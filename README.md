@@ -48,7 +48,7 @@ Variables disponibles :
 
 - `.env.example`
 
-Commandes prévues à terme :
+Commandes disponibles :
 
 ```bash
 make up
@@ -62,6 +62,50 @@ make typecheck
 make db-seed-dev
 make db-reset-dev
 make build
+make test
+make test-unit
+make test-e2e
+```
+
+## Tests
+
+Commandes disponibles :
+
+```bash
+pnpm run test
+pnpm run test:unit
+pnpm run test:e2e
+```
+
+- `pnpm run test` : lance la base actuelle de tests unitaires
+- `pnpm run test:unit` : lance explicitement Vitest
+- `pnpm run test:e2e` : lance les smoke tests Playwright
+
+Via `make` :
+
+```bash
+make test
+make test-unit
+make test-e2e
+```
+
+- `make test` et `make test-unit` s'executent dans le conteneur `app`
+- `make test-e2e` s'execute sur l'hote
+
+Prerequis pour `make test-e2e` :
+
+1. l'application et PostgreSQL doivent deja etre demarres
+2. le schema et le seed doivent deja etre appliques
+3. Chromium Playwright doit etre installe localement une fois
+
+Flux local minimal :
+
+```bash
+docker compose --env-file .env.example up -d --build
+make db-schema
+make db-seed-dev
+pnpm exec playwright install chromium
+make test-e2e
 ```
 
 ## Schema base de donnees
@@ -228,6 +272,8 @@ rm <chemin_retourne>
 
 - `docs/architecture-v1.md`
 - `docs/roadmap-v1.md`
+- `docs/testing/strategy.md`
+- `docs/testing/roadmap.md`
 - `docs/v1-qa-checklist.md`
 
 ## Contraintes importantes
