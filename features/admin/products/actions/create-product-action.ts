@@ -13,6 +13,8 @@ export async function createProductAction(formData: FormData): Promise<void> {
     slug: formData.get("slug"),
     shortDescription: formData.get("shortDescription"),
     description: formData.get("description"),
+    seoTitle: formData.get("seoTitle"),
+    seoDescription: formData.get("seoDescription"),
     status: formData.get("status"),
     isFeatured: formData.get("isFeatured"),
     categoryIds: formData.getAll("categoryIds")

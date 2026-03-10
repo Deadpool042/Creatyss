@@ -516,6 +516,8 @@ h3 {
 .admin-product-page,
 .admin-product-detail,
 .admin-product-list,
+.admin-blog-page,
+.admin-blog-list,
 .admin-record-list,
 .admin-product-subsection {
   display: grid;
@@ -526,7 +528,13 @@ h3 {
   grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
 }
 
+.admin-blog-list {
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+}
+
 .admin-product-card,
+.admin-blog-card,
+.admin-blog-form-section,
 .admin-product-form-section,
 .admin-product-section,
 .admin-variant-card,
@@ -590,6 +598,20 @@ h3 {
   padding: 1rem;
   color: rgba(31, 31, 31, 0.62);
   text-align: center;
+}
+
+.admin-blog-cover-preview {
+  min-height: 14rem;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: rgba(31, 31, 31, 0.05);
+}
+
+.admin-blog-cover-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .admin-media-card {

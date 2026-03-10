@@ -345,7 +345,8 @@ export default async function ProductDetailPage({
           <p className="eyebrow">Produit parent</p>
           <h2>Informations produit</h2>
           <p className="card-copy">
-            Les champs SEO restent volontairement hors de ce lot V1.
+            Ajustez les champs catalogue et le SEO de base depuis le meme
+            formulaire.
           </p>
         </div>
 
@@ -400,6 +401,26 @@ export default async function ProductDetailPage({
               defaultValue={product.description ?? ""}
               name="description"
               rows={6}
+            />
+          </label>
+
+          <label className="admin-field">
+            <span className="meta-label">SEO title</span>
+            <input
+              className="admin-input"
+              defaultValue={product.seoTitle ?? ""}
+              name="seoTitle"
+              type="text"
+            />
+          </label>
+
+          <label className="admin-field">
+            <span className="meta-label">SEO description</span>
+            <textarea
+              className="admin-input admin-textarea"
+              defaultValue={product.seoDescription ?? ""}
+              name="seoDescription"
+              rows={3}
             />
           </label>
 

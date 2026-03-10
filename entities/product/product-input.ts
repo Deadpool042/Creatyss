@@ -5,6 +5,8 @@ export type ValidatedProductInput = {
   slug: string;
   shortDescription: string | null;
   description: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   status: ProductStatus;
   isFeatured: boolean;
   categoryIds: string[];
@@ -22,6 +24,8 @@ type ProductInputSource = {
   slug: FormDataEntryValue | string | null | undefined;
   shortDescription: FormDataEntryValue | string | null | undefined;
   description: FormDataEntryValue | string | null | undefined;
+  seoTitle: FormDataEntryValue | string | null | undefined;
+  seoDescription: FormDataEntryValue | string | null | undefined;
   status: FormDataEntryValue | string | null | undefined;
   isFeatured: FormDataEntryValue | string | null | undefined;
   categoryIds: readonly FormDataEntryValue[] | readonly string[] | undefined;
@@ -157,6 +161,8 @@ export function validateProductInput(
       slug: normalizedSlug,
       shortDescription: normalizeOptionalText(input.shortDescription),
       description: normalizeOptionalText(input.description),
+      seoTitle: normalizeOptionalText(input.seoTitle),
+      seoDescription: normalizeOptionalText(input.seoDescription),
       status,
       isFeatured:
         input.isFeatured === "on" ||

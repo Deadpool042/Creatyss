@@ -30,6 +30,7 @@ export default async function ProtectedAdminLayout({
         <nav aria-label="Navigation admin" className="admin-nav">
           <Link href="/admin">Accueil admin</Link>
           <Link href="/admin/homepage">Homepage</Link>
+          <Link href="/admin/blog">Blog</Link>
           <Link href="/admin/categories">Categories</Link>
           <Link href="/admin/products">Produits</Link>
           <Link href="/admin/media">Bibliotheque media</Link>

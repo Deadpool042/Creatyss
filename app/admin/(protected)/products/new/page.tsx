@@ -94,6 +94,20 @@ export default async function NewAdminProductPage({
         </label>
 
         <label className="admin-field">
+          <span className="meta-label">SEO title</span>
+          <input className="admin-input" name="seoTitle" type="text" />
+        </label>
+
+        <label className="admin-field">
+          <span className="meta-label">SEO description</span>
+          <textarea
+            className="admin-input admin-textarea"
+            name="seoDescription"
+            rows={3}
+          />
+        </label>
+
+        <label className="admin-field">
           <span className="meta-label">Statut</span>
           <select className="admin-input" defaultValue="draft" name="status">
             <option value="draft">Brouillon</option>

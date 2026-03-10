@@ -24,6 +24,8 @@ type AdminProductRow = {
   slug: string;
   short_description: string | null;
   description: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
   status: AdminProductStatus;
   is_featured: boolean;
   created_at: TimestampValue;
@@ -54,6 +56,8 @@ type CreateAdminProductInput = {
   slug: string;
   shortDescription: string | null;
   description: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   status: AdminProductStatus;
   isFeatured: boolean;
   categoryIds: string[];
@@ -93,6 +97,8 @@ export type AdminProductDetail = {
   slug: string;
   shortDescription: string | null;
   description: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   status: AdminProductStatus;
   isFeatured: boolean;
   categories: AdminProductCategoryAssignment[];
@@ -162,6 +168,8 @@ function mapAdminProductDetail(
     slug: row.slug,
     shortDescription: row.short_description,
     description: row.description,
+    seoTitle: row.seo_title,
+    seoDescription: row.seo_description,
     status: row.status,
     isFeatured: row.is_featured,
     categories,
@@ -336,6 +344,8 @@ export async function findAdminProductById(
         p.slug,
         p.short_description,
         p.description,
+        p.seo_title,
+        p.seo_description,
         p.status,
         p.is_featured,
         p.created_at,
@@ -378,16 +388,20 @@ export async function createAdminProduct(
           slug,
           short_description,
           description,
+          seo_title,
+          seo_description,
           status,
           is_featured
         )
-        values ($1, $2, $3, $4, $5, $6)
+        values ($1, $2, $3, $4, $5, $6, $7, $8)
         returning
           id::text as id,
           name,
           slug,
           short_description,
           description,
+          seo_title,
+          seo_description,
           status,
           is_featured,
           created_at,
@@ -398,6 +412,8 @@ export async function createAdminProduct(
         input.slug,
         input.shortDescription,
         input.description,
+        input.seoTitle,
+        input.seoDescription,
         input.status,
         input.isFeatured
       ]
@@ -449,8 +465,10 @@ export async function updateAdminProduct(
           slug = $3,
           short_description = $4,
           description = $5,
-          status = $6,
-          is_featured = $7
+          seo_title = $6,
+          seo_description = $7,
+          status = $8,
+          is_featured = $9
         where id = $1::bigint
         returning
           id::text as id,
@@ -458,6 +476,8 @@ export async function updateAdminProduct(
           slug,
           short_description,
           description,
+          seo_title,
+          seo_description,
           status,
           is_featured,
           created_at,
@@ -469,6 +489,8 @@ export async function updateAdminProduct(
         input.slug,
         input.shortDescription,
         input.description,
+        input.seoTitle,
+        input.seoDescription,
         input.status,
         input.isFeatured
       ]

@@ -44,6 +44,20 @@ export default function AdminHomePage() {
       </article>
 
       <article className="store-card">
+        <p className="card-kicker">Blog</p>
+        <h2>Edition des articles</h2>
+        <p className="card-copy">
+          Creez, publiez et ajustez les articles du blog avec un formulaire
+          simple et une image de couverture optionnelle.
+        </p>
+        <div>
+          <Link className="link" href="/admin/blog">
+            Ouvrir le blog admin
+          </Link>
+        </div>
+      </article>
+
+      <article className="store-card">
         <p className="card-kicker">Categories</p>
         <h2>Structure du catalogue</h2>
         <p className="card-copy">

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPublishedProductBySlug } from "@/db/catalog";
 import { getUploadsPublicPath } from "@/lib/uploads";
@@ -9,6 +10,38 @@ type ProductPageProps = Readonly<{
     slug: string;
   }>;
 }>;
+
+type ProductMetadataSource = NonNullable<
+  Awaited<ReturnType<typeof getPublishedProductBySlug>>
+>;
+
+function getProductMetadataDescription(product: ProductMetadataSource): string {
+  return (
+    product.seoDescription ??
+    product.shortDescription ??
+    product.description ??
+    "Produit Creatyss."
+  );
+}
+
+export async function generateMetadata({
+  params
+}: ProductPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getPublishedProductBySlug(slug);
+
+  if (product === null) {
+    return {
+      title: "Produit Creatyss",
+      description: "Produit Creatyss."
+    };
+  }
+
+  return {
+    title: product.seoTitle ?? product.name,
+    description: getProductMetadataDescription(product)
+  };
+}
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
