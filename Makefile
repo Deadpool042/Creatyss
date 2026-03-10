@@ -2,8 +2,9 @@ SHELL := /bin/sh
 ENV_FILE ?= .env.example
 COMPOSE := docker compose --env-file $(ENV_FILE)
 APP_SERVICE := app
+DB_SERVICE := db
 
-.PHONY: help up down restart build logs ps sh dev typecheck
+.PHONY: help up down restart build logs ps sh dev typecheck db-schema
 
 help:
 	@echo "Usage: make [target]"
@@ -16,6 +17,7 @@ help:
 	@echo "  ps        - Liste les conteneurs"
 	@echo "  sh        - Ouvre un shell dans l'app"
 	@echo "  dev       - Lance le serveur de dev dans le conteneur app"
+	@echo "  db-schema - Applique le schema SQL initial sur une base vide"
 	@echo "  typecheck - Verifie les types TypeScript"
 
 up:
@@ -42,6 +44,9 @@ sh:
 
 dev:
 	$(COMPOSE) exec $(APP_SERVICE) pnpm run dev
+
+db-schema:
+	$(COMPOSE) exec -T $(DB_SERVICE) sh -lc 'psql -v ON_ERROR_STOP=1 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"' < db/migrations/001_initial_schema.sql
 
 typecheck:
 	$(COMPOSE) exec $(APP_SERVICE) pnpm run typecheck
