@@ -16,6 +16,20 @@ export default function AdminHomePage() {
       </article>
 
       <article className="store-card">
+        <p className="card-kicker">Homepage</p>
+        <h2>Edition de la page d'accueil</h2>
+        <p className="card-copy">
+          Modifiez le hero, le bloc editorial et les selections mises en avant
+          depuis une page admin unique et lisible.
+        </p>
+        <div>
+          <Link className="link" href="/admin/homepage">
+            Ouvrir la homepage
+          </Link>
+        </div>
+      </article>
+
+      <article className="store-card">
         <p className="card-kicker">Catalogue</p>
         <h2>Gestion des produits</h2>
         <p className="card-copy">
