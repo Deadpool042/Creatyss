@@ -3,7 +3,7 @@ ENV_FILE ?= .env.example
 COMPOSE := docker compose --env-file $(ENV_FILE)
 APP_SERVICE := app
 
-.PHONY: help up down restart build logs ps sh dev typecheck lint
+.PHONY: help up down restart build logs ps sh dev typecheck
 
 help:
 	@echo "Usage: make [target]"
@@ -16,8 +16,7 @@ help:
 	@echo "  ps        - Liste les conteneurs"
 	@echo "  sh        - Ouvre un shell dans l'app"
 	@echo "  dev       - Lance le serveur de dev dans le conteneur app"
-	@echo "  typecheck - Vérifie les types TypeScript"
-	@echo "  lint      - Vérifie le style de code avec ESLint"
+	@echo "  typecheck - Verifie les types TypeScript"
 
 up:
 	$(COMPOSE) up --build
@@ -42,10 +41,7 @@ sh:
 	$(COMPOSE) exec $(APP_SERVICE) sh
 
 dev:
-	$(COMPOSE) exec $(APP_SERVICE) npm run dev
+	$(COMPOSE) exec $(APP_SERVICE) pnpm run dev
 
 typecheck:
-	$(COMPOSE) exec $(APP_SERVICE) npm run typecheck
-
-lint:
-	$(COMPOSE) exec $(APP_SERVICE) npm run lint
+	$(COMPOSE) exec $(APP_SERVICE) pnpm run typecheck
