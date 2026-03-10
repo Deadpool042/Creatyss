@@ -70,7 +70,7 @@ Faire tourner l’application et PostgreSQL en local via Docker.
 
 Poser un schéma de données propre et stable pour la V1.
 
-### Livrables
+### Livrables de l’étape 3
 
 - tables `admins`
 - tables `categories`
@@ -270,6 +270,7 @@ Construire les pages publiques principales de la V1.
 - affichage des variantes couleur
 - changement d’image selon variante
 - SEO de base rendu côté front
+- parallel routes seulement si elles apportent un vrai bénéfice structurel ou UX
 
 ### Dépendances de l’étape 10
 
@@ -289,7 +290,7 @@ Construire les pages publiques principales de la V1.
 
 Stabiliser la V1 avant enrichissement futur.
 
-### Livrables de l'étape 11
+### Livrables de l’étape 11
 
 - vérification TypeScript
 - vérification Docker local
@@ -321,6 +322,7 @@ Sont explicitement repoussés hors V1 :
 - réductions ciblées
 - moteur de recommandation sophistiqué
 - mailing list avancée
+- publication automatique vers les réseaux sociaux
 - automatisations marketing avancées
 - IA
 - analytics avancés
@@ -337,4 +339,5 @@ La V1 est considérée comme terminée si :
 - le front public affiche correctement catalogue, fiches produit, blog et homepage
 - les variantes changent bien l’image affichée
 - l’auth admin fonctionne
+- les erreurs principales sont gérées proprement côté admin et côté front
 - le code reste lisible, typé strictement et sans sur-architecture
