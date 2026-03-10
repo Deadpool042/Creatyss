@@ -35,6 +35,8 @@ Thumbs.db
 
 # coverage
 coverage/
+playwright-report/
+test-results/
 
 # uploads / local storage
 uploads/
@@ -42,6 +44,5 @@ public/uploads/
 
 # docker
 postgres_data/
-
 
 

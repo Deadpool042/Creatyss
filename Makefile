@@ -82,5 +82,4 @@ test-unit:
 	$(COMPOSE) exec $(APP_SERVICE) pnpm run test:unit
 
 test-e2e:
-	$(COMPOSE) exec $(APP_SERVICE) pnpm run test:e2e
-
+	pnpm run test:e2e
