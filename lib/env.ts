@@ -9,8 +9,19 @@ function readEnv(name: string, fallback: string) {
   return value;
 }
 
+function readRequiredEnv(name: string) {
+  const value = process.env[name];
+
+  if (!value || value.trim().length === 0) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+
+  return value;
+}
+
 export const env = {
   appUrl: readEnv("APP_URL", "http://localhost:3000"),
+  adminSessionSecret: readRequiredEnv("ADMIN_SESSION_SECRET"),
   databaseUrl: readEnv(
     "DATABASE_URL",
     "postgresql://creatyss:creatyss@db:5432/creatyss"

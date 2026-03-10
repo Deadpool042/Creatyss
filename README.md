@@ -87,6 +87,43 @@ docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -
 pnpm run typecheck
 ```
 
+## Auth admin
+
+L'auth admin repose sur la table `admin_users`, un cookie de session signe `HttpOnly`, et une verification serveur sur chaque acces a `/admin`.
+
+Variables d'environnement requises :
+
+- `ADMIN_SESSION_SECRET`
+
+Creation du premier admin :
+
+```bash
+printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.example exec -T app node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
+```
+
+Verification locale exacte :
+
+```bash
+docker compose --env-file .env.example down -v
+docker compose --env-file .env.example up -d --build
+make db-schema
+printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.example exec -T app node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
+docker compose --env-file .env.example exec app pnpm run typecheck
+docker compose --env-file .env.example exec app pnpm run build
+curl -I http://localhost:3000/admin
+curl -i -c /tmp/creatyss-admin.cookie -X POST -H 'Content-Type: application/x-www-form-urlencoded' --data 'email=Admin%40Example.com&password=SuperLongPassword123!' http://localhost:3000/admin/login
+COOKIE_VALUE=$(awk '$6=="creatyss_admin_session"{print $7}' /tmp/creatyss-admin.cookie)
+node -e "const [payload] = process.argv[1].split('.'); const data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')); console.log(data); console.log(Object.keys(data).sort().join(','));" "$COOKIE_VALUE"
+curl -I -b /tmp/creatyss-admin.cookie http://localhost:3000/admin
+curl -i -b /tmp/creatyss-admin.cookie -X POST http://localhost:3000/admin/logout
+curl -I -b /tmp/creatyss-admin.cookie http://localhost:3000/admin
+COOKIE_VALUE=$(awk '$6=="creatyss_admin_session"{print $7}' /tmp/creatyss-admin.cookie)
+node -e "const [payload, sig] = process.argv[1].split('.'); const obj = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')); obj.exp = 1; process.stdout.write(Buffer.from(JSON.stringify(obj)).toString('base64url') + '.' + sig);" "$COOKIE_VALUE" > /tmp/creatyss-expired.cookie
+curl -i -H "Cookie: creatyss_admin_session=$(cat /tmp/creatyss-expired.cookie)" http://localhost:3000/admin
+printf 'not-json.invalidsig' > /tmp/creatyss-invalid.cookie
+curl -i -H "Cookie: creatyss_admin_session=$(cat /tmp/creatyss-invalid.cookie)" http://localhost:3000/admin
+```
+
 ## Documentation
 
 - `docs/architecture-v1.md`
