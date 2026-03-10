@@ -10,16 +10,30 @@ export default function AdminHomePage() {
         <h2>Espace protege pret pour la suite</h2>
         <p className="card-copy">
           Cette base d&apos;authentification protege deja l&apos;espace admin et
-          prepare l&apos;integration des futures pages de gestion des medias.
+          accueille maintenant une verticale categories simple et maintenable.
         </p>
       </article>
 
       <article className="store-card">
         <p className="card-kicker">Prochaine etape</p>
-        <h2>Bibliotheque media</h2>
+        <h2>Gestion des categories</h2>
         <p className="card-copy">
-          Les prochains ecrans admin pourront s&apos;ajouter sous
-          <code> /admin</code> en reutilisant directement ce layout protege.
+          Creez, modifiez et supprimez les categories du catalogue depuis un
+          flux admin dedie.
+        </p>
+        <div>
+          <Link className="link" href="/admin/categories">
+            Ouvrir les categories
+          </Link>
+        </div>
+      </article>
+
+      <article className="store-card">
+        <p className="card-kicker">Media</p>
+        <h2>Bibliotheque locale</h2>
+        <p className="card-copy">
+          La bibliotheque media reste disponible pour preparer les futures
+          editions produits, blog et homepage.
         </p>
         <div>
           <Link className="link" href="/admin/media">

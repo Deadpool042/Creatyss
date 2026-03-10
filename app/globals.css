@@ -370,7 +370,9 @@ h3 {
 
 .admin-nav,
 .admin-media-page,
-.admin-media-grid {
+.admin-media-grid,
+.admin-category-page,
+.admin-category-list {
   display: grid;
   gap: 1rem;
 }
@@ -395,6 +397,65 @@ h3 {
 
 .admin-upload-card {
   width: 100%;
+}
+
+.admin-category-list {
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.admin-category-card,
+.admin-category-form-section,
+.admin-danger-zone {
+  width: 100%;
+}
+
+.admin-category-tags,
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.admin-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(31, 31, 31, 0.12);
+  border-radius: 999px;
+  background: rgba(31, 31, 31, 0.05);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+.admin-textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.admin-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: inherit;
+}
+
+.admin-checkbox input {
+  width: 1rem;
+  height: 1rem;
+}
+
+.admin-danger-zone {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-danger-button {
+  border-color: #7a2020;
+  color: #7a2020;
+}
+
+.admin-danger-button:hover {
+  background: #7a2020;
+  color: #f5f2ea;
 }
 
 .admin-success {
