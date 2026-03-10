@@ -1,0 +1,7 @@
+{
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true
+}
