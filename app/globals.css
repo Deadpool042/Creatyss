@@ -471,6 +471,85 @@ h3 {
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 }
 
+.admin-product-page,
+.admin-product-detail,
+.admin-product-list,
+.admin-record-list,
+.admin-product-subsection {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-product-list {
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+}
+
+.admin-product-card,
+.admin-product-form-section,
+.admin-product-section,
+.admin-variant-card,
+.admin-image-card {
+  width: 100%;
+}
+
+.admin-product-section,
+.admin-product-subsection {
+  align-content: start;
+}
+
+.admin-product-form,
+.admin-record-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-product-tags,
+.admin-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.admin-fieldset {
+  margin: 0;
+  border: 1px solid rgba(31, 31, 31, 0.1);
+  border-radius: 0.9rem;
+  padding: 1rem;
+}
+
+.admin-checkbox-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-muted-note {
+  margin: 0;
+  color: rgba(31, 31, 31, 0.68);
+  line-height: 1.6;
+}
+
+.admin-image-preview {
+  min-height: 12rem;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: rgba(31, 31, 31, 0.05);
+}
+
+.admin-image-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-image-placeholder {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  color: rgba(31, 31, 31, 0.62);
+  text-align: center;
+}
+
 .admin-media-card {
   align-content: start;
 }
