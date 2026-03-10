@@ -1,29 +1,32 @@
-SHELL := /bin/sh
+SHELL := /bin/bash
 ENV_FILE ?= .env.example
 COMPOSE := docker compose --env-file $(ENV_FILE)
 APP_SERVICE := app
 DB_SERVICE := db
 
-.PHONY: help up down restart build logs ps sh dev typecheck db-schema db-seed-dev db-reset-dev test test-unit test-e2e
+.PHONY: help up down restart build logs ps sh dev typecheck db-schema db-seed-dev db-reset-dev test test-unit test-e2e test-e2e-ui test-e2e-headed test-select
 
 help:
 	@echo "Usage: make [target]"
 	@echo "Targets:"
-	@echo "  up        - Demarre l'application et PostgreSQL"
-	@echo "  down      - Stoppe les services"
-	@echo "  restart   - Redemarre les services"
-	@echo "  build     - Construit les services"
-	@echo "  logs      - Suit les logs"
-	@echo "  ps        - Liste les conteneurs"
-	@echo "  sh        - Ouvre un shell dans l'app"
-	@echo "  dev       - Lance le serveur de dev dans le conteneur app"
-	@echo "  db-schema - Applique toutes les migrations SQL sur une base vide"
-	@echo "  typecheck - Verifie les types TypeScript"
-	@echo "  db-seed-dev - Applique les fichiers de seed SQL sur la base de dev"
-	@echo "  db-reset-dev - Reset la base de dev (down -v, up -d --build, db-schema, db-seed-dev)"
-	@echo "  test         - Lance les tests unitaires"
-	@echo "  test-unit    - Lance les tests unitaires"
-	@echo "  test-e2e     - Lance les tests E2E"
+	@echo "  up              - Demarre l'application et PostgreSQL"
+	@echo "  down            - Stoppe les services"
+	@echo "  restart         - Redemarre les services"
+	@echo "  build           - Construit les services"
+	@echo "  logs            - Suit les logs"
+	@echo "  ps              - Liste les conteneurs"
+	@echo "  sh              - Ouvre un shell dans l'app"
+	@echo "  dev             - Lance le serveur de dev dans le conteneur app"
+	@echo "  db-schema       - Applique toutes les migrations SQL sur une base vide"
+	@echo "  typecheck       - Verifie les types TypeScript"
+	@echo "  db-seed-dev     - Applique les fichiers de seed SQL sur la base de dev"
+	@echo "  db-reset-dev    - Reset la base de dev (down -v, up -d --build, db-schema, db-seed-dev)"
+	@echo "  test            - Lance les tests unitaires"
+	@echo "  test-unit       - Lance les tests unitaires"
+	@echo "  test-e2e        - Lance les tests E2E"
+	@echo "  test-e2e-ui     - Lance Playwright en mode UI"
+	@echo "  test-e2e-headed - Lance Playwright avec navigateur visible"
+	@echo "  test-select     - Ouvre un menu pour choisir le type de test"
 
 up:
 	$(COMPOSE) up --build
@@ -59,7 +62,6 @@ db-schema:
 typecheck:
 	$(COMPOSE) exec $(APP_SERVICE) pnpm run typecheck
 
-
 db-seed-dev:
 	@for file in db/seeds/*.sql; do \
 		[ -e "$$file" ] || continue; \
@@ -83,3 +85,23 @@ test-unit:
 
 test-e2e:
 	pnpm run test:e2e
+
+test-e2e-ui:
+	pnpm exec playwright test --ui
+
+test-e2e-headed:
+	pnpm exec playwright test --headed
+
+test-select:
+	@echo "Choisis le type de test a lancer :"; \
+	select choice in "Tests unitaires" "Tests E2E" "Tests E2E UI" "Tests E2E navigateur visible" "Tous" "Quitter"; do \
+		case $$REPLY in \
+			1) $(MAKE) test-unit; break ;; \
+			2) $(MAKE) test-e2e; break ;; \
+			3) $(MAKE) test-e2e-ui; break ;; \
+			4) $(MAKE) test-e2e-headed; break ;; \
+			5) $(MAKE) test-unit && $(MAKE) test-e2e; break ;; \
+			6) echo "Annule."; break ;; \
+			*) echo "Choix invalide." ;; \
+		esac; \
+	done
