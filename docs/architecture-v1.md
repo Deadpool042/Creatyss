@@ -28,13 +28,12 @@ Cette V1 couvre uniquement :
 - Client Components uniquement si nécessaire
 - Server Actions seulement quand elles simplifient réellement le flux
 
-## Structure cible
+## Structure actuelle
 
 ```text
 app/
-components/
+entities/
 features/
-domain/
 db/
 lib/
 public/
@@ -51,16 +50,6 @@ Ne doit pas contenir :
 
 - logique métier complexe
 - accès direct à la base partout sans couche dédiée
-
-### `components/`
-
-Composants UI réutilisables.
-
-Ne doit pas contenir :
-
-- logique métier
-- accès base
-- validations métier profondes
 
 ### `features/`
 
@@ -81,7 +70,7 @@ Contient en priorité :
 - actions ciblées
 - logique applicative par domaine
 
-### `domain/`
+### `entities/`
 
 Types métier, règles métier pures, contrats et modèles conceptuels.
 
@@ -127,13 +116,13 @@ Scripts techniques utiles :
 
 ### UI
 
-Dans `components/` et `app/`.
+Dans `app/`.
 La UI affiche et collecte les entrées utilisateur.
 Elle ne porte pas la logique métier.
 
 ### Logique métier
 
-Dans `features/` et `domain/`.
+Dans `features/` et `entities/`.
 Elle applique les règles métier :
 
 - gestion produit
@@ -163,7 +152,7 @@ Aucune logique admin dans les pages publiques.
 
 ## Modèle de données V1
 
-### `admins`
+### `admin_users`
 
 Utilisateurs d’administration.
 
@@ -322,15 +311,30 @@ Champs minimaux :
 - `hero_image_path`
 - `editorial_title`
 - `editorial_text`
-- `featured_product_ids` ou relation dédiée plus tard
-- `featured_category_ids` ou relation dédiée plus tard
-- `featured_blog_post_ids` ou relation dédiée plus tard
 - `status`
+- `created_at`
 - `updated_at`
 
 Contraintes :
 
 - `status` borné (`draft`, `published`)
+- une seule homepage `published`
+
+### `homepage_featured_products`
+
+Relation ordonnée entre homepage et produits mis en avant.
+
+### `homepage_featured_categories`
+
+Relation ordonnée entre homepage et catégories mises en avant.
+
+### `homepage_featured_blog_posts`
+
+Relation ordonnée entre homepage et articles mis en avant.
+
+### `media_assets`
+
+Bibliothèque média locale utilisée par l'admin.
 
 ## Routes principales prévues
 
@@ -339,7 +343,6 @@ Contraintes :
 - `/`
 - `/boutique`
 - `/boutique/[slug]`
-- `/categories/[slug]`
 - `/blog`
 - `/blog/[slug]`
 
@@ -357,6 +360,7 @@ Contraintes :
 - `/admin/blog/new`
 - `/admin/blog/[id]`
 - `/admin/homepage`
+- `/admin/media`
 
 ## Docker local
 

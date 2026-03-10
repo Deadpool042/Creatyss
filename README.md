@@ -111,6 +111,35 @@ Reset complet + seed :
 make db-reset-dev
 ```
 
+Le seed de developpement couvre :
+
+- comptes `admin_users`
+- categories
+- produits et variantes
+- images produit en base
+- blog
+- homepage
+
+Il ne cree pas de fichiers ou de lignes `media_assets`. Les flux admin qui proposent de choisir un media existant necessitent donc d'importer au moins une image via `/admin/media` avant verification.
+
+## Verticales V1 livrees
+
+Verticales admin disponibles :
+
+- `/admin/media`
+- `/admin/categories`
+- `/admin/products`
+- `/admin/homepage`
+- `/admin/blog`
+
+Pages publiques disponibles :
+
+- `/`
+- `/boutique`
+- `/boutique/[slug]`
+- `/blog`
+- `/blog/[slug]`
+
 ## Auth admin
 
 L'auth admin repose sur la table `admin_users`, un cookie de session signe `HttpOnly`, et une verification serveur sur chaque acces a `/admin`.
@@ -199,6 +228,7 @@ rm <chemin_retourne>
 
 - `docs/architecture-v1.md`
 - `docs/roadmap-v1.md`
+- `docs/v1-qa-checklist.md`
 
 ## Contraintes importantes
 
@@ -210,13 +240,17 @@ Le projet n’utilise pas :
 - Supabase
 - Vercel
 
-## État du projet
+## Etat actuel
 
-Le dépôt contient désormais une fondation technique minimale :
+Le depot contient une V1 locale exploitable avec :
 
-- base Next.js App Router
-- TypeScript strict
-- Docker Compose avec `app` + `db`
-- connexion PostgreSQL
-- configuration initiale des uploads locaux
-- commandes `make` minimales
+- auth admin serveur
+- bibliotheque media locale
+- CRUD categories admin
+- CRUD produits admin avec variantes, categories et images
+- edition admin de la homepage
+- CRUD blog admin
+- front public catalogue, blog et homepage
+- SEO de base sur produits et articles
+
+La checklist manuelle de recette V1 est centralisee dans `docs/v1-qa-checklist.md`.

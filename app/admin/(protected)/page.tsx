@@ -10,8 +10,8 @@ export default function AdminHomePage() {
         <h2>Espace protege pret pour la suite</h2>
         <p className="card-copy">
           Cette base d&apos;authentification protege deja l&apos;espace admin et
-          accueille maintenant des verticales categories, produits et media
-          simples et maintenables.
+          accueille maintenant des verticales homepage, blog, categories,
+          produits et media simples et maintenables.
         </p>
       </article>
 

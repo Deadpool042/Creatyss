@@ -72,7 +72,7 @@ Poser un schéma de données propre et stable pour la V1.
 
 ### Livrables de l’étape 3
 
-- tables `admins`
+- tables `admin_users`
 - tables `categories`
 - tables `products`
 - tables `product_categories`
