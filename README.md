@@ -52,19 +52,23 @@ Commandes disponibles :
 
 ```bash
 make up
-make db-schema
 make down
+make restart
 make logs
 make ps
 make sh
 make dev
+make build
+make db-schema
 make typecheck
 make db-seed-dev
 make db-reset-dev
-make build
 make test
 make test-unit
 make test-e2e
+make test-e2e-ui
+make test-e2e-headed
+make test-select
 ```
 
 ## Tests
@@ -91,16 +95,19 @@ make test-e2e
 
 - `make test` et `make test-unit` s'executent dans le conteneur `app`
 - `make test-e2e` s'execute sur l'hote
+- `make test-e2e-ui`, `make test-e2e-headed` et `make test-select` sont aussi disponibles pour Playwright
 
 Prerequis pour `make test-e2e` :
 
 1. l'application et PostgreSQL doivent deja etre demarres
 2. le schema et le seed doivent deja etre appliques
-3. Chromium Playwright doit etre installe localement une fois
+3. les dependances Node locales doivent deja etre installees sur l'hote (`pnpm install`)
+4. Chromium Playwright doit etre installe localement une fois
 
 Flux local minimal :
 
 ```bash
+pnpm install
 docker compose --env-file .env.example up -d --build
 make db-schema
 make db-seed-dev
