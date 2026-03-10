@@ -4,7 +4,7 @@ COMPOSE := docker compose --env-file $(ENV_FILE)
 APP_SERVICE := app
 DB_SERVICE := db
 
-.PHONY: help up down restart build logs ps sh dev typecheck db-schema db-seed-dev db-reset-dev
+.PHONY: help up down restart build logs ps sh dev typecheck db-schema db-seed-dev db-reset-dev test test-unit test-e2e
 
 help:
 	@echo "Usage: make [target]"
@@ -21,6 +21,9 @@ help:
 	@echo "  typecheck - Verifie les types TypeScript"
 	@echo "  db-seed-dev - Applique les fichiers de seed SQL sur la base de dev"
 	@echo "  db-reset-dev - Reset la base de dev (down -v, up -d --build, db-schema, db-seed-dev)"
+	@echo "  test         - Lance les tests unitaires"
+	@echo "  test-unit    - Lance les tests unitaires"
+	@echo "  test-e2e     - Lance les tests E2E"
 
 up:
 	$(COMPOSE) up --build
@@ -71,3 +74,13 @@ db-reset-dev:
 	$(COMPOSE) up -d --build
 	$(MAKE) db-schema
 	$(MAKE) db-seed-dev
+
+test:
+	$(COMPOSE) exec $(APP_SERVICE) pnpm run test
+
+test-unit:
+	$(COMPOSE) exec $(APP_SERVICE) pnpm run test:unit
+
+test-e2e:
+	$(COMPOSE) exec $(APP_SERVICE) pnpm run test:e2e
+
