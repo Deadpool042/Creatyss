@@ -2,17 +2,17 @@ import Link from "next/link";
 
 export default function NotFoundPage() {
   return (
-    <main className="shell">
+    <div className="shell">
       <section className="card">
         <p className="eyebrow">404</p>
         <h1>Page introuvable</h1>
         <p className="lead">
-          Cette route n&apos;existe pas dans la fondation actuelle.
+          La page demandee n&apos;est pas disponible sur la boutique publique.
         </p>
         <Link className="link" href="/">
-          Retour a l&apos;accueil technique
+          Retour a l&apos;accueil
         </Link>
       </section>
-    </main>
+    </div>
   );
 }
