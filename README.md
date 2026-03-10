@@ -84,6 +84,9 @@ pnpm run test:e2e
 - `pnpm run test` : lance la base actuelle de tests unitaires
 - `pnpm run test:unit` : lance explicitement Vitest
 - `pnpm run test:e2e` : lance les smoke tests Playwright
+- `pnpm run test:e2e-ui` : lance les tests Playwright avec interface graphique
+- `pnpm run test-e2e-headed` : lance les tests Playwright en mode headed
+- `pnpm run test-select` : lance Playwright Test Select pour choisir les tests à exécuter via une interface interactive
 
 Via `make` :
 
@@ -91,6 +94,9 @@ Via `make` :
 make test
 make test-unit
 make test-e2e
+make test-e2e-ui
+make test-e2e-headed
+make test-select
 ```
 
 - `make test` et `make test-unit` s'executent dans le conteneur `app`
