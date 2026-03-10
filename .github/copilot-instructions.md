@@ -38,6 +38,8 @@ Projet e-commerce custom pour Creatyss, marque de sacs artisanaux.
 - `db/` pour schéma, accès base et migrations
 - `components/` pour composants UI réutilisables
 - `lib/` pour helpers techniques transverses
+- `public/` pour assets publics et uploads servis simplement en V1
+- `scripts/` pour scripts techniques utiles
 - `docs/` pour la documentation projet
 
 ## Règles Next.js et routing
@@ -58,6 +60,15 @@ Projet e-commerce custom pour Creatyss, marque de sacs artisanaux.
 - Ne pas surcharger l’interface avec des composants inutiles
 - Toujours privilégier lisibilité, accessibilité et clarté des formulaires
 - L’admin doit être simple pour une utilisatrice non technique
+
+## Règles base de données
+
+- Clés primaires explicites
+- Timestamps systématiques
+- Slugs uniques quand nécessaire
+- Relations propres
+- Noms de tables et colonnes cohérents et stables
+- Index utiles sans excès
 
 ## Gestion des erreurs
 
