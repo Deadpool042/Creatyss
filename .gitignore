@@ -22,11 +22,14 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# os / editor
+# os
 .DS_Store
 Thumbs.db
+
+# vscode
 .vscode/*
 !.vscode/settings.json
+!.vscode/extensions.json
 
 # coverage
 coverage/

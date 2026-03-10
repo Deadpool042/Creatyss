@@ -1,11 +1,16 @@
 # Creatyss - Instructions projet
 
+## Contexte
+
+Projet e-commerce custom pour Creatyss, marque de sacs artisanaux.
+
 ## Stack
 
 - Next.js App Router (v16+)
 - TypeScript strict
 - PostgreSQL
 - Docker Compose en local
+- Makefile comme point d’entrée des commandes
 - futur déploiement sur VPS OVH
 
 ## Interdits
@@ -14,10 +19,11 @@
 - Ne jamais ajouter de dépendance inutile.
 - Ne jamais introduire Redis, microservices, queue, websocket, IA ou analytics avancés sans demande explicite.
 - Ne jamais utiliser `any` sauf justification explicite et exceptionnelle.
+- Ne jamais sur-architecturer.
 
 ## Priorités
 
-- Solution la plus simple compatible avec l'évolution future.
+- Solution la plus simple compatible avec l’évolution future.
 - Local first via Docker.
 - Code lisible, modulaire, maintenable.
 - Séparation stricte entre UI, logique métier, accès aux données et validation.
@@ -32,8 +38,9 @@
 - `db/` pour schéma, accès base et migrations
 - `components/` pour composants UI réutilisables
 - `lib/` pour helpers techniques transverses
+- `docs/` pour la documentation projet
 
-## Règles Next.js
+## Règles Next.js et routing
 
 - Server Components par défaut
 - Client Components seulement si nécessaire
@@ -42,7 +49,8 @@
 - Utiliser les layouts imbriqués pour limiter les rechargements inutiles
 - Utiliser les parallel routes (`@slot`) seulement quand elles apportent un bénéfice clair de structure ou d’UX
 - Réserver les parallel routes surtout pour l’admin, les vues composées, les modales ou des zones indépendantes
-- Ne pas complexifier le routing si une route simple suffit
+- Ne jamais introduire de parallel routes par défaut
+- Préférer une route simple tant qu’un besoin concret ne justifie pas plus
 
 ## Règles UI
 
@@ -73,6 +81,27 @@
 - SEO de base
 - auth admin simple et sécurisée
 
+## Hors périmètre V1
+
+- paiement avancé
+- coupons complexes
+- promos avancées
+- réductions ciblées
+- moteur de recommandation sophistiqué
+- mailing list avancée
+- automatisations marketing avancées
+- publication automatique vers les réseaux sociaux
+- IA
+- analytics avancés
+- multi-langue
+- espace client complet
+
+## Local first
+
+- Le projet doit fonctionner localement via Docker
+- La commande d’entrée principale doit être `make up`
+- Le setup local doit inclure au minimum un service `app` et un service `db`
+
 ## Quand tu proposes une modification
 
 Toujours donner :
@@ -81,12 +110,6 @@ Toujours donner :
 - les variables d’environnement nécessaires
 - la commande de test
 - la vérification manuelle attendue
-
-## Routing
-
-- Utiliser les parallel routes (`@slot`) seulement si elles évitent réellement de dupliquer des layouts ou améliorent clairement l’UX admin
-- Ne jamais introduire de parallel routes par défaut
-- Préférer une route simple tant qu’un besoin concret ne justifie pas plus
 
 ## Format des réponses
 
