@@ -44,6 +44,10 @@ Commande d’entrée principale :
 make up
 ```
 
+Variables disponibles :
+
+- `.env.example`
+
 Commandes prévues à terme :
 
 ```bash
@@ -70,5 +74,11 @@ Le projet n’utilise pas :
 
 ## État du projet
 
-Le dépôt pose actuellement la base de cadrage et de documentation.
-La fondation technique sera ajoutée ensuite avec la structure Next.js, Docker, PostgreSQL et le `Makefile`.
+Le dépôt contient désormais une fondation technique minimale :
+
+- base Next.js App Router
+- TypeScript strict
+- Docker Compose avec `app` + `db`
+- connexion PostgreSQL
+- configuration initiale des uploads locaux
+- commandes `make` minimales

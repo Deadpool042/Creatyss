@@ -40,3 +40,10 @@ public/uploads/
 
 # docker
 postgres_data/
+
+# node_modules
+node_modules/
+
+# next.js
+.next/
+out/

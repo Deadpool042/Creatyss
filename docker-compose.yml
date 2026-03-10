@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: creatyss-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_URL: ${APP_URL:-http://localhost:3000}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://creatyss:creatyss@db:5432/creatyss}
+      NEXT_TELEMETRY_DISABLED: "1"
+      PORT: "3000"
+      UPLOADS_DIR: ${UPLOADS_DIR:-public/uploads}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      - .:/app
+      - app_node_modules:/app/node_modules
+    command: npm run dev
+
+  db:
+    container_name: creatyss-db
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-creatyss}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-creatyss}
+      POSTGRES_USER: ${POSTGRES_USER:-creatyss}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-creatyss} -d ${POSTGRES_DB:-creatyss}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  app_node_modules:
+  postgres_data:
