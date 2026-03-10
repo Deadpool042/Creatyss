@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const dynamic = "force-dynamic";
 
 export default function AdminHomePage() {
@@ -19,6 +21,11 @@ export default function AdminHomePage() {
           Les prochains ecrans admin pourront s&apos;ajouter sous
           <code> /admin</code> en reutilisant directement ce layout protege.
         </p>
+        <div>
+          <Link className="link" href="/admin/media">
+            Ouvrir la bibliotheque media
+          </Link>
+        </div>
       </article>
     </div>
   );

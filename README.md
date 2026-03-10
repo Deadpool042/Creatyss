@@ -60,7 +60,7 @@ make ps
 
 ## Schema base de donnees
 
-Le schema PostgreSQL initial V1 est defini dans `db/migrations/001_initial_schema.sql`.
+Le schema PostgreSQL V1 est defini par les migrations SQL dans `db/migrations/`.
 
 Application locale :
 
@@ -69,7 +69,7 @@ make up
 make db-schema
 ```
 
-`make db-schema` cible uniquement une base vide. Pour reappliquer le schema proprement, repartez d'une base neuve :
+`make db-schema` applique tous les fichiers `db/migrations/*.sql` dans l'ordre lexical et cible uniquement une base vide. Pour reappliquer le schema proprement, repartez d'une base neuve :
 
 ```bash
 docker compose --env-file .env.example down -v
@@ -122,6 +122,47 @@ node -e "const [payload, sig] = process.argv[1].split('.'); const obj = JSON.par
 curl -i -H "Cookie: creatyss_admin_session=$(cat /tmp/creatyss-expired.cookie)" http://localhost:3000/admin
 printf 'not-json.invalidsig' > /tmp/creatyss-invalid.cookie
 curl -i -H "Cookie: creatyss_admin_session=$(cat /tmp/creatyss-invalid.cookie)" http://localhost:3000/admin
+```
+
+## Media admin
+
+La bibliotheque media admin repose sur la table `media_assets`, un stockage local sous `public/uploads`, et une page protegee `/admin/media`.
+
+Cette fondation V1 accepte uniquement :
+
+- `image/jpeg`
+- `image/png`
+- `image/webp`
+
+Verification locale exacte :
+
+```bash
+docker compose --env-file .env.example down -v
+docker compose --env-file .env.example up -d --build
+make db-schema
+printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.example exec -T app node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
+docker compose --env-file .env.example exec app pnpm run typecheck
+docker compose --env-file .env.example exec app pnpm run build
+docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' and table_name = 'media_assets';"
+```
+
+Puis :
+
+1. connectez-vous sur `http://localhost:3000/admin/login`
+2. ouvrez `http://localhost:3000/admin/media`
+3. importez une image JPEG, PNG ou WebP valide
+4. verifiez la ligne creee en base :
+
+```bash
+docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select id, file_path, original_name, mime_type, byte_size, image_width, image_height from media_assets order by created_at desc;"
+find public/uploads/media -type f | sort
+```
+
+Pour verifier le fallback listing, supprimez un fichier local deja importe puis rechargez `/admin/media` :
+
+```bash
+find public/uploads/media -type f | head -n 1
+rm <chemin_retourne>
 ```
 
 ## Documentation

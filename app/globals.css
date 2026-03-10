@@ -368,6 +368,67 @@ h3 {
   gap: 1rem;
 }
 
+.admin-nav,
+.admin-media-page,
+.admin-media-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-nav {
+  grid-template-columns: repeat(auto-fit, minmax(12rem, max-content));
+}
+
+.admin-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(31, 31, 31, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.65rem 1rem;
+}
+
+.admin-nav a:hover {
+  background: rgba(31, 31, 31, 0.08);
+}
+
+.admin-upload-card {
+  width: 100%;
+}
+
+.admin-success {
+  margin: 0;
+  border: 1px solid rgba(35, 107, 58, 0.18);
+  border-radius: 0.9rem;
+  background: rgba(35, 107, 58, 0.08);
+  padding: 0.85rem 1rem;
+  color: #1f6d37;
+}
+
+.admin-media-grid {
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.admin-media-card {
+  align-content: start;
+}
+
+.admin-media-preview {
+  min-height: 12rem;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: rgba(31, 31, 31, 0.05);
+}
+
+.admin-media-placeholder {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  color: rgba(31, 31, 31, 0.62);
+  text-align: center;
+}
+
 .button,
 .link {
   display: inline-flex;

@@ -17,7 +17,7 @@ help:
 	@echo "  ps        - Liste les conteneurs"
 	@echo "  sh        - Ouvre un shell dans l'app"
 	@echo "  dev       - Lance le serveur de dev dans le conteneur app"
-	@echo "  db-schema - Applique le schema SQL initial sur une base vide"
+	@echo "  db-schema - Applique toutes les migrations SQL sur une base vide"
 	@echo "  typecheck - Verifie les types TypeScript"
 
 up:
@@ -46,7 +46,10 @@ dev:
 	$(COMPOSE) exec $(APP_SERVICE) pnpm run dev
 
 db-schema:
-	$(COMPOSE) exec -T $(DB_SERVICE) sh -lc 'psql -v ON_ERROR_STOP=1 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"' < db/migrations/001_initial_schema.sql
+	@for migration in db/migrations/*.sql; do \
+		echo "Applying $$migration"; \
+		$(COMPOSE) exec -T $(DB_SERVICE) sh -lc 'psql -v ON_ERROR_STOP=1 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"' < "$$migration" || exit $$?; \
+	done
 
 typecheck:
 	$(COMPOSE) exec $(APP_SERVICE) pnpm run typecheck

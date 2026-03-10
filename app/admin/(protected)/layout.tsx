@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireAuthenticatedAdmin } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
@@ -25,6 +26,11 @@ export default async function ProtectedAdminLayout({
             </button>
           </form>
         </div>
+
+        <nav aria-label="Navigation admin" className="admin-nav">
+          <Link href="/admin">Accueil admin</Link>
+          <Link href="/admin/media">Bibliotheque media</Link>
+        </nav>
 
         {children}
       </section>
