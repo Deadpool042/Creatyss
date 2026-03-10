@@ -46,13 +46,16 @@ export type PublishedProductVariant = {
   sku: string;
   price: MoneyAmount;
   compareAtPrice: MoneyAmount | null;
+  stockQuantity: number;
   isDefault: boolean;
+  isAvailable: boolean;
   createdAt: string;
   updatedAt: string;
   images: PublishedProductImage[];
 };
 
 export type PublishedProductDetail = PublishedProductSummary & {
+  isAvailable: boolean;
   images: PublishedProductImage[];
   variants: PublishedProductVariant[];
 };
@@ -144,6 +147,7 @@ type ProductVariantRow = {
   sku: string;
   price: MoneyAmount;
   compare_at_price: MoneyAmount | null;
+  stock_quantity: number;
   is_default: boolean;
   created_at: TimestampValue;
   updated_at: TimestampValue;
@@ -454,12 +458,13 @@ export async function getPublishedProductBySlug(
           pv.name,
           pv.color_name,
           pv.color_hex,
-          pv.sku,
-          pv.price::text as price,
-          pv.compare_at_price::text as compare_at_price,
-          pv.is_default,
-          pv.created_at,
-          pv.updated_at
+        pv.sku,
+        pv.price::text as price,
+        pv.compare_at_price::text as compare_at_price,
+        pv.stock_quantity,
+        pv.is_default,
+        pv.created_at,
+        pv.updated_at
         from product_variants pv
         where pv.product_id = $1::bigint
           and pv.status = 'published'
@@ -519,7 +524,9 @@ export async function getPublishedProductBySlug(
     sku: row.sku,
     price: row.price,
     compareAtPrice: row.compare_at_price,
+    stockQuantity: row.stock_quantity,
     isDefault: row.is_default,
+    isAvailable: row.stock_quantity > 0,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at),
     images: imagesByVariantId.get(row.id) ?? []
@@ -527,6 +534,7 @@ export async function getPublishedProductBySlug(
 
   return {
     ...mapProductSummary(productRow),
+    isAvailable: variants.some((variant) => variant.isAvailable),
     images: parentImageRows.map(mapProductImage),
     variants
   };

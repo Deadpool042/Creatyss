@@ -14,6 +14,7 @@ type AdminProductVariantRow = {
   sku: string;
   price: string;
   compare_at_price: string | null;
+  stock_quantity: number;
   is_default: boolean;
   status: AdminProductVariantStatus;
   created_at: TimestampValue;
@@ -41,6 +42,7 @@ type CreateAdminProductVariantInput = {
   sku: string;
   price: string;
   compareAtPrice: string | null;
+  stockQuantity: number;
   isDefault: boolean;
   status: AdminProductVariantStatus;
 };
@@ -60,8 +62,10 @@ export type AdminProductVariant = {
   sku: string;
   price: string;
   compareAtPrice: string | null;
+  stockQuantity: number;
   isDefault: boolean;
   status: AdminProductVariantStatus;
+  isAvailable: boolean;
   createdAt: string;
   updatedAt: string;
 };
@@ -112,8 +116,10 @@ function mapAdminProductVariant(
     sku: row.sku,
     price: row.price,
     compareAtPrice: row.compare_at_price,
+    stockQuantity: row.stock_quantity,
     isDefault: row.is_default,
     status: row.status,
+    isAvailable: row.status === "published" && row.stock_quantity > 0,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
   };
@@ -200,6 +206,7 @@ export async function listAdminProductVariants(
         pv.sku,
         pv.price::text as price,
         pv.compare_at_price::text as compare_at_price,
+        pv.stock_quantity,
         pv.is_default,
         pv.status,
         pv.created_at,
@@ -245,10 +252,11 @@ export async function createAdminProductVariant(
           sku,
           price,
           compare_at_price,
+          stock_quantity,
           is_default,
           status
         )
-        values ($1::bigint, $2, $3, $4, $5, $6::numeric, $7::numeric, $8, $9)
+        values ($1::bigint, $2, $3, $4, $5, $6::numeric, $7::numeric, $8, $9, $10)
         returning
           id::text as id,
           product_id::text as product_id,
@@ -258,6 +266,7 @@ export async function createAdminProductVariant(
           sku,
           price::text as price,
           compare_at_price::text as compare_at_price,
+          stock_quantity,
           is_default,
           status,
           created_at,
@@ -271,6 +280,7 @@ export async function createAdminProductVariant(
         input.sku,
         input.price,
         input.compareAtPrice,
+        input.stockQuantity,
         input.isDefault,
         input.status
       ]
@@ -324,8 +334,9 @@ export async function updateAdminProductVariant(
           sku = $6,
           price = $7::numeric,
           compare_at_price = $8::numeric,
-          is_default = $9,
-          status = $10
+          stock_quantity = $9,
+          is_default = $10,
+          status = $11
         where id = $1::bigint
           and product_id = $2::bigint
         returning
@@ -337,6 +348,7 @@ export async function updateAdminProductVariant(
           sku,
           price::text as price,
           compare_at_price::text as compare_at_price,
+          stock_quantity,
           is_default,
           status,
           created_at,
@@ -351,6 +363,7 @@ export async function updateAdminProductVariant(
         input.sku,
         input.price,
         input.compareAtPrice,
+        input.stockQuantity,
         input.isDefault,
         input.status
       ]

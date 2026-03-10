@@ -29,6 +29,7 @@ export async function updateProductVariantAction(
     sku: formData.get("sku"),
     price: formData.get("price"),
     compareAtPrice: formData.get("compareAtPrice"),
+    stockQuantity: formData.get("stockQuantity"),
     isDefault: formData.get("isDefault"),
     status: formData.get("status")
   });

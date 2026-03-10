@@ -10,6 +10,7 @@ describe("validateProductVariantInput", () => {
       sku: "  SAC-CAMEL-001  ",
       price: "129,9",
       compareAtPrice: "149.00",
+      stockQuantity: " 12 ",
       isDefault: "true",
       status: "published"
     });
@@ -23,6 +24,7 @@ describe("validateProductVariantInput", () => {
         sku: "SAC-CAMEL-001",
         price: "129.90",
         compareAtPrice: "149.00",
+        stockQuantity: 12,
         isDefault: true,
         status: "published"
       }
@@ -37,6 +39,7 @@ describe("validateProductVariantInput", () => {
       sku: "SKU-1",
       price: "10",
       compareAtPrice: "",
+      stockQuantity: "0",
       isDefault: null,
       status: "draft"
     });
@@ -50,6 +53,7 @@ describe("validateProductVariantInput", () => {
         sku: "SKU-1",
         price: "10.00",
         compareAtPrice: null,
+        stockQuantity: 0,
         isDefault: false,
         status: "draft"
       }
@@ -65,6 +69,7 @@ describe("validateProductVariantInput", () => {
         sku: "SKU-1",
         price: "10",
         compareAtPrice: "",
+        stockQuantity: "1",
         isDefault: null,
         status: "draft"
       })
@@ -83,12 +88,68 @@ describe("validateProductVariantInput", () => {
         sku: "SKU-1",
         price: "10",
         compareAtPrice: "9.99",
+        stockQuantity: "1",
         isDefault: null,
         status: "draft"
       })
     ).toEqual({
       ok: false,
       code: "compare_at_price_below_price"
+    });
+  });
+
+  it("rejette un stock manquant", () => {
+    expect(
+      validateProductVariantInput({
+        name: "Variante",
+        colorName: "Noir",
+        colorHex: "#000",
+        sku: "SKU-1",
+        price: "10",
+        compareAtPrice: "",
+        stockQuantity: "",
+        isDefault: null,
+        status: "draft"
+      })
+    ).toEqual({
+      ok: false,
+      code: "missing_stock_quantity"
+    });
+  });
+
+  it("rejette un stock negatif ou decimal", () => {
+    expect(
+      validateProductVariantInput({
+        name: "Variante",
+        colorName: "Noir",
+        colorHex: "#000",
+        sku: "SKU-1",
+        price: "10",
+        compareAtPrice: "",
+        stockQuantity: "-1",
+        isDefault: null,
+        status: "draft"
+      })
+    ).toEqual({
+      ok: false,
+      code: "invalid_stock_quantity"
+    });
+
+    expect(
+      validateProductVariantInput({
+        name: "Variante",
+        colorName: "Noir",
+        colorHex: "#000",
+        sku: "SKU-1",
+        price: "10",
+        compareAtPrice: "",
+        stockQuantity: "1.5",
+        isDefault: null,
+        status: "draft"
+      })
+    ).toEqual({
+      ok: false,
+      code: "invalid_stock_quantity"
     });
   });
 });

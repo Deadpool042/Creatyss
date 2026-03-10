@@ -15,6 +15,10 @@ type ProductMetadataSource = NonNullable<
   Awaited<ReturnType<typeof getPublishedProductBySlug>>
 >;
 
+function getAvailabilityLabel(isAvailable: boolean): string {
+  return isAvailable ? "Disponible" : "Temporairement indisponible";
+}
+
 function getProductMetadataDescription(product: ProductMetadataSource): string {
   return (
     product.seoDescription ??
@@ -104,6 +108,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <p className="meta-label">Variantes publiees</p>
               <p className="card-copy">{product.variants.length}</p>
             </div>
+
+            <div className="stack">
+              <p className="meta-label">Disponibilite produit</p>
+              <p className="card-copy">
+                {getAvailabilityLabel(product.isAvailable)}
+              </p>
+            </div>
           </aside>
         </div>
       </section>
@@ -139,6 +150,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {variant.compareAtPrice ? (
                     <p className="card-meta">Compare a {variant.compareAtPrice}</p>
                   ) : null}
+                </div>
+
+                <div className="stack">
+                  <p className="meta-label">Disponibilite de la variante</p>
+                  <p className="card-copy">
+                    {getAvailabilityLabel(variant.isAvailable)}
+                  </p>
                 </div>
 
                 {variant.images.length > 0 ? (

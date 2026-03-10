@@ -114,6 +114,10 @@ function getVariantErrorMessage(error: string | undefined): string | null {
       return "Renseignez un prix compare valide.";
     case "compare_at_price_below_price":
       return "Le prix compare doit etre superieur ou egal au prix.";
+    case "missing_stock_quantity":
+      return "Le stock disponible est obligatoire.";
+    case "invalid_stock_quantity":
+      return "Renseignez un stock disponible entier positif ou nul.";
     case "invalid_variant_status":
       return "Le statut de la variante est invalide.";
     case "sku_taken":
@@ -125,6 +129,10 @@ function getVariantErrorMessage(error: string | undefined): string | null {
     default:
       return null;
   }
+}
+
+function getAvailabilityLabel(isAvailable: boolean): string {
+  return isAvailable ? "Disponible" : "Temporairement indisponible";
 }
 
 function getImageStatusMessage(status: string | undefined): string | null {
@@ -634,11 +642,12 @@ export default async function ProductDetailPage({
 
       <section className="section admin-product-section">
         <div className="stack">
-          <p className="eyebrow">Variantes</p>
-          <h2>Variantes couleur</h2>
+          <p className="eyebrow">Declinaisons</p>
+          <h2>Produits vendables</h2>
           <p className="card-copy">
-            Creez ensuite les variantes du produit parent, avec leur SKU, leur
-            statut et leur couleur.
+            Chaque declinaison regroupe des informations produit vendable
+            comme le SKU, le prix, le statut et le stock, ainsi que les
+            informations de variante comme le nom et la couleur.
           </p>
         </div>
 
@@ -662,63 +671,84 @@ export default async function ProductDetailPage({
         <form action={createProductVariantAction} className="admin-form admin-product-form">
           <input name="productId" type="hidden" value={product.id} />
 
-          <label className="admin-field">
-            <span className="meta-label">Nom de la variante</span>
-            <input className="admin-input" name="name" required type="text" />
-          </label>
+          <fieldset className="admin-fieldset">
+            <legend className="meta-label">Informations produit</legend>
 
-          <label className="admin-field">
-            <span className="meta-label">Nom de couleur</span>
-            <input className="admin-input" name="colorName" required type="text" />
-          </label>
+            <label className="admin-field">
+              <span className="meta-label">SKU</span>
+              <input className="admin-input" name="sku" required type="text" />
+            </label>
 
-          <label className="admin-field">
-            <span className="meta-label">Code couleur</span>
-            <input className="admin-input" name="colorHex" placeholder="#C19A6B" type="text" />
-          </label>
+            <label className="admin-field">
+              <span className="meta-label">Prix</span>
+              <input
+                className="admin-input"
+                inputMode="decimal"
+                name="price"
+                required
+                type="text"
+              />
+            </label>
 
-          <label className="admin-field">
-            <span className="meta-label">SKU</span>
-            <input className="admin-input" name="sku" required type="text" />
-          </label>
+            <label className="admin-field">
+              <span className="meta-label">Prix compare</span>
+              <input
+                className="admin-input"
+                inputMode="decimal"
+                name="compareAtPrice"
+                type="text"
+              />
+            </label>
 
-          <label className="admin-field">
-            <span className="meta-label">Prix</span>
-            <input
-              className="admin-input"
-              inputMode="decimal"
-              name="price"
-              required
-              type="text"
-            />
-          </label>
+            <label className="admin-field">
+              <span className="meta-label">Statut</span>
+              <select className="admin-input" defaultValue="draft" name="status">
+                <option value="draft">Brouillon</option>
+                <option value="published">Publie</option>
+              </select>
+            </label>
 
-          <label className="admin-field">
-            <span className="meta-label">Prix compare</span>
-            <input
-              className="admin-input"
-              inputMode="decimal"
-              name="compareAtPrice"
-              type="text"
-            />
-          </label>
+            <label className="admin-field">
+              <span className="meta-label">Stock disponible</span>
+              <input
+                className="admin-input"
+                defaultValue="0"
+                min="0"
+                name="stockQuantity"
+                required
+                step="1"
+                type="number"
+              />
+            </label>
+          </fieldset>
 
-          <label className="admin-field">
-            <span className="meta-label">Statut</span>
-            <select className="admin-input" defaultValue="draft" name="status">
-              <option value="draft">Brouillon</option>
-              <option value="published">Publie</option>
-            </select>
-          </label>
+          <fieldset className="admin-fieldset">
+            <legend className="meta-label">Informations variante</legend>
 
-          <label className="admin-checkbox">
-            <input name="isDefault" type="checkbox" value="on" />
-            <span>Definir comme variante par defaut</span>
-          </label>
+            <label className="admin-field">
+              <span className="meta-label">Nom de la variante</span>
+              <input className="admin-input" name="name" required type="text" />
+            </label>
+
+            <label className="admin-field">
+              <span className="meta-label">Nom de couleur</span>
+              <input className="admin-input" name="colorName" required type="text" />
+            </label>
+
+            <label className="admin-field">
+              <span className="meta-label">Code couleur</span>
+              <input className="admin-input" name="colorHex" placeholder="#C19A6B" type="text" />
+            </label>
+
+            <label className="admin-checkbox">
+              <input name="isDefault" type="checkbox" value="on" />
+              <span>Definir comme variante par defaut</span>
+            </label>
+          </fieldset>
 
           <div className="admin-actions">
             <button className="button" type="submit">
-              Ajouter une variante
+              Ajouter une declinaison
             </button>
           </div>
         </form>
@@ -731,6 +761,7 @@ export default async function ProductDetailPage({
               return (
                 <article className="variant-card admin-variant-card" key={variant.id}>
                   <div className="stack">
+                    <p className="meta-label">Produit vendable</p>
                     <div className="admin-product-tags">
                       <span className="admin-chip">{variant.colorName}</span>
                       <span className="admin-chip">
@@ -745,6 +776,10 @@ export default async function ProductDetailPage({
                       SKU {variant.sku}
                       {variant.colorHex ? ` · ${variant.colorHex}` : ""}
                     </p>
+                    <p className="card-meta">
+                      Disponibilite actuelle :{" "}
+                      {getAvailabilityLabel(variant.isAvailable)}
+                    </p>
                   </div>
 
                   <form
@@ -754,98 +789,119 @@ export default async function ProductDetailPage({
                     <input name="productId" type="hidden" value={product.id} />
                     <input name="variantId" type="hidden" value={variant.id} />
 
-                    <label className="admin-field">
-                      <span className="meta-label">Nom de la variante</span>
-                      <input
-                        className="admin-input"
-                        defaultValue={variant.name}
-                        name="name"
-                        required
-                        type="text"
-                      />
-                    </label>
+                    <fieldset className="admin-fieldset">
+                      <legend className="meta-label">Informations produit</legend>
 
-                    <label className="admin-field">
-                      <span className="meta-label">Nom de couleur</span>
-                      <input
-                        className="admin-input"
-                        defaultValue={variant.colorName}
-                        name="colorName"
-                        required
-                        type="text"
-                      />
-                    </label>
+                      <label className="admin-field">
+                        <span className="meta-label">SKU</span>
+                        <input
+                          className="admin-input"
+                          defaultValue={variant.sku}
+                          name="sku"
+                          required
+                          type="text"
+                        />
+                      </label>
 
-                    <label className="admin-field">
-                      <span className="meta-label">Code couleur</span>
-                      <input
-                        className="admin-input"
-                        defaultValue={variant.colorHex ?? ""}
-                        name="colorHex"
-                        placeholder="#C19A6B"
-                        type="text"
-                      />
-                    </label>
+                      <label className="admin-field">
+                        <span className="meta-label">Prix</span>
+                        <input
+                          className="admin-input"
+                          defaultValue={variant.price}
+                          inputMode="decimal"
+                          name="price"
+                          required
+                          type="text"
+                        />
+                      </label>
 
-                    <label className="admin-field">
-                      <span className="meta-label">SKU</span>
-                      <input
-                        className="admin-input"
-                        defaultValue={variant.sku}
-                        name="sku"
-                        required
-                        type="text"
-                      />
-                    </label>
+                      <label className="admin-field">
+                        <span className="meta-label">Prix compare</span>
+                        <input
+                          className="admin-input"
+                          defaultValue={variant.compareAtPrice ?? ""}
+                          inputMode="decimal"
+                          name="compareAtPrice"
+                          type="text"
+                        />
+                      </label>
 
-                    <label className="admin-field">
-                      <span className="meta-label">Prix</span>
-                      <input
-                        className="admin-input"
-                        defaultValue={variant.price}
-                        inputMode="decimal"
-                        name="price"
-                        required
-                        type="text"
-                      />
-                    </label>
+                      <label className="admin-field">
+                        <span className="meta-label">Statut</span>
+                        <select
+                          className="admin-input"
+                          defaultValue={variant.status}
+                          name="status"
+                        >
+                          <option value="draft">Brouillon</option>
+                          <option value="published">Publie</option>
+                        </select>
+                      </label>
 
-                    <label className="admin-field">
-                      <span className="meta-label">Prix compare</span>
-                      <input
-                        className="admin-input"
-                        defaultValue={variant.compareAtPrice ?? ""}
-                        inputMode="decimal"
-                        name="compareAtPrice"
-                        type="text"
-                      />
-                    </label>
+                      <label className="admin-field">
+                        <span className="meta-label">Stock disponible</span>
+                        <input
+                          className="admin-input"
+                          defaultValue={variant.stockQuantity}
+                          min="0"
+                          name="stockQuantity"
+                          required
+                          step="1"
+                          type="number"
+                        />
+                      </label>
+                    </fieldset>
 
-                    <label className="admin-field">
-                      <span className="meta-label">Statut</span>
-                      <select
-                        className="admin-input"
-                        defaultValue={variant.status}
-                        name="status"
-                      >
-                        <option value="draft">Brouillon</option>
-                        <option value="published">Publie</option>
-                      </select>
-                    </label>
+                    <fieldset className="admin-fieldset">
+                      <legend className="meta-label">Informations variante</legend>
 
-                    <label className="admin-checkbox">
-                      <input
-                        defaultChecked={variant.isDefault}
-                        name="isDefault"
-                        type="checkbox"
-                        value="on"
-                      />
-                      <span>Variante par defaut</span>
-                    </label>
+                      <label className="admin-field">
+                        <span className="meta-label">Nom de la variante</span>
+                        <input
+                          className="admin-input"
+                          defaultValue={variant.name}
+                          name="name"
+                          required
+                          type="text"
+                        />
+                      </label>
+
+                      <label className="admin-field">
+                        <span className="meta-label">Nom de couleur</span>
+                        <input
+                          className="admin-input"
+                          defaultValue={variant.colorName}
+                          name="colorName"
+                          required
+                          type="text"
+                        />
+                      </label>
+
+                      <label className="admin-field">
+                        <span className="meta-label">Code couleur</span>
+                        <input
+                          className="admin-input"
+                          defaultValue={variant.colorHex ?? ""}
+                          name="colorHex"
+                          placeholder="#C19A6B"
+                          type="text"
+                        />
+                      </label>
+
+                      <label className="admin-checkbox">
+                        <input
+                          defaultChecked={variant.isDefault}
+                          name="isDefault"
+                          type="checkbox"
+                          value="on"
+                        />
+                        <span>Variante par defaut</span>
+                      </label>
+                    </fieldset>
 
                     <div className="admin-inline-actions">
                       <button className="button" type="submit">
-                        Enregistrer la variante
+                        Enregistrer la declinaison
                       </button>
                     </div>
                   </form>
@@ -855,16 +911,16 @@ export default async function ProductDetailPage({
                     <input name="variantId" type="hidden" value={variant.id} />
 
                     <button className="button link-subtle" type="submit">
-                      Supprimer la variante
+                      Supprimer la declinaison
                     </button>
                   </form>
 
                   <div className="admin-product-subsection">
                     <div className="stack">
-                      <p className="eyebrow">Images variante</p>
+                      <p className="eyebrow">Images de la declinaison</p>
                       <h3>Images pour {variant.colorName}</h3>
                       <p className="card-copy">
-                        Ajoutez des medias existants pour cette variante.
+                        Ajoutez des medias existants pour cette declinaison.
                       </p>
                     </div>
 
@@ -1021,11 +1077,11 @@ export default async function ProductDetailPage({
           </div>
         ) : (
           <div className="empty-state">
-            <p className="eyebrow">Aucune variante</p>
-            <h2>Ce produit n&apos;a pas encore de variante couleur</h2>
+            <p className="eyebrow">Aucune declinaison</p>
+            <h2>Ce produit n&apos;a pas encore de declinaison vendable</h2>
             <p className="card-copy">
-              Ajoutez une premiere variante pour structurer les couleurs du
-              produit.
+              Ajoutez une premiere declinaison pour definir son SKU, son prix,
+              son stock et sa couleur.
             </p>
           </div>
         )}

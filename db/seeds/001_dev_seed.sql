@@ -69,6 +69,7 @@ insert into
     sku,
     price,
     compare_at_price,
+    stock_quantity,
     is_default,
     status
   )
@@ -88,6 +89,7 @@ values
     'SAC-CAMEL-001',
     129.00,
     149.00,
+    5,
     true,
     'published'
   ),
@@ -106,6 +108,7 @@ values
     'SAC-CAMEL-DRAFT',
     139.00,
     null,
+    2,
     false,
     'draft'
   );

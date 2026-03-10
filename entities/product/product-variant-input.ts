@@ -7,6 +7,7 @@ export type ValidatedProductVariantInput = {
   sku: string;
   price: string;
   compareAtPrice: string | null;
+  stockQuantity: number;
   isDefault: boolean;
   status: ProductVariantStatus;
 };
@@ -20,6 +21,8 @@ export type ProductVariantInputErrorCode =
   | "invalid_price"
   | "invalid_compare_at_price"
   | "compare_at_price_below_price"
+  | "missing_stock_quantity"
+  | "invalid_stock_quantity"
   | "invalid_variant_status";
 
 type ProductVariantInputSource = {
@@ -29,6 +32,7 @@ type ProductVariantInputSource = {
   sku: FormDataEntryValue | string | null | undefined;
   price: FormDataEntryValue | string | null | undefined;
   compareAtPrice: FormDataEntryValue | string | null | undefined;
+  stockQuantity: FormDataEntryValue | string | null | undefined;
   isDefault: FormDataEntryValue | string | null | undefined;
   status: FormDataEntryValue | string | null | undefined;
 };
@@ -91,6 +95,28 @@ function normalizeMoneyValue(
   }
 
   return numericValue.toFixed(2);
+}
+
+function normalizeStockQuantity(
+  value: FormDataEntryValue | string | null | undefined
+): number | null | undefined {
+  const normalizedValue = readTrimmedString(value);
+
+  if (normalizedValue === null || normalizedValue.length === 0) {
+    return null;
+  }
+
+  if (!/^\d+$/.test(normalizedValue)) {
+    return undefined;
+  }
+
+  const numericValue = Number.parseInt(normalizedValue, 10);
+
+  if (!Number.isSafeInteger(numericValue) || numericValue < 0) {
+    return undefined;
+  }
+
+  return numericValue;
 }
 
 function isVariantStatus(value: string | null): value is ProductVariantStatus {
@@ -168,6 +194,22 @@ export function validateProductVariantInput(
     };
   }
 
+  const stockQuantity = normalizeStockQuantity(input.stockQuantity);
+
+  if (stockQuantity === null) {
+    return {
+      ok: false,
+      code: "missing_stock_quantity"
+    };
+  }
+
+  if (stockQuantity === undefined) {
+    return {
+      ok: false,
+      code: "invalid_stock_quantity"
+    };
+  }
+
   const status = readTrimmedString(input.status);
 
   if (!isVariantStatus(status)) {
@@ -186,6 +228,7 @@ export function validateProductVariantInput(
       sku,
       price,
       compareAtPrice,
+      stockQuantity,
       isDefault:
         input.isDefault === "on" ||
         input.isDefault === "true" ||

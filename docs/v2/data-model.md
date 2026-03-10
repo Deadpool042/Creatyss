@@ -24,6 +24,24 @@ Chaque `product_variant` doit pouvoir exprimer au minimum :
 
 La variante reste l'unite vendable.
 
+Dans l'interface admin, cette unite vendable peut etre presentee comme une
+declinaison vendable :
+
+- informations produit vendable : SKU, prix, stock, statut
+- informations variante : nom, couleur, variante par defaut
+
+En pratique, la variante porte aussi les attributs commerciaux qui peuvent
+changer d'une declinaison a l'autre :
+
+- SKU
+- prix
+- stock
+- disponibilite derivee
+
+Le produit parent garde un role de regroupement catalogue. Son etat de
+disponibilite n'est qu'un resume derive de ses variantes. Il ne porte ni SKU,
+ni prix vendable, ni stock propre.
+
 ### Cart
 
 Le panier represente une intention d'achat simple pour une session invite.
@@ -100,7 +118,12 @@ Il doit permettre de conserver au minimum :
 
 - seule une variante peut etre achetee
 - le stock est controle par variante
+- le SKU et le prix sont controles par variante
+- le stock, le SKU, le prix et le statut vendable ne vivent jamais sur le
+  produit parent
 - une variante sans stock ne doit pas etre commandable
+- un produit parent peut afficher une disponibilite derivee, mais ne porte pas
+  lui-meme le stock vendable
 - le checkout revalide prix et stock avant creation de commande
 - la commande fige ses lignes et ses montants au moment de la validation
 - le panier reste modifiable tant que la commande n'est pas creee

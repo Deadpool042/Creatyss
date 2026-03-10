@@ -35,6 +35,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <nav
                 aria-label="Navigation principale"
                 className="site-nav">
+                <Link href="/admin">Admin</Link>
                 <Link href="/">Accueil</Link>
                 <Link href="/boutique">Boutique</Link>
                 <Link href="/blog">Blog</Link>

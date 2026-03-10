@@ -23,7 +23,10 @@ Livrables minimaux :
 - stock simple par variante
 - validation de disponibilite
 - affichage public basique de disponibilite si necessaire
-- edition admin minimale du stock
+- edition admin minimale du stock par variante
+- resume derive de disponibilite au niveau produit parent si utile pour le catalogue
+- presentation admin lisible des declinaisons vendables, sans melanger le stock
+  et les attributs commerciaux avec le produit parent
 
 Dependance :
 
