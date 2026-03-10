@@ -56,6 +56,12 @@ make db-schema
 make down
 make logs
 make ps
+make sh
+make dev
+make typecheck
+make db-seed-dev
+make db-reset-dev
+make build
 ```
 
 ## Schema base de donnees
@@ -87,6 +93,24 @@ docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -
 pnpm run typecheck
 ```
 
+## Seed dev
+
+Un seed de developpement minimal permet de reconstituer rapidement un jeu de donnees local apres un reset de volume Docker.
+
+Il est destine uniquement au developpement local sur base neuve.
+
+Application locale :
+
+```bash
+make db-seed-dev
+```
+
+Reset complet + seed :
+
+```bash
+make db-reset-dev
+```
+
 ## Auth admin
 
 L'auth admin repose sur la table `admin_users`, un cookie de session signe `HttpOnly`, et une verification serveur sur chaque acces a `/admin`.
@@ -95,7 +119,14 @@ Variables d'environnement requises :
 
 - `ADMIN_SESSION_SECRET`
 
-Creation du premier admin :
+Comptes admin de developpement fournis par le seed local :
+
+- `admin@creatyss.local` / `AdminDev123!` / actif
+- `inactive-admin@creatyss.local` / `AdminDev123!` / inactif
+
+Le seed de developpement cree automatiquement ces comptes sur base neuve via `make db-seed-dev` ou `make db-reset-dev`.
+
+Pour creer un admin supplementaire manuellement :
 
 ```bash
 printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.example exec -T app node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
@@ -107,22 +138,21 @@ Verification locale exacte :
 docker compose --env-file .env.example down -v
 docker compose --env-file .env.example up -d --build
 make db-schema
-printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.example exec -T app node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
+make db-seed-dev
+docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select email, display_name, is_active from admin_users order by email;"
 docker compose --env-file .env.example exec app pnpm run typecheck
 docker compose --env-file .env.example exec app pnpm run build
 curl -I http://localhost:3000/admin
-curl -i -c /tmp/creatyss-admin.cookie -X POST -H 'Content-Type: application/x-www-form-urlencoded' --data 'email=Admin%40Example.com&password=SuperLongPassword123!' http://localhost:3000/admin/login
-COOKIE_VALUE=$(awk '$6=="creatyss_admin_session"{print $7}' /tmp/creatyss-admin.cookie)
-node -e "const [payload] = process.argv[1].split('.'); const data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')); console.log(data); console.log(Object.keys(data).sort().join(','));" "$COOKIE_VALUE"
-curl -I -b /tmp/creatyss-admin.cookie http://localhost:3000/admin
-curl -i -b /tmp/creatyss-admin.cookie -X POST http://localhost:3000/admin/logout
-curl -I -b /tmp/creatyss-admin.cookie http://localhost:3000/admin
-COOKIE_VALUE=$(awk '$6=="creatyss_admin_session"{print $7}' /tmp/creatyss-admin.cookie)
-node -e "const [payload, sig] = process.argv[1].split('.'); const obj = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')); obj.exp = 1; process.stdout.write(Buffer.from(JSON.stringify(obj)).toString('base64url') + '.' + sig);" "$COOKIE_VALUE" > /tmp/creatyss-expired.cookie
-curl -i -H "Cookie: creatyss_admin_session=$(cat /tmp/creatyss-expired.cookie)" http://localhost:3000/admin
-printf 'not-json.invalidsig' > /tmp/creatyss-invalid.cookie
-curl -i -H "Cookie: creatyss_admin_session=$(cat /tmp/creatyss-invalid.cookie)" http://localhost:3000/admin
 ```
+
+Verification manuelle du login admin :
+
+1. ouvrez `http://localhost:3000/admin/login`
+2. connectez-vous avec `admin@creatyss.local` / `AdminDev123!`
+3. verifiez la redirection vers `/admin`
+4. verifiez qu'un acces direct a `http://localhost:3000/admin` fonctionne apres connexion
+5. cliquez sur la deconnexion puis verifiez que `/admin` redirige de nouveau vers `/admin/login`
+6. verifiez aussi qu'un login avec `inactive-admin@creatyss.local` / `AdminDev123!` est refuse
 
 ## Media admin
 
@@ -140,7 +170,7 @@ Verification locale exacte :
 docker compose --env-file .env.example down -v
 docker compose --env-file .env.example up -d --build
 make db-schema
-printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.example exec -T app node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
+make db-seed-dev
 docker compose --env-file .env.example exec app pnpm run typecheck
 docker compose --env-file .env.example exec app pnpm run build
 docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' and table_name = 'media_assets';"
