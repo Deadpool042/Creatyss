@@ -51,7 +51,7 @@ export default async function NewAdminProductPage({
           <h1>Nouveau produit</h1>
           <p className="lead">
             Creez d&apos;abord le produit, choisissez son type, puis completez
-            son offre vendable et ses images depuis la page de detail.
+            son offre vendable ou ses declinaisons depuis la page de detail.
           </p>
         </div>
 
@@ -127,7 +127,7 @@ export default async function NewAdminProductPage({
 
         <p className="admin-muted-note">
           Un produit simple utilisera une seule offre vendable. Un produit
-          variable pourra accueillir plusieurs declinaisons vendables.
+          variable pourra accueillir plusieurs declinaisons.
         </p>
 
         <fieldset className="admin-fieldset">

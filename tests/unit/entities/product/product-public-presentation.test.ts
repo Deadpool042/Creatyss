@@ -84,7 +84,7 @@ describe("product-public-presentation", () => {
       emptyEyebrow: "Aucune declinaison",
       emptyTitle: "Ce produit n'a pas encore de declinaison publique",
       emptyDescription:
-        "Les declinaisons vendables apparaitront ici lorsqu'elles seront disponibles."
+        "Les declinaisons apparaitront ici lorsqu'elles seront disponibles."
     });
   });
 

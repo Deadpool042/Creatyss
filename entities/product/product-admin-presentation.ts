@@ -32,7 +32,7 @@ export function getAdminProductPresentation(
       sectionTitle: "Offre vendable",
       sectionDescription:
         "Un produit simple repose sur une seule offre vendable. Renseignez son SKU, son prix, son stock et ses informations de variante ci-dessous.",
-      saleFieldsetLegend: "Informations de vente",
+      saleFieldsetLegend: "Informations de l'offre vendable",
       createActionLabel: "Definir l'offre vendable",
       saveActionLabel: "Enregistrer l'offre vendable",
       deleteActionLabel: "Supprimer l'offre vendable",
@@ -47,19 +47,19 @@ export function getAdminProductPresentation(
 
   return {
     typeLabel: "Variable",
-    sellableCountLabel: `${variantCount} variante${variantCount > 1 ? "s" : ""}`,
+    sellableCountLabel: `${variantCount} declinaison${variantCount > 1 ? "s" : ""}`,
     sectionEyebrow: "Declinaisons",
-    sectionTitle: "Produits vendables",
+    sectionTitle: "Declinaisons",
     sectionDescription:
-      "Chaque declinaison regroupe des informations produit vendable comme le SKU, le prix, le statut et le stock, ainsi que les informations de variante comme le nom et la couleur.",
-    saleFieldsetLegend: "Informations produit",
+      "Chaque declinaison regroupe son SKU, son prix, son statut, son stock et ses informations de variante.",
+    saleFieldsetLegend: "Informations de la declinaison",
     createActionLabel: "Ajouter une declinaison",
     saveActionLabel: "Enregistrer la declinaison",
     deleteActionLabel: "Supprimer la declinaison",
-    itemKicker: "Produit vendable",
+    itemKicker: "Declinaison",
     imagesEyebrow: "Images de la declinaison",
     emptyEyebrow: "Aucune variante",
-    emptyTitle: "Ce produit n'a pas encore de declinaison vendable",
+    emptyTitle: "Ce produit n'a pas encore de declinaison",
     emptyDescription:
       "Ajoutez une premiere declinaison pour renseigner son SKU, son prix, son statut et son stock."
   };

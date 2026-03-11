@@ -60,7 +60,7 @@ export function getProductPageStatusSummary(input: {
   if (input.totalVariantCount === 0) {
     return {
       title: "Produit sans declinaison publique",
-      description: "Aucune declinaison vendable n'est visible pour le moment.",
+      description: "Aucune declinaison n'est visible pour le moment.",
       nextStep: "Revenez plus tard pour consulter les prochaines declinaisons."
     };
   }
@@ -97,17 +97,17 @@ export function getProductOfferSectionPresentation(
     };
   }
 
-  return {
-    eyebrow: "Declinaisons",
-    title: "Choisir une declinaison",
-    description:
-      "Verifiez le prix, la disponibilite et les visuels de chaque declinaison avant l'ajout au panier.",
-    emptyEyebrow: "Aucune declinaison",
-    emptyTitle: "Ce produit n'a pas encore de declinaison publique",
-    emptyDescription:
-      "Les declinaisons vendables apparaitront ici lorsqu'elles seront disponibles."
-  };
-}
+    return {
+      eyebrow: "Declinaisons",
+      title: "Choisir une declinaison",
+      description:
+        "Verifiez le prix, la disponibilite et les visuels de chaque declinaison avant l'ajout au panier.",
+      emptyEyebrow: "Aucune declinaison",
+      emptyTitle: "Ce produit n'a pas encore de declinaison publique",
+      emptyDescription:
+        "Les declinaisons apparaitront ici lorsqu'elles seront disponibles."
+    };
+  }
 
 export function getSimpleOfferCardTitle(): string {
   return "Offre vendable";

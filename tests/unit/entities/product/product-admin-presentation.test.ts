@@ -17,8 +17,8 @@ describe("getAdminProductPresentation", () => {
     const presentation = getAdminProductPresentation("variable", 2);
 
     expect(presentation.typeLabel).toBe("Variable");
-    expect(presentation.sellableCountLabel).toBe("2 variantes");
-    expect(presentation.sectionTitle).toBe("Produits vendables");
+    expect(presentation.sellableCountLabel).toBe("2 declinaisons");
+    expect(presentation.sectionTitle).toBe("Declinaisons");
     expect(presentation.createActionLabel).toBe("Ajouter une declinaison");
     expect(presentation.saveActionLabel).toBe("Enregistrer la declinaison");
   });
