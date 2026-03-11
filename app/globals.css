@@ -383,6 +383,51 @@ h3 {
   color: rgba(31, 31, 31, 0.72);
 }
 
+.catalog-search-summary--active {
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(31, 31, 31, 0.08);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.catalog-intro,
+.store-card-availability {
+  margin: 0;
+  color: rgba(31, 31, 31, 0.72);
+  line-height: 1.6;
+}
+
+.store-card-header,
+.store-card-badges {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.store-card-badge {
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.store-card-badge--featured {
+  background: rgba(143, 93, 45, 0.14);
+  color: #8f5d2d;
+}
+
+.store-card-badge--available {
+  background: rgba(22, 101, 52, 0.1);
+  color: rgb(22, 101, 52);
+}
+
+.store-card-badge--unavailable {
+  background: rgba(153, 27, 27, 0.1);
+  color: rgb(153, 27, 27);
+}
+
 .cart-feedback p {
   margin: 0;
 }

@@ -37,6 +37,10 @@ export type PublishedProductSummary = {
   updatedAt: string;
 };
 
+export type PublishedCatalogProductSummary = PublishedProductSummary & {
+  isAvailable: boolean;
+};
+
 export type PublishedProductImage = {
   id: DbId;
   productId: DbId;
@@ -144,6 +148,10 @@ type ProductSummaryRow = {
   updated_at: TimestampValue;
 };
 
+type ProductCatalogSummaryRow = ProductSummaryRow & {
+  is_available: boolean;
+};
+
 type ProductImageRow = {
   id: DbId;
   product_id: DbId;
@@ -237,6 +245,15 @@ function mapProductSummary(row: ProductSummaryRow): PublishedProductSummary {
     seoDescription: row.seo_description,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
+  };
+}
+
+function mapCatalogProductSummary(
+  row: ProductCatalogSummaryRow
+): PublishedCatalogProductSummary {
+  return {
+    ...mapProductSummary(row),
+    isAvailable: row.is_available
   };
 }
 
@@ -432,8 +449,8 @@ export async function listCatalogFilterCategories(): Promise<
 
 export async function listPublishedProducts(
   filters: PublishedProductListFilters
-): Promise<PublishedProductSummary[]> {
-  const rows = await queryRows<ProductSummaryRow>(
+): Promise<PublishedCatalogProductSummary[]> {
+  const rows = await queryRows<ProductCatalogSummaryRow>(
     `
       select
         p.id::text as id,
@@ -442,6 +459,13 @@ export async function listPublishedProducts(
         p.short_description,
         p.description,
         p.is_featured,
+        exists (
+          select 1
+          from product_variants pv
+          where pv.product_id = p.id
+            and pv.status = 'published'
+            and pv.stock_quantity > 0
+        ) as is_available,
         p.seo_title,
         p.seo_description,
         p.created_at,
@@ -492,12 +516,22 @@ export async function listPublishedProducts(
               and pv.stock_quantity > 0
           )
         )
-      order by p.created_at desc, p.id desc
+      order by
+        case
+          when $1::text is null
+            and $2::text is null
+            and not $3::boolean
+            and p.is_featured
+          then 0
+          else 1
+        end asc,
+        p.created_at desc,
+        p.id desc
     `,
     [filters.searchQuery, filters.categorySlug, filters.onlyAvailable]
   );
 
-  return rows.map(mapProductSummary);
+  return rows.map(mapCatalogProductSummary);
 }
 
 export async function getPublishedProductBySlug(
