@@ -12,6 +12,18 @@ export type FeaturedCategory = {
   updatedAt: string;
 };
 
+export type CatalogFilterCategory = {
+  id: DbId;
+  name: string;
+  slug: string;
+};
+
+export type PublishedProductListFilters = {
+  searchQuery: string | null;
+  categorySlug: string | null;
+  onlyAvailable: boolean;
+};
+
 export type PublishedProductSummary = {
   id: DbId;
   name: string;
@@ -113,6 +125,12 @@ type CategoryRow = {
   updated_at: TimestampValue;
 };
 
+type CatalogFilterCategoryRow = {
+  id: DbId;
+  name: string;
+  slug: string;
+};
+
 type ProductSummaryRow = {
   id: DbId;
   name: string;
@@ -194,6 +212,16 @@ function mapCategory(row: CategoryRow): FeaturedCategory {
     description: row.description,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
+  };
+}
+
+function mapCatalogFilterCategory(
+  row: CatalogFilterCategoryRow
+): CatalogFilterCategory {
+  return {
+    id: row.id,
+    name: row.name,
+    slug: row.slug
   };
 }
 
@@ -379,8 +407,31 @@ export async function listPublishedFeaturedCategories(): Promise<FeaturedCategor
   return listHomepageFeaturedCategories(homepageRow.id);
 }
 
+export async function listCatalogFilterCategories(): Promise<
+  CatalogFilterCategory[]
+> {
+  const rows = await queryRows<CatalogFilterCategoryRow>(
+    `
+      select
+        c.id::text as id,
+        c.name,
+        c.slug
+      from categories c
+      join product_categories pc
+        on pc.category_id = c.id
+      join products p
+        on p.id = pc.product_id
+      where p.status = 'published'
+      group by c.id, c.name, c.slug
+      order by c.name asc, c.id asc
+    `
+  );
+
+  return rows.map(mapCatalogFilterCategory);
+}
+
 export async function listPublishedProducts(
-  searchQuery?: string | null
+  filters: PublishedProductListFilters
 ): Promise<PublishedProductSummary[]> {
   const rows = await queryRows<ProductSummaryRow>(
     `
@@ -420,9 +471,30 @@ export async function listPublishedProducts(
               and pv.color_name ilike '%' || $1 || '%'
           )
         )
+        and (
+          $2::text is null
+          or exists (
+            select 1
+            from product_categories pc
+            join categories c
+              on c.id = pc.category_id
+            where pc.product_id = p.id
+              and c.slug = $2
+          )
+        )
+        and (
+          not $3::boolean
+          or exists (
+            select 1
+            from product_variants pv
+            where pv.product_id = p.id
+              and pv.status = 'published'
+              and pv.stock_quantity > 0
+          )
+        )
       order by p.created_at desc, p.id desc
     `,
-    [searchQuery ?? null]
+    [filters.searchQuery, filters.categorySlug, filters.onlyAvailable]
   );
 
   return rows.map(mapProductSummary);

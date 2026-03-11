@@ -6,7 +6,7 @@ test("searches published products by name or variant color", async ({ page }) =>
   await page.getByLabel("Recherche").fill("Sable");
   await page.getByRole("button", { name: "Rechercher" }).click();
 
-  await expect(page).toHaveURL(/\/boutique\?q=Sable$/);
+  await expect(page).toHaveURL(/\/boutique\?q=Sable&category=$/);
   await expect(
     page.getByText("Resultats pour", { exact: false })
   ).toContainText("Sable");
@@ -26,7 +26,7 @@ test("shows a discreet empty state and reset link when nothing matches", async (
   await page.getByLabel("Recherche").fill("introuvable-xyz");
   await page.getByRole("button", { name: "Rechercher" }).click();
 
-  await expect(page).toHaveURL(/\/boutique\?q=introuvable-xyz$/);
+  await expect(page).toHaveURL(/\/boutique\?q=introuvable-xyz&category=$/);
   await expect(
     page.getByRole("heading", {
       name: "Aucun produit ne correspond a cette recherche"

@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { listPublishedProducts } from "@/db/catalog";
+import {
+  listCatalogFilterCategories,
+  listPublishedProducts
+} from "@/db/catalog";
+import {
+  CATALOG_AVAILABILITY_FILTER_VALUE,
+  validateCatalogFilterInput
+} from "@/entities/catalog/catalog-filter-input";
 import { validateCatalogSearchQuery } from "@/entities/catalog/catalog-search-input";
 
 export const dynamic = "force-dynamic";
@@ -7,6 +14,8 @@ export const dynamic = "force-dynamic";
 type ProductsPageProps = Readonly<{
   searchParams: Promise<{
     q?: string | string[];
+    category?: string | string[];
+    availability?: string | string[];
   }>;
 }>;
 
@@ -15,9 +24,52 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const rawQuery = Array.isArray(resolvedSearchParams.q)
     ? resolvedSearchParams.q[0] ?? null
     : resolvedSearchParams.q ?? null;
+  const rawCategory = Array.isArray(resolvedSearchParams.category)
+    ? resolvedSearchParams.category[0] ?? null
+    : resolvedSearchParams.category ?? null;
+  const rawAvailability = Array.isArray(resolvedSearchParams.availability)
+    ? resolvedSearchParams.availability[0] ?? null
+    : resolvedSearchParams.availability ?? null;
   const searchQuery = validateCatalogSearchQuery(rawQuery);
-  const products = await listPublishedProducts(searchQuery);
-  const hasActiveSearch = searchQuery !== null;
+  const filters = validateCatalogFilterInput({
+    category: rawCategory,
+    availability: rawAvailability
+  });
+  const [products, categories] = await Promise.all([
+    listPublishedProducts({
+      searchQuery,
+      categorySlug: filters.categorySlug,
+      onlyAvailable: filters.onlyAvailable
+    }),
+    listCatalogFilterCategories()
+  ]);
+  const selectedCategory =
+    filters.categorySlug === null
+      ? null
+      : categories.find((category) => category.slug === filters.categorySlug) ?? null;
+  const selectedCategoryLabel =
+    filters.categorySlug === null
+      ? null
+      : selectedCategory?.name ?? filters.categorySlug;
+  const activeFilters: string[] = [];
+
+  if (searchQuery !== null) {
+    activeFilters.push(`Recherche : ${searchQuery}`);
+  }
+
+  if (selectedCategoryLabel !== null) {
+    activeFilters.push(`Categorie : ${selectedCategoryLabel}`);
+  }
+
+  if (filters.onlyAvailable) {
+    activeFilters.push("Disponibles uniquement");
+  }
+
+  const hasActiveFilters = activeFilters.length > 0;
+  const hasOnlyActiveSearch =
+    searchQuery !== null &&
+    filters.categorySlug === null &&
+    !filters.onlyAvailable;
 
   return (
     <div className="page">
@@ -42,11 +94,39 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             />
           </label>
 
+          <label className="admin-field" htmlFor="catalog-category-filter">
+            <span className="meta-label">Categorie</span>
+            <select
+              className="admin-input"
+              defaultValue={filters.categorySlug ?? ""}
+              id="catalog-category-filter"
+              name="category"
+            >
+              <option value="">Toutes les categories</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.slug}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="admin-checkbox catalog-filter-checkbox" htmlFor="catalog-availability-filter">
+            <input
+              defaultChecked={filters.onlyAvailable}
+              id="catalog-availability-filter"
+              name="availability"
+              type="checkbox"
+              value={CATALOG_AVAILABILITY_FILTER_VALUE}
+            />
+            <span>Disponibles uniquement</span>
+          </label>
+
           <div className="button-row">
             <button className="button" type="submit">
               Rechercher
             </button>
-            {hasActiveSearch ? (
+            {hasActiveFilters ? (
               <Link className="link link-subtle" href="/boutique">
                 Revenir a la liste complete
               </Link>
@@ -54,9 +134,15 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </div>
         </form>
 
-        {hasActiveSearch ? (
+        {hasOnlyActiveSearch ? (
           <p className="catalog-search-summary">
             Resultats pour <strong>{searchQuery}</strong>
+          </p>
+        ) : null}
+
+        {!hasOnlyActiveSearch && hasActiveFilters ? (
+          <p className="catalog-search-summary">
+            Filtres actifs : <strong>{activeFilters.join(" · ")}</strong>
           </p>
         ) : null}
 
@@ -79,19 +165,23 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         ) : (
           <div className="empty-state">
             <p className="eyebrow">
-              {hasActiveSearch ? "Aucun resultat" : "Catalogue vide"}
+              {hasActiveFilters ? "Aucun resultat" : "Catalogue vide"}
             </p>
             <h2>
-              {hasActiveSearch
+              {hasOnlyActiveSearch
                 ? "Aucun produit ne correspond a cette recherche"
+                : hasActiveFilters
+                ? "Aucun produit ne correspond a ces filtres"
                 : "Aucun produit publie"}
             </h2>
             <p className="card-copy">
-              {hasActiveSearch
+              {hasOnlyActiveSearch
                 ? "Essayez un autre terme ou revenez a la liste complete."
+                : hasActiveFilters
+                ? "Essayez une autre combinaison ou revenez a la liste complete."
                 : "Les produits publics apparaitront ici des qu&apos;ils seront publies."}
             </p>
-            {hasActiveSearch ? (
+            {hasActiveFilters ? (
               <Link className="link link-subtle" href="/boutique">
                 Voir tous les produits
               </Link>
