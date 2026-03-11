@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { loginAsSeedAdmin } from "./admin-auth";
 
-test("shows a created order in the admin list and detail", async ({ page }) => {
+test("lets admin cancel a pending order from the detail page", async ({ page }) => {
   await page.goto("/boutique/pochette-sable");
 
   const sableVariant = page
@@ -59,4 +59,26 @@ test("shows a created order in the admin list and detail", async ({ page }) => {
   await expect(page.getByText("En attente", { exact: true })).toBeVisible();
   await expect(page.getByText("Paiement en attente")).toBeVisible();
   await expect(page.getByText("Provider : stripe")).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Marquer en preparation" })
+  ).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Annuler la commande" }).click();
+
+  await expect(page).toHaveURL(/order_status=updated$/);
+  await expect(
+    page.getByText("Le statut de la commande a ete mis a jour.")
+  ).toBeVisible();
+  await expect(page.getByText("Annulee", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("Aucune autre action n'est disponible pour cette commande.")
+  ).toBeVisible();
+
+  await page.goto("/admin/orders");
+  const updatedOrderCard = page
+    .getByRole("article")
+    .filter({ hasText: reference ?? "" })
+    .first();
+
+  await expect(updatedOrderCard).toContainText("Annulee");
 });

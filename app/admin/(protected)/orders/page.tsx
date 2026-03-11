@@ -7,6 +7,12 @@ import {
 
 export const dynamic = "force-dynamic";
 
+type AdminOrdersPageProps = Readonly<{
+  searchParams: Promise<{
+    error?: string | string[];
+  }>;
+}>;
+
 const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",
   timeStyle: "short"
@@ -14,6 +20,8 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 function getOrderStatusLabel(status: OrderStatus): string {
   switch (status) {
+    case "preparing":
+      return "En preparation";
     case "paid":
       return "Payee";
     case "cancelled":
@@ -36,8 +44,20 @@ function getPaymentStatusLabel(status: PaymentStatus): string {
   }
 }
 
-export default async function AdminOrdersPage() {
+export default async function AdminOrdersPage({
+  searchParams
+}: AdminOrdersPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const errorParam = Array.isArray(resolvedSearchParams.error)
+    ? resolvedSearchParams.error[0]
+    : resolvedSearchParams.error;
   const orders = await listAdminOrders();
+  const errorMessage =
+    errorParam === "missing_order"
+      ? "La commande demandee est introuvable."
+      : errorParam === "invalid_order_action"
+        ? "L'action demandee est invalide."
+        : null;
 
   return (
     <div className="admin-record-list">
@@ -52,6 +72,8 @@ export default async function AdminOrdersPage() {
             </p>
           </div>
         </div>
+
+        {errorMessage ? <p className="admin-alert">{errorMessage}</p> : null}
 
         {orders.length > 0 ? (
           <div className="admin-record-list">

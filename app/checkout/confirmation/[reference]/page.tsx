@@ -25,6 +25,8 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 function getOrderStatusLabel(status: OrderStatus): string {
   switch (status) {
+    case "preparing":
+      return "En preparation";
     case "paid":
       return "Payee";
     case "cancelled":
@@ -55,6 +57,13 @@ function getPaymentMessage(input: {
   kind: "success" | "alert";
   text: string;
 } | null {
+  if (input.orderStatus === "cancelled") {
+    return {
+      kind: "alert",
+      text: "Cette commande a ete annulee."
+    };
+  }
+
   if (input.paymentStatus === "succeeded" || input.orderStatus === "paid") {
     return {
       kind: "success",

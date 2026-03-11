@@ -4,12 +4,18 @@ import {
   type OrderStatus,
   type PaymentStatus
 } from "@/db/repositories/order.repository";
+import { getAllowedOrderStatusTransitions } from "@/entities/order/order-status-transition";
+import { updateOrderStatusAction } from "@/features/admin/orders/actions/update-order-status-action";
 
 export const dynamic = "force-dynamic";
 
 type AdminOrderDetailPageProps = Readonly<{
   params: Promise<{
     id: string;
+  }>;
+  searchParams: Promise<{
+    order_status?: string | string[];
+    order_error?: string | string[];
   }>;
 }>;
 
@@ -20,6 +26,8 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 function getOrderStatusLabel(status: OrderStatus): string {
   switch (status) {
+    case "preparing":
+      return "En preparation";
     case "paid":
       return "Payee";
     case "cancelled":
@@ -27,6 +35,17 @@ function getOrderStatusLabel(status: OrderStatus): string {
     case "pending":
     default:
       return "En attente";
+  }
+}
+
+function getOrderTransitionLabel(status: OrderStatus): string {
+  switch (status) {
+    case "preparing":
+      return "Marquer en preparation";
+    case "cancelled":
+      return "Annuler la commande";
+    default:
+      return status;
   }
 }
 
@@ -43,14 +62,34 @@ function getPaymentStatusLabel(status: PaymentStatus): string {
 }
 
 export default async function AdminOrderDetailPage({
-  params
+  params,
+  searchParams
 }: AdminOrderDetailPageProps) {
   const { id } = await params;
+  const resolvedSearchParams = await searchParams;
+  const orderStatusParam = Array.isArray(resolvedSearchParams.order_status)
+    ? resolvedSearchParams.order_status[0]
+    : resolvedSearchParams.order_status;
+  const orderErrorParam = Array.isArray(resolvedSearchParams.order_error)
+    ? resolvedSearchParams.order_error[0]
+    : resolvedSearchParams.order_error;
   const order = await findAdminOrderById(id);
 
   if (order === null) {
     notFound();
   }
+
+  const allowedTransitions = getAllowedOrderStatusTransitions(order.status);
+  const statusMessage =
+    orderStatusParam === "updated"
+      ? "Le statut de la commande a ete mis a jour."
+      : null;
+  const errorMessage =
+    orderErrorParam === "invalid_transition"
+      ? "Cette transition n'est pas autorisee."
+      : orderErrorParam === "update_failed"
+        ? "La commande n'a pas pu etre mise a jour."
+        : null;
 
   return (
     <div className="admin-record-list">
@@ -60,10 +99,14 @@ export default async function AdminOrderDetailPage({
             <p className="eyebrow">Orders</p>
             <h1>Commande {order.reference}</h1>
             <p className="lead">
-              Lecture seule du snapshot cree depuis le checkout invite.
+              Snapshot cree depuis le checkout invite, avec actions bornees
+              sur le cycle de vie de la commande.
             </p>
           </div>
         </div>
+
+        {statusMessage ? <p className="admin-success">{statusMessage}</p> : null}
+        {errorMessage ? <p className="admin-alert">{errorMessage}</p> : null}
 
         <div className="cart-layout">
           <div className="checkout-line-list">
@@ -91,6 +134,31 @@ export default async function AdminOrderDetailPage({
                   {orderDateTimeFormatter.format(new Date(order.createdAt))}
                 </p>
               </div>
+
+              {allowedTransitions.length > 0 ? (
+                <div className="admin-inline-actions">
+                  {allowedTransitions.map((nextStatus) => (
+                    <form action={updateOrderStatusAction} key={nextStatus}>
+                      <input name="orderId" type="hidden" value={order.id} />
+                      <input name="nextStatus" type="hidden" value={nextStatus} />
+                      <button
+                        className={
+                          nextStatus === "cancelled"
+                            ? "button admin-danger-button"
+                            : "button"
+                        }
+                        type="submit"
+                      >
+                        {getOrderTransitionLabel(nextStatus)}
+                      </button>
+                    </form>
+                  ))}
+                </div>
+              ) : (
+                <p className="admin-muted-note">
+                  Aucune autre action n&apos;est disponible pour cette commande.
+                </p>
+              )}
             </article>
 
             <article className="store-card checkout-line">

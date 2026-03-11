@@ -38,7 +38,11 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
     redirect(`/checkout/confirmation/${reference}?payment=unavailable`);
   }
 
-  if (paymentContext.orderStatus === "paid" || paymentContext.paymentStatus === "succeeded") {
+  if (
+    paymentContext.orderStatus === "paid" ||
+    paymentContext.orderStatus === "preparing" ||
+    paymentContext.paymentStatus === "succeeded"
+  ) {
     redirect(`/checkout/confirmation/${reference}?payment=already_paid`);
   }
 

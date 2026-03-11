@@ -1,11 +1,15 @@
 import { db, queryFirst, queryRows } from "@/db/client";
 import type { PoolClient } from "pg";
 import { createOrderReference } from "@/entities/order/order-reference";
+import {
+  resolveOrderStatusTransition,
+  type OrderStatus
+} from "@/entities/order/order-status-transition";
 
 type TimestampValue = Date | string;
 type ProductStatus = "draft" | "published";
 type ProductVariantStatus = "draft" | "published";
-export type OrderStatus = "pending" | "paid" | "cancelled";
+export type { OrderStatus } from "@/entities/order/order-status-transition";
 export type PaymentStatus = "pending" | "succeeded" | "failed";
 export type PaymentProvider = "stripe";
 export type PaymentMethod = "card";
@@ -119,6 +123,11 @@ type CreatedOrderRow = {
   reference: string;
 };
 
+type OrderStatusRow = {
+  id: string;
+  status: OrderStatus;
+};
+
 type PostgreSqlErrorLike = Error & {
   code: string;
   constraint?: string;
@@ -198,7 +207,9 @@ type OrderRepositoryErrorCode =
   | "empty_cart"
   | "missing_checkout"
   | "cart_unavailable"
-  | "create_failed";
+  | "create_failed"
+  | "missing_order"
+  | "invalid_status_transition";
 
 export class OrderRepositoryError extends Error {
   readonly code: OrderRepositoryErrorCode;
@@ -693,6 +704,97 @@ export async function createOrderFromGuestCartToken(
     await client.query("commit");
 
     return createdOrder;
+  } catch (error) {
+    await client.query("rollback");
+
+    if (error instanceof OrderRepositoryError) {
+      throw error;
+    }
+
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+export async function updateOrderStatus(input: {
+  id: string;
+  nextStatus: OrderStatus;
+}): Promise<OrderStatus | null> {
+  if (!isValidNumericId(input.id)) {
+    return null;
+  }
+
+  const client = await db.connect();
+
+  try {
+    await client.query("begin");
+
+    const orderResult = await client.query<OrderStatusRow>(
+      `
+        select
+          id::text as id,
+          status
+        from orders
+        where id = $1::bigint
+        limit 1
+        for update
+      `,
+      [input.id]
+    );
+    const orderRow = orderResult.rows[0] ?? null;
+
+    if (orderRow === null) {
+      throw new OrderRepositoryError(
+        "missing_order",
+        "Order is missing."
+      );
+    }
+
+    const transition = resolveOrderStatusTransition({
+      currentStatus: orderRow.status,
+      nextStatus: input.nextStatus
+    });
+
+    if (!transition.ok) {
+      throw new OrderRepositoryError(
+        "invalid_status_transition",
+        "Order status transition is invalid."
+      );
+    }
+
+    if (transition.shouldRestock) {
+      await client.query(
+        `
+          update product_variants pv
+          set stock_quantity = pv.stock_quantity + restock.total_quantity
+          from (
+            select
+              source_product_variant_id as product_variant_id,
+              sum(quantity)::integer as total_quantity
+            from order_items
+            where order_id = $1::bigint
+              and source_product_variant_id is not null
+            group by source_product_variant_id
+          ) restock
+          where pv.id = restock.product_variant_id
+        `,
+        [input.id]
+      );
+    }
+
+    await client.query(
+      `
+        update orders
+        set status = $2
+        where id = $1::bigint
+      `,
+      [input.id, input.nextStatus]
+    );
+
+    await client.query("commit");
+
+    return input.nextStatus;
   } catch (error) {
     await client.query("rollback");
 
