@@ -31,7 +31,7 @@ test("saves a guest checkout draft", async ({ page }) => {
   await page.locator('input[name="shippingPostalCode"]').fill("75001");
   await page.locator('input[name="shippingCity"]').fill("Paris");
 
-  await page.getByRole("button", { name: "Enregistrer le checkout" }).click();
+  await page.getByRole("button", { name: "Enregistrer le brouillon" }).click();
 
   await expect(page).toHaveURL(/\/checkout\?status=saved$/);
   await expect(
@@ -59,7 +59,7 @@ test("rejects an invalid French postal code", async ({ page }) => {
   await page.locator('input[name="shippingPostalCode"]').fill("7501");
   await page.locator('input[name="shippingCity"]').fill("Paris");
 
-  await page.getByRole("button", { name: "Enregistrer le checkout" }).click();
+  await page.getByRole("button", { name: "Enregistrer le brouillon" }).click();
 
   await expect(page).toHaveURL(/\/checkout\?error=invalid_shipping_postal_code$/);
   await expect(

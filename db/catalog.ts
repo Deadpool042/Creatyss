@@ -379,7 +379,9 @@ export async function listPublishedFeaturedCategories(): Promise<FeaturedCategor
   return listHomepageFeaturedCategories(homepageRow.id);
 }
 
-export async function listPublishedProducts(): Promise<PublishedProductSummary[]> {
+export async function listPublishedProducts(
+  searchQuery?: string | null
+): Promise<PublishedProductSummary[]> {
   const rows = await queryRows<ProductSummaryRow>(
     `
       select
@@ -395,8 +397,32 @@ export async function listPublishedProducts(): Promise<PublishedProductSummary[]
         p.updated_at
       from products p
       where p.status = 'published'
+        and (
+          $1::text is null
+          or p.name ilike '%' || $1 || '%'
+          or p.slug ilike '%' || $1 || '%'
+          or exists (
+            select 1
+            from product_categories pc
+            join categories c
+              on c.id = pc.category_id
+            where pc.product_id = p.id
+              and (
+                c.name ilike '%' || $1 || '%'
+                or c.slug ilike '%' || $1 || '%'
+              )
+          )
+          or exists (
+            select 1
+            from product_variants pv
+            where pv.product_id = p.id
+              and pv.status = 'published'
+              and pv.color_name ilike '%' || $1 || '%'
+          )
+        )
       order by p.created_at desc, p.id desc
-    `
+    `,
+    [searchQuery ?? null]
   );
 
   return rows.map(mapProductSummary);

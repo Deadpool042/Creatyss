@@ -296,6 +296,17 @@ h3 {
   gap: 1rem;
 }
 
+.catalog-search-form {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.catalog-search-summary {
+  margin: 0 0 1rem;
+  color: rgba(31, 31, 31, 0.72);
+}
+
 .cart-feedback p {
   margin: 0;
 }

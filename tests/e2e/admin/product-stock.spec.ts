@@ -18,17 +18,23 @@ test("updates variant stock and reflects simple availability on the product page
     hasText: "SKU SAC-CAMEL-001"
   });
 
-  await expect(variantCard.getByText(/^Disponible$/)).toBeVisible();
+  await expect(
+    variantCard.getByText(/Disponibilite actuelle :\s*Disponible/)
+  ).toBeVisible();
 
   await variantCard.getByLabel("Stock disponible").fill("0");
-  await variantCard.getByRole("button", { name: "Enregistrer la variante" }).click();
+  await variantCard
+    .getByRole("button", { name: "Enregistrer la declinaison" })
+    .click();
 
   await expect(page).toHaveURL(/variant_status=updated$/);
   await expect(
     page.getByText("Variante mise a jour avec succes.")
   ).toBeVisible();
   await expect(
-    variantCard.getByText(/^Temporairement indisponible$/)
+    variantCard.getByText(
+      /Disponibilite actuelle :\s*Temporairement indisponible/
+    )
   ).toBeVisible();
 
   await page.goto("/boutique/sac-camel");
@@ -42,10 +48,14 @@ test("updates variant stock and reflects simple availability on the product page
   await productCard.getByRole("link", { name: "Modifier le produit" }).click();
 
   await variantCard.getByLabel("Stock disponible").fill("5");
-  await variantCard.getByRole("button", { name: "Enregistrer la variante" }).click();
+  await variantCard
+    .getByRole("button", { name: "Enregistrer la declinaison" })
+    .click();
 
   await expect(page).toHaveURL(/variant_status=updated$/);
-  await expect(variantCard.getByText(/^Disponible$/)).toBeVisible();
+  await expect(
+    variantCard.getByText(/Disponibilite actuelle :\s*Disponible/)
+  ).toBeVisible();
 
   await page.goto("/boutique/sac-camel");
   await expect(page.getByText("Disponible").first()).toBeVisible();
