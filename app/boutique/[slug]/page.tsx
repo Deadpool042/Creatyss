@@ -3,6 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublishedProductBySlug } from "@/db/catalog";
 import { addToCartAction } from "@/features/cart/actions/add-to-cart-action";
+import {
+  getProductAvailabilityLabel,
+  getProductPageStatusSummary,
+  getVariantAvailabilityLabel,
+  getVariantAvailabilityMessage,
+  getVariantDefaultBadgeLabel
+} from "@/entities/product/product-page-presentation";
 import { getUploadsPublicPath } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";
@@ -20,10 +27,6 @@ type ProductPageProps = Readonly<{
 type ProductMetadataSource = NonNullable<
   Awaited<ReturnType<typeof getPublishedProductBySlug>>
 >;
-
-function getAvailabilityLabel(isAvailable: boolean): string {
-  return isAvailable ? "Disponible" : "Temporairement indisponible";
-}
 
 function getCartStatusMessage(status: string | undefined): string | null {
   switch (status) {
@@ -101,6 +104,13 @@ export default async function ProductPage({
   }
 
   const uploadsPublicPath = getUploadsPublicPath();
+  const availableVariantCount = product.variants.filter(
+    (variant) => variant.isAvailable
+  ).length;
+  const productStatusSummary = getProductPageStatusSummary({
+    totalVariantCount: product.variants.length,
+    availableVariantCount
+  });
 
   return (
     <div className="page">
@@ -151,6 +161,37 @@ export default async function ProductPage({
           </div>
 
           <aside className="product-panel">
+            <div className="product-summary">
+              <div className="product-summary-header">
+                <p className="meta-label">Disponibilite produit</p>
+                <span
+                  className={`status-pill ${
+                    product.isAvailable
+                      ? "status-pill--available"
+                      : "status-pill--unavailable"
+                  }`}
+                >
+                  {getProductAvailabilityLabel(product.isAvailable)}
+                </span>
+              </div>
+
+              <h2>{productStatusSummary.title}</h2>
+              <p className="card-copy">{productStatusSummary.description}</p>
+              <p className="card-meta">{productStatusSummary.nextStep}</p>
+
+              <div className="product-summary-stats">
+                <div className="product-summary-stat">
+                  <p className="meta-label">Declinaisons disponibles</p>
+                  <p className="card-copy">{availableVariantCount}</p>
+                </div>
+
+                <div className="product-summary-stat">
+                  <p className="meta-label">Declinaisons publiees</p>
+                  <p className="card-copy">{product.variants.length}</p>
+                </div>
+              </div>
+            </div>
+
             <div className="stack">
               <p className="meta-label">Slug</p>
               <p className="card-copy">{product.slug}</p>
@@ -162,18 +203,6 @@ export default async function ProductPage({
                 <p className="product-copy">{product.description}</p>
               </div>
             ) : null}
-
-            <div className="stack">
-              <p className="meta-label">Variantes publiees</p>
-              <p className="card-copy">{product.variants.length}</p>
-            </div>
-
-            <div className="stack">
-              <p className="meta-label">Disponibilite produit</p>
-              <p className="card-copy">
-                {getAvailabilityLabel(product.isAvailable)}
-              </p>
-            </div>
           </aside>
         </div>
       </section>
@@ -181,8 +210,12 @@ export default async function ProductPage({
       <section className="section">
         <div className="section-header">
           <div>
-            <p className="eyebrow">Variantes</p>
-            <h2>Variantes publiees</h2>
+            <p className="eyebrow">Declinaisons</p>
+            <h2>Choisir une declinaison</h2>
+            <p className="card-meta">
+              Verifiez le prix, la disponibilite et les visuels de chaque
+              declinaison avant l'ajout au panier.
+            </p>
           </div>
         </div>
 
@@ -190,63 +223,98 @@ export default async function ProductPage({
           <div className="variant-list">
             {product.variants.map((variant) => (
               <article className="variant-card" key={variant.id}>
-                <div className="stack">
-                  <h3>{variant.name}</h3>
-                  <p className="variant-meta">
-                    {variant.colorName}
-                    {variant.colorHex ? ` · ${variant.colorHex}` : ""}
-                  </p>
+                <div className="variant-header">
+                  <div className="stack">
+                    <h3>{variant.name}</h3>
+                    <p className="variant-meta">
+                      {variant.colorName}
+                      {variant.colorHex ? ` · ${variant.colorHex}` : ""}
+                    </p>
+                  </div>
+
+                  <div className="variant-badges">
+                    {getVariantDefaultBadgeLabel(variant.isDefault) ? (
+                      <span className="status-pill status-pill--neutral">
+                        {getVariantDefaultBadgeLabel(variant.isDefault)}
+                      </span>
+                    ) : null}
+                    <span
+                      className={`status-pill ${
+                        variant.isAvailable
+                          ? "status-pill--available"
+                          : "status-pill--unavailable"
+                      }`}
+                    >
+                      {getVariantAvailabilityLabel(variant.isAvailable)}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="stack">
-                  <p className="meta-label">SKU</p>
-                  <p className="card-copy">{variant.sku}</p>
-                </div>
+                <div className="variant-purchase">
+                  <div className="stack">
+                    <p className="meta-label">Prix</p>
+                    <p className="product-price">{variant.price}</p>
+                    {variant.compareAtPrice ? (
+                      <p className="card-meta">
+                        Compare a {variant.compareAtPrice}
+                      </p>
+                    ) : null}
+                  </div>
 
-                <div className="stack">
-                  <p className="meta-label">Prix</p>
-                  <p className="card-copy">{variant.price}</p>
-                  {variant.compareAtPrice ? (
-                    <p className="card-meta">Compare a {variant.compareAtPrice}</p>
+                  <div className="stack">
+                    <p className="meta-label">Ajout au panier</p>
+                    <p
+                      className={variant.isAvailable ? "card-copy" : "card-meta"}
+                    >
+                      {getVariantAvailabilityMessage(variant.isAvailable)}
+                    </p>
+                  </div>
+
+                  {variant.isAvailable ? (
+                    <form action={addToCartAction} className="cart-add-form">
+                      <input
+                        name="productSlug"
+                        type="hidden"
+                        value={product.slug}
+                      />
+                      <input name="variantId" type="hidden" value={variant.id} />
+
+                      <label className="admin-field cart-quantity-field">
+                        <span className="meta-label">Quantite</span>
+                        <input
+                          className="admin-input"
+                          defaultValue="1"
+                          min="1"
+                          name="quantity"
+                          required
+                          step="1"
+                          type="number"
+                        />
+                      </label>
+
+                      <div className="admin-inline-actions">
+                        <button className="button" type="submit">
+                          Ajouter au panier
+                        </button>
+                      </div>
+                    </form>
                   ) : null}
                 </div>
 
-                <div className="stack">
-                  <p className="meta-label">Disponibilite de la variante</p>
-                  <p className="card-copy">
-                    {getAvailabilityLabel(variant.isAvailable)}
-                  </p>
+                <div className="variant-details">
+                  <div className="variant-detail">
+                    <p className="meta-label">SKU</p>
+                    <p className="card-copy">{variant.sku}</p>
+                  </div>
+
+                  <div className="variant-detail">
+                    <p className="meta-label">Couleur</p>
+                    <p className="card-copy">
+                      {variant.colorName}
+                      {variant.colorHex ? ` · ${variant.colorHex}` : ""}
+                    </p>
+                  </div>
                 </div>
-
-                {variant.isAvailable ? (
-                  <form action={addToCartAction} className="cart-add-form">
-                    <input name="productSlug" type="hidden" value={product.slug} />
-                    <input name="variantId" type="hidden" value={variant.id} />
-
-                    <label className="admin-field cart-quantity-field">
-                      <span className="meta-label">Quantite</span>
-                      <input
-                        className="admin-input"
-                        defaultValue="1"
-                        min="1"
-                        name="quantity"
-                        required
-                        step="1"
-                        type="number"
-                      />
-                    </label>
-
-                    <div className="admin-inline-actions">
-                      <button className="button" type="submit">
-                        Ajouter au panier
-                      </button>
-                    </div>
-                  </form>
-                ) : (
-                  <p className="card-meta">
-                    Cette variante est temporairement indisponible.
-                  </p>
-                )}
 
                 {variant.images.length > 0 ? (
                   <div className="variant-images">
@@ -262,7 +330,7 @@ export default async function ProductPage({
                   </div>
                 ) : (
                   <div className="media-placeholder">
-                    Aucun visuel pour cette variante.
+                    Aucun visuel pour cette declinaison.
                   </div>
                 )}
               </article>
@@ -270,11 +338,11 @@ export default async function ProductPage({
           </div>
         ) : (
           <div className="empty-state">
-            <p className="eyebrow">Aucune variante</p>
-            <h2>Ce produit n&apos;a pas de variante publique</h2>
+            <p className="eyebrow">Aucune declinaison</p>
+            <h2>Ce produit n&apos;a pas encore de declinaison publique</h2>
             <p className="card-copy">
-              Les variantes publiees apparaitront ici lorsqu&apos;elles seront
-              disponibles.
+              Les declinaisons vendables apparaitront ici lorsqu&apos;elles
+              seront disponibles.
             </p>
           </div>
         )}
