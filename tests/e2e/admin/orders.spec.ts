@@ -1,6 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { loginAsSeedAdmin } from "./admin-auth";
-import { markOrderAsPaid } from "../order-db";
+import { markOrderAsPaid, resetSimpleProductCatalogState } from "../order-db";
+
+test.beforeEach(() => {
+  resetSimpleProductCatalogState();
+});
 
 test("lets admin cancel a pending order from the detail page", async ({ page }) => {
   await page.goto("/boutique/pochette-sable");

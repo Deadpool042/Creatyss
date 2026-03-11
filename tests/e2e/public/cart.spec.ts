@@ -1,4 +1,9 @@
 import { expect, test } from "@playwright/test";
+import { resetSimpleProductCatalogState } from "../order-db";
+
+test.beforeEach(() => {
+  resetSimpleProductCatalogState();
+});
 
 test("adds, updates and removes a cart line from the product page", async ({
   page
