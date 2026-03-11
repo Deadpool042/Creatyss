@@ -84,6 +84,20 @@ export default function AdminHomePage() {
           </Link>
         </div>
       </article>
+
+      <article className="store-card">
+        <p className="card-kicker">Orders</p>
+        <h2>Suivi des commandes</h2>
+        <p className="card-copy">
+          Consultez les commandes creees depuis le checkout invite avec un
+          detail simple, en lecture seule, avant le lot paiement.
+        </p>
+        <div>
+          <Link className="link" href="/admin/orders">
+            Ouvrir les commandes
+          </Link>
+        </div>
+      </article>
     </div>
   );
 }

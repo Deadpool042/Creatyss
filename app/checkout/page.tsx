@@ -3,6 +3,7 @@ import {
   readGuestCheckoutContextByToken,
   type GuestCheckoutContext
 } from "@/db/repositories/guest-cart.repository";
+import { createOrderAction } from "@/features/checkout/actions/create-order-action";
 import { saveGuestCheckoutAction } from "@/features/checkout/actions/save-guest-checkout-action";
 import { readCartSessionToken } from "@/lib/cart-session";
 
@@ -56,8 +57,12 @@ function getErrorMessage(error: string | undefined): string | null {
       return "Renseignez un code postal de facturation a 5 chiffres.";
     case "missing_billing_city":
       return "Renseignez la ville de facturation.";
+    case "missing_checkout":
+      return "Renseignez les informations de checkout avant de creer la commande.";
     case "save_failed":
       return "Le checkout n'a pas pu etre enregistre.";
+    case "create_failed":
+      return "La commande n'a pas pu etre creee.";
     default:
       return null;
   }
@@ -106,8 +111,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             <p className="eyebrow">Checkout</p>
             <h1>Checkout invite</h1>
             <p className="lead">
-              Renseignez vos informations avant la creation de commande du lot
-              suivant.
+              Renseignez vos informations puis creez votre commande invitee.
             </p>
           </div>
         </div>
@@ -127,7 +131,6 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         {cart ? (
           <div className="checkout-layout">
             <form
-              action={saveGuestCheckoutAction}
               className="admin-form checkout-form"
               noValidate
             >
@@ -352,9 +355,18 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
               <div className="admin-inline-actions">
                 {canSave ? (
-                  <button className="button" type="submit">
-                    Enregistrer le checkout
-                  </button>
+                  <>
+                    <button className="button" formAction={createOrderAction} type="submit">
+                      Creer la commande
+                    </button>
+                    <button
+                      className="button link-subtle"
+                      formAction={saveGuestCheckoutAction}
+                      type="submit"
+                    >
+                      Enregistrer le brouillon
+                    </button>
+                  </>
                 ) : (
                   <p className="admin-muted-note">
                     Corrigez le panier avant de poursuivre.

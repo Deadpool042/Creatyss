@@ -33,6 +33,7 @@ export default async function ProtectedAdminLayout({
           <Link href="/admin/blog">Blog</Link>
           <Link href="/admin/categories">Categories</Link>
           <Link href="/admin/products">Produits</Link>
+          <Link href="/admin/orders">Orders</Link>
           <Link href="/admin/media">Bibliotheque media</Link>
         </nav>
 
