@@ -97,3 +97,11 @@ La V3 devient utile des que le projet permet :
 - d'afficher un suivi minimal
 - d'envoyer les emails transactionnels essentiels
 - de garder un etat coherent entre public et admin
+
+## Note sur les emails transactionnels
+
+Brevo est intégré pour les emails transactionnels.
+
+L’envoi réel reste à valider tant qu’un domaine expéditeur dédié n’est pas disponible et authentifié.
+
+Cela ne bloque pas le flux métier, car l’envoi reste en mode best-effort.

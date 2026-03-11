@@ -1,5 +1,9 @@
 import { db, queryFirst, queryRows } from "@/db/client";
 import type { PoolClient } from "pg";
+import {
+  listOrderEmailEventsByOrderId,
+  type OrderEmailEvent
+} from "@/db/repositories/order-email.repository";
 import { createOrderReference } from "@/entities/order/order-reference";
 import {
   resolveOrderStatusTransition,
@@ -11,6 +15,7 @@ type ProductStatus = "draft" | "published";
 type ProductVariantStatus = "draft" | "published";
 export type { OrderStatus } from "@/entities/order/order-status-transition";
 export type PaymentStatus = "pending" | "succeeded" | "failed";
+export type { OrderEmailEventStatus } from "@/db/repositories/order-email.repository";
 export type PaymentProvider = "stripe";
 export type PaymentMethod = "card";
 
@@ -120,6 +125,15 @@ type OrderSummaryRow = {
   updated_at: TimestampValue;
 };
 
+type OrderEmailContextRow = {
+  id: string;
+  reference: string;
+  customer_email: string;
+  customer_first_name: string;
+  total_amount: string;
+  tracking_reference: string | null;
+};
+
 type CreatedOrderRow = {
   id: string;
   reference: string;
@@ -204,7 +218,18 @@ export type AdminOrderSummary = {
   updatedAt: string;
 };
 
-export type AdminOrderDetail = PublicOrderConfirmation;
+export type OrderEmailContext = {
+  id: string;
+  reference: string;
+  customerEmail: string;
+  customerFirstName: string;
+  totalAmount: string;
+  trackingReference: string | null;
+};
+
+export type AdminOrderDetail = PublicOrderConfirmation & {
+  emailEvents: OrderEmailEvent[];
+};
 
 type OrderRepositoryErrorCode =
   | "missing_cart"
@@ -395,6 +420,17 @@ function mapAdminOrderSummary(row: OrderSummaryRow): AdminOrderSummary {
     lineCount: row.line_count,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
+  };
+}
+
+function mapOrderEmailContext(row: OrderEmailContextRow): OrderEmailContext {
+  return {
+    id: row.id,
+    reference: row.reference,
+    customerEmail: row.customer_email,
+    customerFirstName: row.customer_first_name,
+    totalAmount: normalizeMoneyString(row.total_amount),
+    trackingReference: row.tracking_reference
   };
 }
 
@@ -988,6 +1024,30 @@ async function readOrderRowById(id: string): Promise<OrderRow | null> {
   );
 }
 
+async function readOrderEmailContextRowById(
+  id: string
+): Promise<OrderEmailContextRow | null> {
+  if (!isValidNumericId(id)) {
+    return null;
+  }
+
+  return queryFirst<OrderEmailContextRow>(
+    `
+      select
+        o.id::text as id,
+        o.reference,
+        o.customer_email,
+        o.customer_first_name,
+        o.total_amount::text as total_amount,
+        o.tracking_reference
+      from orders o
+      where o.id = $1::bigint
+      limit 1
+    `,
+    [id]
+  );
+}
+
 async function readOrderItemRows(orderId: string): Promise<OrderItemRow[]> {
   if (!isValidNumericId(orderId)) {
     return [];
@@ -1030,6 +1090,14 @@ export async function findPublicOrderByReference(
   return mapOrderRow(orderRow, orderItems);
 }
 
+export async function findOrderEmailContextById(
+  id: string
+): Promise<OrderEmailContext | null> {
+  const row = await readOrderEmailContextRowById(id);
+
+  return row ? mapOrderEmailContext(row) : null;
+}
+
 export async function listAdminOrders(): Promise<AdminOrderSummary[]> {
   const rows = await queryRows<OrderSummaryRow>(
     `
@@ -1066,6 +1134,10 @@ export async function findAdminOrderById(
   }
 
   const orderItems = await readOrderItemRows(orderRow.id);
+  const emailEvents = await listOrderEmailEventsByOrderId(orderRow.id);
 
-  return mapOrderRow(orderRow, orderItems);
+  return {
+    ...mapOrderRow(orderRow, orderItems),
+    emailEvents
+  };
 }

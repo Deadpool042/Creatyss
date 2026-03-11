@@ -58,6 +58,15 @@ ENV_FILE=.env.local make up
 
 Le meme principe s'applique a `make build`, `make db-reset-dev`, `make test-e2e` et aux autres cibles `make`.
 
+Variables sensibles ou locales notables :
+
+- `ADMIN_SESSION_SECRET`
+- `CART_SESSION_SECRET`
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `BREVO_API_KEY`
+- `EMAIL_FROM`
+
 Commandes disponibles :
 
 ```bash
@@ -123,6 +132,7 @@ Prerequis pour `make test-e2e` :
 3. les dependances Node locales doivent deja etre installees sur l'hote (`pnpm install`)
 4. Chromium Playwright doit etre installe localement une fois
 5. si les flux Stripe doivent etre testes reellement, de vraies cles de test doivent etre definies dans `.env` ou `.env.local`
+6. si les emails transactionnels doivent etre testes reellement, `BREVO_API_KEY` et `EMAIL_FROM` doivent aussi etre definis dans `.env` ou `.env.local`
 
 Flux local minimal :
 

@@ -55,7 +55,7 @@ test("lets admin cancel a pending order from the detail page", async ({ page }) 
   await expect(
     page.getByRole("heading", { name: `Commande ${reference}` })
   ).toBeVisible();
-  await expect(page.getByText("alice.orders@example.com")).toBeVisible();
+  await expect(page.getByText("alice.orders@example.com").first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "Pochette Sable" })).toBeVisible();
   await expect(page.getByText("En attente", { exact: true })).toBeVisible();
   await expect(page.getByText("Paiement en attente")).toBeVisible();

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import {
   findAdminOrderById,
+  type OrderEmailEventStatus,
   type OrderStatus,
   type PaymentStatus
 } from "@/db/repositories/order.repository";
@@ -61,6 +62,30 @@ function getPaymentStatusLabel(status: PaymentStatus): string {
     case "pending":
     default:
       return "Paiement en attente";
+  }
+}
+
+function getEmailEventLabel(eventType: string): string {
+  switch (eventType) {
+    case "payment_succeeded":
+      return "Paiement reussi";
+    case "order_shipped":
+      return "Commande expediee";
+    case "order_created":
+    default:
+      return "Commande creee";
+  }
+}
+
+function getEmailEventStatusLabel(status: OrderEmailEventStatus): string {
+  switch (status) {
+    case "sent":
+      return "Envoye";
+    case "failed":
+      return "Echec";
+    case "pending":
+    default:
+      return "En attente";
   }
 }
 
@@ -232,6 +257,64 @@ export default async function AdminOrderDetailPage({
                     Payment intent : {order.payment.stripePaymentIntentId}
                   </p>
                 ) : null}
+              </div>
+            </article>
+
+            <article className="store-card checkout-line">
+              <div className="stack">
+                <p className="eyebrow">Emails transactionnels</p>
+                <h2>Trace minimale</h2>
+                {order.emailEvents.length === 0 ? (
+                  <p className="card-copy">
+                    Aucun email transactionnel n&apos;a encore ete trace pour
+                    cette commande.
+                  </p>
+                ) : (
+                  <div className="checkout-line-list">
+                    {order.emailEvents.map((emailEvent) => (
+                      <article
+                        className="store-card checkout-line"
+                        key={emailEvent.id}
+                      >
+                        <div className="stack">
+                          <p className="meta-label">Evenement</p>
+                          <p className="card-copy">
+                            {getEmailEventLabel(emailEvent.eventType)}
+                          </p>
+                        </div>
+
+                        <div className="stack">
+                          <p className="meta-label">Statut</p>
+                          <p className="card-copy">
+                            {getEmailEventStatusLabel(emailEvent.status)}
+                          </p>
+                        </div>
+
+                        <div className="stack">
+                          <p className="meta-label">Destinataire</p>
+                          <p className="card-copy">
+                            {emailEvent.recipientEmail}
+                          </p>
+                        </div>
+
+                        {emailEvent.sentAt ? (
+                          <p className="card-meta">
+                            Envoye le{" "}
+                            {orderDateTimeFormatter.format(
+                              new Date(emailEvent.sentAt)
+                            )}
+                          </p>
+                        ) : null}
+
+                        {emailEvent.lastError ? (
+                          <p className="card-meta">
+                            Erreur : {emailEvent.lastError}
+                          </p>
+                        ) : null}
+                      </article>
+                    ))}
+                  </div>
+                )}
               </div>
             </article>
 

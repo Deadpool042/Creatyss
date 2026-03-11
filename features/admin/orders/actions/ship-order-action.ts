@@ -5,6 +5,7 @@ import {
   OrderRepositoryError,
   shipOrder
 } from "@/db/repositories/order.repository";
+import { sendOrderTransactionalEmail } from "@/features/email/send-order-transactional-email";
 import { validateShipmentInput } from "@/entities/order/shipment-input";
 
 function normalizeNumericId(value: FormDataEntryValue | null): string | null {
@@ -38,6 +39,11 @@ export async function shipOrderAction(formData: FormData): Promise<void> {
     if (updatedStatus === null) {
       redirect("/admin/orders?error=missing_order");
     }
+
+    await sendOrderTransactionalEmail({
+      orderId,
+      eventType: "order_shipped"
+    });
   } catch (error) {
     if (
       error instanceof OrderRepositoryError &&

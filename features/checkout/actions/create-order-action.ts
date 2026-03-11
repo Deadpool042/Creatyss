@@ -10,6 +10,7 @@ import {
   upsertGuestCheckoutDetails
 } from "@/db/repositories/guest-cart.repository";
 import { validateGuestCheckoutInput } from "@/entities/checkout/guest-checkout-input";
+import { sendOrderTransactionalEmail } from "@/features/email/send-order-transactional-email";
 import { clearCartSessionToken, readCartSessionToken } from "@/lib/cart-session";
 
 export async function createOrderAction(formData: FormData): Promise<void> {
@@ -72,6 +73,10 @@ export async function createOrderAction(formData: FormData): Promise<void> {
 
     const order = await createOrderFromGuestCartToken(cartToken);
     orderReference = order.reference;
+    await sendOrderTransactionalEmail({
+      orderId: order.id,
+      eventType: "order_created"
+    });
     await clearCartSessionToken();
   } catch (error) {
     if (error instanceof OrderRepositoryError) {

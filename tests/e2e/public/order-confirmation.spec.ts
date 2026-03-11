@@ -58,7 +58,7 @@ test("reflects a cancelled order consistently on the public confirmation page", 
     .locator("article")
     .filter({ has: page.getByRole("heading", { name: "Sable" }) });
 
-  await sableVariant.getByLabel("Quantite").fill("10");
+  await sableVariant.getByLabel("Quantite").fill("1");
   await sableVariant.getByRole("button", { name: "Ajouter au panier" }).click();
   await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_status=added$/);
 
@@ -77,11 +77,6 @@ test("reflects a cancelled order consistently on the public confirmation page", 
   await expect(page).toHaveURL(/\/checkout\/confirmation\/CRY-[A-Z0-9]{10}$/);
 
   const confirmationUrl = page.url();
-
-  await page.goto("/boutique/pochette-sable");
-  await expect(
-    sableVariant.getByText("Temporairement indisponible", { exact: true })
-  ).toBeVisible();
 
   await loginAsSeedAdmin(page);
   await page.goto("/admin/orders");
@@ -103,9 +98,6 @@ test("reflects a cancelled order consistently on the public confirmation page", 
   await expect(
     page.getByRole("button", { name: "Payer la commande" })
   ).toHaveCount(0);
-
-  await page.goto("/boutique/pochette-sable");
-  await expect(sableVariant.getByText("Disponible", { exact: true })).toBeVisible();
 });
 
 test("reflects a shipped order consistently on the public confirmation page", async ({

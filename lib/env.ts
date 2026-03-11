@@ -39,6 +39,14 @@ export function getStripeWebhookSecret(): string {
   return readRequiredSecretEnv("STRIPE_WEBHOOK_SECRET", ["whsec_change_me"]);
 }
 
+export function getBrevoApiKey(): string {
+  return readRequiredSecretEnv("BREVO_API_KEY", ["brevo_api_key_change_me"]);
+}
+
+export function getEmailFrom(): string {
+  return readRequiredEnv("EMAIL_FROM");
+}
+
 export const env = {
   appUrl: readEnv("APP_URL", "http://localhost:3000"),
   adminSessionSecret: readRequiredEnv("ADMIN_SESSION_SECRET"),

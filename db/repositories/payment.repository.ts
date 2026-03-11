@@ -133,7 +133,7 @@ export async function saveStripeCheckoutSessionForOrder(input: {
 export async function markPaymentSucceededByCheckoutSessionId(input: {
   stripeCheckoutSessionId: string;
   stripePaymentIntentId: string | null;
-}): Promise<void> {
+}): Promise<string | null> {
   const client = await db.connect();
 
   try {
@@ -157,7 +157,7 @@ export async function markPaymentSucceededByCheckoutSessionId(input: {
 
     if (!row) {
       await client.query("commit");
-      return;
+      return null;
     }
 
     if (row.payment_status !== "succeeded") {
@@ -185,6 +185,7 @@ export async function markPaymentSucceededByCheckoutSessionId(input: {
     }
 
     await client.query("commit");
+    return row.order_id;
   } catch (error) {
     await client.query("rollback");
     throw error;

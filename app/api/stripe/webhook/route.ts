@@ -3,6 +3,7 @@ import {
   markPaymentFailedByCheckoutSessionId,
   markPaymentSucceededByCheckoutSessionId
 } from "@/db/repositories/payment.repository";
+import { sendOrderTransactionalEmail } from "@/features/email/send-order-transactional-email";
 import { getStripeWebhookSecret } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
 
@@ -43,10 +44,17 @@ export async function POST(request: Request): Promise<Response> {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
 
-        await markPaymentSucceededByCheckoutSessionId({
+        const orderId = await markPaymentSucceededByCheckoutSessionId({
           stripeCheckoutSessionId: session.id,
           stripePaymentIntentId: extractStripePaymentIntentId(session)
         });
+
+        if (orderId !== null) {
+          await sendOrderTransactionalEmail({
+            orderId,
+            eventType: "payment_succeeded"
+          });
+        }
         break;
       }
 
