@@ -21,6 +21,7 @@ import { createProductImageAction } from "@/features/admin/products/actions/crea
 import { createProductVariantAction } from "@/features/admin/products/actions/create-product-variant-action";
 import { updateProductAction } from "@/features/admin/products/actions/update-product-action";
 import { updateProductImageAction } from "@/features/admin/products/actions/update-product-image-action";
+import { updateSimpleProductOfferAction } from "@/features/admin/products/actions/update-simple-product-offer-action";
 import { updateProductVariantAction } from "@/features/admin/products/actions/update-product-variant-action";
 import { getUploadsPublicPath } from "@/lib/uploads";
 
@@ -99,6 +100,44 @@ function getVariantStatusMessage(status: string | undefined): string | null {
   }
 }
 
+function getSimpleOfferStatusMessage(status: string | undefined): string | null {
+  switch (status) {
+    case "updated":
+      return "L'offre simple a ete mise a jour avec succes.";
+    default:
+      return null;
+  }
+}
+
+function getSimpleOfferErrorMessage(error: string | undefined): string | null {
+  switch (error) {
+    case "missing_sku":
+      return "Le SKU est obligatoire.";
+    case "missing_price":
+      return "Le prix est obligatoire.";
+    case "invalid_price":
+      return "Renseignez un prix valide.";
+    case "invalid_compare_at_price":
+      return "Renseignez un prix compare valide.";
+    case "compare_at_price_below_price":
+      return "Le prix compare doit etre superieur ou egal au prix.";
+    case "missing_stock_quantity":
+      return "Le stock disponible est obligatoire.";
+    case "invalid_stock_quantity":
+      return "Renseignez un stock disponible entier positif ou nul.";
+    case "sku_taken":
+      return "Ce SKU est deja utilise par une autre variante.";
+    case "simple_product_offer_requires_simple_product":
+      return "Cette edition native est reservee aux produits simples.";
+    case "simple_product_multiple_legacy_variants":
+      return "Ce produit simple est incoherent car plusieurs variantes legacy existent. Corrigez d'abord cet etat dans le bloc legacy.";
+    case "save_failed":
+      return "L'offre simple n'a pas pu etre enregistree.";
+    default:
+      return null;
+  }
+}
+
 function getVariantErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_variant":
@@ -142,6 +181,35 @@ function getVariantErrorMessage(error: string | undefined): string | null {
 
 function getAvailabilityLabel(isAvailable: boolean): string {
   return isAvailable ? "Disponible" : "Temporairement indisponible";
+}
+
+function getDetailSellableCountLabel(input: {
+  productType: "simple" | "variable";
+  variantCount: number;
+  simpleOffer: {
+    sku: string;
+    price: string;
+    compareAtPrice: string | null;
+    stockQuantity: number;
+    isAvailable: boolean;
+  } | null;
+  fallbackLabel: string;
+}): string {
+  if (input.productType !== "simple") {
+    return input.fallbackLabel;
+  }
+
+  if (input.variantCount > 1) {
+    return `${input.variantCount} variantes legacy`;
+  }
+
+  if (input.simpleOffer !== null) {
+    return "Offre simple configuree";
+  }
+
+  return input.variantCount === 0
+    ? "Offre simple a completer"
+    : "Offre simple a verifier";
 }
 
 function getImageStatusMessage(status: string | undefined): string | null {
@@ -256,6 +324,34 @@ function renderImagePreview(
   );
 }
 
+function getSimpleOfferFormDefaults(product: {
+  simpleOfferFields: {
+    sku: string | null;
+    price: string | null;
+    compareAtPrice: string | null;
+    stockQuantity: number | null;
+  };
+  simpleOffer: {
+    sku: string;
+    price: string;
+    compareAtPrice: string | null;
+    stockQuantity: number;
+    isAvailable: boolean;
+  } | null;
+}) {
+  return {
+    sku: product.simpleOfferFields.sku ?? product.simpleOffer?.sku ?? "",
+    price: product.simpleOfferFields.price ?? product.simpleOffer?.price ?? "",
+    compareAtPrice:
+      product.simpleOfferFields.compareAtPrice ??
+      product.simpleOffer?.compareAtPrice ??
+      "",
+    stockQuantity: String(
+      product.simpleOfferFields.stockQuantity ?? product.simpleOffer?.stockQuantity ?? 0
+    )
+  };
+}
+
 export default async function ProductDetailPage({
   params,
   searchParams
@@ -292,6 +388,12 @@ export default async function ProductDetailPage({
   const variantErrorMessage = getVariantErrorMessage(
     readSearchParam(resolvedSearchParams, "variant_error")
   );
+  const simpleOfferStatusMessage = getSimpleOfferStatusMessage(
+    readSearchParam(resolvedSearchParams, "simple_offer_status")
+  );
+  const simpleOfferErrorMessage = getSimpleOfferErrorMessage(
+    readSearchParam(resolvedSearchParams, "simple_offer_error")
+  );
   const imageStatusMessage = getImageStatusMessage(
     readSearchParam(resolvedSearchParams, "image_status")
   );
@@ -327,8 +429,24 @@ export default async function ProductDetailPage({
     variants.length
   );
   const isSimpleProduct = product.productType === "simple";
-  const simpleProductHasInconsistentVariantCount = isSimpleProduct && variants.length > 1;
-  const showVariantCreateForm = !isSimpleProduct || variants.length === 0;
+  const detailSellableCountLabel = getDetailSellableCountLabel({
+    productType: product.productType,
+    variantCount: variants.length,
+    simpleOffer: product.simpleOffer,
+    fallbackLabel: productPresentation.sellableCountLabel
+  });
+  const simpleProductHasNoLegacyVariant = isSimpleProduct && variants.length === 0;
+  const simpleProductHasSingleLegacyVariant = isSimpleProduct && variants.length === 1;
+  const simpleProductHasInconsistentVariantCount =
+    isSimpleProduct && variants.length > 1;
+  const showSimpleOfferForm =
+    isSimpleProduct && !simpleProductHasInconsistentVariantCount;
+  const showLegacyVariantCompatibilityBlock =
+    isSimpleProduct && variants.length > 0;
+  const showVariantCreateForm = !isSimpleProduct;
+  const simpleOfferFormDefaults = isSimpleProduct
+    ? getSimpleOfferFormDefaults(product)
+    : null;
 
   return (
     <div className="admin-product-detail">
@@ -358,7 +476,7 @@ export default async function ProductDetailPage({
             {product.categories.length} categorie
             {product.categories.length > 1 ? "s" : ""}
           </span>
-          <span className="admin-chip">{productPresentation.sellableCountLabel}</span>
+          <span className="admin-chip">{detailSellableCountLabel}</span>
         </div>
       </section>
 
@@ -668,39 +786,179 @@ export default async function ProductDetailPage({
 
       <section className="section admin-product-section">
         <div className="stack">
-          <p className="eyebrow">{productPresentation.sectionEyebrow}</p>
-          <h2>{productPresentation.sectionTitle}</h2>
-          <p className="card-copy">{productPresentation.sectionDescription}</p>
+          <p className="eyebrow">
+            {isSimpleProduct ? "Produit simple" : productPresentation.sectionEyebrow}
+          </p>
+          <h2>{isSimpleProduct ? "Offre simple" : productPresentation.sectionTitle}</h2>
+          <p className="card-copy">
+            {isSimpleProduct
+              ? "Modifiez directement le SKU, le prix, le prix compare et le stock natifs du produit simple."
+              : productPresentation.sectionDescription}
+          </p>
         </div>
 
-        {variantStatusMessage ? (
-          <p className="admin-success">{variantStatusMessage}</p>
-        ) : null}
-        {variantErrorMessage ? (
-          <p className="admin-alert" role="alert">
-            {variantErrorMessage}
-          </p>
-        ) : null}
-        {variantImageMessage.status ? (
-          <p className="admin-success">{variantImageMessage.status}</p>
-        ) : null}
-        {variantImageMessage.error ? (
-          <p className="admin-alert" role="alert">
-            {variantImageMessage.error}
-          </p>
-        ) : null}
-        {simpleProductHasInconsistentVariantCount ? (
-          <p className="admin-alert" role="alert">
-            Ce produit simple contient plusieurs offres vendables. Revenez au type
-            Variable ou conservez une seule offre vendable.
-          </p>
-        ) : null}
-        {isSimpleProduct && variants.length === 1 ? (
-          <p className="admin-muted-note">
-            Ce produit simple utilise deja son offre vendable unique. Modifiez-la
-            ci-dessous.
-          </p>
-        ) : null}
+        {isSimpleProduct ? (
+          <>
+            {simpleOfferStatusMessage ? (
+              <p className="admin-success">{simpleOfferStatusMessage}</p>
+            ) : null}
+            {simpleOfferErrorMessage ? (
+              <p className="admin-alert" role="alert">
+                {simpleOfferErrorMessage}
+              </p>
+            ) : null}
+            {simpleProductHasInconsistentVariantCount ? (
+              <p className="admin-alert" role="alert">
+                Ce produit simple est incoherent car plusieurs variantes legacy
+                existent. Aucune resolution native n&apos;est appliquee tant que
+                vous n&apos;avez pas conserve une seule variante vendable.
+              </p>
+            ) : null}
+            {showSimpleOfferForm && simpleOfferFormDefaults ? (
+              <>
+                {product.simpleOffer ? (
+                  <p className="card-meta">
+                    Disponibilite actuelle :{" "}
+                    {getAvailabilityLabel(product.simpleOffer.isAvailable)}
+                  </p>
+                ) : null}
+                {simpleProductHasNoLegacyVariant ? (
+                  <p className="admin-muted-note">
+                    L&apos;edition native admin est disponible, mais la
+                    compatibilite publique actuelle reste limitee tant
+                    qu&apos;aucune variante legacy n&apos;existe. Ce lot ne cree
+                    aucune variante automatiquement.
+                  </p>
+                ) : null}
+                {simpleProductHasSingleLegacyVariant ? (
+                  <p className="admin-muted-note">
+                    Les champs commerciaux saisis ici restent synchronises avec
+                    l&apos;unique variante legacy. Son statut de publication
+                    continue a se gerer dans le bloc legacy ci-dessous.
+                  </p>
+                ) : null}
+
+                <form
+                  action={updateSimpleProductOfferAction}
+                  className="admin-form admin-product-form"
+                >
+                  <input name="productId" type="hidden" value={product.id} />
+
+                  <fieldset className="admin-fieldset">
+                    <legend className="meta-label">
+                      Informations de l&apos;offre simple
+                    </legend>
+
+                    <label className="admin-field">
+                      <span className="meta-label">SKU</span>
+                      <input
+                        className="admin-input"
+                        defaultValue={simpleOfferFormDefaults.sku}
+                        name="sku"
+                        required
+                        type="text"
+                      />
+                    </label>
+
+                    <label className="admin-field">
+                      <span className="meta-label">Prix</span>
+                      <input
+                        className="admin-input"
+                        defaultValue={simpleOfferFormDefaults.price}
+                        inputMode="decimal"
+                        name="price"
+                        required
+                        type="text"
+                      />
+                    </label>
+
+                    <label className="admin-field">
+                      <span className="meta-label">Prix compare</span>
+                      <input
+                        className="admin-input"
+                        defaultValue={simpleOfferFormDefaults.compareAtPrice}
+                        inputMode="decimal"
+                        name="compareAtPrice"
+                        type="text"
+                      />
+                    </label>
+
+                    <label className="admin-field">
+                      <span className="meta-label">Stock disponible</span>
+                      <input
+                        className="admin-input"
+                        defaultValue={simpleOfferFormDefaults.stockQuantity}
+                        min="0"
+                        name="stockQuantity"
+                        required
+                        step="1"
+                        type="number"
+                      />
+                    </label>
+                  </fieldset>
+
+                  <div className="admin-actions">
+                    <button className="button" type="submit">
+                      Enregistrer l&apos;offre simple
+                    </button>
+                  </div>
+                </form>
+              </>
+            ) : null}
+            {showLegacyVariantCompatibilityBlock ? (
+              <div className="admin-product-subsection">
+                <div className="stack">
+                  <p className="eyebrow">Compatibilite legacy</p>
+                  <h3>
+                    {variants.length > 1
+                      ? "Variantes legacy existantes"
+                      : "Variante legacy existante"}
+                  </h3>
+                  <p className="card-copy">
+                    Ce bloc reste disponible pour les informations techniques et
+                    les ajustements manuels encore utilises par l&apos;existant.
+                  </p>
+                </div>
+
+                {variantStatusMessage ? (
+                  <p className="admin-success">{variantStatusMessage}</p>
+                ) : null}
+                {variantErrorMessage ? (
+                  <p className="admin-alert" role="alert">
+                    {variantErrorMessage}
+                  </p>
+                ) : null}
+                {variantImageMessage.status ? (
+                  <p className="admin-success">{variantImageMessage.status}</p>
+                ) : null}
+                {variantImageMessage.error ? (
+                  <p className="admin-alert" role="alert">
+                    {variantImageMessage.error}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
+          </>
+        ) : (
+          <>
+            {variantStatusMessage ? (
+              <p className="admin-success">{variantStatusMessage}</p>
+            ) : null}
+            {variantErrorMessage ? (
+              <p className="admin-alert" role="alert">
+                {variantErrorMessage}
+              </p>
+            ) : null}
+            {variantImageMessage.status ? (
+              <p className="admin-success">{variantImageMessage.status}</p>
+            ) : null}
+            {variantImageMessage.error ? (
+              <p className="admin-alert" role="alert">
+                {variantImageMessage.error}
+              </p>
+            ) : null}
+          </>
+        )}
 
         {showVariantCreateForm ? (
           <form
@@ -802,7 +1060,11 @@ export default async function ProductDetailPage({
               return (
                 <article className="variant-card admin-variant-card" key={variant.id}>
                   <div className="stack">
-                    <p className="meta-label">{productPresentation.itemKicker}</p>
+                    <p className="meta-label">
+                      {isSimpleProduct
+                        ? "Variante legacy"
+                        : productPresentation.itemKicker}
+                    </p>
                     <div className="admin-product-tags">
                       <span className="admin-chip">{variant.colorName}</span>
                       <span className="admin-chip">
@@ -832,7 +1094,9 @@ export default async function ProductDetailPage({
 
                     <fieldset className="admin-fieldset">
                       <legend className="meta-label">
-                        {productPresentation.saleFieldsetLegend}
+                        {isSimpleProduct
+                          ? "Champs commerciaux legacy"
+                          : productPresentation.saleFieldsetLegend}
                       </legend>
 
                       <label className="admin-field">
@@ -944,7 +1208,9 @@ export default async function ProductDetailPage({
 
                     <div className="admin-inline-actions">
                       <button className="button" type="submit">
-                        {productPresentation.saveActionLabel}
+                        {isSimpleProduct
+                          ? "Enregistrer la variante legacy"
+                          : productPresentation.saveActionLabel}
                       </button>
                     </div>
                   </form>
@@ -954,13 +1220,19 @@ export default async function ProductDetailPage({
                     <input name="variantId" type="hidden" value={variant.id} />
 
                     <button className="button link-subtle" type="submit">
-                      {productPresentation.deleteActionLabel}
+                      {isSimpleProduct
+                        ? "Supprimer la variante legacy"
+                        : productPresentation.deleteActionLabel}
                     </button>
                   </form>
 
                   <div className="admin-product-subsection">
                     <div className="stack">
-                      <p className="eyebrow">{productPresentation.imagesEyebrow}</p>
+                      <p className="eyebrow">
+                        {isSimpleProduct
+                          ? "Images legacy"
+                          : productPresentation.imagesEyebrow}
+                      </p>
                       <h3>
                         {isSimpleProduct
                           ? "Images de l'offre vendable"
@@ -1115,7 +1387,7 @@ export default async function ProductDetailPage({
                     ) : (
                       <p className="admin-muted-note">
                         {isSimpleProduct
-                          ? "Cette offre vendable n'a pas encore d'image associee."
+                          ? "Cette variante legacy n'a pas encore d'image associee."
                           : "Cette variante n'a pas encore d'image associee."}
                       </p>
                     )}
@@ -1124,13 +1396,13 @@ export default async function ProductDetailPage({
               );
             })}
           </div>
-        ) : (
+        ) : !isSimpleProduct ? (
           <div className="empty-state">
             <p className="eyebrow">{productPresentation.emptyEyebrow}</p>
             <h2>{productPresentation.emptyTitle}</h2>
             <p className="card-copy">{productPresentation.emptyDescription}</p>
           </div>
-        )}
+        ) : null}
       </section>
 
       <section className="section admin-danger-zone">

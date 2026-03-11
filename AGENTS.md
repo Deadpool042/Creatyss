@@ -123,6 +123,30 @@ Quand tu proposes une modification :
 6. indique la vérification manuelle attendue
 7. précise ce qui reste volontairement hors périmètre
 
+## Lisibilité métier et UX admin
+
+- Le modèle visible dans l’admin doit rester simple, métier et compréhensible par une utilisatrice non technique.
+- L’admin doit parler en termes de :
+  - produit simple
+  - produit avec déclinaisons
+  - informations de vente
+  - déclinaisons
+  - prix
+  - prix barré
+  - stock
+  - référence
+  - publication
+  - Ne jamais exposer comme chemin principal dans l’UI des notions internes telles que :
+  - produit parent
+  - produit vendable
+  - variante technique
+  - compatibilité legacy
+  - fallback
+  - `compareAtPrice`
+  - `simpleOffer`
+  - Le code doit privilégier des noms orientés métier, des responsabilités claires et des fichiers lisibles.
+  - Toute compatibilité transitoire ou legacy doit rester isolée et ne pas structurer l’expérience admin principale.
+
 ## Style de livraison
 
 - Code complet quand nécessaire.
@@ -131,6 +155,7 @@ Quand tu proposes une modification :
 - Noms explicites.
 - Pas d’abstraction prématurée.
 - Pas de fonctionnalité hors périmètre demandé.
+- Privilégier des noms et structures compréhensibles par intention métier avant toute sophistication technique.
 
 ## Planification
 

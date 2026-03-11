@@ -57,12 +57,21 @@ type AdminProductCategoryRow = {
   slug: string;
 };
 
+type AdminProductCompatibilityRow = {
+  id: string;
+  product_type: ProductType;
+};
+
 type DeletedProductRow = {
   id: string;
 };
 
 type CountRow = {
   matched_count: number;
+};
+
+type ExistingVariantRow = {
+  id: string;
 };
 
 type SimpleProductFieldsRow = {
@@ -101,10 +110,21 @@ type UpdateAdminProductInput = CreateAdminProductInput & {
   id: string;
 };
 
+type UpdateAdminSimpleProductOfferInput = {
+  id: string;
+  sku: string;
+  price: string;
+  compareAtPrice: string | null;
+  stockQuantity: number;
+};
+
 type RepositoryErrorCode =
+  | "sku_taken"
   | "slug_taken"
   | "category_missing"
   | "product_referenced"
+  | "simple_product_offer_requires_simple_product"
+  | "simple_product_multiple_legacy_variants"
   | ProductTypeCompatibilityErrorCode;
 
 export type AdminProductSummary = {
@@ -140,6 +160,7 @@ export type AdminProductDetail = {
   isFeatured: boolean;
   categories: AdminProductCategoryAssignment[];
   categoryIds: string[];
+  simpleOfferFields: SimpleProductOfferFields;
   simpleOffer: SimpleProductOffer | null;
   createdAt: string;
   updatedAt: string;
@@ -215,6 +236,7 @@ function mapAdminProductDetail(
     isFeatured: row.is_featured,
     categories,
     categoryIds: categories.map((category) => category.id),
+    simpleOfferFields: getNativeSimpleOfferFields(row),
     simpleOffer,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
@@ -240,6 +262,17 @@ function mapRepositoryError(error: unknown): never {
     throw new AdminProductRepositoryError(
       "slug_taken",
       "Product slug already exists."
+    );
+  }
+
+  if (
+    isPostgreSqlErrorLike(error) &&
+    error.code === "23505" &&
+    error.constraint === "product_variants_sku_key"
+  ) {
+    throw new AdminProductRepositoryError(
+      "sku_taken",
+      "Variant SKU already exists."
     );
   }
 
@@ -382,6 +415,44 @@ async function countVariantsByProductId(
   return result.rows[0]?.matched_count ?? 0;
 }
 
+async function readProductCompatibilityById(
+  client: PoolClient,
+  productId: string
+): Promise<AdminProductCompatibilityRow | null> {
+  const result = await client.query<AdminProductCompatibilityRow>(
+    `
+      select
+        p.id::text as id,
+        p.product_type
+      from products p
+      where p.id = $1::bigint
+      limit 1
+    `,
+    [productId]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+async function readSingleLegacyVariantId(
+  client: PoolClient,
+  productId: string
+): Promise<string | null> {
+  const result = await client.query<ExistingVariantRow>(
+    `
+      select
+        pv.id::text as id
+      from product_variants pv
+      where pv.product_id = $1::bigint
+      order by pv.is_default desc, pv.id asc
+      limit 1
+    `,
+    [productId]
+  );
+
+  return result.rows[0]?.id ?? null;
+}
+
 async function replaceProductCategories(
   client: PoolClient,
   productId: string,
@@ -482,6 +553,44 @@ async function syncSimpleProductFieldsFromOnlyVariant(
       variantFields.stock_quantity
     ]
   );
+}
+
+async function syncSingleLegacyVariantCommercialFields(
+  client: PoolClient,
+  productId: string,
+  input: UpdateAdminSimpleProductOfferInput
+): Promise<void> {
+  const variantId = await readSingleLegacyVariantId(client, productId);
+
+  if (variantId === null) {
+    throw new Error("Missing legacy variant to synchronize.");
+  }
+
+  const result = await client.query<ExistingVariantRow>(
+    `
+      update product_variants
+      set
+        sku = $2,
+        price = $3::numeric,
+        compare_at_price = $4::numeric,
+        stock_quantity = $5
+      where id = $6::bigint
+        and product_id = $1::bigint
+      returning id::text as id
+    `,
+    [
+      productId,
+      input.sku,
+      input.price,
+      input.compareAtPrice,
+      input.stockQuantity,
+      variantId
+    ]
+  );
+
+  if (!result.rows[0]) {
+    throw new Error("Failed to synchronize legacy variant.");
+  }
 }
 
 export async function listAdminProducts(): Promise<AdminProductSummary[]> {
@@ -762,6 +871,109 @@ export async function updateAdminProduct(
     }
 
     await replaceProductCategories(client, row.id, categoryIds);
+    const [categories, simpleOffer] = await Promise.all([
+      listAssignedCategoriesByProductId(client, row.id),
+      resolveAdminSimpleOffer(client, row)
+    ]);
+
+    await client.query("commit");
+
+    return mapAdminProductDetail(row, categories, simpleOffer);
+  } catch (error) {
+    await client.query("rollback");
+
+    if (error instanceof AdminProductRepositoryError) {
+      throw error;
+    }
+
+    mapRepositoryError(error);
+  } finally {
+    client.release();
+  }
+}
+
+export async function updateAdminSimpleProductOffer(
+  input: UpdateAdminSimpleProductOfferInput
+): Promise<AdminProductDetail | null> {
+  if (!isValidProductId(input.id)) {
+    return null;
+  }
+
+  const client = await db.connect();
+
+  try {
+    await client.query("begin");
+
+    const product = await readProductCompatibilityById(client, input.id);
+
+    if (product === null) {
+      await client.query("rollback");
+      return null;
+    }
+
+    if (product.product_type !== "simple") {
+      throw new AdminProductRepositoryError(
+        "simple_product_offer_requires_simple_product",
+        "Native simple offer editing is reserved for simple products."
+      );
+    }
+
+    const variantCount = await countVariantsByProductId(client, input.id);
+
+    if (variantCount > 1) {
+      throw new AdminProductRepositoryError(
+        "simple_product_multiple_legacy_variants",
+        "A simple product with multiple legacy variants is incoherent."
+      );
+    }
+
+    const result = await client.query<AdminProductRow>(
+      `
+        update products
+        set
+          simple_sku = $2,
+          simple_price = $3::numeric,
+          simple_compare_at_price = $4::numeric,
+          simple_stock_quantity = $5
+        where id = $1::bigint
+        returning
+          id::text as id,
+          name,
+          slug,
+          short_description,
+          description,
+          seo_title,
+          seo_description,
+          status,
+          product_type,
+          simple_sku,
+          simple_price::text as simple_price,
+          simple_compare_at_price::text as simple_compare_at_price,
+          simple_stock_quantity,
+          is_featured,
+          created_at,
+          updated_at
+      `,
+      [
+        input.id,
+        input.sku,
+        input.price,
+        input.compareAtPrice,
+        input.stockQuantity
+      ]
+    );
+
+    const row = result.rows[0];
+
+    if (!row) {
+      await client.query("rollback");
+      return null;
+    }
+
+    if (variantCount === 1) {
+      await syncSingleLegacyVariantCommercialFields(client, input.id, input);
+    }
+
     const [categories, simpleOffer] = await Promise.all([
       listAssignedCategoriesByProductId(client, row.id),
       resolveAdminSimpleOffer(client, row)
