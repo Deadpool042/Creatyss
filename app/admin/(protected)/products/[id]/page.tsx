@@ -129,6 +129,8 @@ function getVariantErrorMessage(error: string | undefined): string | null {
       return "Ce SKU est deja utilise par une autre variante.";
     case "simple_product_single_variant_only":
       return "Un produit simple ne peut avoir qu'une seule declinaison vendable.";
+    case "simple_product_requires_sellable_variant":
+      return "Un produit simple doit conserver son offre vendable unique.";
     case "save_failed":
       return "La variante n'a pas pu etre enregistree.";
     case "delete_failed":

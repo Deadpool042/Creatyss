@@ -59,6 +59,12 @@ test("keeps simple products focused on a single sellable offer and refuses unsaf
     page.getByRole("button", { name: "Enregistrer l'offre vendable" })
   ).toBeVisible();
 
+  await page.getByRole("button", { name: "Supprimer l'offre vendable" }).click();
+
+  await expect(
+    page.getByText("Un produit simple doit conserver son offre vendable unique.")
+  ).toBeVisible();
+
   await page.goto("/admin/products");
 
   const productCard = page.getByRole("article").filter({

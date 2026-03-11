@@ -225,6 +225,28 @@ values
     'published'
   );
 
+update products p
+set
+  simple_sku = pv.sku,
+  simple_price = pv.price,
+  simple_compare_at_price = pv.compare_at_price,
+  simple_stock_quantity = pv.stock_quantity
+from product_variants pv
+where p.product_type = 'simple'
+  and pv.id = (
+    select
+      pv2.id
+    from
+      product_variants pv2
+    where
+      pv2.product_id = p.id
+    order by
+      pv2.is_default desc,
+      pv2.id asc
+    limit
+      1
+  );
+
 insert into
   product_images (
     product_id,

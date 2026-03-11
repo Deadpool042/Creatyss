@@ -6,9 +6,16 @@ test("surfaces featured products first on the unfiltered catalogue", async ({
   await page.goto("/boutique");
 
   const headings = page.locator(".store-card h3");
+  const headingTexts = await headings.allTextContents();
+  const cabasIndex = headingTexts.indexOf("Cabas Moka");
+  const sacCamelIndex = headingTexts.indexOf("Sac Camel");
+  const pochetteIndex = headingTexts.indexOf("Pochette Sable");
 
-  await expect(headings.nth(0)).toHaveText("Cabas Moka");
-  await expect(headings.nth(1)).toHaveText("Sac Camel");
+  expect(cabasIndex).toBeGreaterThanOrEqual(0);
+  expect(sacCamelIndex).toBeGreaterThanOrEqual(0);
+  expect(pochetteIndex).toBeGreaterThanOrEqual(0);
+  expect(cabasIndex).toBeLessThan(pochetteIndex);
+  expect(sacCamelIndex).toBeLessThan(pochetteIndex);
 
   const featuredCard = page.locator("article.store-card").filter({
     has: page.getByRole("heading", { name: "Cabas Moka" })

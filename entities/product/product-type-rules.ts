@@ -2,7 +2,8 @@ import { type ProductType } from "./product-input";
 
 export type ProductTypeCompatibilityErrorCode =
   | "simple_product_single_variant_only"
-  | "simple_product_requires_single_variant";
+  | "simple_product_requires_single_variant"
+  | "simple_product_requires_sellable_variant";
 
 export function isProductType(value: string): value is ProductType {
   return value === "simple" || value === "variable";
@@ -18,6 +19,17 @@ export function canCreateVariantForProductType(
 ): boolean {
   if (productType === "simple") {
     return existingVariantCount === 0;
+  }
+
+  return true;
+}
+
+export function canDeleteVariantForProductType(
+  productType: ProductType,
+  existingVariantCount: number
+): boolean {
+  if (productType === "simple") {
+    return existingVariantCount > 1;
   }
 
   return true;

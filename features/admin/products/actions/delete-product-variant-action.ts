@@ -1,7 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { deleteAdminProductVariant } from "@/db/repositories/admin-product-variant.repository";
+import {
+  AdminProductVariantRepositoryError,
+  deleteAdminProductVariant
+} from "@/db/repositories/admin-product-variant.repository";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 
 export async function deleteProductVariantAction(
@@ -25,6 +28,15 @@ export async function deleteProductVariantAction(
       redirect(`/admin/products/${productId}?variant_error=missing_variant`);
     }
   } catch (error) {
+    if (
+      error instanceof AdminProductVariantRepositoryError &&
+      error.code === "simple_product_requires_sellable_variant"
+    ) {
+      redirect(
+        `/admin/products/${productId}?variant_error=simple_product_requires_sellable_variant`
+      );
+    }
+
     console.error(error);
     redirect(`/admin/products/${productId}?variant_error=delete_failed`);
   }

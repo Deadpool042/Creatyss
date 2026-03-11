@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   canChangeProductTypeToSimple,
   canCreateVariantForProductType,
+  canDeleteVariantForProductType,
   isProductType
 } from "@/entities/product/product-type-rules";
 
@@ -33,5 +34,20 @@ describe("canCreateVariantForProductType", () => {
   it("keeps the current behavior for variable products", () => {
     expect(canCreateVariantForProductType("variable", 0)).toBe(true);
     expect(canCreateVariantForProductType("variable", 3)).toBe(true);
+  });
+});
+
+describe("canDeleteVariantForProductType", () => {
+  it("refuses deleting the only sellable variant of a simple product", () => {
+    expect(canDeleteVariantForProductType("simple", 1)).toBe(false);
+  });
+
+  it("allows deleting a variant when a simple product still has more than one", () => {
+    expect(canDeleteVariantForProductType("simple", 2)).toBe(true);
+  });
+
+  it("keeps the current behavior for variable products", () => {
+    expect(canDeleteVariantForProductType("variable", 1)).toBe(true);
+    expect(canDeleteVariantForProductType("variable", 3)).toBe(true);
   });
 });

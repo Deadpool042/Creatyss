@@ -53,6 +53,13 @@ type CountRow = {
   matched_count: number;
 };
 
+type SimpleProductFieldsRow = {
+  sku: string;
+  price: string;
+  compare_at_price: string | null;
+  stock_quantity: number;
+};
+
 type PostgreSqlErrorLike = Error & {
   code: string;
   constraint?: string;
@@ -328,6 +335,77 @@ async function replaceProductCategories(
   );
 }
 
+async function clearSimpleProductFields(
+  client: PoolClient,
+  productId: string
+): Promise<void> {
+  await client.query(
+    `
+      update products
+      set
+        simple_sku = null,
+        simple_price = null,
+        simple_compare_at_price = null,
+        simple_stock_quantity = null
+      where id = $1::bigint
+    `,
+    [productId]
+  );
+}
+
+async function readPrimaryVariantFields(
+  client: PoolClient,
+  productId: string
+): Promise<SimpleProductFieldsRow | null> {
+  const result = await client.query<SimpleProductFieldsRow>(
+    `
+      select
+        pv.sku,
+        pv.price::text as price,
+        pv.compare_at_price::text as compare_at_price,
+        pv.stock_quantity
+      from product_variants pv
+      where pv.product_id = $1::bigint
+      order by pv.is_default desc, pv.id asc
+      limit 1
+    `,
+    [productId]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+async function syncSimpleProductFieldsFromOnlyVariant(
+  client: PoolClient,
+  productId: string
+): Promise<void> {
+  const variantFields = await readPrimaryVariantFields(client, productId);
+
+  if (variantFields === null) {
+    await clearSimpleProductFields(client, productId);
+    return;
+  }
+
+  await client.query(
+    `
+      update products
+      set
+        simple_sku = $2,
+        simple_price = $3::numeric,
+        simple_compare_at_price = $4::numeric,
+        simple_stock_quantity = $5
+      where id = $1::bigint
+    `,
+    [
+      productId,
+      variantFields.sku,
+      variantFields.price,
+      variantFields.compare_at_price,
+      variantFields.stock_quantity
+    ]
+  );
+}
+
 export async function listAdminProducts(): Promise<AdminProductSummary[]> {
   const rows = await queryRows<AdminProductSummaryRow>(
     `
@@ -460,6 +538,9 @@ export async function createAdminProduct(
     }
 
     await replaceProductCategories(client, row.id, categoryIds);
+
+    await clearSimpleProductFields(client, row.id);
+
     const categories = await listAssignedCategoriesByProductId(client, row.id);
 
     await client.query("commit");

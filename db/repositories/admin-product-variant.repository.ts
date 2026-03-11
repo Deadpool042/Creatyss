@@ -1,6 +1,7 @@
 import { type PoolClient } from "pg";
 import { db, queryFirst, queryRows } from "@/db/client";
 import {
+  canDeleteVariantForProductType,
   canCreateVariantForProductType,
   type ProductTypeCompatibilityErrorCode
 } from "@/entities/product/product-type-rules";
@@ -41,6 +42,13 @@ type CountRow = {
 
 type DeletedVariantRow = {
   id: string;
+};
+
+type SimpleProductFieldsRow = {
+  sku: string;
+  price: string;
+  compare_at_price: string | null;
+  stock_quantity: number;
 };
 
 type PostgreSqlErrorLike = Error & {
@@ -220,6 +228,84 @@ async function clearDefaultVariant(
   );
 }
 
+async function clearSimpleProductFields(
+  client: PoolClient,
+  productId: string
+): Promise<void> {
+  await client.query(
+    `
+      update products
+      set
+        simple_sku = null,
+        simple_price = null,
+        simple_compare_at_price = null,
+        simple_stock_quantity = null
+      where id = $1::bigint
+    `,
+    [productId]
+  );
+}
+
+async function readVariantFieldsForSimpleProduct(
+  client: PoolClient,
+  productId: string,
+  variantId?: string
+): Promise<SimpleProductFieldsRow | null> {
+  const result = await client.query<SimpleProductFieldsRow>(
+    `
+      select
+        pv.sku,
+        pv.price::text as price,
+        pv.compare_at_price::text as compare_at_price,
+        pv.stock_quantity
+      from product_variants pv
+      where pv.product_id = $1::bigint
+        and ($2::bigint is null or pv.id = $2::bigint)
+      order by pv.is_default desc, pv.id asc
+      limit 1
+    `,
+    [productId, variantId ?? null]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+async function syncSimpleProductFields(
+  client: PoolClient,
+  productId: string,
+  variantId?: string
+): Promise<void> {
+  const variantFields = await readVariantFieldsForSimpleProduct(
+    client,
+    productId,
+    variantId
+  );
+
+  if (variantFields === null) {
+    await clearSimpleProductFields(client, productId);
+    return;
+  }
+
+  await client.query(
+    `
+      update products
+      set
+        simple_sku = $2,
+        simple_price = $3::numeric,
+        simple_compare_at_price = $4::numeric,
+        simple_stock_quantity = $5
+      where id = $1::bigint
+    `,
+    [
+      productId,
+      variantFields.sku,
+      variantFields.price,
+      variantFields.compare_at_price,
+      variantFields.stock_quantity
+    ]
+  );
+}
+
 export async function listAdminProductVariants(
   productId: string
 ): Promise<AdminProductVariant[]> {
@@ -343,6 +429,10 @@ export async function createAdminProductVariant(
       throw new Error("Failed to create product variant.");
     }
 
+    if (product.product_type === "simple") {
+      await syncSimpleProductFields(client, input.productId, row.id);
+    }
+
     await client.query("commit");
 
     return mapAdminProductVariant(row);
@@ -370,6 +460,13 @@ export async function updateAdminProductVariant(
 
   try {
     await client.query("begin");
+
+    const product = await productExists(client, input.productId);
+
+    if (product === null) {
+      await client.query("rollback");
+      return null;
+    }
 
     if (input.isDefault) {
       await clearDefaultVariant(client, input.productId, input.id);
@@ -427,6 +524,10 @@ export async function updateAdminProductVariant(
       return null;
     }
 
+    if (product.product_type === "simple") {
+      await syncSimpleProductFields(client, input.productId, input.id);
+    }
+
     await client.query("commit");
 
     return mapAdminProductVariant(row);
@@ -451,15 +552,65 @@ export async function deleteAdminProductVariant(
     return false;
   }
 
-  const row = await queryFirst<DeletedVariantRow>(
-    `
-      delete from product_variants
-      where id = $1::bigint
-        and product_id = $2::bigint
-      returning id::text as id
-    `,
-    [variantId, productId]
-  );
+  const client = await db.connect();
 
-  return row !== null;
+  try {
+    await client.query("begin");
+
+    const product = await productExists(client, productId);
+
+    if (product === null) {
+      await client.query("rollback");
+      return false;
+    }
+
+    const existingVariantCount = await countVariantsForProduct(client, productId);
+
+    if (
+      !canDeleteVariantForProductType(
+        product.product_type,
+        existingVariantCount
+      )
+    ) {
+      throw new AdminProductVariantRepositoryError(
+        "simple_product_requires_sellable_variant",
+        "A simple product must keep its single sellable variant."
+      );
+    }
+
+    const result = await client.query<DeletedVariantRow>(
+      `
+        delete from product_variants
+        where id = $1::bigint
+          and product_id = $2::bigint
+        returning id::text as id
+      `,
+      [variantId, productId]
+    );
+
+    const row = result.rows[0] ?? null;
+
+    if (row === null) {
+      await client.query("rollback");
+      return false;
+    }
+
+    if (product.product_type === "simple") {
+      await syncSimpleProductFields(client, productId);
+    }
+
+    await client.query("commit");
+
+    return true;
+  } catch (error) {
+    await client.query("rollback");
+
+    if (error instanceof AdminProductVariantRepositoryError) {
+      throw error;
+    }
+
+    mapRepositoryError(error);
+  } finally {
+    client.release();
+  }
 }
