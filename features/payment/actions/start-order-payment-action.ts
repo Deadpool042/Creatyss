@@ -3,10 +3,12 @@
 import { redirect } from "next/navigation";
 import {
   findPaymentStartContextByOrderReference,
+  markPaymentFailedByCheckoutSessionId,
   saveStripeCheckoutSessionForOrder
 } from "@/db/repositories/payment.repository";
 import { env } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
+import { resolveStripeCheckoutSessionState } from "@/features/payment/stripe-checkout-session-state";
 
 function moneyStringToCents(value: string): number {
   const match = value.match(/^(\d+)(?:\.(\d{1,2}))?$/);
@@ -44,9 +46,44 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
     redirect(`/checkout/confirmation/${reference}?payment=unavailable`);
   }
 
-  let checkoutUrl: string | null = null;
+  let redirectTarget: string | null = null;
 
   try {
+    if (
+      paymentContext.paymentStatus === "pending" &&
+      paymentContext.stripeCheckoutSessionId !== null
+    ) {
+      const existingSession = await stripe.checkout.sessions.retrieve(
+        paymentContext.stripeCheckoutSessionId
+      );
+      const existingSessionState = resolveStripeCheckoutSessionState({
+        status: existingSession.status,
+        url: existingSession.url ?? null
+      });
+
+      switch (existingSessionState.kind) {
+        case "reuse":
+          redirectTarget = existingSessionState.url;
+          break;
+        case "await_confirmation":
+          redirectTarget = `/checkout/confirmation/${reference}?payment=return`;
+          break;
+        case "replace":
+          await markPaymentFailedByCheckoutSessionId({
+            stripeCheckoutSessionId: paymentContext.stripeCheckoutSessionId,
+            stripePaymentIntentId: paymentContext.stripePaymentIntentId
+          });
+          break;
+        case "unavailable":
+          redirectTarget = `/checkout/confirmation/${reference}?payment=failed`;
+          break;
+      }
+    }
+
+    if (redirectTarget !== null) {
+      redirect(redirectTarget);
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
@@ -83,11 +120,15 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
           ? session.payment_intent
           : null
     });
-    checkoutUrl = session.url;
+    redirectTarget = session.url;
   } catch (error) {
     console.error(error);
     redirect(`/checkout/confirmation/${reference}?payment=failed`);
   }
 
-  redirect(checkoutUrl);
+  if (redirectTarget === null) {
+    redirect(`/checkout/confirmation/${reference}?payment=failed`);
+  }
+
+  redirect(redirectTarget);
 }

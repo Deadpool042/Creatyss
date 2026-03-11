@@ -1,15 +1,15 @@
 import { expect, test } from "@playwright/test";
 
 test("creates an order from checkout and clears the cart", async ({ page }) => {
-  await page.goto("/boutique/sac-camel");
+  await page.goto("/boutique/pochette-sable");
 
-  const camelVariant = page
+  const sableVariant = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Camel" }) });
+    .filter({ has: page.getByRole("heading", { name: "Sable" }) });
 
-  await camelVariant.getByLabel("Quantite").fill("1");
-  await camelVariant.getByRole("button", { name: "Ajouter au panier" }).click();
-  await expect(page).toHaveURL(/\/boutique\/sac-camel\?cart_status=added$/);
+  await sableVariant.getByLabel("Quantite").fill("1");
+  await sableVariant.getByRole("button", { name: "Ajouter au panier" }).click();
+  await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_status=added$/);
 
   await page.goto("/checkout");
 
@@ -31,7 +31,7 @@ test("creates an order from checkout and clears the cart", async ({ page }) => {
   await expect(page.getByText("En attente", { exact: true })).toBeVisible();
   await expect(page.getByText("Paiement en attente")).toBeVisible();
   await expect(page.getByText("jeanne@example.com")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Sac Camel" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pochette Sable" })).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Payer la commande" })
   ).toBeVisible();
