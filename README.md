@@ -21,18 +21,23 @@ Le projet doit rester :
 - lisible
 - sans dépendance inutile
 
-## Périmètre V1
+## Portée fonctionnelle actuelle
+
+Le projet couvre actuellement les fondations principales de la boutique Creatyss :
 
 - catalogue produits
+- produits simples et produits avec déclinaisons
 - variantes par couleur
 - changement d’image selon variante
 - catégories
 - blog
 - homepage éditable
-- admin simple
+- admin interne
 - uploads locaux
 - SEO de base
 - authentification admin simple et sécurisée
+
+L’évolution du projet est documentée par versions et par lots dans `docs/`, en particulier dans `docs/v6/`.
 
 ## Démarrage local
 
@@ -50,13 +55,13 @@ Variables disponibles :
 
 `.env.example` est uniquement un fichier de placeholders versionné. Les vraies valeurs locales doivent vivre dans `.env` ou `.env.local`, qui restent non versionnés.
 
-Le `Makefile` utilise `ENV_FILE=.env.example` par defaut. Pour lancer le projet avec de vrais secrets locaux :
+Le `Makefile` utilise `ENV_FILE=.env.example` par défaut. Pour lancer le projet avec de vrais secrets locaux :
 
 ```bash
 ENV_FILE=.env.local make up
 ```
 
-Le meme principe s'applique a `make build`, `make db-reset-dev`, `make test-e2e` et aux autres cibles `make`.
+Le même principe s’applique à `make build`, `make db-reset-dev`, `make test-e2e` et aux autres cibles `make`.
 
 Variables sensibles ou locales notables :
 
@@ -121,18 +126,18 @@ make test-e2e-headed
 make test-select
 ```
 
-- `make test` et `make test-unit` s'executent dans le conteneur `app`
-- `make test-e2e` s'execute sur l'hote
+- `make test` et `make test-unit` s’exécutent dans le conteneur `app`
+- `make test-e2e` s’exécute sur l’hôte
 - `make test-e2e-ui`, `make test-e2e-headed` et `make test-select` sont aussi disponibles pour Playwright
 
-Prerequis pour `make test-e2e` :
+Prérequis pour `make test-e2e` :
 
-1. l'application et PostgreSQL doivent deja etre demarres
-2. le schema et le seed doivent deja etre appliques
-3. les dependances Node locales doivent deja etre installees sur l'hote (`pnpm install`)
-4. Chromium Playwright doit etre installe localement une fois
-5. si les flux Stripe doivent etre testes reellement, de vraies cles de test doivent etre definies dans `.env` ou `.env.local`
-6. si les emails transactionnels doivent etre testes reellement, `BREVO_API_KEY` et `EMAIL_FROM` doivent aussi etre definis dans `.env` ou `.env.local`
+1. l’application et PostgreSQL doivent déjà être démarrés
+2. le schéma et le seed doivent déjà être appliqués
+3. les dépendances Node locales doivent déjà être installées sur l’hôte (`pnpm install`)
+4. Chromium Playwright doit être installé localement une fois
+5. si les flux Stripe doivent être testés réellement, de vraies clés de test doivent être définies dans `.env` ou `.env.local`
+6. si les emails transactionnels doivent être testés réellement, `BREVO_API_KEY` et `EMAIL_FROM` doivent aussi être définis dans `.env` ou `.env.local`
 
 Flux local minimal :
 
@@ -145,9 +150,9 @@ pnpm exec playwright install chromium
 make test-e2e
 ```
 
-## Schema base de donnees
+## Base de données
 
-Le schema PostgreSQL V1 est defini par les migrations SQL dans `db/migrations/`.
+Le schéma PostgreSQL est défini par les migrations SQL dans `db/migrations/`.
 
 Application locale :
 
@@ -156,7 +161,7 @@ make up
 make db-schema
 ```
 
-`make db-schema` applique tous les fichiers `db/migrations/*.sql` dans l'ordre lexical et cible uniquement une base vide. Pour reappliquer le schema proprement, repartez d'une base neuve :
+`make db-schema` applique tous les fichiers `db/migrations/*.sql` dans l’ordre lexical et cible uniquement une base vide. Pour réappliquer le schéma proprement, repartez d’une base neuve :
 
 ```bash
 docker compose --env-file .env.example down -v
@@ -164,7 +169,7 @@ make up
 make db-schema
 ```
 
-Verifications locales exactes :
+Vérifications locales exactes :
 
 ```bash
 docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' order by table_name;"
@@ -174,11 +179,13 @@ docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -
 pnpm run typecheck
 ```
 
+L’évolution fonctionnelle et structurelle en cours est documentée par version dans `docs/`, notamment `docs/v6/`.
+
 ## Seed dev
 
-Un seed de developpement minimal permet de reconstituer rapidement un jeu de donnees local apres un reset de volume Docker.
+Un seed de développement minimal permet de reconstituer rapidement un jeu de données local après un reset de volume Docker.
 
-Il est destine uniquement au developpement local sur base neuve.
+Il est destiné uniquement au développement local sur base neuve.
 
 Application locale :
 
@@ -192,20 +199,20 @@ Reset complet + seed :
 make db-reset-dev
 ```
 
-Le seed de developpement couvre :
+Le seed de développement couvre :
 
 - comptes `admin_users`
-- categories
+- catégories
 - produits et variantes
 - images produit en base
 - blog
 - homepage
 
-Il ne cree pas de fichiers ou de lignes `media_assets`. Les flux admin qui proposent de choisir un media existant necessitent donc d'importer au moins une image via `/admin/media` avant verification.
+Il ne crée pas de fichiers ou de lignes `media_assets`. Les flux admin qui proposent de choisir un media existant nécessitent donc d’importer au moins une image via `/admin/media` avant vérification.
 
-## Verticales V1 livrees
+## Fonctionnalités disponibles
 
-Verticales admin disponibles :
+Fonctionnalités admin disponibles :
 
 - `/admin/media`
 - `/admin/categories`
@@ -223,26 +230,26 @@ Pages publiques disponibles :
 
 ## Auth admin
 
-L'auth admin repose sur la table `admin_users`, un cookie de session signe `HttpOnly`, et une verification serveur sur chaque acces a `/admin`.
+L’auth admin repose sur la table `admin_users`, un cookie de session signé `HttpOnly`, et une vérification serveur sur chaque accès à `/admin`.
 
-Variables d'environnement requises :
+Variables d’environnement requises :
 
 - `ADMIN_SESSION_SECRET`
 
-Comptes admin de developpement fournis par le seed local :
+Comptes admin de développement fournis par le seed local :
 
 - `admin@creatyss.local` / `AdminDev123!` / actif
 - `inactive-admin@creatyss.local` / `AdminDev123!` / inactif
 
-Le seed de developpement cree automatiquement ces comptes sur base neuve via `make db-seed-dev` ou `make db-reset-dev`.
+Le seed de développement crée automatiquement ces comptes sur base neuve via `make db-seed-dev` ou `make db-reset-dev`.
 
-Pour creer un admin supplementaire manuellement :
+Pour créer un admin supplémentaire manuellement :
 
 ```bash
 printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.example exec -T app node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
 ```
 
-Verification locale exacte :
+Vérification locale exacte :
 
 ```bash
 docker compose --env-file .env.example down -v
@@ -255,26 +262,26 @@ docker compose --env-file .env.example exec app pnpm run build
 curl -I http://localhost:3000/admin
 ```
 
-Verification manuelle du login admin :
+Vérification manuelle du login admin :
 
 1. ouvrez `http://localhost:3000/admin/login`
 2. connectez-vous avec `admin@creatyss.local` / `AdminDev123!`
-3. verifiez la redirection vers `/admin`
-4. verifiez qu'un acces direct a `http://localhost:3000/admin` fonctionne apres connexion
-5. cliquez sur la deconnexion puis verifiez que `/admin` redirige de nouveau vers `/admin/login`
-6. verifiez aussi qu'un login avec `inactive-admin@creatyss.local` / `AdminDev123!` est refuse
+3. vérifiez la redirection vers `/admin`
+4. vérifiez qu’un accès direct à `http://localhost:3000/admin` fonctionne après connexion
+5. cliquez sur la déconnexion puis vérifiez que `/admin` redirige de nouveau vers `/admin/login`
+6. vérifiez aussi qu’un login avec `inactive-admin@creatyss.local` / `AdminDev123!` est refusé
 
 ## Media admin
 
-La bibliotheque media admin repose sur la table `media_assets`, un stockage local sous `public/uploads`, et une page protegee `/admin/media`.
+La bibliothèque media admin repose sur la table `media_assets`, un stockage local sous `public/uploads`, et une page protégée `/admin/media`.
 
-Cette fondation V1 accepte uniquement :
+Le système media admin accepte actuellement uniquement :
 
 - `image/jpeg`
 - `image/png`
 - `image/webp`
 
-Verification locale exacte :
+Vérification locale exacte :
 
 ```bash
 docker compose --env-file .env.example down -v
@@ -291,14 +298,14 @@ Puis :
 1. connectez-vous sur `http://localhost:3000/admin/login`
 2. ouvrez `http://localhost:3000/admin/media`
 3. importez une image JPEG, PNG ou WebP valide
-4. verifiez la ligne creee en base :
+4. vérifiez la ligne créée en base :
 
 ```bash
 docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select id, file_path, original_name, mime_type, byte_size, image_width, image_height from media_assets order by created_at desc;"
 find public/uploads/media -type f | sort
 ```
 
-Pour verifier le fallback listing, supprimez un fichier local deja importe puis rechargez `/admin/media` :
+Pour vérifier le fallback listing, supprimez un fichier local déjà importé puis rechargez `/admin/media` :
 
 ```bash
 find public/uploads/media -type f | head -n 1
@@ -307,11 +314,21 @@ rm <chemin_retourne>
 
 ## Documentation
 
+Documentation générale :
+
+- `AGENTS.md`
 - `docs/architecture-v1.md`
 - `docs/roadmap-v1.md`
 - `docs/testing/strategy.md`
 - `docs/testing/roadmap.md`
 - `docs/v1-qa-checklist.md`
+
+Documentation versionnée en cours :
+
+- `docs/v6/scope.md`
+- `docs/v6/data-model.md`
+- `docs/v6/roadmap.md`
+- `docs/v6/admin-language-and-ux.md`
 
 ## Contraintes importantes
 
@@ -323,17 +340,19 @@ Le projet n’utilise pas :
 - Supabase
 - Vercel
 
-## Etat actuel
+## État actuel du projet
 
-Le depot contient une V1 locale exploitable avec :
+Le dépôt contient une base locale exploitable pour Creatyss avec :
 
-- auth admin serveur
-- bibliotheque media locale
-- CRUD categories admin
-- CRUD produits admin avec variantes, categories et images
-- edition admin de la homepage
+- authentification admin serveur
+- bibliothèque media locale
+- CRUD catégories admin
+- CRUD produits admin avec catégories, images et déclinaisons
+- édition admin de la homepage
 - CRUD blog admin
 - front public catalogue, blog et homepage
 - SEO de base sur produits et articles
 
-La checklist manuelle de recette V1 est centralisee dans `docs/v1-qa-checklist.md`.
+Le projet évolue désormais par versions et lots documentés dans `docs/`, avec un cadrage actif dans `docs/v6/`.
+
+La checklist manuelle de recette historique reste centralisée dans `docs/v1-qa-checklist.md`.
