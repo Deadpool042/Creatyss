@@ -39,6 +39,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <Link href="/">Accueil</Link>
                 <Link href="/boutique">Boutique</Link>
                 <Link href="/blog">Blog</Link>
+                <Link href="/panier">Panier</Link>
               </nav>
             </div>
           </header>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublishedProductBySlug } from "@/db/catalog";
+import { addToCartAction } from "@/features/cart/actions/add-to-cart-action";
 import { getUploadsPublicPath } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +10,10 @@ export const dynamic = "force-dynamic";
 type ProductPageProps = Readonly<{
   params: Promise<{
     slug: string;
+  }>;
+  searchParams: Promise<{
+    cart_error?: string | string[];
+    cart_status?: string | string[];
   }>;
 }>;
 
@@ -17,6 +23,33 @@ type ProductMetadataSource = NonNullable<
 
 function getAvailabilityLabel(isAvailable: boolean): string {
   return isAvailable ? "Disponible" : "Temporairement indisponible";
+}
+
+function getCartStatusMessage(status: string | undefined): string | null {
+  switch (status) {
+    case "added":
+      return "Article ajoute au panier.";
+    default:
+      return null;
+  }
+}
+
+function getCartErrorMessage(error: string | undefined): string | null {
+  switch (error) {
+    case "missing_variant":
+      return "La variante demandee est introuvable.";
+    case "missing_quantity":
+    case "invalid_quantity":
+      return "Renseignez une quantite entiere superieure ou egale a 1.";
+    case "variant_unavailable":
+      return "Cette variante n'est pas disponible actuellement.";
+    case "insufficient_stock":
+      return "Le stock disponible est insuffisant pour cette quantite.";
+    case "save_failed":
+      return "Le panier n'a pas pu etre mis a jour.";
+    default:
+      return null;
+  }
 }
 
 function getProductMetadataDescription(product: ProductMetadataSource): string {
@@ -47,8 +80,20 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({
+  params,
+  searchParams
+}: ProductPageProps) {
   const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
+  const cartStatusParam = Array.isArray(resolvedSearchParams.cart_status)
+    ? resolvedSearchParams.cart_status[0]
+    : resolvedSearchParams.cart_status;
+  const cartErrorParam = Array.isArray(resolvedSearchParams.cart_error)
+    ? resolvedSearchParams.cart_error[0]
+    : resolvedSearchParams.cart_error;
+  const cartStatusMessage = getCartStatusMessage(cartStatusParam);
+  const cartErrorMessage = getCartErrorMessage(cartErrorParam);
   const product = await getPublishedProductBySlug(slug);
 
   if (product === null) {
@@ -69,6 +114,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
             ) : null}
           </div>
         </div>
+
+        {cartStatusMessage ? (
+          <div className="admin-success cart-feedback">
+            <p>{cartStatusMessage}</p>
+            <Link className="link" href="/panier">
+              Voir le panier
+            </Link>
+          </div>
+        ) : null}
+        {cartErrorMessage ? (
+          <p className="admin-alert" role="alert">
+            {cartErrorMessage}
+          </p>
+        ) : null}
 
         <div className="product-layout">
           <div className="product-gallery">
@@ -158,6 +217,36 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     {getAvailabilityLabel(variant.isAvailable)}
                   </p>
                 </div>
+
+                {variant.isAvailable ? (
+                  <form action={addToCartAction} className="cart-add-form">
+                    <input name="productSlug" type="hidden" value={product.slug} />
+                    <input name="variantId" type="hidden" value={variant.id} />
+
+                    <label className="admin-field cart-quantity-field">
+                      <span className="meta-label">Quantite</span>
+                      <input
+                        className="admin-input"
+                        defaultValue="1"
+                        min="1"
+                        name="quantity"
+                        required
+                        step="1"
+                        type="number"
+                      />
+                    </label>
+
+                    <div className="admin-inline-actions">
+                      <button className="button" type="submit">
+                        Ajouter au panier
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <p className="card-meta">
+                    Cette variante est temporairement indisponible.
+                  </p>
+                )}
 
                 {variant.images.length > 0 ? (
                   <div className="variant-images">

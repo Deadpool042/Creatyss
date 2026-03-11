@@ -79,6 +79,9 @@ Commandes disponibles :
 pnpm run test
 pnpm run test:unit
 pnpm run test:e2e
+pnpm run test:e2e-ui
+pnpm run test-e2e-headed
+pnpm run test-select
 ```
 
 - `pnpm run test` : lance la base actuelle de tests unitaires

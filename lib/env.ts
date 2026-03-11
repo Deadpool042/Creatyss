@@ -22,6 +22,7 @@ function readRequiredEnv(name: string) {
 export const env = {
   appUrl: readEnv("APP_URL", "http://localhost:3000"),
   adminSessionSecret: readRequiredEnv("ADMIN_SESSION_SECRET"),
+  cartSessionSecret: readRequiredEnv("CART_SESSION_SECRET"),
   databaseUrl: readEnv(
     "DATABASE_URL",
     "postgresql://creatyss:creatyss@db:5432/creatyss"
