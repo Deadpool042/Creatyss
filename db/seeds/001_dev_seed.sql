@@ -50,6 +50,36 @@ values
     'Meta Sac Camel'
   ),
   (
+    'Cabas Moka',
+    'cabas-moka',
+    'Grand cabas quotidien',
+    'Cabas structure pour le quotidien, pense pour un port confortable et une silhouette sobre.',
+    'published',
+    true,
+    'SEO Cabas Moka',
+    'Meta Cabas Moka'
+  ),
+  (
+    'Pochette Sable',
+    'pochette-sable',
+    'Pochette legere et epuree',
+    'Pochette compacte a porter main ou glissee dans un grand cabas.',
+    'published',
+    false,
+    'SEO Pochette Sable',
+    'Meta Pochette Sable'
+  ),
+  (
+    'Besace Nuit',
+    'besace-nuit',
+    'Besace souple pour la ville',
+    'Besace souple a rabat, avec une allure plus urbaine et un volume intermediaire.',
+    'published',
+    false,
+    'SEO Besace Nuit',
+    'Meta Besace Nuit'
+  ),
+  (
     'Sac Brouillon',
     'sac-brouillon',
     'Sac brouillon',
@@ -111,6 +141,82 @@ values
     2,
     false,
     'draft'
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'cabas-moka'
+    ),
+    'Moka',
+    'Moka',
+    '#6B4F3A',
+    'CABAS-MOKA-001',
+    159.00,
+    179.00,
+    8,
+    true,
+    'published'
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'cabas-moka'
+    ),
+    'Espresso',
+    'Espresso',
+    '#4A3426',
+    'CABAS-MOKA-002',
+    169.00,
+    189.00,
+    3,
+    false,
+    'published'
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'pochette-sable'
+    ),
+    'Sable',
+    'Sable',
+    '#D8C3A5',
+    'POCHETTE-SABLE-001',
+    89.00,
+    null,
+    12,
+    true,
+    'published'
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'besace-nuit'
+    ),
+    'Nuit',
+    'Nuit',
+    '#1F2A44',
+    'BESACE-NUIT-001',
+    149.00,
+    169.00,
+    0,
+    true,
+    'published'
   );
 
 insert into
@@ -137,6 +243,145 @@ values
     'Visuel principal Creatyss',
     0,
     true
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'cabas-moka'
+    ),
+    null,
+    'creatyss.webp',
+    'Visuel principal Cabas Moka',
+    0,
+    true
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'pochette-sable'
+    ),
+    null,
+    'creatyss.webp',
+    'Visuel principal Pochette Sable',
+    0,
+    true
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'besace-nuit'
+    ),
+    null,
+    'creatyss.webp',
+    'Visuel principal Besace Nuit',
+    0,
+    true
+  );
+
+insert into
+  product_categories (product_id, category_id)
+values
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'sac-camel'
+    ),
+    (
+      select
+        id
+      from
+        categories
+      where
+        slug = 'sacs-iconiques'
+    )
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'cabas-moka'
+    ),
+    (
+      select
+        id
+      from
+        categories
+      where
+        slug = 'sacs-iconiques'
+    )
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'cabas-moka'
+    ),
+    (
+      select
+        id
+      from
+        categories
+      where
+        slug = 'edition-atelier'
+    )
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'pochette-sable'
+    ),
+    (
+      select
+        id
+      from
+        categories
+      where
+        slug = 'edition-atelier'
+    )
+  ),
+  (
+    (
+      select
+        id
+      from
+        products
+      where
+        slug = 'besace-nuit'
+    ),
+    (
+      select
+        id
+      from
+        categories
+      where
+        slug = 'sacs-iconiques'
+    )
   );
 
 insert into

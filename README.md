@@ -48,6 +48,16 @@ Variables disponibles :
 
 - `.env.example`
 
+`.env.example` est uniquement un fichier de placeholders versionné. Les vraies valeurs locales doivent vivre dans `.env` ou `.env.local`, qui restent non versionnés.
+
+Le `Makefile` utilise `ENV_FILE=.env.example` par defaut. Pour lancer le projet avec de vrais secrets locaux :
+
+```bash
+ENV_FILE=.env.local make up
+```
+
+Le meme principe s'applique a `make build`, `make db-reset-dev`, `make test-e2e` et aux autres cibles `make`.
+
 Commandes disponibles :
 
 ```bash
@@ -112,6 +122,7 @@ Prerequis pour `make test-e2e` :
 2. le schema et le seed doivent deja etre appliques
 3. les dependances Node locales doivent deja etre installees sur l'hote (`pnpm install`)
 4. Chromium Playwright doit etre installe localement une fois
+5. si les flux Stripe doivent etre testes reellement, de vraies cles de test doivent etre definies dans `.env` ou `.env.local`
 
 Flux local minimal :
 

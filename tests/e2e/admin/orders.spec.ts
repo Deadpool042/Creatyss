@@ -46,6 +46,7 @@ test("shows a created order in the admin list and detail", async ({ page }) => {
     .filter({ hasText: "alice.orders@example.com" });
 
   await expect(createdOrderCard).toContainText(reference ?? "");
+  await expect(createdOrderCard).toContainText("Paiement en attente");
   await createdOrderCard.getByRole("link", { name: "Voir le detail" }).click();
 
   await expect(page).toHaveURL(/\/admin\/orders\/[0-9]+$/);
@@ -54,5 +55,7 @@ test("shows a created order in the admin list and detail", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByText("alice.orders@example.com")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Sac Camel" })).toBeVisible();
-  await expect(page.getByText("En attente")).toBeVisible();
+  await expect(page.getByText("En attente", { exact: true })).toBeVisible();
+  await expect(page.getByText("Paiement en attente")).toBeVisible();
+  await expect(page.getByText("Provider : stripe")).toBeVisible();
 });

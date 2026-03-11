@@ -1,7 +1,8 @@
 import Link from "next/link";
 import {
   listAdminOrders,
-  type OrderStatus
+  type OrderStatus,
+  type PaymentStatus
 } from "@/db/repositories/order.repository";
 
 export const dynamic = "force-dynamic";
@@ -13,11 +14,25 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 function getOrderStatusLabel(status: OrderStatus): string {
   switch (status) {
+    case "paid":
+      return "Payee";
     case "cancelled":
       return "Annulee";
     case "pending":
     default:
       return "En attente";
+  }
+}
+
+function getPaymentStatusLabel(status: PaymentStatus): string {
+  switch (status) {
+    case "succeeded":
+      return "Paiement reussi";
+    case "failed":
+      return "Paiement echoue";
+    case "pending":
+    default:
+      return "Paiement en attente";
   }
 }
 
@@ -53,6 +68,9 @@ export default async function AdminOrdersPage() {
                 <div className="admin-product-tags">
                   <span className="admin-chip">
                     {getOrderStatusLabel(order.status)}
+                  </span>
+                  <span className="admin-chip">
+                    {getPaymentStatusLabel(order.paymentStatus)}
                   </span>
                   <span className="admin-chip">{order.totalAmount}</span>
                   <span className="admin-chip">

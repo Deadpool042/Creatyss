@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-ENV_FILE ?= .env.example
+ENV_FILE ?= .env.local
 COMPOSE := docker compose --env-file $(ENV_FILE)
 APP_SERVICE := app
 DB_SERVICE := db

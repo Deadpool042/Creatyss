@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import {
   findAdminOrderById,
-  type OrderStatus
+  type OrderStatus,
+  type PaymentStatus
 } from "@/db/repositories/order.repository";
 
 export const dynamic = "force-dynamic";
@@ -19,11 +20,25 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 function getOrderStatusLabel(status: OrderStatus): string {
   switch (status) {
+    case "paid":
+      return "Payee";
     case "cancelled":
       return "Annulee";
     case "pending":
     default:
       return "En attente";
+  }
+}
+
+function getPaymentStatusLabel(status: PaymentStatus): string {
+  switch (status) {
+    case "succeeded":
+      return "Paiement reussi";
+    case "failed":
+      return "Paiement echoue";
+    case "pending":
+    default:
+      return "Paiement en attente";
   }
 }
 
@@ -64,10 +79,43 @@ export default async function AdminOrderDetailPage({
               </div>
 
               <div className="stack">
+                <p className="meta-label">Paiement</p>
+                <p className="card-copy">
+                  {getPaymentStatusLabel(order.payment.status)}
+                </p>
+              </div>
+
+              <div className="stack">
                 <p className="meta-label">Creee le</p>
                 <p className="card-copy">
                   {orderDateTimeFormatter.format(new Date(order.createdAt))}
                 </p>
+              </div>
+            </article>
+
+            <article className="store-card checkout-line">
+              <div className="stack">
+                <p className="eyebrow">Paiement</p>
+                <h2>Etat du paiement</h2>
+                <p className="card-copy">
+                  Provider : {order.payment.provider}
+                </p>
+                <p className="card-copy">
+                  Methode : {order.payment.method}
+                </p>
+                <p className="card-copy">
+                  Montant : {order.payment.amount} {order.payment.currency.toUpperCase()}
+                </p>
+                {order.payment.stripeCheckoutSessionId ? (
+                  <p className="card-meta">
+                    Session Stripe : {order.payment.stripeCheckoutSessionId}
+                  </p>
+                ) : null}
+                {order.payment.stripePaymentIntentId ? (
+                  <p className="card-meta">
+                    Payment intent : {order.payment.stripePaymentIntentId}
+                  </p>
+                ) : null}
               </div>
             </article>
 

@@ -5,7 +5,10 @@ import { createOrderReference } from "@/entities/order/order-reference";
 type TimestampValue = Date | string;
 type ProductStatus = "draft" | "published";
 type ProductVariantStatus = "draft" | "published";
-export type OrderStatus = "pending" | "cancelled";
+export type OrderStatus = "pending" | "paid" | "cancelled";
+export type PaymentStatus = "pending" | "succeeded" | "failed";
+export type PaymentProvider = "stripe";
+export type PaymentMethod = "card";
 
 type CartIdRow = {
   id: string;
@@ -71,6 +74,13 @@ type OrderRow = {
   billing_city: string | null;
   billing_country_code: string | null;
   total_amount: string;
+  payment_status: PaymentStatus | null;
+  payment_provider: PaymentProvider | null;
+  payment_method: PaymentMethod | null;
+  payment_amount: string | null;
+  payment_currency: string | null;
+  stripe_checkout_session_id: string | null;
+  stripe_payment_intent_id: string | null;
   created_at: TimestampValue;
   updated_at: TimestampValue;
 };
@@ -94,6 +104,7 @@ type OrderSummaryRow = {
   id: string;
   reference: string;
   status: OrderStatus;
+  payment_status: PaymentStatus | null;
   customer_email: string;
   customer_first_name: string;
   customer_last_name: string;
@@ -127,6 +138,16 @@ export type OrderLine = {
   createdAt: string;
 };
 
+export type OrderPayment = {
+  status: PaymentStatus;
+  provider: PaymentProvider;
+  method: PaymentMethod;
+  amount: string;
+  currency: "eur";
+  stripeCheckoutSessionId: string | null;
+  stripePaymentIntentId: string | null;
+};
+
 export type PublicOrderConfirmation = {
   id: string;
   reference: string;
@@ -150,6 +171,7 @@ export type PublicOrderConfirmation = {
   billingCity: string | null;
   billingCountryCode: "FR" | null;
   totalAmount: string;
+  payment: OrderPayment;
   createdAt: string;
   updatedAt: string;
   lines: OrderLine[];
@@ -159,6 +181,7 @@ export type AdminOrderSummary = {
   id: string;
   reference: string;
   status: OrderStatus;
+  paymentStatus: PaymentStatus;
   customerEmail: string;
   customerFirstName: string;
   customerLastName: string;
@@ -280,6 +303,18 @@ function sourceLineIsAvailable(row: OrderSourceLineRow): boolean {
   );
 }
 
+function mapOrderPayment(row: OrderRow): OrderPayment {
+  return {
+    status: row.payment_status ?? "pending",
+    provider: row.payment_provider ?? "stripe",
+    method: row.payment_method ?? "card",
+    amount: normalizeMoneyString(row.payment_amount ?? row.total_amount),
+    currency: (row.payment_currency ?? "eur") as "eur",
+    stripeCheckoutSessionId: row.stripe_checkout_session_id,
+    stripePaymentIntentId: row.stripe_payment_intent_id
+  };
+}
+
 function mapOrderLine(row: OrderItemRow): OrderLine {
   return {
     id: row.id,
@@ -323,6 +358,7 @@ function mapOrderRow(
     billingCity: row.billing_city,
     billingCountryCode: row.billing_country_code as "FR" | null,
     totalAmount: normalizeMoneyString(row.total_amount),
+    payment: mapOrderPayment(row),
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at),
     lines: lines.map(mapOrderLine)
@@ -334,6 +370,7 @@ function mapAdminOrderSummary(row: OrderSummaryRow): AdminOrderSummary {
     id: row.id,
     reference: row.reference,
     status: row.status,
+    paymentStatus: row.payment_status ?? "pending",
     customerEmail: row.customer_email,
     customerFirstName: row.customer_first_name,
     customerLastName: row.customer_last_name,
@@ -566,6 +603,28 @@ export async function createOrderFromGuestCartToken(
       totalAmount
     });
 
+    await client.query(
+      `
+        insert into payments (
+          order_id,
+          provider,
+          method,
+          status,
+          amount,
+          currency
+        )
+        values (
+          $1::bigint,
+          'stripe',
+          'card',
+          'pending',
+          $2::numeric,
+          'eur'
+        )
+      `,
+      [createdOrder.id, totalAmount]
+    );
+
     for (const line of sourceLines) {
       const unitPrice = normalizeMoneyString(line.unit_price);
       const lineTotal = centsToMoneyString(
@@ -655,32 +714,40 @@ async function readOrderRowByReference(reference: string): Promise<OrderRow | nu
   return queryFirst<OrderRow>(
     `
       select
-        id::text as id,
-        reference,
-        status,
-        customer_email,
-        customer_first_name,
-        customer_last_name,
-        customer_phone,
-        shipping_address_line_1,
-        shipping_address_line_2,
-        shipping_postal_code,
-        shipping_city,
-        shipping_country_code,
-        billing_same_as_shipping,
-        billing_first_name,
-        billing_last_name,
-        billing_phone,
-        billing_address_line_1,
-        billing_address_line_2,
-        billing_postal_code,
-        billing_city,
-        billing_country_code,
-        total_amount::text as total_amount,
-        created_at,
-        updated_at
-      from orders
-      where reference = $1
+        o.id::text as id,
+        o.reference,
+        o.status,
+        o.customer_email,
+        o.customer_first_name,
+        o.customer_last_name,
+        o.customer_phone,
+        o.shipping_address_line_1,
+        o.shipping_address_line_2,
+        o.shipping_postal_code,
+        o.shipping_city,
+        o.shipping_country_code,
+        o.billing_same_as_shipping,
+        o.billing_first_name,
+        o.billing_last_name,
+        o.billing_phone,
+        o.billing_address_line_1,
+        o.billing_address_line_2,
+        o.billing_postal_code,
+        o.billing_city,
+        o.billing_country_code,
+        o.total_amount::text as total_amount,
+        p.status as payment_status,
+        p.provider as payment_provider,
+        p.method as payment_method,
+        p.amount::text as payment_amount,
+        p.currency as payment_currency,
+        p.stripe_checkout_session_id,
+        p.stripe_payment_intent_id,
+        o.created_at,
+        o.updated_at
+      from orders o
+      left join payments p on p.order_id = o.id
+      where o.reference = $1
       limit 1
     `,
     [reference]
@@ -695,32 +762,40 @@ async function readOrderRowById(id: string): Promise<OrderRow | null> {
   return queryFirst<OrderRow>(
     `
       select
-        id::text as id,
-        reference,
-        status,
-        customer_email,
-        customer_first_name,
-        customer_last_name,
-        customer_phone,
-        shipping_address_line_1,
-        shipping_address_line_2,
-        shipping_postal_code,
-        shipping_city,
-        shipping_country_code,
-        billing_same_as_shipping,
-        billing_first_name,
-        billing_last_name,
-        billing_phone,
-        billing_address_line_1,
-        billing_address_line_2,
-        billing_postal_code,
-        billing_city,
-        billing_country_code,
-        total_amount::text as total_amount,
-        created_at,
-        updated_at
-      from orders
-      where id = $1::bigint
+        o.id::text as id,
+        o.reference,
+        o.status,
+        o.customer_email,
+        o.customer_first_name,
+        o.customer_last_name,
+        o.customer_phone,
+        o.shipping_address_line_1,
+        o.shipping_address_line_2,
+        o.shipping_postal_code,
+        o.shipping_city,
+        o.shipping_country_code,
+        o.billing_same_as_shipping,
+        o.billing_first_name,
+        o.billing_last_name,
+        o.billing_phone,
+        o.billing_address_line_1,
+        o.billing_address_line_2,
+        o.billing_postal_code,
+        o.billing_city,
+        o.billing_country_code,
+        o.total_amount::text as total_amount,
+        p.status as payment_status,
+        p.provider as payment_provider,
+        p.method as payment_method,
+        p.amount::text as payment_amount,
+        p.currency as payment_currency,
+        p.stripe_checkout_session_id,
+        p.stripe_payment_intent_id,
+        o.created_at,
+        o.updated_at
+      from orders o
+      left join payments p on p.order_id = o.id
+      where o.id = $1::bigint
       limit 1
     `,
     [id]
@@ -776,6 +851,7 @@ export async function listAdminOrders(): Promise<AdminOrderSummary[]> {
         o.id::text as id,
         o.reference,
         o.status,
+        p.status as payment_status,
         o.customer_email,
         o.customer_first_name,
         o.customer_last_name,
@@ -784,8 +860,9 @@ export async function listAdminOrders(): Promise<AdminOrderSummary[]> {
         o.created_at,
         o.updated_at
       from orders o
+      left join payments p on p.order_id = o.id
       left join order_items oi on oi.order_id = o.id
-      group by o.id
+      group by o.id, p.status
       order by o.created_at desc, o.id desc
     `
   );
