@@ -16,6 +16,7 @@ export async function createProductAction(formData: FormData): Promise<void> {
     seoTitle: formData.get("seoTitle"),
     seoDescription: formData.get("seoDescription"),
     status: formData.get("status"),
+    productType: formData.get("productType"),
     isFeatured: formData.get("isFeatured"),
     categoryIds: formData.getAll("categoryIds")
   });

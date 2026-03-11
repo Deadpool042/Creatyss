@@ -30,6 +30,7 @@ export type PublishedProductSummary = {
   slug: string;
   shortDescription: string | null;
   description: string | null;
+  productType: "simple" | "variable";
   isFeatured: boolean;
   seoTitle: string | null;
   seoDescription: string | null;
@@ -141,6 +142,7 @@ type ProductSummaryRow = {
   slug: string;
   short_description: string | null;
   description: string | null;
+  product_type: "simple" | "variable";
   is_featured: boolean;
   seo_title: string | null;
   seo_description: string | null;
@@ -240,6 +242,7 @@ function mapProductSummary(row: ProductSummaryRow): PublishedProductSummary {
     slug: row.slug,
     shortDescription: row.short_description,
     description: row.description,
+    productType: row.product_type,
     isFeatured: row.is_featured,
     seoTitle: row.seo_title,
     seoDescription: row.seo_description,
@@ -340,6 +343,7 @@ async function listHomepageFeaturedProducts(
         p.slug,
         p.short_description,
         p.description,
+        p.product_type,
         p.is_featured,
         p.seo_title,
         p.seo_description,
@@ -458,6 +462,7 @@ export async function listPublishedProducts(
         p.slug,
         p.short_description,
         p.description,
+        p.product_type,
         p.is_featured,
         exists (
           select 1
@@ -545,6 +550,7 @@ export async function getPublishedProductBySlug(
         p.slug,
         p.short_description,
         p.description,
+        p.product_type,
         p.is_featured,
         p.seo_title,
         p.seo_description,

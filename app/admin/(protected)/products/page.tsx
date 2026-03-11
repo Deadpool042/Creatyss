@@ -14,6 +14,10 @@ function getStatusLabel(status: string): string {
   return status === "published" ? "Publie" : "Brouillon";
 }
 
+function getProductTypeLabel(productType: "simple" | "variable"): string {
+  return productType === "simple" ? "Simple" : "Variable";
+}
+
 function getStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "deleted":
@@ -92,6 +96,9 @@ export default async function AdminProductsPage({
                 <div className="admin-product-tags">
                   <span className="admin-chip">
                     {getStatusLabel(product.status)}
+                  </span>
+                  <span className="admin-chip">
+                    {getProductTypeLabel(product.productType)}
                   </span>
                   <span className="admin-chip">
                     {product.isFeatured ? "Mis en avant" : "Standard"}

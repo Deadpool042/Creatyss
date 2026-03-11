@@ -1,5 +1,10 @@
 import { type PoolClient } from "pg";
 import { db, queryFirst, queryRows } from "@/db/client";
+import {
+  canChangeProductTypeToSimple,
+  type ProductTypeCompatibilityErrorCode
+} from "@/entities/product/product-type-rules";
+import { type ProductType } from "@/entities/product/product-input";
 
 type TimestampValue = Date | string;
 
@@ -11,6 +16,7 @@ type AdminProductSummaryRow = {
   slug: string;
   short_description: string | null;
   status: AdminProductStatus;
+  product_type: ProductType;
   is_featured: boolean;
   category_count: number;
   variant_count: number;
@@ -27,6 +33,7 @@ type AdminProductRow = {
   seo_title: string | null;
   seo_description: string | null;
   status: AdminProductStatus;
+  product_type: ProductType;
   is_featured: boolean;
   created_at: TimestampValue;
   updated_at: TimestampValue;
@@ -59,6 +66,7 @@ type CreateAdminProductInput = {
   seoTitle: string | null;
   seoDescription: string | null;
   status: AdminProductStatus;
+  productType: ProductType;
   isFeatured: boolean;
   categoryIds: string[];
 };
@@ -70,7 +78,8 @@ type UpdateAdminProductInput = CreateAdminProductInput & {
 type RepositoryErrorCode =
   | "slug_taken"
   | "category_missing"
-  | "product_referenced";
+  | "product_referenced"
+  | ProductTypeCompatibilityErrorCode;
 
 export type AdminProductSummary = {
   id: string;
@@ -78,6 +87,7 @@ export type AdminProductSummary = {
   slug: string;
   shortDescription: string | null;
   status: AdminProductStatus;
+  productType: ProductType;
   isFeatured: boolean;
   categoryCount: number;
   variantCount: number;
@@ -100,6 +110,7 @@ export type AdminProductDetail = {
   seoTitle: string | null;
   seoDescription: string | null;
   status: AdminProductStatus;
+  productType: ProductType;
   isFeatured: boolean;
   categories: AdminProductCategoryAssignment[];
   categoryIds: string[];
@@ -150,6 +161,7 @@ function mapAdminProductSummary(
     slug: row.slug,
     shortDescription: row.short_description,
     status: row.status,
+    productType: row.product_type,
     isFeatured: row.is_featured,
     categoryCount: row.category_count,
     variantCount: row.variant_count,
@@ -171,6 +183,7 @@ function mapAdminProductDetail(
     seoTitle: row.seo_title,
     seoDescription: row.seo_description,
     status: row.status,
+    productType: row.product_type,
     isFeatured: row.is_featured,
     categories,
     categoryIds: categories.map((category) => category.id),
@@ -268,6 +281,22 @@ async function ensureCategoriesExist(
   return normalizedCategoryIds;
 }
 
+async function countVariantsByProductId(
+  client: PoolClient,
+  productId: string
+): Promise<number> {
+  const result = await client.query<CountRow>(
+    `
+      select count(*)::int as matched_count
+      from product_variants
+      where product_id = $1::bigint
+    `,
+    [productId]
+  );
+
+  return result.rows[0]?.matched_count ?? 0;
+}
+
 async function replaceProductCategories(
   client: PoolClient,
   productId: string,
@@ -308,6 +337,7 @@ export async function listAdminProducts(): Promise<AdminProductSummary[]> {
         p.slug,
         p.short_description,
         p.status,
+        p.product_type,
         p.is_featured,
         (
           select count(*)::int
@@ -347,6 +377,7 @@ export async function findAdminProductById(
         p.seo_title,
         p.seo_description,
         p.status,
+        p.product_type,
         p.is_featured,
         p.created_at,
         p.updated_at
@@ -391,9 +422,10 @@ export async function createAdminProduct(
           seo_title,
           seo_description,
           status,
+          product_type,
           is_featured
         )
-        values ($1, $2, $3, $4, $5, $6, $7, $8)
+        values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         returning
           id::text as id,
           name,
@@ -403,6 +435,7 @@ export async function createAdminProduct(
           seo_title,
           seo_description,
           status,
+          product_type,
           is_featured,
           created_at,
           updated_at
@@ -415,6 +448,7 @@ export async function createAdminProduct(
         input.seoTitle,
         input.seoDescription,
         input.status,
+        input.productType,
         input.isFeatured
       ]
     );
@@ -457,6 +491,18 @@ export async function updateAdminProduct(
     await client.query("begin");
 
     const categoryIds = await ensureCategoriesExist(client, input.categoryIds);
+    const variantCount = await countVariantsByProductId(client, input.id);
+
+    if (
+      input.productType === "simple" &&
+      !canChangeProductTypeToSimple(variantCount)
+    ) {
+      throw new AdminProductRepositoryError(
+        "simple_product_requires_single_variant",
+        "A simple product can only have one sellable variant."
+      );
+    }
+
     const result = await client.query<AdminProductRow>(
       `
         update products
@@ -468,7 +514,8 @@ export async function updateAdminProduct(
           seo_title = $6,
           seo_description = $7,
           status = $8,
-          is_featured = $9
+          product_type = $9,
+          is_featured = $10
         where id = $1::bigint
         returning
           id::text as id,
@@ -479,6 +526,7 @@ export async function updateAdminProduct(
           seo_title,
           seo_description,
           status,
+          product_type,
           is_featured,
           created_at,
           updated_at
@@ -492,6 +540,7 @@ export async function updateAdminProduct(
         input.seoTitle,
         input.seoDescription,
         input.status,
+        input.productType,
         input.isFeatured
       ]
     );

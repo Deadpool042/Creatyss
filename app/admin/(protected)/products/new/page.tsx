@@ -20,6 +20,8 @@ function getErrorMessage(error: string | undefined): string | null {
       return "Renseignez un slug valide.";
     case "invalid_status":
       return "Le statut du produit est invalide.";
+    case "invalid_product_type":
+      return "Le type de produit est invalide.";
     case "invalid_category_ids":
       return "Une ou plusieurs categories selectionnees sont invalides.";
     case "slug_taken":
@@ -112,6 +114,14 @@ export default async function NewAdminProductPage({
           <select className="admin-input" defaultValue="draft" name="status">
             <option value="draft">Brouillon</option>
             <option value="published">Publie</option>
+          </select>
+        </label>
+
+        <label className="admin-field">
+          <span className="meta-label">Type de produit</span>
+          <select className="admin-input" defaultValue="variable" name="productType">
+            <option value="simple">Simple</option>
+            <option value="variable">Variable</option>
           </select>
         </label>
 

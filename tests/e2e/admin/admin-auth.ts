@@ -3,8 +3,32 @@ import { expect, type Page } from "@playwright/test";
 const SEEDED_ADMIN_EMAIL = "admin@creatyss.local";
 const SEEDED_ADMIN_PASSWORD = "AdminDev123!";
 
+async function gotoAdminLogin(page: Page): Promise<void> {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      await page.goto("/admin/login", {
+        timeout: 30_000,
+        waitUntil: "domcontentloaded"
+      });
+      return;
+    } catch (error) {
+      const isLastAttempt = attempt === 2;
+      const isRecoverableNavigationError =
+        error instanceof Error &&
+        (error.message.includes("ERR_ABORTED") ||
+          error.message.includes("Timeout"));
+
+      if (!isRecoverableNavigationError || isLastAttempt) {
+        throw error;
+      }
+
+      await page.waitForTimeout(1_000);
+    }
+  }
+}
+
 export async function loginAsSeedAdmin(page: Page): Promise<void> {
-  await page.goto("/admin/login");
+  await gotoAdminLogin(page);
 
   await expect(
     page.getByRole("heading", { name: "Connexion" })

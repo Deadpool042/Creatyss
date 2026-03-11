@@ -23,6 +23,7 @@ export async function updateProductAction(formData: FormData): Promise<void> {
     seoTitle: formData.get("seoTitle"),
     seoDescription: formData.get("seoDescription"),
     status: formData.get("status"),
+    productType: formData.get("productType"),
     isFeatured: formData.get("isFeatured"),
     categoryIds: formData.getAll("categoryIds")
   });
@@ -53,6 +54,15 @@ export async function updateProductAction(formData: FormData): Promise<void> {
       error.code === "category_missing"
     ) {
       redirect(`/admin/products/${productId}?product_error=invalid_category_ids`);
+    }
+
+    if (
+      error instanceof AdminProductRepositoryError &&
+      error.code === "simple_product_requires_single_variant"
+    ) {
+      redirect(
+        `/admin/products/${productId}?product_error=simple_product_requires_single_variant`
+      );
     }
 
     console.error(error);

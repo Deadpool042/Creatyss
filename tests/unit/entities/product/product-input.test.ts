@@ -22,6 +22,7 @@ describe("validateProductInput", () => {
       seoTitle: "  SEO title  ",
       seoDescription: "  SEO description  ",
       status: "published",
+      productType: "variable",
       isFeatured: "1",
       categoryIds: ["1", "2", "1"]
     });
@@ -36,6 +37,7 @@ describe("validateProductInput", () => {
         seoTitle: "SEO title",
         seoDescription: "SEO description",
         status: "published",
+        productType: "variable",
         isFeatured: true,
         categoryIds: ["1", "2"]
       }
@@ -51,6 +53,7 @@ describe("validateProductInput", () => {
       seoTitle: "",
       seoDescription: undefined,
       status: "draft",
+      productType: "simple",
       isFeatured: null,
       categoryIds: undefined
     });
@@ -65,6 +68,7 @@ describe("validateProductInput", () => {
         seoTitle: null,
         seoDescription: null,
         status: "draft",
+        productType: "simple",
         isFeatured: false,
         categoryIds: []
       }
@@ -81,6 +85,7 @@ describe("validateProductInput", () => {
         seoTitle: null,
         seoDescription: null,
         status: "archived",
+        productType: "variable",
         isFeatured: null,
         categoryIds: []
       })
@@ -100,12 +105,33 @@ describe("validateProductInput", () => {
         seoTitle: null,
         seoDescription: null,
         status: "draft",
+        productType: "variable",
         isFeatured: null,
         categoryIds: ["1", "abc"]
       })
     ).toEqual({
       ok: false,
       code: "invalid_category_ids"
+    });
+  });
+
+  it("rejette un type de produit invalide", () => {
+    expect(
+      validateProductInput({
+        name: "Produit",
+        slug: "produit",
+        shortDescription: null,
+        description: null,
+        seoTitle: null,
+        seoDescription: null,
+        status: "draft",
+        productType: "configurable",
+        isFeatured: null,
+        categoryIds: []
+      })
+    ).toEqual({
+      ok: false,
+      code: "invalid_product_type"
     });
   });
 });

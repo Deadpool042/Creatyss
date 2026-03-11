@@ -50,6 +50,15 @@ export async function createProductVariantAction(
       redirect(`/admin/products/${productId}?variant_error=sku_taken`);
     }
 
+    if (
+      error instanceof AdminProductVariantRepositoryError &&
+      error.code === "simple_product_single_variant_only"
+    ) {
+      redirect(
+        `/admin/products/${productId}?variant_error=simple_product_single_variant_only`
+      );
+    }
+
     console.error(error);
     redirect(`/admin/products/${productId}?variant_error=save_failed`);
   }

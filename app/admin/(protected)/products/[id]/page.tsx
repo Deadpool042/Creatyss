@@ -49,6 +49,10 @@ function getProductStatusLabel(status: "draft" | "published"): string {
   return status === "published" ? "Publie" : "Brouillon";
 }
 
+function getProductTypeLabel(productType: "simple" | "variable"): string {
+  return productType === "simple" ? "Simple" : "Variable";
+}
+
 function getProductStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "created":
@@ -70,10 +74,14 @@ function getProductErrorMessage(error: string | undefined): string | null {
       return "Renseignez un slug produit valide.";
     case "invalid_status":
       return "Le statut du produit est invalide.";
+    case "invalid_product_type":
+      return "Le type de produit est invalide.";
     case "invalid_category_ids":
       return "Une ou plusieurs categories selectionnees sont invalides.";
     case "slug_taken":
       return "Ce slug est deja utilise par un autre produit.";
+    case "simple_product_requires_single_variant":
+      return "Un produit simple ne peut avoir qu'une seule declinaison vendable.";
     case "save_failed":
       return "Le produit n'a pas pu etre enregistre.";
     default:
@@ -122,6 +130,8 @@ function getVariantErrorMessage(error: string | undefined): string | null {
       return "Le statut de la variante est invalide.";
     case "sku_taken":
       return "Ce SKU est deja utilise par une autre variante.";
+    case "simple_product_single_variant_only":
+      return "Un produit simple ne peut avoir qu'une seule declinaison vendable.";
     case "save_failed":
       return "La variante n'a pas pu etre enregistree.";
     case "delete_failed":
@@ -334,6 +344,7 @@ export default async function ProductDetailPage({
 
         <div className="admin-product-tags">
           <span className="admin-chip">{getProductStatusLabel(product.status)}</span>
+          <span className="admin-chip">{getProductTypeLabel(product.productType)}</span>
           <span className="admin-chip">
             {product.isFeatured ? "Mis en avant" : "Standard"}
           </span>
@@ -437,6 +448,18 @@ export default async function ProductDetailPage({
             <select className="admin-input" defaultValue={product.status} name="status">
               <option value="draft">Brouillon</option>
               <option value="published">Publie</option>
+            </select>
+          </label>
+
+          <label className="admin-field">
+            <span className="meta-label">Type de produit</span>
+            <select
+              className="admin-input"
+              defaultValue={product.productType}
+              name="productType"
+            >
+              <option value="simple">Simple</option>
+              <option value="variable">Variable</option>
             </select>
           </label>
 

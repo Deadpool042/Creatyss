@@ -1,4 +1,5 @@
 export type ProductStatus = "draft" | "published";
+export type ProductType = "simple" | "variable";
 
 export type ValidatedProductInput = {
   name: string;
@@ -8,6 +9,7 @@ export type ValidatedProductInput = {
   seoTitle: string | null;
   seoDescription: string | null;
   status: ProductStatus;
+  productType: ProductType;
   isFeatured: boolean;
   categoryIds: string[];
 };
@@ -17,6 +19,7 @@ export type ProductInputErrorCode =
   | "missing_slug"
   | "invalid_slug"
   | "invalid_status"
+  | "invalid_product_type"
   | "invalid_category_ids";
 
 type ProductInputSource = {
@@ -27,6 +30,7 @@ type ProductInputSource = {
   seoTitle: FormDataEntryValue | string | null | undefined;
   seoDescription: FormDataEntryValue | string | null | undefined;
   status: FormDataEntryValue | string | null | undefined;
+  productType: FormDataEntryValue | string | null | undefined;
   isFeatured: FormDataEntryValue | string | null | undefined;
   categoryIds: readonly FormDataEntryValue[] | readonly string[] | undefined;
 };
@@ -106,6 +110,10 @@ function isProductStatus(value: string | null): value is ProductStatus {
   return value === "draft" || value === "published";
 }
 
+function isProductType(value: string | null): value is ProductType {
+  return value === "simple" || value === "variable";
+}
+
 export function validateProductInput(
   input: ProductInputSource
 ): ProductInputValidationResult {
@@ -145,6 +153,15 @@ export function validateProductInput(
     };
   }
 
+  const productType = readTrimmedString(input.productType);
+
+  if (!isProductType(productType)) {
+    return {
+      ok: false,
+      code: "invalid_product_type"
+    };
+  }
+
   const categoryIds = normalizeCategoryIds(input.categoryIds);
 
   if (categoryIds === null) {
@@ -164,6 +181,7 @@ export function validateProductInput(
       seoTitle: normalizeOptionalText(input.seoTitle),
       seoDescription: normalizeOptionalText(input.seoDescription),
       status,
+      productType,
       isFeatured:
         input.isFeatured === "on" ||
         input.isFeatured === "true" ||

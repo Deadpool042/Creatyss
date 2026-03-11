@@ -3,8 +3,10 @@ ENV_FILE ?= .env.local
 COMPOSE := docker compose --env-file $(ENV_FILE)
 APP_SERVICE := app
 DB_SERVICE := db
+STRIPE_WEBHOOK_FORWARD_URL ?= http://localhost:3000/api/stripe/webhook
 
-.PHONY: help up down restart build logs ps sh dev typecheck db-schema db-seed-dev db-reset-dev test test-unit test-e2e test-e2e-ui test-e2e-headed test-select
+
+.PHONY: help up down restart build logs ps sh dev typecheck db-schema db-seed-dev db-reset-dev test test-unit test-e2e test-e2e-ui test-e2e-headed test-select stripe-dev
 
 help:
 	@echo "Usage: make [target]"
@@ -21,12 +23,16 @@ help:
 	@echo "  typecheck       - Verifie les types TypeScript"
 	@echo "  db-seed-dev     - Applique les fichiers de seed SQL sur la base de dev"
 	@echo "  db-reset-dev    - Reset la base de dev (down -v, up -d --build, db-schema, db-seed-dev)"
+	@echo "  stripe-dev      - Lance le serveur de mock Stripe pour le dev"
 	@echo "  test            - Lance les tests unitaires"
 	@echo "  test-unit       - Lance les tests unitaires"
 	@echo "  test-e2e        - Lance les tests E2E"
 	@echo "  test-e2e-ui     - Lance Playwright en mode UI"
 	@echo "  test-e2e-headed - Lance Playwright avec navigateur visible"
 	@echo "  test-select     - Ouvre un menu pour choisir le type de test"
+
+stripe-dev:
+	stripe listen --forward-to $(STRIPE_WEBHOOK_FORWARD_URL)
 
 up:
 	$(COMPOSE) up --build

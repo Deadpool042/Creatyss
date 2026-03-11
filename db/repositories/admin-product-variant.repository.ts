@@ -1,5 +1,10 @@
 import { type PoolClient } from "pg";
 import { db, queryFirst, queryRows } from "@/db/client";
+import {
+  canCreateVariantForProductType,
+  type ProductTypeCompatibilityErrorCode
+} from "@/entities/product/product-type-rules";
+import { type ProductType } from "@/entities/product/product-input";
 
 type TimestampValue = Date | string;
 
@@ -23,6 +28,15 @@ type AdminProductVariantRow = {
 
 type ExistingVariantRow = {
   id: string;
+};
+
+type ProductCompatibilityRow = {
+  id: string;
+  product_type: ProductType;
+};
+
+type CountRow = {
+  variant_count: number;
 };
 
 type DeletedVariantRow = {
@@ -51,7 +65,7 @@ type UpdateAdminProductVariantInput = CreateAdminProductVariantInput & {
   id: string;
 };
 
-type RepositoryErrorCode = "sku_taken";
+type RepositoryErrorCode = "sku_taken" | ProductTypeCompatibilityErrorCode;
 
 export type AdminProductVariant = {
   id: string;
@@ -143,10 +157,12 @@ function mapRepositoryError(error: unknown): never {
 async function productExists(
   client: PoolClient,
   productId: string
-): Promise<boolean> {
-  const result = await client.query<ExistingVariantRow>(
+): Promise<ProductCompatibilityRow | null> {
+  const result = await client.query<ProductCompatibilityRow>(
     `
-      select id::text as id
+      select
+        id::text as id,
+        product_type
       from products
       where id = $1::bigint
       limit 1
@@ -154,7 +170,23 @@ async function productExists(
     [productId]
   );
 
-  return result.rows.length > 0;
+  return result.rows[0] ?? null;
+}
+
+async function countVariantsForProduct(
+  client: PoolClient,
+  productId: string
+): Promise<number> {
+  const result = await client.query<CountRow>(
+    `
+      select count(*)::int as variant_count
+      from product_variants
+      where product_id = $1::bigint
+    `,
+    [productId]
+  );
+
+  return result.rows[0]?.variant_count ?? 0;
 }
 
 async function clearDefaultVariant(
@@ -233,9 +265,28 @@ export async function createAdminProductVariant(
   try {
     await client.query("begin");
 
-    if (!(await productExists(client, input.productId))) {
+    const product = await productExists(client, input.productId);
+
+    if (product === null) {
       await client.query("rollback");
       return null;
+    }
+
+    const existingVariantCount = await countVariantsForProduct(
+      client,
+      input.productId
+    );
+
+    if (
+      !canCreateVariantForProductType(
+        product.product_type,
+        existingVariantCount
+      )
+    ) {
+      throw new AdminProductVariantRepositoryError(
+        "simple_product_single_variant_only",
+        "A simple product can only have one sellable variant."
+      );
     }
 
     if (input.isDefault) {
