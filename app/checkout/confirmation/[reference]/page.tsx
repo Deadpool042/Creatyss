@@ -25,6 +25,8 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 function getOrderStatusLabel(status: OrderStatus): string {
   switch (status) {
+    case "shipped":
+      return "Expediee";
     case "preparing":
       return "En preparation";
     case "paid":
@@ -61,6 +63,13 @@ function getPaymentMessage(input: {
     return {
       kind: "alert",
       text: "Cette commande a ete annulee."
+    };
+  }
+
+  if (input.orderStatus === "shipped") {
+    return {
+      kind: "success",
+      text: "Votre commande a ete expediee."
     };
   }
 
@@ -207,6 +216,17 @@ export default async function OrderConfirmationPage({
                   {order.shippingPostalCode} {order.shippingCity}
                 </p>
                 <p className="card-meta">{order.shippingCountryCode}</p>
+                {order.shippedAt ? (
+                  <p className="card-meta">
+                    Date d&apos;expedition :{" "}
+                    {orderDateTimeFormatter.format(new Date(order.shippedAt))}
+                  </p>
+                ) : null}
+                {order.trackingReference ? (
+                  <p className="card-meta">
+                    Reference de suivi : {order.trackingReference}
+                  </p>
+                ) : null}
               </div>
             </article>
 

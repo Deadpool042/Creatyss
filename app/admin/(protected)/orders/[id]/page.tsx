@@ -5,6 +5,7 @@ import {
   type PaymentStatus
 } from "@/db/repositories/order.repository";
 import { getAllowedOrderStatusTransitions } from "@/entities/order/order-status-transition";
+import { shipOrderAction } from "@/features/admin/orders/actions/ship-order-action";
 import { updateOrderStatusAction } from "@/features/admin/orders/actions/update-order-status-action";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,8 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 function getOrderStatusLabel(status: OrderStatus): string {
   switch (status) {
+    case "shipped":
+      return "Expediee";
     case "preparing":
       return "En preparation";
     case "paid":
@@ -83,10 +86,14 @@ export default async function AdminOrderDetailPage({
   const statusMessage =
     orderStatusParam === "updated"
       ? "Le statut de la commande a ete mis a jour."
+      : orderStatusParam === "shipped"
+        ? "La commande a ete marquee comme expediee."
       : null;
   const errorMessage =
     orderErrorParam === "invalid_transition"
       ? "Cette transition n'est pas autorisee."
+      : orderErrorParam === "ship_failed"
+        ? "La commande n'a pas pu etre marquee comme expediee."
       : orderErrorParam === "update_failed"
         ? "La commande n'a pas pu etre mise a jour."
         : null;
@@ -137,28 +144,69 @@ export default async function AdminOrderDetailPage({
 
               {allowedTransitions.length > 0 ? (
                 <div className="admin-inline-actions">
-                  {allowedTransitions.map((nextStatus) => (
-                    <form action={updateOrderStatusAction} key={nextStatus}>
+                  {allowedTransitions.includes("shipped") ? (
+                    <form action={shipOrderAction} className="admin-form">
                       <input name="orderId" type="hidden" value={order.id} />
-                      <input name="nextStatus" type="hidden" value={nextStatus} />
-                      <button
-                        className={
-                          nextStatus === "cancelled"
-                            ? "button admin-danger-button"
-                            : "button"
-                        }
-                        type="submit"
-                      >
-                        {getOrderTransitionLabel(nextStatus)}
+                      <label className="admin-field">
+                        <span className="meta-label">
+                          Reference de suivi optionnelle
+                        </span>
+                        <input
+                          defaultValue={order.trackingReference ?? ""}
+                          name="trackingReference"
+                          placeholder="Ex. COLISSIMO-123456"
+                          type="text"
+                        />
+                      </label>
+                      <button className="button" type="submit">
+                        Marquer comme expediee
                       </button>
                     </form>
-                  ))}
+                  ) : null}
+
+                  {allowedTransitions
+                    .filter((nextStatus) => nextStatus !== "shipped")
+                    .map((nextStatus) => (
+                      <form action={updateOrderStatusAction} key={nextStatus}>
+                        <input name="orderId" type="hidden" value={order.id} />
+                        <input name="nextStatus" type="hidden" value={nextStatus} />
+                        <button
+                          className={
+                            nextStatus === "cancelled"
+                              ? "button admin-danger-button"
+                              : "button"
+                          }
+                          type="submit"
+                        >
+                          {getOrderTransitionLabel(nextStatus)}
+                        </button>
+                      </form>
+                    ))}
                 </div>
               ) : (
                 <p className="admin-muted-note">
                   Aucune autre action n&apos;est disponible pour cette commande.
                 </p>
               )}
+            </article>
+
+            <article className="store-card checkout-line">
+              <div className="stack">
+                <p className="eyebrow">Expedition</p>
+                <h2>Suivi simple</h2>
+                <p className="card-copy">
+                  {order.shippedAt
+                    ? `Expediee le ${orderDateTimeFormatter.format(
+                        new Date(order.shippedAt)
+                      )}`
+                    : "La commande n'a pas encore ete expediee."}
+                </p>
+                {order.trackingReference ? (
+                  <p className="card-meta">
+                    Reference de suivi : {order.trackingReference}
+                  </p>
+                ) : null}
+              </div>
             </article>
 
             <article className="store-card checkout-line">

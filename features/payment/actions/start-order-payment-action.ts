@@ -41,6 +41,7 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
   if (
     paymentContext.orderStatus === "paid" ||
     paymentContext.orderStatus === "preparing" ||
+    paymentContext.orderStatus === "shipped" ||
     paymentContext.paymentStatus === "succeeded"
   ) {
     redirect(`/checkout/confirmation/${reference}?payment=already_paid`);

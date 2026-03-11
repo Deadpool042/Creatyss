@@ -77,6 +77,8 @@ type OrderRow = {
   billing_postal_code: string | null;
   billing_city: string | null;
   billing_country_code: string | null;
+  shipped_at: TimestampValue | null;
+  tracking_reference: string | null;
   total_amount: string;
   payment_status: PaymentStatus | null;
   payment_provider: PaymentProvider | null;
@@ -179,6 +181,8 @@ export type PublicOrderConfirmation = {
   billingPostalCode: string | null;
   billingCity: string | null;
   billingCountryCode: "FR" | null;
+  shippedAt: string | null;
+  trackingReference: string | null;
   totalAmount: string;
   payment: OrderPayment;
   createdAt: string;
@@ -368,6 +372,8 @@ function mapOrderRow(
     billingPostalCode: row.billing_postal_code,
     billingCity: row.billing_city,
     billingCountryCode: row.billing_country_code as "FR" | null,
+    shippedAt: row.shipped_at ? toIsoTimestamp(row.shipped_at) : null,
+    trackingReference: row.tracking_reference,
     totalAmount: normalizeMoneyString(row.total_amount),
     payment: mapOrderPayment(row),
     createdAt: toIsoTimestamp(row.created_at),
@@ -808,6 +814,80 @@ export async function updateOrderStatus(input: {
   }
 }
 
+export async function shipOrder(input: {
+  id: string;
+  trackingReference: string | null;
+}): Promise<OrderStatus | null> {
+  if (!isValidNumericId(input.id)) {
+    return null;
+  }
+
+  const client = await db.connect();
+
+  try {
+    await client.query("begin");
+
+    const orderResult = await client.query<OrderStatusRow>(
+      `
+        select
+          id::text as id,
+          status
+        from orders
+        where id = $1::bigint
+        limit 1
+        for update
+      `,
+      [input.id]
+    );
+    const orderRow = orderResult.rows[0] ?? null;
+
+    if (orderRow === null) {
+      throw new OrderRepositoryError(
+        "missing_order",
+        "Order is missing."
+      );
+    }
+
+    const transition = resolveOrderStatusTransition({
+      currentStatus: orderRow.status,
+      nextStatus: "shipped"
+    });
+
+    if (!transition.ok) {
+      throw new OrderRepositoryError(
+        "invalid_status_transition",
+        "Order status transition is invalid."
+      );
+    }
+
+    await client.query(
+      `
+        update orders
+        set
+          status = 'shipped',
+          shipped_at = now(),
+          tracking_reference = $2
+        where id = $1::bigint
+      `,
+      [input.id, input.trackingReference]
+    );
+
+    await client.query("commit");
+
+    return "shipped";
+  } catch (error) {
+    await client.query("rollback");
+
+    if (error instanceof OrderRepositoryError) {
+      throw error;
+    }
+
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 async function readOrderRowByReference(reference: string): Promise<OrderRow | null> {
   if (!isValidOrderReference(reference)) {
     return null;
@@ -837,6 +917,8 @@ async function readOrderRowByReference(reference: string): Promise<OrderRow | nu
         o.billing_postal_code,
         o.billing_city,
         o.billing_country_code,
+        o.shipped_at,
+        o.tracking_reference,
         o.total_amount::text as total_amount,
         p.status as payment_status,
         p.provider as payment_provider,
@@ -885,6 +967,8 @@ async function readOrderRowById(id: string): Promise<OrderRow | null> {
         o.billing_postal_code,
         o.billing_city,
         o.billing_country_code,
+        o.shipped_at,
+        o.tracking_reference,
         o.total_amount::text as total_amount,
         p.status as payment_status,
         p.provider as payment_provider,

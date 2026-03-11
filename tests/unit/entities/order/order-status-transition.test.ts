@@ -12,8 +12,10 @@ describe("getAllowedOrderStatusTransitions", () => {
       "cancelled"
     ]);
     expect(getAllowedOrderStatusTransitions("preparing")).toEqual([
+      "shipped",
       "cancelled"
     ]);
+    expect(getAllowedOrderStatusTransitions("shipped")).toEqual([]);
     expect(getAllowedOrderStatusTransitions("cancelled")).toEqual([]);
   });
 });
@@ -24,6 +26,16 @@ describe("resolveOrderStatusTransition", () => {
       resolveOrderStatusTransition({
         currentStatus: "paid",
         nextStatus: "preparing"
+      })
+    ).toEqual({
+      ok: true,
+      shouldRestock: false
+    });
+
+    expect(
+      resolveOrderStatusTransition({
+        currentStatus: "preparing",
+        nextStatus: "shipped"
       })
     ).toEqual({
       ok: true,
@@ -72,6 +84,13 @@ describe("resolveOrderStatusTransition", () => {
       resolveOrderStatusTransition({
         currentStatus: "paid",
         nextStatus: "paid"
+      })
+    ).toEqual({ ok: false });
+
+    expect(
+      resolveOrderStatusTransition({
+        currentStatus: "shipped",
+        nextStatus: "cancelled"
       })
     ).toEqual({ ok: false });
   });

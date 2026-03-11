@@ -1,7 +1,7 @@
 import { db, queryFirst } from "@/db/client";
 
 type TimestampValue = Date | string;
-type OrderStatus = "pending" | "paid" | "preparing" | "cancelled";
+type OrderStatus = "pending" | "paid" | "preparing" | "shipped" | "cancelled";
 export type PaymentStatus = "pending" | "succeeded" | "failed";
 
 type PaymentStartContextRow = {

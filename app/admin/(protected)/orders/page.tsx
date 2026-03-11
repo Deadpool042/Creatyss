@@ -20,6 +20,8 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 function getOrderStatusLabel(status: OrderStatus): string {
   switch (status) {
+    case "shipped":
+      return "Expediee";
     case "preparing":
       return "En preparation";
     case "paid":
