@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { findPublicOrderByReference } from "@/db/repositories/order.repository";
 import {
-  findPublicOrderByReference,
-  type OrderStatus,
-  type PaymentStatus
-} from "@/db/repositories/order.repository";
+  getOrderPaymentNotice,
+  getOrderStatusLabel,
+  getOrderStatusSummary,
+  getPaymentStatusLabel
+} from "@/entities/order/order-status-presentation";
 import { startOrderPaymentAction } from "@/features/payment/actions/start-order-payment-action";
 
 export const dynamic = "force-dynamic";
@@ -23,101 +25,6 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   timeStyle: "short"
 });
 
-function getOrderStatusLabel(status: OrderStatus): string {
-  switch (status) {
-    case "shipped":
-      return "Expediee";
-    case "preparing":
-      return "En preparation";
-    case "paid":
-      return "Payee";
-    case "cancelled":
-      return "Annulee";
-    case "pending":
-    default:
-      return "En attente";
-  }
-}
-
-function getPaymentStatusLabel(status: PaymentStatus): string {
-  switch (status) {
-    case "succeeded":
-      return "Paiement reussi";
-    case "failed":
-      return "Paiement echoue";
-    case "pending":
-    default:
-      return "Paiement en attente";
-  }
-}
-
-function getPaymentMessage(input: {
-  paymentStatus: PaymentStatus;
-  orderStatus: OrderStatus;
-  paymentParam: string | undefined;
-}): {
-  kind: "success" | "alert";
-  text: string;
-} | null {
-  if (input.orderStatus === "cancelled") {
-    return {
-      kind: "alert",
-      text: "Cette commande a ete annulee."
-    };
-  }
-
-  if (input.orderStatus === "shipped") {
-    return {
-      kind: "success",
-      text: "Votre commande a ete expediee."
-    };
-  }
-
-  if (input.paymentStatus === "succeeded" || input.orderStatus === "paid") {
-    return {
-      kind: "success",
-      text: "Le paiement a ete confirme pour cette commande."
-    };
-  }
-
-  switch (input.paymentParam) {
-    case "cancelled":
-      return {
-        kind: "alert",
-        text: "Le paiement a ete interrompu. Vous pouvez le relancer tant que la commande reste en attente."
-      };
-    case "failed":
-      return {
-        kind: "alert",
-        text: "Le paiement n'a pas abouti. Vous pouvez relancer le paiement."
-      };
-    case "return":
-      return {
-        kind: "alert",
-        text: "Le paiement est en cours de confirmation. Rechargez la page dans quelques instants si besoin."
-      };
-    case "already_paid":
-      return {
-        kind: "success",
-        text: "Cette commande est deja payee."
-      };
-    case "unavailable":
-      return {
-        kind: "alert",
-        text: "Cette commande ne peut pas etre payee dans son etat actuel."
-      };
-    default:
-      if (input.paymentStatus === "failed") {
-        return {
-          kind: "alert",
-          text: "Le paiement n'a pas abouti. Vous pouvez relancer le paiement."
-        };
-      }
-
-      return null;
-  }
-}
-
 export default async function OrderConfirmationPage({
   params,
   searchParams
@@ -133,7 +40,11 @@ export default async function OrderConfirmationPage({
     notFound();
   }
 
-  const paymentMessage = getPaymentMessage({
+  const summary = getOrderStatusSummary({
+    orderStatus: order.status,
+    paymentStatus: order.payment.status
+  });
+  const paymentMessage = getOrderPaymentNotice({
     paymentStatus: order.payment.status,
     orderStatus: order.status,
     paymentParam
@@ -145,11 +56,8 @@ export default async function OrderConfirmationPage({
         <div className="page-header">
           <div>
             <p className="eyebrow">Confirmation</p>
-            <h1>Commande creee</h1>
-            <p className="lead">
-              Votre commande est enregistree. Vous pouvez suivre son paiement
-              depuis cette page.
-            </p>
+            <h1>{summary.title}</h1>
+            <p className="lead">{summary.description}</p>
           </div>
         </div>
 
@@ -165,6 +73,24 @@ export default async function OrderConfirmationPage({
 
         <div className="cart-layout order-confirmation-layout">
           <div className="checkout-line-list">
+            <article className="store-card checkout-line">
+              <div className="stack">
+                <p className="eyebrow">Synthese</p>
+                <h2>{summary.title}</h2>
+                <p className="card-copy">{summary.description}</p>
+                <p className="card-meta">Prochaine etape : {summary.nextStep}</p>
+              </div>
+
+              <div className="admin-product-tags">
+                <span className="admin-chip">
+                  {getOrderStatusLabel(order.status)}
+                </span>
+                <span className="admin-chip">
+                  {getPaymentStatusLabel(order.payment.status)}
+                </span>
+              </div>
+            </article>
+
             <article className="store-card checkout-line">
               <div className="stack">
                 <p className="meta-label">Reference</p>

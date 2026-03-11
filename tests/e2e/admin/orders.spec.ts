@@ -57,8 +57,11 @@ test("lets admin cancel a pending order from the detail page", async ({ page }) 
   ).toBeVisible();
   await expect(page.getByText("alice.orders@example.com").first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "Pochette Sable" })).toBeVisible();
-  await expect(page.getByText("En attente", { exact: true })).toBeVisible();
-  await expect(page.getByText("Paiement en attente")).toBeVisible();
+  await expect(page.getByText("En attente", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("Paiement en attente").first()).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Commande en attente de paiement" })
+  ).toBeVisible();
   await expect(page.getByText("Provider : stripe")).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Marquer en preparation" })
@@ -70,9 +73,11 @@ test("lets admin cancel a pending order from the detail page", async ({ page }) 
   await expect(
     page.getByText("Le statut de la commande a ete mis a jour.")
   ).toBeVisible();
-  await expect(page.getByText("Annulee", { exact: true })).toBeVisible();
+  await expect(page.getByText("Annulee", { exact: true }).first()).toBeVisible();
   await expect(
-    page.getByText("Aucune autre action n'est disponible pour cette commande.")
+    page.getByText("Aucune autre action n'est disponible pour cette commande.", {
+      exact: true,
+    })
   ).toBeVisible();
 
   await page.goto("/admin/orders");
@@ -128,20 +133,26 @@ test("lets admin ship a paid order from the detail page", async ({ page }) => {
     .first();
 
   await createdOrderCard.getByRole("link", { name: "Voir le detail" }).click();
-  await expect(page.getByText("Payee", { exact: true })).toBeVisible();
+  await expect(page.getByText("Payee", { exact: true }).first()).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Commande payee" })
+  ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Marquer en preparation" })
   ).toBeVisible();
 
   await page.getByRole("button", { name: "Marquer en preparation" }).click();
   await expect(page).toHaveURL(/order_status=updated$/);
-  await expect(page.getByText("En preparation", { exact: true })).toBeVisible();
+  await expect(page.getByText("En preparation", { exact: true }).first()).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Commande en preparation" })
+  ).toBeVisible();
 
   await page.getByLabel("Reference de suivi optionnelle").fill("COL-123456");
   await page.getByRole("button", { name: "Marquer comme expediee" }).click();
 
   await expect(page).toHaveURL(/order_status=shipped$/);
-  await expect(page.getByText("Expediee", { exact: true })).toBeVisible();
+  await expect(page.getByText("Expediee", { exact: true }).first()).toBeVisible();
   await expect(
     page.getByText(/Expediee le /)
   ).toBeVisible();

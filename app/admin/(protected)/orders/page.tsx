@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { listAdminOrders } from "@/db/repositories/order.repository";
 import {
-  listAdminOrders,
-  type OrderStatus,
-  type PaymentStatus
-} from "@/db/repositories/order.repository";
+  getOrderStatusLabel,
+  getOrderStatusSummary,
+  getPaymentStatusLabel
+} from "@/entities/order/order-status-presentation";
 
 export const dynamic = "force-dynamic";
 
@@ -17,34 +18,6 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",
   timeStyle: "short"
 });
-
-function getOrderStatusLabel(status: OrderStatus): string {
-  switch (status) {
-    case "shipped":
-      return "Expediee";
-    case "preparing":
-      return "En preparation";
-    case "paid":
-      return "Payee";
-    case "cancelled":
-      return "Annulee";
-    case "pending":
-    default:
-      return "En attente";
-  }
-}
-
-function getPaymentStatusLabel(status: PaymentStatus): string {
-  switch (status) {
-    case "succeeded":
-      return "Paiement reussi";
-    case "failed":
-      return "Paiement echoue";
-    case "pending":
-    default:
-      return "Paiement en attente";
-  }
-}
 
 export default async function AdminOrdersPage({
   searchParams
@@ -79,41 +52,50 @@ export default async function AdminOrdersPage({
 
         {orders.length > 0 ? (
           <div className="admin-record-list">
-            {orders.map((order) => (
-              <article className="store-card" key={order.id}>
-                <div className="stack">
-                  <p className="card-kicker">Commande</p>
-                  <h2>{order.reference}</h2>
+            {orders.map((order) => {
+              const summary = getOrderStatusSummary({
+                orderStatus: order.status,
+                paymentStatus: order.paymentStatus
+              });
+
+              return (
+                <article className="store-card" key={order.id}>
+                  <div className="stack">
+                    <p className="card-kicker">Commande</p>
+                    <h2>{order.reference}</h2>
+                    <p className="card-meta">
+                      {order.customerFirstName} {order.customerLastName}
+                    </p>
+                  </div>
+
+                  <div className="admin-product-tags">
+                    <span className="admin-chip">
+                      {getOrderStatusLabel(order.status)}
+                    </span>
+                    <span className="admin-chip">
+                      {getPaymentStatusLabel(order.paymentStatus)}
+                    </span>
+                    <span className="admin-chip">{order.totalAmount}</span>
+                    <span className="admin-chip">
+                      {order.lineCount} ligne{order.lineCount > 1 ? "s" : ""}
+                    </span>
+                  </div>
+
+                  <p className="card-copy">{summary.description}</p>
+                  <p className="card-meta">Suivant : {summary.nextStep}</p>
+                  <p className="card-copy">{order.customerEmail}</p>
                   <p className="card-meta">
-                    {order.customerFirstName} {order.customerLastName}
+                    {orderDateTimeFormatter.format(new Date(order.createdAt))}
                   </p>
-                </div>
 
-                <div className="admin-product-tags">
-                  <span className="admin-chip">
-                    {getOrderStatusLabel(order.status)}
-                  </span>
-                  <span className="admin-chip">
-                    {getPaymentStatusLabel(order.paymentStatus)}
-                  </span>
-                  <span className="admin-chip">{order.totalAmount}</span>
-                  <span className="admin-chip">
-                    {order.lineCount} ligne{order.lineCount > 1 ? "s" : ""}
-                  </span>
-                </div>
-
-                <p className="card-copy">{order.customerEmail}</p>
-                <p className="card-meta">
-                  {orderDateTimeFormatter.format(new Date(order.createdAt))}
-                </p>
-
-                <div>
-                  <Link className="link" href={`/admin/orders/${order.id}`}>
-                    Voir le detail
-                  </Link>
-                </div>
-              </article>
-            ))}
+                  <div>
+                    <Link className="link" href={`/admin/orders/${order.id}`}>
+                      Voir le detail
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         ) : (
           <div className="empty-state">

@@ -2,10 +2,14 @@ import { notFound } from "next/navigation";
 import {
   findAdminOrderById,
   type OrderEmailEventStatus,
-  type OrderStatus,
-  type PaymentStatus
+  type OrderStatus
 } from "@/db/repositories/order.repository";
 import { getAllowedOrderStatusTransitions } from "@/entities/order/order-status-transition";
+import {
+  getOrderStatusLabel,
+  getOrderStatusSummary,
+  getPaymentStatusLabel
+} from "@/entities/order/order-status-presentation";
 import { shipOrderAction } from "@/features/admin/orders/actions/ship-order-action";
 import { updateOrderStatusAction } from "@/features/admin/orders/actions/update-order-status-action";
 
@@ -26,22 +30,6 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   timeStyle: "short"
 });
 
-function getOrderStatusLabel(status: OrderStatus): string {
-  switch (status) {
-    case "shipped":
-      return "Expediee";
-    case "preparing":
-      return "En preparation";
-    case "paid":
-      return "Payee";
-    case "cancelled":
-      return "Annulee";
-    case "pending":
-    default:
-      return "En attente";
-  }
-}
-
 function getOrderTransitionLabel(status: OrderStatus): string {
   switch (status) {
     case "preparing":
@@ -50,18 +38,6 @@ function getOrderTransitionLabel(status: OrderStatus): string {
       return "Annuler la commande";
     default:
       return status;
-  }
-}
-
-function getPaymentStatusLabel(status: PaymentStatus): string {
-  switch (status) {
-    case "succeeded":
-      return "Paiement reussi";
-    case "failed":
-      return "Paiement echoue";
-    case "pending":
-    default:
-      return "Paiement en attente";
   }
 }
 
@@ -108,6 +84,10 @@ export default async function AdminOrderDetailPage({
   }
 
   const allowedTransitions = getAllowedOrderStatusTransitions(order.status);
+  const summary = getOrderStatusSummary({
+    orderStatus: order.status,
+    paymentStatus: order.payment.status
+  });
   const statusMessage =
     orderStatusParam === "updated"
       ? "Le statut de la commande a ete mis a jour."
@@ -142,6 +122,24 @@ export default async function AdminOrderDetailPage({
 
         <div className="cart-layout">
           <div className="checkout-line-list">
+            <article className="store-card checkout-line">
+              <div className="stack">
+                <p className="eyebrow">Synthese</p>
+                <h2>{summary.title}</h2>
+                <p className="card-copy">{summary.description}</p>
+                <p className="card-meta">Suivant : {summary.nextStep}</p>
+              </div>
+
+              <div className="admin-product-tags">
+                <span className="admin-chip">
+                  {getOrderStatusLabel(order.status)}
+                </span>
+                <span className="admin-chip">
+                  {getPaymentStatusLabel(order.payment.status)}
+                </span>
+              </div>
+            </article>
+
             <article className="store-card checkout-line">
               <div className="stack">
                 <p className="meta-label">Reference</p>

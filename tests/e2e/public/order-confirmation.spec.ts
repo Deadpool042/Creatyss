@@ -28,10 +28,18 @@ test("creates an order from checkout and clears the cart", async ({ page }) => {
 
   await expect(page).toHaveURL(/\/checkout\/confirmation\/CRY-[A-Z0-9]{10}$/);
   await expect(
-    page.getByRole("heading", { name: "Commande creee" })
+    page.getByRole("heading", {
+      level: 1,
+      name: "Commande en attente de paiement"
+    })
   ).toBeVisible();
-  await expect(page.getByText("En attente", { exact: true })).toBeVisible();
-  await expect(page.getByText("Paiement en attente")).toBeVisible();
+  await expect(
+    page.getByText(
+      "La commande est creee, mais le paiement doit encore etre confirme."
+    ).first()
+  ).toBeVisible();
+  await expect(page.getByText("En attente", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("Paiement en attente").first()).toBeVisible();
   await expect(page.getByText("jeanne@example.com")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Pochette Sable" })).toBeVisible();
   await expect(
@@ -91,7 +99,10 @@ test("reflects a cancelled order consistently on the public confirmation page", 
   await expect(page).toHaveURL(/order_status=updated$/);
 
   await page.goto(confirmationUrl);
-  await expect(page.getByText("Annulee", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Commande annulee" })
+  ).toBeVisible();
+  await expect(page.getByText("Annulee", { exact: true }).first()).toBeVisible();
   await expect(
     page.getByText("Cette commande a ete annulee.")
   ).toBeVisible();
@@ -155,8 +166,15 @@ test("reflects a shipped order consistently on the public confirmation page", as
   await expect(page).toHaveURL(/order_status=shipped$/);
 
   await page.goto(confirmationUrl);
-  await expect(page.getByText("Expediee", { exact: true })).toBeVisible();
-  await expect(page.getByText("Votre commande a ete expediee.")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Commande expediee" })
+  ).toBeVisible();
+  await expect(page.getByText("Expediee", { exact: true }).first()).toBeVisible();
+  await expect(
+    page
+      .getByText("La commande a quitte l'atelier et est en cours d'acheminement.")
+      .first()
+  ).toBeVisible();
   await expect(page.getByText(/Date d'expedition : /)).toBeVisible();
   await expect(page.getByText("Reference de suivi : COL-654321")).toBeVisible();
   await expect(
