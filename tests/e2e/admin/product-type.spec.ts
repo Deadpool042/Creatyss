@@ -5,7 +5,7 @@ function uniqueSuffix(): string {
   return Date.now().toString();
 }
 
-test("keeps simple products limited to one sellable variant and refuses unsafe conversion", async ({
+test("keeps simple products focused on a single sellable offer and refuses unsafe conversion", async ({
   page
 }) => {
   test.setTimeout(90_000);
@@ -24,11 +24,14 @@ test("keeps simple products limited to one sellable variant and refuses unsafe c
 
   await expect(page).toHaveURL(/\/admin\/products\/[0-9]+\?product_status=created$/);
   await expect(page.getByText("Produit cree avec succes.")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Offre vendable", exact: true })
+  ).toBeVisible();
 
   const variantCreateForm = page
     .locator("form")
     .filter({
-      has: page.getByRole("button", { name: "Ajouter une declinaison" })
+      has: page.getByRole("button", { name: "Definir l'offre vendable" })
     })
     .first();
 
@@ -39,25 +42,21 @@ test("keeps simple products limited to one sellable variant and refuses unsafe c
   await variantCreateForm.getByLabel("Nom de la variante").fill("Version unique");
   await variantCreateForm.getByLabel("Nom de couleur").fill("Naturel");
   await variantCreateForm
-    .getByRole("button", { name: "Ajouter une declinaison" })
+    .getByRole("button", { name: "Definir l'offre vendable" })
     .click();
 
   await expect(page).toHaveURL(/variant_status=created$/);
   await expect(page.getByText("Variante creee avec succes.")).toBeVisible();
-
-  await variantCreateForm.getByLabel("SKU").fill(`SKU-SIMPLE-${suffix}-BIS`);
-  await variantCreateForm.getByLabel("Prix", { exact: true }).fill("59");
-  await variantCreateForm.getByLabel("Statut").selectOption("published");
-  await variantCreateForm.getByLabel("Stock disponible").fill("2");
-  await variantCreateForm.getByLabel("Nom de la variante").fill("Version bis");
-  await variantCreateForm.getByLabel("Nom de couleur").fill("Sable");
-  await variantCreateForm
-    .getByRole("button", { name: "Ajouter une declinaison" })
-    .click();
-
-  await expect(page).toHaveURL(/variant_error=simple_product_single_variant_only$/);
   await expect(
-    page.getByText("Un produit simple ne peut avoir qu'une seule declinaison vendable.")
+    page.getByText(
+      "Ce produit simple utilise deja son offre vendable unique. Modifiez-la ci-dessous."
+    )
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Definir l'offre vendable" })
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Enregistrer l'offre vendable" })
   ).toBeVisible();
 
   await page.goto("/admin/products");

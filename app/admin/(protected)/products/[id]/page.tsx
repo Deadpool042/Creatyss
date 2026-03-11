@@ -13,6 +13,7 @@ import {
 import {
   listAdminProductVariants,
 } from "@/db/repositories/admin-product-variant.repository";
+import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
 import { deleteProductAction } from "@/features/admin/products/actions/delete-product-action";
 import { deleteProductImageAction } from "@/features/admin/products/actions/delete-product-image-action";
 import { deleteProductVariantAction } from "@/features/admin/products/actions/delete-product-variant-action";
@@ -47,10 +48,6 @@ function readSearchParam(
 
 function getProductStatusLabel(status: "draft" | "published"): string {
   return status === "published" ? "Publie" : "Brouillon";
-}
-
-function getProductTypeLabel(productType: "simple" | "variable"): string {
-  return productType === "simple" ? "Simple" : "Variable";
 }
 
 function getProductStatusMessage(status: string | undefined): string | null {
@@ -323,6 +320,13 @@ export default async function ProductDetailPage({
           status: null,
           error: null
         };
+  const productPresentation = getAdminProductPresentation(
+    product.productType,
+    variants.length
+  );
+  const isSimpleProduct = product.productType === "simple";
+  const simpleProductHasInconsistentVariantCount = isSimpleProduct && variants.length > 1;
+  const showVariantCreateForm = !isSimpleProduct || variants.length === 0;
 
   return (
     <div className="admin-product-detail">
@@ -332,8 +336,8 @@ export default async function ProductDetailPage({
             <p className="eyebrow">Produits</p>
             <h1>Modifier le produit</h1>
             <p className="lead">
-              Mettez a jour le produit parent, ses categories, ses variantes et
-              ses images depuis le meme ecran.
+              Mettez a jour le produit, son type, son offre vendable et ses
+              images depuis le meme ecran.
             </p>
           </div>
 
@@ -344,7 +348,7 @@ export default async function ProductDetailPage({
 
         <div className="admin-product-tags">
           <span className="admin-chip">{getProductStatusLabel(product.status)}</span>
-          <span className="admin-chip">{getProductTypeLabel(product.productType)}</span>
+          <span className="admin-chip">{productPresentation.typeLabel}</span>
           <span className="admin-chip">
             {product.isFeatured ? "Mis en avant" : "Standard"}
           </span>
@@ -352,10 +356,7 @@ export default async function ProductDetailPage({
             {product.categories.length} categorie
             {product.categories.length > 1 ? "s" : ""}
           </span>
-          <span className="admin-chip">
-            {variants.length} variante
-            {variants.length > 1 ? "s" : ""}
-          </span>
+          <span className="admin-chip">{productPresentation.sellableCountLabel}</span>
         </div>
       </section>
 
@@ -665,13 +666,9 @@ export default async function ProductDetailPage({
 
       <section className="section admin-product-section">
         <div className="stack">
-          <p className="eyebrow">Declinaisons</p>
-          <h2>Produits vendables</h2>
-          <p className="card-copy">
-            Chaque declinaison regroupe des informations produit vendable
-            comme le SKU, le prix, le statut et le stock, ainsi que les
-            informations de variante comme le nom et la couleur.
-          </p>
+          <p className="eyebrow">{productPresentation.sectionEyebrow}</p>
+          <h2>{productPresentation.sectionTitle}</h2>
+          <p className="card-copy">{productPresentation.sectionDescription}</p>
         </div>
 
         {variantStatusMessage ? (
@@ -690,12 +687,30 @@ export default async function ProductDetailPage({
             {variantImageMessage.error}
           </p>
         ) : null}
+        {simpleProductHasInconsistentVariantCount ? (
+          <p className="admin-alert" role="alert">
+            Ce produit simple contient plusieurs offres vendables. Revenez au type
+            Variable ou conservez une seule offre vendable.
+          </p>
+        ) : null}
+        {isSimpleProduct && variants.length === 1 ? (
+          <p className="admin-muted-note">
+            Ce produit simple utilise deja son offre vendable unique. Modifiez-la
+            ci-dessous.
+          </p>
+        ) : null}
 
-        <form action={createProductVariantAction} className="admin-form admin-product-form">
+        {showVariantCreateForm ? (
+          <form
+            action={createProductVariantAction}
+            className="admin-form admin-product-form"
+          >
           <input name="productId" type="hidden" value={product.id} />
 
           <fieldset className="admin-fieldset">
-            <legend className="meta-label">Informations produit</legend>
+            <legend className="meta-label">
+              {productPresentation.saleFieldsetLegend}
+            </legend>
 
             <label className="admin-field">
               <span className="meta-label">SKU</span>
@@ -771,10 +786,11 @@ export default async function ProductDetailPage({
 
           <div className="admin-actions">
             <button className="button" type="submit">
-              Ajouter une declinaison
+              {productPresentation.createActionLabel}
             </button>
           </div>
-        </form>
+          </form>
+        ) : null}
 
         {variants.length > 0 ? (
           <div className="variant-list admin-record-list">
@@ -784,7 +800,7 @@ export default async function ProductDetailPage({
               return (
                 <article className="variant-card admin-variant-card" key={variant.id}>
                   <div className="stack">
-                    <p className="meta-label">Produit vendable</p>
+                    <p className="meta-label">{productPresentation.itemKicker}</p>
                     <div className="admin-product-tags">
                       <span className="admin-chip">{variant.colorName}</span>
                       <span className="admin-chip">
@@ -813,7 +829,9 @@ export default async function ProductDetailPage({
                     <input name="variantId" type="hidden" value={variant.id} />
 
                     <fieldset className="admin-fieldset">
-                      <legend className="meta-label">Informations produit</legend>
+                      <legend className="meta-label">
+                        {productPresentation.saleFieldsetLegend}
+                      </legend>
 
                       <label className="admin-field">
                         <span className="meta-label">SKU</span>
@@ -924,7 +942,7 @@ export default async function ProductDetailPage({
 
                     <div className="admin-inline-actions">
                       <button className="button" type="submit">
-                        Enregistrer la declinaison
+                        {productPresentation.saveActionLabel}
                       </button>
                     </div>
                   </form>
@@ -934,14 +952,18 @@ export default async function ProductDetailPage({
                     <input name="variantId" type="hidden" value={variant.id} />
 
                     <button className="button link-subtle" type="submit">
-                      Supprimer la declinaison
+                      {productPresentation.deleteActionLabel}
                     </button>
                   </form>
 
                   <div className="admin-product-subsection">
                     <div className="stack">
-                      <p className="eyebrow">Images de la declinaison</p>
-                      <h3>Images pour {variant.colorName}</h3>
+                      <p className="eyebrow">{productPresentation.imagesEyebrow}</p>
+                      <h3>
+                        {isSimpleProduct
+                          ? "Images de l'offre vendable"
+                          : `Images pour ${variant.colorName}`}
+                      </h3>
                       <p className="card-copy">
                         Ajoutez des medias existants pour cette declinaison.
                       </p>
@@ -1090,7 +1112,9 @@ export default async function ProductDetailPage({
                       </div>
                     ) : (
                       <p className="admin-muted-note">
-                        Cette variante n&apos;a pas encore d&apos;image associee.
+                        {isSimpleProduct
+                          ? "Cette offre vendable n'a pas encore d'image associee."
+                          : "Cette variante n'a pas encore d'image associee."}
                       </p>
                     )}
                   </div>
@@ -1100,12 +1124,9 @@ export default async function ProductDetailPage({
           </div>
         ) : (
           <div className="empty-state">
-            <p className="eyebrow">Aucune declinaison</p>
-            <h2>Ce produit n&apos;a pas encore de declinaison vendable</h2>
-            <p className="card-copy">
-              Ajoutez une premiere declinaison pour definir son SKU, son prix,
-              son stock et sa couleur.
-            </p>
+            <p className="eyebrow">{productPresentation.emptyEyebrow}</p>
+            <h2>{productPresentation.emptyTitle}</h2>
+            <p className="card-copy">{productPresentation.emptyDescription}</p>
           </div>
         )}
       </section>

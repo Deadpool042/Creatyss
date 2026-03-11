@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listAdminProducts } from "@/db/repositories/admin-product.repository";
+import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
 
 export const dynamic = "force-dynamic";
 
@@ -12,10 +13,6 @@ type AdminProductsPageProps = Readonly<{
 
 function getStatusLabel(status: string): string {
   return status === "published" ? "Publie" : "Brouillon";
-}
-
-function getProductTypeLabel(productType: "simple" | "variable"): string {
-  return productType === "simple" ? "Simple" : "Variable";
 }
 
 function getStatusMessage(status: string | undefined): string | null {
@@ -77,49 +74,51 @@ export default async function AdminProductsPage({
 
         {products.length > 0 ? (
           <div className="admin-product-list">
-            {products.map((product) => (
-              <article className="store-card admin-product-card" key={product.id}>
-                <div className="stack">
-                  <p className="card-kicker">Produit</p>
-                  <h2>{product.name}</h2>
-                  <p className="card-meta">{product.slug}</p>
-                </div>
+            {products.map((product) => {
+              const presentation = getAdminProductPresentation(
+                product.productType,
+                product.variantCount
+              );
 
-                {product.shortDescription ? (
-                  <p className="card-copy">{product.shortDescription}</p>
-                ) : (
-                  <p className="card-copy">
-                    Aucune description courte pour ce produit.
-                  </p>
-                )}
+              return (
+                <article className="store-card admin-product-card" key={product.id}>
+                  <div className="stack">
+                    <p className="card-kicker">Produit</p>
+                    <h2>{product.name}</h2>
+                    <p className="card-meta">{product.slug}</p>
+                  </div>
 
-                <div className="admin-product-tags">
-                  <span className="admin-chip">
-                    {getStatusLabel(product.status)}
-                  </span>
-                  <span className="admin-chip">
-                    {getProductTypeLabel(product.productType)}
-                  </span>
-                  <span className="admin-chip">
-                    {product.isFeatured ? "Mis en avant" : "Standard"}
-                  </span>
-                  <span className="admin-chip">
-                    {product.categoryCount} categorie
-                    {product.categoryCount > 1 ? "s" : ""}
-                  </span>
-                  <span className="admin-chip">
-                    {product.variantCount} variante
-                    {product.variantCount > 1 ? "s" : ""}
-                  </span>
-                </div>
+                  {product.shortDescription ? (
+                    <p className="card-copy">{product.shortDescription}</p>
+                  ) : (
+                    <p className="card-copy">
+                      Aucune description courte pour ce produit.
+                    </p>
+                  )}
 
-                <div>
-                  <Link className="link" href={`/admin/products/${product.id}`}>
-                    Modifier le produit
-                  </Link>
-                </div>
-              </article>
-            ))}
+                  <div className="admin-product-tags">
+                    <span className="admin-chip">{getStatusLabel(product.status)}</span>
+                    <span className="admin-chip">{presentation.typeLabel}</span>
+                    <span className="admin-chip">
+                      {product.isFeatured ? "Mis en avant" : "Standard"}
+                    </span>
+                    <span className="admin-chip">
+                      {product.categoryCount} categorie
+                      {product.categoryCount > 1 ? "s" : ""}
+                    </span>
+                    <span className="admin-chip">
+                      {presentation.sellableCountLabel}
+                    </span>
+                  </div>
+
+                  <div>
+                    <Link className="link" href={`/admin/products/${product.id}`}>
+                      Modifier le produit
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         ) : (
           <div className="empty-state">
