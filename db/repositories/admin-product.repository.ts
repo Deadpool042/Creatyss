@@ -1,6 +1,11 @@
 import { type PoolClient } from "pg";
 import { db, queryFirst, queryRows } from "@/db/client";
 import {
+  resolveSimpleProductOffer,
+  type SimpleProductOffer,
+  type SimpleProductOfferFields
+} from "@/entities/product/simple-product-offer";
+import {
   canChangeProductTypeToSimple,
   type ProductTypeCompatibilityErrorCode
 } from "@/entities/product/product-type-rules";
@@ -9,6 +14,13 @@ import { type ProductType } from "@/entities/product/product-input";
 type TimestampValue = Date | string;
 
 type AdminProductStatus = "draft" | "published";
+
+type AdminProductSimpleFieldsRow = {
+  simple_sku: string | null;
+  simple_price: string | null;
+  simple_compare_at_price: string | null;
+  simple_stock_quantity: number | null;
+};
 
 type AdminProductSummaryRow = {
   id: string;
@@ -24,7 +36,7 @@ type AdminProductSummaryRow = {
   updated_at: TimestampValue;
 };
 
-type AdminProductRow = {
+type AdminProductRow = AdminProductSimpleFieldsRow & {
   id: string;
   name: string;
   slug: string;
@@ -58,6 +70,13 @@ type SimpleProductFieldsRow = {
   price: string;
   compare_at_price: string | null;
   stock_quantity: number;
+};
+
+type AdminLegacySimpleOfferCandidateRow = {
+  sku: string | null;
+  price: string | null;
+  compare_at_price: string | null;
+  stock_quantity: number | null;
 };
 
 type PostgreSqlErrorLike = Error & {
@@ -121,6 +140,7 @@ export type AdminProductDetail = {
   isFeatured: boolean;
   categories: AdminProductCategoryAssignment[];
   categoryIds: string[];
+  simpleOffer: SimpleProductOffer | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -179,7 +199,8 @@ function mapAdminProductSummary(
 
 function mapAdminProductDetail(
   row: AdminProductRow,
-  categories: AdminProductCategoryAssignment[]
+  categories: AdminProductCategoryAssignment[],
+  simpleOffer: SimpleProductOffer | null
 ): AdminProductDetail {
   return {
     id: row.id,
@@ -194,6 +215,7 @@ function mapAdminProductDetail(
     isFeatured: row.is_featured,
     categories,
     categoryIds: categories.map((category) => category.id),
+    simpleOffer,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
   };
@@ -235,6 +257,17 @@ function normalizeCategoryIds(categoryIds: readonly string[]): string[] {
   return [...new Set(categoryIds)];
 }
 
+function getNativeSimpleOfferFields(
+  row: AdminProductSimpleFieldsRow
+): SimpleProductOfferFields {
+  return {
+    sku: row.simple_sku,
+    price: row.simple_price,
+    compareAtPrice: row.simple_compare_at_price,
+    stockQuantity: row.simple_stock_quantity
+  };
+}
+
 async function listAssignedCategoriesByProductId(
   client: PoolClient,
   productId: string
@@ -255,6 +288,51 @@ async function listAssignedCategoriesByProductId(
   );
 
   return result.rows.map(mapCategoryAssignment);
+}
+
+async function listLegacySimpleOfferCandidatesByProductId(
+  client: PoolClient,
+  productId: string
+): Promise<SimpleProductOfferFields[]> {
+  const result = await client.query<AdminLegacySimpleOfferCandidateRow>(
+    `
+      select
+        pv.sku,
+        pv.price::text as price,
+        pv.compare_at_price::text as compare_at_price,
+        pv.stock_quantity
+      from product_variants pv
+      where pv.product_id = $1::bigint
+      order by pv.is_default desc, pv.id asc
+    `,
+    [productId]
+  );
+
+  return result.rows.map((row) => ({
+    sku: row.sku,
+    price: row.price,
+    compareAtPrice: row.compare_at_price,
+    stockQuantity: row.stock_quantity
+  }));
+}
+
+async function resolveAdminSimpleOffer(
+  client: PoolClient,
+  row: AdminProductRow
+): Promise<SimpleProductOffer | null> {
+  if (row.product_type !== "simple") {
+    return null;
+  }
+
+  const legacyOffers = await listLegacySimpleOfferCandidatesByProductId(
+    client,
+    row.id
+  );
+
+  return resolveSimpleProductOffer({
+    native: getNativeSimpleOfferFields(row),
+    legacyOffers
+  });
 }
 
 async function ensureCategoriesExist(
@@ -456,6 +534,10 @@ export async function findAdminProductById(
         p.seo_description,
         p.status,
         p.product_type,
+        p.simple_sku,
+        p.simple_price::text as simple_price,
+        p.simple_compare_at_price::text as simple_compare_at_price,
+        p.simple_stock_quantity,
         p.is_featured,
         p.created_at,
         p.updated_at
@@ -473,9 +555,12 @@ export async function findAdminProductById(
   const client = await db.connect();
 
   try {
-    const categories = await listAssignedCategoriesByProductId(client, row.id);
+    const [categories, simpleOffer] = await Promise.all([
+      listAssignedCategoriesByProductId(client, row.id),
+      resolveAdminSimpleOffer(client, row)
+    ]);
 
-    return mapAdminProductDetail(row, categories);
+    return mapAdminProductDetail(row, categories, simpleOffer);
   } finally {
     client.release();
   }
@@ -514,6 +599,10 @@ export async function createAdminProduct(
           seo_description,
           status,
           product_type,
+          simple_sku,
+          simple_price::text as simple_price,
+          simple_compare_at_price::text as simple_compare_at_price,
+          simple_stock_quantity,
           is_featured,
           created_at,
           updated_at
@@ -541,11 +630,46 @@ export async function createAdminProduct(
 
     await clearSimpleProductFields(client, row.id);
 
-    const categories = await listAssignedCategoriesByProductId(client, row.id);
+    const refreshedRow = (
+      await client.query<AdminProductRow>(
+        `
+          select
+            p.id::text as id,
+            p.name,
+            p.slug,
+            p.short_description,
+            p.description,
+            p.seo_title,
+            p.seo_description,
+            p.status,
+            p.product_type,
+            p.simple_sku,
+            p.simple_price::text as simple_price,
+            p.simple_compare_at_price::text as simple_compare_at_price,
+            p.simple_stock_quantity,
+            p.is_featured,
+            p.created_at,
+            p.updated_at
+          from products p
+          where p.id = $1::bigint
+          limit 1
+        `,
+        [row.id]
+      )
+    ).rows[0];
+
+    if (!refreshedRow) {
+      throw new Error("Failed to reload product after creation.");
+    }
+
+    const [categories, simpleOffer] = await Promise.all([
+      listAssignedCategoriesByProductId(client, row.id),
+      resolveAdminSimpleOffer(client, refreshedRow)
+    ]);
 
     await client.query("commit");
 
-    return mapAdminProductDetail(row, categories);
+    return mapAdminProductDetail(refreshedRow, categories, simpleOffer);
   } catch (error) {
     await client.query("rollback");
 
@@ -608,6 +732,10 @@ export async function updateAdminProduct(
           seo_description,
           status,
           product_type,
+          simple_sku,
+          simple_price::text as simple_price,
+          simple_compare_at_price::text as simple_compare_at_price,
+          simple_stock_quantity,
           is_featured,
           created_at,
           updated_at
@@ -634,11 +762,14 @@ export async function updateAdminProduct(
     }
 
     await replaceProductCategories(client, row.id, categoryIds);
-    const categories = await listAssignedCategoriesByProductId(client, row.id);
+    const [categories, simpleOffer] = await Promise.all([
+      listAssignedCategoriesByProductId(client, row.id),
+      resolveAdminSimpleOffer(client, row)
+    ]);
 
     await client.query("commit");
 
-    return mapAdminProductDetail(row, categories);
+    return mapAdminProductDetail(row, categories, simpleOffer);
   } catch (error) {
     await client.query("rollback");
 

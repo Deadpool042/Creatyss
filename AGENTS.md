@@ -88,7 +88,7 @@ Construire et faire évoluer la boutique e-commerce custom Creatyss, local-first
 
 - Le projet évolue par versions et lots documentés dans `docs/`.
 - Les documents de travail sont organisés par version, par exemple `docs/v6/*.md`.
-- Pour toute demande liée à un lot, toujours prendre comme source de vérité le document de lot explicitement visé.
+- Pour toute demande liée à un lot, toujours prendre comme source de vérité le ou les documents explicitement visés dans `docs/vX/`.
 - Ne pas extrapoler au-delà du lot demandé.
 - Ne pas implémenter une étape suivante non explicitement demandée.
 - En cas de tension entre une ancienne implémentation et le lot courant, appliquer le lot courant tout en préservant la compatibilité demandée.
@@ -137,9 +137,12 @@ Quand tu proposes une modification :
 - Pour tout lot non trivial, commencer par proposer un plan avant toute modification de code.
 - Si la demande vise un document de lot `docs/vX/*.md`, lire ce document en entier puis produire un plan d’implémentation strict.
 - Tant que le plan n’est pas validé, ne modifier aucun fichier.
-- Le plan doit lister :
-  - les fichiers à créer ou modifier
-  - l’ordre d’exécution
-  - les impacts de compatibilité
-  - les vérifications à exécuter
+- Le plan doit être structuré dans cet ordre :
+  1. objectif
+  2. périmètre
+  3. hors périmètre
+  4. fichiers à créer ou modifier
+  5. ordre d’exécution
+  6. impacts de compatibilité
+  7. vérifications
 - Pour les lots importants, le plan peut être matérialisé dans un document dédié sous `docs/vX/plans/`.

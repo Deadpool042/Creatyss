@@ -1,3 +1,8 @@
+import {
+  resolveSimpleProductOffer,
+  type SimpleProductOffer,
+  type SimpleProductOfferFields
+} from "@/entities/product/simple-product-offer";
 import { queryFirst, queryRows } from "./client";
 
 export type DbId = string;
@@ -40,6 +45,7 @@ export type PublishedProductSummary = {
 
 export type PublishedCatalogProductSummary = PublishedProductSummary & {
   isAvailable: boolean;
+  simpleOffer: SimpleProductOffer | null;
 };
 
 export type PublishedProductImage = {
@@ -73,6 +79,7 @@ export type PublishedProductVariant = {
 
 export type PublishedProductDetail = PublishedProductSummary & {
   isAvailable: boolean;
+  simpleOffer: SimpleProductOffer | null;
   images: PublishedProductImage[];
   variants: PublishedProductVariant[];
 };
@@ -136,7 +143,14 @@ type CatalogFilterCategoryRow = {
   slug: string;
 };
 
-type ProductSummaryRow = {
+type ProductSimpleFieldsRow = {
+  simple_sku: string | null;
+  simple_price: MoneyAmount | null;
+  simple_compare_at_price: MoneyAmount | null;
+  simple_stock_quantity: number | null;
+};
+
+type ProductSummaryRow = ProductSimpleFieldsRow & {
   id: DbId;
   name: string;
   slug: string;
@@ -152,6 +166,11 @@ type ProductSummaryRow = {
 
 type ProductCatalogSummaryRow = ProductSummaryRow & {
   is_available: boolean;
+  legacy_exploitable_variant_count: number;
+  legacy_variant_sku: string | null;
+  legacy_variant_price: MoneyAmount | null;
+  legacy_variant_compare_at_price: MoneyAmount | null;
+  legacy_variant_stock_quantity: number | null;
 };
 
 type ProductImageRow = {
@@ -251,12 +270,55 @@ function mapProductSummary(row: ProductSummaryRow): PublishedProductSummary {
   };
 }
 
+function getNativeSimpleOfferFields(
+  row: ProductSimpleFieldsRow
+): SimpleProductOfferFields {
+  return {
+    sku: row.simple_sku,
+    price: row.simple_price,
+    compareAtPrice: row.simple_compare_at_price,
+    stockQuantity: row.simple_stock_quantity
+  };
+}
+
+function resolvePublishedSimpleOffer(input: {
+  productType: "simple" | "variable";
+  native: SimpleProductOfferFields;
+  legacyOffers: readonly SimpleProductOfferFields[];
+}): SimpleProductOffer | null {
+  if (input.productType !== "simple") {
+    return null;
+  }
+
+  return resolveSimpleProductOffer({
+    native: input.native,
+    legacyOffers: input.legacyOffers
+  });
+}
+
 function mapCatalogProductSummary(
   row: ProductCatalogSummaryRow
 ): PublishedCatalogProductSummary {
+  const simpleOffer = resolvePublishedSimpleOffer({
+    productType: row.product_type,
+    native: getNativeSimpleOfferFields(row),
+    legacyOffers:
+      row.legacy_exploitable_variant_count === 1
+        ? [
+            {
+              sku: row.legacy_variant_sku,
+              price: row.legacy_variant_price,
+              compareAtPrice: row.legacy_variant_compare_at_price,
+              stockQuantity: row.legacy_variant_stock_quantity
+            }
+          ]
+        : []
+  });
+
   return {
     ...mapProductSummary(row),
-    isAvailable: row.is_available
+    isAvailable: row.is_available,
+    simpleOffer
   };
 }
 
@@ -344,6 +406,10 @@ async function listHomepageFeaturedProducts(
         p.short_description,
         p.description,
         p.product_type,
+        p.simple_sku,
+        p.simple_price::text as simple_price,
+        p.simple_compare_at_price::text as simple_compare_at_price,
+        p.simple_stock_quantity,
         p.is_featured,
         p.seo_title,
         p.seo_description,
@@ -457,81 +523,150 @@ export async function listPublishedProducts(
   const rows = await queryRows<ProductCatalogSummaryRow>(
     `
       select
-        p.id::text as id,
-        p.name,
-        p.slug,
-        p.short_description,
-        p.description,
-        p.product_type,
-        p.is_featured,
-        exists (
-          select 1
+        catalog_products.id,
+        catalog_products.name,
+        catalog_products.slug,
+        catalog_products.short_description,
+        catalog_products.description,
+        catalog_products.product_type,
+        catalog_products.simple_sku,
+        catalog_products.simple_price,
+        catalog_products.simple_compare_at_price,
+        catalog_products.simple_stock_quantity,
+        catalog_products.is_featured,
+        catalog_products.is_available,
+        catalog_products.legacy_exploitable_variant_count,
+        catalog_products.legacy_variant_sku,
+        catalog_products.legacy_variant_price,
+        catalog_products.legacy_variant_compare_at_price,
+        catalog_products.legacy_variant_stock_quantity,
+        catalog_products.seo_title,
+        catalog_products.seo_description,
+        catalog_products.created_at,
+        catalog_products.updated_at
+      from (
+        select
+          p.id::text as id,
+          p.name,
+          p.slug,
+          p.short_description,
+          p.description,
+          p.product_type,
+          p.simple_sku,
+          p.simple_price::text as simple_price,
+          p.simple_compare_at_price::text as simple_compare_at_price,
+          p.simple_stock_quantity,
+          p.is_featured,
+          case
+            when p.product_type = 'simple' then
+              case
+                when p.simple_sku is not null
+                  and btrim(p.simple_sku) <> ''
+                  and p.simple_price is not null
+                  and p.simple_stock_quantity is not null
+                then p.simple_stock_quantity > 0
+                when coalesce(legacy_simple_offer.legacy_exploitable_variant_count, 0) = 1
+                  and legacy_simple_offer.legacy_variant_sku is not null
+                  and btrim(legacy_simple_offer.legacy_variant_sku) <> ''
+                  and legacy_simple_offer.legacy_variant_price is not null
+                  and legacy_simple_offer.legacy_variant_stock_quantity is not null
+                then legacy_simple_offer.legacy_variant_stock_quantity > 0
+                else false
+              end
+            else coalesce(published_variants.has_available_variant, false)
+          end as is_available,
+          coalesce(legacy_simple_offer.legacy_exploitable_variant_count, 0)
+            as legacy_exploitable_variant_count,
+          legacy_simple_offer.legacy_variant_sku,
+          legacy_simple_offer.legacy_variant_price,
+          legacy_simple_offer.legacy_variant_compare_at_price,
+          legacy_simple_offer.legacy_variant_stock_quantity,
+          p.seo_title,
+          p.seo_description,
+          p.created_at,
+          p.updated_at
+        from products p
+        left join lateral (
+          select
+            count(*)::int as legacy_exploitable_variant_count,
+            (
+              array_agg(pv.sku order by pv.is_default desc, pv.id asc)
+            )[1] as legacy_variant_sku,
+            (
+              array_agg(pv.price::text order by pv.is_default desc, pv.id asc)
+            )[1] as legacy_variant_price,
+            (
+              array_agg(
+                pv.compare_at_price::text
+                order by pv.is_default desc, pv.id asc
+              )
+            )[1] as legacy_variant_compare_at_price,
+            (
+              array_agg(pv.stock_quantity order by pv.is_default desc, pv.id asc)
+            )[1] as legacy_variant_stock_quantity
           from product_variants pv
           where pv.product_id = p.id
             and pv.status = 'published'
-            and pv.stock_quantity > 0
-        ) as is_available,
-        p.seo_title,
-        p.seo_description,
-        p.created_at,
-        p.updated_at
-      from products p
-      where p.status = 'published'
-        and (
-          $1::text is null
-          or p.name ilike '%' || $1 || '%'
-          or p.slug ilike '%' || $1 || '%'
-          or exists (
-            select 1
-            from product_categories pc
-            join categories c
-              on c.id = pc.category_id
-            where pc.product_id = p.id
-              and (
-                c.name ilike '%' || $1 || '%'
-                or c.slug ilike '%' || $1 || '%'
-              )
+            and pv.sku is not null
+            and btrim(pv.sku) <> ''
+            and pv.price is not null
+            and pv.stock_quantity is not null
+        ) as legacy_simple_offer on true
+        left join lateral (
+          select
+            coalesce(bool_or(pv.stock_quantity > 0), false) as has_available_variant
+          from product_variants pv
+          where pv.product_id = p.id
+            and pv.status = 'published'
+        ) as published_variants on true
+        where p.status = 'published'
+          and (
+            $1::text is null
+            or p.name ilike '%' || $1 || '%'
+            or p.slug ilike '%' || $1 || '%'
+            or exists (
+              select 1
+              from product_categories pc
+              join categories c
+                on c.id = pc.category_id
+              where pc.product_id = p.id
+                and (
+                  c.name ilike '%' || $1 || '%'
+                  or c.slug ilike '%' || $1 || '%'
+                )
+            )
+            or exists (
+              select 1
+              from product_variants pv
+              where pv.product_id = p.id
+                and pv.status = 'published'
+                and pv.color_name ilike '%' || $1 || '%'
+            )
           )
-          or exists (
-            select 1
-            from product_variants pv
-            where pv.product_id = p.id
-              and pv.status = 'published'
-              and pv.color_name ilike '%' || $1 || '%'
+          and (
+            $2::text is null
+            or exists (
+              select 1
+              from product_categories pc
+              join categories c
+                on c.id = pc.category_id
+              where pc.product_id = p.id
+                and c.slug = $2
+            )
           )
-        )
-        and (
-          $2::text is null
-          or exists (
-            select 1
-            from product_categories pc
-            join categories c
-              on c.id = pc.category_id
-            where pc.product_id = p.id
-              and c.slug = $2
-          )
-        )
-        and (
-          not $3::boolean
-          or exists (
-            select 1
-            from product_variants pv
-            where pv.product_id = p.id
-              and pv.status = 'published'
-              and pv.stock_quantity > 0
-          )
-        )
+      ) as catalog_products
+      where not $3::boolean or catalog_products.is_available
       order by
         case
           when $1::text is null
             and $2::text is null
             and not $3::boolean
-            and p.is_featured
+            and catalog_products.is_featured
           then 0
           else 1
         end asc,
-        p.created_at desc,
-        p.id desc
+        catalog_products.created_at desc,
+        catalog_products.id desc
     `,
     [filters.searchQuery, filters.categorySlug, filters.onlyAvailable]
   );
@@ -551,6 +686,10 @@ export async function getPublishedProductBySlug(
         p.short_description,
         p.description,
         p.product_type,
+        p.simple_sku,
+        p.simple_price::text as simple_price,
+        p.simple_compare_at_price::text as simple_compare_at_price,
+        p.simple_stock_quantity,
         p.is_featured,
         p.seo_title,
         p.seo_description,
@@ -669,10 +808,24 @@ export async function getPublishedProductBySlug(
     updatedAt: toIsoTimestamp(row.updated_at),
     images: imagesByVariantId.get(row.id) ?? []
   }));
+  const simpleOffer = resolvePublishedSimpleOffer({
+    productType: productRow.product_type,
+    native: getNativeSimpleOfferFields(productRow),
+    legacyOffers: variantRows.map((row) => ({
+      sku: row.sku,
+      price: row.price,
+      compareAtPrice: row.compare_at_price,
+      stockQuantity: row.stock_quantity
+    }))
+  });
 
   return {
     ...mapProductSummary(productRow),
-    isAvailable: variants.some((variant) => variant.isAvailable),
+    isAvailable:
+      productRow.product_type === "simple"
+        ? (simpleOffer?.isAvailable ?? false)
+        : variants.some((variant) => variant.isAvailable),
+    simpleOffer,
     images: parentImageRows.map(mapProductImage),
     variants
   };
