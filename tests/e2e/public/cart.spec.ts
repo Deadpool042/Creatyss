@@ -5,12 +5,12 @@ test("adds, updates and removes a cart line from the product page", async ({
 }) => {
   await page.goto("/boutique/pochette-sable");
 
-  const sableVariant = page
+  const offerCard = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Sable" }) });
+    .filter({ has: page.getByRole("heading", { name: "Offre vendable" }) });
 
-  await sableVariant.getByLabel("Quantite").fill("1");
-  await sableVariant.getByRole("button", { name: "Ajouter au panier" }).click();
+  await offerCard.getByLabel("Quantite").fill("1");
+  await offerCard.getByRole("button", { name: "Ajouter au panier" }).click();
 
   await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_status=added$/);
   await expect(page.getByText("Article ajoute au panier.")).toBeVisible();
@@ -47,12 +47,12 @@ test("adds, updates and removes a cart line from the product page", async ({
 test("rejects a quantity above available stock", async ({ page }) => {
   await page.goto("/boutique/pochette-sable");
 
-  const sableVariant = page
+  const offerCard = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Sable" }) });
+    .filter({ has: page.getByRole("heading", { name: "Offre vendable" }) });
 
-  await sableVariant.getByLabel("Quantite").fill("13");
-  await sableVariant.getByRole("button", { name: "Ajouter au panier" }).click();
+  await offerCard.getByLabel("Quantite").fill("13");
+  await offerCard.getByRole("button", { name: "Ajouter au panier" }).click();
 
   await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_error=insufficient_stock$/);
   await expect(

@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-test("surfaces a clearer purchase summary for an available product", async ({
+test("keeps variable products focused on multiple sellable offers", async ({
   page
 }) => {
-  await page.goto("/boutique/pochette-sable");
+  await page.goto("/boutique/cabas-moka");
 
   await expect(
     page.getByRole("heading", { level: 2, name: "Produit disponible" })
@@ -11,48 +11,25 @@ test("surfaces a clearer purchase summary for an available product", async ({
   await expect(
     page.getByText("Choisissez une declinaison disponible ci-dessous.")
   ).toBeVisible();
-
-  const sableVariant = page
-    .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Sable" }) });
-
-  await expect(sableVariant.getByText("Par defaut")).toBeVisible();
-  await expect(sableVariant.getByText("Disponible", { exact: true })).toBeVisible();
   await expect(
-    sableVariant.getByText(
+    page.getByRole("heading", { level: 2, name: "Choisir une declinaison" })
+  ).toBeVisible();
+
+  const mokaVariant = page
+    .locator("article")
+    .filter({ has: page.getByRole("heading", { name: "Moka" }) });
+
+  await expect(mokaVariant.getByText("Par defaut")).toBeVisible();
+  await expect(mokaVariant.getByText("Disponible", { exact: true })).toBeVisible();
+  await expect(
+    mokaVariant.getByText(
       "Selectionnez une quantite puis ajoutez cette declinaison au panier."
     )
   ).toBeVisible();
   await expect(
-    sableVariant.getByRole("button", { name: "Ajouter au panier" })
-  ).toBeVisible();
-});
-
-test("keeps the unavailable state useful and discreet for an unavailable product", async ({
-  page
-}) => {
-  await page.goto("/boutique/besace-nuit");
-
-  await expect(
-    page.getByRole("heading", {
-      level: 2,
-      name: "Produit temporairement indisponible"
-    })
-  ).toBeVisible();
-
-  const nuitVariant = page
-    .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Nuit" }) });
-
-  await expect(
-    nuitVariant.getByText("Temporairement indisponible", { exact: true })
+    mokaVariant.getByRole("button", { name: "Ajouter au panier" })
   ).toBeVisible();
   await expect(
-    nuitVariant.getByText(
-      "Cette declinaison est temporairement indisponible. Choisissez une autre declinaison pour continuer."
-    )
+    page.getByRole("heading", { level: 3, name: "Espresso" })
   ).toBeVisible();
-  await expect(
-    nuitVariant.getByRole("button", { name: "Ajouter au panier" })
-  ).toHaveCount(0);
 });

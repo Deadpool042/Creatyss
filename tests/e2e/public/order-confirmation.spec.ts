@@ -5,12 +5,12 @@ import { markOrderAsPaid } from "../order-db";
 test("creates an order from checkout and clears the cart", async ({ page }) => {
   await page.goto("/boutique/pochette-sable");
 
-  const sableVariant = page
+  const offerCard = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Sable" }) });
+    .filter({ has: page.getByRole("heading", { name: "Offre vendable" }) });
 
-  await sableVariant.getByLabel("Quantite").fill("1");
-  await sableVariant.getByRole("button", { name: "Ajouter au panier" }).click();
+  await offerCard.getByLabel("Quantite").fill("1");
+  await offerCard.getByRole("button", { name: "Ajouter au panier" }).click();
   await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_status=added$/);
 
   await page.goto("/checkout");
@@ -62,12 +62,12 @@ test("reflects a cancelled order consistently on the public confirmation page", 
 }) => {
   await page.goto("/boutique/pochette-sable");
 
-  const sableVariant = page
+  const offerCard = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Sable" }) });
+    .filter({ has: page.getByRole("heading", { name: "Offre vendable" }) });
 
-  await sableVariant.getByLabel("Quantite").fill("1");
-  await sableVariant.getByRole("button", { name: "Ajouter au panier" }).click();
+  await offerCard.getByLabel("Quantite").fill("1");
+  await offerCard.getByRole("button", { name: "Ajouter au panier" }).click();
   await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_status=added$/);
 
   await page.goto("/checkout");
@@ -116,12 +116,12 @@ test("reflects a shipped order consistently on the public confirmation page", as
 }) => {
   await page.goto("/boutique/pochette-sable");
 
-  const sableVariant = page
+  const offerCard = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Sable" }) });
+    .filter({ has: page.getByRole("heading", { name: "Offre vendable" }) });
 
-  await sableVariant.getByLabel("Quantite").fill("1");
-  await sableVariant.getByRole("button", { name: "Ajouter au panier" }).click();
+  await offerCard.getByLabel("Quantite").fill("1");
+  await offerCard.getByRole("button", { name: "Ajouter au panier" }).click();
   await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_status=added$/);
 
   await page.goto("/checkout");
