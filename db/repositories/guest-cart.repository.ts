@@ -8,6 +8,31 @@ type GuestCartIdRow = {
   id: string;
 };
 
+type GuestCartCheckoutDetailsRow = {
+  id: string;
+  cart_id: string;
+  customer_email: string | null;
+  customer_first_name: string | null;
+  customer_last_name: string | null;
+  customer_phone: string | null;
+  shipping_address_line_1: string | null;
+  shipping_address_line_2: string | null;
+  shipping_postal_code: string | null;
+  shipping_city: string | null;
+  shipping_country_code: string | null;
+  billing_same_as_shipping: boolean;
+  billing_first_name: string | null;
+  billing_last_name: string | null;
+  billing_phone: string | null;
+  billing_address_line_1: string | null;
+  billing_address_line_2: string | null;
+  billing_postal_code: string | null;
+  billing_city: string | null;
+  billing_country_code: string | null;
+  created_at: TimestampValue;
+  updated_at: TimestampValue;
+};
+
 type GuestCartVariantRow = {
   id: string;
   product_id: string;
@@ -94,6 +119,39 @@ export type GuestCart = {
   itemCount: number;
   subtotal: string;
   lines: GuestCartLine[];
+};
+
+export type GuestCheckoutDetails = {
+  id: string;
+  cartId: string;
+  customerEmail: string | null;
+  customerFirstName: string | null;
+  customerLastName: string | null;
+  customerPhone: string | null;
+  shippingAddressLine1: string | null;
+  shippingAddressLine2: string | null;
+  shippingPostalCode: string | null;
+  shippingCity: string | null;
+  shippingCountryCode: "FR" | null;
+  billingSameAsShipping: boolean;
+  billingFirstName: string | null;
+  billingLastName: string | null;
+  billingPhone: string | null;
+  billingAddressLine1: string | null;
+  billingAddressLine2: string | null;
+  billingPostalCode: string | null;
+  billingCity: string | null;
+  billingCountryCode: "FR" | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type GuestCheckoutIssueCode = "empty_cart" | "cart_unavailable";
+
+export type GuestCheckoutContext = {
+  cart: GuestCart | null;
+  draft: GuestCheckoutDetails | null;
+  issues: GuestCheckoutIssueCode[];
 };
 
 function isValidNumericId(value: string): boolean {
@@ -185,6 +243,47 @@ function mapGuestCartLine(row: GuestCartLineRow): GuestCartLine {
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
   };
+}
+
+function mapGuestCheckoutDetails(
+  row: GuestCartCheckoutDetailsRow
+): GuestCheckoutDetails {
+  return {
+    id: row.id,
+    cartId: row.cart_id,
+    customerEmail: row.customer_email,
+    customerFirstName: row.customer_first_name,
+    customerLastName: row.customer_last_name,
+    customerPhone: row.customer_phone,
+    shippingAddressLine1: row.shipping_address_line_1,
+    shippingAddressLine2: row.shipping_address_line_2,
+    shippingPostalCode: row.shipping_postal_code,
+    shippingCity: row.shipping_city,
+    shippingCountryCode: row.shipping_country_code as "FR" | null,
+    billingSameAsShipping: row.billing_same_as_shipping,
+    billingFirstName: row.billing_first_name,
+    billingLastName: row.billing_last_name,
+    billingPhone: row.billing_phone,
+    billingAddressLine1: row.billing_address_line_1,
+    billingAddressLine2: row.billing_address_line_2,
+    billingPostalCode: row.billing_postal_code,
+    billingCity: row.billing_city,
+    billingCountryCode: row.billing_country_code as "FR" | null,
+    createdAt: toIsoTimestamp(row.created_at),
+    updatedAt: toIsoTimestamp(row.updated_at)
+  };
+}
+
+function getGuestCheckoutIssues(cart: GuestCart | null): GuestCheckoutIssueCode[] {
+  if (cart === null || cart.lines.length === 0) {
+    return ["empty_cart"];
+  }
+
+  if (cart.lines.some((line) => !line.isAvailable)) {
+    return ["cart_unavailable"];
+  }
+
+  return [];
 }
 
 export async function findGuestCartIdByToken(token: string): Promise<string | null> {
@@ -423,5 +522,208 @@ export async function readGuestCartByToken(token: string): Promise<GuestCart | n
     itemCount,
     subtotal: centsToMoneyString(subtotalCents),
     lines
+  };
+}
+
+export async function readGuestCheckoutDetailsByCartId(
+  cartId: string
+): Promise<GuestCheckoutDetails | null> {
+  if (!isValidNumericId(cartId)) {
+    return null;
+  }
+
+  const row = await queryFirst<GuestCartCheckoutDetailsRow>(
+    `
+      select
+        id::text as id,
+        cart_id::text as cart_id,
+        customer_email,
+        customer_first_name,
+        customer_last_name,
+        customer_phone,
+        shipping_address_line_1,
+        shipping_address_line_2,
+        shipping_postal_code,
+        shipping_city,
+        shipping_country_code,
+        billing_same_as_shipping,
+        billing_first_name,
+        billing_last_name,
+        billing_phone,
+        billing_address_line_1,
+        billing_address_line_2,
+        billing_postal_code,
+        billing_city,
+        billing_country_code,
+        created_at,
+        updated_at
+      from cart_checkout_details
+      where cart_id = $1::bigint
+      limit 1
+    `,
+    [cartId]
+  );
+
+  return row ? mapGuestCheckoutDetails(row) : null;
+}
+
+export async function upsertGuestCheckoutDetails(input: {
+  cartId: string;
+  customerEmail: string;
+  customerFirstName: string;
+  customerLastName: string;
+  customerPhone: string | null;
+  shippingAddressLine1: string;
+  shippingAddressLine2: string | null;
+  shippingPostalCode: string;
+  shippingCity: string;
+  shippingCountryCode: "FR";
+  billingSameAsShipping: boolean;
+  billingFirstName: string | null;
+  billingLastName: string | null;
+  billingPhone: string | null;
+  billingAddressLine1: string | null;
+  billingAddressLine2: string | null;
+  billingPostalCode: string | null;
+  billingCity: string | null;
+  billingCountryCode: "FR" | null;
+}): Promise<GuestCheckoutDetails> {
+  const row = await queryFirst<GuestCartCheckoutDetailsRow>(
+    `
+      insert into cart_checkout_details (
+        cart_id,
+        customer_email,
+        customer_first_name,
+        customer_last_name,
+        customer_phone,
+        shipping_address_line_1,
+        shipping_address_line_2,
+        shipping_postal_code,
+        shipping_city,
+        shipping_country_code,
+        billing_same_as_shipping,
+        billing_first_name,
+        billing_last_name,
+        billing_phone,
+        billing_address_line_1,
+        billing_address_line_2,
+        billing_postal_code,
+        billing_city,
+        billing_country_code
+      )
+      values (
+        $1::bigint,
+        $2,
+        $3,
+        $4,
+        $5,
+        $6,
+        $7,
+        $8,
+        $9,
+        $10,
+        $11,
+        $12,
+        $13,
+        $14,
+        $15,
+        $16,
+        $17,
+        $18,
+        $19
+      )
+      on conflict (cart_id)
+      do update
+      set
+        customer_email = excluded.customer_email,
+        customer_first_name = excluded.customer_first_name,
+        customer_last_name = excluded.customer_last_name,
+        customer_phone = excluded.customer_phone,
+        shipping_address_line_1 = excluded.shipping_address_line_1,
+        shipping_address_line_2 = excluded.shipping_address_line_2,
+        shipping_postal_code = excluded.shipping_postal_code,
+        shipping_city = excluded.shipping_city,
+        shipping_country_code = excluded.shipping_country_code,
+        billing_same_as_shipping = excluded.billing_same_as_shipping,
+        billing_first_name = excluded.billing_first_name,
+        billing_last_name = excluded.billing_last_name,
+        billing_phone = excluded.billing_phone,
+        billing_address_line_1 = excluded.billing_address_line_1,
+        billing_address_line_2 = excluded.billing_address_line_2,
+        billing_postal_code = excluded.billing_postal_code,
+        billing_city = excluded.billing_city,
+        billing_country_code = excluded.billing_country_code
+      returning
+        id::text as id,
+        cart_id::text as cart_id,
+        customer_email,
+        customer_first_name,
+        customer_last_name,
+        customer_phone,
+        shipping_address_line_1,
+        shipping_address_line_2,
+        shipping_postal_code,
+        shipping_city,
+        shipping_country_code,
+        billing_same_as_shipping,
+        billing_first_name,
+        billing_last_name,
+        billing_phone,
+        billing_address_line_1,
+        billing_address_line_2,
+        billing_postal_code,
+        billing_city,
+        billing_country_code,
+        created_at,
+        updated_at
+    `,
+    [
+      input.cartId,
+      input.customerEmail,
+      input.customerFirstName,
+      input.customerLastName,
+      input.customerPhone,
+      input.shippingAddressLine1,
+      input.shippingAddressLine2,
+      input.shippingPostalCode,
+      input.shippingCity,
+      input.shippingCountryCode,
+      input.billingSameAsShipping,
+      input.billingFirstName,
+      input.billingLastName,
+      input.billingPhone,
+      input.billingAddressLine1,
+      input.billingAddressLine2,
+      input.billingPostalCode,
+      input.billingCity,
+      input.billingCountryCode
+    ]
+  );
+
+  if (!row) {
+    throw new Error("Guest checkout details save failed.");
+  }
+
+  return mapGuestCheckoutDetails(row);
+}
+
+export async function readGuestCheckoutContextByToken(
+  token: string
+): Promise<GuestCheckoutContext | null> {
+  const cartId = await findGuestCartIdByToken(token);
+
+  if (cartId === null) {
+    return null;
+  }
+
+  const [cart, draft] = await Promise.all([
+    readGuestCartByToken(token),
+    readGuestCheckoutDetailsByCartId(cartId)
+  ]);
+
+  return {
+    cart,
+    draft,
+    issues: getGuestCheckoutIssues(cart)
   };
 }

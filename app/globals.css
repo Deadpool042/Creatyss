@@ -277,7 +277,13 @@ h3 {
 .cart-summary,
 .cart-line,
 .cart-add-form,
-.cart-line-form {
+.cart-line-form,
+.checkout-page,
+.checkout-layout,
+.checkout-form,
+.checkout-summary,
+.checkout-line-list,
+.checkout-line {
   display: grid;
   gap: 1rem;
 }
@@ -296,6 +302,10 @@ h3 {
 
 .cart-quantity-field {
   max-width: 10rem;
+}
+
+.checkout-form {
+  align-content: start;
 }
 
 .product-gallery,
@@ -703,7 +713,8 @@ h3 {
     align-items: start;
   }
 
-  .cart-layout {
+  .cart-layout,
+  .checkout-layout {
     grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
     align-items: start;
   }

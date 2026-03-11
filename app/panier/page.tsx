@@ -189,6 +189,12 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                 <p className="meta-label">Sous-total panier</p>
                 <p className="card-copy">{cart.subtotal}</p>
               </div>
+
+              <div className="admin-inline-actions">
+                <Link className="button" href="/checkout">
+                  Continuer vers le checkout
+                </Link>
+              </div>
             </aside>
           </div>
         ) : (
