@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionIntro } from "@/components/ui/section-intro";
@@ -193,9 +194,9 @@ export default async function AdminOrderDetailPage({
                           type="text"
                         />
                       </label>
-                      <button className="button" type="submit">
+                      <Button className="button" type="submit">
                         Marquer comme expédiée
-                      </button>
+                      </Button>
                     </form>
                   ) : null}
 
@@ -205,7 +206,7 @@ export default async function AdminOrderDetailPage({
                       <form action={updateOrderStatusAction} key={nextStatus}>
                         <input name="orderId" type="hidden" value={order.id} />
                         <input name="nextStatus" type="hidden" value={nextStatus} />
-                        <button
+                        <Button
                           className={
                             nextStatus === "cancelled"
                               ? "button admin-danger-button"
@@ -214,7 +215,7 @@ export default async function AdminOrderDetailPage({
                           type="submit"
                         >
                           {getOrderTransitionLabel(nextStatus)}
-                        </button>
+                        </Button>
                       </form>
                     ))}
                 </div>
