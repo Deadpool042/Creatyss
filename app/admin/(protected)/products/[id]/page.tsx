@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionIntro } from "@/components/ui/section-intro";
@@ -623,9 +624,9 @@ export default async function ProductDetailPage({
           </label>
 
           <div className="admin-actions">
-            <button className="button" type="submit">
+            <Button className="button" type="submit">
               Enregistrer le produit
-            </button>
+            </Button>
           </div>
         </form>
       </section>
@@ -897,9 +898,9 @@ export default async function ProductDetailPage({
                   </fieldset>
 
                   <div className="admin-actions">
-                    <button className="button" type="submit">
+                    <Button className="button" type="submit">
                       Enregistrer les informations de vente
-                    </button>
+                    </Button>
                   </div>
                 </form>
               </>
@@ -1413,9 +1414,9 @@ export default async function ProductDetailPage({
         <form action={deleteProductAction}>
           <input name="productId" type="hidden" value={product.id} />
 
-          <button className="button admin-danger-button" type="submit">
+          <Button className="button admin-danger-button" type="submit">
             Supprimer le produit
-          </button>
+          </Button>
         </form>
       </section>
     </div>
