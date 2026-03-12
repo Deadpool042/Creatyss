@@ -127,9 +127,23 @@ Lot de cohérence UI — `Button` et `Card` ne sont pas applicables sur cette pa
 | `Button` | — | non applicable — aucun `<button>` dans cette page |
 | `Card` | — | non applicable — le seul `store-card` est un `<article>`, préservé |
 
+### `app/admin/(protected)/blog/page.tsx`
+
+Lot de cohérence UI — `Button` et `Card` ne sont pas applicables sur cette page, comme pour `orders/page.tsx` et `categories/page.tsx`.
+
+| Élément | Avant | Après |
+|---|---|---|
+| Header inline | `<div className="page-header">` + HTML manuel | `<PageHeader>` avec prop `actions` (composant maison) |
+| Lien "Nouvel article" | `<Link className="button">` passé en inline | `<Link className="button">` passé en prop `actions` — inchangé |
+| Message succès inline | `<p className="admin-success">` | `<Notice tone="success">` (composant maison) |
+| Message erreur inline | `<p className="admin-alert" role="alert">` | `<Notice tone="alert">` (composant maison) |
+| `<article className="store-card admin-blog-card">` dans `.map()` | conservé | conservé — sémantique `article` utile |
+| `Button` | — | non applicable — aucun `<button>` dans cette page |
+| `Card` | — | non applicable — le seul `store-card` est un `<article>`, préservé |
+
 ## Éléments délibérément hors périmètre à ce stade
 
 - Boutons dans les boucles `.map()` sur les déclinaisons et les images produit (`products/[id]/page.tsx`)
 - Pages non encore touchées : `/admin/categories`, `/admin/products` (liste), `/admin/blog`, `/admin/products/new`
-- `<article className="store-card">` sur `orders/page.tsx` et `categories/page.tsx` — sémantique article préservée, `getByRole("article")` dépendant dans les tests
+- `<article className="store-card">` sur `orders/page.tsx`, `categories/page.tsx` et `blog/page.tsx` — sémantique article préservée, `getByRole("article")` dépendant dans les tests
 - `<Link>` stylés avec `.button` (ex : "Retour à la liste")

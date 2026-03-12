@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Notice } from "@/components/ui/notice";
+import { PageHeader } from "@/components/ui/page-header";
 import { listAdminBlogPosts } from "@/db/repositories/admin-blog.repository";
 
 export const dynamic = "force-dynamic";
@@ -54,27 +56,19 @@ export default async function AdminBlogPage({
   return (
     <div className="admin-blog-page">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Blog</p>
-            <h1>Articles</h1>
-            <p className="lead">
-              Gérez les articles, leur statut de publication et leur visuel de
-              couverture depuis une page simple et lisible.
-            </p>
-          </div>
+        <PageHeader
+          actions={
+            <Link className="button" href="/admin/blog/new">
+              Nouvel article
+            </Link>
+          }
+          description="Gérez les articles, leur statut de publication et leur visuel de couverture depuis une page simple et lisible."
+          eyebrow="Blog"
+          title="Articles"
+        />
 
-          <Link className="button" href="/admin/blog/new">
-            Nouvel article
-          </Link>
-        </div>
-
-        {successMessage ? <p className="admin-success">{successMessage}</p> : null}
-        {errorMessage ? (
-          <p className="admin-alert" role="alert">
-            {errorMessage}
-          </p>
-        ) : null}
+        {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
+        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {blogPosts.length > 0 ? (
           <div className="admin-blog-list">
