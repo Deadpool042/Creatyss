@@ -2,6 +2,11 @@ import { type Locator, type Page } from "@playwright/test";
 
 type AdminProductStatus = "draft" | "published";
 
+const SAMPLE_PNG_BYTES = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wn7s1cAAAAASUVORK5CYII=",
+  "base64"
+);
+
 export function createUniqueAdminProductIdentity(input: {
   namePrefix: string;
   slugPrefix: string;
@@ -31,7 +36,9 @@ export async function createSimpleAdminProduct(
     status?: AdminProductStatus;
   }
 ): Promise<void> {
-  await page.goto("/admin/products/new");
+  await page.goto("/admin/products/new", {
+    waitUntil: "domcontentloaded"
+  });
 
   await page.getByLabel("Nom").fill(input.name);
   await page.getByLabel("Slug").fill(input.slug);
@@ -76,4 +83,26 @@ export function getSimpleOfferForm(page: Page): Locator {
       })
     })
     .first();
+}
+
+export async function uploadAdminMediaImage(
+  page: Page,
+  fileName: string
+): Promise<void> {
+  await page.goto("/admin/media", {
+    waitUntil: "domcontentloaded"
+  });
+
+  await page.locator('input[type="file"][name="file"]').setInputFiles({
+    name: fileName,
+    mimeType: "image/png",
+    buffer: SAMPLE_PNG_BYTES
+  });
+
+  await Promise.all([
+    page.waitForURL(/\/admin\/media\?status=uploaded$/, {
+      timeout: 15_000
+    }),
+    page.getByRole("button", { name: "Importer le média" }).click()
+  ]);
 }

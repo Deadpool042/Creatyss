@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { listAdminMediaAssets } from "@/db/admin-media";
+import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/admin-media";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 import {
   findAdminProductById,
@@ -20,9 +20,13 @@ import {
 import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
 import { deleteProductAction } from "@/features/admin/products/actions/delete-product-action";
 import { deleteProductImageAction } from "@/features/admin/products/actions/delete-product-image-action";
+import { deleteProductPrimaryImageAction } from "@/features/admin/products/actions/delete-product-primary-image-action";
 import { deleteProductVariantAction } from "@/features/admin/products/actions/delete-product-variant-action";
 import { createProductImageAction } from "@/features/admin/products/actions/create-product-image-action";
 import { createProductVariantAction } from "@/features/admin/products/actions/create-product-variant-action";
+import { deleteVariantPrimaryImageAction } from "@/features/admin/products/actions/delete-variant-primary-image-action";
+import { setProductPrimaryImageAction } from "@/features/admin/products/actions/set-product-primary-image-action";
+import { setVariantPrimaryImageAction } from "@/features/admin/products/actions/set-variant-primary-image-action";
 import { updateProductAction } from "@/features/admin/products/actions/update-product-action";
 import { updateProductImageAction } from "@/features/admin/products/actions/update-product-image-action";
 import { updateSimpleProductOfferAction } from "@/features/admin/products/actions/update-simple-product-offer-action";
@@ -224,6 +228,10 @@ function getImageStatusMessage(status: string | undefined): string | null {
       return "Image mise à jour avec succès.";
     case "deleted":
       return "Image supprimée avec succès.";
+    case "primary_updated":
+      return "Image principale enregistrée avec succès.";
+    case "primary_deleted":
+      return "Image principale supprimée avec succès.";
     default:
       return null;
   }
@@ -298,6 +306,34 @@ function groupVariantImages(
   }
 
   return groupedImages;
+}
+
+function getPrimaryImageState(images: AdminProductImage[]): {
+  primaryImage: AdminProductImage | null;
+  displayImage: AdminProductImage | null;
+  extraImageCount: number;
+  usesFallbackImage: boolean;
+} {
+  const primaryImage = images.find((image) => image.isPrimary) ?? null;
+  const displayImage = primaryImage ?? images[0] ?? null;
+
+  return {
+    primaryImage,
+    displayImage,
+    extraImageCount: displayImage === null ? 0 : Math.max(images.length - 1, 0),
+    usesFallbackImage: primaryImage === null && displayImage !== null
+  };
+}
+
+function findMediaAssetByFilePath(
+  mediaAssets: AdminMediaAsset[],
+  filePath: string | null
+): AdminMediaAsset | null {
+  if (typeof filePath !== "string") {
+    return null;
+  }
+
+  return mediaAssets.find((mediaAsset) => mediaAsset.filePath === filePath) ?? null;
 }
 
 function isCategoryAssigned(
@@ -379,6 +415,11 @@ export default async function ProductDetailPage({
   const uploadsPublicPath = getUploadsPublicPath();
   const parentImages = images.filter((image) => image.variantId === null);
   const variantImagesById = groupVariantImages(images);
+  const productPrimaryImageState = getPrimaryImageState(parentImages);
+  const currentProductPrimaryMediaAsset = findMediaAssetByFilePath(
+    mediaAssets,
+    productPrimaryImageState.displayImage?.filePath ?? null
+  );
   const imageScope = readSearchParam(resolvedSearchParams, "image_scope");
   const productStatusMessage = getProductStatusMessage(
     readSearchParam(resolvedSearchParams, "product_status")
@@ -634,7 +675,7 @@ export default async function ProductDetailPage({
       <section className="section admin-product-section">
         <SectionIntro
           className="stack"
-          description="Associez des médias existants pour construire la galerie principale du produit."
+          description="Commencez par l'image principale du produit. Les réglages d'images plus détaillés restent disponibles plus bas si nécessaire."
           eyebrow="Images produit"
           title="Images du produit"
         />
@@ -645,6 +686,109 @@ export default async function ProductDetailPage({
         {productImageMessage.error ? (
           <Notice tone="alert">{productImageMessage.error}</Notice>
         ) : null}
+
+        <div className="admin-product-subsection">
+          <SectionIntro
+            className="stack"
+            description="Choisissez ici le visuel principal affiché pour ce produit."
+            eyebrow="Image principale"
+            title="Image principale du produit"
+            titleAs="h3"
+          />
+
+          {productPrimaryImageState.displayImage ? (
+            renderImagePreview(
+              uploadsPublicPath,
+              productPrimaryImageState.displayImage
+            )
+          ) : (
+            <div className="admin-image-preview admin-image-placeholder">
+              Aucune image principale définie pour ce produit.
+            </div>
+          )}
+
+          {productPrimaryImageState.usesFallbackImage ? (
+            <Notice tone="note">
+              Aucune image principale du produit n&apos;est encore définie. Une
+              image existante reste associée au produit, mais elle n&apos;est
+              pas encore marquée comme principale.
+            </Notice>
+          ) : null}
+
+          {productPrimaryImageState.extraImageCount > 0 ? (
+            <Notice tone="note">
+              {productPrimaryImageState.extraImageCount} image
+              {productPrimaryImageState.extraImageCount > 1 ? "s" : ""}{" "}
+              supplémentaire
+              {productPrimaryImageState.extraImageCount > 1 ? "s restent" : " reste"}{" "}
+              associée
+              {productPrimaryImageState.extraImageCount > 1 ? "s" : ""} à ce
+              produit. Ce lot reste centré sur l&apos;image principale.
+            </Notice>
+          ) : null}
+
+          {hasMediaAssets ? (
+            <form
+              action={setProductPrimaryImageAction}
+              className="admin-form admin-product-form"
+            >
+              <input name="productId" type="hidden" value={product.id} />
+
+              <label className="admin-field">
+                <span className="meta-label">Média existant</span>
+                <select
+                  className="admin-input"
+                  defaultValue={currentProductPrimaryMediaAsset?.id ?? ""}
+                  name="mediaAssetId"
+                >
+                  <option disabled value="">
+                    Sélectionnez un média
+                  </option>
+                  {mediaAssets.map((mediaAsset) => (
+                    <option key={mediaAsset.id} value={mediaAsset.id}>
+                      {mediaAsset.originalName} · {mediaAsset.mimeType}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <div className="admin-inline-actions">
+                <button className="button" type="submit">
+                  {productPrimaryImageState.primaryImage
+                    ? "Remplacer l'image principale"
+                    : "Définir l'image principale"}
+                </button>
+              </div>
+            </form>
+          ) : (
+            <Notice tone="note">
+              Aucun média n&apos;est disponible. Ajoutez d&apos;abord une image dans{" "}
+              <Link className="link" href="/admin/media">
+                la bibliothèque médias
+              </Link>
+              .
+            </Notice>
+          )}
+
+          {productPrimaryImageState.primaryImage ? (
+            <form action={deleteProductPrimaryImageAction}>
+              <input name="productId" type="hidden" value={product.id} />
+
+              <button className="button link-subtle" type="submit">
+                Supprimer l&apos;image principale
+              </button>
+            </form>
+          ) : null}
+        </div>
+
+        <div className="admin-product-subsection">
+          <SectionIntro
+            className="stack"
+            description="Les autres images associées et leurs réglages restent disponibles ici si vous devez intervenir plus finement."
+            eyebrow="Réglages complémentaires"
+            title="Images associées"
+            titleAs="h3"
+          />
 
         {hasMediaAssets ? (
           <form action={createProductImageAction} className="admin-form admin-product-form">
@@ -780,6 +924,7 @@ export default async function ProductDetailPage({
             </p>
           </div>
         )}
+        </div>
       </section>
 
       <section className="section admin-product-section">
@@ -1050,6 +1195,11 @@ export default async function ProductDetailPage({
           <div className="variant-list admin-record-list">
             {variants.map((variant) => {
               const variantImages = variantImagesById.get(variant.id) ?? [];
+              const variantPrimaryImageState = getPrimaryImageState(variantImages);
+              const currentVariantPrimaryMediaAsset = findMediaAssetByFilePath(
+                mediaAssets,
+                variantPrimaryImageState.displayImage?.filePath ?? null
+              );
 
               return (
                 <article className="variant-card admin-variant-card" key={variant.id}>
@@ -1233,7 +1383,121 @@ export default async function ProductDetailPage({
                           : `Images pour ${variant.colorName}`}
                       </h3>
                       <p className="card-copy">
-                        Ajoutez des médias existants pour cette déclinaison.
+                        Commencez par l&apos;image principale de cette
+                        déclinaison. Les autres réglages d&apos;images restent
+                        disponibles plus bas si nécessaire.
+                      </p>
+                    </div>
+
+                    <div className="admin-product-subsection">
+                      <SectionIntro
+                        className="stack"
+                        description="Choisissez ici le visuel principal affiché pour cette déclinaison."
+                        eyebrow="Image principale"
+                        title={
+                          isSimpleProduct
+                            ? "Image principale de la déclinaison existante"
+                            : "Image principale de la déclinaison"
+                        }
+                        titleAs="h3"
+                      />
+
+                      {variantPrimaryImageState.displayImage ? (
+                        renderImagePreview(
+                          uploadsPublicPath,
+                          variantPrimaryImageState.displayImage
+                        )
+                      ) : (
+                        <div className="admin-image-preview admin-image-placeholder">
+                          Aucune image principale définie pour cette déclinaison.
+                        </div>
+                      )}
+
+                      {variantPrimaryImageState.usesFallbackImage ? (
+                        <Notice tone="note">
+                          Aucune image principale n&apos;est encore définie pour
+                          cette déclinaison. Une image existante reste associée,
+                          sans être marquée comme principale.
+                        </Notice>
+                      ) : null}
+
+                      {variantPrimaryImageState.extraImageCount > 0 ? (
+                        <Notice tone="note">
+                          {variantPrimaryImageState.extraImageCount} image
+                          {variantPrimaryImageState.extraImageCount > 1 ? "s" : ""}{" "}
+                          supplémentaire
+                          {variantPrimaryImageState.extraImageCount > 1
+                            ? "s restent"
+                            : " reste"}{" "}
+                          associée
+                          {variantPrimaryImageState.extraImageCount > 1 ? "s" : ""} à
+                          cette déclinaison. Ce lot reste centré sur l&apos;image
+                          principale.
+                        </Notice>
+                      ) : null}
+
+                      {hasMediaAssets ? (
+                        <form
+                          action={setVariantPrimaryImageAction}
+                          className="admin-form admin-record-form"
+                        >
+                          <input name="productId" type="hidden" value={product.id} />
+                          <input name="variantId" type="hidden" value={variant.id} />
+
+                          <label className="admin-field">
+                            <span className="meta-label">Média existant</span>
+                            <select
+                              className="admin-input"
+                              defaultValue={currentVariantPrimaryMediaAsset?.id ?? ""}
+                              name="mediaAssetId"
+                            >
+                              <option disabled value="">
+                                Sélectionnez un média
+                              </option>
+                              {mediaAssets.map((mediaAsset) => (
+                                <option key={mediaAsset.id} value={mediaAsset.id}>
+                                  {mediaAsset.originalName} · {mediaAsset.mimeType}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+
+                          <div className="admin-inline-actions">
+                            <button className="button" type="submit">
+                              {variantPrimaryImageState.primaryImage
+                                ? "Remplacer l'image principale"
+                                : "Définir l'image principale"}
+                            </button>
+                          </div>
+                        </form>
+                      ) : (
+                        <Notice tone="note">
+                          Aucun média n&apos;est disponible. Ajoutez d&apos;abord une
+                          image dans{" "}
+                          <Link className="link" href="/admin/media">
+                            la bibliothèque médias
+                          </Link>
+                          .
+                        </Notice>
+                      )}
+
+                      {variantPrimaryImageState.primaryImage ? (
+                        <form action={deleteVariantPrimaryImageAction}>
+                          <input name="productId" type="hidden" value={product.id} />
+                          <input name="variantId" type="hidden" value={variant.id} />
+
+                          <button className="button link-subtle" type="submit">
+                            Supprimer l&apos;image principale
+                          </button>
+                        </form>
+                      ) : null}
+                    </div>
+
+                    <div className="stack">
+                      <p className="meta-label">Réglages complémentaires</p>
+                      <p className="card-copy">
+                        Les autres images associées et leurs réglages restent
+                        disponibles ici si vous devez intervenir plus finement.
                       </p>
                     </div>
 

@@ -66,6 +66,19 @@ function getProductMetadataDescription(product: ProductMetadataSource): string {
   );
 }
 
+function getImageUrl(
+  uploadsPublicPath: string,
+  filePath: string
+): string {
+  return `${uploadsPublicPath}/${filePath.replace(/^\/+/, "")}`;
+}
+
+function getPrimaryImage<TImage extends { isPrimary: boolean }>(
+  images: readonly TImage[]
+): TImage | null {
+  return images.find((image) => image.isPrimary) ?? images[0] ?? null;
+}
+
 export async function generateMetadata({
   params
 }: ProductPageProps): Promise<Metadata> {
@@ -120,6 +133,10 @@ export default async function ProductPage({
   const isSimpleProduct = product.productType === "simple";
   const singleOffer =
     isSimpleProduct && product.variants.length === 1 ? product.variants[0] : null;
+  const productPrimaryImage = getPrimaryImage(product.images);
+  const singleOfferPrimaryImage = singleOffer
+    ? getPrimaryImage(singleOffer.images)
+    : null;
 
   return (
     <div className="page">
@@ -150,20 +167,16 @@ export default async function ProductPage({
 
         <div className="product-layout">
           <div className="product-gallery">
-            <h2>Galerie principale</h2>
+            <h2>Image principale</h2>
 
-            {product.images.length > 0 ? (
-              <div className="image-grid">
-                {product.images.map((image) => (
-                  <figure className="product-media" key={image.id}>
-                    <img
-                      alt={image.altText ?? product.name}
-                      loading="lazy"
-                      src={`${uploadsPublicPath}/${image.filePath.replace(/^\/+/, "")}`}
-                    />
-                  </figure>
-                ))}
-              </div>
+            {productPrimaryImage ? (
+              <figure className="product-media">
+                <img
+                  alt={productPrimaryImage.altText ?? product.name}
+                  loading="lazy"
+                  src={getImageUrl(uploadsPublicPath, productPrimaryImage.filePath)}
+                />
+              </figure>
             ) : (
               <div className="media-placeholder">Aucun visuel principal.</div>
             )}
@@ -342,17 +355,18 @@ export default async function ProductPage({
                 </div>
               </div>
 
-              {singleOffer.images.length > 0 ? (
+              {singleOfferPrimaryImage ? (
                 <div className="variant-images">
-                  {singleOffer.images.map((image) => (
-                    <figure className="variant-media" key={image.id}>
-                      <img
-                        alt={image.altText ?? singleOffer.name}
-                        loading="lazy"
-                        src={`${uploadsPublicPath}/${image.filePath.replace(/^\/+/, "")}`}
-                      />
-                    </figure>
-                  ))}
+                  <figure className="variant-media" key={singleOfferPrimaryImage.id}>
+                    <img
+                      alt={singleOfferPrimaryImage.altText ?? singleOffer.name}
+                      loading="lazy"
+                      src={getImageUrl(
+                        uploadsPublicPath,
+                        singleOfferPrimaryImage.filePath
+                      )}
+                    />
+                  </figure>
                 </div>
               ) : (
                 <div className="media-placeholder">
@@ -371,7 +385,10 @@ export default async function ProductPage({
           )
         ) : product.variants.length > 0 ? (
           <div className="variant-list">
-            {product.variants.map((variant) => (
+            {product.variants.map((variant) => {
+              const variantPrimaryImage = getPrimaryImage(variant.images);
+
+              return (
               <article className="variant-card" key={variant.id}>
                 <div className="variant-header">
                   <div className="stack">
@@ -469,17 +486,18 @@ export default async function ProductPage({
                   </div>
                 </div>
 
-                {variant.images.length > 0 ? (
+                {variantPrimaryImage ? (
                   <div className="variant-images">
-                    {variant.images.map((image) => (
-                      <figure className="variant-media" key={image.id}>
-                        <img
-                          alt={image.altText ?? variant.name}
-                          loading="lazy"
-                          src={`${uploadsPublicPath}/${image.filePath.replace(/^\/+/, "")}`}
-                        />
-                      </figure>
-                    ))}
+                    <figure className="variant-media" key={variantPrimaryImage.id}>
+                      <img
+                        alt={variantPrimaryImage.altText ?? variant.name}
+                        loading="lazy"
+                        src={getImageUrl(
+                          uploadsPublicPath,
+                          variantPrimaryImage.filePath
+                        )}
+                      />
+                    </figure>
                   </div>
                 ) : (
                   <div className="media-placeholder">
@@ -487,7 +505,8 @@ export default async function ProductPage({
                   </div>
                 )}
               </article>
-            ))}
+            );
+            })}
           </div>
         ) : (
           <div className="empty-state">

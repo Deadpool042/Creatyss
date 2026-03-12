@@ -40,6 +40,17 @@ type UpdateAdminProductImageInput = {
   isPrimary: boolean;
 };
 
+type UpsertAdminPrimaryProductImageInput = {
+  productId: string;
+  filePath: string;
+};
+
+type UpsertAdminPrimaryVariantImageInput = {
+  productId: string;
+  variantId: string;
+  filePath: string;
+};
+
 export type AdminProductImage = {
   id: string;
   productId: string;
@@ -214,6 +225,213 @@ async function findProductImageRow(
   return result.rows[0] ?? null;
 }
 
+async function findPrimaryImageRowInScope(
+  client: PoolClient,
+  productId: string,
+  variantId: string | null
+): Promise<AdminProductImageRow | null> {
+  if (variantId === null) {
+    const result = await client.query<AdminProductImageRow>(
+      `
+        select
+          pi.id::text as id,
+          pi.product_id::text as product_id,
+          pi.variant_id::text as variant_id,
+          pi.file_path,
+          pi.alt_text,
+          pi.sort_order,
+          pi.is_primary,
+          pi.created_at,
+          pi.updated_at
+        from product_images pi
+        where pi.product_id = $1::bigint
+          and pi.variant_id is null
+          and pi.is_primary
+        limit 1
+      `,
+      [productId]
+    );
+
+    return result.rows[0] ?? null;
+  }
+
+  const result = await client.query<AdminProductImageRow>(
+    `
+      select
+        pi.id::text as id,
+        pi.product_id::text as product_id,
+        pi.variant_id::text as variant_id,
+        pi.file_path,
+        pi.alt_text,
+        pi.sort_order,
+        pi.is_primary,
+        pi.created_at,
+        pi.updated_at
+      from product_images pi
+      where pi.product_id = $1::bigint
+        and pi.variant_id = $2::bigint
+        and pi.is_primary
+      limit 1
+    `,
+    [productId, variantId]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+async function findImageRowByFilePathInScope(
+  client: PoolClient,
+  productId: string,
+  variantId: string | null,
+  filePath: string
+): Promise<AdminProductImageRow | null> {
+  if (variantId === null) {
+    const result = await client.query<AdminProductImageRow>(
+      `
+        select
+          pi.id::text as id,
+          pi.product_id::text as product_id,
+          pi.variant_id::text as variant_id,
+          pi.file_path,
+          pi.alt_text,
+          pi.sort_order,
+          pi.is_primary,
+          pi.created_at,
+          pi.updated_at
+        from product_images pi
+        where pi.product_id = $1::bigint
+          and pi.variant_id is null
+          and pi.file_path = $2
+        order by pi.id asc
+        limit 1
+      `,
+      [productId, filePath]
+    );
+
+    return result.rows[0] ?? null;
+  }
+
+  const result = await client.query<AdminProductImageRow>(
+    `
+      select
+        pi.id::text as id,
+        pi.product_id::text as product_id,
+        pi.variant_id::text as variant_id,
+        pi.file_path,
+        pi.alt_text,
+        pi.sort_order,
+        pi.is_primary,
+        pi.created_at,
+        pi.updated_at
+      from product_images pi
+      where pi.product_id = $1::bigint
+        and pi.variant_id = $2::bigint
+        and pi.file_path = $3
+      order by pi.id asc
+      limit 1
+    `,
+    [productId, variantId, filePath]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+async function setPrimaryImageInScope(
+  client: PoolClient,
+  input: {
+    productId: string;
+    variantId: string | null;
+    filePath: string;
+  }
+): Promise<AdminProductImageRow> {
+  const existingPrimaryImage = await findPrimaryImageRowInScope(
+    client,
+    input.productId,
+    input.variantId
+  );
+  const existingScopedImage = await findImageRowByFilePathInScope(
+    client,
+    input.productId,
+    input.variantId,
+    input.filePath
+  );
+  const targetImageId =
+    existingScopedImage?.id ?? existingPrimaryImage?.id ?? null;
+
+  if (targetImageId !== null) {
+    await clearPrimaryImageInScope(
+      client,
+      input.productId,
+      input.variantId,
+      targetImageId
+    );
+
+    const result = await client.query<AdminProductImageRow>(
+      `
+        update product_images
+        set
+          file_path = $2,
+          alt_text = null,
+          sort_order = 0,
+          is_primary = true
+        where id = $1::bigint
+        returning
+          id::text as id,
+          product_id::text as product_id,
+          variant_id::text as variant_id,
+          file_path,
+          alt_text,
+          sort_order,
+          is_primary,
+          created_at,
+          updated_at
+      `,
+      [targetImageId, input.filePath]
+    );
+
+    const row = result.rows[0];
+
+    if (row) {
+      return row;
+    }
+  }
+
+  await clearPrimaryImageInScope(client, input.productId, input.variantId);
+
+  const result = await client.query<AdminProductImageRow>(
+    `
+      insert into product_images (
+        product_id,
+        variant_id,
+        file_path,
+        alt_text,
+        sort_order,
+        is_primary
+      )
+      values ($1::bigint, $2::bigint, $3, null, 0, true)
+      returning
+        id::text as id,
+        product_id::text as product_id,
+        variant_id::text as variant_id,
+        file_path,
+        alt_text,
+        sort_order,
+        is_primary,
+        created_at,
+        updated_at
+    `,
+    [input.productId, input.variantId, input.filePath]
+  );
+
+  const row = result.rows[0];
+
+  if (row === undefined) {
+    throw new Error("Failed to set primary product image.");
+  }
+
+  return row;
+}
+
 export async function listAdminProductImages(
   productId: string
 ): Promise<AdminProductImage[]> {
@@ -241,6 +459,69 @@ export async function listAdminProductImages(
   );
 
   return rows.map(mapAdminProductImage);
+}
+
+export async function findAdminPrimaryProductImage(
+  productId: string
+): Promise<AdminProductImage | null> {
+  if (!isValidNumericId(productId)) {
+    return null;
+  }
+
+  const row = await queryFirst<AdminProductImageRow>(
+    `
+      select
+        pi.id::text as id,
+        pi.product_id::text as product_id,
+        pi.variant_id::text as variant_id,
+        pi.file_path,
+        pi.alt_text,
+        pi.sort_order,
+        pi.is_primary,
+        pi.created_at,
+        pi.updated_at
+      from product_images pi
+      where pi.product_id = $1::bigint
+        and pi.variant_id is null
+        and pi.is_primary
+      limit 1
+    `,
+    [productId]
+  );
+
+  return row ? mapAdminProductImage(row) : null;
+}
+
+export async function findAdminPrimaryVariantImage(
+  productId: string,
+  variantId: string
+): Promise<AdminProductImage | null> {
+  if (!isValidNumericId(productId) || !isValidNumericId(variantId)) {
+    return null;
+  }
+
+  const row = await queryFirst<AdminProductImageRow>(
+    `
+      select
+        pi.id::text as id,
+        pi.product_id::text as product_id,
+        pi.variant_id::text as variant_id,
+        pi.file_path,
+        pi.alt_text,
+        pi.sort_order,
+        pi.is_primary,
+        pi.created_at,
+        pi.updated_at
+      from product_images pi
+      where pi.product_id = $1::bigint
+        and pi.variant_id = $2::bigint
+        and pi.is_primary
+      limit 1
+    `,
+    [productId, variantId]
+  );
+
+  return row ? mapAdminProductImage(row) : null;
 }
 
 export async function createAdminProductImage(
@@ -316,6 +597,87 @@ export async function createAdminProductImage(
     if (!row) {
       throw new Error("Failed to create product image.");
     }
+
+    await client.query("commit");
+
+    return mapAdminProductImage(row);
+  } catch (error) {
+    await client.query("rollback");
+
+    if (error instanceof AdminProductImageRepositoryError) {
+      throw error;
+    }
+
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+export async function upsertAdminPrimaryProductImage(
+  input: UpsertAdminPrimaryProductImageInput
+): Promise<AdminProductImage | null> {
+  if (!isValidNumericId(input.productId)) {
+    return null;
+  }
+
+  const client = await db.connect();
+
+  try {
+    await client.query("begin");
+
+    if (!(await productExists(client, input.productId))) {
+      await client.query("rollback");
+      return null;
+    }
+
+    const row = await setPrimaryImageInScope(client, {
+      productId: input.productId,
+      variantId: null,
+      filePath: input.filePath
+    });
+
+    await client.query("commit");
+
+    return mapAdminProductImage(row);
+  } catch (error) {
+    await client.query("rollback");
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+export async function upsertAdminPrimaryVariantImage(
+  input: UpsertAdminPrimaryVariantImageInput
+): Promise<AdminProductImage | null> {
+  if (!isValidNumericId(input.productId) || !isValidNumericId(input.variantId)) {
+    return null;
+  }
+
+  const client = await db.connect();
+
+  try {
+    await client.query("begin");
+
+    if (!(await productExists(client, input.productId))) {
+      await client.query("rollback");
+      return null;
+    }
+
+    if (
+      !(await variantExistsForProduct(client, input.productId, input.variantId))
+    ) {
+      throw new AdminProductImageRepositoryError(
+        "Selected variant does not belong to this product."
+      );
+    }
+
+    const row = await setPrimaryImageInScope(client, {
+      productId: input.productId,
+      variantId: input.variantId,
+      filePath: input.filePath
+    });
 
     await client.query("commit");
 
@@ -418,6 +780,49 @@ export async function deleteAdminProductImage(
       returning id::text as id
     `,
     [imageId, productId]
+  );
+
+  return row !== null;
+}
+
+export async function deleteAdminPrimaryProductImage(
+  productId: string
+): Promise<boolean> {
+  if (!isValidNumericId(productId)) {
+    return false;
+  }
+
+  const row = await queryFirst<DeletedImageRow>(
+    `
+      delete from product_images
+      where product_id = $1::bigint
+        and variant_id is null
+        and is_primary
+      returning id::text as id
+    `,
+    [productId]
+  );
+
+  return row !== null;
+}
+
+export async function deleteAdminPrimaryVariantImage(
+  productId: string,
+  variantId: string
+): Promise<boolean> {
+  if (!isValidNumericId(productId) || !isValidNumericId(variantId)) {
+    return false;
+  }
+
+  const row = await queryFirst<DeletedImageRow>(
+    `
+      delete from product_images
+      where product_id = $1::bigint
+        and variant_id = $2::bigint
+        and is_primary
+      returning id::text as id
+    `,
+    [productId, variantId]
   );
 
   return row !== null;
