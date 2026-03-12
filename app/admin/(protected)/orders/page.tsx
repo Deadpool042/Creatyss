@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Notice } from "@/components/ui/notice";
+import { PageHeader } from "@/components/ui/page-header";
 import { listAdminOrders } from "@/db/repositories/order.repository";
 import {
   getOrderStatusLabel,
@@ -37,18 +39,13 @@ export default async function AdminOrdersPage({
   return (
     <div className="admin-record-list">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Commandes</p>
-            <h1>Commandes</h1>
-            <p className="lead">
-              Suivez les commandes créées sur la boutique avec les principales
-              informations de suivi.
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          description="Suivez les commandes créées sur la boutique avec les principales informations de suivi."
+          eyebrow="Commandes"
+          title="Commandes"
+        />
 
-        {errorMessage ? <p className="admin-alert">{errorMessage}</p> : null}
+        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {orders.length > 0 ? (
           <div className="admin-record-list">

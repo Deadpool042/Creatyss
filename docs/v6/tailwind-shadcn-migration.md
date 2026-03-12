@@ -101,8 +101,21 @@ Toutes les classes existantes (`.button`, `.store-card`, `.admin-homepage-sectio
 | `<article>` (variant cards, image cards) | conservés | conservés (`getByRole("article")` dans les tests) |
 | Boutons dans `.map()` (déclinaisons, images) | non migrés | hors périmètre — lot dédié à prévoir |
 
+### `app/admin/(protected)/orders/page.tsx`
+
+Lot de cohérence UI — `Button` et `Card` ne sont pas migrés sur cette page.
+
+| Élément | Avant | Après |
+|---|---|---|
+| Header inline | `<div className="page-header">` + HTML manuel | `<PageHeader>` (composant maison) |
+| Alerte inline | `<p className="admin-alert">` | `<Notice tone="alert">` (composant maison) |
+| `<article className="store-card">` dans `.map()` | conservé | conservé — sémantique `article` utile, `getByRole("article")` ciblé par `orders.spec.ts` |
+| `Button` | — | non applicable — aucun `<button>` dans cette page |
+| `Card` | — | non applicable — le seul `store-card` est un `<article>`, préservé |
+
 ## Éléments délibérément hors périmètre à ce stade
 
 - Boutons dans les boucles `.map()` sur les déclinaisons et les images produit (`products/[id]/page.tsx`)
 - Pages non encore touchées : `/admin/categories`, `/admin/products` (liste), `/admin/blog`, `/admin/products/new`
+- `<article className="store-card">` sur `orders/page.tsx` — sémantique article préservée, `getByRole("article")` dépendant dans les tests
 - `<Link>` stylés avec `.button` (ex : "Retour à la liste")
