@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Notice } from "@/components/ui/notice";
+import { PageHeader } from "@/components/ui/page-header";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 
 export const dynamic = "force-dynamic";
@@ -49,27 +51,19 @@ export default async function AdminCategoriesPage({
   return (
     <div className="admin-category-page">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Catégories</p>
-            <h1>Catégories</h1>
-            <p className="lead">
-              Gérez les catégories du catalogue avec un formulaire simple et
-              des validations côté serveur.
-            </p>
-          </div>
+        <PageHeader
+          actions={
+            <Link className="button" href="/admin/categories/new">
+              Nouvelle catégorie
+            </Link>
+          }
+          description="Gérez les catégories du catalogue avec un formulaire simple et des validations côté serveur."
+          eyebrow="Catégories"
+          title="Catégories"
+        />
 
-          <Link className="button" href="/admin/categories/new">
-            Nouvelle catégorie
-          </Link>
-        </div>
-
-        {successMessage ? <p className="admin-success">{successMessage}</p> : null}
-        {errorMessage ? (
-          <p className="admin-alert" role="alert">
-            {errorMessage}
-          </p>
-        ) : null}
+        {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
+        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {categories.length > 0 ? (
           <div className="admin-category-list">
