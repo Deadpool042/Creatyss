@@ -187,7 +187,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
           </label>
 
           <div>
-            <Button variant="outline" type="submit">
+            <Button className="button" type="submit">
               Importer le média
             </Button>
           </div>
