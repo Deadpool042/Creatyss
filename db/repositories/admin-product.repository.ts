@@ -168,6 +168,31 @@ export class AdminProductRepositoryError extends Error {
   }
 }
 
+const ADMIN_PRODUCT_DETAIL_COLUMNS =
+  "id::text as id, name, slug, short_description, description, seo_title, seo_description, status, product_type, simple_sku, simple_price::text as simple_price, simple_compare_at_price::text as simple_compare_at_price, simple_stock_quantity, is_featured, created_at, updated_at";
+
+const ADMIN_PRODUCT_GENERAL_INSERT_COLUMNS =
+  "name, slug, short_description, description, seo_title, seo_description, status, product_type, is_featured";
+
+const ADMIN_PRODUCT_GENERAL_UPDATE_SET_CLAUSE = `
+  name = $2,
+  slug = $3,
+  short_description = $4,
+  description = $5,
+  seo_title = $6,
+  seo_description = $7,
+  status = $8,
+  product_type = $9,
+  is_featured = $10
+`;
+
+const ADMIN_SIMPLE_PRODUCT_OFFER_UPDATE_SET_CLAUSE = `
+  simple_sku = $2,
+  simple_price = $3::numeric,
+  simple_compare_at_price = $4::numeric,
+  simple_stock_quantity = $5
+`;
+
 function isValidProductId(id: string): boolean {
   return /^[0-9]+$/.test(id);
 }
@@ -292,6 +317,68 @@ function getNativeSimpleOfferFields(
     compareAtPrice: row.simple_compare_at_price,
     stockQuantity: row.simple_stock_quantity
   };
+}
+
+function buildAdminProductWriteParams(
+  input: CreateAdminProductInput
+): unknown[] {
+  return [
+    input.name,
+    input.slug,
+    input.shortDescription,
+    input.description,
+    input.seoTitle,
+    input.seoDescription,
+    input.status,
+    input.productType,
+    input.isFeatured
+  ];
+}
+
+function buildAdminSimpleProductOfferWriteParams(
+  input: UpdateAdminSimpleProductOfferInput
+): unknown[] {
+  return [
+    input.sku,
+    input.price,
+    input.compareAtPrice,
+    input.stockQuantity
+  ];
+}
+
+function assertCanSaveAsSimpleProduct(
+  productType: ProductType,
+  variantCount: number
+): void {
+  if (
+    productType === "simple" &&
+    !canChangeProductTypeToSimple(variantCount)
+  ) {
+    throw new AdminProductRepositoryError(
+      "simple_product_requires_single_variant",
+      "A simple product can only have one sellable variant."
+    );
+  }
+}
+
+function assertProductSupportsNativeSimpleOffer(productType: ProductType): void {
+  if (productType !== "simple") {
+    throw new AdminProductRepositoryError(
+      "simple_product_offer_requires_simple_product",
+      "Native simple offer editing is reserved for simple products."
+    );
+  }
+}
+
+function assertCompatibleLegacyVariantCountForNativeSimpleOffer(
+  variantCount: number
+): void {
+  if (variantCount > 1) {
+    throw new AdminProductRepositoryError(
+      "simple_product_multiple_legacy_variants",
+      "A simple product with multiple legacy variants is incoherent."
+    );
+  }
 }
 
 async function listAssignedCategoriesByProductId(
@@ -427,6 +514,35 @@ async function readProductTypeById(
   return result.rows[0] ?? null;
 }
 
+async function readAdminProductRowById(
+  client: PoolClient,
+  productId: string
+): Promise<AdminProductRow | null> {
+  const result = await client.query<AdminProductRow>(
+    `
+      select ${ADMIN_PRODUCT_DETAIL_COLUMNS}
+      from products
+      where id = $1::bigint
+      limit 1
+    `,
+    [productId]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+async function readAdminProductDetailFromRow(
+  client: PoolClient,
+  row: AdminProductRow
+): Promise<AdminProductDetail> {
+  const [categories, simpleOffer] = await Promise.all([
+    listAssignedCategoriesByProductId(client, row.id),
+    readAdminSimpleProductOffer(client, row)
+  ]);
+
+  return mapAdminProductDetail(row, categories, simpleOffer);
+}
+
 async function replaceProductCategories(
   client: PoolClient,
   productId: string,
@@ -496,45 +612,16 @@ export async function findAdminProductById(
     return null;
   }
 
-  const row = await queryFirst<AdminProductRow>(
-    `
-      select
-        p.id::text as id,
-        p.name,
-        p.slug,
-        p.short_description,
-        p.description,
-        p.seo_title,
-        p.seo_description,
-        p.status,
-        p.product_type,
-        p.simple_sku,
-        p.simple_price::text as simple_price,
-        p.simple_compare_at_price::text as simple_compare_at_price,
-        p.simple_stock_quantity,
-        p.is_featured,
-        p.created_at,
-        p.updated_at
-      from products p
-      where p.id = $1::bigint
-      limit 1
-    `,
-    [id]
-  );
-
-  if (row === null) {
-    return null;
-  }
-
   const client = await db.connect();
 
   try {
-    const [categories, simpleOffer] = await Promise.all([
-      listAssignedCategoriesByProductId(client, row.id),
-      readAdminSimpleProductOffer(client, row)
-    ]);
+    const row = await readAdminProductRowById(client, id);
 
-    return mapAdminProductDetail(row, categories, simpleOffer);
+    if (row === null) {
+      return null;
+    }
+
+    return await readAdminProductDetailFromRow(client, row);
   } finally {
     client.release();
   }
@@ -551,47 +638,11 @@ export async function createAdminProduct(
     const categoryIds = await ensureCategoriesExist(client, input.categoryIds);
     const result = await client.query<AdminProductRow>(
       `
-        insert into products (
-          name,
-          slug,
-          short_description,
-          description,
-          seo_title,
-          seo_description,
-          status,
-          product_type,
-          is_featured
-        )
+        insert into products (${ADMIN_PRODUCT_GENERAL_INSERT_COLUMNS})
         values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-        returning
-          id::text as id,
-          name,
-          slug,
-          short_description,
-          description,
-          seo_title,
-          seo_description,
-          status,
-          product_type,
-          simple_sku,
-          simple_price::text as simple_price,
-          simple_compare_at_price::text as simple_compare_at_price,
-          simple_stock_quantity,
-          is_featured,
-          created_at,
-          updated_at
+        returning ${ADMIN_PRODUCT_DETAIL_COLUMNS}
       `,
-      [
-        input.name,
-        input.slug,
-        input.shortDescription,
-        input.description,
-        input.seoTitle,
-        input.seoDescription,
-        input.status,
-        input.productType,
-        input.isFeatured
-      ]
+      buildAdminProductWriteParams(input)
     );
 
     const row = result.rows[0];
@@ -604,46 +655,17 @@ export async function createAdminProduct(
 
     await clearNativeSimpleProductOfferFields(client, row.id);
 
-    const refreshedRow = (
-      await client.query<AdminProductRow>(
-        `
-          select
-            p.id::text as id,
-            p.name,
-            p.slug,
-            p.short_description,
-            p.description,
-            p.seo_title,
-            p.seo_description,
-            p.status,
-            p.product_type,
-            p.simple_sku,
-            p.simple_price::text as simple_price,
-            p.simple_compare_at_price::text as simple_compare_at_price,
-            p.simple_stock_quantity,
-            p.is_featured,
-            p.created_at,
-            p.updated_at
-          from products p
-          where p.id = $1::bigint
-          limit 1
-        `,
-        [row.id]
-      )
-    ).rows[0];
+    const refreshedRow = await readAdminProductRowById(client, row.id);
 
     if (!refreshedRow) {
       throw new Error("Failed to reload product after creation.");
     }
 
-    const [categories, simpleOffer] = await Promise.all([
-      listAssignedCategoriesByProductId(client, row.id),
-      readAdminSimpleProductOffer(client, refreshedRow)
-    ]);
+    const productDetail = await readAdminProductDetailFromRow(client, refreshedRow);
 
     await client.query("commit");
 
-    return mapAdminProductDetail(refreshedRow, categories, simpleOffer);
+    return productDetail;
   } catch (error) {
     await client.query("rollback");
 
@@ -672,60 +694,16 @@ export async function updateAdminProduct(
     const categoryIds = await ensureCategoriesExist(client, input.categoryIds);
     const variantCount = await countVariantsByProductId(client, input.id);
 
-    if (
-      input.productType === "simple" &&
-      !canChangeProductTypeToSimple(variantCount)
-    ) {
-      throw new AdminProductRepositoryError(
-        "simple_product_requires_single_variant",
-        "A simple product can only have one sellable variant."
-      );
-    }
+    assertCanSaveAsSimpleProduct(input.productType, variantCount);
 
     const result = await client.query<AdminProductRow>(
       `
         update products
-        set
-          name = $2,
-          slug = $3,
-          short_description = $4,
-          description = $5,
-          seo_title = $6,
-          seo_description = $7,
-          status = $8,
-          product_type = $9,
-          is_featured = $10
+        set ${ADMIN_PRODUCT_GENERAL_UPDATE_SET_CLAUSE}
         where id = $1::bigint
-        returning
-          id::text as id,
-          name,
-          slug,
-          short_description,
-          description,
-          seo_title,
-          seo_description,
-          status,
-          product_type,
-          simple_sku,
-          simple_price::text as simple_price,
-          simple_compare_at_price::text as simple_compare_at_price,
-          simple_stock_quantity,
-          is_featured,
-          created_at,
-          updated_at
+        returning ${ADMIN_PRODUCT_DETAIL_COLUMNS}
       `,
-      [
-        input.id,
-        input.name,
-        input.slug,
-        input.shortDescription,
-        input.description,
-        input.seoTitle,
-        input.seoDescription,
-        input.status,
-        input.productType,
-        input.isFeatured
-      ]
+      [input.id, ...buildAdminProductWriteParams(input)]
     );
 
     const row = result.rows[0];
@@ -736,14 +714,11 @@ export async function updateAdminProduct(
     }
 
     await replaceProductCategories(client, row.id, categoryIds);
-    const [categories, simpleOffer] = await Promise.all([
-      listAssignedCategoriesByProductId(client, row.id),
-      readAdminSimpleProductOffer(client, row)
-    ]);
+    const productDetail = await readAdminProductDetailFromRow(client, row);
 
     await client.query("commit");
 
-    return mapAdminProductDetail(row, categories, simpleOffer);
+    return productDetail;
   } catch (error) {
     await client.query("rollback");
 
@@ -776,56 +751,20 @@ export async function updateAdminSimpleProductOffer(
       return null;
     }
 
-    if (product.product_type !== "simple") {
-      throw new AdminProductRepositoryError(
-        "simple_product_offer_requires_simple_product",
-        "Native simple offer editing is reserved for simple products."
-      );
-    }
+    assertProductSupportsNativeSimpleOffer(product.product_type);
 
     const variantCount = await countVariantsByProductId(client, input.id);
 
-    if (variantCount > 1) {
-      throw new AdminProductRepositoryError(
-        "simple_product_multiple_legacy_variants",
-        "A simple product with multiple legacy variants is incoherent."
-      );
-    }
+    assertCompatibleLegacyVariantCountForNativeSimpleOffer(variantCount);
 
     const result = await client.query<AdminProductRow>(
       `
         update products
-        set
-          simple_sku = $2,
-          simple_price = $3::numeric,
-          simple_compare_at_price = $4::numeric,
-          simple_stock_quantity = $5
+        set ${ADMIN_SIMPLE_PRODUCT_OFFER_UPDATE_SET_CLAUSE}
         where id = $1::bigint
-        returning
-          id::text as id,
-          name,
-          slug,
-          short_description,
-          description,
-          seo_title,
-          seo_description,
-          status,
-          product_type,
-          simple_sku,
-          simple_price::text as simple_price,
-          simple_compare_at_price::text as simple_compare_at_price,
-          simple_stock_quantity,
-          is_featured,
-          created_at,
-          updated_at
+        returning ${ADMIN_PRODUCT_DETAIL_COLUMNS}
       `,
-      [
-        input.id,
-        input.sku,
-        input.price,
-        input.compareAtPrice,
-        input.stockQuantity
-      ]
+      [input.id, ...buildAdminSimpleProductOfferWriteParams(input)]
     );
 
     const row = result.rows[0];
@@ -845,14 +784,11 @@ export async function updateAdminSimpleProductOffer(
       });
     }
 
-    const [categories, simpleOffer] = await Promise.all([
-      listAssignedCategoriesByProductId(client, row.id),
-      readAdminSimpleProductOffer(client, row)
-    ]);
+    const productDetail = await readAdminProductDetailFromRow(client, row);
 
     await client.query("commit");
 
-    return mapAdminProductDetail(row, categories, simpleOffer);
+    return productDetail;
   } catch (error) {
     await client.query("rollback");
 
