@@ -1,6 +1,8 @@
 import { access } from "node:fs/promises";
 import path from "node:path";
 import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionIntro } from "@/components/ui/section-intro";
@@ -159,7 +161,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
         />
       </section>
 
-      <section className="store-card admin-upload-card">
+      <Card className="store-card admin-upload-card">
         <SectionIntro
           className="stack"
           description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP. Taille maximale : 10 MB."
@@ -185,12 +187,12 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
           </label>
 
           <div>
-            <button className="button" type="submit">
+            <Button variant="outline" type="submit">
               Importer le média
-            </button>
+            </Button>
           </div>
         </form>
-      </section>
+      </Card>
 
       <section className="section">
         <div className="section-header">
@@ -204,7 +206,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
         {assets.length > 0 ? (
           <div className="admin-media-grid">
             {assets.map((asset) => (
-              <article className="store-card admin-media-card" key={asset.id}>
+              <Card key={asset.id} className="p-5 grid gap-3 content-start">
                 {asset.previewUrl ? (
                   <div className="admin-media-preview">
                     <img
@@ -255,7 +257,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                   <p className="meta-label">Chemin</p>
                   <p className="card-copy">{asset.filePath}</p>
                 </div>
-              </article>
+              </Card>
             ))}
           </div>
         ) : (
