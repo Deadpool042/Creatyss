@@ -1,5 +1,6 @@
 import { type PoolClient } from "pg";
-import { db, queryFirst, queryRows } from "@/db/client";
+import { db, queryRows } from "@/db/client";
+import { syncNativeSimpleProductOfferFromLegacyVariant } from "@/db/repositories/simple-product-admin-compatibility";
 import {
   canDeleteVariantForProductType,
   canCreateVariantForProductType,
@@ -27,10 +28,6 @@ type AdminProductVariantRow = {
   updated_at: TimestampValue;
 };
 
-type ExistingVariantRow = {
-  id: string;
-};
-
 type ProductCompatibilityRow = {
   id: string;
   product_type: ProductType;
@@ -42,13 +39,6 @@ type CountRow = {
 
 type DeletedVariantRow = {
   id: string;
-};
-
-type SimpleProductFieldsRow = {
-  sku: string;
-  price: string;
-  compare_at_price: string | null;
-  stock_quantity: number;
 };
 
 type PostgreSqlErrorLike = Error & {
@@ -162,7 +152,7 @@ function mapRepositoryError(error: unknown): never {
   throw error;
 }
 
-async function productExists(
+async function readProductTypeById(
   client: PoolClient,
   productId: string
 ): Promise<ProductCompatibilityRow | null> {
@@ -228,84 +218,6 @@ async function clearDefaultVariant(
   );
 }
 
-async function clearSimpleProductFields(
-  client: PoolClient,
-  productId: string
-): Promise<void> {
-  await client.query(
-    `
-      update products
-      set
-        simple_sku = null,
-        simple_price = null,
-        simple_compare_at_price = null,
-        simple_stock_quantity = null
-      where id = $1::bigint
-    `,
-    [productId]
-  );
-}
-
-async function readVariantFieldsForSimpleProduct(
-  client: PoolClient,
-  productId: string,
-  variantId?: string
-): Promise<SimpleProductFieldsRow | null> {
-  const result = await client.query<SimpleProductFieldsRow>(
-    `
-      select
-        pv.sku,
-        pv.price::text as price,
-        pv.compare_at_price::text as compare_at_price,
-        pv.stock_quantity
-      from product_variants pv
-      where pv.product_id = $1::bigint
-        and ($2::bigint is null or pv.id = $2::bigint)
-      order by pv.is_default desc, pv.id asc
-      limit 1
-    `,
-    [productId, variantId ?? null]
-  );
-
-  return result.rows[0] ?? null;
-}
-
-async function syncSimpleProductFields(
-  client: PoolClient,
-  productId: string,
-  variantId?: string
-): Promise<void> {
-  const variantFields = await readVariantFieldsForSimpleProduct(
-    client,
-    productId,
-    variantId
-  );
-
-  if (variantFields === null) {
-    await clearSimpleProductFields(client, productId);
-    return;
-  }
-
-  await client.query(
-    `
-      update products
-      set
-        simple_sku = $2,
-        simple_price = $3::numeric,
-        simple_compare_at_price = $4::numeric,
-        simple_stock_quantity = $5
-      where id = $1::bigint
-    `,
-    [
-      productId,
-      variantFields.sku,
-      variantFields.price,
-      variantFields.compare_at_price,
-      variantFields.stock_quantity
-    ]
-  );
-}
-
 export async function listAdminProductVariants(
   productId: string
 ): Promise<AdminProductVariant[]> {
@@ -351,7 +263,7 @@ export async function createAdminProductVariant(
   try {
     await client.query("begin");
 
-    const product = await productExists(client, input.productId);
+    const product = await readProductTypeById(client, input.productId);
 
     if (product === null) {
       await client.query("rollback");
@@ -430,7 +342,10 @@ export async function createAdminProductVariant(
     }
 
     if (product.product_type === "simple") {
-      await syncSimpleProductFields(client, input.productId, row.id);
+      await syncNativeSimpleProductOfferFromLegacyVariant(client, {
+        productId: input.productId,
+        variantId: row.id
+      });
     }
 
     await client.query("commit");
@@ -461,7 +376,7 @@ export async function updateAdminProductVariant(
   try {
     await client.query("begin");
 
-    const product = await productExists(client, input.productId);
+    const product = await readProductTypeById(client, input.productId);
 
     if (product === null) {
       await client.query("rollback");
@@ -525,7 +440,10 @@ export async function updateAdminProductVariant(
     }
 
     if (product.product_type === "simple") {
-      await syncSimpleProductFields(client, input.productId, input.id);
+      await syncNativeSimpleProductOfferFromLegacyVariant(client, {
+        productId: input.productId,
+        variantId: input.id
+      });
     }
 
     await client.query("commit");
@@ -557,7 +475,7 @@ export async function deleteAdminProductVariant(
   try {
     await client.query("begin");
 
-    const product = await productExists(client, productId);
+    const product = await readProductTypeById(client, productId);
 
     if (product === null) {
       await client.query("rollback");
@@ -596,7 +514,9 @@ export async function deleteAdminProductVariant(
     }
 
     if (product.product_type === "simple") {
-      await syncSimpleProductFields(client, productId);
+      await syncNativeSimpleProductOfferFromLegacyVariant(client, {
+        productId
+      });
     }
 
     await client.query("commit");
