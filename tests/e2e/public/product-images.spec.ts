@@ -6,11 +6,18 @@ import {
   uploadAdminMediaImage
 } from "../admin/product-test-helpers";
 
+const PRIMARY_IMAGE_SUBMIT_BUTTON_PATTERN =
+  /^(Définir|Remplacer) l'image principale$/;
+
 function getProductPrimaryImageBlock(page: Page): Locator {
   return page
     .locator(".admin-product-subsection")
     .filter({
-      has: page.getByRole("heading", { name: "Image principale du produit" })
+      has: page.getByRole("heading", {
+        exact: true,
+        level: 3,
+        name: "Image principale du produit"
+      })
     })
     .first();
 }
@@ -39,10 +46,12 @@ function getVariantPrimaryImageBlock(
     .locator(".admin-product-subsection")
     .filter({
       has: page.getByRole("heading", {
+        exact: true,
+        level: 3,
         name: "Image principale de la déclinaison"
       })
     })
-    .last();
+    .first();
 }
 
 test("affiche publiquement l'image principale produit choisie dans l'admin", async ({
@@ -126,7 +135,9 @@ test("affiche publiquement l'image principale de déclinaison choisie dans l'adm
       timeout: 15_000
     }),
     primaryImageBlock
-      .getByRole("button", { name: "Définir l'image principale" })
+      .getByRole("button", {
+        name: PRIMARY_IMAGE_SUBMIT_BUTTON_PATTERN
+      })
       .click()
   ]);
 

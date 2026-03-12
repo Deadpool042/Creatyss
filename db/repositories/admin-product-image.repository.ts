@@ -40,6 +40,11 @@ type UpdateAdminProductImageInput = {
   isPrimary: boolean;
 };
 
+type PrimaryImageScopeInput = {
+  productId: string;
+  variantId: string | null;
+};
+
 type UpsertAdminPrimaryProductImageInput = {
   productId: string;
   filePath: string;
@@ -48,6 +53,10 @@ type UpsertAdminPrimaryProductImageInput = {
 type UpsertAdminPrimaryVariantImageInput = {
   productId: string;
   variantId: string;
+  filePath: string;
+};
+
+type UpsertPrimaryImageInScopeInput = PrimaryImageScopeInput & {
   filePath: string;
 };
 
@@ -279,6 +288,13 @@ async function findPrimaryImageRowInScope(
   return result.rows[0] ?? null;
 }
 
+function resolvePrimaryImageTargetRow(input: {
+  existingPrimaryImage: AdminProductImageRow | null;
+  existingScopedImage: AdminProductImageRow | null;
+}): AdminProductImageRow | null {
+  return input.existingScopedImage ?? input.existingPrimaryImage ?? null;
+}
+
 async function findImageRowByFilePathInScope(
   client: PoolClient,
   productId: string,
@@ -336,68 +352,47 @@ async function findImageRowByFilePathInScope(
   return result.rows[0] ?? null;
 }
 
-async function setPrimaryImageInScope(
+async function updatePrimaryImageRow(
   client: PoolClient,
-  input: {
-    productId: string;
-    variantId: string | null;
-    filePath: string;
-  }
+  imageId: string,
+  filePath: string
 ): Promise<AdminProductImageRow> {
-  const existingPrimaryImage = await findPrimaryImageRowInScope(
-    client,
-    input.productId,
-    input.variantId
+  const result = await client.query<AdminProductImageRow>(
+    `
+      update product_images
+      set
+        file_path = $2,
+        alt_text = null,
+        sort_order = 0,
+        is_primary = true
+      where id = $1::bigint
+      returning
+        id::text as id,
+        product_id::text as product_id,
+        variant_id::text as variant_id,
+        file_path,
+        alt_text,
+        sort_order,
+        is_primary,
+        created_at,
+        updated_at
+    `,
+    [imageId, filePath]
   );
-  const existingScopedImage = await findImageRowByFilePathInScope(
-    client,
-    input.productId,
-    input.variantId,
-    input.filePath
-  );
-  const targetImageId =
-    existingScopedImage?.id ?? existingPrimaryImage?.id ?? null;
 
-  if (targetImageId !== null) {
-    await clearPrimaryImageInScope(
-      client,
-      input.productId,
-      input.variantId,
-      targetImageId
-    );
+  const row = result.rows[0];
 
-    const result = await client.query<AdminProductImageRow>(
-      `
-        update product_images
-        set
-          file_path = $2,
-          alt_text = null,
-          sort_order = 0,
-          is_primary = true
-        where id = $1::bigint
-        returning
-          id::text as id,
-          product_id::text as product_id,
-          variant_id::text as variant_id,
-          file_path,
-          alt_text,
-          sort_order,
-          is_primary,
-          created_at,
-          updated_at
-      `,
-      [targetImageId, input.filePath]
-    );
-
-    const row = result.rows[0];
-
-    if (row) {
-      return row;
-    }
+  if (row === undefined) {
+    throw new Error("Failed to update primary product image.");
   }
 
-  await clearPrimaryImageInScope(client, input.productId, input.variantId);
+  return row;
+}
 
+async function insertPrimaryImageRow(
+  client: PoolClient,
+  input: UpsertPrimaryImageInScopeInput
+): Promise<AdminProductImageRow> {
   const result = await client.query<AdminProductImageRow>(
     `
       insert into product_images (
@@ -426,10 +421,46 @@ async function setPrimaryImageInScope(
   const row = result.rows[0];
 
   if (row === undefined) {
-    throw new Error("Failed to set primary product image.");
+    throw new Error("Failed to insert primary product image.");
   }
 
   return row;
+}
+
+async function setPrimaryImageInScope(
+  client: PoolClient,
+  input: UpsertPrimaryImageInScopeInput
+): Promise<AdminProductImageRow> {
+  const existingPrimaryImage = await findPrimaryImageRowInScope(
+    client,
+    input.productId,
+    input.variantId
+  );
+  const existingScopedImage = await findImageRowByFilePathInScope(
+    client,
+    input.productId,
+    input.variantId,
+    input.filePath
+  );
+  const targetImage = resolvePrimaryImageTargetRow({
+    existingPrimaryImage,
+    existingScopedImage
+  });
+
+  if (targetImage !== null) {
+    await clearPrimaryImageInScope(
+      client,
+      input.productId,
+      input.variantId,
+      targetImage.id
+    );
+
+    return updatePrimaryImageRow(client, targetImage.id, input.filePath);
+  }
+
+  await clearPrimaryImageInScope(client, input.productId, input.variantId);
+
+  return insertPrimaryImageRow(client, input);
 }
 
 export async function listAdminProductImages(

@@ -4,6 +4,11 @@ import { redirect } from "next/navigation";
 import { deleteAdminPrimaryVariantImage } from "@/db/repositories/admin-product-image.repository";
 import { appendImageScope, normalizeNumericIdFromForm } from "./action-helpers";
 
+type VariantPrimaryImageDeleteErrorCode =
+  | "delete_failed"
+  | "invalid_variant"
+  | "missing_image";
+
 function readVariantId(
   value: FormDataEntryValue | null
 ):
@@ -15,16 +20,9 @@ function readVariantId(
       ok: false;
       code: "invalid_variant";
     } {
-  if (typeof value !== "string") {
-    return {
-      ok: false,
-      code: "invalid_variant"
-    };
-  }
+  const variantId = normalizeNumericIdFromForm(value);
 
-  const normalizedValue = value.trim();
-
-  if (!/^[0-9]+$/.test(normalizedValue)) {
+  if (variantId === null) {
     return {
       ok: false,
       code: "invalid_variant"
@@ -33,8 +31,26 @@ function readVariantId(
 
   return {
     ok: true,
-    variantId: normalizedValue
+    variantId
   };
+}
+
+function redirectToVariantPrimaryImageError(
+  productId: string,
+  code: VariantPrimaryImageDeleteErrorCode
+): never {
+  redirect(
+    appendImageScope(`/admin/products/${productId}?image_error=${code}`, "variant")
+  );
+}
+
+function redirectToVariantPrimaryImageStatus(
+  productId: string,
+  status: "primary_deleted"
+): never {
+  redirect(
+    appendImageScope(`/admin/products/${productId}?image_status=${status}`, "variant")
+  );
 }
 
 export async function deleteVariantPrimaryImageAction(
@@ -49,12 +65,7 @@ export async function deleteVariantPrimaryImageAction(
   const variantResult = readVariantId(formData.get("variantId"));
 
   if (!variantResult.ok) {
-    redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=${variantResult.code}`,
-        "variant"
-      )
-    );
+    redirectToVariantPrimaryImageError(productId, variantResult.code);
   }
 
   try {
@@ -64,27 +75,12 @@ export async function deleteVariantPrimaryImageAction(
     );
 
     if (!wasDeleted) {
-      redirect(
-        appendImageScope(
-          `/admin/products/${productId}?image_error=missing_image`,
-          "variant"
-        )
-      );
+      redirectToVariantPrimaryImageError(productId, "missing_image");
     }
   } catch (error) {
     console.error(error);
-    redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=delete_failed`,
-        "variant"
-      )
-    );
+    redirectToVariantPrimaryImageError(productId, "delete_failed");
   }
 
-  redirect(
-    appendImageScope(
-      `/admin/products/${productId}?image_status=primary_deleted`,
-      "variant"
-    )
-  );
+  redirectToVariantPrimaryImageStatus(productId, "primary_deleted");
 }

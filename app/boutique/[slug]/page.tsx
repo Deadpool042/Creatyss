@@ -73,7 +73,7 @@ function getImageUrl(
   return `${uploadsPublicPath}/${filePath.replace(/^\/+/, "")}`;
 }
 
-function getPrimaryImage<TImage extends { isPrimary: boolean }>(
+function getDisplayImage<TImage extends { isPrimary: boolean }>(
   images: readonly TImage[]
 ): TImage | null {
   return images.find((image) => image.isPrimary) ?? images[0] ?? null;
@@ -133,9 +133,9 @@ export default async function ProductPage({
   const isSimpleProduct = product.productType === "simple";
   const singleOffer =
     isSimpleProduct && product.variants.length === 1 ? product.variants[0] : null;
-  const productPrimaryImage = getPrimaryImage(product.images);
-  const singleOfferPrimaryImage = singleOffer
-    ? getPrimaryImage(singleOffer.images)
+  const productDisplayImage = getDisplayImage(product.images);
+  const singleOfferDisplayImage = singleOffer
+    ? getDisplayImage(singleOffer.images)
     : null;
 
   return (
@@ -169,12 +169,12 @@ export default async function ProductPage({
           <div className="product-gallery">
             <h2>Image principale</h2>
 
-            {productPrimaryImage ? (
+            {productDisplayImage ? (
               <figure className="product-media">
                 <img
-                  alt={productPrimaryImage.altText ?? product.name}
+                  alt={productDisplayImage.altText ?? product.name}
                   loading="lazy"
-                  src={getImageUrl(uploadsPublicPath, productPrimaryImage.filePath)}
+                  src={getImageUrl(uploadsPublicPath, productDisplayImage.filePath)}
                 />
               </figure>
             ) : (
@@ -355,15 +355,15 @@ export default async function ProductPage({
                 </div>
               </div>
 
-              {singleOfferPrimaryImage ? (
+              {singleOfferDisplayImage ? (
                 <div className="variant-images">
-                  <figure className="variant-media" key={singleOfferPrimaryImage.id}>
+                  <figure className="variant-media" key={singleOfferDisplayImage.id}>
                     <img
-                      alt={singleOfferPrimaryImage.altText ?? singleOffer.name}
+                      alt={singleOfferDisplayImage.altText ?? singleOffer.name}
                       loading="lazy"
                       src={getImageUrl(
                         uploadsPublicPath,
-                        singleOfferPrimaryImage.filePath
+                        singleOfferDisplayImage.filePath
                       )}
                     />
                   </figure>
@@ -386,126 +386,126 @@ export default async function ProductPage({
         ) : product.variants.length > 0 ? (
           <div className="variant-list">
             {product.variants.map((variant) => {
-              const variantPrimaryImage = getPrimaryImage(variant.images);
+              const variantDisplayImage = getDisplayImage(variant.images);
 
               return (
-              <article className="variant-card" key={variant.id}>
-                <div className="variant-header">
-                  <div className="stack">
-                    <h3>{variant.name}</h3>
-                    <p className="variant-meta">
-                      {variant.colorName}
-                      {variant.colorHex ? ` · ${variant.colorHex}` : ""}
-                    </p>
-                  </div>
-
-                  <div className="variant-badges">
-                    {getVariantDefaultBadgeLabel(variant.isDefault) ? (
-                      <span className="status-pill status-pill--neutral">
-                        {getVariantDefaultBadgeLabel(variant.isDefault)}
-                      </span>
-                    ) : null}
-                    <span
-                      className={`status-pill ${
-                        variant.isAvailable
-                          ? "status-pill--available"
-                          : "status-pill--unavailable"
-                      }`}
-                    >
-                      {getVariantAvailabilityLabel(variant.isAvailable)}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="variant-purchase">
-                  <div className="stack">
-                    <p className="meta-label">Prix</p>
-                    <p className="product-price">{variant.price}</p>
-                    {variant.compareAtPrice ? (
-                      <p className="card-meta">
-                        Prix barré : {variant.compareAtPrice}
+                <article className="variant-card" key={variant.id}>
+                  <div className="variant-header">
+                    <div className="stack">
+                      <h3>{variant.name}</h3>
+                      <p className="variant-meta">
+                        {variant.colorName}
+                        {variant.colorHex ? ` · ${variant.colorHex}` : ""}
                       </p>
+                    </div>
+
+                    <div className="variant-badges">
+                      {getVariantDefaultBadgeLabel(variant.isDefault) ? (
+                        <span className="status-pill status-pill--neutral">
+                          {getVariantDefaultBadgeLabel(variant.isDefault)}
+                        </span>
+                      ) : null}
+                      <span
+                        className={`status-pill ${
+                          variant.isAvailable
+                            ? "status-pill--available"
+                            : "status-pill--unavailable"
+                        }`}
+                      >
+                        {getVariantAvailabilityLabel(variant.isAvailable)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="variant-purchase">
+                    <div className="stack">
+                      <p className="meta-label">Prix</p>
+                      <p className="product-price">{variant.price}</p>
+                      {variant.compareAtPrice ? (
+                        <p className="card-meta">
+                          Prix barré : {variant.compareAtPrice}
+                        </p>
+                      ) : null}
+                    </div>
+
+                    <div className="stack">
+                      <p className="meta-label">Ajout au panier</p>
+                      <p
+                        className={variant.isAvailable ? "card-copy" : "card-meta"}
+                      >
+                        {getOfferAvailabilityMessage({
+                          productType: product.productType,
+                          isAvailable: variant.isAvailable
+                        })}
+                      </p>
+                    </div>
+
+                    {variant.isAvailable ? (
+                      <form action={addToCartAction} className="cart-add-form">
+                        <input
+                          name="productSlug"
+                          type="hidden"
+                          value={product.slug}
+                        />
+                        <input name="variantId" type="hidden" value={variant.id} />
+
+                        <label className="admin-field cart-quantity-field">
+                          <span className="meta-label">Quantité</span>
+                          <input
+                            className="admin-input"
+                            defaultValue="1"
+                            min="1"
+                            name="quantity"
+                            required
+                            step="1"
+                            type="number"
+                          />
+                        </label>
+
+                        <div className="admin-inline-actions">
+                          <button className="button" type="submit">
+                            Ajouter au panier
+                          </button>
+                        </div>
+                      </form>
                     ) : null}
                   </div>
 
-                  <div className="stack">
-                    <p className="meta-label">Ajout au panier</p>
-                    <p
-                      className={variant.isAvailable ? "card-copy" : "card-meta"}
-                    >
-                      {getOfferAvailabilityMessage({
-                        productType: product.productType,
-                        isAvailable: variant.isAvailable,
-                      })}
-                    </p>
+                  <div className="variant-details">
+                    <div className="variant-detail">
+                      <p className="meta-label">SKU</p>
+                      <p className="card-copy">{variant.sku}</p>
+                    </div>
+
+                    <div className="variant-detail">
+                      <p className="meta-label">Couleur</p>
+                      <p className="card-copy">
+                        {variant.colorName}
+                        {variant.colorHex ? ` · ${variant.colorHex}` : ""}
+                      </p>
+                    </div>
                   </div>
 
-                  {variant.isAvailable ? (
-                    <form action={addToCartAction} className="cart-add-form">
-                      <input
-                        name="productSlug"
-                        type="hidden"
-                        value={product.slug}
-                      />
-                      <input name="variantId" type="hidden" value={variant.id} />
-
-                      <label className="admin-field cart-quantity-field">
-                        <span className="meta-label">Quantité</span>
-                        <input
-                          className="admin-input"
-                          defaultValue="1"
-                          min="1"
-                          name="quantity"
-                          required
-                          step="1"
-                          type="number"
+                  {variantDisplayImage ? (
+                    <div className="variant-images">
+                      <figure className="variant-media" key={variantDisplayImage.id}>
+                        <img
+                          alt={variantDisplayImage.altText ?? variant.name}
+                          loading="lazy"
+                          src={getImageUrl(
+                            uploadsPublicPath,
+                            variantDisplayImage.filePath
+                          )}
                         />
-                      </label>
-
-                      <div className="admin-inline-actions">
-                        <button className="button" type="submit">
-                          Ajouter au panier
-                        </button>
-                      </div>
-                    </form>
-                  ) : null}
-                </div>
-
-                <div className="variant-details">
-                  <div className="variant-detail">
-                    <p className="meta-label">SKU</p>
-                    <p className="card-copy">{variant.sku}</p>
-                  </div>
-
-                  <div className="variant-detail">
-                    <p className="meta-label">Couleur</p>
-                    <p className="card-copy">
-                      {variant.colorName}
-                      {variant.colorHex ? ` · ${variant.colorHex}` : ""}
-                    </p>
-                  </div>
-                </div>
-
-                {variantPrimaryImage ? (
-                  <div className="variant-images">
-                    <figure className="variant-media" key={variantPrimaryImage.id}>
-                      <img
-                        alt={variantPrimaryImage.altText ?? variant.name}
-                        loading="lazy"
-                        src={getImageUrl(
-                          uploadsPublicPath,
-                          variantPrimaryImage.filePath
-                        )}
-                      />
-                    </figure>
-                  </div>
-                ) : (
-                  <div className="media-placeholder">
-                    Aucun visuel pour cette déclinaison.
-                  </div>
-                )}
-              </article>
-            );
+                      </figure>
+                    </div>
+                  ) : (
+                    <div className="media-placeholder">
+                      Aucun visuel pour cette déclinaison.
+                    </div>
+                  )}
+                </article>
+              );
             })}
           </div>
         ) : (

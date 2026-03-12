@@ -8,6 +8,12 @@ import {
   normalizeNumericIdFromForm
 } from "@/features/admin/products/actions/action-helpers";
 
+type ProductPrimaryImageErrorCode =
+  | "invalid_media_asset"
+  | "media_missing"
+  | "missing_media_asset"
+  | "save_failed";
+
 function readMediaAssetId(
   value: FormDataEntryValue | null
 ):
@@ -19,23 +25,16 @@ function readMediaAssetId(
       ok: false;
       code: "missing_media_asset" | "invalid_media_asset";
     } {
-  if (typeof value !== "string") {
+  if (value === null || (typeof value === "string" && value.trim().length === 0)) {
     return {
       ok: false,
       code: "missing_media_asset"
     };
   }
 
-  const normalizedValue = value.trim();
+  const mediaAssetId = normalizeNumericIdFromForm(value);
 
-  if (normalizedValue.length === 0) {
-    return {
-      ok: false,
-      code: "missing_media_asset"
-    };
-  }
-
-  if (!/^[0-9]+$/.test(normalizedValue)) {
+  if (mediaAssetId === null) {
     return {
       ok: false,
       code: "invalid_media_asset"
@@ -44,8 +43,26 @@ function readMediaAssetId(
 
   return {
     ok: true,
-    mediaAssetId: normalizedValue
+    mediaAssetId
   };
+}
+
+function redirectToProductPrimaryImageError(
+  productId: string,
+  code: ProductPrimaryImageErrorCode
+): never {
+  redirect(
+    appendImageScope(`/admin/products/${productId}?image_error=${code}`, "product")
+  );
+}
+
+function redirectToProductPrimaryImageStatus(
+  productId: string,
+  status: "primary_updated"
+): never {
+  redirect(
+    appendImageScope(`/admin/products/${productId}?image_status=${status}`, "product")
+  );
 }
 
 export async function setProductPrimaryImageAction(
@@ -60,23 +77,13 @@ export async function setProductPrimaryImageAction(
   const mediaAssetResult = readMediaAssetId(formData.get("mediaAssetId"));
 
   if (!mediaAssetResult.ok) {
-    redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=${mediaAssetResult.code}`,
-        "product"
-      )
-    );
+    redirectToProductPrimaryImageError(productId, mediaAssetResult.code);
   }
 
   const mediaAsset = await findAdminMediaAssetById(mediaAssetResult.mediaAssetId);
 
   if (mediaAsset === null) {
-    redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=media_missing`,
-        "product"
-      )
-    );
+    redirectToProductPrimaryImageError(productId, "media_missing");
   }
 
   try {
@@ -90,18 +97,8 @@ export async function setProductPrimaryImageAction(
     }
   } catch (error) {
     console.error(error);
-    redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=save_failed`,
-        "product"
-      )
-    );
+    redirectToProductPrimaryImageError(productId, "save_failed");
   }
 
-  redirect(
-    appendImageScope(
-      `/admin/products/${productId}?image_status=primary_updated`,
-      "product"
-    )
-  );
+  redirectToProductPrimaryImageStatus(productId, "primary_updated");
 }

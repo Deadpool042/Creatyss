@@ -11,6 +11,14 @@ import {
   normalizeNumericIdFromForm
 } from "@/features/admin/products/actions/action-helpers";
 
+type VariantPrimaryImageErrorCode =
+  | "invalid_media_asset"
+  | "invalid_variant"
+  | "media_missing"
+  | "missing_media_asset"
+  | "save_failed"
+  | "variant_missing";
+
 function readMediaAssetId(
   value: FormDataEntryValue | null
 ):
@@ -22,23 +30,16 @@ function readMediaAssetId(
       ok: false;
       code: "missing_media_asset" | "invalid_media_asset";
     } {
-  if (typeof value !== "string") {
+  if (value === null || (typeof value === "string" && value.trim().length === 0)) {
     return {
       ok: false,
       code: "missing_media_asset"
     };
   }
 
-  const normalizedValue = value.trim();
+  const mediaAssetId = normalizeNumericIdFromForm(value);
 
-  if (normalizedValue.length === 0) {
-    return {
-      ok: false,
-      code: "missing_media_asset"
-    };
-  }
-
-  if (!/^[0-9]+$/.test(normalizedValue)) {
+  if (mediaAssetId === null) {
     return {
       ok: false,
       code: "invalid_media_asset"
@@ -47,7 +48,7 @@ function readMediaAssetId(
 
   return {
     ok: true,
-    mediaAssetId: normalizedValue
+    mediaAssetId
   };
 }
 
@@ -62,16 +63,9 @@ function readVariantId(
       ok: false;
       code: "invalid_variant";
     } {
-  if (typeof value !== "string") {
-    return {
-      ok: false,
-      code: "invalid_variant"
-    };
-  }
+  const variantId = normalizeNumericIdFromForm(value);
 
-  const normalizedValue = value.trim();
-
-  if (!/^[0-9]+$/.test(normalizedValue)) {
+  if (variantId === null) {
     return {
       ok: false,
       code: "invalid_variant"
@@ -80,8 +74,26 @@ function readVariantId(
 
   return {
     ok: true,
-    variantId: normalizedValue
+    variantId
   };
+}
+
+function redirectToVariantPrimaryImageError(
+  productId: string,
+  code: VariantPrimaryImageErrorCode
+): never {
+  redirect(
+    appendImageScope(`/admin/products/${productId}?image_error=${code}`, "variant")
+  );
+}
+
+function redirectToVariantPrimaryImageStatus(
+  productId: string,
+  status: "primary_updated"
+): never {
+  redirect(
+    appendImageScope(`/admin/products/${productId}?image_status=${status}`, "variant")
+  );
 }
 
 export async function setVariantPrimaryImageAction(
@@ -96,34 +108,19 @@ export async function setVariantPrimaryImageAction(
   const variantResult = readVariantId(formData.get("variantId"));
 
   if (!variantResult.ok) {
-    redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=${variantResult.code}`,
-        "variant"
-      )
-    );
+    redirectToVariantPrimaryImageError(productId, variantResult.code);
   }
 
   const mediaAssetResult = readMediaAssetId(formData.get("mediaAssetId"));
 
   if (!mediaAssetResult.ok) {
-    redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=${mediaAssetResult.code}`,
-        "variant"
-      )
-    );
+    redirectToVariantPrimaryImageError(productId, mediaAssetResult.code);
   }
 
   const mediaAsset = await findAdminMediaAssetById(mediaAssetResult.mediaAssetId);
 
   if (mediaAsset === null) {
-    redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=media_missing`,
-        "variant"
-      )
-    );
+    redirectToVariantPrimaryImageError(productId, "media_missing");
   }
 
   try {
@@ -141,27 +138,12 @@ export async function setVariantPrimaryImageAction(
       error instanceof AdminProductImageRepositoryError &&
       error.code === "variant_missing"
     ) {
-      redirect(
-        appendImageScope(
-          `/admin/products/${productId}?image_error=variant_missing`,
-          "variant"
-        )
-      );
+      redirectToVariantPrimaryImageError(productId, "variant_missing");
     }
 
     console.error(error);
-    redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=save_failed`,
-        "variant"
-      )
-    );
+    redirectToVariantPrimaryImageError(productId, "save_failed");
   }
 
-  redirect(
-    appendImageScope(
-      `/admin/products/${productId}?image_status=primary_updated`,
-      "variant"
-    )
-  );
+  redirectToVariantPrimaryImageStatus(productId, "primary_updated");
 }

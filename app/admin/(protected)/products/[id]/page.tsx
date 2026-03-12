@@ -42,6 +42,32 @@ type ProductDetailPageProps = Readonly<{
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }>;
 
+type PrimaryImageScope = "product" | "variant";
+
+type PrimaryImageState = {
+  primaryImage: AdminProductImage | null;
+  displayImage: AdminProductImage | null;
+  extraImageCount: number;
+  usesFallbackImage: boolean;
+};
+
+type PrimaryImageFormAction = (formData: FormData) => Promise<void>;
+
+type PrimaryImageManagerProps = {
+  currentMediaAssetId: string;
+  deleteAction: PrimaryImageFormAction;
+  description: string;
+  formClassName: string;
+  mediaAssets: AdminMediaAsset[];
+  productId: string;
+  scope: PrimaryImageScope;
+  setAction: PrimaryImageFormAction;
+  state: PrimaryImageState;
+  title: string;
+  uploadsPublicPath: string;
+  variantId?: string;
+};
+
 function readSearchParam(
   searchParams: Record<string, string | string[] | undefined>,
   key: string
@@ -308,12 +334,7 @@ function groupVariantImages(
   return groupedImages;
 }
 
-function getPrimaryImageState(images: AdminProductImage[]): {
-  primaryImage: AdminProductImage | null;
-  displayImage: AdminProductImage | null;
-  extraImageCount: number;
-  usesFallbackImage: boolean;
-} {
+function getPrimaryImageState(images: AdminProductImage[]): PrimaryImageState {
   const primaryImage = images.find((image) => image.isPrimary) ?? null;
   const displayImage = primaryImage ?? images[0] ?? null;
 
@@ -323,6 +344,133 @@ function getPrimaryImageState(images: AdminProductImage[]): {
     extraImageCount: displayImage === null ? 0 : Math.max(images.length - 1, 0),
     usesFallbackImage: primaryImage === null && displayImage !== null
   };
+}
+
+function getPrimaryImageEmptyMessage(scope: PrimaryImageScope): string {
+  return scope === "product"
+    ? "Aucune image principale définie pour ce produit."
+    : "Aucune image principale définie pour cette déclinaison.";
+}
+
+function getPrimaryImageFallbackMessage(scope: PrimaryImageScope): string {
+  return scope === "product"
+    ? "Aucune image principale du produit n'est encore définie. Une image existante reste associée au produit, mais elle n'est pas encore marquée comme principale."
+    : "Aucune image principale n'est encore définie pour cette déclinaison. Une image existante reste associée, sans être marquée comme principale.";
+}
+
+function getPrimaryImageExtraImagesMessage(
+  scope: PrimaryImageScope,
+  extraImageCount: number
+): string {
+  const scopeLabel = scope === "product" ? "ce produit" : "cette déclinaison";
+  const imageLabel = extraImageCount > 1 ? "images" : "image";
+  const extraLabel = extraImageCount > 1 ? "supplémentaires restent" : "supplémentaire reste";
+  const associationLabel = extraImageCount > 1 ? "associées" : "associée";
+
+  return `${extraImageCount} ${imageLabel} ${extraLabel} ${associationLabel} à ${scopeLabel}. Les réglages complémentaires restent disponibles plus bas.`;
+}
+
+function getPrimaryImageSubmitLabel(hasPrimaryImage: boolean): string {
+  return hasPrimaryImage
+    ? "Remplacer l'image principale"
+    : "Définir l'image principale";
+}
+
+function renderMediaLibraryNotice() {
+  return (
+    <Notice tone="note">
+      Aucun média n&apos;est disponible. Ajoutez d&apos;abord une image dans{" "}
+      <Link className="link" href="/admin/media">
+        la bibliothèque médias
+      </Link>
+      .
+    </Notice>
+  );
+}
+
+function renderPrimaryImageManager(input: PrimaryImageManagerProps) {
+  return (
+    <div className="admin-product-subsection">
+      <SectionIntro
+        className="stack"
+        description={input.description}
+        eyebrow="Image principale"
+        title={input.title}
+        titleAs="h3"
+      />
+
+      {input.state.displayImage ? (
+        renderImagePreview(input.uploadsPublicPath, input.state.displayImage)
+      ) : (
+        <div className="admin-image-preview admin-image-placeholder">
+          {getPrimaryImageEmptyMessage(input.scope)}
+        </div>
+      )}
+
+      {input.state.usesFallbackImage ? (
+        <Notice tone="note">
+          {getPrimaryImageFallbackMessage(input.scope)}
+        </Notice>
+      ) : null}
+
+      {input.state.extraImageCount > 0 ? (
+        <Notice tone="note">
+          {getPrimaryImageExtraImagesMessage(
+            input.scope,
+            input.state.extraImageCount
+          )}
+        </Notice>
+      ) : null}
+
+      {input.mediaAssets.length > 0 ? (
+        <form action={input.setAction} className={input.formClassName}>
+          <input name="productId" type="hidden" value={input.productId} />
+          {input.variantId ? (
+            <input name="variantId" type="hidden" value={input.variantId} />
+          ) : null}
+
+          <label className="admin-field">
+            <span className="meta-label">Média existant</span>
+            <select
+              className="admin-input"
+              defaultValue={input.currentMediaAssetId}
+              name="mediaAssetId"
+            >
+              <option disabled value="">
+                Sélectionnez un média
+              </option>
+              {input.mediaAssets.map((mediaAsset) => (
+                <option key={mediaAsset.id} value={mediaAsset.id}>
+                  {mediaAsset.originalName} · {mediaAsset.mimeType}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <div className="admin-inline-actions">
+            <button className="button" type="submit">
+              {getPrimaryImageSubmitLabel(input.state.primaryImage !== null)}
+            </button>
+          </div>
+        </form>
+      ) : (
+        renderMediaLibraryNotice()
+      )}
+
+      {input.state.primaryImage ? (
+        <form action={input.deleteAction}>
+          <input name="productId" type="hidden" value={input.productId} />
+          {input.variantId ? (
+            <input name="variantId" type="hidden" value={input.variantId} />
+          ) : null}
+
+          <button className="button link-subtle" type="submit">
+            Supprimer l&apos;image principale
+          </button>
+        </form>
+      ) : null}
+    </div>
+  );
 }
 
 function findMediaAssetByFilePath(
@@ -687,60 +835,41 @@ export default async function ProductDetailPage({
           <Notice tone="alert">{productImageMessage.error}</Notice>
         ) : null}
 
+        {renderPrimaryImageManager({
+          currentMediaAssetId: currentProductPrimaryMediaAsset?.id ?? "",
+          deleteAction: deleteProductPrimaryImageAction,
+          description: "Choisissez ici le visuel principal affiché pour ce produit.",
+          formClassName: "admin-form admin-product-form",
+          mediaAssets,
+          productId: product.id,
+          scope: "product",
+          setAction: setProductPrimaryImageAction,
+          state: productPrimaryImageState,
+          title: "Image principale du produit",
+          uploadsPublicPath
+        })}
+
         <div className="admin-product-subsection">
           <SectionIntro
             className="stack"
-            description="Choisissez ici le visuel principal affiché pour ce produit."
-            eyebrow="Image principale"
-            title="Image principale du produit"
+            description="Les autres images associées et leurs réglages restent disponibles ici si vous devez intervenir plus finement."
+            eyebrow="Réglages complémentaires"
+            title="Images associées"
             titleAs="h3"
           />
 
-          {productPrimaryImageState.displayImage ? (
-            renderImagePreview(
-              uploadsPublicPath,
-              productPrimaryImageState.displayImage
-            )
-          ) : (
-            <div className="admin-image-preview admin-image-placeholder">
-              Aucune image principale définie pour ce produit.
-            </div>
-          )}
-
-          {productPrimaryImageState.usesFallbackImage ? (
-            <Notice tone="note">
-              Aucune image principale du produit n&apos;est encore définie. Une
-              image existante reste associée au produit, mais elle n&apos;est
-              pas encore marquée comme principale.
-            </Notice>
-          ) : null}
-
-          {productPrimaryImageState.extraImageCount > 0 ? (
-            <Notice tone="note">
-              {productPrimaryImageState.extraImageCount} image
-              {productPrimaryImageState.extraImageCount > 1 ? "s" : ""}{" "}
-              supplémentaire
-              {productPrimaryImageState.extraImageCount > 1 ? "s restent" : " reste"}{" "}
-              associée
-              {productPrimaryImageState.extraImageCount > 1 ? "s" : ""} à ce
-              produit. Ce lot reste centré sur l&apos;image principale.
-            </Notice>
-          ) : null}
-
           {hasMediaAssets ? (
             <form
-              action={setProductPrimaryImageAction}
+              action={createProductImageAction}
               className="admin-form admin-product-form"
             >
               <input name="productId" type="hidden" value={product.id} />
+              <input name="variantId" type="hidden" value="" />
+              <input name="imageScope" type="hidden" value="product" />
 
               <label className="admin-field">
                 <span className="meta-label">Média existant</span>
-                <select
-                  className="admin-input"
-                  defaultValue={currentProductPrimaryMediaAsset?.id ?? ""}
-                  name="mediaAssetId"
-                >
+                <select className="admin-input" defaultValue="" name="mediaAssetId">
                   <option disabled value="">
                     Sélectionnez un média
                   </option>
@@ -752,178 +881,119 @@ export default async function ProductDetailPage({
                 </select>
               </label>
 
-              <div className="admin-inline-actions">
+              <label className="admin-field">
+                <span className="meta-label">Texte alternatif</span>
+                <input className="admin-input" name="altText" type="text" />
+              </label>
+
+              <label className="admin-field">
+                <span className="meta-label">Ordre</span>
+                <input
+                  className="admin-input"
+                  defaultValue="0"
+                  name="sortOrder"
+                  type="number"
+                />
+              </label>
+
+              <label className="admin-checkbox">
+                <input name="isPrimary" type="checkbox" value="on" />
+                <span>Définir comme image principale du produit</span>
+              </label>
+
+              <div className="admin-actions">
                 <button className="button" type="submit">
-                  {productPrimaryImageState.primaryImage
-                    ? "Remplacer l'image principale"
-                    : "Définir l'image principale"}
+                  Ajouter une image produit
                 </button>
               </div>
             </form>
           ) : (
-            <Notice tone="note">
-              Aucun média n&apos;est disponible. Ajoutez d&apos;abord une image dans{" "}
-              <Link className="link" href="/admin/media">
-                la bibliothèque médias
-              </Link>
-              .
-            </Notice>
+            renderMediaLibraryNotice()
           )}
 
-          {productPrimaryImageState.primaryImage ? (
-            <form action={deleteProductPrimaryImageAction}>
-              <input name="productId" type="hidden" value={product.id} />
+          {parentImages.length > 0 ? (
+            <div className="admin-record-list">
+              {parentImages.map((image) => (
+                <article className="store-card admin-image-card" key={image.id}>
+                  {renderImagePreview(uploadsPublicPath, image)}
 
-              <button className="button link-subtle" type="submit">
-                Supprimer l&apos;image principale
-              </button>
-            </form>
-          ) : null}
-        </div>
-
-        <div className="admin-product-subsection">
-          <SectionIntro
-            className="stack"
-            description="Les autres images associées et leurs réglages restent disponibles ici si vous devez intervenir plus finement."
-            eyebrow="Réglages complémentaires"
-            title="Images associées"
-            titleAs="h3"
-          />
-
-        {hasMediaAssets ? (
-          <form action={createProductImageAction} className="admin-form admin-product-form">
-            <input name="productId" type="hidden" value={product.id} />
-            <input name="variantId" type="hidden" value="" />
-            <input name="imageScope" type="hidden" value="product" />
-
-            <label className="admin-field">
-              <span className="meta-label">Média existant</span>
-              <select className="admin-input" defaultValue="" name="mediaAssetId">
-                <option disabled value="">
-                  Sélectionnez un média
-                </option>
-                {mediaAssets.map((mediaAsset) => (
-                  <option key={mediaAsset.id} value={mediaAsset.id}>
-                    {mediaAsset.originalName} · {mediaAsset.mimeType}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="admin-field">
-              <span className="meta-label">Texte alternatif</span>
-              <input className="admin-input" name="altText" type="text" />
-            </label>
-
-            <label className="admin-field">
-              <span className="meta-label">Ordre</span>
-              <input className="admin-input" defaultValue="0" name="sortOrder" type="number" />
-            </label>
-
-            <label className="admin-checkbox">
-              <input name="isPrimary" type="checkbox" value="on" />
-              <span>Définir comme image principale du produit</span>
-            </label>
-
-            <div className="admin-actions">
-              <button className="button" type="submit">
-                Ajouter une image produit
-              </button>
-            </div>
-          </form>
-        ) : (
-          <Notice tone="note">
-            Aucun média n&apos;est disponible. Ajoutez d&apos;abord une image dans{" "}
-            <Link className="link" href="/admin/media">
-              la bibliothèque médias
-            </Link>
-            .
-          </Notice>
-        )}
-
-        {parentImages.length > 0 ? (
-          <div className="admin-record-list">
-            {parentImages.map((image) => (
-              <article className="store-card admin-image-card" key={image.id}>
-                {renderImagePreview(uploadsPublicPath, image)}
-
-                <div className="stack">
-                  <div className="admin-product-tags">
-                    <span className="admin-chip">
-                      {image.isPrimary ? "Image principale" : "Image secondaire"}
-                    </span>
-                    <span className="admin-chip">Ordre {image.sortOrder}</span>
+                  <div className="stack">
+                    <div className="admin-product-tags">
+                      <span className="admin-chip">
+                        {image.isPrimary ? "Image principale" : "Image secondaire"}
+                      </span>
+                      <span className="admin-chip">Ordre {image.sortOrder}</span>
+                    </div>
+                    <p className="card-meta">{image.filePath}</p>
                   </div>
-                  <p className="card-meta">{image.filePath}</p>
-                </div>
 
-                <form
-                  action={updateProductImageAction}
-                  className="admin-form admin-record-form"
-                >
-                  <input name="productId" type="hidden" value={product.id} />
-                  <input name="imageId" type="hidden" value={image.id} />
-                  <input name="imageScope" type="hidden" value="product" />
+                  <form
+                    action={updateProductImageAction}
+                    className="admin-form admin-record-form"
+                  >
+                    <input name="productId" type="hidden" value={product.id} />
+                    <input name="imageId" type="hidden" value={image.id} />
+                    <input name="imageScope" type="hidden" value="product" />
 
-                  <label className="admin-field">
-                    <span className="meta-label">Texte alternatif</span>
-                    <input
-                      className="admin-input"
-                      defaultValue={image.altText ?? ""}
-                      name="altText"
-                      type="text"
-                    />
-                  </label>
+                    <label className="admin-field">
+                      <span className="meta-label">Texte alternatif</span>
+                      <input
+                        className="admin-input"
+                        defaultValue={image.altText ?? ""}
+                        name="altText"
+                        type="text"
+                      />
+                    </label>
 
-                  <label className="admin-field">
-                    <span className="meta-label">Ordre</span>
-                    <input
-                      className="admin-input"
-                      defaultValue={String(image.sortOrder)}
-                      name="sortOrder"
-                      type="number"
-                    />
-                  </label>
+                    <label className="admin-field">
+                      <span className="meta-label">Ordre</span>
+                      <input
+                        className="admin-input"
+                        defaultValue={String(image.sortOrder)}
+                        name="sortOrder"
+                        type="number"
+                      />
+                    </label>
 
-                  <label className="admin-checkbox">
-                    <input
-                      defaultChecked={image.isPrimary}
-                      name="isPrimary"
-                      type="checkbox"
-                      value="on"
-                    />
-                    <span>Image principale produit</span>
-                  </label>
+                    <label className="admin-checkbox">
+                      <input
+                        defaultChecked={image.isPrimary}
+                        name="isPrimary"
+                        type="checkbox"
+                        value="on"
+                      />
+                      <span>Image principale produit</span>
+                    </label>
 
-                  <div className="admin-inline-actions">
-                    <button className="button" type="submit">
-                      Mettre à jour l&apos;image
+                    <div className="admin-inline-actions">
+                      <button className="button" type="submit">
+                        Mettre à jour l&apos;image
+                      </button>
+                    </div>
+                  </form>
+
+                  <form action={deleteProductImageAction}>
+                    <input name="productId" type="hidden" value={product.id} />
+                    <input name="imageId" type="hidden" value={image.id} />
+                    <input name="imageScope" type="hidden" value="product" />
+
+                    <button className="button link-subtle" type="submit">
+                      Supprimer l&apos;image
                     </button>
-                  </div>
-                </form>
-
-                <form action={deleteProductImageAction}>
-                  <input name="productId" type="hidden" value={product.id} />
-                  <input name="imageId" type="hidden" value={image.id} />
-                  <input name="imageScope" type="hidden" value="product" />
-
-                  <button className="button link-subtle" type="submit">
-                    Supprimer l&apos;image
-                  </button>
-                </form>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <div className="empty-state">
-            <p className="eyebrow">Aucune image</p>
-            <h2>Le produit n&apos;a pas encore d&apos;image</h2>
-            <p className="card-copy">
-              Associez un média existant pour afficher une image principale ou
-              secondaire.
-            </p>
-          </div>
-        )}
+                  </form>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="empty-state">
+              <p className="eyebrow">Aucune image</p>
+              <h2>Le produit n&apos;a pas encore d&apos;image</h2>
+              <p className="card-copy">
+                Associez un média existant pour afficher une image principale ou
+                secondaire.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -1370,286 +1440,191 @@ export default async function ProductDetailPage({
                     </button>
                   </form>
 
-                  <div className="admin-product-subsection">
-                    <div className="stack">
-                      <p className="eyebrow">
-                        {isSimpleProduct
-                          ? "Images existantes"
-                          : productPresentation.imagesEyebrow}
-                      </p>
-                      <h3>
-                        {isSimpleProduct
-                          ? "Images de la déclinaison existante"
-                          : `Images pour ${variant.colorName}`}
-                      </h3>
-                      <p className="card-copy">
-                        Commencez par l&apos;image principale de cette
-                        déclinaison. Les autres réglages d&apos;images restent
-                        disponibles plus bas si nécessaire.
-                      </p>
-                    </div>
-
-                    <div className="admin-product-subsection">
-                      <SectionIntro
-                        className="stack"
-                        description="Choisissez ici le visuel principal affiché pour cette déclinaison."
-                        eyebrow="Image principale"
-                        title={
-                          isSimpleProduct
-                            ? "Image principale de la déclinaison existante"
-                            : "Image principale de la déclinaison"
-                        }
-                        titleAs="h3"
-                      />
-
-                      {variantPrimaryImageState.displayImage ? (
-                        renderImagePreview(
-                          uploadsPublicPath,
-                          variantPrimaryImageState.displayImage
-                        )
-                      ) : (
-                        <div className="admin-image-preview admin-image-placeholder">
-                          Aucune image principale définie pour cette déclinaison.
-                        </div>
-                      )}
-
-                      {variantPrimaryImageState.usesFallbackImage ? (
-                        <Notice tone="note">
-                          Aucune image principale n&apos;est encore définie pour
-                          cette déclinaison. Une image existante reste associée,
-                          sans être marquée comme principale.
-                        </Notice>
-                      ) : null}
-
-                      {variantPrimaryImageState.extraImageCount > 0 ? (
-                        <Notice tone="note">
-                          {variantPrimaryImageState.extraImageCount} image
-                          {variantPrimaryImageState.extraImageCount > 1 ? "s" : ""}{" "}
-                          supplémentaire
-                          {variantPrimaryImageState.extraImageCount > 1
-                            ? "s restent"
-                            : " reste"}{" "}
-                          associée
-                          {variantPrimaryImageState.extraImageCount > 1 ? "s" : ""} à
-                          cette déclinaison. Ce lot reste centré sur l&apos;image
-                          principale.
-                        </Notice>
-                      ) : null}
-
-                      {hasMediaAssets ? (
-                        <form
-                          action={setVariantPrimaryImageAction}
-                          className="admin-form admin-record-form"
-                        >
-                          <input name="productId" type="hidden" value={product.id} />
-                          <input name="variantId" type="hidden" value={variant.id} />
-
-                          <label className="admin-field">
-                            <span className="meta-label">Média existant</span>
-                            <select
-                              className="admin-input"
-                              defaultValue={currentVariantPrimaryMediaAsset?.id ?? ""}
-                              name="mediaAssetId"
-                            >
-                              <option disabled value="">
-                                Sélectionnez un média
-                              </option>
-                              {mediaAssets.map((mediaAsset) => (
-                                <option key={mediaAsset.id} value={mediaAsset.id}>
-                                  {mediaAsset.originalName} · {mediaAsset.mimeType}
-                                </option>
-                              ))}
-                            </select>
-                          </label>
-
-                          <div className="admin-inline-actions">
-                            <button className="button" type="submit">
-                              {variantPrimaryImageState.primaryImage
-                                ? "Remplacer l'image principale"
-                                : "Définir l'image principale"}
-                            </button>
-                          </div>
-                        </form>
-                      ) : (
-                        <Notice tone="note">
-                          Aucun média n&apos;est disponible. Ajoutez d&apos;abord une
-                          image dans{" "}
-                          <Link className="link" href="/admin/media">
-                            la bibliothèque médias
-                          </Link>
-                          .
-                        </Notice>
-                      )}
-
-                      {variantPrimaryImageState.primaryImage ? (
-                        <form action={deleteVariantPrimaryImageAction}>
-                          <input name="productId" type="hidden" value={product.id} />
-                          <input name="variantId" type="hidden" value={variant.id} />
-
-                          <button className="button link-subtle" type="submit">
-                            Supprimer l&apos;image principale
-                          </button>
-                        </form>
-                      ) : null}
-                    </div>
-
-                    <div className="stack">
-                      <p className="meta-label">Réglages complémentaires</p>
-                      <p className="card-copy">
-                        Les autres images associées et leurs réglages restent
-                        disponibles ici si vous devez intervenir plus finement.
-                      </p>
-                    </div>
-
-                    {hasMediaAssets ? (
-                      <form
-                        action={createProductImageAction}
-                        className="admin-form admin-record-form"
-                      >
-                        <input name="productId" type="hidden" value={product.id} />
-                        <input name="variantId" type="hidden" value={variant.id} />
-                        <input name="imageScope" type="hidden" value="variant" />
-
-                        <label className="admin-field">
-                          <span className="meta-label">Média existant</span>
-                          <select
-                            className="admin-input"
-                            defaultValue=""
-                            name="mediaAssetId"
-                          >
-                            <option disabled value="">
-                              Sélectionnez un média
-                            </option>
-                            {mediaAssets.map((mediaAsset) => (
-                              <option key={mediaAsset.id} value={mediaAsset.id}>
-                                {mediaAsset.originalName} · {mediaAsset.mimeType}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-
-                        <label className="admin-field">
-                          <span className="meta-label">Texte alternatif</span>
-                          <input className="admin-input" name="altText" type="text" />
-                        </label>
-
-                        <label className="admin-field">
-                          <span className="meta-label">Ordre</span>
-                          <input
-                            className="admin-input"
-                            defaultValue="0"
-                            name="sortOrder"
-                            type="number"
-                          />
-                        </label>
-
-                        <label className="admin-checkbox">
-                          <input name="isPrimary" type="checkbox" value="on" />
-                          <span>Image principale de la déclinaison</span>
-                        </label>
-
-                        <div className="admin-actions">
-                          <button className="button" type="submit">
-                            Ajouter une image à la déclinaison
-                          </button>
-                        </div>
-                      </form>
-                    ) : (
-                      <Notice tone="note">
-                        Aucun média n&apos;est disponible. Ajoutez d&apos;abord une
-                        image dans{" "}
-                        <Link className="link" href="/admin/media">
-                          la bibliothèque médias
-                        </Link>
-                        .
-                      </Notice>
-                    )}
-
-                    {variantImages.length > 0 ? (
-                      <div className="admin-record-list">
-                        {variantImages.map((image) => (
-                          <article className="store-card admin-image-card" key={image.id}>
-                            {renderImagePreview(uploadsPublicPath, image)}
-
-                            <div className="stack">
-                              <div className="admin-product-tags">
-                                <span className="admin-chip">
-                                  {image.isPrimary
-                                    ? "Image principale"
-                                    : "Image secondaire"}
-                                </span>
-                                <span className="admin-chip">
-                                  Ordre {image.sortOrder}
-                                </span>
-                              </div>
-                              <p className="card-meta">{image.filePath}</p>
-                            </div>
-
-                            <form
-                              action={updateProductImageAction}
-                              className="admin-form admin-record-form"
-                            >
-                              <input name="productId" type="hidden" value={product.id} />
-                              <input name="imageId" type="hidden" value={image.id} />
-                              <input name="imageScope" type="hidden" value="variant" />
-
-                              <label className="admin-field">
-                                <span className="meta-label">Texte alternatif</span>
-                                <input
-                                  className="admin-input"
-                                  defaultValue={image.altText ?? ""}
-                                  name="altText"
-                                  type="text"
-                                />
-                              </label>
-
-                              <label className="admin-field">
-                                <span className="meta-label">Ordre</span>
-                                <input
-                                  className="admin-input"
-                                  defaultValue={String(image.sortOrder)}
-                                  name="sortOrder"
-                                  type="number"
-                                />
-                              </label>
-
-                              <label className="admin-checkbox">
-                                <input
-                                  defaultChecked={image.isPrimary}
-                                  name="isPrimary"
-                                  type="checkbox"
-                                  value="on"
-                                />
-                                <span>Image principale de la déclinaison</span>
-                              </label>
-
-                              <div className="admin-inline-actions">
-                                <button className="button" type="submit">
-                                  Mettre à jour l&apos;image
-                                </button>
-                              </div>
-                            </form>
-
-                            <form action={deleteProductImageAction}>
-                              <input name="productId" type="hidden" value={product.id} />
-                              <input name="imageId" type="hidden" value={image.id} />
-                              <input name="imageScope" type="hidden" value="variant" />
-
-                              <button className="button link-subtle" type="submit">
-                                Supprimer l&apos;image
-                              </button>
-                            </form>
-                          </article>
-                        ))}
-                      </div>
-                    ) : (
-                      <Notice tone="note">
-                        {isSimpleProduct
-                          ? "Cette déclinaison existante n'a pas encore d'image associée."
-                          : "Cette déclinaison n'a pas encore d'image associée."}
-                      </Notice>
-                    )}
+                  <div className="stack">
+                    <p className="eyebrow">
+                      {isSimpleProduct
+                        ? "Images existantes"
+                        : productPresentation.imagesEyebrow}
+                    </p>
+                    <h3>
+                      {isSimpleProduct
+                        ? "Images de la déclinaison existante"
+                        : `Images pour ${variant.colorName}`}
+                    </h3>
+                    <p className="card-copy">
+                      Commencez par l&apos;image principale de cette
+                      déclinaison. Les autres réglages d&apos;images restent
+                      disponibles plus bas si nécessaire.
+                    </p>
                   </div>
+
+                  {renderPrimaryImageManager({
+                    currentMediaAssetId: currentVariantPrimaryMediaAsset?.id ?? "",
+                    deleteAction: deleteVariantPrimaryImageAction,
+                    description:
+                      "Choisissez ici le visuel principal affiché pour cette déclinaison.",
+                    formClassName: "admin-form admin-record-form",
+                    mediaAssets,
+                    productId: product.id,
+                    scope: "variant",
+                    setAction: setVariantPrimaryImageAction,
+                    state: variantPrimaryImageState,
+                    title: isSimpleProduct
+                      ? "Image principale de la déclinaison existante"
+                      : "Image principale de la déclinaison",
+                    uploadsPublicPath,
+                    variantId: variant.id
+                  })}
+
+                  <div className="stack">
+                    <p className="meta-label">Réglages complémentaires</p>
+                    <p className="card-copy">
+                      Les autres images associées et leurs réglages restent
+                      disponibles ici si vous devez intervenir plus finement.
+                    </p>
+                  </div>
+
+                  {hasMediaAssets ? (
+                    <form
+                      action={createProductImageAction}
+                      className="admin-form admin-record-form"
+                    >
+                      <input name="productId" type="hidden" value={product.id} />
+                      <input name="variantId" type="hidden" value={variant.id} />
+                      <input name="imageScope" type="hidden" value="variant" />
+
+                      <label className="admin-field">
+                        <span className="meta-label">Média existant</span>
+                        <select
+                          className="admin-input"
+                          defaultValue=""
+                          name="mediaAssetId"
+                        >
+                          <option disabled value="">
+                            Sélectionnez un média
+                          </option>
+                          {mediaAssets.map((mediaAsset) => (
+                            <option key={mediaAsset.id} value={mediaAsset.id}>
+                              {mediaAsset.originalName} · {mediaAsset.mimeType}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <label className="admin-field">
+                        <span className="meta-label">Texte alternatif</span>
+                        <input className="admin-input" name="altText" type="text" />
+                      </label>
+
+                      <label className="admin-field">
+                        <span className="meta-label">Ordre</span>
+                        <input
+                          className="admin-input"
+                          defaultValue="0"
+                          name="sortOrder"
+                          type="number"
+                        />
+                      </label>
+
+                      <label className="admin-checkbox">
+                        <input name="isPrimary" type="checkbox" value="on" />
+                        <span>Image principale de la déclinaison</span>
+                      </label>
+
+                      <div className="admin-actions">
+                        <button className="button" type="submit">
+                          Ajouter une image à la déclinaison
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    renderMediaLibraryNotice()
+                  )}
+
+                  {variantImages.length > 0 ? (
+                    <div className="admin-record-list">
+                      {variantImages.map((image) => (
+                        <article className="store-card admin-image-card" key={image.id}>
+                          {renderImagePreview(uploadsPublicPath, image)}
+
+                          <div className="stack">
+                            <div className="admin-product-tags">
+                              <span className="admin-chip">
+                                {image.isPrimary
+                                  ? "Image principale"
+                                  : "Image secondaire"}
+                              </span>
+                              <span className="admin-chip">
+                                Ordre {image.sortOrder}
+                              </span>
+                            </div>
+                            <p className="card-meta">{image.filePath}</p>
+                          </div>
+
+                          <form
+                            action={updateProductImageAction}
+                            className="admin-form admin-record-form"
+                          >
+                            <input name="productId" type="hidden" value={product.id} />
+                            <input name="imageId" type="hidden" value={image.id} />
+                            <input name="imageScope" type="hidden" value="variant" />
+
+                            <label className="admin-field">
+                              <span className="meta-label">Texte alternatif</span>
+                              <input
+                                className="admin-input"
+                                defaultValue={image.altText ?? ""}
+                                name="altText"
+                                type="text"
+                              />
+                            </label>
+
+                            <label className="admin-field">
+                              <span className="meta-label">Ordre</span>
+                              <input
+                                className="admin-input"
+                                defaultValue={String(image.sortOrder)}
+                                name="sortOrder"
+                                type="number"
+                              />
+                            </label>
+
+                            <label className="admin-checkbox">
+                              <input
+                                defaultChecked={image.isPrimary}
+                                name="isPrimary"
+                                type="checkbox"
+                                value="on"
+                              />
+                              <span>Image principale de la déclinaison</span>
+                            </label>
+
+                            <div className="admin-inline-actions">
+                              <button className="button" type="submit">
+                                Mettre à jour l&apos;image
+                              </button>
+                            </div>
+                          </form>
+
+                          <form action={deleteProductImageAction}>
+                            <input name="productId" type="hidden" value={product.id} />
+                            <input name="imageId" type="hidden" value={image.id} />
+                            <input name="imageScope" type="hidden" value="variant" />
+
+                            <button className="button link-subtle" type="submit">
+                              Supprimer l&apos;image
+                            </button>
+                          </form>
+                        </article>
+                      ))}
+                    </div>
+                  ) : (
+                    <Notice tone="note">
+                      {isSimpleProduct
+                        ? "Cette déclinaison existante n'a pas encore d'image associée."
+                        : "Cette déclinaison n'a pas encore d'image associée."}
+                    </Notice>
+                  )}
                 </article>
               );
             })}
