@@ -548,6 +548,302 @@ async function insertOrderWithUniqueReference(
   );
 }
 
+async function readLockedCartIdByToken(
+  client: PoolClient,
+  token: string
+): Promise<CartIdRow | null> {
+  const result = await client.query<CartIdRow>(
+    `
+      select id::text as id
+      from carts
+      where token = $1
+      limit 1
+      for update
+    `,
+    [token]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+async function readLockedCheckoutDraftByCartId(
+  client: PoolClient,
+  cartId: string
+): Promise<CheckoutDraftRow | null> {
+  const result = await client.query<CheckoutDraftRow>(
+    `
+      select
+        id::text as id,
+        customer_email,
+        customer_first_name,
+        customer_last_name,
+        customer_phone,
+        shipping_address_line_1,
+        shipping_address_line_2,
+        shipping_postal_code,
+        shipping_city,
+        shipping_country_code,
+        billing_same_as_shipping,
+        billing_first_name,
+        billing_last_name,
+        billing_phone,
+        billing_address_line_1,
+        billing_address_line_2,
+        billing_postal_code,
+        billing_city,
+        billing_country_code
+      from cart_checkout_details
+      where cart_id = $1::bigint
+      limit 1
+      for update
+    `,
+    [cartId]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+function assertCompleteCheckoutDraft(
+  checkoutDraft: CheckoutDraftRow | null
+): asserts checkoutDraft is CheckoutDraftRow {
+  if (!checkoutDraftIsComplete(checkoutDraft)) {
+    throw new OrderRepositoryError(
+      "missing_checkout",
+      "Checkout draft is missing."
+    );
+  }
+}
+
+async function readLockedOrderSourceLinesByCartId(
+  client: PoolClient,
+  cartId: string
+): Promise<OrderSourceLineRow[]> {
+  const result = await client.query<OrderSourceLineRow>(
+    `
+      select
+        ci.id::text as cart_item_id,
+        ci.product_variant_id::text as product_variant_id,
+        ci.quantity,
+        p.name as product_name,
+        p.status as product_status,
+        pv.name as variant_name,
+        pv.status as variant_status,
+        pv.color_name,
+        pv.color_hex,
+        pv.sku,
+        pv.price::text as unit_price,
+        pv.stock_quantity
+      from cart_items ci
+      inner join product_variants pv on pv.id = ci.product_variant_id
+      inner join products p on p.id = pv.product_id
+      where ci.cart_id = $1::bigint
+      order by ci.created_at asc, ci.id asc
+      for update of ci, pv
+    `,
+    [cartId]
+  );
+
+  return result.rows;
+}
+
+function assertOrderSourceLinesCanBeOrdered(
+  sourceLines: readonly OrderSourceLineRow[]
+): void {
+  if (sourceLines.length === 0) {
+    throw new OrderRepositoryError("empty_cart", "Guest cart is empty.");
+  }
+
+  if (sourceLines.some((line) => !sourceLineIsAvailable(line))) {
+    throw new OrderRepositoryError(
+      "cart_unavailable",
+      "Guest cart is no longer available."
+    );
+  }
+}
+
+function calculateOrderTotalAmount(
+  sourceLines: readonly OrderSourceLineRow[]
+): string {
+  const totalAmountCents = sourceLines.reduce((sum, line) => {
+    return sum + moneyStringToCents(line.unit_price) * line.quantity;
+  }, 0);
+
+  return centsToMoneyString(totalAmountCents);
+}
+
+async function insertPendingOrderPayment(
+  client: PoolClient,
+  orderId: string,
+  totalAmount: string
+): Promise<void> {
+  await client.query(
+    `
+      insert into payments (
+        order_id,
+        provider,
+        method,
+        status,
+        amount,
+        currency
+      )
+      values (
+        $1::bigint,
+        'stripe',
+        'card',
+        'pending',
+        $2::numeric,
+        'eur'
+      )
+    `,
+    [orderId, totalAmount]
+  );
+}
+
+async function insertOrderItemsFromSourceLines(
+  client: PoolClient,
+  orderId: string,
+  sourceLines: readonly OrderSourceLineRow[]
+): Promise<void> {
+  for (const line of sourceLines) {
+    const unitPrice = normalizeMoneyString(line.unit_price);
+    const lineTotal = centsToMoneyString(
+      moneyStringToCents(unitPrice) * line.quantity
+    );
+
+    await client.query(
+      `
+        insert into order_items (
+          order_id,
+          source_product_variant_id,
+          product_name,
+          variant_name,
+          color_name,
+          color_hex,
+          sku,
+          unit_price,
+          quantity,
+          line_total
+        )
+        values (
+          $1::bigint,
+          $2::bigint,
+          $3,
+          $4,
+          $5,
+          $6,
+          $7,
+          $8::numeric,
+          $9,
+          $10::numeric
+        )
+      `,
+      [
+        orderId,
+        line.product_variant_id,
+        line.product_name,
+        line.variant_name,
+        line.color_name,
+        line.color_hex,
+        line.sku,
+        unitPrice,
+        line.quantity,
+        lineTotal
+      ]
+    );
+  }
+}
+
+async function decrementVariantStockFromSourceLines(
+  client: PoolClient,
+  sourceLines: readonly OrderSourceLineRow[]
+): Promise<void> {
+  for (const line of sourceLines) {
+    await client.query(
+      `
+        update product_variants
+        set stock_quantity = stock_quantity - $2
+        where id = $1::bigint
+      `,
+      [line.product_variant_id, line.quantity]
+    );
+  }
+}
+
+async function deleteCartById(
+  client: PoolClient,
+  cartId: string
+): Promise<void> {
+  await client.query(
+    `
+      delete from carts
+      where id = $1::bigint
+    `,
+    [cartId]
+  );
+}
+
+async function readLockedOrderStatusById(
+  client: PoolClient,
+  id: string
+): Promise<OrderStatusRow | null> {
+  const result = await client.query<OrderStatusRow>(
+    `
+      select
+        id::text as id,
+        status
+      from orders
+      where id = $1::bigint
+      limit 1
+      for update
+    `,
+    [id]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+function getOrderStatusTransitionOrThrow(
+  currentStatus: OrderStatus,
+  nextStatus: OrderStatus
+) {
+  const transition = resolveOrderStatusTransition({
+    currentStatus,
+    nextStatus
+  });
+
+  if (!transition.ok) {
+    throw new OrderRepositoryError(
+      "invalid_status_transition",
+      "Order status transition is invalid."
+    );
+  }
+
+  return transition;
+}
+
+async function restockOrderItems(
+  client: PoolClient,
+  orderId: string
+): Promise<void> {
+  await client.query(
+    `
+      update product_variants pv
+      set stock_quantity = pv.stock_quantity + restock.total_quantity
+      from (
+        select
+          source_product_variant_id as product_variant_id,
+          sum(quantity)::integer as total_quantity
+        from order_items
+        where order_id = $1::bigint
+          and source_product_variant_id is not null
+        group by source_product_variant_id
+      ) restock
+      where pv.id = restock.product_variant_id
+    `,
+    [orderId]
+  );
+}
+
 export async function createOrderFromGuestCartToken(
   token: string
 ): Promise<CreatedOrderRow> {
@@ -556,192 +852,31 @@ export async function createOrderFromGuestCartToken(
   try {
     await client.query("begin");
 
-    const cartResult = await client.query<CartIdRow>(
-      `
-        select id::text as id
-        from carts
-        where token = $1
-        limit 1
-        for update
-      `,
-      [token]
-    );
-    const cartRow = cartResult.rows[0];
+    const cartRow = await readLockedCartIdByToken(client, token);
 
     if (!cartRow) {
       throw new OrderRepositoryError("missing_cart", "Guest cart is missing.");
     }
 
-    const checkoutResult = await client.query<CheckoutDraftRow>(
-      `
-        select
-          id::text as id,
-          customer_email,
-          customer_first_name,
-          customer_last_name,
-          customer_phone,
-          shipping_address_line_1,
-          shipping_address_line_2,
-          shipping_postal_code,
-          shipping_city,
-          shipping_country_code,
-          billing_same_as_shipping,
-          billing_first_name,
-          billing_last_name,
-          billing_phone,
-          billing_address_line_1,
-          billing_address_line_2,
-          billing_postal_code,
-          billing_city,
-          billing_country_code
-        from cart_checkout_details
-        where cart_id = $1::bigint
-        limit 1
-        for update
-      `,
-      [cartRow.id]
+    const checkoutRow = await readLockedCheckoutDraftByCartId(client, cartRow.id);
+    assertCompleteCheckoutDraft(checkoutRow);
+
+    const sourceLines = await readLockedOrderSourceLinesByCartId(
+      client,
+      cartRow.id
     );
-    const checkoutRow = checkoutResult.rows[0] ?? null;
+    assertOrderSourceLinesCanBeOrdered(sourceLines);
 
-    if (!checkoutDraftIsComplete(checkoutRow)) {
-      throw new OrderRepositoryError(
-        "missing_checkout",
-        "Checkout draft is missing."
-      );
-    }
-
-    const sourceLinesResult = await client.query<OrderSourceLineRow>(
-      `
-        select
-          ci.id::text as cart_item_id,
-          ci.product_variant_id::text as product_variant_id,
-          ci.quantity,
-          p.name as product_name,
-          p.status as product_status,
-          pv.name as variant_name,
-          pv.status as variant_status,
-          pv.color_name,
-          pv.color_hex,
-          pv.sku,
-          pv.price::text as unit_price,
-          pv.stock_quantity
-        from cart_items ci
-        inner join product_variants pv on pv.id = ci.product_variant_id
-        inner join products p on p.id = pv.product_id
-        where ci.cart_id = $1::bigint
-        order by ci.created_at asc, ci.id asc
-        for update of ci, pv
-      `,
-      [cartRow.id]
-    );
-    const sourceLines = sourceLinesResult.rows;
-
-    if (sourceLines.length === 0) {
-      throw new OrderRepositoryError("empty_cart", "Guest cart is empty.");
-    }
-
-    if (sourceLines.some((line) => !sourceLineIsAvailable(line))) {
-      throw new OrderRepositoryError(
-        "cart_unavailable",
-        "Guest cart is no longer available."
-      );
-    }
-
-    const totalAmountCents = sourceLines.reduce((sum, line) => {
-      return sum + moneyStringToCents(line.unit_price) * line.quantity;
-    }, 0);
-    const totalAmount = centsToMoneyString(totalAmountCents);
+    const totalAmount = calculateOrderTotalAmount(sourceLines);
     const createdOrder = await insertOrderWithUniqueReference(client, {
       checkout: checkoutRow,
       totalAmount
     });
 
-    await client.query(
-      `
-        insert into payments (
-          order_id,
-          provider,
-          method,
-          status,
-          amount,
-          currency
-        )
-        values (
-          $1::bigint,
-          'stripe',
-          'card',
-          'pending',
-          $2::numeric,
-          'eur'
-        )
-      `,
-      [createdOrder.id, totalAmount]
-    );
-
-    for (const line of sourceLines) {
-      const unitPrice = normalizeMoneyString(line.unit_price);
-      const lineTotal = centsToMoneyString(
-        moneyStringToCents(unitPrice) * line.quantity
-      );
-
-      await client.query(
-        `
-          insert into order_items (
-            order_id,
-            source_product_variant_id,
-            product_name,
-            variant_name,
-            color_name,
-            color_hex,
-            sku,
-            unit_price,
-            quantity,
-            line_total
-          )
-          values (
-            $1::bigint,
-            $2::bigint,
-            $3,
-            $4,
-            $5,
-            $6,
-            $7,
-            $8::numeric,
-            $9,
-            $10::numeric
-          )
-        `,
-        [
-          createdOrder.id,
-          line.product_variant_id,
-          line.product_name,
-          line.variant_name,
-          line.color_name,
-          line.color_hex,
-          line.sku,
-          unitPrice,
-          line.quantity,
-          lineTotal
-        ]
-      );
-
-      await client.query(
-        `
-          update product_variants
-          set stock_quantity = stock_quantity - $2
-          where id = $1::bigint
-        `,
-        [line.product_variant_id, line.quantity]
-      );
-    }
-
-    await client.query(
-      `
-        delete from carts
-        where id = $1::bigint
-      `,
-      [cartRow.id]
-    );
+    await insertPendingOrderPayment(client, createdOrder.id, totalAmount);
+    await insertOrderItemsFromSourceLines(client, createdOrder.id, sourceLines);
+    await decrementVariantStockFromSourceLines(client, sourceLines);
+    await deleteCartById(client, cartRow.id);
 
     await client.query("commit");
 
@@ -772,19 +907,7 @@ export async function updateOrderStatus(input: {
   try {
     await client.query("begin");
 
-    const orderResult = await client.query<OrderStatusRow>(
-      `
-        select
-          id::text as id,
-          status
-        from orders
-        where id = $1::bigint
-        limit 1
-        for update
-      `,
-      [input.id]
-    );
-    const orderRow = orderResult.rows[0] ?? null;
+    const orderRow = await readLockedOrderStatusById(client, input.id);
 
     if (orderRow === null) {
       throw new OrderRepositoryError(
@@ -793,36 +916,13 @@ export async function updateOrderStatus(input: {
       );
     }
 
-    const transition = resolveOrderStatusTransition({
-      currentStatus: orderRow.status,
-      nextStatus: input.nextStatus
-    });
-
-    if (!transition.ok) {
-      throw new OrderRepositoryError(
-        "invalid_status_transition",
-        "Order status transition is invalid."
-      );
-    }
+    const transition = getOrderStatusTransitionOrThrow(
+      orderRow.status,
+      input.nextStatus
+    );
 
     if (transition.shouldRestock) {
-      await client.query(
-        `
-          update product_variants pv
-          set stock_quantity = pv.stock_quantity + restock.total_quantity
-          from (
-            select
-              source_product_variant_id as product_variant_id,
-              sum(quantity)::integer as total_quantity
-            from order_items
-            where order_id = $1::bigint
-              and source_product_variant_id is not null
-            group by source_product_variant_id
-          ) restock
-          where pv.id = restock.product_variant_id
-        `,
-        [input.id]
-      );
+      await restockOrderItems(client, input.id);
     }
 
     await client.query(
@@ -863,19 +963,7 @@ export async function shipOrder(input: {
   try {
     await client.query("begin");
 
-    const orderResult = await client.query<OrderStatusRow>(
-      `
-        select
-          id::text as id,
-          status
-        from orders
-        where id = $1::bigint
-        limit 1
-        for update
-      `,
-      [input.id]
-    );
-    const orderRow = orderResult.rows[0] ?? null;
+    const orderRow = await readLockedOrderStatusById(client, input.id);
 
     if (orderRow === null) {
       throw new OrderRepositoryError(
@@ -884,17 +972,7 @@ export async function shipOrder(input: {
       );
     }
 
-    const transition = resolveOrderStatusTransition({
-      currentStatus: orderRow.status,
-      nextStatus: "shipped"
-    });
-
-    if (!transition.ok) {
-      throw new OrderRepositoryError(
-        "invalid_status_transition",
-        "Order status transition is invalid."
-      );
-    }
+    getOrderStatusTransitionOrThrow(orderRow.status, "shipped");
 
     await client.query(
       `
@@ -924,6 +1002,45 @@ export async function shipOrder(input: {
   }
 }
 
+const ORDER_WITH_PAYMENT_SELECT = `
+  select
+    o.id::text as id,
+    o.reference,
+    o.status,
+    o.customer_email,
+    o.customer_first_name,
+    o.customer_last_name,
+    o.customer_phone,
+    o.shipping_address_line_1,
+    o.shipping_address_line_2,
+    o.shipping_postal_code,
+    o.shipping_city,
+    o.shipping_country_code,
+    o.billing_same_as_shipping,
+    o.billing_first_name,
+    o.billing_last_name,
+    o.billing_phone,
+    o.billing_address_line_1,
+    o.billing_address_line_2,
+    o.billing_postal_code,
+    o.billing_city,
+    o.billing_country_code,
+    o.shipped_at,
+    o.tracking_reference,
+    o.total_amount::text as total_amount,
+    p.status as payment_status,
+    p.provider as payment_provider,
+    p.method as payment_method,
+    p.amount::text as payment_amount,
+    p.currency as payment_currency,
+    p.stripe_checkout_session_id,
+    p.stripe_payment_intent_id,
+    o.created_at,
+    o.updated_at
+  from orders o
+  left join payments p on p.order_id = o.id
+`;
+
 async function readOrderRowByReference(reference: string): Promise<OrderRow | null> {
   if (!isValidOrderReference(reference)) {
     return null;
@@ -931,42 +1048,7 @@ async function readOrderRowByReference(reference: string): Promise<OrderRow | nu
 
   return queryFirst<OrderRow>(
     `
-      select
-        o.id::text as id,
-        o.reference,
-        o.status,
-        o.customer_email,
-        o.customer_first_name,
-        o.customer_last_name,
-        o.customer_phone,
-        o.shipping_address_line_1,
-        o.shipping_address_line_2,
-        o.shipping_postal_code,
-        o.shipping_city,
-        o.shipping_country_code,
-        o.billing_same_as_shipping,
-        o.billing_first_name,
-        o.billing_last_name,
-        o.billing_phone,
-        o.billing_address_line_1,
-        o.billing_address_line_2,
-        o.billing_postal_code,
-        o.billing_city,
-        o.billing_country_code,
-        o.shipped_at,
-        o.tracking_reference,
-        o.total_amount::text as total_amount,
-        p.status as payment_status,
-        p.provider as payment_provider,
-        p.method as payment_method,
-        p.amount::text as payment_amount,
-        p.currency as payment_currency,
-        p.stripe_checkout_session_id,
-        p.stripe_payment_intent_id,
-        o.created_at,
-        o.updated_at
-      from orders o
-      left join payments p on p.order_id = o.id
+      ${ORDER_WITH_PAYMENT_SELECT}
       where o.reference = $1
       limit 1
     `,
@@ -981,42 +1063,7 @@ async function readOrderRowById(id: string): Promise<OrderRow | null> {
 
   return queryFirst<OrderRow>(
     `
-      select
-        o.id::text as id,
-        o.reference,
-        o.status,
-        o.customer_email,
-        o.customer_first_name,
-        o.customer_last_name,
-        o.customer_phone,
-        o.shipping_address_line_1,
-        o.shipping_address_line_2,
-        o.shipping_postal_code,
-        o.shipping_city,
-        o.shipping_country_code,
-        o.billing_same_as_shipping,
-        o.billing_first_name,
-        o.billing_last_name,
-        o.billing_phone,
-        o.billing_address_line_1,
-        o.billing_address_line_2,
-        o.billing_postal_code,
-        o.billing_city,
-        o.billing_country_code,
-        o.shipped_at,
-        o.tracking_reference,
-        o.total_amount::text as total_amount,
-        p.status as payment_status,
-        p.provider as payment_provider,
-        p.method as payment_method,
-        p.amount::text as payment_amount,
-        p.currency as payment_currency,
-        p.stripe_checkout_session_id,
-        p.stripe_payment_intent_id,
-        o.created_at,
-        o.updated_at
-      from orders o
-      left join payments p on p.order_id = o.id
+      ${ORDER_WITH_PAYMENT_SELECT}
       where o.id = $1::bigint
       limit 1
     `,
