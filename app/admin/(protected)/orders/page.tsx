@@ -1,12 +1,8 @@
-import Link from "next/link";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
+import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminOrderCard } from "@/components/admin/admin-order-card";
 import { listAdminOrders } from "@/db/repositories/order.repository";
-import {
-  getOrderStatusLabel,
-  getOrderStatusSummary,
-  getPaymentStatusLabel
-} from "@/entities/order/order-status-presentation";
 
 export const dynamic = "force-dynamic";
 
@@ -15,11 +11,6 @@ type AdminOrdersPageProps = Readonly<{
     error?: string | string[];
   }>;
 }>;
-
-const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
-  dateStyle: "long",
-  timeStyle: "short"
-});
 
 export default async function AdminOrdersPage({
   searchParams
@@ -49,59 +40,16 @@ export default async function AdminOrdersPage({
 
         {orders.length > 0 ? (
           <div className="admin-record-list">
-            {orders.map((order) => {
-              const summary = getOrderStatusSummary({
-                orderStatus: order.status,
-                paymentStatus: order.paymentStatus
-              });
-
-              return (
-                <article className="store-card" key={order.id}>
-                  <div className="stack">
-                    <p className="card-kicker">Commande</p>
-                    <h2>{order.reference}</h2>
-                    <p className="card-meta">
-                      {order.customerFirstName} {order.customerLastName}
-                    </p>
-                  </div>
-
-                  <div className="admin-product-tags">
-                    <span className="admin-chip">
-                      {getOrderStatusLabel(order.status)}
-                    </span>
-                    <span className="admin-chip">
-                      {getPaymentStatusLabel(order.paymentStatus)}
-                    </span>
-                    <span className="admin-chip">{order.totalAmount}</span>
-                    <span className="admin-chip">
-                      {order.lineCount} ligne{order.lineCount > 1 ? "s" : ""}
-                    </span>
-                  </div>
-
-                  <p className="card-copy">{summary.description}</p>
-                  <p className="card-meta">Suivant : {summary.nextStep}</p>
-                  <p className="card-copy">{order.customerEmail}</p>
-                  <p className="card-meta">
-                    {orderDateTimeFormatter.format(new Date(order.createdAt))}
-                  </p>
-
-                  <div>
-                    <Link className="link" href={`/admin/orders/${order.id}`}>
-                      Voir le détail
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
+            {orders.map((order) => (
+              <AdminOrderCard key={order.id} order={order} />
+            ))}
           </div>
         ) : (
-          <div className="empty-state">
-            <p className="eyebrow">Aucune commande</p>
-            <h2>Aucune commande n&apos;a encore été créée</h2>
-            <p className="card-copy">
-              Les commandes créées sur la boutique apparaîtront ici.
-            </p>
-          </div>
+          <AdminEmptyState
+            eyebrow="Aucune commande"
+            title="Aucune commande n'a encore été créée"
+            description="Les commandes créées sur la boutique apparaîtront ici."
+          />
         )}
       </section>
     </div>

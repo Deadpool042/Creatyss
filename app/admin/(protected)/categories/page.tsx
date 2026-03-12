@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
+import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminCategoryCard } from "@/components/admin/admin-category-card";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 
 export const dynamic = "force-dynamic";
@@ -68,39 +70,15 @@ export default async function AdminCategoriesPage({
         {categories.length > 0 ? (
           <div className="admin-category-list">
             {categories.map((category) => (
-              <article className="store-card admin-category-card" key={category.id}>
-                <div className="stack">
-                  <p className="card-kicker">Catégorie</p>
-                  <h2>{category.name}</h2>
-                  <p className="card-meta">{category.slug}</p>
-                </div>
-
-                <p className="card-copy">
-                  {category.description ?? "Aucune description pour cette catégorie."}
-                </p>
-
-                <div className="admin-category-tags">
-                  <span className="admin-chip">
-                    {category.isFeatured ? "Mise en avant" : "Standard"}
-                  </span>
-                </div>
-
-                <div>
-                  <Link className="link" href={`/admin/categories/${category.id}`}>
-                    Modifier la catégorie
-                  </Link>
-                </div>
-              </article>
+              <AdminCategoryCard key={category.id} category={category} />
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            <p className="eyebrow">Aucune catégorie</p>
-            <h2>Le catalogue ne contient pas encore de catégorie</h2>
-            <p className="card-copy">
-              Créez une première catégorie pour structurer le catalogue.
-            </p>
-          </div>
+          <AdminEmptyState
+            eyebrow="Aucune catégorie"
+            title="Le catalogue ne contient pas encore de catégorie"
+            description="Créez une première catégorie pour structurer le catalogue."
+          />
         )}
       </section>
     </div>

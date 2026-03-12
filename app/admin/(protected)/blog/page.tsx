@@ -1,14 +1,11 @@
 import Link from "next/link";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
+import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminBlogPostCard } from "@/components/admin/admin-blog-post-card";
 import { listAdminBlogPosts } from "@/db/repositories/admin-blog.repository";
 
 export const dynamic = "force-dynamic";
-
-const blogDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
-  dateStyle: "long",
-  timeStyle: "short"
-});
 
 type AdminBlogPageProps = Readonly<{
   searchParams: Promise<{
@@ -16,10 +13,6 @@ type AdminBlogPageProps = Readonly<{
     status?: string | string[];
   }>;
 }>;
-
-function getStatusLabel(status: "draft" | "published"): string {
-  return status === "published" ? "Publié" : "Brouillon";
-}
 
 function getStatusMessage(status: string | undefined): string | null {
   switch (status) {
@@ -73,45 +66,15 @@ export default async function AdminBlogPage({
         {blogPosts.length > 0 ? (
           <div className="admin-blog-list">
             {blogPosts.map((blogPost) => (
-              <article className="store-card admin-blog-card" key={blogPost.id}>
-                <div className="stack">
-                  <p className="card-kicker">Article</p>
-                  <h2>{blogPost.title}</h2>
-                  <p className="card-meta">{blogPost.slug}</p>
-                </div>
-
-                <p className="card-copy">
-                  {blogPost.excerpt ?? "Aucun extrait pour cet article."}
-                </p>
-
-                <div className="admin-product-tags">
-                  <span className="admin-chip">
-                    {getStatusLabel(blogPost.status)}
-                  </span>
-                  <span className="admin-chip">
-                    {blogPost.publishedAt
-                      ? `Publié le ${blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}`
-                      : "Non publié"}
-                  </span>
-                </div>
-
-                <div>
-                  <Link className="link" href={`/admin/blog/${blogPost.id}`}>
-                    Modifier l&apos;article
-                  </Link>
-                </div>
-              </article>
+              <AdminBlogPostCard key={blogPost.id} blogPost={blogPost} />
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            <p className="eyebrow">Aucun article</p>
-            <h2>Le blog ne contient pas encore d&apos;article</h2>
-            <p className="card-copy">
-              Créez un premier article simple pour alimenter la partie blog
-              publique.
-            </p>
-          </div>
+          <AdminEmptyState
+            eyebrow="Aucun article"
+            title="Le blog ne contient pas encore d'article"
+            description="Créez un premier article simple pour alimenter la partie blog publique."
+          />
         )}
       </section>
     </div>

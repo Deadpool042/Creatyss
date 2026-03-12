@@ -1,0 +1,61 @@
+import Link from "next/link";
+import {
+  getOrderStatusLabel,
+  getOrderStatusSummary,
+  getPaymentStatusLabel
+} from "@/entities/order/order-status-presentation";
+import { type AdminOrderSummary } from "@/db/repositories/order.repository";
+
+const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
+  dateStyle: "long",
+  timeStyle: "short"
+});
+
+type AdminOrderCardProps = {
+  order: AdminOrderSummary;
+};
+
+export function AdminOrderCard({ order }: AdminOrderCardProps) {
+  const summary = getOrderStatusSummary({
+    orderStatus: order.status,
+    paymentStatus: order.paymentStatus
+  });
+
+  return (
+    <article className="store-card" key={order.id}>
+      <div className="stack">
+        <p className="card-kicker">Commande</p>
+        <h2>{order.reference}</h2>
+        <p className="card-meta">
+          {order.customerFirstName} {order.customerLastName}
+        </p>
+      </div>
+
+      <div className="admin-product-tags">
+        <span className="admin-chip">
+          {getOrderStatusLabel(order.status)}
+        </span>
+        <span className="admin-chip">
+          {getPaymentStatusLabel(order.paymentStatus)}
+        </span>
+        <span className="admin-chip">{order.totalAmount}</span>
+        <span className="admin-chip">
+          {order.lineCount} ligne{order.lineCount > 1 ? "s" : ""}
+        </span>
+      </div>
+
+      <p className="card-copy">{summary.description}</p>
+      <p className="card-meta">Suivant : {summary.nextStep}</p>
+      <p className="card-copy">{order.customerEmail}</p>
+      <p className="card-meta">
+        {orderDateTimeFormatter.format(new Date(order.createdAt))}
+      </p>
+
+      <div>
+        <Link className="link" href={`/admin/orders/${order.id}`}>
+          Voir le détail
+        </Link>
+      </div>
+    </article>
+  );
+}
