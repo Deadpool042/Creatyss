@@ -3,10 +3,6 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import "./globals.css";
 import Image from "next/image";
-import { Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "Creatyss",
@@ -19,7 +15,7 @@ type RootLayoutProps = Readonly<{
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="fr" className={cn("font-sans", geist.variable)}>
+    <html lang="fr">
       <body>
         <div className="site">
           <header className="site-header">
