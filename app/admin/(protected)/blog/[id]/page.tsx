@@ -120,8 +120,8 @@ export default async function EditAdminBlogPostPage({
             <p className="eyebrow">Blog</p>
             <h1>Modifier l&apos;article</h1>
             <p className="lead">
-              Ajustez le contenu, la couverture et le statut de cet article
-              depuis un écran unique.
+              Modifiez d&apos;abord le contenu et le statut de l&apos;article,
+              puis ajustez sa couverture si nécessaire.
             </p>
           </div>
 
@@ -146,11 +146,13 @@ export default async function EditAdminBlogPostPage({
           />
 
           {blogPost.publishedAt ? (
-            <p className="card-meta">
+            <p className="admin-muted-note">
               Publié le {blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}
             </p>
           ) : (
-            <p className="card-meta">Cet article n&apos;est pas encore publié.</p>
+            <p className="admin-muted-note">
+              Cet article est enregistré en brouillon pour le moment.
+            </p>
           )}
 
           {coverImageUrl ? (
@@ -281,9 +283,8 @@ export default async function EditAdminBlogPostPage({
           <p className="eyebrow">Suppression</p>
           <h2>Supprimer cet article</h2>
           <p className="card-copy">
-            L&apos;article sera retiré du blog public et des sélections de la
-            page d&apos;accueil
-            existantes.
+            La suppression retire l&apos;article du blog public. Vérifiez
+            ensuite vos mises en avant sur la page d&apos;accueil si besoin.
           </p>
         </div>
 

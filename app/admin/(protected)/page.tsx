@@ -9,9 +9,8 @@ export default function AdminHomePage() {
         <p className="card-kicker">Administration</p>
         <h2>Espace d&apos;administration</h2>
         <p className="card-copy">
-          Cet espace permet déjà de gérer l&apos;accueil, le blog, les
-          catégories, les produits, les médias et les commandes depuis une
-          base simple et maintenable.
+          Gérez l&apos;accueil, le blog, les catégories, les produits, les
+          médias et les commandes depuis un seul espace.
         </p>
       </article>
 
@@ -61,8 +60,8 @@ export default function AdminHomePage() {
         <p className="card-kicker">Catégories</p>
         <h2>Structure du catalogue</h2>
         <p className="card-copy">
-          Les catégories restent disponibles pour organiser proprement le
-          catalogue et alimenter les associations produit.
+          Organisez le catalogue et reliez les produits aux catégories déjà
+          créées.
         </p>
         <div>
           <Link className="link" href="/admin/categories">
@@ -75,8 +74,8 @@ export default function AdminHomePage() {
         <p className="card-kicker">Médias</p>
         <h2>Bibliothèque locale</h2>
         <p className="card-copy">
-          La bibliothèque médias reste disponible pour préparer les futures
-          éditions produits, blog et page d&apos;accueil.
+          Importez des images puis réutilisez-les dans les produits, le blog et
+          la page d&apos;accueil.
         </p>
         <div>
           <Link className="link" href="/admin/media">

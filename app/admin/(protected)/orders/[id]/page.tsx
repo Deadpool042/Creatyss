@@ -111,8 +111,8 @@ export default async function AdminOrderDetailPage({
             <p className="eyebrow">Commandes</p>
             <h1>Commande {order.reference}</h1>
             <p className="lead">
-              Consultez la commande, son paiement et son avancement depuis un
-              seul écran.
+              Repérez d&apos;abord l&apos;état de la commande, appliquez
+              l&apos;action utile si nécessaire, puis consultez les détails.
             </p>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default async function AdminOrderDetailPage({
                 <p className="eyebrow">Synthèse</p>
                 <h2>{summary.title}</h2>
                 <p className="card-copy">{summary.description}</p>
-                <p className="card-meta">Suivant : {summary.nextStep}</p>
+                <p className="admin-muted-note">{summary.nextStep}</p>
               </div>
 
               <div className="admin-product-tags">
@@ -141,6 +141,15 @@ export default async function AdminOrderDetailPage({
             </article>
 
             <article className="store-card checkout-line">
+              <div className="stack">
+                <p className="eyebrow">Actions</p>
+                <h2>État actuel</h2>
+                <p className="card-copy">
+                  Vérifiez le statut, puis utilisez l&apos;action disponible si
+                  une étape reste à effectuer.
+                </p>
+              </div>
+
               <div className="stack">
                 <p className="meta-label">Référence</p>
                 <p className="card-copy">{order.reference}</p>

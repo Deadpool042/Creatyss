@@ -111,7 +111,8 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             <p className="eyebrow">Commande</p>
             <h1>Finaliser la commande</h1>
             <p className="lead">
-              Renseignez vos informations pour créer votre commande.
+              Renseignez vos informations, puis créez la commande quand le
+              panier est prêt.
             </p>
           </div>
         </div>
@@ -356,6 +357,10 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               <div className="admin-inline-actions">
                 {canSave ? (
                   <>
+                    <p className="admin-muted-note">
+                      Créez la commande une fois vos informations complètes.
+                      Vous pouvez aussi les enregistrer pour plus tard.
+                    </p>
                     <button className="button" formAction={createOrderAction} type="submit">
                       Créer la commande
                     </button>
@@ -369,7 +374,8 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   </>
                 ) : (
                   <p className="admin-muted-note">
-                    Corrigez le panier avant de poursuivre.
+                    La commande reste bloquée tant que le panier n&apos;est pas
+                    corrigé.
                   </p>
                 )}
 
@@ -423,10 +429,9 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                           {getAvailabilityLabel(line.isAvailable)}
                         </p>
                         {!line.isAvailable ? (
-                          <p className="card-meta">
-                            Cette ligne reste visible mais bloque la validation
-                            de la commande
-                            tant qu&apos;elle n&apos;est pas corrigée.
+                          <p className="admin-alert">
+                            Cette ligne bloque la commande tant qu&apos;elle
+                            n&apos;est pas corrigée dans le panier.
                           </p>
                         ) : null}
                       </div>
@@ -459,8 +464,8 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             <p className="eyebrow">Commande indisponible</p>
             <h2>Ajoutez d&apos;abord un article au panier</h2>
             <p className="card-copy">
-              La finalisation de la commande sera disponible dès qu&apos;un
-              article publié et en stock sera ajouté au panier.
+              Ajoutez d&apos;abord un article disponible au panier pour
+              finaliser la commande.
             </p>
             <div className="button-row">
               <Link className="button" href="/boutique">

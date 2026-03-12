@@ -63,8 +63,8 @@ export default async function EditAdminCategoryPage({
             <p className="eyebrow">Catégories</p>
             <h1>Modifier la catégorie</h1>
             <p className="lead">
-              Ajustez les informations de cette catégorie et gérez sa
-              suppression depuis le même écran.
+              Modifiez d&apos;abord les informations de la catégorie. La
+              suppression reste disponible séparément en bas de page.
             </p>
           </div>
 
@@ -137,8 +137,8 @@ export default async function EditAdminCategoryPage({
           <p className="eyebrow">Suppression</p>
           <h2>Supprimer cette catégorie</h2>
           <p className="card-copy">
-            La suppression sera refusée si la catégorie est encore utilisée par
-            au moins un produit.
+            La suppression est refusée tant que cette catégorie est encore
+            utilisée par un produit.
           </p>
         </div>
 

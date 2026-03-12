@@ -53,7 +53,7 @@ export function getProductPageStatusSummary(input: {
     return {
       title: "Produit disponible",
       description: "Ce produit est disponible à l'achat.",
-      nextStep: "Choisissez la quantité puis ajoutez le produit au panier."
+      nextStep: "Choisissez la quantité puis ajoutez ce produit au panier."
     };
   }
 
@@ -89,7 +89,7 @@ export function getProductOfferSectionPresentation(
       eyebrow: "Informations de vente",
       title: "Informations de vente",
       description:
-        "Retrouvez ici le prix, le stock et les informations utiles pour commander ce produit simple.",
+        "Consultez le prix, la disponibilité et la quantité avant d'ajouter ce produit au panier.",
       emptyEyebrow: "Informations de vente",
       emptyTitle: "Ce produit simple n'est pas disponible pour le moment",
       emptyDescription:
@@ -101,7 +101,7 @@ export function getProductOfferSectionPresentation(
       eyebrow: "Déclinaisons",
       title: "Choisir une déclinaison",
       description:
-        "Vérifiez le prix, la disponibilité et les visuels de chaque déclinaison avant l'ajout au panier.",
+        "Comparez les déclinaisons disponibles avant d'ajouter celle qui vous convient au panier.",
       emptyEyebrow: "Aucune déclinaison",
       emptyTitle: "Ce produit n'a pas encore de déclinaison disponible",
       emptyDescription:
@@ -119,10 +119,10 @@ export function getOfferAvailabilityMessage(input: {
 }): string {
   if (input.productType === "simple") {
     if (input.isAvailable) {
-      return "Choisissez la quantité puis ajoutez le produit au panier.";
+      return "Choisissez la quantité puis ajoutez ce produit au panier.";
     }
 
-    return "Cette offre est temporairement indisponible.";
+    return "Ce produit n'est pas disponible pour le moment.";
   }
 
   if (input.isAvailable) {

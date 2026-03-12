@@ -130,7 +130,7 @@ function getSimpleOfferErrorMessage(error: string | undefined): string | null {
     case "simple_product_offer_requires_simple_product":
       return "Cette édition est réservée aux produits simples.";
     case "simple_product_multiple_legacy_variants":
-      return "Ce produit simple est incohérent car plusieurs déclinaisons sont encore associées. Corrigez d'abord cet état dans le bloc de données existantes.";
+      return "Ce produit simple est incohérent car plusieurs déclinaisons sont encore associées. Corrigez d'abord cet état dans les données existantes avant de modifier les informations de vente.";
     case "save_failed":
       return "Les informations de vente n'ont pas pu être enregistrées.";
     default:
@@ -456,8 +456,9 @@ export default async function ProductDetailPage({
             <p className="eyebrow">Produits</p>
             <h1>Modifier le produit</h1>
             <p className="lead">
-              Mettez à jour le produit, son type, ses informations de vente et
-              ses images depuis le même écran.
+              Commencez par les informations générales, puis complétez les
+              informations de vente ou les déclinaisons selon le type du
+              produit.
             </p>
           </div>
 
@@ -485,8 +486,8 @@ export default async function ProductDetailPage({
           <p className="eyebrow">Informations générales</p>
           <h2>Informations produit</h2>
           <p className="card-copy">
-            Ajustez les champs catalogue et le SEO de base depuis le même
-            formulaire.
+            Modifiez ici le catalogue, le texte public et la publication du
+            produit.
           </p>
         </div>
 
@@ -794,7 +795,7 @@ export default async function ProductDetailPage({
           </h2>
           <p className="card-copy">
             {isSimpleProduct
-              ? "Modifiez directement la référence, le prix, le prix barré et le stock du produit simple."
+              ? "Complétez ici la référence, le prix, le prix barré et le stock du produit simple."
               : productPresentation.sectionDescription}
           </p>
         </div>
@@ -811,33 +812,33 @@ export default async function ProductDetailPage({
             ) : null}
             {simpleProductHasInconsistentVariantCount ? (
               <p className="admin-alert" role="alert">
-                Ce produit simple est incohérent car plusieurs déclinaisons sont
-                encore associées. Aucune correction automatique n&apos;est
-                appliquée tant qu&apos;une seule déclinaison n&apos;est pas
-                conservée.
+                Plusieurs déclinaisons sont encore associées à ce produit
+                simple. Corrigez d&apos;abord cet état dans les données
+                existantes avant de modifier les informations de vente.
               </p>
             ) : null}
             {showSimpleOfferForm && simpleOfferFormDefaults ? (
               <>
                 {product.simpleOffer ? (
-                  <p className="card-meta">
+                  <p className="admin-muted-note">
                     Disponibilité actuelle :{" "}
                     {getAvailabilityLabel(product.simpleOffer.isAvailable)}
                   </p>
                 ) : null}
                 {simpleProductHasNoLegacyVariant ? (
                   <p className="admin-muted-note">
-                    L&apos;édition directe est disponible, mais l&apos;affichage
-                    public reste limité tant qu&apos;aucune déclinaison
-                    existante n&apos;est présente. Cette page ne crée rien
-                    automatiquement.
+                    Vous pouvez enregistrer les informations de vente ici. Pour
+                    le moment, l&apos;affichage public de ce produit reste
+                    limité tant qu&apos;aucune déclinaison existante n&apos;est
+                    associée.
                   </p>
                 ) : null}
                 {simpleProductHasSingleLegacyVariant ? (
                   <p className="admin-muted-note">
-                    Les champs commerciaux saisis ici restent synchronisés avec
-                    l&apos;unique déclinaison existante. Son statut de
-                    publication continue à se gérer dans le bloc ci-dessous.
+                    Les informations commerciales saisies ici restent
+                    synchronisées avec l&apos;unique déclinaison déjà
+                    enregistrée. Les autres réglages de cette déclinaison
+                    restent disponibles plus bas sur la page.
                   </p>
                 ) : null}
 
@@ -918,8 +919,9 @@ export default async function ProductDetailPage({
                       : "Déclinaison existante"}
                   </h3>
                   <p className="card-copy">
-                    Ce bloc reste disponible pour les informations déjà
-                    présentes et les ajustements manuels encore nécessaires.
+                    Ce bloc rassemble les données déjà enregistrées. Utilisez-le
+                    seulement pour vérifier l&apos;existant ou terminer une
+                    correction manuelle.
                   </p>
                 </div>
 
@@ -960,6 +962,9 @@ export default async function ProductDetailPage({
                 {variantImageMessage.error}
               </p>
             ) : null}
+            <p className="admin-muted-note">
+              Gérez ici les déclinaisons et leurs informations de vente.
+            </p>
           </>
         )}
 

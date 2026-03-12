@@ -57,7 +57,10 @@ export default async function OrderConfirmationPage({
           <div>
             <p className="eyebrow">Confirmation</p>
             <h1>{summary.title}</h1>
-            <p className="lead">{summary.description}</p>
+            <p className="lead">
+              {summary.description} Retrouvez ici le paiement, l&apos;état de la
+              commande et les informations utiles pour la suite.
+            </p>
           </div>
         </div>
 
@@ -78,7 +81,7 @@ export default async function OrderConfirmationPage({
                 <p className="eyebrow">Synthèse</p>
                 <h2>{summary.title}</h2>
                 <p className="card-copy">{summary.description}</p>
-                <p className="card-meta">Prochaine étape : {summary.nextStep}</p>
+                <p className="admin-muted-note">{summary.nextStep}</p>
               </div>
 
               <div className="admin-product-tags">

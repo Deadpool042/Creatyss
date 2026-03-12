@@ -81,7 +81,7 @@ test("lets admin cancel a pending order from the detail page", async ({ page }) 
   await expect(
     page.getByText("Aucune autre action n'est disponible pour cette commande.", {
       exact: true,
-    })
+    }).first()
   ).toBeVisible();
 
   await page.goto("/admin/orders");

@@ -49,7 +49,7 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
 
   await expect(
     page.getByText(
-      "Les champs commerciaux saisis ici restent synchronisés avec l'unique déclinaison existante. Son statut de publication continue à se gérer dans le bloc ci-dessous."
+      "Les informations commerciales saisies ici restent synchronisées avec l'unique déclinaison déjà enregistrée. Les autres réglages de cette déclinaison restent disponibles plus bas sur la page."
     )
   ).toBeVisible();
 

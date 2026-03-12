@@ -65,13 +65,13 @@ export function getOrderStatusSummary(input: {
       return {
         title: "Commande en préparation",
         description: "Le paiement est confirmé et la commande est en cours de préparation.",
-        nextStep: "Prochaine étape : expédition de la commande."
+        nextStep: "Expédiez la commande lorsqu'elle est prête."
       };
     case "paid":
       return {
         title: "Commande payée",
         description: "Le paiement a bien été confirmé pour cette commande.",
-        nextStep: "Prochaine étape : préparation de la commande."
+        nextStep: "Passez la commande en préparation avant l'expédition."
       };
     case "pending":
     default:

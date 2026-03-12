@@ -143,12 +143,26 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
 
   return (
     <div className="admin-media-page">
+      <section className="section">
+        <div className="page-header">
+          <div>
+            <p className="eyebrow">Médias</p>
+            <h1>Bibliothèque médias</h1>
+            <p className="lead">
+              Importez d&apos;abord vos visuels, puis réutilisez-les dans les
+              produits, le blog et la page d&apos;accueil.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="store-card admin-upload-card">
         <div className="stack">
           <p className="eyebrow">Bibliothèque médias</p>
           <h2>Importer une image</h2>
           <p className="card-copy">
-            Formats acceptés : JPEG, PNG, WebP. Taille maximale : 10 MB.
+            Ajoutez ici une image prête à être réutilisée. Formats acceptés :
+            JPEG, PNG, WebP. Taille maximale : 10 MB.
           </p>
         </div>
 
@@ -184,6 +198,10 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
           <div>
             <p className="eyebrow">Médias</p>
             <h2>Bibliothèque locale</h2>
+            <p className="card-copy">
+              Chaque image reste immédiatement réutilisable. Les informations
+              techniques sont affichées en dessous pour vérification.
+            </p>
           </div>
         </div>
 
@@ -212,8 +230,10 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                 </div>
 
                 <div className="stack">
-                  <p className="meta-label">Format du fichier</p>
-                  <p className="card-copy">{asset.mimeType}</p>
+                  <p className="meta-label">Ajouté le</p>
+                  <p className="card-copy">
+                    {mediaDateFormatter.format(new Date(asset.createdAt))}
+                  </p>
                 </div>
 
                 <div className="stack">
@@ -231,15 +251,13 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                 </div>
 
                 <div className="stack">
-                  <p className="meta-label">Chemin</p>
-                  <p className="card-copy">{asset.filePath}</p>
+                  <p className="meta-label">Format du fichier</p>
+                  <p className="card-copy">{asset.mimeType}</p>
                 </div>
 
                 <div className="stack">
-                  <p className="meta-label">Ajouté le</p>
-                  <p className="card-copy">
-                    {mediaDateFormatter.format(new Date(asset.createdAt))}
-                  </p>
+                  <p className="meta-label">Chemin</p>
+                  <p className="card-copy">{asset.filePath}</p>
                 </div>
               </article>
             ))}
@@ -249,7 +267,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
             <p className="eyebrow">Aucun média</p>
             <h2>La bibliothèque est encore vide</h2>
             <p className="card-copy">
-              Les images importées depuis cet écran seront listées ici.
+              Importez une première image pour commencer votre bibliothèque.
             </p>
           </div>
         )}

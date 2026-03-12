@@ -166,8 +166,8 @@ export default async function AdminHomepagePage({
           <p className="eyebrow">Accueil</p>
           <h1>Édition de la page d’accueil</h1>
           <p className="lead">
-            Modifiez la bannière principale, le bloc éditorial et les sélections
-            mises en avant depuis une seule page.
+            Commencez par la bannière principale, puis complétez le bloc
+            éditorial et les sélections mises en avant.
           </p>
         </div>
       </div>
@@ -192,8 +192,8 @@ export default async function AdminHomepagePage({
             <p className="eyebrow">Mise en avant principale</p>
             <h2>Bannière principale</h2>
             <p className="card-copy">
-              Cette section pilote le titre principal, le texte d&apos;accroche
-              et l&apos;image de la page d’accueil publique.
+              Renseignez ici le titre, le texte et l&apos;image visibles en
+              haut de la page d&apos;accueil.
             </p>
           </div>
 
@@ -267,7 +267,7 @@ export default async function AdminHomepagePage({
             <p className="eyebrow">Éditorial</p>
             <h2>Bloc éditorial</h2>
             <p className="card-copy">
-              Ce bloc alimente la section éditoriale affichée sous la bannière
+              Complétez ensuite le texte éditorial affiché sous la bannière
               principale.
             </p>
           </div>
@@ -298,10 +298,15 @@ export default async function AdminHomepagePage({
             <p className="eyebrow">Produits</p>
             <h2>Produits mis en avant</h2>
             <p className="card-copy">
-              Sélectionnez les produits publiés à afficher sur la page
-              d’accueil.
+              En complément, choisissez les produits publiés à afficher sur la
+              page d&apos;accueil.
             </p>
           </div>
+
+          <p className="admin-muted-note">
+            Ces sélections complètent la page après la bannière principale et
+            le bloc éditorial.
+          </p>
 
           {productOptions.length > 0 ? (
             <div className="admin-homepage-option-grid">
@@ -337,7 +342,7 @@ export default async function AdminHomepagePage({
             </div>
           ) : (
             <p className="admin-muted-note">
-              Aucun produit publié n&apos;est disponible pour cette section.
+              Publiez d&apos;abord un produit pour l&apos;afficher ici.
             </p>
           )}
         </section>
@@ -347,7 +352,8 @@ export default async function AdminHomepagePage({
             <p className="eyebrow">Catégories</p>
             <h2>Catégories mises en avant</h2>
             <p className="card-copy">
-              Sélectionnez les catégories à afficher sur la page d’accueil.
+              En complément, choisissez les catégories à afficher sur la page
+              d&apos;accueil.
             </p>
           </div>
 
@@ -385,7 +391,7 @@ export default async function AdminHomepagePage({
             </div>
           ) : (
             <p className="admin-muted-note">
-              Aucune catégorie n&apos;est disponible pour cette section.
+              Créez ou publiez une catégorie pour l&apos;afficher ici.
             </p>
           )}
         </section>
@@ -395,8 +401,8 @@ export default async function AdminHomepagePage({
             <p className="eyebrow">Articles</p>
             <h2>Articles mis en avant</h2>
             <p className="card-copy">
-              Sélectionnez les articles publiés à afficher sur la page
-              d’accueil.
+              En complément, choisissez les articles publiés à afficher sur la
+              page d&apos;accueil.
             </p>
           </div>
 
@@ -434,7 +440,7 @@ export default async function AdminHomepagePage({
             </div>
           ) : (
             <p className="admin-muted-note">
-              Aucun article publié n&apos;est disponible pour cette section.
+              Publiez d&apos;abord un article pour l&apos;afficher ici.
             </p>
           )}
         </section>

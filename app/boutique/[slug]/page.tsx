@@ -186,7 +186,7 @@ export default async function ProductPage({
 
               <h2>{productStatusSummary.title}</h2>
               <p className="card-copy">{productStatusSummary.description}</p>
-              <p className="card-meta">{productStatusSummary.nextStep}</p>
+              <p className="admin-muted-note">{productStatusSummary.nextStep}</p>
 
               {isSimpleProduct ? (
                 <div className="product-summary-stats">
@@ -217,17 +217,17 @@ export default async function ProductPage({
               )}
             </div>
 
-            <div className="stack">
-              <p className="meta-label">Slug</p>
-              <p className="card-copy">{product.slug}</p>
-            </div>
-
             {product.description ? (
               <div className="stack">
                 <p className="meta-label">Description</p>
                 <p className="product-copy">{product.description}</p>
               </div>
             ) : null}
+
+            <div className="stack">
+              <p className="meta-label">Référence de page</p>
+              <p className="card-copy">{product.slug}</p>
+            </div>
           </aside>
         </div>
       </section>

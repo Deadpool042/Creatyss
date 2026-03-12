@@ -73,6 +73,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
   const statusMessage = getStatusMessage(statusParam);
   const errorMessage = getErrorMessage(errorParam);
   const cart = await readGuestCart();
+  const hasUnavailableLine = cart?.lines.some((line) => !line.isAvailable) ?? false;
 
   return (
     <div className="page cart-page">
@@ -82,7 +83,8 @@ export default async function CartPage({ searchParams }: CartPageProps) {
             <p className="eyebrow">Panier</p>
             <h1>Votre panier</h1>
             <p className="lead">
-              Vérifiez vos articles avant de finaliser votre commande.
+              Vérifiez la disponibilité de vos articles, puis ajustez les
+              quantités avant de finaliser la commande.
             </p>
           </div>
         </div>
@@ -129,9 +131,9 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                       {getAvailabilityLabel(line.isAvailable)}
                     </p>
                     {!line.isAvailable ? (
-                      <p className="card-meta">
-                        Cette ligne reste visible mais ne peut pas être
-                        commandée en l&apos;état.
+                      <p className="admin-alert">
+                        Cette ligne bloque la commande. Revenez à la fiche
+                        produit ou supprimez-la pour continuer.
                       </p>
                     ) : null}
                   </div>
@@ -175,6 +177,13 @@ export default async function CartPage({ searchParams }: CartPageProps) {
             </div>
 
             <aside className="product-panel cart-summary">
+              {hasUnavailableLine ? (
+                <p className="admin-alert">
+                  Au moins une ligne bloque la commande. Corrigez le panier
+                  avant de continuer.
+                </p>
+              ) : null}
+
               <div className="stack">
                 <p className="meta-label">Lignes</p>
                 <p className="card-copy">{cart.lines.length}</p>

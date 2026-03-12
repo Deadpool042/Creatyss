@@ -32,7 +32,7 @@ test("edits a simple product natively without creating a legacy variant", async 
   await expect(page.getByRole("heading", { name: "Informations de vente" })).toBeVisible();
   await expect(
     page.getByText(
-      "L'édition directe est disponible, mais l'affichage public reste limité tant qu'aucune déclinaison existante n'est présente. Cette page ne crée rien automatiquement."
+      "Vous pouvez enregistrer les informations de vente ici. Pour le moment, l'affichage public de ce produit reste limité tant qu'aucune déclinaison existante n'est associée."
     )
   ).toBeVisible();
   await expect(
@@ -115,14 +115,14 @@ test("shows a clear incoherent state when a simple product has multiple legacy v
 
   await expect(
     page.getByText(
-      "Ce produit simple est incohérent car plusieurs déclinaisons sont encore associées. Aucune correction automatique n'est appliquée tant qu'une seule déclinaison n'est pas conservée."
+      "Plusieurs déclinaisons sont encore associées à ce produit simple. Corrigez d'abord cet état dans les données existantes avant de modifier les informations de vente."
     )
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Enregistrer les informations de vente" })
   ).toHaveCount(0);
   await expect(
-    page.getByText("Données existantes")
+    page.getByText("Données existantes", { exact: true })
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Enregistrer la déclinaison existante" })

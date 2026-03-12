@@ -21,7 +21,7 @@ test("renders a simple product as a single purchasable offer", async ({
   ).toBeVisible();
   await expect(
     page.getByText(
-      "Retrouvez ici le prix, le stock et les informations utiles pour commander ce produit simple."
+      "Consultez le prix, la disponibilité et la quantité avant d'ajouter ce produit au panier."
     )
   ).toBeVisible();
   await expect(
@@ -34,9 +34,7 @@ test("renders a simple product as a single purchasable offer", async ({
 
   await expect(offerCard.getByText(/^Disponible$/)).toBeVisible();
   await expect(
-    offerCard.getByText(
-      "Choisissez la quantité puis ajoutez le produit au panier."
-    )
+    offerCard.getByText("Choisissez la quantité puis ajoutez ce produit au panier.")
   ).toBeVisible();
   await expect(
     offerCard.getByRole("button", { name: "Ajouter au panier" })
@@ -66,7 +64,7 @@ test("shows a discreet unavailable state for a simple product", async ({
     offerCard.getByText(/^Temporairement indisponible$/)
   ).toBeVisible();
   await expect(
-    offerCard.getByText("Cette offre est temporairement indisponible.")
+    offerCard.getByText("Ce produit n'est pas disponible pour le moment.")
   ).toBeVisible();
   await expect(
     offerCard.getByRole("button", { name: "Ajouter au panier" })
