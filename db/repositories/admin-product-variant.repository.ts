@@ -8,6 +8,9 @@ import {
 } from "@/entities/product/product-type-rules";
 import { type ProductType } from "@/entities/product/product-input";
 
+// --- Internal types ---
+
+// pg may return Date or string for timestamp columns depending on driver configuration
 type TimestampValue = Date | string;
 
 type AdminProductVariantStatus = "draft" | "published";
@@ -41,11 +44,6 @@ type DeletedVariantRow = {
   id: string;
 };
 
-type PostgreSqlErrorLike = Error & {
-  code: string;
-  constraint?: string;
-};
-
 type CreateAdminProductVariantInput = {
   productId: string;
   name: string;
@@ -64,6 +62,13 @@ type UpdateAdminProductVariantInput = CreateAdminProductVariantInput & {
 };
 
 type RepositoryErrorCode = "sku_taken" | ProductTypeCompatibilityErrorCode;
+
+type PostgreSqlErrorLike = Error & {
+  code: string;
+  constraint?: string;
+};
+
+// --- Public types ---
 
 export type AdminProductVariant = {
   id: string;
@@ -91,21 +96,24 @@ export class AdminProductVariantRepositoryError extends Error {
   }
 }
 
+// --- Internal helpers ---
+
+const PG_UNIQUE_VIOLATION = "23505";
+const VARIANT_SKU_CONSTRAINT = "product_variants_sku_key";
+
+// Full column list shared by list, create (returning), and update (returning) — no alias prefix needed (single-table queries)
+const PRODUCT_VARIANT_COLUMNS =
+  "id::text as id, product_id::text as product_id, name, color_name, color_hex, sku, price::text as price, compare_at_price::text as compare_at_price, stock_quantity, is_default, status, created_at, updated_at";
+
 function isValidNumericId(value: string): boolean {
   return /^[0-9]+$/.test(value);
 }
 
 function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
-  if (!(error instanceof Error)) {
-    return false;
-  }
-
-  const candidate = error as Error & {
-    code?: unknown;
-    constraint?: unknown;
-  };
-
-  return typeof candidate.code === "string";
+  return (
+    error instanceof Error &&
+    typeof (error as { code?: unknown }).code === "string"
+  );
 }
 
 function toIsoTimestamp(value: TimestampValue): string {
@@ -137,20 +145,42 @@ function mapAdminProductVariant(
   };
 }
 
+// Builds the 9 shared field parameters — productId is NOT included; callers prepend it.
+// Create: [input.productId, ...buildProductVariantWriteParams(input)] → $1=productId, $2=name … $10=status
+// Update: [input.id, input.productId, ...buildProductVariantWriteParams(input)] → $1=id, $2=productId, $3=name … $11=status
+function buildProductVariantWriteParams(
+  input: CreateAdminProductVariantInput
+): unknown[] {
+  return [
+    input.name,
+    input.colorName,
+    input.colorHex,
+    input.sku,
+    input.price,
+    input.compareAtPrice,
+    input.stockQuantity,
+    input.isDefault,
+    input.status
+  ];
+}
+
 function mapRepositoryError(error: unknown): never {
-  if (
-    isPostgreSqlErrorLike(error) &&
-    error.code === "23505" &&
-    error.constraint === "product_variants_sku_key"
-  ) {
-    throw new AdminProductVariantRepositoryError(
-      "sku_taken",
-      "Variant SKU already exists."
-    );
+  if (isPostgreSqlErrorLike(error)) {
+    if (
+      error.code === PG_UNIQUE_VIOLATION &&
+      error.constraint === VARIANT_SKU_CONSTRAINT
+    ) {
+      throw new AdminProductVariantRepositoryError(
+        "sku_taken",
+        "Variant SKU already exists."
+      );
+    }
   }
 
   throw error;
 }
+
+// --- Internal transaction helpers ---
 
 async function readProductTypeById(
   client: PoolClient,
@@ -218,6 +248,8 @@ async function clearDefaultVariant(
   );
 }
 
+// --- Public functions ---
+
 export async function listAdminProductVariants(
   productId: string
 ): Promise<AdminProductVariant[]> {
@@ -227,23 +259,10 @@ export async function listAdminProductVariants(
 
   const rows = await queryRows<AdminProductVariantRow>(
     `
-      select
-        pv.id::text as id,
-        pv.product_id::text as product_id,
-        pv.name,
-        pv.color_name,
-        pv.color_hex,
-        pv.sku,
-        pv.price::text as price,
-        pv.compare_at_price::text as compare_at_price,
-        pv.stock_quantity,
-        pv.is_default,
-        pv.status,
-        pv.created_at,
-        pv.updated_at
-      from product_variants pv
-      where pv.product_id = $1::bigint
-      order by pv.is_default desc, pv.id asc
+      select ${PRODUCT_VARIANT_COLUMNS}
+      from product_variants
+      where product_id = $1::bigint
+      order by is_default desc, id asc
     `,
     [productId]
   );
@@ -306,33 +325,9 @@ export async function createAdminProductVariant(
           status
         )
         values ($1::bigint, $2, $3, $4, $5, $6::numeric, $7::numeric, $8, $9, $10)
-        returning
-          id::text as id,
-          product_id::text as product_id,
-          name,
-          color_name,
-          color_hex,
-          sku,
-          price::text as price,
-          compare_at_price::text as compare_at_price,
-          stock_quantity,
-          is_default,
-          status,
-          created_at,
-          updated_at
+        returning ${PRODUCT_VARIANT_COLUMNS}
       `,
-      [
-        input.productId,
-        input.name,
-        input.colorName,
-        input.colorHex,
-        input.sku,
-        input.price,
-        input.compareAtPrice,
-        input.stockQuantity,
-        input.isDefault,
-        input.status
-      ]
+      [input.productId, ...buildProductVariantWriteParams(input)]
     );
 
     const row = result.rows[0];
@@ -402,34 +397,9 @@ export async function updateAdminProductVariant(
           status = $11
         where id = $1::bigint
           and product_id = $2::bigint
-        returning
-          id::text as id,
-          product_id::text as product_id,
-          name,
-          color_name,
-          color_hex,
-          sku,
-          price::text as price,
-          compare_at_price::text as compare_at_price,
-          stock_quantity,
-          is_default,
-          status,
-          created_at,
-          updated_at
+        returning ${PRODUCT_VARIANT_COLUMNS}
       `,
-      [
-        input.id,
-        input.productId,
-        input.name,
-        input.colorName,
-        input.colorHex,
-        input.sku,
-        input.price,
-        input.compareAtPrice,
-        input.stockQuantity,
-        input.isDefault,
-        input.status
-      ]
+      [input.id, input.productId, ...buildProductVariantWriteParams(input)]
     );
 
     const row = result.rows[0];

@@ -1,6 +1,9 @@
 import { type PoolClient } from "pg";
 import { db, queryFirst, queryRows } from "@/db/client";
 
+// --- Internal types ---
+
+// pg may return Date or string for timestamp columns depending on driver configuration
 type TimestampValue = Date | string;
 
 type HomepageStatus = "draft" | "published";
@@ -72,6 +75,8 @@ type RepositoryErrorCode =
   | "category_missing"
   | "blog_post_missing";
 
+// --- Public types ---
+
 export type AdminHomepageFeaturedProductSelection = {
   productId: string;
   sortOrder: number;
@@ -136,6 +141,11 @@ export class AdminHomepageRepositoryError extends Error {
   }
 }
 
+// --- Internal utilities ---
+
+const HOMEPAGE_COLUMNS =
+  "id::text as id, hero_title, hero_text, hero_image_path, editorial_title, editorial_text, status, created_at, updated_at";
+
 function isValidNumericId(value: string): boolean {
   return /^[0-9]+$/.test(value);
 }
@@ -148,32 +158,24 @@ function toIsoTimestamp(value: TimestampValue): string {
   return new Date(value).toISOString();
 }
 
+function normalizeUniqueIds(ids: readonly string[]): string[] {
+  return [...new Set(ids)];
+}
+
 function mapProductOption(row: ProductOptionRow): AdminHomepageProductOption {
-  return {
-    id: row.id,
-    name: row.name,
-    slug: row.slug
-  };
+  return { id: row.id, name: row.name, slug: row.slug };
 }
 
 function mapCategoryOption(
   row: CategoryOptionRow
 ): AdminHomepageCategoryOption {
-  return {
-    id: row.id,
-    name: row.name,
-    slug: row.slug
-  };
+  return { id: row.id, name: row.name, slug: row.slug };
 }
 
 function mapBlogPostOption(
   row: BlogPostOptionRow
 ): AdminHomepageBlogPostOption {
-  return {
-    id: row.id,
-    title: row.title,
-    slug: row.slug
-  };
+  return { id: row.id, title: row.title, slug: row.slug };
 }
 
 function mapHomepageDetail(
@@ -198,25 +200,14 @@ function mapHomepageDetail(
   };
 }
 
-function normalizeUniqueIds(ids: readonly string[]): string[] {
-  return [...new Set(ids)];
-}
+// --- Homepage reads ---
 
 async function getPublishedHomepageRow(): Promise<AdminHomepageRow | null> {
   return queryFirst<AdminHomepageRow>(
     `
-      select
-        hc.id::text as id,
-        hc.hero_title,
-        hc.hero_text,
-        hc.hero_image_path,
-        hc.editorial_title,
-        hc.editorial_text,
-        hc.status,
-        hc.created_at,
-        hc.updated_at
-      from homepage_content hc
-      where hc.status = 'published'
+      select ${HOMEPAGE_COLUMNS}
+      from homepage_content
+      where status = 'published'
       limit 1
     `
   );
@@ -284,6 +275,63 @@ async function listHomepageFeaturedBlogPosts(
     sortOrder: row.sort_order
   }));
 }
+
+// Reads the three current featured selections for a homepage in parallel
+async function loadHomepageFeaturedSelections(homepageId: string): Promise<{
+  featuredProducts: AdminHomepageFeaturedProductSelection[];
+  featuredCategories: AdminHomepageFeaturedCategorySelection[];
+  featuredBlogPosts: AdminHomepageFeaturedBlogPostSelection[];
+}> {
+  const [featuredProducts, featuredCategories, featuredBlogPosts] =
+    await Promise.all([
+      listHomepageFeaturedProducts(homepageId),
+      listHomepageFeaturedCategories(homepageId),
+      listHomepageFeaturedBlogPosts(homepageId)
+    ]);
+
+  return { featuredProducts, featuredCategories, featuredBlogPosts };
+}
+
+// Reads the three option lists available for homepage edition in parallel
+async function loadHomepageOptions(): Promise<{
+  productOptions: AdminHomepageProductOption[];
+  categoryOptions: AdminHomepageCategoryOption[];
+  blogPostOptions: AdminHomepageBlogPostOption[];
+}> {
+  const [productRows, categoryRows, blogPostRows] = await Promise.all([
+    queryRows<ProductOptionRow>(
+      `
+        select id::text as id, name, slug
+        from products
+        where status = 'published'
+        order by lower(name) asc, id asc
+      `
+    ),
+    queryRows<CategoryOptionRow>(
+      `
+        select id::text as id, name, slug
+        from categories
+        order by lower(name) asc, id asc
+      `
+    ),
+    queryRows<BlogPostOptionRow>(
+      `
+        select id::text as id, title, slug
+        from blog_posts
+        where status = 'published'
+        order by coalesce(published_at, created_at) desc, id desc
+      `
+    )
+  ]);
+
+  return {
+    productOptions: productRows.map(mapProductOption),
+    categoryOptions: categoryRows.map(mapCategoryOption),
+    blogPostOptions: blogPostRows.map(mapBlogPostOption)
+  };
+}
+
+// --- Homepage validation ---
 
 async function ensureHomepageExists(
   client: PoolClient,
@@ -403,6 +451,19 @@ async function ensurePublishedBlogPostsExist(
   }
 }
 
+// Runs all pre-update existence checks within the open transaction
+async function validateHomepageUpdateInput(
+  client: PoolClient,
+  input: UpdateAdminHomepageInput
+): Promise<void> {
+  await ensureHomepageExists(client, input.id);
+  await ensurePublishedProductsExist(client, input.featuredProducts);
+  await ensureCategoriesExist(client, input.featuredCategories);
+  await ensurePublishedBlogPostsExist(client, input.featuredBlogPosts);
+}
+
+// --- Homepage writes ---
+
 async function replaceHomepageFeaturedProducts(
   client: PoolClient,
   homepageId: string,
@@ -517,6 +578,19 @@ async function replaceHomepageFeaturedBlogPosts(
   );
 }
 
+// Replaces all three featured selection tables within the open transaction
+async function applyHomepageFeaturedSelections(
+  client: PoolClient,
+  homepageId: string,
+  input: UpdateAdminHomepageInput
+): Promise<void> {
+  await replaceHomepageFeaturedProducts(client, homepageId, input.featuredProducts);
+  await replaceHomepageFeaturedCategories(client, homepageId, input.featuredCategories);
+  await replaceHomepageFeaturedBlogPosts(client, homepageId, input.featuredBlogPosts);
+}
+
+// --- Public functions ---
+
 export async function getAdminHomepageEditorData(): Promise<AdminHomepageEditorData | null> {
   const homepageRow = await getPublishedHomepageRow();
 
@@ -524,61 +598,19 @@ export async function getAdminHomepageEditorData(): Promise<AdminHomepageEditorD
     return null;
   }
 
-  const [
-    featuredProducts,
-    featuredCategories,
-    featuredBlogPosts,
-    productRows,
-    categoryRows,
-    blogPostRows
-  ] = await Promise.all([
-    listHomepageFeaturedProducts(homepageRow.id),
-    listHomepageFeaturedCategories(homepageRow.id),
-    listHomepageFeaturedBlogPosts(homepageRow.id),
-    queryRows<ProductOptionRow>(
-      `
-        select
-          id::text as id,
-          name,
-          slug
-        from products
-        where status = 'published'
-        order by lower(name) asc, id asc
-      `
-    ),
-    queryRows<CategoryOptionRow>(
-      `
-        select
-          id::text as id,
-          name,
-          slug
-        from categories
-        order by lower(name) asc, id asc
-      `
-    ),
-    queryRows<BlogPostOptionRow>(
-      `
-        select
-          id::text as id,
-          title,
-          slug
-        from blog_posts
-        where status = 'published'
-        order by coalesce(published_at, created_at) desc, id desc
-      `
-    )
+  const [selections, options] = await Promise.all([
+    loadHomepageFeaturedSelections(homepageRow.id),
+    loadHomepageOptions()
   ]);
 
   return {
     homepage: mapHomepageDetail(
       homepageRow,
-      featuredProducts,
-      featuredCategories,
-      featuredBlogPosts
+      selections.featuredProducts,
+      selections.featuredCategories,
+      selections.featuredBlogPosts
     ),
-    productOptions: productRows.map(mapProductOption),
-    categoryOptions: categoryRows.map(mapCategoryOption),
-    blogPostOptions: blogPostRows.map(mapBlogPostOption)
+    ...options
   };
 }
 
@@ -594,10 +626,7 @@ export async function updateAdminHomepage(
   try {
     await client.query("begin");
 
-    await ensureHomepageExists(client, input.id);
-    await ensurePublishedProductsExist(client, input.featuredProducts);
-    await ensureCategoriesExist(client, input.featuredCategories);
-    await ensurePublishedBlogPostsExist(client, input.featuredBlogPosts);
+    await validateHomepageUpdateInput(client, input);
 
     const result = await client.query<AdminHomepageRow>(
       `
@@ -610,16 +639,7 @@ export async function updateAdminHomepage(
           editorial_text = $6
         where id = $1::bigint
           and status = 'published'
-        returning
-          id::text as id,
-          hero_title,
-          hero_text,
-          hero_image_path,
-          editorial_title,
-          editorial_text,
-          status,
-          created_at,
-          updated_at
+        returning ${HOMEPAGE_COLUMNS}
       `,
       [
         input.id,
@@ -638,17 +658,7 @@ export async function updateAdminHomepage(
       return null;
     }
 
-    await replaceHomepageFeaturedProducts(client, input.id, input.featuredProducts);
-    await replaceHomepageFeaturedCategories(
-      client,
-      input.id,
-      input.featuredCategories
-    );
-    await replaceHomepageFeaturedBlogPosts(
-      client,
-      input.id,
-      input.featuredBlogPosts
-    );
+    await applyHomepageFeaturedSelections(client, input.id, input);
 
     await client.query("commit");
 
@@ -660,11 +670,6 @@ export async function updateAdminHomepage(
     );
   } catch (error) {
     await client.query("rollback");
-
-    if (error instanceof AdminHomepageRepositoryError) {
-      throw error;
-    }
-
     throw error;
   } finally {
     client.release();
