@@ -16,6 +16,8 @@ test("affiche la page création produit avec le heading, le lien retour, le cham
     page.getByRole("link", { name: "Retour à la liste" })
   ).toBeVisible();
   await expect(page.getByRole("textbox", { name: "Nom" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Slug" })).toBeVisible();
+  await expect(page.getByLabel("Type de produit")).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Créer le produit" })
   ).toBeVisible();

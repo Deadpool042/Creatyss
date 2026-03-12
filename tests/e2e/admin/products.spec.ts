@@ -14,5 +14,20 @@ test("affiche la page liste admin des produits avec le lien d'action et la zone 
     page.getByRole("link", { name: "Nouveau produit" })
   ).toBeVisible();
 
-  await expect(page.locator("article, .empty-state").first()).toBeVisible();
+  const productCards = page.locator("article.admin-product-card");
+
+  if ((await productCards.count()) > 0) {
+    await expect(productCards.first()).toBeVisible();
+    await expect(
+      productCards.first().getByRole("link", { name: "Modifier le produit" })
+    ).toBeVisible();
+    return;
+  }
+
+  await expect(page.locator(".empty-state")).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: "Le catalogue ne contient pas encore de produit"
+    })
+  ).toBeVisible();
 });

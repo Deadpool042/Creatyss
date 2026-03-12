@@ -36,7 +36,11 @@ export async function loginAsSeedAdmin(page: Page): Promise<void> {
 
   await page.getByLabel("Email").fill(SEEDED_ADMIN_EMAIL);
   await page.getByLabel("Mot de passe").fill(SEEDED_ADMIN_PASSWORD);
-  await page.getByRole("button", { name: "Se connecter" }).click();
+
+  await Promise.all([
+    page.waitForURL(/\/admin$/, { timeout: 15_000 }),
+    page.getByRole("button", { name: "Se connecter" }).click()
+  ]);
 
   await expect(page).toHaveURL(/\/admin$/);
   await expect(
