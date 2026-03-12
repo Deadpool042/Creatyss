@@ -296,23 +296,30 @@ function resolvePublishedSimpleOffer(input: {
   });
 }
 
+function getCatalogLegacySimpleOffers(
+  row: ProductCatalogSummaryRow
+): SimpleProductOfferFields[] {
+  if (row.legacy_exploitable_variant_count !== 1) {
+    return [];
+  }
+
+  return [
+    {
+      sku: row.legacy_variant_sku,
+      price: row.legacy_variant_price,
+      compareAtPrice: row.legacy_variant_compare_at_price,
+      stockQuantity: row.legacy_variant_stock_quantity
+    }
+  ];
+}
+
 function mapCatalogProductSummary(
   row: ProductCatalogSummaryRow
 ): PublishedCatalogProductSummary {
   const simpleOffer = resolvePublishedSimpleOffer({
     productType: row.product_type,
     native: getNativeSimpleOfferFields(row),
-    legacyOffers:
-      row.legacy_exploitable_variant_count === 1
-        ? [
-            {
-              sku: row.legacy_variant_sku,
-              price: row.legacy_variant_price,
-              compareAtPrice: row.legacy_variant_compare_at_price,
-              stockQuantity: row.legacy_variant_stock_quantity
-            }
-          ]
-        : []
+    legacyOffers: getCatalogLegacySimpleOffers(row)
   });
 
   return {
@@ -334,6 +341,75 @@ function mapProductImage(row: ProductImageRow): PublishedProductImage {
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
   };
+}
+
+function getVariantSimpleOfferFields(
+  row: ProductVariantRow
+): SimpleProductOfferFields {
+  return {
+    sku: row.sku,
+    price: row.price,
+    compareAtPrice: row.compare_at_price,
+    stockQuantity: row.stock_quantity
+  };
+}
+
+function mapPublishedProductVariant(
+  row: ProductVariantRow,
+  images: PublishedProductImage[]
+): PublishedProductVariant {
+  return {
+    id: row.id,
+    productId: row.product_id,
+    name: row.name,
+    colorName: row.color_name,
+    colorHex: row.color_hex,
+    sku: row.sku,
+    price: row.price,
+    compareAtPrice: row.compare_at_price,
+    stockQuantity: row.stock_quantity,
+    isDefault: row.is_default,
+    isAvailable: row.stock_quantity > 0,
+    createdAt: toIsoTimestamp(row.created_at),
+    updatedAt: toIsoTimestamp(row.updated_at),
+    images
+  };
+}
+
+function groupVariantImagesByVariantId(
+  rows: readonly ProductImageRow[]
+): Map<DbId, PublishedProductImage[]> {
+  const imagesByVariantId = new Map<DbId, PublishedProductImage[]>();
+
+  for (const row of rows) {
+    if (row.variant_id === null) {
+      continue;
+    }
+
+    const image = mapProductImage(row);
+    const variantImages = imagesByVariantId.get(row.variant_id);
+
+    if (variantImages) {
+      variantImages.push(image);
+      continue;
+    }
+
+    imagesByVariantId.set(row.variant_id, [image]);
+  }
+
+  return imagesByVariantId;
+}
+
+function getPublishedProductAvailability(input: {
+  productType: "simple" | "variable";
+  simpleOffer: SimpleProductOffer | null;
+  variants: readonly PublishedProductVariant[];
+}): boolean {
+  if (input.productType === "simple") {
+    return input.simpleOffer?.isAvailable ?? false;
+  }
+
+  return input.variants.some((variant) => variant.isAvailable);
 }
 
 function mapBlogPostSummary(
@@ -517,10 +593,10 @@ export async function listCatalogFilterCategories(): Promise<
   return rows.map(mapCatalogFilterCategory);
 }
 
-export async function listPublishedProducts(
+async function listPublishedCatalogProductRows(
   filters: PublishedProductListFilters
-): Promise<PublishedCatalogProductSummary[]> {
-  const rows = await queryRows<ProductCatalogSummaryRow>(
+): Promise<ProductCatalogSummaryRow[]> {
+  return queryRows<ProductCatalogSummaryRow>(
     `
       select
         catalog_products.id,
@@ -670,14 +746,12 @@ export async function listPublishedProducts(
     `,
     [filters.searchQuery, filters.categorySlug, filters.onlyAvailable]
   );
-
-  return rows.map(mapCatalogProductSummary);
 }
 
-export async function getPublishedProductBySlug(
+async function getPublishedProductRowBySlug(
   slug: string
-): Promise<PublishedProductDetail | null> {
-  const productRow = await queryFirst<ProductSummaryRow>(
+): Promise<ProductSummaryRow | null> {
+  return queryFirst<ProductSummaryRow>(
     `
       select
         p.id::text as id,
@@ -702,39 +776,43 @@ export async function getPublishedProductBySlug(
     `,
     [slug]
   );
+}
 
-  if (productRow === null) {
-    return null;
-  }
+async function listPublishedParentProductImages(
+  productId: DbId
+): Promise<ProductImageRow[]> {
+  return queryRows<ProductImageRow>(
+    `
+      select
+        pi.id::text as id,
+        pi.product_id::text as product_id,
+        pi.variant_id::text as variant_id,
+        pi.file_path,
+        pi.alt_text,
+        pi.sort_order,
+        pi.is_primary,
+        pi.created_at,
+        pi.updated_at
+      from product_images pi
+      where pi.product_id = $1::bigint
+        and pi.variant_id is null
+      order by pi.sort_order asc, pi.id asc
+    `,
+    [productId]
+  );
+}
 
-  const [parentImageRows, variantRows, variantImageRows] = await Promise.all([
-    queryRows<ProductImageRow>(
-      `
-        select
-          pi.id::text as id,
-          pi.product_id::text as product_id,
-          pi.variant_id::text as variant_id,
-          pi.file_path,
-          pi.alt_text,
-          pi.sort_order,
-          pi.is_primary,
-          pi.created_at,
-          pi.updated_at
-        from product_images pi
-        where pi.product_id = $1::bigint
-          and pi.variant_id is null
-        order by pi.sort_order asc, pi.id asc
-      `,
-      [productRow.id]
-    ),
-    queryRows<ProductVariantRow>(
-      `
-        select
-          pv.id::text as id,
-          pv.product_id::text as product_id,
-          pv.name,
-          pv.color_name,
-          pv.color_hex,
+async function listPublishedProductVariants(
+  productId: DbId
+): Promise<ProductVariantRow[]> {
+  return queryRows<ProductVariantRow>(
+    `
+      select
+        pv.id::text as id,
+        pv.product_id::text as product_id,
+        pv.name,
+        pv.color_name,
+        pv.color_hex,
         pv.sku,
         pv.price::text as price,
         pv.compare_at_price::text as compare_at_price,
@@ -742,89 +820,83 @@ export async function getPublishedProductBySlug(
         pv.is_default,
         pv.created_at,
         pv.updated_at
-        from product_variants pv
-        where pv.product_id = $1::bigint
-          and pv.status = 'published'
-        order by pv.is_default desc, pv.id asc
-      `,
-      [productRow.id]
-    ),
-    queryRows<ProductImageRow>(
-      `
-        select
-          pi.id::text as id,
-          pi.product_id::text as product_id,
-          pi.variant_id::text as variant_id,
-          pi.file_path,
-          pi.alt_text,
-          pi.sort_order,
-          pi.is_primary,
-          pi.created_at,
-          pi.updated_at
-        from product_images pi
-        join product_variants pv
-          on pv.id = pi.variant_id
-         and pv.product_id = pi.product_id
-        where pi.product_id = $1::bigint
-          and pi.variant_id is not null
-          and pv.status = 'published'
-        order by pi.sort_order asc, pi.id asc
-      `,
-      [productRow.id]
-    )
-  ]);
+      from product_variants pv
+      where pv.product_id = $1::bigint
+        and pv.status = 'published'
+      order by pv.is_default desc, pv.id asc
+    `,
+    [productId]
+  );
+}
 
-  const imagesByVariantId = new Map<DbId, PublishedProductImage[]>();
+async function listPublishedVariantImages(
+  productId: DbId
+): Promise<ProductImageRow[]> {
+  return queryRows<ProductImageRow>(
+    `
+      select
+        pi.id::text as id,
+        pi.product_id::text as product_id,
+        pi.variant_id::text as variant_id,
+        pi.file_path,
+        pi.alt_text,
+        pi.sort_order,
+        pi.is_primary,
+        pi.created_at,
+        pi.updated_at
+      from product_images pi
+      join product_variants pv
+        on pv.id = pi.variant_id
+       and pv.product_id = pi.product_id
+      where pi.product_id = $1::bigint
+        and pi.variant_id is not null
+        and pv.status = 'published'
+      order by pi.sort_order asc, pi.id asc
+    `,
+    [productId]
+  );
+}
 
-  for (const row of variantImageRows) {
-    if (row.variant_id === null) {
-      continue;
-    }
+export async function listPublishedProducts(
+  filters: PublishedProductListFilters
+): Promise<PublishedCatalogProductSummary[]> {
+  const rows = await listPublishedCatalogProductRows(filters);
 
-    const image = mapProductImage(row);
-    const variantImages = imagesByVariantId.get(row.variant_id);
+  return rows.map(mapCatalogProductSummary);
+}
 
-    if (variantImages) {
-      variantImages.push(image);
-      continue;
-    }
+export async function getPublishedProductBySlug(
+  slug: string
+): Promise<PublishedProductDetail | null> {
+  const productRow = await getPublishedProductRowBySlug(slug);
 
-    imagesByVariantId.set(row.variant_id, [image]);
+  if (productRow === null) {
+    return null;
   }
 
-  const variants: PublishedProductVariant[] = variantRows.map((row) => ({
-    id: row.id,
-    productId: row.product_id,
-    name: row.name,
-    colorName: row.color_name,
-    colorHex: row.color_hex,
-    sku: row.sku,
-    price: row.price,
-    compareAtPrice: row.compare_at_price,
-    stockQuantity: row.stock_quantity,
-    isDefault: row.is_default,
-    isAvailable: row.stock_quantity > 0,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-    images: imagesByVariantId.get(row.id) ?? []
-  }));
+  const [parentImageRows, variantRows, variantImageRows] = await Promise.all([
+    listPublishedParentProductImages(productRow.id),
+    listPublishedProductVariants(productRow.id),
+    listPublishedVariantImages(productRow.id)
+  ]);
+
+  const imagesByVariantId = groupVariantImagesByVariantId(variantImageRows);
+  const variants: PublishedProductVariant[] = variantRows.map((row) =>
+    mapPublishedProductVariant(row, imagesByVariantId.get(row.id) ?? [])
+  );
   const simpleOffer = resolvePublishedSimpleOffer({
     productType: productRow.product_type,
     native: getNativeSimpleOfferFields(productRow),
-    legacyOffers: variantRows.map((row) => ({
-      sku: row.sku,
-      price: row.price,
-      compareAtPrice: row.compare_at_price,
-      stockQuantity: row.stock_quantity
-    }))
+    legacyOffers: variantRows.map(getVariantSimpleOfferFields)
   });
 
   return {
     ...mapProductSummary(productRow),
-    isAvailable:
-      productRow.product_type === "simple"
-        ? (simpleOffer?.isAvailable ?? false)
-        : variants.some((variant) => variant.isAvailable),
+    isAvailable: getPublishedProductAvailability({
+      productType: productRow.product_type,
+      simpleOffer,
+      variants
+    }),
     simpleOffer,
     images: parentImageRows.map(mapProductImage),
     variants
