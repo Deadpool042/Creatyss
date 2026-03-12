@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
+import { SectionIntro } from "@/components/ui/section-intro";
 import {
   findAdminOrderById,
   type OrderEmailEventStatus,
@@ -126,9 +127,11 @@ export default async function AdminOrderDetailPage({
           <div className="checkout-line-list">
             <article className="store-card checkout-line">
               <div className="stack">
-                <p className="eyebrow">Synthèse</p>
-                <h2>{summary.title}</h2>
-                <p className="card-copy">{summary.description}</p>
+                <SectionIntro
+                  description={summary.description}
+                  eyebrow="Synthèse"
+                  title={summary.title}
+                />
                 <Notice tone="note">{summary.nextStep}</Notice>
               </div>
 
@@ -143,14 +146,12 @@ export default async function AdminOrderDetailPage({
             </article>
 
             <article className="store-card checkout-line">
-              <div className="stack">
-                <p className="eyebrow">Actions</p>
-                <h2>État actuel</h2>
-                <p className="card-copy">
-                  Vérifiez le statut, puis utilisez l&apos;action disponible si
-                  une étape reste à effectuer.
-                </p>
-              </div>
+              <SectionIntro
+                className="stack"
+                description="Vérifiez le statut, puis utilisez l'action disponible si une étape reste à effectuer."
+                eyebrow="Actions"
+                title="État actuel"
+              />
 
               <div className="stack">
                 <p className="meta-label">Référence</p>
@@ -226,15 +227,17 @@ export default async function AdminOrderDetailPage({
 
             <article className="store-card checkout-line">
               <div className="stack">
-                <p className="eyebrow">Expédition</p>
-                <h2>Suivi simple</h2>
-                <p className="card-copy">
-                  {order.shippedAt
-                    ? `Expédiée le ${orderDateTimeFormatter.format(
-                        new Date(order.shippedAt)
-                      )}`
-                    : "La commande n'a pas encore été expédiée."}
-                </p>
+                <SectionIntro
+                  description={
+                    order.shippedAt
+                      ? `Expédiée le ${orderDateTimeFormatter.format(
+                          new Date(order.shippedAt)
+                        )}`
+                      : "La commande n'a pas encore été expédiée."
+                  }
+                  eyebrow="Expédition"
+                  title="Suivi simple"
+                />
                 {order.trackingReference ? (
                   <p className="card-meta">
                     Référence de suivi : {order.trackingReference}

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 import {
@@ -485,14 +486,12 @@ export default async function ProductDetailPage({
       </section>
 
       <section className="section admin-product-section">
-        <div className="stack">
-          <p className="eyebrow">Informations générales</p>
-          <h2>Informations produit</h2>
-          <p className="card-copy">
-            Modifiez ici le catalogue, le texte public et la publication du
-            produit.
-          </p>
-        </div>
+        <SectionIntro
+          className="stack"
+          description="Modifiez ici le catalogue, le texte public et la publication du produit."
+          eyebrow="Informations générales"
+          title="Informations produit"
+        />
 
         {productStatusMessage ? (
           <Notice tone="success">{productStatusMessage}</Notice>
@@ -632,14 +631,12 @@ export default async function ProductDetailPage({
       </section>
 
       <section className="section admin-product-section">
-        <div className="stack">
-          <p className="eyebrow">Images produit</p>
-          <h2>Images du produit</h2>
-          <p className="card-copy">
-            Associez des médias existants pour construire la galerie principale
-            du produit.
-          </p>
-        </div>
+        <SectionIntro
+          className="stack"
+          description="Associez des médias existants pour construire la galerie principale du produit."
+          eyebrow="Images produit"
+          title="Images du produit"
+        />
 
         {productImageMessage.status ? (
           <Notice tone="success">{productImageMessage.status}</Notice>
@@ -785,19 +782,20 @@ export default async function ProductDetailPage({
       </section>
 
       <section className="section admin-product-section">
-        <div className="stack">
-          <p className="eyebrow">
-            {isSimpleProduct ? "Produit simple" : productPresentation.sectionEyebrow}
-          </p>
-          <h2>
-            {isSimpleProduct ? "Informations de vente" : productPresentation.sectionTitle}
-          </h2>
-          <p className="card-copy">
-            {isSimpleProduct
+        <SectionIntro
+          className="stack"
+          description={
+            isSimpleProduct
               ? "Complétez ici la référence, le prix, le prix barré et le stock du produit simple."
-              : productPresentation.sectionDescription}
-          </p>
-        </div>
+              : productPresentation.sectionDescription
+          }
+          eyebrow={
+            isSimpleProduct ? "Produit simple" : productPresentation.sectionEyebrow
+          }
+          title={
+            isSimpleProduct ? "Informations de vente" : productPresentation.sectionTitle
+          }
+        />
 
         {isSimpleProduct ? (
           <>
@@ -907,20 +905,18 @@ export default async function ProductDetailPage({
               </>
             ) : null}
             {showLegacyVariantCompatibilityBlock ? (
-                <div className="admin-product-subsection">
-                  <div className="stack">
-                  <p className="eyebrow">Données existantes</p>
-                  <h3>
-                    {variants.length > 1
+              <div className="admin-product-subsection">
+                <SectionIntro
+                  className="stack"
+                  description="Ce bloc rassemble les données déjà enregistrées. Utilisez-le seulement pour vérifier l'existant ou terminer une correction manuelle."
+                  eyebrow="Données existantes"
+                  title={
+                    variants.length > 1
                       ? "Déclinaisons existantes"
-                      : "Déclinaison existante"}
-                  </h3>
-                  <p className="card-copy">
-                    Ce bloc rassemble les données déjà enregistrées. Utilisez-le
-                    seulement pour vérifier l&apos;existant ou terminer une
-                    correction manuelle.
-                  </p>
-                </div>
+                      : "Déclinaison existante"
+                  }
+                  titleAs="h3"
+                />
 
                 {variantStatusMessage ? (
                   <Notice tone="success">{variantStatusMessage}</Notice>
@@ -1403,14 +1399,12 @@ export default async function ProductDetailPage({
       </section>
 
       <section className="section admin-danger-zone">
-        <div className="stack">
-          <p className="eyebrow">Suppression</p>
-          <h2>Supprimer ce produit</h2>
-          <p className="card-copy">
-            La suppression retire aussi les catégories associées, les
-            déclinaisons et les images rattachées.
-          </p>
-        </div>
+        <SectionIntro
+          className="stack"
+          description="La suppression retire aussi les catégories associées, les déclinaisons et les images rattachées."
+          eyebrow="Suppression"
+          title="Supprimer ce produit"
+        />
 
         {deleteErrorMessage ? (
           <Notice tone="alert">{deleteErrorMessage}</Notice>

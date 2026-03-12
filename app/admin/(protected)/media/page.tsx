@@ -3,6 +3,7 @@ import path from "node:path";
 import { redirect } from "next/navigation";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/admin-media";
 import { requireAuthenticatedAdmin } from "@/lib/admin-auth";
 import { uploadAdminMedia, MediaUploadError } from "@/features/admin/media/upload";
@@ -159,14 +160,12 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
       </section>
 
       <section className="store-card admin-upload-card">
-        <div className="stack">
-          <p className="eyebrow">Bibliothèque médias</p>
-          <h2>Importer une image</h2>
-          <p className="card-copy">
-            Ajoutez ici une image prête à être réutilisée. Formats acceptés :
-            JPEG, PNG, WebP. Taille maximale : 10 MB.
-          </p>
-        </div>
+        <SectionIntro
+          className="stack"
+          description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP. Taille maximale : 10 MB."
+          eyebrow="Bibliothèque médias"
+          title="Importer une image"
+        />
 
         {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
         {errorMessage ? (
@@ -195,14 +194,11 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
 
       <section className="section">
         <div className="section-header">
-          <div>
-            <p className="eyebrow">Médias</p>
-            <h2>Bibliothèque locale</h2>
-            <p className="card-copy">
-              Chaque image reste immédiatement réutilisable. Les informations
-              techniques sont affichées en dessous pour vérification.
-            </p>
-          </div>
+          <SectionIntro
+            description="Chaque image reste immédiatement réutilisable. Les informations techniques sont affichées en dessous pour vérification."
+            eyebrow="Médias"
+            title="Bibliothèque locale"
+          />
         </div>
 
         {assets.length > 0 ? (

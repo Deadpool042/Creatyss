@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import {
   getAdminHomepageEditorData,
@@ -188,14 +189,12 @@ export default async function AdminHomepagePage({
         />
 
         <section className="admin-homepage-section">
-          <div className="stack">
-            <p className="eyebrow">Mise en avant principale</p>
-            <h2>Bannière principale</h2>
-            <p className="card-copy">
-              Renseignez ici le titre, le texte et l&apos;image visibles en
-              haut de la page d&apos;accueil.
-            </p>
-          </div>
+          <SectionIntro
+            className="stack"
+            description="Renseignez ici le titre, le texte et l'image visibles en haut de la page d'accueil."
+            eyebrow="Mise en avant principale"
+            title="Bannière principale"
+          />
 
           {heroImageUrl ? (
             <div className="admin-homepage-hero-preview">
@@ -263,14 +262,12 @@ export default async function AdminHomepagePage({
         </section>
 
         <section className="admin-homepage-section">
-          <div className="stack">
-            <p className="eyebrow">Éditorial</p>
-            <h2>Bloc éditorial</h2>
-            <p className="card-copy">
-              Complétez ensuite le texte éditorial affiché sous la bannière
-              principale.
-            </p>
-          </div>
+          <SectionIntro
+            className="stack"
+            description="Complétez ensuite le texte éditorial affiché sous la bannière principale."
+            eyebrow="Éditorial"
+            title="Bloc éditorial"
+          />
 
           <label className="admin-field">
             <span className="meta-label">Titre éditorial</span>
@@ -294,14 +291,12 @@ export default async function AdminHomepagePage({
         </section>
 
         <section className="admin-homepage-section">
-          <div className="stack">
-            <p className="eyebrow">Produits</p>
-            <h2>Produits mis en avant</h2>
-            <p className="card-copy">
-              En complément, choisissez les produits publiés à afficher sur la
-              page d&apos;accueil.
-            </p>
-          </div>
+          <SectionIntro
+            className="stack"
+            description="En complément, choisissez les produits publiés à afficher sur la page d'accueil."
+            eyebrow="Produits"
+            title="Produits mis en avant"
+          />
 
           <Notice tone="note">
             Ces sélections complètent la page après la bannière principale et
@@ -348,14 +343,12 @@ export default async function AdminHomepagePage({
         </section>
 
         <section className="admin-homepage-section">
-          <div className="stack">
-            <p className="eyebrow">Catégories</p>
-            <h2>Catégories mises en avant</h2>
-            <p className="card-copy">
-              En complément, choisissez les catégories à afficher sur la page
-              d&apos;accueil.
-            </p>
-          </div>
+          <SectionIntro
+            className="stack"
+            description="En complément, choisissez les catégories à afficher sur la page d'accueil."
+            eyebrow="Catégories"
+            title="Catégories mises en avant"
+          />
 
           {categoryOptions.length > 0 ? (
             <div className="admin-homepage-option-grid">
@@ -397,14 +390,12 @@ export default async function AdminHomepagePage({
         </section>
 
         <section className="admin-homepage-section">
-          <div className="stack">
-            <p className="eyebrow">Articles</p>
-            <h2>Articles mis en avant</h2>
-            <p className="card-copy">
-              En complément, choisissez les articles publiés à afficher sur la
-              page d&apos;accueil.
-            </p>
-          </div>
+          <SectionIntro
+            className="stack"
+            description="En complément, choisissez les articles publiés à afficher sur la page d'accueil."
+            eyebrow="Articles"
+            title="Articles mis en avant"
+          />
 
           {blogPostOptions.length > 0 ? (
             <div className="admin-homepage-option-grid">
