@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Notice } from "@/components/ui/notice";
+import { PageHeader } from "@/components/ui/page-header";
 import { listAdminProducts } from "@/db/repositories/admin-product.repository";
 import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
 
@@ -50,27 +52,19 @@ export default async function AdminProductsPage({
   return (
     <div className="admin-product-page">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Produits</p>
-            <h1>Produits</h1>
-            <p className="lead">
-              Gérez les produits, leurs catégories, leurs déclinaisons et leurs
-              images depuis un seul espace.
-            </p>
-          </div>
+        <PageHeader
+          actions={
+            <Link className="button" href="/admin/products/new">
+              Nouveau produit
+            </Link>
+          }
+          description="Gérez les produits, leurs catégories, leurs déclinaisons et leurs images depuis un seul espace."
+          eyebrow="Produits"
+          title="Produits"
+        />
 
-          <Link className="button" href="/admin/products/new">
-            Nouveau produit
-          </Link>
-        </div>
-
-        {successMessage ? <p className="admin-success">{successMessage}</p> : null}
-        {errorMessage ? (
-          <p className="admin-alert" role="alert">
-            {errorMessage}
-          </p>
-        ) : null}
+        {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
+        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {products.length > 0 ? (
           <div className="admin-product-list">
