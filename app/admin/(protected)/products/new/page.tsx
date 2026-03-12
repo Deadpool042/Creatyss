@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Notice } from "@/components/ui/notice";
+import { PageHeader } from "@/components/ui/page-header";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 import { createProductAction } from "@/features/admin/products/actions/create-product-action";
 
@@ -45,27 +48,18 @@ export default async function NewAdminProductPage({
 
   return (
     <section className="section admin-product-form-section">
-      <div className="page-header">
-        <div>
-          <p className="eyebrow">Produits</p>
-          <h1>Nouveau produit</h1>
-          <p className="lead">
-            Créez d&apos;abord le produit, choisissez son type, puis complétez
-            ses informations de vente ou ses déclinaisons depuis la page de
-            détail.
-          </p>
-        </div>
+      <PageHeader
+        actions={
+          <Link className="link-subtle button" href="/admin/products">
+            Retour à la liste
+          </Link>
+        }
+        description="Créez d'abord le produit, choisissez son type, puis complétez ses informations de vente ou ses déclinaisons depuis la page de détail."
+        eyebrow="Produits"
+        title="Nouveau produit"
+      />
 
-        <Link className="link-subtle button" href="/admin/products">
-          Retour à la liste
-        </Link>
-      </div>
-
-      {errorMessage ? (
-        <p className="admin-alert" role="alert">
-          {errorMessage}
-        </p>
-      ) : null}
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <form action={createProductAction} className="admin-form admin-product-form">
         <label className="admin-field">
@@ -160,9 +154,9 @@ export default async function NewAdminProductPage({
         </label>
 
         <div className="admin-actions">
-          <button className="button" type="submit">
+          <Button className="button" type="submit">
             Créer le produit
-          </button>
+          </Button>
         </div>
       </form>
     </section>

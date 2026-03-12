@@ -141,6 +141,18 @@ Lot de cohérence UI — `Button` et `Card` ne sont pas applicables sur cette pa
 | `Button` | — | non applicable — aucun `<button>` dans cette page |
 | `Card` | — | non applicable — le seul `store-card` est un `<article>`, préservé |
 
+### `app/admin/(protected)/products/new/page.tsx`
+
+| Élément | Avant | Après |
+|---|---|---|
+| Header inline | `<div className="page-header">` + HTML manuel | `<PageHeader>` avec prop `actions` (composant maison) |
+| Lien "Retour à la liste" | `<Link className="link-subtle button">` passé en inline | `<Link className="link-subtle button">` passé en prop `actions` — inchangé |
+| Message erreur inline | `<p className="admin-alert" role="alert">` | `<Notice tone="alert">` (composant maison) |
+| Bouton de soumission | `<button className="button" type="submit">` | `<Button className="button" type="submit">` |
+| `<section className="section admin-product-form-section">` | conservée | conservée — groupement sémantique du formulaire |
+| `<p className="admin-muted-note">` | conservé | conservé — texte d'aide contextuel dans le formulaire, hors périmètre Notice |
+| `Card` | — | non applicable — aucun `.store-card` dans cette page |
+
 ### `app/admin/(protected)/products/page.tsx`
 
 Lot de cohérence UI — `Button` et `Card` ne sont pas applicables sur cette page, comme pour `orders/page.tsx`, `categories/page.tsx` et `blog/page.tsx`.
