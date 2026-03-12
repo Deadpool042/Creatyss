@@ -174,3 +174,11 @@ Quand tu proposes une modification :
   6. impacts de compatibilité
   7. vérifications
 - Pour les lots importants, le plan peut être matérialisé dans un document dédié sous `docs/vX/plans/`.
+
+## Vérifications
+
+- Pour chaque lot, exécuter les vérifications les plus pertinentes pour le périmètre modifié.
+- Inclure au minimum `typecheck`, puis des tests unitaires et e2e ciblés si le lot le justifie.
+- Si un lot touche l’UI, privilégier une vérification automatisée des écrans ou parcours impactés avant de laisser une vérification manuelle.
+- Ne proposer une vérification manuelle navigateur que lorsqu’aucune vérification automatisée utile n’existe.
+- Toujours indiquer clairement les commandes lancées, les vérifications passées et les limites restantes.

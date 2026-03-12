@@ -194,12 +194,34 @@ function centsToMoneyString(cents: number): string {
   return `${sign}${major}.${minor.toString().padStart(2, "0")}`;
 }
 
-function mapGuestCartVariant(row: GuestCartVariantRow): GuestCartVariant {
-  const isAvailable =
+function isGuestCartVariantAvailable(row: GuestCartVariantRow): boolean {
+  return (
     row.product_status === "published" &&
     row.status === "published" &&
-    row.stock_quantity > 0;
+    row.stock_quantity > 0
+  );
+}
 
+function isGuestCartLineAvailable(row: GuestCartLineRow): boolean {
+  return (
+    row.product_status === "published" &&
+    row.variant_status === "published" &&
+    row.stock_quantity >= row.quantity &&
+    row.stock_quantity > 0
+  );
+}
+
+function mapGuestCartItemReference(
+  row: GuestCartItemReferenceRow
+): GuestCartItemReference {
+  return {
+    id: row.id,
+    variantId: row.product_variant_id,
+    quantity: row.quantity
+  };
+}
+
+function mapGuestCartVariant(row: GuestCartVariantRow): GuestCartVariant {
   return {
     id: row.id,
     productId: row.product_id,
@@ -213,18 +235,13 @@ function mapGuestCartVariant(row: GuestCartVariantRow): GuestCartVariant {
     price: normalizeMoneyString(row.price),
     stockQuantity: row.stock_quantity,
     status: row.status,
-    isAvailable
+    isAvailable: isGuestCartVariantAvailable(row)
   };
 }
 
 function mapGuestCartLine(row: GuestCartLineRow): GuestCartLine {
   const unitPrice = normalizeMoneyString(row.unit_price);
   const lineTotal = centsToMoneyString(moneyStringToCents(unitPrice) * row.quantity);
-  const isAvailable =
-    row.product_status === "published" &&
-    row.variant_status === "published" &&
-    row.stock_quantity >= row.quantity &&
-    row.stock_quantity > 0;
 
   return {
     id: row.id,
@@ -239,7 +256,7 @@ function mapGuestCartLine(row: GuestCartLineRow): GuestCartLine {
     sku: row.sku,
     unitPrice,
     lineTotal,
-    isAvailable,
+    isAvailable: isGuestCartLineAvailable(row),
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
   };
@@ -284,6 +301,30 @@ function getGuestCheckoutIssues(cart: GuestCart | null): GuestCheckoutIssueCode[
   }
 
   return [];
+}
+
+function buildGuestCartFromLineRows(
+  rows: readonly GuestCartLineRow[]
+): GuestCart | null {
+  const firstRow = rows[0];
+
+  if (!firstRow) {
+    return null;
+  }
+
+  const lines = rows.map(mapGuestCartLine);
+  const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
+  const subtotalCents = lines.reduce(
+    (sum, line) => sum + moneyStringToCents(line.lineTotal),
+    0
+  );
+
+  return {
+    id: firstRow.cart_id,
+    itemCount,
+    subtotal: centsToMoneyString(subtotalCents),
+    lines
+  };
 }
 
 export async function findGuestCartIdByToken(token: string): Promise<string | null> {
@@ -372,15 +413,7 @@ export async function findGuestCartItemByVariant(
     [cartId, variantId]
   );
 
-  if (!row) {
-    return null;
-  }
-
-  return {
-    id: row.id,
-    variantId: row.product_variant_id,
-    quantity: row.quantity
-  };
+  return row ? mapGuestCartItemReference(row) : null;
 }
 
 export async function findGuestCartItemById(
@@ -405,15 +438,7 @@ export async function findGuestCartItemById(
     [cartId, itemId]
   );
 
-  if (!row) {
-    return null;
-  }
-
-  return {
-    id: row.id,
-    variantId: row.product_variant_id,
-    quantity: row.quantity
-  };
+  return row ? mapGuestCartItemReference(row) : null;
 }
 
 export async function addGuestCartItemQuantity(input: {
@@ -500,29 +525,7 @@ export async function readGuestCartByToken(token: string): Promise<GuestCart | n
     [token]
   );
 
-  if (rows.length === 0) {
-    return null;
-  }
-
-  const firstRow = rows[0];
-
-  if (!firstRow) {
-    return null;
-  }
-
-  const lines = rows.map(mapGuestCartLine);
-  const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
-  const subtotalCents = lines.reduce(
-    (sum, line) => sum + moneyStringToCents(line.lineTotal),
-    0
-  );
-
-  return {
-    id: firstRow.cart_id,
-    itemCount,
-    subtotal: centsToMoneyString(subtotalCents),
-    lines
-  };
+  return buildGuestCartFromLineRows(rows);
 }
 
 export async function readGuestCheckoutDetailsByCartId(
