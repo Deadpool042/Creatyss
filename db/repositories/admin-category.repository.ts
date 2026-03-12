@@ -1,5 +1,8 @@
 import { queryFirst, queryRows } from "@/db/client";
 
+// --- Internal types ---
+
+// pg may return Date or string for timestamp columns depending on driver configuration
 type TimestampValue = Date | string;
 
 type AdminCategoryRow = {
@@ -38,6 +41,8 @@ type PostgreSqlErrorLike = Error & {
   constraint?: string;
 };
 
+// --- Public types ---
+
 export type AdminCategory = {
   id: string;
   name: string;
@@ -57,21 +62,25 @@ export class AdminCategoryRepositoryError extends Error {
   }
 }
 
+// --- Internal helpers ---
+
+const PG_UNIQUE_VIOLATION = "23505";
+const PG_FOREIGN_KEY_VIOLATION = "23503";
+const CATEGORY_SLUG_CONSTRAINT = "categories_slug_key";
+
+// Single column list used by all category queries — no summary/detail distinction for this entity
+const CATEGORY_COLUMNS =
+  "id::text as id, name, slug, description, is_featured, created_at, updated_at";
+
 function isValidCategoryId(id: string): boolean {
   return /^[0-9]+$/.test(id);
 }
 
 function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
-  if (!(error instanceof Error)) {
-    return false;
-  }
-
-  const candidate = error as Error & {
-    code?: unknown;
-    constraint?: unknown;
-  };
-
-  return typeof candidate.code === "string";
+  return (
+    error instanceof Error &&
+    typeof (error as { code?: unknown }).code === "string"
+  );
 }
 
 function toIsoTimestamp(value: TimestampValue): string {
@@ -94,39 +103,42 @@ function mapAdminCategory(row: AdminCategoryRow): AdminCategory {
   };
 }
 
-function mapRepositoryError(error: unknown): never {
-  if (
-    isPostgreSqlErrorLike(error) &&
-    error.code === "23505" &&
-    error.constraint === "categories_slug_key"
-  ) {
-    throw new AdminCategoryRepositoryError(
-      "slug_taken",
-      "Category slug already exists."
-    );
-  }
+// Builds the ordered parameter array shared by INSERT and UPDATE queries.
+// Create: buildCategoryWriteParams(input)          → $1=name … $4=isFeatured
+// Update: [input.id, ...buildCategoryWriteParams(input)] → $1=id, $2=name … $5=isFeatured
+function buildCategoryWriteParams(input: CreateAdminCategoryInput): unknown[] {
+  return [input.name, input.slug, input.description, input.isFeatured];
+}
 
-  if (isPostgreSqlErrorLike(error) && error.code === "23503") {
-    throw new AdminCategoryRepositoryError(
-      "category_referenced",
-      "Category is still referenced by other records."
-    );
+function mapRepositoryError(error: unknown): never {
+  if (isPostgreSqlErrorLike(error)) {
+    if (
+      error.code === PG_UNIQUE_VIOLATION &&
+      error.constraint === CATEGORY_SLUG_CONSTRAINT
+    ) {
+      throw new AdminCategoryRepositoryError(
+        "slug_taken",
+        "Category slug already exists."
+      );
+    }
+
+    if (error.code === PG_FOREIGN_KEY_VIOLATION) {
+      throw new AdminCategoryRepositoryError(
+        "category_referenced",
+        "Category is still referenced by other records."
+      );
+    }
   }
 
   throw error;
 }
 
+// --- Public functions ---
+
 export async function listAdminCategories(): Promise<AdminCategory[]> {
   const rows = await queryRows<AdminCategoryRow>(
     `
-      select
-        id::text as id,
-        name,
-        slug,
-        description,
-        is_featured,
-        created_at,
-        updated_at
+      select ${CATEGORY_COLUMNS}
       from categories
       order by lower(name) asc, id asc
     `
@@ -144,14 +156,7 @@ export async function findAdminCategoryById(
 
   const row = await queryFirst<AdminCategoryRow>(
     `
-      select
-        id::text as id,
-        name,
-        slug,
-        description,
-        is_featured,
-        created_at,
-        updated_at
+      select ${CATEGORY_COLUMNS}
       from categories
       where id = $1::bigint
       limit 1
@@ -172,23 +177,11 @@ export async function createAdminCategory(
   try {
     const row = await queryFirst<AdminCategoryRow>(
       `
-        insert into categories (
-          name,
-          slug,
-          description,
-          is_featured
-        )
+        insert into categories (name, slug, description, is_featured)
         values ($1, $2, $3, $4)
-        returning
-          id::text as id,
-          name,
-          slug,
-          description,
-          is_featured,
-          created_at,
-          updated_at
+        returning ${CATEGORY_COLUMNS}
       `,
-      [input.name, input.slug, input.description, input.isFeatured]
+      buildCategoryWriteParams(input)
     );
 
     if (row === null) {
@@ -218,22 +211,9 @@ export async function updateAdminCategory(
           description = $4,
           is_featured = $5
         where id = $1::bigint
-        returning
-          id::text as id,
-          name,
-          slug,
-          description,
-          is_featured,
-          created_at,
-          updated_at
+        returning ${CATEGORY_COLUMNS}
       `,
-      [
-        input.id,
-        input.name,
-        input.slug,
-        input.description,
-        input.isFeatured
-      ]
+      [input.id, ...buildCategoryWriteParams(input)]
     );
 
     if (row === null) {
