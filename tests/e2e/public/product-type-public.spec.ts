@@ -14,26 +14,28 @@ test("renders a simple product as a single purchasable offer", async ({
     page.getByRole("heading", { level: 2, name: "Produit disponible" })
   ).toBeVisible();
   await expect(
-    page.getByText("Cette offre unique est disponible a l'achat.")
+    page.getByText("Ce produit est disponible à l'achat.")
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { level: 2, name: "Offre vendable" })
+    page.getByRole("heading", { level: 2, name: "Informations de vente" })
   ).toBeVisible();
   await expect(
-    page.getByText("Ce produit simple se presente comme une offre vendable unique.")
+    page.getByText(
+      "Retrouvez ici le prix, le stock et les informations utiles pour commander ce produit simple."
+    )
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { level: 2, name: "Choisir une declinaison" })
+    page.getByRole("heading", { level: 2, name: "Choisir une déclinaison" })
   ).toHaveCount(0);
 
   const offerCard = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Offre vendable" }) });
+    .filter({ has: page.getByRole("heading", { name: "Produit simple" }) });
 
   await expect(offerCard.getByText(/^Disponible$/)).toBeVisible();
   await expect(
     offerCard.getByText(
-      "Choisissez la quantite puis ajoutez le produit au panier."
+      "Choisissez la quantité puis ajoutez le produit au panier."
     )
   ).toBeVisible();
   await expect(
@@ -53,12 +55,12 @@ test("shows a discreet unavailable state for a simple product", async ({
     })
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { level: 2, name: "Offre vendable" })
+    page.getByRole("heading", { level: 2, name: "Informations de vente" })
   ).toBeVisible();
 
   const offerCard = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Offre vendable" }) });
+    .filter({ has: page.getByRole("heading", { name: "Produit simple" }) });
 
   await expect(
     offerCard.getByText(/^Temporairement indisponible$/)

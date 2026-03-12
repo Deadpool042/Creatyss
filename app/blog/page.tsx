@@ -16,7 +16,7 @@ export default async function BlogPage() {
         <div className="page-header">
           <div>
             <p className="eyebrow">Blog</p>
-            <h1>Articles publies</h1>
+            <h1>Articles publiés</h1>
           </div>
         </div>
 
@@ -42,10 +42,10 @@ export default async function BlogPage() {
         ) : (
           <div className="empty-state">
             <p className="eyebrow">Blog vide</p>
-            <h2>Aucun article publie</h2>
+            <h2>Aucun article publié</h2>
             <p className="card-copy">
-              Les articles publics apparaitront ici des qu&apos;ils seront
-              publies.
+              Les articles publics apparaîtront ici dès qu&apos;ils seront
+              publiés.
             </p>
           </div>
         )}

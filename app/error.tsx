@@ -18,7 +18,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         <p className="eyebrow">Erreur applicative</p>
         <h1>Une erreur est survenue.</h1>
         <p className="lead">
-          Le socle technique a rencontré une erreur inattendue.
+          Le site a rencontré une erreur inattendue.
         </p>
         <p className="message">{error.message || "Erreur inconnue."}</p>
         <button className="button" type="button" onClick={() => reset()}>

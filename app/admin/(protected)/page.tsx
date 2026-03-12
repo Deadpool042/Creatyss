@@ -6,25 +6,25 @@ export default function AdminHomePage() {
   return (
     <div className="admin-panels">
       <article className="store-card">
-        <p className="card-kicker">Fondation admin</p>
-        <h2>Espace protege pret pour la suite</h2>
+        <p className="card-kicker">Administration</p>
+        <h2>Espace d&apos;administration</h2>
         <p className="card-copy">
-          Cette base d&apos;authentification protege deja l&apos;espace admin et
-          accueille maintenant des verticales homepage, blog, categories,
-          produits et media simples et maintenables.
+          Cet espace permet déjà de gérer l&apos;accueil, le blog, les
+          catégories, les produits, les médias et les commandes depuis une
+          base simple et maintenable.
         </p>
       </article>
 
       <article className="store-card">
-        <p className="card-kicker">Homepage</p>
-        <h2>Edition de la page d'accueil</h2>
+        <p className="card-kicker">Accueil</p>
+        <h2>Édition de la page d&apos;accueil</h2>
         <p className="card-copy">
-          Modifiez le hero, le bloc editorial et les selections mises en avant
-          depuis une page admin unique et lisible.
+          Modifiez la bannière principale, le bloc éditorial et les sélections
+          mises en avant depuis une seule page.
         </p>
         <div>
           <Link className="link" href="/admin/homepage">
-            Ouvrir la homepage
+            Ouvrir la page d&apos;accueil
           </Link>
         </div>
       </article>
@@ -33,8 +33,8 @@ export default function AdminHomePage() {
         <p className="card-kicker">Catalogue</p>
         <h2>Gestion des produits</h2>
         <p className="card-copy">
-          Creez des produits parents, rattachez-les aux categories existantes,
-          puis gerez variantes et images depuis une page detail unique.
+          Créez des produits, rattachez-les aux catégories existantes, puis
+          gérez leurs informations et leurs images depuis une fiche détaillée.
         </p>
         <div>
           <Link className="link" href="/admin/products">
@@ -45,52 +45,52 @@ export default function AdminHomePage() {
 
       <article className="store-card">
         <p className="card-kicker">Blog</p>
-        <h2>Edition des articles</h2>
+        <h2>Édition des articles</h2>
         <p className="card-copy">
-          Creez, publiez et ajustez les articles du blog avec un formulaire
+          Créez, publiez et ajustez les articles du blog avec un formulaire
           simple et une image de couverture optionnelle.
         </p>
         <div>
           <Link className="link" href="/admin/blog">
-            Ouvrir le blog admin
+            Ouvrir le blog
           </Link>
         </div>
       </article>
 
       <article className="store-card">
-        <p className="card-kicker">Categories</p>
+        <p className="card-kicker">Catégories</p>
         <h2>Structure du catalogue</h2>
         <p className="card-copy">
-          Les categories restent disponibles pour organiser proprement le
+          Les catégories restent disponibles pour organiser proprement le
           catalogue et alimenter les associations produit.
         </p>
         <div>
           <Link className="link" href="/admin/categories">
-            Ouvrir les categories
+            Ouvrir les catégories
           </Link>
         </div>
       </article>
 
       <article className="store-card">
-        <p className="card-kicker">Media</p>
-        <h2>Bibliotheque locale</h2>
+        <p className="card-kicker">Médias</p>
+        <h2>Bibliothèque locale</h2>
         <p className="card-copy">
-          La bibliotheque media reste disponible pour preparer les futures
-          editions produits, blog et homepage.
+          La bibliothèque médias reste disponible pour préparer les futures
+          éditions produits, blog et page d&apos;accueil.
         </p>
         <div>
           <Link className="link" href="/admin/media">
-            Ouvrir la bibliotheque media
+            Ouvrir la bibliothèque médias
           </Link>
         </div>
       </article>
 
       <article className="store-card">
-        <p className="card-kicker">Orders</p>
+        <p className="card-kicker">Commandes</p>
         <h2>Suivi des commandes</h2>
         <p className="card-copy">
-          Consultez les commandes creees depuis le checkout invite avec un
-          detail simple, en lecture seule, avant le lot paiement.
+          Consultez les commandes créées sur la boutique avec un détail simple
+          et les principales informations de suivi.
         </p>
         <div>
           <Link className="link" href="/admin/orders">

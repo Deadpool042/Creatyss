@@ -9,21 +9,21 @@ test("keeps variable products focused on multiple sellable offers", async ({
     page.getByRole("heading", { level: 2, name: "Produit disponible" })
   ).toBeVisible();
   await expect(
-    page.getByText("Choisissez une declinaison disponible ci-dessous.")
+    page.getByText("Choisissez une déclinaison disponible ci-dessous.")
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { level: 2, name: "Choisir une declinaison" })
+    page.getByRole("heading", { level: 2, name: "Choisir une déclinaison" })
   ).toBeVisible();
 
   const mokaVariant = page
     .locator("article")
     .filter({ has: page.getByRole("heading", { name: "Moka" }) });
 
-  await expect(mokaVariant.getByText("Par defaut")).toBeVisible();
+  await expect(mokaVariant.getByText("Par défaut")).toBeVisible();
   await expect(mokaVariant.getByText("Disponible", { exact: true })).toBeVisible();
   await expect(
     mokaVariant.getByText(
-      "Selectionnez une quantite puis ajoutez cette declinaison au panier."
+      "Sélectionnez une quantité puis ajoutez cette déclinaison au panier."
     )
   ).toBeVisible();
   await expect(

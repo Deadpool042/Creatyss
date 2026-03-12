@@ -28,7 +28,7 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
   await page.getByLabel("Slug").fill(productSlug);
   await page.getByLabel("Statut").selectOption("published");
   await page.getByLabel("Type de produit").selectOption("simple");
-  await page.getByRole("button", { name: "Creer le produit" }).click();
+  await page.getByRole("button", { name: "Créer le produit" }).click();
 
   await expect(page).toHaveURL(/\/admin\/products\/[0-9]+\?product_status=created$/);
 
@@ -49,29 +49,29 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
 
   await expect(
     page.getByText(
-      "Les champs commerciaux saisis ici restent synchronises avec l'unique variante legacy. Son statut de publication continue a se gerer dans le bloc legacy ci-dessous."
+      "Les champs commerciaux saisis ici restent synchronisés avec l'unique déclinaison existante. Son statut de publication continue à se gérer dans le bloc ci-dessous."
     )
   ).toBeVisible();
 
   const simpleOfferForm = page
     .locator("form")
     .filter({
-      has: page.getByRole("button", { name: "Enregistrer l'offre simple" })
+      has: page.getByRole("button", { name: "Enregistrer les informations de vente" })
     })
     .first();
 
   await expect(simpleOfferForm.getByLabel("SKU")).toHaveValue(initialSku);
   await simpleOfferForm.getByLabel("SKU").fill(updatedSku);
   await simpleOfferForm.getByLabel("Prix", { exact: true }).fill("109");
-  await simpleOfferForm.getByLabel("Prix compare").fill("129");
+  await simpleOfferForm.getByLabel("Prix barré").fill("129");
   await simpleOfferForm.getByLabel("Stock disponible").fill("0");
   await simpleOfferForm
-    .getByRole("button", { name: "Enregistrer l'offre simple" })
+    .getByRole("button", { name: "Enregistrer les informations de vente" })
     .click();
 
   await expect(page).toHaveURL(/simple_offer_status=updated$/);
   await expect(
-    page.getByText("L'offre simple a ete mise a jour avec succes.")
+    page.getByText("Les informations de vente ont été mises à jour avec succès.")
   ).toBeVisible();
 
   const legacyVariantCard = page.getByRole("article").filter({
@@ -82,7 +82,7 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
   await expect(
     legacyVariantCard.getByLabel("Prix", { exact: true })
   ).toHaveValue("109.00");
-  await expect(legacyVariantCard.getByLabel("Prix compare")).toHaveValue(
+  await expect(legacyVariantCard.getByLabel("Prix barré")).toHaveValue(
     "129.00"
   );
   await expect(legacyVariantCard.getByLabel("Stock disponible")).toHaveValue("0");
@@ -97,7 +97,7 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
     })
   ).toBeVisible();
   await expect(page.getByText("109.00").first()).toBeVisible();
-  await expect(page.getByText("Compare a 129.00")).toBeVisible();
+  await expect(page.getByText("Prix barré : 129.00")).toBeVisible();
   await expect(
     page.getByText("Temporairement indisponible").first()
   ).toBeVisible();
@@ -121,21 +121,21 @@ test("updates variant stock and reflects simple availability on the product page
   });
 
   await expect(
-    variantCard.getByText(/Disponibilite actuelle :\s*Disponible/)
+    variantCard.getByText(/Disponibilité actuelle :\s*Disponible/)
   ).toBeVisible();
 
   await variantCard.getByLabel("Stock disponible").fill("0");
   await variantCard
-    .getByRole("button", { name: "Enregistrer la declinaison" })
+    .getByRole("button", { name: "Enregistrer la déclinaison" })
     .click();
 
   await expect(page).toHaveURL(/variant_status=updated$/);
   await expect(
-    page.getByText("Variante mise a jour avec succes.")
+    page.getByText("Déclinaison mise à jour avec succès.")
   ).toBeVisible();
   await expect(
     variantCard.getByText(
-      /Disponibilite actuelle :\s*Temporairement indisponible/
+      /Disponibilité actuelle :\s*Temporairement indisponible/
     )
   ).toBeVisible();
 
@@ -151,12 +151,12 @@ test("updates variant stock and reflects simple availability on the product page
 
   await variantCard.getByLabel("Stock disponible").fill("5");
   await variantCard
-    .getByRole("button", { name: "Enregistrer la declinaison" })
+    .getByRole("button", { name: "Enregistrer la déclinaison" })
     .click();
 
   await expect(page).toHaveURL(/variant_status=updated$/);
   await expect(
-    variantCard.getByText(/Disponibilite actuelle :\s*Disponible/)
+    variantCard.getByText(/Disponibilité actuelle :\s*Disponible/)
   ).toBeVisible();
 
   await page.goto("/boutique/sac-camel");

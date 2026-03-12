@@ -48,15 +48,15 @@ function readSearchParam(
 }
 
 function getProductStatusLabel(status: "draft" | "published"): string {
-  return status === "published" ? "Publie" : "Brouillon";
+  return status === "published" ? "Publié" : "Brouillon";
 }
 
 function getProductStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "created":
-      return "Produit cree avec succes.";
+      return "Produit créé avec succès.";
     case "updated":
-      return "Produit mis a jour avec succes.";
+      return "Produit mis à jour avec succès.";
     default:
       return null;
   }
@@ -75,13 +75,13 @@ function getProductErrorMessage(error: string | undefined): string | null {
     case "invalid_product_type":
       return "Le type de produit est invalide.";
     case "invalid_category_ids":
-      return "Une ou plusieurs categories selectionnees sont invalides.";
+      return "Une ou plusieurs catégories sélectionnées sont invalides.";
     case "slug_taken":
-      return "Ce slug est deja utilise par un autre produit.";
+      return "Ce slug est déjà utilisé par un autre produit.";
     case "simple_product_requires_single_variant":
-      return "Un produit simple ne peut avoir qu'une seule declinaison vendable.";
+      return "Un produit simple ne peut avoir qu'une seule déclinaison.";
     case "save_failed":
-      return "Le produit n'a pas pu etre enregistre.";
+      return "Le produit n'a pas pu être enregistré.";
     default:
       return null;
   }
@@ -90,11 +90,11 @@ function getProductErrorMessage(error: string | undefined): string | null {
 function getVariantStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "created":
-      return "Variante creee avec succes.";
+      return "Déclinaison créée avec succès.";
     case "updated":
-      return "Variante mise a jour avec succes.";
+      return "Déclinaison mise à jour avec succès.";
     case "deleted":
-      return "Variante supprimee avec succes.";
+      return "Déclinaison supprimée avec succès.";
     default:
       return null;
   }
@@ -103,7 +103,7 @@ function getVariantStatusMessage(status: string | undefined): string | null {
 function getSimpleOfferStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "updated":
-      return "L'offre simple a ete mise a jour avec succes.";
+      return "Les informations de vente ont été mises à jour avec succès.";
     default:
       return null;
   }
@@ -118,21 +118,21 @@ function getSimpleOfferErrorMessage(error: string | undefined): string | null {
     case "invalid_price":
       return "Renseignez un prix valide.";
     case "invalid_compare_at_price":
-      return "Renseignez un prix compare valide.";
+      return "Renseignez un prix barré valide.";
     case "compare_at_price_below_price":
-      return "Le prix compare doit etre superieur ou egal au prix.";
+      return "Le prix barré doit être supérieur ou égal au prix.";
     case "missing_stock_quantity":
       return "Le stock disponible est obligatoire.";
     case "invalid_stock_quantity":
       return "Renseignez un stock disponible entier positif ou nul.";
     case "sku_taken":
-      return "Ce SKU est deja utilise par une autre variante.";
+      return "Cette référence est déjà utilisée par une autre déclinaison.";
     case "simple_product_offer_requires_simple_product":
-      return "Cette edition native est reservee aux produits simples.";
+      return "Cette édition est réservée aux produits simples.";
     case "simple_product_multiple_legacy_variants":
-      return "Ce produit simple est incoherent car plusieurs variantes legacy existent. Corrigez d'abord cet etat dans le bloc legacy.";
+      return "Ce produit simple est incohérent car plusieurs déclinaisons sont encore associées. Corrigez d'abord cet état dans le bloc de données existantes.";
     case "save_failed":
-      return "L'offre simple n'a pas pu etre enregistree.";
+      return "Les informations de vente n'ont pas pu être enregistrées.";
     default:
       return null;
   }
@@ -141,13 +141,13 @@ function getSimpleOfferErrorMessage(error: string | undefined): string | null {
 function getVariantErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_variant":
-      return "La variante demandee est introuvable.";
+      return "La déclinaison demandée est introuvable.";
     case "missing_variant_name":
-      return "Le nom de la variante est obligatoire.";
+      return "Le nom de la déclinaison est obligatoire.";
     case "missing_color_name":
       return "Le nom de couleur est obligatoire.";
     case "invalid_color_hex":
-      return "Renseignez un code couleur hexadecimal valide.";
+      return "Renseignez un code couleur hexadécimal valide.";
     case "missing_sku":
       return "Le SKU est obligatoire.";
     case "missing_price":
@@ -155,25 +155,25 @@ function getVariantErrorMessage(error: string | undefined): string | null {
     case "invalid_price":
       return "Renseignez un prix valide.";
     case "invalid_compare_at_price":
-      return "Renseignez un prix compare valide.";
+      return "Renseignez un prix barré valide.";
     case "compare_at_price_below_price":
-      return "Le prix compare doit etre superieur ou egal au prix.";
+      return "Le prix barré doit être supérieur ou égal au prix.";
     case "missing_stock_quantity":
       return "Le stock disponible est obligatoire.";
     case "invalid_stock_quantity":
       return "Renseignez un stock disponible entier positif ou nul.";
     case "invalid_variant_status":
-      return "Le statut de la variante est invalide.";
+      return "Le statut de la déclinaison est invalide.";
     case "sku_taken":
-      return "Ce SKU est deja utilise par une autre variante.";
+      return "Cette référence est déjà utilisée par une autre déclinaison.";
     case "simple_product_single_variant_only":
-      return "Un produit simple ne peut avoir qu'une seule declinaison vendable.";
+      return "Un produit simple ne peut avoir qu'une seule déclinaison.";
     case "simple_product_requires_sellable_variant":
-      return "Un produit simple doit conserver son offre vendable unique.";
+      return "Un produit simple doit conserver sa déclinaison existante unique.";
     case "save_failed":
-      return "La variante n'a pas pu etre enregistree.";
+      return "La déclinaison n'a pas pu être enregistrée.";
     case "delete_failed":
-      return "La variante n'a pas pu etre supprimee.";
+      return "La déclinaison n'a pas pu être supprimée.";
     default:
       return null;
   }
@@ -200,26 +200,26 @@ function getDetailSellableCountLabel(input: {
   }
 
   if (input.variantCount > 1) {
-    return `${input.variantCount} variantes legacy`;
+    return "État à vérifier";
   }
 
   if (input.simpleOffer !== null) {
-    return "Offre simple configuree";
+    return "Informations de vente prêtes";
   }
 
   return input.variantCount === 0
-    ? "Offre simple a completer"
-    : "Offre simple a verifier";
+    ? "Informations de vente à compléter"
+    : "Informations de vente à vérifier";
 }
 
 function getImageStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "created":
-      return "Image enregistree avec succes.";
+      return "Image enregistrée avec succès.";
     case "updated":
-      return "Image mise a jour avec succes.";
+      return "Image mise à jour avec succès.";
     case "deleted":
-      return "Image supprimee avec succes.";
+      return "Image supprimée avec succès.";
     default:
       return null;
   }
@@ -228,23 +228,23 @@ function getImageStatusMessage(status: string | undefined): string | null {
 function getImageErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_media_asset":
-      return "Selectionnez un media existant.";
+      return "Sélectionnez un média existant.";
     case "invalid_media_asset":
-      return "Le media selectionne est invalide.";
+      return "Le média sélectionné est invalide.";
     case "invalid_variant":
-      return "La variante selectionnee est invalide.";
+      return "La déclinaison sélectionnée est invalide.";
     case "invalid_sort_order":
-      return "Le tri d'image doit etre un entier positif ou nul.";
+      return "Le tri d'image doit être un entier positif ou nul.";
     case "media_missing":
-      return "Le media selectionne est introuvable.";
+      return "Le média sélectionné est introuvable.";
     case "variant_missing":
-      return "La variante selectionnee n'appartient pas a ce produit.";
+      return "La déclinaison sélectionnée n'appartient pas à ce produit.";
     case "missing_image":
-      return "L'image demandee est introuvable.";
+      return "L'image demandée est introuvable.";
     case "save_failed":
-      return "L'image n'a pas pu etre enregistree.";
+      return "L'image n'a pas pu être enregistrée.";
     case "delete_failed":
-      return "L'image n'a pas pu etre supprimee.";
+      return "L'image n'a pas pu être supprimée.";
     default:
       return null;
   }
@@ -253,9 +253,9 @@ function getImageErrorMessage(error: string | undefined): string | null {
 function getDeleteErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "referenced":
-      return "Ce produit ne peut pas etre supprime car il est encore reference ailleurs.";
+      return "Ce produit ne peut pas être supprimé car il est encore référencé ailleurs.";
     case "delete_failed":
-      return "Le produit n'a pas pu etre supprime.";
+      return "Le produit n'a pas pu être supprimé.";
     default:
       return null;
   }
@@ -456,13 +456,13 @@ export default async function ProductDetailPage({
             <p className="eyebrow">Produits</p>
             <h1>Modifier le produit</h1>
             <p className="lead">
-              Mettez a jour le produit, son type, son offre vendable et ses
-              images depuis le meme ecran.
+              Mettez à jour le produit, son type, ses informations de vente et
+              ses images depuis le même écran.
             </p>
           </div>
 
           <Link className="link-subtle button" href="/admin/products">
-            Retour a la liste
+            Retour à la liste
           </Link>
         </div>
 
@@ -473,7 +473,7 @@ export default async function ProductDetailPage({
             {product.isFeatured ? "Mis en avant" : "Standard"}
           </span>
           <span className="admin-chip">
-            {product.categories.length} categorie
+            {product.categories.length} catégorie
             {product.categories.length > 1 ? "s" : ""}
           </span>
           <span className="admin-chip">{detailSellableCountLabel}</span>
@@ -482,10 +482,10 @@ export default async function ProductDetailPage({
 
       <section className="section admin-product-section">
         <div className="stack">
-          <p className="eyebrow">Produit parent</p>
+          <p className="eyebrow">Informations générales</p>
           <h2>Informations produit</h2>
           <p className="card-copy">
-            Ajustez les champs catalogue et le SEO de base depuis le meme
+            Ajustez les champs catalogue et le SEO de base depuis le même
             formulaire.
           </p>
         </div>
@@ -545,7 +545,7 @@ export default async function ProductDetailPage({
           </label>
 
           <label className="admin-field">
-            <span className="meta-label">SEO title</span>
+            <span className="meta-label">Titre SEO</span>
             <input
               className="admin-input"
               defaultValue={product.seoTitle ?? ""}
@@ -555,7 +555,7 @@ export default async function ProductDetailPage({
           </label>
 
           <label className="admin-field">
-            <span className="meta-label">SEO description</span>
+            <span className="meta-label">Description SEO</span>
             <textarea
               className="admin-input admin-textarea"
               defaultValue={product.seoDescription ?? ""}
@@ -568,7 +568,7 @@ export default async function ProductDetailPage({
             <span className="meta-label">Statut</span>
             <select className="admin-input" defaultValue={product.status} name="status">
               <option value="draft">Brouillon</option>
-              <option value="published">Publie</option>
+              <option value="published">Publié</option>
             </select>
           </label>
 
@@ -579,13 +579,13 @@ export default async function ProductDetailPage({
               defaultValue={product.productType}
               name="productType"
             >
-              <option value="simple">Simple</option>
-              <option value="variable">Variable</option>
+              <option value="simple">Produit simple</option>
+              <option value="variable">Produit avec déclinaisons</option>
             </select>
           </label>
 
           <fieldset className="admin-fieldset">
-            <legend className="meta-label">Categories associees</legend>
+            <legend className="meta-label">Catégories associées</legend>
 
             {categories.length > 0 ? (
               <div className="admin-checkbox-grid">
@@ -606,7 +606,7 @@ export default async function ProductDetailPage({
               </div>
             ) : (
               <p className="card-copy">
-                Aucune categorie n&apos;est encore disponible pour ce produit.
+                Aucune catégorie n&apos;est encore disponible pour ce produit.
               </p>
             )}
           </fieldset>
@@ -632,9 +632,9 @@ export default async function ProductDetailPage({
       <section className="section admin-product-section">
         <div className="stack">
           <p className="eyebrow">Images produit</p>
-          <h2>Images du produit parent</h2>
+          <h2>Images du produit</h2>
           <p className="card-copy">
-            Associez des medias existants pour construire la galerie principale
+            Associez des médias existants pour construire la galerie principale
             du produit.
           </p>
         </div>
@@ -655,10 +655,10 @@ export default async function ProductDetailPage({
             <input name="imageScope" type="hidden" value="product" />
 
             <label className="admin-field">
-              <span className="meta-label">Media existant</span>
+              <span className="meta-label">Média existant</span>
               <select className="admin-input" defaultValue="" name="mediaAssetId">
                 <option disabled value="">
-                  Selectionnez un media
+                  Sélectionnez un média
                 </option>
                 {mediaAssets.map((mediaAsset) => (
                   <option key={mediaAsset.id} value={mediaAsset.id}>
@@ -680,7 +680,7 @@ export default async function ProductDetailPage({
 
             <label className="admin-checkbox">
               <input name="isPrimary" type="checkbox" value="on" />
-              <span>Definir comme image principale produit</span>
+              <span>Définir comme image principale du produit</span>
             </label>
 
             <div className="admin-actions">
@@ -691,9 +691,9 @@ export default async function ProductDetailPage({
           </form>
         ) : (
           <p className="admin-muted-note">
-            Aucun media n&apos;est disponible. Ajoutez d&apos;abord une image dans{" "}
+            Aucun média n&apos;est disponible. Ajoutez d&apos;abord une image dans{" "}
             <Link className="link" href="/admin/media">
-              la bibliotheque media
+              la bibliothèque médias
             </Link>
             .
           </p>
@@ -755,7 +755,7 @@ export default async function ProductDetailPage({
 
                   <div className="admin-inline-actions">
                     <button className="button" type="submit">
-                      Mettre a jour l&apos;image
+                      Mettre à jour l&apos;image
                     </button>
                   </div>
                 </form>
@@ -775,9 +775,9 @@ export default async function ProductDetailPage({
         ) : (
           <div className="empty-state">
             <p className="eyebrow">Aucune image</p>
-            <h2>Le produit parent n&apos;a pas encore d&apos;image</h2>
+            <h2>Le produit n&apos;a pas encore d&apos;image</h2>
             <p className="card-copy">
-              Associez un media existant pour afficher une image principale ou
+              Associez un média existant pour afficher une image principale ou
               secondaire.
             </p>
           </div>
@@ -789,10 +789,12 @@ export default async function ProductDetailPage({
           <p className="eyebrow">
             {isSimpleProduct ? "Produit simple" : productPresentation.sectionEyebrow}
           </p>
-          <h2>{isSimpleProduct ? "Offre simple" : productPresentation.sectionTitle}</h2>
+          <h2>
+            {isSimpleProduct ? "Informations de vente" : productPresentation.sectionTitle}
+          </h2>
           <p className="card-copy">
             {isSimpleProduct
-              ? "Modifiez directement le SKU, le prix, le prix compare et le stock natifs du produit simple."
+              ? "Modifiez directement la référence, le prix, le prix barré et le stock du produit simple."
               : productPresentation.sectionDescription}
           </p>
         </div>
@@ -809,32 +811,33 @@ export default async function ProductDetailPage({
             ) : null}
             {simpleProductHasInconsistentVariantCount ? (
               <p className="admin-alert" role="alert">
-                Ce produit simple est incoherent car plusieurs variantes legacy
-                existent. Aucune resolution native n&apos;est appliquee tant que
-                vous n&apos;avez pas conserve une seule variante vendable.
+                Ce produit simple est incohérent car plusieurs déclinaisons sont
+                encore associées. Aucune correction automatique n&apos;est
+                appliquée tant qu&apos;une seule déclinaison n&apos;est pas
+                conservée.
               </p>
             ) : null}
             {showSimpleOfferForm && simpleOfferFormDefaults ? (
               <>
                 {product.simpleOffer ? (
                   <p className="card-meta">
-                    Disponibilite actuelle :{" "}
+                    Disponibilité actuelle :{" "}
                     {getAvailabilityLabel(product.simpleOffer.isAvailable)}
                   </p>
                 ) : null}
                 {simpleProductHasNoLegacyVariant ? (
                   <p className="admin-muted-note">
-                    L&apos;edition native admin est disponible, mais la
-                    compatibilite publique actuelle reste limitee tant
-                    qu&apos;aucune variante legacy n&apos;existe. Ce lot ne cree
-                    aucune variante automatiquement.
+                    L&apos;édition directe est disponible, mais l&apos;affichage
+                    public reste limité tant qu&apos;aucune déclinaison
+                    existante n&apos;est présente. Cette page ne crée rien
+                    automatiquement.
                   </p>
                 ) : null}
                 {simpleProductHasSingleLegacyVariant ? (
                   <p className="admin-muted-note">
-                    Les champs commerciaux saisis ici restent synchronises avec
-                    l&apos;unique variante legacy. Son statut de publication
-                    continue a se gerer dans le bloc legacy ci-dessous.
+                    Les champs commerciaux saisis ici restent synchronisés avec
+                    l&apos;unique déclinaison existante. Son statut de
+                    publication continue à se gérer dans le bloc ci-dessous.
                   </p>
                 ) : null}
 
@@ -846,7 +849,7 @@ export default async function ProductDetailPage({
 
                   <fieldset className="admin-fieldset">
                     <legend className="meta-label">
-                      Informations de l&apos;offre simple
+                      Informations de vente
                     </legend>
 
                     <label className="admin-field">
@@ -873,7 +876,7 @@ export default async function ProductDetailPage({
                     </label>
 
                     <label className="admin-field">
-                      <span className="meta-label">Prix compare</span>
+                      <span className="meta-label">Prix barré</span>
                       <input
                         className="admin-input"
                         defaultValue={simpleOfferFormDefaults.compareAtPrice}
@@ -899,24 +902,24 @@ export default async function ProductDetailPage({
 
                   <div className="admin-actions">
                     <button className="button" type="submit">
-                      Enregistrer l&apos;offre simple
+                      Enregistrer les informations de vente
                     </button>
                   </div>
                 </form>
               </>
             ) : null}
             {showLegacyVariantCompatibilityBlock ? (
-              <div className="admin-product-subsection">
-                <div className="stack">
-                  <p className="eyebrow">Compatibilite legacy</p>
+                <div className="admin-product-subsection">
+                  <div className="stack">
+                  <p className="eyebrow">Données existantes</p>
                   <h3>
                     {variants.length > 1
-                      ? "Variantes legacy existantes"
-                      : "Variante legacy existante"}
+                      ? "Déclinaisons existantes"
+                      : "Déclinaison existante"}
                   </h3>
                   <p className="card-copy">
-                    Ce bloc reste disponible pour les informations techniques et
-                    les ajustements manuels encore utilises par l&apos;existant.
+                    Ce bloc reste disponible pour les informations déjà
+                    présentes et les ajustements manuels encore nécessaires.
                   </p>
                 </div>
 
@@ -989,7 +992,7 @@ export default async function ProductDetailPage({
             </label>
 
             <label className="admin-field">
-              <span className="meta-label">Prix compare</span>
+              <span className="meta-label">Prix barré</span>
               <input
                 className="admin-input"
                 inputMode="decimal"
@@ -1002,7 +1005,7 @@ export default async function ProductDetailPage({
               <span className="meta-label">Statut</span>
               <select className="admin-input" defaultValue="draft" name="status">
                 <option value="draft">Brouillon</option>
-                <option value="published">Publie</option>
+                <option value="published">Publié</option>
               </select>
             </label>
 
@@ -1021,12 +1024,12 @@ export default async function ProductDetailPage({
           </fieldset>
 
           <fieldset className="admin-fieldset">
-            <legend className="meta-label">Informations variante</legend>
+            <legend className="meta-label">Informations de la déclinaison</legend>
 
-            <label className="admin-field">
-              <span className="meta-label">Nom de la variante</span>
-              <input className="admin-input" name="name" required type="text" />
-            </label>
+              <label className="admin-field">
+                <span className="meta-label">Nom de la déclinaison</span>
+                <input className="admin-input" name="name" required type="text" />
+              </label>
 
             <label className="admin-field">
               <span className="meta-label">Nom de couleur</span>
@@ -1040,7 +1043,7 @@ export default async function ProductDetailPage({
 
             <label className="admin-checkbox">
               <input name="isDefault" type="checkbox" value="on" />
-              <span>Definir comme variante par defaut</span>
+              <span>Définir comme déclinaison par défaut</span>
             </label>
           </fieldset>
 
@@ -1062,13 +1065,13 @@ export default async function ProductDetailPage({
                   <div className="stack">
                     <p className="meta-label">
                       {isSimpleProduct
-                        ? "Variante legacy"
+                        ? "Déclinaison existante"
                         : productPresentation.itemKicker}
                     </p>
                     <div className="admin-product-tags">
                       <span className="admin-chip">{variant.colorName}</span>
                       <span className="admin-chip">
-                        {variant.isDefault ? "Variante par defaut" : "Variante secondaire"}
+                        {variant.isDefault ? "Déclinaison par défaut" : "Déclinaison secondaire"}
                       </span>
                       <span className="admin-chip">
                         {getProductStatusLabel(variant.status)}
@@ -1080,7 +1083,7 @@ export default async function ProductDetailPage({
                       {variant.colorHex ? ` · ${variant.colorHex}` : ""}
                     </p>
                     <p className="card-meta">
-                      Disponibilite actuelle :{" "}
+                      Disponibilité actuelle :{" "}
                       {getAvailabilityLabel(variant.isAvailable)}
                     </p>
                   </div>
@@ -1095,7 +1098,7 @@ export default async function ProductDetailPage({
                     <fieldset className="admin-fieldset">
                       <legend className="meta-label">
                         {isSimpleProduct
-                          ? "Champs commerciaux legacy"
+                          ? "Informations commerciales existantes"
                           : productPresentation.saleFieldsetLegend}
                       </legend>
 
@@ -1123,7 +1126,7 @@ export default async function ProductDetailPage({
                       </label>
 
                       <label className="admin-field">
-                        <span className="meta-label">Prix compare</span>
+                        <span className="meta-label">Prix barré</span>
                         <input
                           className="admin-input"
                           defaultValue={variant.compareAtPrice ?? ""}
@@ -1141,7 +1144,7 @@ export default async function ProductDetailPage({
                           name="status"
                         >
                           <option value="draft">Brouillon</option>
-                          <option value="published">Publie</option>
+                          <option value="published">Publié</option>
                         </select>
                       </label>
 
@@ -1160,10 +1163,10 @@ export default async function ProductDetailPage({
                     </fieldset>
 
                     <fieldset className="admin-fieldset">
-                      <legend className="meta-label">Informations variante</legend>
+                      <legend className="meta-label">Informations de la déclinaison</legend>
 
                       <label className="admin-field">
-                        <span className="meta-label">Nom de la variante</span>
+                        <span className="meta-label">Nom de la déclinaison</span>
                         <input
                           className="admin-input"
                           defaultValue={variant.name}
@@ -1202,14 +1205,14 @@ export default async function ProductDetailPage({
                           type="checkbox"
                           value="on"
                         />
-                        <span>Variante par defaut</span>
+                        <span>Déclinaison par défaut</span>
                       </label>
                     </fieldset>
 
                     <div className="admin-inline-actions">
                       <button className="button" type="submit">
                         {isSimpleProduct
-                          ? "Enregistrer la variante legacy"
+                          ? "Enregistrer la déclinaison existante"
                           : productPresentation.saveActionLabel}
                       </button>
                     </div>
@@ -1221,7 +1224,7 @@ export default async function ProductDetailPage({
 
                     <button className="button link-subtle" type="submit">
                       {isSimpleProduct
-                        ? "Supprimer la variante legacy"
+                        ? "Supprimer la déclinaison existante"
                         : productPresentation.deleteActionLabel}
                     </button>
                   </form>
@@ -1230,16 +1233,16 @@ export default async function ProductDetailPage({
                     <div className="stack">
                       <p className="eyebrow">
                         {isSimpleProduct
-                          ? "Images legacy"
+                          ? "Images existantes"
                           : productPresentation.imagesEyebrow}
                       </p>
                       <h3>
                         {isSimpleProduct
-                          ? "Images de l'offre vendable"
+                          ? "Images de la déclinaison existante"
                           : `Images pour ${variant.colorName}`}
                       </h3>
                       <p className="card-copy">
-                        Ajoutez des medias existants pour cette declinaison.
+                        Ajoutez des médias existants pour cette déclinaison.
                       </p>
                     </div>
 
@@ -1253,14 +1256,14 @@ export default async function ProductDetailPage({
                         <input name="imageScope" type="hidden" value="variant" />
 
                         <label className="admin-field">
-                          <span className="meta-label">Media existant</span>
+                          <span className="meta-label">Média existant</span>
                           <select
                             className="admin-input"
                             defaultValue=""
                             name="mediaAssetId"
                           >
                             <option disabled value="">
-                              Selectionnez un media
+                              Sélectionnez un média
                             </option>
                             {mediaAssets.map((mediaAsset) => (
                               <option key={mediaAsset.id} value={mediaAsset.id}>
@@ -1287,21 +1290,21 @@ export default async function ProductDetailPage({
 
                         <label className="admin-checkbox">
                           <input name="isPrimary" type="checkbox" value="on" />
-                          <span>Image principale de la variante</span>
+                          <span>Image principale de la déclinaison</span>
                         </label>
 
                         <div className="admin-actions">
                           <button className="button" type="submit">
-                            Ajouter une image variante
+                            Ajouter une image à la déclinaison
                           </button>
                         </div>
                       </form>
                     ) : (
                       <p className="admin-muted-note">
-                        Aucun media n&apos;est disponible. Ajoutez d&apos;abord une
+                        Aucun média n&apos;est disponible. Ajoutez d&apos;abord une
                         image dans{" "}
                         <Link className="link" href="/admin/media">
-                          la bibliotheque media
+                          la bibliothèque médias
                         </Link>
                         .
                       </p>
@@ -1362,12 +1365,12 @@ export default async function ProductDetailPage({
                                   type="checkbox"
                                   value="on"
                                 />
-                                <span>Image principale variante</span>
+                                <span>Image principale de la déclinaison</span>
                               </label>
 
                               <div className="admin-inline-actions">
                                 <button className="button" type="submit">
-                                  Mettre a jour l&apos;image
+                                  Mettre à jour l&apos;image
                                 </button>
                               </div>
                             </form>
@@ -1387,8 +1390,8 @@ export default async function ProductDetailPage({
                     ) : (
                       <p className="admin-muted-note">
                         {isSimpleProduct
-                          ? "Cette variante legacy n'a pas encore d'image associee."
-                          : "Cette variante n'a pas encore d'image associee."}
+                          ? "Cette déclinaison existante n'a pas encore d'image associée."
+                          : "Cette déclinaison n'a pas encore d'image associée."}
                       </p>
                     )}
                   </div>
@@ -1410,8 +1413,8 @@ export default async function ProductDetailPage({
           <p className="eyebrow">Suppression</p>
           <h2>Supprimer ce produit</h2>
           <p className="card-copy">
-            La suppression retire aussi les categories associees, les variantes
-            et les images rattachees par cascade SQL.
+            La suppression retire aussi les catégories associées, les
+            déclinaisons et les images rattachées.
           </p>
         </div>
 

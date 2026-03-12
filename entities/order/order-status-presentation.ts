@@ -18,13 +18,13 @@ export type OrderStatusNotice =
 export function getOrderStatusLabel(status: OrderStatus): string {
   switch (status) {
     case "shipped":
-      return "Expediee";
+      return "Expédiée";
     case "preparing":
-      return "En preparation";
+      return "En préparation";
     case "paid":
-      return "Payee";
+      return "Payée";
     case "cancelled":
-      return "Annulee";
+      return "Annulée";
     case "pending":
     default:
       return "En attente";
@@ -34,9 +34,9 @@ export function getOrderStatusLabel(status: OrderStatus): string {
 export function getPaymentStatusLabel(status: OrderPaymentStatus): string {
   switch (status) {
     case "succeeded":
-      return "Paiement reussi";
+      return "Paiement réussi";
     case "failed":
-      return "Paiement echoue";
+      return "Paiement échoué";
     case "pending":
     default:
       return "Paiement en attente";
@@ -50,34 +50,34 @@ export function getOrderStatusSummary(input: {
   switch (input.orderStatus) {
     case "cancelled":
       return {
-        title: "Commande annulee",
-        description: "La commande a ete annulee et n'est plus en cours de traitement.",
+        title: "Commande annulée",
+        description: "La commande a été annulée et n'est plus en cours de traitement.",
         nextStep: "Aucune autre action n'est disponible pour cette commande."
       };
     case "shipped":
       return {
-        title: "Commande expediee",
-        description: "La commande a quitte l'atelier et est en cours d'acheminement.",
+        title: "Commande expédiée",
+        description: "La commande a quitté l'atelier et est en cours d'acheminement.",
         nextStep:
-          "Consultez la date d'expedition et la reference de suivi si elles sont disponibles."
+          "Consultez la date d'expédition et la référence de suivi si elles sont disponibles."
       };
     case "preparing":
       return {
-        title: "Commande en preparation",
-        description: "Le paiement est confirme et la commande est en cours de preparation.",
-        nextStep: "Prochaine etape : expedition de la commande."
+        title: "Commande en préparation",
+        description: "Le paiement est confirmé et la commande est en cours de préparation.",
+        nextStep: "Prochaine étape : expédition de la commande."
       };
     case "paid":
       return {
-        title: "Commande payee",
-        description: "Le paiement a bien ete confirme pour cette commande.",
-        nextStep: "Prochaine etape : preparation de la commande."
+        title: "Commande payée",
+        description: "Le paiement a bien été confirmé pour cette commande.",
+        nextStep: "Prochaine étape : préparation de la commande."
       };
     case "pending":
     default:
       if (input.paymentStatus === "failed") {
         return {
-          title: "Paiement a relancer",
+          title: "Paiement à relancer",
           description: "La commande existe toujours, mais le paiement n'a pas abouti.",
           nextStep: "Vous pouvez relancer le paiement depuis cette page."
         };
@@ -85,7 +85,7 @@ export function getOrderStatusSummary(input: {
 
       return {
         title: "Commande en attente de paiement",
-        description: "La commande est creee, mais le paiement doit encore etre confirme.",
+        description: "La commande est créée, mais le paiement doit encore être confirmé.",
         nextStep: "Finalisez le paiement pour lancer le traitement de la commande."
       };
   }
@@ -99,7 +99,7 @@ export function getOrderPaymentNotice(input: {
   if (input.orderStatus === "cancelled") {
     return {
       kind: "alert",
-      text: "Cette commande a ete annulee."
+      text: "Cette commande a été annulée."
     };
   }
 
@@ -114,7 +114,7 @@ export function getOrderPaymentNotice(input: {
     case "cancelled":
       return {
         kind: "alert",
-        text: "Le paiement a ete interrompu. Vous pouvez le relancer."
+        text: "Le paiement a été interrompu. Vous pouvez le relancer."
       };
     case "return":
       return {
@@ -124,12 +124,12 @@ export function getOrderPaymentNotice(input: {
     case "already_paid":
       return {
         kind: "success",
-        text: "Cette commande est deja payee."
+        text: "Cette commande est déjà payée."
       };
     case "unavailable":
       return {
         kind: "alert",
-        text: "Cette commande ne peut pas etre payee dans son etat actuel."
+        text: "Cette commande ne peut pas être payée dans son état actuel."
       };
     default:
       return null;

@@ -21,13 +21,13 @@ function getErrorMessage(error: string | undefined): string | null {
     case "invalid_status":
       return "Le statut de l'article est invalide.";
     case "invalid_cover_image":
-      return "La selection de l'image de couverture est invalide.";
+      return "La sélection de l'image de couverture est invalide.";
     case "cover_media_missing":
-      return "Le media selectionne pour la couverture est introuvable.";
+      return "Le média sélectionné pour la couverture est introuvable.";
     case "slug_taken":
-      return "Ce slug est deja utilise par un autre article.";
+      return "Ce slug est déjà utilisé par un autre article.";
     case "save_failed":
-      return "L'article n'a pas pu etre enregistre.";
+      return "L'article n'a pas pu être enregistré.";
     default:
       return null;
   }
@@ -52,13 +52,13 @@ export default async function NewAdminBlogPostPage({
           <p className="eyebrow">Blog</p>
           <h1>Nouvel article</h1>
           <p className="lead">
-            Creez un article simple avec un texte, un statut et une image de
+            Créez un article simple avec un texte, un statut et une image de
             couverture optionnelle.
           </p>
         </div>
 
         <Link className="link-subtle button" href="/admin/blog">
-          Retour a la liste
+          Retour à la liste
         </Link>
       </div>
 
@@ -90,12 +90,12 @@ export default async function NewAdminBlogPostPage({
         </label>
 
         <label className="admin-field">
-          <span className="meta-label">SEO title</span>
+          <span className="meta-label">Titre SEO</span>
           <input className="admin-input" name="seoTitle" type="text" />
         </label>
 
         <label className="admin-field">
-          <span className="meta-label">SEO description</span>
+          <span className="meta-label">Description SEO</span>
           <textarea
             className="admin-input admin-textarea"
             name="seoDescription"
@@ -107,7 +107,7 @@ export default async function NewAdminBlogPostPage({
           <span className="meta-label">Statut</span>
           <select className="admin-input" defaultValue="draft" name="status">
             <option value="draft">Brouillon</option>
-            <option value="published">Publie</option>
+            <option value="published">Publié</option>
           </select>
         </label>
 
@@ -129,9 +129,9 @@ export default async function NewAdminBlogPostPage({
 
         {mediaAssets.length === 0 ? (
           <p className="admin-muted-note">
-            Aucun media n&apos;est disponible. Vous pouvez en importer depuis{" "}
+            Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
             <Link className="link" href="/admin/media">
-              la bibliotheque media
+              la bibliothèque médias
             </Link>
             .
           </p>
@@ -139,7 +139,7 @@ export default async function NewAdminBlogPostPage({
 
         <div className="admin-actions">
           <button className="button" type="submit">
-            Creer l&apos;article
+            Créer l&apos;article
           </button>
         </div>
       </form>

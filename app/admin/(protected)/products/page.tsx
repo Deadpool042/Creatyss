@@ -12,13 +12,13 @@ type AdminProductsPageProps = Readonly<{
 }>;
 
 function getStatusLabel(status: string): string {
-  return status === "published" ? "Publie" : "Brouillon";
+  return status === "published" ? "Publié" : "Brouillon";
 }
 
 function getStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "deleted":
-      return "Produit supprime avec succes.";
+      return "Produit supprimé avec succès.";
     default:
       return null;
   }
@@ -27,7 +27,7 @@ function getStatusMessage(status: string | undefined): string | null {
 function getErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_product":
-      return "Le produit demande est introuvable.";
+      return "Le produit demandé est introuvable.";
     default:
       return null;
   }
@@ -53,10 +53,10 @@ export default async function AdminProductsPage({
         <div className="page-header">
           <div>
             <p className="eyebrow">Produits</p>
-            <h1>Produits admin</h1>
+            <h1>Produits</h1>
             <p className="lead">
-              Gere les produits parents, leurs categories, leurs variantes et
-              leurs images depuis un flux admin unique.
+              Gérez les produits, leurs catégories, leurs déclinaisons et leurs
+              images depuis un seul espace.
             </p>
           </div>
 
@@ -103,7 +103,7 @@ export default async function AdminProductsPage({
                       {product.isFeatured ? "Mis en avant" : "Standard"}
                     </span>
                     <span className="admin-chip">
-                      {product.categoryCount} categorie
+                      {product.categoryCount} catégorie
                       {product.categoryCount > 1 ? "s" : ""}
                     </span>
                     <span className="admin-chip">
@@ -123,9 +123,9 @@ export default async function AdminProductsPage({
         ) : (
           <div className="empty-state">
             <p className="eyebrow">Aucun produit</p>
-            <h2>Le catalogue ne contient pas encore de produit admin</h2>
+            <h2>Le catalogue ne contient pas encore de produit</h2>
             <p className="card-copy">
-              Creez un premier produit parent pour commencer a structurer le
+              Créez un premier produit pour commencer à structurer le
               catalogue.
             </p>
           </div>

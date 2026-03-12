@@ -16,7 +16,7 @@ export type ProductPublicSectionPresentation = {
 };
 
 function formatVariantCount(count: number): string {
-  return `${count} declinaison${count > 1 ? "s" : ""}`;
+  return `${count} déclinaison${count > 1 ? "s" : ""}`;
 }
 
 export function getProductAvailabilityLabel(isAvailable: boolean): string {
@@ -37,8 +37,8 @@ export function getProductPageStatusSummary(input: {
       return {
         title: "Offre indisponible pour le moment",
         description:
-          "Ce produit simple n'est pas accessible dans une configuration vendable unique pour le moment.",
-        nextStep: "Revenez plus tard pour verifier sa disponibilite."
+          "Ce produit simple n'est pas disponible pour le moment.",
+        nextStep: "Revenez plus tard pour vérifier sa disponibilité."
       };
     }
 
@@ -46,22 +46,22 @@ export function getProductPageStatusSummary(input: {
       return {
         title: "Produit temporairement indisponible",
         description: "Cette offre unique n'est pas disponible actuellement.",
-        nextStep: "Revenez plus tard pour verifier sa disponibilite."
+        nextStep: "Revenez plus tard pour vérifier sa disponibilité."
       };
     }
 
     return {
       title: "Produit disponible",
-      description: "Cette offre unique est disponible a l'achat.",
-      nextStep: "Choisissez la quantite puis ajoutez le produit au panier."
+      description: "Ce produit est disponible à l'achat.",
+      nextStep: "Choisissez la quantité puis ajoutez le produit au panier."
     };
   }
 
   if (input.totalVariantCount === 0) {
     return {
-      title: "Produit sans declinaison publique",
-      description: "Aucune declinaison n'est visible pour le moment.",
-      nextStep: "Revenez plus tard pour consulter les prochaines declinaisons."
+      title: "Produit sans déclinaison disponible",
+      description: "Aucune déclinaison n'est visible pour le moment.",
+      nextStep: "Revenez plus tard pour consulter les prochaines déclinaisons."
     };
   }
 
@@ -69,15 +69,15 @@ export function getProductPageStatusSummary(input: {
     return {
       title: "Produit temporairement indisponible",
       description:
-        "Les declinaisons publiees sont visibles, mais aucune n'est disponible actuellement.",
-      nextStep: "Consultez les declinaisons pour verifier leurs informations."
+        "Les déclinaisons publiées sont visibles, mais aucune n'est disponible actuellement.",
+      nextStep: "Consultez les déclinaisons pour vérifier leurs informations."
     };
   }
 
   return {
     title: "Produit disponible",
     description: `${formatVariantCount(input.availableVariantCount)} disponible${input.availableVariantCount > 1 ? "s" : ""} sur ${input.totalVariantCount}.`,
-    nextStep: "Choisissez une declinaison disponible ci-dessous."
+    nextStep: "Choisissez une déclinaison disponible ci-dessous."
   };
 }
 
@@ -86,31 +86,31 @@ export function getProductOfferSectionPresentation(
 ): ProductPublicSectionPresentation {
   if (productType === "simple") {
     return {
-      eyebrow: "Offre",
-      title: "Offre vendable",
+      eyebrow: "Informations de vente",
+      title: "Informations de vente",
       description:
-        "Ce produit simple se presente comme une offre vendable unique.",
-      emptyEyebrow: "Offre indisponible",
+        "Retrouvez ici le prix, le stock et les informations utiles pour commander ce produit simple.",
+      emptyEyebrow: "Informations de vente",
       emptyTitle: "Ce produit simple n'est pas disponible pour le moment",
       emptyDescription:
-        "L'offre vendable unique n'est pas accessible actuellement."
+        "Les informations de vente ne sont pas disponibles actuellement."
     };
   }
 
-    return {
-      eyebrow: "Declinaisons",
-      title: "Choisir une declinaison",
+  return {
+      eyebrow: "Déclinaisons",
+      title: "Choisir une déclinaison",
       description:
-        "Verifiez le prix, la disponibilite et les visuels de chaque declinaison avant l'ajout au panier.",
-      emptyEyebrow: "Aucune declinaison",
-      emptyTitle: "Ce produit n'a pas encore de declinaison publique",
+        "Vérifiez le prix, la disponibilité et les visuels de chaque déclinaison avant l'ajout au panier.",
+      emptyEyebrow: "Aucune déclinaison",
+      emptyTitle: "Ce produit n'a pas encore de déclinaison disponible",
       emptyDescription:
-        "Les declinaisons apparaitront ici lorsqu'elles seront disponibles."
-    };
-  }
+        "Les déclinaisons apparaîtront ici lorsqu'elles seront disponibles."
+  };
+}
 
 export function getSimpleOfferCardTitle(): string {
-  return "Offre vendable";
+  return "Produit simple";
 }
 
 export function getOfferAvailabilityMessage(input: {
@@ -119,19 +119,19 @@ export function getOfferAvailabilityMessage(input: {
 }): string {
   if (input.productType === "simple") {
     if (input.isAvailable) {
-      return "Choisissez la quantite puis ajoutez le produit au panier.";
+      return "Choisissez la quantité puis ajoutez le produit au panier.";
     }
 
     return "Cette offre est temporairement indisponible.";
   }
 
   if (input.isAvailable) {
-    return "Selectionnez une quantite puis ajoutez cette declinaison au panier.";
+    return "Sélectionnez une quantité puis ajoutez cette déclinaison au panier.";
   }
 
-  return "Cette declinaison est temporairement indisponible. Choisissez une autre declinaison pour continuer.";
+  return "Cette déclinaison est temporairement indisponible. Choisissez une autre déclinaison pour continuer.";
 }
 
 export function getVariantDefaultBadgeLabel(isDefault: boolean): string | null {
-  return isDefault ? "Par defaut" : null;
+  return isDefault ? "Par défaut" : null;
 }

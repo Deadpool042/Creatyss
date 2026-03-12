@@ -3,8 +3,8 @@ import { loginAsSeedAdmin } from "./admin-auth";
 
 test("creates, updates and deletes a category", async ({ page }) => {
   const suffix = Date.now().toString();
-  const categoryName = `Categorie smoke ${suffix}`;
-  const updatedCategoryName = `Categorie smoke modifiee ${suffix}`;
+  const categoryName = `Catégorie smoke ${suffix}`;
+  const updatedCategoryName = `Catégorie smoke modifiée ${suffix}`;
   const normalizedSlug = `categorie-smoke-${suffix}`;
   const updatedSlug = `categorie-smoke-modifiee-${suffix}`;
 
@@ -13,11 +13,11 @@ test("creates, updates and deletes a category", async ({ page }) => {
 
   await page.getByLabel("Nom").fill(categoryName);
   await page.getByLabel("Slug").fill(`  Categorie Smoke ${suffix}  `);
-  await page.getByLabel("Description").fill("Categorie de smoke test.");
-  await page.getByRole("button", { name: "Creer la categorie" }).click();
+  await page.getByLabel("Description").fill("Catégorie de smoke test.");
+  await page.getByRole("button", { name: "Créer la catégorie" }).click();
 
   await expect(page).toHaveURL(/\/admin\/categories\?status=created$/);
-  await expect(page.getByText("Categorie creee avec succes.")).toBeVisible();
+  await expect(page.getByText("Catégorie créée avec succès.")).toBeVisible();
 
   const createdCategoryCard = page
     .getByRole("article")
@@ -25,7 +25,7 @@ test("creates, updates and deletes a category", async ({ page }) => {
 
   await expect(createdCategoryCard).toContainText(normalizedSlug);
   await createdCategoryCard
-    .getByRole("link", { name: "Modifier la categorie" })
+    .getByRole("link", { name: "Modifier la catégorie" })
     .click();
 
   await expect(page).toHaveURL(/\/admin\/categories\/[0-9]+$/);
@@ -36,7 +36,7 @@ test("creates, updates and deletes a category", async ({ page }) => {
 
   await expect(page).toHaveURL(/\/admin\/categories\?status=updated$/);
   await expect(
-    page.getByText("Categorie mise a jour avec succes.")
+    page.getByText("Catégorie mise à jour avec succès.")
   ).toBeVisible();
 
   const updatedCategoryCard = page
@@ -45,14 +45,14 @@ test("creates, updates and deletes a category", async ({ page }) => {
 
   await expect(updatedCategoryCard).toContainText(updatedSlug);
   await updatedCategoryCard
-    .getByRole("link", { name: "Modifier la categorie" })
+    .getByRole("link", { name: "Modifier la catégorie" })
     .click();
 
-  await page.getByRole("button", { name: "Supprimer la categorie" }).click();
+  await page.getByRole("button", { name: "Supprimer la catégorie" }).click();
 
   await expect(page).toHaveURL(/\/admin\/categories\?status=deleted$/);
   await expect(
-    page.getByText("Categorie supprimee avec succes.")
+    page.getByText("Catégorie supprimée avec succès.")
   ).toBeVisible();
   await expect(page.getByText(updatedCategoryName)).toHaveCount(0);
 });

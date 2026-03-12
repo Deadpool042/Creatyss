@@ -33,7 +33,7 @@ type ProductMetadataSource = NonNullable<
 function getCartStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "added":
-      return "Article ajoute au panier.";
+      return "Article ajouté au panier.";
     default:
       return null;
   }
@@ -42,16 +42,16 @@ function getCartStatusMessage(status: string | undefined): string | null {
 function getCartErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_variant":
-      return "La variante demandee est introuvable.";
+      return "La déclinaison demandée est introuvable.";
     case "missing_quantity":
     case "invalid_quantity":
-      return "Renseignez une quantite entiere superieure ou egale a 1.";
+      return "Renseignez une quantité entière supérieure ou égale à 1.";
     case "variant_unavailable":
-      return "Cette variante n'est pas disponible actuellement.";
+      return "Cette déclinaison n'est pas disponible actuellement.";
     case "insufficient_stock":
-      return "Le stock disponible est insuffisant pour cette quantite.";
+      return "Le stock disponible est insuffisant pour cette quantité.";
     case "save_failed":
-      return "Le panier n'a pas pu etre mis a jour.";
+      return "Le panier n'a pas pu être mis à jour.";
     default:
       return null;
   }
@@ -172,7 +172,7 @@ export default async function ProductPage({
           <aside className="product-panel">
             <div className="product-summary">
               <div className="product-summary-header">
-                <p className="meta-label">Disponibilite produit</p>
+                <p className="meta-label">Disponibilité du produit</p>
                 <span
                   className={`status-pill ${
                     product.isAvailable
@@ -192,11 +192,11 @@ export default async function ProductPage({
                 <div className="product-summary-stats">
                   <div className="product-summary-stat">
                     <p className="meta-label">Type de produit</p>
-                    <p className="card-copy">Simple</p>
+                    <p className="card-copy">Produit simple</p>
                   </div>
 
                   <div className="product-summary-stat">
-                    <p className="meta-label">Offre vendable</p>
+                    <p className="meta-label">Informations de vente</p>
                     <p className="card-copy">
                       {singleOffer ? singleOffer.name : "Indisponible"}
                     </p>
@@ -205,12 +205,12 @@ export default async function ProductPage({
               ) : (
                 <div className="product-summary-stats">
                   <div className="product-summary-stat">
-                    <p className="meta-label">Declinaisons disponibles</p>
+                    <p className="meta-label">Déclinaisons disponibles</p>
                     <p className="card-copy">{availableVariantCount}</p>
                   </div>
 
                   <div className="product-summary-stat">
-                    <p className="meta-label">Declinaisons publiees</p>
+                    <p className="meta-label">Déclinaisons publiées</p>
                     <p className="card-copy">{product.variants.length}</p>
                   </div>
                 </div>
@@ -273,7 +273,7 @@ export default async function ProductPage({
                   <p className="product-price">{singleOffer.price}</p>
                   {singleOffer.compareAtPrice ? (
                     <p className="card-meta">
-                      Compare a {singleOffer.compareAtPrice}
+                      Prix barré : {singleOffer.compareAtPrice}
                     </p>
                   ) : null}
                 </div>
@@ -306,7 +306,7 @@ export default async function ProductPage({
                     />
 
                     <label className="admin-field cart-quantity-field">
-                      <span className="meta-label">Quantite</span>
+                      <span className="meta-label">Quantité</span>
                       <input
                         className="admin-input"
                         defaultValue="1"
@@ -356,7 +356,7 @@ export default async function ProductPage({
                 </div>
               ) : (
                 <div className="media-placeholder">
-                  Aucun visuel pour cette offre.
+                  Aucun visuel pour ce produit.
                 </div>
               )}
             </article>
@@ -406,7 +406,7 @@ export default async function ProductPage({
                     <p className="product-price">{variant.price}</p>
                     {variant.compareAtPrice ? (
                       <p className="card-meta">
-                        Compare a {variant.compareAtPrice}
+                        Prix barré : {variant.compareAtPrice}
                       </p>
                     ) : null}
                   </div>
@@ -433,7 +433,7 @@ export default async function ProductPage({
                       <input name="variantId" type="hidden" value={variant.id} />
 
                       <label className="admin-field cart-quantity-field">
-                        <span className="meta-label">Quantite</span>
+                        <span className="meta-label">Quantité</span>
                         <input
                           className="admin-input"
                           defaultValue="1"
@@ -483,7 +483,7 @@ export default async function ProductPage({
                   </div>
                 ) : (
                   <div className="media-placeholder">
-                    Aucun visuel pour cette declinaison.
+                    Aucun visuel pour cette déclinaison.
                   </div>
                 )}
               </article>

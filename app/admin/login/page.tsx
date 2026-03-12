@@ -84,7 +84,7 @@ export default async function AdminLoginPage({
         <p className="eyebrow">Admin</p>
         <h1>Connexion</h1>
         <p className="lead">
-          Connectez-vous pour acceder a l&apos;espace d&apos;administration
+          Connectez-vous pour accéder à l&apos;espace d&apos;administration
           Creatyss.
         </p>
 

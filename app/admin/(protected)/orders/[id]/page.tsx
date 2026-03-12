@@ -33,7 +33,7 @@ const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
 function getOrderTransitionLabel(status: OrderStatus): string {
   switch (status) {
     case "preparing":
-      return "Marquer en preparation";
+      return "Marquer en préparation";
     case "cancelled":
       return "Annuler la commande";
     default:
@@ -44,21 +44,21 @@ function getOrderTransitionLabel(status: OrderStatus): string {
 function getEmailEventLabel(eventType: string): string {
   switch (eventType) {
     case "payment_succeeded":
-      return "Paiement reussi";
+      return "Paiement réussi";
     case "order_shipped":
-      return "Commande expediee";
+      return "Commande expédiée";
     case "order_created":
     default:
-      return "Commande creee";
+      return "Commande créée";
   }
 }
 
 function getEmailEventStatusLabel(status: OrderEmailEventStatus): string {
   switch (status) {
     case "sent":
-      return "Envoye";
+      return "Envoyé";
     case "failed":
-      return "Echec";
+      return "Échec";
     case "pending":
     default:
       return "En attente";
@@ -90,17 +90,17 @@ export default async function AdminOrderDetailPage({
   });
   const statusMessage =
     orderStatusParam === "updated"
-      ? "Le statut de la commande a ete mis a jour."
+      ? "Le statut de la commande a été mis à jour."
       : orderStatusParam === "shipped"
-        ? "La commande a ete marquee comme expediee."
+        ? "La commande a été marquée comme expédiée."
       : null;
   const errorMessage =
     orderErrorParam === "invalid_transition"
-      ? "Cette transition n'est pas autorisee."
+      ? "Cette transition n'est pas autorisée."
       : orderErrorParam === "ship_failed"
-        ? "La commande n'a pas pu etre marquee comme expediee."
+        ? "La commande n'a pas pu être marquée comme expédiée."
       : orderErrorParam === "update_failed"
-        ? "La commande n'a pas pu etre mise a jour."
+        ? "La commande n'a pas pu être mise à jour."
         : null;
 
   return (
@@ -108,11 +108,11 @@ export default async function AdminOrderDetailPage({
       <section className="section">
         <div className="page-header">
           <div>
-            <p className="eyebrow">Orders</p>
+            <p className="eyebrow">Commandes</p>
             <h1>Commande {order.reference}</h1>
             <p className="lead">
-              Snapshot cree depuis le checkout invite, avec actions bornees
-              sur le cycle de vie de la commande.
+              Consultez la commande, son paiement et son avancement depuis un
+              seul écran.
             </p>
           </div>
         </div>
@@ -124,7 +124,7 @@ export default async function AdminOrderDetailPage({
           <div className="checkout-line-list">
             <article className="store-card checkout-line">
               <div className="stack">
-                <p className="eyebrow">Synthese</p>
+                <p className="eyebrow">Synthèse</p>
                 <h2>{summary.title}</h2>
                 <p className="card-copy">{summary.description}</p>
                 <p className="card-meta">Suivant : {summary.nextStep}</p>
@@ -142,7 +142,7 @@ export default async function AdminOrderDetailPage({
 
             <article className="store-card checkout-line">
               <div className="stack">
-                <p className="meta-label">Reference</p>
+                <p className="meta-label">Référence</p>
                 <p className="card-copy">{order.reference}</p>
               </div>
 
@@ -159,7 +159,7 @@ export default async function AdminOrderDetailPage({
               </div>
 
               <div className="stack">
-                <p className="meta-label">Creee le</p>
+                <p className="meta-label">Créée le</p>
                 <p className="card-copy">
                   {orderDateTimeFormatter.format(new Date(order.createdAt))}
                 </p>
@@ -172,7 +172,7 @@ export default async function AdminOrderDetailPage({
                       <input name="orderId" type="hidden" value={order.id} />
                       <label className="admin-field">
                         <span className="meta-label">
-                          Reference de suivi optionnelle
+                          Référence de suivi optionnelle
                         </span>
                         <input
                           defaultValue={order.trackingReference ?? ""}
@@ -182,7 +182,7 @@ export default async function AdminOrderDetailPage({
                         />
                       </label>
                       <button className="button" type="submit">
-                        Marquer comme expediee
+                        Marquer comme expédiée
                       </button>
                     </form>
                   ) : null}
@@ -215,18 +215,18 @@ export default async function AdminOrderDetailPage({
 
             <article className="store-card checkout-line">
               <div className="stack">
-                <p className="eyebrow">Expedition</p>
+                <p className="eyebrow">Expédition</p>
                 <h2>Suivi simple</h2>
                 <p className="card-copy">
                   {order.shippedAt
-                    ? `Expediee le ${orderDateTimeFormatter.format(
+                    ? `Expédiée le ${orderDateTimeFormatter.format(
                         new Date(order.shippedAt)
                       )}`
-                    : "La commande n'a pas encore ete expediee."}
+                    : "La commande n'a pas encore été expédiée."}
                 </p>
                 {order.trackingReference ? (
                   <p className="card-meta">
-                    Reference de suivi : {order.trackingReference}
+                    Référence de suivi : {order.trackingReference}
                   </p>
                 ) : null}
               </div>
@@ -235,12 +235,12 @@ export default async function AdminOrderDetailPage({
             <article className="store-card checkout-line">
               <div className="stack">
                 <p className="eyebrow">Paiement</p>
-                <h2>Etat du paiement</h2>
+                <h2>État du paiement</h2>
                 <p className="card-copy">
-                  Provider : {order.payment.provider}
+                  Prestataire : {order.payment.provider}
                 </p>
                 <p className="card-copy">
-                  Methode : {order.payment.method}
+                  Méthode : {order.payment.method}
                 </p>
                 <p className="card-copy">
                   Montant : {order.payment.amount} {order.payment.currency.toUpperCase()}
@@ -252,7 +252,7 @@ export default async function AdminOrderDetailPage({
                 ) : null}
                 {order.payment.stripePaymentIntentId ? (
                   <p className="card-meta">
-                    Payment intent : {order.payment.stripePaymentIntentId}
+                    Identifiant de paiement : {order.payment.stripePaymentIntentId}
                   </p>
                 ) : null}
               </div>
@@ -264,7 +264,7 @@ export default async function AdminOrderDetailPage({
                 <h2>Trace minimale</h2>
                 {order.emailEvents.length === 0 ? (
                   <p className="card-copy">
-                    Aucun email transactionnel n&apos;a encore ete trace pour
+                    Aucun e-mail transactionnel n&apos;a encore été enregistré pour
                     cette commande.
                   </p>
                 ) : (
@@ -275,7 +275,7 @@ export default async function AdminOrderDetailPage({
                         key={emailEvent.id}
                       >
                         <div className="stack">
-                          <p className="meta-label">Evenement</p>
+                          <p className="meta-label">Événement</p>
                           <p className="card-copy">
                             {getEmailEventLabel(emailEvent.eventType)}
                           </p>
@@ -297,7 +297,7 @@ export default async function AdminOrderDetailPage({
 
                         {emailEvent.sentAt ? (
                           <p className="card-meta">
-                            Envoye le{" "}
+                            Envoyé le{" "}
                             {orderDateTimeFormatter.format(
                               new Date(emailEvent.sentAt)
                             )}
@@ -350,7 +350,7 @@ export default async function AdminOrderDetailPage({
                 <h2>Adresse de facturation</h2>
                 {order.billingSameAsShipping ? (
                   <p className="card-copy">
-                    Identique a l&apos;adresse de livraison.
+                    Identique à l&apos;adresse de livraison.
                   </p>
                 ) : (
                   <>
@@ -376,7 +376,7 @@ export default async function AdminOrderDetailPage({
 
           <aside className="product-panel checkout-summary">
             <div className="stack">
-              <p className="eyebrow">Recapitulatif</p>
+              <p className="eyebrow">Récapitulatif</p>
               <h2>Lignes de commande</h2>
             </div>
 
@@ -397,12 +397,12 @@ export default async function AdminOrderDetailPage({
                   </div>
 
                   <div className="stack">
-                    <p className="meta-label">Quantite</p>
+                    <p className="meta-label">Quantité</p>
                     <p className="card-copy">{line.quantity}</p>
                   </div>
 
                   <div className="stack">
-                    <p className="meta-label">Prix unitaire fige</p>
+                    <p className="meta-label">Prix unitaire figé</p>
                     <p className="card-copy">{line.unitPrice}</p>
                   </div>
 

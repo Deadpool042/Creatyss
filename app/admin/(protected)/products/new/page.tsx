@@ -23,11 +23,11 @@ function getErrorMessage(error: string | undefined): string | null {
     case "invalid_product_type":
       return "Le type de produit est invalide.";
     case "invalid_category_ids":
-      return "Une ou plusieurs categories selectionnees sont invalides.";
+      return "Une ou plusieurs catégories sélectionnées sont invalides.";
     case "slug_taken":
-      return "Ce slug est deja utilise par un autre produit.";
+      return "Ce slug est déjà utilisé par un autre produit.";
     case "save_failed":
-      return "Le produit n'a pas pu etre enregistre.";
+      return "Le produit n'a pas pu être enregistré.";
     default:
       return null;
   }
@@ -50,13 +50,14 @@ export default async function NewAdminProductPage({
           <p className="eyebrow">Produits</p>
           <h1>Nouveau produit</h1>
           <p className="lead">
-            Creez d&apos;abord le produit, choisissez son type, puis completez
-            son offre vendable ou ses declinaisons depuis la page de detail.
+            Créez d&apos;abord le produit, choisissez son type, puis complétez
+            ses informations de vente ou ses déclinaisons depuis la page de
+            détail.
           </p>
         </div>
 
         <Link className="link-subtle button" href="/admin/products">
-          Retour a la liste
+          Retour à la liste
         </Link>
       </div>
 
@@ -96,12 +97,12 @@ export default async function NewAdminProductPage({
         </label>
 
         <label className="admin-field">
-          <span className="meta-label">SEO title</span>
+          <span className="meta-label">Titre SEO</span>
           <input className="admin-input" name="seoTitle" type="text" />
         </label>
 
         <label className="admin-field">
-          <span className="meta-label">SEO description</span>
+          <span className="meta-label">Description SEO</span>
           <textarea
             className="admin-input admin-textarea"
             name="seoDescription"
@@ -113,25 +114,25 @@ export default async function NewAdminProductPage({
           <span className="meta-label">Statut</span>
           <select className="admin-input" defaultValue="draft" name="status">
             <option value="draft">Brouillon</option>
-            <option value="published">Publie</option>
+            <option value="published">Publié</option>
           </select>
         </label>
 
         <label className="admin-field">
           <span className="meta-label">Type de produit</span>
           <select className="admin-input" defaultValue="variable" name="productType">
-            <option value="simple">Simple</option>
-            <option value="variable">Variable</option>
+            <option value="simple">Produit simple</option>
+            <option value="variable">Produit avec déclinaisons</option>
           </select>
         </label>
 
         <p className="admin-muted-note">
-          Un produit simple utilisera une seule offre vendable. Un produit
-          variable pourra accueillir plusieurs declinaisons.
+          Un produit simple se gère via ses informations de vente. Un produit
+          avec déclinaisons pourra accueillir plusieurs déclinaisons.
         </p>
 
         <fieldset className="admin-fieldset">
-          <legend className="meta-label">Categories</legend>
+          <legend className="meta-label">Catégories</legend>
 
           {categories.length > 0 ? (
             <div className="admin-checkbox-grid">
@@ -147,7 +148,7 @@ export default async function NewAdminProductPage({
             </div>
           ) : (
             <p className="card-copy">
-              Aucune categorie n&apos;est encore disponible. Vous pourrez en
+              Aucune catégorie n&apos;est encore disponible. Vous pourrez en
               ajouter plus tard.
             </p>
           )}
@@ -160,7 +161,7 @@ export default async function NewAdminProductPage({
 
         <div className="admin-actions">
           <button className="button" type="submit">
-            Creer le produit
+            Créer le produit
           </button>
         </div>
       </form>

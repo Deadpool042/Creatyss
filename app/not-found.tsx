@@ -7,10 +7,10 @@ export default function NotFoundPage() {
         <p className="eyebrow">404</p>
         <h1>Page introuvable</h1>
         <p className="lead">
-          La page demandee n&apos;est pas disponible sur la boutique publique.
+          La page demandée n&apos;est pas disponible sur la boutique.
         </p>
         <Link className="link" href="/">
-          Retour a l&apos;accueil
+          Retour à l&apos;accueil
         </Link>
       </section>
     </div>

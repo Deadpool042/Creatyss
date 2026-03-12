@@ -19,9 +19,9 @@ type CartPageProps = Readonly<{
 function getStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "updated":
-      return "Quantite du panier mise a jour.";
+      return "Quantité du panier mise à jour.";
     case "removed":
-      return "Ligne retiree du panier.";
+      return "Ligne retirée du panier.";
     default:
       return null;
   }
@@ -31,18 +31,18 @@ function getErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_cart":
     case "missing_cart_item":
-      return "La ligne de panier demandee est introuvable.";
+      return "La ligne de panier demandée est introuvable.";
     case "missing_quantity":
     case "invalid_quantity":
-      return "Renseignez une quantite entiere superieure ou egale a 1.";
+      return "Renseignez une quantité entière supérieure ou égale à 1.";
     case "missing_variant":
-      return "La variante demandee est introuvable.";
+      return "La déclinaison demandée est introuvable.";
     case "variant_unavailable":
       return "Cette ligne n'est plus disponible pour le moment.";
     case "insufficient_stock":
-      return "Le stock disponible est insuffisant pour cette quantite.";
+      return "Le stock disponible est insuffisant pour cette quantité.";
     case "save_failed":
-      return "Le panier n'a pas pu etre mis a jour.";
+      return "Le panier n'a pas pu être mis à jour.";
     default:
       return null;
   }
@@ -80,9 +80,9 @@ export default async function CartPage({ searchParams }: CartPageProps) {
         <div className="page-header">
           <div>
             <p className="eyebrow">Panier</p>
-            <h1>Panier invite</h1>
+            <h1>Votre panier</h1>
             <p className="lead">
-              Verifiez les variantes selectionnees avant le checkout du lot suivant.
+              Vérifiez vos articles avant de finaliser votre commande.
             </p>
           </div>
         </div>
@@ -124,14 +124,14 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                   </div>
 
                   <div className="stack">
-                    <p className="meta-label">Disponibilite</p>
+                    <p className="meta-label">Disponibilité</p>
                     <p className="card-copy">
                       {getAvailabilityLabel(line.isAvailable)}
                     </p>
                     {!line.isAvailable ? (
                       <p className="card-meta">
-                        Cette ligne reste visible mais ne peut pas etre
-                        commandee en l&apos;etat.
+                        Cette ligne reste visible mais ne peut pas être
+                        commandée en l&apos;état.
                       </p>
                     ) : null}
                   </div>
@@ -140,7 +140,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                     <input name="itemId" type="hidden" value={line.id} />
 
                     <label className="admin-field cart-quantity-field">
-                      <span className="meta-label">Quantite</span>
+                      <span className="meta-label">Quantité</span>
                       <input
                         className="admin-input"
                         defaultValue={String(line.quantity)}
@@ -154,7 +154,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
 
                     <div className="admin-inline-actions">
                       <button className="button" type="submit">
-                        Mettre a jour la quantite
+                        Mettre à jour la quantité
                       </button>
                     </div>
                   </form>
@@ -168,7 +168,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                   </form>
 
                   <Link className="link" href={`/boutique/${line.productSlug}`}>
-                    Retour a la fiche produit
+                    Retour à la fiche produit
                   </Link>
                 </article>
               ))}
@@ -181,7 +181,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
               </div>
 
               <div className="stack">
-                <p className="meta-label">Quantite totale</p>
+                <p className="meta-label">Quantité totale</p>
                 <p className="card-copy">{cart.itemCount}</p>
               </div>
 
@@ -192,7 +192,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
 
               <div className="admin-inline-actions">
                 <Link className="button" href="/checkout">
-                  Continuer vers le checkout
+                  Finaliser la commande
                 </Link>
               </div>
             </aside>
@@ -200,9 +200,9 @@ export default async function CartPage({ searchParams }: CartPageProps) {
         ) : (
           <div className="empty-state">
             <p className="eyebrow">Panier vide</p>
-            <h2>Aucune variante n&apos;a encore ete ajoutee au panier</h2>
+            <h2>Aucun article n&apos;a encore été ajouté au panier</h2>
             <p className="card-copy">
-              Ajoutez une variante publiee et disponible depuis une fiche produit.
+              Ajoutez un article disponible depuis une fiche produit.
             </p>
             <div>
               <Link className="button" href="/boutique">

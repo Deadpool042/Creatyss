@@ -5,7 +5,7 @@ test("filters published products by category and availability", async ({
 }) => {
   await page.goto("/boutique");
 
-  await page.getByLabel("Categorie").selectOption("edition-atelier");
+  await page.getByLabel("Catégorie").selectOption("edition-atelier");
   await page.getByLabel("Disponibles uniquement").check();
   await page.getByRole("button", { name: "Rechercher" }).click();
 
@@ -14,7 +14,7 @@ test("filters published products by category and availability", async ({
   ).toHaveURL(/\/boutique\?q=&category=edition-atelier&availability=available$/);
   await expect(
     page.getByText("Filtres actifs", { exact: false })
-  ).toContainText("Categorie : Edition atelier");
+  ).toContainText("Catégorie : Edition atelier");
   await expect(
     page.getByText("Filtres actifs", { exact: false })
   ).toContainText("Disponibles uniquement");
@@ -38,7 +38,7 @@ test("combines search with filters and keeps a simple reset path", async ({
   await page.goto("/boutique");
 
   await page.getByLabel("Recherche").fill("Moka");
-  await page.getByLabel("Categorie").selectOption("edition-atelier");
+  await page.getByLabel("Catégorie").selectOption("edition-atelier");
   await page.getByRole("button", { name: "Rechercher" }).click();
 
   await expect(page).toHaveURL(/\/boutique\?q=Moka&category=edition-atelier$/);
@@ -49,7 +49,7 @@ test("combines search with filters and keeps a simple reset path", async ({
     page.getByRole("heading", { name: "Pochette Sable" })
   ).toHaveCount(0);
 
-  await page.getByRole("link", { name: "Revenir a la liste complete" }).click();
+  await page.getByRole("link", { name: "Revenir à la liste complète" }).click();
 
   await expect(page).toHaveURL(/\/boutique$/);
   await expect(

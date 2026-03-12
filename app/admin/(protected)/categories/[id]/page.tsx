@@ -24,15 +24,15 @@ function getErrorMessage(error: string | undefined): string | null {
     case "invalid_slug":
       return "Renseignez un slug valide.";
     case "slug_taken":
-      return "Ce slug est deja utilise par une autre categorie.";
+      return "Ce slug est déjà utilisé par une autre catégorie.";
     case "in_use":
-      return "Cette categorie ne peut pas etre supprimee car elle est encore utilisee par au moins un produit.";
+      return "Cette catégorie ne peut pas être supprimée car elle est encore utilisée par au moins un produit.";
     case "referenced":
-      return "Cette categorie ne peut pas etre supprimee car elle est encore referencee ailleurs.";
+      return "Cette catégorie ne peut pas être supprimée car elle est encore référencée ailleurs.";
     case "save_failed":
-      return "La categorie n'a pas pu etre mise a jour.";
+      return "La catégorie n'a pas pu être mise à jour.";
     case "delete_failed":
-      return "La categorie n'a pas pu etre supprimee.";
+      return "La catégorie n'a pas pu être supprimée.";
     default:
       return null;
   }
@@ -60,16 +60,16 @@ export default async function EditAdminCategoryPage({
       <section className="section admin-category-form-section">
         <div className="page-header">
           <div>
-            <p className="eyebrow">Categories</p>
-            <h1>Modifier la categorie</h1>
+            <p className="eyebrow">Catégories</p>
+            <h1>Modifier la catégorie</h1>
             <p className="lead">
-              Ajustez les informations de cette categorie et gerez sa suppression
-              depuis le meme ecran.
+              Ajustez les informations de cette catégorie et gérez sa
+              suppression depuis le même écran.
             </p>
           </div>
 
           <Link className="link-subtle button" href="/admin/categories">
-            Retour a la liste
+            Retour à la liste
           </Link>
         </div>
 
@@ -121,7 +121,7 @@ export default async function EditAdminCategoryPage({
               type="checkbox"
               value="on"
             />
-            <span>Mettre cette categorie en avant</span>
+            <span>Mettre cette catégorie en avant</span>
           </label>
 
           <div className="admin-actions">
@@ -135,9 +135,9 @@ export default async function EditAdminCategoryPage({
       <section className="section admin-danger-zone">
         <div className="stack">
           <p className="eyebrow">Suppression</p>
-          <h2>Supprimer cette categorie</h2>
+          <h2>Supprimer cette catégorie</h2>
           <p className="card-copy">
-            La suppression sera refusee si la categorie est encore utilisee par
+            La suppression sera refusée si la catégorie est encore utilisée par
             au moins un produit.
           </p>
         </div>
@@ -146,7 +146,7 @@ export default async function EditAdminCategoryPage({
           <input name="categoryId" type="hidden" value={category.id} />
 
           <button className="button admin-danger-button" type="submit">
-            Supprimer la categorie
+            Supprimer la catégorie
           </button>
         </form>
       </section>

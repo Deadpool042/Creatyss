@@ -75,10 +75,10 @@ export default async function OrderConfirmationPage({
           <div className="checkout-line-list">
             <article className="store-card checkout-line">
               <div className="stack">
-                <p className="eyebrow">Synthese</p>
+                <p className="eyebrow">Synthèse</p>
                 <h2>{summary.title}</h2>
                 <p className="card-copy">{summary.description}</p>
-                <p className="card-meta">Prochaine etape : {summary.nextStep}</p>
+                <p className="card-meta">Prochaine étape : {summary.nextStep}</p>
               </div>
 
               <div className="admin-product-tags">
@@ -93,7 +93,7 @@ export default async function OrderConfirmationPage({
 
             <article className="store-card checkout-line">
               <div className="stack">
-                <p className="meta-label">Reference</p>
+                <p className="meta-label">Référence</p>
                 <p className="card-copy">{order.reference}</p>
               </div>
 
@@ -110,7 +110,7 @@ export default async function OrderConfirmationPage({
               </div>
 
               <div className="stack">
-                <p className="meta-label">Creee le</p>
+                <p className="meta-label">Créée le</p>
                 <p className="card-copy">
                   {orderDateTimeFormatter.format(new Date(order.createdAt))}
                 </p>
@@ -144,13 +144,13 @@ export default async function OrderConfirmationPage({
                 <p className="card-meta">{order.shippingCountryCode}</p>
                 {order.shippedAt ? (
                   <p className="card-meta">
-                    Date d&apos;expedition :{" "}
+                    Date d&apos;expédition :{" "}
                     {orderDateTimeFormatter.format(new Date(order.shippedAt))}
                   </p>
                 ) : null}
                 {order.trackingReference ? (
                   <p className="card-meta">
-                    Reference de suivi : {order.trackingReference}
+                    Référence de suivi : {order.trackingReference}
                   </p>
                 ) : null}
               </div>
@@ -162,7 +162,7 @@ export default async function OrderConfirmationPage({
                 <h2>Adresse de facturation</h2>
                 {order.billingSameAsShipping ? (
                   <p className="card-copy">
-                    Identique a l&apos;adresse de livraison.
+                    Identique à l&apos;adresse de livraison.
                   </p>
                 ) : (
                   <>
@@ -188,7 +188,7 @@ export default async function OrderConfirmationPage({
 
           <aside className="product-panel checkout-summary">
             <div className="stack">
-              <p className="eyebrow">Recapitulatif</p>
+              <p className="eyebrow">Récapitulatif</p>
               <h2>Lignes de commande</h2>
             </div>
 
@@ -209,12 +209,12 @@ export default async function OrderConfirmationPage({
                   </div>
 
                   <div className="stack">
-                    <p className="meta-label">Quantite</p>
+                    <p className="meta-label">Quantité</p>
                     <p className="card-copy">{line.quantity}</p>
                   </div>
 
                   <div className="stack">
-                    <p className="meta-label">Prix unitaire fige</p>
+                    <p className="meta-label">Prix unitaire figé</p>
                     <p className="card-copy">{line.unitPrice}</p>
                   </div>
 
@@ -241,7 +241,7 @@ export default async function OrderConfirmationPage({
                 </form>
               ) : null}
               <Link className="button" href="/boutique">
-                Retour a la boutique
+                Retour à la boutique
               </Link>
               <Link className="link link-subtle" href="/panier">
                 Voir le panier

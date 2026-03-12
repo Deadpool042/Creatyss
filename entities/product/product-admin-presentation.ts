@@ -23,44 +23,44 @@ export function getAdminProductPresentation(
 ): ProductAdminPresentation {
   if (productType === "simple") {
     return {
-      typeLabel: "Simple",
+      typeLabel: "Produit simple",
       sellableCountLabel:
         variantCount === 0
-          ? "Aucune offre vendable"
-          : `${variantCount} offre vendable`,
+          ? "Informations de vente à compléter"
+          : "Informations de vente prêtes",
       sectionEyebrow: "Produit simple",
-      sectionTitle: "Offre vendable",
+      sectionTitle: "Informations de vente",
       sectionDescription:
-        "Un produit simple repose sur une seule offre vendable. Renseignez son SKU, son prix, son stock et ses informations de variante ci-dessous.",
-      saleFieldsetLegend: "Informations de l'offre vendable",
-      createActionLabel: "Definir l'offre vendable",
-      saveActionLabel: "Enregistrer l'offre vendable",
-      deleteActionLabel: "Supprimer l'offre vendable",
-      itemKicker: "Offre vendable",
-      imagesEyebrow: "Images de l'offre vendable",
-      emptyEyebrow: "Aucune offre vendable",
-      emptyTitle: "Ce produit simple n'a pas encore d'offre vendable",
+        "Un produit simple se gère directement via sa référence, son prix, son stock et ses images.",
+      saleFieldsetLegend: "Informations de vente",
+      createActionLabel: "Définir les informations de vente",
+      saveActionLabel: "Enregistrer les informations de vente",
+      deleteActionLabel: "Supprimer les informations de vente",
+      itemKicker: "Produit simple",
+      imagesEyebrow: "Images",
+      emptyEyebrow: "Informations de vente",
+      emptyTitle: "Les informations de vente ne sont pas encore complètes",
       emptyDescription:
-        "Definissez l'offre vendable unique pour pouvoir renseigner son SKU, son prix et son stock."
+        "Renseignez la référence, le prix et le stock pour finaliser ce produit simple."
     };
   }
 
   return {
-    typeLabel: "Variable",
-    sellableCountLabel: `${variantCount} declinaison${variantCount > 1 ? "s" : ""}`,
-    sectionEyebrow: "Declinaisons",
-    sectionTitle: "Declinaisons",
+    typeLabel: "Produit avec déclinaisons",
+    sellableCountLabel: `${variantCount} déclinaison${variantCount > 1 ? "s" : ""}`,
+    sectionEyebrow: "Déclinaisons",
+    sectionTitle: "Déclinaisons",
     sectionDescription:
-      "Chaque declinaison regroupe son SKU, son prix, son statut, son stock et ses informations de variante.",
-    saleFieldsetLegend: "Informations de la declinaison",
-    createActionLabel: "Ajouter une declinaison",
-    saveActionLabel: "Enregistrer la declinaison",
-    deleteActionLabel: "Supprimer la declinaison",
-    itemKicker: "Declinaison",
-    imagesEyebrow: "Images de la declinaison",
-    emptyEyebrow: "Aucune variante",
-    emptyTitle: "Ce produit n'a pas encore de declinaison",
+      "Chaque déclinaison regroupe sa référence, son prix, son statut, son stock et ses informations associées.",
+    saleFieldsetLegend: "Informations de vente de la déclinaison",
+    createActionLabel: "Ajouter une déclinaison",
+    saveActionLabel: "Enregistrer la déclinaison",
+    deleteActionLabel: "Supprimer la déclinaison",
+    itemKicker: "Déclinaison",
+    imagesEyebrow: "Images de la déclinaison",
+    emptyEyebrow: "Aucune déclinaison",
+    emptyTitle: "Ce produit n'a pas encore de déclinaison",
     emptyDescription:
-      "Ajoutez une premiere declinaison pour renseigner son SKU, son prix, son statut et son stock."
+      "Ajoutez une première déclinaison pour renseigner sa référence, son prix, son statut et son stock."
   };
 }

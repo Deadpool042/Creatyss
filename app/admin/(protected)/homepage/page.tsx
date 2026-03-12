@@ -31,7 +31,7 @@ function readSearchParam(
 function getStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "updated":
-      return "Homepage enregistree avec succes.";
+      return "Page d’accueil enregistrée avec succès.";
     default:
       return null;
   }
@@ -40,37 +40,37 @@ function getStatusMessage(status: string | undefined): string | null {
 function getErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_homepage":
-      return "La homepage publiee est introuvable.";
+      return "La page d’accueil publiée est introuvable.";
     case "invalid_hero_image":
-      return "La selection de l'image hero est invalide.";
+      return "La sélection de l’image principale est invalide.";
     case "hero_media_missing":
-      return "Le media selectionne pour le hero est introuvable.";
+      return "Le média sélectionné pour l’image principale est introuvable.";
     case "invalid_product_selection":
-      return "La selection des produits mis en avant est invalide.";
+      return "La sélection des produits mis en avant est invalide.";
     case "invalid_product_sort_order":
       return "Chaque produit mis en avant doit avoir un ordre entier positif ou nul.";
     case "duplicate_product_sort_order":
       return "Chaque produit mis en avant doit avoir un ordre unique.";
     case "product_missing":
-      return "Au moins un produit mis en avant est introuvable ou n'est plus publie.";
+      return "Au moins un produit mis en avant est introuvable ou n'est plus publié.";
     case "invalid_category_selection":
-      return "La selection des categories mises en avant est invalide.";
+      return "La sélection des catégories mises en avant est invalide.";
     case "invalid_category_sort_order":
-      return "Chaque categorie mise en avant doit avoir un ordre entier positif ou nul.";
+      return "Chaque catégorie mise en avant doit avoir un ordre entier positif ou nul.";
     case "duplicate_category_sort_order":
-      return "Chaque categorie mise en avant doit avoir un ordre unique.";
+      return "Chaque catégorie mise en avant doit avoir un ordre unique.";
     case "category_missing":
-      return "Au moins une categorie mise en avant est introuvable.";
+      return "Au moins une catégorie mise en avant est introuvable.";
     case "invalid_blog_post_selection":
-      return "La selection des articles mis en avant est invalide.";
+      return "La sélection des articles mis en avant est invalide.";
     case "invalid_blog_post_sort_order":
       return "Chaque article mis en avant doit avoir un ordre entier positif ou nul.";
     case "duplicate_blog_post_sort_order":
       return "Chaque article mis en avant doit avoir un ordre unique.";
     case "blog_post_missing":
-      return "Au moins un article mis en avant est introuvable ou n'est plus publie.";
+      return "Au moins un article mis en avant est introuvable ou n'est plus publié.";
     case "save_failed":
-      return "La homepage n'a pas pu etre enregistree.";
+      return "La page d’accueil n'a pas pu être enregistrée.";
     default:
       return null;
   }
@@ -122,17 +122,17 @@ export default async function AdminHomepagePage({
       <section className="section admin-homepage-page">
         <div className="page-header">
           <div>
-            <p className="eyebrow">Homepage</p>
-            <h1>Edition homepage</h1>
+            <p className="eyebrow">Accueil</p>
+            <h1>Édition de la page d’accueil</h1>
             <p className="lead">
-              La homepage admin ne peut pas etre editee tant qu&apos;aucune
-              homepage publiee n&apos;existe.
+              La page d’accueil ne peut pas être modifiée tant qu&apos;aucune
+              version publiée n&apos;existe.
             </p>
           </div>
         </div>
 
         <p className="admin-alert" role="alert">
-          {explicitErrorMessage ?? "La homepage publiee est introuvable."}
+          {explicitErrorMessage ?? "La page d’accueil publiée est introuvable."}
         </p>
       </section>
     );
@@ -163,11 +163,11 @@ export default async function AdminHomepagePage({
     <section className="section admin-homepage-page">
       <div className="page-header">
         <div>
-          <p className="eyebrow">Homepage</p>
-          <h1>Edition homepage</h1>
+          <p className="eyebrow">Accueil</p>
+          <h1>Édition de la page d’accueil</h1>
           <p className="lead">
-            Modifiez le hero, le bloc editorial et les selections mises en avant
-            depuis une seule page admin.
+            Modifiez la bannière principale, le bloc éditorial et les sélections
+            mises en avant depuis une seule page.
           </p>
         </div>
       </div>
@@ -189,29 +189,29 @@ export default async function AdminHomepagePage({
 
         <section className="admin-homepage-section">
           <div className="stack">
-            <p className="eyebrow">Hero</p>
-            <h2>Bloc hero</h2>
+            <p className="eyebrow">Mise en avant principale</p>
+            <h2>Bannière principale</h2>
             <p className="card-copy">
-              Le hero pilote le titre principal, le texte d&apos;accroche et
-              l&apos;image de la homepage publique.
+              Cette section pilote le titre principal, le texte d&apos;accroche
+              et l&apos;image de la page d’accueil publique.
             </p>
           </div>
 
           {heroImageUrl ? (
             <div className="admin-homepage-hero-preview">
               <img
-                alt={homepage.heroTitle ?? "Image hero actuelle"}
+                alt={homepage.heroTitle ?? "Image principale actuelle"}
                 src={heroImageUrl}
               />
             </div>
           ) : (
             <div className="admin-homepage-hero-preview admin-image-placeholder">
-              Aucune image hero actuellement
+              Aucune image principale actuellement
             </div>
           )}
 
           <label className="admin-field">
-            <span className="meta-label">Titre hero</span>
+            <span className="meta-label">Titre principal</span>
             <input
               className="admin-input"
               defaultValue={homepage.heroTitle ?? ""}
@@ -231,7 +231,7 @@ export default async function AdminHomepagePage({
           </label>
 
           <label className="admin-field">
-            <span className="meta-label">Image hero</span>
+            <span className="meta-label">Image principale</span>
             <select
               className="admin-input"
               defaultValue={heroImageSelectValue}
@@ -242,7 +242,7 @@ export default async function AdminHomepagePage({
                   Conserver l&apos;image actuelle ({homepage.heroImagePath})
                 </option>
               ) : null}
-              <option value="">Aucune image hero</option>
+              <option value="">Aucune image principale</option>
               {mediaAssets.map((mediaAsset) => (
                 <option key={mediaAsset.id} value={mediaAsset.id}>
                   {mediaAsset.originalName} · {mediaAsset.mimeType}
@@ -253,9 +253,9 @@ export default async function AdminHomepagePage({
 
           {mediaAssets.length === 0 ? (
             <p className="admin-muted-note">
-              Aucun media n&apos;est disponible. Vous pouvez en importer depuis{" "}
+              Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
               <Link className="link" href="/admin/media">
-                la bibliotheque media
+                la bibliothèque médias
               </Link>
               .
             </p>
@@ -264,15 +264,16 @@ export default async function AdminHomepagePage({
 
         <section className="admin-homepage-section">
           <div className="stack">
-            <p className="eyebrow">Editorial</p>
-            <h2>Bloc editorial</h2>
+            <p className="eyebrow">Éditorial</p>
+            <h2>Bloc éditorial</h2>
             <p className="card-copy">
-              Ce bloc alimente la section editoriale affichee sous le hero.
+              Ce bloc alimente la section éditoriale affichée sous la bannière
+              principale.
             </p>
           </div>
 
           <label className="admin-field">
-            <span className="meta-label">Titre editorial</span>
+            <span className="meta-label">Titre éditorial</span>
             <input
               className="admin-input"
               defaultValue={homepage.editorialTitle ?? ""}
@@ -282,7 +283,7 @@ export default async function AdminHomepagePage({
           </label>
 
           <label className="admin-field">
-            <span className="meta-label">Texte editorial</span>
+            <span className="meta-label">Texte éditorial</span>
             <textarea
               className="admin-input admin-textarea"
               defaultValue={homepage.editorialText ?? ""}
@@ -297,7 +298,8 @@ export default async function AdminHomepagePage({
             <p className="eyebrow">Produits</p>
             <h2>Produits mis en avant</h2>
             <p className="card-copy">
-              Selectionnez les produits publies a afficher sur la homepage.
+              Sélectionnez les produits publiés à afficher sur la page
+              d’accueil.
             </p>
           </div>
 
@@ -335,17 +337,17 @@ export default async function AdminHomepagePage({
             </div>
           ) : (
             <p className="admin-muted-note">
-              Aucun produit publie n&apos;est disponible pour cette section.
+              Aucun produit publié n&apos;est disponible pour cette section.
             </p>
           )}
         </section>
 
         <section className="admin-homepage-section">
           <div className="stack">
-            <p className="eyebrow">Categories</p>
-            <h2>Categories mises en avant</h2>
+            <p className="eyebrow">Catégories</p>
+            <h2>Catégories mises en avant</h2>
             <p className="card-copy">
-              Selectionnez les categories a afficher sur la homepage.
+              Sélectionnez les catégories à afficher sur la page d’accueil.
             </p>
           </div>
 
@@ -383,7 +385,7 @@ export default async function AdminHomepagePage({
             </div>
           ) : (
             <p className="admin-muted-note">
-              Aucune categorie n&apos;est disponible pour cette section.
+              Aucune catégorie n&apos;est disponible pour cette section.
             </p>
           )}
         </section>
@@ -393,7 +395,8 @@ export default async function AdminHomepagePage({
             <p className="eyebrow">Articles</p>
             <h2>Articles mis en avant</h2>
             <p className="card-copy">
-              Selectionnez les articles publies a afficher sur la homepage.
+              Sélectionnez les articles publiés à afficher sur la page
+              d’accueil.
             </p>
           </div>
 
@@ -431,14 +434,14 @@ export default async function AdminHomepagePage({
             </div>
           ) : (
             <p className="admin-muted-note">
-              Aucun article publie n&apos;est disponible pour cette section.
+              Aucun article publié n&apos;est disponible pour cette section.
             </p>
           )}
         </section>
 
         <div className="admin-actions">
           <button className="button" type="submit">
-            Enregistrer la homepage
+            Enregistrer la page d&apos;accueil
           </button>
         </div>
       </form>

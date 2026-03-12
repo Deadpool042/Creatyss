@@ -11,13 +11,15 @@ test("reflects homepage hero updates on the public home page", async ({
   await loginAsSeedAdmin(page);
   await page.goto("/admin/homepage");
 
-  await page.getByLabel("Titre hero").fill(heroTitle);
+  await page.getByLabel("Titre principal").fill(heroTitle);
   await page.getByLabel("Texte principal").fill(heroText);
-  await page.getByRole("button", { name: "Enregistrer la homepage" }).click();
+  await page
+    .getByRole("button", { name: "Enregistrer la page d'accueil" })
+    .click();
 
   await expect(page).toHaveURL(/\/admin\/homepage\?status=updated$/);
   await expect(
-    page.getByText("Homepage enregistree avec succes.")
+    page.getByText("Page d’accueil enregistrée avec succès.")
   ).toBeVisible();
 
   await page.goto("/");

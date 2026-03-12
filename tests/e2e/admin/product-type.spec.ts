@@ -25,41 +25,41 @@ test("edits a simple product natively without creating a legacy variant", async 
   await page.getByLabel("Nom").fill(productName);
   await page.getByLabel("Slug").fill(productSlug);
   await page.getByLabel("Type de produit").selectOption("simple");
-  await page.getByRole("button", { name: "Creer le produit" }).click();
+  await page.getByRole("button", { name: "Créer le produit" }).click();
 
   await expect(page).toHaveURL(/\/admin\/products\/[0-9]+\?product_status=created$/);
-  await expect(page.getByText("Produit cree avec succes.")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Offre simple" })).toBeVisible();
+  await expect(page.getByText("Produit créé avec succès.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Informations de vente" })).toBeVisible();
   await expect(
     page.getByText(
-      "L'edition native admin est disponible, mais la compatibilite publique actuelle reste limitee tant qu'aucune variante legacy n'existe. Ce lot ne cree aucune variante automatiquement."
+      "L'édition directe est disponible, mais l'affichage public reste limité tant qu'aucune déclinaison existante n'est présente. Cette page ne crée rien automatiquement."
     )
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Definir l'offre vendable" })
+    page.getByRole("button", { name: "Définir les informations de vente" })
   ).toHaveCount(0);
   await expect(
-    page.getByRole("heading", { name: "Compatibilite legacy" })
+    page.getByRole("heading", { name: "Données existantes" })
   ).toHaveCount(0);
 
   const simpleOfferForm = page
     .locator("form")
     .filter({
-      has: page.getByRole("button", { name: "Enregistrer l'offre simple" })
+      has: page.getByRole("button", { name: "Enregistrer les informations de vente" })
     })
     .first();
 
   await simpleOfferForm.getByLabel("SKU").fill(`SIMPLE-${suffix}`);
   await simpleOfferForm.getByLabel("Prix", { exact: true }).fill("49");
-  await simpleOfferForm.getByLabel("Prix compare").fill("59");
+  await simpleOfferForm.getByLabel("Prix barré").fill("59");
   await simpleOfferForm.getByLabel("Stock disponible").fill("3");
   await simpleOfferForm
-    .getByRole("button", { name: "Enregistrer l'offre simple" })
+    .getByRole("button", { name: "Enregistrer les informations de vente" })
     .click();
 
   await expect(page).toHaveURL(/simple_offer_status=updated$/);
   await expect(
-    page.getByText("L'offre simple a ete mise a jour avec succes.")
+    page.getByText("Les informations de vente ont été mises à jour avec succès.")
   ).toBeVisible();
   await expect(simpleOfferForm.getByLabel("SKU")).toHaveValue(`SIMPLE-${suffix}`);
   await expect(simpleOfferForm.getByLabel("Prix", { exact: true })).toHaveValue(
@@ -82,7 +82,7 @@ test("shows a clear incoherent state when a simple product has multiple legacy v
   await page.getByLabel("Nom").fill(productName);
   await page.getByLabel("Slug").fill(productSlug);
   await page.getByLabel("Type de produit").selectOption("simple");
-  await page.getByRole("button", { name: "Creer le produit" }).click();
+  await page.getByRole("button", { name: "Créer le produit" }).click();
 
   await expect(page).toHaveURL(/\/admin\/products\/[0-9]+\?product_status=created$/);
 
@@ -115,17 +115,17 @@ test("shows a clear incoherent state when a simple product has multiple legacy v
 
   await expect(
     page.getByText(
-      "Ce produit simple est incoherent car plusieurs variantes legacy existent. Aucune resolution native n'est appliquee tant que vous n'avez pas conserve une seule variante vendable."
+      "Ce produit simple est incohérent car plusieurs déclinaisons sont encore associées. Aucune correction automatique n'est appliquée tant qu'une seule déclinaison n'est pas conservée."
     )
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Enregistrer l'offre simple" })
+    page.getByRole("button", { name: "Enregistrer les informations de vente" })
   ).toHaveCount(0);
   await expect(
-    page.getByText("Compatibilite legacy")
+    page.getByText("Données existantes")
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Enregistrer la variante legacy" })
+    page.getByRole("button", { name: "Enregistrer la déclinaison existante" })
   ).toHaveCount(2);
 });
 
@@ -147,7 +147,7 @@ test("refuses unsafe conversion from variable to simple when several variants ex
 
   await expect(
     page
-      .getByText("Un produit simple ne peut avoir qu'une seule declinaison vendable.")
+      .getByText("Un produit simple ne peut avoir qu'une seule déclinaison.")
       .first()
   ).toBeVisible();
 });

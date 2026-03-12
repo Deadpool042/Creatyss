@@ -18,9 +18,9 @@ function getErrorMessage(error: string | undefined): string | null {
     case "invalid_slug":
       return "Renseignez un slug valide.";
     case "slug_taken":
-      return "Ce slug est deja utilise par une autre categorie.";
+      return "Ce slug est déjà utilisé par une autre catégorie.";
     case "save_failed":
-      return "La categorie n'a pas pu etre enregistree.";
+      return "La catégorie n'a pas pu être enregistrée.";
     default:
       return null;
   }
@@ -39,15 +39,15 @@ export default async function NewAdminCategoryPage({
     <section className="section admin-category-form-section">
       <div className="page-header">
         <div>
-          <p className="eyebrow">Categories</p>
-          <h1>Nouvelle categorie</h1>
+          <p className="eyebrow">Catégories</p>
+          <h1>Nouvelle catégorie</h1>
           <p className="lead">
-            Creez une categorie simple pour organiser le catalogue.
+            Créez une catégorie simple pour organiser le catalogue.
           </p>
         </div>
 
         <Link className="link-subtle button" href="/admin/categories">
-          Retour a la liste
+          Retour à la liste
         </Link>
       </div>
 
@@ -75,12 +75,12 @@ export default async function NewAdminCategoryPage({
 
         <label className="admin-checkbox">
           <input name="isFeatured" type="checkbox" value="on" />
-          <span>Mettre cette categorie en avant</span>
+          <span>Mettre cette catégorie en avant</span>
         </label>
 
         <div className="admin-actions">
           <button className="button" type="submit">
-            Creer la categorie
+            Créer la catégorie
           </button>
         </div>
       </form>

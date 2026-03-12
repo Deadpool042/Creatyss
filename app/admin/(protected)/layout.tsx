@@ -22,19 +22,19 @@ export default async function ProtectedAdminLayout({
 
           <form action="/admin/logout" method="post">
             <button className="button link-subtle" type="submit">
-              Se deconnecter
+              Se déconnecter
             </button>
           </form>
         </div>
 
         <nav aria-label="Navigation admin" className="admin-nav">
           <Link href="/admin">Accueil admin</Link>
-          <Link href="/admin/homepage">Homepage</Link>
+          <Link href="/admin/homepage">Page d&apos;accueil</Link>
           <Link href="/admin/blog">Blog</Link>
-          <Link href="/admin/categories">Categories</Link>
+          <Link href="/admin/categories">Catégories</Link>
           <Link href="/admin/products">Produits</Link>
-          <Link href="/admin/orders">Orders</Link>
-          <Link href="/admin/media">Bibliotheque media</Link>
+          <Link href="/admin/orders">Commandes</Link>
+          <Link href="/admin/media">Bibliothèque médias</Link>
         </nav>
 
         {children}

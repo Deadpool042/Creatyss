@@ -26,9 +26,9 @@ type EditAdminBlogPostPageProps = Readonly<{
 function getStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "created":
-      return "Article cree avec succes.";
+      return "Article créé avec succès.";
     case "updated":
-      return "Article mis a jour avec succes.";
+      return "Article mis à jour avec succès.";
     default:
       return null;
   }
@@ -45,17 +45,17 @@ function getErrorMessage(error: string | undefined): string | null {
     case "invalid_status":
       return "Le statut de l'article est invalide.";
     case "invalid_cover_image":
-      return "La selection de l'image de couverture est invalide.";
+      return "La sélection de l'image de couverture est invalide.";
     case "cover_media_missing":
-      return "Le media selectionne pour la couverture est introuvable.";
+      return "Le média sélectionné pour la couverture est introuvable.";
     case "slug_taken":
-      return "Ce slug est deja utilise par un autre article.";
+      return "Ce slug est déjà utilisé par un autre article.";
     case "referenced":
-      return "Cet article ne peut pas etre supprime car il est encore reference ailleurs.";
+      return "Cet article ne peut pas être supprimé car il est encore référencé ailleurs.";
     case "save_failed":
-      return "L'article n'a pas pu etre mis a jour.";
+      return "L'article n'a pas pu être mis à jour.";
     case "delete_failed":
-      return "L'article n'a pas pu etre supprime.";
+      return "L'article n'a pas pu être supprimé.";
     default:
       return null;
   }
@@ -121,12 +121,12 @@ export default async function EditAdminBlogPostPage({
             <h1>Modifier l&apos;article</h1>
             <p className="lead">
               Ajustez le contenu, la couverture et le statut de cet article
-              depuis un ecran unique.
+              depuis un écran unique.
             </p>
           </div>
 
           <Link className="link-subtle button" href="/admin/blog">
-            Retour a la liste
+            Retour à la liste
           </Link>
         </div>
 
@@ -147,10 +147,10 @@ export default async function EditAdminBlogPostPage({
 
           {blogPost.publishedAt ? (
             <p className="card-meta">
-              Publie le {blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}
+              Publié le {blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}
             </p>
           ) : (
-            <p className="card-meta">Cet article n&apos;est pas encore publie.</p>
+            <p className="card-meta">Cet article n&apos;est pas encore publié.</p>
           )}
 
           {coverImageUrl ? (
@@ -206,7 +206,7 @@ export default async function EditAdminBlogPostPage({
           </label>
 
           <label className="admin-field">
-            <span className="meta-label">SEO title</span>
+            <span className="meta-label">Titre SEO</span>
             <input
               className="admin-input"
               defaultValue={blogPost.seoTitle ?? ""}
@@ -216,7 +216,7 @@ export default async function EditAdminBlogPostPage({
           </label>
 
           <label className="admin-field">
-            <span className="meta-label">SEO description</span>
+            <span className="meta-label">Description SEO</span>
             <textarea
               className="admin-input admin-textarea"
               defaultValue={blogPost.seoDescription ?? ""}
@@ -233,7 +233,7 @@ export default async function EditAdminBlogPostPage({
               name="status"
             >
               <option value="draft">Brouillon</option>
-              <option value="published">Publie</option>
+              <option value="published">Publié</option>
             </select>
           </label>
 
@@ -260,9 +260,9 @@ export default async function EditAdminBlogPostPage({
 
           {mediaAssets.length === 0 ? (
             <p className="admin-muted-note">
-              Aucun media n&apos;est disponible. Vous pouvez en importer depuis{" "}
+              Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
               <Link className="link" href="/admin/media">
-                la bibliotheque media
+                la bibliothèque médias
               </Link>
               .
             </p>
@@ -281,7 +281,8 @@ export default async function EditAdminBlogPostPage({
           <p className="eyebrow">Suppression</p>
           <h2>Supprimer cet article</h2>
           <p className="card-copy">
-            L&apos;article sera retire du blog public et des selections homepage
+            L&apos;article sera retiré du blog public et des sélections de la
+            page d&apos;accueil
             existantes.
           </p>
         </div>

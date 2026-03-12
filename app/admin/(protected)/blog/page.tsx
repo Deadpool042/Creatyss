@@ -16,13 +16,13 @@ type AdminBlogPageProps = Readonly<{
 }>;
 
 function getStatusLabel(status: "draft" | "published"): string {
-  return status === "published" ? "Publie" : "Brouillon";
+  return status === "published" ? "Publié" : "Brouillon";
 }
 
 function getStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "deleted":
-      return "Article supprime avec succes.";
+      return "Article supprimé avec succès.";
     default:
       return null;
   }
@@ -31,7 +31,7 @@ function getStatusMessage(status: string | undefined): string | null {
 function getErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_blog_post":
-      return "L'article demande est introuvable.";
+      return "L'article demandé est introuvable.";
     default:
       return null;
   }
@@ -57,10 +57,10 @@ export default async function AdminBlogPage({
         <div className="page-header">
           <div>
             <p className="eyebrow">Blog</p>
-            <h1>Articles admin</h1>
+            <h1>Articles</h1>
             <p className="lead">
-              Gere les articles, leur statut de publication et leur visuel de
-              couverture depuis une verticale simple et lisible.
+              Gérez les articles, leur statut de publication et leur visuel de
+              couverture depuis une page simple et lisible.
             </p>
           </div>
 
@@ -96,8 +96,8 @@ export default async function AdminBlogPage({
                   </span>
                   <span className="admin-chip">
                     {blogPost.publishedAt
-                      ? `Publie le ${blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}`
-                      : "Non publie"}
+                      ? `Publié le ${blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}`
+                      : "Non publié"}
                   </span>
                 </div>
 
@@ -112,9 +112,9 @@ export default async function AdminBlogPage({
         ) : (
           <div className="empty-state">
             <p className="eyebrow">Aucun article</p>
-            <h2>Le blog admin ne contient pas encore d&apos;article</h2>
+            <h2>Le blog ne contient pas encore d&apos;article</h2>
             <p className="card-copy">
-              Creez un premier article simple pour alimenter la partie blog
+              Créez un premier article simple pour alimenter la partie blog
               publique.
             </p>
           </div>

@@ -7,7 +7,7 @@ async function addCamelVariantToCart(page: Page) {
     .locator("article")
     .filter({ has: page.getByRole("heading", { name: "Camel" }) });
 
-  await camelVariant.getByLabel("Quantite").fill("1");
+  await camelVariant.getByLabel("Quantité").fill("1");
   await camelVariant.getByRole("button", { name: "Ajouter au panier" }).click();
   await expect(page).toHaveURL(/\/boutique\/sac-camel\?cart_status=added$/);
 }
@@ -18,7 +18,7 @@ test("saves a guest checkout draft", async ({ page }) => {
   await page.goto("/checkout");
 
   await expect(
-    page.getByRole("heading", { name: "Checkout invite" })
+    page.getByRole("heading", { name: "Finaliser la commande" })
   ).toBeVisible();
   await expect(page.getByRole("heading", { name: "Panier final" })).toBeVisible();
 
@@ -31,11 +31,13 @@ test("saves a guest checkout draft", async ({ page }) => {
   await page.locator('input[name="shippingPostalCode"]').fill("75001");
   await page.locator('input[name="shippingCity"]').fill("Paris");
 
-  await page.getByRole("button", { name: "Enregistrer le brouillon" }).click();
+  await page
+    .getByRole("button", { name: "Enregistrer mes informations" })
+    .click();
 
   await expect(page).toHaveURL(/\/checkout\?status=saved$/);
   await expect(
-    page.getByText("Les informations de checkout ont ete enregistrees.")
+    page.getByText("Les informations de commande ont été enregistrées.")
   ).toBeVisible();
   await expect(page.locator('input[name="customerFirstName"]')).toHaveValue(
     "Jeanne"
@@ -59,10 +61,12 @@ test("rejects an invalid French postal code", async ({ page }) => {
   await page.locator('input[name="shippingPostalCode"]').fill("7501");
   await page.locator('input[name="shippingCity"]').fill("Paris");
 
-  await page.getByRole("button", { name: "Enregistrer le brouillon" }).click();
+  await page
+    .getByRole("button", { name: "Enregistrer mes informations" })
+    .click();
 
   await expect(page).toHaveURL(/\/checkout\?error=invalid_shipping_postal_code$/);
   await expect(
-    page.getByText("Renseignez un code postal de livraison a 5 chiffres.")
+    page.getByText("Renseignez un code postal de livraison à 5 chiffres.")
   ).toBeVisible();
 });

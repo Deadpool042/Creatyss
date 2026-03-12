@@ -52,7 +52,7 @@ export default async function HomePage() {
           </div>
         ) : (
           <div className="hero-media media-placeholder">
-            Visuel hero indisponible
+            Visuel principal indisponible
           </div>
         )}
       </section>
@@ -60,7 +60,7 @@ export default async function HomePage() {
       {homepage.editorialTitle || homepage.editorialText ? (
         <section className="section">
           <div className="section-copy">
-            <p className="eyebrow">Editorial</p>
+            <p className="eyebrow">Éditorial</p>
             <h2>{homepage.editorialTitle ?? "L'atelier Creatyss"}</h2>
             {homepage.editorialText ? (
               <p className="lead">{homepage.editorialText}</p>
@@ -73,7 +73,7 @@ export default async function HomePage() {
         <section className="section">
           <div className="section-header">
             <div>
-              <p className="eyebrow">Selection</p>
+              <p className="eyebrow">Sélection</p>
               <h2>Produits mis en avant</h2>
             </div>
 
@@ -92,7 +92,7 @@ export default async function HomePage() {
                 <p className="card-copy">
                   {product.shortDescription ??
                     product.description ??
-                    "Decouvrir ce modele en detail."}
+                    "Découvrir ce modèle en détail."}
                 </p>
               </article>
             ))}
@@ -105,17 +105,17 @@ export default async function HomePage() {
           <div className="section-header">
             <div>
               <p className="eyebrow">Univers</p>
-              <h2>Categories mises en avant</h2>
+              <h2>Catégories mises en avant</h2>
             </div>
           </div>
 
           <div className="card-grid">
             {homepage.featuredCategories.map((category) => (
               <article className="store-card" key={category.id}>
-                <p className="card-kicker">Categorie</p>
+                <p className="card-kicker">Catégorie</p>
                 <h3>{category.name}</h3>
                 <p className="card-copy">
-                  {category.description ?? "Selection visible sur la homepage."}
+                  {category.description ?? "Sélection visible sur la page d’accueil."}
                 </p>
               </article>
             ))}

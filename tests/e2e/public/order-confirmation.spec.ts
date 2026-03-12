@@ -11,9 +11,9 @@ test("creates an order from checkout and clears the cart", async ({ page }) => {
 
   const offerCard = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Offre vendable" }) });
+    .filter({ has: page.getByRole("heading", { name: "Produit simple" }) });
 
-  await offerCard.getByLabel("Quantite").fill("1");
+  await offerCard.getByLabel("Quantité").fill("1");
   await offerCard.getByRole("button", { name: "Ajouter au panier" }).click();
   await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_status=added$/);
 
@@ -28,7 +28,7 @@ test("creates an order from checkout and clears the cart", async ({ page }) => {
   await page.locator('input[name="shippingPostalCode"]').fill("75001");
   await page.locator('input[name="shippingCity"]').fill("Paris");
 
-  await page.getByRole("button", { name: "Creer la commande" }).click();
+  await page.getByRole("button", { name: "Créer la commande" }).click();
 
   await expect(page).toHaveURL(/\/checkout\/confirmation\/CRY-[A-Z0-9]{10}$/);
   await expect(
@@ -39,7 +39,7 @@ test("creates an order from checkout and clears the cart", async ({ page }) => {
   ).toBeVisible();
   await expect(
     page.getByText(
-      "La commande est creee, mais le paiement doit encore etre confirme."
+      "La commande est créée, mais le paiement doit encore être confirmé."
     ).first()
   ).toBeVisible();
   await expect(page.getByText("En attente", { exact: true }).first()).toBeVisible();
@@ -56,7 +56,7 @@ test("creates an order from checkout and clears the cart", async ({ page }) => {
   await page.goto("/panier");
   await expect(
     page.getByRole("heading", {
-      name: "Aucune variante n'a encore ete ajoutee au panier"
+      name: "Aucun article n'a encore été ajouté au panier"
     })
   ).toBeVisible();
 });
@@ -68,9 +68,9 @@ test("reflects a cancelled order consistently on the public confirmation page", 
 
   const offerCard = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Offre vendable" }) });
+    .filter({ has: page.getByRole("heading", { name: "Produit simple" }) });
 
-  await offerCard.getByLabel("Quantite").fill("1");
+  await offerCard.getByLabel("Quantité").fill("1");
   await offerCard.getByRole("button", { name: "Ajouter au panier" }).click();
   await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_status=added$/);
 
@@ -85,7 +85,7 @@ test("reflects a cancelled order consistently on the public confirmation page", 
   await page.locator('input[name="shippingPostalCode"]').fill("75002");
   await page.locator('input[name="shippingCity"]').fill("Paris");
 
-  await page.getByRole("button", { name: "Creer la commande" }).click();
+  await page.getByRole("button", { name: "Créer la commande" }).click();
   await expect(page).toHaveURL(/\/checkout\/confirmation\/CRY-[A-Z0-9]{10}$/);
 
   const confirmationUrl = page.url();
@@ -98,17 +98,17 @@ test("reflects a cancelled order consistently on the public confirmation page", 
     .filter({ hasText: "nina@example.com" })
     .first();
 
-  await createdOrderCard.getByRole("link", { name: "Voir le detail" }).click();
+  await createdOrderCard.getByRole("link", { name: "Voir le détail" }).click();
   await page.getByRole("button", { name: "Annuler la commande" }).click();
   await expect(page).toHaveURL(/order_status=updated$/);
 
   await page.goto(confirmationUrl);
   await expect(
-    page.getByRole("heading", { level: 1, name: "Commande annulee" })
+    page.getByRole("heading", { level: 1, name: "Commande annulée" })
   ).toBeVisible();
-  await expect(page.getByText("Annulee", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("Annulée", { exact: true }).first()).toBeVisible();
   await expect(
-    page.getByText("Cette commande a ete annulee.")
+    page.getByText("Cette commande a été annulée.")
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Payer la commande" })
@@ -122,9 +122,9 @@ test("reflects a shipped order consistently on the public confirmation page", as
 
   const offerCard = page
     .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Offre vendable" }) });
+    .filter({ has: page.getByRole("heading", { name: "Produit simple" }) });
 
-  await offerCard.getByLabel("Quantite").fill("1");
+  await offerCard.getByLabel("Quantité").fill("1");
   await offerCard.getByRole("button", { name: "Ajouter au panier" }).click();
   await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_status=added$/);
 
@@ -139,12 +139,12 @@ test("reflects a shipped order consistently on the public confirmation page", as
   await page.locator('input[name="shippingPostalCode"]').fill("75007");
   await page.locator('input[name="shippingCity"]').fill("Paris");
 
-  await page.getByRole("button", { name: "Creer la commande" }).click();
+  await page.getByRole("button", { name: "Créer la commande" }).click();
   await expect(page).toHaveURL(/\/checkout\/confirmation\/CRY-[A-Z0-9]{10}$/);
 
   const reference = await page
     .locator("article")
-    .filter({ hasText: "Reference" })
+    .filter({ hasText: "Référence" })
     .locator("p.card-copy")
     .first()
     .textContent();
@@ -162,25 +162,25 @@ test("reflects a shipped order consistently on the public confirmation page", as
     .filter({ hasText: reference ?? "" })
     .first();
 
-  await createdOrderCard.getByRole("link", { name: "Voir le detail" }).click();
-  await page.getByRole("button", { name: "Marquer en preparation" }).click();
+  await createdOrderCard.getByRole("link", { name: "Voir le détail" }).click();
+  await page.getByRole("button", { name: "Marquer en préparation" }).click();
   await expect(page).toHaveURL(/order_status=updated$/);
-  await page.getByLabel("Reference de suivi optionnelle").fill("COL-654321");
-  await page.getByRole("button", { name: "Marquer comme expediee" }).click();
+  await page.getByLabel("Référence de suivi optionnelle").fill("COL-654321");
+  await page.getByRole("button", { name: "Marquer comme expédiée" }).click();
   await expect(page).toHaveURL(/order_status=shipped$/);
 
   await page.goto(confirmationUrl);
   await expect(
-    page.getByRole("heading", { level: 1, name: "Commande expediee" })
+    page.getByRole("heading", { level: 1, name: "Commande expédiée" })
   ).toBeVisible();
-  await expect(page.getByText("Expediee", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("Expédiée", { exact: true }).first()).toBeVisible();
   await expect(
     page
-      .getByText("La commande a quitte l'atelier et est en cours d'acheminement.")
+      .getByText("La commande a quitté l'atelier et est en cours d'acheminement.")
       .first()
   ).toBeVisible();
-  await expect(page.getByText(/Date d'expedition : /)).toBeVisible();
-  await expect(page.getByText("Reference de suivi : COL-654321")).toBeVisible();
+  await expect(page.getByText(/Date d'expédition : /)).toBeVisible();
+  await expect(page.getByText("Référence de suivi : COL-654321")).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Payer la commande" })
   ).toHaveCount(0);

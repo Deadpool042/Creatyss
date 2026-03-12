@@ -43,27 +43,27 @@ function getBoutiqueMetadata(input: {
   if (input.searchQuery !== null) {
     titleSegments.push(`Recherche ${input.searchQuery}`);
     descriptionSegments.push(
-      `Resultats du catalogue Creatyss pour ${input.searchQuery}.`
+      `Résultats du catalogue Creatyss pour ${input.searchQuery}.`
     );
   }
 
   if (input.categoryLabel !== null) {
     titleSegments.push(input.categoryLabel);
     descriptionSegments.push(
-      `Selection de produits pour la categorie ${input.categoryLabel}.`
+      `Sélection de produits pour la catégorie ${input.categoryLabel}.`
     );
   }
 
   if (input.onlyAvailable) {
     titleSegments.push("Disponibles");
-    descriptionSegments.push("Produits actuellement disponibles a la commande.");
+    descriptionSegments.push("Produits actuellement disponibles à la commande.");
   }
 
   if (titleSegments.length === 0) {
     return {
       title: "Boutique Creatyss",
       description:
-        "Decouvrez les produits publies, les pieces mises en avant et les essentiels du catalogue Creatyss."
+        "Découvrez les produits publiés, les pièces mises en avant et les essentiels du catalogue Creatyss."
     };
   }
 
@@ -137,7 +137,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   }
 
   if (selectedCategoryLabel !== null) {
-    activeFilters.push(`Categorie : ${selectedCategoryLabel}`);
+    activeFilters.push(`Catégorie : ${selectedCategoryLabel}`);
   }
 
   if (filters.onlyAvailable) {
@@ -156,11 +156,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <section className="section">
         <div className="page-header">
           <div>
-            <p className="eyebrow">{hasEditorialListing ? "Selection" : "Boutique"}</p>
-            <h1>{hasEditorialListing ? "Produits a decouvrir" : "Produits publies"}</h1>
+            <p className="eyebrow">{hasEditorialListing ? "Sélection" : "Boutique"}</p>
+            <h1>{hasEditorialListing ? "Produits à découvrir" : "Produits publiés"}</h1>
             {hasEditorialListing ? (
               <p className="catalog-intro">
-                Une selection de produits deja disponibles, avec les pieces mises
+                Une sélection de produits déjà disponibles, avec les pièces mises
                 en avant en premier.
               </p>
             ) : null}
@@ -175,20 +175,20 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               defaultValue={searchQuery ?? ""}
               id="catalog-search-query"
               name="q"
-              placeholder="Nom, categorie ou couleur"
+              placeholder="Nom, catégorie ou couleur"
               type="search"
             />
           </label>
 
           <label className="admin-field" htmlFor="catalog-category-filter">
-            <span className="meta-label">Categorie</span>
+            <span className="meta-label">Catégorie</span>
             <select
               className="admin-input"
               defaultValue={filters.categorySlug ?? ""}
               id="catalog-category-filter"
               name="category"
             >
-              <option value="">Toutes les categories</option>
+              <option value="">Toutes les catégories</option>
               {categories.map((category) => (
                 <option key={category.id} value={category.slug}>
                   {category.name}
@@ -214,7 +214,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </button>
             {hasActiveFilters ? (
               <Link className="link link-subtle" href="/boutique">
-                Revenir a la liste complete
+                Revenir à la liste complète
               </Link>
             ) : null}
           </div>
@@ -222,7 +222,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
         {hasOnlyActiveSearch ? (
           <p className="catalog-search-summary">
-            Resultats pour <strong>{searchQuery}</strong>
+            Résultats pour <strong>{searchQuery}</strong>
           </p>
         ) : null}
 
@@ -267,8 +267,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 </p>
                 <p className="store-card-availability">
                   {product.isAvailable
-                    ? "Disponible a la commande."
-                    : "Actuellement indisponible a la commande."}
+                    ? "Disponible à la commande."
+                    : "Actuellement indisponible à la commande."}
                 </p>
               </article>
             ))}
@@ -276,21 +276,21 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         ) : (
           <div className="empty-state">
             <p className="eyebrow">
-              {hasActiveFilters ? "Aucun resultat" : "Catalogue vide"}
+              {hasActiveFilters ? "Aucun résultat" : "Catalogue vide"}
             </p>
             <h2>
               {hasOnlyActiveSearch
-                ? "Aucun produit ne correspond a cette recherche"
+                ? "Aucun produit ne correspond à cette recherche"
                 : hasActiveFilters
-                ? "Aucun produit ne correspond a ces filtres"
-                : "Aucun produit publie"}
+                ? "Aucun produit ne correspond à ces filtres"
+                : "Aucun produit publié"}
             </h2>
             <p className="card-copy">
               {hasOnlyActiveSearch
-                ? "Essayez un autre terme ou revenez a la liste complete."
+                ? "Essayez un autre terme ou revenez à la liste complète."
                 : hasActiveFilters
-                ? "Essayez une autre combinaison ou revenez a la liste complete."
-                : "Les produits publics apparaitront ici des qu&apos;ils seront publies."}
+                ? "Essayez une autre combinaison ou revenez à la liste complète."
+                : "Les produits publics apparaîtront ici dès qu&apos;ils seront publiés."}
             </p>
             {hasActiveFilters ? (
               <Link className="link link-subtle" href="/boutique">

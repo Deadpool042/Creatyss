@@ -13,7 +13,7 @@ test("redirects unauthenticated admin access to login", async ({ page }) => {
 test("logs in and logs out the seeded admin", async ({ page }) => {
   await loginAsSeedAdmin(page);
 
-  await page.getByRole("button", { name: "Se deconnecter" }).click();
+  await page.getByRole("button", { name: "Se déconnecter" }).click();
 
   await expect(page).toHaveURL(/\/admin\/login$/);
   await expect(

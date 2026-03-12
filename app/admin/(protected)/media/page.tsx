@@ -45,19 +45,19 @@ function formatByteSize(byteSize: string): string {
 function getErrorMessage(errorCode: string | undefined): string | null {
   switch (errorCode) {
     case "missing_file":
-      return "Selectionnez une image a importer.";
+      return "Sélectionnez une image à importer.";
     case "empty_file":
-      return "Le fichier selectionne est vide.";
+      return "Le fichier sélectionné est vide.";
     case "file_too_large":
-      return "Le fichier depasse la limite de 10 MB.";
+      return "Le fichier dépasse la limite de 10 MB.";
     case "unsupported_file":
-      return "Seules les images JPEG, PNG et WebP sont acceptees.";
+      return "Seules les images JPEG, PNG et WebP sont acceptées.";
     case "write_failed":
-      return "Le fichier n'a pas pu etre enregistre localement.";
+      return "Le fichier n'a pas pu être enregistré localement.";
     case "database_insert_failed":
-      return "Le fichier a ete refuse lors de l'enregistrement en base.";
+      return "Le fichier a été refusé lors de l'enregistrement en base.";
     case "upload_failed":
-      return "L'import du media a echoue.";
+      return "L'import du média a échoué.";
     default:
       return null;
   }
@@ -137,7 +137,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
     ? resolvedSearchParams.error[0]
     : resolvedSearchParams.error;
   const successMessage =
-    statusParam === "uploaded" ? "Media importe avec succes." : null;
+    statusParam === "uploaded" ? "Média importé avec succès." : null;
   const errorMessage = getErrorMessage(errorParam);
   const assets = await buildMediaListItems();
 
@@ -145,10 +145,10 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
     <div className="admin-media-page">
       <section className="store-card admin-upload-card">
         <div className="stack">
-          <p className="eyebrow">Bibliotheque media</p>
+          <p className="eyebrow">Bibliothèque médias</p>
           <h2>Importer une image</h2>
           <p className="card-copy">
-            Formats acceptes : JPEG, PNG, WebP. Taille maximale : 10 MB.
+            Formats acceptés : JPEG, PNG, WebP. Taille maximale : 10 MB.
           </p>
         </div>
 
@@ -173,7 +173,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
 
           <div>
             <button className="button" type="submit">
-              Importer le media
+              Importer le média
             </button>
           </div>
         </form>
@@ -182,8 +182,8 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
       <section className="section">
         <div className="section-header">
           <div>
-            <p className="eyebrow">Medias</p>
-            <h2>Bibliotheque locale</h2>
+            <p className="eyebrow">Médias</p>
+            <h2>Bibliothèque locale</h2>
           </div>
         </div>
 
@@ -202,7 +202,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                   </div>
                 ) : (
                   <div className="admin-media-preview admin-media-placeholder">
-                    Apercu indisponible
+                    Aperçu indisponible
                   </div>
                 )}
 
@@ -212,7 +212,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                 </div>
 
                 <div className="stack">
-                  <p className="meta-label">Type MIME</p>
+                  <p className="meta-label">Format du fichier</p>
                   <p className="card-copy">{asset.mimeType}</p>
                 </div>
 
@@ -236,7 +236,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                 </div>
 
                 <div className="stack">
-                  <p className="meta-label">Ajoute le</p>
+                  <p className="meta-label">Ajouté le</p>
                   <p className="card-copy">
                     {mediaDateFormatter.format(new Date(asset.createdAt))}
                   </p>
@@ -246,10 +246,10 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
           </div>
         ) : (
           <div className="empty-state">
-            <p className="eyebrow">Aucun media</p>
-            <h2>La bibliotheque est encore vide</h2>
+            <p className="eyebrow">Aucun média</p>
+            <h2>La bibliothèque est encore vide</h2>
             <p className="card-copy">
-              Les images importees depuis cet ecran seront listees ici.
+              Les images importées depuis cet écran seront listées ici.
             </p>
           </div>
         )}

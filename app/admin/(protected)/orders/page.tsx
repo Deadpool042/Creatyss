@@ -29,9 +29,9 @@ export default async function AdminOrdersPage({
   const orders = await listAdminOrders();
   const errorMessage =
     errorParam === "missing_order"
-      ? "La commande demandee est introuvable."
+      ? "La commande demandée est introuvable."
       : errorParam === "invalid_order_action"
-        ? "L'action demandee est invalide."
+        ? "L'action demandée est invalide."
         : null;
 
   return (
@@ -39,11 +39,11 @@ export default async function AdminOrdersPage({
       <section className="section">
         <div className="page-header">
           <div>
-            <p className="eyebrow">Orders</p>
-            <h1>Commandes admin</h1>
+            <p className="eyebrow">Commandes</p>
+            <h1>Commandes</h1>
             <p className="lead">
-              Suivez les commandes creees depuis le checkout invite sans edition
-              complexe dans ce lot.
+              Suivez les commandes créées sur la boutique avec les principales
+              informations de suivi.
             </p>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default async function AdminOrdersPage({
 
                   <div>
                     <Link className="link" href={`/admin/orders/${order.id}`}>
-                      Voir le detail
+                      Voir le détail
                     </Link>
                   </div>
                 </article>
@@ -100,9 +100,9 @@ export default async function AdminOrdersPage({
         ) : (
           <div className="empty-state">
             <p className="eyebrow">Aucune commande</p>
-            <h2>Aucune commande n&apos;a encore ete creee</h2>
+            <h2>Aucune commande n&apos;a encore été créée</h2>
             <p className="card-copy">
-              Les commandes creees depuis le checkout invite apparaitront ici.
+              Les commandes créées sur la boutique apparaîtront ici.
             </p>
           </div>
         )}
