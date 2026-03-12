@@ -1,5 +1,8 @@
 import { queryFirst, queryRows } from "@/db/client";
 
+// --- Internal types ---
+
+// pg may return Date or string for timestamp columns depending on driver configuration
 type TimestampValue = Date | string;
 
 type AdminBlogPostStatus = "draft" | "published";
@@ -48,6 +51,8 @@ type PostgreSqlErrorLike = Error & {
   constraint?: string;
 };
 
+// --- Public types ---
+
 export type AdminBlogPostSummary = {
   id: string;
   title: string;
@@ -75,21 +80,25 @@ export class AdminBlogRepositoryError extends Error {
   }
 }
 
+// --- Internal helpers ---
+
+const PG_UNIQUE_VIOLATION = "23505";
+const PG_FOREIGN_KEY_VIOLATION = "23503";
+const BLOG_POST_SLUG_CONSTRAINT = "blog_posts_slug_key";
+
+// Full column list for detail queries — shared by find, create (returning), and update (returning)
+const BLOG_POST_DETAIL_COLUMNS =
+  "id::text as id, title, slug, excerpt, content, seo_title, seo_description, cover_image_path, status, published_at, created_at, updated_at";
+
 function isValidBlogPostId(id: string): boolean {
   return /^[0-9]+$/.test(id);
 }
 
 function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
-  if (!(error instanceof Error)) {
-    return false;
-  }
-
-  const candidate = error as Error & {
-    code?: unknown;
-    constraint?: unknown;
-  };
-
-  return typeof candidate.code === "string";
+  return (
+    error instanceof Error &&
+    typeof (error as { code?: unknown }).code === "string"
+  );
 }
 
 function toIsoTimestamp(value: TimestampValue): string {
@@ -126,27 +135,46 @@ function mapAdminBlogPostDetail(row: AdminBlogPostRow): AdminBlogPostDetail {
   };
 }
 
-function mapRepositoryError(error: unknown): never {
-  if (
-    isPostgreSqlErrorLike(error) &&
-    error.code === "23505" &&
-    error.constraint === "blog_posts_slug_key"
-  ) {
-    throw new AdminBlogRepositoryError(
-      "slug_taken",
-      "Blog post slug already exists."
-    );
-  }
+// Builds the ordered parameter array shared by INSERT and UPDATE queries.
+// Create: buildBlogPostWriteParams(input)          → $1=title … $8=status
+// Update: [input.id, ...buildBlogPostWriteParams(input)] → $1=id, $2=title … $9=status
+function buildBlogPostWriteParams(input: CreateAdminBlogPostInput): unknown[] {
+  return [
+    input.title,
+    input.slug,
+    input.excerpt,
+    input.content,
+    input.seoTitle,
+    input.seoDescription,
+    input.coverImagePath,
+    input.status
+  ];
+}
 
-  if (isPostgreSqlErrorLike(error) && error.code === "23503") {
-    throw new AdminBlogRepositoryError(
-      "blog_post_referenced",
-      "Blog post is still referenced by other records."
-    );
+function mapRepositoryError(error: unknown): never {
+  if (isPostgreSqlErrorLike(error)) {
+    if (
+      error.code === PG_UNIQUE_VIOLATION &&
+      error.constraint === BLOG_POST_SLUG_CONSTRAINT
+    ) {
+      throw new AdminBlogRepositoryError(
+        "slug_taken",
+        "Blog post slug already exists."
+      );
+    }
+
+    if (error.code === PG_FOREIGN_KEY_VIOLATION) {
+      throw new AdminBlogRepositoryError(
+        "blog_post_referenced",
+        "Blog post is still referenced by other records."
+      );
+    }
   }
 
   throw error;
 }
+
+// --- Public functions ---
 
 export async function listAdminBlogPosts(): Promise<AdminBlogPostSummary[]> {
   const rows = await queryRows<AdminBlogPostSummaryRow>(
@@ -178,19 +206,7 @@ export async function findAdminBlogPostById(
 
   const row = await queryFirst<AdminBlogPostRow>(
     `
-      select
-        id::text as id,
-        title,
-        slug,
-        excerpt,
-        content,
-        seo_title,
-        seo_description,
-        cover_image_path,
-        status,
-        published_at,
-        created_at,
-        updated_at
+      select ${BLOG_POST_DETAIL_COLUMNS}
       from blog_posts
       where id = $1::bigint
       limit 1
@@ -223,43 +239,12 @@ export async function createAdminBlogPost(
           published_at
         )
         values (
-          $1,
-          $2,
-          $3,
-          $4,
-          $5,
-          $6,
-          $7,
-          $8,
-          case
-            when $8 = 'published' then now()
-            else null
-          end
+          $1, $2, $3, $4, $5, $6, $7, $8,
+          case when $8 = 'published' then now() else null end
         )
-        returning
-          id::text as id,
-          title,
-          slug,
-          excerpt,
-          content,
-          seo_title,
-          seo_description,
-          cover_image_path,
-          status,
-          published_at,
-          created_at,
-          updated_at
+        returning ${BLOG_POST_DETAIL_COLUMNS}
       `,
-      [
-        input.title,
-        input.slug,
-        input.excerpt,
-        input.content,
-        input.seoTitle,
-        input.seoDescription,
-        input.coverImagePath,
-        input.status
-      ]
+      buildBlogPostWriteParams(input)
     );
 
     if (row === null) {
@@ -292,36 +277,15 @@ export async function updateAdminBlogPost(
           seo_description = $7,
           cover_image_path = $8,
           status = $9,
+          -- coalesce preserves the original publication date when re-saving a published post
           published_at = case
             when $9 = 'published' then coalesce(published_at, now())
             else null
           end
         where id = $1::bigint
-        returning
-          id::text as id,
-          title,
-          slug,
-          excerpt,
-          content,
-          seo_title,
-          seo_description,
-          cover_image_path,
-          status,
-          published_at,
-          created_at,
-          updated_at
+        returning ${BLOG_POST_DETAIL_COLUMNS}
       `,
-      [
-        input.id,
-        input.title,
-        input.slug,
-        input.excerpt,
-        input.content,
-        input.seoTitle,
-        input.seoDescription,
-        input.coverImagePath,
-        input.status
-      ]
+      [input.id, ...buildBlogPostWriteParams(input)]
     );
 
     if (row === null) {
