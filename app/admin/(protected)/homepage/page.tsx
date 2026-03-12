@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Notice } from "@/components/ui/notice";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionIntro } from "@/components/ui/section-intro";
@@ -306,7 +308,7 @@ export default async function AdminHomepagePage({
           {productOptions.length > 0 ? (
             <div className="admin-homepage-option-grid">
               {productOptions.map((product) => (
-                <div className="store-card admin-homepage-option" key={product.id}>
+                <Card className="store-card admin-homepage-option" key={product.id}>
                   <label className="admin-checkbox">
                     <input
                       defaultChecked={productSelectionMap.has(product.id)}
@@ -332,7 +334,7 @@ export default async function AdminHomepagePage({
                       type="number"
                     />
                   </label>
-                </div>
+                </Card>
               ))}
             </div>
           ) : (
@@ -353,7 +355,7 @@ export default async function AdminHomepagePage({
           {categoryOptions.length > 0 ? (
             <div className="admin-homepage-option-grid">
               {categoryOptions.map((category) => (
-                <div className="store-card admin-homepage-option" key={category.id}>
+                <Card className="store-card admin-homepage-option" key={category.id}>
                   <label className="admin-checkbox">
                     <input
                       defaultChecked={categorySelectionMap.has(category.id)}
@@ -379,7 +381,7 @@ export default async function AdminHomepagePage({
                       type="number"
                     />
                   </label>
-                </div>
+                </Card>
               ))}
             </div>
           ) : (
@@ -400,7 +402,7 @@ export default async function AdminHomepagePage({
           {blogPostOptions.length > 0 ? (
             <div className="admin-homepage-option-grid">
               {blogPostOptions.map((post) => (
-                <div className="store-card admin-homepage-option" key={post.id}>
+                <Card className="store-card admin-homepage-option" key={post.id}>
                   <label className="admin-checkbox">
                     <input
                       defaultChecked={blogPostSelectionMap.has(post.id)}
@@ -426,7 +428,7 @@ export default async function AdminHomepagePage({
                       type="number"
                     />
                   </label>
-                </div>
+                </Card>
               ))}
             </div>
           ) : (
@@ -437,9 +439,9 @@ export default async function AdminHomepagePage({
         </section>
 
         <div className="admin-actions">
-          <button className="button" type="submit">
+          <Button className="button" type="submit">
             Enregistrer la page d&apos;accueil
-          </button>
+          </Button>
         </div>
       </form>
     </section>
