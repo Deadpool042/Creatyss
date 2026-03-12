@@ -1,4 +1,6 @@
 import { notFound } from "next/navigation";
+import { Notice } from "@/components/ui/notice";
+import { PageHeader } from "@/components/ui/page-header";
 import {
   findAdminOrderById,
   type OrderEmailEventStatus,
@@ -106,19 +108,19 @@ export default async function AdminOrderDetailPage({
   return (
     <div className="admin-record-list">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Commandes</p>
-            <h1>Commande {order.reference}</h1>
-            <p className="lead">
+        <PageHeader
+          description={
+            <>
               Repérez d&apos;abord l&apos;état de la commande, appliquez
               l&apos;action utile si nécessaire, puis consultez les détails.
-            </p>
-          </div>
-        </div>
+            </>
+          }
+          eyebrow="Commandes"
+          title={`Commande ${order.reference}`}
+        />
 
-        {statusMessage ? <p className="admin-success">{statusMessage}</p> : null}
-        {errorMessage ? <p className="admin-alert">{errorMessage}</p> : null}
+        {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
+        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         <div className="cart-layout">
           <div className="checkout-line-list">
@@ -127,7 +129,7 @@ export default async function AdminOrderDetailPage({
                 <p className="eyebrow">Synthèse</p>
                 <h2>{summary.title}</h2>
                 <p className="card-copy">{summary.description}</p>
-                <p className="admin-muted-note">{summary.nextStep}</p>
+                <Notice tone="note">{summary.nextStep}</Notice>
               </div>
 
               <div className="admin-product-tags">
@@ -216,9 +218,9 @@ export default async function AdminOrderDetailPage({
                     ))}
                 </div>
               ) : (
-                <p className="admin-muted-note">
+                <Notice tone="note">
                   Aucune autre action n&apos;est disponible pour cette commande.
-                </p>
+                </Notice>
               )}
             </article>
 

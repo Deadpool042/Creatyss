@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Notice } from "@/components/ui/notice";
+import { PageHeader } from "@/components/ui/page-header";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 import {
@@ -451,21 +453,22 @@ export default async function ProductDetailPage({
   return (
     <div className="admin-product-detail">
       <section className="section admin-product-section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Produits</p>
-            <h1>Modifier le produit</h1>
-            <p className="lead">
+        <PageHeader
+          actions={
+            <Link className="link-subtle button" href="/admin/products">
+              Retour à la liste
+            </Link>
+          }
+          description={
+            <>
               Commencez par les informations générales, puis complétez les
               informations de vente ou les déclinaisons selon le type du
               produit.
-            </p>
-          </div>
-
-          <Link className="link-subtle button" href="/admin/products">
-            Retour à la liste
-          </Link>
-        </div>
+            </>
+          }
+          eyebrow="Produits"
+          title="Modifier le produit"
+        />
 
         <div className="admin-product-tags">
           <span className="admin-chip">{getProductStatusLabel(product.status)}</span>
@@ -492,12 +495,10 @@ export default async function ProductDetailPage({
         </div>
 
         {productStatusMessage ? (
-          <p className="admin-success">{productStatusMessage}</p>
+          <Notice tone="success">{productStatusMessage}</Notice>
         ) : null}
         {productErrorMessage ? (
-          <p className="admin-alert" role="alert">
-            {productErrorMessage}
-          </p>
+          <Notice tone="alert">{productErrorMessage}</Notice>
         ) : null}
 
         <form action={updateProductAction} className="admin-form admin-product-form">
@@ -641,12 +642,10 @@ export default async function ProductDetailPage({
         </div>
 
         {productImageMessage.status ? (
-          <p className="admin-success">{productImageMessage.status}</p>
+          <Notice tone="success">{productImageMessage.status}</Notice>
         ) : null}
         {productImageMessage.error ? (
-          <p className="admin-alert" role="alert">
-            {productImageMessage.error}
-          </p>
+          <Notice tone="alert">{productImageMessage.error}</Notice>
         ) : null}
 
         {hasMediaAssets ? (
@@ -691,13 +690,13 @@ export default async function ProductDetailPage({
             </div>
           </form>
         ) : (
-          <p className="admin-muted-note">
+          <Notice tone="note">
             Aucun média n&apos;est disponible. Ajoutez d&apos;abord une image dans{" "}
             <Link className="link" href="/admin/media">
               la bibliothèque médias
             </Link>
             .
-          </p>
+          </Notice>
         )}
 
         {parentImages.length > 0 ? (
@@ -803,43 +802,41 @@ export default async function ProductDetailPage({
         {isSimpleProduct ? (
           <>
             {simpleOfferStatusMessage ? (
-              <p className="admin-success">{simpleOfferStatusMessage}</p>
+              <Notice tone="success">{simpleOfferStatusMessage}</Notice>
             ) : null}
             {simpleOfferErrorMessage ? (
-              <p className="admin-alert" role="alert">
-                {simpleOfferErrorMessage}
-              </p>
+              <Notice tone="alert">{simpleOfferErrorMessage}</Notice>
             ) : null}
             {simpleProductHasInconsistentVariantCount ? (
-              <p className="admin-alert" role="alert">
+              <Notice tone="alert">
                 Plusieurs déclinaisons sont encore associées à ce produit
                 simple. Corrigez d&apos;abord cet état dans les données
                 existantes avant de modifier les informations de vente.
-              </p>
+              </Notice>
             ) : null}
             {showSimpleOfferForm && simpleOfferFormDefaults ? (
               <>
                 {product.simpleOffer ? (
-                  <p className="admin-muted-note">
+                  <Notice tone="note">
                     Disponibilité actuelle :{" "}
                     {getAvailabilityLabel(product.simpleOffer.isAvailable)}
-                  </p>
+                  </Notice>
                 ) : null}
                 {simpleProductHasNoLegacyVariant ? (
-                  <p className="admin-muted-note">
+                  <Notice tone="note">
                     Vous pouvez enregistrer les informations de vente ici. Pour
                     le moment, l&apos;affichage public de ce produit reste
                     limité tant qu&apos;aucune déclinaison existante n&apos;est
                     associée.
-                  </p>
+                  </Notice>
                 ) : null}
                 {simpleProductHasSingleLegacyVariant ? (
-                  <p className="admin-muted-note">
+                  <Notice tone="note">
                     Les informations commerciales saisies ici restent
                     synchronisées avec l&apos;unique déclinaison déjà
                     enregistrée. Les autres réglages de cette déclinaison
                     restent disponibles plus bas sur la page.
-                  </p>
+                  </Notice>
                 ) : null}
 
                 <form
@@ -926,20 +923,16 @@ export default async function ProductDetailPage({
                 </div>
 
                 {variantStatusMessage ? (
-                  <p className="admin-success">{variantStatusMessage}</p>
+                  <Notice tone="success">{variantStatusMessage}</Notice>
                 ) : null}
                 {variantErrorMessage ? (
-                  <p className="admin-alert" role="alert">
-                    {variantErrorMessage}
-                  </p>
+                  <Notice tone="alert">{variantErrorMessage}</Notice>
                 ) : null}
                 {variantImageMessage.status ? (
-                  <p className="admin-success">{variantImageMessage.status}</p>
+                  <Notice tone="success">{variantImageMessage.status}</Notice>
                 ) : null}
                 {variantImageMessage.error ? (
-                  <p className="admin-alert" role="alert">
-                    {variantImageMessage.error}
-                  </p>
+                  <Notice tone="alert">{variantImageMessage.error}</Notice>
                 ) : null}
               </div>
             ) : null}
@@ -947,24 +940,20 @@ export default async function ProductDetailPage({
         ) : (
           <>
             {variantStatusMessage ? (
-              <p className="admin-success">{variantStatusMessage}</p>
+              <Notice tone="success">{variantStatusMessage}</Notice>
             ) : null}
             {variantErrorMessage ? (
-              <p className="admin-alert" role="alert">
-                {variantErrorMessage}
-              </p>
+              <Notice tone="alert">{variantErrorMessage}</Notice>
             ) : null}
             {variantImageMessage.status ? (
-              <p className="admin-success">{variantImageMessage.status}</p>
+              <Notice tone="success">{variantImageMessage.status}</Notice>
             ) : null}
             {variantImageMessage.error ? (
-              <p className="admin-alert" role="alert">
-                {variantImageMessage.error}
-              </p>
+              <Notice tone="alert">{variantImageMessage.error}</Notice>
             ) : null}
-            <p className="admin-muted-note">
+            <Notice tone="note">
               Gérez ici les déclinaisons et leurs informations de vente.
-            </p>
+            </Notice>
           </>
         )}
 
@@ -1305,14 +1294,14 @@ export default async function ProductDetailPage({
                         </div>
                       </form>
                     ) : (
-                      <p className="admin-muted-note">
+                      <Notice tone="note">
                         Aucun média n&apos;est disponible. Ajoutez d&apos;abord une
                         image dans{" "}
                         <Link className="link" href="/admin/media">
                           la bibliothèque médias
                         </Link>
                         .
-                      </p>
+                      </Notice>
                     )}
 
                     {variantImages.length > 0 ? (
@@ -1393,11 +1382,11 @@ export default async function ProductDetailPage({
                         ))}
                       </div>
                     ) : (
-                      <p className="admin-muted-note">
+                      <Notice tone="note">
                         {isSimpleProduct
                           ? "Cette déclinaison existante n'a pas encore d'image associée."
                           : "Cette déclinaison n'a pas encore d'image associée."}
-                      </p>
+                      </Notice>
                     )}
                   </div>
                 </article>
@@ -1424,9 +1413,7 @@ export default async function ProductDetailPage({
         </div>
 
         {deleteErrorMessage ? (
-          <p className="admin-alert" role="alert">
-            {deleteErrorMessage}
-          </p>
+          <Notice tone="alert">{deleteErrorMessage}</Notice>
         ) : null}
 
         <form action={deleteProductAction}>

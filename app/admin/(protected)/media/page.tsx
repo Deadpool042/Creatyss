@@ -1,6 +1,8 @@
 import { access } from "node:fs/promises";
 import path from "node:path";
 import { redirect } from "next/navigation";
+import { Notice } from "@/components/ui/notice";
+import { PageHeader } from "@/components/ui/page-header";
 import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/admin-media";
 import { requireAuthenticatedAdmin } from "@/lib/admin-auth";
 import { uploadAdminMedia, MediaUploadError } from "@/features/admin/media/upload";
@@ -144,16 +146,16 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
   return (
     <div className="admin-media-page">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Médias</p>
-            <h1>Bibliothèque médias</h1>
-            <p className="lead">
+        <PageHeader
+          description={
+            <>
               Importez d&apos;abord vos visuels, puis réutilisez-les dans les
               produits, le blog et la page d&apos;accueil.
-            </p>
-          </div>
-        </div>
+            </>
+          }
+          eyebrow="Médias"
+          title="Bibliothèque médias"
+        />
       </section>
 
       <section className="store-card admin-upload-card">
@@ -166,11 +168,9 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
           </p>
         </div>
 
-        {successMessage ? <p className="admin-success">{successMessage}</p> : null}
+        {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
         {errorMessage ? (
-          <p className="admin-alert" role="alert">
-            {errorMessage}
-          </p>
+          <Notice tone="alert">{errorMessage}</Notice>
         ) : null}
 
         <form action={uploadMediaAction} className="admin-form">

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Notice } from "@/components/ui/notice";
+import { PageHeader } from "@/components/ui/page-header";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import {
   getAdminHomepageEditorData,
@@ -120,20 +122,20 @@ export default async function AdminHomepagePage({
   if (editorData === null) {
     return (
       <section className="section admin-homepage-page">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Accueil</p>
-            <h1>Édition de la page d’accueil</h1>
-            <p className="lead">
+        <PageHeader
+          description={
+            <>
               La page d’accueil ne peut pas être modifiée tant qu&apos;aucune
               version publiée n&apos;existe.
-            </p>
-          </div>
-        </div>
+            </>
+          }
+          eyebrow="Accueil"
+          title="Édition de la page d’accueil"
+        />
 
-        <p className="admin-alert" role="alert">
+        <Notice tone="alert">
           {explicitErrorMessage ?? "La page d’accueil publiée est introuvable."}
-        </p>
+        </Notice>
       </section>
     );
   }
@@ -161,22 +163,20 @@ export default async function AdminHomepagePage({
 
   return (
     <section className="section admin-homepage-page">
-      <div className="page-header">
-        <div>
-          <p className="eyebrow">Accueil</p>
-          <h1>Édition de la page d’accueil</h1>
-          <p className="lead">
+      <PageHeader
+        description={
+          <>
             Commencez par la bannière principale, puis complétez le bloc
             éditorial et les sélections mises en avant.
-          </p>
-        </div>
-      </div>
+          </>
+        }
+        eyebrow="Accueil"
+        title="Édition de la page d’accueil"
+      />
 
-      {successMessage ? <p className="admin-success">{successMessage}</p> : null}
+      {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {pageErrorMessage ? (
-        <p className="admin-alert" role="alert">
-          {pageErrorMessage}
-        </p>
+        <Notice tone="alert">{pageErrorMessage}</Notice>
       ) : null}
 
       <form action={updateHomepageAction} className="admin-form admin-homepage-form">
@@ -252,13 +252,13 @@ export default async function AdminHomepagePage({
           </label>
 
           {mediaAssets.length === 0 ? (
-            <p className="admin-muted-note">
+            <Notice tone="note">
               Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
               <Link className="link" href="/admin/media">
                 la bibliothèque médias
               </Link>
               .
-            </p>
+            </Notice>
           ) : null}
         </section>
 
@@ -303,10 +303,10 @@ export default async function AdminHomepagePage({
             </p>
           </div>
 
-          <p className="admin-muted-note">
+          <Notice tone="note">
             Ces sélections complètent la page après la bannière principale et
             le bloc éditorial.
-          </p>
+          </Notice>
 
           {productOptions.length > 0 ? (
             <div className="admin-homepage-option-grid">
@@ -341,9 +341,9 @@ export default async function AdminHomepagePage({
               ))}
             </div>
           ) : (
-            <p className="admin-muted-note">
+            <Notice tone="note">
               Publiez d&apos;abord un produit pour l&apos;afficher ici.
-            </p>
+            </Notice>
           )}
         </section>
 
@@ -390,9 +390,9 @@ export default async function AdminHomepagePage({
               ))}
             </div>
           ) : (
-            <p className="admin-muted-note">
+            <Notice tone="note">
               Créez ou publiez une catégorie pour l&apos;afficher ici.
-            </p>
+            </Notice>
           )}
         </section>
 
@@ -439,9 +439,9 @@ export default async function AdminHomepagePage({
               ))}
             </div>
           ) : (
-            <p className="admin-muted-note">
+            <Notice tone="note">
               Publiez d&apos;abord un article pour l&apos;afficher ici.
-            </p>
+            </Notice>
           )}
         </section>
 
