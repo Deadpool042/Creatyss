@@ -39,6 +39,17 @@ Le projet couvre actuellement les fondations principales de la boutique Creatyss
 
 L’évolution du projet est documentée par versions et par lots dans `docs/`, en particulier dans `docs/v6/`.
 
+## Documentation de référence actuelle
+
+- `AGENTS.md` : règles de travail, structure du repo et discipline de modification.
+- `docs/v6/scope.md` : périmètre fonctionnel V6.
+- `docs/v6/data-model.md` : modèle métier V6.
+- `docs/v6/roadmap.md` : séquencement des lots V6.
+- `docs/v6/admin-language-and-ux.md` : langage visible et UX admin produit.
+- `docs/v6/glossary.md` : vocabulaire métier officiel, termes UI autorisés ou à éviter, et hiérarchie documentaire actuelle.
+
+Pour un lot donné, les documents explicitement cités dans la demande priment. Sauf mention contraire, les anciennes docs V1 à V5 et les documents historiques restent du contexte utile, pas la source de vérité courante.
+
 ## Démarrage local
 
 Le projet est piloté via `make`.

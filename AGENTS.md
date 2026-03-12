@@ -89,6 +89,8 @@ Construire et faire évoluer la boutique e-commerce custom Creatyss, local-first
 - Le projet évolue par versions et lots documentés dans `docs/`.
 - Les documents de travail sont organisés par version, par exemple `docs/v6/*.md`.
 - Pour toute demande liée à un lot, toujours prendre comme source de vérité le ou les documents explicitement visés dans `docs/vX/`.
+- Pour la terminologie métier, les termes UI autorisés ou interdits, et la hiérarchie documentaire actuelle, s’aligner sur `docs/v6/glossary.md`.
+- Pour le langage visible et l’UX admin produit, `docs/v6/admin-language-and-ux.md` complète `AGENTS.md` et prime sur les formulations plus anciennes.
 - Ne pas extrapoler au-delà du lot demandé.
 - Ne pas implémenter une étape suivante non explicitement demandée.
 - En cas de tension entre une ancienne implémentation et le lot courant, appliquer le lot courant tout en préservant la compatibilité demandée.
@@ -126,6 +128,7 @@ Quand tu proposes une modification :
 ## Lisibilité métier et UX admin
 
 - Le modèle visible dans l’admin doit rester simple, métier et compréhensible par une utilisatrice non technique.
+- Pour tout lot de vocabulaire, wording UI, terminologie ou documentation métier, utiliser les termes officiels de `docs/v6/glossary.md` et `docs/v6/admin-language-and-ux.md`.
 - L’admin doit parler en termes de :
   - produit simple
   - produit avec déclinaisons
