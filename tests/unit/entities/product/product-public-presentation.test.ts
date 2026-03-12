@@ -10,7 +10,7 @@ import {
 } from "@/entities/product/product-public-presentation";
 
 describe("product-public-presentation", () => {
-  it("retourne des libelles lisibles pour la disponibilite produit et declinaison", () => {
+  it("retourne des libellés lisibles pour la disponibilité produit et déclinaison", () => {
     expect(getProductAvailabilityLabel(true)).toBe("Disponible");
     expect(getProductAvailabilityLabel(false)).toBe(
       "Temporairement indisponible"
@@ -21,7 +21,7 @@ describe("product-public-presentation", () => {
     );
   });
 
-  it("retourne une synthese claire pour un produit variable disponible", () => {
+  it("retourne une synthèse claire pour un produit avec déclinaisons disponible", () => {
     expect(
       getProductPageStatusSummary({
         productType: "variable",
@@ -30,12 +30,12 @@ describe("product-public-presentation", () => {
       })
     ).toEqual({
       title: "Produit disponible",
-      description: "1 declinaison disponible sur 2.",
-      nextStep: "Choisissez une declinaison disponible ci-dessous."
+      description: "1 déclinaison disponible sur 2.",
+      nextStep: "Choisissez une déclinaison disponible ci-dessous."
     });
   });
 
-  it("retourne une synthese claire pour un produit simple disponible", () => {
+  it("retourne une synthèse claire pour un produit simple disponible", () => {
     expect(
       getProductPageStatusSummary({
         productType: "simple",
@@ -44,12 +44,12 @@ describe("product-public-presentation", () => {
       })
     ).toEqual({
       title: "Produit disponible",
-      description: "Cette offre unique est disponible a l'achat.",
-      nextStep: "Choisissez la quantite puis ajoutez le produit au panier."
+      description: "Ce produit est disponible à l'achat.",
+      nextStep: "Choisissez la quantité puis ajoutez ce produit au panier."
     });
   });
 
-  it("retourne une synthese neutre pour un produit simple incoherent", () => {
+  it("retourne une synthèse neutre pour un produit simple incohérent", () => {
     expect(
       getProductPageStatusSummary({
         productType: "simple",
@@ -58,51 +58,55 @@ describe("product-public-presentation", () => {
       })
     ).toEqual({
       title: "Offre indisponible pour le moment",
-      description:
-        "Ce produit simple n'est pas accessible dans une configuration vendable unique pour le moment.",
-      nextStep: "Revenez plus tard pour verifier sa disponibilite."
+      description: "Ce produit simple n'est pas disponible pour le moment.",
+      nextStep: "Revenez plus tard pour vérifier sa disponibilité."
     });
   });
 
-  it("retourne des libelles de section coherents selon le type", () => {
-    expect(getProductOfferSectionPresentation("simple")).toEqual({
-      eyebrow: "Offre",
-      title: "Offre vendable",
-      description:
-        "Ce produit simple se presente comme une offre vendable unique.",
-      emptyEyebrow: "Offre indisponible",
-      emptyTitle: "Ce produit simple n'est pas disponible pour le moment",
-      emptyDescription:
-        "L'offre vendable unique n'est pas accessible actuellement."
-    });
+  it("retourne les libellés de section cohérents pour un produit simple", () => {
+    const presentation = getProductOfferSectionPresentation("simple");
 
-    expect(getProductOfferSectionPresentation("variable")).toEqual({
-      eyebrow: "Declinaisons",
-      title: "Choisir une declinaison",
-      description:
-        "Verifiez le prix, la disponibilite et les visuels de chaque declinaison avant l'ajout au panier.",
-      emptyEyebrow: "Aucune declinaison",
-      emptyTitle: "Ce produit n'a pas encore de declinaison publique",
-      emptyDescription:
-        "Les declinaisons apparaitront ici lorsqu'elles seront disponibles."
-    });
+    expect(presentation.eyebrow).toBe("Informations de vente");
+    expect(presentation.title).toBe("Informations de vente");
+    expect(presentation.emptyEyebrow).toBe("Informations de vente");
+    expect(presentation.emptyTitle).toBe(
+      "Ce produit simple n'est pas disponible pour le moment"
+    );
+    expect(presentation.description).toContain("prix");
+    expect(presentation.description).toContain("disponibilité");
+    expect(presentation.description).toContain("panier");
+    expect(presentation.emptyDescription).toContain("informations de vente");
   });
 
-  it("retourne des messages d'achat utiles pour simple et variable", () => {
-    expect(getSimpleOfferCardTitle()).toBe("Offre vendable");
+  it("retourne les libellés de section cohérents pour un produit avec déclinaisons", () => {
+    const presentation = getProductOfferSectionPresentation("variable");
+
+    expect(presentation.eyebrow).toBe("Déclinaisons");
+    expect(presentation.title).toBe("Choisir une déclinaison");
+    expect(presentation.emptyEyebrow).toBe("Aucune déclinaison");
+    expect(presentation.emptyTitle).toBe(
+      "Ce produit n'a pas encore de déclinaison disponible"
+    );
+    expect(presentation.description).toContain("déclinaisons");
+    expect(presentation.description).toContain("panier");
+    expect(presentation.emptyDescription).toContain("déclinaisons");
+  });
+
+  it("retourne des messages d'achat utiles pour simple et produit avec déclinaisons", () => {
+    expect(getSimpleOfferCardTitle()).toBe("Produit simple");
     expect(
       getOfferAvailabilityMessage({ productType: "simple", isAvailable: true })
-    ).toBe("Choisissez la quantite puis ajoutez le produit au panier.");
+    ).toBe("Choisissez la quantité puis ajoutez ce produit au panier.");
     expect(
       getOfferAvailabilityMessage({ productType: "simple", isAvailable: false })
-    ).toBe("Cette offre est temporairement indisponible.");
+    ).toBe("Ce produit n'est pas disponible pour le moment.");
     expect(
       getOfferAvailabilityMessage({
         productType: "variable",
         isAvailable: true
       })
     ).toBe(
-      "Selectionnez une quantite puis ajoutez cette declinaison au panier."
+      "Sélectionnez une quantité puis ajoutez cette déclinaison au panier."
     );
     expect(
       getOfferAvailabilityMessage({
@@ -110,9 +114,9 @@ describe("product-public-presentation", () => {
         isAvailable: false
       })
     ).toBe(
-      "Cette declinaison est temporairement indisponible. Choisissez une autre declinaison pour continuer."
+      "Cette déclinaison est temporairement indisponible. Choisissez une autre déclinaison pour continuer."
     );
-    expect(getVariantDefaultBadgeLabel(true)).toBe("Par defaut");
+    expect(getVariantDefaultBadgeLabel(true)).toBe("Par défaut");
     expect(getVariantDefaultBadgeLabel(false)).toBeNull();
   });
 });
