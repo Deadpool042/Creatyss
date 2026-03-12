@@ -23,6 +23,49 @@ Ces composants ne sont pas migrés vers shadcn. Ils restent intacts sur toutes l
 - `Notice` — `components/ui/notice.tsx`
 - `SectionIntro` — `components/ui/section-intro.tsx`
 
+## Règle PageHeader
+
+Remplacer `<div className="page-header">` + HTML manuel par `<PageHeader>`.
+
+```tsx
+// Avant
+<div className="page-header">
+  <div>
+    <p className="eyebrow">…</p>
+    <h1>…</h1>
+    <p className="lead">…</p>
+  </div>
+  <Link className="button" href="…">…</Link>
+</div>
+
+// Après
+<PageHeader
+  eyebrow="…"
+  title="…"
+  description="…"
+  actions={<Link className="button" href="…">…</Link>}
+/>
+```
+
+- `PageHeader` génère exactement le même HTML que le bloc inline. Rendu visuel identique.
+- Le `<Link>` passé en `actions` est conservé tel quel — classes et attributs inchangés. Il n'est pas remplacé par `<Button>` (voir Règle Button).
+- `description` est optionnel. Ne pas forcer si la page n'avait pas de `<p className="lead">`.
+
+## Règle Notice
+
+Remplacer les messages système visibles de page par `<Notice>`.
+
+| Avant | Après |
+|---|---|
+| `<p className="admin-success">…</p>` | `<Notice tone="success">…</Notice>` |
+| `<p className="admin-alert" role="alert">…</p>` | `<Notice tone="alert">…</Notice>` |
+| `<p className="admin-muted-note">…</p>` (message système) | `<Notice tone="note">…</Notice>` |
+
+- `Notice tone="alert"` ajoute automatiquement `role="alert"`. Ne pas le redéfinir manuellement.
+- `Notice` est réservé aux **messages système visibles de page** : confirmations d'action, erreurs serveur, alertes globales.
+- Ne pas utiliser `Notice` pour : les aides locales de formulaire, les textes éditoriaux, les labels, les méta-informations ou tout texte contextuel interne à un champ ou une section.
+- Un `<p className="admin-muted-note">` à l'intérieur d'un formulaire comme texte d'aide contextuel se conserve tel quel — ce n'est pas un message système.
+
 ## Règle Button
 
 Remplacer `<button className="[classes existantes]" type="submit">` par `<Button className="[classes existantes]" type="submit">`.
@@ -169,7 +212,5 @@ Lot de cohérence UI — `Button` et `Card` ne sont pas applicables sur cette pa
 
 ## Éléments délibérément hors périmètre à ce stade
 
-- Boutons dans les boucles `.map()` sur les déclinaisons et les images produit (`products/[id]/page.tsx`)
-- Pages non encore touchées : `/admin/categories`, `/admin/products` (liste), `/admin/blog`, `/admin/products/new`
-- `<article className="store-card">` sur `orders/page.tsx`, `categories/page.tsx` et `blog/page.tsx` — sémantique article préservée, `getByRole("article")` dépendant dans les tests
-- `<Link>` stylés avec `.button` (ex : "Retour à la liste")
+- Boutons dans les boucles `.map()` sur les déclinaisons et les images produit (`products/[id]/page.tsx`) — lot dédié à prévoir.
+- `<article className="store-card">` sur les pages liste (`orders`, `categories`, `blog`, `products`) — sémantique `article` préservée, `getByRole("article")` dépendant dans les tests e2e.
