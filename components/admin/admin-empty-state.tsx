@@ -10,10 +10,16 @@ export function AdminEmptyState({
   description
 }: AdminEmptyStateProps) {
   return (
-    <div className="empty-state">
-      <p className="eyebrow">{eyebrow}</p>
-      <h2>{title}</h2>
-      <p className="card-copy">{description}</p>
+    <div className="empty-state rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm">
+      <p className="eyebrow text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+        {eyebrow}
+      </p>
+      <h2 className="text-lg font-semibold tracking-tight text-foreground">
+        {title}
+      </h2>
+      <p className="card-copy max-w-prose text-sm leading-6 text-muted-foreground">
+        {description}
+      </p>
     </div>
   );
 }

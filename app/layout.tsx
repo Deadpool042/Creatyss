@@ -25,8 +25,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
       className={cn("font-sans", geist.variable)}>
       <body>
         <TooltipProvider>
-          <div className="site">
-            <header className="site-header">
+          <div className="">
+            {/* <header className="site-header">
               <div className="site-header-inner ">
                 <Link
                   className="site-brand"
@@ -50,7 +50,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   <Link href="/panier">Panier</Link>
                 </nav>
               </div>
-            </header>
+            </header> */}
 
             <main className="site-main">{children}</main>
           </div>

@@ -15,11 +15,7 @@ type AdminShellProps = {
   email: string;
 };
 
-export function AdminShell({
-  children,
-  displayName,
-  email
-}: AdminShellProps) {
+export function AdminShell({ children, displayName, email }: AdminShellProps) {
   return (
     <SidebarProvider
       open={true}
@@ -30,7 +26,7 @@ export function AdminShell({
       />
 
       <SidebarInset className="h-svh overflow-hidden bg-muted/20">
-        <header className="z-20 flex h-14 shrink-0 items-center border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/80 md:px-6">
+        <header className="z-20 flex h-14 shrink-0 items-center border-b bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/80 md:px-6">
           <div className="flex min-w-0 flex-1 items-center gap-3">
             <SidebarTrigger className="-ml-1 md:hidden" />
             <Separator
