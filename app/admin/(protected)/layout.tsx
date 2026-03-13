@@ -1,5 +1,5 @@
 import { requireAuthenticatedAdmin } from "@/lib/admin-auth";
-import { AdminSidebar } from "@/components/admin/admin-sidebar";
+import { AdminShell } from "@/components/admin/admin-shell";
 
 export const dynamic = "force-dynamic";
 
@@ -13,14 +13,10 @@ export default async function ProtectedAdminLayout({
   const admin = await requireAuthenticatedAdmin();
 
   return (
-    <div className="min-h-screen md:flex">
-      <AdminSidebar
-        displayName={admin.displayName}
-        email={admin.email}
-      />
-      <div className="flex-1 min-w-0 p-4 md:p-6">
-        {children}
-      </div>
-    </div>
+    <AdminShell
+      displayName={admin.displayName}
+      email={admin.email}>
+      {children}
+    </AdminShell>
   );
 }

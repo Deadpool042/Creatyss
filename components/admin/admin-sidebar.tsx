@@ -1,3 +1,18 @@
+"use client";
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarSeparator
+} from "@/components/ui/sidebar";
 import { AdminSidebarLink } from "./admin-sidebar-link";
 
 type AdminSidebarProps = { displayName: string; email: string };
@@ -28,41 +43,78 @@ const NAV_GROUPS = [
 
 export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
   return (
-    <aside className="shrink-0 border-b border-sidebar-border bg-white/95 md:w-56 md:border-b-0 md:border-r md:sticky md:top-0 md:h-screen md:flex md:flex-col">
-      <div className="flex items-start justify-between gap-3 p-4 border-b border-sidebar-border">
-        <div className="min-w-0">
-          <p className="text-xs font-bold uppercase tracking-widest text-[#8f5d2d] mb-1">
-            Admin
+    <Sidebar collapsible="offcanvas">
+      <SidebarHeader className="gap-4 border-b border-sidebar-border px-4 py-4">
+        <Link
+          href="/admin"
+          className="rounded-lg px-2 py-1.5 transition-colors hover:bg-sidebar-accent">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8f5d2d]">
+            Administration
           </p>
-          <p className="text-sm font-semibold truncate">{displayName}</p>
-          <p className="text-xs truncate text-muted-foreground">{email}</p>
+          <p className="text-base font-semibold text-sidebar-foreground">
+            Creatyss
+          </p>
+        </Link>
+
+        <div className="rounded-lg border border-sidebar-border/80 bg-background/80 px-3 py-2">
+          <p className="truncate text-sm font-medium text-sidebar-foreground">
+            {displayName}
+          </p>
+          <p className="truncate text-xs text-muted-foreground">{email}</p>
         </div>
-        <form action="/admin/logout" method="post" className="shrink-0">
-          <button className="button link-subtle text-xs" type="submit">
+      </SidebarHeader>
+
+      <SidebarContent className="px-2 py-3">
+        <nav
+          aria-label="Navigation admin"
+          className="flex flex-col gap-1">
+          <SidebarGroup className="p-0">
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <AdminSidebarLink href="/admin">Accueil admin</AdminSidebarLink>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+
+          <SidebarSeparator className="mx-2 my-2" />
+
+          {NAV_GROUPS.map((group) => (
+            <SidebarGroup
+              key={group.label}
+              className="p-0">
+              <SidebarGroupLabel className="px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8f5d2d]">
+                {group.label}
+              </SidebarGroupLabel>
+
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {group.links.map((link) => (
+                    <AdminSidebarLink
+                      key={link.href}
+                      href={link.href}>
+                      {link.label}
+                    </AdminSidebarLink>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          ))}
+        </nav>
+      </SidebarContent>
+
+      <SidebarFooter className="border-t border-sidebar-border px-4 py-4">
+        <form
+          action="/admin/logout"
+          method="post"
+          className="w-full">
+          <Button
+            type="submit"
+            variant="ghost"
+            className="w-full justify-start rounded-lg px-2.5">
             Se déconnecter
-          </button>
+          </Button>
         </form>
-      </div>
-
-      <nav
-        aria-label="Navigation admin"
-        className="flex flex-wrap gap-1 p-3 md:block md:flex-1 md:overflow-y-auto md:p-4"
-      >
-        <AdminSidebarLink href="/admin">Accueil</AdminSidebarLink>
-
-        {NAV_GROUPS.map((group) => (
-          <div key={group.label} className="contents md:block md:mt-3">
-            <p className="hidden md:block px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#8f5d2d]">
-              {group.label}
-            </p>
-            {group.links.map((link) => (
-              <AdminSidebarLink key={link.href} href={link.href}>
-                {link.label}
-              </AdminSidebarLink>
-            ))}
-          </div>
-        ))}
-      </nav>
-    </aside>
+      </SidebarFooter>
+    </Sidebar>
   );
 }
