@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import { type AdminBlogPostSummary } from "@/db/repositories/admin-blog.repository";
 
 const blogDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
@@ -8,6 +9,10 @@ const blogDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 function getStatusLabel(status: "draft" | "published"): string {
   return status === "published" ? "Publié" : "Brouillon";
+}
+
+function getStatusBadgeVariant(status: AdminBlogPostSummary["status"]) {
+  return status === "published" ? "secondary" as const : "outline" as const;
 }
 
 type AdminBlogPostCardProps = {
@@ -20,9 +25,9 @@ export function AdminBlogPostCard({ blogPost }: AdminBlogPostCardProps) {
   return (
     <article
       aria-labelledby={titleId}
-      className="store-card admin-blog-card rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm">
-      <div className="stack gap-2">
-        <p className="card-kicker text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+      className="admin-blog-card grid h-full gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+      <div className="grid gap-2">
+        <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
           Article
         </p>
         <h2
@@ -30,33 +35,31 @@ export function AdminBlogPostCard({ blogPost }: AdminBlogPostCardProps) {
           id={titleId}>
           {blogPost.title}
         </h2>
-        <p className="card-meta text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           {blogPost.slug}
         </p>
       </div>
 
-      <p className="card-copy text-sm leading-6 text-foreground/85">
+      <p className="text-sm leading-6 text-foreground/85">
         {blogPost.excerpt ?? "Aucun extrait pour cet article."}
       </p>
 
-      <div className="admin-product-tags flex flex-wrap gap-2">
-        <span className="admin-chip border-border/70 bg-muted/50 text-xs font-medium text-foreground">
+      <div className="flex flex-wrap gap-2">
+        <Badge variant={getStatusBadgeVariant(blogPost.status)}>
           {getStatusLabel(blogPost.status)}
-        </span>
-        <span className="admin-chip border-border/70 bg-muted/50 text-xs font-medium text-foreground">
+        </Badge>
+        <Badge variant={blogPost.publishedAt ? "secondary" : "outline"}>
           {blogPost.publishedAt
             ? `Publié le ${blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}`
             : "Non publié"}
-        </span>
+        </Badge>
       </div>
 
-      <div className="pt-1">
-        <Link
-          className="link inline-flex w-fit items-center text-sm font-medium"
-          href={`/admin/blog/${blogPost.id}`}>
-          Modifier l&apos;article
-        </Link>
-      </div>
+      <Link
+        className="inline-flex w-fit items-center text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
+        href={`/admin/blog/${blogPost.id}`}>
+        Modifier l&apos;article
+      </Link>
     </article>
   );
 }
