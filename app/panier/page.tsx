@@ -89,9 +89,9 @@ export default async function CartPage({ searchParams }: CartPageProps) {
           </div>
         </div>
 
-        {statusMessage ? <p className="admin-success">{statusMessage}</p> : null}
+        {statusMessage ? <p className="notice-success">{statusMessage}</p> : null}
         {errorMessage ? (
-          <p className="admin-alert" role="alert">
+          <p className="notice-error" role="alert">
             {errorMessage}
           </p>
         ) : null}
@@ -131,7 +131,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                       {getAvailabilityLabel(line.isAvailable)}
                     </p>
                     {!line.isAvailable ? (
-                      <p className="admin-alert">
+                      <p className="notice-error">
                         Cette ligne bloque la commande. Revenez à la fiche
                         produit ou supprimez-la pour continuer.
                       </p>
@@ -141,10 +141,10 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                   <form action={updateCartItemQuantityAction} className="cart-line-form">
                     <input name="itemId" type="hidden" value={line.id} />
 
-                    <label className="admin-field cart-quantity-field">
+                    <label className="form-field cart-quantity-field">
                       <span className="meta-label">Quantité</span>
                       <input
-                        className="admin-input"
+                        className="form-input"
                         defaultValue={String(line.quantity)}
                         min="1"
                         name="quantity"
@@ -154,7 +154,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                       />
                     </label>
 
-                    <div className="admin-inline-actions">
+                    <div className="form-actions">
                       <button className="button" type="submit">
                         Mettre à jour la quantité
                       </button>
@@ -178,7 +178,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
 
             <aside className="product-panel cart-summary">
               {hasUnavailableLine ? (
-                <p className="admin-alert">
+                <p className="notice-error">
                   Au moins une ligne bloque la commande. Corrigez le panier
                   avant de continuer.
                 </p>
@@ -199,7 +199,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                 <p className="card-copy">{cart.subtotal}</p>
               </div>
 
-              <div className="admin-inline-actions">
+              <div className="form-actions">
                 <Link className="button" href="/checkout">
                   Finaliser la commande
                 </Link>

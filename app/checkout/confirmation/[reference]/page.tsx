@@ -67,7 +67,7 @@ export default async function OrderConfirmationPage({
         {paymentMessage ? (
           <p
             className={
-              paymentMessage.kind === "success" ? "admin-success" : "admin-alert"
+              paymentMessage.kind === "success" ? "notice-success" : "notice-error"
             }
           >
             {paymentMessage.text}
@@ -81,14 +81,14 @@ export default async function OrderConfirmationPage({
                 <p className="eyebrow">Synthèse</p>
                 <h2>{summary.title}</h2>
                 <p className="card-copy">{summary.description}</p>
-                <p className="admin-muted-note">{summary.nextStep}</p>
+                <p className="form-note">{summary.nextStep}</p>
               </div>
 
-              <div className="admin-product-tags">
-                <span className="admin-chip">
+              <div className="status-tag-group">
+                <span className="status-tag">
                   {getOrderStatusLabel(order.status)}
                 </span>
-                <span className="admin-chip">
+                <span className="status-tag">
                   {getPaymentStatusLabel(order.payment.status)}
                 </span>
               </div>
@@ -234,7 +234,7 @@ export default async function OrderConfirmationPage({
               <p className="card-copy">{order.totalAmount}</p>
             </div>
 
-            <div className="admin-inline-actions">
+            <div className="form-actions">
               {order.status === "pending" ? (
                 <form action={startOrderPaymentAction}>
                   <input name="reference" type="hidden" value={order.reference} />

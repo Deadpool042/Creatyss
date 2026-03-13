@@ -152,7 +152,7 @@ export default async function ProductPage({
         </div>
 
         {cartStatusMessage ? (
-          <div className="admin-success cart-feedback">
+          <div className="notice-success cart-feedback">
             <p>{cartStatusMessage}</p>
             <Link className="link" href="/panier">
               Voir le panier
@@ -160,7 +160,7 @@ export default async function ProductPage({
           </div>
         ) : null}
         {cartErrorMessage ? (
-          <p className="admin-alert" role="alert">
+          <p className="notice-error" role="alert">
             {cartErrorMessage}
           </p>
         ) : null}
@@ -199,7 +199,7 @@ export default async function ProductPage({
 
               <h2>{productStatusSummary.title}</h2>
               <p className="card-copy">{productStatusSummary.description}</p>
-              <p className="admin-muted-note">{productStatusSummary.nextStep}</p>
+              <p className="form-note">{productStatusSummary.nextStep}</p>
 
               {isSimpleProduct ? (
                 <div className="product-summary-stats">
@@ -318,10 +318,10 @@ export default async function ProductPage({
                       value={singleOffer.id}
                     />
 
-                    <label className="admin-field cart-quantity-field">
+                    <label className="form-field cart-quantity-field">
                       <span className="meta-label">Quantité</span>
                       <input
-                        className="admin-input"
+                        className="form-input"
                         defaultValue="1"
                         min="1"
                         name="quantity"
@@ -331,7 +331,7 @@ export default async function ProductPage({
                       />
                     </label>
 
-                    <div className="admin-inline-actions">
+                    <div className="form-actions">
                       <button className="button" type="submit">
                         Ajouter au panier
                       </button>
@@ -449,10 +449,10 @@ export default async function ProductPage({
                         />
                         <input name="variantId" type="hidden" value={variant.id} />
 
-                        <label className="admin-field cart-quantity-field">
+                        <label className="form-field cart-quantity-field">
                           <span className="meta-label">Quantité</span>
                           <input
-                            className="admin-input"
+                            className="form-input"
                             defaultValue="1"
                             min="1"
                             name="quantity"
@@ -462,7 +462,7 @@ export default async function ProductPage({
                           />
                         </label>
 
-                        <div className="admin-inline-actions">
+                        <div className="form-actions">
                           <button className="button" type="submit">
                             Ajouter au panier
                           </button>

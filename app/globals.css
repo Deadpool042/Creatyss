@@ -42,6 +42,10 @@
   --foreground: oklch(0.145 0 0);
   --brand: oklch(0.523 0.112 53.7);
   --brand-foreground: oklch(0.985 0 0);
+  --shell-surface: rgba(245, 242, 234, 0.92);
+  --shell-surface-blur: rgba(245, 242, 234, 0.84);
+  --shell-drawer: rgba(245, 242, 234, 0.98);
+  --shell-drawer-blur: rgba(245, 242, 234, 0.94);
 }
 
 * {
@@ -79,8 +83,24 @@ a {
   top: 0;
   z-index: 10;
   border-bottom: 1px solid rgba(31, 31, 31, 0.08);
-  background: rgba(245, 242, 234, 0.92);
-  backdrop-filter: blur(12px);
+  background: var(--shell-surface);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .site-header {
+    background: var(--shell-surface-blur);
+    backdrop-filter: blur(4px);
+  }
+}
+
+.shell-drawer {
+  background: var(--shell-drawer);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .shell-drawer {
+    background: var(--shell-drawer-blur);
+  }
 }
 
 .site-header-inner,
@@ -501,6 +521,105 @@ h3 {
 
 .article-content {
   white-space: pre-wrap;
+}
+
+/* — Public : formulaires — */
+
+.form-field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.form-input {
+  width: 100%;
+  border: 1px solid rgba(31, 31, 31, 0.16);
+  border-radius: 0.9rem;
+  background: #fff;
+  padding: 0.85rem 1rem;
+  color: inherit;
+  font: inherit;
+}
+
+.form-input:focus {
+  outline: 2px solid rgba(143, 93, 45, 0.3);
+  outline-offset: 2px;
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: inherit;
+}
+
+.form-checkbox input {
+  width: 1rem;
+  height: 1rem;
+}
+
+.form-panels {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-section {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  border: 1px solid rgba(31, 31, 31, 0.08);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 1.25rem;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.form-note {
+  margin: 0;
+  color: rgba(31, 31, 31, 0.68);
+  line-height: 1.6;
+}
+
+/* — Public : feedback — */
+
+.notice-success {
+  margin: 0;
+  border: 1px solid rgba(35, 107, 58, 0.18);
+  border-radius: 0.9rem;
+  background: rgba(35, 107, 58, 0.08);
+  padding: 0.85rem 1rem;
+  color: #1f6d37;
+}
+
+.notice-error {
+  margin: 0;
+  border: 1px solid rgba(143, 34, 34, 0.18);
+  border-radius: 0.9rem;
+  background: rgba(143, 34, 34, 0.08);
+  padding: 0.85rem 1rem;
+  color: #7a2020;
+}
+
+/* — Public : statuts — */
+
+.status-tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(31, 31, 31, 0.12);
+  border-radius: 999px;
+  background: rgba(31, 31, 31, 0.05);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
 }
 
 .admin-area {

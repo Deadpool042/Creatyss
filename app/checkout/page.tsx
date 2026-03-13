@@ -117,14 +117,14 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
           </div>
         </div>
 
-        {statusMessage ? <p className="admin-success">{statusMessage}</p> : null}
+        {statusMessage ? <p className="notice-success">{statusMessage}</p> : null}
         {errorMessage ? (
-          <p className="admin-alert" role="alert">
+          <p className="notice-error" role="alert">
             {errorMessage}
           </p>
         ) : null}
         {checkoutIssueMessage ? (
-          <p className="admin-alert" role="alert">
+          <p className="notice-error" role="alert">
             {checkoutIssueMessage}
           </p>
         ) : null}
@@ -132,20 +132,20 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         {cart ? (
           <div className="checkout-layout">
             <form
-              className="admin-form checkout-form"
+              className="checkout-form"
               noValidate
             >
-              <section className="admin-homepage-section">
+              <section className="form-section">
                 <div className="stack">
                   <p className="eyebrow">Contact</p>
                   <h2>Vos informations</h2>
                 </div>
 
-                <div className="admin-panels">
-                  <label className="admin-field">
+                <div className="form-panels">
+                  <label className="form-field">
                     <span className="meta-label">Prénom</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.customerFirstName ?? ""}
                       name="customerFirstName"
                       required
@@ -153,10 +153,10 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                     />
                   </label>
 
-                  <label className="admin-field">
+                  <label className="form-field">
                     <span className="meta-label">Nom</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.customerLastName ?? ""}
                       name="customerLastName"
                       required
@@ -165,11 +165,11 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   </label>
                 </div>
 
-                <div className="admin-panels">
-                  <label className="admin-field">
+                <div className="form-panels">
+                  <label className="form-field">
                     <span className="meta-label">Email</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.customerEmail ?? ""}
                       name="customerEmail"
                       required
@@ -177,10 +177,10 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                     />
                   </label>
 
-                  <label className="admin-field">
+                  <label className="form-field">
                     <span className="meta-label">Téléphone</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.customerPhone ?? ""}
                       name="customerPhone"
                       type="tel"
@@ -189,16 +189,16 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
               </section>
 
-              <section className="admin-homepage-section">
+              <section className="form-section">
                 <div className="stack">
                   <p className="eyebrow">Livraison</p>
                   <h2>Adresse de livraison</h2>
                 </div>
 
-                <label className="admin-field">
+                <label className="form-field">
                   <span className="meta-label">Adresse ligne 1</span>
                   <input
-                    className="admin-input"
+                    className="form-input"
                     defaultValue={draft?.shippingAddressLine1 ?? ""}
                     name="shippingAddressLine1"
                     required
@@ -206,21 +206,21 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   />
                 </label>
 
-                <label className="admin-field">
+                <label className="form-field">
                   <span className="meta-label">Adresse ligne 2</span>
                   <input
-                    className="admin-input"
+                    className="form-input"
                     defaultValue={draft?.shippingAddressLine2 ?? ""}
                     name="shippingAddressLine2"
                     type="text"
                   />
                 </label>
 
-                <div className="admin-panels">
-                  <label className="admin-field">
+                <div className="form-panels">
+                  <label className="form-field">
                     <span className="meta-label">Code postal</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.shippingPostalCode ?? ""}
                       inputMode="numeric"
                       maxLength={5}
@@ -231,10 +231,10 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                     />
                   </label>
 
-                  <label className="admin-field">
+                  <label className="form-field">
                     <span className="meta-label">Ville</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.shippingCity ?? ""}
                       name="shippingCity"
                       required
@@ -249,13 +249,13 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
               </section>
 
-              <section className="admin-homepage-section">
+              <section className="form-section">
                 <div className="stack">
                   <p className="eyebrow">Facturation</p>
                   <h2>Adresse de facturation</h2>
                 </div>
 
-                <label className="admin-checkbox">
+                <label className="form-checkbox">
                   <input
                     defaultChecked={billingSameAsShipping}
                     name="billingSameAsShipping"
@@ -265,25 +265,25 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   <span>Adresse de facturation identique</span>
                 </label>
 
-                <p className="admin-muted-note">
+                <p className="form-note">
                   Laissez la case cochée pour réutiliser l&apos;adresse de livraison.
                 </p>
 
-                <div className="admin-panels">
-                  <label className="admin-field">
+                <div className="form-panels">
+                  <label className="form-field">
                     <span className="meta-label">Prénom</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.billingFirstName ?? ""}
                       name="billingFirstName"
                       type="text"
                     />
                   </label>
 
-                  <label className="admin-field">
+                  <label className="form-field">
                     <span className="meta-label">Nom</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.billingLastName ?? ""}
                       name="billingLastName"
                       type="text"
@@ -291,11 +291,11 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   </label>
                 </div>
 
-                <div className="admin-panels">
-                  <label className="admin-field">
+                <div className="form-panels">
+                  <label className="form-field">
                     <span className="meta-label">Téléphone</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.billingPhone ?? ""}
                       name="billingPhone"
                       type="tel"
@@ -303,31 +303,31 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   </label>
                 </div>
 
-                <label className="admin-field">
+                <label className="form-field">
                   <span className="meta-label">Adresse ligne 1</span>
                   <input
-                    className="admin-input"
+                    className="form-input"
                     defaultValue={draft?.billingAddressLine1 ?? ""}
                     name="billingAddressLine1"
                     type="text"
                   />
                 </label>
 
-                <label className="admin-field">
+                <label className="form-field">
                   <span className="meta-label">Adresse ligne 2</span>
                   <input
-                    className="admin-input"
+                    className="form-input"
                     defaultValue={draft?.billingAddressLine2 ?? ""}
                     name="billingAddressLine2"
                     type="text"
                   />
                 </label>
 
-                <div className="admin-panels">
-                  <label className="admin-field">
+                <div className="form-panels">
+                  <label className="form-field">
                     <span className="meta-label">Code postal</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.billingPostalCode ?? ""}
                       inputMode="numeric"
                       maxLength={5}
@@ -337,10 +337,10 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                     />
                   </label>
 
-                  <label className="admin-field">
+                  <label className="form-field">
                     <span className="meta-label">Ville</span>
                     <input
-                      className="admin-input"
+                      className="form-input"
                       defaultValue={draft?.billingCity ?? ""}
                       name="billingCity"
                       type="text"
@@ -354,10 +354,10 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
               </section>
 
-              <div className="admin-inline-actions">
+              <div className="form-actions">
                 {canSave ? (
                   <>
-                    <p className="admin-muted-note">
+                    <p className="form-note">
                       Créez la commande une fois vos informations complètes.
                       Vous pouvez aussi les enregistrer pour plus tard.
                     </p>
@@ -373,7 +373,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                     </button>
                   </>
                 ) : (
-                  <p className="admin-muted-note">
+                  <p className="form-note">
                     La commande reste bloquée tant que le panier n&apos;est pas
                     corrigé.
                   </p>
@@ -429,7 +429,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                           {getAvailabilityLabel(line.isAvailable)}
                         </p>
                         {!line.isAvailable ? (
-                          <p className="admin-alert">
+                          <p className="notice-error">
                             Cette ligne bloque la commande tant qu&apos;elle
                             n&apos;est pas corrigée dans le panier.
                           </p>

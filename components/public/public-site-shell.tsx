@@ -36,7 +36,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
 
   return (
     <div className="site">
-      <header className="site-header z-30 border-black/5 bg-[rgba(245,242,234,0.92)] supports-[backdrop-filter]:bg-[rgba(245,242,234,0.84)] supports-[backdrop-filter]:backdrop-blur-sm">
+      <header className="site-header z-30 border-black/5">
         <div className="site-header-inner mx-auto flex min-h-14 max-w-7xl items-center justify-between gap-3 px-4 md:min-h-16 md:px-6">
           <Link
             className="flex min-w-0 items-center gap-2 text-foreground"
@@ -85,7 +85,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
               </SheetTrigger>
 
               <SheetContent
-                className="w-[min(22rem,100vw)] border-l border-black/10 bg-[rgba(245,242,234,0.98)] supports-[backdrop-filter]:bg-[rgba(245,242,234,0.94)]"
+                className="w-[min(22rem,100vw)] border-l border-black/10 shell-drawer"
                 side="right">
                 <SheetHeader className="px-4 pt-4 pb-2">
                   <SheetTitle className="text-left text-sm font-semibold uppercase tracking-[0.16em] text-foreground">

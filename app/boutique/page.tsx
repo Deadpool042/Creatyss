@@ -168,10 +168,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
 
         <form action="/boutique" className="catalog-search-form" method="get">
-          <label className="admin-field" htmlFor="catalog-search-query">
+          <label className="form-field" htmlFor="catalog-search-query">
             <span className="meta-label">Recherche</span>
             <input
-              className="admin-input"
+              className="form-input"
               defaultValue={searchQuery ?? ""}
               id="catalog-search-query"
               name="q"
@@ -180,10 +180,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             />
           </label>
 
-          <label className="admin-field" htmlFor="catalog-category-filter">
+          <label className="form-field" htmlFor="catalog-category-filter">
             <span className="meta-label">Catégorie</span>
             <select
-              className="admin-input"
+              className="form-input"
               defaultValue={filters.categorySlug ?? ""}
               id="catalog-category-filter"
               name="category"
@@ -197,7 +197,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </select>
           </label>
 
-          <label className="admin-checkbox catalog-filter-checkbox" htmlFor="catalog-availability-filter">
+          <label className="form-checkbox catalog-filter-checkbox" htmlFor="catalog-availability-filter">
             <input
               defaultChecked={filters.onlyAvailable}
               id="catalog-availability-filter"
