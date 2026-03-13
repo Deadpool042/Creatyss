@@ -1,8 +1,16 @@
 "use client";
 
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import {
+  FileText,
+  Globe,
+  ImageIcon,
+  LayoutDashboard,
+  LogOut,
+  Package,
+  ShoppingBag,
+  Tag
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -12,6 +20,9 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
   SidebarSeparator
 } from "@/components/ui/sidebar";
 import { AdminSidebarLink } from "./admin-sidebar-link";
@@ -19,44 +30,40 @@ import { AdminSidebarLink } from "./admin-sidebar-link";
 type AdminSidebarProps = {
   displayName: string;
   email: string;
-  className?: string;
 };
 
-const NAV_GROUPS = [
+const NAV_GROUPS: ReadonlyArray<{
+  label: string;
+  links: ReadonlyArray<{ href: string; label: string; icon: LucideIcon }>;
+}> = [
   {
     label: "Catalogue",
     links: [
-      { href: "/admin/products", label: "Produits" },
-      { href: "/admin/categories", label: "Catégories" }
+      { href: "/admin/products", label: "Produits", icon: Package },
+      { href: "/admin/categories", label: "Catégories", icon: Tag }
     ]
   },
   {
     label: "Contenu",
     links: [
-      { href: "/admin/homepage", label: "Page d'accueil" },
-      { href: "/admin/blog", label: "Blog" }
+      { href: "/admin/homepage", label: "Page d'accueil", icon: Globe },
+      { href: "/admin/blog", label: "Blog", icon: FileText }
     ]
   },
   {
     label: "Opérations",
     links: [
-      { href: "/admin/orders", label: "Commandes" },
-      { href: "/admin/media", label: "Médias" }
+      { href: "/admin/orders", label: "Commandes", icon: ShoppingBag },
+      { href: "/admin/media", label: "Médias", icon: ImageIcon }
     ]
   }
-] as const;
+];
 
-export function AdminSidebar({
-  displayName,
-  email,
-  className
-}: AdminSidebarProps) {
+export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
   return (
-    <Sidebar
-      className={cn(className)}
-      collapsible="offcanvas">
-      <SidebarHeader className="gap-4 border-b border-sidebar-border px-4 py-4">
-        <Link
+    <Sidebar collapsible="icon">
+      <SidebarHeader className="gap-4 border-b border-sidebar-border px-4 py-4 group-data-[collapsible=icon]:hidden">
+        <a
           href="/admin"
           className="rounded-lg px-2 py-1.5 transition-colors hover:bg-sidebar-accent">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
@@ -65,7 +72,7 @@ export function AdminSidebar({
           <p className="text-base font-semibold text-sidebar-foreground">
             Creatyss
           </p>
-        </Link>
+        </a>
 
         <div className="rounded-lg border border-sidebar-border/80 bg-background/80 px-3 py-2">
           <p className="truncate text-sm font-medium text-sidebar-foreground">
@@ -82,7 +89,12 @@ export function AdminSidebar({
           <SidebarGroup className="p-0">
             <SidebarGroupContent>
               <SidebarMenu>
-                <AdminSidebarLink href="/admin">Accueil admin</AdminSidebarLink>
+                <AdminSidebarLink
+                  href="/admin"
+                  icon={LayoutDashboard}
+                  tooltip="Accueil admin">
+                  Accueil admin
+                </AdminSidebarLink>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
@@ -102,7 +114,9 @@ export function AdminSidebar({
                   {group.links.map((link) => (
                     <AdminSidebarLink
                       key={link.href}
-                      href={link.href}>
+                      href={link.href}
+                      icon={link.icon}
+                      tooltip={link.label}>
                       {link.label}
                     </AdminSidebarLink>
                   ))}
@@ -113,19 +127,26 @@ export function AdminSidebar({
         </nav>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border px-4 py-4">
-        <form
-          action="/admin/logout"
-          method="post"
-          className="w-full">
-          <Button
-            type="submit"
-            variant="ghost"
-            className="w-full justify-start rounded-lg px-2.5">
-            Se déconnecter
-          </Button>
-        </form>
+      <SidebarFooter className="border-t border-sidebar-border">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <form
+              action="/admin/logout"
+              method="post">
+              <SidebarMenuButton
+                type="submit"
+                tooltip="Se déconnecter">
+                <LogOut />
+                <span className="group-data-[collapsible=icon]:hidden">
+                  Se déconnecter
+                </span>
+              </SidebarMenuButton>
+            </form>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
+
+      <SidebarRail />
     </Sidebar>
   );
 }
