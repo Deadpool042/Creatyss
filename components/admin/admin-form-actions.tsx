@@ -1,7 +1,18 @@
-type AdminFormActionsProps = {
-  children: React.ReactNode;
-};
+import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
-export function AdminFormActions({ children }: AdminFormActionsProps) {
-  return <div className="admin-actions">{children}</div>;
+type AdminFormActionsProps = Readonly<{
+  children: ReactNode;
+  className?: string;
+}>;
+
+export function AdminFormActions({
+  children,
+  className
+}: AdminFormActionsProps) {
+  return (
+    <div className={cn("admin-actions flex flex-wrap items-center gap-3", className)}>
+      {children}
+    </div>
+  );
 }

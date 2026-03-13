@@ -1,3 +1,4 @@
+//app/layout.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";

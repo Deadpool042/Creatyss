@@ -1,3 +1,4 @@
+//components/admin/admin-shell.tsx
 "use client";
 
 import type { ReactNode } from "react";

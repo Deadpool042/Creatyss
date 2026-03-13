@@ -1,3 +1,4 @@
+// app/admin/(protected)/layout.tsx
 import { requireAuthenticatedAdmin } from "@/lib/admin-auth";
 import { AdminShell } from "@/components/admin/admin-shell";
 

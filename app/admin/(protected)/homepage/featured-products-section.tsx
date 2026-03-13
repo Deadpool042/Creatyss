@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Notice } from "@/components/notice";
-import { SectionIntro } from "@/components/section-intro";
+import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 
 type ProductOption = {
@@ -19,13 +20,10 @@ export function FeaturedProductsSection({
   productSelectionMap
 }: FeaturedProductsSectionProps) {
   return (
-    <AdminFormSection>
-      <SectionIntro
-        className="stack"
-        description="En complément, choisissez les produits publiés à afficher sur la page d'accueil."
-        eyebrow="Produits"
-        title="Produits mis en avant"
-      />
+    <AdminFormSection
+      description="En complément, choisissez les produits publiés à afficher sur la page d'accueil."
+      eyebrow="Produits"
+      title="Produits mis en avant">
 
       <Notice tone="note">
         Ces sélections complètent la page après la bannière principale et le
@@ -36,7 +34,7 @@ export function FeaturedProductsSection({
         <div className="admin-homepage-option-grid">
           {productOptions.map(product => (
             <Card
-              className="store-card admin-homepage-option"
+              className="admin-homepage-option rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm"
               key={product.id}>
               <label className="admin-checkbox">
                 <input
@@ -51,18 +49,20 @@ export function FeaturedProductsSection({
                 </span>
               </label>
 
-              <label className="admin-field admin-selection-order">
-                <span className="meta-label">Ordre</span>
-                <input
-                  className="admin-input"
+              <AdminFormField
+                className="admin-selection-order"
+                htmlFor={`homepage-featured-product-sort-order-${product.id}`}
+                label="Ordre">
+                <Input
                   defaultValue={
                     productSelectionMap.get(product.id)?.toString() ?? ""
                   }
+                  id={`homepage-featured-product-sort-order-${product.id}`}
                   min="0"
                   name={`featuredProductSortOrder:${product.id}`}
                   type="number"
                 />
-              </label>
+              </AdminFormField>
             </Card>
           ))}
         </div>

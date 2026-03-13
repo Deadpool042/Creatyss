@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/notice";
 import { PageHeader } from "@/components/page-header";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
+import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 import { createProductAction } from "@/features/admin/products/actions/create-product-action";
 
@@ -14,6 +17,17 @@ type NewAdminProductPageProps = Readonly<{
     error?: string | string[];
   }>;
 }>;
+
+const newProductFieldIds = {
+  name: "new-product-name",
+  slug: "new-product-slug",
+  shortDescription: "new-product-short-description",
+  description: "new-product-description",
+  seoTitle: "new-product-seo-title",
+  seoDescription: "new-product-seo-description",
+  status: "new-product-status",
+  productType: "new-product-type"
+} as const;
 
 function getErrorMessage(error: string | undefined): string | null {
   switch (error) {
@@ -68,118 +82,138 @@ export default async function NewAdminProductPage({
       <form
         action={createProductAction}
         className="admin-form admin-product-form">
-        <AdminFormField label="Nom">
-          <input
-            className="admin-input"
-            name="name"
-            required
-            type="text"
-          />
-        </AdminFormField>
+        <AdminFormSection title="Informations générales">
+          <AdminFormField
+            htmlFor={newProductFieldIds.name}
+            label="Nom">
+            <Input
+              id={newProductFieldIds.name}
+              name="name"
+              required
+              type="text"
+            />
+          </AdminFormField>
 
-        <AdminFormField label="Slug">
-          <input
-            className="admin-input"
-            name="slug"
-            required
-            type="text"
-          />
-        </AdminFormField>
+          <AdminFormField
+            htmlFor={newProductFieldIds.slug}
+            label="Slug">
+            <Input
+              id={newProductFieldIds.slug}
+              name="slug"
+              required
+              type="text"
+            />
+          </AdminFormField>
 
-        <AdminFormField label="Description courte">
-          <textarea
-            className="admin-input admin-textarea"
-            name="shortDescription"
-            rows={3}
-          />
-        </AdminFormField>
+          <AdminFormField
+            htmlFor={newProductFieldIds.shortDescription}
+            label="Description courte">
+            <Textarea
+              id={newProductFieldIds.shortDescription}
+              name="shortDescription"
+              rows={3}
+            />
+          </AdminFormField>
 
-        <AdminFormField label="Description">
-          <textarea
-            className="admin-input admin-textarea"
-            name="description"
-            rows={6}
-          />
-        </AdminFormField>
+          <AdminFormField
+            htmlFor={newProductFieldIds.description}
+            label="Description">
+            <Textarea
+              id={newProductFieldIds.description}
+              name="description"
+              rows={6}
+            />
+          </AdminFormField>
+        </AdminFormSection>
 
-        <AdminFormField label="Titre SEO">
-          <input
-            className="admin-input"
-            name="seoTitle"
-            type="text"
-          />
-        </AdminFormField>
+        <AdminFormSection title="Référencement">
+          <AdminFormField
+            htmlFor={newProductFieldIds.seoTitle}
+            label="Titre SEO">
+            <Input
+              id={newProductFieldIds.seoTitle}
+              name="seoTitle"
+              type="text"
+            />
+          </AdminFormField>
 
-        <AdminFormField label="Description SEO">
-          <textarea
-            className="admin-input admin-textarea"
-            name="seoDescription"
-            rows={3}
-          />
-        </AdminFormField>
+          <AdminFormField
+            htmlFor={newProductFieldIds.seoDescription}
+            label="Description SEO">
+            <Textarea
+              id={newProductFieldIds.seoDescription}
+              name="seoDescription"
+              rows={3}
+            />
+          </AdminFormField>
+        </AdminFormSection>
 
-        <AdminFormField label="Statut">
-          <select
-            className="admin-input"
-            defaultValue="draft"
-            name="status">
-            <option value="draft">Brouillon</option>
-            <option value="published">Publié</option>
-          </select>
-        </AdminFormField>
+        <AdminFormSection title="Publication et organisation">
+          <AdminFormField
+            htmlFor={newProductFieldIds.status}
+            label="Statut">
+            <select
+              className="admin-input"
+              defaultValue="draft"
+              id={newProductFieldIds.status}
+              name="status">
+              <option value="draft">Brouillon</option>
+              <option value="published">Publié</option>
+            </select>
+          </AdminFormField>
 
-        <AdminFormField label="Type de produit">
-          <select
-            className="admin-input"
-            defaultValue="variable"
-            name="productType">
-            <option value="simple">Produit simple</option>
-            <option value="variable">Produit avec déclinaisons</option>
-          </select>
-        </AdminFormField>
+          <AdminFormField
+            description="Un produit simple se gère via ses informations de vente. Un produit avec déclinaisons pourra accueillir plusieurs déclinaisons."
+            htmlFor={newProductFieldIds.productType}
+            label="Type de produit">
+            <select
+              className="admin-input"
+              defaultValue="variable"
+              id={newProductFieldIds.productType}
+              name="productType">
+              <option value="simple">Produit simple</option>
+              <option value="variable">Produit avec déclinaisons</option>
+            </select>
+          </AdminFormField>
 
-        <p className="admin-muted-note">
-          Un produit simple se gère via ses informations de vente. Un produit
-          avec déclinaisons pourra accueillir plusieurs déclinaisons.
-        </p>
+          <fieldset className="admin-fieldset">
+            <legend className="meta-label">Catégories</legend>
 
-        <fieldset className="admin-fieldset">
-          <legend className="meta-label">Catégories</legend>
+            {categories.length > 0 ? (
+              <div className="admin-checkbox-grid">
+                {categories.map(category => (
+                  <label
+                    className="admin-checkbox"
+                    key={category.id}>
+                    <input
+                      name="categoryIds"
+                      type="checkbox"
+                      value={category.id}
+                    />
+                    <span>
+                      {category.name}
+                      <span className="card-meta"> · {category.slug}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            ) : (
+              <p className="card-copy">
+                Aucune catégorie n&apos;est encore disponible. Vous pourrez en
+                ajouter plus tard.
+              </p>
+            )}
+          </fieldset>
 
-          {categories.length > 0 ? (
-            <div className="admin-checkbox-grid">
-              {categories.map(category => (
-                <label
-                  className="admin-checkbox"
-                  key={category.id}>
-                  <input
-                    name="categoryIds"
-                    type="checkbox"
-                    value={category.id}
-                  />
-                  <span>
-                    {category.name}
-                    <span className="card-meta"> · {category.slug}</span>
-                  </span>
-                </label>
-              ))}
-            </div>
-          ) : (
-            <p className="card-copy">
-              Aucune catégorie n&apos;est encore disponible. Vous pourrez en
-              ajouter plus tard.
-            </p>
-          )}
-        </fieldset>
-
-        <label className="admin-checkbox">
-          <input
-            name="isFeatured"
-            type="checkbox"
-            value="on"
-          />
-          <span>Mettre ce produit en avant</span>
-        </label>
+          <label className="admin-checkbox">
+            <input
+              name="isFeatured"
+              type="checkbox"
+              value="on"
+            />
+            <span>Mettre ce produit en avant</span>
+          </label>
+        </AdminFormSection>
 
         <AdminFormActions>
           <Button

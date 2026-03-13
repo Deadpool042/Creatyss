@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/notice";
-import { SectionIntro } from "@/components/section-intro";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 
@@ -30,13 +31,10 @@ export function HeroSection({
   mediaAssets
 }: HeroSectionProps) {
   return (
-    <AdminFormSection>
-      <SectionIntro
-        className="stack"
-        description="Renseignez ici le titre, le texte et l'image visibles en haut de la page d'accueil."
-        eyebrow="Mise en avant principale"
-        title="Bannière principale"
-      />
+    <AdminFormSection
+      description="Renseignez ici le titre, le texte et l'image visibles en haut de la page d'accueil."
+      eyebrow="Mise en avant principale"
+      title="Bannière principale">
 
       {heroImageUrl ? (
         <div className="admin-homepage-hero-preview">
@@ -51,28 +49,35 @@ export function HeroSection({
         </div>
       )}
 
-      <AdminFormField label="Titre principal">
-        <input
-          className="admin-input"
+      <AdminFormField
+        htmlFor="homepage-hero-title"
+        label="Titre principal">
+        <Input
           defaultValue={heroTitle ?? ""}
+          id="homepage-hero-title"
           name="heroTitle"
           type="text"
         />
       </AdminFormField>
 
-      <AdminFormField label="Texte principal">
-        <textarea
-          className="admin-input admin-textarea"
+      <AdminFormField
+        htmlFor="homepage-hero-text"
+        label="Texte principal">
+        <Textarea
           defaultValue={heroText ?? ""}
+          id="homepage-hero-text"
           name="heroText"
           rows={4}
         />
       </AdminFormField>
 
-      <AdminFormField label="Image principale">
+      <AdminFormField
+        htmlFor="homepage-hero-image"
+        label="Image principale">
         <select
           className="admin-input"
           defaultValue={heroImageSelectValue}
+          id="homepage-hero-image"
           name="heroImageMediaAssetId">
           {heroImagePath !== null && currentHeroMediaAsset === null ? (
             <option value="__keep_current__">

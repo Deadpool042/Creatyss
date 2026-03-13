@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Notice } from "@/components/notice";
-import { SectionIntro } from "@/components/section-intro";
+import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 
 type BlogPostOption = {
@@ -19,19 +20,16 @@ export function FeaturedBlogPostsSection({
   blogPostSelectionMap
 }: FeaturedBlogPostsSectionProps) {
   return (
-    <AdminFormSection>
-      <SectionIntro
-        className="stack"
-        description="En complément, choisissez les articles publiés à afficher sur la page d'accueil."
-        eyebrow="Articles"
-        title="Articles mis en avant"
-      />
+    <AdminFormSection
+      description="En complément, choisissez les articles publiés à afficher sur la page d'accueil."
+      eyebrow="Articles"
+      title="Articles mis en avant">
 
       {blogPostOptions.length > 0 ? (
         <div className="admin-homepage-option-grid">
           {blogPostOptions.map(post => (
             <Card
-              className="store-card admin-homepage-option"
+              className="admin-homepage-option rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm"
               key={post.id}>
               <label className="admin-checkbox">
                 <input
@@ -46,18 +44,20 @@ export function FeaturedBlogPostsSection({
                 </span>
               </label>
 
-              <label className="admin-field admin-selection-order">
-                <span className="meta-label">Ordre</span>
-                <input
-                  className="admin-input"
+              <AdminFormField
+                className="admin-selection-order"
+                htmlFor={`homepage-featured-blog-post-sort-order-${post.id}`}
+                label="Ordre">
+                <Input
                   defaultValue={
                     blogPostSelectionMap.get(post.id)?.toString() ?? ""
                   }
+                  id={`homepage-featured-blog-post-sort-order-${post.id}`}
                   min="0"
                   name={`featuredBlogPostSortOrder:${post.id}`}
                   type="number"
                 />
-              </label>
+              </AdminFormField>
             </Card>
           ))}
         </div>
