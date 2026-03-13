@@ -37,16 +37,21 @@ Le projet couvre actuellement les fondations principales de la boutique Creatyss
 - SEO de base
 - authentification admin simple et sécurisée
 
-L’évolution du projet est documentée par versions et par lots dans `docs/`, en particulier dans `docs/v6/`.
+L’évolution du projet est documentée par versions et par lots dans `docs/`. La phase UI/UX admin en cours est cadrée dans `docs/v7/`, tandis que `docs/v6/` reste une base documentaire utile pour les fondations métier et structurelles.
 
 ## Documentation de référence actuelle
 
 - `AGENTS.md` : règles de travail, structure du repo et discipline de modification.
-- `docs/v6/scope.md` : périmètre fonctionnel V6.
-- `docs/v6/data-model.md` : modèle métier V6.
-- `docs/v6/roadmap.md` : séquencement des lots V6.
-- `docs/v6/admin-language-and-ux.md` : langage visible et UX admin produit.
+- `docs/v7/README.md` : point d’entrée de la phase V7, centrée sur l’évolution UI/UX admin et le découpage des pages.
+
+Bases complémentaires selon le besoin :
+
+- `docs/v6/scope.md` : périmètre fonctionnel et fondations du projet.
+- `docs/v6/data-model.md` : modèle métier.
+- `docs/v6/roadmap.md` : structuration des lots V6 et historique utile.
+- `docs/v6/admin-language-and-ux.md` : langage visible et UX admin métier.
 - `docs/v6/glossary.md` : vocabulaire métier officiel, termes UI autorisés ou à éviter, et hiérarchie documentaire actuelle.
+- `docs/v6/tailwind-shadcn-migration.md` : règles de migration Tailwind/shadcn prolongées par V7.
 
 Pour un lot donné, les documents explicitement cités dans la demande priment. Sauf mention contraire, les anciennes docs V1 à V5 et les documents historiques restent du contexte utile, pas la source de vérité courante.
 
@@ -190,7 +195,7 @@ docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -
 pnpm run typecheck
 ```
 
-L’évolution fonctionnelle et structurelle en cours est documentée par version dans `docs/`, notamment `docs/v6/`.
+L’évolution fonctionnelle et structurelle en cours est documentée par version dans `docs/`, avec `docs/v7/README.md` comme point d’entrée pour la phase UI/UX admin actuelle.
 
 ## Seed dev
 
@@ -336,10 +341,13 @@ Documentation générale :
 
 Documentation versionnée en cours :
 
+- `docs/v7/README.md`
 - `docs/v6/scope.md`
 - `docs/v6/data-model.md`
 - `docs/v6/roadmap.md`
 - `docs/v6/admin-language-and-ux.md`
+- `docs/v6/glossary.md`
+- `docs/v6/tailwind-shadcn-migration.md`
 
 ## Contraintes importantes
 
@@ -364,6 +372,6 @@ Le dépôt contient une base locale exploitable pour Creatyss avec :
 - front public catalogue, blog et homepage
 - SEO de base sur produits et articles
 
-Le projet évolue désormais par versions et lots documentés dans `docs/`, avec un cadrage actif dans `docs/v6/`.
+Le projet évolue désormais par versions et lots documentés dans `docs/`, avec `docs/v7/` comme phase UI/admin en cours et `docs/v6/` comme base documentaire métier et structurelle.
 
 La checklist manuelle de recette historique reste centralisée dans `docs/v1-qa-checklist.md`.

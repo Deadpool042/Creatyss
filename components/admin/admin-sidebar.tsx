@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Sidebar,
@@ -15,7 +16,11 @@ import {
 } from "@/components/ui/sidebar";
 import { AdminSidebarLink } from "./admin-sidebar-link";
 
-type AdminSidebarProps = { displayName: string; email: string };
+type AdminSidebarProps = {
+  displayName: string;
+  email: string;
+  className?: string;
+};
 
 const NAV_GROUPS = [
   {
@@ -41,9 +46,15 @@ const NAV_GROUPS = [
   }
 ] as const;
 
-export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
+export function AdminSidebar({
+  displayName,
+  email,
+  className
+}: AdminSidebarProps) {
   return (
-    <Sidebar collapsible="offcanvas">
+    <Sidebar
+      className={cn(className)}
+      collapsible="offcanvas">
       <SidebarHeader className="gap-4 border-b border-sidebar-border px-4 py-4">
         <Link
           href="/admin"
