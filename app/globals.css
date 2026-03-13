@@ -83,9 +83,9 @@ a {
 
 .site-header-inner,
 .site-main {
-  width: min(100%, 72rem);
+  width: 100%;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 auto;
 }
 
 .site-header-inner {

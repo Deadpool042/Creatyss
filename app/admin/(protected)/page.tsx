@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -16,10 +16,14 @@ export default function AdminHomePage() {
         <div className="store-card">
           <p className="card-kicker">Accès rapide</p>
           <div className="admin-actions">
-            <Link className="button" href="/admin/products/new">
+            <Link
+              className="button"
+              href="/admin/products/new">
               Nouveau produit
             </Link>
-            <Link className="button link-subtle" href="/admin/orders">
+            <Link
+              className="button link-subtle"
+              href="/admin/orders">
               Voir les commandes
             </Link>
           </div>

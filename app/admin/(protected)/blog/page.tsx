@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Notice } from "@/components/ui/notice";
-import { PageHeader } from "@/components/ui/page-header";
+import { Notice } from "@/components/notice";
+import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminBlogPostCard } from "@/components/admin/admin-blog-post-card";
 import { listAdminBlogPosts } from "@/db/repositories/admin-blog.repository";
@@ -51,7 +51,9 @@ export default async function AdminBlogPage({
       <section className="section">
         <PageHeader
           actions={
-            <Link className="button" href="/admin/blog/new">
+            <Link
+              className="button"
+              href="/admin/blog/new">
               Nouvel article
             </Link>
           }
@@ -60,13 +62,18 @@ export default async function AdminBlogPage({
           title="Articles"
         />
 
-        {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
+        {successMessage ? (
+          <Notice tone="success">{successMessage}</Notice>
+        ) : null}
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {blogPosts.length > 0 ? (
           <div className="admin-blog-list">
-            {blogPosts.map((blogPost) => (
-              <AdminBlogPostCard key={blogPost.id} blogPost={blogPost} />
+            {blogPosts.map(blogPost => (
+              <AdminBlogPostCard
+                key={blogPost.id}
+                blogPost={blogPost}
+              />
             ))}
           </div>
         ) : (

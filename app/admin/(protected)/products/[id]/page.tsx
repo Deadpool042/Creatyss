@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/ui/notice";
-import { PageHeader } from "@/components/ui/page-header";
-import { SectionIntro } from "@/components/ui/section-intro";
+import { Notice } from "@/components/notice";
+import { PageHeader } from "@/components/page-header";
+import { SectionIntro } from "@/components/section-intro";
 import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/admin-media";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 import {
@@ -14,9 +14,7 @@ import {
   listAdminProductImages,
   type AdminProductImage
 } from "@/db/repositories/admin-product-image.repository";
-import {
-  listAdminProductVariants,
-} from "@/db/repositories/admin-product-variant.repository";
+import { listAdminProductVariants } from "@/db/repositories/admin-product-variant.repository";
 import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
 import { deleteProductAction } from "@/features/admin/products/actions/delete-product-action";
 import { deleteProductImageAction } from "@/features/admin/products/actions/delete-product-image-action";
@@ -134,7 +132,9 @@ function getVariantStatusMessage(status: string | undefined): string | null {
   }
 }
 
-function getSimpleOfferStatusMessage(status: string | undefined): string | null {
+function getSimpleOfferStatusMessage(
+  status: string | undefined
+): string | null {
   switch (status) {
     case "updated":
       return "Les informations de vente ont été mises à jour avec succès.";
@@ -335,7 +335,7 @@ function groupVariantImages(
 }
 
 function getPrimaryImageState(images: AdminProductImage[]): PrimaryImageState {
-  const primaryImage = images.find((image) => image.isPrimary) ?? null;
+  const primaryImage = images.find(image => image.isPrimary) ?? null;
   const displayImage = primaryImage ?? images[0] ?? null;
 
   return {
@@ -364,7 +364,8 @@ function getPrimaryImageExtraImagesMessage(
 ): string {
   const scopeLabel = scope === "product" ? "ce produit" : "cette déclinaison";
   const imageLabel = extraImageCount > 1 ? "images" : "image";
-  const extraLabel = extraImageCount > 1 ? "supplémentaires restent" : "supplémentaire reste";
+  const extraLabel =
+    extraImageCount > 1 ? "supplémentaires restent" : "supplémentaire reste";
   const associationLabel = extraImageCount > 1 ? "associées" : "associée";
 
   return `${extraImageCount} ${imageLabel} ${extraLabel} ${associationLabel} à ${scopeLabel}. Les réglages complémentaires restent disponibles plus bas.`;
@@ -380,7 +381,9 @@ function renderMediaLibraryNotice() {
   return (
     <Notice tone="note">
       Aucun média n&apos;est disponible. Ajoutez d&apos;abord une image dans{" "}
-      <Link className="link" href="/admin/media">
+      <Link
+        className="link"
+        href="/admin/media">
         la bibliothèque médias
       </Link>
       .
@@ -423,10 +426,20 @@ function renderPrimaryImageManager(input: PrimaryImageManagerProps) {
       ) : null}
 
       {input.mediaAssets.length > 0 ? (
-        <form action={input.setAction} className={input.formClassName}>
-          <input name="productId" type="hidden" value={input.productId} />
+        <form
+          action={input.setAction}
+          className={input.formClassName}>
+          <input
+            name="productId"
+            type="hidden"
+            value={input.productId}
+          />
           {input.variantId ? (
-            <input name="variantId" type="hidden" value={input.variantId} />
+            <input
+              name="variantId"
+              type="hidden"
+              value={input.variantId}
+            />
           ) : null}
 
           <label className="admin-field">
@@ -434,13 +447,16 @@ function renderPrimaryImageManager(input: PrimaryImageManagerProps) {
             <select
               className="admin-input"
               defaultValue={input.currentMediaAssetId}
-              name="mediaAssetId"
-            >
-              <option disabled value="">
+              name="mediaAssetId">
+              <option
+                disabled
+                value="">
                 Sélectionnez un média
               </option>
-              {input.mediaAssets.map((mediaAsset) => (
-                <option key={mediaAsset.id} value={mediaAsset.id}>
+              {input.mediaAssets.map(mediaAsset => (
+                <option
+                  key={mediaAsset.id}
+                  value={mediaAsset.id}>
                   {mediaAsset.originalName} · {mediaAsset.mimeType}
                 </option>
               ))}
@@ -448,7 +464,9 @@ function renderPrimaryImageManager(input: PrimaryImageManagerProps) {
           </label>
 
           <div className="admin-inline-actions">
-            <button className="button" type="submit">
+            <button
+              className="button"
+              type="submit">
               {getPrimaryImageSubmitLabel(input.state.primaryImage !== null)}
             </button>
           </div>
@@ -459,12 +477,22 @@ function renderPrimaryImageManager(input: PrimaryImageManagerProps) {
 
       {input.state.primaryImage ? (
         <form action={input.deleteAction}>
-          <input name="productId" type="hidden" value={input.productId} />
+          <input
+            name="productId"
+            type="hidden"
+            value={input.productId}
+          />
           {input.variantId ? (
-            <input name="variantId" type="hidden" value={input.variantId} />
+            <input
+              name="variantId"
+              type="hidden"
+              value={input.variantId}
+            />
           ) : null}
 
-          <button className="button link-subtle" type="submit">
+          <button
+            className="button link-subtle"
+            type="submit">
             Supprimer l&apos;image principale
           </button>
         </form>
@@ -481,14 +509,16 @@ function findMediaAssetByFilePath(
     return null;
   }
 
-  return mediaAssets.find((mediaAsset) => mediaAsset.filePath === filePath) ?? null;
+  return (
+    mediaAssets.find(mediaAsset => mediaAsset.filePath === filePath) ?? null
+  );
 }
 
 function isCategoryAssigned(
   assignedCategories: AdminProductCategoryAssignment[],
   categoryId: string
 ): boolean {
-  return assignedCategories.some((category) => category.id === categoryId);
+  return assignedCategories.some(category => category.id === categoryId);
 }
 
 function renderImagePreview(
@@ -507,7 +537,10 @@ function renderImagePreview(
 
   return (
     <div className="admin-image-preview">
-      <img alt={image.altText ?? "Image produit"} src={imageUrl} />
+      <img
+        alt={image.altText ?? "Image produit"}
+        src={imageUrl}
+      />
     </div>
   );
 }
@@ -535,7 +568,9 @@ function getSimpleOfferFormDefaults(product: {
       product.simpleOffer?.compareAtPrice ??
       "",
     stockQuantity: String(
-      product.simpleOfferFields.stockQuantity ?? product.simpleOffer?.stockQuantity ?? 0
+      product.simpleOfferFields.stockQuantity ??
+        product.simpleOffer?.stockQuantity ??
+        0
     )
   };
 }
@@ -561,7 +596,7 @@ export default async function ProductDetailPage({
     ]);
 
   const uploadsPublicPath = getUploadsPublicPath();
-  const parentImages = images.filter((image) => image.variantId === null);
+  const parentImages = images.filter(image => image.variantId === null);
   const variantImagesById = groupVariantImages(images);
   const productPrimaryImageState = getPrimaryImageState(parentImages);
   const currentProductPrimaryMediaAsset = findMediaAssetByFilePath(
@@ -628,8 +663,10 @@ export default async function ProductDetailPage({
     simpleOffer: product.simpleOffer,
     fallbackLabel: productPresentation.sellableCountLabel
   });
-  const simpleProductHasNoLegacyVariant = isSimpleProduct && variants.length === 0;
-  const simpleProductHasSingleLegacyVariant = isSimpleProduct && variants.length === 1;
+  const simpleProductHasNoLegacyVariant =
+    isSimpleProduct && variants.length === 0;
+  const simpleProductHasSingleLegacyVariant =
+    isSimpleProduct && variants.length === 1;
   const simpleProductHasInconsistentVariantCount =
     isSimpleProduct && variants.length > 1;
   const showSimpleOfferForm =
@@ -646,7 +683,9 @@ export default async function ProductDetailPage({
       <section className="section admin-product-section">
         <PageHeader
           actions={
-            <Link className="link-subtle button" href="/admin/products">
+            <Link
+              className="link-subtle button"
+              href="/admin/products">
               Retour à la liste
             </Link>
           }
@@ -662,7 +701,9 @@ export default async function ProductDetailPage({
         />
 
         <div className="admin-product-tags">
-          <span className="admin-chip">{getProductStatusLabel(product.status)}</span>
+          <span className="admin-chip">
+            {getProductStatusLabel(product.status)}
+          </span>
           <span className="admin-chip">{productPresentation.typeLabel}</span>
           <span className="admin-chip">
             {product.isFeatured ? "Mis en avant" : "Standard"}
@@ -690,8 +731,14 @@ export default async function ProductDetailPage({
           <Notice tone="alert">{productErrorMessage}</Notice>
         ) : null}
 
-        <form action={updateProductAction} className="admin-form admin-product-form">
-          <input name="productId" type="hidden" value={product.id} />
+        <form
+          action={updateProductAction}
+          className="admin-form admin-product-form">
+          <input
+            name="productId"
+            type="hidden"
+            value={product.id}
+          />
 
           <label className="admin-field">
             <span className="meta-label">Nom</span>
@@ -757,7 +804,10 @@ export default async function ProductDetailPage({
 
           <label className="admin-field">
             <span className="meta-label">Statut</span>
-            <select className="admin-input" defaultValue={product.status} name="status">
+            <select
+              className="admin-input"
+              defaultValue={product.status}
+              name="status">
               <option value="draft">Brouillon</option>
               <option value="published">Publié</option>
             </select>
@@ -768,8 +818,7 @@ export default async function ProductDetailPage({
             <select
               className="admin-input"
               defaultValue={product.productType}
-              name="productType"
-            >
+              name="productType">
               <option value="simple">Produit simple</option>
               <option value="variable">Produit avec déclinaisons</option>
             </select>
@@ -780,10 +829,15 @@ export default async function ProductDetailPage({
 
             {categories.length > 0 ? (
               <div className="admin-checkbox-grid">
-                {categories.map((category) => (
-                  <label className="admin-checkbox" key={category.id}>
+                {categories.map(category => (
+                  <label
+                    className="admin-checkbox"
+                    key={category.id}>
                     <input
-                      defaultChecked={isCategoryAssigned(product.categories, category.id)}
+                      defaultChecked={isCategoryAssigned(
+                        product.categories,
+                        category.id
+                      )}
                       name="categoryIds"
                       type="checkbox"
                       value={category.id}
@@ -813,7 +867,9 @@ export default async function ProductDetailPage({
           </label>
 
           <div className="admin-actions">
-            <Button className="button" type="submit">
+            <Button
+              className="button"
+              type="submit">
               Enregistrer le produit
             </Button>
           </div>
@@ -838,7 +894,8 @@ export default async function ProductDetailPage({
         {renderPrimaryImageManager({
           currentMediaAssetId: currentProductPrimaryMediaAsset?.id ?? "",
           deleteAction: deleteProductPrimaryImageAction,
-          description: "Choisissez ici le visuel principal affiché pour ce produit.",
+          description:
+            "Choisissez ici le visuel principal affiché pour ce produit.",
           formClassName: "admin-form admin-product-form",
           mediaAssets,
           productId: product.id,
@@ -861,20 +918,38 @@ export default async function ProductDetailPage({
           {hasMediaAssets ? (
             <form
               action={createProductImageAction}
-              className="admin-form admin-product-form"
-            >
-              <input name="productId" type="hidden" value={product.id} />
-              <input name="variantId" type="hidden" value="" />
-              <input name="imageScope" type="hidden" value="product" />
+              className="admin-form admin-product-form">
+              <input
+                name="productId"
+                type="hidden"
+                value={product.id}
+              />
+              <input
+                name="variantId"
+                type="hidden"
+                value=""
+              />
+              <input
+                name="imageScope"
+                type="hidden"
+                value="product"
+              />
 
               <label className="admin-field">
                 <span className="meta-label">Média existant</span>
-                <select className="admin-input" defaultValue="" name="mediaAssetId">
-                  <option disabled value="">
+                <select
+                  className="admin-input"
+                  defaultValue=""
+                  name="mediaAssetId">
+                  <option
+                    disabled
+                    value="">
                     Sélectionnez un média
                   </option>
-                  {mediaAssets.map((mediaAsset) => (
-                    <option key={mediaAsset.id} value={mediaAsset.id}>
+                  {mediaAssets.map(mediaAsset => (
+                    <option
+                      key={mediaAsset.id}
+                      value={mediaAsset.id}>
                       {mediaAsset.originalName} · {mediaAsset.mimeType}
                     </option>
                   ))}
@@ -883,7 +958,11 @@ export default async function ProductDetailPage({
 
               <label className="admin-field">
                 <span className="meta-label">Texte alternatif</span>
-                <input className="admin-input" name="altText" type="text" />
+                <input
+                  className="admin-input"
+                  name="altText"
+                  type="text"
+                />
               </label>
 
               <label className="admin-field">
@@ -897,12 +976,18 @@ export default async function ProductDetailPage({
               </label>
 
               <label className="admin-checkbox">
-                <input name="isPrimary" type="checkbox" value="on" />
+                <input
+                  name="isPrimary"
+                  type="checkbox"
+                  value="on"
+                />
                 <span>Définir comme image principale du produit</span>
               </label>
 
               <div className="admin-actions">
-                <button className="button" type="submit">
+                <button
+                  className="button"
+                  type="submit">
                   Ajouter une image produit
                 </button>
               </div>
@@ -913,27 +998,44 @@ export default async function ProductDetailPage({
 
           {parentImages.length > 0 ? (
             <div className="admin-record-list">
-              {parentImages.map((image) => (
-                <article className="store-card admin-image-card" key={image.id}>
+              {parentImages.map(image => (
+                <article
+                  className="store-card admin-image-card"
+                  key={image.id}>
                   {renderImagePreview(uploadsPublicPath, image)}
 
                   <div className="stack">
                     <div className="admin-product-tags">
                       <span className="admin-chip">
-                        {image.isPrimary ? "Image principale" : "Image secondaire"}
+                        {image.isPrimary
+                          ? "Image principale"
+                          : "Image secondaire"}
                       </span>
-                      <span className="admin-chip">Ordre {image.sortOrder}</span>
+                      <span className="admin-chip">
+                        Ordre {image.sortOrder}
+                      </span>
                     </div>
                     <p className="card-meta">{image.filePath}</p>
                   </div>
 
                   <form
                     action={updateProductImageAction}
-                    className="admin-form admin-record-form"
-                  >
-                    <input name="productId" type="hidden" value={product.id} />
-                    <input name="imageId" type="hidden" value={image.id} />
-                    <input name="imageScope" type="hidden" value="product" />
+                    className="admin-form admin-record-form">
+                    <input
+                      name="productId"
+                      type="hidden"
+                      value={product.id}
+                    />
+                    <input
+                      name="imageId"
+                      type="hidden"
+                      value={image.id}
+                    />
+                    <input
+                      name="imageScope"
+                      type="hidden"
+                      value="product"
+                    />
 
                     <label className="admin-field">
                       <span className="meta-label">Texte alternatif</span>
@@ -966,18 +1068,34 @@ export default async function ProductDetailPage({
                     </label>
 
                     <div className="admin-inline-actions">
-                      <button className="button" type="submit">
+                      <button
+                        className="button"
+                        type="submit">
                         Mettre à jour l&apos;image
                       </button>
                     </div>
                   </form>
 
                   <form action={deleteProductImageAction}>
-                    <input name="productId" type="hidden" value={product.id} />
-                    <input name="imageId" type="hidden" value={image.id} />
-                    <input name="imageScope" type="hidden" value="product" />
+                    <input
+                      name="productId"
+                      type="hidden"
+                      value={product.id}
+                    />
+                    <input
+                      name="imageId"
+                      type="hidden"
+                      value={image.id}
+                    />
+                    <input
+                      name="imageScope"
+                      type="hidden"
+                      value="product"
+                    />
 
-                    <button className="button link-subtle" type="submit">
+                    <button
+                      className="button link-subtle"
+                      type="submit">
                       Supprimer l&apos;image
                     </button>
                   </form>
@@ -1006,10 +1124,14 @@ export default async function ProductDetailPage({
               : productPresentation.sectionDescription
           }
           eyebrow={
-            isSimpleProduct ? "Produit simple" : productPresentation.sectionEyebrow
+            isSimpleProduct
+              ? "Produit simple"
+              : productPresentation.sectionEyebrow
           }
           title={
-            isSimpleProduct ? "Informations de vente" : productPresentation.sectionTitle
+            isSimpleProduct
+              ? "Informations de vente"
+              : productPresentation.sectionTitle
           }
         />
 
@@ -1055,9 +1177,12 @@ export default async function ProductDetailPage({
 
                 <form
                   action={updateSimpleProductOfferAction}
-                  className="admin-form admin-product-form"
-                >
-                  <input name="productId" type="hidden" value={product.id} />
+                  className="admin-form admin-product-form">
+                  <input
+                    name="productId"
+                    type="hidden"
+                    value={product.id}
+                  />
 
                   <fieldset className="admin-fieldset">
                     <legend className="meta-label">
@@ -1113,7 +1238,9 @@ export default async function ProductDetailPage({
                   </fieldset>
 
                   <div className="admin-actions">
-                    <Button className="button" type="submit">
+                    <Button
+                      className="button"
+                      type="submit">
                       Enregistrer les informations de vente
                     </Button>
                   </div>
@@ -1172,107 +1299,144 @@ export default async function ProductDetailPage({
         {showVariantCreateForm ? (
           <form
             action={createProductVariantAction}
-            className="admin-form admin-product-form"
-          >
-          <input name="productId" type="hidden" value={product.id} />
+            className="admin-form admin-product-form">
+            <input
+              name="productId"
+              type="hidden"
+              value={product.id}
+            />
 
-          <fieldset className="admin-fieldset">
-            <legend className="meta-label">
-              {productPresentation.saleFieldsetLegend}
-            </legend>
+            <fieldset className="admin-fieldset">
+              <legend className="meta-label">
+                {productPresentation.saleFieldsetLegend}
+              </legend>
 
-            <label className="admin-field">
-              <span className="meta-label">SKU</span>
-              <input className="admin-input" name="sku" required type="text" />
-            </label>
+              <label className="admin-field">
+                <span className="meta-label">SKU</span>
+                <input
+                  className="admin-input"
+                  name="sku"
+                  required
+                  type="text"
+                />
+              </label>
 
-            <label className="admin-field">
-              <span className="meta-label">Prix</span>
-              <input
-                className="admin-input"
-                inputMode="decimal"
-                name="price"
-                required
-                type="text"
-              />
-            </label>
+              <label className="admin-field">
+                <span className="meta-label">Prix</span>
+                <input
+                  className="admin-input"
+                  inputMode="decimal"
+                  name="price"
+                  required
+                  type="text"
+                />
+              </label>
 
-            <label className="admin-field">
-              <span className="meta-label">Prix barré</span>
-              <input
-                className="admin-input"
-                inputMode="decimal"
-                name="compareAtPrice"
-                type="text"
-              />
-            </label>
+              <label className="admin-field">
+                <span className="meta-label">Prix barré</span>
+                <input
+                  className="admin-input"
+                  inputMode="decimal"
+                  name="compareAtPrice"
+                  type="text"
+                />
+              </label>
 
-            <label className="admin-field">
-              <span className="meta-label">Statut</span>
-              <select className="admin-input" defaultValue="draft" name="status">
-                <option value="draft">Brouillon</option>
-                <option value="published">Publié</option>
-              </select>
-            </label>
+              <label className="admin-field">
+                <span className="meta-label">Statut</span>
+                <select
+                  className="admin-input"
+                  defaultValue="draft"
+                  name="status">
+                  <option value="draft">Brouillon</option>
+                  <option value="published">Publié</option>
+                </select>
+              </label>
 
-            <label className="admin-field">
-              <span className="meta-label">Stock disponible</span>
-              <input
-                className="admin-input"
-                defaultValue="0"
-                min="0"
-                name="stockQuantity"
-                required
-                step="1"
-                type="number"
-              />
-            </label>
-          </fieldset>
+              <label className="admin-field">
+                <span className="meta-label">Stock disponible</span>
+                <input
+                  className="admin-input"
+                  defaultValue="0"
+                  min="0"
+                  name="stockQuantity"
+                  required
+                  step="1"
+                  type="number"
+                />
+              </label>
+            </fieldset>
 
-          <fieldset className="admin-fieldset">
-            <legend className="meta-label">Informations de la déclinaison</legend>
+            <fieldset className="admin-fieldset">
+              <legend className="meta-label">
+                Informations de la déclinaison
+              </legend>
 
               <label className="admin-field">
                 <span className="meta-label">Nom de la déclinaison</span>
-                <input className="admin-input" name="name" required type="text" />
+                <input
+                  className="admin-input"
+                  name="name"
+                  required
+                  type="text"
+                />
               </label>
 
-            <label className="admin-field">
-              <span className="meta-label">Nom de couleur</span>
-              <input className="admin-input" name="colorName" required type="text" />
-            </label>
+              <label className="admin-field">
+                <span className="meta-label">Nom de couleur</span>
+                <input
+                  className="admin-input"
+                  name="colorName"
+                  required
+                  type="text"
+                />
+              </label>
 
-            <label className="admin-field">
-              <span className="meta-label">Code couleur</span>
-              <input className="admin-input" name="colorHex" placeholder="#C19A6B" type="text" />
-            </label>
+              <label className="admin-field">
+                <span className="meta-label">Code couleur</span>
+                <input
+                  className="admin-input"
+                  name="colorHex"
+                  placeholder="#C19A6B"
+                  type="text"
+                />
+              </label>
 
-            <label className="admin-checkbox">
-              <input name="isDefault" type="checkbox" value="on" />
-              <span>Définir comme déclinaison par défaut</span>
-            </label>
-          </fieldset>
+              <label className="admin-checkbox">
+                <input
+                  name="isDefault"
+                  type="checkbox"
+                  value="on"
+                />
+                <span>Définir comme déclinaison par défaut</span>
+              </label>
+            </fieldset>
 
-          <div className="admin-actions">
-            <button className="button" type="submit">
-              {productPresentation.createActionLabel}
-            </button>
-          </div>
+            <div className="admin-actions">
+              <button
+                className="button"
+                type="submit">
+                {productPresentation.createActionLabel}
+              </button>
+            </div>
           </form>
         ) : null}
 
         {variants.length > 0 ? (
           <div className="variant-list admin-record-list">
-            {variants.map((variant) => {
+            {variants.map(variant => {
               const variantImages = variantImagesById.get(variant.id) ?? [];
-              const variantPrimaryImageState = getPrimaryImageState(variantImages);
+              const variantPrimaryImageState =
+                getPrimaryImageState(variantImages);
               const currentVariantPrimaryMediaAsset = findMediaAssetByFilePath(
                 mediaAssets,
                 variantPrimaryImageState.displayImage?.filePath ?? null
               );
 
               return (
-                <article className="variant-card admin-variant-card" key={variant.id}>
+                <article
+                  className="variant-card admin-variant-card"
+                  key={variant.id}>
                   <div className="stack">
                     <p className="meta-label">
                       {isSimpleProduct
@@ -1282,7 +1446,9 @@ export default async function ProductDetailPage({
                     <div className="admin-product-tags">
                       <span className="admin-chip">{variant.colorName}</span>
                       <span className="admin-chip">
-                        {variant.isDefault ? "Déclinaison par défaut" : "Déclinaison secondaire"}
+                        {variant.isDefault
+                          ? "Déclinaison par défaut"
+                          : "Déclinaison secondaire"}
                       </span>
                       <span className="admin-chip">
                         {getProductStatusLabel(variant.status)}
@@ -1301,10 +1467,17 @@ export default async function ProductDetailPage({
 
                   <form
                     action={updateProductVariantAction}
-                    className="admin-form admin-record-form"
-                  >
-                    <input name="productId" type="hidden" value={product.id} />
-                    <input name="variantId" type="hidden" value={variant.id} />
+                    className="admin-form admin-record-form">
+                    <input
+                      name="productId"
+                      type="hidden"
+                      value={product.id}
+                    />
+                    <input
+                      name="variantId"
+                      type="hidden"
+                      value={variant.id}
+                    />
 
                     <fieldset className="admin-fieldset">
                       <legend className="meta-label">
@@ -1352,8 +1525,7 @@ export default async function ProductDetailPage({
                         <select
                           className="admin-input"
                           defaultValue={variant.status}
-                          name="status"
-                        >
+                          name="status">
                           <option value="draft">Brouillon</option>
                           <option value="published">Publié</option>
                         </select>
@@ -1374,10 +1546,14 @@ export default async function ProductDetailPage({
                     </fieldset>
 
                     <fieldset className="admin-fieldset">
-                      <legend className="meta-label">Informations de la déclinaison</legend>
+                      <legend className="meta-label">
+                        Informations de la déclinaison
+                      </legend>
 
                       <label className="admin-field">
-                        <span className="meta-label">Nom de la déclinaison</span>
+                        <span className="meta-label">
+                          Nom de la déclinaison
+                        </span>
                         <input
                           className="admin-input"
                           defaultValue={variant.name}
@@ -1421,7 +1597,9 @@ export default async function ProductDetailPage({
                     </fieldset>
 
                     <div className="admin-inline-actions">
-                      <button className="button" type="submit">
+                      <button
+                        className="button"
+                        type="submit">
                         {isSimpleProduct
                           ? "Enregistrer la déclinaison existante"
                           : productPresentation.saveActionLabel}
@@ -1430,10 +1608,20 @@ export default async function ProductDetailPage({
                   </form>
 
                   <form action={deleteProductVariantAction}>
-                    <input name="productId" type="hidden" value={product.id} />
-                    <input name="variantId" type="hidden" value={variant.id} />
+                    <input
+                      name="productId"
+                      type="hidden"
+                      value={product.id}
+                    />
+                    <input
+                      name="variantId"
+                      type="hidden"
+                      value={variant.id}
+                    />
 
-                    <button className="button link-subtle" type="submit">
+                    <button
+                      className="button link-subtle"
+                      type="submit">
                       {isSimpleProduct
                         ? "Supprimer la déclinaison existante"
                         : productPresentation.deleteActionLabel}
@@ -1459,7 +1647,8 @@ export default async function ProductDetailPage({
                   </div>
 
                   {renderPrimaryImageManager({
-                    currentMediaAssetId: currentVariantPrimaryMediaAsset?.id ?? "",
+                    currentMediaAssetId:
+                      currentVariantPrimaryMediaAsset?.id ?? "",
                     deleteAction: deleteVariantPrimaryImageAction,
                     description:
                       "Choisissez ici le visuel principal affiché pour cette déclinaison.",
@@ -1487,24 +1676,38 @@ export default async function ProductDetailPage({
                   {hasMediaAssets ? (
                     <form
                       action={createProductImageAction}
-                      className="admin-form admin-record-form"
-                    >
-                      <input name="productId" type="hidden" value={product.id} />
-                      <input name="variantId" type="hidden" value={variant.id} />
-                      <input name="imageScope" type="hidden" value="variant" />
+                      className="admin-form admin-record-form">
+                      <input
+                        name="productId"
+                        type="hidden"
+                        value={product.id}
+                      />
+                      <input
+                        name="variantId"
+                        type="hidden"
+                        value={variant.id}
+                      />
+                      <input
+                        name="imageScope"
+                        type="hidden"
+                        value="variant"
+                      />
 
                       <label className="admin-field">
                         <span className="meta-label">Média existant</span>
                         <select
                           className="admin-input"
                           defaultValue=""
-                          name="mediaAssetId"
-                        >
-                          <option disabled value="">
+                          name="mediaAssetId">
+                          <option
+                            disabled
+                            value="">
                             Sélectionnez un média
                           </option>
-                          {mediaAssets.map((mediaAsset) => (
-                            <option key={mediaAsset.id} value={mediaAsset.id}>
+                          {mediaAssets.map(mediaAsset => (
+                            <option
+                              key={mediaAsset.id}
+                              value={mediaAsset.id}>
                               {mediaAsset.originalName} · {mediaAsset.mimeType}
                             </option>
                           ))}
@@ -1513,7 +1716,11 @@ export default async function ProductDetailPage({
 
                       <label className="admin-field">
                         <span className="meta-label">Texte alternatif</span>
-                        <input className="admin-input" name="altText" type="text" />
+                        <input
+                          className="admin-input"
+                          name="altText"
+                          type="text"
+                        />
                       </label>
 
                       <label className="admin-field">
@@ -1527,12 +1734,18 @@ export default async function ProductDetailPage({
                       </label>
 
                       <label className="admin-checkbox">
-                        <input name="isPrimary" type="checkbox" value="on" />
+                        <input
+                          name="isPrimary"
+                          type="checkbox"
+                          value="on"
+                        />
                         <span>Image principale de la déclinaison</span>
                       </label>
 
                       <div className="admin-actions">
-                        <button className="button" type="submit">
+                        <button
+                          className="button"
+                          type="submit">
                           Ajouter une image à la déclinaison
                         </button>
                       </div>
@@ -1543,8 +1756,10 @@ export default async function ProductDetailPage({
 
                   {variantImages.length > 0 ? (
                     <div className="admin-record-list">
-                      {variantImages.map((image) => (
-                        <article className="store-card admin-image-card" key={image.id}>
+                      {variantImages.map(image => (
+                        <article
+                          className="store-card admin-image-card"
+                          key={image.id}>
                           {renderImagePreview(uploadsPublicPath, image)}
 
                           <div className="stack">
@@ -1563,14 +1778,27 @@ export default async function ProductDetailPage({
 
                           <form
                             action={updateProductImageAction}
-                            className="admin-form admin-record-form"
-                          >
-                            <input name="productId" type="hidden" value={product.id} />
-                            <input name="imageId" type="hidden" value={image.id} />
-                            <input name="imageScope" type="hidden" value="variant" />
+                            className="admin-form admin-record-form">
+                            <input
+                              name="productId"
+                              type="hidden"
+                              value={product.id}
+                            />
+                            <input
+                              name="imageId"
+                              type="hidden"
+                              value={image.id}
+                            />
+                            <input
+                              name="imageScope"
+                              type="hidden"
+                              value="variant"
+                            />
 
                             <label className="admin-field">
-                              <span className="meta-label">Texte alternatif</span>
+                              <span className="meta-label">
+                                Texte alternatif
+                              </span>
                               <input
                                 className="admin-input"
                                 defaultValue={image.altText ?? ""}
@@ -1600,18 +1828,34 @@ export default async function ProductDetailPage({
                             </label>
 
                             <div className="admin-inline-actions">
-                              <button className="button" type="submit">
+                              <button
+                                className="button"
+                                type="submit">
                                 Mettre à jour l&apos;image
                               </button>
                             </div>
                           </form>
 
                           <form action={deleteProductImageAction}>
-                            <input name="productId" type="hidden" value={product.id} />
-                            <input name="imageId" type="hidden" value={image.id} />
-                            <input name="imageScope" type="hidden" value="variant" />
+                            <input
+                              name="productId"
+                              type="hidden"
+                              value={product.id}
+                            />
+                            <input
+                              name="imageId"
+                              type="hidden"
+                              value={image.id}
+                            />
+                            <input
+                              name="imageScope"
+                              type="hidden"
+                              value="variant"
+                            />
 
-                            <button className="button link-subtle" type="submit">
+                            <button
+                              className="button link-subtle"
+                              type="submit">
                               Supprimer l&apos;image
                             </button>
                           </form>
@@ -1651,9 +1895,15 @@ export default async function ProductDetailPage({
         ) : null}
 
         <form action={deleteProductAction}>
-          <input name="productId" type="hidden" value={product.id} />
+          <input
+            name="productId"
+            type="hidden"
+            value={product.id}
+          />
 
-          <Button className="button admin-danger-button" type="submit">
+          <Button
+            className="button admin-danger-button"
+            type="submit">
             Supprimer le produit
           </Button>
         </form>

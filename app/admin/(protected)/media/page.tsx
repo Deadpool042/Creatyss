@@ -3,12 +3,15 @@ import path from "node:path";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Notice } from "@/components/ui/notice";
-import { PageHeader } from "@/components/ui/page-header";
-import { SectionIntro } from "@/components/ui/section-intro";
+import { Notice } from "@/components/notice";
+import { PageHeader } from "@/components/page-header";
+import { SectionIntro } from "@/components/section-intro";
 import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/admin-media";
 import { requireAuthenticatedAdmin } from "@/lib/admin-auth";
-import { uploadAdminMedia, MediaUploadError } from "@/features/admin/media/upload";
+import {
+  uploadAdminMedia,
+  MediaUploadError
+} from "@/features/admin/media/upload";
 import { getUploadsDirectory, getUploadsPublicPath } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";
@@ -106,7 +109,7 @@ async function buildMediaListItems(): Promise<AdminMediaListItem[]> {
   const assets = await listAdminMediaAssets();
 
   return Promise.all(
-    assets.map(async (asset) => ({
+    assets.map(async asset => ({
       ...asset,
       previewUrl: await resolvePreviewUrl(asset.filePath)
     }))
@@ -169,12 +172,14 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
           title="Importer une image"
         />
 
-        {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
-        {errorMessage ? (
-          <Notice tone="alert">{errorMessage}</Notice>
+        {successMessage ? (
+          <Notice tone="success">{successMessage}</Notice>
         ) : null}
+        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
-        <form action={uploadMediaAction} className="admin-form">
+        <form
+          action={uploadMediaAction}
+          className="admin-form">
           <label className="admin-field">
             <span className="meta-label">Image</span>
             <input
@@ -187,7 +192,9 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
           </label>
 
           <div>
-            <Button className="button" type="submit">
+            <Button
+              className="button"
+              type="submit">
               Importer le média
             </Button>
           </div>
@@ -205,8 +212,10 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
 
         {assets.length > 0 ? (
           <div className="admin-media-grid">
-            {assets.map((asset) => (
-              <Card key={asset.id} className="p-5 grid gap-3 content-start">
+            {assets.map(asset => (
+              <Card
+                key={asset.id}
+                className="p-5 grid gap-3 content-start">
                 {asset.previewUrl ? (
                   <div className="admin-media-preview">
                     <img

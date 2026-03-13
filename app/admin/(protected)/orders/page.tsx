@@ -1,5 +1,5 @@
-import { Notice } from "@/components/ui/notice";
-import { PageHeader } from "@/components/ui/page-header";
+import { Notice } from "@/components/notice";
+import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminOrderCard } from "@/components/admin/admin-order-card";
 import { listAdminOrders } from "@/db/repositories/order.repository";
@@ -40,8 +40,11 @@ export default async function AdminOrdersPage({
 
         {orders.length > 0 ? (
           <div className="admin-record-list">
-            {orders.map((order) => (
-              <AdminOrderCard key={order.id} order={order} />
+            {orders.map(order => (
+              <AdminOrderCard
+                key={order.id}
+                order={order}
+              />
             ))}
           </div>
         ) : (

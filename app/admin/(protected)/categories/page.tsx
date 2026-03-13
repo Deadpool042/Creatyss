@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Notice } from "@/components/ui/notice";
-import { PageHeader } from "@/components/ui/page-header";
+import { Notice } from "@/components/notice";
+import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminCategoryCard } from "@/components/admin/admin-category-card";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
@@ -55,7 +55,9 @@ export default async function AdminCategoriesPage({
       <section className="section">
         <PageHeader
           actions={
-            <Link className="button" href="/admin/categories/new">
+            <Link
+              className="button"
+              href="/admin/categories/new">
               Nouvelle catégorie
             </Link>
           }
@@ -64,13 +66,18 @@ export default async function AdminCategoriesPage({
           title="Catégories"
         />
 
-        {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
+        {successMessage ? (
+          <Notice tone="success">{successMessage}</Notice>
+        ) : null}
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {categories.length > 0 ? (
           <div className="admin-category-list">
-            {categories.map((category) => (
-              <AdminCategoryCard key={category.id} category={category} />
+            {categories.map(category => (
+              <AdminCategoryCard
+                key={category.id}
+                category={category}
+              />
             ))}
           </div>
         ) : (

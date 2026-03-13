@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Notice } from "@/components/ui/notice";
-import { PageHeader } from "@/components/ui/page-header";
+import { Notice } from "@/components/notice";
+import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminProductCard } from "@/components/admin/admin-product-card";
 import { listAdminProducts } from "@/db/repositories/admin-product.repository";
@@ -51,7 +51,9 @@ export default async function AdminProductsPage({
       <section className="section">
         <PageHeader
           actions={
-            <Link className="button" href="/admin/products/new">
+            <Link
+              className="button"
+              href="/admin/products/new">
               Nouveau produit
             </Link>
           }
@@ -60,13 +62,18 @@ export default async function AdminProductsPage({
           title="Produits"
         />
 
-        {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
+        {successMessage ? (
+          <Notice tone="success">{successMessage}</Notice>
+        ) : null}
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {products.length > 0 ? (
           <div className="admin-product-list">
-            {products.map((product) => (
-              <AdminProductCard key={product.id} product={product} />
+            {products.map(product => (
+              <AdminProductCard
+                key={product.id}
+                product={product}
+              />
             ))}
           </div>
         ) : (

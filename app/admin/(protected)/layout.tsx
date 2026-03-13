@@ -3,7 +3,9 @@ import { AdminSidebar } from "@/components/admin/admin-sidebar";
 
 export const dynamic = "force-dynamic";
 
-type ProtectedAdminLayoutProps = LayoutProps<"/admin">;
+type ProtectedAdminLayoutProps = {
+  children: React.ReactNode;
+};
 
 export default async function ProtectedAdminLayout({
   children
@@ -12,8 +14,13 @@ export default async function ProtectedAdminLayout({
 
   return (
     <div className="min-h-screen md:flex">
-      <AdminSidebar displayName={admin.displayName} email={admin.email} />
-      <div className="flex-1 min-w-0 p-4 md:p-6">{children}</div>
+      <AdminSidebar
+        displayName={admin.displayName}
+        email={admin.email}
+      />
+      <div className="flex-1 min-w-0 p-4 md:p-6">
+        {children}
+      </div>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/ui/notice";
-import { PageHeader } from "@/components/ui/page-header";
-import { SectionIntro } from "@/components/ui/section-intro";
+import { Notice } from "@/components/notice";
+import { PageHeader } from "@/components/page-header";
+import { SectionIntro } from "@/components/section-intro";
 import {
   findAdminOrderById,
   type OrderEmailEventStatus,
@@ -97,15 +97,15 @@ export default async function AdminOrderDetailPage({
       ? "Le statut de la commande a été mis à jour."
       : orderStatusParam === "shipped"
         ? "La commande a été marquée comme expédiée."
-      : null;
+        : null;
   const errorMessage =
     orderErrorParam === "invalid_transition"
       ? "Cette transition n'est pas autorisée."
       : orderErrorParam === "ship_failed"
         ? "La commande n'a pas pu être marquée comme expédiée."
-      : orderErrorParam === "update_failed"
-        ? "La commande n'a pas pu être mise à jour."
-        : null;
+        : orderErrorParam === "update_failed"
+          ? "La commande n'a pas pu être mise à jour."
+          : null;
 
   return (
     <div className="admin-record-list">
@@ -181,8 +181,14 @@ export default async function AdminOrderDetailPage({
               {allowedTransitions.length > 0 ? (
                 <div className="admin-inline-actions">
                   {allowedTransitions.includes("shipped") ? (
-                    <form action={shipOrderAction} className="admin-form">
-                      <input name="orderId" type="hidden" value={order.id} />
+                    <form
+                      action={shipOrderAction}
+                      className="admin-form">
+                      <input
+                        name="orderId"
+                        type="hidden"
+                        value={order.id}
+                      />
                       <label className="admin-field">
                         <span className="meta-label">
                           Référence de suivi optionnelle
@@ -194,26 +200,37 @@ export default async function AdminOrderDetailPage({
                           type="text"
                         />
                       </label>
-                      <Button className="button" type="submit">
+                      <Button
+                        className="button"
+                        type="submit">
                         Marquer comme expédiée
                       </Button>
                     </form>
                   ) : null}
 
                   {allowedTransitions
-                    .filter((nextStatus) => nextStatus !== "shipped")
-                    .map((nextStatus) => (
-                      <form action={updateOrderStatusAction} key={nextStatus}>
-                        <input name="orderId" type="hidden" value={order.id} />
-                        <input name="nextStatus" type="hidden" value={nextStatus} />
+                    .filter(nextStatus => nextStatus !== "shipped")
+                    .map(nextStatus => (
+                      <form
+                        action={updateOrderStatusAction}
+                        key={nextStatus}>
+                        <input
+                          name="orderId"
+                          type="hidden"
+                          value={order.id}
+                        />
+                        <input
+                          name="nextStatus"
+                          type="hidden"
+                          value={nextStatus}
+                        />
                         <Button
                           className={
                             nextStatus === "cancelled"
                               ? "button admin-danger-button"
                               : "button"
                           }
-                          type="submit"
-                        >
+                          type="submit">
                           {getOrderTransitionLabel(nextStatus)}
                         </Button>
                       </form>
@@ -254,11 +271,10 @@ export default async function AdminOrderDetailPage({
                 <p className="card-copy">
                   Prestataire : {order.payment.provider}
                 </p>
+                <p className="card-copy">Méthode : {order.payment.method}</p>
                 <p className="card-copy">
-                  Méthode : {order.payment.method}
-                </p>
-                <p className="card-copy">
-                  Montant : {order.payment.amount} {order.payment.currency.toUpperCase()}
+                  Montant : {order.payment.amount}{" "}
+                  {order.payment.currency.toUpperCase()}
                 </p>
                 {order.payment.stripeCheckoutSessionId ? (
                   <p className="card-meta">
@@ -267,7 +283,8 @@ export default async function AdminOrderDetailPage({
                 ) : null}
                 {order.payment.stripePaymentIntentId ? (
                   <p className="card-meta">
-                    Identifiant de paiement : {order.payment.stripePaymentIntentId}
+                    Identifiant de paiement :{" "}
+                    {order.payment.stripePaymentIntentId}
                   </p>
                 ) : null}
               </div>
@@ -279,16 +296,15 @@ export default async function AdminOrderDetailPage({
                 <h2>Trace minimale</h2>
                 {order.emailEvents.length === 0 ? (
                   <p className="card-copy">
-                    Aucun e-mail transactionnel n&apos;a encore été enregistré pour
-                    cette commande.
+                    Aucun e-mail transactionnel n&apos;a encore été enregistré
+                    pour cette commande.
                   </p>
                 ) : (
                   <div className="checkout-line-list">
-                    {order.emailEvents.map((emailEvent) => (
+                    {order.emailEvents.map(emailEvent => (
                       <article
                         className="store-card checkout-line"
-                        key={emailEvent.id}
-                      >
+                        key={emailEvent.id}>
                         <div className="stack">
                           <p className="meta-label">Événement</p>
                           <p className="card-copy">
@@ -396,8 +412,10 @@ export default async function AdminOrderDetailPage({
             </div>
 
             <div className="checkout-line-list">
-              {order.lines.map((line) => (
-                <article className="store-card checkout-line" key={line.id}>
+              {order.lines.map(line => (
+                <article
+                  className="store-card checkout-line"
+                  key={line.id}>
                   <div className="stack">
                     <h3>{line.productName}</h3>
                     <p className="variant-meta">

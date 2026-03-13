@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/ui/notice";
-import { PageHeader } from "@/components/ui/page-header";
+import { Notice } from "@/components/notice";
+import { PageHeader } from "@/components/page-header";
+import { AdminFormField } from "@/components/admin/admin-form-field";
+import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 import { createProductAction } from "@/features/admin/products/actions/create-product-action";
 
@@ -50,7 +52,9 @@ export default async function NewAdminProductPage({
     <section className="section admin-product-form-section">
       <PageHeader
         actions={
-          <Link className="link-subtle button" href="/admin/products">
+          <Link
+            className="link-subtle button"
+            href="/admin/products">
             Retour à la liste
           </Link>
         }
@@ -61,64 +65,78 @@ export default async function NewAdminProductPage({
 
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
-      <form action={createProductAction} className="admin-form admin-product-form">
-        <label className="admin-field">
-          <span className="meta-label">Nom</span>
-          <input className="admin-input" name="name" required type="text" />
-        </label>
+      <form
+        action={createProductAction}
+        className="admin-form admin-product-form">
+        <AdminFormField label="Nom">
+          <input
+            className="admin-input"
+            name="name"
+            required
+            type="text"
+          />
+        </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Slug</span>
-          <input className="admin-input" name="slug" required type="text" />
-        </label>
+        <AdminFormField label="Slug">
+          <input
+            className="admin-input"
+            name="slug"
+            required
+            type="text"
+          />
+        </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Description courte</span>
+        <AdminFormField label="Description courte">
           <textarea
             className="admin-input admin-textarea"
             name="shortDescription"
             rows={3}
           />
-        </label>
+        </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Description</span>
+        <AdminFormField label="Description">
           <textarea
             className="admin-input admin-textarea"
             name="description"
             rows={6}
           />
-        </label>
+        </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Titre SEO</span>
-          <input className="admin-input" name="seoTitle" type="text" />
-        </label>
+        <AdminFormField label="Titre SEO">
+          <input
+            className="admin-input"
+            name="seoTitle"
+            type="text"
+          />
+        </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Description SEO</span>
+        <AdminFormField label="Description SEO">
           <textarea
             className="admin-input admin-textarea"
             name="seoDescription"
             rows={3}
           />
-        </label>
+        </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Statut</span>
-          <select className="admin-input" defaultValue="draft" name="status">
+        <AdminFormField label="Statut">
+          <select
+            className="admin-input"
+            defaultValue="draft"
+            name="status">
             <option value="draft">Brouillon</option>
             <option value="published">Publié</option>
           </select>
-        </label>
+        </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Type de produit</span>
-          <select className="admin-input" defaultValue="variable" name="productType">
+        <AdminFormField label="Type de produit">
+          <select
+            className="admin-input"
+            defaultValue="variable"
+            name="productType">
             <option value="simple">Produit simple</option>
             <option value="variable">Produit avec déclinaisons</option>
           </select>
-        </label>
+        </AdminFormField>
 
         <p className="admin-muted-note">
           Un produit simple se gère via ses informations de vente. Un produit
@@ -130,9 +148,15 @@ export default async function NewAdminProductPage({
 
           {categories.length > 0 ? (
             <div className="admin-checkbox-grid">
-              {categories.map((category) => (
-                <label className="admin-checkbox" key={category.id}>
-                  <input name="categoryIds" type="checkbox" value={category.id} />
+              {categories.map(category => (
+                <label
+                  className="admin-checkbox"
+                  key={category.id}>
+                  <input
+                    name="categoryIds"
+                    type="checkbox"
+                    value={category.id}
+                  />
                   <span>
                     {category.name}
                     <span className="card-meta"> · {category.slug}</span>
@@ -149,15 +173,21 @@ export default async function NewAdminProductPage({
         </fieldset>
 
         <label className="admin-checkbox">
-          <input name="isFeatured" type="checkbox" value="on" />
+          <input
+            name="isFeatured"
+            type="checkbox"
+            value="on"
+          />
           <span>Mettre ce produit en avant</span>
         </label>
 
-        <div className="admin-actions">
-          <Button className="button" type="submit">
+        <AdminFormActions>
+          <Button
+            className="button"
+            type="submit">
             Créer le produit
           </Button>
-        </div>
+        </AdminFormActions>
       </form>
     </section>
   );
