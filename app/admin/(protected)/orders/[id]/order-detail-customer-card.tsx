@@ -12,16 +12,20 @@ export function OrderDetailCustomerCard({
   customer
 }: OrderDetailCustomerCardProps) {
   return (
-    <article className="store-card checkout-line rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm">
-      <div className="stack gap-2">
-        <SectionIntro
-          className="grid gap-2"
-          eyebrow="Cliente"
-          title={customer.fullName}
-        />
-        <p className="card-copy">{customer.email}</p>
-        {customer.phone ? <p className="card-meta">{customer.phone}</p> : null}
-      </div>
+    <article className="grid gap-3 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+      <SectionIntro
+        className="grid gap-2"
+        eyebrow="Cliente"
+        title={customer.fullName}
+      />
+      <p className="card-copy text-sm leading-6 text-foreground">
+        {customer.email}
+      </p>
+      {customer.phone ? (
+        <p className="card-meta text-sm leading-6 text-muted-foreground">
+          {customer.phone}
+        </p>
+      ) : null}
     </article>
   );
 }

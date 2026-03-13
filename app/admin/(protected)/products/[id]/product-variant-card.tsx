@@ -1,6 +1,8 @@
 import { Notice } from "@/components/notice";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormField } from "@/components/admin/admin-form-field";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { type AdminMediaAsset } from "@/db/admin-media";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
@@ -20,6 +22,21 @@ import {
 import { ProductImageCard } from "./product-image-card";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 import { ProductPrimaryImageManager } from "./product-primary-image-manager";
+
+const nativeSelectClassName =
+  "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";
+
+const fieldsetClassName =
+  "grid gap-4 rounded-xl border border-border/60 bg-muted/10 p-4";
+
+const legendClassName =
+  "px-1 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground";
+
+const checkboxInputClassName =
+  "mt-1 size-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30";
+
+const subtleDestructiveButtonClassName =
+  "w-fit px-0 text-destructive hover:bg-transparent hover:text-destructive";
 
 type ProductVariantCardProps = Readonly<{
   isSimpleProduct: boolean;
@@ -59,37 +76,37 @@ export function ProductVariantCard({
   const sortOrderId = `variant-image-sort-order-${variant.id}`;
 
   return (
-    <article className="variant-card admin-variant-card grid gap-5 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
-      <div className="stack">
-        <p className="meta-label">
+    <article className="admin-variant-card grid gap-6 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+      <div className="grid gap-3">
+        <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
           {isSimpleProduct
             ? "Déclinaison existante"
             : productPresentation.itemKicker}
         </p>
-        <div className="admin-product-tags">
-          <span className="admin-chip">{variant.colorName}</span>
-          <span className="admin-chip">
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="secondary">{variant.colorName}</Badge>
+          <Badge variant="outline">
             {variant.isDefault
               ? "Déclinaison par défaut"
               : "Déclinaison secondaire"}
-          </span>
-          <span className="admin-chip">
+          </Badge>
+          <Badge variant="outline">
             {getProductStatusLabel(variant.status)}
-          </span>
+          </Badge>
         </div>
         <h3>{variant.name}</h3>
-        <p className="variant-meta">
+        <p className="text-sm leading-6 text-muted-foreground">
           SKU {variant.sku}
           {variant.colorHex ? ` · ${variant.colorHex}` : ""}
         </p>
-        <p className="card-meta">
+        <p className="text-sm leading-6 text-muted-foreground">
           Disponibilité actuelle : {getAvailabilityLabel(variant.isAvailable)}
         </p>
       </div>
 
       <form
         action={updateProductVariantAction}
-        className="admin-form admin-record-form">
+        className="space-y-4">
         <input
           name="productId"
           type="hidden"
@@ -101,8 +118,8 @@ export function ProductVariantCard({
           value={variant.id}
         />
 
-        <fieldset className="admin-fieldset grid gap-4">
-          <legend className="meta-label">
+        <fieldset className={fieldsetClassName}>
+          <legend className={legendClassName}>
             {isSimpleProduct
               ? "Informations commerciales existantes"
               : productPresentation.saleFieldsetLegend}
@@ -150,7 +167,7 @@ export function ProductVariantCard({
               htmlFor={statusId}
               label="Statut">
               <select
-                className="admin-input"
+                className={nativeSelectClassName}
                 defaultValue={variant.status}
                 id={statusId}
                 name="status">
@@ -175,8 +192,8 @@ export function ProductVariantCard({
           </div>
         </fieldset>
 
-        <fieldset className="admin-fieldset grid gap-4">
-          <legend className="meta-label">Informations de la déclinaison</legend>
+        <fieldset className={fieldsetClassName}>
+          <legend className={legendClassName}>Informations de la déclinaison</legend>
 
           <div className="grid gap-4 md:grid-cols-2">
             <AdminFormField
@@ -216,8 +233,9 @@ export function ProductVariantCard({
             </AdminFormField>
           </div>
 
-          <label className="admin-checkbox">
+          <label className="flex items-start gap-3 text-sm leading-6 text-foreground">
             <input
+              className={checkboxInputClassName}
               defaultChecked={variant.isDefault}
               name="isDefault"
               type="checkbox"
@@ -232,13 +250,13 @@ export function ProductVariantCard({
         </fieldset>
 
         <AdminFormActions>
-          <button
-            className="button"
+          <Button
+            className="w-full sm:w-fit"
             type="submit">
             {isSimpleProduct
               ? "Enregistrer la déclinaison existante"
               : productPresentation.saveActionLabel}
-          </button>
+          </Button>
         </AdminFormActions>
       </form>
 
@@ -254,16 +272,18 @@ export function ProductVariantCard({
           value={variant.id}
         />
 
-        <button
-          className="button link-subtle"
+        <Button
+          className={subtleDestructiveButtonClassName}
+          size="sm"
+          variant="ghost"
           type="submit">
           {isSimpleProduct
             ? "Supprimer la déclinaison existante"
             : productPresentation.deleteActionLabel}
-        </button>
+        </Button>
       </form>
 
-      <div className="stack">
+      <div className="grid gap-2">
         <p className="eyebrow">
           {isSimpleProduct
             ? "Images existantes"
@@ -274,7 +294,7 @@ export function ProductVariantCard({
             ? "Images de la déclinaison existante"
             : `Images pour ${variant.colorName}`}
         </h3>
-        <p className="card-copy">
+        <p className="card-copy text-sm leading-6 text-muted-foreground">
           Commencez par l&apos;image principale de cette déclinaison. Les
           autres réglages d&apos;images restent disponibles plus bas si
           nécessaire.
@@ -285,7 +305,7 @@ export function ProductVariantCard({
         currentMediaAssetId={currentVariantPrimaryMediaAsset?.id ?? ""}
         deleteAction={deleteVariantPrimaryImageAction}
         description="Choisissez ici le visuel principal affiché pour cette déclinaison."
-        formClassName="admin-form admin-record-form"
+        formClassName="grid gap-4"
         mediaAssets={mediaAssets}
         productId={productId}
         scope="variant"
@@ -300,9 +320,11 @@ export function ProductVariantCard({
         variantId={variant.id}
       />
 
-      <div className="stack">
-        <p className="meta-label">Réglages complémentaires</p>
-        <p className="card-copy">
+      <div className="grid gap-2">
+        <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+          Réglages complémentaires
+        </p>
+        <p className="text-sm leading-6 text-muted-foreground">
           Les autres images associées et leurs réglages restent disponibles ici
           si vous devez intervenir plus finement.
         </p>
@@ -311,7 +333,7 @@ export function ProductVariantCard({
       {hasMediaAssets ? (
         <form
           action={createProductImageAction}
-          className="admin-form admin-record-form">
+          className="space-y-4">
           <input
             name="productId"
             type="hidden"
@@ -332,7 +354,7 @@ export function ProductVariantCard({
             htmlFor={mediaAssetId}
             label="Média existant">
             <select
-              className="admin-input"
+              className={nativeSelectClassName}
               defaultValue=""
               id={mediaAssetId}
               name="mediaAssetId">
@@ -372,8 +394,9 @@ export function ProductVariantCard({
             />
           </AdminFormField>
 
-          <label className="admin-checkbox">
+          <label className="flex items-start gap-3 text-sm leading-6 text-foreground">
             <input
+              className={checkboxInputClassName}
               name="isPrimary"
               type="checkbox"
               value="on"
@@ -382,11 +405,11 @@ export function ProductVariantCard({
           </label>
 
           <AdminFormActions>
-            <button
-              className="button"
+            <Button
+              className="w-full sm:w-fit"
               type="submit">
               Ajouter une image à la déclinaison
-            </button>
+            </Button>
           </AdminFormActions>
         </form>
       ) : (
@@ -394,7 +417,7 @@ export function ProductVariantCard({
       )}
 
       {variantImages.length > 0 ? (
-        <div className="admin-record-list">
+        <div className="grid gap-4">
           {variantImages.map(image => (
             <ProductImageCard
               image={image}

@@ -1,8 +1,17 @@
 import { AdminFormField } from "@/components/admin/admin-form-field";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
 import { deleteProductImageAction } from "@/features/admin/products/actions/delete-product-image-action";
 import { updateProductImageAction } from "@/features/admin/products/actions/update-product-image-action";
 import { getImageUrl } from "./product-detail-helpers";
+
+const checkboxInputClassName =
+  "mt-1 size-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30";
+
+const subtleDestructiveButtonClassName =
+  "w-fit px-0 text-destructive hover:bg-transparent hover:text-destructive";
 
 type ProductImageCardProps = Readonly<{
   image: AdminProductImage;
@@ -19,16 +28,17 @@ function renderImagePreview(
 
   if (imageUrl === null) {
     return (
-      <div className="admin-image-preview admin-image-placeholder">
+      <div className="flex min-h-48 items-center justify-center rounded-xl border border-dashed border-border/70 bg-muted/20 px-6 text-center text-sm leading-6 text-muted-foreground">
         Chemin d&apos;image indisponible
       </div>
     );
   }
 
   return (
-    <div className="admin-image-preview">
+    <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
       <img
         alt={image.altText ?? "Image produit"}
+        className="aspect-[16/10] w-full object-cover"
         src={imageUrl}
       />
     </div>
@@ -45,22 +55,22 @@ export function ProductImageCard({
   const sortOrderId = `image-sort-order-${image.id}`;
 
   return (
-    <article className="store-card admin-image-card grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+    <article className="admin-image-card grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
       {renderImagePreview(uploadsPublicPath, image)}
 
-      <div className="stack">
-        <div className="admin-product-tags">
-          <span className="admin-chip">
+      <div className="grid gap-2">
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="outline">
             {image.isPrimary ? "Image principale" : "Image secondaire"}
-          </span>
-          <span className="admin-chip">Ordre {image.sortOrder}</span>
+          </Badge>
+          <Badge variant="secondary">Ordre {image.sortOrder}</Badge>
         </div>
-        <p className="card-meta">{image.filePath}</p>
+        <p className="text-sm leading-6 text-muted-foreground">{image.filePath}</p>
       </div>
 
       <form
         action={updateProductImageAction}
-        className="admin-form admin-record-form">
+        className="space-y-4">
         <input
           name="productId"
           type="hidden"
@@ -80,8 +90,7 @@ export function ProductImageCard({
         <AdminFormField
           htmlFor={altTextId}
           label="Texte alternatif">
-          <input
-            className="admin-input"
+          <Input
             defaultValue={image.altText ?? ""}
             id={altTextId}
             name="altText"
@@ -92,8 +101,7 @@ export function ProductImageCard({
         <AdminFormField
           htmlFor={sortOrderId}
           label="Ordre">
-          <input
-            className="admin-input"
+          <Input
             defaultValue={String(image.sortOrder)}
             id={sortOrderId}
             name="sortOrder"
@@ -101,8 +109,9 @@ export function ProductImageCard({
           />
         </AdminFormField>
 
-        <label className="admin-checkbox">
+        <label className="flex items-start gap-3 text-sm leading-6 text-foreground">
           <input
+            className={checkboxInputClassName}
             defaultChecked={image.isPrimary}
             name="isPrimary"
             type="checkbox"
@@ -115,12 +124,12 @@ export function ProductImageCard({
           </span>
         </label>
 
-        <div className="admin-inline-actions">
-          <button
-            className="button"
+        <div className="flex flex-wrap items-center gap-3">
+          <Button
+            className="w-full sm:w-fit"
             type="submit">
             Mettre à jour l&apos;image
-          </button>
+          </Button>
         </div>
       </form>
 
@@ -141,11 +150,13 @@ export function ProductImageCard({
           value={imageScope}
         />
 
-        <button
-          className="button link-subtle"
+        <Button
+          className={subtleDestructiveButtonClassName}
+          size="sm"
+          variant="ghost"
           type="submit">
           Supprimer l&apos;image
-        </button>
+        </Button>
       </form>
     </article>
   );

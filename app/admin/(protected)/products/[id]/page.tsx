@@ -122,7 +122,7 @@ export default async function ProductDetailPage({
   };
 
   return (
-    <div className="admin-product-detail">
+    <div className="space-y-6 [&_.page-header]:mb-0">
       <ProductDetailHeaderSection
         summary={{
           statusLabel: getProductStatusLabel(product.status),

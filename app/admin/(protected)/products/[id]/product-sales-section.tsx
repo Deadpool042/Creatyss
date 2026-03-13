@@ -4,6 +4,7 @@ import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { type AdminMediaAsset } from "@/db/admin-media";
 import { type AdminProductDetail } from "@/db/repositories/admin-product.repository";
@@ -16,6 +17,18 @@ import { createProductVariantAction } from "@/features/admin/products/actions/cr
 import { updateSimpleProductOfferAction } from "@/features/admin/products/actions/update-simple-product-offer-action";
 import { getAvailabilityLabel } from "./product-detail-helpers";
 import { ProductVariantCard } from "./product-variant-card";
+
+const nativeSelectClassName =
+  "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";
+
+const fieldsetClassName =
+  "grid gap-4 rounded-xl border border-border/60 bg-muted/10 p-4";
+
+const legendClassName =
+  "px-1 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground";
+
+const checkboxInputClassName =
+  "mt-1 size-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30";
 
 export type ProductSalesState = Readonly<{
   isSimpleProduct: boolean;
@@ -112,15 +125,15 @@ function renderSimpleOfferForm(
   return (
     <form
       action={updateSimpleProductOfferAction}
-      className="admin-form admin-product-form">
+      className="space-y-4">
       <input
         name="productId"
         type="hidden"
         value={productId}
       />
 
-      <fieldset className="admin-fieldset grid gap-4">
-        <legend className="meta-label">Informations de vente</legend>
+      <fieldset className={fieldsetClassName}>
+        <legend className={legendClassName}>Informations de vente</legend>
 
         <div className="grid gap-4 md:grid-cols-2">
           <AdminFormField
@@ -177,11 +190,11 @@ function renderSimpleOfferForm(
       </fieldset>
 
       <AdminFormActions>
-        <button
-          className="button"
+        <Button
+          className="w-full sm:w-fit"
           type="submit">
           Enregistrer les informations de vente
-        </button>
+        </Button>
       </AdminFormActions>
     </form>
   );
@@ -208,15 +221,15 @@ function renderVariantCreateForm(
   return (
     <form
       action={createProductVariantAction}
-      className="admin-form admin-product-form">
+      className="space-y-4">
       <input
         name="productId"
         type="hidden"
         value={productId}
       />
 
-      <fieldset className="admin-fieldset grid gap-4">
-        <legend className="meta-label">
+      <fieldset className={fieldsetClassName}>
+        <legend className={legendClassName}>
           {productPresentation.saleFieldsetLegend}
         </legend>
 
@@ -259,7 +272,7 @@ function renderVariantCreateForm(
             htmlFor={statusId}
             label="Statut">
             <select
-              className="admin-input"
+              className={nativeSelectClassName}
               defaultValue="draft"
               id={statusId}
               name="status">
@@ -284,8 +297,8 @@ function renderVariantCreateForm(
         </div>
       </fieldset>
 
-      <fieldset className="admin-fieldset grid gap-4">
-        <legend className="meta-label">Informations de la déclinaison</legend>
+      <fieldset className={fieldsetClassName}>
+        <legend className={legendClassName}>Informations de la déclinaison</legend>
 
         <div className="grid gap-4 md:grid-cols-2">
           <AdminFormField
@@ -322,8 +335,9 @@ function renderVariantCreateForm(
           </AdminFormField>
         </div>
 
-        <label className="admin-checkbox">
+        <label className="flex items-start gap-3 text-sm leading-6 text-foreground">
           <input
+            className={checkboxInputClassName}
             name="isDefault"
             type="checkbox"
             value="on"
@@ -333,11 +347,11 @@ function renderVariantCreateForm(
       </fieldset>
 
       <AdminFormActions>
-        <button
-          className="button"
+        <Button
+          className="w-full sm:w-fit"
           type="submit">
           {productPresentation.createActionLabel}
-        </button>
+        </Button>
       </AdminFormActions>
     </form>
   );
@@ -353,7 +367,7 @@ export function ProductSalesSection({
   variants
 }: ProductSalesSectionProps) {
   const variantCards = variants.length > 0 && (
-    <div className="variant-list admin-record-list">
+    <div className="grid gap-4">
       {variants.map(variant => (
         <ProductVariantCard
           isSimpleProduct={salesState.isSimpleProduct}
@@ -370,9 +384,9 @@ export function ProductSalesSection({
   );
 
   return (
-    <section className="section admin-product-section">
+    <section className="space-y-4">
       <AdminFormSection
-        contentClassName="gap-5"
+        contentClassName="gap-6"
         description={
           salesState.isSimpleProduct
             ? "Complétez ici la référence, le prix, le prix barré et le stock du produit simple."
@@ -394,7 +408,7 @@ export function ProductSalesSection({
             {renderSimpleOfferForm(product.id, salesState)}
 
             {salesState.showLegacyVariantCompatibilityBlock ? (
-              <div className="admin-product-subsection grid gap-4 rounded-lg border border-border/60 bg-muted/10 p-4">
+              <div className="admin-product-subsection space-y-4 rounded-xl border border-border/60 bg-muted/10 p-4">
                 <SectionIntro
                   className="grid gap-2"
                   description="Ce bloc rassemble les données déjà enregistrées. Utilisez-le seulement pour vérifier l'existant ou terminer une correction manuelle."

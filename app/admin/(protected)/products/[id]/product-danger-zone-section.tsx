@@ -13,7 +13,7 @@ export function ProductDangerZoneSection({
   productId
 }: ProductDangerZoneSectionProps) {
   return (
-    <section className="section admin-danger-zone">
+    <section className="space-y-4">
       {deleteErrorMessage ? (
         <Notice tone="alert">{deleteErrorMessage}</Notice>
       ) : null}
@@ -30,7 +30,8 @@ export function ProductDangerZoneSection({
           />
 
           <Button
-            className="button admin-danger-button"
+            className="w-full sm:w-fit"
+            variant="destructive"
             type="submit">
             Supprimer le produit
           </Button>

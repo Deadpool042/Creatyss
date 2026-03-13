@@ -6,7 +6,7 @@ export function ProductMediaLibraryNotice() {
     <Notice tone="note">
       Aucun média n&apos;est disponible. Ajoutez d&apos;abord une image dans{" "}
       <Link
-        className="link"
+        className="font-medium text-primary underline-offset-4 hover:underline"
         href="/admin/media">
         la bibliothèque médias
       </Link>

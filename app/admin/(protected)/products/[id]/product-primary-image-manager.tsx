@@ -1,6 +1,7 @@
 import { Notice } from "@/components/notice";
 import { SectionIntro } from "@/components/section-intro";
 import { AdminFormField } from "@/components/admin/admin-form-field";
+import { Button } from "@/components/ui/button";
 import { type AdminMediaAsset } from "@/db/admin-media";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
 import {
@@ -15,6 +16,12 @@ import {
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 
 type PrimaryImageFormAction = (formData: FormData) => Promise<void>;
+
+const nativeSelectClassName =
+  "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";
+
+const subtleDestructiveButtonClassName =
+  "w-fit px-0 text-destructive hover:bg-transparent hover:text-destructive";
 
 type ProductPrimaryImageManagerProps = Readonly<{
   currentMediaAssetId: string;
@@ -39,16 +46,17 @@ function renderImagePreview(
 
   if (imageUrl === null) {
     return (
-      <div className="admin-image-preview admin-image-placeholder">
+      <div className="flex min-h-48 items-center justify-center rounded-xl border border-dashed border-border/70 bg-muted/20 px-6 text-center text-sm leading-6 text-muted-foreground">
         Chemin d&apos;image indisponible
       </div>
     );
   }
 
   return (
-    <div className="admin-image-preview">
+    <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
       <img
         alt={image.altText ?? "Image produit"}
+        className="aspect-[16/10] w-full object-cover"
         src={imageUrl}
       />
     </div>
@@ -72,7 +80,7 @@ export function ProductPrimaryImageManager({
   const selectId = `${scope}-primary-media-asset-${variantId ?? productId}`;
 
   return (
-    <div className="admin-product-subsection grid gap-4 rounded-lg border border-border/60 bg-muted/10 p-4">
+    <div className="admin-product-subsection space-y-4 rounded-xl border border-border/60 bg-muted/10 p-4">
       <SectionIntro
         className="grid gap-2"
         description={description}
@@ -84,7 +92,7 @@ export function ProductPrimaryImageManager({
       {state.displayImage ? (
         renderImagePreview(uploadsPublicPath, state.displayImage)
       ) : (
-        <div className="admin-image-preview admin-image-placeholder">
+        <div className="flex min-h-48 items-center justify-center rounded-xl border border-dashed border-border/70 bg-muted/20 px-6 text-center text-sm leading-6 text-muted-foreground">
           {getPrimaryImageEmptyMessage(scope)}
         </div>
       )}
@@ -122,7 +130,7 @@ export function ProductPrimaryImageManager({
             htmlFor={selectId}
             label="Média existant">
             <select
-              className="admin-input"
+              className={nativeSelectClassName}
               defaultValue={currentMediaAssetId}
               id={selectId}
               name="mediaAssetId">
@@ -141,12 +149,12 @@ export function ProductPrimaryImageManager({
             </select>
           </AdminFormField>
 
-          <div className="admin-inline-actions">
-            <button
-              className="button"
+          <div className="flex flex-wrap items-center gap-3">
+            <Button
+              className="w-full sm:w-fit"
               type="submit">
               {getPrimaryImageSubmitLabel(state.primaryImage !== null)}
-            </button>
+            </Button>
           </div>
         </form>
       ) : (
@@ -168,11 +176,13 @@ export function ProductPrimaryImageManager({
             />
           ) : null}
 
-          <button
-            className="button link-subtle"
+          <Button
+            className={subtleDestructiveButtonClassName}
+            size="sm"
+            variant="ghost"
             type="submit">
             Supprimer l&apos;image principale
-          </button>
+          </Button>
         </form>
       ) : null}
     </div>

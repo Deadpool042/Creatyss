@@ -10,6 +10,18 @@ import { type AdminProductDetail } from "@/db/repositories/admin-product.reposit
 import { updateProductAction } from "@/features/admin/products/actions/update-product-action";
 import { isCategoryAssigned } from "./product-detail-helpers";
 
+const nativeSelectClassName =
+  "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";
+
+const fieldsetClassName =
+  "grid gap-4 rounded-xl border border-border/60 bg-muted/10 p-4";
+
+const legendClassName =
+  "px-1 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground";
+
+const checkboxInputClassName =
+  "mt-1 size-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30";
+
 type ProductGeneralSectionProps = Readonly<{
   categories: AdminCategory[];
   errorMessage: string | null;
@@ -46,13 +58,13 @@ export function ProductGeneralSection({
   const productTypeId = `product-type-${product.id}`;
 
   return (
-    <section className="section admin-product-section">
+    <section className="space-y-4">
       {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <form
         action={updateProductAction}
-        className="admin-form admin-product-form">
+        className="space-y-4">
         <input
           name="productId"
           type="hidden"
@@ -60,7 +72,7 @@ export function ProductGeneralSection({
         />
 
         <AdminFormSection
-          contentClassName="gap-5"
+          contentClassName="gap-6"
           description="Modifiez ici le catalogue, le texte public et la publication du produit."
           eyebrow="Informations générales"
           title="Informations produit">
@@ -141,7 +153,7 @@ export function ProductGeneralSection({
               htmlFor={statusId}
               label="Statut">
               <select
-                className="admin-input"
+                className={nativeSelectClassName}
                 defaultValue={product.status}
                 id={statusId}
                 name="status">
@@ -154,7 +166,7 @@ export function ProductGeneralSection({
               htmlFor={productTypeId}
               label="Type de produit">
               <select
-                className="admin-input"
+                className={nativeSelectClassName}
                 defaultValue={product.productType}
                 id={productTypeId}
                 name="productType">
@@ -164,16 +176,17 @@ export function ProductGeneralSection({
             </AdminFormField>
           </div>
 
-          <fieldset className="admin-fieldset grid gap-3">
-            <legend className="meta-label">Catégories associées</legend>
+          <fieldset className={fieldsetClassName}>
+            <legend className={legendClassName}>Catégories associées</legend>
 
             {categories.length > 0 ? (
-              <div className="admin-checkbox-grid">
+              <div className="grid gap-3">
                 {categories.map(category => (
                   <label
-                    className="admin-checkbox"
+                    className="flex items-start gap-3 text-sm leading-6 text-foreground"
                     key={category.id}>
                     <input
+                      className={checkboxInputClassName}
                       defaultChecked={isCategoryAssigned(
                         product.categoryIds,
                         category.id
@@ -182,22 +195,27 @@ export function ProductGeneralSection({
                       type="checkbox"
                       value={category.id}
                     />
-                    <span>
-                      {category.name}
-                      <span className="card-meta"> · {category.slug}</span>
+                    <span className="grid gap-1">
+                      <span className="font-medium text-foreground">
+                        {category.name}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {category.slug}
+                      </span>
                     </span>
                   </label>
                 ))}
               </div>
             ) : (
-              <p className="card-copy">
+              <p className="text-sm leading-6 text-muted-foreground">
                 Aucune catégorie n&apos;est encore disponible pour ce produit.
               </p>
             )}
           </fieldset>
 
-          <label className="admin-checkbox">
+          <label className="flex items-start gap-3 text-sm leading-6 text-foreground">
             <input
+              className={checkboxInputClassName}
               defaultChecked={product.isFeatured}
               name="isFeatured"
               type="checkbox"
@@ -208,7 +226,7 @@ export function ProductGeneralSection({
 
           <AdminFormActions>
             <Button
-              className="button"
+              className="w-full sm:w-auto"
               type="submit">
               Enregistrer le produit
             </Button>

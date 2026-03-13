@@ -11,43 +11,59 @@ export function OrderDetailLinesPanel({
   totalAmount
 }: OrderDetailLinesPanelProps) {
   return (
-    <aside className="product-panel checkout-summary rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm">
-      <div className="stack gap-2">
+    <aside className="grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+      <div className="grid gap-2">
         <p className="eyebrow">Récapitulatif</p>
         <h2>Lignes de commande</h2>
       </div>
 
-      <div className="checkout-line-list">
+      <div className="grid gap-3">
         {lines.map(line => (
           <article
-            className="store-card checkout-line rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm"
+            className="grid gap-3 rounded-lg border border-border/60 bg-muted/10 p-4"
             key={line.id}>
-            <div className="stack">
+            <div className="grid gap-1">
               <h3>{line.productName}</h3>
-              <p className="variant-meta">
+              <p className="text-sm leading-6 text-muted-foreground">
                 {line.variantName} · {line.colorName}
                 {line.colorHex ? ` · ${line.colorHex}` : ""}
               </p>
             </div>
 
-            <div className="stack">
-              <p className="meta-label">SKU</p>
-              <p className="card-copy">{line.sku}</p>
+            <div className="grid gap-1">
+              <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                SKU
+              </p>
+              <p className="card-copy text-sm font-medium leading-6 text-foreground">
+                {line.sku}
+              </p>
             </div>
 
-            <div className="stack">
-              <p className="meta-label">Quantité</p>
-              <p className="card-copy">{line.quantity}</p>
+            <div className="grid gap-1">
+              <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                Quantité
+              </p>
+              <p className="card-copy text-sm font-medium leading-6 text-foreground">
+                {line.quantity}
+              </p>
             </div>
 
-            <div className="stack">
-              <p className="meta-label">Prix unitaire figé</p>
-              <p className="card-copy">{line.unitPrice}</p>
+            <div className="grid gap-1">
+              <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                Prix unitaire figé
+              </p>
+              <p className="card-copy text-sm font-medium leading-6 text-foreground">
+                {line.unitPrice}
+              </p>
             </div>
 
-            <div className="stack">
-              <p className="meta-label">Sous-total</p>
-              <p className="card-copy">{line.lineTotal}</p>
+            <div className="grid gap-1">
+              <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                Sous-total
+              </p>
+              <p className="card-copy text-sm font-medium leading-6 text-foreground">
+                {line.lineTotal}
+              </p>
             </div>
           </article>
         ))}
@@ -55,9 +71,13 @@ export function OrderDetailLinesPanel({
 
       <Separator />
 
-      <div className="stack">
-        <p className="meta-label">Total commande</p>
-        <p className="card-copy">{totalAmount}</p>
+      <div className="grid gap-1">
+        <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+          Total commande
+        </p>
+        <p className="card-copy text-base font-semibold leading-6 text-foreground">
+          {totalAmount}
+        </p>
       </div>
     </aside>
   );

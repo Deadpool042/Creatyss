@@ -106,57 +106,55 @@ export default async function AdminOrderDetailPage({
   };
 
   return (
-    <div className="admin-record-list">
-      <section className="section">
-        <PageHeader
-          description={
-            <>
-              Repérez d&apos;abord l&apos;état de la commande, appliquez
-              l&apos;action utile si nécessaire, puis consultez les détails.
-            </>
-          }
-          eyebrow="Commandes"
-          title={`Commande ${order.reference}`}
-        />
+    <section className="space-y-6 [&_.page-header]:mb-0">
+      <PageHeader
+        description={
+          <>
+            Repérez d&apos;abord l&apos;état de la commande, appliquez
+            l&apos;action utile si nécessaire, puis consultez les détails.
+          </>
+        }
+        eyebrow="Commandes"
+        title={`Commande ${order.reference}`}
+      />
 
-        {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
-        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
+      {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
-        <div className="cart-layout">
-          <div className="checkout-line-list">
-            <OrderDetailSummaryCard
-              orderStatusLabel={orderStatusLabel}
-              paymentStatusLabel={paymentStatusLabel}
-              summary={summary}
-            />
-
-            <OrderDetailActionsCard
-              allowedTransitions={allowedTransitions}
-              order={orderMeta}
-            />
-
-            <OrderDetailShippingCard
-              shippedAtLabel={shippingInfo.shippedAtLabel}
-              trackingReference={shippingInfo.trackingReference}
-            />
-
-            <OrderDetailPaymentCard payment={order.payment} />
-
-            <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
-
-            <OrderDetailCustomerCard customer={customer} />
-
-            <OrderDetailShippingAddressCard address={shippingAddress} />
-
-            <OrderDetailBillingAddressCard billing={billing} />
-          </div>
-
-          <OrderDetailLinesPanel
-            lines={order.lines}
-            totalAmount={order.totalAmount}
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)] xl:items-start">
+        <div className="grid gap-4">
+          <OrderDetailSummaryCard
+            orderStatusLabel={orderStatusLabel}
+            paymentStatusLabel={paymentStatusLabel}
+            summary={summary}
           />
+
+          <OrderDetailActionsCard
+            allowedTransitions={allowedTransitions}
+            order={orderMeta}
+          />
+
+          <OrderDetailShippingCard
+            shippedAtLabel={shippingInfo.shippedAtLabel}
+            trackingReference={shippingInfo.trackingReference}
+          />
+
+          <OrderDetailPaymentCard payment={order.payment} />
+
+          <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
+
+          <OrderDetailCustomerCard customer={customer} />
+
+          <OrderDetailShippingAddressCard address={shippingAddress} />
+
+          <OrderDetailBillingAddressCard billing={billing} />
         </div>
-      </section>
-    </div>
+
+        <OrderDetailLinesPanel
+          lines={order.lines}
+          totalAmount={order.totalAmount}
+        />
+      </div>
+    </section>
   );
 }

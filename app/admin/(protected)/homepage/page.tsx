@@ -46,7 +46,7 @@ export default async function AdminHomepagePage({
 
   if (editorData === null) {
     return (
-      <section className="section admin-homepage-page">
+      <section className="space-y-6 [&_.page-header]:mb-0">
         <PageHeader
           description={
             <>
@@ -89,7 +89,7 @@ export default async function AdminHomepagePage({
     (homepage.heroImagePath !== null ? "__keep_current__" : "");
 
   return (
-    <section className="section admin-homepage-page">
+    <section className="space-y-6 [&_.page-header]:mb-0">
       <PageHeader
         description={
           <>
@@ -108,7 +108,7 @@ export default async function AdminHomepagePage({
 
       <form
         action={updateHomepageAction}
-        className="admin-form admin-homepage-form">
+        className="space-y-6">
         <input
           name="homepageId"
           type="hidden"
@@ -150,9 +150,10 @@ export default async function AdminHomepagePage({
           blogPostSelectionMap={blogPostSelectionMap}
         />
 
-        <AdminFormActions>
+        <AdminFormActions className="justify-start sm:justify-end">
           <Button
-            className="button"
+            className="w-full sm:w-auto"
+            size="lg"
             type="submit">
             Enregistrer la page d&apos;accueil
           </Button>

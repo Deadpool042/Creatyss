@@ -15,17 +15,18 @@ export function OrderDetailSummaryCard({
   paymentStatusLabel
 }: OrderDetailSummaryCardProps) {
   return (
-    <article className="store-card checkout-line rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm">
-      <div className="stack gap-2">
+    <article className="grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+      <div className="grid gap-3">
         <SectionIntro
           description={summary.description}
+          className="grid gap-2"
           eyebrow="Synthèse"
           title={summary.title}
         />
         <Notice tone="note">{summary.nextStep}</Notice>
       </div>
 
-      <div className="admin-product-tags flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2">
         <Badge
           className="rounded-full px-2.5 py-1 text-xs font-medium"
           variant="outline">

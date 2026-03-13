@@ -14,60 +14,68 @@ export function OrderDetailEmailEventsCard({
   emailEvents
 }: OrderDetailEmailEventsCardProps) {
   return (
-    <article className="store-card checkout-line rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm">
-      <div className="stack gap-2">
-        <SectionIntro
-          className="grid gap-2"
-          eyebrow="Emails transactionnels"
-          title="Trace minimale"
-        />
+    <article className="grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+      <SectionIntro
+        className="grid gap-2"
+        eyebrow="Emails transactionnels"
+        title="Trace minimale"
+      />
 
-        {emailEvents.length === 0 ? (
-          <p className="card-copy">
-            Aucun e-mail transactionnel n&apos;a encore été enregistré pour
-            cette commande.
-          </p>
-        ) : (
-          <div className="checkout-line-list">
-            {emailEvents.map(emailEvent => (
-              <article
-                className="store-card checkout-line rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm"
-                key={emailEvent.id}>
-                <div className="stack">
-                  <p className="meta-label">Événement</p>
-                  <p className="card-copy">
+      {emailEvents.length === 0 ? (
+        <p className="card-copy text-sm leading-6 text-foreground">
+          Aucun e-mail transactionnel n&apos;a encore été enregistré pour cette
+          commande.
+        </p>
+      ) : (
+        <div className="grid gap-3">
+          {emailEvents.map(emailEvent => (
+            <article
+              className="grid gap-3 rounded-lg border border-border/60 bg-muted/10 p-4"
+              key={emailEvent.id}>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="grid gap-1">
+                  <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Événement
+                  </p>
+                  <p className="card-copy text-sm font-medium leading-6 text-foreground">
                     {getEmailEventLabel(emailEvent.eventType)}
                   </p>
                 </div>
 
-                <div className="stack">
-                  <p className="meta-label">Statut</p>
-                  <p className="card-copy">
+                <div className="grid gap-1">
+                  <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Statut
+                  </p>
+                  <p className="card-copy text-sm font-medium leading-6 text-foreground">
                     {getEmailEventStatusLabel(emailEvent.status)}
                   </p>
                 </div>
 
-                <div className="stack">
-                  <p className="meta-label">Destinataire</p>
-                  <p className="card-copy">{emailEvent.recipientEmail}</p>
+                <div className="grid gap-1">
+                  <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Destinataire
+                  </p>
+                  <p className="card-copy text-sm font-medium leading-6 text-foreground">
+                    {emailEvent.recipientEmail}
+                  </p>
                 </div>
+              </div>
 
-                {emailEvent.sentAt ? (
-                  <p className="card-meta">
-                    Envoyé le {formatOrderDateTime(emailEvent.sentAt)}
-                  </p>
-                ) : null}
+              {emailEvent.sentAt ? (
+                <p className="card-meta text-sm leading-6 text-muted-foreground">
+                  Envoyé le {formatOrderDateTime(emailEvent.sentAt)}
+                </p>
+              ) : null}
 
-                {emailEvent.lastError ? (
-                  <p className="card-meta">
-                    Erreur : {emailEvent.lastError}
-                  </p>
-                ) : null}
-              </article>
-            ))}
-          </div>
-        )}
-      </div>
+              {emailEvent.lastError ? (
+                <p className="card-meta text-sm leading-6 text-muted-foreground">
+                  Erreur : {emailEvent.lastError}
+                </p>
+              ) : null}
+            </article>
+          ))}
+        </div>
+      )}
     </article>
   );
 }

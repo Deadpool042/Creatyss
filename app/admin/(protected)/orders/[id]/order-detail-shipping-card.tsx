@@ -10,24 +10,23 @@ export function OrderDetailShippingCard({
   trackingReference
 }: OrderDetailShippingCardProps) {
   return (
-    <article className="store-card checkout-line rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm">
-      <div className="stack gap-2">
-        <SectionIntro
-          description={
-            shippedAtLabel
-              ? `Expédiée le ${shippedAtLabel}`
-              : "La commande n'a pas encore été expédiée."
-          }
-          eyebrow="Expédition"
-          title="Suivi simple"
-        />
+    <article className="grid gap-3 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+      <SectionIntro
+        className="grid gap-2"
+        description={
+          shippedAtLabel
+            ? `Expédiée le ${shippedAtLabel}`
+            : "La commande n'a pas encore été expédiée."
+        }
+        eyebrow="Expédition"
+        title="Suivi simple"
+      />
 
-        {trackingReference ? (
-          <p className="card-meta">
-            Référence de suivi : {trackingReference}
-          </p>
-        ) : null}
-      </div>
+      {trackingReference ? (
+        <p className="card-meta text-sm leading-6 text-muted-foreground">
+          Référence de suivi : {trackingReference}
+        </p>
+      ) : null}
     </article>
   );
 }

@@ -5,6 +5,9 @@ import { Notice } from "@/components/notice";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 
+const nativeSelectClassName =
+  "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";
+
 type MediaAsset = {
   id: string;
   originalName: string;
@@ -32,19 +35,20 @@ export function HeroSection({
 }: HeroSectionProps) {
   return (
     <AdminFormSection
+      contentClassName="gap-5"
       description="Renseignez ici le titre, le texte et l'image visibles en haut de la page d'accueil."
       eyebrow="Mise en avant principale"
       title="Bannière principale">
-
       {heroImageUrl ? (
-        <div className="admin-homepage-hero-preview">
+        <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
           <img
             alt={heroTitle ?? "Image principale actuelle"}
+            className="aspect-[16/7] w-full object-cover"
             src={heroImageUrl}
           />
         </div>
       ) : (
-        <div className="admin-homepage-hero-preview admin-image-placeholder">
+        <div className="flex min-h-48 items-center justify-center rounded-xl border border-dashed border-border/70 bg-muted/20 px-6 text-center text-sm leading-6 text-muted-foreground">
           Aucune image principale actuellement
         </div>
       )}
@@ -75,7 +79,7 @@ export function HeroSection({
         htmlFor="homepage-hero-image"
         label="Image principale">
         <select
-          className="admin-input"
+          className={nativeSelectClassName}
           defaultValue={heroImageSelectValue}
           id="homepage-hero-image"
           name="heroImageMediaAssetId">
@@ -99,7 +103,7 @@ export function HeroSection({
         <Notice tone="note">
           Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
           <Link
-            className="link"
+            className="font-medium text-primary underline-offset-4 hover:underline"
             href="/admin/media">
             la bibliothèque médias
           </Link>

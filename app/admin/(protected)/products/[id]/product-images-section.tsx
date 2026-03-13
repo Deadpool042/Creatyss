@@ -4,6 +4,8 @@ import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { type AdminMediaAsset } from "@/db/admin-media";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
 import { createProductImageAction } from "@/features/admin/products/actions/create-product-image-action";
@@ -13,6 +15,12 @@ import { type PrimaryImageState } from "./product-detail-helpers";
 import { ProductImageCard } from "./product-image-card";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 import { ProductPrimaryImageManager } from "./product-primary-image-manager";
+
+const nativeSelectClassName =
+  "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";
+
+const checkboxInputClassName =
+  "mt-1 size-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30";
 
 type ProductImagesSectionProps = Readonly<{
   currentProductPrimaryMediaAssetId: string;
@@ -42,7 +50,7 @@ export function ProductImagesSection({
   const imageSortOrderId = `product-image-sort-order-${productId}`;
 
   return (
-    <section className="section admin-product-section">
+    <section className="space-y-4">
       {productImageMessage.status ? (
         <Notice tone="success">{productImageMessage.status}</Notice>
       ) : null}
@@ -51,7 +59,7 @@ export function ProductImagesSection({
       ) : null}
 
       <AdminFormSection
-        contentClassName="gap-5"
+        contentClassName="gap-6"
         description="Commencez par l'image principale du produit. Les réglages d'images plus détaillés restent disponibles plus bas si nécessaire."
         eyebrow="Images produit"
         title="Images du produit">
@@ -59,7 +67,7 @@ export function ProductImagesSection({
           currentMediaAssetId={currentProductPrimaryMediaAssetId}
           deleteAction={deleteProductPrimaryImageAction}
           description="Choisissez ici le visuel principal affiché pour ce produit."
-          formClassName="admin-form admin-product-form"
+          formClassName="grid gap-4"
           mediaAssets={mediaAssets}
           productId={productId}
           scope="product"
@@ -69,7 +77,7 @@ export function ProductImagesSection({
           uploadsPublicPath={uploadsPublicPath}
         />
 
-        <div className="admin-product-subsection grid gap-4 rounded-lg border border-border/60 bg-muted/10 p-4">
+        <div className="admin-product-subsection space-y-4 rounded-xl border border-border/60 bg-muted/10 p-4">
           <SectionIntro
             className="grid gap-2"
             description="Les autres images associées et leurs réglages restent disponibles ici si vous devez intervenir plus finement."
@@ -81,7 +89,7 @@ export function ProductImagesSection({
           {hasMediaAssets ? (
             <form
               action={createProductImageAction}
-              className="admin-form admin-product-form">
+              className="grid gap-4">
               <input
                 name="productId"
                 type="hidden"
@@ -102,7 +110,7 @@ export function ProductImagesSection({
                 htmlFor={imageMediaAssetId}
                 label="Média existant">
                 <select
-                  className="admin-input"
+                  className={nativeSelectClassName}
                   defaultValue=""
                   id={imageMediaAssetId}
                   name="mediaAssetId">
@@ -124,8 +132,7 @@ export function ProductImagesSection({
               <AdminFormField
                 htmlFor={imageAltTextId}
                 label="Texte alternatif">
-                <input
-                  className="admin-input"
+                <Input
                   id={imageAltTextId}
                   name="altText"
                   type="text"
@@ -135,8 +142,7 @@ export function ProductImagesSection({
               <AdminFormField
                 htmlFor={imageSortOrderId}
                 label="Ordre">
-                <input
-                  className="admin-input"
+                <Input
                   defaultValue="0"
                   id={imageSortOrderId}
                   name="sortOrder"
@@ -144,8 +150,9 @@ export function ProductImagesSection({
                 />
               </AdminFormField>
 
-              <label className="admin-checkbox">
+              <label className="flex items-start gap-3 text-sm leading-6 text-foreground">
                 <input
+                  className={checkboxInputClassName}
                   name="isPrimary"
                   type="checkbox"
                   value="on"
@@ -154,11 +161,11 @@ export function ProductImagesSection({
               </label>
 
               <AdminFormActions>
-                <button
-                  className="button"
+                <Button
+                  className="w-full sm:w-fit"
                   type="submit">
                   Ajouter une image produit
-                </button>
+                </Button>
               </AdminFormActions>
             </form>
           ) : (
@@ -166,7 +173,7 @@ export function ProductImagesSection({
           )}
 
           {parentImages.length > 0 ? (
-            <div className="admin-record-list">
+            <div className="grid gap-4">
               {parentImages.map(image => (
                 <ProductImageCard
                   image={image}

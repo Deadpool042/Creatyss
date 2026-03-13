@@ -10,6 +10,15 @@ import { shipOrderAction } from "@/features/admin/orders/actions/ship-order-acti
 import { updateOrderStatusAction } from "@/features/admin/orders/actions/update-order-status-action";
 import { getOrderTransitionLabel } from "./order-detail-helpers";
 
+const detailCardClassName =
+  "grid gap-1 rounded-lg border border-border/60 bg-muted/10 p-3";
+
+const detailLabelClassName =
+  "meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground";
+
+const detailValueClassName =
+  "card-copy text-sm font-medium leading-6 text-foreground";
+
 type OrderDetailActionsCardProps = Readonly<{
   order: {
     id: string;
@@ -33,7 +42,7 @@ export function OrderDetailActionsCard({
   );
 
   return (
-    <article className="store-card checkout-line rounded-xl border border-border/70 bg-card text-card-foreground shadow-sm">
+    <article className="grid gap-5 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
       <SectionIntro
         className="grid gap-2"
         description="Vérifiez le statut, puis utilisez l'action disponible si une étape reste à effectuer."
@@ -42,24 +51,24 @@ export function OrderDetailActionsCard({
       />
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="stack">
-          <p className="meta-label">Référence</p>
-          <p className="card-copy">{order.reference}</p>
+        <div className={detailCardClassName}>
+          <p className={detailLabelClassName}>Référence</p>
+          <p className={detailValueClassName}>{order.reference}</p>
         </div>
 
-        <div className="stack">
-          <p className="meta-label">Créée le</p>
-          <p className="card-copy">{order.createdAtLabel}</p>
+        <div className={detailCardClassName}>
+          <p className={detailLabelClassName}>Créée le</p>
+          <p className={detailValueClassName}>{order.createdAtLabel}</p>
         </div>
 
-        <div className="stack">
-          <p className="meta-label">Statut</p>
-          <p className="card-copy">{order.statusLabel}</p>
+        <div className={detailCardClassName}>
+          <p className={detailLabelClassName}>Statut</p>
+          <p className={detailValueClassName}>{order.statusLabel}</p>
         </div>
 
-        <div className="stack">
-          <p className="meta-label">Paiement</p>
-          <p className="card-copy">{order.paymentStatusLabel}</p>
+        <div className={detailCardClassName}>
+          <p className={detailLabelClassName}>Paiement</p>
+          <p className={detailValueClassName}>{order.paymentStatusLabel}</p>
         </div>
       </div>
 
@@ -70,7 +79,7 @@ export function OrderDetailActionsCard({
           {canShip ? (
             <form
               action={shipOrderAction}
-              className="admin-form grid gap-3 rounded-lg border border-border/60 bg-muted/20 p-4">
+              className="grid gap-4 rounded-lg border border-border/60 bg-muted/10 p-4">
               <input
                 name="orderId"
                 type="hidden"
@@ -90,7 +99,7 @@ export function OrderDetailActionsCard({
               </AdminFormField>
 
               <Button
-                className="button w-fit"
+                className="w-full sm:w-fit"
                 type="submit">
                 Marquer comme expédiée
               </Button>
@@ -98,7 +107,7 @@ export function OrderDetailActionsCard({
           ) : null}
 
           {statusTransitions.length > 0 ? (
-            <AdminFormActions>
+            <AdminFormActions className="gap-2">
               {statusTransitions.map(nextStatus => (
                 <form
                   action={updateOrderStatusAction}
@@ -114,10 +123,8 @@ export function OrderDetailActionsCard({
                     value={nextStatus}
                   />
                   <Button
-                    className={
-                      nextStatus === "cancelled"
-                        ? "button admin-danger-button"
-                        : "button"
+                    variant={
+                      nextStatus === "cancelled" ? "destructive" : "outline"
                     }
                     type="submit">
                     {getOrderTransitionLabel(nextStatus)}
