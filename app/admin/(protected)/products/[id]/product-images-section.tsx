@@ -1,0 +1,191 @@
+import { Notice } from "@/components/notice";
+import { SectionIntro } from "@/components/section-intro";
+import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminFormActions } from "@/components/admin/admin-form-actions";
+import { AdminFormField } from "@/components/admin/admin-form-field";
+import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { type AdminMediaAsset } from "@/db/admin-media";
+import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
+import { createProductImageAction } from "@/features/admin/products/actions/create-product-image-action";
+import { deleteProductPrimaryImageAction } from "@/features/admin/products/actions/delete-product-primary-image-action";
+import { setProductPrimaryImageAction } from "@/features/admin/products/actions/set-product-primary-image-action";
+import { type PrimaryImageState } from "./product-detail-helpers";
+import { ProductImageCard } from "./product-image-card";
+import { ProductMediaLibraryNotice } from "./product-media-library-notice";
+import { ProductPrimaryImageManager } from "./product-primary-image-manager";
+
+type ProductImagesSectionProps = Readonly<{
+  currentProductPrimaryMediaAssetId: string;
+  mediaAssets: AdminMediaAsset[];
+  parentImages: AdminProductImage[];
+  productId: string;
+  productImageMessage: {
+    error: string | null;
+    status: string | null;
+  };
+  productPrimaryImageState: PrimaryImageState;
+  uploadsPublicPath: string;
+}>;
+
+export function ProductImagesSection({
+  currentProductPrimaryMediaAssetId,
+  mediaAssets,
+  parentImages,
+  productId,
+  productImageMessage,
+  productPrimaryImageState,
+  uploadsPublicPath
+}: ProductImagesSectionProps) {
+  const hasMediaAssets = mediaAssets.length > 0;
+  const imageMediaAssetId = `product-image-media-asset-${productId}`;
+  const imageAltTextId = `product-image-alt-text-${productId}`;
+  const imageSortOrderId = `product-image-sort-order-${productId}`;
+
+  return (
+    <section className="section admin-product-section">
+      {productImageMessage.status ? (
+        <Notice tone="success">{productImageMessage.status}</Notice>
+      ) : null}
+      {productImageMessage.error ? (
+        <Notice tone="alert">{productImageMessage.error}</Notice>
+      ) : null}
+
+      <AdminFormSection
+        contentClassName="gap-5"
+        description="Commencez par l'image principale du produit. Les réglages d'images plus détaillés restent disponibles plus bas si nécessaire."
+        eyebrow="Images produit"
+        title="Images du produit">
+        <ProductPrimaryImageManager
+          currentMediaAssetId={currentProductPrimaryMediaAssetId}
+          deleteAction={deleteProductPrimaryImageAction}
+          description="Choisissez ici le visuel principal affiché pour ce produit."
+          formClassName="admin-form admin-product-form"
+          mediaAssets={mediaAssets}
+          productId={productId}
+          scope="product"
+          setAction={setProductPrimaryImageAction}
+          state={productPrimaryImageState}
+          title="Image principale du produit"
+          uploadsPublicPath={uploadsPublicPath}
+        />
+
+        <div className="admin-product-subsection grid gap-4 rounded-lg border border-border/60 bg-muted/10 p-4">
+          <SectionIntro
+            className="grid gap-2"
+            description="Les autres images associées et leurs réglages restent disponibles ici si vous devez intervenir plus finement."
+            eyebrow="Réglages complémentaires"
+            title="Images associées"
+            titleAs="h3"
+          />
+
+          {hasMediaAssets ? (
+            <form
+              action={createProductImageAction}
+              className="admin-form admin-product-form">
+              <input
+                name="productId"
+                type="hidden"
+                value={productId}
+              />
+              <input
+                name="variantId"
+                type="hidden"
+                value=""
+              />
+              <input
+                name="imageScope"
+                type="hidden"
+                value="product"
+              />
+
+              <AdminFormField
+                htmlFor={imageMediaAssetId}
+                label="Média existant">
+                <select
+                  className="admin-input"
+                  defaultValue=""
+                  id={imageMediaAssetId}
+                  name="mediaAssetId">
+                  <option
+                    disabled
+                    value="">
+                    Sélectionnez un média
+                  </option>
+                  {mediaAssets.map(mediaAsset => (
+                    <option
+                      key={mediaAsset.id}
+                      value={mediaAsset.id}>
+                      {mediaAsset.originalName} · {mediaAsset.mimeType}
+                    </option>
+                  ))}
+                </select>
+              </AdminFormField>
+
+              <AdminFormField
+                htmlFor={imageAltTextId}
+                label="Texte alternatif">
+                <input
+                  className="admin-input"
+                  id={imageAltTextId}
+                  name="altText"
+                  type="text"
+                />
+              </AdminFormField>
+
+              <AdminFormField
+                htmlFor={imageSortOrderId}
+                label="Ordre">
+                <input
+                  className="admin-input"
+                  defaultValue="0"
+                  id={imageSortOrderId}
+                  name="sortOrder"
+                  type="number"
+                />
+              </AdminFormField>
+
+              <label className="admin-checkbox">
+                <input
+                  name="isPrimary"
+                  type="checkbox"
+                  value="on"
+                />
+                <span>Définir comme image principale du produit</span>
+              </label>
+
+              <AdminFormActions>
+                <button
+                  className="button"
+                  type="submit">
+                  Ajouter une image produit
+                </button>
+              </AdminFormActions>
+            </form>
+          ) : (
+            <ProductMediaLibraryNotice />
+          )}
+
+          {parentImages.length > 0 ? (
+            <div className="admin-record-list">
+              {parentImages.map(image => (
+                <ProductImageCard
+                  image={image}
+                  imageScope="product"
+                  key={image.id}
+                  productId={productId}
+                  uploadsPublicPath={uploadsPublicPath}
+                />
+              ))}
+            </div>
+          ) : (
+            <AdminEmptyState
+              description="Associez un média existant pour afficher une image principale ou secondaire."
+              eyebrow="Aucune image"
+              title="Le produit n'a pas encore d'image"
+            />
+          )}
+        </div>
+      </AdminFormSection>
+    </section>
+  );
+}
