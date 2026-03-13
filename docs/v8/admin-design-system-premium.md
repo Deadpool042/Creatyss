@@ -5,6 +5,7 @@
 V8 est une phase d'élévation qualitative. Elle ne refondit pas l'architecture ni la logique métier — elle nettoie, consolide et affine l'interface admin bâtie en V7.
 
 "Premium" ne signifie pas plus de complexité. Il signifie :
+
 - **cohérence** : mêmes tokens, mêmes composants, mêmes comportements dans toute l'interface
 - **sobriété** : rien d'inutile, rien de décoratif sans raison
 - **contrôle** : chaque décision visuelle est traçable — un token, un composant, une règle
@@ -16,18 +17,23 @@ Le résultat attendu est une interface admin qui se tient visuellement, qui fonc
 ## Principes directeurs
 
 ### 1. Le token avant la valeur arbitraire
+
 Toute valeur visuelle récurrente (couleur, rayon, espacement significatif) doit être un token CSS. Une valeur arbitraire Tailwind est acceptable pour un usage unique et contextuel. Elle devient une dette dès qu'elle se répète.
 
 ### 2. Le composant shadcn avant la classe CSS
+
 Quand un composant shadcn/ui couvre le besoin, on l'utilise. On ne crée pas de composant custom si un primitif existant suffit. On n'utilise pas une classe CSS legacy si un composant shadcn remplit la même fonction.
 
 ### 3. La migration avant le nettoyage
+
 On ne supprime pas une classe CSS legacy avant que tous ses usages aient été migrés. La coexistence temporaire est préférable à une suppression prématurée qui casse le rendu.
 
 ### 4. Le dark mode n'est pas un bonus
+
 Le dark mode est un sous-système de cohérence UX, pas une vérification optionnelle. Chaque surface qui repose sur un token est dark compliant par construction. Chaque surface qui repose sur une valeur codée en dur est une dette dark mode.
 
 ### 5. Pas de dépendance sans besoin démontré
+
 Aucune nouvelle dépendance npm n'est introduite en V8 sans nécessité explicite. Les composants shadcn déjà présents dans `components/ui/` mais non installés (recharts, calendar, etc.) restent en l'état.
 
 ---
@@ -35,6 +41,7 @@ Aucune nouvelle dépendance npm n'est introduite en V8 sans nécessité explicit
 ## Critères de qualité V8
 
 Un composant est considéré **V8-conforme** quand :
+
 - il ne contient aucune valeur de couleur en dur (hex, rgb, hsl) — uniquement des tokens ou des utilities Tailwind sémantiques
 - il n'importe aucune classe CSS legacy comme source de vérité pour son rendu visuel
 - il fonctionne en dark mode sans ajustement manuel supplémentaire
@@ -73,34 +80,34 @@ V8 s'appuie sur une consultation explicite des blocks, de la documentation et de
 
 ### Ce qu'on retient
 
-| Élément | Pourquoi |
-|---|---|
-| Pattern `sidebar-07` (icon-collapse + `SidebarRail`) | Correspond exactement au besoin ergonomique desktop : sidebar réductible, tooltips en mode icon, handle visuel |
-| `SidebarMenuButton` avec prop `tooltip` | API native shadcn, s'active automatiquement en mode icon — zéro code supplémentaire |
-| Namespace `--sidebar-*` pour tous les tokens sidebar | Cohérence avec shadcn, dark mode natif si les tokens sont bien déclarés dans `.dark {}` |
-| Tokens OKLCH dans `globals.css` (stratégie `:root` / `.dark`) | Bon modèle pour introduire `--brand` sur la même logique |
-| Stratégie dark mode via classe `.dark` sur `<html>` | Compatible `next-themes`, simple, fiable |
+| Élément                                                       | Pourquoi                                                                                                       |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Pattern `sidebar-07` (icon-collapse + `SidebarRail`)          | Correspond exactement au besoin ergonomique desktop : sidebar réductible, tooltips en mode icon, handle visuel |
+| `SidebarMenuButton` avec prop `tooltip`                       | API native shadcn, s'active automatiquement en mode icon — zéro code supplémentaire                            |
+| Namespace `--sidebar-*` pour tous les tokens sidebar          | Cohérence avec shadcn, dark mode natif si les tokens sont bien déclarés dans `.dark {}`                        |
+| Tokens OKLCH dans `globals.css` (stratégie `:root` / `.dark`) | Bon modèle pour introduire `--brand` sur la même logique                                                       |
+| Stratégie dark mode via classe `.dark` sur `<html>`           | Compatible `next-themes`, simple, fiable                                                                       |
 
 ### Ce qu'on adapte
 
-| Élément | Adaptation |
-|---|---|
-| Token `--brand` | N'existe pas dans shadcn — on l'introduit sur le même modèle que les autres tokens OKLCH, avec valeur light et dark distinctes si nécessaire |
-| Block `sidebar-16` (user card dans header) | On s'en inspire pour le positionnement de l'info utilisateur, mais on garde la structure admin actuelle — pas de reprise verbatim du block |
-| `CardAction` | Introduit seulement là où une action inline sur card est utile — pas ajouté systématiquement |
-| Persistance état sidebar | shadcn utilise un cookie (`SIDEBAR_COOKIE_NAME`) — on laisse ce mécanisme natif fonctionner sans le surcharger |
+| Élément                                    | Adaptation                                                                                                                                   |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Token `--brand`                            | N'existe pas dans shadcn — on l'introduit sur le même modèle que les autres tokens OKLCH, avec valeur light et dark distinctes si nécessaire |
+| Block `sidebar-16` (user card dans header) | On s'en inspire pour le positionnement de l'info utilisateur, mais on garde la structure admin actuelle — pas de reprise verbatim du block   |
+| `CardAction`                               | Introduit seulement là où une action inline sur card est utile — pas ajouté systématiquement                                                 |
+| Persistance état sidebar                   | shadcn utilise un cookie (`SIDEBAR_COOKIE_NAME`) — on laisse ce mécanisme natif fonctionner sans le surcharger                               |
 
 ### Ce qu'on écarte et pourquoi
 
-| Élément | Raison |
-|---|---|
-| **Recharts** (`chart.tsx`) | Dépendance lourde (~500 Ko), aucun graphique dans l'admin actuellement, pas de besoin démontré |
-| **react-day-picker** (`calendar.tsx`) | Idem — aucun sélecteur de date dans les formulaires actifs |
-| **Sonner** (`sonner.tsx`) | Notifications toast non utilisées — pas de comportement asynchrone visible nécessitant une notification |
-| **Vaul** (`drawer.tsx`) | Drawer non nécessaire dans les parcours admin actuels |
-| **Command palette** | Trop complexe, trop démonstratif, hors besoin actuel |
-| **Nested sidebars** | Sur-ingénierie pour un admin à navigation plate |
-| **RHF / TanStack Form** | Pas de framework de formulaires — les formulaires admin sont gérés via Server Actions + HTML natif |
+| Élément                               | Raison                                                                                                  |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Recharts** (`chart.tsx`)            | Dépendance lourde (~500 Ko), aucun graphique dans l'admin actuellement, pas de besoin démontré          |
+| **react-day-picker** (`calendar.tsx`) | Idem — aucun sélecteur de date dans les formulaires actifs                                              |
+| **Sonner** (`sonner.tsx`)             | Notifications toast non utilisées — pas de comportement asynchrone visible nécessitant une notification |
+| **Vaul** (`drawer.tsx`)               | Drawer non nécessaire dans les parcours admin actuels                                                   |
+| **Command palette**                   | Trop complexe, trop démonstratif, hors besoin actuel                                                    |
+| **Nested sidebars**                   | Sur-ingénierie pour un admin à navigation plate                                                         |
+| **RHF / TanStack Form**               | Pas de framework de formulaires — les formulaires admin sont gérés via Server Actions + HTML natif      |
 
 La règle : on n'introduit pas une dépendance parce qu'elle est présente dans un block shadcn. On l'introduit seulement si le besoin est présent dans l'interface Creatyss.
 
@@ -118,18 +125,18 @@ Le dark mode n'est pas une vérification de fin de lot. C'est un chantier de coh
 
 ### Surfaces à couvrir
 
-| Surface | Tokens concernés |
-|---|---|
-| Fond page | `--background`, `--foreground` |
-| Sidebar | `--sidebar-background`, `--sidebar-foreground`, `--sidebar-border`, `--sidebar-accent` |
-| Cards et panneaux | `--card`, `--card-foreground`, `--border` |
-| Formulaires (champs, labels) | `--input`, `--ring`, `--muted`, `--muted-foreground` |
-| Boutons | `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground` |
-| États destructifs | `--destructive`, `--destructive-foreground` |
-| Couleur de marque | `--brand` — doit être lisible sur fond dark |
-| Hover et focus | `--accent`, `--accent-foreground`, `--ring` |
-| Badges et statuts | Variants `Badge` — vérifier contraste en dark |
-| États vides | `--muted-foreground` suffisant si composant tokenisé |
+| Surface                      | Tokens concernés                                                                       |
+| ---------------------------- | -------------------------------------------------------------------------------------- |
+| Fond page                    | `--background`, `--foreground`                                                         |
+| Sidebar                      | `--sidebar-background`, `--sidebar-foreground`, `--sidebar-border`, `--sidebar-accent` |
+| Cards et panneaux            | `--card`, `--card-foreground`, `--border`                                              |
+| Formulaires (champs, labels) | `--input`, `--ring`, `--muted`, `--muted-foreground`                                   |
+| Boutons                      | `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`           |
+| États destructifs            | `--destructive`, `--destructive-foreground`                                            |
+| Couleur de marque            | `--brand` — doit être lisible sur fond dark                                            |
+| Hover et focus               | `--accent`, `--accent-foreground`, `--ring`                                            |
+| Badges et statuts            | Variants `Badge` — vérifier contraste en dark                                          |
+| États vides                  | `--muted-foreground` suffisant si composant tokenisé                                   |
 
 ### Critère de validation dark mode
 
@@ -145,15 +152,16 @@ La sortie du CSS legacy n'est pas un objectif immédiat — c'est la conséquenc
 
 ### Les trois stades
 
-| Stade | Signification | Condition |
-|---|---|---|
-| **Coexistence** | Classe legacy présente dans le CSS et dans le composant | Composant non encore migré — état normal en V8-3/V8-4 |
-| **Désactivation** | Classe legacy présente dans le CSS, absente des composants | Composant migré, nettoyage CSS pas encore fait |
-| **Suppression** | Classe retirée du fichier CSS | Vérifié : zéro usage dans `app/` et `components/` |
+| Stade             | Signification                                              | Condition                                             |
+| ----------------- | ---------------------------------------------------------- | ----------------------------------------------------- |
+| **Coexistence**   | Classe legacy présente dans le CSS et dans le composant    | Composant non encore migré — état normal en V8-3/V8-4 |
+| **Désactivation** | Classe legacy présente dans le CSS, absente des composants | Composant migré, nettoyage CSS pas encore fait        |
+| **Suppression**   | Classe retirée du fichier CSS                              | Vérifié : zéro usage dans `app/` et `components/`     |
 
 ### Condition de suppression
 
 Avant de retirer une règle CSS legacy :
+
 1. Grep d'absence : aucune occurrence dans `app/`, `components/`, `styles/` (hors définition CSS elle-même)
 2. Test visuel : les pages qui utilisaient ce composant s'affichent identiquement
 3. Typecheck passe
@@ -164,16 +172,16 @@ La suppression se fait par **bloc logique** (une classe et ses variantes, hover,
 
 Les classes identifiées comme candidates à la suppression en V8-5, après migration :
 
-| Classe | Dépend de |
-|---|---|
-| `.admin-chip` | Migration V8-3 (cards) |
-| `.admin-product-card`, `.admin-product-tags` | Migration V8-3 |
-| `.admin-order-card` | Migration V8-3 |
-| `.store-card` | Migration V8-3 |
-| `.empty-state` | Migration V8-3 |
-| `.admin-shell`, `.admin-nav` | Migration V8-2 |
-| `.admin-input` | Migration V8-4 |
-| `.admin-homepage-*` | Migration V8-4 |
+| Classe                                       | Dépend de              |
+| -------------------------------------------- | ---------------------- |
+| `.admin-chip`                                | Migration V8-3 (cards) |
+| `.admin-product-card`, `.admin-product-tags` | Migration V8-3         |
+| `.admin-order-card`                          | Migration V8-3         |
+| `.store-card`                                | Migration V8-3         |
+| `.empty-state`                               | Migration V8-3         |
+| `.admin-shell`, `.admin-nav`                 | Migration V8-2         |
+| `.admin-input`                               | Migration V8-4         |
+| `.admin-homepage-*`                          | Migration V8-4         |
 
 Cette liste n'est pas exhaustive. Un inventaire final par grep précède V8-5.
 
@@ -188,6 +196,7 @@ La totalité des 5 lots V8 porte sur l'interface d'administration (`app/admin/`,
 ### Dimension public léger
 
 Certains principes V8 s'appliquent mécaniquement au shell public par construction :
+
 - Les tokens CSS `--brand`, `--background`, `--foreground` sont globaux — le front public en bénéficie dès V8-1
 - Le dark mode (stratégie `.dark {}` + `next-themes`) s'applique aux deux interfaces si activé
 - Les composants `components/ui/` migrés ou utilisés en V8 sont partagés

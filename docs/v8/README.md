@@ -8,19 +8,20 @@ V8 ne touche pas au comportement métier, aux Server Actions, ni à la logique d
 
 ## Documents de référence
 
-| Fichier | Rôle |
-|---|---|
-| `docs/v8/admin-design-system-premium.md` | Doctrine — principes, critères, hiérarchie de décision, MCP shadcn, dark mode, legacy CSS |
-| `docs/v8/admin-theme-and-shell-roadmap.md` | Roadmap — justification et séquence des 5 lots |
-| `docs/v8/lots/v8-1-theme-foundation.md` | Lot 1 — Fondations thème : tokens et dark mode |
-| `docs/v8/lots/v8-2-admin-shell-premium.md` | Lot 2 — Shell icon-collapse professionnel |
-| `docs/v8/lots/v8-3-admin-components-migration.md` | Lot 3 — Migration des composants cards et états |
-| `docs/v8/lots/v8-4-admin-pages-high-impact.md` | Lot 4 — Cohérence des pages haute visibilité |
-| `docs/v8/lots/v8-5-legacy-css-cleanup.md` | Lot 5 — Retrait contrôlé du CSS legacy orphelin |
+| Fichier                                           | Rôle                                                                                      |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `docs/v8/admin-design-system-premium.md`          | Doctrine — principes, critères, hiérarchie de décision, MCP shadcn, dark mode, legacy CSS |
+| `docs/v8/admin-theme-and-shell-roadmap.md`        | Roadmap — justification et séquence des 5 lots                                            |
+| `docs/v8/lots/v8-1-theme-foundation.md`           | Lot 1 — Fondations thème : tokens et dark mode                                            |
+| `docs/v8/lots/v8-2-admin-shell-premium.md`        | Lot 2 — Shell icon-collapse professionnel                                                 |
+| `docs/v8/lots/v8-3-admin-components-migration.md` | Lot 3 — Migration des composants cards et états                                           |
+| `docs/v8/lots/v8-4-admin-pages-high-impact.md`    | Lot 4 — Cohérence des pages haute visibilité                                              |
+| `docs/v8/lots/v8-5-legacy-css-cleanup.md`         | Lot 5 — Retrait contrôlé du CSS legacy orphelin                                           |
 
 ## Périmètre
 
 **In scope :**
+
 - Tokens CSS globaux : `--brand`, `--sidebar-*`, complétion du dark mode
 - Shell admin : icon-collapse desktop, `SidebarRail`, tooltips, découplage client/server
 - Migration composants : `AdminProductCard`, `AdminOrderCard`, `AdminBlogPostCard`, `AdminCategoryCard`, `AdminEmptyState`
@@ -28,6 +29,7 @@ V8 ne touche pas au comportement métier, aux Server Actions, ni à la logique d
 - Retrait progressif du CSS legacy devenu orphelin après migrations
 
 **Out of scope :**
+
 - Refonte du front public (catalogue, panier, pages marketing)
 - Graphiques / Recharts — dépendance non installée, aucun besoin actuel
 - Internationalisation

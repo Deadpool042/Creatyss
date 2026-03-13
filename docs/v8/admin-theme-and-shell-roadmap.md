@@ -2,13 +2,13 @@
 
 ## Vue d'ensemble
 
-| Lot | Titre | Risque si non fait |
-|---|---|---|
-| V8-1 | Fondations thème : tokens et dark mode | Valeurs en dur se multiplient, dark mode incohérent |
-| V8-2 | Shell admin premium (icon-collapse) | Shell figé, peu ergonomique desktop, état non persisté |
-| V8-3 | Migration composants cards et états | Deux systèmes de style en tension indéfiniment |
-| V8-4 | Cohérence pages haute visibilité | Expérience fragmentée sur les pages les plus consultées |
-| V8-5 | Retrait contrôlé du CSS legacy | Dette CSS permanente, risques de régressions croisées |
+| Lot  | Titre                                  | Risque si non fait                                      |
+| ---- | -------------------------------------- | ------------------------------------------------------- |
+| V8-1 | Fondations thème : tokens et dark mode | Valeurs en dur se multiplient, dark mode incohérent     |
+| V8-2 | Shell admin premium (icon-collapse)    | Shell figé, peu ergonomique desktop, état non persisté  |
+| V8-3 | Migration composants cards et états    | Deux systèmes de style en tension indéfiniment          |
+| V8-4 | Cohérence pages haute visibilité       | Expérience fragmentée sur les pages les plus consultées |
+| V8-5 | Retrait contrôlé du CSS legacy         | Dette CSS permanente, risques de régressions croisées   |
 
 ---
 
@@ -18,7 +18,7 @@
 
 Tout le reste de V8 s'appuie sur des tokens normalisés. Si V8-2 remplace le shell avant que `--brand` existe, le remplacement introduit encore des valeurs en dur. V8-1 pose le socle commun.
 
-### Ce que ce lot résout
+### Ce que ce lot résout lot V8-1
 
 La couleur de marque Creatyss (`#8f5d2d`) est actuellement inlinée comme valeur arbitraire Tailwind dans plusieurs composants. À chaque ajout de composant qui utilise cette couleur, la valeur se propage. V8-1 en fait un token, une seule source de vérité.
 
@@ -43,9 +43,10 @@ Aucun prérequis. Ce lot peut démarrer immédiatement.
 
 Les tokens `--brand` et `--sidebar-*` dark sont nécessaires pour que le shell refactorisé soit d'emblée correct visuellement. Commencer V8-2 avant V8-1 reviendrait à introduire de nouvelles valeurs en dur dans du code qu'on vient de réécrire.
 
-### Ce que ce lot résout
+### Ce que ce lot résout lot V8-2
 
 Le shell actuel a plusieurs limitations ergonomiques :
+
 - La sidebar ne se réduit pas sur desktop — elle est soit pleine, soit absente
 - L'état ouvert/fermé est verrouillé (`open={true}`), il ne se persiste pas entre navigations
 - Il n'y a pas de handle visuel pour réduire/agrandir (pas de `SidebarRail`)
@@ -54,7 +55,7 @@ Le shell actuel a plusieurs limitations ergonomiques :
 
 Le pattern shadcn `sidebar-07`, consulté via MCP, répond exactement à ce besoin : icon-collapse, `SidebarRail`, tooltips natifs sur `SidebarMenuButton` en mode icon, état persisté via cookie sans code supplémentaire.
 
-### Résultat attendu
+### Résultat attendu lot V8-2
 
 - Sidebar desktop réductible en mode icônes avec tooltips au hover
 - État de la sidebar persisté entre navigations
@@ -62,7 +63,7 @@ Le pattern shadcn `sidebar-07`, consulté via MCP, répond exactement à ce beso
 - Layout sans compensation négative
 - `AdminShell` server component si possible
 
-### Dépendances
+### Dépendances lot V8-1 terminé. V8-3 et V8-4 peuvent être en parallèle après V8-1, mais pas avant.
 
 V8-1 terminé.
 
@@ -70,11 +71,11 @@ V8-1 terminé.
 
 ## V8-3 — Migration composants cards et états
 
-### Pourquoi ce lot
+### Pourquoi ce lot V8-3 legacy et Tailwind coexistent dans les composants cards et états. Cette coexistence crée une tension : corriger un style nécessite de comprendre les classes CSS legacy et les classes Tailwind en même temps
 
 Les composants cards admin (`AdminProductCard`, `AdminOrderCard`, `AdminBlogPostCard`, `AdminCategoryCard`) et `AdminEmptyState` mélangent des classes CSS legacy avec des classes Tailwind. Ce mélange crée une tension : corriger le style d'un composant nécessite de comprendre deux systèmes en même temps. La dark mode coverage de ces composants dépend du bon système gagnant.
 
-### Ce que ce lot résout
+### Ce que ce lot résout V8-3
 
 - `.admin-chip` remplacé par `Badge` shadcn — variant sémantique, dark mode natif
 - `.store-card` et `.admin-*-card` remplacés par `Card` shadcn + Tailwind pur
@@ -82,14 +83,14 @@ Les composants cards admin (`AdminProductCard`, `AdminOrderCard`, `AdminBlogPost
 
 Ces composants sont les plus visibles dans les pages liste (produits, commandes, blog, catégories). Leur migration rend V8-4 plus simple et V8-5 possible.
 
-### Résultat attendu
+### Résultat attendu lot V8-3
 
 - Cinq composants sans aucune importation de classe CSS legacy
 - `Badge` utilisé pour tous les statuts et tags
 - `Card` shadcn comme base des cards
 - Composants dark compliant par construction via tokens
 
-### Dépendances
+### Dépendances lot V8-1 terminé. V8-2 peut être en parallèle
 
 V8-1 terminé. V8-2 peut être en parallèle.
 
@@ -97,11 +98,11 @@ V8-1 terminé. V8-2 peut être en parallèle.
 
 ## V8-4 — Cohérence pages haute visibilité
 
-### Pourquoi ce lot
+### Pourquoi ce lot V8-4
 
 Même avec des composants migrés et un shell amélioré, les pages peuvent rester incohérentes dans leur structure (en-têtes, espacements, hiérarchie). Les pages les plus consultées — dashboard, homepage admin, détail produit, détail commande — méritent une passe de cohérence.
 
-### Ce que ce lot résout
+### Ce que ce lot résout V8-4
 
 - En-têtes de pages structurés de manière cohérente (titre, description, actions)
 - Utilisation systématique de `AdminFormSection`, `AdminFormField`, `AdminFormActions` là où ils s'appliquent
@@ -109,13 +110,13 @@ Même avec des composants migrés et un shell amélioré, les pages peuvent rest
 
 Ce lot ne touche pas à la logique métier ni aux données affichées. Il affine la mise en page et la composition.
 
-### Résultat attendu
+### Résultat attendu lot V8-4
 
 - Pages haute visibilité avec structure d'en-tête homogène
 - Aucun composant legacy dans ces pages
 - Cohérence avec les standards V7/V8
 
-### Dépendances
+### Dépendances du lot V8-4
 
 V8-1 terminé. V8-3 terminé ou en cours (les composants migrés doivent être disponibles).
 
@@ -127,19 +128,19 @@ V8-1 terminé. V8-3 terminé ou en cours (les composants migrés doivent être d
 
 Le CSS legacy ne peut être retiré qu'une fois ses usages migrés. Agir avant crée des régressions visuelles. Agir après garantit que le retrait est sans risque.
 
-### Ce que ce lot résout
+### Ce que ce lot résout V8-5
 
 Après V8-2, V8-3 et V8-4, un ensemble de classes CSS legacy est devenu orphelin — présent dans les fichiers `.css` mais non utilisé dans l'application. V8-5 les retire proprement, bloc par bloc, après vérification systématique.
 
 La cible finale n'est pas un fichier CSS vide : c'est un fichier CSS sans règles orphelines et sans dette active. Les styles globaux légitimes (reset, variables, bases typographiques) restent.
 
-### Résultat attendu
+### Résultat attendu du lot V8-5
 
 - Classes identifiées en V8-3/V8-4 retirées des fichiers CSS
 - Aucune régression visuelle vérifiable
 - Fichiers CSS allégés et cohérents avec ce qui est réellement utilisé
 
-### Dépendances
+### Dépendances du lot V8-5
 
 V8-2, V8-3 et V8-4 terminés.
 

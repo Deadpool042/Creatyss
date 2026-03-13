@@ -41,7 +41,7 @@ export function AdminShell({ children, displayName, email }: AdminShellProps) {
               />
 
               <div className="min-w-0">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8f5d2d]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
                   Administration
                 </p>
                 <p className="truncate text-sm text-muted-foreground">

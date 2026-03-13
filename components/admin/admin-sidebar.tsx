@@ -59,7 +59,7 @@ export function AdminSidebar({
         <Link
           href="/admin"
           className="rounded-lg px-2 py-1.5 transition-colors hover:bg-sidebar-accent">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8f5d2d]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
             Administration
           </p>
           <p className="text-base font-semibold text-sidebar-foreground">
@@ -93,7 +93,7 @@ export function AdminSidebar({
             <SidebarGroup
               key={group.label}
               className="p-0">
-              <SidebarGroupLabel className="px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8f5d2d]">
+              <SidebarGroupLabel className="px-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
                 {group.label}
               </SidebarGroupLabel>
 
