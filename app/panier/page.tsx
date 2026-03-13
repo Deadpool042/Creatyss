@@ -131,7 +131,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                       {getAvailabilityLabel(line.isAvailable)}
                     </p>
                     {!line.isAvailable ? (
-                      <p className="notice-error">
+                      <p className="notice-error" role="alert">
                         Cette ligne bloque la commande. Revenez à la fiche
                         produit ou supprimez-la pour continuer.
                       </p>
@@ -178,7 +178,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
 
             <aside className="product-panel cart-summary">
               {hasUnavailableLine ? (
-                <p className="notice-error">
+                <p className="notice-error" role="alert">
                   Au moins une ligne bloque la commande. Corrigez le panier
                   avant de continuer.
                 </p>
@@ -213,7 +213,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
             <p className="card-copy">
               Ajoutez un article disponible depuis une fiche produit.
             </p>
-            <div>
+            <div className="button-row">
               <Link className="button" href="/boutique">
                 Voir la boutique
               </Link>

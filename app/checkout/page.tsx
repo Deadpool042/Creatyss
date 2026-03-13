@@ -429,7 +429,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                           {getAvailabilityLabel(line.isAvailable)}
                         </p>
                         {!line.isAvailable ? (
-                          <p className="notice-error">
+                          <p className="notice-error" role="alert">
                             Cette ligne bloque la commande tant qu&apos;elle
                             n&apos;est pas corrigée dans le panier.
                           </p>

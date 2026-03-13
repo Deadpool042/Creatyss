@@ -69,6 +69,7 @@ export default async function OrderConfirmationPage({
             className={
               paymentMessage.kind === "success" ? "notice-success" : "notice-error"
             }
+            role={paymentMessage.kind === "success" ? undefined : "alert"}
           >
             {paymentMessage.text}
           </p>
