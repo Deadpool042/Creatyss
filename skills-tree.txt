@@ -1,0 +1,1204 @@
+.agents
+└── skills
+    └── shadcn
+        ├── SKILL.md
+        ├── agents
+        │   └── openai.yml
+        ├── assets
+        │   ├── shadcn-small.png
+        │   └── shadcn.png
+        ├── cli.md
+        ├── customization.md
+        ├── evals
+        │   └── evals.json
+        ├── mcp.md
+        └── rules
+            ├── base-vs-radix.md
+            ├── composition.md
+            ├── forms.md
+            ├── icons.md
+            └── styling.md
+.claude
+├── CLAUDE.md
+├── settings.json
+├── settings.local.json
+└── skills
+    └── shadcn -> ../../.agents/skills/shadcn
+/Users/laurent/.codex
+├── .codex-global-state.json
+├── .personality_migration
+├── AGENTS.md
+├── auth.json
+├── config.toml
+├── memories
+├── models_cache.json
+├── rules
+│   └── default.rules
+├── session_index.jsonl
+├── sessions
+│   ├── 2025
+│   │   └── 09
+│   │       ├── 22
+│   │       │   └── rollout-2025-09-22T17-14-24-019971fd-857e-7e01-bfee-88af9d11132d.jsonl
+│   │       └── 30
+│   │           └── rollout-2025-09-30T10-57-34-019999d7-66cf-74c3-bfb4-e03f938d7eee.jsonl
+│   └── 2026
+│       ├── 02
+│       │   ├── 19
+│       │   │   └── rollout-2026-02-19T08-53-59-019c74e4-38e4-7701-b4a7-a10b2c40be9c.jsonl
+│       │   ├── 23
+│       │   │   └── rollout-2026-02-23T12-20-29-019c8a3a-b46e-7513-8446-ff8e0ea4c244.jsonl
+│       │   └── 26
+│       │       └── rollout-2026-02-26T14-24-21-019c9a1f-3345-71c1-b1f9-535582e106c3.jsonl
+│       └── 03
+│           ├── 01
+│           │   └── rollout-2026-03-01T13-59-14-019ca97b-475e-7ae2-9b93-dc9a2826afa1.jsonl
+│           ├── 05
+│           │   └── rollout-2026-03-05T15-33-21-019cbe6a-e288-7ae3-8565-772cd29b03f2.jsonl
+│           ├── 06
+│           │   ├── rollout-2026-03-06T13-59-01-019cc33a-df68-7de3-a02e-e07be588bf53.jsonl
+│           │   ├── rollout-2026-03-06T14-13-07-019cc347-c8f4-72b0-8254-a71c7598507c.jsonl
+│           │   ├── rollout-2026-03-06T14-31-02-019cc358-2eb2-79a3-90af-a3126c604819.jsonl
+│           │   ├── rollout-2026-03-06T14-42-17-019cc362-7c05-7923-afd9-809fc23c6545.jsonl
+│           │   ├── rollout-2026-03-06T14-48-41-019cc368-57f7-7a62-b521-48bad4911f42.jsonl
+│           │   ├── rollout-2026-03-06T14-55-24-019cc36e-7f5e-72d1-a45b-a848bb4ec244.jsonl
+│           │   ├── rollout-2026-03-06T15-07-01-019cc379-20a1-7c92-ab77-fbf6b5f62a3b.jsonl
+│           │   ├── rollout-2026-03-06T15-20-10-019cc385-2c78-7af2-9cb7-a2b15444847a.jsonl
+│           │   ├── rollout-2026-03-06T15-36-00-019cc393-a908-7be1-9f6f-b4cdb6b1121d.jsonl
+│           │   ├── rollout-2026-03-06T15-57-50-019cc3a7-a6c3-7b81-a72e-3b60352c238a.jsonl
+│           │   ├── rollout-2026-03-06T16-06-21-019cc3af-726a-7540-b3d7-0108478f12b0.jsonl
+│           │   ├── rollout-2026-03-06T16-18-33-019cc3ba-9e75-7650-be46-a7054a2ae57b.jsonl
+│           │   ├── rollout-2026-03-06T16-45-48-019cc3d3-90b4-7ef1-8487-7dc17974f801.jsonl
+│           │   ├── rollout-2026-03-06T16-56-05-019cc3dc-fad1-7223-b1a1-03f948bbcbee.jsonl
+│           │   ├── rollout-2026-03-06T17-15-11-019cc3ee-7871-7490-ac21-eb9dc4f6fd23.jsonl
+│           │   ├── rollout-2026-03-06T17-38-24-019cc403-ba61-7a01-b308-a56f0ee05d8b.jsonl
+│           │   ├── rollout-2026-03-06T17-51-49-019cc410-022b-7450-9edf-2a1aa18e01e3.jsonl
+│           │   ├── rollout-2026-03-06T18-10-03-019cc420-b2b0-70f0-aa88-f003e9de40f9.jsonl
+│           │   ├── rollout-2026-03-06T18-47-20-019cc442-d5f3-7a03-a3c9-4eaad5a2d382.jsonl
+│           │   ├── rollout-2026-03-06T19-01-58-019cc450-3c7f-72b0-ab26-e622d4de4a19.jsonl
+│           │   ├── rollout-2026-03-06T21-06-49-019cc4c2-8a32-7922-80ee-e26acd496402.jsonl
+│           │   └── rollout-2026-03-06T22-36-16-019cc514-6dbb-7e40-a829-711235321a32.jsonl
+│           ├── 10
+│           │   ├── rollout-2026-03-10T10-05-36-019cd6fe-9b9e-7550-95eb-64d7b029b5f5.jsonl
+│           │   └── rollout-2026-03-10T11-30-19-019cd74c-2b0f-7b50-9b8f-d9773a931a82.jsonl
+│           ├── 11
+│           │   └── rollout-2026-03-11T21-35-33-019cde9c-a50e-7873-af42-9e5f019a8ea2.jsonl
+│           ├── 12
+│           │   └── rollout-2026-03-12T15-02-10-019ce25a-d9e8-7010-a4fa-1536574d5803.jsonl
+│           └── 13
+│               └── rollout-2026-03-13T10-38-18-019ce68f-9ffb-7a72-a483-eaed356c0b1c.jsonl
+├── shell_snapshots
+│   ├── 019cd6fe-9b9e-7550-95eb-64d7b029b5f5.sh
+│   ├── 019cd74c-2b0f-7b50-9b8f-d9773a931a82.sh
+│   ├── 019cde9c-a50e-7873-af42-9e5f019a8ea2.sh
+│   ├── 019ce25a-d9e8-7010-a4fa-1536574d5803.sh
+│   ├── 019ce68f-9ffb-7a72-a483-eaed356c0b1c.sh
+│   └── 019ce68f-a1f8-78a3-b08d-a800bd0de74d.sh
+├── skills
+│   ├── .system
+│   │   ├── .codex-system-skills.marker
+│   │   ├── skill-creator
+│   │   │   ├── SKILL.md
+│   │   │   ├── agents
+│   │   │   │   └── openai.yaml
+│   │   │   ├── assets
+│   │   │   │   ├── skill-creator-small.svg
+│   │   │   │   └── skill-creator.png
+│   │   │   ├── license.txt
+│   │   │   ├── references
+│   │   │   │   └── openai_yaml.md
+│   │   │   └── scripts
+│   │   │       ├── generate_openai_yaml.py
+│   │   │       ├── init_skill.py
+│   │   │       └── quick_validate.py
+│   │   └── skill-installer
+│   │       ├── LICENSE.txt
+│   │       ├── SKILL.md
+│   │       ├── agents
+│   │       │   └── openai.yaml
+│   │       ├── assets
+│   │       │   ├── skill-installer-small.svg
+│   │       │   └── skill-installer.png
+│   │       └── scripts
+│   │           ├── github_utils.py
+│   │           ├── install-skill-from-github.py
+│   │           └── list-skills.py
+│   ├── gh-address-comments
+│   │   ├── LICENSE.txt
+│   │   ├── SKILL.md
+│   │   ├── agents
+│   │   │   └── openai.yaml
+│   │   ├── assets
+│   │   │   ├── github-small.svg
+│   │   │   └── github.png
+│   │   └── scripts
+│   │       └── fetch_comments.py
+│   ├── gh-fix-ci
+│   │   ├── LICENSE.txt
+│   │   ├── SKILL.md
+│   │   ├── agents
+│   │   │   └── openai.yaml
+│   │   ├── assets
+│   │   │   ├── github-small.svg
+│   │   │   └── github.png
+│   │   └── scripts
+│   │       └── inspect_pr_checks.py
+│   ├── openai-docs
+│   │   ├── LICENSE.txt
+│   │   ├── SKILL.md
+│   │   ├── agents
+│   │   │   └── openai.yaml
+│   │   ├── assets
+│   │   │   ├── openai-small.svg
+│   │   │   └── openai.png
+│   │   └── references
+│   │       ├── gpt-5p4-prompting-guide.md
+│   │       ├── latest-model.md
+│   │       └── upgrading-to-gpt-5p4.md
+│   ├── playwright
+│   │   ├── LICENSE.txt
+│   │   ├── NOTICE.txt
+│   │   ├── SKILL.md
+│   │   ├── agents
+│   │   │   └── openai.yaml
+│   │   ├── assets
+│   │   │   ├── playwright-small.svg
+│   │   │   └── playwright.png
+│   │   ├── references
+│   │   │   ├── cli.md
+│   │   │   └── workflows.md
+│   │   └── scripts
+│   │       └── playwright_cli.sh
+│   ├── security-best-practices
+│   │   ├── LICENSE.txt
+│   │   ├── SKILL.md
+│   │   ├── agents
+│   │   │   └── openai.yaml
+│   │   └── references
+│   │       ├── golang-general-backend-security.md
+│   │       ├── javascript-express-web-server-security.md
+│   │       ├── javascript-general-web-frontend-security.md
+│   │       ├── javascript-jquery-web-frontend-security.md
+│   │       ├── javascript-typescript-nextjs-web-server-security.md
+│   │       ├── javascript-typescript-react-web-frontend-security.md
+│   │       ├── javascript-typescript-vue-web-frontend-security.md
+│   │       ├── python-django-web-server-security.md
+│   │       ├── python-fastapi-web-server-security.md
+│   │       └── python-flask-web-server-security.md
+│   ├── security-ownership-map
+│   │   ├── LICENSE.txt
+│   │   ├── SKILL.md
+│   │   ├── agents
+│   │   │   └── openai.yaml
+│   │   ├── references
+│   │   │   └── neo4j-import.md
+│   │   └── scripts
+│   │       ├── build_ownership_map.py
+│   │       ├── community_maintainers.py
+│   │       ├── query_ownership.py
+│   │       └── run_ownership_map.py
+│   └── security-threat-model
+│       ├── LICENSE.txt
+│       ├── SKILL.md
+│       ├── agents
+│       │   └── openai.yaml
+│       └── references
+│           ├── prompt-template.md
+│           └── security-controls-and-assets.md
+├── sqlite
+│   └── codex-dev.db
+├── state_5.sqlite
+├── state_5.sqlite-shm
+├── state_5.sqlite-wal
+├── tmp
+│   └── arg0
+│       └── codex-arg03bVOzL
+│           ├── .lock
+│           ├── apply_patch -> /Users/laurent/.vscode/extensions/openai.chatgpt-26.304.20706-darwin-arm64/bin/macos-aarch64/codex
+│           ├── applypatch -> /Users/laurent/.vscode/extensions/openai.chatgpt-26.304.20706-darwin-arm64/bin/macos-aarch64/codex
+│           └── codex-execve-wrapper -> /Users/laurent/.vscode/extensions/openai.chatgpt-26.304.20706-darwin-arm64/bin/macos-aarch64/codex
+└── vendor_imports
+    ├── skills
+    │   ├── .git
+    │   │   ├── FETCH_HEAD
+    │   │   ├── HEAD
+    │   │   ├── ORIG_HEAD
+    │   │   ├── config
+    │   │   ├── config.worktree
+    │   │   ├── description
+    │   │   ├── hooks
+    │   │   │   ├── applypatch-msg.sample
+    │   │   │   ├── commit-msg.sample
+    │   │   │   ├── fsmonitor-watchman.sample
+    │   │   │   ├── post-update.sample
+    │   │   │   ├── pre-applypatch.sample
+    │   │   │   ├── pre-commit.sample
+    │   │   │   ├── pre-merge-commit.sample
+    │   │   │   ├── pre-push.sample
+    │   │   │   ├── pre-rebase.sample
+    │   │   │   ├── pre-receive.sample
+    │   │   │   ├── prepare-commit-msg.sample
+    │   │   │   ├── push-to-checkout.sample
+    │   │   │   ├── sendemail-validate.sample
+    │   │   │   └── update.sample
+    │   │   ├── index
+    │   │   ├── info
+    │   │   │   ├── exclude
+    │   │   │   └── sparse-checkout
+    │   │   ├── logs
+    │   │   │   ├── HEAD
+    │   │   │   └── refs
+    │   │   │       ├── heads
+    │   │   │       │   └── main
+    │   │   │       └── remotes
+    │   │   │           └── origin
+    │   │   │               ├── HEAD
+    │   │   │               └── main
+    │   │   ├── objects
+    │   │   │   ├── info
+    │   │   │   └── pack
+    │   │   │       ├── pack-029d08823bd8a8eab510ad6ac75c823cfd3ed31e.idx
+    │   │   │       ├── pack-029d08823bd8a8eab510ad6ac75c823cfd3ed31e.pack
+    │   │   │       ├── pack-029d08823bd8a8eab510ad6ac75c823cfd3ed31e.promisor
+    │   │   │       ├── pack-029d08823bd8a8eab510ad6ac75c823cfd3ed31e.rev
+    │   │   │       ├── pack-327a094b675c9a74c221ee34a41320a813f77aed.idx
+    │   │   │       ├── pack-327a094b675c9a74c221ee34a41320a813f77aed.pack
+    │   │   │       ├── pack-327a094b675c9a74c221ee34a41320a813f77aed.promisor
+    │   │   │       ├── pack-327a094b675c9a74c221ee34a41320a813f77aed.rev
+    │   │   │       ├── pack-7adc8689ddeb975daf1afed6d56de3005a132210.idx
+    │   │   │       ├── pack-7adc8689ddeb975daf1afed6d56de3005a132210.pack
+    │   │   │       ├── pack-7adc8689ddeb975daf1afed6d56de3005a132210.promisor
+    │   │   │       ├── pack-7adc8689ddeb975daf1afed6d56de3005a132210.rev
+    │   │   │       ├── pack-a6fb130afedf352db8d2c312d785039bfcbf903b.idx
+    │   │   │       ├── pack-a6fb130afedf352db8d2c312d785039bfcbf903b.pack
+    │   │   │       ├── pack-a6fb130afedf352db8d2c312d785039bfcbf903b.promisor
+    │   │   │       ├── pack-a6fb130afedf352db8d2c312d785039bfcbf903b.rev
+    │   │   │       ├── pack-a8996559b65c64d40094888121eaa6131fa38b30.idx
+    │   │   │       ├── pack-a8996559b65c64d40094888121eaa6131fa38b30.pack
+    │   │   │       ├── pack-a8996559b65c64d40094888121eaa6131fa38b30.promisor
+    │   │   │       ├── pack-a8996559b65c64d40094888121eaa6131fa38b30.rev
+    │   │   │       ├── pack-c753297e5d8b9edfbd7ec51f156aa23e6a197fed.idx
+    │   │   │       ├── pack-c753297e5d8b9edfbd7ec51f156aa23e6a197fed.pack
+    │   │   │       ├── pack-c753297e5d8b9edfbd7ec51f156aa23e6a197fed.promisor
+    │   │   │       ├── pack-c753297e5d8b9edfbd7ec51f156aa23e6a197fed.rev
+    │   │   │       ├── pack-c78256cfd2cd279cf21bb5d4e4cdd7efd9b98624.idx
+    │   │   │       ├── pack-c78256cfd2cd279cf21bb5d4e4cdd7efd9b98624.pack
+    │   │   │       ├── pack-c78256cfd2cd279cf21bb5d4e4cdd7efd9b98624.promisor
+    │   │   │       ├── pack-c78256cfd2cd279cf21bb5d4e4cdd7efd9b98624.rev
+    │   │   │       ├── pack-f443a894cd5f677a1a11a1ea71e78e095a04a6c3.idx
+    │   │   │       ├── pack-f443a894cd5f677a1a11a1ea71e78e095a04a6c3.pack
+    │   │   │       ├── pack-f443a894cd5f677a1a11a1ea71e78e095a04a6c3.promisor
+    │   │   │       └── pack-f443a894cd5f677a1a11a1ea71e78e095a04a6c3.rev
+    │   │   ├── packed-refs
+    │   │   ├── refs
+    │   │   │   ├── heads
+    │   │   │   │   └── main
+    │   │   │   ├── remotes
+    │   │   │   │   └── origin
+    │   │   │   │       ├── HEAD
+    │   │   │   │       └── main
+    │   │   │   └── tags
+    │   │   └── shallow
+    │   ├── .gitignore
+    │   ├── README.md
+    │   ├── contributing.md
+    │   └── skills
+    │       └── .curated
+    │           ├── aspnet-core
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   └── dotnet-logo.png
+    │           │   └── references
+    │           │       ├── _sections.md
+    │           │       ├── apis-minimal-and-controllers.md
+    │           │       ├── data-state-and-services.md
+    │           │       ├── program-and-pipeline.md
+    │           │       ├── realtime-grpc-and-background-work.md
+    │           │       ├── security-and-identity.md
+    │           │       ├── source-map.md
+    │           │       ├── stack-selection.md
+    │           │       ├── testing-performance-and-operations.md
+    │           │       ├── ui-blazor.md
+    │           │       ├── ui-mvc.md
+    │           │       ├── ui-razor-pages.md
+    │           │       └── versioning-and-upgrades.md
+    │           ├── chatgpt-apps
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── references
+    │           │   │   ├── app-archetypes.md
+    │           │   │   ├── apps-sdk-docs-workflow.md
+    │           │   │   ├── interactive-state-sync-patterns.md
+    │           │   │   ├── repo-contract-and-validation.md
+    │           │   │   ├── search-fetch-standard.md
+    │           │   │   ├── upstream-example-workflow.md
+    │           │   │   └── window-openai-patterns.md
+    │           │   └── scripts
+    │           │       └── scaffold_node_ext_apps.mjs
+    │           ├── cloudflare-deploy
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── cloudflare-small.svg
+    │           │   │   └── cloudflare.png
+    │           │   └── references
+    │           │       ├── agents-sdk
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── ai-gateway
+    │           │       │   ├── README.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── dynamic-routing.md
+    │           │       │   ├── features.md
+    │           │       │   ├── sdk-integration.md
+    │           │       │   └── troubleshooting.md
+    │           │       ├── ai-search
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── analytics-engine
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── api
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── api-shield
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── argo-smart-routing
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── bindings
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── bot-management
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── browser-rendering
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── c3
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── cache-reserve
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── containers
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── cron-triggers
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── d1
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── ddos
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── do-storage
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   ├── patterns.md
+    │           │       │   └── testing.md
+    │           │       ├── durable-objects
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── email-routing
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── email-workers
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── hyperdrive
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── images
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── kv
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── miniflare
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── network-interconnect
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── observability
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── pages
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── pages-functions
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── pipelines
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── pulumi
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── queues
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── r2
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── r2-data-catalog
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── r2-sql
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── realtime-sfu
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── realtimekit
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── sandbox
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── secrets-store
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── smart-placement
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── snippets
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── spectrum
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── static-assets
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── stream
+    │           │       │   ├── README.md
+    │           │       │   ├── api-live.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── tail-workers
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── terraform
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── tunnel
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   ├── networking.md
+    │           │       │   └── patterns.md
+    │           │       ├── turn
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── turnstile
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── vectorize
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── waf
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── web-analytics
+    │           │       │   ├── README.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   ├── integration.md
+    │           │       │   └── patterns.md
+    │           │       ├── workerd
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── workers
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── frameworks.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── workers-ai
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── workers-for-platforms
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── workers-playground
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── workers-vpc
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── workflows
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       ├── wrangler
+    │           │       │   ├── README.md
+    │           │       │   ├── api.md
+    │           │       │   ├── auth.md
+    │           │       │   ├── configuration.md
+    │           │       │   ├── gotchas.md
+    │           │       │   └── patterns.md
+    │           │       └── zaraz
+    │           │           ├── IMPLEMENTATION_SUMMARY.md
+    │           │           ├── README.md
+    │           │           ├── api.md
+    │           │           ├── configuration.md
+    │           │           ├── gotchas.md
+    │           │           └── patterns.md
+    │           ├── develop-web-game
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── game-small.svg
+    │           │   │   └── game.png
+    │           │   ├── references
+    │           │   │   └── action_payloads.json
+    │           │   └── scripts
+    │           │       └── web_game_playwright_client.js
+    │           ├── doc
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── doc-small.svg
+    │           │   │   └── doc.png
+    │           │   └── scripts
+    │           │       └── render_docx.py
+    │           ├── figma
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── figma-small.svg
+    │           │   │   ├── figma.png
+    │           │   │   └── icon.svg
+    │           │   └── references
+    │           │       ├── figma-mcp-config.md
+    │           │       └── figma-tools-and-prompts.md
+    │           ├── figma-implement-design
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   └── assets
+    │           │       ├── figma-small.svg
+    │           │       ├── figma.png
+    │           │       └── icon.svg
+    │           ├── gh-address-comments
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── github-small.svg
+    │           │   │   └── github.png
+    │           │   └── scripts
+    │           │       └── fetch_comments.py
+    │           ├── gh-fix-ci
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── github-small.svg
+    │           │   │   └── github.png
+    │           │   └── scripts
+    │           │       └── inspect_pr_checks.py
+    │           ├── imagegen
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── imagegen-small.svg
+    │           │   │   └── imagegen.png
+    │           │   ├── references
+    │           │   │   ├── cli.md
+    │           │   │   ├── codex-network.md
+    │           │   │   ├── image-api.md
+    │           │   │   ├── prompting.md
+    │           │   │   └── sample-prompts.md
+    │           │   └── scripts
+    │           │       └── image_gen.py
+    │           ├── jupyter-notebook
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── experiment-template.ipynb
+    │           │   │   ├── jupyter-small.svg
+    │           │   │   ├── jupyter.png
+    │           │   │   └── tutorial-template.ipynb
+    │           │   ├── references
+    │           │   │   ├── experiment-patterns.md
+    │           │   │   ├── notebook-structure.md
+    │           │   │   ├── quality-checklist.md
+    │           │   │   └── tutorial-patterns.md
+    │           │   └── scripts
+    │           │       └── new_notebook.py
+    │           ├── linear
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   └── assets
+    │           │       ├── linear-small.svg
+    │           │       └── linear.png
+    │           ├── netlify-deploy
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── netlify-small.svg
+    │           │   │   └── netlify.png
+    │           │   └── references
+    │           │       ├── cli-commands.md
+    │           │       ├── deployment-patterns.md
+    │           │       └── netlify-toml.md
+    │           ├── notion-knowledge-capture
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── notion-small.svg
+    │           │   │   └── notion.png
+    │           │   ├── evaluations
+    │           │   │   ├── README.md
+    │           │   │   ├── conversation-to-wiki.json
+    │           │   │   └── decision-record.json
+    │           │   ├── examples
+    │           │   │   ├── conversation-to-faq.md
+    │           │   │   ├── decision-capture.md
+    │           │   │   └── how-to-guide.md
+    │           │   └── reference
+    │           │       ├── database-best-practices.md
+    │           │       ├── decision-log-database.md
+    │           │       ├── documentation-database.md
+    │           │       ├── faq-database.md
+    │           │       ├── how-to-guide-database.md
+    │           │       ├── learning-database.md
+    │           │       └── team-wiki-database.md
+    │           ├── notion-meeting-intelligence
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── notion-small.svg
+    │           │   │   └── notion.png
+    │           │   ├── evaluations
+    │           │   │   ├── README.md
+    │           │   │   ├── decision-meeting-prep.json
+    │           │   │   └── status-meeting-prep.json
+    │           │   ├── examples
+    │           │   │   ├── customer-meeting.md
+    │           │   │   ├── executive-review.md
+    │           │   │   ├── project-decision.md
+    │           │   │   └── sprint-planning.md
+    │           │   └── reference
+    │           │       ├── brainstorming-template.md
+    │           │       ├── decision-meeting-template.md
+    │           │       ├── one-on-one-template.md
+    │           │       ├── retrospective-template.md
+    │           │       ├── sprint-planning-template.md
+    │           │       ├── status-update-template.md
+    │           │       └── template-selection-guide.md
+    │           ├── notion-research-documentation
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── notion-small.svg
+    │           │   │   └── notion.png
+    │           │   ├── evaluations
+    │           │   │   ├── README.md
+    │           │   │   ├── basic-research.json
+    │           │   │   └── research-to-database.json
+    │           │   ├── examples
+    │           │   │   ├── competitor-analysis.md
+    │           │   │   ├── market-research.md
+    │           │   │   ├── technical-investigation.md
+    │           │   │   └── trip-planning.md
+    │           │   └── reference
+    │           │       ├── advanced-search.md
+    │           │       ├── citations.md
+    │           │       ├── comparison-format.md
+    │           │       ├── comparison-template.md
+    │           │       ├── comprehensive-report-format.md
+    │           │       ├── comprehensive-report-template.md
+    │           │       ├── format-selection-guide.md
+    │           │       ├── quick-brief-format.md
+    │           │       ├── quick-brief-template.md
+    │           │       ├── research-summary-format.md
+    │           │       └── research-summary-template.md
+    │           ├── notion-spec-to-implementation
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── notion-small.svg
+    │           │   │   └── notion.png
+    │           │   ├── evaluations
+    │           │   │   ├── README.md
+    │           │   │   ├── basic-spec-implementation.json
+    │           │   │   └── spec-to-tasks.json
+    │           │   ├── examples
+    │           │   │   ├── api-feature.md
+    │           │   │   ├── database-migration.md
+    │           │   │   └── ui-component.md
+    │           │   └── reference
+    │           │       ├── milestone-summary-template.md
+    │           │       ├── progress-tracking.md
+    │           │       ├── progress-update-template.md
+    │           │       ├── quick-implementation-plan.md
+    │           │       ├── spec-parsing.md
+    │           │       ├── standard-implementation-plan.md
+    │           │       ├── task-creation-template.md
+    │           │       └── task-creation.md
+    │           ├── openai-docs
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── openai-small.svg
+    │           │   │   └── openai.png
+    │           │   └── references
+    │           │       ├── gpt-5p4-prompting-guide.md
+    │           │       ├── latest-model.md
+    │           │       └── upgrading-to-gpt-5p4.md
+    │           ├── pdf
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   └── assets
+    │           │       └── pdf.png
+    │           ├── playwright
+    │           │   ├── LICENSE.txt
+    │           │   ├── NOTICE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── playwright-small.svg
+    │           │   │   └── playwright.png
+    │           │   ├── references
+    │           │   │   ├── cli.md
+    │           │   │   └── workflows.md
+    │           │   └── scripts
+    │           │       └── playwright_cli.sh
+    │           ├── playwright-interactive
+    │           │   ├── LICENSE.txt
+    │           │   ├── NOTICE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   └── assets
+    │           │       ├── playwright-small.svg
+    │           │       └── playwright.png
+    │           ├── render-deploy
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── docker.yaml
+    │           │   │   ├── go-api.yaml
+    │           │   │   ├── nextjs-postgres.yaml
+    │           │   │   ├── node-express.yaml
+    │           │   │   ├── python-django.yaml
+    │           │   │   ├── render-small.svg
+    │           │   │   ├── render.png
+    │           │   │   └── static-site.yaml
+    │           │   └── references
+    │           │       ├── blueprint-spec.md
+    │           │       ├── codebase-analysis.md
+    │           │       ├── configuration-guide.md
+    │           │       ├── deployment-details.md
+    │           │       ├── direct-creation.md
+    │           │       ├── error-patterns.md
+    │           │       ├── post-deploy-checks.md
+    │           │       ├── runtimes.md
+    │           │       ├── service-types.md
+    │           │       └── troubleshooting-basics.md
+    │           ├── screenshot
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── screenshot-small.svg
+    │           │   │   └── screenshot.png
+    │           │   └── scripts
+    │           │       ├── ensure_macos_permissions.sh
+    │           │       ├── macos_display_info.swift
+    │           │       ├── macos_permissions.swift
+    │           │       ├── macos_window_info.swift
+    │           │       ├── take_screenshot.ps1
+    │           │       └── take_screenshot.py
+    │           ├── security-best-practices
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   └── references
+    │           │       ├── golang-general-backend-security.md
+    │           │       ├── javascript-express-web-server-security.md
+    │           │       ├── javascript-general-web-frontend-security.md
+    │           │       ├── javascript-jquery-web-frontend-security.md
+    │           │       ├── javascript-typescript-nextjs-web-server-security.md
+    │           │       ├── javascript-typescript-react-web-frontend-security.md
+    │           │       ├── javascript-typescript-vue-web-frontend-security.md
+    │           │       ├── python-django-web-server-security.md
+    │           │       ├── python-fastapi-web-server-security.md
+    │           │       └── python-flask-web-server-security.md
+    │           ├── security-ownership-map
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── references
+    │           │   │   └── neo4j-import.md
+    │           │   └── scripts
+    │           │       ├── build_ownership_map.py
+    │           │       ├── community_maintainers.py
+    │           │       ├── query_ownership.py
+    │           │       └── run_ownership_map.py
+    │           ├── security-threat-model
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   └── references
+    │           │       ├── prompt-template.md
+    │           │       └── security-controls-and-assets.md
+    │           ├── sentry
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── sentry-small.svg
+    │           │   │   └── sentry.png
+    │           │   └── scripts
+    │           │       └── sentry_api.py
+    │           ├── slides
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── pptxgenjs_helpers
+    │           │   │   │   ├── code.js
+    │           │   │   │   ├── image.js
+    │           │   │   │   ├── index.js
+    │           │   │   │   ├── latex.js
+    │           │   │   │   ├── layout.js
+    │           │   │   │   ├── layout_builders.js
+    │           │   │   │   ├── svg.js
+    │           │   │   │   ├── text.js
+    │           │   │   │   └── util.js
+    │           │   │   ├── slides-small.svg
+    │           │   │   └── slides.png
+    │           │   ├── references
+    │           │   │   └── pptxgenjs-helpers.md
+    │           │   └── scripts
+    │           │       ├── create_montage.py
+    │           │       ├── detect_font.py
+    │           │       ├── ensure_raster_image.py
+    │           │       ├── render_slides.py
+    │           │       └── slides_test.py
+    │           ├── sora
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── sora-small.svg
+    │           │   │   └── sora.png
+    │           │   ├── references
+    │           │   │   ├── cinematic-shots.md
+    │           │   │   ├── cli.md
+    │           │   │   ├── codex-network.md
+    │           │   │   ├── prompting.md
+    │           │   │   ├── sample-prompts.md
+    │           │   │   ├── social-ads.md
+    │           │   │   ├── troubleshooting.md
+    │           │   │   └── video-api.md
+    │           │   └── scripts
+    │           │       └── sora.py
+    │           ├── speech
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── speech-small.svg
+    │           │   │   └── speech.png
+    │           │   ├── references
+    │           │   │   ├── accessibility.md
+    │           │   │   ├── audio-api.md
+    │           │   │   ├── cli.md
+    │           │   │   ├── codex-network.md
+    │           │   │   ├── ivr.md
+    │           │   │   ├── narration.md
+    │           │   │   ├── prompting.md
+    │           │   │   ├── sample-prompts.md
+    │           │   │   ├── voice-directions.md
+    │           │   │   └── voiceover.md
+    │           │   └── scripts
+    │           │       └── text_to_speech.py
+    │           ├── spreadsheet
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── spreadsheet-small.svg
+    │           │   │   └── spreadsheet.png
+    │           │   └── references
+    │           │       └── examples
+    │           │           └── openpyxl
+    │           │               ├── create_basic_spreadsheet.py
+    │           │               ├── create_spreadsheet_with_styling.py
+    │           │               ├── read_existing_spreadsheet.py
+    │           │               └── styling_spreadsheet.py
+    │           ├── transcribe
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── transcribe-small.svg
+    │           │   │   └── transcribe.png
+    │           │   ├── references
+    │           │   │   └── api.md
+    │           │   └── scripts
+    │           │       └── transcribe_diarize.py
+    │           ├── vercel-deploy
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   ├── vercel-small.svg
+    │           │   │   └── vercel.png
+    │           │   └── scripts
+    │           │       └── deploy.sh
+    │           ├── winui-app
+    │           │   ├── LICENSE.txt
+    │           │   ├── SKILL.md
+    │           │   ├── agents
+    │           │   │   └── openai.yaml
+    │           │   ├── assets
+    │           │   │   └── winui.png
+    │           │   ├── config.yaml
+    │           │   └── references
+    │           │       ├── _sections.md
+    │           │       ├── accessibility-input-and-localization.md
+    │           │       ├── build-run-and-launch-verification.md
+    │           │       ├── community-toolkit-controls-and-helpers.md
+    │           │       ├── controls-layout-and-adaptive-ui.md
+    │           │       ├── foundation-environment-audit-and-remediation.md
+    │           │       ├── foundation-setup-and-project-selection.md
+    │           │       ├── foundation-template-first-recovery.md
+    │           │       ├── foundation-winui-app-structure.md
+    │           │       ├── motion-animations-and-polish.md
+    │           │       ├── performance-diagnostics-and-responsiveness.md
+    │           │       ├── sample-source-map.md
+    │           │       ├── shell-navigation-and-windowing.md
+    │           │       ├── styling-theming-materials-and-icons.md
+    │           │       ├── testing-debugging-and-review-checklists.md
+    │           │       └── windows-app-sdk-lifecycle-notifications-and-deployment.md
+    │           └── yeet
+    │               ├── LICENSE.txt
+    │               ├── SKILL.md
+    │               ├── agents
+    │               │   └── openai.yaml
+    │               └── assets
+    │                   ├── yeet-small.svg
+    │                   └── yeet.png
+    └── skills-curated-cache.json
+
+306 directories, 896 files
