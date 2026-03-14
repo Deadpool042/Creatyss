@@ -106,8 +106,9 @@ export default async function EditAdminBlogPostPage({
   const currentCoverMediaAsset =
     blogPost.coverImagePath === null
       ? null
-      : mediaAssets.find((asset) => asset.filePath === blogPost.coverImagePath) ??
-        null;
+      : (mediaAssets.find(
+          asset => asset.filePath === blogPost.coverImagePath
+        ) ?? null);
   const coverImageSelectValue =
     currentCoverMediaAsset?.id ??
     (blogPost.coverImagePath !== null ? "__keep_current__" : "");
@@ -125,20 +126,32 @@ export default async function EditAdminBlogPostPage({
             </p>
           </div>
 
-          <Link className="link-subtle button" href="/admin/blog">
+          <Link
+            className="link-subtle button"
+            href="/admin/blog">
             Retour à la liste
           </Link>
         </div>
 
-        {successMessage ? <p className="admin-success">{successMessage}</p> : null}
+        {successMessage ? (
+          <p className="admin-success">{successMessage}</p>
+        ) : null}
         {errorMessage ? (
-          <p className="admin-alert" role="alert">
+          <p
+            className="admin-alert"
+            role="alert">
             {errorMessage}
           </p>
         ) : null}
 
-        <form action={updateBlogPostAction} className="admin-form admin-blog-form">
-          <input name="blogPostId" type="hidden" value={blogPost.id} />
+        <form
+          action={updateBlogPostAction}
+          className="admin-form admin-blog-form">
+          <input
+            name="blogPostId"
+            type="hidden"
+            value={blogPost.id}
+          />
           <input
             name="currentCoverImagePath"
             type="hidden"
@@ -147,7 +160,8 @@ export default async function EditAdminBlogPostPage({
 
           {blogPost.publishedAt ? (
             <p className="admin-muted-note">
-              Publié le {blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}
+              Publié le{" "}
+              {blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}
             </p>
           ) : (
             <p className="admin-muted-note">
@@ -157,7 +171,10 @@ export default async function EditAdminBlogPostPage({
 
           {coverImageUrl ? (
             <div className="admin-blog-cover-preview">
-              <img alt={blogPost.title} src={coverImageUrl} />
+              <img
+                alt={blogPost.title}
+                src={coverImageUrl}
+              />
             </div>
           ) : (
             <div className="admin-blog-cover-preview admin-image-placeholder">
@@ -232,8 +249,7 @@ export default async function EditAdminBlogPostPage({
             <select
               className="admin-input"
               defaultValue={blogPost.status}
-              name="status"
-            >
+              name="status">
               <option value="draft">Brouillon</option>
               <option value="published">Publié</option>
             </select>
@@ -244,16 +260,18 @@ export default async function EditAdminBlogPostPage({
             <select
               className="admin-input"
               defaultValue={coverImageSelectValue}
-              name="coverImageMediaAssetId"
-            >
-              {blogPost.coverImagePath !== null && currentCoverMediaAsset === null ? (
+              name="coverImageMediaAssetId">
+              {blogPost.coverImagePath !== null &&
+              currentCoverMediaAsset === null ? (
                 <option value="__keep_current__">
                   Conserver l&apos;image actuelle ({blogPost.coverImagePath})
                 </option>
               ) : null}
               <option value="">Aucune image de couverture</option>
-              {mediaAssets.map((mediaAsset) => (
-                <option key={mediaAsset.id} value={mediaAsset.id}>
+              {mediaAssets.map(mediaAsset => (
+                <option
+                  key={mediaAsset.id}
+                  value={mediaAsset.id}>
                   {mediaAsset.originalName} · {mediaAsset.mimeType}
                 </option>
               ))}
@@ -263,7 +281,9 @@ export default async function EditAdminBlogPostPage({
           {mediaAssets.length === 0 ? (
             <p className="admin-muted-note">
               Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
-              <Link className="link" href="/admin/media">
+              <Link
+                className="link"
+                href="/admin/media">
                 la bibliothèque médias
               </Link>
               .
@@ -271,7 +291,9 @@ export default async function EditAdminBlogPostPage({
           ) : null}
 
           <div className="admin-actions">
-            <button className="button" type="submit">
+            <button
+              className="button"
+              type="submit">
               Enregistrer les modifications
             </button>
           </div>
@@ -289,9 +311,15 @@ export default async function EditAdminBlogPostPage({
         </div>
 
         <form action={deleteBlogPostAction}>
-          <input name="blogPostId" type="hidden" value={blogPost.id} />
+          <input
+            name="blogPostId"
+            type="hidden"
+            value={blogPost.id}
+          />
 
-          <button className="button admin-danger-button" type="submit">
+          <button
+            className="button admin-danger-button"
+            type="submit">
             Supprimer l&apos;article
           </button>
         </form>
