@@ -3,9 +3,11 @@
 import { redirect } from "next/navigation";
 import {
   AdminProductRepositoryError,
-  updateAdminProduct
+  findAdminProductPublishContext,
+  updateAdminProduct,
 } from "@/db/repositories/admin-product.repository";
 import { validateProductInput } from "@/entities/product/product-input";
+import { getProductPublishability } from "@/entities/product/product-publishability";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 
 export async function updateProductAction(formData: FormData): Promise<void> {
@@ -30,6 +32,23 @@ export async function updateProductAction(formData: FormData): Promise<void> {
 
   if (!validation.ok) {
     redirect(`/admin/products/${productId}?product_error=${validation.code}`);
+  }
+
+  if (validation.data.status === "published") {
+    const context = await findAdminProductPublishContext(productId);
+
+    if (context !== null) {
+      const publishability = getProductPublishability(
+        validation.data.productType,
+        context.variantCount
+      );
+
+      if (!publishability.ok) {
+        redirect(
+          `/admin/products/${productId}?product_error=${publishability.code}`
+        );
+      }
+    }
   }
 
   try {

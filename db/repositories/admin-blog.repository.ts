@@ -298,6 +298,32 @@ export async function updateAdminBlogPost(
   }
 }
 
+export async function toggleAdminBlogPostStatus(
+  id: string
+): Promise<"draft" | "published" | null> {
+  if (!isValidBlogPostId(id)) {
+    return null;
+  }
+
+  const row = await queryFirst<{ status: "draft" | "published" }>(
+    `
+      update blog_posts
+      set
+        status = case when status = 'published' then 'draft' else 'published' end,
+        published_at = case
+          when status = 'published' then null
+          else coalesce(published_at, now())
+        end,
+        updated_at = now()
+      where id = $1::bigint
+      returning status
+    `,
+    [id]
+  );
+
+  return row?.status ?? null;
+}
+
 export async function deleteAdminBlogPost(id: string): Promise<boolean> {
   if (!isValidBlogPostId(id)) {
     return false;

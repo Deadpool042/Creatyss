@@ -63,6 +63,8 @@ export function getProductErrorMessage(error: string | undefined): string | null
       return "Ce slug est déjà utilisé par un autre produit.";
     case "simple_product_requires_single_variant":
       return "Un produit simple ne peut avoir qu'une seule déclinaison.";
+    case "simple_product_incoherent_variants":
+      return "Ce produit simple a plusieurs déclinaisons et ne peut pas être publié. Corrigez d'abord la configuration dans la section Vente.";
     case "save_failed":
       return "Le produit n'a pas pu être enregistré.";
     default:

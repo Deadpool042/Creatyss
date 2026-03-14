@@ -574,6 +574,50 @@ async function replaceProductCategories(
   );
 }
 
+export type AdminProductPublishContext = {
+  status: "draft" | "published";
+  productType: ProductType;
+  variantCount: number;
+};
+
+export async function findAdminProductPublishContext(
+  id: string
+): Promise<AdminProductPublishContext | null> {
+  if (!isValidProductId(id)) {
+    return null;
+  }
+
+  const row = await queryFirst<{
+    status: "draft" | "published";
+    product_type: ProductType;
+    variant_count: number;
+  }>(
+    `
+      select
+        p.status,
+        p.product_type,
+        (
+          select count(*)::int
+          from product_variants pv
+          where pv.product_id = p.id
+        ) as variant_count
+      from products p
+      where p.id = $1::bigint
+    `,
+    [id]
+  );
+
+  if (row === null) {
+    return null;
+  }
+
+  return {
+    status: row.status,
+    productType: row.product_type,
+    variantCount: row.variant_count,
+  };
+}
+
 export async function listAdminProducts(): Promise<AdminProductSummary[]> {
   const rows = await queryRows<AdminProductSummaryRow>(
     `

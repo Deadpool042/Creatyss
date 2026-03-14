@@ -52,6 +52,8 @@ function getErrorMessage(error: string | undefined): string | null {
       return "Ce slug est déjà utilisé par un autre article.";
     case "referenced":
       return "Cet article ne peut pas être supprimé car il est encore référencé ailleurs.";
+    case "cannot_publish_missing_content":
+      return "Le contenu de l'article est obligatoire pour publier. Renseignez-le avant de passer en publié.";
     case "save_failed":
       return "L'article n'a pas pu être mis à jour.";
     case "delete_failed":

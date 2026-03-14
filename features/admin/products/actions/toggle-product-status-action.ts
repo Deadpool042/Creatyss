@@ -1,7 +1,11 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { toggleAdminProductStatus } from "@/db/repositories/admin-product.repository";
+import {
+  findAdminProductPublishContext,
+  toggleAdminProductStatus,
+} from "@/db/repositories/admin-product.repository";
+import { getProductPublishability } from "@/entities/product/product-publishability";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 
 export async function toggleProductStatusAction(
@@ -11,6 +15,26 @@ export async function toggleProductStatusAction(
 
   if (productId === null) {
     redirect("/admin/products?error=missing_product");
+  }
+
+  const context = await findAdminProductPublishContext(productId);
+
+  if (context === null) {
+    redirect("/admin/products?error=missing_product");
+  }
+
+  // If toggling draft → published, validate publishability first
+  if (context.status === "draft") {
+    const publishability = getProductPublishability(
+      context.productType,
+      context.variantCount
+    );
+
+    if (!publishability.ok) {
+      redirect(
+        `/admin/products/${productId}?product_error=${publishability.code}`
+      );
+    }
   }
 
   const newStatus = await toggleAdminProductStatus(productId);

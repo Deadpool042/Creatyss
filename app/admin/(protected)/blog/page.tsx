@@ -12,6 +12,7 @@ import {
   TableRow
 } from "@/components/ui/table";
 import { listAdminBlogPosts } from "@/db/repositories/admin-blog.repository";
+import { toggleBlogPostStatusAction } from "@/features/admin/blog/actions/toggle-blog-post-status-action";
 
 export const dynamic = "force-dynamic";
 
@@ -118,11 +119,24 @@ export default async function AdminBlogPage({
                         : "—"}
                     </TableCell>
                     <TableCell>
-                      <Link
-                        className="text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                        href={`/admin/blog/${post.id}`}>
-                        Modifier l&apos;article
-                      </Link>
+                      <div className="flex items-center gap-3">
+                        <Link
+                          className="text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                          href={`/admin/blog/${post.id}`}>
+                          Modifier l&apos;article
+                        </Link>
+
+                        <form action={toggleBlogPostStatusAction}>
+                          <input type="hidden" name="postId" value={post.id} />
+                          <button
+                            className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                            type="submit">
+                            {post.status === "published"
+                              ? "Passer en brouillon"
+                              : "Publier"}
+                          </button>
+                        </form>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

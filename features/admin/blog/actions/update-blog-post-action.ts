@@ -7,6 +7,7 @@ import {
   updateAdminBlogPost
 } from "@/db/repositories/admin-blog.repository";
 import { validateBlogPostInput } from "@/entities/blog/blog-post-input";
+import { getBlogPostPublishability } from "@/entities/blog/blog-post-publishability";
 
 function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string") {
@@ -43,6 +44,16 @@ export async function updateBlogPostAction(formData: FormData): Promise<void> {
 
   if (!validation.ok) {
     redirect(`/admin/blog/${blogPostId}?error=${validation.code}`);
+  }
+
+  if (validation.data.status === "published") {
+    const publishability = getBlogPostPublishability({
+      content: validation.data.content,
+    });
+
+    if (!publishability.ok) {
+      redirect(`/admin/blog/${blogPostId}?error=${publishability.code}`);
+    }
   }
 
   let coverImagePath: string | null = null;
