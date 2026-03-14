@@ -14,5 +14,5 @@ test("affiche la page liste du blog admin avec le heading, le lien d'action et l
     page.getByRole("link", { name: "Nouvel article" })
   ).toBeVisible();
 
-  await expect(page.locator("article, .empty-state").first()).toBeVisible();
+  await expect(page.locator("table, .empty-state").first()).toBeVisible();
 });

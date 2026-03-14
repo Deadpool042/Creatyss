@@ -2,7 +2,15 @@ import Link from "next/link";
 import { Notice } from "@/components/notice";
 import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
-import { AdminBlogPostCard } from "@/components/admin/admin-blog-post-card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from "@/components/ui/table";
 import { listAdminBlogPosts } from "@/db/repositories/admin-blog.repository";
 
 export const dynamic = "force-dynamic";
@@ -32,6 +40,10 @@ function getErrorMessage(error: string | undefined): string | null {
   }
 }
 
+const blogDateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  dateStyle: "medium"
+});
+
 export default async function AdminBlogPage({
   searchParams
 }: AdminBlogPageProps) {
@@ -47,8 +59,8 @@ export default async function AdminBlogPage({
   const blogPosts = await listAdminBlogPosts();
 
   return (
-    <div className="admin-blog-page">
-      <section className="section">
+    <div className="grid gap-6">
+      <section className="grid gap-6">
         <PageHeader
           actions={
             <Link
@@ -68,13 +80,54 @@ export default async function AdminBlogPage({
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {blogPosts.length > 0 ? (
-          <div className="admin-blog-list">
-            {blogPosts.map(blogPost => (
-              <AdminBlogPostCard
-                key={blogPost.id}
-                blogPost={blogPost}
-              />
-            ))}
+          <div className="overflow-hidden rounded-lg border border-border/60">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Titre</TableHead>
+                  <TableHead>Slug</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead>Publié le</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {blogPosts.map((post) => (
+                  <TableRow key={post.id}>
+                    <TableCell>
+                      <Link
+                        className="text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                        href={`/admin/blog/${post.id}`}>
+                        {post.title}
+                      </Link>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {post.slug}
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          post.status === "published" ? "secondary" : "outline"
+                        }>
+                        {post.status === "published" ? "Publié" : "Brouillon"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {post.publishedAt
+                        ? blogDateFormatter.format(new Date(post.publishedAt))
+                        : "—"}
+                    </TableCell>
+                    <TableCell>
+                      <Link
+                        className="text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                        href={`/admin/blog/${post.id}`}>
+                        Modifier l&apos;article
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         ) : (
           <AdminEmptyState
