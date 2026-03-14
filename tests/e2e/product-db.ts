@@ -61,6 +61,33 @@ function toSqlNullableText(value: string | null): string {
   return `'${escapeSqlLiteral(value)}'`;
 }
 
+export function createSimpleProductDraft(input: {
+  slug: string;
+  name: string;
+}): void {
+  assertValidProductSlug(input.slug);
+
+  runProductDatabaseSql(`
+      insert into products (name, slug, status, product_type, is_featured)
+      values (
+        '${escapeSqlLiteral(input.name)}',
+        '${escapeSqlLiteral(input.slug)}',
+        'draft',
+        'simple',
+        false
+      )
+      on conflict (slug) do nothing;
+    `);
+}
+
+export function deleteProductBySlug(slug: string): void {
+  assertValidProductSlug(slug);
+
+  runProductDatabaseSql(`
+      delete from products where slug = '${escapeSqlLiteral(slug)}';
+    `);
+}
+
 export function createLegacyVariantForProduct(
   input: LegacyVariantSeedInput
 ): void {
