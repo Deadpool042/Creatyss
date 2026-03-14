@@ -10,6 +10,7 @@ import {
   getOrderStatusLabel,
   getPaymentStatusLabel
 } from "@/entities/order/order-status-presentation";
+import { OrderRowActions } from "./order-row-actions";
 
 const orderDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "medium"
@@ -222,5 +223,11 @@ export const orderColumns: ColumnDef<AdminOrderSummary>[] = [
         {orderDateFormatter.format(new Date(row.original.createdAt))}
       </span>
     )
+  },
+  {
+    id: "actions",
+    header: "",
+    enableSorting: false,
+    cell: ({ row }) => <OrderRowActions order={row.original} />,
   }
 ];
