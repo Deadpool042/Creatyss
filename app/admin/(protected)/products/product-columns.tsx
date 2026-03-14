@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { AdminProductSummary } from "@/db/repositories/admin-product.repository";
 import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
+import { ProductRowActions } from "./product-row-actions";
 
 const productDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "medium"
@@ -199,5 +200,11 @@ export const productColumns: ColumnDef<AdminProductSummary>[] = [
         {productDateFormatter.format(new Date(row.original.updatedAt))}
       </span>
     )
+  },
+  {
+    id: "actions",
+    header: "",
+    enableSorting: false,
+    cell: ({ row }) => <ProductRowActions product={row.original} />,
   }
 ];

@@ -802,6 +802,28 @@ export async function updateAdminSimpleProductOffer(
   }
 }
 
+export async function toggleAdminProductStatus(
+  id: string
+): Promise<"draft" | "published" | null> {
+  if (!isValidProductId(id)) {
+    return null;
+  }
+
+  const row = await queryFirst<{ status: "draft" | "published" }>(
+    `
+      update products
+      set
+        status = case when status = 'published' then 'draft' else 'published' end,
+        updated_at = now()
+      where id = $1::bigint
+      returning status
+    `,
+    [id]
+  );
+
+  return row?.status ?? null;
+}
+
 export async function deleteAdminProduct(id: string): Promise<boolean> {
   if (!isValidProductId(id)) {
     return false;

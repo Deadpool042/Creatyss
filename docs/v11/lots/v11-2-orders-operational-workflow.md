@@ -15,23 +15,23 @@ Réduire la friction de la gestion quotidienne des commandes. La transition la p
 
 Définies dans `entities/order/order-status-transition.ts` :
 
-| Statut actuel | Transitions disponibles |
-|---------------|------------------------|
-| `pending` | `cancelled` |
-| `paid` | `preparing`, `cancelled` |
-| `preparing` | `shipped`, `cancelled` |
-| `shipped` | aucune |
-| `cancelled` | aucune |
+| Statut actuel | Transitions disponibles  |
+| ------------- | ------------------------ |
+| `pending`     | `cancelled`              |
+| `paid`        | `preparing`, `cancelled` |
+| `preparing`   | `shipped`, `cancelled`   |
+| `shipped`     | aucune                   |
+| `cancelled`   | aucune                   |
 
 ### Décision par transition
 
-| Transition | Depuis la liste | Raison |
-|------------|----------------|--------|
-| `paid → preparing` | ✅ Quick action directe | La plus fréquente. Aucune saisie requise. |
-| `pending → cancelled` | ⚠️ Avec AlertDialog | Destructif. Toujours avec confirmation. |
-| `paid → cancelled` | ⚠️ Avec AlertDialog | Destructif. Toujours avec confirmation. |
-| `preparing → cancelled` | ⚠️ Avec AlertDialog | Destructif. Toujours avec confirmation. |
-| `preparing → shipped` | ❌ Fiche uniquement | Nécessite la référence de suivi (champ texte). |
+| Transition              | Depuis la liste         | Raison                                         |
+| ----------------------- | ----------------------- | ---------------------------------------------- |
+| `paid → preparing`      | ✅ Quick action directe | La plus fréquente. Aucune saisie requise.      |
+| `pending → cancelled`   | ⚠️ Avec AlertDialog     | Destructif. Toujours avec confirmation.        |
+| `paid → cancelled`      | ⚠️ Avec AlertDialog     | Destructif. Toujours avec confirmation.        |
+| `preparing → cancelled` | ⚠️ Avec AlertDialog     | Destructif. Toujours avec confirmation.        |
+| `preparing → shipped`   | ❌ Fiche uniquement     | Nécessite la référence de suivi (champ texte). |
 
 **La colonne d'actions depuis la liste expose uniquement les actions justifiées.** Les transitions non disponibles pour une commande donnée n'apparaissent pas.
 
@@ -64,7 +64,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -72,7 +72,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import type { AdminOrderSummary } from "@/db/repositories/order.repository";
 import { updateOrderStatusAction } from "@/features/admin/orders/actions/update-order-status-action";
@@ -91,21 +91,46 @@ export function OrderRowActions({ order }: OrderRowActionsProps) {
   return (
     <>
       {/* Formulaires cachés pour les Server Actions */}
-      <form ref={preparingFormRef} action={updateOrderStatusAction}>
-        <input type="hidden" name="orderId" value={order.id} />
-        <input type="hidden" name="nextStatus" value="preparing" />
+      <form
+        ref={preparingFormRef}
+        action={updateOrderStatusAction}>
+        <input
+          type="hidden"
+          name="orderId"
+          value={order.id}
+        />
+        <input
+          type="hidden"
+          name="nextStatus"
+          value="preparing"
+        />
       </form>
-      <form ref={cancelFormRef} action={updateOrderStatusAction}>
-        <input type="hidden" name="orderId" value={order.id} />
-        <input type="hidden" name="nextStatus" value="cancelled" />
+      <form
+        ref={cancelFormRef}
+        action={updateOrderStatusAction}>
+        <input
+          type="hidden"
+          name="orderId"
+          value={order.id}
+        />
+        <input
+          type="hidden"
+          name="nextStatus"
+          value="cancelled"
+        />
       </form>
 
       <AlertDialog>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-8">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8">
               <MoreHorizontalIcon className="size-4" />
-              <span className="sr-only">Actions commande {order.reference}</span>
+              <span className="sr-only">
+                Actions commande {order.reference}
+              </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -135,10 +160,12 @@ export function OrderRowActions({ order }: OrderRowActionsProps) {
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Annuler la commande {order.reference} ?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Annuler la commande {order.reference} ?
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              Cette action est irréversible. La commande sera annulée et le stock
-              des articles sera rétabli automatiquement.
+              Cette action est irréversible. La commande sera annulée et le
+              stock des articles sera rétabli automatiquement.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -181,6 +208,7 @@ Importer `OrderRowActions` depuis `"./order-row-actions"`.
 ## Feedback
 
 Le pattern de feedback reste identique à l'existant :
+
 - Succès : redirect vers `/admin/orders/${orderId}?order_status=updated`
 - Erreur : redirect vers `/admin/orders/${orderId}?order_error=invalid_transition`
 
