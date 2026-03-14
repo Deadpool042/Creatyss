@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
 import { deleteProductImageAction } from "@/features/admin/products/actions/delete-product-image-action";
 import { updateProductImageAction } from "@/features/admin/products/actions/update-product-image-action";
-import { getImageUrl } from "./product-detail-helpers";
+import { getImageUrl } from "../lib/product-detail-helpers";
 
 const checkboxInputClassName =
   "mt-1 size-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30";
@@ -65,7 +65,9 @@ export function ProductImageCard({
           </Badge>
           <Badge variant="secondary">Ordre {image.sortOrder}</Badge>
         </div>
-        <p className="text-sm leading-6 text-muted-foreground">{image.filePath}</p>
+        <p className="text-sm leading-6 text-muted-foreground">
+          {image.filePath}
+        </p>
       </div>
 
       <form

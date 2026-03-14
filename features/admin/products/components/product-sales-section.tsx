@@ -10,12 +10,10 @@ import { type AdminMediaAsset } from "@/db/admin-media";
 import { type AdminProductDetail } from "@/db/repositories/admin-product.repository";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
 import { type AdminProductVariant } from "@/db/repositories/admin-product-variant.repository";
-import {
-  type ProductAdminPresentation
-} from "@/entities/product/product-admin-presentation";
+import { type ProductAdminPresentation } from "@/entities/product/product-admin-presentation";
 import { createProductVariantAction } from "@/features/admin/products/actions/create-product-variant-action";
 import { updateSimpleProductOfferAction } from "@/features/admin/products/actions/update-simple-product-offer-action";
-import { getAvailabilityLabel } from "./product-detail-helpers";
+import { getAvailabilityLabel } from "../lib/product-detail-helpers";
 import { ProductVariantCard } from "./product-variant-card";
 
 const nativeSelectClassName =
@@ -92,9 +90,9 @@ function renderSimpleProductNotes(
       {salesState.showSimpleOfferForm &&
       salesState.simpleProductHasNoLegacyVariant ? (
         <Notice tone="note">
-          Vous pouvez enregistrer les informations de vente ici. Pour le
-          moment, l&apos;affichage public de ce produit reste limité
-          tant qu&apos;aucune déclinaison existante n&apos;est associée.
+          Vous pouvez enregistrer les informations de vente ici. Pour le moment,
+          l&apos;affichage public de ce produit reste limité tant qu&apos;aucune
+          déclinaison existante n&apos;est associée.
         </Notice>
       ) : null}
       {salesState.showSimpleOfferForm &&
@@ -113,7 +111,10 @@ function renderSimpleOfferForm(
   productId: string,
   salesState: ProductSalesState
 ) {
-  if (!salesState.showSimpleOfferForm || salesState.simpleOfferFormDefaults === null) {
+  if (
+    !salesState.showSimpleOfferForm ||
+    salesState.simpleOfferFormDefaults === null
+  ) {
     return null;
   }
 
@@ -298,7 +299,9 @@ function renderVariantCreateForm(
       </fieldset>
 
       <fieldset className={fieldsetClassName}>
-        <legend className={legendClassName}>Informations de la déclinaison</legend>
+        <legend className={legendClassName}>
+          Informations de la déclinaison
+        </legend>
 
         <div className="grid gap-4 md:grid-cols-2">
           <AdminFormField

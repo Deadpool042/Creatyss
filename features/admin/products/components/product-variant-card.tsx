@@ -18,7 +18,7 @@ import {
   getAvailabilityLabel,
   getPrimaryImageState,
   getProductStatusLabel
-} from "./product-detail-helpers";
+} from "../lib/product-detail-helpers";
 import { ProductImageCard } from "./product-image-card";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 import { ProductPrimaryImageManager } from "./product-primary-image-manager";
@@ -193,7 +193,9 @@ export function ProductVariantCard({
         </fieldset>
 
         <fieldset className={fieldsetClassName}>
-          <legend className={legendClassName}>Informations de la déclinaison</legend>
+          <legend className={legendClassName}>
+            Informations de la déclinaison
+          </legend>
 
           <div className="grid gap-4 md:grid-cols-2">
             <AdminFormField
@@ -295,9 +297,8 @@ export function ProductVariantCard({
             : `Images pour ${variant.colorName}`}
         </h3>
         <p className="card-copy text-sm leading-6 text-muted-foreground">
-          Commencez par l&apos;image principale de cette déclinaison. Les
-          autres réglages d&apos;images restent disponibles plus bas si
-          nécessaire.
+          Commencez par l&apos;image principale de cette déclinaison. Les autres
+          réglages d&apos;images restent disponibles plus bas si nécessaire.
         </p>
       </div>
 

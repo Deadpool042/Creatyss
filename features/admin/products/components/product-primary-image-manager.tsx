@@ -12,7 +12,7 @@ import {
   getPrimaryImageSubmitLabel,
   type PrimaryImageScope,
   type PrimaryImageState
-} from "./product-detail-helpers";
+} from "../lib/product-detail-helpers";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 
 type PrimaryImageFormAction = (formData: FormData) => Promise<void>;
@@ -98,9 +98,7 @@ export function ProductPrimaryImageManager({
       )}
 
       {state.usesFallbackImage ? (
-        <Notice tone="note">
-          {getPrimaryImageFallbackMessage(scope)}
-        </Notice>
+        <Notice tone="note">{getPrimaryImageFallbackMessage(scope)}</Notice>
       ) : null}
 
       {state.extraImageCount > 0 ? (

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Notice } from "@/components/notice";
 import { PageHeader } from "@/components/page-header";
-import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminEmptyState } from "@/components/admin";
 import { listAdminProducts } from "@/db/repositories/admin-product.repository";
-import { ProductsListTable } from "./products-list-table";
+import { ProductsListTable } from "@/features/admin/products/components";
 
 export const dynamic = "force-dynamic";
 

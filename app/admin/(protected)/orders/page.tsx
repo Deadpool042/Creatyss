@@ -2,7 +2,7 @@ import { Notice } from "@/components/notice";
 import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { listAdminOrders } from "@/db/repositories/order.repository";
-import { OrdersListTable } from "./orders-list-table";
+import { OrdersListTable } from "@/features/admin/orders";
 
 export const dynamic = "force-dynamic";
 

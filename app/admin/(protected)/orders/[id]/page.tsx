@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/notice";
 import { PageHeader } from "@/components/page-header";
-import {
-  findAdminOrderById
-} from "@/db/repositories/order.repository";
+import { findAdminOrderById } from "@/db/repositories/order.repository";
 import { getAllowedOrderStatusTransitions } from "@/entities/order/order-status-transition";
 import {
   getOrderStatusLabel,
@@ -16,16 +14,16 @@ import {
   getOrderDetailErrorMessage,
   getOrderDetailStatusMessage,
   readOrderDetailSearchParam
-} from "./order-detail-helpers";
-import { OrderDetailActionsCard } from "./order-detail-actions-card";
-import { OrderDetailBillingAddressCard } from "./order-detail-billing-address-card";
-import { OrderDetailCustomerCard } from "./order-detail-customer-card";
-import { OrderDetailEmailEventsCard } from "./order-detail-email-events-card";
-import { OrderDetailLinesPanel } from "./order-detail-lines-panel";
-import { OrderDetailPaymentCard } from "./order-detail-payment-card";
-import { OrderDetailShippingAddressCard } from "./order-detail-shipping-address-card";
-import { OrderDetailShippingCard } from "./order-detail-shipping-card";
-import { OrderDetailSummaryCard } from "./order-detail-summary-card";
+} from "../../../../../features/admin/orders/lib/order-detail-helpers";
+import { OrderDetailActionsCard } from "../../../../../features/admin/orders/components/order-detail-actions-card";
+import { OrderDetailBillingAddressCard } from "../../../../../features/admin/orders/components/order-detail-billing-address-card";
+import { OrderDetailCustomerCard } from "../../../../../features/admin/orders/components/order-detail-customer-card";
+import { OrderDetailEmailEventsCard } from "../../../../../features/admin/orders/components/order-detail-email-events-card";
+import { OrderDetailLinesPanel } from "../../../../../features/admin/orders/components/order-detail-lines-panel";
+import { OrderDetailPaymentCard } from "../../../../../features/admin/orders/components/order-detail-payment-card";
+import { OrderDetailShippingAddressCard } from "../../../../../features/admin/orders/components/order-detail-shipping-address-card";
+import { OrderDetailShippingCard } from "../../../../../features/admin/orders/components/order-detail-shipping-card";
+import { OrderDetailSummaryCard } from "../../../../../features/admin/orders/components/order-detail-summary-card";
 
 export const dynamic = "force-dynamic";
 

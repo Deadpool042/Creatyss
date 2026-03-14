@@ -8,7 +8,7 @@ import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { shipOrderAction } from "@/features/admin/orders/actions/ship-order-action";
 import { updateOrderStatusAction } from "@/features/admin/orders/actions/update-order-status-action";
-import { getOrderTransitionLabel } from "./order-detail-helpers";
+import { getOrderTransitionLabel } from "../lib/order-detail-helpers";
 import { OrderCancelConfirmDialog } from "./order-cancel-confirm-dialog";
 
 const detailCardClassName =
@@ -111,7 +111,10 @@ export function OrderDetailActionsCard({
             <AdminFormActions className="gap-2">
               {statusTransitions.map(nextStatus =>
                 nextStatus === "cancelled" ? (
-                  <OrderCancelConfirmDialog key={nextStatus} orderId={order.id} />
+                  <OrderCancelConfirmDialog
+                    key={nextStatus}
+                    orderId={order.id}
+                  />
                 ) : (
                   <form
                     action={updateOrderStatusAction}
@@ -126,7 +129,9 @@ export function OrderDetailActionsCard({
                       type="hidden"
                       value={nextStatus}
                     />
-                    <Button variant="outline" type="submit">
+                    <Button
+                      variant="outline"
+                      type="submit">
                       {getOrderTransitionLabel(nextStatus)}
                     </Button>
                   </form>

@@ -25,12 +25,12 @@ import {
   getVariantStatusMessage,
   groupVariantImages,
   readProductDetailSearchParam
-} from "./product-detail-helpers";
-import { ProductDangerZoneSection } from "./product-danger-zone-section";
-import { ProductDetailHeaderSection } from "./product-detail-header-section";
-import { ProductGeneralSection } from "./product-general-section";
-import { ProductImagesSection } from "./product-images-section";
-import { ProductSalesSection } from "./product-sales-section";
+} from "../../../../../features/admin/products/lib/product-detail-helpers";
+import { ProductDangerZoneSection } from "../../../../../features/admin/products/components/product-danger-zone-section";
+import { ProductDetailHeaderSection } from "../../../../../features/admin/products/components/product-detail-header-section";
+import { ProductGeneralSection } from "../../../../../features/admin/products/components/product-general-section";
+import { ProductImagesSection } from "../../../../../features/admin/products/components/product-images-section";
+import { ProductSalesSection } from "../../../../../features/admin/products/components/product-sales-section";
 
 export const dynamic = "force-dynamic";
 
@@ -89,7 +89,8 @@ export default async function ProductDetailPage({
     showLegacyVariantCompatibilityBlock: isSimpleProduct && variants.length > 0,
     showVariantCreateForm: !isSimpleProduct,
     simpleProductHasNoLegacyVariant: isSimpleProduct && variants.length === 0,
-    simpleProductHasSingleLegacyVariant: isSimpleProduct && variants.length === 1,
+    simpleProductHasSingleLegacyVariant:
+      isSimpleProduct && variants.length === 1,
     simpleProductHasInconsistentVariantCount:
       isSimpleProduct && variants.length > 1,
     simpleOfferFormDefaults: isSimpleProduct
@@ -154,7 +155,9 @@ export default async function ProductDetailPage({
       />
 
       <ProductImagesSection
-        currentProductPrimaryMediaAssetId={currentProductPrimaryMediaAsset?.id ?? ""}
+        currentProductPrimaryMediaAssetId={
+          currentProductPrimaryMediaAsset?.id ?? ""
+        }
         mediaAssets={mediaAssets}
         parentImages={parentImages}
         productId={product.id}
