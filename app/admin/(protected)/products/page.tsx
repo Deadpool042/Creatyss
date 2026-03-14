@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Notice } from "@/components/notice";
 import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
-import { AdminProductCard } from "@/components/admin/admin-product-card";
 import { listAdminProducts } from "@/db/repositories/admin-product.repository";
+import { ProductsListTable } from "./products-list-table";
 
 export const dynamic = "force-dynamic";
 
@@ -47,8 +47,8 @@ export default async function AdminProductsPage({
   const products = await listAdminProducts();
 
   return (
-    <div className="admin-product-page">
-      <section className="section">
+    <div className="grid gap-6">
+      <section className="grid gap-6">
         <PageHeader
           actions={
             <Link
@@ -68,14 +68,7 @@ export default async function AdminProductsPage({
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {products.length > 0 ? (
-          <div className="admin-product-list">
-            {products.map(product => (
-              <AdminProductCard
-                key={product.id}
-                product={product}
-              />
-            ))}
-          </div>
+          <ProductsListTable products={products} />
         ) : (
           <AdminEmptyState
             eyebrow="Aucun produit"

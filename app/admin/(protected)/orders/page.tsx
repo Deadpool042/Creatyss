@@ -1,8 +1,8 @@
 import { Notice } from "@/components/notice";
 import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
-import { AdminOrderCard } from "@/components/admin/admin-order-card";
 import { listAdminOrders } from "@/db/repositories/order.repository";
+import { OrdersListTable } from "./orders-list-table";
 
 export const dynamic = "force-dynamic";
 
@@ -28,8 +28,8 @@ export default async function AdminOrdersPage({
         : null;
 
   return (
-    <div className="admin-record-list">
-      <section className="section">
+    <div className="grid gap-6">
+      <section className="grid gap-6">
         <PageHeader
           description="Suivez les commandes créées sur la boutique avec les principales informations de suivi."
           eyebrow="Commandes"
@@ -39,14 +39,7 @@ export default async function AdminOrdersPage({
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {orders.length > 0 ? (
-          <div className="admin-record-list">
-            {orders.map(order => (
-              <AdminOrderCard
-                key={order.id}
-                order={order}
-              />
-            ))}
-          </div>
+          <OrdersListTable orders={orders} />
         ) : (
           <AdminEmptyState
             eyebrow="Aucune commande"

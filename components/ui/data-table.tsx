@@ -4,6 +4,7 @@ import {
   type ColumnDef,
   type ColumnFiltersState,
   type SortingState,
+  type Table as TanstackTable,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -11,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -29,15 +30,19 @@ interface DataTableProps<TData, TValue> {
   /** Clé de colonne sur laquelle afficher un filtre texte libre. */
   filterColumn?: string;
   filterPlaceholder?: string;
+  initialSorting?: SortingState;
+  renderToolbar?: (table: TanstackTable<TData>) => ReactNode;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   filterColumn,
-  filterPlaceholder = "Filtrer..."
+  filterPlaceholder = "Filtrer...",
+  initialSorting = [],
+  renderToolbar
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
@@ -55,18 +60,24 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-4">
-      {filterColumn ? (
-        <div className="flex items-center gap-3">
-          <Input
-            className="max-w-sm"
-            placeholder={filterPlaceholder}
-            value={
-              (table.getColumn(filterColumn)?.getFilterValue() as string) ?? ""
-            }
-            onChange={(e) =>
-              table.getColumn(filterColumn)?.setFilterValue(e.target.value)
-            }
-          />
+      {filterColumn || renderToolbar ? (
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            {filterColumn ? (
+              <Input
+                className="max-w-sm"
+                placeholder={filterPlaceholder}
+                value={
+                  (table.getColumn(filterColumn)?.getFilterValue() as string) ??
+                  ""
+                }
+                onChange={(e) =>
+                  table.getColumn(filterColumn)?.setFilterValue(e.target.value)
+                }
+              />
+            ) : null}
+          </div>
+          {renderToolbar ? renderToolbar(table) : null}
         </div>
       ) : null}
 
