@@ -24,13 +24,15 @@ import {
   getVariantErrorMessage,
   getVariantStatusMessage,
   groupVariantImages,
-  readProductDetailSearchParam
-} from "../../../../../features/admin/products/lib/product-detail-helpers";
-import { ProductDangerZoneSection } from "../../../../../features/admin/products/components/product-danger-zone-section";
-import { ProductDetailHeaderSection } from "../../../../../features/admin/products/components/product-detail-header-section";
-import { ProductGeneralSection } from "../../../../../features/admin/products/components/product-general-section";
-import { ProductImagesSection } from "../../../../../features/admin/products/components/product-images-section";
-import { ProductSalesSection } from "../../../../../features/admin/products/components/product-sales-section";
+  readProductDetailSearchParam,
+} from "@/features/admin/products/lib";
+import {
+  ProductDangerZoneSection,
+  ProductDetailHeaderSection,
+  ProductGeneralSection,
+  ProductImagesSection,
+  ProductSalesSection,
+} from "@/features/admin/products/components";
 
 export const dynamic = "force-dynamic";
 

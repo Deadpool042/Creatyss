@@ -1,1 +1,1 @@
-export * as productDetailHelpers from "./product-detail-helpers";
+export * from "./product-detail-helpers";

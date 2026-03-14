@@ -1,1 +1,2 @@
-export * as orderDetailHelpers from "./order-detail-helpers";
+//features/admin/orders/lib/index.ts
+export * from "./order-detail-helpers";

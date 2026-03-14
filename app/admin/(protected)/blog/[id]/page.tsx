@@ -2,8 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { findAdminBlogPostById } from "@/db/repositories/admin-blog.repository";
-import { deleteBlogPostAction } from "@/features/admin/blog/actions/delete-blog-post-action";
-import { updateBlogPostAction } from "@/features/admin/blog/actions/update-blog-post-action";
+import {
+  deleteBlogPostAction,
+  updateBlogPostAction,
+} from "@/features/admin/blog/actions";
 import { getBlogPostPublishability } from "@/entities/blog/blog-post-publishability";
 import { getUploadsPublicPath } from "@/lib/uploads";
 

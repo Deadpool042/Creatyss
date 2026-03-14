@@ -1,7 +1,13 @@
 "use client";
 
 import type { SortingState } from "@tanstack/react-table";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 import { DataTable } from "@/components/ui/data-table";
 import type { AdminOrderSummary } from "@/db/repositories/order.repository";
 import type { OrderStatus } from "@/entities/order/order-status-transition";
@@ -30,7 +36,7 @@ export function OrdersListTable({ orders }: OrdersListTableProps) {
       filterColumn="reference"
       filterPlaceholder="Chercher par référence, cliente ou email..."
       initialSorting={ORDER_INITIAL_SORTING}
-      renderToolbar={(table) => {
+      renderToolbar={table => {
         const statusColumn = table.getColumn("status");
         const currentValue =
           (statusColumn?.getFilterValue() as string | undefined) ??
@@ -41,27 +47,24 @@ export function OrdersListTable({ orders }: OrdersListTableProps) {
             <span className="text-sm text-muted-foreground">Statut</span>
             <Select
               value={currentValue}
-              onValueChange={(value) =>
+              onValueChange={value =>
                 statusColumn?.setFilterValue(
                   value === ALL_STATUSES_VALUE ? undefined : value
                 )
-              }
-            >
+              }>
               <SelectTrigger
                 className="w-[14rem]"
-                size="sm"
-              >
+                size="sm">
                 <SelectValue placeholder="Tous les statuts" />
               </SelectTrigger>
               <SelectContent align="end">
                 <SelectItem value={ALL_STATUSES_VALUE}>
                   Tous les statuts
                 </SelectItem>
-                {ORDER_STATUS_FILTERS.map((status) => (
+                {ORDER_STATUS_FILTERS.map(status => (
                   <SelectItem
                     key={status}
-                    value={status}
-                  >
+                    value={status}>
                     {getOrderStatusLabel(status)}
                   </SelectItem>
                 ))}

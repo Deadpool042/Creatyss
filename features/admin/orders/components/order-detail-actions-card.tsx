@@ -6,10 +6,12 @@ import { SectionIntro } from "@/components/section-intro";
 import { Notice } from "@/components/notice";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormField } from "@/components/admin/admin-form-field";
-import { shipOrderAction } from "@/features/admin/orders/actions/ship-order-action";
-import { updateOrderStatusAction } from "@/features/admin/orders/actions/update-order-status-action";
-import { getOrderTransitionLabel } from "../lib/order-detail-helpers";
+import {
+  updateOrderStatusAction,
+  shipOrderAction
+} from "@/features/admin/orders/actions";
 import { OrderCancelConfirmDialog } from "./order-cancel-confirm-dialog";
+import { getOrderTransitionLabel } from "@/features/admin/orders/lib";
 
 const detailCardClassName =
   "grid gap-1 rounded-lg border border-border/60 bg-muted/10 p-3";

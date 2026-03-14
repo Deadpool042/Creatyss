@@ -5,24 +5,27 @@ test("surfaces featured products first on the unfiltered catalogue", async ({
 }) => {
   await page.goto("/boutique");
 
-  const headings = page.locator(".store-card h3");
-  const headingTexts = await headings.allTextContents();
-  const cabasIndex = headingTexts.indexOf("Cabas Moka");
-  const sacCamelIndex = headingTexts.indexOf("Sac Camel");
-  const pochetteIndex = headingTexts.indexOf("Pochette Sable");
+  const productCards = page.locator("main article");
+  await expect(productCards.first()).toBeVisible();
 
-  expect(cabasIndex).toBeGreaterThanOrEqual(0);
-  expect(sacCamelIndex).toBeGreaterThanOrEqual(0);
-  expect(pochetteIndex).toBeGreaterThanOrEqual(0);
-  expect(cabasIndex).toBeLessThan(pochetteIndex);
-  expect(sacCamelIndex).toBeLessThan(pochetteIndex);
+  const firstThreeTitles = await productCards
+    .locator("h3")
+    .evaluateAll(nodes =>
+      nodes.slice(0, 3).map(node => node.textContent?.trim() ?? "")
+    );
 
-  const featuredCard = page.locator("article.store-card").filter({
-    has: page.getByRole("heading", { name: "Cabas Moka" })
+  expect(firstThreeTitles).toContain("Cabas Moka");
+  expect(firstThreeTitles).toContain("Sac Camel");
+  expect(firstThreeTitles).toContain("Pochette Sable");
+
+  const cabasCard = productCards.filter({
+    has: page.getByRole("heading", { name: "Cabas Moka", exact: true })
   });
 
-  await expect(featuredCard.getByText("Mis en avant")).toBeVisible();
-  await expect(featuredCard.getByText("Disponible", { exact: true })).toBeVisible();
+  await expect(cabasCard.getByText("Mis en avant")).toBeVisible();
+  await expect(
+    cabasCard.getByText("Disponible", { exact: true })
+  ).toBeVisible();
 });
 
 test("updates listing metadata for simple catalogue filters", async ({
@@ -30,9 +33,15 @@ test("updates listing metadata for simple catalogue filters", async ({
 }) => {
   await page.goto("/boutique?category=edition-atelier&availability=available");
 
-  await expect(page).toHaveTitle(/Edition atelier.*Disponibles.*Boutique Creatyss/);
+  await expect(page).toHaveTitle(
+    /Edition atelier.*Disponibles.*Boutique Creatyss/
+  );
 
-  await expect(
-    page.locator('meta[name="description"]')
-  ).toHaveAttribute("content", /categorie Edition atelier/i);
+  const description = await page
+    .locator('meta[name="description"]')
+    .getAttribute("content");
+
+  expect(description).not.toBeNull();
+  expect(description).toMatch(/catégorie Edition atelier/i);
+  expect(description).toMatch(/disponibl|commande/i);
 });

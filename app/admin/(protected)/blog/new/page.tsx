@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { listAdminMediaAssets } from "@/db/admin-media";
-import { createBlogPostAction } from "@/features/admin/blog/actions/create-blog-post-action";
+import { createBlogPostAction } from "@/features/admin/blog/actions";
 
 export const dynamic = "force-dynamic";
 

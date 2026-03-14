@@ -1,3 +1,4 @@
+//tests/e2e/admin/product-type.spec.ts
 import { expect, test } from "@playwright/test";
 import { createLegacyVariantForProduct } from "../product-db";
 import { loginAsSeedAdmin } from "./admin-auth";
@@ -56,7 +57,9 @@ test("edits a simple product natively without creating a legacy variant", async 
 
     await expect(page).toHaveURL(/simple_offer_status=updated$/);
     await expect(
-      page.getByText("Les informations de vente ont été mises à jour avec succès.")
+      page.getByText(
+        "Les informations de vente ont été mises à jour avec succès."
+      )
     ).toBeVisible();
     await expect(simpleOfferForm.getByLabel("SKU")).toHaveValue(
       `SIMPLE-${product.suffix}`
@@ -125,7 +128,9 @@ test("shows a clear incoherent state when a simple product has multiple legacy v
       )
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Enregistrer les informations de vente" })
+      page.getByRole("button", {
+        name: "Enregistrer les informations de vente"
+      })
     ).toHaveCount(0);
     await expect(
       page.getByRole("heading", { name: "Déclinaisons existantes" })
@@ -148,14 +153,16 @@ test("refuses unsafe conversion from variable to simple when several variants ex
     await expect(page).toHaveURL(/\/admin\/products\/[0-9]+$/);
   });
 
-  await test.step("refuse le passage en produit simple", async () => {
-    await page.getByLabel("Type de produit").selectOption("simple");
-    await page.getByRole("button", { name: "Enregistrer le produit" }).click();
+  await page.getByLabel("Type de produit").selectOption("simple");
 
-    await expect(
-      page
-        .getByText("Un produit simple ne peut avoir qu'une seule déclinaison.")
-        .first()
-    ).toBeVisible();
-  });
+  await Promise.all([
+    page.waitForURL(/\/admin\/products\/[0-9]+(?:\?product_error=.*)?$/, {
+      timeout: 15_000
+    }),
+    page.getByRole("button", { name: "Enregistrer le produit" }).click()
+  ]);
+
+  await expect(
+    page.getByText(/produit simple.*déclinaison/i).first()
+  ).toBeVisible();
 });

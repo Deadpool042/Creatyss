@@ -1,8 +1,9 @@
+//app/admin/(protected)/orders/page.tsx
 import { Notice } from "@/components/notice";
 import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { listAdminOrders } from "@/db/repositories/order.repository";
-import { OrdersListTable } from "@/features/admin/orders";
+import { OrdersListTable } from "@/features/admin/orders/components";
 
 export const dynamic = "force-dynamic";
 

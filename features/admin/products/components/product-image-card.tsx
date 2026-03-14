@@ -38,7 +38,7 @@ function renderImagePreview(
     <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
       <img
         alt={image.altText ?? "Image produit"}
-        className="aspect-[16/10] w-full object-cover"
+        className="aspect-16/10 w-full object-cover"
         src={imageUrl}
       />
     </div>

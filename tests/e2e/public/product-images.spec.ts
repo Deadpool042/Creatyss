@@ -1,3 +1,4 @@
+// tests/e2e/public/product-images.spec.ts
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { loginAsSeedAdmin } from "../admin/admin-auth";
 import {
@@ -26,19 +27,24 @@ function getVariantCard(page: Page, variantName: string): Locator {
   return page
     .locator("article.variant-card")
     .filter({
-      has: page.getByRole("heading", { level: 3, name: variantName, exact: true })
+      has: page.getByRole("heading", {
+        level: 3,
+        name: variantName,
+        exact: true
+      })
     })
     .first();
 }
 
-function getVariantPrimaryImageBlock(
-  page: Page,
-  variantName: string
-): Locator {
+function getVariantPrimaryImageBlock(page: Page, variantName: string): Locator {
   const variantCard = page
     .locator("article.admin-variant-card")
     .filter({
-      has: page.getByRole("heading", { level: 3, name: variantName, exact: true })
+      has: page.getByRole("heading", {
+        level: 3,
+        name: variantName,
+        exact: true
+      })
     })
     .first();
 
@@ -64,10 +70,6 @@ test("affiche publiquement l'image principale produit choisie dans l'admin", asy
 
   await loginAsSeedAdmin(page);
   await uploadAdminMediaImage(page, mediaFile);
-
-  await page.goto("/admin/products", {
-    waitUntil: "domcontentloaded"
-  });
   await openAdminProductFromList(page, "Pochette Sable");
 
   const productDetailUrl = getAdminProductDetailUrlWithoutSearch(page.url());
@@ -91,8 +93,10 @@ test("affiche publiquement l'image principale produit choisie dans l'admin", asy
   });
 
   const adminImageSrc =
-    (await getProductPrimaryImageBlock(page).locator("img").first().getAttribute("src")) ??
-    "";
+    (await getProductPrimaryImageBlock(page)
+      .locator("img")
+      .first()
+      .getAttribute("src")) ?? "";
 
   expect(adminImageSrc).not.toBe("");
 
@@ -100,11 +104,12 @@ test("affiche publiquement l'image principale produit choisie dans l'admin", asy
     waitUntil: "domcontentloaded"
   });
 
-  await expect(page.getByRole("heading", { name: "Image principale" })).toBeVisible();
-  await expect(page.locator(".product-gallery .product-media img")).toHaveAttribute(
-    "src",
-    adminImageSrc
-  );
+  await expect(
+    page.getByRole("heading", { name: "Image principale" })
+  ).toBeVisible();
+  await expect(
+    page.locator(".product-gallery .product-media img")
+  ).toHaveAttribute("src", adminImageSrc);
 });
 
 test("affiche publiquement l'image principale de déclinaison choisie dans l'admin", async ({
@@ -117,10 +122,6 @@ test("affiche publiquement l'image principale de déclinaison choisie dans l'adm
 
   await loginAsSeedAdmin(page);
   await uploadAdminMediaImage(page, mediaFile);
-
-  await page.goto("/admin/products", {
-    waitUntil: "domcontentloaded"
-  });
   await openAdminProductFromList(page, "Sac Camel");
 
   const productDetailUrl = getAdminProductDetailUrlWithoutSearch(page.url());

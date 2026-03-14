@@ -1,3 +1,4 @@
+//app/admin/(protected)/orders/[id]/page.tsx
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/notice";
 import { PageHeader } from "@/components/page-header";
@@ -9,21 +10,23 @@ import {
   getPaymentStatusLabel
 } from "@/entities/order/order-status-presentation";
 import {
+  OrderDetailActionsCard,
+  OrderDetailBillingAddressCard,
+  OrderDetailCustomerCard,
+  OrderDetailEmailEventsCard,
+  OrderDetailLinesPanel,
+  OrderDetailPaymentCard,
+  OrderDetailShippingAddressCard,
+  OrderDetailShippingCard,
+  OrderDetailSummaryCard
+} from "@/features/admin/orders/components";
+import {
   formatOptionalOrderDateTime,
   formatOrderDateTime,
   getOrderDetailErrorMessage,
   getOrderDetailStatusMessage,
   readOrderDetailSearchParam
-} from "../../../../../features/admin/orders/lib/order-detail-helpers";
-import { OrderDetailActionsCard } from "../../../../../features/admin/orders/components/order-detail-actions-card";
-import { OrderDetailBillingAddressCard } from "../../../../../features/admin/orders/components/order-detail-billing-address-card";
-import { OrderDetailCustomerCard } from "../../../../../features/admin/orders/components/order-detail-customer-card";
-import { OrderDetailEmailEventsCard } from "../../../../../features/admin/orders/components/order-detail-email-events-card";
-import { OrderDetailLinesPanel } from "../../../../../features/admin/orders/components/order-detail-lines-panel";
-import { OrderDetailPaymentCard } from "../../../../../features/admin/orders/components/order-detail-payment-card";
-import { OrderDetailShippingAddressCard } from "../../../../../features/admin/orders/components/order-detail-shipping-address-card";
-import { OrderDetailShippingCard } from "../../../../../features/admin/orders/components/order-detail-shipping-card";
-import { OrderDetailSummaryCard } from "../../../../../features/admin/orders/components/order-detail-summary-card";
+} from "@/features/admin/orders/lib";
 
 export const dynamic = "force-dynamic";
 

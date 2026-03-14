@@ -1,4 +1,4 @@
-import { type Locator, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 type AdminProductStatus = "draft" | "published";
 
@@ -35,7 +35,7 @@ export async function createSimpleAdminProduct(
     slug: string;
     status?: AdminProductStatus;
   }
-): Promise<void> {
+): Promise<string> {
   await page.goto("/admin/products/new", {
     waitUntil: "domcontentloaded"
   });
@@ -55,22 +55,54 @@ export async function createSimpleAdminProduct(
     }),
     page.getByRole("button", { name: "Créer le produit" }).click()
   ]);
+
+  return getAdminProductDetailUrlWithoutSearch(page.url());
+}
+
+export async function openAdminProduct(
+  page: Page,
+  productDetailUrl: string
+): Promise<void> {
+  await page.goto(productDetailUrl, {
+    waitUntil: "domcontentloaded"
+  });
+
+  await expect(page).toHaveURL(
+    new RegExp(
+      `${productDetailUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:\\?.*)?$`
+    )
+  );
 }
 
 export async function openAdminProductFromList(
   page: Page,
   productName: string
 ): Promise<void> {
-  const productCard = page
-    .locator("article.admin-product-card")
-    .filter({ hasText: productName })
-    .first();
+  await page.goto("/admin/products", {
+    waitUntil: "networkidle"
+  });
+
+  const searchInput = page.getByRole("textbox", {
+    name: "Chercher un produit..."
+  });
+
+  await expect(searchInput).toBeVisible();
+  await searchInput.fill(productName);
+
+  const row = page.getByRole("row").filter({ hasText: productName }).first();
+  const editLink = row.getByRole("link", {
+    name: "Modifier le produit",
+    exact: true
+  });
+
+  await expect(row).toBeVisible();
+  await expect(editLink).toBeVisible();
 
   await Promise.all([
     page.waitForURL(/\/admin\/products\/[0-9]+(?:\?.*)?$/, {
       timeout: 15_000
     }),
-    productCard.getByRole("link", { name: "Modifier le produit" }).click()
+    editLink.click()
   ]);
 }
 

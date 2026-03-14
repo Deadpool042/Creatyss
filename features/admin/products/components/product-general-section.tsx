@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { type AdminCategory } from "@/db/repositories/admin-category.repository";
 import { type AdminProductDetail } from "@/db/repositories/admin-product.repository";
-import { updateProductAction } from "@/features/admin/products/actions/update-product-action";
+import { updateProductAction } from "@/features/admin/products/actions";
 import { isCategoryAssigned } from "../lib/product-detail-helpers";
 
 const nativeSelectClassName =

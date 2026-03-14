@@ -12,7 +12,7 @@ import {
   TableRow
 } from "@/components/ui/table";
 import { listAdminBlogPosts } from "@/db/repositories/admin-blog.repository";
-import { toggleBlogPostStatusAction } from "@/features/admin/blog/actions/toggle-blog-post-status-action";
+import { toggleBlogPostStatusAction } from "@/features/admin/blog/actions";
 
 export const dynamic = "force-dynamic";
 

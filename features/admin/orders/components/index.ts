@@ -1,3 +1,4 @@
+//features/admin/orders/components/index.ts
 export { OrderCancelConfirmDialog } from "./order-cancel-confirm-dialog";
 export { orderColumns } from "./order-columns";
 export { OrderDetailActionsCard } from "./order-detail-actions-card";

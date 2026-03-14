@@ -10,23 +10,29 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteProductAction } from "@/features/admin/products/actions/delete-product-action";
+import { deleteProductAction } from "@/features/admin/products/actions";
 
 type ProductDeleteConfirmDialogProps = {
   productId: string;
 };
 
 export function ProductDeleteConfirmDialog({
-  productId,
+  productId
 }: ProductDeleteConfirmDialogProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
   return (
-    <form ref={formRef} action={deleteProductAction}>
-      <input type="hidden" name="productId" value={productId} />
+    <form
+      ref={formRef}
+      action={deleteProductAction}>
+      <input
+        type="hidden"
+        name="productId"
+        value={productId}
+      />
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
