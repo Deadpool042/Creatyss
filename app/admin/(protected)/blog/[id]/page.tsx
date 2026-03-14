@@ -4,6 +4,7 @@ import { listAdminMediaAssets } from "@/db/admin-media";
 import { findAdminBlogPostById } from "@/db/repositories/admin-blog.repository";
 import { deleteBlogPostAction } from "@/features/admin/blog/actions/delete-blog-post-action";
 import { updateBlogPostAction } from "@/features/admin/blog/actions/update-blog-post-action";
+import { getBlogPostPublishability } from "@/entities/blog/blog-post-publishability";
 import { getUploadsPublicPath } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";
@@ -103,6 +104,10 @@ export default async function EditAdminBlogPostPage({
     : resolvedSearchParams.error;
   const successMessage = getStatusMessage(statusParam);
   const errorMessage = getErrorMessage(errorParam);
+  const publishabilityWarning =
+    blogPost.status === "draft"
+      ? getBlogPostPublishability({ content: blogPost.content })
+      : null;
   const uploadsPublicPath = getUploadsPublicPath();
   const coverImageUrl = getImageUrl(uploadsPublicPath, blogPost.coverImagePath);
   const currentCoverMediaAsset =
@@ -143,6 +148,12 @@ export default async function EditAdminBlogPostPage({
             className="admin-alert"
             role="alert">
             {errorMessage}
+          </p>
+        ) : null}
+        {publishabilityWarning !== null && !publishabilityWarning.ok ? (
+          <p className="admin-alert" role="alert">
+            Le contenu de l&apos;article est vide. Renseignez-le pour pouvoir
+            publier cet article.
           </p>
         ) : null}
 

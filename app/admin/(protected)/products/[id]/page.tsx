@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
+import { Notice } from "@/components/notice";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 import { findAdminProductById } from "@/db/repositories/admin-product.repository";
+import { getProductPublishability } from "@/entities/product/product-publishability";
 import { listAdminProductImages } from "@/db/repositories/admin-product-image.repository";
 import { listAdminProductVariants } from "@/db/repositories/admin-product-variant.repository";
 import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
@@ -132,6 +134,13 @@ export default async function ProductDetailPage({
           sellableLabel: detailSellableCountLabel
         }}
       />
+
+      {product.status === "draft" &&
+      !getProductPublishability(product.productType, variants.length).ok ? (
+        <Notice tone="alert">
+          {getProductErrorMessage("simple_product_incoherent_variants")}
+        </Notice>
+      ) : null}
 
       <ProductGeneralSection
         categories={categories}

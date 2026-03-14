@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { AdminProductSummary } from "@/db/repositories/admin-product.repository";
 import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
+import { getProductPublishability } from "@/entities/product/product-publishability";
 import { ProductRowActions } from "./product-row-actions";
 
 const productDateFormatter = new Intl.DateTimeFormat("fr-FR", {
@@ -102,11 +103,24 @@ export const productColumns: ColumnDef<AdminProductSummary>[] = [
         title="Statut"
       />
     ),
-    cell: ({ row }) => (
-      <Badge variant={getProductStatusBadgeVariant(row.original.status)}>
-        {getProductStatusLabel(row.original.status)}
-      </Badge>
-    )
+    cell: ({ row }) => {
+      const product = row.original;
+      const publishability =
+        product.status === "draft"
+          ? getProductPublishability(product.productType, product.variantCount)
+          : null;
+
+      return (
+        <div className="grid gap-1">
+          <Badge variant={getProductStatusBadgeVariant(product.status)}>
+            {getProductStatusLabel(product.status)}
+          </Badge>
+          {publishability !== null && !publishability.ok ? (
+            <span className="text-xs text-destructive">Non publiable</span>
+          ) : null}
+        </div>
+      );
+    }
   },
   {
     id: "type",

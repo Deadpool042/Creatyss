@@ -129,7 +129,10 @@ export default async function AdminBlogPage({
                         <form action={toggleBlogPostStatusAction}>
                           <input type="hidden" name="postId" value={post.id} />
                           <button
-                            className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                            className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+                            disabled={
+                              post.status === "draft" && !post.hasContent
+                            }
                             type="submit">
                             {post.status === "published"
                               ? "Passer en brouillon"

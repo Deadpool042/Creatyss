@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { AdminProductSummary } from "@/db/repositories/admin-product.repository";
+import { getProductPublishability } from "@/entities/product/product-publishability";
 import { toggleProductStatusAction } from "@/features/admin/products/actions/toggle-product-status-action";
 import { deleteProductAction } from "@/features/admin/products/actions/delete-product-action";
 
@@ -36,6 +37,10 @@ export function ProductRowActions({ product }: ProductRowActionsProps) {
 
   const toggleLabel =
     product.status === "published" ? "Passer en brouillon" : "Publier";
+
+  const isToggleDisabled =
+    product.status === "draft" &&
+    !getProductPublishability(product.productType, product.variantCount).ok;
 
   return (
     <>
@@ -59,6 +64,7 @@ export function ProductRowActions({ product }: ProductRowActionsProps) {
               <Link href={`/admin/products/${product.id}`}>Modifier</Link>
             </DropdownMenuItem>
             <DropdownMenuItem
+              disabled={isToggleDisabled}
               onClick={() => toggleFormRef.current?.requestSubmit()}>
               {toggleLabel}
             </DropdownMenuItem>

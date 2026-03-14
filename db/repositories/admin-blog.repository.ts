@@ -15,6 +15,7 @@ type AdminBlogPostSummaryRow = {
   cover_image_path: string | null;
   status: AdminBlogPostStatus;
   published_at: TimestampValue | null;
+  has_content: boolean;
   created_at: TimestampValue;
   updated_at: TimestampValue;
 };
@@ -61,6 +62,7 @@ export type AdminBlogPostSummary = {
   coverImagePath: string | null;
   status: AdminBlogPostStatus;
   publishedAt: string | null;
+  hasContent: boolean;
   createdAt: string;
   updatedAt: string;
 };
@@ -121,6 +123,7 @@ function mapAdminBlogPostSummary(
     status: row.status,
     publishedAt:
       row.published_at === null ? null : toIsoTimestamp(row.published_at),
+    hasContent: row.has_content,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
   };
@@ -187,6 +190,7 @@ export async function listAdminBlogPosts(): Promise<AdminBlogPostSummary[]> {
         cover_image_path,
         status,
         published_at,
+        (content IS NOT NULL AND trim(content) != '') as has_content,
         created_at,
         updated_at
       from blog_posts
