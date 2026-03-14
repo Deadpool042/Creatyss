@@ -72,6 +72,10 @@ test("lets admin cancel a pending order from the detail page", async ({ page }) 
   ).toHaveCount(0);
 
   await page.getByRole("button", { name: "Annuler la commande" }).click();
+  await page
+    .getByRole("alertdialog")
+    .getByRole("button", { name: "Annuler la commande" })
+    .click();
 
   await expect(page).toHaveURL(/order_status=updated$/);
   await expect(

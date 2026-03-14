@@ -9,6 +9,7 @@ import { AdminFormField } from "@/components/admin/admin-form-field";
 import { shipOrderAction } from "@/features/admin/orders/actions/ship-order-action";
 import { updateOrderStatusAction } from "@/features/admin/orders/actions/update-order-status-action";
 import { getOrderTransitionLabel } from "./order-detail-helpers";
+import { OrderCancelConfirmDialog } from "./order-cancel-confirm-dialog";
 
 const detailCardClassName =
   "grid gap-1 rounded-lg border border-border/60 bg-muted/10 p-3";
@@ -108,29 +109,29 @@ export function OrderDetailActionsCard({
 
           {statusTransitions.length > 0 ? (
             <AdminFormActions className="gap-2">
-              {statusTransitions.map(nextStatus => (
-                <form
-                  action={updateOrderStatusAction}
-                  key={nextStatus}>
-                  <input
-                    name="orderId"
-                    type="hidden"
-                    value={order.id}
-                  />
-                  <input
-                    name="nextStatus"
-                    type="hidden"
-                    value={nextStatus}
-                  />
-                  <Button
-                    variant={
-                      nextStatus === "cancelled" ? "destructive" : "outline"
-                    }
-                    type="submit">
-                    {getOrderTransitionLabel(nextStatus)}
-                  </Button>
-                </form>
-              ))}
+              {statusTransitions.map(nextStatus =>
+                nextStatus === "cancelled" ? (
+                  <OrderCancelConfirmDialog key={nextStatus} orderId={order.id} />
+                ) : (
+                  <form
+                    action={updateOrderStatusAction}
+                    key={nextStatus}>
+                    <input
+                      name="orderId"
+                      type="hidden"
+                      value={order.id}
+                    />
+                    <input
+                      name="nextStatus"
+                      type="hidden"
+                      value={nextStatus}
+                    />
+                    <Button variant="outline" type="submit">
+                      {getOrderTransitionLabel(nextStatus)}
+                    </Button>
+                  </form>
+                )
+              )}
             </AdminFormActions>
           ) : null}
         </>

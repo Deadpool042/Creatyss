@@ -1,7 +1,6 @@
 import { Notice } from "@/components/notice";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
-import { Button } from "@/components/ui/button";
-import { deleteProductAction } from "@/features/admin/products/actions/delete-product-action";
+import { ProductDeleteConfirmDialog } from "./product-delete-confirm-dialog";
 
 type ProductDangerZoneSectionProps = Readonly<{
   deleteErrorMessage: string | null;
@@ -22,20 +21,7 @@ export function ProductDangerZoneSection({
         description="La suppression retire aussi les catégories associées, les déclinaisons et les images rattachées."
         eyebrow="Suppression"
         title="Supprimer ce produit">
-        <form action={deleteProductAction}>
-          <input
-            name="productId"
-            type="hidden"
-            value={productId}
-          />
-
-          <Button
-            className="w-full sm:w-fit"
-            variant="destructive"
-            type="submit">
-            Supprimer le produit
-          </Button>
-        </form>
+        <ProductDeleteConfirmDialog productId={productId} />
       </AdminFormSection>
     </section>
   );
