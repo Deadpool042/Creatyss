@@ -289,7 +289,7 @@ export function ProductVariantCard({
       </form>
 
       <div className="grid gap-2">
-        <p className="eyebrow">
+        <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
           {isSimpleProduct
             ? "Images existantes"
             : productPresentation.imagesEyebrow}

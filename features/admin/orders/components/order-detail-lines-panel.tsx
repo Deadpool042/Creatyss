@@ -13,7 +13,7 @@ export function OrderDetailLinesPanel({
   return (
     <aside className="grid gap-4 p-5 border shadow-sm rounded-xl border-border/70 bg-card text-card-foreground">
       <div className="grid gap-2">
-        <p className="eyebrow">Récapitulatif</p>
+        <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Récapitulatif</p>
         <h2>Lignes de commande</h2>
       </div>
 

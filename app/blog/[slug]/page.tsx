@@ -93,7 +93,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </p>
         ) : null}
 
-        {post.excerpt ? <p className="lead">{post.excerpt}</p> : null}
+        {post.excerpt ? (
+          <p className="mt-4 leading-relaxed">{post.excerpt}</p>
+        ) : null}
 
         {coverImagePath ? (
           <figure className="article-cover">
