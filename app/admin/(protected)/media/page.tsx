@@ -2,10 +2,14 @@ import { access } from "node:fs/promises";
 import path from "node:path";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Notice } from "@/components/notice";
-import { PageHeader } from "@/components/page-header";
 import { SectionIntro } from "@/components/section-intro";
+import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { AdminFormField } from "@/components/admin/admin-form-field";
+import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/admin-media";
 import { requireAuthenticatedAdmin } from "@/lib/admin-auth";
 import {
@@ -13,6 +17,7 @@ import {
   MediaUploadError
 } from "@/features/admin/media/upload";
 import { getUploadsDirectory, getUploadsPublicPath } from "@/lib/uploads";
+import { Card } from "@/components/ui/card";
 
 export const dynamic = "force-dynamic";
 
@@ -150,135 +155,132 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
   const assets = await buildMediaListItems();
 
   return (
-    <div className="admin-media-page">
-      <section className="section">
-        <PageHeader
-          description={
-            <>
-              Importez d&apos;abord vos visuels, puis réutilisez-les dans les
-              produits, le blog et la page d&apos;accueil.
-            </>
-          }
-          eyebrow="Médias"
-          title="Bibliothèque médias"
-        />
-      </section>
+    <AdminPageShell
+      description="Importez d'abord vos visuels, puis réutilisez-les dans les produits, le blog et la page d'accueil."
+      eyebrow="Médias"
+      title="Bibliothèque médias">
+      {successMessage ? (
+        <Notice tone="success">{successMessage}</Notice>
+      ) : null}
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
-      <Card className="store-card admin-upload-card">
-        <SectionIntro
-          className="stack"
-          description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP. Taille maximale : 10 MB."
-          eyebrow="Bibliothèque médias"
-          title="Importer une image"
-        />
-
-        {successMessage ? (
-          <Notice tone="success">{successMessage}</Notice>
-        ) : null}
-        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
-
+      <AdminFormSection
+        description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP. Taille maximale : 10 MB."
+        eyebrow="Import"
+        title="Importer une image">
         <form
           action={uploadMediaAction}
-          className="admin-form">
-          <label className="admin-field">
-            <span className="meta-label">Image</span>
-            <input
+          className="grid gap-4">
+          <AdminFormField
+            htmlFor="media-file"
+            label="Image">
+            <Input
               accept="image/jpeg,image/png,image/webp"
-              className="admin-input"
+              id="media-file"
               name="file"
               required
               type="file"
             />
-          </label>
+          </AdminFormField>
 
-          <div>
-            <Button
-              className="button"
-              type="submit">
-              Importer le média
-            </Button>
-          </div>
+          <AdminFormActions>
+            <Button type="submit">Importer le média</Button>
+          </AdminFormActions>
         </form>
-      </Card>
+      </AdminFormSection>
 
-      <section className="section">
-        <div className="section-header">
-          <SectionIntro
-            description="Chaque image reste immédiatement réutilisable. Les informations techniques sont affichées en dessous pour vérification."
-            eyebrow="Médias"
-            title="Bibliothèque locale"
-          />
-        </div>
+      <div className="grid gap-4">
+        <SectionIntro
+          className="grid gap-2"
+          description="Chaque image reste immédiatement réutilisable. Les informations techniques sont affichées en dessous pour vérification."
+          eyebrow="Médias"
+          title="Bibliothèque locale"
+          titleAs="h2"
+        />
 
         {assets.length > 0 ? (
-          <div className="admin-media-grid">
+          <div className="admin-media-grid grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
             {assets.map(asset => (
               <Card
                 key={asset.id}
-                className="p-5 grid gap-3 content-start">
+                className="grid content-start gap-3 p-5">
                 {asset.previewUrl ? (
-                  <div className="admin-media-preview">
+                  <div className="min-h-48 overflow-hidden rounded-xl bg-muted/20">
                     <img
                       alt={asset.originalName}
-                      className="media-image"
+                      className="block h-full w-full object-cover"
                       loading="lazy"
                       src={asset.previewUrl}
                     />
                   </div>
                 ) : (
-                  <div className="admin-media-preview admin-media-placeholder">
+                  <div className="grid min-h-48 place-items-center rounded-xl bg-muted/20 p-4 text-center text-sm text-muted-foreground">
                     Aperçu indisponible
                   </div>
                 )}
 
-                <div className="stack">
-                  <p className="meta-label">Nom original</p>
-                  <p className="card-copy">{asset.originalName}</p>
+                <div className="grid gap-1">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Nom original
+                  </p>
+                  <p className="text-sm text-foreground">{asset.originalName}</p>
                 </div>
 
-                <div className="stack">
-                  <p className="meta-label">Ajouté le</p>
-                  <p className="card-copy">
+                <div className="grid gap-1">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Ajouté le
+                  </p>
+                  <p className="text-sm text-foreground">
                     {mediaDateFormatter.format(new Date(asset.createdAt))}
                   </p>
                 </div>
 
-                <div className="stack">
-                  <p className="meta-label">Taille</p>
-                  <p className="card-copy">{formatByteSize(asset.byteSize)}</p>
+                <div className="grid gap-1">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Taille
+                  </p>
+                  <p className="text-sm text-foreground">
+                    {formatByteSize(asset.byteSize)}
+                  </p>
                 </div>
 
-                <div className="stack">
-                  <p className="meta-label">Dimensions</p>
-                  <p className="card-copy">
+                <div className="grid gap-1">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Dimensions
+                  </p>
+                  <p className="text-sm text-foreground">
                     {asset.imageWidth !== null && asset.imageHeight !== null
                       ? `${asset.imageWidth} × ${asset.imageHeight}`
                       : "Indisponibles"}
                   </p>
                 </div>
 
-                <div className="stack">
-                  <p className="meta-label">Format du fichier</p>
-                  <p className="card-copy">{asset.mimeType}</p>
+                <div className="grid gap-1">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Format du fichier
+                  </p>
+                  <p className="text-sm text-foreground">{asset.mimeType}</p>
                 </div>
 
-                <div className="stack">
-                  <p className="meta-label">Chemin</p>
-                  <p className="card-copy">{asset.filePath}</p>
+                <div className="grid gap-1">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Chemin
+                  </p>
+                  <p className="break-all text-sm text-foreground">
+                    {asset.filePath}
+                  </p>
                 </div>
               </Card>
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            <p className="eyebrow">Aucun média</p>
-            <h2>La bibliothèque est encore vide</h2>
-            <p className="card-copy">
-              Importez une première image pour commencer votre bibliothèque.
-            </p>
-          </div>
+          <AdminEmptyState
+            description="Importez une première image pour commencer votre bibliothèque."
+            eyebrow="Aucun média"
+            title="La bibliothèque est encore vide"
+          />
         )}
-      </section>
-    </div>
+      </div>
+    </AdminPageShell>
   );
 }

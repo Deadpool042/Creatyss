@@ -672,15 +672,6 @@ h3 {
   color: #7a2020;
 }
 
-.admin-media-page,
-.admin-media-grid {
-  display: grid;
-  gap: 1rem;
-}
-
-.admin-upload-card {
-  width: 100%;
-}
 
 
 .admin-actions {
@@ -727,9 +718,6 @@ h3 {
   color: #1f6d37;
 }
 
-.admin-media-grid {
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-}
 
 
 .admin-product-subsection {
@@ -775,20 +763,6 @@ h3 {
 }
 
 
-.admin-media-preview {
-  min-height: 12rem;
-  border-radius: 0.9rem;
-  overflow: hidden;
-  background: rgba(31, 31, 31, 0.05);
-}
-
-.admin-media-placeholder {
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-  color: rgba(31, 31, 31, 0.62);
-  text-align: center;
-}
 
 .button,
 .link {
