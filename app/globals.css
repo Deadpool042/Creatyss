@@ -266,7 +266,6 @@ h3 {
 }
 
 .card-grid,
-.image-grid,
 .variant-list {
   display: grid;
   gap: 1rem;
@@ -389,18 +388,6 @@ h3 {
   gap: 1rem;
 }
 
-.cart-feedback {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-
-.cart-feedback p {
-  margin: 0;
-}
 
 .cart-quantity-field {
   max-width: 10rem;
@@ -427,10 +414,6 @@ h3 {
 .variant-media,
 .article-cover {
   min-height: 14rem;
-}
-
-.image-grid {
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 }
 
 .variant-list {
@@ -537,23 +520,6 @@ h3 {
   color: #7a2020;
 }
 
-/* — Public : statuts — */
-
-.status-tag-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.status-tag {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid rgba(31, 31, 31, 0.12);
-  border-radius: 999px;
-  background: rgba(31, 31, 31, 0.05);
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
-}
 
 .admin-area {
   width: 100%;
@@ -617,26 +583,6 @@ h3 {
 .admin-checkbox input {
   width: 1rem;
   height: 1rem;
-}
-
-
-.admin-danger-button {
-  border-color: #7a2020;
-  color: #7a2020;
-}
-
-.admin-danger-button:hover {
-  background: #7a2020;
-  color: #f5f2ea;
-}
-
-.admin-success {
-  margin: 0;
-  border: 1px solid rgba(35, 107, 58, 0.18);
-  border-radius: 0.9rem;
-  background: rgba(35, 107, 58, 0.08);
-  padding: 0.85rem 1rem;
-  color: #1f6d37;
 }
 
 

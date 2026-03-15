@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Notice } from "@/components/notice";
 import { findPublicOrderByReference } from "@/db/repositories/order.repository";
 import {
   getOrderPaymentNotice,
@@ -53,29 +56,24 @@ export default async function OrderConfirmationPage({
   return (
     <div className="page">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Confirmation</p>
-            <h1>{summary.title}</h1>
-            <p className="lead">
-              {summary.description} Retrouvez ici le paiement, l&apos;état de la
-              commande et les informations utiles pour la suite.
-            </p>
-          </div>
+        <div className="mb-6 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+            Confirmation
+          </p>
+          <h1 className="m-0">{summary.title}</h1>
+          <p className="mt-1 leading-relaxed text-muted-foreground">
+            {summary.description} Retrouvez ici le paiement, l&apos;état de la
+            commande et les informations utiles pour la suite.
+          </p>
         </div>
 
         {paymentMessage ? (
-          <p
-            className={
-              paymentMessage.kind === "success" ? "notice-success" : "notice-error"
-            }
-            role={paymentMessage.kind === "success" ? undefined : "alert"}
-          >
+          <Notice tone={paymentMessage.kind === "success" ? "success" : "alert"}>
             {paymentMessage.text}
-          </p>
+          </Notice>
         ) : null}
 
-        <div className="cart-layout order-confirmation-layout">
+        <div className="cart-layout">
           <div className="checkout-line-list">
             <article className="store-card checkout-line">
               <div className="stack">
@@ -85,13 +83,13 @@ export default async function OrderConfirmationPage({
                 <p className="form-note">{summary.nextStep}</p>
               </div>
 
-              <div className="status-tag-group">
-                <span className="status-tag">
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary">
                   {getOrderStatusLabel(order.status)}
-                </span>
-                <span className="status-tag">
+                </Badge>
+                <Badge variant="secondary">
                   {getPaymentStatusLabel(order.payment.status)}
-                </span>
+                </Badge>
               </div>
             </article>
 
@@ -239,15 +237,15 @@ export default async function OrderConfirmationPage({
               {order.status === "pending" ? (
                 <form action={startOrderPaymentAction}>
                   <input name="reference" type="hidden" value={order.reference} />
-                  <button className="button" type="submit">
-                    Payer la commande
-                  </button>
+                  <Button type="submit">Payer la commande</Button>
                 </form>
               ) : null}
-              <Link className="button" href="/boutique">
-                Retour à la boutique
-              </Link>
-              <Link className="link link-subtle" href="/panier">
+              <Button asChild>
+                <Link href="/boutique">Retour à la boutique</Link>
+              </Button>
+              <Link
+                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                href="/panier">
                 Voir le panier
               </Link>
             </div>
