@@ -53,7 +53,7 @@ export function OrdersListTable({ orders }: OrdersListTableProps) {
                 )
               }>
               <SelectTrigger
-                className="w-[14rem]"
+                className="w-56"
                 size="sm">
                 <SelectValue placeholder="Tous les statuts" />
               </SelectTrigger>

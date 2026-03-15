@@ -11,9 +11,11 @@ import { type AdminProductDetail } from "@/db/repositories/admin-product.reposit
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
 import { type AdminProductVariant } from "@/db/repositories/admin-product-variant.repository";
 import { type ProductAdminPresentation } from "@/entities/product/product-admin-presentation";
-import { createProductVariantAction } from "@/features/admin/products/actions/create-product-variant-action";
-import { updateSimpleProductOfferAction } from "@/features/admin/products/actions/update-simple-product-offer-action";
-import { getAvailabilityLabel } from "../lib/product-detail-helpers";
+import {
+  createProductVariantAction,
+  updateSimpleProductOfferAction
+} from "@/features/admin/products/actions";
+import { getAvailabilityLabel } from "@/features/admin/products/lib";
 import { ProductVariantCard } from "./product-variant-card";
 
 const nativeSelectClassName =

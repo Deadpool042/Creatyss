@@ -12,7 +12,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,12 +20,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import type { AdminProductSummary } from "@/db/repositories/admin-product.repository";
 import { getProductPublishability } from "@/entities/product/product-publishability";
-import { toggleProductStatusAction } from "@/features/admin/products/actions/toggle-product-status-action";
-import { deleteProductAction } from "@/features/admin/products/actions/delete-product-action";
+import {
+  toggleProductStatusAction,
+  deleteProductAction
+} from "@/features/admin/products/actions";
 
 type ProductRowActionsProps = {
   product: AdminProductSummary;
@@ -44,17 +46,32 @@ export function ProductRowActions({ product }: ProductRowActionsProps) {
 
   return (
     <>
-      <form ref={toggleFormRef} action={toggleProductStatusAction}>
-        <input type="hidden" name="productId" value={product.id} />
+      <form
+        ref={toggleFormRef}
+        action={toggleProductStatusAction}>
+        <input
+          type="hidden"
+          name="productId"
+          value={product.id}
+        />
       </form>
-      <form ref={deleteFormRef} action={deleteProductAction}>
-        <input type="hidden" name="productId" value={product.id} />
+      <form
+        ref={deleteFormRef}
+        action={deleteProductAction}>
+        <input
+          type="hidden"
+          name="productId"
+          value={product.id}
+        />
       </form>
 
       <AlertDialog>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-8">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8">
               <MoreHorizontalIcon className="size-4" />
               <span className="sr-only">Actions produit {product.name}</span>
             </Button>
@@ -79,9 +96,7 @@ export function ProductRowActions({ product }: ProductRowActionsProps) {
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              Supprimer « {product.name} » ?
-            </AlertDialogTitle>
+            <AlertDialogTitle>Supprimer « {product.name} » ?</AlertDialogTitle>
             <AlertDialogDescription>
               Cette action est irréversible. Le produit sera supprimé avec ses
               déclinaisons et ses images.

@@ -8,17 +8,20 @@ import { type AdminMediaAsset } from "@/db/admin-media";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
 import { type AdminProductVariant } from "@/db/repositories/admin-product-variant.repository";
 import { type ProductAdminPresentation } from "@/entities/product/product-admin-presentation";
-import { createProductImageAction } from "@/features/admin/products/actions/create-product-image-action";
-import { deleteProductVariantAction } from "@/features/admin/products/actions/delete-product-variant-action";
-import { deleteVariantPrimaryImageAction } from "@/features/admin/products/actions/delete-variant-primary-image-action";
-import { setVariantPrimaryImageAction } from "@/features/admin/products/actions/set-variant-primary-image-action";
-import { updateProductVariantAction } from "@/features/admin/products/actions/update-product-variant-action";
+import {
+  createProductImageAction,
+  deleteProductVariantAction,
+  deleteVariantPrimaryImageAction,
+  setVariantPrimaryImageAction,
+  updateProductVariantAction
+} from "@/features/admin/products/actions";
+
 import {
   findMediaAssetByFilePath,
   getAvailabilityLabel,
   getPrimaryImageState,
   getProductStatusLabel
-} from "../lib/product-detail-helpers";
+} from "@/features/admin/products/lib";
 import { ProductImageCard } from "./product-image-card";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 import { ProductPrimaryImageManager } from "./product-primary-image-manager";

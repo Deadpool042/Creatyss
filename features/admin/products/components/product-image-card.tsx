@@ -3,9 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
-import { deleteProductImageAction } from "@/features/admin/products/actions/delete-product-image-action";
-import { updateProductImageAction } from "@/features/admin/products/actions/update-product-image-action";
-import { getImageUrl } from "../lib/product-detail-helpers";
+import {
+  updateProductImageAction,
+  deleteProductImageAction
+} from "@/features/admin/products/actions";
+import { getImageUrl } from "@/features/admin/products/lib";
 
 const checkboxInputClassName =
   "mt-1 size-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30";

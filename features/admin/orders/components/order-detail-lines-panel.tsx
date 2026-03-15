@@ -11,7 +11,7 @@ export function OrderDetailLinesPanel({
   totalAmount
 }: OrderDetailLinesPanelProps) {
   return (
-    <aside className="grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+    <aside className="grid gap-4 p-5 border shadow-sm rounded-xl border-border/70 bg-card text-card-foreground">
       <div className="grid gap-2">
         <p className="eyebrow">Récapitulatif</p>
         <h2>Lignes de commande</h2>
@@ -20,7 +20,7 @@ export function OrderDetailLinesPanel({
       <div className="grid gap-3">
         {lines.map(line => (
           <article
-            className="grid gap-3 rounded-lg border border-border/60 bg-muted/10 p-4"
+            className="grid gap-3 p-4 border rounded-lg border-border/60 bg-muted/10"
             key={line.id}>
             <div className="grid gap-1">
               <h3>{line.productName}</h3>
@@ -34,7 +34,7 @@ export function OrderDetailLinesPanel({
               <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 SKU
               </p>
-              <p className="card-copy text-sm font-medium leading-6 text-foreground">
+              <p className="text-sm font-medium leading-6 card-copy text-foreground">
                 {line.sku}
               </p>
             </div>
@@ -43,7 +43,7 @@ export function OrderDetailLinesPanel({
               <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 Quantité
               </p>
-              <p className="card-copy text-sm font-medium leading-6 text-foreground">
+              <p className="text-sm font-medium leading-6 card-copy text-foreground">
                 {line.quantity}
               </p>
             </div>
@@ -52,7 +52,7 @@ export function OrderDetailLinesPanel({
               <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 Prix unitaire figé
               </p>
-              <p className="card-copy text-sm font-medium leading-6 text-foreground">
+              <p className="text-sm font-medium leading-6 card-copy text-foreground">
                 {line.unitPrice}
               </p>
             </div>
@@ -61,7 +61,7 @@ export function OrderDetailLinesPanel({
               <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 Sous-total
               </p>
-              <p className="card-copy text-sm font-medium leading-6 text-foreground">
+              <p className="text-sm font-medium leading-6 card-copy text-foreground">
                 {line.lineTotal}
               </p>
             </div>
@@ -75,7 +75,7 @@ export function OrderDetailLinesPanel({
         <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
           Total commande
         </p>
-        <p className="card-copy text-base font-semibold leading-6 text-foreground">
+        <p className="text-base font-semibold leading-6 card-copy text-foreground">
           {totalAmount}
         </p>
       </div>

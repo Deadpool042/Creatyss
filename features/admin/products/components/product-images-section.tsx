@@ -8,9 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { type AdminMediaAsset } from "@/db/admin-media";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
-import { createProductImageAction } from "@/features/admin/products/actions/create-product-image-action";
-import { deleteProductPrimaryImageAction } from "@/features/admin/products/actions/delete-product-primary-image-action";
-import { setProductPrimaryImageAction } from "@/features/admin/products/actions/set-product-primary-image-action";
+import {
+  createProductImageAction,
+  deleteProductPrimaryImageAction,
+  setProductPrimaryImageAction
+} from "@/features/admin/products/actions";
+
 import { type PrimaryImageState } from "../lib/product-detail-helpers";
 import { ProductImageCard } from "./product-image-card";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";

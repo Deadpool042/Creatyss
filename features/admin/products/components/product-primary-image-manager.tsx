@@ -12,7 +12,7 @@ import {
   getPrimaryImageSubmitLabel,
   type PrimaryImageScope,
   type PrimaryImageState
-} from "../lib/product-detail-helpers";
+} from "@/features/admin/products/lib";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 
 type PrimaryImageFormAction = (formData: FormData) => Promise<void>;
@@ -56,7 +56,7 @@ function renderImagePreview(
     <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
       <img
         alt={image.altText ?? "Image produit"}
-        className="aspect-[16/10] w-full object-cover"
+        className="aspect-16/10 w-full object-cover"
         src={imageUrl}
       />
     </div>

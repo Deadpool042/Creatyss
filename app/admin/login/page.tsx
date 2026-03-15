@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { findAdminUserByEmail } from "@/db/admin-users";
+import { LoginForm } from "@/features/admin/auth/components/login-form";
 import {
   ADMIN_SESSION_COOKIE_NAME,
   ADMIN_SESSION_DURATION_SECONDS,
@@ -79,49 +80,9 @@ export default async function AdminLoginPage({
   const showError = errorParam === "invalid_credentials";
 
   return (
-    <div className="shell">
-      <section className="card admin-card">
-        <p className="eyebrow">Admin</p>
-        <h1>Connexion</h1>
-        <p className="lead">
-          Connectez-vous pour accéder à l&apos;espace d&apos;administration
-          Creatyss.
-        </p>
-
-        {showError ? (
-          <p className="admin-alert" role="alert">
-            Identifiants invalides.
-          </p>
-        ) : null}
-
-        <form action={loginAction} className="admin-form">
-          <label className="admin-field">
-            <span className="meta-label">Email</span>
-            <input
-              autoComplete="email"
-              className="admin-input"
-              name="email"
-              required
-              type="email"
-            />
-          </label>
-
-          <label className="admin-field">
-            <span className="meta-label">Mot de passe</span>
-            <input
-              autoComplete="current-password"
-              className="admin-input"
-              name="password"
-              required
-              type="password"
-            />
-          </label>
-
-          <button className="button" type="submit">
-            Se connecter
-          </button>
-        </form>
-      </section>
-    </div>
+    <LoginForm
+      action={loginAction}
+      showError={showError}
+    />
   );
 }

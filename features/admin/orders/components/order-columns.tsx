@@ -37,7 +37,9 @@ function getOrderStatusBadgeVariant(status: AdminOrderSummary["status"]) {
   return "secondary" as const;
 }
 
-function getPaymentStatusBadgeVariant(status: AdminOrderSummary["paymentStatus"]) {
+function getPaymentStatusBadgeVariant(
+  status: AdminOrderSummary["paymentStatus"]
+) {
   if (status === "failed") {
     return "destructive" as const;
   }
@@ -60,11 +62,10 @@ function SortableHeader<TData>({
 
   return (
     <Button
-      className="-ml-2 h-8 px-2 text-left font-semibold text-foreground hover:bg-muted/60"
+      className="h-8 px-2 -ml-2 font-semibold text-left text-foreground hover:bg-muted/60"
       size="sm"
       variant="ghost"
-      onClick={() => column.toggleSorting(direction === "asc")}
-    >
+      onClick={() => column.toggleSorting(direction === "asc")}>
       {title}
       {direction === "asc" ? (
         <ArrowUpIcon className="size-3.5" />
@@ -87,18 +88,16 @@ export const orderColumns: ColumnDef<AdminOrderSummary>[] = [
       />
     ),
     filterFn: (row, _columnId, filterValue) => {
-      const query = String(filterValue ?? "").trim().toLowerCase();
+      const query = String(filterValue ?? "")
+        .trim()
+        .toLowerCase();
 
       if (!query) {
         return true;
       }
 
-      const {
-        reference,
-        customerFirstName,
-        customerLastName,
-        customerEmail
-      } = row.original;
+      const { reference, customerFirstName, customerLastName, customerEmail } =
+        row.original;
 
       return [reference, customerFirstName, customerLastName, customerEmail]
         .join(" ")
@@ -109,7 +108,7 @@ export const orderColumns: ColumnDef<AdminOrderSummary>[] = [
       const order = row.original;
 
       return (
-        <article className="grid min-w-[15rem] gap-1.5 py-1">
+        <article className="grid min-w-60 gap-1.5 py-1">
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-sm font-semibold text-foreground">
               {order.reference}
@@ -124,9 +123,8 @@ export const orderColumns: ColumnDef<AdminOrderSummary>[] = [
           </p>
 
           <Link
-            className="inline-flex w-fit items-center text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
-            href={`/admin/orders/${order.id}`}
-          >
+            className="inline-flex items-center text-sm font-medium transition-colors w-fit text-foreground/80 underline-offset-4 hover:text-foreground hover:underline"
+            href={`/admin/orders/${order.id}`}>
             Voir le détail
           </Link>
         </article>
@@ -135,7 +133,7 @@ export const orderColumns: ColumnDef<AdminOrderSummary>[] = [
   },
   {
     id: "customer",
-    accessorFn: (order) =>
+    accessorFn: order =>
       `${order.customerFirstName} ${order.customerLastName} ${order.customerEmail}`,
     header: ({ column }) => (
       <SortableHeader
@@ -147,13 +145,11 @@ export const orderColumns: ColumnDef<AdminOrderSummary>[] = [
       const order = row.original;
 
       return (
-        <div className="grid min-w-[14rem] gap-1">
+        <div className="grid min-w-56 gap-1">
           <p className="text-sm font-medium text-foreground">
             {order.customerFirstName} {order.customerLastName}
           </p>
-          <p className="text-sm text-muted-foreground">
-            {order.customerEmail}
-          </p>
+          <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
         </div>
       );
     }
@@ -195,7 +191,7 @@ export const orderColumns: ColumnDef<AdminOrderSummary>[] = [
   },
   {
     id: "totalAmount",
-    accessorFn: (order) => parseMoneyStringToCents(order.totalAmount),
+    accessorFn: order => parseMoneyStringToCents(order.totalAmount),
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -210,7 +206,7 @@ export const orderColumns: ColumnDef<AdminOrderSummary>[] = [
   },
   {
     id: "createdAt",
-    accessorFn: (order) => new Date(order.createdAt),
+    accessorFn: order => new Date(order.createdAt),
     header: ({ column }) => (
       <SortableHeader
         column={column}
@@ -228,6 +224,6 @@ export const orderColumns: ColumnDef<AdminOrderSummary>[] = [
     id: "actions",
     header: "",
     enableSorting: false,
-    cell: ({ row }) => <OrderRowActions order={row.original} />,
+    cell: ({ row }) => <OrderRowActions order={row.original} />
   }
 ];
