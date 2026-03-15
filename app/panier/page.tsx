@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Notice } from "@/components/notice";
 import {
   readGuestCartByToken,
   type GuestCart
@@ -78,29 +80,31 @@ export default async function CartPage({ searchParams }: CartPageProps) {
   return (
     <div className="page cart-page">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Panier</p>
-            <h1>Votre panier</h1>
-            <p className="lead">
-              Vérifiez la disponibilité de vos articles, puis ajustez les
-              quantités avant de finaliser la commande.
-            </p>
-          </div>
+        <div className="mb-6 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+            Panier
+          </p>
+          <h1 className="m-0">Votre panier</h1>
+          <p className="mt-1 leading-relaxed text-muted-foreground">
+            Vérifiez la disponibilité de vos articles, puis ajustez les
+            quantités avant de finaliser la commande.
+          </p>
         </div>
 
-        {statusMessage ? <p className="notice-success">{statusMessage}</p> : null}
+        {statusMessage ? (
+          <Notice tone="success">{statusMessage}</Notice>
+        ) : null}
         {errorMessage ? (
-          <p className="notice-error" role="alert">
-            {errorMessage}
-          </p>
+          <Notice tone="alert">{errorMessage}</Notice>
         ) : null}
 
         {cart && cart.lines.length > 0 ? (
           <div className="cart-layout">
             <div className="cart-list">
               {cart.lines.map((line) => (
-                <article className="store-card cart-line" key={line.id}>
+                <article
+                  className="store-card cart-line"
+                  key={line.id}>
                   <div className="stack">
                     <p className="card-kicker">Produit</p>
                     <h2>{line.productName}</h2>
@@ -131,15 +135,21 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                       {getAvailabilityLabel(line.isAvailable)}
                     </p>
                     {!line.isAvailable ? (
-                      <p className="notice-error" role="alert">
+                      <Notice tone="alert">
                         Cette ligne bloque la commande. Revenez à la fiche
                         produit ou supprimez-la pour continuer.
-                      </p>
+                      </Notice>
                     ) : null}
                   </div>
 
-                  <form action={updateCartItemQuantityAction} className="cart-line-form">
-                    <input name="itemId" type="hidden" value={line.id} />
+                  <form
+                    action={updateCartItemQuantityAction}
+                    className="cart-line-form">
+                    <input
+                      name="itemId"
+                      type="hidden"
+                      value={line.id}
+                    />
 
                     <label className="form-field cart-quantity-field">
                       <span className="meta-label">Quantité</span>
@@ -155,21 +165,28 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                     </label>
 
                     <div className="form-actions">
-                      <button className="button" type="submit">
-                        Mettre à jour la quantité
-                      </button>
+                      <Button type="submit">Mettre à jour la quantité</Button>
                     </div>
                   </form>
 
                   <form action={removeCartItemAction}>
-                    <input name="itemId" type="hidden" value={line.id} />
+                    <input
+                      name="itemId"
+                      type="hidden"
+                      value={line.id}
+                    />
 
-                    <button className="button link-subtle" type="submit">
+                    <Button
+                      size="sm"
+                      type="submit"
+                      variant="ghost">
                       Supprimer la ligne
-                    </button>
+                    </Button>
                   </form>
 
-                  <Link className="link" href={`/boutique/${line.productSlug}`}>
+                  <Link
+                    className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                    href={`/boutique/${line.productSlug}`}>
                     Retour à la fiche produit
                   </Link>
                 </article>
@@ -178,10 +195,10 @@ export default async function CartPage({ searchParams }: CartPageProps) {
 
             <aside className="product-panel cart-summary">
               {hasUnavailableLine ? (
-                <p className="notice-error" role="alert">
+                <Notice tone="alert">
                   Au moins une ligne bloque la commande. Corrigez le panier
                   avant de continuer.
-                </p>
+                </Notice>
               ) : null}
 
               <div className="stack">
@@ -199,11 +216,11 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                 <p className="card-copy">{cart.subtotal}</p>
               </div>
 
-              <div className="form-actions">
-                <Link className="button" href="/checkout">
-                  Finaliser la commande
-                </Link>
-              </div>
+              <Button
+                asChild
+                className="w-full">
+                <Link href="/checkout">Finaliser la commande</Link>
+              </Button>
             </aside>
           </div>
         ) : (
@@ -213,11 +230,9 @@ export default async function CartPage({ searchParams }: CartPageProps) {
             <p className="card-copy">
               Ajoutez un article disponible depuis une fiche produit.
             </p>
-            <div className="button-row">
-              <Link className="button" href="/boutique">
-                Voir la boutique
-              </Link>
-            </div>
+            <Button asChild>
+              <Link href="/boutique">Voir la boutique</Link>
+            </Button>
           </div>
         )}
       </section>

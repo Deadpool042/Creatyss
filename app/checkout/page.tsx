@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Notice } from "@/components/notice";
 import {
   readGuestCheckoutContextByToken,
   type GuestCheckoutContext
@@ -104,29 +106,27 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   const billingSameAsShipping = draft?.billingSameAsShipping ?? true;
 
   return (
-    <div className="page checkout-page">
+    <div className="page">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Commande</p>
-            <h1>Finaliser la commande</h1>
-            <p className="lead">
-              Renseignez vos informations, puis créez la commande quand le
-              panier est prêt.
-            </p>
-          </div>
+        <div className="mb-6 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+            Commande
+          </p>
+          <h1 className="m-0">Finaliser la commande</h1>
+          <p className="mt-1 leading-relaxed text-muted-foreground">
+            Renseignez vos informations, puis créez la commande quand le
+            panier est prêt.
+          </p>
         </div>
 
-        {statusMessage ? <p className="notice-success">{statusMessage}</p> : null}
+        {statusMessage ? (
+          <Notice tone="success">{statusMessage}</Notice>
+        ) : null}
         {errorMessage ? (
-          <p className="notice-error" role="alert">
-            {errorMessage}
-          </p>
+          <Notice tone="alert">{errorMessage}</Notice>
         ) : null}
         {checkoutIssueMessage ? (
-          <p className="notice-error" role="alert">
-            {checkoutIssueMessage}
-          </p>
+          <Notice tone="alert">{checkoutIssueMessage}</Notice>
         ) : null}
 
         {cart ? (
@@ -361,16 +361,17 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                       Créez la commande une fois vos informations complètes.
                       Vous pouvez aussi les enregistrer pour plus tard.
                     </p>
-                    <button className="button" formAction={createOrderAction} type="submit">
+                    <Button
+                      formAction={createOrderAction}
+                      type="submit">
                       Créer la commande
-                    </button>
-                    <button
-                      className="button link-subtle"
+                    </Button>
+                    <Button
                       formAction={saveGuestCheckoutAction}
                       type="submit"
-                    >
+                      variant="ghost">
                       Enregistrer mes informations
-                    </button>
+                    </Button>
                   </>
                 ) : (
                   <p className="form-note">
@@ -379,7 +380,9 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   </p>
                 )}
 
-                <Link className="link link-subtle" href="/panier">
+                <Link
+                  className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                  href="/panier">
                   Retour au panier
                 </Link>
               </div>
@@ -429,10 +432,10 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                           {getAvailabilityLabel(line.isAvailable)}
                         </p>
                         {!line.isAvailable ? (
-                          <p className="notice-error" role="alert">
+                          <Notice tone="alert">
                             Cette ligne bloque la commande tant qu&apos;elle
                             n&apos;est pas corrigée dans le panier.
-                          </p>
+                          </Notice>
                         ) : null}
                       </div>
                     </article>
@@ -467,11 +470,13 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               Ajoutez d&apos;abord un article disponible au panier pour
               finaliser la commande.
             </p>
-            <div className="button-row">
-              <Link className="button" href="/boutique">
-                Voir la boutique
-              </Link>
-              <Link className="link link-subtle" href="/panier">
+            <div className="flex flex-wrap items-center gap-3">
+              <Button asChild>
+                <Link href="/boutique">Voir la boutique</Link>
+              </Button>
+              <Link
+                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                href="/panier">
                 Retour au panier
               </Link>
             </div>
