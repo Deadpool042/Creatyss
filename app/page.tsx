@@ -102,7 +102,7 @@ export default async function HomePage() {
               <article
                 className="store-card"
                 key={product.id}>
-                <p className="card-kicker">Produit</p>
+                <p className="text-[0.95rem] text-foreground/68">Produit</p>
                 <h3>
                   <Link href={`/boutique/${product.slug}`}>{product.name}</Link>
                 </h3>
@@ -131,7 +131,7 @@ export default async function HomePage() {
               <article
                 className="store-card"
                 key={category.id}>
-                <p className="card-kicker">Catégorie</p>
+                <p className="text-[0.95rem] text-foreground/68">Catégorie</p>
                 <h3>{category.name}</h3>
                 <p className="card-copy">
                   {category.description ?? "Sélection visible sur la page d'accueil."}
@@ -164,12 +164,12 @@ export default async function HomePage() {
               <article
                 className="store-card"
                 key={post.id}>
-                <p className="card-kicker">Article</p>
+                <p className="text-[0.95rem] text-foreground/68">Article</p>
                 <h3>
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h3>
                 {post.publishedAt ? (
-                  <p className="card-meta">
+                  <p className="text-[0.95rem] text-foreground/68">
                     {blogDateFormatter.format(new Date(post.publishedAt))}
                   </p>
                 ) : null}

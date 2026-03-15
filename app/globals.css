@@ -251,13 +251,6 @@ h3 {
   gap: 0.75rem;
 }
 
-.card-kicker,
-.card-meta,
-.variant-meta {
-  margin: 0;
-  color: rgba(31, 31, 31, 0.68);
-  font-size: 0.95rem;
-}
 
 .card-copy,
 .article-content,

@@ -268,7 +268,7 @@ export default async function ProductPage({
               <div className="variant-header">
                 <div className="grid gap-1">
                   <h3>{getSimpleOfferCardTitle()}</h3>
-                  <p className="variant-meta">
+                  <p className="text-[0.95rem] text-foreground/68">
                     {singleOffer.name}
                     {singleOffer.colorName ? ` · ${singleOffer.colorName}` : ""}
                     {singleOffer.colorHex ? ` · ${singleOffer.colorHex}` : ""}
@@ -294,7 +294,7 @@ export default async function ProductPage({
                   <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix</p>
                   <p className="product-price">{singleOffer.price}</p>
                   {singleOffer.compareAtPrice ? (
-                    <p className="card-meta">
+                    <p className="text-[0.95rem] text-foreground/68">
                       Prix barré : {singleOffer.compareAtPrice}
                     </p>
                   ) : null}
@@ -304,7 +304,7 @@ export default async function ProductPage({
                   <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Ajout au panier</p>
                   <p
                     className={
-                      singleOffer.isAvailable ? "card-copy" : "card-meta"
+                      singleOffer.isAvailable ? "card-copy" : "text-[0.95rem] text-foreground/68"
                     }>
                     {getOfferAvailabilityMessage({
                       productType: product.productType,
@@ -407,7 +407,7 @@ export default async function ProductPage({
                   <div className="variant-header">
                     <div className="grid gap-1">
                       <h3>{variant.name}</h3>
-                      <p className="variant-meta">
+                      <p className="text-[0.95rem] text-foreground/68">
                         {variant.colorName}
                         {variant.colorHex ? ` · ${variant.colorHex}` : ""}
                       </p>
@@ -437,7 +437,7 @@ export default async function ProductPage({
                       <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix</p>
                       <p className="product-price">{variant.price}</p>
                       {variant.compareAtPrice ? (
-                        <p className="card-meta">
+                        <p className="text-[0.95rem] text-foreground/68">
                           Prix barré : {variant.compareAtPrice}
                         </p>
                       ) : null}
@@ -446,7 +446,7 @@ export default async function ProductPage({
                     <div className="grid gap-1">
                       <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Ajout au panier</p>
                       <p
-                        className={variant.isAvailable ? "card-copy" : "card-meta"}>
+                        className={variant.isAvailable ? "card-copy" : "text-[0.95rem] text-foreground/68"}>
                         {getOfferAvailabilityMessage({
                           productType: product.productType,
                           isAvailable: variant.isAvailable

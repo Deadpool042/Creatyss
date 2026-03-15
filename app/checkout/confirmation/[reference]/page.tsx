@@ -127,7 +127,7 @@ export default async function OrderConfirmationPage({
                 </h2>
                 <p className="card-copy">{order.customerEmail}</p>
                 {order.customerPhone ? (
-                  <p className="card-meta">{order.customerPhone}</p>
+                  <p className="text-[0.95rem] text-foreground/68">{order.customerPhone}</p>
                 ) : null}
               </div>
             </article>
@@ -143,15 +143,15 @@ export default async function OrderConfirmationPage({
                 <p className="card-copy">
                   {order.shippingPostalCode} {order.shippingCity}
                 </p>
-                <p className="card-meta">{order.shippingCountryCode}</p>
+                <p className="text-[0.95rem] text-foreground/68">{order.shippingCountryCode}</p>
                 {order.shippedAt ? (
-                  <p className="card-meta">
+                  <p className="text-[0.95rem] text-foreground/68">
                     Date d&apos;expédition :{" "}
                     {orderDateTimeFormatter.format(new Date(order.shippedAt))}
                   </p>
                 ) : null}
                 {order.trackingReference ? (
-                  <p className="card-meta">
+                  <p className="text-[0.95rem] text-foreground/68">
                     Référence de suivi : {order.trackingReference}
                   </p>
                 ) : null}
@@ -172,7 +172,7 @@ export default async function OrderConfirmationPage({
                       {order.billingFirstName} {order.billingLastName}
                     </p>
                     {order.billingPhone ? (
-                      <p className="card-meta">{order.billingPhone}</p>
+                      <p className="text-[0.95rem] text-foreground/68">{order.billingPhone}</p>
                     ) : null}
                     <p className="card-copy">{order.billingAddressLine1}</p>
                     {order.billingAddressLine2 ? (
@@ -181,7 +181,7 @@ export default async function OrderConfirmationPage({
                     <p className="card-copy">
                       {order.billingPostalCode} {order.billingCity}
                     </p>
-                    <p className="card-meta">{order.billingCountryCode}</p>
+                    <p className="text-[0.95rem] text-foreground/68">{order.billingCountryCode}</p>
                   </>
                 )}
               </div>
@@ -199,7 +199,7 @@ export default async function OrderConfirmationPage({
                 <article className="store-card checkout-line" key={line.id}>
                   <div className="grid gap-1">
                     <h3>{line.productName}</h3>
-                    <p className="variant-meta">
+                    <p className="text-[0.95rem] text-foreground/68">
                       {line.variantName} · {line.colorName}
                       {line.colorHex ? ` · ${line.colorHex}` : ""}
                     </p>

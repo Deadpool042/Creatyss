@@ -88,7 +88,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <h1 className="m-0">{post.title}</h1>
 
         {post.publishedAt ? (
-          <p className="card-meta">
+          <p className="text-[0.95rem] text-foreground/68">
             {blogDateFormatter.format(new Date(post.publishedAt))}
           </p>
         ) : null}

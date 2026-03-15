@@ -24,12 +24,12 @@ export default async function BlogPage() {
           <div className="card-grid">
             {posts.map((post) => (
               <article className="store-card" key={post.id}>
-                <p className="card-kicker">Article</p>
+                <p className="text-[0.95rem] text-foreground/68">Article</p>
                 <h3>
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                 </h3>
                 {post.publishedAt ? (
-                  <p className="card-meta">
+                  <p className="text-[0.95rem] text-foreground/68">
                     {blogDateFormatter.format(new Date(post.publishedAt))}
                   </p>
                 ) : null}

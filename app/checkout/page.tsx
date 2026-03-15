@@ -403,7 +403,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                     <article className="store-card checkout-line" key={line.id}>
                       <div className="grid gap-1">
                         <h3>{line.productName}</h3>
-                        <p className="variant-meta">
+                        <p className="text-[0.95rem] text-foreground/68">
                           {line.variantName} · {line.colorName}
                           {line.colorHex ? ` · ${line.colorHex}` : ""}
                         </p>

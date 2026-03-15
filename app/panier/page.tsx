@@ -108,9 +108,9 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                   className="store-card cart-line"
                   key={line.id}>
                   <div className="grid gap-1">
-                    <p className="card-kicker">Produit</p>
+                    <p className="text-[0.95rem] text-foreground/68">Produit</p>
                     <h2>{line.productName}</h2>
-                    <p className="variant-meta">
+                    <p className="text-[0.95rem] text-foreground/68">
                       {line.variantName} · {line.colorName}
                       {line.colorHex ? ` · ${line.colorHex}` : ""}
                     </p>
