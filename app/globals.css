@@ -673,9 +673,7 @@ h3 {
 }
 
 .admin-media-page,
-.admin-media-grid,
-.admin-category-page,
-.admin-category-list {
+.admin-media-grid {
   display: grid;
   gap: 1rem;
 }
@@ -684,15 +682,6 @@ h3 {
   width: 100%;
 }
 
-.admin-category-list {
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-}
-
-.admin-category-card,
-.admin-category-form-section,
-.admin-danger-zone {
-  width: 100%;
-}
 
 .admin-actions {
   display: flex;
@@ -718,10 +707,6 @@ h3 {
   height: 1rem;
 }
 
-.admin-danger-zone {
-  display: grid;
-  gap: 1rem;
-}
 
 .admin-danger-button {
   border-color: #7a2020;

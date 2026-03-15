@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/notice";
-import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
 import { AdminCategoryCard } from "@/components/admin/admin-category-card";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 
@@ -51,43 +52,39 @@ export default async function AdminCategoriesPage({
   const categories = await listAdminCategories();
 
   return (
-    <div className="admin-category-page">
-      <section className="section">
-        <PageHeader
-          actions={
-            <Link
-              className="button"
-              href="/admin/categories/new">
-              Nouvelle catégorie
-            </Link>
-          }
-          description="Gérez les catégories du catalogue avec un formulaire simple et des validations côté serveur."
-          eyebrow="Catégories"
-          title="Catégories"
+    <AdminPageShell
+      actions={
+        <Button
+          asChild
+          size="sm"
+          variant="outline">
+          <Link href="/admin/categories/new">Nouvelle catégorie</Link>
+        </Button>
+      }
+      description="Gérez les catégories du catalogue avec un formulaire simple et des validations côté serveur."
+      eyebrow="Catégories"
+      title="Catégories">
+      {successMessage ? (
+        <Notice tone="success">{successMessage}</Notice>
+      ) : null}
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
+
+      {categories.length > 0 ? (
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4">
+          {categories.map(category => (
+            <AdminCategoryCard
+              key={category.id}
+              category={category}
+            />
+          ))}
+        </div>
+      ) : (
+        <AdminEmptyState
+          description="Créez une première catégorie pour structurer le catalogue."
+          eyebrow="Aucune catégorie"
+          title="Le catalogue ne contient pas encore de catégorie"
         />
-
-        {successMessage ? (
-          <Notice tone="success">{successMessage}</Notice>
-        ) : null}
-        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
-
-        {categories.length > 0 ? (
-          <div className="admin-category-list">
-            {categories.map(category => (
-              <AdminCategoryCard
-                key={category.id}
-                category={category}
-              />
-            ))}
-          </div>
-        ) : (
-          <AdminEmptyState
-            eyebrow="Aucune catégorie"
-            title="Le catalogue ne contient pas encore de catégorie"
-            description="Créez une première catégorie pour structurer le catalogue."
-          />
-        )}
-      </section>
-    </div>
+      )}
+    </AdminPageShell>
   );
 }

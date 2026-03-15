@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Notice } from "@/components/notice";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { AdminFormField } from "@/components/admin/admin-form-field";
+import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { findAdminCategoryById } from "@/db/repositories/admin-category.repository";
 import { deleteCategoryAction } from "@/features/admin/categories/actions/delete-category-action";
 import { updateCategoryAction } from "@/features/admin/categories/actions/update-category-action";
@@ -56,66 +64,70 @@ export default async function EditAdminCategoryPage({
   const errorMessage = getErrorMessage(errorParam);
 
   return (
-    <div className="admin-category-page">
-      <section className="section admin-category-form-section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Catégories</p>
-            <h1>Modifier la catégorie</h1>
-            <p className="lead">
-              Modifiez d&apos;abord les informations de la catégorie. La
-              suppression reste disponible séparément en bas de page.
-            </p>
-          </div>
+    <AdminPageShell
+      actions={
+        <Button
+          asChild
+          size="sm"
+          variant="outline">
+          <Link href="/admin/categories">Retour à la liste</Link>
+        </Button>
+      }
+      description="Modifiez d'abord les informations de la catégorie. La suppression reste disponible séparément en bas de page."
+      eyebrow="Catégories"
+      title="Modifier la catégorie">
+      {errorMessage ? (
+        <Notice tone="alert">{errorMessage}</Notice>
+      ) : null}
 
-          <Link className="link-subtle button" href="/admin/categories">
-            Retour à la liste
-          </Link>
-        </div>
+      <AdminFormSection>
+        <form
+          action={updateCategoryAction}
+          className="grid gap-4">
+          <input
+            name="categoryId"
+            type="hidden"
+            value={category.id}
+          />
 
-        {errorMessage ? (
-          <p className="admin-alert" role="alert">
-            {errorMessage}
-          </p>
-        ) : null}
-
-        <form action={updateCategoryAction} className="admin-form admin-category-form">
-          <input name="categoryId" type="hidden" value={category.id} />
-
-          <label className="admin-field">
-            <span className="meta-label">Nom</span>
-            <input
-              className="admin-input"
+          <AdminFormField
+            htmlFor="cat-name"
+            label="Nom">
+            <Input
               defaultValue={category.name}
+              id="cat-name"
               name="name"
               required
               type="text"
             />
-          </label>
+          </AdminFormField>
 
-          <label className="admin-field">
-            <span className="meta-label">Slug</span>
-            <input
-              className="admin-input"
+          <AdminFormField
+            htmlFor="cat-slug"
+            label="Slug">
+            <Input
               defaultValue={category.slug}
+              id="cat-slug"
               name="slug"
               required
               type="text"
             />
-          </label>
+          </AdminFormField>
 
-          <label className="admin-field">
-            <span className="meta-label">Description</span>
-            <textarea
-              className="admin-input admin-textarea"
+          <AdminFormField
+            htmlFor="cat-description"
+            label="Description">
+            <Textarea
               defaultValue={category.description ?? ""}
+              id="cat-description"
               name="description"
               rows={5}
             />
-          </label>
+          </AdminFormField>
 
-          <label className="admin-checkbox">
+          <label className="flex items-center gap-3 text-sm text-foreground">
             <input
+              className="size-4"
               defaultChecked={category.isFeatured}
               name="isFeatured"
               type="checkbox"
@@ -124,32 +136,30 @@ export default async function EditAdminCategoryPage({
             <span>Mettre cette catégorie en avant</span>
           </label>
 
-          <div className="admin-actions">
-            <button className="button" type="submit">
-              Enregistrer les modifications
-            </button>
-          </div>
+          <AdminFormActions>
+            <Button type="submit">Enregistrer les modifications</Button>
+          </AdminFormActions>
         </form>
-      </section>
+      </AdminFormSection>
 
-      <section className="section admin-danger-zone">
-        <div className="stack">
-          <p className="eyebrow">Suppression</p>
-          <h2>Supprimer cette catégorie</h2>
-          <p className="card-copy">
-            La suppression est refusée tant que cette catégorie est encore
-            utilisée par un produit.
-          </p>
-        </div>
-
+      <AdminFormSection
+        description="La suppression est refusée tant que cette catégorie est encore utilisée par un produit."
+        eyebrow="Suppression"
+        title="Supprimer cette catégorie">
         <form action={deleteCategoryAction}>
-          <input name="categoryId" type="hidden" value={category.id} />
+          <input
+            name="categoryId"
+            type="hidden"
+            value={category.id}
+          />
 
-          <button className="button admin-danger-button" type="submit">
+          <Button
+            type="submit"
+            variant="destructive">
             Supprimer la catégorie
-          </button>
+          </Button>
         </form>
-      </section>
-    </div>
+      </AdminFormSection>
+    </AdminPageShell>
   );
 }

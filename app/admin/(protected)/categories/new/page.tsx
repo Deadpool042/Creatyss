@@ -1,4 +1,12 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Notice } from "@/components/notice";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { AdminFormField } from "@/components/admin/admin-form-field";
+import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { createCategoryAction } from "@/features/admin/categories/actions/create-category-action";
 
 export const dynamic = "force-dynamic";
@@ -36,54 +44,73 @@ export default async function NewAdminCategoryPage({
   const errorMessage = getErrorMessage(errorParam);
 
   return (
-    <section className="section admin-category-form-section">
-      <div className="page-header">
-        <div>
-          <p className="eyebrow">Catégories</p>
-          <h1>Nouvelle catégorie</h1>
-          <p className="lead">
-            Créez une catégorie simple pour organiser le catalogue.
-          </p>
-        </div>
-
-        <Link className="link-subtle button" href="/admin/categories">
-          Retour à la liste
-        </Link>
-      </div>
-
+    <AdminPageShell
+      actions={
+        <Button
+          asChild
+          size="sm"
+          variant="outline">
+          <Link href="/admin/categories">Retour à la liste</Link>
+        </Button>
+      }
+      description="Créez une catégorie simple pour organiser le catalogue."
+      eyebrow="Catégories"
+      title="Nouvelle catégorie">
       {errorMessage ? (
-        <p className="admin-alert" role="alert">
-          {errorMessage}
-        </p>
+        <Notice tone="alert">{errorMessage}</Notice>
       ) : null}
 
-      <form action={createCategoryAction} className="admin-form admin-category-form">
-        <label className="admin-field">
-          <span className="meta-label">Nom</span>
-          <input className="admin-input" name="name" required type="text" />
-        </label>
+      <AdminFormSection>
+        <form
+          action={createCategoryAction}
+          className="grid gap-4">
+          <AdminFormField
+            htmlFor="cat-name"
+            label="Nom">
+            <Input
+              id="cat-name"
+              name="name"
+              required
+              type="text"
+            />
+          </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Slug</span>
-          <input className="admin-input" name="slug" required type="text" />
-        </label>
+          <AdminFormField
+            htmlFor="cat-slug"
+            label="Slug">
+            <Input
+              id="cat-slug"
+              name="slug"
+              required
+              type="text"
+            />
+          </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Description</span>
-          <textarea className="admin-input admin-textarea" name="description" rows={5} />
-        </label>
+          <AdminFormField
+            htmlFor="cat-description"
+            label="Description">
+            <Textarea
+              id="cat-description"
+              name="description"
+              rows={5}
+            />
+          </AdminFormField>
 
-        <label className="admin-checkbox">
-          <input name="isFeatured" type="checkbox" value="on" />
-          <span>Mettre cette catégorie en avant</span>
-        </label>
+          <label className="flex items-center gap-3 text-sm text-foreground">
+            <input
+              className="size-4"
+              name="isFeatured"
+              type="checkbox"
+              value="on"
+            />
+            <span>Mettre cette catégorie en avant</span>
+          </label>
 
-        <div className="admin-actions">
-          <button className="button" type="submit">
-            Créer la catégorie
-          </button>
-        </div>
-      </form>
-    </section>
+          <AdminFormActions>
+            <Button type="submit">Créer la catégorie</Button>
+          </AdminFormActions>
+        </form>
+      </AdminFormSection>
+    </AdminPageShell>
   );
 }

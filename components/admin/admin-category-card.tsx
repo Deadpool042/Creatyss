@@ -12,7 +12,7 @@ export function AdminCategoryCard({ category }: AdminCategoryCardProps) {
   return (
     <article
       aria-labelledby={titleId}
-      className="admin-category-card grid h-full gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+      className="grid h-full gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
       <div className="grid gap-2">
         <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
           Catégorie
