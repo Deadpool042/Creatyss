@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/notice";
 import {
   readGuestCartByToken,
@@ -105,7 +107,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                 <article
                   className="store-card cart-line"
                   key={line.id}>
-                  <div className="stack">
+                  <div className="grid gap-1">
                     <p className="card-kicker">Produit</p>
                     <h2>{line.productName}</h2>
                     <p className="variant-meta">
@@ -114,22 +116,22 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                     </p>
                   </div>
 
-                  <div className="stack">
+                  <div className="grid gap-1">
                     <p className="meta-label">SKU</p>
                     <p className="card-copy">{line.sku}</p>
                   </div>
 
-                  <div className="stack">
+                  <div className="grid gap-1">
                     <p className="meta-label">Prix unitaire actuel</p>
                     <p className="card-copy">{line.unitPrice}</p>
                   </div>
 
-                  <div className="stack">
+                  <div className="grid gap-1">
                     <p className="meta-label">Sous-total</p>
                     <p className="card-copy">{line.lineTotal}</p>
                   </div>
 
-                  <div className="stack">
+                  <div className="grid gap-1">
                     <p className="meta-label">Disponibilité</p>
                     <p className="card-copy">
                       {getAvailabilityLabel(line.isAvailable)}
@@ -151,20 +153,20 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                       value={line.id}
                     />
 
-                    <label className="form-field cart-quantity-field">
-                      <span className="meta-label">Quantité</span>
-                      <input
-                        className="form-input"
+                    <div className="grid gap-2 max-w-[10rem]">
+                      <Label htmlFor={`quantity-${line.id}`}>Quantité</Label>
+                      <Input
                         defaultValue={String(line.quantity)}
+                        id={`quantity-${line.id}`}
                         min="1"
                         name="quantity"
                         required
                         step="1"
                         type="number"
                       />
-                    </label>
+                    </div>
 
-                    <div className="form-actions">
+                    <div className="flex flex-wrap gap-2">
                       <Button type="submit">Mettre à jour la quantité</Button>
                     </div>
                   </form>
@@ -201,17 +203,17 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                 </Notice>
               ) : null}
 
-              <div className="stack">
+              <div className="grid gap-1">
                 <p className="meta-label">Lignes</p>
                 <p className="card-copy">{cart.lines.length}</p>
               </div>
 
-              <div className="stack">
+              <div className="grid gap-1">
                 <p className="meta-label">Quantité totale</p>
                 <p className="card-copy">{cart.itemCount}</p>
               </div>
 
-              <div className="stack">
+              <div className="grid gap-1">
                 <p className="meta-label">Sous-total panier</p>
                 <p className="card-copy">{cart.subtotal}</p>
               </div>
@@ -225,7 +227,9 @@ export default async function CartPage({ searchParams }: CartPageProps) {
           </div>
         ) : (
           <div className="empty-state">
-            <p className="eyebrow">Panier vide</p>
+            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+              Panier vide
+            </p>
             <h2>Aucun article n&apos;a encore été ajouté au panier</h2>
             <p className="card-copy">
               Ajoutez un article disponible depuis une fiche produit.
