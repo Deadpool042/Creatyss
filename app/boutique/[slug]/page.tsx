@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/notice";
 import { getPublishedProductBySlug } from "@/db/catalog";
 import { addToCartAction } from "@/features/cart/actions/add-to-cart-action";
@@ -201,7 +203,9 @@ export default async function ProductPage({
 
               <h2>{productStatusSummary.title}</h2>
               <p className="card-copy">{productStatusSummary.description}</p>
-              <p className="form-note">{productStatusSummary.nextStep}</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {productStatusSummary.nextStep}
+              </p>
 
               {isSimpleProduct ? (
                 <div className="product-summary-stats">
@@ -233,7 +237,7 @@ export default async function ProductPage({
             </div>
 
             {product.description ? (
-              <div className="stack">
+              <div className="grid gap-1">
                 <p className="meta-label">Description</p>
                 <p className="product-copy">{product.description}</p>
               </div>
@@ -262,7 +266,7 @@ export default async function ProductPage({
           singleOffer ? (
             <article className="variant-card">
               <div className="variant-header">
-                <div className="stack">
+                <div className="grid gap-1">
                   <h3>{getSimpleOfferCardTitle()}</h3>
                   <p className="variant-meta">
                     {singleOffer.name}
@@ -286,7 +290,7 @@ export default async function ProductPage({
               </div>
 
               <div className="variant-purchase">
-                <div className="stack">
+                <div className="grid gap-1">
                   <p className="meta-label">Prix</p>
                   <p className="product-price">{singleOffer.price}</p>
                   {singleOffer.compareAtPrice ? (
@@ -296,7 +300,7 @@ export default async function ProductPage({
                   ) : null}
                 </div>
 
-                <div className="stack">
+                <div className="grid gap-1">
                   <p className="meta-label">Ajout au panier</p>
                   <p
                     className={
@@ -324,20 +328,20 @@ export default async function ProductPage({
                       value={singleOffer.id}
                     />
 
-                    <label className="form-field cart-quantity-field">
-                      <span className="meta-label">Quantité</span>
-                      <input
-                        className="form-input"
+                    <div className="grid gap-2 max-w-[10rem]">
+                      <Label htmlFor={`quantity-${singleOffer.id}`}>Quantité</Label>
+                      <Input
                         defaultValue="1"
+                        id={`quantity-${singleOffer.id}`}
                         min="1"
                         name="quantity"
                         required
                         step="1"
                         type="number"
                       />
-                    </label>
+                    </div>
 
-                    <div className="form-actions">
+                    <div className="flex flex-wrap gap-2">
                       <Button type="submit">Ajouter au panier</Button>
                     </div>
                   </form>
@@ -382,7 +386,9 @@ export default async function ProductPage({
             </article>
           ) : (
             <div className="empty-state">
-              <p className="eyebrow">{offerSectionPresentation.emptyEyebrow}</p>
+              <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+              {offerSectionPresentation.emptyEyebrow}
+            </p>
               <h2>{offerSectionPresentation.emptyTitle}</h2>
               <p className="card-copy">
                 {offerSectionPresentation.emptyDescription}
@@ -399,7 +405,7 @@ export default async function ProductPage({
                   className="variant-card"
                   key={variant.id}>
                   <div className="variant-header">
-                    <div className="stack">
+                    <div className="grid gap-1">
                       <h3>{variant.name}</h3>
                       <p className="variant-meta">
                         {variant.colorName}
@@ -427,7 +433,7 @@ export default async function ProductPage({
                   </div>
 
                   <div className="variant-purchase">
-                    <div className="stack">
+                    <div className="grid gap-1">
                       <p className="meta-label">Prix</p>
                       <p className="product-price">{variant.price}</p>
                       {variant.compareAtPrice ? (
@@ -437,7 +443,7 @@ export default async function ProductPage({
                       ) : null}
                     </div>
 
-                    <div className="stack">
+                    <div className="grid gap-1">
                       <p className="meta-label">Ajout au panier</p>
                       <p
                         className={variant.isAvailable ? "card-copy" : "card-meta"}>
@@ -463,20 +469,20 @@ export default async function ProductPage({
                           value={variant.id}
                         />
 
-                        <label className="form-field cart-quantity-field">
-                          <span className="meta-label">Quantité</span>
-                          <input
-                            className="form-input"
+                        <div className="grid gap-2 max-w-[10rem]">
+                          <Label htmlFor={`quantity-${variant.id}`}>Quantité</Label>
+                          <Input
                             defaultValue="1"
+                            id={`quantity-${variant.id}`}
                             min="1"
                             name="quantity"
                             required
                             step="1"
                             type="number"
                           />
-                        </label>
+                        </div>
 
-                        <div className="form-actions">
+                        <div className="flex flex-wrap gap-2">
                           <Button type="submit">Ajouter au panier</Button>
                         </div>
                       </form>
@@ -524,7 +530,9 @@ export default async function ProductPage({
           </div>
         ) : (
           <div className="empty-state">
-            <p className="eyebrow">{offerSectionPresentation.emptyEyebrow}</p>
+            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+              {offerSectionPresentation.emptyEyebrow}
+            </p>
             <h2>{offerSectionPresentation.emptyTitle}</h2>
             <p className="card-copy">{offerSectionPresentation.emptyDescription}</p>
           </div>
