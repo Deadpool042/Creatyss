@@ -82,11 +82,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <div className="page">
       <article className="section article-layout">
-        <p className="eyebrow">Blog</p>
-        <h1>{post.title}</h1>
+        <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+          Blog
+        </p>
+        <h1 className="m-0">{post.title}</h1>
 
         {post.publishedAt ? (
-          <p className="meta-line">
+          <p className="card-meta">
             {blogDateFormatter.format(new Date(post.publishedAt))}
           </p>
         ) : null}
