@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   listCatalogFilterCategories,
   listPublishedProducts
@@ -154,21 +156,28 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   return (
     <div className="page">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">{hasEditorialListing ? "Sélection" : "Boutique"}</p>
-            <h1>{hasEditorialListing ? "Produits à découvrir" : "Produits publiés"}</h1>
-            {hasEditorialListing ? (
-              <p className="catalog-intro">
-                Une sélection de produits déjà disponibles, avec les pièces mises
-                en avant en premier.
-              </p>
-            ) : null}
-          </div>
+        <div className="mb-6 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+            {hasEditorialListing ? "Sélection" : "Boutique"}
+          </p>
+          <h1 className="m-0">
+            {hasEditorialListing ? "Produits à découvrir" : "Produits publiés"}
+          </h1>
+          {hasEditorialListing ? (
+            <p className="mt-1 leading-relaxed text-muted-foreground">
+              Une sélection de produits déjà disponibles, avec les pièces mises
+              en avant en premier.
+            </p>
+          ) : null}
         </div>
 
-        <form action="/boutique" className="catalog-search-form" method="get">
-          <label className="form-field" htmlFor="catalog-search-query">
+        <form
+          action="/boutique"
+          className="grid gap-3"
+          method="get">
+          <label
+            className="form-field"
+            htmlFor="catalog-search-query">
             <span className="meta-label">Recherche</span>
             <input
               className="form-input"
@@ -180,24 +189,29 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             />
           </label>
 
-          <label className="form-field" htmlFor="catalog-category-filter">
+          <label
+            className="form-field"
+            htmlFor="catalog-category-filter">
             <span className="meta-label">Catégorie</span>
             <select
               className="form-input"
               defaultValue={filters.categorySlug ?? ""}
               id="catalog-category-filter"
-              name="category"
-            >
+              name="category">
               <option value="">Toutes les catégories</option>
               {categories.map((category) => (
-                <option key={category.id} value={category.slug}>
+                <option
+                  key={category.id}
+                  value={category.slug}>
                   {category.name}
                 </option>
               ))}
             </select>
           </label>
 
-          <label className="form-checkbox catalog-filter-checkbox" htmlFor="catalog-availability-filter">
+          <label
+            className="form-checkbox"
+            htmlFor="catalog-availability-filter">
             <input
               defaultChecked={filters.onlyAvailable}
               id="catalog-availability-filter"
@@ -208,12 +222,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             <span>Disponibles uniquement</span>
           </label>
 
-          <div className="button-row">
-            <button className="button" type="submit">
-              Rechercher
-            </button>
+          <div className="flex flex-wrap items-center gap-3">
+            <Button type="submit">Rechercher</Button>
             {hasActiveFilters ? (
-              <Link className="link link-subtle" href="/boutique">
+              <Link
+                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                href="/boutique">
                 Revenir à la liste complète
               </Link>
             ) : null}
@@ -221,40 +235,55 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </form>
 
         {hasOnlyActiveSearch ? (
-          <p className="catalog-search-summary">
-            Résultats pour <strong>{searchQuery}</strong>
+          <p className="mb-4 mt-5 text-sm text-muted-foreground">
+            Résultats pour <strong className="text-foreground">{searchQuery}</strong>
           </p>
         ) : null}
 
         {!hasOnlyActiveSearch && hasActiveFilters ? (
-          <p className="catalog-search-summary catalog-search-summary--active">
-            Filtres actifs : <strong>{activeFilters.join(" · ")}</strong>
-          </p>
+          <div className="mb-4 mt-5 flex flex-wrap items-center gap-2 rounded-xl border border-border/60 bg-muted/20 px-4 py-3 text-sm text-muted-foreground">
+            <span>Filtres actifs :</span>
+            {activeFilters.map((filter) => (
+              <Badge
+                key={filter}
+                variant="secondary">
+                {filter}
+              </Badge>
+            ))}
+            <Link
+              className="ml-auto text-xs underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              href="/boutique">
+              Effacer
+            </Link>
+          </div>
         ) : null}
 
         {products.length > 0 ? (
           <div className="card-grid">
             {products.map((product) => (
-              <article className="store-card" key={product.id}>
-                <div className="store-card-header">
-                  <p className="card-kicker">Produit</p>
-                  <div className="store-card-badges">
+              <article
+                className="store-card"
+                key={product.id}>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-xs font-medium text-muted-foreground">
+                    Produit
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
                     {product.isFeatured ? (
-                      <span className="store-card-badge store-card-badge--featured">
-                        Mis en avant
-                      </span>
+                      <Badge variant="secondary">Mis en avant</Badge>
                     ) : null}
-                    <span
-                      className={`store-card-badge ${
-                        product.isAvailable
-                          ? "store-card-badge--available"
-                          : "store-card-badge--unavailable"
-                      }`}
-                    >
-                      {product.isAvailable
-                        ? "Disponible"
-                        : "Temporairement indisponible"}
-                    </span>
+                    <Badge variant={product.isAvailable ? "outline" : "outline"}>
+                      <span
+                        className={
+                          product.isAvailable
+                            ? "text-emerald-700"
+                            : "text-destructive"
+                        }>
+                        {product.isAvailable
+                          ? "Disponible"
+                          : "Temporairement indisponible"}
+                      </span>
+                    </Badge>
                   </div>
                 </div>
                 <h3>
@@ -265,7 +294,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     product.description ??
                     "Aucune description n'est disponible pour ce produit."}
                 </p>
-                <p className="store-card-availability">
+                <p className="text-sm leading-relaxed text-muted-foreground">
                   {product.isAvailable
                     ? "Disponible à la commande."
                     : "Actuellement indisponible à la commande."}
@@ -290,10 +319,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 ? "Essayez un autre terme ou revenez à la liste complète."
                 : hasActiveFilters
                 ? "Essayez une autre combinaison ou revenez à la liste complète."
-                : "Les produits publics apparaîtront ici dès qu&apos;ils seront publiés."}
+                : "Les produits publics apparaîtront ici dès qu'ils seront publiés."}
             </p>
             {hasActiveFilters ? (
-              <Link className="link link-subtle" href="/boutique">
+              <Link
+                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                href="/boutique">
                 Voir tous les produits
               </Link>
             ) : null}
