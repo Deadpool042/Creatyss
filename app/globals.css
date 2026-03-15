@@ -435,6 +435,7 @@ h3 {
 .admin-product-subsection {
   display: grid;
   gap: 1rem;
+  align-content: start;
 }
 
 .admin-product-card,
@@ -442,10 +443,6 @@ h3 {
 .admin-variant-card,
 .admin-image-card {
   width: 100%;
-}
-
-.admin-product-subsection {
-  align-content: start;
 }
 
 
