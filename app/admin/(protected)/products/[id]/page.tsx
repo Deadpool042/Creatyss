@@ -1,5 +1,8 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/notice";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 import { findAdminProductById } from "@/db/repositories/admin-product.repository";
@@ -127,7 +130,18 @@ export default async function ProductDetailPage({
   };
 
   return (
-    <div className="space-y-6 [&_.page-header]:mb-0">
+    <AdminPageShell
+      actions={
+        <Button
+          asChild
+          size="sm"
+          variant="outline">
+          <Link href="/admin/products">Retour à la liste</Link>
+        </Button>
+      }
+      description="Commencez par les informations générales, puis complétez les informations de vente ou les déclinaisons selon le type du produit."
+      eyebrow="Produits"
+      title="Modifier le produit">
       <ProductDetailHeaderSection
         summary={{
           statusLabel: getProductStatusLabel(product.status),
@@ -204,6 +218,6 @@ export default async function ProductDetailPage({
         )}
         productId={product.id}
       />
-    </div>
+    </AdminPageShell>
   );
 }
