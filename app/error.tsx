@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 type ErrorPageProps = Readonly<{
   error: Error & { digest?: string };
@@ -15,15 +16,19 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
     <main className="shell">
       <section className="card">
-        <p className="eyebrow">Erreur applicative</p>
+        <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+          Erreur applicative
+        </p>
         <h1>Une erreur est survenue.</h1>
-        <p className="lead">
+        <p className="mt-1 leading-relaxed text-muted-foreground">
           Le site a rencontré une erreur inattendue.
         </p>
-        <p className="message">{error.message || "Erreur inconnue."}</p>
-        <button className="button" type="button" onClick={() => reset()}>
+        <p className="text-sm text-muted-foreground">
+          {error.message || "Erreur inconnue."}
+        </p>
+        <Button type="button" onClick={() => reset()}>
           Recharger cette vue
-        </button>
+        </Button>
       </section>
     </main>
   );

@@ -244,8 +244,7 @@ h3 {
   font-size: 1.2rem;
 }
 
-.lead,
-.message {
+.lead {
   margin: 1rem 0 0;
   line-height: 1.6;
 }
@@ -519,25 +518,6 @@ h3 {
   align-content: start;
 }
 
-
-
-.button,
-.link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #1f1f1f;
-  border-radius: 999px;
-  background: transparent;
-  padding: 0.8rem 1.1rem;
-  font: inherit;
-}
-
-.button:hover,
-.link:hover {
-  background: #1f1f1f;
-  color: #f5f2ea;
-}
 
 
 @media (min-width: 700px) {
