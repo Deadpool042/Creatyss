@@ -31,7 +31,7 @@ export function OrderDetailLinesPanel({
             </div>
 
             <div className="grid gap-1">
-              <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 SKU
               </p>
               <p className="text-sm font-medium leading-6 card-copy text-foreground">
@@ -40,7 +40,7 @@ export function OrderDetailLinesPanel({
             </div>
 
             <div className="grid gap-1">
-              <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 Quantité
               </p>
               <p className="text-sm font-medium leading-6 card-copy text-foreground">
@@ -49,7 +49,7 @@ export function OrderDetailLinesPanel({
             </div>
 
             <div className="grid gap-1">
-              <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 Prix unitaire figé
               </p>
               <p className="text-sm font-medium leading-6 card-copy text-foreground">
@@ -58,7 +58,7 @@ export function OrderDetailLinesPanel({
             </div>
 
             <div className="grid gap-1">
-              <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 Sous-total
               </p>
               <p className="text-sm font-medium leading-6 card-copy text-foreground">
@@ -72,7 +72,7 @@ export function OrderDetailLinesPanel({
       <Separator />
 
       <div className="grid gap-1">
-        <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
           Total commande
         </p>
         <p className="text-base font-semibold leading-6 card-copy text-foreground">

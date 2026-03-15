@@ -34,7 +34,7 @@ export function OrderDetailEmailEventsCard({
               key={emailEvent.id}>
               <div className="grid gap-3 sm:grid-cols-3">
                 <div className="grid gap-1">
-                  <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Événement
                   </p>
                   <p className="card-copy text-sm font-medium leading-6 text-foreground">
@@ -43,7 +43,7 @@ export function OrderDetailEmailEventsCard({
                 </div>
 
                 <div className="grid gap-1">
-                  <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Statut
                   </p>
                   <p className="card-copy text-sm font-medium leading-6 text-foreground">
@@ -52,7 +52,7 @@ export function OrderDetailEmailEventsCard({
                 </div>
 
                 <div className="grid gap-1">
-                  <p className="meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Destinataire
                   </p>
                   <p className="card-copy text-sm font-medium leading-6 text-foreground">
