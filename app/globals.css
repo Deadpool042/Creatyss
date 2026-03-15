@@ -359,34 +359,11 @@ h3 {
   gap: 0.25rem;
 }
 
-.status-pill,
 .variant-badges {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
-}
-
-.status-pill {
-  border-radius: 999px;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.status-pill--available {
-  background: rgba(22, 101, 52, 0.1);
-  color: rgb(22, 101, 52);
-}
-
-.status-pill--unavailable {
-  background: rgba(153, 27, 27, 0.1);
-  color: rgb(153, 27, 27);
-}
-
-.status-pill--neutral {
-  background: rgba(31, 31, 31, 0.08);
-  color: rgba(31, 31, 31, 0.8);
 }
 
 .product-price {

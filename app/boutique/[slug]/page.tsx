@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Notice } from "@/components/notice";
 import { getPublishedProductBySlug } from "@/db/catalog";
 import { addToCartAction } from "@/features/cart/actions/add-to-cart-action";
 import {
@@ -141,34 +144,34 @@ export default async function ProductPage({
   return (
     <div className="page">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Produit</p>
-            <h1>{product.name}</h1>
-            {product.shortDescription ? (
-              <p className="lead">{product.shortDescription}</p>
-            ) : null}
-          </div>
+        <div className="mb-6 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+            Produit
+          </p>
+          <h1 className="m-0">{product.name}</h1>
+          {product.shortDescription ? (
+            <p className="mt-1 leading-relaxed text-muted-foreground">
+              {product.shortDescription}
+            </p>
+          ) : null}
         </div>
 
         {cartStatusMessage ? (
-          <div className="notice-success cart-feedback">
-            <p>{cartStatusMessage}</p>
-            <Link className="link" href="/panier">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-600/20 bg-emerald-50/60 px-4 py-3 text-sm text-emerald-800">
+            <span>{cartStatusMessage}</span>
+            <Link
+              className="font-medium underline-offset-4 transition-colors hover:underline"
+              href="/panier">
               Voir le panier
             </Link>
           </div>
         ) : null}
         {cartErrorMessage ? (
-          <p className="notice-error" role="alert">
-            {cartErrorMessage}
-          </p>
+          <Notice tone="alert">{cartErrorMessage}</Notice>
         ) : null}
 
         <div className="product-layout">
           <div className="product-gallery">
-            <h2>Image principale</h2>
-
             {productDisplayImage ? (
               <figure className="product-media">
                 <img
@@ -186,15 +189,14 @@ export default async function ProductPage({
             <div className="product-summary">
               <div className="product-summary-header">
                 <p className="meta-label">Disponibilité du produit</p>
-                <span
-                  className={`status-pill ${
-                    product.isAvailable
-                      ? "status-pill--available"
-                      : "status-pill--unavailable"
-                  }`}
-                >
-                  {getProductAvailabilityLabel(product.isAvailable)}
-                </span>
+                <Badge variant="outline">
+                  <span
+                    className={
+                      product.isAvailable ? "text-emerald-700" : "text-destructive"
+                    }>
+                    {getProductAvailabilityLabel(product.isAvailable)}
+                  </span>
+                </Badge>
               </div>
 
               <h2>{productStatusSummary.title}</h2>
@@ -246,12 +248,14 @@ export default async function ProductPage({
       </section>
 
       <section className="section">
-        <div className="section-header">
-          <div>
-            <p className="eyebrow">{offerSectionPresentation.eyebrow}</p>
-            <h2>{offerSectionPresentation.title}</h2>
-            <p className="card-meta">{offerSectionPresentation.description}</p>
-          </div>
+        <div className="mb-6 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+            {offerSectionPresentation.eyebrow}
+          </p>
+          <h2 className="m-0">{offerSectionPresentation.title}</h2>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {offerSectionPresentation.description}
+          </p>
         </div>
 
         {isSimpleProduct ? (
@@ -268,15 +272,16 @@ export default async function ProductPage({
                 </div>
 
                 <div className="variant-badges">
-                  <span
-                    className={`status-pill ${
-                      singleOffer.isAvailable
-                        ? "status-pill--available"
-                        : "status-pill--unavailable"
-                    }`}
-                  >
-                    {getProductAvailabilityLabel(singleOffer.isAvailable)}
-                  </span>
+                  <Badge variant="outline">
+                    <span
+                      className={
+                        singleOffer.isAvailable
+                          ? "text-emerald-700"
+                          : "text-destructive"
+                      }>
+                      {getProductAvailabilityLabel(singleOffer.isAvailable)}
+                    </span>
+                  </Badge>
                 </div>
               </div>
 
@@ -296,17 +301,18 @@ export default async function ProductPage({
                   <p
                     className={
                       singleOffer.isAvailable ? "card-copy" : "card-meta"
-                    }
-                  >
+                    }>
                     {getOfferAvailabilityMessage({
                       productType: product.productType,
-                      isAvailable: singleOffer.isAvailable,
+                      isAvailable: singleOffer.isAvailable
                     })}
                   </p>
                 </div>
 
                 {singleOffer.isAvailable ? (
-                  <form action={addToCartAction} className="cart-add-form">
+                  <form
+                    action={addToCartAction}
+                    className="cart-add-form">
                     <input
                       name="productSlug"
                       type="hidden"
@@ -332,9 +338,7 @@ export default async function ProductPage({
                     </label>
 
                     <div className="form-actions">
-                      <button className="button" type="submit">
-                        Ajouter au panier
-                      </button>
+                      <Button type="submit">Ajouter au panier</Button>
                     </div>
                   </form>
                 ) : null}
@@ -357,7 +361,9 @@ export default async function ProductPage({
 
               {singleOfferDisplayImage ? (
                 <div className="variant-images">
-                  <figure className="variant-media" key={singleOfferDisplayImage.id}>
+                  <figure
+                    className="variant-media"
+                    key={singleOfferDisplayImage.id}>
                     <img
                       alt={singleOfferDisplayImage.altText ?? singleOffer.name}
                       loading="lazy"
@@ -389,7 +395,9 @@ export default async function ProductPage({
               const variantDisplayImage = getDisplayImage(variant.images);
 
               return (
-                <article className="variant-card" key={variant.id}>
+                <article
+                  className="variant-card"
+                  key={variant.id}>
                   <div className="variant-header">
                     <div className="stack">
                       <h3>{variant.name}</h3>
@@ -401,19 +409,20 @@ export default async function ProductPage({
 
                     <div className="variant-badges">
                       {getVariantDefaultBadgeLabel(variant.isDefault) ? (
-                        <span className="status-pill status-pill--neutral">
+                        <Badge variant="secondary">
                           {getVariantDefaultBadgeLabel(variant.isDefault)}
-                        </span>
+                        </Badge>
                       ) : null}
-                      <span
-                        className={`status-pill ${
-                          variant.isAvailable
-                            ? "status-pill--available"
-                            : "status-pill--unavailable"
-                        }`}
-                      >
-                        {getVariantAvailabilityLabel(variant.isAvailable)}
-                      </span>
+                      <Badge variant="outline">
+                        <span
+                          className={
+                            variant.isAvailable
+                              ? "text-emerald-700"
+                              : "text-destructive"
+                          }>
+                          {getVariantAvailabilityLabel(variant.isAvailable)}
+                        </span>
+                      </Badge>
                     </div>
                   </div>
 
@@ -431,8 +440,7 @@ export default async function ProductPage({
                     <div className="stack">
                       <p className="meta-label">Ajout au panier</p>
                       <p
-                        className={variant.isAvailable ? "card-copy" : "card-meta"}
-                      >
+                        className={variant.isAvailable ? "card-copy" : "card-meta"}>
                         {getOfferAvailabilityMessage({
                           productType: product.productType,
                           isAvailable: variant.isAvailable
@@ -441,13 +449,19 @@ export default async function ProductPage({
                     </div>
 
                     {variant.isAvailable ? (
-                      <form action={addToCartAction} className="cart-add-form">
+                      <form
+                        action={addToCartAction}
+                        className="cart-add-form">
                         <input
                           name="productSlug"
                           type="hidden"
                           value={product.slug}
                         />
-                        <input name="variantId" type="hidden" value={variant.id} />
+                        <input
+                          name="variantId"
+                          type="hidden"
+                          value={variant.id}
+                        />
 
                         <label className="form-field cart-quantity-field">
                           <span className="meta-label">Quantité</span>
@@ -463,9 +477,7 @@ export default async function ProductPage({
                         </label>
 
                         <div className="form-actions">
-                          <button className="button" type="submit">
-                            Ajouter au panier
-                          </button>
+                          <Button type="submit">Ajouter au panier</Button>
                         </div>
                       </form>
                     ) : null}
@@ -488,7 +500,9 @@ export default async function ProductPage({
 
                   {variantDisplayImage ? (
                     <div className="variant-images">
-                      <figure className="variant-media" key={variantDisplayImage.id}>
+                      <figure
+                        className="variant-media"
+                        key={variantDisplayImage.id}>
                         <img
                           alt={variantDisplayImage.altText ?? variant.name}
                           loading="lazy"
