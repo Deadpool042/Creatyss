@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { getPublishedHomepageContent } from "@/db/catalog";
 import { getUploadsPublicPath } from "@/lib/uploads";
 
@@ -25,20 +26,26 @@ export default async function HomePage() {
     <div className="page">
       <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">Boutique publique</p>
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+            Boutique publique
+          </p>
           <h1>{homepage.heroTitle ?? "Creatyss"}</h1>
 
           {homepage.heroText ? (
-            <p className="lead">{homepage.heroText}</p>
+            <p className="mt-1 leading-relaxed text-muted-foreground">
+              {homepage.heroText}
+            </p>
           ) : null}
 
-          <div className="button-row">
-            <Link className="link" href="/boutique">
-              Voir la boutique
-            </Link>
-            <Link className="link link-subtle" href="/blog">
-              Lire le blog
-            </Link>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href="/boutique">Voir la boutique</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline">
+              <Link href="/blog">Lire le blog</Link>
+            </Button>
           </div>
         </div>
 
@@ -59,11 +66,15 @@ export default async function HomePage() {
 
       {homepage.editorialTitle || homepage.editorialText ? (
         <section className="section">
-          <div className="section-copy">
-            <p className="eyebrow">Éditorial</p>
-            <h2>{homepage.editorialTitle ?? "L'atelier Creatyss"}</h2>
+          <div className="grid gap-2">
+            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+              Éditorial
+            </p>
+            <h2 className="m-0">{homepage.editorialTitle ?? "L'atelier Creatyss"}</h2>
             {homepage.editorialText ? (
-              <p className="lead">{homepage.editorialText}</p>
+              <p className="mt-1 leading-relaxed text-muted-foreground">
+                {homepage.editorialText}
+              </p>
             ) : null}
           </div>
         </section>
@@ -71,20 +82,26 @@ export default async function HomePage() {
 
       {homepage.featuredProducts.length > 0 ? (
         <section className="section">
-          <div className="section-header">
-            <div>
-              <p className="eyebrow">Sélection</p>
-              <h2>Produits mis en avant</h2>
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <div className="grid gap-1">
+              <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+                Sélection
+              </p>
+              <h2 className="m-0">Produits mis en avant</h2>
             </div>
 
-            <Link className="link link-subtle" href="/boutique">
+            <Link
+              className="shrink-0 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              href="/boutique">
               Toute la boutique
             </Link>
           </div>
 
           <div className="card-grid">
             {homepage.featuredProducts.map((product) => (
-              <article className="store-card" key={product.id}>
+              <article
+                className="store-card"
+                key={product.id}>
                 <p className="card-kicker">Produit</p>
                 <h3>
                   <Link href={`/boutique/${product.slug}`}>{product.name}</Link>
@@ -102,20 +119,22 @@ export default async function HomePage() {
 
       {homepage.featuredCategories.length > 0 ? (
         <section className="section">
-          <div className="section-header">
-            <div>
-              <p className="eyebrow">Univers</p>
-              <h2>Catégories mises en avant</h2>
-            </div>
+          <div className="mb-6 grid gap-1">
+            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+              Univers
+            </p>
+            <h2 className="m-0">Catégories mises en avant</h2>
           </div>
 
           <div className="card-grid">
             {homepage.featuredCategories.map((category) => (
-              <article className="store-card" key={category.id}>
+              <article
+                className="store-card"
+                key={category.id}>
                 <p className="card-kicker">Catégorie</p>
                 <h3>{category.name}</h3>
                 <p className="card-copy">
-                  {category.description ?? "Sélection visible sur la page d’accueil."}
+                  {category.description ?? "Sélection visible sur la page d'accueil."}
                 </p>
               </article>
             ))}
@@ -125,20 +144,26 @@ export default async function HomePage() {
 
       {homepage.featuredBlogPosts.length > 0 ? (
         <section className="section">
-          <div className="section-header">
-            <div>
-              <p className="eyebrow">Journal</p>
-              <h2>Articles mis en avant</h2>
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <div className="grid gap-1">
+              <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+                Journal
+              </p>
+              <h2 className="m-0">Articles mis en avant</h2>
             </div>
 
-            <Link className="link link-subtle" href="/blog">
+            <Link
+              className="shrink-0 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              href="/blog">
               Tous les articles
             </Link>
           </div>
 
           <div className="card-grid">
             {homepage.featuredBlogPosts.map((post) => (
-              <article className="store-card" key={post.id}>
+              <article
+                className="store-card"
+                key={post.id}>
                 <p className="card-kicker">Article</p>
                 <h3>
                   <Link href={`/blog/${post.slug}`}>{post.title}</Link>

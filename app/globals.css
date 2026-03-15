@@ -216,7 +216,6 @@ a {
   padding: 1.75rem;
 }
 
-.section-header,
 .page-header {
   display: flex;
   align-items: end;
@@ -259,11 +258,6 @@ h3 {
   line-height: 1.6;
 }
 
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
 
 .card-grid,
 .variant-list {
@@ -282,7 +276,6 @@ h3 {
 
 .store-card,
 .variant-card,
-.section-copy,
 .product-panel,
 .article-layout,
 .empty-state {
@@ -576,13 +569,6 @@ h3 {
   color: #f5f2ea;
 }
 
-.link-subtle {
-  border-color: rgba(31, 31, 31, 0.22);
-}
-
-.link-subtle:hover {
-  background: rgba(31, 31, 31, 0.9);
-}
 
 @media (min-width: 700px) {
   .hero {
@@ -610,7 +596,6 @@ h3 {
 
 @media (max-width: 699px) {
   .site-header-inner,
-  .section-header,
   .page-header {
     align-items: start;
     flex-direction: column;
