@@ -17,10 +17,10 @@ const detailCardClassName =
   "grid gap-1 rounded-lg border border-border/60 bg-muted/10 p-3";
 
 const detailLabelClassName =
-  "meta-label text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground";
+  "text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground";
 
 const detailValueClassName =
-  "card-copy text-sm font-medium leading-6 text-foreground";
+  "text-sm font-medium leading-6 text-foreground";
 
 type OrderDetailActionsCardProps = Readonly<{
   order: {

@@ -1,7 +1,8 @@
-//app/admin/(protected)/orders/[id]/page.tsx
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/notice";
-import { PageHeader } from "@/components/page-header";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
 import { findAdminOrderById } from "@/db/repositories/order.repository";
 import { getAllowedOrderStatusTransitions } from "@/entities/order/order-status-transition";
 import {
@@ -107,18 +108,18 @@ export default async function AdminOrderDetailPage({
   };
 
   return (
-    <section className="space-y-6 [&_.page-header]:mb-0">
-      <PageHeader
-        description={
-          <>
-            Repérez d&apos;abord l&apos;état de la commande, appliquez
-            l&apos;action utile si nécessaire, puis consultez les détails.
-          </>
-        }
-        eyebrow="Commandes"
-        title={`Commande ${order.reference}`}
-      />
-
+    <AdminPageShell
+      actions={
+        <Button
+          asChild
+          size="sm"
+          variant="outline">
+          <Link href="/admin/orders">Retour aux commandes</Link>
+        </Button>
+      }
+      description="Repérez d'abord l'état de la commande, appliquez l'action utile si nécessaire, puis consultez les détails."
+      eyebrow="Commandes"
+      title={`Commande ${order.reference}`}>
       {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
@@ -156,6 +157,6 @@ export default async function AdminOrderDetailPage({
           totalAmount={order.totalAmount}
         />
       </div>
-    </section>
+    </AdminPageShell>
   );
 }

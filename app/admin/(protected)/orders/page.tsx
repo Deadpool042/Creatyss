@@ -1,7 +1,6 @@
-//app/admin/(protected)/orders/page.tsx
 import { Notice } from "@/components/notice";
-import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
 import { listAdminOrders } from "@/db/repositories/order.repository";
 import { OrdersListTable } from "@/features/admin/orders/components";
 
@@ -29,26 +28,21 @@ export default async function AdminOrdersPage({
         : null;
 
   return (
-    <div className="grid gap-6">
-      <section className="grid gap-6">
-        <PageHeader
-          description="Suivez les commandes créées sur la boutique avec les principales informations de suivi."
-          eyebrow="Commandes"
-          title="Commandes"
+    <AdminPageShell
+      description="Suivez les commandes créées sur la boutique avec les principales informations de suivi."
+      eyebrow="Commandes"
+      title="Commandes">
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
+
+      {orders.length > 0 ? (
+        <OrdersListTable orders={orders} />
+      ) : (
+        <AdminEmptyState
+          description="Les commandes créées sur la boutique apparaîtront ici."
+          eyebrow="Aucune commande"
+          title="Aucune commande n'a encore été créée"
         />
-
-        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
-
-        {orders.length > 0 ? (
-          <OrdersListTable orders={orders} />
-        ) : (
-          <AdminEmptyState
-            eyebrow="Aucune commande"
-            title="Aucune commande n'a encore été créée"
-            description="Les commandes créées sur la boutique apparaîtront ici."
-          />
-        )}
-      </section>
-    </div>
+      )}
+    </AdminPageShell>
   );
 }
