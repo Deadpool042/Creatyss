@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { PageHeader } from "@/components/page-header";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -52,23 +52,21 @@ export default async function AdminHomePage() {
   const recentOrders = orders.slice(0, 5);
 
   return (
-    <section className="space-y-6 [&_.page-header]:mb-0">
-      <PageHeader
-        eyebrow="Administration"
-        title="Tableau de bord"
-        description="État de la boutique en ce moment."
-        actions={
-          <Button
-            asChild
-            variant="outline">
-            <Link
-              href="/"
-              target="_blank">
-              Aller sur le site
-            </Link>
-          </Button>
-        }
-      />
+    <AdminPageShell
+      actions={
+        <Button
+          asChild
+          variant="outline">
+          <Link
+            href="/"
+            target="_blank">
+            Aller sur le site
+          </Link>
+        </Button>
+      }
+      description="État de la boutique en ce moment."
+      eyebrow="Administration"
+      title="Tableau de bord">
 
       {/* Signal grid */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -266,6 +264,6 @@ export default async function AdminHomePage() {
           </Button>
         </CardContent>
       </Card>
-    </section>
+    </AdminPageShell>
   );
 }
