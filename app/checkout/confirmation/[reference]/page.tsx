@@ -95,24 +95,24 @@ export default async function OrderConfirmationPage({
 
             <article className="store-card checkout-line">
               <div className="grid gap-1">
-                <p className="meta-label">Référence</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Référence</p>
                 <p className="card-copy">{order.reference}</p>
               </div>
 
               <div className="grid gap-1">
-                <p className="meta-label">Statut</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Statut</p>
                 <p className="card-copy">{getOrderStatusLabel(order.status)}</p>
               </div>
 
               <div className="grid gap-1">
-                <p className="meta-label">Paiement</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Paiement</p>
                 <p className="card-copy">
                   {getPaymentStatusLabel(order.payment.status)}
                 </p>
               </div>
 
               <div className="grid gap-1">
-                <p className="meta-label">Créée le</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Créée le</p>
                 <p className="card-copy">
                   {orderDateTimeFormatter.format(new Date(order.createdAt))}
                 </p>
@@ -206,22 +206,22 @@ export default async function OrderConfirmationPage({
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="meta-label">SKU</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">SKU</p>
                     <p className="card-copy">{line.sku}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="meta-label">Quantité</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Quantité</p>
                     <p className="card-copy">{line.quantity}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="meta-label">Prix unitaire figé</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix unitaire figé</p>
                     <p className="card-copy">{line.unitPrice}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="meta-label">Sous-total</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Sous-total</p>
                     <p className="card-copy">{line.lineTotal}</p>
                   </div>
                 </article>
@@ -229,7 +229,7 @@ export default async function OrderConfirmationPage({
             </div>
 
             <div className="grid gap-1">
-              <p className="meta-label">Total commande</p>
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Total commande</p>
               <p className="card-copy">{order.totalAmount}</p>
             </div>
 

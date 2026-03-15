@@ -190,7 +190,7 @@ export default async function ProductPage({
           <aside className="product-panel">
             <div className="product-summary">
               <div className="product-summary-header">
-                <p className="meta-label">Disponibilité du produit</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Disponibilité du produit</p>
                 <Badge variant="outline">
                   <span
                     className={
@@ -210,12 +210,12 @@ export default async function ProductPage({
               {isSimpleProduct ? (
                 <div className="product-summary-stats">
                   <div className="product-summary-stat">
-                    <p className="meta-label">Type de produit</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Type de produit</p>
                     <p className="card-copy">Produit simple</p>
                   </div>
 
                   <div className="product-summary-stat">
-                    <p className="meta-label">Informations de vente</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Informations de vente</p>
                     <p className="card-copy">
                       {singleOffer ? singleOffer.name : "Indisponible"}
                     </p>
@@ -224,12 +224,12 @@ export default async function ProductPage({
               ) : (
                 <div className="product-summary-stats">
                   <div className="product-summary-stat">
-                    <p className="meta-label">Déclinaisons disponibles</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Déclinaisons disponibles</p>
                     <p className="card-copy">{availableVariantCount}</p>
                   </div>
 
                   <div className="product-summary-stat">
-                    <p className="meta-label">Déclinaisons publiées</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Déclinaisons publiées</p>
                     <p className="card-copy">{product.variants.length}</p>
                   </div>
                 </div>
@@ -238,13 +238,13 @@ export default async function ProductPage({
 
             {product.description ? (
               <div className="grid gap-1">
-                <p className="meta-label">Description</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Description</p>
                 <p className="product-copy">{product.description}</p>
               </div>
             ) : null}
 
             <div className="grid gap-1">
-              <p className="meta-label">Référence de page</p>
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Référence de page</p>
               <p className="card-copy">{product.slug}</p>
             </div>
           </aside>
@@ -291,7 +291,7 @@ export default async function ProductPage({
 
               <div className="variant-purchase">
                 <div className="grid gap-1">
-                  <p className="meta-label">Prix</p>
+                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix</p>
                   <p className="product-price">{singleOffer.price}</p>
                   {singleOffer.compareAtPrice ? (
                     <p className="card-meta">
@@ -301,7 +301,7 @@ export default async function ProductPage({
                 </div>
 
                 <div className="grid gap-1">
-                  <p className="meta-label">Ajout au panier</p>
+                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Ajout au panier</p>
                   <p
                     className={
                       singleOffer.isAvailable ? "card-copy" : "card-meta"
@@ -350,12 +350,12 @@ export default async function ProductPage({
 
               <div className="variant-details">
                 <div className="variant-detail">
-                  <p className="meta-label">SKU</p>
+                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">SKU</p>
                   <p className="card-copy">{singleOffer.sku}</p>
                 </div>
 
                 <div className="variant-detail">
-                  <p className="meta-label">Couleur</p>
+                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Couleur</p>
                   <p className="card-copy">
                     {singleOffer.colorName}
                     {singleOffer.colorHex ? ` · ${singleOffer.colorHex}` : ""}
@@ -434,7 +434,7 @@ export default async function ProductPage({
 
                   <div className="variant-purchase">
                     <div className="grid gap-1">
-                      <p className="meta-label">Prix</p>
+                      <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix</p>
                       <p className="product-price">{variant.price}</p>
                       {variant.compareAtPrice ? (
                         <p className="card-meta">
@@ -444,7 +444,7 @@ export default async function ProductPage({
                     </div>
 
                     <div className="grid gap-1">
-                      <p className="meta-label">Ajout au panier</p>
+                      <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Ajout au panier</p>
                       <p
                         className={variant.isAvailable ? "card-copy" : "card-meta"}>
                         {getOfferAvailabilityMessage({
@@ -491,12 +491,12 @@ export default async function ProductPage({
 
                   <div className="variant-details">
                     <div className="variant-detail">
-                      <p className="meta-label">SKU</p>
+                      <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">SKU</p>
                       <p className="card-copy">{variant.sku}</p>
                     </div>
 
                     <div className="variant-detail">
-                      <p className="meta-label">Couleur</p>
+                      <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Couleur</p>
                       <p className="card-copy">
                         {variant.colorName}
                         {variant.colorHex ? ` · ${variant.colorHex}` : ""}
