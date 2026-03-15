@@ -525,32 +525,10 @@ h3 {
   width: 100%;
 }
 
-.admin-form {
-  display: grid;
-  gap: 1rem;
-}
-
 .admin-field {
   display: grid;
   gap: 0.5rem;
 }
-
-.admin-input {
-  width: 100%;
-  border: 1px solid rgba(31, 31, 31, 0.16);
-  border-radius: 0.9rem;
-  background: #fff;
-  padding: 0.85rem 1rem;
-  color: inherit;
-  font: inherit;
-}
-
-.admin-input:focus {
-  outline: 2px solid rgba(143, 93, 45, 0.3);
-  outline-offset: 2px;
-}
-
-
 
 
 .admin-actions {
@@ -559,23 +537,6 @@ h3 {
   gap: 0.75rem;
 }
 
-
-.admin-textarea {
-  min-height: 8rem;
-  resize: vertical;
-}
-
-.admin-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: inherit;
-}
-
-.admin-checkbox input {
-  width: 1rem;
-  height: 1rem;
-}
 
 
 
@@ -586,7 +547,6 @@ h3 {
 
 .admin-product-card,
 .admin-blog-card,
-.admin-product-form-section,
 .admin-variant-card,
 .admin-image-card {
   width: 100%;
@@ -595,25 +555,6 @@ h3 {
 .admin-product-subsection {
   align-content: start;
 }
-
-.admin-product-form {
-  display: grid;
-  gap: 1rem;
-}
-
-
-.admin-fieldset {
-  margin: 0;
-  border: 1px solid rgba(31, 31, 31, 0.1);
-  border-radius: 0.9rem;
-  padding: 1rem;
-}
-
-.admin-checkbox-grid {
-  display: grid;
-  gap: 0.75rem;
-}
-
 
 
 

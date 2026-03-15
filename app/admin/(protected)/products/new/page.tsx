@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/notice";
-import { PageHeader } from "@/components/page-header";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
@@ -63,25 +63,23 @@ export default async function NewAdminProductPage({
   const categories = await listAdminCategories();
 
   return (
-    <section className="section admin-product-form-section">
-      <PageHeader
-        actions={
-          <Link
-            className="link-subtle button"
-            href="/admin/products">
-            Retour à la liste
-          </Link>
-        }
-        description="Créez d'abord le produit, choisissez son type, puis complétez ses informations de vente ou ses déclinaisons depuis la page de détail."
-        eyebrow="Produits"
-        title="Nouveau produit"
-      />
-
+    <AdminPageShell
+      actions={
+        <Button
+          asChild
+          size="sm"
+          variant="outline">
+          <Link href="/admin/products">Retour à la liste</Link>
+        </Button>
+      }
+      description="Créez d'abord le produit, choisissez son type, puis complétez ses informations de vente ou ses déclinaisons depuis la page de détail."
+      eyebrow="Produits"
+      title="Nouveau produit">
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <form
         action={createProductAction}
-        className="admin-form admin-product-form">
+        className="grid gap-6">
         <AdminFormSection title="Informations générales">
           <AdminFormField
             htmlFor={newProductFieldIds.name}
@@ -153,7 +151,7 @@ export default async function NewAdminProductPage({
             htmlFor={newProductFieldIds.status}
             label="Statut">
             <select
-              className="admin-input"
+              className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
               defaultValue="draft"
               id={newProductFieldIds.status}
               name="status">
@@ -167,7 +165,7 @@ export default async function NewAdminProductPage({
             htmlFor={newProductFieldIds.productType}
             label="Type de produit">
             <select
-              className="admin-input"
+              className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
               defaultValue="variable"
               id={newProductFieldIds.productType}
               name="productType">
@@ -176,37 +174,38 @@ export default async function NewAdminProductPage({
             </select>
           </AdminFormField>
 
-          <fieldset className="admin-fieldset">
-            <legend className="meta-label">Catégories</legend>
-
+          <div className="grid gap-2">
+            <p className="text-sm font-medium leading-none">Catégories</p>
             {categories.length > 0 ? (
-              <div className="admin-checkbox-grid">
+              <div className="grid gap-2">
                 {categories.map(category => (
                   <label
-                    className="admin-checkbox"
+                    className="flex items-center gap-3 text-sm text-foreground"
                     key={category.id}>
                     <input
+                      className="size-4"
                       name="categoryIds"
                       type="checkbox"
                       value={category.id}
                     />
                     <span>
                       {category.name}
-                      <span className="card-meta"> · {category.slug}</span>
+                      <span className="text-muted-foreground"> · {category.slug}</span>
                     </span>
                   </label>
                 ))}
               </div>
             ) : (
-              <p className="card-copy">
+              <p className="text-sm leading-relaxed text-muted-foreground">
                 Aucune catégorie n&apos;est encore disponible. Vous pourrez en
                 ajouter plus tard.
               </p>
             )}
-          </fieldset>
+          </div>
 
-          <label className="admin-checkbox">
+          <label className="flex items-center gap-3 text-sm text-foreground">
             <input
+              className="size-4"
               name="isFeatured"
               type="checkbox"
               value="on"
@@ -216,13 +215,9 @@ export default async function NewAdminProductPage({
         </AdminFormSection>
 
         <AdminFormActions>
-          <Button
-            className="button"
-            type="submit">
-            Créer le produit
-          </Button>
+          <Button type="submit">Créer le produit</Button>
         </AdminFormActions>
       </form>
-    </section>
+    </AdminPageShell>
   );
 }
