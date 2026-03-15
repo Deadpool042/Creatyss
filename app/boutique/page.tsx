@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   listCatalogFilterCategories,
   listPublishedProducts
@@ -175,26 +177,21 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           action="/boutique"
           className="grid gap-3"
           method="get">
-          <label
-            className="form-field"
-            htmlFor="catalog-search-query">
-            <span className="meta-label">Recherche</span>
-            <input
-              className="form-input"
+          <div className="grid gap-2">
+            <Label htmlFor="catalog-search-query">Recherche</Label>
+            <Input
               defaultValue={searchQuery ?? ""}
               id="catalog-search-query"
               name="q"
               placeholder="Nom, catégorie ou couleur"
               type="search"
             />
-          </label>
+          </div>
 
-          <label
-            className="form-field"
-            htmlFor="catalog-category-filter">
-            <span className="meta-label">Catégorie</span>
+          <div className="grid gap-2">
+            <Label htmlFor="catalog-category-filter">Catégorie</Label>
             <select
-              className="form-input"
+              className="h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
               defaultValue={filters.categorySlug ?? ""}
               id="catalog-category-filter"
               name="category">
@@ -207,12 +204,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 </option>
               ))}
             </select>
-          </label>
+          </div>
 
           <label
-            className="form-checkbox"
+            className="flex items-center gap-3 text-sm text-foreground"
             htmlFor="catalog-availability-filter">
             <input
+              className="size-4"
               defaultChecked={filters.onlyAvailable}
               id="catalog-availability-filter"
               name="availability"
@@ -304,7 +302,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </div>
         ) : (
           <div className="empty-state">
-            <p className="eyebrow">
+            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
               {hasActiveFilters ? "Aucun résultat" : "Catalogue vide"}
             </p>
             <h2>
