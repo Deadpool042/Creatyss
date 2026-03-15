@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/notice";
-import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -60,27 +61,24 @@ export default async function AdminBlogPage({
   const blogPosts = await listAdminBlogPosts();
 
   return (
-    <div className="grid gap-6">
-      <section className="grid gap-6">
-        <PageHeader
-          actions={
-            <Link
-              className="button"
-              href="/admin/blog/new">
-              Nouvel article
-            </Link>
-          }
-          description="Gérez les articles, leur statut de publication et leur visuel de couverture depuis une page simple et lisible."
-          eyebrow="Blog"
-          title="Articles"
-        />
+    <AdminPageShell
+      actions={
+        <Button
+          asChild
+          size="sm"
+          variant="outline">
+          <Link href="/admin/blog/new">Nouvel article</Link>
+        </Button>
+      }
+      description="Gérez les articles, leur statut de publication et leur visuel de couverture depuis une page simple et lisible."
+      eyebrow="Blog"
+      title="Articles">
+      {successMessage ? (
+        <Notice tone="success">{successMessage}</Notice>
+      ) : null}
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
-        {successMessage ? (
-          <Notice tone="success">{successMessage}</Notice>
-        ) : null}
-        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
-
-        {blogPosts.length > 0 ? (
+      {blogPosts.length > 0 ? (
           <div className="overflow-hidden rounded-lg border border-border/60">
             <Table>
               <TableHeader>
@@ -153,7 +151,6 @@ export default async function AdminBlogPage({
             description="Créez un premier article simple pour alimenter la partie blog publique."
           />
         )}
-      </section>
-    </div>
+    </AdminPageShell>
   );
 }
