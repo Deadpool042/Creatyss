@@ -76,11 +76,11 @@ export default async function OrderConfirmationPage({
         <div className="cart-layout">
           <div className="checkout-line-list">
             <article className="store-card checkout-line">
-              <div className="stack">
-                <p className="eyebrow">Synthèse</p>
+              <div className="grid gap-1">
+                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Synthèse</p>
                 <h2>{summary.title}</h2>
                 <p className="card-copy">{summary.description}</p>
-                <p className="form-note">{summary.nextStep}</p>
+                <p className="text-sm leading-relaxed text-muted-foreground">{summary.nextStep}</p>
               </div>
 
               <div className="flex flex-wrap gap-2">
@@ -94,24 +94,24 @@ export default async function OrderConfirmationPage({
             </article>
 
             <article className="store-card checkout-line">
-              <div className="stack">
+              <div className="grid gap-1">
                 <p className="meta-label">Référence</p>
                 <p className="card-copy">{order.reference}</p>
               </div>
 
-              <div className="stack">
+              <div className="grid gap-1">
                 <p className="meta-label">Statut</p>
                 <p className="card-copy">{getOrderStatusLabel(order.status)}</p>
               </div>
 
-              <div className="stack">
+              <div className="grid gap-1">
                 <p className="meta-label">Paiement</p>
                 <p className="card-copy">
                   {getPaymentStatusLabel(order.payment.status)}
                 </p>
               </div>
 
-              <div className="stack">
+              <div className="grid gap-1">
                 <p className="meta-label">Créée le</p>
                 <p className="card-copy">
                   {orderDateTimeFormatter.format(new Date(order.createdAt))}
@@ -120,8 +120,8 @@ export default async function OrderConfirmationPage({
             </article>
 
             <article className="store-card checkout-line">
-              <div className="stack">
-                <p className="eyebrow">Cliente</p>
+              <div className="grid gap-1">
+                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Cliente</p>
                 <h2>
                   {order.customerFirstName} {order.customerLastName}
                 </h2>
@@ -133,8 +133,8 @@ export default async function OrderConfirmationPage({
             </article>
 
             <article className="store-card checkout-line">
-              <div className="stack">
-                <p className="eyebrow">Livraison</p>
+              <div className="grid gap-1">
+                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Livraison</p>
                 <h2>Adresse de livraison</h2>
                 <p className="card-copy">{order.shippingAddressLine1}</p>
                 {order.shippingAddressLine2 ? (
@@ -159,8 +159,8 @@ export default async function OrderConfirmationPage({
             </article>
 
             <article className="store-card checkout-line">
-              <div className="stack">
-                <p className="eyebrow">Facturation</p>
+              <div className="grid gap-1">
+                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Facturation</p>
                 <h2>Adresse de facturation</h2>
                 {order.billingSameAsShipping ? (
                   <p className="card-copy">
@@ -189,15 +189,15 @@ export default async function OrderConfirmationPage({
           </div>
 
           <aside className="product-panel checkout-summary">
-            <div className="stack">
-              <p className="eyebrow">Récapitulatif</p>
+            <div className="grid gap-1">
+              <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Récapitulatif</p>
               <h2>Lignes de commande</h2>
             </div>
 
             <div className="checkout-line-list">
               {order.lines.map((line) => (
                 <article className="store-card checkout-line" key={line.id}>
-                  <div className="stack">
+                  <div className="grid gap-1">
                     <h3>{line.productName}</h3>
                     <p className="variant-meta">
                       {line.variantName} · {line.colorName}
@@ -205,22 +205,22 @@ export default async function OrderConfirmationPage({
                     </p>
                   </div>
 
-                  <div className="stack">
+                  <div className="grid gap-1">
                     <p className="meta-label">SKU</p>
                     <p className="card-copy">{line.sku}</p>
                   </div>
 
-                  <div className="stack">
+                  <div className="grid gap-1">
                     <p className="meta-label">Quantité</p>
                     <p className="card-copy">{line.quantity}</p>
                   </div>
 
-                  <div className="stack">
+                  <div className="grid gap-1">
                     <p className="meta-label">Prix unitaire figé</p>
                     <p className="card-copy">{line.unitPrice}</p>
                   </div>
 
-                  <div className="stack">
+                  <div className="grid gap-1">
                     <p className="meta-label">Sous-total</p>
                     <p className="card-copy">{line.lineTotal}</p>
                   </div>
@@ -228,12 +228,12 @@ export default async function OrderConfirmationPage({
               ))}
             </div>
 
-            <div className="stack">
+            <div className="grid gap-1">
               <p className="meta-label">Total commande</p>
               <p className="card-copy">{order.totalAmount}</p>
             </div>
 
-            <div className="form-actions">
+            <div className="flex flex-wrap gap-3">
               {order.status === "pending" ? (
                 <form action={startOrderPaymentAction}>
                   <input name="reference" type="hidden" value={order.reference} />

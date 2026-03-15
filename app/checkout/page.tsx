@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/notice";
 import {
   readGuestCheckoutContextByToken,
@@ -135,93 +137,93 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               className="checkout-form"
               noValidate
             >
-              <section className="form-section">
-                <div className="stack">
-                  <p className="eyebrow">Contact</p>
+              <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
+                <div className="grid gap-1">
+                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Contact</p>
                   <h2>Vos informations</h2>
                 </div>
 
-                <div className="form-panels">
-                  <label className="form-field">
-                    <span className="meta-label">Prénom</span>
-                    <input
-                      className="form-input"
+                <div className="grid gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="customerFirstName">Prénom</Label>
+                    <Input
                       defaultValue={draft?.customerFirstName ?? ""}
+                      id="customerFirstName"
                       name="customerFirstName"
                       required
                       type="text"
                     />
-                  </label>
+                  </div>
 
-                  <label className="form-field">
-                    <span className="meta-label">Nom</span>
-                    <input
-                      className="form-input"
+                  <div className="grid gap-2">
+                    <Label htmlFor="customerLastName">Nom</Label>
+                    <Input
                       defaultValue={draft?.customerLastName ?? ""}
+                      id="customerLastName"
                       name="customerLastName"
                       required
                       type="text"
                     />
-                  </label>
+                  </div>
                 </div>
 
-                <div className="form-panels">
-                  <label className="form-field">
-                    <span className="meta-label">Email</span>
-                    <input
-                      className="form-input"
+                <div className="grid gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="customerEmail">Email</Label>
+                    <Input
                       defaultValue={draft?.customerEmail ?? ""}
+                      id="customerEmail"
                       name="customerEmail"
                       required
                       type="email"
                     />
-                  </label>
+                  </div>
 
-                  <label className="form-field">
-                    <span className="meta-label">Téléphone</span>
-                    <input
-                      className="form-input"
+                  <div className="grid gap-2">
+                    <Label htmlFor="customerPhone">Téléphone</Label>
+                    <Input
                       defaultValue={draft?.customerPhone ?? ""}
+                      id="customerPhone"
                       name="customerPhone"
                       type="tel"
                     />
-                  </label>
+                  </div>
                 </div>
               </section>
 
-              <section className="form-section">
-                <div className="stack">
-                  <p className="eyebrow">Livraison</p>
+              <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
+                <div className="grid gap-1">
+                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Livraison</p>
                   <h2>Adresse de livraison</h2>
                 </div>
 
-                <label className="form-field">
-                  <span className="meta-label">Adresse ligne 1</span>
-                  <input
-                    className="form-input"
+                <div className="grid gap-2">
+                  <Label htmlFor="shippingAddressLine1">Adresse ligne 1</Label>
+                  <Input
                     defaultValue={draft?.shippingAddressLine1 ?? ""}
+                    id="shippingAddressLine1"
                     name="shippingAddressLine1"
                     required
                     type="text"
                   />
-                </label>
+                </div>
 
-                <label className="form-field">
-                  <span className="meta-label">Adresse ligne 2</span>
-                  <input
-                    className="form-input"
+                <div className="grid gap-2">
+                  <Label htmlFor="shippingAddressLine2">Adresse ligne 2</Label>
+                  <Input
                     defaultValue={draft?.shippingAddressLine2 ?? ""}
+                    id="shippingAddressLine2"
                     name="shippingAddressLine2"
                     type="text"
                   />
-                </label>
+                </div>
 
-                <div className="form-panels">
-                  <label className="form-field">
-                    <span className="meta-label">Code postal</span>
-                    <input
-                      className="form-input"
+                <div className="grid gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="shippingPostalCode">Code postal</Label>
+                    <Input
                       defaultValue={draft?.shippingPostalCode ?? ""}
+                      id="shippingPostalCode"
                       inputMode="numeric"
                       maxLength={5}
                       name="shippingPostalCode"
@@ -229,34 +231,35 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                       required
                       type="text"
                     />
-                  </label>
+                  </div>
 
-                  <label className="form-field">
-                    <span className="meta-label">Ville</span>
-                    <input
-                      className="form-input"
+                  <div className="grid gap-2">
+                    <Label htmlFor="shippingCity">Ville</Label>
+                    <Input
                       defaultValue={draft?.shippingCity ?? ""}
+                      id="shippingCity"
                       name="shippingCity"
                       required
                       type="text"
                     />
-                  </label>
+                  </div>
                 </div>
 
-                <div className="stack">
+                <div className="grid gap-1">
                   <p className="meta-label">Pays</p>
                   <p className="card-copy">France</p>
                 </div>
               </section>
 
-              <section className="form-section">
-                <div className="stack">
-                  <p className="eyebrow">Facturation</p>
+              <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
+                <div className="grid gap-1">
+                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Facturation</p>
                   <h2>Adresse de facturation</h2>
                 </div>
 
-                <label className="form-checkbox">
+                <label className="flex items-center gap-3 text-sm text-foreground">
                   <input
+                    className="size-4"
                     defaultChecked={billingSameAsShipping}
                     name="billingSameAsShipping"
                     type="checkbox"
@@ -265,99 +268,99 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   <span>Adresse de facturation identique</span>
                 </label>
 
-                <p className="form-note">
+                <p className="text-sm leading-relaxed text-muted-foreground">
                   Laissez la case cochée pour réutiliser l&apos;adresse de livraison.
                 </p>
 
-                <div className="form-panels">
-                  <label className="form-field">
-                    <span className="meta-label">Prénom</span>
-                    <input
-                      className="form-input"
+                <div className="grid gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="billingFirstName">Prénom</Label>
+                    <Input
                       defaultValue={draft?.billingFirstName ?? ""}
+                      id="billingFirstName"
                       name="billingFirstName"
                       type="text"
                     />
-                  </label>
+                  </div>
 
-                  <label className="form-field">
-                    <span className="meta-label">Nom</span>
-                    <input
-                      className="form-input"
+                  <div className="grid gap-2">
+                    <Label htmlFor="billingLastName">Nom</Label>
+                    <Input
                       defaultValue={draft?.billingLastName ?? ""}
+                      id="billingLastName"
                       name="billingLastName"
                       type="text"
                     />
-                  </label>
+                  </div>
                 </div>
 
-                <div className="form-panels">
-                  <label className="form-field">
-                    <span className="meta-label">Téléphone</span>
-                    <input
-                      className="form-input"
+                <div className="grid gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="billingPhone">Téléphone</Label>
+                    <Input
                       defaultValue={draft?.billingPhone ?? ""}
+                      id="billingPhone"
                       name="billingPhone"
                       type="tel"
                     />
-                  </label>
+                  </div>
                 </div>
 
-                <label className="form-field">
-                  <span className="meta-label">Adresse ligne 1</span>
-                  <input
-                    className="form-input"
+                <div className="grid gap-2">
+                  <Label htmlFor="billingAddressLine1">Adresse ligne 1</Label>
+                  <Input
                     defaultValue={draft?.billingAddressLine1 ?? ""}
+                    id="billingAddressLine1"
                     name="billingAddressLine1"
                     type="text"
                   />
-                </label>
+                </div>
 
-                <label className="form-field">
-                  <span className="meta-label">Adresse ligne 2</span>
-                  <input
-                    className="form-input"
+                <div className="grid gap-2">
+                  <Label htmlFor="billingAddressLine2">Adresse ligne 2</Label>
+                  <Input
                     defaultValue={draft?.billingAddressLine2 ?? ""}
+                    id="billingAddressLine2"
                     name="billingAddressLine2"
                     type="text"
                   />
-                </label>
+                </div>
 
-                <div className="form-panels">
-                  <label className="form-field">
-                    <span className="meta-label">Code postal</span>
-                    <input
-                      className="form-input"
+                <div className="grid gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="billingPostalCode">Code postal</Label>
+                    <Input
                       defaultValue={draft?.billingPostalCode ?? ""}
+                      id="billingPostalCode"
                       inputMode="numeric"
                       maxLength={5}
                       name="billingPostalCode"
                       pattern="[0-9]{5}"
                       type="text"
                     />
-                  </label>
+                  </div>
 
-                  <label className="form-field">
-                    <span className="meta-label">Ville</span>
-                    <input
-                      className="form-input"
+                  <div className="grid gap-2">
+                    <Label htmlFor="billingCity">Ville</Label>
+                    <Input
                       defaultValue={draft?.billingCity ?? ""}
+                      id="billingCity"
                       name="billingCity"
                       type="text"
                     />
-                  </label>
+                  </div>
                 </div>
 
-                <div className="stack">
+                <div className="grid gap-1">
                   <p className="meta-label">Pays</p>
                   <p className="card-copy">France</p>
                 </div>
               </section>
 
-              <div className="form-actions">
+              <div className="flex flex-wrap gap-3">
                 {canSave ? (
                   <>
-                    <p className="form-note">
+                    <p className="text-sm leading-relaxed text-muted-foreground">
                       Créez la commande une fois vos informations complètes.
                       Vous pouvez aussi les enregistrer pour plus tard.
                     </p>
@@ -374,7 +377,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                     </Button>
                   </>
                 ) : (
-                  <p className="form-note">
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     La commande reste bloquée tant que le panier n&apos;est pas
                     corrigé.
                   </p>
@@ -389,8 +392,8 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             </form>
 
             <aside className="product-panel checkout-summary">
-              <div className="stack">
-                <p className="eyebrow">Récapitulatif</p>
+              <div className="grid gap-1">
+                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Récapitulatif</p>
                 <h2>Panier final</h2>
               </div>
 
@@ -398,7 +401,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 <div className="checkout-line-list">
                   {cart.lines.map((line) => (
                     <article className="store-card checkout-line" key={line.id}>
-                      <div className="stack">
+                      <div className="grid gap-1">
                         <h3>{line.productName}</h3>
                         <p className="variant-meta">
                           {line.variantName} · {line.colorName}
@@ -406,27 +409,27 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                         </p>
                       </div>
 
-                      <div className="stack">
+                      <div className="grid gap-1">
                         <p className="meta-label">SKU</p>
                         <p className="card-copy">{line.sku}</p>
                       </div>
 
-                      <div className="stack">
+                      <div className="grid gap-1">
                         <p className="meta-label">Quantité</p>
                         <p className="card-copy">{line.quantity}</p>
                       </div>
 
-                      <div className="stack">
+                      <div className="grid gap-1">
                         <p className="meta-label">Prix unitaire actuel</p>
                         <p className="card-copy">{line.unitPrice}</p>
                       </div>
 
-                      <div className="stack">
+                      <div className="grid gap-1">
                         <p className="meta-label">Sous-total</p>
                         <p className="card-copy">{line.lineTotal}</p>
                       </div>
 
-                      <div className="stack">
+                      <div className="grid gap-1">
                         <p className="meta-label">Disponibilité</p>
                         <p className="card-copy">
                           {getAvailabilityLabel(line.isAvailable)}
@@ -443,7 +446,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
               ) : (
                 <div className="empty-state">
-                  <p className="eyebrow">Panier vide</p>
+                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Panier vide</p>
                   <h2>Aucune ligne à valider</h2>
                   <p className="card-copy">
                     Revenez à la boutique pour ajouter un article au panier.
@@ -451,12 +454,12 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
               )}
 
-              <div className="stack">
+              <div className="grid gap-1">
                 <p className="meta-label">Quantité totale</p>
                 <p className="card-copy">{cart.itemCount}</p>
               </div>
 
-              <div className="stack">
+              <div className="grid gap-1">
                 <p className="meta-label">Sous-total panier</p>
                 <p className="card-copy">{cart.subtotal}</p>
               </div>
@@ -464,7 +467,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
           </div>
         ) : (
           <div className="empty-state">
-            <p className="eyebrow">Commande indisponible</p>
+            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Commande indisponible</p>
             <h2>Ajoutez d&apos;abord un article au panier</h2>
             <p className="card-copy">
               Ajoutez d&apos;abord un article disponible au panier pour

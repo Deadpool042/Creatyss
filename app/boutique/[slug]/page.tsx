@@ -243,7 +243,7 @@ export default async function ProductPage({
               </div>
             ) : null}
 
-            <div className="stack">
+            <div className="grid gap-1">
               <p className="meta-label">Référence de page</p>
               <p className="card-copy">{product.slug}</p>
             </div>
