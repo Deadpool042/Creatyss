@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Notice } from "@/components/notice";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { AdminFormField } from "@/components/admin/admin-form-field";
+import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { findAdminBlogPostById } from "@/db/repositories/admin-blog.repository";
 import {
@@ -123,45 +131,35 @@ export default async function EditAdminBlogPostPage({
     (blogPost.coverImagePath !== null ? "__keep_current__" : "");
 
   return (
-    <div className="admin-blog-page">
-      <section className="section admin-blog-form-section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Blog</p>
-            <h1>Modifier l&apos;article</h1>
-            <p className="lead">
-              Modifiez d&apos;abord le contenu et le statut de l&apos;article,
-              puis ajustez sa couverture si nécessaire.
-            </p>
-          </div>
+    <AdminPageShell
+      actions={
+        <Button
+          asChild
+          size="sm"
+          variant="outline">
+          <Link href="/admin/blog">Retour à la liste</Link>
+        </Button>
+      }
+      description="Modifiez d'abord le contenu et le statut de l'article, puis ajustez sa couverture si nécessaire."
+      eyebrow="Blog"
+      title="Modifier l'article">
+      {successMessage ? (
+        <Notice tone="success">{successMessage}</Notice>
+      ) : null}
+      {errorMessage ? (
+        <Notice tone="alert">{errorMessage}</Notice>
+      ) : null}
+      {publishabilityWarning !== null && !publishabilityWarning.ok ? (
+        <Notice tone="alert">
+          Le contenu de l&apos;article est vide. Renseignez-le pour pouvoir
+          publier cet article.
+        </Notice>
+      ) : null}
 
-          <Link
-            className="link-subtle button"
-            href="/admin/blog">
-            Retour à la liste
-          </Link>
-        </div>
-
-        {successMessage ? (
-          <p className="admin-success">{successMessage}</p>
-        ) : null}
-        {errorMessage ? (
-          <p
-            className="admin-alert"
-            role="alert">
-            {errorMessage}
-          </p>
-        ) : null}
-        {publishabilityWarning !== null && !publishabilityWarning.ok ? (
-          <p className="admin-alert" role="alert">
-            Le contenu de l&apos;article est vide. Renseignez-le pour pouvoir
-            publier cet article.
-          </p>
-        ) : null}
-
+      <AdminFormSection>
         <form
           action={updateBlogPostAction}
-          className="admin-form admin-blog-form">
+          className="grid gap-4">
           <input
             name="blogPostId"
             type="hidden"
@@ -173,108 +171,114 @@ export default async function EditAdminBlogPostPage({
             value={blogPost.coverImagePath ?? ""}
           />
 
-          {blogPost.publishedAt ? (
-            <p className="admin-muted-note">
-              Publié le{" "}
-              {blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}
-            </p>
-          ) : (
-            <p className="admin-muted-note">
-              Cet article est enregistré en brouillon pour le moment.
-            </p>
-          )}
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {blogPost.publishedAt
+              ? `Publié le ${blogDateTimeFormatter.format(new Date(blogPost.publishedAt))}`
+              : "Cet article est enregistré en brouillon pour le moment."}
+          </p>
 
           {coverImageUrl ? (
-            <div className="admin-blog-cover-preview">
+            <div className="min-h-56 overflow-hidden rounded-xl bg-muted/20">
               <img
                 alt={blogPost.title}
+                className="block h-full w-full object-cover"
                 src={coverImageUrl}
               />
             </div>
           ) : (
-            <div className="admin-blog-cover-preview admin-image-placeholder">
+            <div className="grid min-h-56 place-items-center rounded-xl bg-muted/20 p-4 text-center text-sm text-muted-foreground">
               Aucune image de couverture actuellement
             </div>
           )}
 
-          <label className="admin-field">
-            <span className="meta-label">Titre</span>
-            <input
-              className="admin-input"
+          <AdminFormField
+            htmlFor="blog-title"
+            label="Titre">
+            <Input
               defaultValue={blogPost.title}
+              id="blog-title"
               name="title"
               required
               type="text"
             />
-          </label>
+          </AdminFormField>
 
-          <label className="admin-field">
-            <span className="meta-label">Slug</span>
-            <input
-              className="admin-input"
+          <AdminFormField
+            htmlFor="blog-slug"
+            label="Slug">
+            <Input
               defaultValue={blogPost.slug}
+              id="blog-slug"
               name="slug"
               required
               type="text"
             />
-          </label>
+          </AdminFormField>
 
-          <label className="admin-field">
-            <span className="meta-label">Extrait</span>
-            <textarea
-              className="admin-input admin-textarea"
+          <AdminFormField
+            htmlFor="blog-excerpt"
+            label="Extrait">
+            <Textarea
               defaultValue={blogPost.excerpt ?? ""}
+              id="blog-excerpt"
               name="excerpt"
               rows={4}
             />
-          </label>
+          </AdminFormField>
 
-          <label className="admin-field">
-            <span className="meta-label">Contenu</span>
-            <textarea
-              className="admin-input admin-textarea"
+          <AdminFormField
+            htmlFor="blog-content"
+            label="Contenu">
+            <Textarea
               defaultValue={blogPost.content ?? ""}
+              id="blog-content"
               name="content"
               rows={10}
             />
-          </label>
+          </AdminFormField>
 
-          <label className="admin-field">
-            <span className="meta-label">Titre SEO</span>
-            <input
-              className="admin-input"
+          <AdminFormField
+            htmlFor="blog-seo-title"
+            label="Titre SEO">
+            <Input
               defaultValue={blogPost.seoTitle ?? ""}
+              id="blog-seo-title"
               name="seoTitle"
               type="text"
             />
-          </label>
+          </AdminFormField>
 
-          <label className="admin-field">
-            <span className="meta-label">Description SEO</span>
-            <textarea
-              className="admin-input admin-textarea"
+          <AdminFormField
+            htmlFor="blog-seo-description"
+            label="Description SEO">
+            <Textarea
               defaultValue={blogPost.seoDescription ?? ""}
+              id="blog-seo-description"
               name="seoDescription"
               rows={3}
             />
-          </label>
+          </AdminFormField>
 
-          <label className="admin-field">
-            <span className="meta-label">Statut</span>
+          <AdminFormField
+            htmlFor="blog-status"
+            label="Statut">
             <select
-              className="admin-input"
+              className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
               defaultValue={blogPost.status}
+              id="blog-status"
               name="status">
               <option value="draft">Brouillon</option>
               <option value="published">Publié</option>
             </select>
-          </label>
+          </AdminFormField>
 
-          <label className="admin-field">
-            <span className="meta-label">Image de couverture</span>
+          <AdminFormField
+            htmlFor="blog-cover-image"
+            label="Image de couverture">
             <select
-              className="admin-input"
+              className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
               defaultValue={coverImageSelectValue}
+              id="blog-cover-image"
               name="coverImageMediaAssetId">
               {blogPost.coverImagePath !== null &&
               currentCoverMediaAsset === null ? (
@@ -291,13 +295,13 @@ export default async function EditAdminBlogPostPage({
                 </option>
               ))}
             </select>
-          </label>
+          </AdminFormField>
 
           {mediaAssets.length === 0 ? (
-            <p className="admin-muted-note">
+            <p className="text-sm leading-relaxed text-muted-foreground">
               Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
               <Link
-                className="link"
+                className="font-medium underline underline-offset-4 transition-colors hover:text-foreground"
                 href="/admin/media">
                 la bibliothèque médias
               </Link>
@@ -305,26 +309,16 @@ export default async function EditAdminBlogPostPage({
             </p>
           ) : null}
 
-          <div className="admin-actions">
-            <button
-              className="button"
-              type="submit">
-              Enregistrer les modifications
-            </button>
-          </div>
+          <AdminFormActions>
+            <Button type="submit">Enregistrer les modifications</Button>
+          </AdminFormActions>
         </form>
-      </section>
+      </AdminFormSection>
 
-      <section className="section admin-danger-zone">
-        <div className="stack">
-          <p className="eyebrow">Suppression</p>
-          <h2>Supprimer cet article</h2>
-          <p className="card-copy">
-            La suppression retire l&apos;article du blog public. Vérifiez
-            ensuite vos mises en avant sur la page d&apos;accueil si besoin.
-          </p>
-        </div>
-
+      <AdminFormSection
+        description="La suppression retire l'article du blog public. Vérifiez ensuite vos mises en avant sur la page d'accueil si besoin."
+        eyebrow="Suppression"
+        title="Supprimer cet article">
         <form action={deleteBlogPostAction}>
           <input
             name="blogPostId"
@@ -332,13 +326,13 @@ export default async function EditAdminBlogPostPage({
             value={blogPost.id}
           />
 
-          <button
-            className="button admin-danger-button"
-            type="submit">
+          <Button
+            type="submit"
+            variant="destructive">
             Supprimer l&apos;article
-          </button>
+          </Button>
         </form>
-      </section>
-    </div>
+      </AdminFormSection>
+    </AdminPageShell>
   );
 }
