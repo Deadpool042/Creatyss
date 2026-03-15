@@ -38,6 +38,7 @@ export function AdminFormSection({
               description={description}
               eyebrow={eyebrow}
               title={title ?? ""}
+              titleAs="h3"
             />
           </div>
 

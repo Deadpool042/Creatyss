@@ -638,12 +638,7 @@ h3 {
   width: 100%;
 }
 
-.admin-card {
-  gap: 1.5rem;
-}
-
-.admin-form,
-.admin-panels {
+.admin-form {
   display: grid;
   gap: 1rem;
 }
@@ -705,15 +700,6 @@ h3 {
   gap: 0.75rem;
 }
 
-.admin-chip {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid rgba(31, 31, 31, 0.12);
-  border-radius: 999px;
-  background: rgba(31, 31, 31, 0.05);
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
-}
 
 .admin-textarea {
   min-height: 8rem;
@@ -760,35 +746,11 @@ h3 {
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 }
 
-.admin-homepage-section {
-  display: grid;
-  gap: 1rem;
-}
 
-.admin-homepage-section {
-  width: 100%;
-  border: 1px solid rgba(31, 31, 31, 0.08);
-  border-radius: 0.9rem;
-  background: rgba(255, 255, 255, 0.82);
-  padding: 1.25rem;
-}
-
-.admin-product-page,
-.admin-product-list,
 .admin-blog-page,
-.admin-blog-list,
-.admin-record-list,
 .admin-product-subsection {
   display: grid;
   gap: 1rem;
-}
-
-.admin-product-list {
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-}
-
-.admin-blog-list {
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
 }
 
 .admin-product-card,
@@ -809,12 +771,6 @@ h3 {
   gap: 1rem;
 }
 
-.admin-product-tags,
-.admin-inline-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
 
 .admin-fieldset {
   margin: 0;

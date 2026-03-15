@@ -33,7 +33,9 @@ function LoginSidebar() {
             <p className="text-[11px] uppercase tracking-[0.24em] text-primary-foreground/60">
               Administration
             </p>
-            <p className="text-sm font-medium text-primary-foreground">Creatyss</p>
+            <p className="text-sm font-medium text-primary-foreground">
+              Creatyss
+            </p>
           </div>
         </div>
 
@@ -45,9 +47,8 @@ function LoginSidebar() {
             Une interface sobre pour piloter la boutique avec clarté.
           </h1>
           <p className="max-w-lg text-base leading-7 text-primary-foreground/70">
-            Gérez les produits, les contenus et les commandes depuis un
-            espace pensé pour rester lisible, rapide et rassurant au
-            quotidien.
+            Gérez les produits, les contenus et les commandes depuis un espace
+            pensé pour rester lisible, rapide et rassurant au quotidien.
           </p>
         </div>
       </div>
@@ -67,7 +68,7 @@ function LoginSidebar() {
             Contenu
           </p>
           <p className="mt-2 text-sm leading-6 text-primary-foreground/80">
-            Homepage éditable et blog administrable.
+            Page d'accueil éditable et blog administrable.
           </p>
         </div>
 
@@ -107,14 +108,16 @@ export function LoginForm({ action, showError = false }: LoginFormProps) {
               Connexion
             </CardTitle>
             <CardDescription className="text-[15px] leading-7 text-muted-foreground">
-              Connectez-vous pour accéder à l&apos;espace
-              d&apos;administration Creatyss.
+              Connectez-vous pour accéder à l&apos;espace d&apos;administration
+              Creatyss.
             </CardDescription>
           </div>
         </CardHeader>
 
         <CardContent className="px-8 pb-8">
-          <form action={action} className="space-y-6">
+          <form
+            action={action}
+            className="space-y-6">
             <FieldGroup className="space-y-5">
               <Field className="space-y-2.5">
                 <FieldLabel

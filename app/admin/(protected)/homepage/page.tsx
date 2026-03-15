@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/notice";
-import { PageHeader } from "@/components/page-header";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
 import {
   getAdminHomepageEditorData,
 } from "@/db/repositories/admin-homepage.repository";
@@ -46,22 +46,14 @@ export default async function AdminHomepagePage({
 
   if (editorData === null) {
     return (
-      <section className="space-y-6 [&_.page-header]:mb-0">
-        <PageHeader
-          description={
-            <>
-              La page d'accueil ne peut pas être modifiée tant qu&apos;aucune
-              version publiée n&apos;existe.
-            </>
-          }
-          eyebrow="Accueil"
-          title="Édition de la page d'accueil"
-        />
-
+      <AdminPageShell
+        description="La page d'accueil ne peut pas être modifiée tant qu'aucune version publiée n'existe."
+        eyebrow="Accueil"
+        title="Édition de la page d'accueil">
         <Notice tone="alert">
           {explicitErrorMessage ?? "La page d'accueil publiée est introuvable."}
         </Notice>
-      </section>
+      </AdminPageShell>
     );
   }
 
@@ -89,17 +81,10 @@ export default async function AdminHomepagePage({
     (homepage.heroImagePath !== null ? "__keep_current__" : "");
 
   return (
-    <section className="space-y-6 [&_.page-header]:mb-0">
-      <PageHeader
-        description={
-          <>
-            Commencez par la bannière principale, puis complétez le bloc
-            éditorial et les sélections mises en avant.
-          </>
-        }
-        eyebrow="Accueil"
-        title="Édition de la page d'accueil"
-      />
+    <AdminPageShell
+      description="Commencez par la bannière principale, puis complétez le bloc éditorial et les sélections mises en avant."
+      eyebrow="Accueil"
+      title="Édition de la page d'accueil">
 
       {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {explicitErrorMessage ? (
@@ -159,6 +144,6 @@ export default async function AdminHomepagePage({
           </Button>
         </AdminFormActions>
       </form>
-    </section>
+    </AdminPageShell>
   );
 }
