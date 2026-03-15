@@ -37,7 +37,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
   return (
     <div className="site">
       <header className="site-header z-30 border-black/5">
-        <div className="site-header-inner mx-auto flex min-h-14 max-w-7xl items-center justify-between gap-3 px-4 md:min-h-16 md:px-6">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-start justify-between gap-4 px-4 min-h-[4.5rem] md:flex-row md:items-center md:min-h-16 md:px-6">
           <Link
             className="flex min-w-0 items-center gap-2 text-foreground"
             href="/">
