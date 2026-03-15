@@ -1,4 +1,12 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Notice } from "@/components/notice";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { AdminFormField } from "@/components/admin/admin-form-field";
+import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { createBlogPostAction } from "@/features/admin/blog/actions";
 
@@ -46,103 +54,137 @@ export default async function NewAdminBlogPostPage({
   const errorMessage = getErrorMessage(errorParam);
 
   return (
-    <section className="section admin-blog-form-section">
-      <div className="page-header">
-        <div>
-          <p className="eyebrow">Blog</p>
-          <h1>Nouvel article</h1>
-          <p className="lead">
-            Créez un article simple avec un texte, un statut et une image de
-            couverture optionnelle.
-          </p>
-        </div>
-
-        <Link className="link-subtle button" href="/admin/blog">
-          Retour à la liste
-        </Link>
-      </div>
-
+    <AdminPageShell
+      actions={
+        <Button
+          asChild
+          size="sm"
+          variant="outline">
+          <Link href="/admin/blog">Retour à la liste</Link>
+        </Button>
+      }
+      description="Renseignez le titre, le contenu et les informations de publication avant de créer l'article."
+      eyebrow="Blog"
+      title="Nouvel article">
       {errorMessage ? (
-        <p className="admin-alert" role="alert">
-          {errorMessage}
-        </p>
+        <Notice tone="alert">{errorMessage}</Notice>
       ) : null}
 
-      <form action={createBlogPostAction} className="admin-form admin-blog-form">
-        <label className="admin-field">
-          <span className="meta-label">Titre</span>
-          <input className="admin-input" name="title" required type="text" />
-        </label>
+      <AdminFormSection>
+        <form
+          action={createBlogPostAction}
+          className="grid gap-4">
+          <AdminFormField
+            htmlFor="blog-title"
+            label="Titre">
+            <Input
+              id="blog-title"
+              name="title"
+              required
+              type="text"
+            />
+          </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Slug</span>
-          <input className="admin-input" name="slug" required type="text" />
-        </label>
+          <AdminFormField
+            htmlFor="blog-slug"
+            label="Slug">
+            <Input
+              id="blog-slug"
+              name="slug"
+              required
+              type="text"
+            />
+          </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Extrait</span>
-          <textarea className="admin-input admin-textarea" name="excerpt" rows={4} />
-        </label>
+          <AdminFormField
+            htmlFor="blog-excerpt"
+            label="Extrait">
+            <Textarea
+              id="blog-excerpt"
+              name="excerpt"
+              rows={4}
+            />
+          </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Contenu</span>
-          <textarea className="admin-input admin-textarea" name="content" rows={10} />
-        </label>
+          <AdminFormField
+            htmlFor="blog-content"
+            label="Contenu">
+            <Textarea
+              id="blog-content"
+              name="content"
+              rows={10}
+            />
+          </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Titre SEO</span>
-          <input className="admin-input" name="seoTitle" type="text" />
-        </label>
+          <AdminFormField
+            htmlFor="blog-seo-title"
+            label="Titre SEO">
+            <Input
+              id="blog-seo-title"
+              name="seoTitle"
+              type="text"
+            />
+          </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Description SEO</span>
-          <textarea
-            className="admin-input admin-textarea"
-            name="seoDescription"
-            rows={3}
-          />
-        </label>
+          <AdminFormField
+            htmlFor="blog-seo-description"
+            label="Description SEO">
+            <Textarea
+              id="blog-seo-description"
+              name="seoDescription"
+              rows={3}
+            />
+          </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Statut</span>
-          <select className="admin-input" defaultValue="draft" name="status">
-            <option value="draft">Brouillon</option>
-            <option value="published">Publié</option>
-          </select>
-        </label>
+          <AdminFormField
+            htmlFor="blog-status"
+            label="Statut">
+            <select
+              className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              defaultValue="draft"
+              id="blog-status"
+              name="status">
+              <option value="draft">Brouillon</option>
+              <option value="published">Publié</option>
+            </select>
+          </AdminFormField>
 
-        <label className="admin-field">
-          <span className="meta-label">Image de couverture</span>
-          <select
-            className="admin-input"
-            defaultValue=""
-            name="coverImageMediaAssetId"
-          >
-            <option value="">Aucune image de couverture</option>
-            {mediaAssets.map((mediaAsset) => (
-              <option key={mediaAsset.id} value={mediaAsset.id}>
-                {mediaAsset.originalName} · {mediaAsset.mimeType}
-              </option>
-            ))}
-          </select>
-        </label>
+          <AdminFormField
+            htmlFor="blog-cover-image"
+            label="Image de couverture">
+            <select
+              className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              defaultValue=""
+              id="blog-cover-image"
+              name="coverImageMediaAssetId">
+              <option value="">Aucune image de couverture</option>
+              {mediaAssets.map((mediaAsset) => (
+                <option
+                  key={mediaAsset.id}
+                  value={mediaAsset.id}>
+                  {mediaAsset.originalName} · {mediaAsset.mimeType}
+                </option>
+              ))}
+            </select>
+          </AdminFormField>
 
-        {mediaAssets.length === 0 ? (
-          <p className="admin-muted-note">
-            Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
-            <Link className="link" href="/admin/media">
-              la bibliothèque médias
-            </Link>
-            .
-          </p>
-        ) : null}
+          {mediaAssets.length === 0 ? (
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
+              <Link
+                className="font-medium underline underline-offset-4 transition-colors hover:text-foreground"
+                href="/admin/media">
+                la bibliothèque médias
+              </Link>
+              .
+            </p>
+          ) : null}
 
-        <div className="admin-actions">
-          <button className="button" type="submit">
-            Créer l&apos;article
-          </button>
-        </div>
-      </form>
-    </section>
+          <AdminFormActions>
+            <Button type="submit">Créer l&apos;article</Button>
+          </AdminFormActions>
+        </form>
+      </AdminFormSection>
+    </AdminPageShell>
   );
 }

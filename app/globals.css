@@ -550,14 +550,6 @@ h3 {
   outline-offset: 2px;
 }
 
-.admin-alert {
-  margin: 0;
-  border: 1px solid rgba(143, 34, 34, 0.18);
-  border-radius: 0.9rem;
-  background: rgba(143, 34, 34, 0.08);
-  padding: 0.85rem 1rem;
-  color: #7a2020;
-}
 
 
 
@@ -594,7 +586,6 @@ h3 {
 
 .admin-product-card,
 .admin-blog-card,
-.admin-blog-form-section,
 .admin-product-form-section,
 .admin-variant-card,
 .admin-image-card {
@@ -623,11 +614,6 @@ h3 {
   gap: 0.75rem;
 }
 
-.admin-muted-note {
-  margin: 0;
-  color: rgba(31, 31, 31, 0.68);
-  line-height: 1.6;
-}
 
 
 
