@@ -13,11 +13,11 @@ export default async function BlogPage() {
   return (
     <div className="page">
       <section className="section">
-        <div className="page-header">
-          <div>
-            <p className="eyebrow">Blog</p>
-            <h1>Articles publiés</h1>
-          </div>
+        <div className="mb-6 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+            Blog
+          </p>
+          <h1 className="m-0">Articles publiés</h1>
         </div>
 
         {posts.length > 0 ? (
@@ -41,7 +41,9 @@ export default async function BlogPage() {
           </div>
         ) : (
           <div className="empty-state">
-            <p className="eyebrow">Blog vide</p>
+            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+              Blog vide
+            </p>
             <h2>Aucun article publié</h2>
             <p className="card-copy">
               Les articles publics apparaîtront ici dès qu&apos;ils seront
