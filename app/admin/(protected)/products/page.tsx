@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/notice";
-import { PageHeader } from "@/components/page-header";
 import { AdminEmptyState } from "@/components/admin";
+import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
 import { listAdminProducts } from "@/db/repositories/admin-product.repository";
 import { ProductsListTable } from "@/features/admin/products/components";
 
@@ -47,36 +48,29 @@ export default async function AdminProductsPage({
   const products = await listAdminProducts();
 
   return (
-    <div className="grid gap-6">
-      <section className="grid gap-6">
-        <PageHeader
-          actions={
-            <Link
-              className="button"
-              href="/admin/products/new">
-              Nouveau produit
-            </Link>
-          }
-          description="Gérez les produits, leurs catégories, leurs déclinaisons et leurs images depuis un seul espace."
-          eyebrow="Produits"
-          title="Produits"
+    <AdminPageShell
+      actions={
+        <Button asChild>
+          <Link href="/admin/products/new">Nouveau produit</Link>
+        </Button>
+      }
+      description="Gérez les produits, leurs catégories, leurs déclinaisons et leurs images depuis un seul espace."
+      eyebrow="Produits"
+      title="Produits">
+      {successMessage ? (
+        <Notice tone="success">{successMessage}</Notice>
+      ) : null}
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
+
+      {products.length > 0 ? (
+        <ProductsListTable products={products} />
+      ) : (
+        <AdminEmptyState
+          description="Créez un premier produit pour commencer à structurer le catalogue."
+          eyebrow="Aucun produit"
+          title="Le catalogue ne contient pas encore de produit"
         />
-
-        {successMessage ? (
-          <Notice tone="success">{successMessage}</Notice>
-        ) : null}
-        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
-
-        {products.length > 0 ? (
-          <ProductsListTable products={products} />
-        ) : (
-          <AdminEmptyState
-            eyebrow="Aucun produit"
-            title="Le catalogue ne contient pas encore de produit"
-            description="Créez un premier produit pour commencer à structurer le catalogue."
-          />
-        )}
-      </section>
-    </div>
+      )}
+    </AdminPageShell>
   );
 }
