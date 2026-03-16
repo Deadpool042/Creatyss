@@ -97,7 +97,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="card-grid">
+          <div className="grid gap-4 min-[700px]:grid-cols-3">
             {homepage.featuredProducts.map((product) => (
               <article
                 className="store-card"
@@ -126,7 +126,7 @@ export default async function HomePage() {
             <h2 className="m-0">Catégories mises en avant</h2>
           </div>
 
-          <div className="card-grid">
+          <div className="grid gap-4 min-[700px]:grid-cols-3">
             {homepage.featuredCategories.map((category) => (
               <article
                 className="store-card"
@@ -159,7 +159,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="card-grid">
+          <div className="grid gap-4 min-[700px]:grid-cols-3">
             {homepage.featuredBlogPosts.map((post) => (
               <article
                 className="store-card"

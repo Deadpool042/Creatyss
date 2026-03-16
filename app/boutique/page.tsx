@@ -257,7 +257,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         ) : null}
 
         {products.length > 0 ? (
-          <div className="card-grid">
+          <div className="grid gap-4 min-[700px]:grid-cols-3">
             {products.map((product) => (
               <article
                 className="store-card"

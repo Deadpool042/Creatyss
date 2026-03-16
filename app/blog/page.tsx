@@ -21,7 +21,7 @@ export default async function BlogPage() {
         </div>
 
         {posts.length > 0 ? (
-          <div className="card-grid">
+          <div className="grid gap-4 min-[700px]:grid-cols-3">
             {posts.map((post) => (
               <article className="store-card" key={post.id}>
                 <p className="text-[0.95rem] text-foreground/68">Article</p>
