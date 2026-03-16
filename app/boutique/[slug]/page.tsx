@@ -189,7 +189,7 @@ export default async function ProductPage({
 
           <aside className="product-panel">
             <div className="product-summary">
-              <div className="product-summary-header">
+              <div className="flex items-start justify-between gap-3 flex-wrap">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Disponibilité du produit</p>
                 <Badge variant="outline">
                   <span
@@ -209,12 +209,12 @@ export default async function ProductPage({
 
               {isSimpleProduct ? (
                 <div className="product-summary-stats">
-                  <div className="product-summary-stat">
+                  <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Type de produit</p>
                     <p className="card-copy">Produit simple</p>
                   </div>
 
-                  <div className="product-summary-stat">
+                  <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Informations de vente</p>
                     <p className="card-copy">
                       {singleOffer ? singleOffer.name : "Indisponible"}
@@ -223,12 +223,12 @@ export default async function ProductPage({
                 </div>
               ) : (
                 <div className="product-summary-stats">
-                  <div className="product-summary-stat">
+                  <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Déclinaisons disponibles</p>
                     <p className="card-copy">{availableVariantCount}</p>
                   </div>
 
-                  <div className="product-summary-stat">
+                  <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Déclinaisons publiées</p>
                     <p className="card-copy">{product.variants.length}</p>
                   </div>
@@ -239,7 +239,7 @@ export default async function ProductPage({
             {product.description ? (
               <div className="grid gap-1">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Description</p>
-                <p className="product-copy">{product.description}</p>
+                <p className="leading-[1.65]">{product.description}</p>
               </div>
             ) : null}
 
@@ -289,7 +289,7 @@ export default async function ProductPage({
                 </div>
               </div>
 
-              <div className="variant-purchase">
+              <div className="grid gap-3">
                 <div className="grid gap-1">
                   <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix</p>
                   <p className="text-[1.45rem] font-bold leading-[1.2]">{singleOffer.price}</p>
@@ -348,13 +348,13 @@ export default async function ProductPage({
                 ) : null}
               </div>
 
-              <div className="variant-details">
-                <div className="variant-detail">
+              <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
+                <div className="grid gap-1">
                   <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">SKU</p>
                   <p className="card-copy">{singleOffer.sku}</p>
                 </div>
 
-                <div className="variant-detail">
+                <div className="grid gap-1">
                   <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Couleur</p>
                   <p className="card-copy">
                     {singleOffer.colorName}
@@ -396,7 +396,7 @@ export default async function ProductPage({
             </div>
           )
         ) : product.variants.length > 0 ? (
-          <div className="variant-list">
+          <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
             {product.variants.map((variant) => {
               const variantDisplayImage = getDisplayImage(variant.images);
 
@@ -404,7 +404,7 @@ export default async function ProductPage({
                 <article
                   className="variant-card"
                   key={variant.id}>
-                  <div className="variant-header">
+                  <div className="flex items-start justify-between gap-3 flex-wrap">
                     <div className="grid gap-1">
                       <h3>{variant.name}</h3>
                       <p className="text-[0.95rem] text-foreground/68">
@@ -432,7 +432,7 @@ export default async function ProductPage({
                     </div>
                   </div>
 
-                  <div className="variant-purchase">
+                  <div className="grid gap-3">
                     <div className="grid gap-1">
                       <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix</p>
                       <p className="text-[1.45rem] font-bold leading-[1.2]">{variant.price}</p>
@@ -489,13 +489,13 @@ export default async function ProductPage({
                     ) : null}
                   </div>
 
-                  <div className="variant-details">
-                    <div className="variant-detail">
+                  <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
+                    <div className="grid gap-1">
                       <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">SKU</p>
                       <p className="card-copy">{variant.sku}</p>
                     </div>
 
-                    <div className="variant-detail">
+                    <div className="grid gap-1">
                       <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Couleur</p>
                       <p className="card-copy">
                         {variant.colorName}
