@@ -244,7 +244,6 @@ h3 {
 .store-card,
 .variant-card,
 .product-panel,
-.article-layout,
 .empty-state {
   display: grid;
   gap: 0.75rem;
@@ -252,7 +251,6 @@ h3 {
 
 
 .card-copy,
-.article-content,
 .product-copy {
   margin: 0;
   line-height: 1.65;
@@ -350,13 +348,6 @@ h3 {
   gap: 0.75rem;
 }
 
-.article-layout {
-  max-width: 52rem;
-}
-
-.article-content {
-  white-space: pre-wrap;
-}
 
 .admin-area {
   width: 100%;

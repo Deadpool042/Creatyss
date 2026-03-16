@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="page">
-      <article className="section article-layout">
+      <article className="section grid gap-3 max-w-[52rem]">
         <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
           Blog
         </p>
@@ -105,7 +105,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="media-placeholder">Aucun visuel de couverture.</div>
         )}
 
-        <div className="article-content">
+        <div className="leading-[1.65] whitespace-pre-wrap">
           {post.content ?? "Cet article ne contient pas encore de contenu."}
         </div>
       </article>
