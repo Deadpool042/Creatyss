@@ -7,7 +7,7 @@
  * Identité : cool, corporate, indigo, sidebar sombre en mode clair.
  *
  * Éléments hardcodés à copier manuellement dans les règles CSS (hors tokens) :
- *   body { background: oklch(0.99 0 0); }    /* fond neutre, sans gradient */
+ *   body { background: oklch(0.99 0 0); }   fond neutre, sans gradient
  *   :root { font-family: system-ui, sans-serif; }
  *
  * Tokens qui changent par rapport à Creatyss (11) :
@@ -23,7 +23,6 @@
 :root {
   color-scheme: light;
 
-  /* --- Core semantic tokens — invariants structurels (identiques à Creatyss) --- */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -47,7 +46,7 @@
   --radius: 0.5rem;
 
   /* --- Brand — varie : indigo froid --- */
-  --brand: oklch(0.52 0.18 262);          /* indigo-violet */
+  --brand: oklch(0.52 0.18 262); /* indigo-violet */
   --brand-foreground: oklch(0.985 0 0);
 
   /* --- Sidebar admin — varie : sidebar SOMBRE en mode clair --- */
