@@ -258,10 +258,6 @@ h3 {
   line-height: 1.65;
 }
 
-.product-layout {
-  display: grid;
-  gap: 1.5rem;
-}
 
 .product-summary,
 .product-summary-stats,
@@ -302,19 +298,7 @@ h3 {
   gap: 0.25rem;
 }
 
-.variant-badges {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
 
-.product-price {
-  margin: 0;
-  font-size: 1.45rem;
-  font-weight: 700;
-  line-height: 1.2;
-}
 
 .cart-page,
 .cart-layout,
@@ -417,11 +401,6 @@ h3 {
 }
 
 @media (min-width: 900px) {
-  .product-layout {
-    grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
-    align-items: start;
-  }
-
   .cart-layout,
   .checkout-layout {
     grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);

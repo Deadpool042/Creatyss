@@ -172,7 +172,7 @@ export default async function ProductPage({
           <Notice tone="alert">{cartErrorMessage}</Notice>
         ) : null}
 
-        <div className="product-layout">
+        <div className="grid gap-6 min-[900px]:grid-cols-[minmax(0,1.1fr)_minmax(18rem,0.9fr)] min-[900px]:items-start">
           <div className="product-gallery">
             {productDisplayImage ? (
               <figure className="product-media">
@@ -275,7 +275,7 @@ export default async function ProductPage({
                   </p>
                 </div>
 
-                <div className="variant-badges">
+                <div className="flex items-center gap-2 flex-wrap">
                   <Badge variant="outline">
                     <span
                       className={
@@ -292,7 +292,7 @@ export default async function ProductPage({
               <div className="variant-purchase">
                 <div className="grid gap-1">
                   <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix</p>
-                  <p className="product-price">{singleOffer.price}</p>
+                  <p className="text-[1.45rem] font-bold leading-[1.2]">{singleOffer.price}</p>
                   {singleOffer.compareAtPrice ? (
                     <p className="text-[0.95rem] text-foreground/68">
                       Prix barré : {singleOffer.compareAtPrice}
@@ -413,7 +413,7 @@ export default async function ProductPage({
                       </p>
                     </div>
 
-                    <div className="variant-badges">
+                    <div className="flex items-center gap-2 flex-wrap">
                       {getVariantDefaultBadgeLabel(variant.isDefault) ? (
                         <Badge variant="secondary">
                           {getVariantDefaultBadgeLabel(variant.isDefault)}
@@ -435,7 +435,7 @@ export default async function ProductPage({
                   <div className="variant-purchase">
                     <div className="grid gap-1">
                       <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix</p>
-                      <p className="product-price">{variant.price}</p>
+                      <p className="text-[1.45rem] font-bold leading-[1.2]">{variant.price}</p>
                       {variant.compareAtPrice ? (
                         <p className="text-[0.95rem] text-foreground/68">
                           Prix barré : {variant.compareAtPrice}
