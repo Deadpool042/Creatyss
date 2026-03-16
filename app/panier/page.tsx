@@ -80,7 +80,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
   const hasUnavailableLine = cart?.lines.some((line) => !line.isAvailable) ?? false;
 
   return (
-    <div className="page cart-page">
+    <div className="page">
       <section className="section">
         <div className="mb-6 grid gap-2">
           <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
@@ -102,7 +102,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
 
         {cart && cart.lines.length > 0 ? (
           <div className="cart-layout">
-            <div className="cart-list">
+            <div className="grid gap-4">
               {cart.lines.map((line) => (
                 <article
                   className="store-card cart-line"
@@ -146,7 +146,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
 
                   <form
                     action={updateCartItemQuantityAction}
-                    className="cart-line-form">
+                    className="grid gap-4">
                     <input
                       name="itemId"
                       type="hidden"

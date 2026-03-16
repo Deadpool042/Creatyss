@@ -74,7 +74,7 @@ export default async function OrderConfirmationPage({
         ) : null}
 
         <div className="cart-layout">
-          <div className="checkout-line-list">
+          <div className="grid gap-4">
             <article className="store-card checkout-line">
               <div className="grid gap-1">
                 <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Synthèse</p>
@@ -194,7 +194,7 @@ export default async function OrderConfirmationPage({
               <h2>Lignes de commande</h2>
             </div>
 
-            <div className="checkout-line-list">
+            <div className="grid gap-4">
               {order.lines.map((line) => (
                 <article className="store-card checkout-line" key={line.id}>
                   <div className="grid gap-1">

@@ -316,7 +316,7 @@ export default async function ProductPage({
                 {singleOffer.isAvailable ? (
                   <form
                     action={addToCartAction}
-                    className="cart-add-form">
+                    className="grid gap-4">
                     <input
                       name="productSlug"
                       type="hidden"
@@ -457,7 +457,7 @@ export default async function ProductPage({
                     {variant.isAvailable ? (
                       <form
                         action={addToCartAction}
-                        className="cart-add-form">
+                        className="grid gap-4">
                         <input
                           name="productSlug"
                           type="hidden"

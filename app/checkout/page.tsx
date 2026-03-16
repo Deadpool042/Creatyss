@@ -134,7 +134,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         {cart ? (
           <div className="checkout-layout">
             <form
-              className="checkout-form"
+              className="grid gap-4 content-start"
               noValidate
             >
               <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
@@ -398,7 +398,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               </div>
 
               {cart.lines.length > 0 ? (
-                <div className="checkout-line-list">
+                <div className="grid gap-4">
                   {cart.lines.map((line) => (
                     <article className="store-card checkout-line" key={line.id}>
                       <div className="grid gap-1">

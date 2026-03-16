@@ -260,25 +260,14 @@ h3 {
 
 
 
-.cart-page,
 .cart-layout,
-.cart-list,
 .cart-summary,
 .cart-line,
-.cart-add-form,
-.cart-line-form,
 .checkout-layout,
-.checkout-form,
 .checkout-summary,
-.checkout-line-list,
 .checkout-line {
   display: grid;
   gap: 1rem;
-}
-
-
-.checkout-form {
-  align-content: start;
 }
 
 .product-gallery,
