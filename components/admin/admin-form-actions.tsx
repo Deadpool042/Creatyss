@@ -11,7 +11,7 @@ export function AdminFormActions({
   className
 }: AdminFormActionsProps) {
   return (
-    <div className={cn("admin-actions flex flex-wrap items-center gap-3", className)}>
+    <div className={cn("flex flex-wrap items-center gap-3", className)}>
       {children}
     </div>
   );

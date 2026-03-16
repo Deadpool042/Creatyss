@@ -314,25 +314,6 @@ h3 {
 }
 
 
-.admin-area {
-  width: 100%;
-}
-
-.admin-field {
-  display: grid;
-  gap: 0.5rem;
-}
-
-
-.admin-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-
-
-
 .admin-product-subsection {
   display: grid;
   gap: 1rem;
@@ -340,9 +321,7 @@ h3 {
 }
 
 .admin-product-card,
-.admin-blog-card,
-.admin-variant-card,
-.admin-image-card {
+.admin-variant-card {
   width: 100%;
 }
 

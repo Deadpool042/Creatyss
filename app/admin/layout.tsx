@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 type AdminLayoutProps = LayoutProps<"/admin">;
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
-  return <div className="admin-area">{children}</div>;
+  return <div>{children}</div>;
 }

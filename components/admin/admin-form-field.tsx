@@ -18,7 +18,7 @@ export function AdminFormField({
   children
 }: AdminFormFieldProps) {
   return (
-    <div className={cn("admin-field grid gap-2", className)}>
+    <div className={cn("grid gap-2", className)}>
       <Label
         className="text-sm font-medium leading-5 text-foreground"
         htmlFor={htmlFor}>

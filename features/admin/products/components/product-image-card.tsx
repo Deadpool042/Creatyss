@@ -57,7 +57,7 @@ export function ProductImageCard({
   const sortOrderId = `image-sort-order-${image.id}`;
 
   return (
-    <article className="admin-image-card grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+    <article className="grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
       {renderImagePreview(uploadsPublicPath, image)}
 
       <div className="grid gap-2">
