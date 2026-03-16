@@ -1,16 +1,12 @@
 /*
  * Theme pack — Novamart (client fictif, test de validation V15-3)
  *
- * Usage : copier la section :root et .dark dans globals.css du projet cible.
- * Compléter avec les éléments hardcodés notés ci-dessous.
+ * Usage : copier la section :root et .dark dans theme.css du projet cible.
  *
  * Identité : cool, corporate, indigo, sidebar sombre en mode clair.
  *
- * Éléments hardcodés à copier manuellement dans les règles CSS (hors tokens) :
- *   body { background: oklch(0.99 0 0); }   fond neutre, sans gradient
- *   :root { font-family: system-ui, sans-serif; }
- *
- * Tokens qui changent par rapport à Creatyss (11) :
+ * Tokens qui changent par rapport à Creatyss (13) :
+ *   --page-bg, --body-background
  *   --brand, --brand-foreground
  *   --radius
  *   --sidebar, --sidebar-foreground, --sidebar-primary, --sidebar-primary-foreground,
@@ -18,6 +14,8 @@
  *
  * Tokens invariants (identiques à Creatyss) :
  *   tous les core semantic tokens (--background → --ring)
+ *
+ * La police est gérée via --font-sans injecté par Next.js (app/layout.tsx).
  */
 
 :root {
@@ -44,6 +42,10 @@
 
   /* --- Géométrie — varie : plus carré, plus corporate --- */
   --radius: 0.5rem;
+
+  /* --- Page background — varie : neutre, sans gradient --- */
+  --page-bg: oklch(0.99 0 0);
+  --body-background: var(--page-bg);
 
   /* --- Brand — varie : indigo froid --- */
   --brand: oklch(0.52 0.18 262); /* indigo-violet */

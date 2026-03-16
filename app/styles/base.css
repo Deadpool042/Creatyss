@@ -9,9 +9,7 @@ body {
 }
 
 body {
-  background:
-    radial-gradient(circle at top, rgba(164, 120, 72, 0.16), transparent 32rem),
-    var(--page-bg);
+  background: var(--body-background);
 }
 
 a {

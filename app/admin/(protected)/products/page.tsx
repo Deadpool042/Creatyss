@@ -57,9 +57,7 @@ export default async function AdminProductsPage({
       description="Gérez les produits, leurs catégories, leurs déclinaisons et leurs images depuis un seul espace."
       eyebrow="Produits"
       title="Produits">
-      {successMessage ? (
-        <Notice tone="success">{successMessage}</Notice>
-      ) : null}
+      {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       {products.length > 0 ? (

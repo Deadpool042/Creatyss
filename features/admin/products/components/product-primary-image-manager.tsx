@@ -80,7 +80,7 @@ export function ProductPrimaryImageManager({
   const selectId = `${scope}-primary-media-asset-${variantId ?? productId}`;
 
   return (
-    <div className="admin-product-subsection space-y-4 rounded-xl border border-border/60 bg-muted/10 p-4">
+    <div className="space-y-4 rounded-xl border border-border/60 bg-muted/10 p-4">
       <SectionIntro
         className="grid gap-2"
         description={description}

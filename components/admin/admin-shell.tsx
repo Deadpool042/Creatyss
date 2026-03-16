@@ -7,6 +7,7 @@ import {
   SidebarTrigger
 } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
+import { ModeToggle } from "../shared/mode-toggle";
 
 type AdminShellProps = {
   children: ReactNode;
@@ -26,7 +27,7 @@ export function AdminShell({ children, displayName, email }: AdminShellProps) {
 
       <SidebarInset className="overflow-hidden bg-muted/20">
         <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center border-b bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/80 md:px-6">
-          <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div className="flex min-w-0 flex-1 items-center gap-3 ">
             <SidebarTrigger className="-ml-1 md:hidden" />
             <Separator
               orientation="vertical"
@@ -42,6 +43,7 @@ export function AdminShell({ children, displayName, email }: AdminShellProps) {
               </p>
             </div>
           </div>
+          <ModeToggle />
         </header>
 
         <div className="min-h-0 flex-1 overflow-y-auto">

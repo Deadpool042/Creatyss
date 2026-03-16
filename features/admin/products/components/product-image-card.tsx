@@ -8,6 +8,7 @@ import {
   deleteProductImageAction
 } from "@/features/admin/products/actions";
 import { getImageUrl } from "@/features/admin/products/lib";
+import Image from "next/image";
 
 const checkboxInputClassName =
   "mt-1 size-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30";
@@ -38,10 +39,12 @@ function renderImagePreview(
 
   return (
     <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
-      <img
+      <Image
         alt={image.altText ?? "Image produit"}
         className="aspect-16/10 w-full object-cover"
         src={imageUrl}
+        width={400}
+        height={250}
       />
     </div>
   );

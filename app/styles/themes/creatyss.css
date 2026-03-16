@@ -1,0 +1,255 @@
+/*
+ * Theme pack — Creatyss (référence)
+ *
+ * Usage :
+ * - ce fichier ne contient que :root et .dark
+ * - il est importé par app/styles/theme.css
+ *
+ * Identité :
+ * - chaleureux
+ * - artisanal
+ * - ambre doux
+ * - surfaces crème / blanc cassé
+ * - sidebar claire
+ *
+ * Objectif :
+ * - tous les aspects visuels identitaires passent par des tokens
+ * - le CSS structurel consomme ensuite ces tokens
+ *
+ * Police :
+ * - gérée via --font-sans injecté par Next.js
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ==========================================================================
+     Core semantic tokens — structurels, stables
+     ========================================================================== */
+
+  --background: oklch(0.99 0.005 75);
+  --foreground: oklch(0.19 0.01 55);
+
+  --card: oklch(1 0.003 75);
+  --card-foreground: oklch(0.19 0.01 55);
+
+  --popover: oklch(1 0.003 75);
+  --popover-foreground: oklch(0.19 0.01 55);
+
+  --primary: oklch(0.24 0.01 55);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.96 0.008 75);
+  --secondary-foreground: oklch(0.24 0.01 55);
+
+  --muted: oklch(0.965 0.006 75);
+  --muted-foreground: oklch(0.54 0.015 55);
+
+  --accent: oklch(0.965 0.012 70);
+  --accent-foreground: oklch(0.24 0.01 55);
+
+  --destructive: oklch(0.577 0.245 27.325);
+
+  --border: oklch(0.91 0.008 70);
+  --input: oklch(0.91 0.008 70);
+  --ring: oklch(0.68 0.06 55);
+
+  /* ==========================================================================
+     Geometry
+     ========================================================================== */
+
+  --radius: 0.875rem;
+
+  /* ==========================================================================
+     Brand
+     ========================================================================== */
+
+  --brand: oklch(0.63 0.12 58);
+  --brand-foreground: oklch(0.985 0 0);
+
+  /* ==========================================================================
+     Document / page identity
+     ========================================================================== */
+
+  --page-bg: oklch(0.965 0.015 75);
+  --page-foreground: oklch(0.19 0.01 55);
+
+  --body-background:
+    radial-gradient(
+      circle at top,
+      oklch(0.72 0.08 60 / 0.18),
+      transparent 32rem
+    ),
+    var(--page-bg);
+
+  /* ==========================================================================
+     Shared surfaces
+     ========================================================================== */
+
+  --surface-panel: rgb(255 255 255 / 0.92);
+  --surface-panel-soft: rgb(255 255 255 / 0.88);
+  --surface-subtle: rgb(31 31 31 / 0.05);
+
+  --surface-border: rgb(31 31 31 / 0.08);
+  --surface-border-strong: rgb(31 31 31 / 0.12);
+
+  --shadow-soft: 0 20px 60px rgb(31 31 31 / 0.08);
+  --shadow-card: 0 16px 40px rgb(31 31 31 / 0.06);
+
+  /* ==========================================================================
+     Public shell
+     ========================================================================== */
+
+  --shell-surface: rgb(245 242 234 / 0.92);
+  --shell-surface-blur: rgb(245 242 234 / 0.84);
+  --shell-drawer: rgb(245 242 234 / 0.98);
+  --shell-drawer-blur: rgb(245 242 234 / 0.94);
+  --shell-border: rgb(31 31 31 / 0.08);
+
+  /* ==========================================================================
+     Media / decorative blocks
+     ========================================================================== */
+
+  --media-surface: rgb(31 31 31 / 0.05);
+  --media-foreground: rgb(31 31 31 / 0.62);
+
+  /* ==========================================================================
+     Sidebar admin
+     ========================================================================== */
+
+  --sidebar: oklch(0.985 0.003 75);
+  --sidebar-foreground: oklch(0.19 0.01 55);
+
+  --sidebar-primary: oklch(0.24 0.01 55);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+
+  --sidebar-accent: oklch(0.96 0.008 75);
+  --sidebar-accent-foreground: oklch(0.24 0.01 55);
+
+  --sidebar-border: oklch(0.91 0.008 70);
+  --sidebar-ring: oklch(0.68 0.06 55);
+
+  /* ==========================================================================
+     Charts
+     ========================================================================== */
+
+  --chart-1: oklch(0.73 0.11 55);
+  --chart-2: oklch(0.63 0.13 75);
+  --chart-3: oklch(0.56 0.09 35);
+  --chart-4: oklch(0.68 0.07 95);
+  --chart-5: oklch(0.5 0.06 20);
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* ==========================================================================
+     Core semantic tokens — dark
+     ========================================================================== */
+
+  --background: oklch(0.16 0.01 55);
+  --foreground: oklch(0.95 0.004 75);
+
+  --card: oklch(0.2 0.01 55);
+  --card-foreground: oklch(0.95 0.004 75);
+
+  --popover: oklch(0.2 0.01 55);
+  --popover-foreground: oklch(0.95 0.004 75);
+
+  --primary: oklch(0.9 0.005 75);
+  --primary-foreground: oklch(0.2 0.01 55);
+
+  --secondary: oklch(0.28 0.01 55);
+  --secondary-foreground: oklch(0.95 0.004 75);
+
+  --muted: oklch(0.26 0.01 55);
+  --muted-foreground: oklch(0.74 0.01 75);
+
+  --accent: oklch(0.28 0.012 55);
+  --accent-foreground: oklch(0.95 0.004 75);
+
+  --destructive: oklch(0.704 0.191 22.216);
+
+  --border: rgb(255 255 255 / 0.1);
+  --input: rgb(255 255 255 / 0.14);
+  --ring: oklch(0.72 0.08 58);
+
+  /* ==========================================================================
+     Brand — dark
+     ========================================================================== */
+
+  --brand: oklch(0.75 0.09 58);
+  --brand-foreground: oklch(0.18 0.01 55);
+
+  /* ==========================================================================
+     Document / page identity — dark
+     ========================================================================== */
+
+  --page-bg: oklch(0.145 0.008 55);
+  --page-foreground: oklch(0.95 0.004 75);
+
+  --body-background:
+    radial-gradient(
+      circle at top,
+      oklch(0.62 0.06 58 / 0.2),
+      transparent 32rem
+    ),
+    var(--page-bg);
+
+  /* ==========================================================================
+     Shared surfaces — dark
+     ========================================================================== */
+
+  --surface-panel: rgb(255 255 255 / 0.05);
+  --surface-panel-soft: rgb(255 255 255 / 0.04);
+  --surface-subtle: rgb(255 255 255 / 0.05);
+
+  --surface-border: rgb(255 255 255 / 0.1);
+  --surface-border-strong: rgb(255 255 255 / 0.14);
+
+  --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.35);
+  --shadow-card: 0 16px 40px rgb(0 0 0 / 0.28);
+
+  /* ==========================================================================
+     Public shell — dark
+     ========================================================================== */
+
+  --shell-surface: rgb(24 24 24 / 0.9);
+  --shell-surface-blur: rgb(24 24 24 / 0.8);
+  --shell-drawer: rgb(20 20 20 / 0.96);
+  --shell-drawer-blur: rgb(20 20 20 / 0.88);
+  --shell-border: rgb(255 255 255 / 0.08);
+
+  /* ==========================================================================
+     Media / decorative blocks — dark
+     ========================================================================== */
+
+  --media-surface: rgb(255 255 255 / 0.05);
+  --media-foreground: rgb(255 255 255 / 0.58);
+
+  /* ==========================================================================
+     Sidebar admin — dark
+     ========================================================================== */
+
+  --sidebar: oklch(0.205 0.01 55);
+  --sidebar-foreground: oklch(0.95 0.004 75);
+
+  --sidebar-primary: oklch(0.75 0.09 58);
+  --sidebar-primary-foreground: oklch(0.18 0.01 55);
+
+  --sidebar-accent: oklch(0.28 0.012 55);
+  --sidebar-accent-foreground: oklch(0.95 0.004 75);
+
+  --sidebar-border: rgb(255 255 255 / 0.08);
+  --sidebar-ring: oklch(0.72 0.08 58);
+
+  /* ==========================================================================
+     Charts — dark
+     ========================================================================== */
+
+  --chart-1: oklch(0.75 0.1 58);
+  --chart-2: oklch(0.68 0.11 78);
+  --chart-3: oklch(0.6 0.08 32);
+  --chart-4: oklch(0.72 0.06 95);
+  --chart-5: oklch(0.56 0.06 18);
+}

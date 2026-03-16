@@ -176,7 +176,7 @@ export function ProductImagesSection({
           )}
 
           {parentImages.length > 0 ? (
-            <div className="grid gap-4">
+            <div className="grid gap-4 w-fit grid-cols-[repeat(auto-fit,minmax(240px,1fr))]">
               {parentImages.map(image => (
                 <ProductImageCard
                   image={image}
