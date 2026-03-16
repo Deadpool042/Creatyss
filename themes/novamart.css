@@ -1,0 +1,119 @@
+/*
+ * Theme pack — Novamart (client fictif, test de validation V15-3)
+ *
+ * Usage : copier la section :root et .dark dans globals.css du projet cible.
+ * Compléter avec les éléments hardcodés notés ci-dessous.
+ *
+ * Identité : cool, corporate, indigo, sidebar sombre en mode clair.
+ *
+ * Éléments hardcodés à copier manuellement dans les règles CSS (hors tokens) :
+ *   body { background: oklch(0.99 0 0); }    /* fond neutre, sans gradient */
+ *   :root { font-family: system-ui, sans-serif; }
+ *
+ * Tokens qui changent par rapport à Creatyss (11) :
+ *   --brand, --brand-foreground
+ *   --radius
+ *   --sidebar, --sidebar-foreground, --sidebar-primary, --sidebar-primary-foreground,
+ *   --sidebar-accent, --sidebar-accent-foreground, --sidebar-border, --sidebar-ring
+ *
+ * Tokens invariants (identiques à Creatyss) :
+ *   tous les core semantic tokens (--background → --ring)
+ */
+
+:root {
+  color-scheme: light;
+
+  /* --- Core semantic tokens — invariants structurels (identiques à Creatyss) --- */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  /* --- Géométrie — varie : plus carré, plus corporate --- */
+  --radius: 0.5rem;
+
+  /* --- Brand — varie : indigo froid --- */
+  --brand: oklch(0.52 0.18 262);          /* indigo-violet */
+  --brand-foreground: oklch(0.985 0 0);
+
+  /* --- Sidebar admin — varie : sidebar SOMBRE en mode clair --- */
+  /* Personnalité : contraste fort, sidebar foncée indigo */
+  --sidebar: oklch(0.165 0.015 262);
+  --sidebar-foreground: oklch(0.92 0 0);
+  --sidebar-primary: oklch(0.62 0.18 262);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.235 0.015 262);
+  --sidebar-accent-foreground: oklch(0.92 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.62 0.18 262);
+
+  /* --- Shell public — couche C, à adapter au storefront Novamart --- */
+  --shell-surface: rgba(255, 255, 255, 0.92);
+  --shell-surface-blur: rgba(255, 255, 255, 0.84);
+  --shell-drawer: rgba(255, 255, 255, 0.98);
+  --shell-drawer-blur: rgba(255, 255, 255, 0.94);
+
+  /* --- Charts — secondaires, peuvent rester les mêmes --- */
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+}
+
+.dark {
+  /* --- Core semantic — dark mode (même logique que Creatyss) --- */
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+
+  /* --- Brand dark — varie : indigo éclairci --- */
+  --brand: oklch(0.68 0.16 262);
+  --brand-foreground: oklch(0.985 0 0);
+
+  /* --- Sidebar dark — encore plus sombre que le mode clair --- */
+  --sidebar: oklch(0.12 0.015 262);
+  --sidebar-foreground: oklch(0.92 0 0);
+  --sidebar-primary: oklch(0.62 0.18 262);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.19 0.015 262);
+  --sidebar-accent-foreground: oklch(0.92 0 0);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(0.62 0.18 262);
+
+  /* --- Charts dark --- */
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+}
