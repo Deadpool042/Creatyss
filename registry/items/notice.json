@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "notice",
+  "type": "registry:component",
+  "description": "Inline feedback message with tone variants: success (emerald), alert (destructive), note (muted).",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/notice.tsx",
+      "type": "registry:component",
+      "content": "import type { ReactNode } from \"react\";\n\ntype NoticeTone = \"success\" | \"alert\" | \"note\";\n\ntype NoticeProps = Readonly<{\n  tone: NoticeTone;\n  children: ReactNode;\n}>;\n\nfunction getNoticeClassName(tone: NoticeTone): string {\n  switch (tone) {\n    case \"success\":\n      return \"rounded-xl border border-emerald-600/20 bg-emerald-50/60 px-4 py-3 text-sm leading-relaxed text-emerald-800\";\n    case \"alert\":\n      return \"rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm leading-relaxed text-destructive\";\n    case \"note\":\n    default:\n      return \"rounded-xl border border-border/60 bg-muted/30 px-4 py-3 text-sm leading-relaxed text-muted-foreground\";\n  }\n}\n\nexport function Notice({ tone, children }: NoticeProps) {\n  return (\n    <p\n      className={getNoticeClassName(tone)}\n      role={tone === \"alert\" ? \"alert\" : undefined}>\n      {children}\n    </p>\n  );\n}\n"
+    }
+  ]
+}

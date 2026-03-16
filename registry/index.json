@@ -1,0 +1,79 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "creatyss",
+  "homepage": "",
+  "items": [
+    {
+      "name": "notice",
+      "type": "registry:component",
+      "description": "Inline feedback message with tone variants: success (emerald), alert (destructive), note (muted).",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/notice.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "section-intro",
+      "type": "registry:component",
+      "description": "Eyebrow + title + description header block for sections. Supports h2 or h3 title tag.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/section-intro.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "admin-form-actions",
+      "type": "registry:component",
+      "description": "Flex row wrapper for admin form action buttons (submit, cancel, secondary actions).",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/admin/admin-form-actions.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "admin-form-field",
+      "type": "registry:component",
+      "description": "Admin form field wrapper with label, optional description, and input slot.",
+      "registryDependencies": ["label"],
+      "files": [
+        {
+          "path": "components/admin/admin-form-field.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "admin-page-shell",
+      "type": "registry:component",
+      "description": "Admin page top-level structure: eyebrow, title, optional description and actions slot, content area with border-b separator.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/admin/admin-page-shell.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "admin-form-section",
+      "type": "registry:component",
+      "description": "Card-based admin form section with optional eyebrow/title/description header separated from content.",
+      "registryDependencies": ["card", "separator", "section-intro"],
+      "files": [
+        {
+          "path": "components/admin/admin-form-section.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

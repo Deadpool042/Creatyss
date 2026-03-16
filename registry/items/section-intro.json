@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section-intro",
+  "type": "registry:component",
+  "description": "Eyebrow + title + description header block for sections. Supports h2 or h3 title tag.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/section-intro.tsx",
+      "type": "registry:component",
+      "content": "import type { ReactNode } from \"react\";\n\ntype SectionIntroProps = Readonly<{\n  eyebrow?: ReactNode;\n  title: ReactNode;\n  description?: ReactNode;\n  titleAs?: \"h2\" | \"h3\";\n  className?: string;\n}>;\n\nexport function SectionIntro({\n  eyebrow,\n  title,\n  description,\n  titleAs = \"h2\",\n  className\n}: SectionIntroProps) {\n  const TitleTag = titleAs;\n\n  return (\n    <div className={className}>\n      {eyebrow ? (\n        <p className=\"mb-3 text-sm font-bold uppercase tracking-[0.08em] text-muted-foreground\">\n          {eyebrow}\n        </p>\n      ) : null}\n      <TitleTag>{title}</TitleTag>\n      {description ? (\n        <p className=\"leading-[1.65] text-muted-foreground\">{description}</p>\n      ) : null}\n    </div>\n  );\n}\n"
+    }
+  ]
+}

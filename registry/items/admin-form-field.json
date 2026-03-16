@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-form-field",
+  "type": "registry:component",
+  "description": "Admin form field wrapper with label, optional description, and input slot.",
+  "dependencies": [],
+  "registryDependencies": ["label"],
+  "files": [
+    {
+      "path": "components/admin/admin-form-field.tsx",
+      "type": "registry:component",
+      "content": "import type { ReactNode } from \"react\";\nimport { Label } from \"@/components/ui/label\";\nimport { cn } from \"@/lib/utils\";\n\ntype AdminFormFieldProps = Readonly<{\n  label: ReactNode;\n  htmlFor?: string;\n  description?: ReactNode;\n  className?: string;\n  children: ReactNode;\n}>;\n\nexport function AdminFormField({\n  label,\n  htmlFor,\n  description,\n  className,\n  children\n}: AdminFormFieldProps) {\n  return (\n    <div className={cn(\"grid gap-2\", className)}>\n      <Label\n        className=\"text-sm font-medium leading-5 text-foreground\"\n        htmlFor={htmlFor}>\n        {label}\n      </Label>\n\n      {description ? (\n        <p className=\"text-sm leading-6 text-muted-foreground\">\n          {description}\n        </p>\n      ) : null}\n\n      {children}\n    </div>\n  );\n}\n"
+    }
+  ]
+}
