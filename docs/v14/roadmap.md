@@ -21,178 +21,331 @@ Chaque lot V14 doit respecter les règles suivantes :
 - suppression CSS seulement si la règle devient réellement morte
 - lisibilité du markup et du code avant tout
 
-## V14-1 — `.meta-label` storefront cleanup
+## État du chantier après les premiers lots
 
-### Objectif
+Les premiers lots V14 ont déjà permis de supprimer plusieurs familles de classes de présentation simples.
 
-Supprimer `.meta-label` côté storefront en remplaçant ses usages par du Tailwind local explicite.
+Mais le chantier n’est pas terminé.
 
-### Périmètre attendu
+Le CSS custom restant n’est plus composé principalement de petits helpers triviaux. Il reste encore :
 
-Écrans typiquement concernés :
+- du shell public
+- des surfaces partagées
+- des helpers admin encore portés par du global CSS
+- des structures storefront plus denses
+- plusieurs sélecteurs groupés qui empêchent de considérer le chantier comme clos
 
-- `/boutique/[slug]`
-- `/panier`
-- `/checkout`
-- `/checkout/confirmation/[reference]`
+En conséquence, la V14 doit être prolongée au-delà de son premier audit final prévu initialement.
 
-### Intention
+## Lecture des familles restantes
 
-Ce lot vise une famille encore très visible et encore diffusée sur plusieurs écrans, mais qui reste compréhensible et traitable de manière ciblée.
+Le CSS custom encore présent se répartit désormais en quatre groupes :
 
-### Attendus
+### 1. Thème et fondations globales
 
-- audit des usages réels
-- remplacement local cohérent
-- suppression de la règle CSS si elle devient réellement morte
-- aucun changement métier ni structurel majeur
+Ces éléments ne sont pas la cible de V14 :
 
-### Risque principal
+- variables `:root`
+- mode `.dark`
+- `@theme inline`
+- `@layer base`
+- resets globaux utiles
 
-Créer des écarts visuels entre les contextes storefront si le remplacement n’est pas suffisamment homogène.
+### 2. Shell public et surfaces simples
 
----
+Encore traitables sans refonte lourde :
 
-## V14-2 — Storefront text/meta cleanup
+- `.site`
+- `.site-header`
+- `.site-main`
+- `.page`
+- `.hero`
+- `.hero-copy`
+- `.card`
+- `.section`
+- `.shell`
+- `.shell-drawer`
 
-### Objectif
+### 3. Helpers et surfaces admin encore globales
 
-Traiter les autres classes de texte et métadonnées encore globales si leur remplacement local devient suffisamment simple.
+Encore présentes mais potentiellement remplaçables par du Tailwind local ou des composants déjà stabilisés :
 
-### Cibles probables
+- `.admin-area`
+- `.admin-field`
+- `.admin-actions`
+- `.admin-product-subsection`
+- `.admin-product-card`
+- `.admin-blog-card`
+- `.admin-variant-card`
+- `.admin-image-card`
 
-- `.card-kicker`
-- `.card-meta`
-- `.card-copy`
-- `.variant-meta`
+### 4. Structures storefront denses
 
-### Intention
+Toujours actives et plus coûteuses à supprimer :
 
-Réduire les derniers styles typographiques partagés quand ils n’apportent plus assez de valeur pour rester globaux.
-
-### Attendus
-
-- audit des usages
-- qualification par famille
-- remplacement local si le ratio gain / risque est bon
-- cleanup CSS uniquement si une famille devient réellement morte
-
-### Risque principal
-
-Multiplier les styles inline hétérogènes si le lot n’est pas mené de façon cohérente.
-
----
-
-## V14-3 — Simple public layout helpers cleanup
-
-### Objectif
-
-Réduire certaines classes de structure légère encore présentes sur les pages publiques.
-
-### Cibles probables
-
-- `.empty-state`
-- `.card-grid`
 - `.store-card`
-
-### Intention
-
-Tester jusqu’où les helpers de layout simples peuvent être remplacés proprement sans dégrader la lisibilité ni provoquer une duplication excessive.
-
-### Attendus
-
-- audit des usages réels
-- décision explicite par famille
-- cleanup ciblé seulement si le remplacement local reste sobre
-
-### Risque principal
-
-Transformer des helpers stables et utiles en duplication diffuse sans gain réel.
-
----
-
-## V14-4 — Dense storefront structure cleanup
-
-### Objectif
-
-Aborder les familles de classes storefront plus structurelles et plus denses, uniquement si les lots précédents montrent que le coût reste acceptable.
-
-### Cibles probables
-
-- `.product-*`
-- `.variant-*`
+- `.variant-card`
+- `.product-panel`
+- `.product-summary*`
 - `.cart-*`
 - `.checkout-*`
+- `.product-gallery`
+- `.variant-images`
+- `.variant-media`
+- `.product-media`
+- `.article-cover`
 
-### Intention
+## Ce que V14 a déjà traité
 
-Ne traiter ce niveau que si le projet montre qu’il est possible d’aller plus loin sans casser la maintenabilité.
+### V14-1 — `.meta-label` storefront cleanup
 
-### Attendus
+Terminé.
 
-- audit précis par sous-famille
-- décision explicite sur ce qui peut être remplacé et ce qui doit rester
-- aucun chantier global incontrôlé
+### V14-1B — Admin `meta-label` cleanup
 
-### Risque principal
+Terminé.
 
-Rouvrir de fait une refonte complète du storefront sous prétexte de cleanup CSS.
+### V14-2 — Storefront text/meta cleanup
+
+Terminé partiellement avec suppression de :
+
+- `.card-kicker`
+- `.card-meta` côté storefront
+- `.variant-meta`
+
+Conservation explicite de `.card-copy`.
+
+### V14-3 — Simple public layout helpers cleanup
+
+Terminé partiellement avec suppression de :
+
+- `.card-grid`
+
+Conservation explicite de :
+
+- `.store-card`
+- `.empty-state`
+
+### V14-4 — Dense storefront structure cleanup
+
+Terminé partiellement avec suppression de :
+
+- `.product-layout`
+- `.product-price`
+- `.variant-badges`
+
+### V14-5 — Editorial cleanup
+
+Terminé partiellement avec suppression de :
+
+- `.article-layout`
+- `.article-content`
+
+## Refonte de la deuxième moitié de V14
+
+Le lot initialement prévu comme audit final ne suffit plus à clôturer le chantier si l’objectif reste bien de supprimer presque tout le CSS custom encore remplaçable.
+
+La roadmap V14 est donc prolongée avec une seconde vague plus structurelle.
+
+## V14-6A — Easy cleanup audit
+
+### Statut
+
+Déjà effectué.
+
+### Rôle
+
+Constater qu’il n’y avait plus de suppressions triviales immédiates à ce stade.
+
+### Limite
+
+Ce lot ne doit plus être considéré comme la clôture effective de V14, mais comme la fin de la phase de nettoyage simple.
 
 ---
 
-## V14-5 — Editorial cleanup
+## V14-6B — Public shell and surface cleanup
 
 ### Objectif
 
-Traiter éventuellement les classes éditoriales restantes si elles sont peu nombreuses et encore simplifiables.
+Réduire le CSS global encore présent sur les wrappers et surfaces publiques simples, sans refondre les pages.
 
 ### Cibles probables
 
-- `.article-*`
+- `.site`
+- `.site-header`
+- `.site-main`
+- `.page`
+- `.hero`
+- `.hero-copy`
+- `.card`
+- `.section`
+- `.shell`
+- `.shell-drawer`
 
 ### Intention
 
-Clore proprement les reliquats éventuels du côté éditorial, sans priorité absolue.
-
-### Attendus
-
-- audit de l’intérêt réel
-- cleanup seulement si le bénéfice est net
+Faire tomber les classes globales les plus transverses qui sont encore simples à réexprimer localement ou via les primitives déjà stabilisées.
 
 ### Risque principal
 
-Passer du temps sur une zone stable qui n’apporte qu’un gain marginal.
+Créer de la duplication diffuse sur plusieurs pages si le lot est mené sans discipline.
 
 ---
 
-## V14-6 — Final audit
+## V14-6C — Admin utility cleanup
 
 ### Objectif
 
-Faire l’audit final du CSS custom restant après les lots précédents.
+Supprimer autant que possible les helpers admin encore portés par le CSS global lorsqu’ils sont déjà redondants avec Tailwind ou les composants admin stabilisés.
+
+### Cibles probables
+
+- `.admin-area`
+- `.admin-field`
+- `.admin-actions`
+- `.admin-product-subsection`
+- `.admin-product-card`
+- `.admin-blog-card`
+- `.admin-variant-card`
+- `.admin-image-card`
+
+### Intention
+
+Profiter de la maturité de `AdminPageShell`, `AdminFormField`, `AdminFormActions` et des autres composants admin pour réduire encore le global CSS côté back-office.
+
+### Risque principal
+
+Faire un cleanup incohérent si le markup conserve des noms de classe no-op sans suppression coordonnée.
+
+---
+
+## V14-7 — Shared surface groups cleanup
+
+### Objectif
+
+Traiter les gros sélecteurs groupés encore présents dans `globals.css` et casser les dépendances artificielles entre familles de composants différentes.
+
+### Cibles probables
+
+Exemples de groupes encore structurants :
+
+- `.hero, .section, .card`
+- `.store-card, .variant-card, .empty-state`
+- `.store-card, .variant-card, .product-panel, .empty-state`
+- `.hero-media, .media-placeholder, .product-media, .article-cover`
+- `.hero-media, .product-media, .article-cover, .variant-media`
+- `.media-image, .product-media img, .article-cover img, .variant-media img`
+
+### Intention
+
+Rendre explicites les responsabilités CSS restantes au lieu de conserver de grands groupes hérités qui bloquent les suppressions fines.
+
+### Risque principal
+
+Introduire une fragmentation inutile si les groupes sont cassés sans stratégie de remplacement claire.
+
+---
+
+## V14-8 — Cart and checkout structure cleanup
+
+### Objectif
+
+Aborder les familles encore actives du panier et du checkout, qui restent largement structurées par le CSS global.
+
+### Cibles probables
+
+- `.cart-page`
+- `.cart-layout`
+- `.cart-list`
+- `.cart-summary`
+- `.cart-line`
+- `.cart-add-form`
+- `.cart-line-form`
+- `.checkout-layout`
+- `.checkout-form`
+- `.checkout-summary`
+- `.checkout-line-list`
+- `.checkout-line`
+
+### Intention
+
+Réduire la dépendance au CSS global sur les flux transactionnels sans casser la lisibilité ni le responsive.
+
+### Risque principal
+
+Rouvrir de fait une refonte du panier et du checkout si le lot devient trop large.
+
+---
+
+## V14-9 — Product and variant structure cleanup
+
+### Objectif
+
+Poursuivre la réduction du CSS global sur la fiche produit et les variantes, uniquement sur les sous-familles réellement remplaçables.
+
+### Cibles probables
+
+- `.product-gallery`
+- `.product-panel`
+- `.product-summary`
+- `.product-summary-header`
+- `.product-summary-stats`
+- `.product-summary-stat`
+- `.product-copy`
+- `.variant-list`
+- `.variant-card`
+- `.variant-header`
+- `.variant-purchase`
+- `.variant-details`
+- `.variant-detail`
+- `.variant-images`
+- `.variant-media`
+
+### Intention
+
+Finir proprement la zone storefront produit/variante autant que raisonnablement possible, sans sacrifier les sélecteurs e2e ni les layouts stables.
+
+### Risque principal
+
+Dégrader la maintenabilité du JSX si le remplacement local devient trop lourd.
+
+---
+
+## V14-10 — Real final audit
+
+### Objectif
+
+Établir le véritable audit final du CSS custom restant après toute la seconde vague V14.
 
 ### Attendus
 
 - état des lieux final
-- liste des règles supprimées pendant V14
-- liste du CSS restant
-- qualification explicite de ce qui est conservé
-- préparation de la sortie de V14
+- liste des règles supprimées pendant toute la V14
+- qualification du CSS restant
+- identification explicite du résiduel assumé
+- conclusion claire sur la fin réelle du chantier CSS
 
 ### Intention
 
-Marquer la fin de la phase d’élimination du CSS custom et clarifier ce qui reste comme base structurelle minimale ou comme choix assumé.
+Marquer la fin effective de la phase d’élimination du CSS custom, avec une lecture honnête de ce qui reste encore structurellement justifié.
 
 ---
 
-## Ordre recommandé
+## Ordre recommandé actualisé
 
 1. V14-1 — `.meta-label` storefront cleanup
-2. V14-2 — Storefront text/meta cleanup
-3. V14-3 — Simple public layout helpers cleanup
-4. V14-4 — Dense storefront structure cleanup
-5. V14-5 — Editorial cleanup
-6. V14-6 — Final audit
+2. V14-1B — Admin `meta-label` cleanup
+3. V14-2 — Storefront text/meta cleanup
+4. V14-3 — Simple public layout helpers cleanup
+5. V14-4 — Dense storefront structure cleanup
+6. V14-5 — Editorial cleanup
+7. V14-6A — Easy cleanup audit
+8. V14-6B — Public shell and surface cleanup
+9. V14-6C — Admin utility cleanup
+10. V14-7 — Shared surface groups cleanup
+11. V14-8 — Cart and checkout structure cleanup
+12. V14-9 — Product and variant structure cleanup
+13. V14-10 — Real final audit
 
 ## Sortie attendue de V14
 
@@ -200,8 +353,9 @@ Marquer la fin de la phase d’élimination du CSS custom et clarifier ce qui re
 
 - d’un CSS custom fortement réduit
 - d’un markup plus explicite localement
-- d’un nombre limité de classes globales encore justifiées
-- d’une base frontend plus proche d’un fonctionnement presque entièrement piloté par Tailwind et les composants UI déjà stabilisés
+- d’un nombre très limité de classes globales encore justifiées
+- d’une séparation plus claire entre thème global, structure indispensable et styles de présentation courants
+- d’une base frontend suffisamment propre pour que la dette CSS ne soit plus un sujet prioritaire
 
 ## Suite logique après V14
 
