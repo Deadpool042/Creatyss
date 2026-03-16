@@ -35,7 +35,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
   }
 
   return (
-    <div className="site">
+    <div className="min-h-screen">
       <header className="site-header z-30 border-black/5">
         <div className="mx-auto flex w-full max-w-7xl flex-col items-start justify-between gap-4 px-4 min-h-[4.5rem] md:flex-row md:items-center md:min-h-16 md:px-6">
           <Link
@@ -124,7 +124,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
         </div>
       </header>
 
-      <main className="site-main">{children}</main>
+      <main className="w-full mx-auto pt-8 pb-16">{children}</main>
     </div>
   );
 }

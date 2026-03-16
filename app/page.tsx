@@ -25,7 +25,7 @@ export default async function HomePage() {
   return (
     <div className="page">
       <section className="hero">
-        <div className="hero-copy">
+        <div className="grid gap-4">
           <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
             Boutique publique
           </p>
