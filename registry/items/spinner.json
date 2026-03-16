@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "type": "registry:ui",
+  "description": "Minimal loading spinner using Loader2Icon with animate-spin and ARIA role=\"status\".",
+  "dependencies": ["lucide-react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/spinner.tsx",
+      "type": "registry:ui",
+      "content": "import { cn } from \"@/lib/utils\"\nimport { Loader2Icon } from \"lucide-react\"\n\nfunction Spinner({ className, ...props }: React.ComponentProps<\"svg\">) {\n  return (\n    <Loader2Icon role=\"status\" aria-label=\"Loading\" className={cn(\"size-4 animate-spin\", className)} {...props} />\n  )\n}\n\nexport { Spinner }\n"
+    }
+  ]
+}

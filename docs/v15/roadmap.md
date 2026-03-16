@@ -221,22 +221,19 @@ Lot de complément qui a permis de valider complètement le workflow namespace e
 
 ## V15-5 — Selective public registry extraction
 
+**Statut : validé. 2 items extraits (`empty`, `spinner`). Storefront conservé local.**
+
 ### Objectif
 
 Extraire seulement quelques patterns publics réellement stables et réutilisables.
 
-### Cibles probables
+### Résultat
 
-- surfaces neutres
-- wrappers de sections
-- empty states sobres
-- blocs de contenu premium simples
-
-### Attendus
-
-- très petit nombre d’items publics extraits
-- justification explicite de chaque extraction
-- maintien de la flexibilité storefront locale
+- Storefront public : 0 pattern extractible (tout couplé à Creatyss)
+- `empty` extrait : compound empty state, 100% token-driven, zéro contenu Creatyss
+- `spinner` extrait : loading spinner trivial, universel
+- `item`, `field`, `input-group` : reportés à V15-6 (primitives transverses, pas storefront)
+- Registry passe de 6 à 8 items
 
 ### Intention
 

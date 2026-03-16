@@ -1,227 +1,185 @@
 # V15-5 — Selective public registry extraction
 
+## Statut
+
+**Validé. Extraction ultra-sélective : 2 items extraits. Storefront local conservé.**
+
+---
+
 ## Objectif du lot
 
-Le lot V15-5 prend le relais après la stratégie registry, la première extraction admin, la fondation des thèmes et la validation du workflow MCP.
+Déterminer s'il existe dans le repo un très petit nombre de patterns publics réellement neutres, sobres et réutilisables, qui méritent de sortir en registry sans figer le storefront Creatyss.
 
-Son rôle n’est pas d’extraire le storefront complet, ni de figer la couche publique dans une structure commune à tous les projets. Son rôle est plus précis : identifier quelques patterns publics réellement neutres, suffisamment stables et assez peu dépendants du storytelling d’un client pour mériter de sortir en registry.
+---
 
-L’idée directrice est simple :
+## Audit des candidats publics
 
-> le public reste majoritairement spécifique au projet, mais certains blocs transverses sobres peuvent devenir réutilisables.
+### Méthode
 
-## Intention
+Analyse de tous les fichiers sous `components/` (hors `components/admin/` et `components/ui/`) et sous `components/ui/` pour identifier les patterns sans couplage Creatyss.
 
-V15-5 est un lot d’extraction sélective et disciplinée.
+### Résultats de l'audit
 
-Contrairement à l’admin, le public n’a pas le même niveau naturel de mutualisation.
+#### Storefront public — 0 pattern extractible
 
-Ce lot doit donc éviter deux erreurs :
+| Composant | Raison du refus |
+|-----------|----------------|
+| `components/public/public-site-shell.tsx` | Nom "Creatyss" hardcodé, logo `/uploads/logo.svg`, nav links hardcodés ("Accueil", "Boutique", "Blog"), labels français, variables CSS `--shell-*` spécifiques |
+| `app/page.tsx` (homepage) | Storytelling Creatyss, données catalogue, labels français, classes CSS spécifiques |
+| `app/boutique/` | Catalogue Creatyss, modèle de données spécifique, français |
+| `app/blog/` | Narration éditoriale Creatyss, français |
+| `app/panier/` `app/checkout/` | Logique métier panier/commande, "France" hardcodé |
 
-- extraire trop de blocs publics trop tôt
-- ne rien extraire du tout alors que certains patterns neutres ont déjà prouvé leur stabilité
+**Conclusion storefront** : rien n'est extractible tel quel. Tout le storefront est couplé au projet Creatyss.
 
-Le bon niveau est intermédiaire :
+#### `components/ui/` — candidats génériques
 
-- peu d’items
-- très ciblés
-- très sobres
-- peu couplés à la narration Creatyss
-- fortement pilotés par les tokens
+| Composant | Extractible ? | Raison |
+|-----------|---------------|--------|
+| `empty.tsx` | **OUI** | Compound empty state, zéro couplage, 100% token-driven, API propre |
+| `spinner.tsx` | **OUI** | Trivial, universel, zéro couplage |
+| `item.tsx` | Pas dans V15-5 | Excellente primitive liste, mais pas un pattern public storefront — V15-6 |
+| `field.tsx` | Pas dans V15-5 | Excellente primitive formulaire, idem — V15-6 |
+| `input-group.tsx` | Pas dans V15-5 | Primitive formulaire — V15-6 |
+| `data-table.tsx` | NON | Strings français hardcodées ("Filtrer...", "Aucun résultat.", "Précédent", "Suivant") |
+| `combobox.tsx` | NON | Dépendance `@base-ui/react` non standard, complexité élevée |
 
-## Résultat attendu
+#### Artefacts scaffold (hors périmètre)
 
-À l’issue de V15-5, le projet doit idéalement disposer :
+- `components/section-cards.tsx` — aucune prop, données hardcodées, résidu shadcn scaffold
+- `components/site-header.tsx` — lien GitHub shadcn hardcodé, "Documents", résidu scaffold
 
-- d’un petit lot de patterns publics réellement réutilisables
-- d’une frontière plus claire entre public générique et storefront spécifique client
-- d’items publics qui restent neutres et compatibles avec plusieurs thèmes
-- d’une justification explicite des patterns publics laissés dans le projet local
-- d’un registry qui s’enrichit sans devenir un doublon du storefront Creatyss
+---
 
-## Ce que couvre ce lot
+## Patterns retenus
 
-V15-5 couvre :
+### `empty` — Compound empty state
 
-- l’audit des patterns publics encore candidats à l’extraction
-- la qualification de ces patterns selon leur niveau réel de neutralité
-- l’extraction d’un très petit nombre d’items publics stables
-- l’ajustement éventuel des patterns sélectionnés pour les rendre plus réutilisables
-- la documentation de ce qui sort et de ce qui reste local
+**Fichier** : `components/ui/empty.tsx`
 
-## Ce que ce lot ne couvre pas
+**Pourquoi** :
+- Explicitement mentionné comme cible probable dans le roadmap V15-5
+- Composant compound : `Empty`, `EmptyHeader`, `EmptyMedia`, `EmptyTitle`, `EmptyDescription`, `EmptyContent`
+- Zéro contenu Creatyss
+- 100% token-driven : `bg-muted`, `text-muted-foreground`, `text-foreground`, `text-primary`
+- API simple et extensible via `className`
+- CVA pour les variants `EmptyMedia` (`default` / `icon`)
+- Utilisable dans n'importe quel projet : panier vide, résultats vides, erreurs, états initiaux
 
-V15-5 ne couvre pas :
+**Compatible thèmes** : oui — `creatyss.css` et `novamart.css` utilisent les mêmes tokens.
 
-- l’extraction du storefront complet
-- la généralisation des pages publiques entières
-- une refonte du front marketing
-- la réécriture du catalogue public
-- des changements métier
-- des abstractions massives ou spéculatives
+### `spinner` — Loading spinner
 
-## Candidats probables
+**Fichier** : `components/ui/spinner.tsx`
 
-Les meilleurs candidats publics sont probablement des patterns de surface ou de structure légère, par exemple :
+**Pourquoi** :
+- Composant trivial, universellement utile
+- Zéro couplage, zéro contenu projet
+- `role="status"` + `aria-label="Loading"` corrects
+- `currentColor` via lucide — s'adapte automatiquement au contexte
+- 7 lignes, aucune surprise
 
-- une section publique sobre
-- un panneau ou wrapper premium neutre
-- un empty state générique
-- un bloc de contenu simple
-- un shell ou wrapper public réutilisable
+**Compatible thèmes** : oui — hérite de `currentColor`, aucun token spécifique requis.
 
-La liste réelle doit être confirmée par l’état du repo.
+---
 
-Le lot doit se méfier de tout ce qui dépend fortement :
+## Patterns explicitement refusés
 
-- du storytelling de la home
-- du catalogue Creatyss
-- de la narration éditoriale
-- d’une composition de page trop spécifique
+### Storefront public
 
-## Pourquoi ce lot doit rester petit
+Tout le storefront public est refusé. La raison est simple et systématique : **chaque composant public porte l'identité narrative de Creatyss** — nom de marque, langue française, liens catalogue, variables CSS spécifiques, ou logique métier propre au projet.
 
-La couche publique est, par nature, plus variable que l’admin.
+Extraire quoi que ce soit du storefront public tel quel reviendrait à extraire Creatyss, pas un pattern réutilisable.
 
-Ce qui change d’un projet à l’autre peut inclure :
+### `item`, `field`, `input-group`
 
-- la structure de la home
-- les priorités marketing
-- les sections mises en avant
-- le ton éditorial
-- le style des hero
-- la densité visuelle
-- les besoins du catalogue
+Ces composants sont d'excellentes primitives UI génériques. Ils sont cependant :
+- des primitives transverses (admin + public), pas des patterns publics storefront spécifiques
+- mieux placés dans un lot de consolidation des primitives UI (V15-6)
 
-Cela signifie qu’un pattern public ne doit sortir en registry que s’il a une vraie neutralité structurelle.
+Leur exclusion de V15-5 n'est pas un refus — c'est un report au bon lot.
 
-Sinon, il doit rester dans le projet local.
+### `data-table`
 
-## Questions auxquelles le lot doit répondre
+Strings français hardcodées dans la pagination et les états vides. Pas extractible sans ajouter une couche i18n ou des props de texte, ce qui sort du périmètre.
 
-### 1. Le pattern public est-il réellement neutre ?
+### `auth-shell`
 
-Un bloc n’est pas réutilisable simplement parce qu’il est joli ou déjà présent à plusieurs endroits.
+Une couleur warm amber hardcodée (`rgba(217,119,6,0.14)`) dans un dégradé décoratif. Techniquement mineur, mais aussi hors du périmètre "public storefront" de V15-5.
 
-Il doit être suffisamment générique pour servir dans plusieurs projets sans transporter la personnalité narrative de Creatyss.
+---
 
-### 2. Le pattern dépend-il principalement du thème ?
+## Modifications appliquées
 
-Un bon candidat public est souvent un pattern dont l’identité dépend surtout des tokens et du thème, pas d’un contenu ou d’une structure marketing propre à Creatyss.
+### Nouveaux fichiers registry
 
-### 3. Le pattern a-t-il une API simple ?
+- `registry/items/empty.json` — item avec contenu inline, type `registry:ui`
+- `registry/items/spinner.json` — item avec contenu inline, type `registry:ui`
 
-Un item public trop configurable ou trop couplé à un contexte local n’est pas un bon premier candidat à l’extraction.
+### `registry/index.json`
 
-### 4. Le pattern a-t-il plusieurs usages réels ou une vraie réutilisabilité plausible ?
+Ajout des deux entrées `empty` et `spinner`.
 
-La réutilisation ne doit pas être purement théorique.
+### Aucune modification du code applicatif
 
-### 5. Le pattern reste-t-il utile après extraction ?
+Les fichiers `components/ui/empty.tsx` et `components/ui/spinner.tsx` sont inchangés. L'extraction est additive.
 
-L’extraction ne doit pas produire un item abstrait sans usage concret.
+---
 
-## Critères de sélection recommandés
+## Typecheck
 
-Un pattern public est un bon candidat s’il :
+```
+pnpm run typecheck → clean (0 erreur)
+```
 
-- reste visuellement sobre
-- a une structure générique
-- dépend principalement des tokens
-- n’est pas fortement couplé à un contenu précis
-- peut être utilisé dans plusieurs projets sans réécriture lourde
-- n’embarque pas une logique métier spécifique
-- garde une API simple
+---
 
-À l’inverse, il doit rester local s’il :
+## Impact sur le registry
 
-- dépend du storytelling Creatyss
-- mélange structure et contenu marketing spécifique
-- impose une composition de page trop contextualisée
-- suppose un catalogue ou une narration donnée
-- n’a pas de vraie réutilisabilité hors du projet actuel
+Le registry passe de 6 à 8 items :
 
-## Doctrine d’extraction publique
+| # | Nom | Type | Couche |
+|---|-----|------|--------|
+| 1 | `notice` | `registry:component` | Transverse |
+| 2 | `section-intro` | `registry:component` | Transverse |
+| 3 | `admin-form-actions` | `registry:component` | Admin |
+| 4 | `admin-form-field` | `registry:component` | Admin |
+| 5 | `admin-page-shell` | `registry:component` | Admin |
+| 6 | `admin-form-section` | `registry:component` | Admin |
+| 7 | `empty` | `registry:ui` | Transverse |
+| 8 | `spinner` | `registry:ui` | Transverse |
 
-### 1. Extraire des patterns, pas des pages
+---
 
-Le bon niveau de réutilisation publique est rarement la page complète.
+## Impact sur le theming
 
-Le bon niveau est plutôt :
+Les deux items extraits sont entièrement pilotés par tokens :
 
-- une surface
-- un wrapper
-- un panel
-- une section simple
-- un empty state
-- un bloc de contenu neutre
+- `empty` : `bg-muted`, `text-muted-foreground`, `text-foreground`, `text-primary` — tokens présents dans `creatyss.css` et `novamart.css`
+- `spinner` : hérite de `currentColor` — aucun token spécifique requis
 
-### 2. Le thème doit porter la personnalité
+**Les deux items fonctionnent sans modification sur les deux thèmes.**
 
-Un item public extrait doit pouvoir changer de caractère principalement via le thème.
+---
 
-### 3. Le storefront du client reste local
+## Conclusion
 
-Ce qui relève de la narration ou de la stratégie de marque du client doit rester dans le projet.
+### Extraction publique utile, mais limitée
 
-### 4. Mieux vaut peu d’items publics, mais bons
+L'extraction publique de V15-5 produit 2 items.
 
-La discipline est plus importante que le volume.
+Ce chiffre est volontaire et honnête.
 
-## Ce que le lot doit éviter
+Le storefront Creatyss est trop couplé à l'identité du projet pour en sortir des patterns génériques sans réécriture. Ce n'est pas un problème — c'est la nature normale d'un storefront e-commerce.
 
-### 1. Extraire une home déguisée en bloc réutilisable
+Les seuls patterns publics réellement neutres et extractibles en l'état sont `empty` et `spinner`, deux composants sans aucun contenu Creatyss, entièrement pilotés par les tokens du thème.
 
-Un bloc très lié à Creatyss ne doit pas sortir en registry sous un faux nom neutre.
+### Ce qui attend V15-6
 
-### 2. Confondre surface neutre et marketing spécifique
+Les primitives UI génériques `item`, `field`, `input-group` sont des candidats forts pour V15-6 (consolidation registry). Elles n'ont pas été extraites ici car elles sont des primitives transverses, pas des patterns publics storefront.
 
-Une section premium réutilisable n’est pas un storytelling de marque.
-
-### 3. Créer des composants publics trop configurables
-
-Un item trop flexible devient souvent difficile à réutiliser proprement.
-
-### 4. Dégrader la lisibilité du projet local
-
-L’extraction doit clarifier, pas rendre le storefront actuel plus opaque.
-
-## Livrables attendus
-
-Le lot doit idéalement produire :
-
-- un audit clair des candidats publics
-- un très petit nombre d’items publics extraits
-- une justification explicite des items sortis
-- une justification explicite des patterns publics laissés locaux
-- une validation que les items publics extraits restent compatibles avec plusieurs thèmes
-
-## Validation attendue
-
-### Validation de réutilisabilité
-
-Le lot doit permettre de répondre à la question :
-
-> est-ce que ce pattern public peut vraiment être réinstallé dans un autre projet sans embarquer l’identité Creatyss par défaut ?
-
-### Validation de lisibilité
-
-Le projet local doit rester compréhensible après extraction.
-
-### Validation de theming
-
-Les items publics extraits doivent réagir proprement aux thèmes sans nécessiter de hardcoding visuel supplémentaire.
+---
 
 ## Suite logique
 
-Une fois V15-5 terminé, la suite logique est :
-
-### V15-6 — Registry consolidation and documentation
-
-Ce lot devra consolider le registry, documenter les conventions retenues et clôturer proprement la première phase d’extraction multi-projets.
-
-## Résumé
-
-V15-5 est un lot d’extraction publique volontairement sélectif.
-
-Il sert à sortir seulement quelques patterns publics réellement neutres et réutilisables, tout en assumant que la majeure partie du storefront doit rester spécifique au projet et au client.
+V15-5 étant clos, la suite est **V15-6 — Registry consolidation and documentation**.

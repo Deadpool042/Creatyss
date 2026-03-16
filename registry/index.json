@@ -74,6 +74,32 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "description": "Compound empty state component: centered dashed container with optional icon, title, description, and content slots.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/empty.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "description": "Minimal loading spinner using Loader2Icon with animate-spin and ARIA role=\"status\".",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
