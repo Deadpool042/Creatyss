@@ -119,10 +119,6 @@ a {
 .hero,
 .section {
   width: 100%;
-}
-
-.hero,
-.section {
   border: 1px solid rgba(31, 31, 31, 0.08);
   border-radius: 1rem;
   background: rgba(255, 255, 255, 0.92);
@@ -195,6 +191,7 @@ h3 {
 .variant-list {
   display: grid;
   gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
 
 .store-card,
@@ -301,10 +298,6 @@ h3 {
 .variant-media,
 .article-cover {
   min-height: 14rem;
-}
-
-.variant-list {
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
 
 .variant-images {
