@@ -67,7 +67,7 @@
       "name": "admin-form-section",
       "type": "registry:component",
       "description": "Card-based admin form section with optional eyebrow/title/description header separated from content.",
-      "registryDependencies": ["card", "separator", "./registry/items/section-intro.json"],
+      "registryDependencies": ["card", "separator", "@creatyss/section-intro"],
       "files": [
         {
           "path": "components/admin/admin-form-section.tsx",

@@ -185,6 +185,8 @@ Montrer que le vrai point de variation entre projets est bien le thème, pas la 
 
 ## V15-4 — MCP workflow validation
 
+**Statut : validé (complété par V15-4B).**
+
 ### Objectif
 
 Valider un vrai usage du MCP shadcn avec le registry produit.
@@ -200,6 +202,20 @@ Valider un vrai usage du MCP shadcn avec le registry produit.
 ### Intention
 
 Éviter de mettre en place un registry “théorique” non utilisé en pratique.
+
+### V15-4B — Local HTTPS and hosted registry validation
+
+**Statut : validé.**
+
+Lot de complément qui a permis de valider complètement le workflow namespace en conditions HTTPS réelles.
+
+- Traefik + nginx locaux opérationnels
+- `https://registry.creatyss.localhost` servi et accessible
+- namespace `@creatyss` fonctionnel dans `components.json`
+- `npx shadcn add @creatyss/notice --dry-run` → OK
+- `npx shadcn add @creatyss/admin-form-section --dry-run` → OK (dépendances résolues)
+- friction documentée : `NODE_EXTRA_CA_CERTS` requis pour Node.js + mkcert
+- hébergement public non requis pour valider le workflow local
 
 ---
 

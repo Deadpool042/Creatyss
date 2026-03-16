@@ -4,9 +4,11 @@ COMPOSE := docker compose --env-file $(ENV_FILE)
 APP_SERVICE := app
 DB_SERVICE := db
 STRIPE_WEBHOOK_FORWARD_URL ?= http://localhost:3000/api/stripe/webhook
+CERT_DIR := docker/traefik/certs
+CERT_DOMAINS := creatyss.localhost registry.creatyss.localhost
 
 
-.PHONY: help up down restart build logs ps sh dev typecheck db-schema db-seed-dev db-reset-dev test test-unit test-e2e test-e2e-ui test-e2e-headed test-select stripe-dev
+.PHONY: help up down restart build logs ps sh dev typecheck db-schema db-seed-dev db-reset-dev test test-unit test-e2e test-e2e-ui test-e2e-headed test-select stripe-dev certs hosts-setup
 
 help:
 	@echo "Usage: make [target]"
@@ -24,12 +26,26 @@ help:
 	@echo "  db-seed-dev     - Applique les fichiers de seed SQL sur la base de dev"
 	@echo "  db-reset-dev    - Reset la base de dev (down -v, up -d --build, db-schema, db-seed-dev)"
 	@echo "  stripe-dev      - Lance le serveur de mock Stripe pour le dev"
+	@echo "  certs           - Genere les certs TLS locaux via mkcert"
+	@echo "  hosts-setup     - Ajoute les entrees /etc/hosts pour creatyss.localhost"
 	@echo "  test            - Lance les tests unitaires"
 	@echo "  test-unit       - Lance les tests unitaires"
 	@echo "  test-e2e        - Lance les tests E2E"
 	@echo "  test-e2e-ui     - Lance Playwright en mode UI"
 	@echo "  test-e2e-headed - Lance Playwright avec navigateur visible"
 	@echo "  test-select     - Ouvre un menu pour choisir le type de test"
+
+certs:
+	@echo "Generating local TLS certs with mkcert..."
+	@mkdir -p $(CERT_DIR)
+	mkcert -cert-file $(CERT_DIR)/local.crt -key-file $(CERT_DIR)/local.key $(CERT_DOMAINS)
+	@echo "Done. Certs written to $(CERT_DIR)/"
+
+hosts-setup:
+	@echo "Adding local DNS entries to /etc/hosts (requires sudo)..."
+	@grep -q "creatyss.localhost" /etc/hosts || echo "127.0.0.1 creatyss.localhost" | sudo tee -a /etc/hosts
+	@grep -q "registry.creatyss.localhost" /etc/hosts || echo "127.0.0.1 registry.creatyss.localhost" | sudo tee -a /etc/hosts
+	@echo "Done."
 
 stripe-dev:
 	stripe listen --forward-to $(STRIPE_WEBHOOK_FORWARD_URL)
