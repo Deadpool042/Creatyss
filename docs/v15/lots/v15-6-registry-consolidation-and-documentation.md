@@ -1,225 +1,244 @@
 # V15-6 — Registry consolidation and documentation
 
-## Objectif du lot
+## Statut
 
-Le lot V15-6 clôt la première phase de la V15 consacrée à l’extraction registry et à la fondation d’un socle multi-projets.
+**Validé. V15 est terminée. Le registry compte 11 items.**
 
-Après :
+---
 
-- la stratégie d’extraction
-- la première extraction admin
-- la validation de la couche thème
-- la validation du workflow MCP
-- l’éventuelle extraction sélective de quelques patterns publics
+## Audit final du registry
 
-ce lot a pour rôle de consolider l’ensemble, de documenter clairement ce qui a été mis en place, et de rendre la base réellement exploitable pour un prochain projet.
+### État avant V15-6
 
-L’objectif n’est plus d’ajouter de nouveaux patterns “par principe”. L’objectif est de transformer les décisions prises pendant V15 en un système lisible, maintenable et réutilisable.
+8 items extraits lors des lots V15-2, V15-4, V15-5.
 
-## Intention
+### Candidats restants examinés
 
-V15-6 est un lot de consolidation.
+| Composant | Verdict | Raison |
+|-----------|---------|--------|
+| `item.tsx` | **Extrait** | Compound list-item, zéro couplage, 100% token-driven, CVA, `asChild`, API propre |
+| `field.tsx` | **Extrait** | Compound form field avec déduplication d'erreurs, orientations responsive, zéro couplage |
+| `input-group.tsx` | **Extrait** | Compound input avec addons inline/block, gestion complète focus/invalid, zéro couplage |
 
-Il doit éviter deux dérives :
+Les trois composants passent tous les critères : aucun contenu Creatyss, entièrement pilotés par les tokens du thème, API lisible, CVA standard, utilisables dans n'importe quel projet.
 
-- terminer V15 avec un registry techniquement présent mais difficile à comprendre
-- laisser plusieurs conventions implicites, dispersées entre les lots, sans documentation claire pour un futur projet
+### Typecheck
 
-Ce lot sert à rendre explicite ce que la V15 a réellement produit :
+```
+pnpm run typecheck → clean (0 erreur)
+```
 
-- ce qui est maintenant réutilisable
-- ce qui reste local au projet
-- ce qui dépend du thème
-- comment utiliser concrètement le registry et le MCP
+---
 
-## Résultat attendu
+## Registry final — 11 items
 
-À l’issue de V15-6, le projet doit idéalement disposer :
+### Couche Admin (4 items)
 
-- d’un registry consolidé
-- d’une documentation claire des conventions retenues
-- d’une liste explicite des items extraits
-- d’une séparation lisible entre registry, thème et projet local
-- d’une conclusion claire sur la maturité de Creatyss comme base réutilisable multi-projets
+| Item | Type | Dépendances registry | Description |
+|------|------|----------------------|-------------|
+| `admin-form-actions` | `registry:component` | — | Flex row wrapper pour les boutons d'action d'un formulaire admin |
+| `admin-form-field` | `registry:component` | `label` | Champ de formulaire admin avec label, description optionnelle et slot input |
+| `admin-page-shell` | `registry:component` | — | Shell de page admin : eyebrow, titre, description, slot actions, séparateur |
+| `admin-form-section` | `registry:component` | `card`, `separator`, `@creatyss/section-intro` | Section de formulaire admin en card avec header optionnel |
 
-## Ce que couvre ce lot
+### Couche Transverse — composants (2 items)
 
-V15-6 couvre :
+| Item | Type | Dépendances registry | Description |
+|------|------|----------------------|-------------|
+| `notice` | `registry:component` | — | Message de feedback inline : `success`, `alert`, `note` |
+| `section-intro` | `registry:component` | — | Bloc eyebrow + titre + description pour les sections. `h2` ou `h3` |
 
-- la consolidation du registry après les premiers lots d’extraction
-- la documentation des conventions de structure et de nommage
-- la documentation des frontières entre registry, thème et projet local
-- la documentation du workflow MCP retenu
-- la clarification des patterns extraits, conservés ou repoussés
-- la formulation explicite de la sortie de V15
+### Couche Transverse — primitives UI (5 items)
 
-## Ce que ce lot ne couvre pas
+| Item | Type | Dépendances registry | Description |
+|------|------|----------------------|-------------|
+| `empty` | `registry:ui` | — | Compound empty state : conteneur centré en tirets, icon, titre, description, contenu |
+| `spinner` | `registry:ui` | — | Loading spinner `Loader2Icon` avec `animate-spin` et `role="status"` |
+| `item` | `registry:ui` | `separator` | Compound list-item : media, contenu, titre, description, actions, header, footer |
+| `field` | `registry:ui` | `label`, `separator` | Compound form field : orientations `vertical`/`horizontal`/`responsive`, erreurs, légende |
+| `input-group` | `registry:ui` | `button`, `input`, `textarea` | Compound input avec addons inline et block, texte, bouton, gestion états |
 
-V15-6 ne couvre pas :
+---
 
-- une nouvelle vague d’extraction opportuniste
-- une refonte de l’admin ou du storefront
-- une nouvelle passe de nettoyage CSS indépendante
-- des changements métier ou serveur
-- une industrialisation prématurée au-delà de ce qui a réellement été validé
+## Ce qui reste local
 
-## Problème à résoudre
+### Storefront public
 
-Un registry peut exister techniquement tout en restant difficile à utiliser.
+Tout le storefront public est volontairement conservé dans le projet.
 
-De la même manière, une stratégie de theming peut être bien pensée sans être réellement lisible pour quelqu’un qui rejoint le projet plus tard.
+| Zone | Raison |
+|------|--------|
+| `public-site-shell` | Nom de marque Creatyss, nav hardcodée, labels français, variables CSS `--shell-*` spécifiques |
+| Pages boutique / catalogue | Logique métier catalogue, modèle de données Creatyss, contenu français |
+| Pages blog | Narration éditoriale spécifique |
+| Pages panier / checkout | Flux commande, données client, "France" hardcodé |
 
-Le lot doit donc répondre à cette question :
+**Ce n'est pas un oubli.** Le storefront est par nature variable selon le client et le projet. L'extraire serait extraire l'identité Creatyss, pas un pattern réutilisable.
 
-> si je repars demain sur un nouveau projet à partir de Creatyss, est-ce que je comprends clairement ce que je peux réutiliser, comment le réutiliser, comment le thème varie, et ce qui doit rester spécifique au projet ?
+### Primitives non extraites
 
-## Axes de consolidation attendus
+| Composant | Raison |
+|-----------|--------|
+| `data-table` | Strings français hardcodées dans la pagination et les états vides |
+| `combobox` | Dépendance `@base-ui/react` non standard, complexité élevée |
+| `auth-shell` | Une couleur décorative hardcodée, hors périmètre |
+| `badge` (étendu) | Extension mineure de shadcn, gain trop faible |
+| `card` (étendu) | Extension mineure de shadcn (`size`, `CardAction`), shadcn le fera probablement lui-même |
 
-### 1. Consolidation du registry
+### Artefacts scaffold
 
-Le registry doit être relu comme un système cohérent, pas comme une accumulation de fichiers.
+`components/section-cards.tsx` et `components/site-header.tsx` sont des résidus shadcn sans usage réel dans le projet. Ils n'ont pas été extraits car ils ne correspondent pas à des patterns métier stabilisés.
 
-Il faut clarifier :
+---
 
-- les namespaces
-- la structure des items
-- les conventions de nommage
-- les dépendances implicites à éviter
-- les items réellement prêts à la réutilisation
+## La couche thème
 
-### 2. Consolidation du thème
+### Rôle
 
-Le thème doit être documenté comme une vraie couche d’adaptation.
+Le thème est la variable principale d'adaptation entre projets. Changer de thème doit permettre de changer l'identité visuelle sans modifier les composants du registry.
 
-Il faut clarifier :
+### Fichiers
 
-- les tokens principaux à modifier d’un projet à l’autre
-- les tokens qui doivent rester stables
-- la relation entre thème et composants extraits
-- la place des theme packs dans le futur workflow multi-projets
+| Fichier | Description |
+|---------|-------------|
+| `themes/creatyss.css` | Identité Creatyss : amber brand `oklch(0.523 0.112 53.7)`, sidebar clair, `--radius: 0.625rem` |
+| `themes/novamart.css` | Identité client test : indigo brand `oklch(0.52 0.18 262)`, sidebar sombre, `--radius: 0.5rem` |
 
-### 3. Consolidation du périmètre local
+### Tokens à changer d'un projet à l'autre
 
-Tout ce qui n’est pas dans le registry ne doit pas être perçu comme un oubli.
+Les tokens principaux à redéfinir pour une nouvelle identité :
 
-Il faut documenter explicitement :
+- `--brand` — couleur principale de marque
+- `--primary` / `--primary-foreground` — couleur d'action principale
+- `--sidebar-background` / `--sidebar-*` — identité de la sidebar admin
+- `--background` / `--card` — surfaces principales
+- `--radius` — arrondis globaux
 
-- ce qui reste volontairement local
-- pourquoi cela reste local
-- quelles zones du storefront ne doivent pas être extraites trop tôt
+### Ce qui reste stable
 
-### 4. Consolidation du workflow MCP
+Les tokens de structure sémantique (`--foreground`, `--border`, `--muted`, `--destructive`, `--ring`, etc.) doivent rester définis mais peuvent varier dans leur valeur précise selon le contexte.
 
-Le MCP doit être documenté comme un outil de travail avec :
+### Compatibilité registry / thème
 
-- ses cas d’usage pertinents
-- ses limites
-- son ordre d’usage logique dans un nouveau projet
+Tous les items du registry sont 100% pilotés par les tokens sémantiques. Aucun n'embarque de valeur de couleur hardcodée (à l'exception de `notice` dont le `success` tone utilise les classes emerald de Tailwind — connu, documenté, acceptable).
 
-## Questions auxquelles le lot doit répondre
+---
 
-### 1. Le registry produit est-il lisible pour quelqu’un d’extérieur au chantier ?
+## Workflow local — utilisation du registry sur un nouveau projet
 
-Les conventions doivent être suffisamment claires pour qu’un nouveau projet ne dépende pas de la mémoire du chantier V15.
+### Prérequis (à faire une fois par machine)
 
-### 2. La frontière registry / thème / projet local est-elle explicite ?
+```bash
+# 1. Générer les certificats TLS locaux
+make certs
 
-C’est un point clé de réutilisabilité.
+# 2. Ajouter les entrées DNS locales
+sudo make hosts-setup
 
-### 3. Les items extraits sont-ils documentés selon leur rôle réel ?
+# 3. Exporter la CA mkcert pour Node.js
+export NODE_EXTRA_CA_CERTS="$(mkcert -CAROOT)/rootCA.pem"
+# → À ajouter dans .zshrc/.bashrc pour ne pas avoir à le refaire
+```
 
-Un item ne doit pas exister “nu” dans le registry sans explication sur son usage attendu.
+### Démarrer l'environnement
 
-### 4. Le workflow MCP est-il intégré dans la documentation finale ?
+```bash
+make up
+# → Démarre Traefik + app + registry
+# → https://creatyss.localhost     → application
+# → https://registry.creatyss.localhost  → registry shadcn
+```
 
-Le MCP ne doit pas être une note annexe. Il doit être positionné correctement dans le mode d’emploi du système.
+### Installer un item
 
-### 5. La V15 peut-elle être considérée comme terminée ?
+```bash
+# Syntaxe namespace (@creatyss = clé dans components.json > registries)
+npx shadcn add @creatyss/admin-page-shell
+npx shadcn add @creatyss/empty
+npx shadcn add @creatyss/field
 
-Le lot doit conclure clairement sur la maturité atteinte.
+# Avec dry-run pour vérifier avant installation
+npx shadcn add @creatyss/admin-form-section --dry-run
+```
 
-## Principes de décision
+### Configuration `components.json`
 
-### 1. Documenter ce qui a été réellement validé
+```json
+{
+  "registries": {
+    "@creatyss": {
+      "url": "https://registry.creatyss.localhost/{name}.json"
+    }
+  }
+}
+```
 
-Pas de promesse excessive. Le lot doit refléter honnêtement le niveau réel de maturité atteint.
+Règles du schéma shadcn :
+- La clé **doit commencer par `@`**
+- L'URL **doit contenir `{name}`**
+- Seules `url`, `params`, `headers` sont valides dans l'objet (pas `style`)
 
-### 2. Rendre explicite le résiduel local
+### Résolution des dépendances
 
-Ce qui reste dans le projet local doit être assumé comme tel, pas laissé dans une zone floue.
+Le CLI shadcn résout automatiquement :
+- les dépendances shadcn standard (`card`, `separator`, `label`, `button`, etc.)
+- les dépendances `@creatyss/*` croisées (ex : `admin-form-section` → `@creatyss/section-intro`)
 
-### 3. Préparer le prochain projet, pas seulement clôturer celui-ci
+---
 
-La documentation finale doit être utile pour un futur usage réel, pas seulement pour archiver le chantier.
+## Frontière claire : registry / thème / local
 
-### 4. Préférer la clarté à la complétude artificielle
+```
+registry/                    ← patterns stables réinstallables
+  items/                     ← 11 items
+  index.json                 ← manifest
 
-Un système plus petit mais bien expliqué est meilleur qu’une pseudo-base générique mal maîtrisée.
+themes/                      ← identités visuelles
+  creatyss.css               ← thème Creatyss
+  novamart.css               ← thème client test
 
-## Ce que le lot doit éviter
+app/                         ← storefront local (ne pas extraire)
+components/public/           ← shells et patterns publics (ne pas extraire)
+components/admin/            ← implémentation locale admin (les items registry en sont une copie)
+```
 
-### 1. Réouvrir des extractions non stabilisées
+**Le registry est un miroir stable de certains composants locaux.** Le fichier source dans `components/` reste la référence vivante du projet. Le registry embarque le contenu inline pour la redistribution.
 
-V15-6 n’est pas un prétexte pour ajouter encore quelques items au dernier moment.
+---
 
-### 2. Surdocumenter sans hiérarchie
+## Conclusion V15
 
-La documentation doit rester opérationnelle, pas encyclopédique.
+### Ce qui est réutilisable aujourd'hui
 
-### 3. Présenter le registry comme plus mature qu’il ne l’est
+Le registry Creatyss constitue un premier noyau solide et honnête :
 
-Si la base est solide mais encore limitée, il faut le dire clairement.
+- **4 composants admin** complets, couvrant les patterns les plus récurrents de n'importe quel back-office
+- **2 composants transverses** simples (`notice`, `section-intro`) applicables admin et public
+- **5 primitives UI** génériques (`empty`, `spinner`, `item`, `field`, `input-group`) utilisables dans tout projet React / Next.js avec shadcn
 
-### 4. Laisser des conventions implicites
+Ces 11 items sont :
+- zéro couplage Creatyss
+- 100% token-driven
+- compatibles avec les deux thèmes testés
+- installables via `npx shadcn add @creatyss/...`
+- résolvant automatiquement leurs dépendances
 
-Tout ce qui est nécessaire pour comprendre le système doit être formulé explicitement.
+### Ce qui n'est pas encore extrait (et c'est normal)
 
-## Livrables attendus
+Le storefront Creatyss reste 100% local. Ce n'est pas une dette — c'est le comportement attendu d'un storefront e-commerce dont l'identité est par nature propre au projet.
 
-Le lot doit idéalement produire :
+Les quelques composants non extraits (`data-table`, `combobox`, `auth-shell`, extensions de primitives) ont été refusés pour des raisons précises documentées, pas par oubli.
 
-- une documentation claire du registry
-- une documentation claire du rôle du thème
-- une documentation claire du périmètre local restant
-- une synthèse des items extraits
-- une synthèse du workflow MCP retenu
-- une conclusion claire sur la sortie de V15
+### Maturité de la base multi-projets
 
-## Validation attendue
+Creatyss est aujourd'hui une base multi-projets **crédible et opérationnelle** pour un premier usage réel.
 
-### Validation documentaire
+Ce qui manque pour aller plus loin n'est pas dans le registry — c'est l'usage réel sur un second projet, qui seul permettra de valider quels patterns supplémentaires méritent d'être extraits.
 
-Un intervenant extérieur doit pouvoir comprendre rapidement :
+### V15 est terminée
 
-- ce qui est réutilisable
-- ce qui ne l’est pas encore
-- comment un nouveau projet doit utiliser la base
-- comment le thème doit varier
-- comment le MCP s’insère dans le workflow
+Tous les lots V15-1 → V15-6 sont validés.
 
-### Validation projet
-
-À la fin de V15-6, le projet doit pouvoir être considéré comme une base multi-projets crédible, même si elle reste volontairement limitée à un premier périmètre stable.
-
-## Suite logique
-
-Une fois V15-6 terminé, la suite logique ne sera plus forcément une nouvelle vague d’extraction.
-
-La suite pourra être, selon la priorité :
-
-- l’utilisation réelle de cette base sur un autre projet
-- le retour aux sujets métier du projet courant
-- l’enrichissement du registry uniquement quand un besoin réel de réutilisation apparaîtra
-
-## Résumé
-
-V15-6 est le lot de consolidation qui transforme V15 en base réellement exploitable.
-
-Il sert à rendre explicite :
-
-- ce qui a été extrait
-- ce qui dépend du thème
-- ce qui reste local
-- comment le registry et le MCP doivent être utilisés
-
-C’est ce lot qui permet de sortir de la V15 avec un système lisible, réutilisable et honnêtement documenté, plutôt qu’avec une extraction partielle difficile à transmettre.
+La suite logique n'est pas une nouvelle vague d'extraction, mais :
+- l'utilisation réelle de cette base sur un autre projet
+- ou le retour aux sujets métier du projet courant (fonctionnalités e-commerce, paiements, stock)

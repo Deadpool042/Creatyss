@@ -245,17 +245,18 @@ Ce lot ne doit pas transformer le front public en structure rigide commune à to
 
 ## V15-6 — Registry consolidation and documentation
 
+**Statut : validé. V15 terminée. Registry : 11 items.**
+
 ### Objectif
 
 Consolider le registry, documenter les conventions retenues et clôturer proprement la phase initiale d’extraction.
 
-### Attendus
+### Résultat
 
-- documentation claire du registry
-- conventions de nommage et de structure
-- liste des items extraits
-- distinction claire entre registry, thème et projet local
-- conclusion sur la maturité de la base réutilisable
+- `item`, `field`, `input-group` extraits
+- Registry final : 11 items (4 admin, 2 composants transverses, 5 primitives UI)
+- Documentation complète du registry, du thème, du périmètre local et du workflow
+- V15 clôturée — base multi-projets opérationnelle
 
 ### Intention
 

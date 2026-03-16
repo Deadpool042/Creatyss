@@ -100,6 +100,45 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "description": "Compound list-item component with optional media, content, title, description, actions, header, and footer slots. Supports default, outline, and muted variants.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["separator"],
+      "files": [
+        {
+          "path": "components/ui/item.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "description": "Compound form field system with orientation variants, label, description, error deduplication, separator with optional label, fieldset, and legend. Requires Tailwind v4 container queries.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["label", "separator"],
+      "files": [
+        {
+          "path": "components/ui/field.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "description": "Compound input wrapper with inline and block addon slots, icon/text/button addons, borderless Input and Textarea sub-components, and full focus/invalid state handling.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["button", "input", "textarea"],
+      "files": [
+        {
+          "path": "components/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
