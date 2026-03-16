@@ -71,10 +71,7 @@ function getProductMetadataDescription(product: ProductMetadataSource): string {
   );
 }
 
-function getImageUrl(
-  uploadsPublicPath: string,
-  filePath: string
-): string {
+function getImageUrl(uploadsPublicPath: string, filePath: string): string {
   return `${uploadsPublicPath}/${filePath.replace(/^\/+/, "")}`;
 }
 
@@ -144,22 +141,22 @@ export default async function ProductPage({
     : null;
 
   return (
-    <div className="page">
-      <section className="section">
-        <div className="mb-6 grid gap-2">
-          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+    <div className="grid gap-10">
+      <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
+        <div className="mb-8 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-widest text-brand">
             Produit
           </p>
           <h1 className="m-0">{product.name}</h1>
           {product.shortDescription ? (
-            <p className="mt-1 leading-relaxed text-muted-foreground">
+            <p className="leading-relaxed text-muted-foreground">
               {product.shortDescription}
             </p>
           ) : null}
         </div>
 
         {cartStatusMessage ? (
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-600/20 bg-emerald-50/60 px-4 py-3 text-sm text-emerald-800">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-600/20 bg-emerald-50/60 px-4 py-3 text-sm text-emerald-800">
             <span>{cartStatusMessage}</span>
             <Link
               className="font-medium underline-offset-4 transition-colors hover:underline"
@@ -173,24 +170,29 @@ export default async function ProductPage({
         ) : null}
 
         <div className="grid gap-6 min-[900px]:grid-cols-[minmax(0,1.1fr)_minmax(18rem,0.9fr)] min-[900px]:items-start">
-          <div className="product-gallery">
+          <div className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel p-6">
             {productDisplayImage ? (
-              <figure className="product-media">
+              <figure className="overflow-hidden rounded-lg bg-media-surface min-h-56">
                 <img
                   alt={productDisplayImage.altText ?? product.name}
+                  className="block h-full w-full object-cover"
                   loading="lazy"
                   src={getImageUrl(uploadsPublicPath, productDisplayImage.filePath)}
                 />
               </figure>
             ) : (
-              <div className="media-placeholder">Aucun visuel principal.</div>
+              <div className="grid place-items-center min-h-64 rounded-lg bg-media-surface p-4 text-center text-media-foreground">
+                Aucun visuel principal.
+              </div>
             )}
           </div>
 
-          <aside className="product-panel">
-            <div className="product-summary">
-              <div className="flex items-start justify-between gap-3 flex-wrap">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Disponibilité du produit</p>
+          <aside className="grid gap-5 rounded-lg border border-surface-border bg-surface-panel p-6">
+            <div className="grid gap-3 border-b border-surface-border pb-5">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                  Disponibilité du produit
+                </p>
                 <Badge variant="outline">
                   <span
                     className={
@@ -202,35 +204,43 @@ export default async function ProductPage({
               </div>
 
               <h2>{productStatusSummary.title}</h2>
-              <p className="card-copy">{productStatusSummary.description}</p>
+              <p className="leading-relaxed">{productStatusSummary.description}</p>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {productStatusSummary.nextStep}
               </p>
 
               {isSimpleProduct ? (
-                <div className="product-summary-stats">
+                <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Type de produit</p>
-                    <p className="card-copy">Produit simple</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      Type de produit
+                    </p>
+                    <p className="leading-relaxed">Produit simple</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Informations de vente</p>
-                    <p className="card-copy">
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      Informations de vente
+                    </p>
+                    <p className="leading-relaxed">
                       {singleOffer ? singleOffer.name : "Indisponible"}
                     </p>
                   </div>
                 </div>
               ) : (
-                <div className="product-summary-stats">
+                <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Déclinaisons disponibles</p>
-                    <p className="card-copy">{availableVariantCount}</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      Déclinaisons disponibles
+                    </p>
+                    <p className="leading-relaxed">{availableVariantCount}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Déclinaisons publiées</p>
-                    <p className="card-copy">{product.variants.length}</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      Déclinaisons publiées
+                    </p>
+                    <p className="leading-relaxed">{product.variants.length}</p>
                   </div>
                 </div>
               )}
@@ -238,22 +248,26 @@ export default async function ProductPage({
 
             {product.description ? (
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Description</p>
-                <p className="leading-[1.65]">{product.description}</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                  Description
+                </p>
+                <p className="leading-relaxed">{product.description}</p>
               </div>
             ) : null}
 
             <div className="grid gap-1">
-              <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Référence de page</p>
-              <p className="card-copy">{product.slug}</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                Référence de page
+              </p>
+              <p className="leading-relaxed">{product.slug}</p>
             </div>
           </aside>
         </div>
       </section>
 
-      <section className="section">
-        <div className="mb-6 grid gap-2">
-          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+      <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
+        <div className="mb-8 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-widest text-brand">
             {offerSectionPresentation.eyebrow}
           </p>
           <h2 className="m-0">{offerSectionPresentation.title}</h2>
@@ -264,18 +278,18 @@ export default async function ProductPage({
 
         {isSimpleProduct ? (
           singleOffer ? (
-            <article className="variant-card">
-              <div className="variant-header">
+            <article className="grid gap-5 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
+              <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="grid gap-1">
                   <h3>{getSimpleOfferCardTitle()}</h3>
-                  <p className="text-[0.95rem] text-foreground/68">
+                  <p className="text-sm text-muted-foreground">
                     {singleOffer.name}
                     {singleOffer.colorName ? ` · ${singleOffer.colorName}` : ""}
                     {singleOffer.colorHex ? ` · ${singleOffer.colorHex}` : ""}
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="outline">
                     <span
                       className={
@@ -289,22 +303,30 @@ export default async function ProductPage({
                 </div>
               </div>
 
-              <div className="grid gap-3">
+              <div className="grid gap-4">
                 <div className="grid gap-1">
-                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix</p>
-                  <p className="text-[1.45rem] font-bold leading-[1.2]">{singleOffer.price}</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    Prix
+                  </p>
+                  <p className="text-2xl font-bold leading-tight">
+                    {singleOffer.price}
+                  </p>
                   {singleOffer.compareAtPrice ? (
-                    <p className="text-[0.95rem] text-foreground/68">
+                    <p className="text-sm text-muted-foreground">
                       Prix barré : {singleOffer.compareAtPrice}
                     </p>
                   ) : null}
                 </div>
 
                 <div className="grid gap-1">
-                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Ajout au panier</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    Ajout au panier
+                  </p>
                   <p
                     className={
-                      singleOffer.isAvailable ? "card-copy" : "text-[0.95rem] text-foreground/68"
+                      singleOffer.isAvailable
+                        ? "leading-relaxed"
+                        : "text-sm text-muted-foreground"
                     }>
                     {getOfferAvailabilityMessage({
                       productType: product.productType,
@@ -350,13 +372,17 @@ export default async function ProductPage({
 
               <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
                 <div className="grid gap-1">
-                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">SKU</p>
-                  <p className="card-copy">{singleOffer.sku}</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    SKU
+                  </p>
+                  <p className="leading-relaxed">{singleOffer.sku}</p>
                 </div>
 
                 <div className="grid gap-1">
-                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Couleur</p>
-                  <p className="card-copy">
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    Couleur
+                  </p>
+                  <p className="leading-relaxed">
                     {singleOffer.colorName}
                     {singleOffer.colorHex ? ` · ${singleOffer.colorHex}` : ""}
                   </p>
@@ -364,12 +390,13 @@ export default async function ProductPage({
               </div>
 
               {singleOfferDisplayImage ? (
-                <div className="variant-images">
+                <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
                   <figure
-                    className="variant-media"
+                    className="overflow-hidden rounded-lg bg-media-surface min-h-40"
                     key={singleOfferDisplayImage.id}>
                     <img
                       alt={singleOfferDisplayImage.altText ?? singleOffer.name}
+                      className="block h-full w-full object-cover"
                       loading="lazy"
                       src={getImageUrl(
                         uploadsPublicPath,
@@ -379,41 +406,41 @@ export default async function ProductPage({
                   </figure>
                 </div>
               ) : (
-                <div className="media-placeholder">
+                <div className="grid place-items-center min-h-56 rounded-lg bg-media-surface p-4 text-center text-media-foreground">
                   Aucun visuel pour ce produit.
                 </div>
               )}
             </article>
           ) : (
-            <div className="empty-state">
-              <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
-              {offerSectionPresentation.emptyEyebrow}
-            </p>
+            <div className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
+              <p className="text-sm font-bold uppercase tracking-widest text-brand">
+                {offerSectionPresentation.emptyEyebrow}
+              </p>
               <h2>{offerSectionPresentation.emptyTitle}</h2>
-              <p className="card-copy">
+              <p className="leading-relaxed text-muted-foreground">
                 {offerSectionPresentation.emptyDescription}
               </p>
             </div>
           )
         ) : product.variants.length > 0 ? (
-          <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
+          <div className="grid gap-5 grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
             {product.variants.map((variant) => {
               const variantDisplayImage = getDisplayImage(variant.images);
 
               return (
                 <article
-                  className="variant-card"
+                  className="grid gap-5 rounded-lg border border-surface-border bg-surface-panel-soft p-6"
                   key={variant.id}>
-                  <div className="flex items-start justify-between gap-3 flex-wrap">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="grid gap-1">
                       <h3>{variant.name}</h3>
-                      <p className="text-[0.95rem] text-foreground/68">
+                      <p className="text-sm text-muted-foreground">
                         {variant.colorName}
                         {variant.colorHex ? ` · ${variant.colorHex}` : ""}
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-2 flex-wrap">
+                    <div className="flex flex-wrap items-center gap-2">
                       {getVariantDefaultBadgeLabel(variant.isDefault) ? (
                         <Badge variant="secondary">
                           {getVariantDefaultBadgeLabel(variant.isDefault)}
@@ -432,21 +459,31 @@ export default async function ProductPage({
                     </div>
                   </div>
 
-                  <div className="grid gap-3">
+                  <div className="grid gap-4">
                     <div className="grid gap-1">
-                      <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix</p>
-                      <p className="text-[1.45rem] font-bold leading-[1.2]">{variant.price}</p>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                        Prix
+                      </p>
+                      <p className="text-2xl font-bold leading-tight">
+                        {variant.price}
+                      </p>
                       {variant.compareAtPrice ? (
-                        <p className="text-[0.95rem] text-foreground/68">
+                        <p className="text-sm text-muted-foreground">
                           Prix barré : {variant.compareAtPrice}
                         </p>
                       ) : null}
                     </div>
 
                     <div className="grid gap-1">
-                      <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Ajout au panier</p>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                        Ajout au panier
+                      </p>
                       <p
-                        className={variant.isAvailable ? "card-copy" : "text-[0.95rem] text-foreground/68"}>
+                        className={
+                          variant.isAvailable
+                            ? "leading-relaxed"
+                            : "text-sm text-muted-foreground"
+                        }>
                         {getOfferAvailabilityMessage({
                           productType: product.productType,
                           isAvailable: variant.isAvailable
@@ -470,7 +507,9 @@ export default async function ProductPage({
                         />
 
                         <div className="grid gap-2 max-w-[10rem]">
-                          <Label htmlFor={`quantity-${variant.id}`}>Quantité</Label>
+                          <Label htmlFor={`quantity-${variant.id}`}>
+                            Quantité
+                          </Label>
                           <Input
                             defaultValue="1"
                             id={`quantity-${variant.id}`}
@@ -491,13 +530,17 @@ export default async function ProductPage({
 
                   <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
                     <div className="grid gap-1">
-                      <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">SKU</p>
-                      <p className="card-copy">{variant.sku}</p>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                        SKU
+                      </p>
+                      <p className="leading-relaxed">{variant.sku}</p>
                     </div>
 
                     <div className="grid gap-1">
-                      <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Couleur</p>
-                      <p className="card-copy">
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                        Couleur
+                      </p>
+                      <p className="leading-relaxed">
                         {variant.colorName}
                         {variant.colorHex ? ` · ${variant.colorHex}` : ""}
                       </p>
@@ -505,12 +548,13 @@ export default async function ProductPage({
                   </div>
 
                   {variantDisplayImage ? (
-                    <div className="variant-images">
+                    <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
                       <figure
-                        className="variant-media"
+                        className="overflow-hidden rounded-lg bg-media-surface min-h-40"
                         key={variantDisplayImage.id}>
                         <img
                           alt={variantDisplayImage.altText ?? variant.name}
+                          className="block h-full w-full object-cover"
                           loading="lazy"
                           src={getImageUrl(
                             uploadsPublicPath,
@@ -520,7 +564,7 @@ export default async function ProductPage({
                       </figure>
                     </div>
                   ) : (
-                    <div className="media-placeholder">
+                    <div className="grid place-items-center min-h-56 rounded-lg bg-media-surface p-4 text-center text-media-foreground">
                       Aucun visuel pour cette déclinaison.
                     </div>
                   )}
@@ -529,12 +573,14 @@ export default async function ProductPage({
             })}
           </div>
         ) : (
-          <div className="empty-state">
-            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+          <div className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
+            <p className="text-sm font-bold uppercase tracking-widest text-brand">
               {offerSectionPresentation.emptyEyebrow}
             </p>
             <h2>{offerSectionPresentation.emptyTitle}</h2>
-            <p className="card-copy">{offerSectionPresentation.emptyDescription}</p>
+            <p className="leading-relaxed text-muted-foreground">
+              {offerSectionPresentation.emptyDescription}
+            </p>
           </div>
         )}
       </section>

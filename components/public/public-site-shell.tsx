@@ -46,9 +46,9 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
               src="/uploads/logo.svg"
               alt=""
               aria-hidden="true"
-              width={28}
-              height={28}
-              className="h-7 w-7 shrink-0 object-contain"
+              width={150}
+              height={50}
+              className="h-8 shrink-0 object-contain"
             />
             <span className="truncate text-sm font-semibold uppercase tracking-[0.18em] sm:text-[0.95rem]">
               Creatyss
@@ -127,7 +127,9 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
         </div>
       </header>
 
-      <main className="mx-auto w-full pb-16 pt-8">{children}</main>
+      <main className="mx-auto w-full max-w-7xl px-4 pb-20 pt-10 md:px-6">
+        {children}
+      </main>
     </div>
   );
 }

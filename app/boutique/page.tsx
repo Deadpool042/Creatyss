@@ -156,17 +156,17 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const hasEditorialListing = !hasActiveFilters;
 
   return (
-    <div className="page">
-      <section className="section">
-        <div className="mb-6 grid gap-2">
-          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+    <div className="grid gap-10">
+      <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
+        <div className="mb-8 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-widest text-brand">
             {hasEditorialListing ? "Sélection" : "Boutique"}
           </p>
           <h1 className="m-0">
             {hasEditorialListing ? "Produits à découvrir" : "Produits publiés"}
           </h1>
           {hasEditorialListing ? (
-            <p className="mt-1 leading-relaxed text-muted-foreground">
+            <p className="leading-relaxed text-muted-foreground">
               Une sélection de produits déjà disponibles, avec les pièces mises
               en avant en premier.
             </p>
@@ -233,13 +233,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </form>
 
         {hasOnlyActiveSearch ? (
-          <p className="mb-4 mt-5 text-sm text-muted-foreground">
-            Résultats pour <strong className="text-foreground">{searchQuery}</strong>
+          <p className="mb-4 mt-6 text-sm text-muted-foreground">
+            Résultats pour{" "}
+            <strong className="text-foreground">{searchQuery}</strong>
           </p>
         ) : null}
 
         {!hasOnlyActiveSearch && hasActiveFilters ? (
-          <div className="mb-4 mt-5 flex flex-wrap items-center gap-2 rounded-xl border border-border/60 bg-muted/20 px-4 py-3 text-sm text-muted-foreground">
+          <div className="mb-4 mt-6 flex flex-wrap items-center gap-2 rounded-xl border border-border/60 bg-muted/20 px-4 py-3 text-sm text-muted-foreground">
             <span>Filtres actifs :</span>
             {activeFilters.map((filter) => (
               <Badge
@@ -257,20 +258,20 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         ) : null}
 
         {products.length > 0 ? (
-          <div className="grid gap-4 min-[700px]:grid-cols-3">
+          <div className="mt-6 grid gap-5 min-[700px]:grid-cols-3">
             {products.map((product) => (
               <article
-                className="store-card"
+                className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6 shadow-card"
                 key={product.id}>
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-xs font-medium text-muted-foreground">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     Produit
                   </p>
                   <div className="flex flex-wrap gap-1.5">
                     {product.isFeatured ? (
                       <Badge variant="secondary">Mis en avant</Badge>
                     ) : null}
-                    <Badge variant={product.isAvailable ? "outline" : "outline"}>
+                    <Badge variant="outline">
                       <span
                         className={
                           product.isAvailable
@@ -285,14 +286,18 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   </div>
                 </div>
                 <h3>
-                  <Link href={`/boutique/${product.slug}`}>{product.name}</Link>
+                  <Link
+                    className="transition-colors hover:text-brand"
+                    href={`/boutique/${product.slug}`}>
+                    {product.name}
+                  </Link>
                 </h3>
-                <p className="card-copy">
+                <p className="leading-relaxed">
                   {product.shortDescription ??
                     product.description ??
                     "Aucune description n'est disponible pour ce produit."}
                 </p>
-                <p className="text-sm leading-relaxed text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   {product.isAvailable
                     ? "Disponible à la commande."
                     : "Actuellement indisponible à la commande."}
@@ -301,23 +306,23 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+          <div className="mt-6 grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
+            <p className="text-sm font-bold uppercase tracking-widest text-brand">
               {hasActiveFilters ? "Aucun résultat" : "Catalogue vide"}
             </p>
             <h2>
               {hasOnlyActiveSearch
                 ? "Aucun produit ne correspond à cette recherche"
                 : hasActiveFilters
-                ? "Aucun produit ne correspond à ces filtres"
-                : "Aucun produit publié"}
+                  ? "Aucun produit ne correspond à ces filtres"
+                  : "Aucun produit publié"}
             </h2>
-            <p className="card-copy">
+            <p className="leading-relaxed text-muted-foreground">
               {hasOnlyActiveSearch
                 ? "Essayez un autre terme ou revenez à la liste complète."
                 : hasActiveFilters
-                ? "Essayez une autre combinaison ou revenez à la liste complète."
-                : "Les produits publics apparaîtront ici dès qu'ils seront publiés."}
+                  ? "Essayez une autre combinaison ou revenez à la liste complète."
+                  : "Les produits publics apparaîtront ici dès qu'ils seront publiés."}
             </p>
             {hasActiveFilters ? (
               <Link

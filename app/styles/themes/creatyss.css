@@ -1,83 +1,215 @@
 /*
- * Theme pack — Creatyss (référence)
+ * Theme pack — Creatyss prune rosée premium
  *
- * Usage :
- * - ce fichier ne contient que :root et .dark
- * - il est importé par app/styles/theme.css
+ * Intention :
+ * - clair, délicat, premium
+ * - fait main, artisanal, féminin sobre
+ * - accent rose-violet / prune rosée assumé
+ * - sans beige fade, sans taupe uniforme
  *
- * Identité :
- * - chaleureux
- * - artisanal
- * - ambre doux
- * - surfaces crème / blanc cassé
- * - sidebar claire
+ * Hiérarchie light :
+ *   page-bg (rose poudré teinté) → shell/sections (blanc-rosé) → surface-panel (blanc pur)
  *
- * Objectif :
- * - tous les aspects visuels identitaires passent par des tokens
- * - le CSS structurel consomme ensuite ces tokens
- *
- * Police :
- * - gérée via --font-sans injecté par Next.js
+ * Hiérarchie dark :
+ *   page-bg (prune très sombre) → sections (plum charcoal visible) → card (légèrement plus clair)
  */
 
 :root {
   color-scheme: light;
 
   /* ==========================================================================
-     Core semantic tokens — structurels, stables
+     Core semantic tokens
      ========================================================================== */
 
-  --background: oklch(0.99 0.005 75);
-  --foreground: oklch(0.19 0.01 55);
+  /* Blanc pur pour dialogs / popovers — contraste max sur fond teinté */
+  --background: oklch(0.995 0.002 335);
+  --foreground: oklch(0.20 0.015 335);
 
-  --card: oklch(1 0.003 75);
-  --card-foreground: oklch(0.19 0.01 55);
+  --card: oklch(0.998 0.002 335);
+  --card-foreground: oklch(0.20 0.015 335);
 
-  --popover: oklch(1 0.003 75);
-  --popover-foreground: oklch(0.19 0.01 55);
+  --popover: oklch(0.998 0.002 335);
+  --popover-foreground: oklch(0.20 0.015 335);
 
-  --primary: oklch(0.24 0.01 55);
+  /* Bouton primaire — prune profond, clairement incarné */
+  --primary: oklch(0.32 0.13 335);
   --primary-foreground: oklch(0.985 0 0);
 
-  --secondary: oklch(0.96 0.008 75);
-  --secondary-foreground: oklch(0.24 0.01 55);
+  --secondary: oklch(0.960 0.018 335);
+  --secondary-foreground: oklch(0.30 0.10 335);
 
-  --muted: oklch(0.965 0.006 75);
-  --muted-foreground: oklch(0.54 0.015 55);
+  --muted: oklch(0.956 0.012 335);
+  /* muted-fg plus sombre pour lisibilité sur fond teinté */
+  --muted-foreground: oklch(0.46 0.018 335);
 
-  --accent: oklch(0.965 0.012 70);
-  --accent-foreground: oklch(0.24 0.01 55);
+  --accent: oklch(0.962 0.018 335);
+  --accent-foreground: oklch(0.30 0.10 335);
 
   --destructive: oklch(0.577 0.245 27.325);
 
-  --border: oklch(0.91 0.008 70);
-  --input: oklch(0.91 0.008 70);
-  --ring: oklch(0.68 0.06 55);
+  /* Borders renforcés — 0.91 trop fade sur fond rose poudré */
+  --border: oklch(0.88 0.010 335);
+  --input: oklch(0.88 0.010 335);
+  --ring: oklch(0.62 0.14 335);
 
   /* ==========================================================================
      Geometry
      ========================================================================== */
 
-  --radius: 0.875rem;
+  --radius: 0.9rem;
 
   /* ==========================================================================
-     Brand
+     Brand — prune rosée / rose-violet
      ========================================================================== */
 
-  --brand: oklch(0.63 0.12 58);
+  --brand: oklch(0.50 0.17 335);
   --brand-foreground: oklch(0.985 0 0);
 
   /* ==========================================================================
      Document / page identity
      ========================================================================== */
 
-  --page-bg: oklch(0.965 0.015 75);
-  --page-foreground: oklch(0.19 0.01 55);
+  /*
+   * page-bg clairement teinté — rose poudré léger visible.
+   * C'est le fond sur lequel les sections (shell-surface blanc-rosé) se détachent.
+   * Gap page-bg (0.938) → shell-surface (~0.990) = ~0.05 en L : visible et élégant.
+   */
+  --page-bg: oklch(0.938 0.014 335);
+  --page-foreground: oklch(0.20 0.015 335);
 
   --body-background:
     radial-gradient(
       circle at top,
-      oklch(0.72 0.08 60 / 0.18),
+      oklch(0.80 0.08 335 / 0.30),
+      transparent 36rem
+    ),
+    var(--page-bg);
+
+  /* ==========================================================================
+     Shared surfaces
+     ========================================================================== */
+
+  /* Blanc pur pour les panneaux intérieurs — au-dessus des sections */
+  --surface-panel: rgb(255 255 255 / 0.96);
+  --surface-panel-soft: rgb(255 255 255 / 0.86);
+  --surface-subtle: rgb(140 30 90 / 0.05);
+
+  /* Borders renforcés — lisibles sur fond clair teinté */
+  --surface-border: rgb(140 30 90 / 0.13);
+  --surface-border-strong: rgb(140 30 90 / 0.20);
+
+  --shadow-soft: 0 20px 60px rgb(120 20 80 / 0.12);
+  --shadow-card: 0 16px 40px rgb(120 20 80 / 0.09);
+
+  /* ==========================================================================
+     Public shell
+     ========================================================================== */
+
+  /*
+   * shell-surface = blanc-rosé quasi-opaque.
+   * Clairement plus clair que page-bg (0.938) → sections se détachent nettement.
+   */
+  --shell-surface: rgb(253 249 254 / 0.97);
+  --shell-surface-blur: rgb(253 249 254 / 0.88);
+  --shell-drawer: rgb(255 252 255 / 0.98);
+  --shell-drawer-blur: rgb(255 252 255 / 0.93);
+  --shell-border: rgb(140 30 90 / 0.12);
+
+  /* ==========================================================================
+     Media / decorative blocks
+     ========================================================================== */
+
+  --media-surface: rgb(140 30 90 / 0.06);
+  --media-foreground: rgb(100 20 70 / 0.50);
+
+  /* ==========================================================================
+     Sidebar admin
+     ========================================================================== */
+
+  --sidebar: oklch(0.987 0.003 335);
+  --sidebar-foreground: oklch(0.20 0.015 335);
+
+  --sidebar-primary: oklch(0.30 0.10 335);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+
+  --sidebar-accent: oklch(0.956 0.012 335);
+  --sidebar-accent-foreground: oklch(0.30 0.10 335);
+
+  --sidebar-border: oklch(0.88 0.010 335);
+  --sidebar-ring: oklch(0.62 0.14 335);
+
+  /* ==========================================================================
+     Charts
+     ========================================================================== */
+
+  --chart-1: oklch(0.68 0.15 335);
+  --chart-2: oklch(0.66 0.08 300);
+  --chart-3: oklch(0.62 0.08 15);
+  --chart-4: oklch(0.69 0.06 260);
+  --chart-5: oklch(0.58 0.06 8);
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* ==========================================================================
+     Core semantic tokens
+     ========================================================================== */
+
+  /*
+   * background en L=0.242 au lieu de L=0.170 :
+   * moins noir, plus "charcoal velours", plus raffiné.
+   */
+  --background: oklch(0.242 0.010 335);
+  --foreground: oklch(0.94 0.004 335);
+
+  --card: oklch(0.255 0.010 335);
+  --card-foreground: oklch(0.94 0.004 335);
+
+  --popover: oklch(0.255 0.010 335);
+  --popover-foreground: oklch(0.94 0.004 335);
+
+  /* Bouton dark : rose-violet clair, texte sombre — contraste ~8:1 */
+  --primary: oklch(0.78 0.14 335);
+  --primary-foreground: oklch(0.18 0.012 335);
+
+  --secondary: oklch(0.310 0.014 335);
+  --secondary-foreground: oklch(0.94 0.004 335);
+
+  --muted: oklch(0.295 0.012 335);
+  --muted-foreground: oklch(0.69 0.012 335);
+
+  --accent: oklch(0.310 0.014 335);
+  --accent-foreground: oklch(0.94 0.004 335);
+
+  --destructive: oklch(0.704 0.191 22.216);
+
+  --border: rgb(230 180 210 / 0.30);
+  --input: rgb(230 180 210 / 0.30);
+  --ring: oklch(0.70 0.12 335);
+
+  /* ==========================================================================
+     Brand
+     ========================================================================== */
+
+  --brand: oklch(0.74 0.14 335);
+  --brand-foreground: oklch(0.20 0.010 335);
+
+  /* ==========================================================================
+     Document / page identity
+     ========================================================================== */
+
+  /*
+   * page-bg en L=0.195 au lieu de L=0.148 : moins noir profond.
+   * Gap page-bg (0.195) → shell-surface (~0.27 effectif) = strates clairement visibles.
+   */
+  --page-bg: oklch(0.195 0.012 335);
+  --page-foreground: oklch(0.94 0.004 335);
+
+  --body-background:
+    radial-gradient(
+      circle at top,
+      oklch(0.58 0.10 335 / 0.20),
       transparent 32rem
     ),
     var(--page-bg);
@@ -86,170 +218,61 @@
      Shared surfaces
      ========================================================================== */
 
-  --surface-panel: rgb(255 255 255 / 0.92);
-  --surface-panel-soft: rgb(255 255 255 / 0.88);
-  --surface-subtle: rgb(31 31 31 / 0.05);
+  --surface-panel: rgb(255 255 255 / 0.072);
+  --surface-panel-soft: rgb(255 255 255 / 0.052);
+  --surface-subtle: rgb(255 255 255 / 0.06);
 
-  --surface-border: rgb(31 31 31 / 0.08);
-  --surface-border-strong: rgb(31 31 31 / 0.12);
+  --surface-border: rgb(230 180 210 / 0.14);
+  --surface-border-strong: rgb(230 180 210 / 0.22);
 
-  --shadow-soft: 0 20px 60px rgb(31 31 31 / 0.08);
-  --shadow-card: 0 16px 40px rgb(31 31 31 / 0.06);
+  --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.40);
+  --shadow-card: 0 16px 40px rgb(0 0 0 / 0.32);
 
   /* ==========================================================================
      Public shell
      ========================================================================== */
 
-  --shell-surface: rgb(245 242 234 / 0.92);
-  --shell-surface-blur: rgb(245 242 234 / 0.84);
-  --shell-drawer: rgb(245 242 234 / 0.98);
-  --shell-drawer-blur: rgb(245 242 234 / 0.94);
-  --shell-border: rgb(31 31 31 / 0.08);
+  /*
+   * shell-surface rgb(72 54 72 / 0.93) ≈ oklch L~0.27 effectif.
+   * Gap clair vs page-bg (0.195) : sections "émergent" du fond sombre.
+   * Couleur : plum-violet, pas noir, pas gris technique.
+   */
+  --shell-surface: rgb(72 54 72 / 0.93);
+  --shell-surface-blur: rgb(72 54 72 / 0.84);
+  --shell-drawer: rgb(62 46 62 / 0.97);
+  --shell-drawer-blur: rgb(62 46 62 / 0.90);
+  --shell-border: rgb(230 180 210 / 0.10);
 
   /* ==========================================================================
      Media / decorative blocks
      ========================================================================== */
 
-  --media-surface: rgb(31 31 31 / 0.05);
-  --media-foreground: rgb(31 31 31 / 0.62);
+  --media-surface: rgb(230 180 210 / 0.08);
+  --media-foreground: rgb(230 180 210 / 0.58);
 
   /* ==========================================================================
      Sidebar admin
      ========================================================================== */
 
-  --sidebar: oklch(0.985 0.003 75);
-  --sidebar-foreground: oklch(0.19 0.01 55);
+  --sidebar: oklch(0.215 0.009 335);
+  --sidebar-foreground: oklch(0.94 0.004 335);
 
-  --sidebar-primary: oklch(0.24 0.01 55);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.74 0.14 335);
+  --sidebar-primary-foreground: oklch(0.20 0.010 335);
 
-  --sidebar-accent: oklch(0.96 0.008 75);
-  --sidebar-accent-foreground: oklch(0.24 0.01 55);
+  --sidebar-accent: oklch(0.295 0.012 335);
+  --sidebar-accent-foreground: oklch(0.94 0.004 335);
 
-  --sidebar-border: oklch(0.91 0.008 70);
-  --sidebar-ring: oklch(0.68 0.06 55);
+  --sidebar-border: rgb(230 180 210 / 0.13);
+  --sidebar-ring: oklch(0.70 0.12 335);
 
   /* ==========================================================================
      Charts
      ========================================================================== */
 
-  --chart-1: oklch(0.73 0.11 55);
-  --chart-2: oklch(0.63 0.13 75);
-  --chart-3: oklch(0.56 0.09 35);
-  --chart-4: oklch(0.68 0.07 95);
-  --chart-5: oklch(0.5 0.06 20);
-}
-
-.dark {
-  color-scheme: dark;
-
-  /* ==========================================================================
-     Core semantic tokens — dark
-     ========================================================================== */
-
-  --background: oklch(0.16 0.01 55);
-  --foreground: oklch(0.95 0.004 75);
-
-  --card: oklch(0.2 0.01 55);
-  --card-foreground: oklch(0.95 0.004 75);
-
-  --popover: oklch(0.2 0.01 55);
-  --popover-foreground: oklch(0.95 0.004 75);
-
-  --primary: oklch(0.9 0.005 75);
-  --primary-foreground: oklch(0.2 0.01 55);
-
-  --secondary: oklch(0.28 0.01 55);
-  --secondary-foreground: oklch(0.95 0.004 75);
-
-  --muted: oklch(0.26 0.01 55);
-  --muted-foreground: oklch(0.74 0.01 75);
-
-  --accent: oklch(0.28 0.012 55);
-  --accent-foreground: oklch(0.95 0.004 75);
-
-  --destructive: oklch(0.704 0.191 22.216);
-
-  --border: rgb(255 255 255 / 0.1);
-  --input: rgb(255 255 255 / 0.14);
-  --ring: oklch(0.72 0.08 58);
-
-  /* ==========================================================================
-     Brand — dark
-     ========================================================================== */
-
-  --brand: oklch(0.75 0.09 58);
-  --brand-foreground: oklch(0.18 0.01 55);
-
-  /* ==========================================================================
-     Document / page identity — dark
-     ========================================================================== */
-
-  --page-bg: oklch(0.145 0.008 55);
-  --page-foreground: oklch(0.95 0.004 75);
-
-  --body-background:
-    radial-gradient(
-      circle at top,
-      oklch(0.62 0.06 58 / 0.2),
-      transparent 32rem
-    ),
-    var(--page-bg);
-
-  /* ==========================================================================
-     Shared surfaces — dark
-     ========================================================================== */
-
-  --surface-panel: rgb(255 255 255 / 0.05);
-  --surface-panel-soft: rgb(255 255 255 / 0.04);
-  --surface-subtle: rgb(255 255 255 / 0.05);
-
-  --surface-border: rgb(255 255 255 / 0.1);
-  --surface-border-strong: rgb(255 255 255 / 0.14);
-
-  --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.35);
-  --shadow-card: 0 16px 40px rgb(0 0 0 / 0.28);
-
-  /* ==========================================================================
-     Public shell — dark
-     ========================================================================== */
-
-  --shell-surface: rgb(24 24 24 / 0.9);
-  --shell-surface-blur: rgb(24 24 24 / 0.8);
-  --shell-drawer: rgb(20 20 20 / 0.96);
-  --shell-drawer-blur: rgb(20 20 20 / 0.88);
-  --shell-border: rgb(255 255 255 / 0.08);
-
-  /* ==========================================================================
-     Media / decorative blocks — dark
-     ========================================================================== */
-
-  --media-surface: rgb(255 255 255 / 0.05);
-  --media-foreground: rgb(255 255 255 / 0.58);
-
-  /* ==========================================================================
-     Sidebar admin — dark
-     ========================================================================== */
-
-  --sidebar: oklch(0.205 0.01 55);
-  --sidebar-foreground: oklch(0.95 0.004 75);
-
-  --sidebar-primary: oklch(0.75 0.09 58);
-  --sidebar-primary-foreground: oklch(0.18 0.01 55);
-
-  --sidebar-accent: oklch(0.28 0.012 55);
-  --sidebar-accent-foreground: oklch(0.95 0.004 75);
-
-  --sidebar-border: rgb(255 255 255 / 0.08);
-  --sidebar-ring: oklch(0.72 0.08 58);
-
-  /* ==========================================================================
-     Charts — dark
-     ========================================================================== */
-
-  --chart-1: oklch(0.75 0.1 58);
-  --chart-2: oklch(0.68 0.11 78);
-  --chart-3: oklch(0.6 0.08 32);
-  --chart-4: oklch(0.72 0.06 95);
-  --chart-5: oklch(0.56 0.06 18);
+  --chart-1: oklch(0.72 0.12 335);
+  --chart-2: oklch(0.72 0.07 300);
+  --chart-3: oklch(0.66 0.05 15);
+  --chart-4: oklch(0.72 0.05 260);
+  --chart-5: oklch(0.62 0.04 8);
 }

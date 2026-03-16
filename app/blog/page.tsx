@@ -11,41 +11,49 @@ export default async function BlogPage() {
   const posts = await listPublishedBlogPosts();
 
   return (
-    <div className="page">
-      <section className="section">
-        <div className="mb-6 grid gap-2">
-          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+    <div className="grid gap-10">
+      <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
+        <div className="mb-8 grid gap-2">
+          <p className="text-sm font-bold uppercase tracking-widest text-brand">
             Blog
           </p>
           <h1 className="m-0">Articles publiés</h1>
         </div>
 
         {posts.length > 0 ? (
-          <div className="grid gap-4 min-[700px]:grid-cols-3">
+          <div className="grid gap-5 min-[700px]:grid-cols-3">
             {posts.map((post) => (
-              <article className="store-card" key={post.id}>
-                <p className="text-[0.95rem] text-foreground/68">Article</p>
+              <article
+                className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6 shadow-card"
+                key={post.id}>
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  Article
+                </p>
                 <h3>
-                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                  <Link
+                    className="transition-colors hover:text-brand"
+                    href={`/blog/${post.slug}`}>
+                    {post.title}
+                  </Link>
                 </h3>
                 {post.publishedAt ? (
-                  <p className="text-[0.95rem] text-foreground/68">
+                  <p className="text-sm text-muted-foreground">
                     {blogDateFormatter.format(new Date(post.publishedAt))}
                   </p>
                 ) : null}
-                <p className="card-copy">
+                <p className="leading-relaxed">
                   {post.excerpt ?? "Aucun extrait n'est disponible."}
                 </p>
               </article>
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+          <div className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
+            <p className="text-sm font-bold uppercase tracking-widest text-brand">
               Blog vide
             </p>
             <h2>Aucun article publié</h2>
-            <p className="card-copy">
+            <p className="leading-relaxed text-muted-foreground">
               Les articles publics apparaîtront ici dès qu&apos;ils seront
               publiés.
             </p>

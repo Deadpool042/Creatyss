@@ -62,11 +62,27 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.62 0.18 262);
 
-  /* --- Shell public — couche C, à adapter au storefront Novamart --- */
-  --shell-surface: rgba(255, 255, 255, 0.92);
-  --shell-surface-blur: rgba(255, 255, 255, 0.84);
-  --shell-drawer: rgba(255, 255, 255, 0.98);
-  --shell-drawer-blur: rgba(255, 255, 255, 0.94);
+  /* --- Shared surfaces --- */
+  --surface-panel: rgb(255 255 255 / 0.92);
+  --surface-panel-soft: rgb(255 255 255 / 0.88);
+  --surface-subtle: rgb(0 0 0 / 0.04);
+
+  --surface-border: rgb(0 0 0 / 0.08);
+  --surface-border-strong: rgb(0 0 0 / 0.12);
+
+  --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.07);
+  --shadow-card: 0 16px 40px rgb(0 0 0 / 0.05);
+
+  /* --- Media / decorative blocks --- */
+  --media-surface: rgb(0 0 0 / 0.04);
+  --media-foreground: rgb(0 0 0 / 0.55);
+
+  /* --- Shell public --- */
+  --shell-surface: rgb(255 255 255 / 0.92);
+  --shell-surface-blur: rgb(255 255 255 / 0.84);
+  --shell-drawer: rgb(255 255 255 / 0.98);
+  --shell-drawer-blur: rgb(255 255 255 / 0.94);
+  --shell-border: rgb(0 0 0 / 0.08);
 
   /* --- Charts — secondaires, peuvent rester les mêmes --- */
   --chart-1: oklch(0.809 0.105 251.813);
@@ -96,6 +112,32 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
+
+  /* --- Page background dark --- */
+  --page-bg: oklch(0.145 0 0);
+  --body-background: var(--page-bg);
+
+  /* --- Shared surfaces dark --- */
+  --surface-panel: rgb(255 255 255 / 0.05);
+  --surface-panel-soft: rgb(255 255 255 / 0.04);
+  --surface-subtle: rgb(255 255 255 / 0.05);
+
+  --surface-border: rgb(255 255 255 / 0.1);
+  --surface-border-strong: rgb(255 255 255 / 0.14);
+
+  --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.35);
+  --shadow-card: 0 16px 40px rgb(0 0 0 / 0.28);
+
+  /* --- Media dark --- */
+  --media-surface: rgb(255 255 255 / 0.05);
+  --media-foreground: rgb(255 255 255 / 0.55);
+
+  /* --- Shell public dark --- */
+  --shell-surface: rgb(20 20 20 / 0.9);
+  --shell-surface-blur: rgb(20 20 20 / 0.8);
+  --shell-drawer: rgb(16 16 16 / 0.96);
+  --shell-drawer-blur: rgb(16 16 16 / 0.88);
+  --shell-border: rgb(255 255 255 / 0.08);
 
   /* --- Brand dark — varie : indigo éclairci --- */
   --brand: oklch(0.68 0.16 262);

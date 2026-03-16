@@ -1,84 +1,57 @@
-.hero-media,
-.media-placeholder,
-.product-media,
+/*
+ * Storefront — classes CSS conservées
+ *
+ * Justification :
+ * - .article-cover + img  : utilisé dans blog/[slug]/page.tsx (non converti ce lot)
+ * - .media-image          : utilitaire générique
+ * - .media-placeholder    : utilisé dans blog/[slug]/page.tsx (non converti)
+ * - .cart-* / .checkout-* : utilisé dans panier/page.tsx (non converti)
+ *
+ * Classes supprimées (converties en Tailwind inline) :
+ * - .store-card, .variant-card, .empty-state
+ * - .card-copy
+ * - .product-gallery, .product-panel
+ * - .product-summary, .product-summary-stats
+ * - .product-media, .variant-media, .variant-images
+ * - .hero-media (orphelin)
+ */
+
+/* Article cover — blog/[slug] */
 .article-cover {
-  border-radius: 0.9rem;
-  background: rgba(31, 31, 31, 0.05);
-}
-
-.hero-media,
-.product-media,
-.article-cover,
-.variant-media {
+  border-radius: var(--radius);
+  background: var(--media-surface);
   overflow: hidden;
+  min-height: 14rem;
 }
 
-.media-image,
-.product-media img,
-.article-cover img,
-.variant-media img {
+.article-cover img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+/* Utilitaire image générique */
+.media-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Placeholder visuel non disponible */
 .media-placeholder {
   display: grid;
   place-items: center;
   min-height: 16rem;
+  border-radius: var(--radius);
+  background: var(--media-surface);
   padding: 1rem;
-  color: rgba(31, 31, 31, 0.62);
+  color: var(--media-foreground);
   text-align: center;
 }
 
-.store-card,
-.variant-card,
-.empty-state {
-  border: 1px solid rgba(31, 31, 31, 0.08);
-  border-radius: 0.9rem;
-  background: rgba(255, 255, 255, 0.88);
-  padding: 1.25rem;
-}
-
-.store-card,
-.variant-card,
-.product-panel,
-.empty-state {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.card-copy {
-  margin: 0;
-  line-height: 1.65;
-}
-
-.product-summary,
-.product-summary-stats {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.product-summary {
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(31, 31, 31, 0.08);
-}
-
-.product-summary h2 {
-  margin: 0;
-  font-size: clamp(1.6rem, 2vw, 2rem);
-}
-
-.product-summary-stats {
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-}
-
-.variant-card {
-  display: grid;
-  gap: 0.25rem;
-}
-
+/* Cart / checkout layout — panier/page.tsx */
 .cart-layout,
 .cart-summary,
 .cart-line,
@@ -87,31 +60,6 @@
 .checkout-line {
   display: grid;
   gap: 1rem;
-}
-
-.product-gallery,
-.product-panel {
-  border: 1px solid rgba(31, 31, 31, 0.08);
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.92);
-  padding: 1.5rem;
-}
-
-.product-gallery {
-  display: grid;
-  gap: 1rem;
-}
-
-.product-media,
-.variant-media,
-.article-cover {
-  min-height: 14rem;
-}
-
-.variant-images {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 0.75rem;
 }
 
 @media (min-width: 900px) {
