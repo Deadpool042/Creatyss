@@ -4,28 +4,39 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { MenuIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger
-} from "@/components/ui/sheet";
+  HouseIcon,
+  MailIcon,
+  NewspaperIcon,
+  ShoppingBagIcon,
+  ShoppingCartIcon,
+  UserIcon
+} from "lucide-react";
 import { ModeToggle } from "../shared/mode-toggle";
 
-const publicLinks = [
-  { href: "/", label: "Accueil" },
-  { href: "/boutique", label: "Boutique" },
-  { href: "/blog", label: "Blog" },
-  { href: "/panier", label: "Panier" }
+const publicLinksLeft = [
+  { href: "/", label: "Accueil", icon: HouseIcon },
+  { href: "/boutique", label: "Collections", icon: ShoppingBagIcon },
+  { href: "/blog", label: "Blog", icon: NewspaperIcon }
+] as const;
+
+const publicLinksRight = [
+  { href: "/contact", label: "", icon: MailIcon },
+  { href: "/mon-compte", label: "", icon: UserIcon },
+  { href: "/panier", label: "", icon: ShoppingCartIcon }
 ] as const;
 
 type PublicSiteShellProps = Readonly<{
   children: ReactNode;
 }>;
+
+function isPublicLinkActive(pathname: string, href: string): boolean {
+  if (href === "/") {
+    return pathname === "/";
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function PublicSiteShell({ children }: PublicSiteShellProps) {
   const pathname = usePathname();
@@ -38,96 +49,156 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
   return (
     <div className="min-h-screen">
       <header className="site-header-blur sticky top-0 z-30 border-b border-shell-border">
-        <div className="mx-auto flex min-h-18 w-full max-w-7xl flex-col items-start justify-between gap-4 px-4 md:min-h-16 md:flex-row md:items-center md:px-6">
-          <Link
-            className="flex min-w-0 items-center gap-2 text-foreground"
-            href="/">
-            <Image
-              src="/uploads/logo.svg"
-              alt=""
-              aria-hidden="true"
-              width={150}
-              height={50}
-              className="h-8 shrink-0 object-contain"
-            />
-            <span className="truncate text-sm font-semibold uppercase tracking-[0.18em] sm:text-[0.95rem]">
-              Creatyss
-            </span>
-          </Link>
-
+        <div className="mx-auto grid min-h-16 w-full max-w-[1720px] grid-cols-[1fr_auto_1fr] items-center gap-6 px-6 xl:px-12">
           <nav
             aria-label="Navigation principale"
-            className="hidden items-center gap-1 md:flex">
-            {publicLinks.map(link => (
+            className="hidden items-center gap-4 md:flex">
+            {publicLinksLeft.map(link => (
               <Link
-                className="rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-surface-subtle hover:text-foreground"
+                className={`px-1.5 py-2 text-[0.68rem] font-medium uppercase tracking-[0.28em] transition-colors ${
+                  isPublicLinkActive(pathname, link.href)
+                    ? "text-foreground"
+                    : "text-foreground/72 hover:text-foreground"
+                }`}
                 href={link.href}
                 key={link.href}>
                 {link.label}
               </Link>
             ))}
-
-            <Link
-              className="ml-1 rounded-full px-3 py-2 text-xs font-medium uppercase tracking-[0.14em] text-foreground/60 transition-colors hover:bg-surface-subtle hover:text-foreground"
-              href="/admin/login">
-              Admin
-            </Link>
-
-            <ModeToggle />
           </nav>
 
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  aria-label="Ouvrir le menu"
-                  size="icon-sm"
-                  variant="ghost">
-                  <MenuIcon />
-                </Button>
-              </SheetTrigger>
+          <Link
+            className="mx-auto hidden min-w-0 items-center gap-2.5 text-foreground md:flex"
+            href="/">
+            <Image
+              src="/uploads/logo.svg"
+              alt=""
+              aria-hidden="true"
+              width={32}
+              height={32}
+              className="hidden h-5 w-auto shrink-0 object-contain opacity-90 md:block"
+            />
+            <span className="truncate text-[1.05rem] font-medium uppercase tracking-[0.38em] sm:text-[1.18rem]">
+              Creatyss
+            </span>
+          </Link>
 
-              <SheetContent
-                className="shell-drawer w-[min(22rem,100vw)] border-l border-shell-border p-0 shadow-soft"
-                side="right">
-                <SheetHeader className="px-4 pb-2 pt-4">
-                  <SheetTitle className="text-left text-sm font-semibold uppercase tracking-[0.16em] text-foreground">
-                    Creatyss V2
-                  </SheetTitle>
-                </SheetHeader>
+          <div className="hidden items-center justify-self-end md:flex md:gap-1.5">
+            {publicLinksRight.map(link => {
+              const isActive = isPublicLinkActive(pathname, link.href);
 
-                <nav
-                  aria-label="Navigation principale mobile"
-                  className="flex flex-col gap-1 px-4 pb-6">
-                  {publicLinks.map(link => (
-                    <SheetClose
-                      asChild
-                      key={link.href}>
-                      <Link
-                        className="rounded-xl px-3 py-3 text-base font-medium text-foreground/85 transition-colors hover:bg-surface-subtle hover:text-foreground"
-                        href={link.href}>
-                        {link.label}
-                      </Link>
-                    </SheetClose>
-                  ))}
+              if (link.icon) {
+                const Icon = link.icon;
 
-                  <div className="mt-3 border-t border-shell-border pt-3">
-                    <SheetClose asChild>
-                      <Link
-                        className="rounded-xl px-3 py-3 text-sm font-medium uppercase tracking-[0.14em] text-foreground/60 transition-colors hover:bg-surface-subtle hover:text-foreground"
-                        href="/admin/login">
-                        Admin
-                      </Link>
-                    </SheetClose>
-                  </div>
-                </nav>
-              </SheetContent>
-            </Sheet>
+                return (
+                  <Link
+                    aria-label={
+                      link.href === "/contact"
+                        ? "Contact"
+                        : link.href === "/mon-compte"
+                          ? "Mon compte"
+                          : "Panier"
+                    }
+                    className={`inline-flex h-8.5 w-8.5 items-center justify-center rounded-full transition-colors ${
+                      isActive
+                        ? "bg-surface-subtle text-foreground"
+                        : "text-foreground/72 hover:bg-surface-subtle hover:text-foreground"
+                    }`}
+                    href={link.href}
+                    key={link.href}>
+                    <Icon className="size-[0.95rem]" />
+                  </Link>
+                );
+              }
+
+              return (
+                <Link
+                  className={`px-1.5 py-2 text-[0.68rem] font-medium uppercase tracking-[0.28em] transition-colors ${
+                    isActive
+                      ? "text-foreground"
+                      : "text-foreground/72 hover:text-foreground"
+                  }`}
+                  href={link.href}
+                  key={link.href}>
+                  {link.label}
+                </Link>
+              );
+            })}
+            <ModeToggle />
+          </div>
+
+          <div className="col-span-3 flex min-h-16 items-center justify-between md:hidden">
+            <Link
+              className="flex min-w-0 items-center gap-2 text-foreground"
+              href="/">
+              <Image
+                src="/uploads/logo.svg"
+                alt=""
+                aria-hidden="true"
+                width={28}
+                height={28}
+                className="h-6 w-auto shrink-0 object-contain"
+              />
+              <span className="truncate text-sm font-semibold uppercase tracking-[0.24em]">
+                Creatyss
+              </span>
+            </Link>
+
+            <div className="flex items-center gap-1.5">
+              <Link
+                aria-label="Contact"
+                className={`inline-flex h-8.5 w-8.5 items-center justify-center rounded-full transition-colors ${
+                  isPublicLinkActive(pathname, "/contact")
+                    ? "bg-surface-subtle text-foreground"
+                    : "text-foreground/72 hover:bg-surface-subtle hover:text-foreground"
+                }`}
+                href="/contact">
+                <MailIcon className="size-[0.95rem]" />
+              </Link>
+
+              <Link
+                aria-label="Mon compte"
+                className={`inline-flex h-8.5 w-8.5 items-center justify-center rounded-full transition-colors ${
+                  isPublicLinkActive(pathname, "/mon-compte")
+                    ? "bg-surface-subtle text-foreground"
+                    : "text-foreground/72 hover:bg-surface-subtle hover:text-foreground"
+                }`}
+                href="/mon-compte">
+                <UserIcon className="size-[0.95rem]" />
+              </Link>
+
+              <ModeToggle />
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-7xl px-4 pb-20 pt-10 md:px-6">
+      <nav
+        aria-label="Navigation principale mobile"
+        className="site-header-blur fixed inset-x-0 bottom-0 z-30 border-t border-shell-border md:hidden">
+        <div className="mx-auto grid w-full max-w-[1720px] grid-cols-3 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
+          {publicLinksLeft.map(link => {
+            const Icon = link.icon;
+            const isActive = isPublicLinkActive(pathname, link.href);
+
+            return (
+              <Link
+                className={`flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl px-2 py-2 text-[0.66rem] font-medium transition-colors ${
+                  isActive
+                    ? "bg-surface-subtle text-foreground"
+                    : "text-foreground/70 hover:bg-surface-subtle hover:text-foreground"
+                }`}
+                href={link.href}
+                key={link.href}>
+                <Icon className="size-[1.05rem]" />
+                <span>{link.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+
+      <main className="mx-auto w-full max-w-full overflow-x-clip px-4 pb-28 pt-8 md:px-6 md:pb-20 xl:px-12">
         {children}
       </main>
     </div>

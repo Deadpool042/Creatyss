@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creatyss — Sacs faits main, fabrication française</title>
+  <meta name="description" content="Créations exclusives faites main. Sacs à main, cabas, pochettes et bandoulières, fabriqués à la main en France. Chaque pièce est unique." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────────
+       TOKENS
+    ───────────────────────────────────────────── */
+    :root {
+      --c-bg:          #F8F4EF;
+      --c-bg-alt:      #FDFCF9;
+      --c-bg-warm:     #F0EAE1;
+      --c-bg-dark:     #1C1610;
+      --c-bg-dark2:    #261E16;
+
+      --c-text:        #1C1610;
+      --c-text-mid:    #5A4A3C;
+      --c-text-soft:   #9B8C7E;
+      --c-text-inv:    #F8F4EF;
+
+      --c-border:      #E4DBCF;
+      --c-border-mid:  #C9BEB0;
+
+      --c-terra:       #C4764A;   /* accent principal */
+      --c-bordeaux:    #8B2E2E;
+      --c-vert:        #6B7A5E;
+      --c-bleu:        #7B93A3;
+      --c-or:          #C9A96E;
+
+      --serif:  'Cormorant Garamond', Georgia, serif;
+      --sans:   'Jost', system-ui, sans-serif;
+
+      --ease:   cubic-bezier(.25,.46,.45,.94);
+    }
+
+    /* ─────────────────────────────────────────────
+       RESET
+    ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--c-bg);
+      color: var(--c-text);
+      font-size: 15px;
+      line-height: 1.7;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ─────────────────────────────────────────────
+       UTILITIES
+    ───────────────────────────────────────────── */
+    .eyebrow {
+      display: block;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--c-text-soft);
+      margin-bottom: 14px;
+    }
+    .eyebrow--terra { color: var(--c-terra); }
+
+    .rule {
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: var(--c-terra);
+      margin-bottom: 28px;
+    }
+    .rule--center { margin-left: auto; margin-right: auto; }
+
+    /* ─────────────────────────────────────────────
+       BUTTONS
+    ───────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: all .25s var(--ease);
+    }
+    .btn-dark {
+      background: var(--c-text);
+      color: var(--c-text-inv);
+      padding: 15px 30px;
+    }
+    .btn-dark:hover { background: #2E241C; }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--c-text);
+      padding: 14px 28px;
+      border: 1px solid var(--c-border-mid);
+    }
+    .btn-outline:hover { border-color: var(--c-text); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--c-text);
+      padding: 0;
+      border-bottom: 1px solid var(--c-border-mid);
+      border-radius: 0;
+      padding-bottom: 2px;
+    }
+    .btn-ghost:hover { border-color: var(--c-text); }
+    .btn-ghost--inv { color: var(--c-text-inv); border-color: rgba(255,255,255,.3); }
+    .btn-ghost--inv:hover { border-color: var(--c-text-inv); }
+
+    .arrow { font-size: 14px; font-family: serif; transition: transform .2s var(--ease); }
+    .btn:hover .arrow { transform: translateX(4px); }
+
+    /* ─────────────────────────────────────────────
+       ① NAVIGATION
+    ───────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      transition: background .35s var(--ease), box-shadow .35s var(--ease);
+    }
+    .nav.scrolled {
+      background: var(--c-bg);
+      box-shadow: 0 1px 0 var(--c-border);
+    }
+    .nav-brand {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: .15em;
+      color: var(--c-text);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--c-text-mid);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--c-text); }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-icon {
+      cursor: pointer;
+      color: var(--c-text-mid);
+      transition: color .2s;
+      line-height: 1;
+    }
+    .nav-icon:hover { color: var(--c-text); }
+    .nav-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* burger – mobile only */
+    .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-burger span { display: block; width: 22px; height: 1px; background: var(--c-text); }
+
+    /* mobile drawer */
+    .nav-drawer {
+      position: fixed;
+      inset: 0;
+      background: var(--c-bg);
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      transform: translateX(-100%);
+      transition: transform .4s var(--ease);
+    }
+    .nav-drawer.open { transform: translateX(0); }
+    .nav-drawer a {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--c-text);
+    }
+    .nav-drawer-close {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      cursor: pointer;
+      font-size: 22px;
+      color: var(--c-text-soft);
+    }
+
+    /* ─────────────────────────────────────────────
+       ② HERO
+    ───────────────────────────────────────────── */
+    .hero {
+      display: grid;
+      grid-template-columns: 56% 44%;
+      min-height: 100svh;
+      padding-top: 64px;
+    }
+    .hero-visual {
+      position: relative;
+      overflow: hidden;
+      background: var(--c-bg-warm);
+    }
+    /* Real photo goes here: <img src="photos/hero-sac.jpg" alt="Sac fait main Creatyss"> */
+    .hero-visual img,
+    .hero-visual .photo-slot {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .hero-visual .photo-slot {
+      background: linear-gradient(160deg, #D4C9B2 0%, #BFB3A0 35%, #A89680 65%, #7A6452 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .photo-slot-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+      text-align: center;
+      line-height: 2;
+    }
+    /* Sticker pièce unique */
+    .hero-badge {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      background: var(--c-bg);
+      padding: 14px 20px;
+      border-left: 3px solid var(--c-terra);
+    }
+    .hero-badge-title {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--c-text);
+      line-height: 1.3;
+    }
+    .hero-badge-sub {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--c-text-soft);
+      margin-top: 2px;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 64px 80px 72px;
+      background: var(--c-bg);
+    }
+    .hero-h1 {
+      font-family: var(--serif);
+      font-size: clamp(42px, 5vw, 72px);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -.01em;
+      color: var(--c-text);
+      margin-bottom: 28px;
+    }
+    .hero-h1 em {
+      font-style: italic;
+      font-weight: 300;
+    }
+    .hero-p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--c-text-mid);
+      line-height: 1.8;
+      max-width: 38ch;
+      margin-bottom: 44px;
+    }
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      right: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-scroll span {
+      font-size: 9px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--c-text-soft);
+      writing-mode: vertical-rl;
+    }
+    .hero-scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--c-border), transparent);
+    }
+
+    /* ─────────────────────────────────────────────
+       ③ BANDE DE GARANTIES
+    ───────────────────────────────────────────── */
+    .guarantees {
+      background: var(--c-bg-dark);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .guarantee-item {
+      padding: 32px 40px;
+      border-right: 1px solid rgba(255,255,255,.06);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .guarantee-item:last-child { border-right: none; }
+    .guarantee-icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      opacity: .45;
+    }
+    .guarantee-icon svg { width: 32px; height: 32px; fill: none; stroke: var(--c-text-inv); stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; }
+    .guarantee-text {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: .06em;
+      color: rgba(255,255,255,.55);
+      line-height: 1.5;
+    }
+    .guarantee-text strong {
+      display: block;
+      font-weight: 500;
+      color: rgba(255,255,255,.85);
+      font-size: 12px;
+      letter-spacing: .04em;
+      margin-bottom: 1px;
+    }
+
+    /* ─────────────────────────────────────────────
+       ④ COLLECTIONS
+    ───────────────────────────────────────────── */
+    .collections {
+      padding: 100px 60px;
+      background: var(--c-bg-alt);
+    }
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(30px, 3.5vw, 46px);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--c-text);
+    }
+
+    .coll-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 14px;
+    }
+    .coll-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: block;
+    }
+    /* Large card spans 2 rows */
+    .coll-card--featured { grid-row: span 2; }
+
+    .coll-card-img {
+      position: relative;
+      overflow: hidden;
+      background: var(--c-bg-warm);
+    }
+    .coll-card--featured .coll-card-img { aspect-ratio: 2/3; }
+    .coll-card:not(.coll-card--featured) .coll-card-img { aspect-ratio: 3/2; }
+
+    /* Photo slot inside collection card */
+    .coll-card-img .photo-slot {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+    }
+    .coll-card-img img {
+      transition: transform .7s var(--ease);
+    }
+    .coll-card-img .photo-slot {
+      transition: transform .7s var(--ease);
+    }
+    .coll-card:hover .coll-card-img img,
+    .coll-card:hover .coll-card-img .photo-slot {
+      transform: scale(1.05);
+    }
+
+    .coll-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(20,12,6,.6) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .coll-card-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 24px 28px;
+    }
+    .coll-card-name {
+      font-family: var(--serif);
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .coll-card-count {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+    }
+    /* Tag couleur collection */
+    .coll-tag {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      backdrop-filter: blur(6px);
+    }
+    .coll-tag--light { background: rgba(255,255,255,.88); color: var(--c-text-mid); }
+    .coll-tag--terra { background: var(--c-terra); color: #fff; }
+    .coll-tag--vert  { background: var(--c-vert);  color: #fff; }
+
+    /* Swatches palettes de couleurs */
+    .coll-swatches {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      gap: 5px;
+    }
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,.7);
+    }
+
+    /* ─────────────────────────────────────────────
+       ⑤ SAVOIR-FAIRE
+    ───────────────────────────────────────────── */
+    .savoirfaire {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .sf-visual {
+      position: relative;
+      background: var(--c-bg-warm);
+      min-height: 560px;
+      overflow: hidden;
+    }
+    .sf-visual .photo-slot {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(145deg, #C8B89E 0%, #A8906E 45%, #6E5840 100%);
+    }
+    .sf-visual img {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Encart sur photo */
+    .sf-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(28,22,16,.72);
+      backdrop-filter: blur(2px);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .sf-caption-num {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 300;
+      color: rgba(255,255,255,.25);
+      line-height: 1;
+    }
+    .sf-caption-text {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(255,255,255,.65);
+      line-height: 1.6;
+    }
+    .sf-caption-text strong {
+      display: block;
+      font-weight: 500;
+      color: rgba(255,255,255,.9);
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    .sf-content {
+      padding: 80px 72px;
+      background: var(--c-bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .sf-h2 {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3vw, 42px);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--c-text);
+      margin-bottom: 20px;
+      max-width: 18ch;
+    }
+    .sf-p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--c-text-mid);
+      line-height: 1.85;
+      max-width: 44ch;
+      margin-bottom: 40px;
+    }
+    .sf-list {
+      list-style: none;
+      margin-bottom: 44px;
+    }
+    .sf-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--c-border);
+      font-size: 13px;
+      color: var(--c-text-mid);
+    }
+    .sf-list li:first-child { border-top: 1px solid var(--c-border); }
+    .sf-num {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--c-terra);
+      line-height: 1;
+      min-width: 28px;
+      margin-top: 2px;
+    }
+
+    /* ─────────────────────────────────────────────
+       ⑥ SÉLECTION PRODUITS
+    ───────────────────────────────────────────── */
+    .products {
+      padding: 100px 60px;
+      background: var(--c-bg);
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+    .product-card {
+      cursor: pointer;
+    }
+    .product-card-img {
+      position: relative;
+      overflow: hidden;
+      background: var(--c-bg-warm);
+      aspect-ratio: 3/4;
+      margin-bottom: 18px;
+    }
+    .product-card-img .photo-slot {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      transition: transform .6s var(--ease);
+    }
+    .product-card-img img {
+      transition: transform .6s var(--ease);
+    }
+    .product-card:hover .product-card-img .photo-slot,
+    .product-card:hover .product-card-img img {
+      transform: scale(1.04);
+    }
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      padding: 4px 9px;
+      background: var(--c-bg-dark);
+      color: var(--c-text-inv);
+    }
+    .product-badge--new { background: var(--c-terra); }
+    .product-wishlist {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      background: var(--c-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .product-card:hover .product-wishlist { opacity: 1; }
+    .product-wishlist svg { width: 16px; height: 16px; fill: none; stroke: var(--c-text-mid); stroke-width: 1.5; }
+
+    .product-name {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--c-text);
+      margin-bottom: 5px;
+    }
+    .product-detail {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--c-text-soft);
+      letter-spacing: .08em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .product-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .product-price {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--c-text-mid);
+    }
+    .product-price strong {
+      font-weight: 500;
+      color: var(--c-text);
+    }
+    .products-footer {
+      text-align: center;
+    }
+
+    /* ─────────────────────────────────────────────
+       ⑦ À PROPOS — CRÉATRICE
+    ───────────────────────────────────────────── */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .about-content {
+      padding: 100px 72px;
+      background: var(--c-bg-warm);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .about-h2 {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3vw, 44px);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--c-text);
+      margin-bottom: 24px;
+      max-width: 20ch;
+    }
+    .about-blockquote {
+      font-family: var(--serif);
+      font-size: clamp(17px, 2vw, 22px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--c-text-mid);
+      margin-bottom: 28px;
+      max-width: 40ch;
+      border-left: 2px solid var(--c-terra);
+      padding-left: 24px;
+    }
+    .about-signature {
+      font-family: var(--serif);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: .12em;
+      color: var(--c-text-soft);
+      margin-bottom: 44px;
+    }
+    .about-visual {
+      position: relative;
+      background: var(--c-bg-dark2);
+      min-height: 520px;
+      overflow: hidden;
+    }
+    .about-visual .photo-slot {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(160deg, #3A2E24 0%, #26201A 50%, #1C1610 100%);
+    }
+    .about-visual img {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Encart chiffre flottant */
+    .about-stat {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      background: var(--c-bg);
+      padding: 20px 24px;
+      text-align: center;
+    }
+    .about-stat-num {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--c-text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .about-stat-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--c-text-soft);
+    }
+
+    /* ─────────────────────────────────────────────
+       ⑧ NOUVEAUTÉS / ÉVÉNEMENTS
+    ───────────────────────────────────────────── */
+    .nouveautes {
+      padding: 100px 0 100px 60px;
+      background: var(--c-bg-alt);
+      overflow: hidden;
+    }
+    .nouveautes-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      padding-right: 60px;
+    }
+    .nouveautes-track {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .nouveautes-track::-webkit-scrollbar { display: none; }
+    .nouv-card {
+      flex: 0 0 300px;
+      scroll-snap-align: start;
+      cursor: pointer;
+    }
+    .nouv-card-img {
+      position: relative;
+      aspect-ratio: 2/3;
+      background: var(--c-bg-warm);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .nouv-card-img .photo-slot {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      transition: transform .65s var(--ease);
+    }
+    .nouv-card-img img {
+      transition: transform .65s var(--ease);
+    }
+    .nouv-card:hover .nouv-card-img .photo-slot,
+    .nouv-card:hover .nouv-card-img img {
+      transform: scale(1.05);
+    }
+    .nouv-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--c-terra);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      padding: 4px 9px;
+    }
+    .nouv-name {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--c-text);
+      margin-bottom: 4px;
+    }
+    .nouv-sub {
+      font-size: 11px;
+      color: var(--c-text-soft);
+      letter-spacing: .06em;
+    }
+    .nouv-price {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--c-text-mid);
+    }
+
+    /* Carte événement */
+    .nouv-card--event .nouv-card-img {
+      background: var(--c-bg-dark2);
+      display: flex;
+      align-items: flex-end;
+    }
+    .event-inner {
+      position: absolute;
+      inset: 0;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background: linear-gradient(160deg, var(--c-bg-dark2) 0%, #3A2C22 100%);
+    }
+    .event-date {
+      font-family: var(--serif);
+      font-size: 44px;
+      font-weight: 300;
+      color: rgba(255,255,255,.15);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .event-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--c-terra);
+      margin-bottom: 8px;
+    }
+    .event-name {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: rgba(255,255,255,.9);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .event-place {
+      font-size: 11px;
+      color: rgba(255,255,255,.4);
+      letter-spacing: .1em;
+    }
+
+    /* ─────────────────────────────────────────────
+       ⑨ NEWSLETTER
+    ───────────────────────────────────────────── */
+    .newsletter {
+      padding: 88px 60px;
+      background: var(--c-bg-dark);
+      text-align: center;
+    }
+    .newsletter-h2 {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3vw, 40px);
+      font-weight: 300;
+      color: var(--c-text-inv);
+      margin-bottom: 12px;
+    }
+    .newsletter-sub {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(255,255,255,.4);
+      max-width: 48ch;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+    }
+    .newsletter-form {
+      display: flex;
+      max-width: 440px;
+      margin: 0 auto;
+      border: 1px solid rgba(255,255,255,.15);
+    }
+    .newsletter-input {
+      flex: 1;
+      padding: 15px 22px;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--c-text-inv);
+      background: transparent;
+      border: none;
+      outline: none;
+    }
+    .newsletter-input::placeholder { color: rgba(255,255,255,.28); }
+    .newsletter-submit {
+      padding: 15px 24px;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      background: var(--c-terra);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .newsletter-submit:hover { background: #B36640; }
+    .newsletter-legal {
+      margin-top: 16px;
+      font-size: 10px;
+      color: rgba(255,255,255,.2);
+      letter-spacing: .06em;
+    }
+
+    /* ─────────────────────────────────────────────
+       ⑩ FOOTER
+    ───────────────────────────────────────────── */
+    .footer {
+      background: var(--c-bg-dark2);
+      padding: 72px 60px 40px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 64px;
+      padding-bottom: 64px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .footer-brand-logo {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: .12em;
+      color: var(--c-text-inv);
+      margin-bottom: 16px;
+    }
+    .footer-brand-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(255,255,255,.35);
+      line-height: 1.8;
+      max-width: 28ch;
+      margin-bottom: 28px;
+    }
+    .footer-social {
+      display: flex;
+      gap: 14px;
+    }
+    .footer-social a {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+      transition: color .2s;
+    }
+    .footer-social a:hover { color: var(--c-text-inv); }
+    .footer-col-title {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.25);
+      margin-bottom: 24px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-links a {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(255,255,255,.45);
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: rgba(255,255,255,.85); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      color: rgba(255,255,255,.2);
+      letter-spacing: .08em;
+    }
+    .footer-bottom a {
+      color: rgba(255,255,255,.2);
+      transition: color .2s;
+    }
+    .footer-bottom a:hover { color: rgba(255,255,255,.45); }
+
+    /* ─────────────────────────────────────────────
+       RESPONSIVE — MOBILE
+    ───────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .nav { padding: 0 28px; }
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+      .nav-brand { left: 50%; transform: translateX(-50%); }
+
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-visual { min-height: 60vw; max-height: 70vw; }
+      .hero-visual .photo-slot { position: relative; inset: auto; width: 100%; height: 60vw; max-height: 70vw; }
+      .hero-content { padding: 52px 28px 60px; }
+      .hero-ctas { flex-direction: column; align-items: flex-start; }
+      .hero-scroll { display: none; }
+      .hero-badge { left: 20px; bottom: 20px; }
+
+      .guarantees { grid-template-columns: 1fr 1fr; }
+      .guarantee-item { padding: 22px 24px; }
+      .guarantee-item:nth-child(2) { border-right: none; }
+
+      .collections { padding: 64px 28px; }
+      .coll-grid { grid-template-columns: 1fr 1fr; }
+      .coll-card--featured { grid-row: span 1; grid-column: span 2; }
+      .coll-card--featured .coll-card-img { aspect-ratio: 16/9; }
+
+      .savoirfaire { grid-template-columns: 1fr; }
+      .sf-visual { min-height: 65vw; }
+      .sf-visual .photo-slot { position: relative; height: 65vw; inset: auto; }
+      .sf-content { padding: 56px 28px 64px; }
+      .sf-h2 { font-size: 30px; }
+
+      .products { padding: 64px 28px; }
+      .products-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+
+      .about { grid-template-columns: 1fr; }
+      .about-content { padding: 64px 28px; }
+      .about-visual { min-height: 65vw; }
+      .about-visual .photo-slot { position: relative; height: 65vw; inset: auto; }
+      .about-stat { top: 20px; left: 20px; padding: 14px 18px; }
+
+      .nouveautes { padding: 64px 0 64px 28px; }
+      .nouveautes-head { padding-right: 28px; }
+      .nouv-card { flex: 0 0 260px; }
+
+      .newsletter { padding: 64px 28px; }
+      .newsletter-form { flex-direction: column; }
+      .newsletter-input { border-bottom: 1px solid rgba(255,255,255,.12); }
+      .newsletter-submit { padding: 16px; }
+
+      .footer { padding: 56px 28px 32px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .guarantees { grid-template-columns: 1fr; }
+      .guarantee-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,.06); }
+      .guarantee-item:last-child { border-bottom: none; }
+      .products-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════════ -->
+<header class="nav" id="nav">
+  <nav class="nav-links" aria-label="Navigation principale">
+    <li><a href="#collections">Collections</a></li>
+    <li><a href="#nouveautes">Nouveautés</a></li>
+    <li><a href="#savoirfaire">L'atelier</a></li>
+  </nav>
+
+  <a href="/" class="nav-brand" aria-label="Creatyss — Accueil">CREATYSS</a>
+
+  <div class="nav-right">
+    <a href="/contact" class="nav-icon" aria-label="Contact">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </a>
+    <a href="/panier" class="nav-icon" aria-label="Panier">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </a>
+    <div class="nav-burger" id="burger" aria-label="Menu" role="button" tabindex="0">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="nav-drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu navigation">
+  <span class="nav-drawer-close" id="drawer-close" aria-label="Fermer">✕</span>
+  <a href="#collections" class="drawer-link">Collections</a>
+  <a href="#nouveautes" class="drawer-link">Nouveautés</a>
+  <a href="#savoirfaire" class="drawer-link">L'atelier</a>
+  <a href="#about" class="drawer-link">La créatrice</a>
+  <a href="/contact" class="drawer-link">Contact</a>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     ① HERO
+═══════════════════════════════════════════════ -->
+<section class="hero" aria-label="Section principale">
+  <div class="hero-visual">
+    <!--
+      INTÉGRATION PHOTO :
+      Remplacer .photo-slot par :
+      <img src="photos/hero-sac-principal.jpg" alt="Sac à main fait main Creatyss — collection phare" loading="eager" />
+    -->
+    <div class="photo-slot" aria-hidden="true">
+      <div class="photo-slot-label">
+        Photo éditoriale<br>Sac principal en situation<br>
+        <span style="font-size:9px; opacity:.6;">Portrait · lumière naturelle · fond neutre</span>
+      </div>
+    </div>
+
+    <!-- Encart flottant bas-gauche -->
+    <div class="hero-badge">
+      <div class="hero-badge-title">Chaque pièce est unique</div>
+      <div class="hero-badge-sub">Fabrication française · fait main</div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <span class="eyebrow eyebrow--terra">Créations exclusives</span>
+    <h1 class="hero-h1">
+      Des sacs faits<br>
+      <em>à la main,</em><br>
+      nulle part ailleurs.
+    </h1>
+    <p class="hero-p">
+      Chaque sac Creatyss est dessiné, coupé et cousu dans notre atelier en France.
+      Aucun modèle n'est reproduit à l'identique.
+    </p>
+    <div class="hero-ctas">
+      <a href="#collections" class="btn btn-dark">
+        Découvrir les collections <span class="arrow">→</span>
+      </a>
+      <a href="#savoirfaire" class="btn btn-ghost">
+        Notre atelier <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     BANDE GARANTIES
+═══════════════════════════════════════════════ -->
+<div class="guarantees" role="list" aria-label="Nos engagements">
+  <div class="guarantee-item" role="listitem">
+    <div class="guarantee-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <div class="guarantee-text">
+      <strong>Atelier en France</strong>
+      Toutes nos créations sont fabriquées dans notre atelier français
+    </div>
+  </div>
+  <div class="guarantee-item" role="listitem">
+    <div class="guarantee-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    </div>
+    <div class="guarantee-text">
+      <strong>Pièces uniques</strong>
+      Chaque sac est numéroté — jamais deux fois le même modèle
+    </div>
+  </div>
+  <div class="guarantee-item" role="listitem">
+    <div class="guarantee-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </div>
+    <div class="guarantee-text">
+      <strong>Fait avec soin</strong>
+      Du choix des matières à la dernière piqûre, chaque geste est humain
+    </div>
+  </div>
+  <div class="guarantee-item" role="listitem">
+    <div class="guarantee-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    </div>
+    <div class="guarantee-text">
+      <strong>Livraison soignée</strong>
+      Emballage artisanal, expédition en 3–5 jours ouvrés
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     ② COLLECTIONS
+═══════════════════════════════════════════════ -->
+<section class="collections" id="collections" aria-labelledby="collections-title">
+  <div class="section-header">
+    <div>
+      <span class="eyebrow">L'univers Creatyss</span>
+      <h2 class="section-title" id="collections-title">Nos collections</h2>
+    </div>
+    <a href="/collections" class="btn btn-ghost">
+      Tout voir <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="coll-grid">
+
+    <!-- Grande carte -->
+    <a href="/collections/sacs-a-main" class="coll-card coll-card--featured" aria-label="Collection Sacs à main">
+      <div class="coll-card-img">
+        <!--
+          PHOTO : <img src="photos/collection-sacs-main.jpg" alt="Collection sacs à main Creatyss">
+        -->
+        <div class="photo-slot" style="background: linear-gradient(160deg, #A84040 0%, #7A2828 45%, #4E1616 100%);" aria-hidden="true">
+          <div class="photo-slot-label">Sacs à main<br><span style="font-size:9px; opacity:.5;">photo ambiance</span></div>
+        </div>
+        <div class="coll-card-overlay"></div>
+        <div class="coll-tag coll-tag--light">Collection phare</div>
+        <div class="coll-swatches" aria-hidden="true">
+          <span class="swatch" style="background:#8B2E2E;" title="Bordeaux"></span>
+          <span class="swatch" style="background:#C4764A;" title="Terracotta"></span>
+          <span class="swatch" style="background:#D4C9B2;" title="Écru"></span>
+        </div>
+      </div>
+      <div class="coll-card-info">
+        <div class="coll-card-name">Sacs à main</div>
+        <div class="coll-card-count">12 créations</div>
+      </div>
+    </a>
+
+    <!-- Cartes secondaires -->
+    <a href="/collections/cabas" class="coll-card" aria-label="Collection Cabas">
+      <div class="coll-card-img">
+        <!--
+          PHOTO : <img src="photos/collection-cabas.jpg" alt="Cabas Creatyss">
+        -->
+        <div class="photo-slot" style="background: linear-gradient(145deg, #8E9E82 0%, #5E7050 100%);" aria-hidden="true">
+          <div class="photo-slot-label">Cabas</div>
+        </div>
+        <div class="coll-card-overlay"></div>
+        <div class="coll-tag coll-tag--vert">Nouveauté</div>
+      </div>
+      <div class="coll-card-info">
+        <div class="coll-card-name" style="font-size:18px;">Cabas</div>
+        <div class="coll-card-count">6 créations</div>
+      </div>
+    </a>
+
+    <a href="/collections/bandoulieres" class="coll-card" aria-label="Collection Bandoulières">
+      <div class="coll-card-img">
+        <!--
+          PHOTO : <img src="photos/collection-bandoulieres.jpg" alt="Sacs bandoulière Creatyss">
+        -->
+        <div class="photo-slot" style="background: linear-gradient(145deg, #D4905A 0%, #9E6030 100%);" aria-hidden="true">
+          <div class="photo-slot-label">Bandoulières</div>
+        </div>
+        <div class="coll-card-overlay"></div>
+      </div>
+      <div class="coll-card-info">
+        <div class="coll-card-name" style="font-size:18px;">Bandoulières</div>
+        <div class="coll-card-count">8 créations</div>
+      </div>
+    </a>
+
+    <a href="/collections/mini-sacs" class="coll-card" aria-label="Collection Mini sacs">
+      <div class="coll-card-img">
+        <!--
+          PHOTO : <img src="photos/collection-mini.jpg" alt="Mini sacs Creatyss">
+        -->
+        <div class="photo-slot" style="background: linear-gradient(145deg, #8EB0C4 0%, #5C8099 100%);" aria-hidden="true">
+          <div class="photo-slot-label">Mini sacs</div>
+        </div>
+        <div class="coll-card-overlay"></div>
+      </div>
+      <div class="coll-card-info">
+        <div class="coll-card-name" style="font-size:18px;">Mini sacs</div>
+        <div class="coll-card-count">9 créations</div>
+      </div>
+    </a>
+
+    <a href="/collections/pochettes" class="coll-card" aria-label="Collection Pochettes">
+      <div class="coll-card-img">
+        <!--
+          PHOTO : <img src="photos/collection-pochettes.jpg" alt="Pochettes Creatyss">
+        -->
+        <div class="photo-slot" style="background: linear-gradient(145deg, #C4B49A 0%, #8A7060 100%);" aria-hidden="true">
+          <div class="photo-slot-label">Pochettes</div>
+        </div>
+        <div class="coll-card-overlay"></div>
+        <div class="coll-tag coll-tag--terra">−30 €</div>
+      </div>
+      <div class="coll-card-info">
+        <div class="coll-card-name" style="font-size:18px;">Pochettes &amp; Trousses</div>
+        <div class="coll-card-count">12 créations</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     ③ SAVOIR-FAIRE
+═══════════════════════════════════════════════ -->
+<section class="savoirfaire" id="savoirfaire" aria-labelledby="sf-title">
+  <div class="sf-visual">
+    <!--
+      PHOTO : <img src="photos/atelier-couture-detail.jpg" alt="Détail couture à la main dans l'atelier Creatyss">
+    -->
+    <div class="photo-slot" aria-hidden="true">
+      <div class="photo-slot-label">
+        Gros plan couture<br>Mains de la créatrice au travail<br>
+        <span style="font-size:9px; opacity:.5;">Lumière naturelle · ton chaud</span>
+      </div>
+    </div>
+    <div class="sf-caption">
+      <div class="sf-caption-num">100%</div>
+      <div class="sf-caption-text">
+        <strong>Fait main en France</strong>
+        Chaque geste, de la découpe à la finition, est réalisé dans notre atelier.
+      </div>
+    </div>
+  </div>
+
+  <div class="sf-content">
+    <span class="eyebrow eyebrow--terra">Atelier &amp; savoir-faire</span>
+    <h2 class="sf-h2" id="sf-title">Du dessin à la dernière piqûre</h2>
+    <span class="rule"></span>
+    <p class="sf-p">
+      Chaque sac naît d'une envie, se dessine sur papier, se découpe dans des matières
+      choisies avec soin, et se coud entièrement à la main.
+      Ici, rien n'est fait à la série. Chaque modèle est unique.
+    </p>
+    <ul class="sf-list">
+      <li>
+        <span class="sf-num">01</span>
+        <span>Matières sélectionnées pour leur qualité et leur durabilité — tissus, vinyles, cuirs synthétiques</span>
+      </li>
+      <li>
+        <span class="sf-num">02</span>
+        <span>Fabrication 100 % française, sans sous-traitance, dans notre atelier</span>
+      </li>
+      <li>
+        <span class="sf-num">03</span>
+        <span>Chaque pièce est unique — numérotée, jamais reproduite à l'identique</span>
+      </li>
+    </ul>
+    <a href="/notre-atelier" class="btn btn-ghost">
+      Voir notre processus <span class="arrow">→</span>
+    </a>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     ④ SÉLECTION PRODUITS
+═══════════════════════════════════════════════ -->
+<section class="products" id="products" aria-labelledby="products-title">
+  <div class="section-header">
+    <div>
+      <span class="eyebrow">À la une</span>
+      <h2 class="section-title" id="products-title">Sélection du moment</h2>
+    </div>
+    <a href="/boutique" class="btn btn-outline">
+      Voir tous les sacs <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="products-grid">
+
+    <!-- Produit 1 -->
+    <article class="product-card">
+      <div class="product-card-img">
+        <!--
+          PHOTO : <img src="photos/sac-bordeaux-bandouliere.jpg" alt="Sac bandoulière bordeaux Creatyss">
+        -->
+        <div class="photo-slot" style="background:linear-gradient(145deg,#A84040,#5E1818);" aria-hidden="true">
+          <div class="photo-slot-label" style="font-size:9px;">sac-bordeaux.jpg</div>
+        </div>
+        <span class="product-badge">Pièce unique</span>
+        <button class="product-wishlist" aria-label="Ajouter aux favoris">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <h3 class="product-name">Sac Bordeaux</h3>
+      <div class="product-detail">
+        <span class="product-dot" style="background:#8B2E2E;" aria-hidden="true"></span>
+        Bordeaux · Tissu étanche imperméable
+      </div>
+      <div class="product-price"><strong>64 €</strong></div>
+    </article>
+
+    <!-- Produit 2 -->
+    <article class="product-card">
+      <div class="product-card-img">
+        <!--
+          PHOTO : <img src="photos/sac-vert-ecru.jpg" alt="Cabas vert anis et écru Creatyss">
+        -->
+        <div class="photo-slot" style="background:linear-gradient(145deg,#8E9E82,#4E6040);" aria-hidden="true">
+          <div class="photo-slot-label" style="font-size:9px;">cabas-vert-ecru.jpg</div>
+        </div>
+        <button class="product-wishlist" aria-label="Ajouter aux favoris">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <h3 class="product-name">Cabas Vert Anis</h3>
+      <div class="product-detail">
+        <span class="product-dot" style="background:#6B7A5E;" aria-hidden="true"></span>
+        Vert anis &amp; écru · Vinyle
+      </div>
+      <div class="product-price"><strong>72 €</strong></div>
+    </article>
+
+    <!-- Produit 3 -->
+    <article class="product-card">
+      <div class="product-card-img">
+        <!--
+          PHOTO : <img src="photos/mini-safran.jpg" alt="Mini sac safran Creatyss">
+        -->
+        <div class="photo-slot" style="background:linear-gradient(145deg,#D4905A,#A86030);" aria-hidden="true">
+          <div class="photo-slot-label" style="font-size:9px;">mini-safran.jpg</div>
+        </div>
+        <span class="product-badge product-badge--new">Nouveau</span>
+        <button class="product-wishlist" aria-label="Ajouter aux favoris">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <h3 class="product-name">Mini Safran</h3>
+      <div class="product-detail">
+        <span class="product-dot" style="background:#C4764A;" aria-hidden="true"></span>
+        Safran · Cuir synthétique
+      </div>
+      <div class="product-price"><strong>30 €</strong></div>
+    </article>
+
+    <!-- Produit 4 -->
+    <article class="product-card">
+      <div class="product-card-img">
+        <!--
+          PHOTO : <img src="photos/bandouliere-gris.jpg" alt="Sac bandoulière gris Creatyss">
+        -->
+        <div class="photo-slot" style="background:linear-gradient(145deg,#8EB0C4,#5C8099);" aria-hidden="true">
+          <div class="photo-slot-label" style="font-size:9px;">bandouliere-gris.jpg</div>
+        </div>
+        <button class="product-wishlist" aria-label="Ajouter aux favoris">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <h3 class="product-name">Bandoulière Gris</h3>
+      <div class="product-detail">
+        <span class="product-dot" style="background:#7B93A3;" aria-hidden="true"></span>
+        Gris bleuté · Tissé
+      </div>
+      <div class="product-price"><strong>64 €</strong></div>
+    </article>
+
+  </div>
+
+  <div class="products-footer">
+    <a href="/boutique" class="btn btn-dark">
+      Voir toute la boutique <span class="arrow">→</span>
+    </a>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     ⑤ À PROPOS — LA CRÉATRICE
+═══════════════════════════════════════════════ -->
+<section class="about" id="about" aria-labelledby="about-title">
+  <div class="about-content">
+    <span class="eyebrow eyebrow--terra">La créatrice</span>
+    <h2 class="about-h2" id="about-title">
+      Derrière chaque sac,<br>
+      <em>une main.</em>
+    </h2>
+    <blockquote class="about-blockquote">
+      « Je coud par passion, mais aussi par conviction — que les objets qu'on porte méritent
+      d'être pensés, faits avec soin, et destinés à durer. »
+    </blockquote>
+    <div class="about-signature">— Creatyss, fabrication française</div>
+    <a href="/notre-histoire" class="btn btn-ghost">
+      Notre histoire <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="about-visual">
+    <!--
+      PHOTO : <img src="photos/creatrice-atelier.jpg" alt="La créatrice Creatyss dans son atelier">
+    -->
+    <div class="photo-slot" aria-hidden="true">
+      <div class="photo-slot-label">
+        Portrait de la créatrice<br>En atelier, lumière naturelle<br>
+        <span style="font-size:9px; opacity:.5;">Ton chaud · authenticité</span>
+      </div>
+    </div>
+    <div class="about-stat" aria-label="Depuis 2018">
+      <div class="about-stat-num">2018</div>
+      <div class="about-stat-label">Depuis</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     ⑥ NOUVEAUTÉS &amp; ÉVÉNEMENTS
+═══════════════════════════════════════════════ -->
+<section class="nouveautes" id="nouveautes" aria-labelledby="nouv-title">
+  <div class="nouveautes-head">
+    <div>
+      <span class="eyebrow">Vient d'arriver</span>
+      <h2 class="section-title" id="nouv-title">Nouveautés &amp; Marchés</h2>
+    </div>
+    <a href="/nouveautes" class="btn btn-ghost">
+      Tout voir <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="nouveautes-track" role="list" aria-label="Nouvelles créations">
+
+    <article class="nouv-card" role="listitem">
+      <div class="nouv-card-img">
+        <!--
+          PHOTO : <img src="photos/nouveaute-pochette-ecru.jpg" alt="Pochette écru Creatyss — nouveauté">
+        -->
+        <div class="photo-slot" style="background:linear-gradient(145deg,#C4B49A,#8A7060);" aria-hidden="true">
+          <div class="photo-slot-label" style="font-size:9px;">pochette-ecru.jpg</div>
+        </div>
+        <span class="nouv-tag">Nouveau</span>
+      </div>
+      <h3 class="nouv-name">Pochette Écru</h3>
+      <div class="nouv-sub">Tissu naturel · pièce unique</div>
+      <div class="nouv-price">30 €</div>
+    </article>
+
+    <article class="nouv-card" role="listitem">
+      <div class="nouv-card-img">
+        <!--
+          PHOTO : <img src="photos/nouveaute-mini-terra.jpg" alt="Mini sac terracotta Creatyss — nouveauté">
+        -->
+        <div class="photo-slot" style="background:linear-gradient(145deg,#D4905A,#A06030);" aria-hidden="true">
+          <div class="photo-slot-label" style="font-size:9px;">mini-terracotta.jpg</div>
+        </div>
+        <span class="nouv-tag">Nouveau</span>
+      </div>
+      <h3 class="nouv-name">Mini Terracotta</h3>
+      <div class="nouv-sub">Cuir synthétique · pièce unique</div>
+      <div class="nouv-price">34 €</div>
+    </article>
+
+    <article class="nouv-card" role="listitem">
+      <div class="nouv-card-img">
+        <!--
+          PHOTO : <img src="photos/nouveaute-cabas-basil.jpg" alt="Cabas basil Creatyss — nouveauté">
+        -->
+        <div class="photo-slot" style="background:linear-gradient(145deg,#7A9E8A,#4A7060);" aria-hidden="true">
+          <div class="photo-slot-label" style="font-size:9px;">cabas-basil.jpg</div>
+        </div>
+        <span class="nouv-tag">Nouveau</span>
+      </div>
+      <h3 class="nouv-name">Cabas Basil</h3>
+      <div class="nouv-sub">Tissu imperméable · pièce unique</div>
+      <div class="nouv-price">78 €</div>
+    </article>
+
+    <!-- Carte événement marché -->
+    <article class="nouv-card nouv-card--event" role="listitem" aria-label="Prochain marché artisanal">
+      <div class="nouv-card-img" style="background:none;">
+        <div class="event-inner">
+          <div class="event-date" aria-hidden="true">29<br>Mar.</div>
+          <div class="event-label">Marché artisanal</div>
+          <div class="event-name">Marché des créateurs<br>de Montauban</div>
+          <div class="event-place">Place Nationale · 9h–18h</div>
+        </div>
+      </div>
+      <h3 class="nouv-name">Prochain marché</h3>
+      <div class="nouv-sub">Retrouvez-nous en personne</div>
+      <div class="nouv-price" style="color:var(--c-terra);">Entrée libre →</div>
+    </article>
+
+    <article class="nouv-card" role="listitem">
+      <div class="nouv-card-img">
+        <!--
+          PHOTO : <img src="photos/nouveaute-bandouliere-ardoise.jpg" alt="Bandoulière ardoise Creatyss — nouveauté">
+        -->
+        <div class="photo-slot" style="background:linear-gradient(145deg,#8899AA,#5A6878);" aria-hidden="true">
+          <div class="photo-slot-label" style="font-size:9px;">bandouliere-ardoise.jpg</div>
+        </div>
+      </div>
+      <h3 class="nouv-name">Bandoulière Ardoise</h3>
+      <div class="nouv-sub">Tissu tissé · pièce unique</div>
+      <div class="nouv-price">68 €</div>
+    </article>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     ⑦ NEWSLETTER
+═══════════════════════════════════════════════ -->
+<section class="newsletter" id="newsletter" aria-labelledby="nl-title">
+  <span class="eyebrow" style="color:rgba(255,255,255,.3);">Restez proche de l'atelier</span>
+  <h2 class="newsletter-h2" id="nl-title">
+    Nouvelles créations,<br>coulisses &amp; marchés
+  </h2>
+  <p class="newsletter-sub">
+    Quelques nouvelles par mois, jamais plus.
+    Pour ceux qui aiment les belles choses faites avec soin.
+  </p>
+  <form class="newsletter-form" action="/newsletter" method="post" novalidate>
+    <label for="nl-email" class="sr-only">Votre adresse email</label>
+    <input
+      type="email"
+      id="nl-email"
+      name="email"
+      class="newsletter-input"
+      placeholder="Votre adresse email"
+      required
+      autocomplete="email"
+    />
+    <button type="submit" class="newsletter-submit">S'abonner</button>
+  </form>
+  <p class="newsletter-legal">Pas de spam · Désabonnement en un clic · Données protégées</p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     ⑧ FOOTER
+═══════════════════════════════════════════════ -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-logo">Creatyss</div>
+      <p class="footer-brand-desc">
+        Créations exclusives faites main. Fabrication française, pièces uniques,
+        amour du détail. Depuis 2018.
+      </p>
+      <div class="footer-social" aria-label="Réseaux sociaux">
+        <a href="https://instagram.com/creatyss" rel="noopener" aria-label="Instagram Creatyss">Instagram</a>
+        <a href="https://facebook.com/creatyss" rel="noopener" aria-label="Facebook Creatyss">Facebook</a>
+      </div>
+    </div>
+
+    <nav aria-label="Collections">
+      <div class="footer-col-title">Collections</div>
+      <ul class="footer-links">
+        <li><a href="/collections/sacs-a-main">Sacs à main</a></li>
+        <li><a href="/collections/cabas">Cabas</a></li>
+        <li><a href="/collections/bandoulieres">Bandoulières</a></li>
+        <li><a href="/collections/mini-sacs">Mini sacs</a></li>
+        <li><a href="/collections/pochettes">Pochettes &amp; Trousses</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-label="À propos">
+      <div class="footer-col-title">L'atelier</div>
+      <ul class="footer-links">
+        <li><a href="/notre-histoire">Notre histoire</a></li>
+        <li><a href="/notre-atelier">Savoir-faire</a></li>
+        <li><a href="/sur-mesure">Commandes sur mesure</a></li>
+        <li><a href="/marches">Nos marchés artisanaux</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-label="Aide et contact">
+      <div class="footer-col-title">Aide</div>
+      <ul class="footer-links">
+        <li><a href="/livraison">Livraison &amp; retours</a></li>
+        <li><a href="/faq">Questions fréquentes</a></li>
+        <li><a href="/contact">Nous contacter</a></li>
+        <li><a href="/entretien">Entretien des sacs</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Creatyss — Tous droits réservés</span>
+    <span>
+      <a href="/mentions-legales">Mentions légales</a>
+      &ensp;·&ensp;
+      <a href="/cgv">CGV</a>
+      &ensp;·&ensp;
+      <a href="/confidentialite">Confidentialité</a>
+    </span>
+  </div>
+</footer>
+
+<!-- Accessibilité : masquer visuellement mais garder pour les lecteurs d'écran -->
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<!-- ─────────────────────────────────────────────
+     SCRIPTS — Navigation sticky + burger
+───────────────────────────────────────────── -->
+<script>
+  // Nav sticky
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Burger menu mobile
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  const drawerClose = document.getElementById('drawer-close');
+  const drawerLinks = drawer.querySelectorAll('.drawer-link');
+
+  const openDrawer = () => {
+    drawer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    drawerClose.focus();
+  };
+  const closeDrawer = () => {
+    drawer.classList.remove('open');
+    document.body.style.overflow = '';
+    burger.focus();
+  };
+
+  burger.addEventListener('click', openDrawer);
+  burger.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openDrawer(); });
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerLinks.forEach(link => link.addEventListener('click', closeDrawer));
+
+  // Fermer drawer avec Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+  });
+</script>
+
+</body>
+</html>

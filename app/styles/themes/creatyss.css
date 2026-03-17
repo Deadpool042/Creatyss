@@ -1,17 +1,17 @@
 /*
- * Theme pack — Creatyss prune rosée premium
+ * Theme pack — Creatyss artisanal warm premium
  *
  * Intention :
- * - clair, délicat, premium
+ * - chaleureux, éditorial, premium
  * - fait main, artisanal, féminin sobre
- * - accent rose-violet / prune rosée assumé
- * - sans beige fade, sans taupe uniforme
+ * - inspiré de la DA Claude : ivoire, brun profond, terracotta, sauge
+ * - plus matière / atelier que prune cosmétique
  *
  * Hiérarchie light :
- *   page-bg (rose poudré teinté) → shell/sections (blanc-rosé) → surface-panel (blanc pur)
+ *   page-bg (ivoire chaud) → shell/sections (blanc cassé rosé) → surface-panel (presque blanc)
  *
  * Hiérarchie dark :
- *   page-bg (prune très sombre) → sections (plum charcoal visible) → card (légèrement plus clair)
+ *   page-bg (brun profond) → sections (brun cacao) → card (brun légèrement relevé)
  */
 
 :root {
@@ -21,36 +21,36 @@
      Core semantic tokens
      ========================================================================== */
 
-  /* Blanc pur pour dialogs / popovers — contraste max sur fond teinté */
-  --background: oklch(0.995 0.002 335);
-  --foreground: oklch(0.20 0.015 335);
+  /* Fond UI principal : presque blanc chaud pour dialogs / popovers */
+  --background: oklch(0.988 0.006 70);
+  --foreground: oklch(0.22 0.02 55);
 
-  --card: oklch(0.998 0.002 335);
-  --card-foreground: oklch(0.20 0.015 335);
+  --card: oklch(0.993 0.004 70);
+  --card-foreground: oklch(0.22 0.02 55);
 
-  --popover: oklch(0.998 0.002 335);
-  --popover-foreground: oklch(0.20 0.015 335);
+  --popover: oklch(0.995 0.003 70);
+  --popover-foreground: oklch(0.22 0.02 55);
 
-  /* Bouton primaire — prune profond, clairement incarné */
-  --primary: oklch(0.32 0.13 335);
-  --primary-foreground: oklch(0.985 0 0);
+  /* CTA principal : brun profond, plus noble et plus stable que prune */
+  --primary: oklch(0.28 0.03 55);
+  --primary-foreground: oklch(0.97 0.004 70);
 
-  --secondary: oklch(0.960 0.018 335);
-  --secondary-foreground: oklch(0.30 0.10 335);
+  /* Secondaire : ivoire chaud visible, pas gris technique */
+  --secondary: oklch(0.962 0.012 72);
+  --secondary-foreground: oklch(0.3 0.03 55);
 
-  --muted: oklch(0.956 0.012 335);
-  /* muted-fg plus sombre pour lisibilité sur fond teinté */
-  --muted-foreground: oklch(0.46 0.018 335);
+  --muted: oklch(0.955 0.01 72);
+  --muted-foreground: oklch(0.5 0.018 55);
 
-  --accent: oklch(0.962 0.018 335);
-  --accent-foreground: oklch(0.30 0.10 335);
+  /* Accent UI discret : rosé chaud très léger */
+  --accent: oklch(0.958 0.016 45);
+  --accent-foreground: oklch(0.34 0.055 45);
 
   --destructive: oklch(0.577 0.245 27.325);
 
-  /* Borders renforcés — 0.91 trop fade sur fond rose poudré */
-  --border: oklch(0.88 0.010 335);
-  --input: oklch(0.88 0.010 335);
-  --ring: oklch(0.62 0.14 335);
+  --border: oklch(0.89 0.012 70);
+  --input: oklch(0.89 0.012 70);
+  --ring: oklch(0.58 0.09 45);
 
   /* ==========================================================================
      Geometry
@@ -59,28 +59,25 @@
   --radius: 0.9rem;
 
   /* ==========================================================================
-     Brand — prune rosée / rose-violet
+     Brand — terracotta / argile chaude
      ========================================================================== */
 
-  --brand: oklch(0.50 0.17 335);
-  --brand-foreground: oklch(0.985 0 0);
+  /* Signature de marque inspirée de la DA Claude */
+  --brand: oklch(0.62 0.13 45);
+  --brand-foreground: oklch(0.985 0.003 70);
 
   /* ==========================================================================
      Document / page identity
      ========================================================================== */
 
-  /*
-   * page-bg clairement teinté — rose poudré léger visible.
-   * C'est le fond sur lequel les sections (shell-surface blanc-rosé) se détachent.
-   * Gap page-bg (0.938) → shell-surface (~0.990) = ~0.05 en L : visible et élégant.
-   */
-  --page-bg: oklch(0.938 0.014 335);
-  --page-foreground: oklch(0.20 0.015 335);
+  /* Fond global clairement chaud, visible mais sobre */
+  --page-bg: oklch(0.955 0.014 72);
+  --page-foreground: oklch(0.22 0.02 55);
 
   --body-background:
     radial-gradient(
       circle at top,
-      oklch(0.80 0.08 335 / 0.30),
+      oklch(0.83 0.05 45 / 0.22),
       transparent 36rem
     ),
     var(--page-bg);
@@ -89,64 +86,77 @@
      Shared surfaces
      ========================================================================== */
 
-  /* Blanc pur pour les panneaux intérieurs — au-dessus des sections */
-  --surface-panel: rgb(255 255 255 / 0.96);
-  --surface-panel-soft: rgb(255 255 255 / 0.86);
-  --surface-subtle: rgb(140 30 90 / 0.05);
+  /* Panneaux intérieurs : blancs chauds, nets sur le fond ivoire */
+  --surface-panel: rgb(255 252 249 / 0.96);
+  --surface-panel-soft: rgb(255 252 249 / 0.88);
+  --surface-subtle: rgb(196 118 74 / 0.06);
 
-  /* Borders renforcés — lisibles sur fond clair teinté */
-  --surface-border: rgb(140 30 90 / 0.13);
-  --surface-border-strong: rgb(140 30 90 / 0.20);
+  --surface-border: rgb(120 90 60 / 0.14);
+  --surface-border-strong: rgb(120 90 60 / 0.22);
 
-  --shadow-soft: 0 20px 60px rgb(120 20 80 / 0.12);
-  --shadow-card: 0 16px 40px rgb(120 20 80 / 0.09);
+  --shadow-soft: 0 20px 60px rgb(70 45 25 / 0.1);
+  --shadow-card: 0 16px 40px rgb(70 45 25 / 0.08);
 
   /* ==========================================================================
      Public shell
      ========================================================================== */
 
-  /*
-   * shell-surface = blanc-rosé quasi-opaque.
-   * Clairement plus clair que page-bg (0.938) → sections se détachent nettement.
-   */
-  --shell-surface: rgb(253 249 254 / 0.97);
-  --shell-surface-blur: rgb(253 249 254 / 0.88);
-  --shell-drawer: rgb(255 252 255 / 0.98);
-  --shell-drawer-blur: rgb(255 252 255 / 0.93);
-  --shell-border: rgb(140 30 90 / 0.12);
+  /* Sections : blanc cassé rosé, plus clair que le fond de page */
+  --shell-surface: rgb(253 249 245 / 0.97);
+  --shell-surface-blur: rgb(253 249 245 / 0.9);
+  --shell-drawer: rgb(255 251 248 / 0.98);
+  --shell-drawer-blur: rgb(255 251 248 / 0.93);
+  --shell-border: rgb(120 90 60 / 0.12);
 
   /* ==========================================================================
      Media / decorative blocks
      ========================================================================== */
 
-  --media-surface: rgb(140 30 90 / 0.06);
-  --media-foreground: rgb(100 20 70 / 0.50);
+  --media-surface: rgb(196 118 74 / 0.08);
+  --media-foreground: rgb(110 80 55 / 0.52);
 
   /* ==========================================================================
      Sidebar admin
      ========================================================================== */
 
-  --sidebar: oklch(0.987 0.003 335);
-  --sidebar-foreground: oklch(0.20 0.015 335);
+  --sidebar: oklch(0.982 0.006 72);
+  --sidebar-foreground: oklch(0.22 0.02 55);
 
-  --sidebar-primary: oklch(0.30 0.10 335);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.28 0.03 55);
+  --sidebar-primary-foreground: oklch(0.97 0.004 70);
 
-  --sidebar-accent: oklch(0.956 0.012 335);
-  --sidebar-accent-foreground: oklch(0.30 0.10 335);
+  --sidebar-accent: oklch(0.955 0.01 72);
+  --sidebar-accent-foreground: oklch(0.3 0.03 55);
 
-  --sidebar-border: oklch(0.88 0.010 335);
-  --sidebar-ring: oklch(0.62 0.14 335);
+  --sidebar-border: oklch(0.89 0.012 70);
+  --sidebar-ring: oklch(0.58 0.09 45);
 
   /* ==========================================================================
      Charts
      ========================================================================== */
 
-  --chart-1: oklch(0.68 0.15 335);
-  --chart-2: oklch(0.66 0.08 300);
-  --chart-3: oklch(0.62 0.08 15);
-  --chart-4: oklch(0.69 0.06 260);
-  --chart-5: oklch(0.58 0.06 8);
+  --chart-1: oklch(0.62 0.13 45);
+  --chart-2: oklch(0.58 0.05 145);
+  --chart-3: oklch(0.55 0.05 250);
+  --chart-4: oklch(0.7 0.04 70);
+  --chart-5: oklch(0.45 0.03 20);
+
+  /* ==========================================================================
+     Hero editorial — fond crème, encre chaude, terracotta
+     ========================================================================== */
+
+  --hero-bg: rgb(248 244 239);
+  --hero-bg-media: rgb(240 234 225);
+  --hero-ink: rgb(28 22 16);
+  --hero-ink-soft: rgb(90 74 60);
+  --hero-ink-muted: rgb(155 140 126);
+  --hero-border: rgb(201 190 176);
+
+  /* ==========================================================================
+     Band — always-dark editorial band (guarantees strip)
+     ========================================================================== */
+
+  --band-bg: rgb(28 22 16);
 }
 
 .dark {
@@ -156,60 +166,54 @@
      Core semantic tokens
      ========================================================================== */
 
-  /*
-   * background en L=0.242 au lieu de L=0.170 :
-   * moins noir, plus "charcoal velours", plus raffiné.
-   */
-  --background: oklch(0.242 0.010 335);
-  --foreground: oklch(0.94 0.004 335);
+  /* Dark moins prune, plus brun velours / cacao */
+  --background: oklch(0.22 0.015 55);
+  --foreground: oklch(0.94 0.008 72);
 
-  --card: oklch(0.255 0.010 335);
-  --card-foreground: oklch(0.94 0.004 335);
+  --card: oklch(0.255 0.016 55);
+  --card-foreground: oklch(0.94 0.008 72);
 
-  --popover: oklch(0.255 0.010 335);
-  --popover-foreground: oklch(0.94 0.004 335);
+  --popover: oklch(0.255 0.016 55);
+  --popover-foreground: oklch(0.94 0.008 72);
 
-  /* Bouton dark : rose-violet clair, texte sombre — contraste ~8:1 */
-  --primary: oklch(0.78 0.14 335);
-  --primary-foreground: oklch(0.18 0.012 335);
+  /* CTA dark : terracotta clair, chaleureux */
+  --primary: oklch(0.74 0.11 45);
+  --primary-foreground: oklch(0.22 0.02 55);
 
-  --secondary: oklch(0.310 0.014 335);
-  --secondary-foreground: oklch(0.94 0.004 335);
+  --secondary: oklch(0.31 0.012 55);
+  --secondary-foreground: oklch(0.94 0.008 72);
 
-  --muted: oklch(0.295 0.012 335);
-  --muted-foreground: oklch(0.69 0.012 335);
+  --muted: oklch(0.295 0.01 55);
+  --muted-foreground: oklch(0.72 0.012 72);
 
-  --accent: oklch(0.310 0.014 335);
-  --accent-foreground: oklch(0.94 0.004 335);
+  --accent: oklch(0.32 0.02 45);
+  --accent-foreground: oklch(0.94 0.008 72);
 
   --destructive: oklch(0.704 0.191 22.216);
 
-  --border: rgb(230 180 210 / 0.30);
-  --input: rgb(230 180 210 / 0.30);
-  --ring: oklch(0.70 0.12 335);
+  --border: rgb(225 200 180 / 0.22);
+  --input: rgb(225 200 180 / 0.22);
+  --ring: oklch(0.72 0.09 45);
 
   /* ==========================================================================
      Brand
      ========================================================================== */
 
-  --brand: oklch(0.74 0.14 335);
-  --brand-foreground: oklch(0.20 0.010 335);
+  --brand: oklch(0.74 0.11 45);
+  --brand-foreground: oklch(0.22 0.02 55);
 
   /* ==========================================================================
      Document / page identity
      ========================================================================== */
 
-  /*
-   * page-bg en L=0.195 au lieu de L=0.148 : moins noir profond.
-   * Gap page-bg (0.195) → shell-surface (~0.27 effectif) = strates clairement visibles.
-   */
-  --page-bg: oklch(0.195 0.012 335);
-  --page-foreground: oklch(0.94 0.004 335);
+  /* Fond global brun profond, plus atelier que prune glamour */
+  --page-bg: oklch(0.18 0.012 55);
+  --page-foreground: oklch(0.94 0.008 72);
 
   --body-background:
     radial-gradient(
       circle at top,
-      oklch(0.58 0.10 335 / 0.20),
+      oklch(0.5 0.08 45 / 0.18),
       transparent 32rem
     ),
     var(--page-bg);
@@ -218,61 +222,74 @@
      Shared surfaces
      ========================================================================== */
 
-  --surface-panel: rgb(255 255 255 / 0.072);
-  --surface-panel-soft: rgb(255 255 255 / 0.052);
-  --surface-subtle: rgb(255 255 255 / 0.06);
+  --surface-panel: rgb(255 248 242 / 0.075);
+  --surface-panel-soft: rgb(255 248 242 / 0.055);
+  --surface-subtle: rgb(255 255 255 / 0.05);
 
-  --surface-border: rgb(230 180 210 / 0.14);
-  --surface-border-strong: rgb(230 180 210 / 0.22);
+  --surface-border: rgb(225 200 180 / 0.14);
+  --surface-border-strong: rgb(225 200 180 / 0.24);
 
-  --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.40);
+  --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.42);
   --shadow-card: 0 16px 40px rgb(0 0 0 / 0.32);
 
   /* ==========================================================================
      Public shell
      ========================================================================== */
 
-  /*
-   * shell-surface rgb(72 54 72 / 0.93) ≈ oklch L~0.27 effectif.
-   * Gap clair vs page-bg (0.195) : sections "émergent" du fond sombre.
-   * Couleur : plum-violet, pas noir, pas gris technique.
-   */
-  --shell-surface: rgb(72 54 72 / 0.93);
-  --shell-surface-blur: rgb(72 54 72 / 0.84);
-  --shell-drawer: rgb(62 46 62 / 0.97);
-  --shell-drawer-blur: rgb(62 46 62 / 0.90);
-  --shell-border: rgb(230 180 210 / 0.10);
+  /* Sections brun cacao visibles sur le fond sombre */
+  --shell-surface: rgb(54 42 34 / 0.93);
+  --shell-surface-blur: rgb(54 42 34 / 0.85);
+  --shell-drawer: rgb(46 36 30 / 0.97);
+  --shell-drawer-blur: rgb(46 36 30 / 0.9);
+  --shell-border: rgb(225 200 180 / 0.1);
 
   /* ==========================================================================
      Media / decorative blocks
      ========================================================================== */
 
-  --media-surface: rgb(230 180 210 / 0.08);
-  --media-foreground: rgb(230 180 210 / 0.58);
+  --media-surface: rgb(225 200 180 / 0.08);
+  --media-foreground: rgb(235 220 205 / 0.58);
 
   /* ==========================================================================
      Sidebar admin
      ========================================================================== */
 
-  --sidebar: oklch(0.215 0.009 335);
-  --sidebar-foreground: oklch(0.94 0.004 335);
+  --sidebar: oklch(0.205 0.012 55);
+  --sidebar-foreground: oklch(0.94 0.008 72);
 
-  --sidebar-primary: oklch(0.74 0.14 335);
-  --sidebar-primary-foreground: oklch(0.20 0.010 335);
+  --sidebar-primary: oklch(0.74 0.11 45);
+  --sidebar-primary-foreground: oklch(0.22 0.02 55);
 
-  --sidebar-accent: oklch(0.295 0.012 335);
-  --sidebar-accent-foreground: oklch(0.94 0.004 335);
+  --sidebar-accent: oklch(0.295 0.01 55);
+  --sidebar-accent-foreground: oklch(0.94 0.008 72);
 
-  --sidebar-border: rgb(230 180 210 / 0.13);
-  --sidebar-ring: oklch(0.70 0.12 335);
+  --sidebar-border: rgb(225 200 180 / 0.13);
+  --sidebar-ring: oklch(0.72 0.09 45);
 
   /* ==========================================================================
      Charts
      ========================================================================== */
 
-  --chart-1: oklch(0.72 0.12 335);
-  --chart-2: oklch(0.72 0.07 300);
-  --chart-3: oklch(0.66 0.05 15);
-  --chart-4: oklch(0.72 0.05 260);
-  --chart-5: oklch(0.62 0.04 8);
+  --chart-1: oklch(0.74 0.11 45);
+  --chart-2: oklch(0.68 0.04 145);
+  --chart-3: oklch(0.7 0.04 250);
+  --chart-4: oklch(0.76 0.03 70);
+  --chart-5: oklch(0.62 0.03 20);
+
+  /* ==========================================================================
+     Hero editorial — dark
+     ========================================================================== */
+
+  --hero-bg: rgb(22 18 14);
+  --hero-bg-media: rgb(18 14 10);
+  --hero-ink: rgb(240 234 225);
+  --hero-ink-soft: rgb(196 182 165);
+  --hero-ink-muted: rgb(120 106 90);
+  --hero-border: rgb(60 50 40);
+
+  /* ==========================================================================
+     Band — always-dark (same as :root — intentionally identical)
+     ========================================================================== */
+
+  --band-bg: rgb(28 22 16);
 }

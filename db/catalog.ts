@@ -41,6 +41,7 @@ export type PublishedProductSummary = {
   seoDescription: string | null;
   createdAt: string;
   updatedAt: string;
+  primaryImage: PublishedProductImage | null;
 };
 
 export type PublishedCatalogProductSummary = PublishedProductSummary & {
@@ -162,6 +163,16 @@ type ProductSummaryRow = ProductSimpleFieldsRow & {
   seo_description: string | null;
   created_at: TimestampValue;
   updated_at: TimestampValue;
+
+  primary_image_id: DbId | null;
+  primary_image_product_id: DbId | null;
+  primary_image_variant_id: DbId | null;
+  primary_image_file_path: string | null;
+  primary_image_alt_text: string | null;
+  primary_image_sort_order: number | null;
+  primary_image_is_primary: boolean | null;
+  primary_image_created_at: TimestampValue | null;
+  primary_image_updated_at: TimestampValue | null;
 };
 
 type ProductCatalogSummaryRow = ProductSummaryRow & {
@@ -254,6 +265,34 @@ function mapCatalogFilterCategory(
   };
 }
 
+function mapPrimaryProductImage(
+  row: ProductSummaryRow
+): PublishedProductImage | null {
+  if (
+    row.primary_image_id === null ||
+    row.primary_image_product_id === null ||
+    row.primary_image_file_path === null ||
+    row.primary_image_sort_order === null ||
+    row.primary_image_is_primary === null ||
+    row.primary_image_created_at === null ||
+    row.primary_image_updated_at === null
+  ) {
+    return null;
+  }
+
+  return {
+    id: row.primary_image_id,
+    productId: row.primary_image_product_id,
+    variantId: row.primary_image_variant_id,
+    filePath: row.primary_image_file_path,
+    altText: row.primary_image_alt_text,
+    sortOrder: row.primary_image_sort_order,
+    isPrimary: row.primary_image_is_primary,
+    createdAt: toIsoTimestamp(row.primary_image_created_at),
+    updatedAt: toIsoTimestamp(row.primary_image_updated_at)
+  };
+}
+
 function mapProductSummary(row: ProductSummaryRow): PublishedProductSummary {
   return {
     id: row.id,
@@ -266,7 +305,8 @@ function mapProductSummary(row: ProductSummaryRow): PublishedProductSummary {
     seoTitle: row.seo_title,
     seoDescription: row.seo_description,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
+    primaryImage: mapPrimaryProductImage(row)
   };
 }
 
@@ -409,12 +449,10 @@ function getPublishedProductAvailability(input: {
     return input.simpleOffer?.isAvailable ?? false;
   }
 
-  return input.variants.some((variant) => variant.isAvailable);
+  return input.variants.some(variant => variant.isAvailable);
 }
 
-function mapBlogPostSummary(
-  row: BlogPostSummaryRow
-): PublishedBlogPostSummary {
+function mapBlogPostSummary(row: BlogPostSummaryRow): PublishedBlogPostSummary {
   return {
     id: row.id,
     title: row.title,
@@ -490,10 +528,45 @@ async function listHomepageFeaturedProducts(
         p.seo_title,
         p.seo_description,
         p.created_at,
-        p.updated_at
+        p.updated_at,
+        primary_image.id::text as primary_image_id,
+        primary_image.product_id::text as primary_image_product_id,
+        primary_image.variant_id::text as primary_image_variant_id,
+        primary_image.file_path as primary_image_file_path,
+        primary_image.alt_text as primary_image_alt_text,
+        primary_image.sort_order as primary_image_sort_order,
+        primary_image.is_primary as primary_image_is_primary,
+        primary_image.created_at as primary_image_created_at,
+        primary_image.updated_at as primary_image_updated_at
       from homepage_featured_products hfp
       join products p
         on p.id = hfp.product_id
+      left join lateral (
+        select
+          pi.id,
+          pi.product_id,
+          pi.variant_id,
+          pi.file_path,
+          pi.alt_text,
+          pi.sort_order,
+          pi.is_primary,
+          pi.created_at,
+          pi.updated_at
+        from product_images pi
+        left join product_variants pv
+          on pv.id = pi.variant_id
+        where pi.product_id = p.id
+          and (
+            pi.variant_id is null
+            or pv.status = 'published'
+          )
+        order by
+          case when pi.variant_id is null then 0 else 1 end asc,
+          pi.is_primary desc,
+          pi.sort_order asc,
+          pi.id asc
+        limit 1
+      ) as primary_image on true
       where hfp.homepage_content_id = $1::bigint
         and p.status = 'published'
       order by hfp.sort_order asc, p.id asc
@@ -560,7 +633,9 @@ export async function getPublishedHomepageContent(): Promise<PublishedHomepageCo
   };
 }
 
-export async function listPublishedFeaturedCategories(): Promise<FeaturedCategory[]> {
+export async function listPublishedFeaturedCategories(): Promise<
+  FeaturedCategory[]
+> {
   const homepageRow = await getPublishedHomepageRow();
 
   if (homepageRow === null) {
@@ -619,7 +694,16 @@ async function listPublishedCatalogProductRows(
         catalog_products.seo_title,
         catalog_products.seo_description,
         catalog_products.created_at,
-        catalog_products.updated_at
+        catalog_products.updated_at,
+        catalog_products.primary_image_id,
+        catalog_products.primary_image_product_id,
+        catalog_products.primary_image_variant_id,
+        catalog_products.primary_image_file_path,
+        catalog_products.primary_image_alt_text,
+        catalog_products.primary_image_sort_order,
+        catalog_products.primary_image_is_primary,
+        catalog_products.primary_image_created_at,
+        catalog_products.primary_image_updated_at
       from (
         select
           p.id::text as id,
@@ -660,8 +744,43 @@ async function listPublishedCatalogProductRows(
           p.seo_title,
           p.seo_description,
           p.created_at,
-          p.updated_at
+          p.updated_at,
+          primary_image.id::text as primary_image_id,
+          primary_image.product_id::text as primary_image_product_id,
+          primary_image.variant_id::text as primary_image_variant_id,
+          primary_image.file_path as primary_image_file_path,
+          primary_image.alt_text as primary_image_alt_text,
+          primary_image.sort_order as primary_image_sort_order,
+          primary_image.is_primary as primary_image_is_primary,
+          primary_image.created_at as primary_image_created_at,
+          primary_image.updated_at as primary_image_updated_at
         from products p
+        left join lateral (
+          select
+            pi.id,
+            pi.product_id,
+            pi.variant_id,
+            pi.file_path,
+            pi.alt_text,
+            pi.sort_order,
+            pi.is_primary,
+            pi.created_at,
+            pi.updated_at
+          from product_images pi
+          left join product_variants pv
+            on pv.id = pi.variant_id
+          where pi.product_id = p.id
+            and (
+              pi.variant_id is null
+              or pv.status = 'published'
+            )
+          order by
+            case when pi.variant_id is null then 0 else 1 end asc,
+            pi.is_primary desc,
+            pi.sort_order asc,
+            pi.id asc
+          limit 1
+        ) as primary_image on true
         left join lateral (
           select
             count(*)::int as legacy_exploitable_variant_count,
@@ -768,8 +887,43 @@ async function getPublishedProductRowBySlug(
         p.seo_title,
         p.seo_description,
         p.created_at,
-        p.updated_at
+        p.updated_at,
+        primary_image.id::text as primary_image_id,
+        primary_image.product_id::text as primary_image_product_id,
+        primary_image.variant_id::text as primary_image_variant_id,
+        primary_image.file_path as primary_image_file_path,
+        primary_image.alt_text as primary_image_alt_text,
+        primary_image.sort_order as primary_image_sort_order,
+        primary_image.is_primary as primary_image_is_primary,
+        primary_image.created_at as primary_image_created_at,
+        primary_image.updated_at as primary_image_updated_at
       from products p
+      left join lateral (
+        select
+          pi.id,
+          pi.product_id,
+          pi.variant_id,
+          pi.file_path,
+          pi.alt_text,
+          pi.sort_order,
+          pi.is_primary,
+          pi.created_at,
+          pi.updated_at
+        from product_images pi
+        left join product_variants pv
+          on pv.id = pi.variant_id
+        where pi.product_id = p.id
+          and (
+            pi.variant_id is null
+            or pv.status = 'published'
+          )
+        order by
+          case when pi.variant_id is null then 0 else 1 end asc,
+          pi.is_primary desc,
+          pi.sort_order asc,
+          pi.id asc
+        limit 1
+      ) as primary_image on true
       where p.status = 'published'
         and p.slug = $1
       limit 1
@@ -881,7 +1035,7 @@ export async function getPublishedProductBySlug(
   ]);
 
   const imagesByVariantId = groupVariantImagesByVariantId(variantImageRows);
-  const variants: PublishedProductVariant[] = variantRows.map((row) =>
+  const variants: PublishedProductVariant[] = variantRows.map(row =>
     mapPublishedProductVariant(row, imagesByVariantId.get(row.id) ?? [])
   );
   const simpleOffer = resolvePublishedSimpleOffer({
@@ -903,7 +1057,9 @@ export async function getPublishedProductBySlug(
   };
 }
 
-export async function listPublishedBlogPosts(): Promise<PublishedBlogPostSummary[]> {
+export async function listPublishedBlogPosts(): Promise<
+  PublishedBlogPostSummary[]
+> {
   const rows = await queryRows<BlogPostSummaryRow>(
     `
       select

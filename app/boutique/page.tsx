@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   listCatalogFilterCategories,
   listPublishedProducts
@@ -13,6 +12,7 @@ import {
   validateCatalogFilterInput
 } from "@/entities/catalog/catalog-filter-input";
 import { validateCatalogSearchQuery } from "@/entities/catalog/catalog-search-input";
+import { getUploadsPublicPath } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";
 
@@ -77,6 +77,10 @@ function getBoutiqueMetadata(input: {
   };
 }
 
+function getImageUrl(uploadsPublicPath: string, filePath: string): string {
+  return `${uploadsPublicPath}/${filePath.replace(/^\/+/, "")}`;
+}
+
 export async function generateMetadata({
   searchParams
 }: ProductsPageProps): Promise<Metadata> {
@@ -126,6 +130,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     }),
     listCatalogFilterCategories()
   ]);
+  const uploadsPublicPath = getUploadsPublicPath();
   const selectedCategory =
     filters.categorySlug === null
       ? null
@@ -149,16 +154,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   }
 
   const hasActiveFilters = activeFilters.length > 0;
-  const hasOnlyActiveSearch =
-    searchQuery !== null &&
-    filters.categorySlug === null &&
-    !filters.onlyAvailable;
   const hasEditorialListing = !hasActiveFilters;
 
   return (
     <div className="grid gap-10">
+      {/* Header section */}
       <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
-        <div className="mb-8 grid gap-2">
+        <div className="grid gap-2">
           <p className="text-sm font-bold uppercase tracking-widest text-brand">
             {hasEditorialListing ? "Sélection" : "Boutique"}
           </p>
@@ -173,27 +175,24 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           ) : null}
         </div>
 
+        {/* Compact filter bar */}
         <form
           action="/boutique"
-          className="grid gap-3"
+          className="mt-6 flex flex-wrap items-end gap-3"
           method="get">
-          <div className="grid gap-2">
-            <Label htmlFor="catalog-search-query">Recherche</Label>
+          <div className="min-w-40 flex-1">
             <Input
               defaultValue={searchQuery ?? ""}
-              id="catalog-search-query"
               name="q"
-              placeholder="Nom, catégorie ou couleur"
+              placeholder="Rechercher…"
               type="search"
             />
           </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="catalog-category-filter">Catégorie</Label>
+          <div className="min-w-36 flex-1">
             <select
               className="h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
               defaultValue={filters.categorySlug ?? ""}
-              id="catalog-category-filter"
               name="category">
               <option value="">Toutes les catégories</option>
               {categories.map((category) => (
@@ -206,42 +205,35 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </select>
           </div>
 
-          <label
-            className="flex items-center gap-3 text-sm text-foreground"
-            htmlFor="catalog-availability-filter">
+          <label className="flex items-center gap-2 text-sm text-muted-foreground">
             <input
               className="size-4"
               defaultChecked={filters.onlyAvailable}
-              id="catalog-availability-filter"
               name="availability"
               type="checkbox"
               value={CATALOG_AVAILABILITY_FILTER_VALUE}
             />
-            <span>Disponibles uniquement</span>
+            <span>Disponibles</span>
           </label>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <Button type="submit">Rechercher</Button>
-            {hasActiveFilters ? (
-              <Link
-                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                href="/boutique">
-                Revenir à la liste complète
-              </Link>
-            ) : null}
-          </div>
+          <Button
+            size="sm"
+            type="submit">
+            Filtrer
+          </Button>
+
+          {hasActiveFilters ? (
+            <Link
+              className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              href="/boutique">
+              Tout voir
+            </Link>
+          ) : null}
         </form>
 
-        {hasOnlyActiveSearch ? (
-          <p className="mb-4 mt-6 text-sm text-muted-foreground">
-            Résultats pour{" "}
-            <strong className="text-foreground">{searchQuery}</strong>
-          </p>
-        ) : null}
-
-        {!hasOnlyActiveSearch && hasActiveFilters ? (
-          <div className="mb-4 mt-6 flex flex-wrap items-center gap-2 rounded-xl border border-border/60 bg-muted/20 px-4 py-3 text-sm text-muted-foreground">
-            <span>Filtres actifs :</span>
+        {hasActiveFilters ? (
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+            <span>Filtres :</span>
             {activeFilters.map((filter) => (
               <Badge
                 key={filter}
@@ -249,80 +241,92 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 {filter}
               </Badge>
             ))}
-            <Link
-              className="ml-auto text-xs underline-offset-4 transition-colors hover:text-foreground hover:underline"
-              href="/boutique">
-              Effacer
-            </Link>
           </div>
         ) : null}
+      </section>
 
-        {products.length > 0 ? (
-          <div className="mt-6 grid gap-5 min-[700px]:grid-cols-3">
-            {products.map((product) => (
-              <article
-                className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6 shadow-card"
-                key={product.id}>
+      {/* Product grid */}
+      {products.length > 0 ? (
+        <div className="grid gap-5 min-[500px]:grid-cols-2 min-[900px]:grid-cols-3">
+          {products.map((product) => (
+            <article
+              className="group grid grid-rows-[auto_1fr] overflow-hidden rounded-xl border border-surface-border bg-shell-surface shadow-card transition-shadow hover:shadow-soft"
+              key={product.id}>
+              {/* Image zone */}
+              <Link
+                className="block"
+                href={`/boutique/${product.slug}`}
+                tabIndex={-1}>
+                {product.primaryImage !== null ? (
+                  <figure className="relative aspect-[4/3] overflow-hidden bg-media-surface">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      alt={product.primaryImage.altText ?? product.name}
+                      className="absolute inset-0 block h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                      src={getImageUrl(uploadsPublicPath, product.primaryImage.filePath)}
+                    />
+                  </figure>
+                ) : (
+                  <div className="flex aspect-[4/3] items-center justify-center bg-media-surface text-media-foreground">
+                    <span className="text-xs font-medium uppercase tracking-widest opacity-60">
+                      {product.name}
+                    </span>
+                  </div>
+                )}
+              </Link>
+
+              {/* Text content */}
+              <div className="grid gap-3 p-5">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    Produit
+                    {product.isFeatured ? "Pièce phare" : "Produit"}
                   </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {product.isFeatured ? (
-                      <Badge variant="secondary">Mis en avant</Badge>
-                    ) : null}
-                    <Badge variant="outline">
-                      <span
-                        className={
-                          product.isAvailable
-                            ? "text-emerald-700"
-                            : "text-destructive"
-                        }>
-                        {product.isAvailable
-                          ? "Disponible"
-                          : "Temporairement indisponible"}
-                      </span>
-                    </Badge>
-                  </div>
+                  <Badge
+                    variant="outline">
+                    <span
+                      className={
+                        product.isAvailable
+                          ? "text-emerald-700"
+                          : "text-destructive"
+                      }>
+                      {product.isAvailable ? "Disponible" : "Indisponible"}
+                    </span>
+                  </Badge>
                 </div>
-                <h3>
+
+                <h3 className="m-0 text-base font-semibold leading-snug">
                   <Link
                     className="transition-colors hover:text-brand"
                     href={`/boutique/${product.slug}`}>
                     {product.name}
                   </Link>
                 </h3>
-                <p className="leading-relaxed">
-                  {product.shortDescription ??
-                    product.description ??
-                    "Aucune description n'est disponible pour ce produit."}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {product.isAvailable
-                    ? "Disponible à la commande."
-                    : "Actuellement indisponible à la commande."}
-                </p>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <div className="mt-6 grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
+
+                {(product.shortDescription ?? product.description) ? (
+                  <p className="text-sm leading-relaxed text-muted-foreground line-clamp-2">
+                    {product.shortDescription ?? product.description}
+                  </p>
+                ) : null}
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
+          <div className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
             <p className="text-sm font-bold uppercase tracking-widest text-brand">
               {hasActiveFilters ? "Aucun résultat" : "Catalogue vide"}
             </p>
             <h2>
-              {hasOnlyActiveSearch
-                ? "Aucun produit ne correspond à cette recherche"
-                : hasActiveFilters
-                  ? "Aucun produit ne correspond à ces filtres"
-                  : "Aucun produit publié"}
+              {hasActiveFilters
+                ? "Aucun produit ne correspond à ces filtres"
+                : "Aucun produit publié"}
             </h2>
             <p className="leading-relaxed text-muted-foreground">
-              {hasOnlyActiveSearch
-                ? "Essayez un autre terme ou revenez à la liste complète."
-                : hasActiveFilters
-                  ? "Essayez une autre combinaison ou revenez à la liste complète."
-                  : "Les produits publics apparaîtront ici dès qu'ils seront publiés."}
+              {hasActiveFilters
+                ? "Essayez une autre combinaison ou revenez à la liste complète."
+                : "Les produits publics apparaîtront ici dès qu'ils seront publiés."}
             </p>
             {hasActiveFilters ? (
               <Link
@@ -332,8 +336,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               </Link>
             ) : null}
           </div>
-        )}
-      </section>
+        </section>
+      )}
     </div>
   );
 }

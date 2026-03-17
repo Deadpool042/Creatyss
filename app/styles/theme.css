@@ -8,6 +8,7 @@
      ========================================================================== */
 
   --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
 
   /* ==========================================================================
      Core semantic colors
@@ -99,6 +100,23 @@
 
   --color-media-surface: var(--media-surface);
   --color-media-foreground: var(--media-foreground);
+
+  /* ==========================================================================
+     Hero editorial
+     ========================================================================== */
+
+  --color-hero-bg: var(--hero-bg);
+  --color-hero-bg-media: var(--hero-bg-media);
+  --color-hero-ink: var(--hero-ink);
+  --color-hero-ink-soft: var(--hero-ink-soft);
+  --color-hero-ink-muted: var(--hero-ink-muted);
+  --color-hero-border: var(--hero-border);
+
+  /* ==========================================================================
+     Band
+     ========================================================================== */
+
+  --color-band-bg: var(--band-bg);
 
   /* ==========================================================================
      Shadows
