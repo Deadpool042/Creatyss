@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import PlaceholderImage, { PLACEHOLDER_FILENAME } from "@/components/shared/placeholderImage";
 
 type FeaturedProductImage = {
   filePath: string;
@@ -81,8 +82,8 @@ export function HomepageFeaturedProductsSection({
                   className="block"
                   href={`/boutique/${product.slug}`}>
                   {/* Image — rounded cohérent avec les cards collections */}
-                  <div className="relative aspect-3/4 overflow-hidden rounded-(--radius) bg-surface-subtle">
-                    {imageSrc ? (
+                  <div className="relative aspect-3/4 overflow-hidden rounded-lg bg-surface-subtle">
+                    {imageSrc && product.primaryImage?.filePath !== PLACEHOLDER_FILENAME ? (
                       <Image
                         alt={
                           product.primaryImage?.altText?.trim() || product.name
@@ -93,17 +94,17 @@ export function HomepageFeaturedProductsSection({
                         src={imageSrc}
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-[linear-gradient(145deg,#c8b89e_0%,#a8906e_45%,#6e5840_100%)]" />
+                      <PlaceholderImage alt={product.name} />
                     )}
 
                     {/* Badge sobre — fond toujours sombre, lettre-espacé 0.15em */}
-                    <span className="absolute left-3 top-3 bg-band-bg px-2.5 py-1 text-[0.55rem] font-medium uppercase tracking-[0.15em] text-white/75">
+                    <span className="absolute left-3 top-3 bg-band-bg px-2.5 py-1 text-[0.55rem] font-medium uppercase tracking-[0.15em] text-white/75 rounded-lg">
                       Pièce unique
                     </span>
                   </div>
 
                   {/* Info produit — nom serif 18px + détail léger */}
-                  <div className="mt-[18px]">
+                  <div className="mt-4.5">
                     <h3 className="font-serif text-[1.1rem] font-normal leading-snug text-foreground transition-colors group-hover:text-brand">
                       {product.name}
                     </h3>
@@ -123,7 +124,7 @@ export function HomepageFeaturedProductsSection({
         {/* Footer CTA — btn-dark centré comme index.html */}
         <div className="flex justify-center">
           <Link
-            className="inline-flex items-center gap-2.5 bg-foreground px-8 py-4 text-[0.65rem] font-medium uppercase tracking-[0.22em] text-background transition-opacity hover:opacity-80"
+            className="inline-flex items-center gap-2.5 rounded-lg bg-primary px-7 py-3.5 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-primary/90"
             href="/boutique">
             Voir toute la boutique
             <span

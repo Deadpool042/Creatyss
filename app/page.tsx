@@ -1,15 +1,21 @@
 import { notFound } from "next/navigation";
-import { getPublishedHomepageContent } from "@/db/catalog";
+import {
+  getPublishedHomepageContent,
+  listRecentPublishedProducts
+} from "@/db/catalog";
 import { getUploadsPublicPath } from "@/lib/uploads";
 import { HomepageHeroSection } from "@/features/homepage/components/homepage-hero-section";
-
-import { HomepageFeaturedProductsSection } from "@/features/homepage/components/homepage-featured-products-section";
-import { HomepageEventsSection } from "@/features/homepage/components/homepage-events-section";
-import { HomepageJournalSection } from "@/features/homepage/components/homepage-journal-section";
-import { HomepageCollectionsSection } from "@/features/homepage/components/homepage-collections-section";
-import { HomepageSavoirFaireSection } from "@/features/homepage/components/homepage-savoir-faire";
-import { HomepageAboutSection } from "@/features/homepage/components/homepage-about-section";
-import { HomepageGuaranteesSection } from "@/features/homepage/components/homepage-guarantees-section";
+import {
+  HomepageAboutSection,
+  HomepageCollectionsSection,
+  HomepageEventsSection,
+  HomepageFeaturedProductsSection,
+  HomepageGuaranteesSection,
+  HomepageJournalSection,
+  HomepageNewArrivalsSection,
+  HomepageNewsletterSection,
+  HomepageSavoirFaireSection
+} from "@/features/homepage/components";
 
 export const dynamic = "force-dynamic";
 
@@ -49,13 +55,17 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const homepage = await getPublishedHomepageContent();
+  const [homepage, recentProducts] = await Promise.all([
+    getPublishedHomepageContent(),
+    listRecentPublishedProducts(4)
+  ]);
 
   if (homepage === null) {
     notFound();
   }
 
   const uploadsPublicPath = getUploadsPublicPath();
+
   const heroImagePath = homepage.heroImagePath
     ? `${uploadsPublicPath}/${homepage.heroImagePath.replace(/^\/+/, "")}`
     : null;
@@ -70,7 +80,10 @@ export default async function HomePage() {
 
       <HomepageGuaranteesSection />
       <div className=" grid gap-16 my-16">
-        <HomepageCollectionsSection />
+        <HomepageCollectionsSection
+          categories={homepage.featuredCategories}
+          uploadsPublicPath={uploadsPublicPath}
+        />
 
         <HomepageSavoirFaireSection
           editorialText={homepage.editorialText}
@@ -79,6 +92,11 @@ export default async function HomePage() {
 
         <HomepageFeaturedProductsSection
           products={homepage.featuredProducts}
+          uploadsPublicPath={uploadsPublicPath}
+        />
+
+        <HomepageNewArrivalsSection
+          products={recentProducts}
           uploadsPublicPath={uploadsPublicPath}
         />
 
@@ -91,6 +109,7 @@ export default async function HomePage() {
           />
         </div>
       </div>
+      <HomepageNewsletterSection />
     </div>
   );
 }

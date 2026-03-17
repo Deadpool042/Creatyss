@@ -7,7 +7,7 @@ import {
 
 describe("normalizeCatalogSearchQuery", () => {
   it("trim la requete et reduit les espaces multiples", () => {
-    expect(normalizeCatalogSearchQuery("  cabas   moka  ")).toBe("cabas moka");
+    expect(normalizeCatalogSearchQuery("  sac   bandouliere  ")).toBe("sac bandouliere");
   });
 
   it("convertit une requete vide en null", () => {

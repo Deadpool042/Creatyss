@@ -1,18 +1,19 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
+import sharp from "sharp";
 import { createAdminMediaAsset, type AdminMediaAsset } from "@/db/admin-media";
 import { ensureUploadsDirectory } from "@/lib/uploads";
 
 const MAX_MEDIA_FILE_SIZE_BYTES = 10 * 1024 * 1024;
 
-type SupportedMimeType = "image/jpeg" | "image/png" | "image/webp";
+// Formats accepted as input — anything else is rejected before conversion.
+const ALLOWED_INPUT_FORMATS = new Set(["jpeg", "png", "webp"]);
 
-type DetectedImageMetadata = {
-  extension: "jpg" | "png" | "webp";
-  imageHeight: number | null;
-  imageWidth: number | null;
-  mimeType: SupportedMimeType;
+// WebP encoding settings applied to every upload.
+const WEBP_OPTIONS: sharp.WebpOptions = {
+  quality: 85,
+  effort: 4
 };
 
 type UploadAdminMediaInput = {
@@ -43,185 +44,17 @@ function isFile(value: FormDataEntryValue | null): value is File {
 function normalizeOriginalName(name: string): string {
   const trimmedName = name.trim();
   const basename = trimmedName.split(/[/\\]/).pop()?.trim() ?? "";
+  const withoutExt = basename.replace(/\.[^.]+$/, "") || "upload";
 
-  return basename.length > 0 ? basename : "upload";
+  return `${withoutExt}.webp`;
 }
 
-function isPng(buffer: Buffer): boolean {
-  return (
-    buffer.length >= 24 &&
-    buffer[0] === 0x89 &&
-    buffer[1] === 0x50 &&
-    buffer[2] === 0x4e &&
-    buffer[3] === 0x47 &&
-    buffer[4] === 0x0d &&
-    buffer[5] === 0x0a &&
-    buffer[6] === 0x1a &&
-    buffer[7] === 0x0a
-  );
-}
-
-function readPngDimensions(buffer: Buffer) {
-  if (
-    buffer.length < 24 ||
-    buffer.toString("ascii", 12, 16) !== "IHDR"
-  ) {
-    return null;
-  }
-
-  const width = buffer.readUInt32BE(16);
-  const height = buffer.readUInt32BE(20);
-
-  if (width === 0 || height === 0) {
-    return null;
-  }
-
-  return { width, height };
-}
-
-function isJpeg(buffer: Buffer): boolean {
-  return (
-    buffer.length >= 4 &&
-    buffer[0] === 0xff &&
-    buffer[1] === 0xd8 &&
-    buffer[2] === 0xff
-  );
-}
-
-function isJpegSofMarker(marker: number): boolean {
-  return (
-    marker >= 0xc0 &&
-    marker <= 0xcf &&
-    marker !== 0xc4 &&
-    marker !== 0xc8 &&
-    marker !== 0xcc
-  );
-}
-
-function readJpegDimensions(buffer: Buffer) {
-  if (!isJpeg(buffer)) {
-    return null;
-  }
-
-  let offset = 2;
-
-  while (offset < buffer.length) {
-    if (buffer[offset] !== 0xff) {
-      return null;
-    }
-
-    while (buffer[offset] === 0xff) {
-      offset += 1;
-    }
-
-    if (offset >= buffer.length) {
-      return null;
-    }
-
-    const marker = buffer[offset];
-
-    if (marker === undefined) {
-      return null;
-    }
-
-    offset += 1;
-
-    if (marker === 0xd9 || marker === 0xda) {
-      return null;
-    }
-
-    if (marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) {
-      continue;
-    }
-
-    if (offset + 1 >= buffer.length) {
-      return null;
-    }
-
-    const segmentLength = buffer.readUInt16BE(offset);
-
-    if (segmentLength < 2 || offset + segmentLength > buffer.length) {
-      return null;
-    }
-
-    if (isJpegSofMarker(marker)) {
-      if (segmentLength < 7) {
-        return null;
-      }
-
-      const height = buffer.readUInt16BE(offset + 3);
-      const width = buffer.readUInt16BE(offset + 5);
-
-      if (width === 0 || height === 0) {
-        return null;
-      }
-
-      return { width, height };
-    }
-
-    offset += segmentLength;
-  }
-
-  return null;
-}
-
-function isWebp(buffer: Buffer): boolean {
-  return (
-    buffer.length >= 12 &&
-    buffer.toString("ascii", 0, 4) === "RIFF" &&
-    buffer.toString("ascii", 8, 12) === "WEBP"
-  );
-}
-
-function detectImageMetadata(buffer: Buffer): DetectedImageMetadata | null {
-  if (isPng(buffer)) {
-    const dimensions = readPngDimensions(buffer);
-
-    if (dimensions === null) {
-      return null;
-    }
-
-    return {
-      extension: "png",
-      imageHeight: dimensions.height,
-      imageWidth: dimensions.width,
-      mimeType: "image/png"
-    };
-  }
-
-  if (isJpeg(buffer)) {
-    const dimensions = readJpegDimensions(buffer);
-
-    if (dimensions === null) {
-      return null;
-    }
-
-    return {
-      extension: "jpg",
-      imageHeight: dimensions.height,
-      imageWidth: dimensions.width,
-      mimeType: "image/jpeg"
-    };
-  }
-
-  if (isWebp(buffer)) {
-    return {
-      extension: "webp",
-      imageHeight: null,
-      imageWidth: null,
-      mimeType: "image/webp"
-    };
-  }
-
-  return null;
-}
-
-function buildStoredRelativePath(extension: DetectedImageMetadata["extension"]) {
+function buildStoredRelativePath() {
   const now = new Date();
   const year = String(now.getUTCFullYear());
   const month = String(now.getUTCMonth() + 1).padStart(2, "0");
 
-  return `media/${year}/${month}/${randomUUID()}.${extension}`;
+  return `media/${year}/${month}/${randomUUID()}.webp`;
 }
 
 export async function uploadAdminMedia(
@@ -231,36 +64,66 @@ export async function uploadAdminMedia(
     throw new MediaUploadError("missing_file", "A media file is required.");
   }
 
-  const fileBuffer = Buffer.from(await input.file.arrayBuffer());
+  const inputBuffer = Buffer.from(await input.file.arrayBuffer());
 
-  if (fileBuffer.length === 0) {
+  if (inputBuffer.length === 0) {
     throw new MediaUploadError("empty_file", "The uploaded file is empty.");
   }
 
-  if (fileBuffer.length > MAX_MEDIA_FILE_SIZE_BYTES) {
+  if (inputBuffer.length > MAX_MEDIA_FILE_SIZE_BYTES) {
     throw new MediaUploadError(
       "file_too_large",
       "The uploaded file exceeds the 10 MB limit."
     );
   }
 
-  const detectedImage = detectImageMetadata(fileBuffer);
+  // Detect format and validate before any conversion.
+  let metadata: sharp.Metadata;
 
-  if (detectedImage === null) {
+  try {
+    metadata = await sharp(inputBuffer).metadata();
+  } catch {
     throw new MediaUploadError(
       "unsupported_file",
       "Only JPEG, PNG, and WebP images are supported."
     );
   }
 
-  const relativeFilePath = buildStoredRelativePath(detectedImage.extension);
+  if (!metadata.format || !ALLOWED_INPUT_FORMATS.has(metadata.format)) {
+    throw new MediaUploadError(
+      "unsupported_file",
+      "Only JPEG, PNG, and WebP images are supported."
+    );
+  }
+
+  // Convert to WebP.
+  let outputBuffer: Buffer;
+  let outputWidth: number | null = null;
+  let outputHeight: number | null = null;
+
+  try {
+    const result = await sharp(inputBuffer)
+      .webp(WEBP_OPTIONS)
+      .toBuffer({ resolveWithObject: true });
+
+    outputBuffer = result.data;
+    outputWidth = result.info.width ?? null;
+    outputHeight = result.info.height ?? null;
+  } catch {
+    throw new MediaUploadError(
+      "unsupported_file",
+      "The image could not be converted to WebP."
+    );
+  }
+
+  const relativeFilePath = buildStoredRelativePath();
   const uploadsDirectory = await ensureUploadsDirectory();
   const absoluteFilePath = path.join(uploadsDirectory, relativeFilePath);
 
   await mkdir(path.dirname(absoluteFilePath), { recursive: true });
 
   try {
-    await writeFile(absoluteFilePath, fileBuffer, { flag: "wx" });
+    await writeFile(absoluteFilePath, outputBuffer, { flag: "wx" });
   } catch (error) {
     throw new MediaUploadError(
       "write_failed",
@@ -270,11 +133,11 @@ export async function uploadAdminMedia(
 
   try {
     return await createAdminMediaAsset({
-      byteSize: String(fileBuffer.length),
+      byteSize: String(outputBuffer.length),
       filePath: relativeFilePath,
-      imageHeight: detectedImage.imageHeight,
-      imageWidth: detectedImage.imageWidth,
-      mimeType: detectedImage.mimeType,
+      imageHeight: outputHeight,
+      imageWidth: outputWidth,
+      mimeType: "image/webp",
       originalName: normalizeOriginalName(input.file.name),
       uploadedByAdminUserId: input.adminUserId
     });

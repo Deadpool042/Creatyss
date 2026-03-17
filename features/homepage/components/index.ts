@@ -1,1 +1,11 @@
-export {};
+export { HomepageAboutSection } from "./homepage-about-section";
+export { HomepageFeaturedProductsSection } from "./homepage-featured-products-section";
+export { HomepageHeroSection } from "./homepage-hero-section";
+export { HomepageCollectionsSection } from "./homepage-collections-section";
+export { HomepageNewsletterSection } from "./homepage-newsletter-section";
+export { HomepageEditorialSection } from "./homepage-editorial-section";
+export { HomepageEventsSection } from "./homepage-events-section";
+export { HomepageGuaranteesSection } from "./homepage-guarantees-section";
+export { HomepageJournalSection } from "./homepage-journal-section";
+export { HomepageNewArrivalsSection } from "./homepage-new-arrivals-section";
+export { HomepageSavoirFaireSection } from "./homepage-savoir-faire";

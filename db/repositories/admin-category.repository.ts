@@ -11,8 +11,12 @@ type AdminCategoryRow = {
   slug: string;
   description: string | null;
   is_featured: boolean;
+  image_path: string | null;
   created_at: TimestampValue;
   updated_at: TimestampValue;
+  // Present only when fetched via the lateral-join read queries
+  rep_image_file_path?: string | null;
+  rep_image_alt_text?: string | null;
 };
 
 type ProductCountRow = {
@@ -28,6 +32,11 @@ type CreateAdminCategoryInput = {
   slug: string;
   description: string | null;
   isFeatured: boolean;
+};
+
+type UpdateAdminCategoryImageInput = {
+  id: string;
+  imagePath: string | null;
 };
 
 type UpdateAdminCategoryInput = CreateAdminCategoryInput & {
@@ -49,6 +58,8 @@ export type AdminCategory = {
   slug: string;
   description: string | null;
   isFeatured: boolean;
+  imagePath: string | null;
+  representativeImage: { filePath: string; altText: string | null } | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -70,7 +81,7 @@ const CATEGORY_SLUG_CONSTRAINT = "categories_slug_key";
 
 // Single column list used by all category queries — no summary/detail distinction for this entity
 const CATEGORY_COLUMNS =
-  "id::text as id, name, slug, description, is_featured, created_at, updated_at";
+  "id::text as id, name, slug, description, is_featured, image_path, created_at, updated_at";
 
 function isValidCategoryId(id: string): boolean {
   return /^[0-9]+$/.test(id);
@@ -98,10 +109,28 @@ function mapAdminCategory(row: AdminCategoryRow): AdminCategory {
     slug: row.slug,
     description: row.description,
     isFeatured: row.is_featured,
+    imagePath: row.image_path,
+    representativeImage:
+      row.rep_image_file_path != null
+        ? { filePath: row.rep_image_file_path, altText: row.rep_image_alt_text ?? null }
+        : null,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
   };
 }
+
+const REP_IMAGE_LATERAL = `
+  left join lateral (
+    select pi.file_path, pi.alt_text
+    from   product_categories pc
+    join   products p        on p.id  = pc.product_id
+    join   product_images pi on pi.product_id = p.id and pi.is_primary = true
+    where  pc.category_id = c.id
+      and  p.status = 'published'
+    order by p.created_at desc
+    limit 1
+  ) rep_img on true
+`;
 
 // Builds the ordered parameter array shared by INSERT and UPDATE queries.
 // Create: buildCategoryWriteParams(input)          → $1=name … $4=isFeatured
@@ -138,9 +167,12 @@ function mapRepositoryError(error: unknown): never {
 export async function listAdminCategories(): Promise<AdminCategory[]> {
   const rows = await queryRows<AdminCategoryRow>(
     `
-      select ${CATEGORY_COLUMNS}
-      from categories
-      order by lower(name) asc, id asc
+      select ${CATEGORY_COLUMNS},
+             rep_img.file_path as rep_image_file_path,
+             rep_img.alt_text  as rep_image_alt_text
+      from categories c
+      ${REP_IMAGE_LATERAL}
+      order by lower(c.name) asc, c.id asc
     `
   );
 
@@ -156,9 +188,12 @@ export async function findAdminCategoryById(
 
   const row = await queryFirst<AdminCategoryRow>(
     `
-      select ${CATEGORY_COLUMNS}
-      from categories
-      where id = $1::bigint
+      select ${CATEGORY_COLUMNS},
+             rep_img.file_path as rep_image_file_path,
+             rep_img.alt_text  as rep_image_alt_text
+      from categories c
+      ${REP_IMAGE_LATERAL}
+      where c.id = $1::bigint
       limit 1
     `,
     [id]
@@ -245,6 +280,30 @@ export async function deleteAdminCategory(id: string): Promise<boolean> {
   } catch (error) {
     mapRepositoryError(error);
   }
+}
+
+export async function updateAdminCategoryImage(
+  input: UpdateAdminCategoryImageInput
+): Promise<AdminCategory | null> {
+  if (!isValidCategoryId(input.id)) {
+    return null;
+  }
+
+  const row = await queryFirst<AdminCategoryRow>(
+    `
+      update categories
+      set image_path = $2
+      where id = $1::bigint
+      returning ${CATEGORY_COLUMNS}
+    `,
+    [input.id, input.imagePath]
+  );
+
+  if (row === null) {
+    return null;
+  }
+
+  return mapAdminCategory(row);
 }
 
 export async function countProductsForCategory(id: string): Promise<number> {

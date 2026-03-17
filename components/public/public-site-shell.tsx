@@ -49,7 +49,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
   return (
     <div className="min-h-screen">
       <header className="site-header-blur sticky top-0 z-30 border-b border-shell-border">
-        <div className="mx-auto grid min-h-16 w-full max-w-[1720px] grid-cols-[1fr_auto_1fr] items-center gap-6 px-6 xl:px-12">
+        <div className="mx-auto grid min-h-16 w-full max-w-430 grid-cols-[1fr_auto_1fr] items-center gap-6 px-6 xl:px-12">
           <nav
             aria-label="Navigation principale"
             className="hidden items-center gap-4 md:flex">
@@ -176,7 +176,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
       <nav
         aria-label="Navigation principale mobile"
         className="site-header-blur fixed inset-x-0 bottom-0 z-30 border-t border-shell-border md:hidden">
-        <div className="mx-auto grid w-full max-w-[1720px] grid-cols-3 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
+        <div className="mx-auto grid w-full max-w-430 grid-cols-3 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
           {publicLinksLeft.map(link => {
             const Icon = link.icon;
             const isActive = isPublicLinkActive(pathname, link.href);

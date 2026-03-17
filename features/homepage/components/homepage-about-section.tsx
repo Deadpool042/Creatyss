@@ -4,23 +4,22 @@ export function HomepageAboutSection() {
   return (
     <section
       aria-labelledby="homepage-about-title"
-      className="grid overflow-hidden rounded-xl min-[980px]:grid-cols-[1fr_1fr]">
+      className="grid overflow-hidden rounded-xl min-[860px]:grid-cols-[1fr_1fr]">
       {/* Panneau éditorial — bg-hero-bg comme savoir-faire */}
-      <div className="flex flex-col justify-center bg-hero-bg px-8 py-14 min-[980px]:px-18 min-[980px]:py-24">
+      <div className="flex flex-col justify-center bg-hero-bg px-8 py-14 min-[860px]:px-18 min-[860px]:py-24">
         <p className="mb-4 text-[0.62rem] font-medium uppercase tracking-[0.32em] text-brand">
           La créatrice
         </p>
 
         {/* H2 avec <em> italic comme index.html, max-w 20ch */}
         <h2
-          className="mb-6 max-w-[20ch] font-serif text-3xl font-normal leading-[1.2] tracking-tight text-hero-ink min-[980px]:text-[2.75rem]"
+          className="mb-6 max-w-[20ch] font-serif text-3xl font-normal leading-[1.2] tracking-tight text-hero-ink min-[860px]:text-[2.75rem]"
           id="homepage-about-title">
-          Derrière chaque sac,{" "}
-          <em>une main.</em>
+          Derrière chaque sac, <em>une main.</em>
         </h2>
 
         {/* Blockquote — font-serif font-light leading-[1.6] border-l brand pl-6 */}
-        <blockquote className="mb-7 max-w-[40ch] border-l-2 border-brand pl-6 font-serif text-[1.1rem] font-light italic leading-[1.6] text-hero-ink-soft min-[980px]:text-[1.2rem]">
+        <blockquote className="mb-7 max-w-[40ch] border-l-2 border-brand pl-6 font-serif text-[1.1rem] font-light italic leading-[1.6] text-hero-ink-soft min-[860px]:text-[1.2rem]">
           « Je couds par passion, mais aussi par conviction — que les objets
           qu'on porte méritent d'être pensés, faits avec soin, et destinés à
           durer. »
@@ -45,7 +44,7 @@ export function HomepageAboutSection() {
       </div>
 
       {/* Panneau visuel — toujours sombre, pas de radius interne */}
-      <div className="relative min-h-[32rem] overflow-hidden bg-[linear-gradient(160deg,#3a2e24_0%,#26201a_50%,#1c1610_100%)] min-[980px]:min-h-0">
+      <div className="relative min-h-128 overflow-hidden bg-[linear-gradient(160deg,#3a2e24_0%,#26201a_50%,#1c1610_100%)] min-[860px]:min-h-0">
         <div className="absolute inset-0 grid place-items-center p-8 text-center text-[0.62rem] uppercase tracking-[0.24em] text-white/30">
           Portrait de la créatrice · en atelier · lumière naturelle
         </div>

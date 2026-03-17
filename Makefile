@@ -8,7 +8,7 @@ CERT_DIR := docker/traefik/certs
 CERT_DOMAINS := creatyss.localhost registry.creatyss.localhost
 
 
-.PHONY: help up down restart build logs ps sh dev typecheck db-schema db-seed-dev db-reset-dev test test-unit test-e2e test-e2e-ui test-e2e-headed test-select stripe-dev certs hosts-setup
+.PHONY: help up down restart build logs ps sh dev typecheck db-schema db-seed-dev db-seed-images db-import-woocommerce db-import-woocommerce-images db-reseed-dev db-reset-dev uploads-import seed-data-init test test-unit test-e2e test-e2e-ui test-e2e-headed test-select stripe-dev certs hosts-setup
 
 help:
 	@echo "Usage: make [target]"
@@ -24,7 +24,12 @@ help:
 	@echo "  db-schema       - Applique toutes les migrations SQL sur une base vide"
 	@echo "  typecheck       - Verifie les types TypeScript"
 	@echo "  db-seed-dev     - Applique les fichiers de seed SQL sur la base de dev"
+	@echo "  db-seed-images       - Copie les images de seed vers le volume et sync les metadonnees DB"
+	@echo "  db-import-woocommerce - Importe les produits/categories depuis seed_data/*.creatyss.json"
+	@echo "  db-reseed-dev   - Tronque les tables seedees et re-applique le seed (sans redemarrer)"
 	@echo "  db-reset-dev    - Reset la base de dev (down -v, up -d --build, db-schema, db-seed-dev)"
+	@echo "  uploads-import  - Importe les uploads existants du dossier local vers le volume Docker"
+	@echo "  seed-data-init  - Copie creatyss.webp vers seed_data/images/ (une seule fois)"
 	@echo "  stripe-dev      - Lance le serveur de mock Stripe pour le dev"
 	@echo "  certs           - Genere les certs TLS locaux via mkcert"
 	@echo "  hosts-setup     - Ajoute les entrees /etc/hosts pour creatyss.localhost"
@@ -92,12 +97,53 @@ db-seed-dev:
 	done
 	@echo "Seeding dev admin users"
 	@$(COMPOSE) exec -T $(APP_SERVICE) node --experimental-strip-types scripts/seed-dev-admin-users.ts
+	@$(MAKE) db-seed-images
+
+db-seed-images:
+	@echo "Seeding images..."
+	@$(COMPOSE) exec -T $(APP_SERVICE) node --experimental-strip-types scripts/seed-images.ts
+
+db-import-woocommerce:
+	@echo "Importing WooCommerce data (data only, no images)..."
+	@$(COMPOSE) exec -T $(APP_SERVICE) node --experimental-strip-types scripts/import-woocommerce.ts --skip-images
+	@echo "Done. Run 'make db-import-woocommerce-images' to also download+convert product images."
+
+db-import-woocommerce-images:
+	@echo "Importing WooCommerce data with images (this may take a while)..."
+	@$(COMPOSE) exec -T $(APP_SERVICE) node --experimental-strip-types scripts/import-woocommerce.ts
+
+db-reseed-dev:
+	@bash scripts/reseed-dev.sh
 
 db-reset-dev:
 	$(COMPOSE) down -v
 	$(COMPOSE) up -d --build
 	$(MAKE) db-schema
 	$(MAKE) db-seed-dev
+
+# Copy all existing uploads from the host directory into the Docker uploads volume.
+# Run this once after adding the uploads_data volume if you had previous uploads.
+uploads-import:
+	@echo "Importing uploads from host to volume..."
+	@if [ -d "public/uploads" ]; then \
+		$(COMPOSE) run --rm -v "$(shell pwd)/public/uploads:/host_uploads:ro" \
+			-v uploads_data:/app/public/uploads \
+			--no-deps $(APP_SERVICE) sh -c "cp -rn /host_uploads/. /app/public/uploads/ && echo 'Import done.'"; \
+	else \
+		echo "No public/uploads directory found on host."; \
+	fi
+
+# Copy creatyss.webp from public/uploads/ to seed_data/images/ (run once, then commit).
+seed-data-init:
+	@mkdir -p seed_data/images
+	@if [ -f public/uploads/creatyss.webp ]; then \
+		cp public/uploads/creatyss.webp seed_data/images/creatyss.webp; \
+		echo "Copied creatyss.webp to seed_data/images/ — commit this file."; \
+	elif [ -f seed_data/images/creatyss.webp ]; then \
+		echo "seed_data/images/creatyss.webp already exists."; \
+	else \
+		echo "Error: public/uploads/creatyss.webp not found."; exit 1; \
+	fi
 
 test:
 	$(COMPOSE) exec $(APP_SERVICE) pnpm run test

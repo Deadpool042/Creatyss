@@ -111,12 +111,20 @@
   --color-hero-ink-soft: var(--hero-ink-soft);
   --color-hero-ink-muted: var(--hero-ink-muted);
   --color-hero-border: var(--hero-border);
+  --color-hero-vignette: var(--hero-vignette);
 
   /* ==========================================================================
      Band
      ========================================================================== */
 
   --color-band-bg: var(--band-bg);
+  --color-band-border: var(--band-border);
+  --color-band-foreground: var(--band-foreground);
+  --color-band-foreground-muted: var(--band-foreground-muted);
+  --color-band-icon: var(--band-icon);
+  --color-band-eyebrow: var(--band-eyebrow);
+  --color-band-form-border: var(--band-form-border);
+  --color-media-overlay: var(--media-overlay);
 
   /* ==========================================================================
      Shadows

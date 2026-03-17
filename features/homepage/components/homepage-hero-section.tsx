@@ -1,3 +1,4 @@
+import PlaceholderImage from "@/components/shared/placeholderImage";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,7 +14,7 @@ export function HomepageHeroSection({
   heroTitle
 }: HomepageHeroSectionProps) {
   const resolvedTitle =
-    heroTitle ?? "Des sacs faits à la main, nulle part ailleurs.";
+    heroTitle ?? "Des sacs faits main, nulle part ailleurs.";
   const resolvedText =
     heroText ??
     "Chaque sac Creatyss est dessiné, coupé et cousu dans notre atelier en France. Aucun modèle n'est reproduit à l'identique.";
@@ -21,7 +22,7 @@ export function HomepageHeroSection({
   return (
     <section className="relative -mx-4 -mt-8 grid overflow-hidden border-b border-hero-border bg-hero-bg md:-mx-6 xl:-mx-12 lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[56%_44%]">
       {/* Media panel */}
-      <div className="relative min-h-80 overflow-hidden bg-hero-bg-media sm:min-h-[24rem] md:min-h-[28rem] lg:min-h-[calc(100svh-5rem)]">
+      <div className="relative min-h-80 overflow-hidden bg-hero-bg-media sm:min-h-96 md:min-h-112 lg:min-h-[calc(100svh-5rem)]">
         {heroImagePath ? (
           <>
             <Image
@@ -34,7 +35,7 @@ export function HomepageHeroSection({
               src={heroImagePath}
             />
             {/* Vignette top très légère — cadre l'image sans l'éteindre */}
-            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(20,12,6,0.10),transparent_38%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,var(--hero-vignette),transparent_38%)]" />
           </>
         ) : (
           <div className="absolute inset-0 bg-[linear-gradient(160deg,#d4c9b2_0%,#bfb3a0_35%,#a89680_65%,#7a6452_100%)]" />
@@ -42,14 +43,18 @@ export function HomepageHeroSection({
 
         {/* Photo annotation overlay — masqué si image réelle */}
         {!heroImagePath && (
-          <div className="absolute inset-0 flex items-center justify-center px-8 text-center">
-            <div className="text-[0.58rem] font-normal uppercase tracking-[0.34em] text-white/30 min-[1100px]:text-[0.66rem]">
+          <div className="absolute inset-0 flex items-center justify-center px-8 text-center ">
+            <PlaceholderImage
+              alt={resolvedTitle}
+              className="h-1/2 opacity-30"
+            />
+            {/* <div className="text-[0.58rem] font-normal uppercase tracking-[0.34em] text-white/30 min-[1100px]:text-[0.66rem]">
               <p>Photo éditoriale</p>
               <p className="mt-2">Sac principal en situation</p>
               <p className="mt-2 text-[0.5rem] tracking-[0.28em] text-white/20 min-[1100px]:text-[0.56rem]">
                 Portrait · lumière naturelle · fond neutre
               </p>
-            </div>
+            </div> */}
           </div>
         )}
 
@@ -66,7 +71,7 @@ export function HomepageHeroSection({
 
       {/* Panneau éditorial */}
       <div className="relative flex items-center bg-hero-bg px-7 py-12 md:px-8 md:py-14 lg:px-18 lg:py-24">
-        <div className="max-w-md">
+        <div className="max-w-full">
           {/* Eyebrow — utilise le token brand (terracotta) */}
           <p className="mb-6 text-[0.62rem] font-medium uppercase tracking-[0.34em] text-brand md:mb-7 lg:mb-8 lg:text-[0.68rem]">
             Créations exclusives
@@ -79,7 +84,7 @@ export function HomepageHeroSection({
             <span className="mt-1 block lg:mt-2">nulle part ailleurs.</span>
           </h1>
 
-          <p className="mt-8 max-w-[33ch] text-[0.96rem] font-light leading-9 text-hero-ink-soft md:mt-9 lg:mt-12 lg:text-[1rem]">
+          <p className="mt-8 max-w-fit text-[0.96rem] font-light leading-9 text-hero-ink-soft md:mt-9 lg:mt-12 lg:text-[1rem]">
             {resolvedText}
           </p>
 

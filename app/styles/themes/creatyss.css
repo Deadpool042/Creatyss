@@ -151,12 +151,26 @@
   --hero-ink-soft: rgb(90 74 60);
   --hero-ink-muted: rgb(155 140 126);
   --hero-border: rgb(201 190 176);
+  --hero-vignette: rgb(20 12 6 / 0.10);
 
   /* ==========================================================================
      Band — always-dark editorial band (guarantees strip)
+     Always identical in :root and .dark since band-bg never changes.
      ========================================================================== */
 
   --band-bg: rgb(28 22 16);
+  --band-border: rgb(255 255 255 / 0.06);
+  --band-foreground: rgb(255 255 255 / 0.85);
+  --band-foreground-muted: rgb(255 255 255 / 0.55);
+  --band-icon: rgb(255 255 255 / 0.45);
+  --band-eyebrow: rgb(255 255 255 / 0.30);
+  --band-form-border: rgb(255 255 255 / 0.15);
+
+  /* ==========================================================================
+     Media
+     ========================================================================== */
+
+  --media-overlay: rgb(20 12 6 / 0.62);
 }
 
 .dark {
@@ -286,10 +300,23 @@
   --hero-ink-soft: rgb(196 182 165);
   --hero-ink-muted: rgb(120 106 90);
   --hero-border: rgb(60 50 40);
+  --hero-vignette: rgb(0 0 0 / 0.18);
 
   /* ==========================================================================
      Band — always-dark (same as :root — intentionally identical)
      ========================================================================== */
 
   --band-bg: rgb(28 22 16);
+  --band-border: rgb(255 255 255 / 0.06);
+  --band-foreground: rgb(255 255 255 / 0.85);
+  --band-foreground-muted: rgb(255 255 255 / 0.55);
+  --band-icon: rgb(255 255 255 / 0.45);
+  --band-eyebrow: rgb(255 255 255 / 0.30);
+  --band-form-border: rgb(255 255 255 / 0.15);
+
+  /* ==========================================================================
+     Media
+     ========================================================================== */
+
+  --media-overlay: rgb(0 0 0 / 0.68);
 }

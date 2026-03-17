@@ -25,14 +25,36 @@ services:
       - "traefik.http.routers.registry.tls=true"
       - "traefik.http.services.registry.loadbalancer.server.port=80"
 
-  app:
+  # Init service: copies seed images to the uploads volume and syncs DB metadata.
+  # Runs once per `docker compose up` cycle (restart: "no").
+  # app waits for this to complete successfully before starting.
+  seeder:
     build:
       context: .
       dockerfile: Dockerfile
+    image: creatyss-dev
+    container_name: creatyss-seeder
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      UPLOADS_DIR: ${UPLOADS_DIR}
+    volumes:
+      - .:/app
+      - app_node_modules:/app/node_modules
+      - uploads_data:/app/public/uploads
+    command: node --experimental-strip-types scripts/seed-images.ts
+    restart: "no"
+
+  app:
+    image: creatyss-dev
     container_name: creatyss-app
     depends_on:
       db:
         condition: service_healthy
+      seeder:
+        condition: service_completed_successfully
     environment:
       APP_URL: ${APP_URL}
       ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET}
@@ -50,7 +72,9 @@ services:
     volumes:
       - .:/app
       - app_node_modules:/app/node_modules
+      - uploads_data:/app/public/uploads
     command: pnpm run dev
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.rule=Host(`creatyss.localhost`)"
@@ -78,3 +102,8 @@ services:
 volumes:
   app_node_modules:
   postgres_data:
+  # Dedicated volume for public/uploads.
+  # Survives `docker compose down` and image rebuilds.
+  # Populated at startup by the seeder service.
+  # Use `make uploads-import` to migrate existing host uploads into this volume.
+  uploads_data:

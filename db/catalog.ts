@@ -13,6 +13,7 @@ export type FeaturedCategory = {
   name: string;
   slug: string;
   description: string | null;
+  representativeImage: { filePath: string; altText: string | null } | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -134,6 +135,8 @@ type CategoryRow = {
   name: string;
   slug: string;
   description: string | null;
+  rep_image_file_path: string | null;
+  rep_image_alt_text: string | null;
   created_at: TimestampValue;
   updated_at: TimestampValue;
 };
@@ -250,6 +253,10 @@ function mapCategory(row: CategoryRow): FeaturedCategory {
     name: row.name,
     slug: row.slug,
     description: row.description,
+    representativeImage:
+      row.rep_image_file_path !== null
+        ? { filePath: row.rep_image_file_path, altText: row.rep_image_alt_text }
+        : null,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at)
   };
@@ -495,10 +502,22 @@ async function listHomepageFeaturedCategories(
         c.slug,
         c.description,
         c.created_at,
-        c.updated_at
+        c.updated_at,
+        rep_img.file_path as rep_image_file_path,
+        rep_img.alt_text  as rep_image_alt_text
       from homepage_featured_categories hfc
       join categories c
         on c.id = hfc.category_id
+      left join lateral (
+        select pi.file_path, pi.alt_text
+        from product_categories pc
+        join products p  on p.id  = pc.product_id
+        join product_images pi on pi.product_id = p.id and pi.is_primary = true
+        where pc.category_id = c.id
+          and p.status = 'published'
+        order by p.created_at desc
+        limit 1
+      ) rep_img on true
       where hfc.homepage_content_id = $1::bigint
       order by hfc.sort_order asc, c.id asc
     `,
@@ -1055,6 +1074,73 @@ export async function getPublishedProductBySlug(
     images: parentImageRows.map(mapProductImage),
     variants
   };
+}
+
+export async function listRecentPublishedProducts(
+  limit: number
+): Promise<PublishedProductSummary[]> {
+  const rows = await queryRows<ProductSummaryRow>(
+    `
+      select
+        p.id::text as id,
+        p.name,
+        p.slug,
+        p.short_description,
+        p.description,
+        p.product_type,
+        p.simple_sku,
+        p.simple_price::text as simple_price,
+        p.simple_compare_at_price::text as simple_compare_at_price,
+        p.simple_stock_quantity,
+        p.is_featured,
+        p.seo_title,
+        p.seo_description,
+        p.created_at,
+        p.updated_at,
+        primary_image.id::text as primary_image_id,
+        primary_image.product_id::text as primary_image_product_id,
+        primary_image.variant_id::text as primary_image_variant_id,
+        primary_image.file_path as primary_image_file_path,
+        primary_image.alt_text as primary_image_alt_text,
+        primary_image.sort_order as primary_image_sort_order,
+        primary_image.is_primary as primary_image_is_primary,
+        primary_image.created_at as primary_image_created_at,
+        primary_image.updated_at as primary_image_updated_at
+      from products p
+      left join lateral (
+        select
+          pi.id,
+          pi.product_id,
+          pi.variant_id,
+          pi.file_path,
+          pi.alt_text,
+          pi.sort_order,
+          pi.is_primary,
+          pi.created_at,
+          pi.updated_at
+        from product_images pi
+        left join product_variants pv
+          on pv.id = pi.variant_id
+        where pi.product_id = p.id
+          and (
+            pi.variant_id is null
+            or pv.status = 'published'
+          )
+        order by
+          case when pi.variant_id is null then 0 else 1 end asc,
+          pi.is_primary desc,
+          pi.sort_order asc,
+          pi.id asc
+        limit 1
+      ) as primary_image on true
+      where p.status = 'published'
+      order by p.created_at desc
+      limit $1
+    `,
+    [limit]
+  );
+
+  return rows.map(mapProductSummary);
 }
 
 export async function listPublishedBlogPosts(): Promise<

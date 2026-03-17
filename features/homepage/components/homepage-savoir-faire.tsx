@@ -12,9 +12,9 @@ export function HomepageSavoirFaireSection({
   editorialTitle
 }: HomepageSavoirFaireSectionProps) {
   return (
-    <section className="grid overflow-hidden rounded-xl border border-hero-border/50 bg-hero-bg min-[980px]:grid-cols-[0.95fr_1.05fr] dark:border-hero-border">
+    <section className="grid overflow-hidden rounded-xl border border-hero-border/50 bg-hero-bg min-[860px]:grid-cols-[0.95fr_1.05fr] dark:border-hero-border">
       {/* Panneau visuel */}
-      <div className="relative min-h-[34rem] overflow-hidden bg-[linear-gradient(145deg,#c8b89e_0%,#a8906e_45%,#6e5840_100%)]">
+      <div className="relative min-h-136 overflow-hidden bg-[linear-gradient(145deg,#c8b89e_0%,#a8906e_45%,#6e5840_100%)]">
         <Image
           alt="Détail du savoir-faire Creatyss dans l'atelier"
           src={savoirFaireImagePath}
@@ -47,12 +47,12 @@ export function HomepageSavoirFaireSection({
       </div>
 
       {/* Panneau éditorial — fond crème chaud */}
-      <div className="bg-hero-bg px-8 py-10 min-[980px]:px-18 min-[980px]:py-20 dark:bg-background">
+      <div className="bg-hero-bg px-8 py-10 min-[860px]:px-18 min-[860px]:py-20 dark:bg-background">
         <p className="mb-3.5 text-[0.62rem] font-medium uppercase tracking-[0.32em] text-brand dark:text-brand">
           Atelier & savoir-faire
         </p>
 
-        <h2 className="max-w-[18ch] font-serif text-3xl font-normal leading-[1.2] tracking-tight text-hero-ink min-[980px]:text-[2.6rem] dark:text-foreground">
+        <h2 className="max-w-[18ch] font-serif text-3xl font-normal leading-[1.2] tracking-tight text-hero-ink min-[860px]:text-[2.6rem] dark:text-foreground">
           {editorialTitle ?? "Du dessin à la dernière piqûre"}
         </h2>
 
@@ -65,7 +65,7 @@ export function HomepageSavoirFaireSection({
         </p>
 
         <ul className="mt-8 grid gap-0">
-          <li className="grid grid-cols-[1.75rem_1fr] items-start gap-[18px] border-t border-hero-border/60 py-4 dark:border-hero-border">
+          <li className="grid grid-cols-[1.75rem_1fr] items-start gap-4.5 border-t border-hero-border/60 py-4 dark:border-hero-border">
             <span className="mt-0.5 font-serif text-xl font-normal leading-none text-brand dark:text-brand">
               01
             </span>
@@ -74,7 +74,7 @@ export function HomepageSavoirFaireSection({
               durabilité.
             </span>
           </li>
-          <li className="grid grid-cols-[1.75rem_1fr] items-start gap-[18px] border-t border-hero-border/60 py-4 dark:border-hero-border">
+          <li className="grid grid-cols-[1.75rem_1fr] items-start gap-4.5 border-t border-hero-border/60 py-4 dark:border-hero-border">
             <span className="mt-0.5 font-serif text-xl font-normal leading-none text-brand dark:text-brand">
               02
             </span>
@@ -83,7 +83,7 @@ export function HomepageSavoirFaireSection({
               rythme.
             </span>
           </li>
-          <li className="grid grid-cols-[1.75rem_1fr] items-start gap-[18px] border-t border-b border-hero-border/60 py-4 dark:border-hero-border">
+          <li className="grid grid-cols-[1.75rem_1fr] items-start gap-4.5 border-t border-b border-hero-border/60 py-4 dark:border-hero-border">
             <span className="mt-0.5 font-serif text-xl font-normal leading-none text-brand dark:text-brand">
               03
             </span>
