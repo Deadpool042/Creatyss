@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import { AdminEmptyState } from "@/components/admin";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { listAdminProducts } from "@/db/repositories/admin-product.repository";
 import { ProductsListTable } from "@/features/admin/products/components";
 

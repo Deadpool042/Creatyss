@@ -4,11 +4,15 @@ import type { ReactNode } from "react";
 import "./globals.css";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { PublicSiteShell } from "@/components/public/public-site-shell";
+import { PublicSiteShell } from "@/components/storefront/public-site-shell";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 
-const jost = Jost({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+const jost = Jost({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap"
+});
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],

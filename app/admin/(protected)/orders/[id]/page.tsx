@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/notice";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { Notice } from "@/components/shared/notice";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { findAdminOrderById } from "@/db/repositories/order.repository";
 import { getAllowedOrderStatusTransitions } from "@/entities/order/order-status-transition";
 import {

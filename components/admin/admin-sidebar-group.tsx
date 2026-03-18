@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 import {
   Collapsible,
@@ -15,6 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 
 import { AdminSidebarLink } from "./admin-sidebar-link";
 import type { AdminNavGroup } from "./admin-sidebar";
@@ -24,11 +27,57 @@ type AdminSidebarGroupProps = {
 };
 
 export function AdminSidebarGroup({ group }: AdminSidebarGroupProps) {
+  const pathname = usePathname();
+
+  const isGroupActive = group.items.some(
+    item =>
+      !item.disabled &&
+      (pathname === item.href || pathname.startsWith(`${item.href}/`))
+  );
+
+  const firstEnabledItem = group.items.find(item => !item.disabled) ?? null;
+  const GroupIcon = group.icon;
+
   return (
     <Collapsible
       defaultOpen={group.defaultOpen ?? false}
       className="group/collapsible">
       <SidebarGroup className="p-0">
+        {/* Mode icon-only — caché en mode étendu */}
+        <SidebarMenu className="hidden group-data-[collapsible=icon]:flex">
+          <SidebarMenuItem>
+            {firstEnabledItem ? (
+              <SidebarMenuButton
+                asChild
+                tooltip={group.label}
+                isActive={isGroupActive}
+                className={cn(
+                  "h-9 rounded-lg transition-colors duration-150",
+                  isGroupActive
+                    ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
+                    : "text-sidebar-foreground/75 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                )}>
+                <Link href={firstEnabledItem.href}>
+                  <GroupIcon
+                    className={cn(
+                      "size-4 shrink-0",
+                      isGroupActive && "text-brand"
+                    )}
+                  />
+                </Link>
+              </SidebarMenuButton>
+            ) : (
+              <SidebarMenuButton
+                tooltip={group.label}
+                disabled
+                className="h-9 rounded-lg opacity-45">
+                <GroupIcon className="size-4 shrink-0" />
+              </SidebarMenuButton>
+            )}
+          </SidebarMenuItem>
+        </SidebarMenu>
+
+        {/* Mode étendu — label + chevron */}
         <SidebarGroupLabel
           asChild
           className="p-0">
@@ -38,7 +87,7 @@ export function AdminSidebarGroup({ group }: AdminSidebarGroupProps) {
           </CollapsibleTrigger>
         </SidebarGroupLabel>
 
-        <CollapsibleContent className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up group-data-[collapsible=icon]:hidden ">
+        <CollapsibleContent className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up group-data-[collapsible=icon]:hidden">
           <SidebarGroupContent className="pt-1">
             <SidebarMenu className="gap-1">
               {group.items.map(item =>

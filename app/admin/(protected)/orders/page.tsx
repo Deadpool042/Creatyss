@@ -1,6 +1,6 @@
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { listAdminOrders } from "@/db/repositories/order.repository";
 import { OrdersListTable } from "@/features/admin/orders/components";
 

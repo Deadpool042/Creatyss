@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
-import {
-  getAdminHomepageEditorData,
-} from "@/db/repositories/admin-homepage.repository";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { getAdminHomepageEditorData } from "@/db/repositories/admin-homepage.repository";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { updateHomepageAction } from "@/features/admin/homepage/actions/update-homepage-action";
 import { getUploadsPublicPath } from "@/lib/uploads";
@@ -59,7 +57,9 @@ export default async function AdminHomepagePage({
 
   const { homepage, productOptions, categoryOptions, blogPostOptions } =
     editorData;
-  const productSelectionMap = buildProductSelectionMap(homepage.featuredProducts);
+  const productSelectionMap = buildProductSelectionMap(
+    homepage.featuredProducts
+  );
   const categorySelectionMap = buildCategorySelectionMap(
     homepage.featuredCategories
   );
@@ -85,7 +85,6 @@ export default async function AdminHomepagePage({
       description="Commencez par la bannière principale, puis complétez le bloc éditorial et les sélections mises en avant."
       eyebrow="Accueil"
       title="Édition de la page d'accueil">
-
       {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {explicitErrorMessage ? (
         <Notice tone="alert">{explicitErrorMessage}</Notice>

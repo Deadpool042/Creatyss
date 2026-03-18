@@ -1,5 +1,5 @@
 import type { AdminOrderDetail } from "@/db/repositories/order.repository";
-import { SectionIntro } from "@/components/section-intro";
+import { SectionIntro } from "@/components/shared/section-intro";
 
 type OrderDetailPaymentCardProps = Readonly<{
   payment: AdminOrderDetail["payment"];

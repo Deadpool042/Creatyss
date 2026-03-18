@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import {
   readGuestCartByToken,
   type GuestCart
@@ -77,7 +77,8 @@ export default async function CartPage({ searchParams }: CartPageProps) {
   const statusMessage = getStatusMessage(statusParam);
   const errorMessage = getErrorMessage(errorParam);
   const cart = await readGuestCart();
-  const hasUnavailableLine = cart?.lines.some((line) => !line.isAvailable) ?? false;
+  const hasUnavailableLine =
+    cart?.lines.some(line => !line.isAvailable) ?? false;
 
   return (
     <div className="page">
@@ -93,17 +94,13 @@ export default async function CartPage({ searchParams }: CartPageProps) {
           </p>
         </div>
 
-        {statusMessage ? (
-          <Notice tone="success">{statusMessage}</Notice>
-        ) : null}
-        {errorMessage ? (
-          <Notice tone="alert">{errorMessage}</Notice>
-        ) : null}
+        {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
+        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {cart && cart.lines.length > 0 ? (
           <div className="cart-layout">
             <div className="grid gap-4">
-              {cart.lines.map((line) => (
+              {cart.lines.map(line => (
                 <article
                   className="store-card cart-line"
                   key={line.id}>
@@ -117,22 +114,30 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">SKU</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                      SKU
+                    </p>
                     <p className="card-copy">{line.sku}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix unitaire actuel</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                      Prix unitaire actuel
+                    </p>
                     <p className="card-copy">{line.unitPrice}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Sous-total</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                      Sous-total
+                    </p>
                     <p className="card-copy">{line.lineTotal}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Disponibilité</p>
+                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                      Disponibilité
+                    </p>
                     <p className="card-copy">
                       {getAvailabilityLabel(line.isAvailable)}
                     </p>
@@ -204,17 +209,23 @@ export default async function CartPage({ searchParams }: CartPageProps) {
               ) : null}
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Lignes</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                  Lignes
+                </p>
                 <p className="card-copy">{cart.lines.length}</p>
               </div>
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Quantité totale</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                  Quantité totale
+                </p>
                 <p className="card-copy">{cart.itemCount}</p>
               </div>
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Sous-total panier</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                  Sous-total panier
+                </p>
                 <p className="card-copy">{cart.subtotal}</p>
               </div>
 

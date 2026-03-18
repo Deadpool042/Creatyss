@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Notice } from "@/components/notice";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { Notice } from "@/components/shared/notice";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
@@ -128,9 +128,7 @@ export default async function EditAdminCategoryPage({
       description="Modifiez d'abord les informations de la catégorie. La suppression reste disponible séparément en bas de page."
       eyebrow="Catégories"
       title="Modifier la catégorie">
-      {errorMessage ? (
-        <Notice tone="alert">{errorMessage}</Notice>
-      ) : null}
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <AdminFormSection>
         <form

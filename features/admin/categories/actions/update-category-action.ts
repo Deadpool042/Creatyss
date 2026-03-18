@@ -5,7 +5,9 @@ import {
   AdminCategoryRepositoryError,
   updateAdminCategory
 } from "@/db/repositories/admin-category.repository";
-import { validateCategoryInput } from "@/entities/category/category-input";
+import { normalizeCategorySlug } from "@/entities/category/category-input";
+
+import { CategoryFormSchema } from "../schemas/category-form-schema";
 
 function normalizeCategoryId(
   value: FormDataEntryValue | null
@@ -30,21 +32,37 @@ export async function updateCategoryAction(formData: FormData): Promise<void> {
     redirect("/admin/categories?error=missing_category");
   }
 
-  const validation = validateCategoryInput({
+  const parsed = CategoryFormSchema.safeParse({
     name: formData.get("name"),
     slug: formData.get("slug"),
     description: formData.get("description"),
     isFeatured: formData.get("isFeatured")
   });
 
-  if (!validation.ok) {
-    redirect(`/admin/categories/${categoryId}?error=${validation.code}`);
+  if (!parsed.success) {
+    const field = parsed.error.issues[0]?.path[0];
+    const code =
+      field === "name"
+        ? "missing_name"
+        : field === "slug"
+          ? "missing_slug"
+          : "save_failed";
+    redirect(`/admin/categories/${categoryId}?error=${code}`);
+  }
+
+  const slug = normalizeCategorySlug(parsed.data.slug);
+
+  if (slug.length === 0) {
+    redirect(`/admin/categories/${categoryId}?error=invalid_slug`);
   }
 
   try {
     const category = await updateAdminCategory({
       id: categoryId,
-      ...validation.data
+      name: parsed.data.name,
+      slug,
+      description: parsed.data.description,
+      isFeatured: parsed.data.isFeatured
     });
 
     if (category === null) {

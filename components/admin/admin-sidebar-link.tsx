@@ -32,13 +32,15 @@ export function AdminSidebarLink({
         tooltip={tooltip}
         isActive={isActive}
         className={cn(
-          "h-10 rounded-xl border border-transparent transition-all duration-200",
-          "hover:border-sidebar-border/70 hover:bg-sidebar-accent/50",
-          isActive &&
-            "border-sidebar-border/80 bg-sidebar-accent text-sidebar-foreground shadow-sm"
+          "h-9 rounded-lg transition-colors duration-150",
+          isActive
+            ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
+            : "text-sidebar-foreground/75 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
         )}>
         <Link href={href}>
-          <Icon className="size-4" />
+          <Icon
+            className={cn("size-4 shrink-0", isActive && "text-brand")}
+          />
           {children}
         </Link>
       </SidebarMenuButton>

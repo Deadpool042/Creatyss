@@ -1,5 +1,5 @@
-import { Notice } from "@/components/notice";
-import { SectionIntro } from "@/components/section-intro";
+import { Notice } from "@/components/shared/notice";
+import { SectionIntro } from "@/components/shared/section-intro";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { Button } from "@/components/ui/button";
 import { type AdminMediaAsset } from "@/db/admin-media";

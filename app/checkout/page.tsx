@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import {
   readGuestCheckoutContextByToken,
   type GuestCheckoutContext
@@ -86,7 +86,9 @@ async function readCheckoutContext(): Promise<GuestCheckoutContext | null> {
   return readGuestCheckoutContextByToken(cartToken);
 }
 
-export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
+export default async function CheckoutPage({
+  searchParams
+}: CheckoutPageProps) {
   const resolvedSearchParams = await searchParams;
   const statusParam = Array.isArray(resolvedSearchParams.status)
     ? resolvedSearchParams.status[0]
@@ -116,17 +118,13 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
           </p>
           <h1 className="m-0">Finaliser la commande</h1>
           <p className="mt-1 leading-relaxed text-muted-foreground">
-            Renseignez vos informations, puis créez la commande quand le
-            panier est prêt.
+            Renseignez vos informations, puis créez la commande quand le panier
+            est prêt.
           </p>
         </div>
 
-        {statusMessage ? (
-          <Notice tone="success">{statusMessage}</Notice>
-        ) : null}
-        {errorMessage ? (
-          <Notice tone="alert">{errorMessage}</Notice>
-        ) : null}
+        {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
+        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
         {checkoutIssueMessage ? (
           <Notice tone="alert">{checkoutIssueMessage}</Notice>
         ) : null}
@@ -135,11 +133,12 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
           <div className="checkout-layout">
             <form
               className="grid gap-4 content-start"
-              noValidate
-            >
+              noValidate>
               <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
                 <div className="grid gap-1">
-                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Contact</p>
+                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+                    Contact
+                  </p>
                   <h2>Vos informations</h2>
                 </div>
 
@@ -193,7 +192,9 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
               <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
                 <div className="grid gap-1">
-                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Livraison</p>
+                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+                    Livraison
+                  </p>
                   <h2>Adresse de livraison</h2>
                 </div>
 
@@ -246,14 +247,18 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
 
                 <div className="grid gap-1">
-                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Pays</p>
+                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    Pays
+                  </p>
                   <p className="card-copy">France</p>
                 </div>
               </section>
 
               <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
                 <div className="grid gap-1">
-                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Facturation</p>
+                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+                    Facturation
+                  </p>
                   <h2>Adresse de facturation</h2>
                 </div>
 
@@ -269,7 +274,8 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </label>
 
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  Laissez la case cochée pour réutiliser l&apos;adresse de livraison.
+                  Laissez la case cochée pour réutiliser l&apos;adresse de
+                  livraison.
                 </p>
 
                 <div className="grid gap-4">
@@ -352,7 +358,9 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
 
                 <div className="grid gap-1">
-                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Pays</p>
+                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    Pays
+                  </p>
                   <p className="card-copy">France</p>
                 </div>
               </section>
@@ -393,14 +401,18 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
             <aside className="product-panel checkout-summary">
               <div className="grid gap-1">
-                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Récapitulatif</p>
+                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+                  Récapitulatif
+                </p>
                 <h2>Panier final</h2>
               </div>
 
               {cart.lines.length > 0 ? (
                 <div className="grid gap-4">
-                  {cart.lines.map((line) => (
-                    <article className="store-card checkout-line" key={line.id}>
+                  {cart.lines.map(line => (
+                    <article
+                      className="store-card checkout-line"
+                      key={line.id}>
                       <div className="grid gap-1">
                         <h3>{line.productName}</h3>
                         <p className="text-[0.95rem] text-foreground/68">
@@ -410,27 +422,37 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                       </div>
 
                       <div className="grid gap-1">
-                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">SKU</p>
+                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                          SKU
+                        </p>
                         <p className="card-copy">{line.sku}</p>
                       </div>
 
                       <div className="grid gap-1">
-                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Quantité</p>
+                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                          Quantité
+                        </p>
                         <p className="card-copy">{line.quantity}</p>
                       </div>
 
                       <div className="grid gap-1">
-                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Prix unitaire actuel</p>
+                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                          Prix unitaire actuel
+                        </p>
                         <p className="card-copy">{line.unitPrice}</p>
                       </div>
 
                       <div className="grid gap-1">
-                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Sous-total</p>
+                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                          Sous-total
+                        </p>
                         <p className="card-copy">{line.lineTotal}</p>
                       </div>
 
                       <div className="grid gap-1">
-                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Disponibilité</p>
+                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                          Disponibilité
+                        </p>
                         <p className="card-copy">
                           {getAvailabilityLabel(line.isAvailable)}
                         </p>
@@ -446,7 +468,9 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
               ) : (
                 <div className="empty-state">
-                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Panier vide</p>
+                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+                    Panier vide
+                  </p>
                   <h2>Aucune ligne à valider</h2>
                   <p className="card-copy">
                     Revenez à la boutique pour ajouter un article au panier.
@@ -455,19 +479,25 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               )}
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Quantité totale</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                  Quantité totale
+                </p>
                 <p className="card-copy">{cart.itemCount}</p>
               </div>
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">Sous-total panier</p>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                  Sous-total panier
+                </p>
                 <p className="card-copy">{cart.subtotal}</p>
               </div>
             </aside>
           </div>
         ) : (
           <div className="empty-state">
-            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Commande indisponible</p>
+            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+              Commande indisponible
+            </p>
             <h2>Ajoutez d&apos;abord un article au panier</h2>
             <p className="card-copy">
               Ajoutez d&apos;abord un article disponible au panier pour

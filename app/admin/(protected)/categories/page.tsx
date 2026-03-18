@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminCategoryCard } from "@/components/admin/admin-category-card";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 
@@ -64,9 +64,7 @@ export default async function AdminCategoriesPage({
       description="Gérez les catégories du catalogue avec un formulaire simple et des validations côté serveur."
       eyebrow="Catégories"
       title="Catégories">
-      {successMessage ? (
-        <Notice tone="success">{successMessage}</Notice>
-      ) : null}
+      {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       {categories.length > 0 ? (

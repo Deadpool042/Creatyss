@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Notice } from "@/components/notice";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { Notice } from "@/components/shared/notice";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
@@ -190,7 +190,10 @@ export default async function NewAdminProductPage({
                     />
                     <span>
                       {category.name}
-                      <span className="text-muted-foreground"> · {category.slug}</span>
+                      <span className="text-muted-foreground">
+                        {" "}
+                        · {category.slug}
+                      </span>
                     </span>
                   </label>
                 ))}

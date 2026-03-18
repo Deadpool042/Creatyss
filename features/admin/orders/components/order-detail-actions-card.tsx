@@ -2,8 +2,8 @@ import type { OrderStatus } from "@/db/repositories/order.repository";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { SectionIntro } from "@/components/section-intro";
-import { Notice } from "@/components/notice";
+import { SectionIntro } from "@/components/shared/section-intro";
+import { Notice } from "@/components/shared/notice";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import {
@@ -19,8 +19,7 @@ const detailCardClassName =
 const detailLabelClassName =
   "text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground";
 
-const detailValueClassName =
-  "text-sm font-medium leading-6 text-foreground";
+const detailValueClassName = "text-sm font-medium leading-6 text-foreground";
 
 type OrderDetailActionsCardProps = Readonly<{
   order: {

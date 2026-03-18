@@ -1,5 +1,5 @@
-import { Notice } from "@/components/notice";
-import { SectionIntro } from "@/components/section-intro";
+import { Notice } from "@/components/shared/notice";
+import { SectionIntro } from "@/components/shared/section-intro";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormField } from "@/components/admin/admin-form-field";

@@ -1,4 +1,4 @@
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormSection } from "@/components/admin/admin-form-section";

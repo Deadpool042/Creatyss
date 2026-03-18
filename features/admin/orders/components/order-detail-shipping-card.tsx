@@ -1,4 +1,4 @@
-import { SectionIntro } from "@/components/section-intro";
+import { SectionIntro } from "@/components/shared/section-intro";
 
 type OrderDetailShippingCardProps = Readonly<{
   shippedAtLabel: string | null;

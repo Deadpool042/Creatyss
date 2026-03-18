@@ -1,4 +1,4 @@
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { ProductDeleteConfirmDialog } from "./product-delete-confirm-dialog";
 

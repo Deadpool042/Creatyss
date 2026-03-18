@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Notice } from "@/components/notice";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { Notice } from "@/components/shared/notice";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
@@ -66,9 +66,7 @@ export default async function NewAdminBlogPostPage({
       description="Renseignez le titre, le contenu et les informations de publication avant de créer l'article."
       eyebrow="Blog"
       title="Nouvel article">
-      {errorMessage ? (
-        <Notice tone="alert">{errorMessage}</Notice>
-      ) : null}
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <AdminFormSection>
         <form
@@ -158,7 +156,7 @@ export default async function NewAdminBlogPostPage({
               id="blog-cover-image"
               name="coverImageMediaAssetId">
               <option value="">Aucune image de couverture</option>
-              {mediaAssets.map((mediaAsset) => (
+              {mediaAssets.map(mediaAsset => (
                 <option
                   key={mediaAsset.id}
                   value={mediaAsset.id}>

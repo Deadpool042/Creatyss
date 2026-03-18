@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Notice } from "@/components/notice";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { Notice } from "@/components/shared/notice";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
@@ -56,9 +56,7 @@ export default async function NewAdminCategoryPage({
       description="Créez une catégorie simple pour organiser le catalogue."
       eyebrow="Catégories"
       title="Nouvelle catégorie">
-      {errorMessage ? (
-        <Notice tone="alert">{errorMessage}</Notice>
-      ) : null}
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <AdminFormSection>
         <form

@@ -1,4 +1,4 @@
-import { SectionIntro } from "@/components/section-intro";
+import { SectionIntro } from "@/components/shared/section-intro";
 
 type OrderDetailShippingAddressCardProps = Readonly<{
   address: {
@@ -20,7 +20,9 @@ export function OrderDetailShippingAddressCard({
         eyebrow="Livraison"
         title="Adresse de livraison"
       />
-      <p className="card-copy text-sm leading-6 text-foreground">{address.line1}</p>
+      <p className="card-copy text-sm leading-6 text-foreground">
+        {address.line1}
+      </p>
       {address.line2 ? (
         <p className="card-copy text-sm leading-6 text-foreground">
           {address.line2}

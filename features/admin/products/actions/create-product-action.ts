@@ -5,10 +5,29 @@ import {
   AdminProductRepositoryError,
   createAdminProduct
 } from "@/db/repositories/admin-product.repository";
-import { validateProductInput } from "@/entities/product/product-input";
+import { normalizeProductSlug } from "@/entities/product/product-input";
+
+import { ProductFormSchema } from "../schemas/product-form-schema";
+
+function mapProductFormError(field: PropertyKey | undefined): string {
+  switch (field) {
+    case "name":
+      return "missing_name";
+    case "slug":
+      return "missing_slug";
+    case "status":
+      return "invalid_status";
+    case "productType":
+      return "invalid_product_type";
+    case "categoryIds":
+      return "invalid_category_ids";
+    default:
+      return "save_failed";
+  }
+}
 
 export async function createProductAction(formData: FormData): Promise<void> {
-  const validation = validateProductInput({
+  const parsed = ProductFormSchema.safeParse({
     name: formData.get("name"),
     slug: formData.get("slug"),
     shortDescription: formData.get("shortDescription"),
@@ -21,14 +40,21 @@ export async function createProductAction(formData: FormData): Promise<void> {
     categoryIds: formData.getAll("categoryIds")
   });
 
-  if (!validation.ok) {
-    redirect(`/admin/products/new?error=${validation.code}`);
+  if (!parsed.success) {
+    const code = mapProductFormError(parsed.error.issues[0]?.path[0]);
+    redirect(`/admin/products/new?error=${code}`);
+  }
+
+  const slug = normalizeProductSlug(parsed.data.slug);
+
+  if (slug.length === 0) {
+    redirect("/admin/products/new?error=invalid_slug");
   }
 
   let createdProductId: string | null = null;
 
   try {
-    const product = await createAdminProduct(validation.data);
+    const product = await createAdminProduct({ ...parsed.data, slug });
     createdProductId = product.id;
   } catch (error) {
     if (

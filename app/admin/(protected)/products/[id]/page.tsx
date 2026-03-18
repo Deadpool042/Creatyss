@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/notice";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { Notice } from "@/components/shared/notice";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
 import { findAdminProductById } from "@/db/repositories/admin-product.repository";
@@ -27,14 +27,14 @@ import {
   getVariantErrorMessage,
   getVariantStatusMessage,
   groupVariantImages,
-  readProductDetailSearchParam,
+  readProductDetailSearchParam
 } from "@/features/admin/products/lib";
 import {
   ProductDangerZoneSection,
   ProductDetailHeaderSection,
   ProductGeneralSection,
   ProductImagesSection,
-  ProductSalesSection,
+  ProductSalesSection
 } from "@/features/admin/products/components";
 
 export const dynamic = "force-dynamic";

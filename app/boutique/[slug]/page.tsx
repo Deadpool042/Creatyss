@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import { getPublishedProductBySlug } from "@/db/catalog";
 import { addToCartAction } from "@/features/cart/actions/add-to-cart-action";
 import {
@@ -78,7 +78,7 @@ function getImageUrl(uploadsPublicPath: string, filePath: string): string {
 function getDisplayImage<TImage extends { isPrimary: boolean }>(
   images: readonly TImage[]
 ): TImage | null {
-  return images.find((image) => image.isPrimary) ?? images[0] ?? null;
+  return images.find(image => image.isPrimary) ?? images[0] ?? null;
 }
 
 export async function generateMetadata({
@@ -122,7 +122,7 @@ export default async function ProductPage({
 
   const uploadsPublicPath = getUploadsPublicPath();
   const availableVariantCount = product.variants.filter(
-    (variant) => variant.isAvailable
+    variant => variant.isAvailable
   ).length;
   const productStatusSummary = getProductPageStatusSummary({
     productType: product.productType,
@@ -134,7 +134,9 @@ export default async function ProductPage({
   );
   const isSimpleProduct = product.productType === "simple";
   const singleOffer =
-    isSimpleProduct && product.variants.length === 1 ? product.variants[0] : null;
+    isSimpleProduct && product.variants.length === 1
+      ? product.variants[0]
+      : null;
   const productDisplayImage = getDisplayImage(product.images);
   const singleOfferDisplayImage = singleOffer
     ? getDisplayImage(singleOffer.images)
@@ -177,7 +179,10 @@ export default async function ProductPage({
                   alt={productDisplayImage.altText ?? product.name}
                   className="block h-full w-full object-cover"
                   loading="lazy"
-                  src={getImageUrl(uploadsPublicPath, productDisplayImage.filePath)}
+                  src={getImageUrl(
+                    uploadsPublicPath,
+                    productDisplayImage.filePath
+                  )}
                 />
               </figure>
             ) : (
@@ -196,7 +201,9 @@ export default async function ProductPage({
                 <Badge variant="outline">
                   <span
                     className={
-                      product.isAvailable ? "text-emerald-700" : "text-destructive"
+                      product.isAvailable
+                        ? "text-emerald-700"
+                        : "text-destructive"
                     }>
                     {getProductAvailabilityLabel(product.isAvailable)}
                   </span>
@@ -204,7 +211,9 @@ export default async function ProductPage({
               </div>
 
               <h2>{productStatusSummary.title}</h2>
-              <p className="leading-relaxed">{productStatusSummary.description}</p>
+              <p className="leading-relaxed">
+                {productStatusSummary.description}
+              </p>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {productStatusSummary.nextStep}
               </p>
@@ -351,7 +360,9 @@ export default async function ProductPage({
                     />
 
                     <div className="grid gap-2 max-w-[10rem]">
-                      <Label htmlFor={`quantity-${singleOffer.id}`}>Quantité</Label>
+                      <Label htmlFor={`quantity-${singleOffer.id}`}>
+                        Quantité
+                      </Label>
                       <Input
                         defaultValue="1"
                         id={`quantity-${singleOffer.id}`}
@@ -424,7 +435,7 @@ export default async function ProductPage({
           )
         ) : product.variants.length > 0 ? (
           <div className="grid gap-5 grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
-            {product.variants.map((variant) => {
+            {product.variants.map(variant => {
               const variantDisplayImage = getDisplayImage(variant.images);
 
               return (

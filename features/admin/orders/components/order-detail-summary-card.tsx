@@ -1,6 +1,6 @@
 import type { OrderStatusSummary } from "@/entities/order/order-status-presentation";
-import { Notice } from "@/components/notice";
-import { SectionIntro } from "@/components/section-intro";
+import { Notice } from "@/components/shared/notice";
+import { SectionIntro } from "@/components/shared/section-intro";
 import { Badge } from "@/components/ui/badge";
 
 type OrderDetailSummaryCardProps = Readonly<{

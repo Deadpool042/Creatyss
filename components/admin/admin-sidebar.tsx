@@ -14,10 +14,13 @@ import {
   Search,
   Settings,
   ShoppingBag,
+  ShoppingBagIcon,
+  ShoppingCart,
   Tag,
   Truck,
   Users,
-  Wrench
+  Wrench,
+  Zap
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -54,121 +57,137 @@ export type AdminNavGroup = {
   label: string;
   defaultOpen?: boolean;
   items: ReadonlyArray<AdminNavItem>;
+  icon: LucideIcon;
 };
 
-const NAV_GROUPS: ReadonlyArray<AdminNavGroup> = [
-  {
-    id: "shop",
-    label: "Boutique",
-    defaultOpen: true,
-    items: [
-      { href: "/admin/products", label: "Produits", icon: Package },
-      { href: "/admin/categories", label: "Catégories", icon: Tag },
-      { href: "/admin/media", label: "Médias", icon: ImageIcon }
-    ]
-  },
-  {
-    id: "commerce",
-    label: "Commerce",
-    defaultOpen: true,
-    items: [
-      { href: "/admin/orders", label: "Commandes", icon: ShoppingBag },
-      {
-        href: "/admin/payments",
-        label: "Paiements",
-        icon: CreditCard,
-        disabled: true,
-        badge: "Bientôt"
-      },
-      {
-        href: "/admin/customers",
-        label: "Clients",
-        icon: Users,
-        disabled: true,
-        badge: "Bientôt"
-      },
-      {
-        href: "/admin/shipping",
-        label: "Livraisons",
-        icon: Truck,
-        disabled: true,
-        badge: "Bientôt"
-      }
-    ]
-  },
-  {
-    id: "marketing",
-    label: "Marketing",
-    defaultOpen: false,
-    items: [
-      {
-        href: "/admin/newsletter",
-        label: "Newsletter",
-        icon: Mail,
-        disabled: true,
-        badge: "Bientôt"
-      },
-      {
-        href: "/admin/promotions",
-        label: "Promotions",
-        icon: Megaphone,
-        disabled: true,
-        badge: "Bientôt"
-      },
-      {
-        href: "/admin/coupons",
-        label: "Codes promo",
-        icon: BadgePercent,
-        disabled: true,
-        badge: "Bientôt"
-      },
-      {
-        href: "/admin/seo",
-        label: "SEO",
-        icon: Search,
-        disabled: true,
-        badge: "Bientôt"
-      }
-    ]
-  },
-  {
-    id: "content",
-    label: "Contenu",
-    defaultOpen: true,
-    items: [
-      { href: "/admin/homepage", label: "Page d’accueil", icon: Globe },
-      { href: "/admin/blog", label: "Blog", icon: FileText }
-    ]
-  },
-  {
-    id: "maintenance",
-    label: "Maintenance",
-    defaultOpen: false,
-    items: [
-      {
-        href: "/admin/maintenance",
-        label: "Maintenance",
-        icon: Wrench,
-        disabled: true,
-        badge: "Bientôt"
-      }
-    ]
-  },
-  {
-    id: "settings",
-    label: "Réglages",
-    defaultOpen: false,
-    items: [
-      {
-        href: "/admin/settings",
-        label: "Paramètres",
-        icon: Settings,
-        disabled: true,
-        badge: "Bientôt"
-      }
-    ]
-  }
-];
+const SHOP_GROUP: AdminNavGroup = {
+  id: "shop",
+  label: "Boutique",
+  icon: ShoppingBagIcon,
+  defaultOpen: true,
+  items: [
+    { href: "/admin/products", label: "Produits", icon: Package },
+    { href: "/admin/categories", label: "Catégories", icon: Tag }
+  ]
+};
+
+const COMMERCE_GROUP: AdminNavGroup = {
+  id: "commerce",
+  label: "Commerce",
+  icon: ShoppingCart,
+  defaultOpen: true,
+  items: [
+    { href: "/admin/orders", label: "Commandes", icon: ShoppingBag },
+    {
+      href: "/admin/payments",
+      label: "Paiements",
+      icon: CreditCard,
+      disabled: true,
+      badge: "Bientôt"
+    },
+    {
+      href: "/admin/customers",
+      label: "Clients",
+      icon: Users,
+      disabled: true,
+      badge: "Bientôt"
+    },
+    {
+      href: "/admin/shipping",
+      label: "Livraisons",
+      icon: Truck,
+      disabled: true,
+      badge: "Bientôt"
+    }
+  ]
+};
+
+const MARKETING_GROUP: AdminNavGroup = {
+  id: "marketing",
+  label: "Marketing",
+  icon: Megaphone,
+  defaultOpen: false,
+  items: [
+    {
+      href: "/admin/newsletter",
+      label: "Newsletter",
+      icon: Mail,
+      disabled: true,
+      badge: "Bientôt"
+    },
+    {
+      href: "/admin/promotions",
+      label: "Promotions",
+      icon: Megaphone,
+      disabled: true,
+      badge: "Bientôt"
+    },
+    {
+      href: "/admin/coupons",
+      label: "Codes promo",
+      icon: BadgePercent,
+      disabled: true,
+      badge: "Bientôt"
+    },
+    {
+      href: "/admin/seo",
+      label: "SEO",
+      icon: Search,
+      disabled: true,
+      badge: "Bientôt"
+    },
+    {
+      href: "/admin/automations",
+      label: "Automations",
+      icon: Zap,
+      disabled: true,
+      badge: "Bientôt"
+    }
+  ]
+};
+
+const CONTENT_GROUP: AdminNavGroup = {
+  id: "content",
+  label: "Contenu",
+  icon: FileText,
+  defaultOpen: true,
+  items: [
+    { href: "/admin/homepage", label: "Page d'accueil", icon: Globe },
+    { href: "/admin/blog", label: "Blog", icon: FileText }
+  ]
+};
+
+const MAINTENANCE_GROUP: AdminNavGroup = {
+  id: "maintenance",
+  label: "Maintenance",
+  defaultOpen: false,
+  icon: Wrench,
+  items: [
+    {
+      href: "/admin/maintenance",
+      label: "Maintenance",
+      icon: Wrench,
+      disabled: true,
+      badge: "Bientôt"
+    }
+  ]
+};
+
+const SETTINGS_GROUP: AdminNavGroup = {
+  id: "settings",
+  label: "Réglages",
+  defaultOpen: false,
+  icon: Settings,
+  items: [
+    {
+      href: "/admin/settings",
+      label: "Paramètres",
+      icon: Settings,
+      disabled: true,
+      badge: "Bientôt"
+    }
+  ]
+};
 
 export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
   return (
@@ -202,11 +221,12 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="px-2 py-3">
+      <SidebarContent className="px-2 py-2">
         <nav
           aria-label="Navigation admin"
-          className="flex flex-col gap-2">
-          <SidebarMenu>
+          className="flex flex-col gap-0">
+          {/* Items racine — portée globale */}
+          <SidebarMenu className="gap-0.5 py-1">
             <AdminSidebarLink
               href="/admin"
               icon={LayoutDashboard}
@@ -215,14 +235,28 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
             </AdminSidebarLink>
           </SidebarMenu>
 
-          <SidebarSeparator className="mx-2 my-1 opacity-60" />
+          <SidebarSeparator className="mx-2 my-1 opacity-40" />
 
-          {NAV_GROUPS.map(group => (
-            <AdminSidebarGroup
-              key={group.id}
-              group={group}
-            />
-          ))}
+          <SidebarMenu className="gap-0.5 py-1">
+            <AdminSidebarLink
+              href="/admin/media"
+              icon={ImageIcon}
+              tooltip="Médiathèque">
+              Médias
+            </AdminSidebarLink>
+          </SidebarMenu>
+
+          {/* Groupes métier */}
+          <AdminSidebarGroup group={SHOP_GROUP} />
+          <AdminSidebarGroup group={COMMERCE_GROUP} />
+          <AdminSidebarGroup group={MARKETING_GROUP} />
+          <AdminSidebarGroup group={CONTENT_GROUP} />
+
+          <SidebarSeparator className="mx-2 my-1 opacity-40" />
+
+          {/* Systèmes */}
+          <AdminSidebarGroup group={MAINTENANCE_GROUP} />
+          <AdminSidebarGroup group={SETTINGS_GROUP} />
         </nav>
       </SidebarContent>
 
@@ -252,7 +286,7 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
               <SidebarMenuButton
                 type="submit"
                 tooltip="Se déconnecter"
-                className="h-10 rounded-xl border border-transparent transition-all hover:border-sidebar-border/70 hover:bg-sidebar-accent/50">
+                className="h-9 rounded-lg text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground">
                 <LogOut className="size-4" />
                 <span className="group-data-[collapsible=icon]:hidden">
                   Se déconnecter

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 

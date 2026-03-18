@@ -3,10 +3,10 @@ import path from "node:path";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Notice } from "@/components/notice";
-import { SectionIntro } from "@/components/section-intro";
+import { Notice } from "@/components/shared/notice";
+import { SectionIntro } from "@/components/shared/section-intro";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
@@ -159,9 +159,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
       description="Importez d'abord vos visuels, puis réutilisez-les dans les produits, le blog et la page d'accueil."
       eyebrow="Médias"
       title="Bibliothèque médias">
-      {successMessage ? (
-        <Notice tone="success">{successMessage}</Notice>
-      ) : null}
+      {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <AdminFormSection
@@ -223,7 +221,9 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Nom original
                   </p>
-                  <p className="text-sm text-foreground">{asset.originalName}</p>
+                  <p className="text-sm text-foreground">
+                    {asset.originalName}
+                  </p>
                 </div>
 
                 <div className="grid gap-1">

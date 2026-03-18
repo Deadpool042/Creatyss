@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 
 export function ProductMediaLibraryNotice() {
   return (

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -67,7 +67,6 @@ export default async function AdminHomePage() {
       description="État de la boutique en ce moment."
       eyebrow="Administration"
       title="Tableau de bord">
-
       {/* Signal grid */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Card className="rounded-2xl border border-border/70 bg-card/95 shadow-sm">

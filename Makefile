@@ -5,33 +5,34 @@ COMPOSE := docker compose --env-file $(ENV_FILE)
 
 PROFILE_CORE := --profile core
 PROFILE_PROXY := --profile proxy
-PROFILE_TOOLS := --profile tools
 PROFILE_JOBS := --profile jobs
 
 COMPOSE_CORE := $(COMPOSE) $(PROFILE_CORE)
 COMPOSE_CORE_PROXY := $(COMPOSE) $(PROFILE_CORE) $(PROFILE_PROXY)
-COMPOSE_FULL := $(COMPOSE) $(PROFILE_CORE) $(PROFILE_PROXY) $(PROFILE_TOOLS)
 
 APP_SERVICE := app
 DB_SERVICE := db
 STRIPE_WEBHOOK_FORWARD_URL ?= http://localhost:3000/api/stripe/webhook
 CERT_DIR := docker/traefik/certs
-CERT_DOMAINS := creatyss.localhost registry.creatyss.localhost
+CERT_DOMAINS := creatyss.localhost
+APP_BUILD_NODE_OPTIONS ?= --max-old-space-size=2048
 
-.PHONY: help up up-proxy up-full down restart build logs ps sh dev typecheck \
+.PHONY: help up up-proxy down restart build app-build logs ps sh dev typecheck \
 	db-schema db-seed-dev db-seed-images db-import-woocommerce db-import-woocommerce-images \
 	db-reseed-dev db-reset-dev uploads-import seed seed-data-init test test-unit \
 	test-e2e test-e2e-ui test-e2e-headed test-select stripe-dev certs hosts-setup
+
+
 
 help:
 	@echo "Usage: make [target]"
 	@echo "Targets:"
 	@echo "  up              - Demarre app + db"
 	@echo "  up-proxy        - Demarre app + db + traefik"
-	@echo "  up-full         - Demarre app + db + traefik + registry"
 	@echo "  down            - Stoppe les services"
 	@echo "  restart         - Redemarre le mode minimal"
-	@echo "  build           - Construit les services du mode minimal"
+	@echo "  build           - Construit les images Docker du mode minimal"
+	@echo "  app-build       - Lance le build Next.js dans le conteneur app avec NODE_OPTIONS"
 	@echo "  logs            - Suit les logs du mode minimal"
 	@echo "  ps              - Liste les conteneurs du mode minimal"
 	@echo "  sh              - Ouvre un shell dans l'app"
@@ -53,7 +54,6 @@ certs:
 hosts-setup:
 	@echo "Adding local DNS entries to /etc/hosts (requires sudo)..."
 	@grep -q "creatyss.localhost" /etc/hosts || echo "127.0.0.1 creatyss.localhost" | sudo tee -a /etc/hosts
-	@grep -q "registry.creatyss.localhost" /etc/hosts || echo "127.0.0.1 registry.creatyss.localhost" | sudo tee -a /etc/hosts
 	@echo "Done."
 
 stripe-dev:
@@ -65,9 +65,6 @@ up:
 up-proxy:
 	$(COMPOSE_CORE_PROXY) up -d --build
 
-up-full:
-	$(COMPOSE_FULL) up -d --build
-
 down:
 	$(COMPOSE) down
 
@@ -75,8 +72,6 @@ restart:
 	$(COMPOSE_CORE) down
 	$(COMPOSE_CORE) up -d --build
 
-build:
-	$(COMPOSE_CORE) build
 
 logs:
 	$(COMPOSE_CORE) logs -f
@@ -92,6 +87,12 @@ dev:
 
 seed:
 	$(COMPOSE) $(PROFILE_CORE) $(PROFILE_JOBS) run --rm seeder
+
+build:
+	$(COMPOSE_CORE) build
+
+app-build:
+	$(COMPOSE_CORE) exec -e NODE_OPTIONS="$(APP_BUILD_NODE_OPTIONS)" $(APP_SERVICE) pnpm run build
 
 db-schema:
 	@for migration in db/migrations/*.sql; do \
@@ -168,3 +169,6 @@ test-e2e-ui:
 
 test-e2e-headed:
 	pnpm exec playwright test --headed
+
+test-select:
+	pnpm run test-select

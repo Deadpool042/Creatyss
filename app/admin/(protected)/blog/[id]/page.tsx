@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Notice } from "@/components/notice";
-import { AdminPageShell } from "@/components/theme/admin/admin-page-shell";
+import { Notice } from "@/components/shared/notice";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
@@ -12,7 +12,7 @@ import { listAdminMediaAssets } from "@/db/admin-media";
 import { findAdminBlogPostById } from "@/db/repositories/admin-blog.repository";
 import {
   deleteBlogPostAction,
-  updateBlogPostAction,
+  updateBlogPostAction
 } from "@/features/admin/blog/actions";
 import { getBlogPostPublishability } from "@/entities/blog/blog-post-publishability";
 import { getUploadsPublicPath } from "@/lib/uploads";
@@ -143,12 +143,8 @@ export default async function EditAdminBlogPostPage({
       description="Modifiez d'abord le contenu et le statut de l'article, puis ajustez sa couverture si nécessaire."
       eyebrow="Blog"
       title="Modifier l'article">
-      {successMessage ? (
-        <Notice tone="success">{successMessage}</Notice>
-      ) : null}
-      {errorMessage ? (
-        <Notice tone="alert">{errorMessage}</Notice>
-      ) : null}
+      {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
+      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
       {publishabilityWarning !== null && !publishabilityWarning.ok ? (
         <Notice tone="alert">
           Le contenu de l&apos;article est vide. Renseignez-le pour pouvoir

@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Notice } from "@/components/notice";
+import { Notice } from "@/components/shared/notice";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 

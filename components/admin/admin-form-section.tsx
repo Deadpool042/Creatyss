@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { SectionIntro } from "@/components/section-intro";
+import { SectionIntro } from "@/components/shared/section-intro";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
@@ -46,11 +46,7 @@ export function AdminFormSection({
         </>
       ) : null}
 
-      <div
-        className={cn(
-          "grid gap-4 px-5 py-5",
-          contentClassName
-        )}>
+      <div className={cn("grid gap-4 px-5 py-5", contentClassName)}>
         {children}
       </div>
     </Card>

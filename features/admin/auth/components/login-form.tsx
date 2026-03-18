@@ -1,3 +1,4 @@
+import { AuthShell } from "@/components/admin/auth-shell";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,7 +14,6 @@ import {
   FieldLabel
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { AuthShell } from "@/components/theme/auth/auth-shell";
 import Image from "next/image";
 
 type LoginFormProps = {
