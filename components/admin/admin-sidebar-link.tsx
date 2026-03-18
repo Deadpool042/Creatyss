@@ -1,51 +1,45 @@
 "use client";
 
 import Link from "next/link";
-import type { LucideIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
-import {
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar
-} from "@/components/ui/sidebar";
+import type { LucideIcon } from "lucide-react";
+
+import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 
 type AdminSidebarLinkProps = {
   href: string;
+  icon: LucideIcon;
+  tooltip: string;
   children: React.ReactNode;
-  icon?: LucideIcon;
-  tooltip?: string;
 };
 
 export function AdminSidebarLink({
   href,
-  children,
   icon: Icon,
-  tooltip
+  tooltip,
+  children
 }: AdminSidebarLinkProps) {
   const pathname = usePathname();
-  const { isMobile, setOpenMobile } = useSidebar();
+
   const isActive =
-    href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
+    pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`));
 
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         asChild
+        tooltip={tooltip}
         isActive={isActive}
-        className="h-9 rounded-lg px-4 text-sm"
-        {...(tooltip !== undefined && { tooltip })}>
-        <Link
-          aria-current={isActive ? "page" : undefined}
-          href={href}
-          onClick={() => {
-            if (isMobile) {
-              setOpenMobile(false);
-            }
-          }}>
-          {Icon && <Icon />}
-          <span className="group-data-[collapsible=icon]:hidden">
-            {children}
-          </span>
+        className={cn(
+          "h-10 rounded-xl border border-transparent transition-all duration-200",
+          "hover:border-sidebar-border/70 hover:bg-sidebar-accent/50",
+          isActive &&
+            "border-sidebar-border/80 bg-sidebar-accent text-sidebar-foreground shadow-sm"
+        )}>
+        <Link href={href}>
+          <Icon className="size-4" />
+          {children}
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>

@@ -1,5 +1,10 @@
 import { type PoolClient } from "pg";
 import { db, queryFirst, queryRows } from "@/db/client";
+import type {
+  HomepageFeaturedBlogPostSelection,
+  HomepageFeaturedCategorySelection,
+  HomepageFeaturedProductSelection
+} from "@/entities/homepage/homepage-types";
 
 // --- Internal types ---
 
@@ -77,20 +82,14 @@ type RepositoryErrorCode =
 
 // --- Public types ---
 
-export type AdminHomepageFeaturedProductSelection = {
-  productId: string;
-  sortOrder: number;
-};
+export type AdminHomepageFeaturedProductSelection =
+  HomepageFeaturedProductSelection;
 
-export type AdminHomepageFeaturedCategorySelection = {
-  categoryId: string;
-  sortOrder: number;
-};
+export type AdminHomepageFeaturedCategorySelection =
+  HomepageFeaturedCategorySelection;
 
-export type AdminHomepageFeaturedBlogPostSelection = {
-  blogPostId: string;
-  sortOrder: number;
-};
+export type AdminHomepageFeaturedBlogPostSelection =
+  HomepageFeaturedBlogPostSelection;
 
 export type AdminHomepageProductOption = {
   id: string;
@@ -590,6 +589,26 @@ async function applyHomepageFeaturedSelections(
 }
 
 // --- Public functions ---
+
+export async function getAdminHomepageCurrentHeroImagePath(
+  homepageId: string
+): Promise<string | null> {
+  if (!isValidNumericId(homepageId)) {
+    return null;
+  }
+
+  const row = await queryFirst<{ hero_image_path: string | null }>(
+    `
+      select hero_image_path
+      from homepage_content
+      where id = $1::bigint
+        and status = 'published'
+    `,
+    [homepageId]
+  );
+
+  return row?.hero_image_path ?? null;
+}
 
 export async function getAdminHomepageEditorData(): Promise<AdminHomepageEditorData | null> {
   const homepageRow = await getPublishedHomepageRow();

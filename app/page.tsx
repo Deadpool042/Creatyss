@@ -17,7 +17,7 @@ import {
   HomepageSavoirFaireSection
 } from "@/features/homepage/components";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata = {
   title: "Creatyss - Sacs faits main et artisanat d'art",

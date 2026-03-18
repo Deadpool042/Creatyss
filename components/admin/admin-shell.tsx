@@ -1,6 +1,5 @@
 //components/admin/admin-shell.tsx
 import type { ReactNode } from "react";
-import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
@@ -27,21 +26,8 @@ export function AdminShell({ children, displayName, email }: AdminShellProps) {
 
       <SidebarInset className="overflow-hidden bg-muted/20">
         <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center border-b bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/80 md:px-6">
-          <div className="flex min-w-0 flex-1 items-center gap-3 ">
+          <div className="flex min-w-0 flex-1 items-center">
             <SidebarTrigger className="-ml-1" />
-            {/* <Separator
-              orientation="vertical"
-              className="mr-2 h-4"
-            /> */}
-
-            <div className="min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
-                Administration
-              </p>
-              <p className="truncate text-sm text-muted-foreground">
-                Espace interne Creatyss
-              </p>
-            </div>
           </div>
           <ModeToggle />
         </header>

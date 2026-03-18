@@ -83,6 +83,35 @@ export async function listAdminMediaAssets(): Promise<AdminMediaAsset[]> {
   return rows.map(mapAdminMediaAsset);
 }
 
+export async function getAdminMediaAssetById(
+  id: string
+): Promise<AdminMediaAsset | null> {
+  const row = await queryFirst<AdminMediaAssetRow>(
+    `
+      select
+        id::text as id,
+        file_path,
+        original_name,
+        mime_type,
+        byte_size::text as byte_size,
+        image_width,
+        image_height,
+        uploaded_by_admin_user_id::text as uploaded_by_admin_user_id,
+        created_at,
+        updated_at
+      from media_assets
+      where id = $1::bigint
+    `,
+    [id]
+  );
+
+  if (row === null) {
+    return null;
+  }
+
+  return mapAdminMediaAsset(row);
+}
+
 export async function createAdminMediaAsset(
   input: CreateAdminMediaAssetInput
 ): Promise<AdminMediaAsset> {

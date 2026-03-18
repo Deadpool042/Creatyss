@@ -1,90 +1,8 @@
 services:
-  traefik:
-    image: traefik:v3
-    container_name: creatyss-traefik
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./docker/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./docker/traefik/tls.yml:/etc/traefik/tls.yml:ro
-      - ./docker/traefik/certs:/certs:ro
-    restart: unless-stopped
-
-  registry:
-    image: nginx:alpine
-    container_name: creatyss-registry
-    volumes:
-      - ./registry:/usr/share/nginx/html:ro
-      - ./docker/registry/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.registry.rule=Host(`registry.creatyss.localhost`)"
-      - "traefik.http.routers.registry.entrypoints=https"
-      - "traefik.http.routers.registry.tls=true"
-      - "traefik.http.services.registry.loadbalancer.server.port=80"
-
-  # Init service: copies seed images to the uploads volume and syncs DB metadata.
-  # Runs once per `docker compose up` cycle (restart: "no").
-  # app waits for this to complete successfully before starting.
-  seeder:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: creatyss-dev
-    container_name: creatyss-seeder
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-      UPLOADS_DIR: ${UPLOADS_DIR}
-    volumes:
-      - .:/app
-      - app_node_modules:/app/node_modules
-      - uploads_data:/app/public/uploads
-    command: node --experimental-strip-types scripts/seed-images.ts
-    restart: "no"
-
-  app:
-    image: creatyss-dev
-    container_name: creatyss-app
-    depends_on:
-      db:
-        condition: service_healthy
-      seeder:
-        condition: service_completed_successfully
-    environment:
-      APP_URL: ${APP_URL}
-      ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET}
-      CART_SESSION_SECRET: ${CART_SESSION_SECRET}
-      DATABASE_URL: ${DATABASE_URL}
-      NEXT_TELEMETRY_DISABLED: "1"
-      PORT: "3000"
-      BREVO_API_KEY: ${BREVO_API_KEY}
-      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
-      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
-      EMAIL_FROM: ${EMAIL_FROM}
-      UPLOADS_DIR: ${UPLOADS_DIR}
-    ports:
-      - "${APP_PORT}:3000"
-    volumes:
-      - .:/app
-      - app_node_modules:/app/node_modules
-      - uploads_data:/app/public/uploads
-    command: pnpm run dev
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`creatyss.localhost`)"
-      - "traefik.http.routers.app.entrypoints=https"
-      - "traefik.http.routers.app.tls=true"
-      - "traefik.http.services.app.loadbalancer.server.port=3000"
-
   db:
     container_name: creatyss-db
     image: postgres:17-alpine
+    profiles: ["core"]
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -98,12 +16,99 @@ services:
       - "${POSTGRES_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    mem_limit: 768m
+    restart: unless-stopped
+
+  app:
+    image: creatyss-dev
+    container_name: creatyss-app
+    profiles: ["core"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_URL: ${APP_URL}
+      ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET}
+      CART_SESSION_SECRET: ${CART_SESSION_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+      NEXT_TELEMETRY_DISABLED: "1"
+      PORT: "3000"
+      BREVO_API_KEY: ${BREVO_API_KEY}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      EMAIL_FROM: ${EMAIL_FROM}
+      UPLOADS_DIR: ${UPLOADS_DIR}
+      CHOKIDAR_USEPOLLING: "false"
+      WATCHPACK_POLLING: "false"
+    ports:
+      - "${APP_PORT}:3000"
+    volumes:
+      - .:/app
+      - app_node_modules:/app/node_modules
+      - uploads_data:/app/public/uploads
+    command: pnpm run dev
+    mem_limit: 1g
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`creatyss.localhost`)"
+      - "traefik.http.routers.app.entrypoints=https"
+      - "traefik.http.routers.app.tls=true"
+      - "traefik.http.services.app.loadbalancer.server.port=3000"
+
+  traefik:
+    image: traefik:v3
+    container_name: creatyss-traefik
+    profiles: ["proxy"]
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./docker/traefik/tls.yml:/etc/traefik/tls.yml:ro
+      - ./docker/traefik/certs:/certs:ro
+    mem_limit: 128m
+    restart: unless-stopped
+
+  registry:
+    image: nginx:alpine
+    container_name: creatyss-registry
+    profiles: ["tools"]
+    volumes:
+      - ./registry:/usr/share/nginx/html:ro
+      - ./docker/registry/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    mem_limit: 128m
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.registry.rule=Host(`registry.creatyss.localhost`)"
+      - "traefik.http.routers.registry.entrypoints=https"
+      - "traefik.http.routers.registry.tls=true"
+      - "traefik.http.services.registry.loadbalancer.server.port=80"
+
+  seeder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: creatyss-dev
+    container_name: creatyss-seeder
+    profiles: ["jobs"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      UPLOADS_DIR: ${UPLOADS_DIR}
+    volumes:
+      - .:/app
+      - app_node_modules:/app/node_modules
+      - uploads_data:/app/public/uploads
+    command: node --experimental-strip-types scripts/seed-images.ts
+    mem_limit: 512m
+    restart: "no"
 
 volumes:
   app_node_modules:
   postgres_data:
-  # Dedicated volume for public/uploads.
-  # Survives `docker compose down` and image rebuilds.
-  # Populated at startup by the seeder service.
-  # Use `make uploads-import` to migrate existing host uploads into this volume.
   uploads_data:

@@ -1,0 +1,10 @@
+Projet Creatyss.
+Stack cible: Next.js App Router, TypeScript strict, PostgreSQL, Docker Compose local, VPS OVH ensuite.
+Ne jamais proposer WordPress, WooCommerce, Shopify, Supabase, Vercel.
+Pas de dépendance inutile.
+Aucun any sauf justification explicite.
+Séparer strictement domaine métier, data access, logique serveur, UI.
+Server Components par défaut.
+Ne pas mélanger logique métier et présentation.
+Valider toutes les entrées côté serveur.
+Privilégier des petits incréments sûrs, production-ready mais simples.

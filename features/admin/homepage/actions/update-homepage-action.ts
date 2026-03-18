@@ -1,9 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { listAdminMediaAssets } from "@/db/admin-media";
+import { getAdminMediaAssetById } from "@/db/admin-media";
 import {
   AdminHomepageRepositoryError,
+  getAdminHomepageCurrentHeroImagePath,
   updateAdminHomepage
 } from "@/db/repositories/admin-homepage.repository";
 import { validateHomepageInput } from "@/entities/homepage/homepage-input";
@@ -36,7 +37,6 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
     homepageId: formData.get("homepageId"),
     heroTitle: formData.get("heroTitle"),
     heroText: formData.get("heroText"),
-    currentHeroImagePath: formData.get("currentHeroImagePath"),
     heroImageMediaAssetId: formData.get("heroImageMediaAssetId"),
     editorialTitle: formData.get("editorialTitle"),
     editorialText: formData.get("editorialText"),
@@ -64,13 +64,14 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
   let heroImagePath: string | null = null;
 
   if (validation.data.heroImage.kind === "keep_current") {
-    heroImagePath = validation.data.heroImage.filePath;
+    heroImagePath = await getAdminHomepageCurrentHeroImagePath(
+      validation.data.homepageId
+    );
   } else if (validation.data.heroImage.kind === "media_asset") {
     const mediaAssetId = validation.data.heroImage.mediaAssetId;
-    const mediaAssets = await listAdminMediaAssets();
-    const mediaAsset = mediaAssets.find((asset) => asset.id === mediaAssetId);
+    const mediaAsset = await getAdminMediaAssetById(mediaAssetId);
 
-    if (mediaAsset === undefined) {
+    if (mediaAsset === null) {
       redirect("/admin/homepage?error=hero_media_missing");
     }
 

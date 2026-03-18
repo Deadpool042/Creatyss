@@ -99,11 +99,6 @@ export default async function AdminHomepagePage({
           type="hidden"
           value={homepage.id}
         />
-        <input
-          name="currentHeroImagePath"
-          type="hidden"
-          value={homepage.heroImagePath ?? ""}
-        />
 
         <HeroSection
           currentHeroMediaAsset={currentHeroMediaAsset}
