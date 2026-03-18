@@ -1,7 +1,3 @@
-// [PRÉPARATOIRE] Ce schéma n'est pas encore branché dans les actions blog.
-// Il sera utilisé pour remplacer validateBlogPostInput (@/entities/blog/blog-post-input)
-// dans un prochain lot. La sélection de cover image (logique __keep_current__ / numeric id)
-// sera traitée séparément quand l'entity validator correspondant sera migré.
 import { z } from "zod";
 
 function formText(min = 1) {
@@ -25,9 +21,6 @@ function formEnum<T extends string>(values: readonly [T, ...T[]]) {
   );
 }
 
-// Note : la sélection de l'image de couverture (cover image) reste gérée
-// par l'entity validator — sa logique (__keep_current__, numeric id) est
-// spécifique au domaine et sera migrée dans un lot ultérieur.
 export const BlogPostFormSchema = z.object({
   title: formText(),
   slug: formText(),
@@ -35,7 +28,56 @@ export const BlogPostFormSchema = z.object({
   content: formOptionalText(),
   seoTitle: formOptionalText(),
   seoDescription: formOptionalText(),
-  status: formEnum(["draft", "published"] as const)
+  status: formEnum(["draft", "published"] as const),
+  // Champs cover image : présents tels quels, résolution via parseCoverImageSelection
+  coverImageMediaAssetId: formOptionalText(),
+  currentCoverImagePath: formOptionalText()
 });
 
 export type BlogPostFormInput = z.infer<typeof BlogPostFormSchema>;
+
+// --- Cover image resolution ---
+
+export type CoverImageSelection =
+  | { kind: "clear" }
+  | { kind: "keep_current"; filePath: string }
+  | { kind: "media_asset"; mediaAssetId: string };
+
+/**
+ * Résout les champs bruts du formulaire en une sélection d'image de couverture typée.
+ * Remplace la logique de validateCoverImageSelection de entities/blog/blog-post-input.ts.
+ *
+ * Logique :
+ * - null / vide → clear (pas d'image)
+ * - "__keep_current__" + currentPath présent → keep_current
+ * - "__keep_current__" + currentPath absent → invalide
+ * - id numérique → media_asset
+ * - autre valeur → invalide
+ */
+export function parseCoverImageSelection(
+  coverImageMediaAssetId: string | null,
+  currentCoverImagePath: string | null
+): { ok: true; data: CoverImageSelection } | { ok: false } {
+  if (coverImageMediaAssetId === null) {
+    return { ok: true, data: { kind: "clear" } };
+  }
+
+  if (coverImageMediaAssetId === "__keep_current__") {
+    if (currentCoverImagePath === null) {
+      return { ok: false };
+    }
+    return {
+      ok: true,
+      data: { kind: "keep_current", filePath: currentCoverImagePath }
+    };
+  }
+
+  if (!/^[0-9]+$/.test(coverImageMediaAssetId)) {
+    return { ok: false };
+  }
+
+  return {
+    ok: true,
+    data: { kind: "media_asset", mediaAssetId: coverImageMediaAssetId }
+  };
+}

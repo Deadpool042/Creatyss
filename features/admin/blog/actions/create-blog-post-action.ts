@@ -6,10 +6,28 @@ import {
   AdminBlogRepositoryError,
   createAdminBlogPost
 } from "@/db/repositories/admin-blog.repository";
-import { validateBlogPostInput } from "@/entities/blog/blog-post-input";
+import { normalizeBlogPostSlug } from "@/entities/blog/blog-post-input";
+
+import {
+  BlogPostFormSchema,
+  parseCoverImageSelection
+} from "../schemas/blog-post-form-schema";
+
+function mapBlogPostFormError(field: PropertyKey | undefined): string {
+  switch (field) {
+    case "title":
+      return "missing_title";
+    case "slug":
+      return "missing_slug";
+    case "status":
+      return "invalid_status";
+    default:
+      return "save_failed";
+  }
+}
 
 export async function createBlogPostAction(formData: FormData): Promise<void> {
-  const validation = validateBlogPostInput({
+  const parsed = BlogPostFormSchema.safeParse({
     title: formData.get("title"),
     slug: formData.get("slug"),
     excerpt: formData.get("excerpt"),
@@ -17,22 +35,36 @@ export async function createBlogPostAction(formData: FormData): Promise<void> {
     seoTitle: formData.get("seoTitle"),
     seoDescription: formData.get("seoDescription"),
     status: formData.get("status"),
-    currentCoverImagePath: null,
-    coverImageMediaAssetId: formData.get("coverImageMediaAssetId")
+    coverImageMediaAssetId: formData.get("coverImageMediaAssetId"),
+    currentCoverImagePath: null
   });
 
-  if (!validation.ok) {
-    redirect(`/admin/blog/new?error=${validation.code}`);
+  if (!parsed.success) {
+    const code = mapBlogPostFormError(parsed.error.issues[0]?.path[0]);
+    redirect(`/admin/blog/new?error=${code}`);
+  }
+
+  const slug = normalizeBlogPostSlug(parsed.data.slug);
+
+  if (slug.length === 0) {
+    redirect("/admin/blog/new?error=invalid_slug");
+  }
+
+  const coverImage = parseCoverImageSelection(
+    parsed.data.coverImageMediaAssetId,
+    parsed.data.currentCoverImagePath
+  );
+
+  if (!coverImage.ok) {
+    redirect("/admin/blog/new?error=invalid_cover_image");
   }
 
   let coverImagePath: string | null = null;
 
-  if (validation.data.coverImage.kind === "media_asset") {
-    const mediaAssetId = validation.data.coverImage.mediaAssetId;
+  if (coverImage.data.kind === "media_asset") {
+    const mediaAssetId = coverImage.data.mediaAssetId;
     const mediaAssets = await listAdminMediaAssets();
-    const mediaAsset = mediaAssets.find(
-      (asset) => asset.id === mediaAssetId
-    );
+    const mediaAsset = mediaAssets.find(asset => asset.id === mediaAssetId);
 
     if (mediaAsset === undefined) {
       redirect("/admin/blog/new?error=cover_media_missing");
@@ -45,14 +77,14 @@ export async function createBlogPostAction(formData: FormData): Promise<void> {
 
   try {
     const blogPost = await createAdminBlogPost({
-      title: validation.data.title,
-      slug: validation.data.slug,
-      excerpt: validation.data.excerpt,
-      content: validation.data.content,
-      seoTitle: validation.data.seoTitle,
-      seoDescription: validation.data.seoDescription,
+      title: parsed.data.title,
+      slug,
+      excerpt: parsed.data.excerpt,
+      content: parsed.data.content,
+      seoTitle: parsed.data.seoTitle,
+      seoDescription: parsed.data.seoDescription,
       coverImagePath,
-      status: validation.data.status
+      status: parsed.data.status
     });
     createdBlogPostId = blogPost.id;
   } catch (error) {
