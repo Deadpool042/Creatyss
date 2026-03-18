@@ -14,7 +14,7 @@ import {
   setProductPrimaryImageAction
 } from "@/features/admin/products/actions";
 
-import { type PrimaryImageState } from "../lib/product-detail-helpers";
+import { type PrimaryImageState } from "../types/product-detail-types";
 import { ProductImageCard } from "./product-image-card";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 import { ProductPrimaryImageManager } from "./product-primary-image-manager";

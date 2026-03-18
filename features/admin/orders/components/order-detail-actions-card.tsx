@@ -11,7 +11,7 @@ import {
   shipOrderAction
 } from "@/features/admin/orders/actions";
 import { OrderCancelConfirmDialog } from "./order-cancel-confirm-dialog";
-import { getOrderTransitionLabel } from "@/features/admin/orders/lib";
+import { getOrderTransitionLabel } from "@/features/admin/orders/mappers/order-detail-mappers";
 
 const detailCardClassName =
   "grid gap-1 rounded-lg border border-border/60 bg-muted/10 p-3";

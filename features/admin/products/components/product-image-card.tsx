@@ -7,7 +7,7 @@ import {
   updateProductImageAction,
   deleteProductImageAction
 } from "@/features/admin/products/actions";
-import { getImageUrl } from "@/features/admin/products/lib";
+import { getImageUrl } from "@/features/admin/products/mappers/product-detail-mappers";
 import Image from "next/image";
 
 const checkboxInputClassName =

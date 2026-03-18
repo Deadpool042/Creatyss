@@ -1,14 +1,11 @@
 import type { OrderEmailEventStatus, OrderStatus } from "@/db/repositories/order.repository";
 
+import { type OrderDetailSearchParams } from "../types/order-detail-types";
+
 const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",
   timeStyle: "short"
 });
-
-export type OrderDetailSearchParams = Record<
-  string,
-  string | string[] | undefined
->;
 
 export function readOrderDetailSearchParam(
   searchParams: OrderDetailSearchParams,

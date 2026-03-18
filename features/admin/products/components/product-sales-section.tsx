@@ -15,7 +15,7 @@ import {
   createProductVariantAction,
   updateSimpleProductOfferAction
 } from "@/features/admin/products/actions";
-import { getAvailabilityLabel } from "@/features/admin/products/lib";
+import { getAvailabilityLabel } from "@/features/admin/products/mappers/product-detail-mappers";
 import { ProductVariantCard } from "./product-variant-card";
 
 const nativeSelectClassName =

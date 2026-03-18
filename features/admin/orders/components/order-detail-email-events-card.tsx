@@ -4,7 +4,7 @@ import {
   formatOrderDateTime,
   getEmailEventLabel,
   getEmailEventStatusLabel
-} from "../lib/order-detail-helpers";
+} from "../mappers/order-detail-mappers";
 
 type OrderDetailEmailEventsCardProps = Readonly<{
   emailEvents: AdminOrderDetail["emailEvents"];

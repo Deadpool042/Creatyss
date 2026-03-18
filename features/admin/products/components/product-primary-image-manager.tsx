@@ -9,10 +9,12 @@ import {
   getPrimaryImageEmptyMessage,
   getPrimaryImageExtraImagesMessage,
   getPrimaryImageFallbackMessage,
-  getPrimaryImageSubmitLabel,
+  getPrimaryImageSubmitLabel
+} from "@/features/admin/products/mappers/product-detail-mappers";
+import {
   type PrimaryImageScope,
   type PrimaryImageState
-} from "@/features/admin/products/lib";
+} from "@/features/admin/products/types/product-detail-types";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 
 type PrimaryImageFormAction = (formData: FormData) => Promise<void>;

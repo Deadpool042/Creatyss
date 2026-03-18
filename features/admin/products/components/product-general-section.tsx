@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { type AdminCategory } from "@/db/repositories/admin-category.repository";
 import { type AdminProductDetail } from "@/db/repositories/admin-product.repository";
 import { updateProductAction } from "@/features/admin/products/actions";
-import { isCategoryAssigned } from "@/features/admin/products/lib";
+import { isCategoryAssigned } from "@/features/admin/products/mappers/product-detail-mappers";
 
 const nativeSelectClassName =
   "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";

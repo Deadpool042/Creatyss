@@ -21,7 +21,7 @@ import {
   getAvailabilityLabel,
   getPrimaryImageState,
   getProductStatusLabel
-} from "@/features/admin/products/lib";
+} from "@/features/admin/products/mappers/product-detail-mappers";
 import { ProductImageCard } from "./product-image-card";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 import { ProductPrimaryImageManager } from "./product-primary-image-manager";

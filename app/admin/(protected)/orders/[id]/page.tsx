@@ -27,7 +27,7 @@ import {
   getOrderDetailErrorMessage,
   getOrderDetailStatusMessage,
   readOrderDetailSearchParam
-} from "@/features/admin/orders/lib";
+} from "@/features/admin/orders/mappers/order-detail-mappers";
 
 export const dynamic = "force-dynamic";
 

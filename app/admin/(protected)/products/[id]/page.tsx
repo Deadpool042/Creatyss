@@ -28,7 +28,7 @@ import {
   getVariantStatusMessage,
   groupVariantImages,
   readProductDetailSearchParam
-} from "@/features/admin/products/lib";
+} from "@/features/admin/products/mappers/product-detail-mappers";
 import {
   ProductDangerZoneSection,
   ProductDetailHeaderSection,
