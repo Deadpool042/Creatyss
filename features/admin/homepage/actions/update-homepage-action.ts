@@ -9,6 +9,8 @@ import {
 } from "@/db/repositories/admin-homepage.repository";
 import { validateHomepageInput } from "@/entities/homepage/homepage-input";
 
+import { HomepageFormSchema } from "../schemas/homepage-form-schema";
+
 function collectSortOrdersByPrefix(
   formData: FormData,
   prefix: string
@@ -32,7 +34,39 @@ function collectSortOrdersByPrefix(
   return sortOrders;
 }
 
+function mapHomepageTextError(field: PropertyKey | undefined): string {
+  switch (field) {
+    case "heroTitle":
+      return "hero_title_too_long";
+    case "heroText":
+      return "hero_text_too_long";
+    case "editorialTitle":
+      return "editorial_title_too_long";
+    case "editorialText":
+      return "editorial_text_too_long";
+    default:
+      return "save_failed";
+  }
+}
+
 export async function updateHomepageAction(formData: FormData): Promise<void> {
+  // Étape 1 : validation des champs texte par Zod (fail-fast, sortie typée).
+  // Si un champ texte est trop long, on redirige avant tout parsing des sélections.
+  const textParsed = HomepageFormSchema.safeParse({
+    heroTitle: formData.get("heroTitle"),
+    heroText: formData.get("heroText"),
+    editorialTitle: formData.get("editorialTitle"),
+    editorialText: formData.get("editorialText")
+  });
+
+  if (!textParsed.success) {
+    const code = mapHomepageTextError(textParsed.error.issues[0]?.path[0]);
+    redirect(`/admin/homepage?error=${code}`);
+  }
+
+  // Étape 2 : validation complète via entity validator.
+  // Périmètre : homepageId, hero image, sélections featured + sort orders.
+  // Les champs texte sont re-validés ici aussi (même normalisation que Zod).
   const validation = validateHomepageInput({
     homepageId: formData.get("homepageId"),
     heroTitle: formData.get("heroTitle"),
@@ -83,11 +117,13 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
   try {
     const homepage = await updateAdminHomepage({
       id: validation.data.homepageId,
-      heroTitle: validation.data.heroTitle,
-      heroText: validation.data.heroText,
+      // Champs texte : issus de Zod (typés, normalisés par formOptionalText)
+      heroTitle: textParsed.data.heroTitle,
+      heroText: textParsed.data.heroText,
       heroImagePath,
-      editorialTitle: validation.data.editorialTitle,
-      editorialText: validation.data.editorialText,
+      editorialTitle: textParsed.data.editorialTitle,
+      editorialText: textParsed.data.editorialText,
+      // Sélections : issues de l'entity validator (logique déduplication + sort orders)
       featuredProducts: validation.data.featuredProducts,
       featuredCategories: validation.data.featuredCategories,
       featuredBlogPosts: validation.data.featuredBlogPosts

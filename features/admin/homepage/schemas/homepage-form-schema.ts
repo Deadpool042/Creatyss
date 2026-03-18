@@ -1,7 +1,17 @@
-// [PRÉPARATOIRE] Ce schéma n'est pas encore branché dans l'action homepage.
-// Il couvre uniquement les champs texte simples. Les sélections de produits /
-// catégories / articles en vedette avec sort orders restent dans validateHomepageInput
-// (@/entities/homepage/homepage-input) jusqu'à leur migration dans un prochain lot.
+// Ce schéma valide les champs texte du formulaire homepage.
+//
+// Périmètre dans ce lot :
+//   - heroTitle, heroText, editorialTitle, editorialText
+//
+// Hors périmètre (reste dans validateHomepageInput / @/entities/homepage/homepage-input) :
+//   - homepageId (parsing ID numérique)
+//   - heroImageMediaAssetId (sélection image hero — 3 états)
+//   - sélections featured (produits / catégories / articles) avec sort orders
+//     → logique de déduplication + validation d'ordre trop complexe pour ce lot
+//
+// Utilisation dans update-homepage-action.ts :
+//   1. ce schéma s'exécute en premier (fail-fast sur les champs texte)
+//   2. validateHomepageInput() prend ensuite le relais pour tout le reste
 import { z } from "zod";
 import {
   HOMEPAGE_HERO_TITLE_MAX_LENGTH,
@@ -18,9 +28,6 @@ function formOptionalText(max?: number) {
   );
 }
 
-// Note : la sélection d'image hero et les sélections de produits/catégories/
-// articles en vedette (avec sort orders) restent gérées par l'entity validator —
-// leur logique est spécifique au domaine et sera migrée dans un lot ultérieur.
 export const HomepageFormSchema = z.object({
   heroTitle: formOptionalText(HOMEPAGE_HERO_TITLE_MAX_LENGTH),
   heroText: formOptionalText(HOMEPAGE_HERO_TEXT_MAX_LENGTH),
