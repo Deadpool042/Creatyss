@@ -4,8 +4,8 @@ import {
   createOrderEmailEventIfAbsent,
   markOrderEmailEventFailed,
   markOrderEmailEventSent,
-  type OrderEmailEventType,
 } from "@/db/repositories/order-email.repository";
+import type { OrderEmailEventType } from "@/db/repositories/order-email.types";
 import { findOrderEmailContextById } from "@/db/repositories/order.repository";
 import { buildOrderEmailTemplate } from "@/features/email/order-email-templates";
 import { sendEmail } from "@/lib/email";

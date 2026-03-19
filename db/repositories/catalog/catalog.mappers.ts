@@ -4,81 +4,13 @@ import {
 } from "@/entities/product/simple-product-offer";
 import type {
   DbId,
-  MoneyAmount,
-  FeaturedCategory,
   CatalogFilterCategory,
   PublishedProductImage,
-  PublishedProductSummary,
-  PublishedCatalogProductSummary,
   PublishedProductVariant,
   PublishedBlogPostSummary,
 } from "./catalog.types";
 
-// --- Internal Row types for $queryRaw results ---
-
 type TimestampValue = Date | string;
-
-export type CategoryRow = {
-  id: DbId;
-  name: string;
-  slug: string;
-  description: string | null;
-  rep_image_file_path: string | null;
-  rep_image_alt_text: string | null;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
-
-type ProductSimpleFieldsRow = {
-  simple_sku: string | null;
-  simple_price: MoneyAmount | null;
-  simple_compare_at_price: MoneyAmount | null;
-  simple_stock_quantity: number | null;
-};
-
-export type ProductSummaryRow = ProductSimpleFieldsRow & {
-  id: DbId;
-  name: string;
-  slug: string;
-  short_description: string | null;
-  description: string | null;
-  product_type: "simple" | "variable";
-  is_featured: boolean;
-  seo_title: string | null;
-  seo_description: string | null;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-
-  primary_image_id: DbId | null;
-  primary_image_product_id: DbId | null;
-  primary_image_variant_id: DbId | null;
-  primary_image_file_path: string | null;
-  primary_image_alt_text: string | null;
-  primary_image_sort_order: number | null;
-  primary_image_is_primary: boolean | null;
-  primary_image_created_at: TimestampValue | null;
-  primary_image_updated_at: TimestampValue | null;
-};
-
-export type ProductCatalogSummaryRow = ProductSummaryRow & {
-  is_available: boolean;
-  legacy_exploitable_variant_count: number;
-  legacy_variant_sku: string | null;
-  legacy_variant_price: MoneyAmount | null;
-  legacy_variant_compare_at_price: MoneyAmount | null;
-  legacy_variant_stock_quantity: number | null;
-};
-
-export type BlogPostSummaryRow = {
-  id: DbId;
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  cover_image_path: string | null;
-  published_at: TimestampValue | null;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
 
 // --- Timestamp helpers ---
 
@@ -98,23 +30,6 @@ function toNullableIsoTimestamp(value: TimestampValue | null): string | null {
   return toIsoTimestamp(value);
 }
 
-// --- Mappers ---
-
-export function mapCategory(row: CategoryRow): FeaturedCategory {
-  return {
-    id: row.id,
-    name: row.name,
-    slug: row.slug,
-    description: row.description,
-    representativeImage:
-      row.rep_image_file_path !== null
-        ? { filePath: row.rep_image_file_path, altText: row.rep_image_alt_text }
-        : null,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-  };
-}
-
 export function mapCatalogFilterCategory(row: {
   id: bigint;
   name: string;
@@ -124,58 +39,6 @@ export function mapCatalogFilterCategory(row: {
     id: row.id.toString(),
     name: row.name,
     slug: row.slug,
-  };
-}
-
-function mapPrimaryProductImage(row: ProductSummaryRow): PublishedProductImage | null {
-  if (
-    row.primary_image_id === null ||
-    row.primary_image_product_id === null ||
-    row.primary_image_file_path === null ||
-    row.primary_image_sort_order === null ||
-    row.primary_image_is_primary === null ||
-    row.primary_image_created_at === null ||
-    row.primary_image_updated_at === null
-  ) {
-    return null;
-  }
-
-  return {
-    id: row.primary_image_id,
-    productId: row.primary_image_product_id,
-    variantId: row.primary_image_variant_id,
-    filePath: row.primary_image_file_path,
-    altText: row.primary_image_alt_text,
-    sortOrder: row.primary_image_sort_order,
-    isPrimary: row.primary_image_is_primary,
-    createdAt: toIsoTimestamp(row.primary_image_created_at),
-    updatedAt: toIsoTimestamp(row.primary_image_updated_at),
-  };
-}
-
-export function mapProductSummaryRow(row: ProductSummaryRow): PublishedProductSummary {
-  return {
-    id: row.id,
-    name: row.name,
-    slug: row.slug,
-    shortDescription: row.short_description,
-    description: row.description,
-    productType: row.product_type,
-    isFeatured: row.is_featured,
-    seoTitle: row.seo_title,
-    seoDescription: row.seo_description,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-    primaryImage: mapPrimaryProductImage(row),
-  };
-}
-
-function getNativeSimpleOfferFields(row: ProductSimpleFieldsRow): SimpleProductOfferFields {
-  return {
-    sku: row.simple_sku,
-    price: row.simple_price,
-    compareAtPrice: row.simple_compare_at_price,
-    stockQuantity: row.simple_stock_quantity,
   };
 }
 
@@ -192,37 +55,6 @@ export function resolvePublishedSimpleOffer(input: {
     native: input.native,
     legacyOffers: input.legacyOffers,
   });
-}
-
-function getCatalogLegacySimpleOffers(row: ProductCatalogSummaryRow): SimpleProductOfferFields[] {
-  if (row.legacy_exploitable_variant_count !== 1) {
-    return [];
-  }
-
-  return [
-    {
-      sku: row.legacy_variant_sku,
-      price: row.legacy_variant_price,
-      compareAtPrice: row.legacy_variant_compare_at_price,
-      stockQuantity: row.legacy_variant_stock_quantity,
-    },
-  ];
-}
-
-export function mapCatalogProductSummaryRow(
-  row: ProductCatalogSummaryRow
-): PublishedCatalogProductSummary {
-  const simpleOffer = resolvePublishedSimpleOffer({
-    productType: row.product_type,
-    native: getNativeSimpleOfferFields(row),
-    legacyOffers: getCatalogLegacySimpleOffers(row),
-  });
-
-  return {
-    ...mapProductSummaryRow(row),
-    isAvailable: row.is_available,
-    simpleOffer,
-  };
 }
 
 export function mapPrismaProductImage(pi: {

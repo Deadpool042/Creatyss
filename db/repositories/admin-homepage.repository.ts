@@ -1,9 +1,20 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/db/prisma-client";
+import {
+  AdminHomepageRepositoryError,
+  type AdminHomepageBlogPostOption,
+  type AdminHomepageCategoryOption,
+  type AdminHomepageDetail,
+  type AdminHomepageEditorData,
+  type AdminHomepageFeaturedBlogPostSelection,
+  type AdminHomepageFeaturedCategorySelection,
+  type AdminHomepageFeaturedProductSelection,
+  type AdminHomepageProductOption,
+  type AdminHomepageStatus,
+  type UpdateAdminHomepageInput,
+} from "./admin-homepage.types";
 
 // --- Internal types ---
-
-type HomepageStatus = "draft" | "published";
 
 // Structural type aligned with what Prisma returns for homepage_content (without relations)
 type PrismaHomepageContentData = {
@@ -16,43 +27,6 @@ type PrismaHomepageContentData = {
   status: string;
   created_at: Date;
   updated_at: Date;
-};
-
-type UpdateAdminHomepageInput = {
-  id: string;
-  heroTitle: string | null;
-  heroText: string | null;
-  heroImagePath: string | null;
-  editorialTitle: string | null;
-  editorialText: string | null;
-  featuredProducts: AdminHomepageFeaturedProductSelection[];
-  featuredCategories: AdminHomepageFeaturedCategorySelection[];
-  featuredBlogPosts: AdminHomepageFeaturedBlogPostSelection[];
-};
-
-// --- Public types ---
-
-import {
-  AdminHomepageRepositoryError,
-  type AdminHomepageFeaturedProductSelection,
-  type AdminHomepageFeaturedCategorySelection,
-  type AdminHomepageFeaturedBlogPostSelection,
-  type AdminHomepageDetail,
-  type AdminHomepageEditorData,
-  type AdminHomepageProductOption,
-  type AdminHomepageCategoryOption,
-  type AdminHomepageBlogPostOption,
-} from "./admin-homepage.types";
-export { AdminHomepageRepositoryError };
-export type {
-  AdminHomepageFeaturedProductSelection,
-  AdminHomepageFeaturedCategorySelection,
-  AdminHomepageFeaturedBlogPostSelection,
-  AdminHomepageProductOption,
-  AdminHomepageCategoryOption,
-  AdminHomepageBlogPostOption,
-  AdminHomepageDetail,
-  AdminHomepageEditorData,
 };
 
 // --- Internal utilities ---
@@ -78,7 +52,7 @@ function mapPrismaHomepage(
     heroImagePath: row.hero_image_path,
     editorialTitle: row.editorial_title,
     editorialText: row.editorial_text,
-    status: row.status as HomepageStatus,
+    status: row.status as AdminHomepageStatus,
     createdAt: row.created_at.toISOString(),
     updatedAt: row.updated_at.toISOString(),
     featuredProducts,

@@ -10,14 +10,11 @@ import {
 import { type ProductType } from "@/entities/product/product-input";
 import {
   AdminProductVariantRepositoryError,
+  type AdminProductVariantStatus,
   type AdminProductVariant,
+  type CreateAdminProductVariantInput,
+  type UpdateAdminProductVariantInput,
 } from "./admin-product-variant.types";
-export { AdminProductVariantRepositoryError };
-export type { AdminProductVariant };
-
-// --- Internal types ---
-
-type AdminProductVariantStatus = "draft" | "published";
 
 type ProductCompatibilityRow = {
   id: string;
@@ -131,18 +128,9 @@ export async function listAdminProductVariants(productId: string): Promise<Admin
   return rows.map(mapVariantFromPrisma);
 }
 
-export async function createAdminProductVariant(input: {
-  productId: string;
-  name: string;
-  colorName: string;
-  colorHex: string | null;
-  sku: string;
-  price: string;
-  compareAtPrice: string | null;
-  stockQuantity: number;
-  isDefault: boolean;
-  status: AdminProductVariantStatus;
-}): Promise<AdminProductVariant | null> {
+export async function createAdminProductVariant(
+  input: CreateAdminProductVariantInput
+): Promise<AdminProductVariant | null> {
   if (!isValidNumericId(input.productId)) {
     return null;
   }
@@ -201,19 +189,9 @@ export async function createAdminProductVariant(input: {
     });
 }
 
-export async function updateAdminProductVariant(input: {
-  id: string;
-  productId: string;
-  name: string;
-  colorName: string;
-  colorHex: string | null;
-  sku: string;
-  price: string;
-  compareAtPrice: string | null;
-  stockQuantity: number;
-  isDefault: boolean;
-  status: AdminProductVariantStatus;
-}): Promise<AdminProductVariant | null> {
+export async function updateAdminProductVariant(
+  input: UpdateAdminProductVariantInput
+): Promise<AdminProductVariant | null> {
   if (!isValidNumericId(input.productId) || !isValidNumericId(input.id)) {
     return null;
   }

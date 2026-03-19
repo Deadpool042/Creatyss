@@ -89,7 +89,22 @@ export type AdminOrderDetail = PublicOrderConfirmation & {
   emailEvents: OrderEmailEvent[];
 };
 
-type OrderRepositoryErrorCode =
+export type CreateOrderFromGuestCartResult = {
+  id: string;
+  reference: string;
+};
+
+export type UpdateOrderStatusInput = {
+  id: string;
+  nextStatus: OrderStatus;
+};
+
+export type ShipOrderInput = {
+  id: string;
+  trackingReference: string | null;
+};
+
+export type OrderRepositoryErrorCode =
   | "missing_cart"
   | "empty_cart"
   | "missing_checkout"

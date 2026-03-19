@@ -1,12 +1,9 @@
 import { prisma } from "@/db/prisma-client";
-import type { AdminUser, AdminUserWithPassword } from "./admin-users.types";
-export type { AdminUser, AdminUserWithPassword };
-
-type CreateAdminUserInput = {
-  email: string;
-  displayName: string;
-  passwordHash: string;
-};
+import type {
+  AdminUser,
+  AdminUserWithPassword,
+  CreateAdminUserInput,
+} from "./admin-users.types";
 
 function mapPrismaAdminUser(row: {
   id: bigint;

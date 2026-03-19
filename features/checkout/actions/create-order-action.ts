@@ -1,10 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  OrderRepositoryError,
-  createOrderFromGuestCartToken,
-} from "@/db/repositories/order.repository";
+import { createOrderFromGuestCartToken } from "@/db/repositories/order.repository";
+import { OrderRepositoryError } from "@/db/repositories/order.types";
 import {
   readGuestCheckoutContextByToken,
   upsertGuestCheckoutDetails,

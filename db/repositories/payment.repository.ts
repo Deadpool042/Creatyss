@@ -1,6 +1,11 @@
 import { prisma } from "@/db/prisma-client";
-import type { PaymentStatus, PaymentStartContext } from "./payment.types";
-export type { PaymentStatus, PaymentStartContext };
+import type {
+  MarkPaymentFailedByCheckoutSessionIdInput,
+  MarkPaymentSucceededByCheckoutSessionIdInput,
+  PaymentStartContext,
+  PaymentStatus,
+  SaveStripeCheckoutSessionForOrderInput,
+} from "./payment.types";
 
 function isValidOrderReference(value: string): boolean {
   return /^CRY-[A-Z0-9]{10}$/.test(value);
@@ -47,11 +52,9 @@ export async function findPaymentStartContextByOrderReference(
   };
 }
 
-export async function saveStripeCheckoutSessionForOrder(input: {
-  orderId: string;
-  stripeCheckoutSessionId: string;
-  stripePaymentIntentId: string | null;
-}): Promise<void> {
+export async function saveStripeCheckoutSessionForOrder(
+  input: SaveStripeCheckoutSessionForOrderInput
+): Promise<void> {
   const order = await prisma.orders.findUnique({
     where: { id: BigInt(input.orderId) },
     select: { total_amount: true },
@@ -81,10 +84,9 @@ export async function saveStripeCheckoutSessionForOrder(input: {
   });
 }
 
-export async function markPaymentSucceededByCheckoutSessionId(input: {
-  stripeCheckoutSessionId: string;
-  stripePaymentIntentId: string | null;
-}): Promise<string | null> {
+export async function markPaymentSucceededByCheckoutSessionId(
+  input: MarkPaymentSucceededByCheckoutSessionIdInput
+): Promise<string | null> {
   // Serializable isolation reproduces the SELECT FOR UPDATE semantics of the original SQL:
   // prevents two concurrent webhook calls from both reading status="pending" and both updating.
   return prisma.$transaction(
@@ -129,10 +131,9 @@ export async function markPaymentSucceededByCheckoutSessionId(input: {
   );
 }
 
-export async function markPaymentFailedByCheckoutSessionId(input: {
-  stripeCheckoutSessionId: string;
-  stripePaymentIntentId: string | null;
-}): Promise<void> {
+export async function markPaymentFailedByCheckoutSessionId(
+  input: MarkPaymentFailedByCheckoutSessionIdInput
+): Promise<void> {
   // Serializable isolation reproduces the SELECT FOR UPDATE semantics of the original SQL.
   await prisma.$transaction(
     async (tx) => {

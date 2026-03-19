@@ -1,10 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  AdminProductImageRepositoryError,
-  createAdminProductImage,
-} from "@/db/repositories/products/admin-product-image.repository";
+import { createAdminProductImage } from "@/db/repositories/products/admin-product-image.repository";
+import { AdminProductImageRepositoryError } from "@/db/repositories/products/admin-product-image.types";
 import { validateCreateProductImageInput } from "@/entities/product/product-image-input";
 import {
   appendImageScope,

@@ -6,6 +6,7 @@ import { createOrderReference } from "@/entities/order/order-reference";
 import { resolveOrderStatusTransition } from "@/entities/order/order-status-transition";
 import {
   OrderRepositoryError,
+  type CreateOrderFromGuestCartResult,
   type OrderStatus,
   type PaymentStatus,
   type PaymentProvider,
@@ -16,22 +17,9 @@ import {
   type AdminOrderSummary,
   type OrderEmailContext,
   type AdminOrderDetail,
-  type OrderEmailEventStatus,
+  type ShipOrderInput,
+  type UpdateOrderStatusInput,
 } from "./order.types";
-export { OrderRepositoryError };
-export type {
-  OrderStatus,
-  PaymentStatus,
-  PaymentProvider,
-  PaymentMethod,
-  OrderLine,
-  OrderPayment,
-  PublicOrderConfirmation,
-  AdminOrderSummary,
-  OrderEmailContext,
-  AdminOrderDetail,
-  OrderEmailEventStatus,
-};
 
 // --- Internal types ---
 
@@ -503,7 +491,7 @@ export async function findAdminOrderById(id: string): Promise<AdminOrderDetail |
 // Prisma operation inside a transaction causes an automatic rollback.
 export async function createOrderFromGuestCartToken(
   token: string
-): Promise<{ id: string; reference: string }> {
+): Promise<CreateOrderFromGuestCartResult> {
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const reference = createOrderReference();
 
@@ -652,10 +640,9 @@ export async function createOrderFromGuestCartToken(
   throw new OrderRepositoryError("create_failed", "Order reference generation failed.");
 }
 
-export async function updateOrderStatus(input: {
-  id: string;
-  nextStatus: OrderStatus;
-}): Promise<OrderStatus | null> {
+export async function updateOrderStatus(
+  input: UpdateOrderStatusInput
+): Promise<OrderStatus | null> {
   if (!isValidNumericId(input.id)) {
     return null;
   }
@@ -699,10 +686,7 @@ export async function updateOrderStatus(input: {
     });
 }
 
-export async function shipOrder(input: {
-  id: string;
-  trackingReference: string | null;
-}): Promise<OrderStatus | null> {
+export async function shipOrder(input: ShipOrderInput): Promise<OrderStatus | null> {
   if (!isValidNumericId(input.id)) {
     return null;
   }

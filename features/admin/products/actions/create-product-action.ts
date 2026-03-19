@@ -1,10 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  AdminProductRepositoryError,
-  createAdminProduct,
-} from "@/db/repositories/products/admin-product.repository";
+import { createAdminProduct } from "@/db/repositories/products/admin-product.repository";
+import { AdminProductRepositoryError } from "@/db/repositories/products/admin-product.types";
 
 import { ProductFormSchema } from "../schemas/product-form-schema";
 import { normalizeProductSlug } from "@/entities/product/product-input";

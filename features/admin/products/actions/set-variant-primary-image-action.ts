@@ -1,10 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  AdminProductImageRepositoryError,
-  upsertAdminPrimaryVariantImage,
-} from "@/db/repositories/products/admin-product-image.repository";
+import { upsertAdminPrimaryVariantImage } from "@/db/repositories/products/admin-product-image.repository";
+import { AdminProductImageRepositoryError } from "@/db/repositories/products/admin-product-image.types";
 import {
   appendImageScope,
   findAdminMediaAssetById,

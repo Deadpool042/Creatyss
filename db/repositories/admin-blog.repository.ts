@@ -1,9 +1,15 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/db/prisma-client";
+import {
+  AdminBlogRepositoryError,
+  type AdminBlogPostDetail,
+  type AdminBlogPostStatus,
+  type AdminBlogPostSummary,
+  type CreateAdminBlogPostInput,
+  type UpdateAdminBlogPostInput,
+} from "./admin-blog.types";
 
 // --- Internal types ---
-
-type AdminBlogPostStatus = "draft" | "published";
 
 // Structural type aligned with what Prisma returns for blog_posts (without relations)
 type PrismaBlogPostData = {
@@ -20,31 +26,6 @@ type PrismaBlogPostData = {
   created_at: Date;
   updated_at: Date;
 };
-
-type CreateAdminBlogPostInput = {
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  content: string | null;
-  seoTitle: string | null;
-  seoDescription: string | null;
-  coverImagePath: string | null;
-  status: AdminBlogPostStatus;
-};
-
-type UpdateAdminBlogPostInput = CreateAdminBlogPostInput & {
-  id: string;
-};
-
-// --- Public types ---
-
-import {
-  AdminBlogRepositoryError,
-  type AdminBlogPostSummary,
-  type AdminBlogPostDetail,
-} from "./admin-blog.types";
-export { AdminBlogRepositoryError };
-export type { AdminBlogPostSummary, AdminBlogPostDetail };
 
 // --- Internal helpers ---
 

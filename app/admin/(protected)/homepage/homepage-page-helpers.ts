@@ -2,7 +2,7 @@ import type {
   AdminHomepageFeaturedBlogPostSelection,
   AdminHomepageFeaturedCategorySelection,
   AdminHomepageFeaturedProductSelection,
-} from "@/db/repositories/admin-homepage.repository";
+} from "@/db/repositories/admin-homepage.types";
 import {
   HOMEPAGE_EDITORIAL_TEXT_MAX_LENGTH,
   HOMEPAGE_EDITORIAL_TITLE_MAX_LENGTH,

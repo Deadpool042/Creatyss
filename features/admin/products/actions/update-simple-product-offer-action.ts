@@ -1,10 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  AdminProductRepositoryError,
-  updateAdminSimpleProductOffer,
-} from "@/db/repositories/products/admin-product.repository";
+import { updateAdminSimpleProductOffer } from "@/db/repositories/products/admin-product.repository";
+import { AdminProductRepositoryError } from "@/db/repositories/products/admin-product.types";
 import { validateSimpleProductOfferInput } from "@/entities/product/simple-product-offer-input";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 

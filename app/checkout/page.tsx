@@ -3,10 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/notice";
-import {
-  readGuestCheckoutContextByToken,
-  type GuestCheckoutContext,
-} from "@/db/repositories/guest-cart.repository";
+import { readGuestCheckoutContextByToken } from "@/db/repositories/guest-cart.repository";
+import type { GuestCheckoutContext } from "@/db/repositories/guest-cart.types";
 import { createOrderAction, saveGuestCheckoutAction } from "@/features/checkout";
 import { readCartSessionToken } from "@/lib/cart-session";
 

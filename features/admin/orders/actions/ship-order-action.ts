@@ -1,7 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { OrderRepositoryError, shipOrder } from "@/db/repositories/order.repository";
+import { shipOrder } from "@/db/repositories/order.repository";
+import { OrderRepositoryError } from "@/db/repositories/order.types";
 import { sendOrderTransactionalEmail } from "@/features/email";
 import { validateShipmentInput } from "@/entities/order/shipment-input";
 

@@ -2,10 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
-import {
-  AdminBlogRepositoryError,
-  updateAdminBlogPost,
-} from "@/db/repositories/admin-blog.repository";
+import { updateAdminBlogPost } from "@/db/repositories/admin-blog.repository";
+import { AdminBlogRepositoryError } from "@/db/repositories/admin-blog.types";
 import { normalizeBlogPostSlug } from "@/entities/blog/blog-post-input";
 import { getBlogPostPublishability } from "@/entities/blog/blog-post-publishability";
 

@@ -3,10 +3,10 @@
 import { redirect } from "next/navigation";
 import { getAdminMediaAssetById } from "@/db/repositories/admin-media.repository";
 import {
-  AdminHomepageRepositoryError,
   getAdminHomepageCurrentHeroImagePath,
   updateAdminHomepage,
 } from "@/db/repositories/admin-homepage.repository";
+import { AdminHomepageRepositoryError } from "@/db/repositories/admin-homepage.types";
 import { validateHomepageInput } from "@/entities/homepage/homepage-input";
 
 import { HomepageFormSchema } from "../schemas/homepage-form-schema";

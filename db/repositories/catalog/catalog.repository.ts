@@ -1,10 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/db/prisma-client";
 import {
-  mapCategory,
   mapCatalogFilterCategory,
-  mapProductSummaryRow,
-  mapCatalogProductSummaryRow,
   mapPrismaProductImage,
   mapPrismaProductVariant,
   getVariantSimpleOfferFields,
@@ -12,14 +9,13 @@ import {
   getPublishedProductAvailability,
   resolvePublishedSimpleOffer,
   mapBlogPostSummary,
-  type CategoryRow,
-  type ProductSummaryRow,
-  type ProductCatalogSummaryRow,
 } from "./catalog.mappers";
 
 import type {
+  DbId,
   FeaturedCategory,
   CatalogFilterCategory,
+  PublishedProductImage,
   PublishedProductListFilters,
   PublishedProductSummary,
   PublishedCatalogProductSummary,
@@ -45,6 +41,512 @@ export type {
   PublishedHomepageContent,
 } from "./catalog.types";
 
+const featuredCategorySelect = Prisma.validator<Prisma.categoriesSelect>()({
+  id: true,
+  name: true,
+  slug: true,
+  description: true,
+  created_at: true,
+  updated_at: true,
+});
+
+type FeaturedCategoryRecord = Prisma.categoriesGetPayload<{
+  select: typeof featuredCategorySelect;
+}>;
+
+const publishedProductSummarySelect = Prisma.validator<Prisma.productsSelect>()({
+  id: true,
+  name: true,
+  slug: true,
+  short_description: true,
+  description: true,
+  product_type: true,
+  simple_sku: true,
+  simple_price: true,
+  simple_compare_at_price: true,
+  simple_stock_quantity: true,
+  is_featured: true,
+  seo_title: true,
+  seo_description: true,
+  created_at: true,
+  updated_at: true,
+});
+
+type PublishedProductSummaryRecord = Prisma.productsGetPayload<{
+  select: typeof publishedProductSummarySelect;
+}>;
+
+const primaryProductImageSelect = Prisma.validator<Prisma.product_imagesSelect>()({
+  id: true,
+  product_id: true,
+  variant_id: true,
+  file_path: true,
+  alt_text: true,
+  sort_order: true,
+  is_primary: true,
+  created_at: true,
+  updated_at: true,
+});
+
+type PrimaryProductImageRecord = Prisma.product_imagesGetPayload<{
+  select: typeof primaryProductImageSelect;
+}>;
+
+const publishedVariantOfferSelect = Prisma.validator<Prisma.product_variantsSelect>()({
+  product_id: true,
+  sku: true,
+  price: true,
+  compare_at_price: true,
+  stock_quantity: true,
+});
+
+type PublishedVariantOfferRecord = Prisma.product_variantsGetPayload<{
+  select: typeof publishedVariantOfferSelect;
+}>;
+
+const publishedVariantDetailSelect = Prisma.validator<Prisma.product_variantsSelect>()({
+  id: true,
+  product_id: true,
+  name: true,
+  color_name: true,
+  color_hex: true,
+  sku: true,
+  price: true,
+  compare_at_price: true,
+  stock_quantity: true,
+  is_default: true,
+  created_at: true,
+  updated_at: true,
+});
+
+type PublishedVariantDetailRecord = Prisma.product_variantsGetPayload<{
+  select: typeof publishedVariantDetailSelect;
+}>;
+
+type ProductRecencyRecord = {
+  id: bigint;
+  created_at: Date;
+};
+
+type SimpleOfferNativeSource = Pick<
+  PublishedProductSummaryRecord,
+  "simple_sku" | "simple_price" | "simple_compare_at_price" | "simple_stock_quantity"
+>;
+
+function uniqueBigIntIds(ids: readonly bigint[]): bigint[] {
+  const seen = new Set<string>();
+  const uniqueIds: bigint[] = [];
+
+  for (const id of ids) {
+    const key = id.toString();
+
+    if (seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+    uniqueIds.push(id);
+  }
+
+  return uniqueIds;
+}
+
+function toDbId(id: bigint): DbId {
+  return id.toString();
+}
+
+function toPublishedProductType(value: string): PublishedProductSummary["productType"] {
+  return value as PublishedProductSummary["productType"];
+}
+
+function getRepresentativeImage(
+  primaryImage: PublishedProductImage | null
+): FeaturedCategory["representativeImage"] {
+  if (primaryImage === null) {
+    return null;
+  }
+
+  return {
+    filePath: primaryImage.filePath,
+    altText: primaryImage.altText,
+  };
+}
+
+function mapFeaturedCategoryRecord(
+  category: FeaturedCategoryRecord,
+  representativeImage: FeaturedCategory["representativeImage"]
+): FeaturedCategory {
+  return {
+    id: toDbId(category.id),
+    name: category.name,
+    slug: category.slug,
+    description: category.description,
+    representativeImage,
+    createdAt: category.created_at.toISOString(),
+    updatedAt: category.updated_at.toISOString(),
+  };
+}
+
+function mapPublishedProductSummaryRecord(
+  product: PublishedProductSummaryRecord,
+  primaryImage: PublishedProductImage | null
+): PublishedProductSummary {
+  return {
+    id: toDbId(product.id),
+    name: product.name,
+    slug: product.slug,
+    shortDescription: product.short_description,
+    description: product.description,
+    productType: toPublishedProductType(product.product_type),
+    isFeatured: product.is_featured,
+    seoTitle: product.seo_title,
+    seoDescription: product.seo_description,
+    createdAt: product.created_at.toISOString(),
+    updatedAt: product.updated_at.toISOString(),
+    primaryImage,
+  };
+}
+
+function compareBigIntAsc(left: bigint, right: bigint): number {
+  if (left < right) {
+    return -1;
+  }
+
+  if (left > right) {
+    return 1;
+  }
+
+  return 0;
+}
+
+function compareBigIntDesc(left: bigint, right: bigint): number {
+  return compareBigIntAsc(right, left);
+}
+
+function comparePrimaryProductImages(
+  left: PrimaryProductImageRecord,
+  right: PrimaryProductImageRecord
+): number {
+  const leftVariantPriority = left.variant_id === null ? 0 : 1;
+  const rightVariantPriority = right.variant_id === null ? 0 : 1;
+
+  if (leftVariantPriority !== rightVariantPriority) {
+    return leftVariantPriority - rightVariantPriority;
+  }
+
+  if (left.is_primary !== right.is_primary) {
+    return left.is_primary ? -1 : 1;
+  }
+
+  if (left.sort_order !== right.sort_order) {
+    return left.sort_order - right.sort_order;
+  }
+
+  return compareBigIntAsc(left.id, right.id);
+}
+
+function selectPrimaryProductImage(
+  candidates: readonly PrimaryProductImageRecord[]
+): PublishedProductImage | null {
+  let selectedCandidate: PrimaryProductImageRecord | null = null;
+
+  for (const candidate of candidates) {
+    if (selectedCandidate === null || comparePrimaryProductImages(candidate, selectedCandidate) < 0) {
+      selectedCandidate = candidate;
+    }
+  }
+
+  return selectedCandidate === null ? null : mapPrismaProductImage(selectedCandidate);
+}
+
+async function loadPrimaryProductImagesByProductIds(
+  productIds: readonly bigint[]
+): Promise<Map<DbId, PublishedProductImage | null>> {
+  const uniqueProductIds = uniqueBigIntIds(productIds);
+  const imagesByProductId = new Map<DbId, PublishedProductImage | null>();
+
+  if (uniqueProductIds.length === 0) {
+    return imagesByProductId;
+  }
+
+  const imageRows = await prisma.product_images.findMany({
+    where: {
+      product_id: { in: uniqueProductIds },
+      OR: [{ variant_id: null }, { product_variants: { status: "published" } }],
+    },
+    select: primaryProductImageSelect,
+  });
+
+  const candidatesByProductId = new Map<DbId, PrimaryProductImageRecord[]>();
+
+  for (const imageRow of imageRows) {
+    const productId = toDbId(imageRow.product_id);
+    const productImages = candidatesByProductId.get(productId);
+
+    if (productImages) {
+      productImages.push(imageRow);
+      continue;
+    }
+
+    candidatesByProductId.set(productId, [imageRow]);
+  }
+
+  for (const productId of uniqueProductIds) {
+    const key = toDbId(productId);
+    imagesByProductId.set(key, selectPrimaryProductImage(candidatesByProductId.get(key) ?? []));
+  }
+
+  return imagesByProductId;
+}
+
+function isMoreRecentProduct(
+  candidate: ProductRecencyRecord,
+  current: ProductRecencyRecord
+): boolean {
+  const createdAtDelta = candidate.created_at.getTime() - current.created_at.getTime();
+
+  if (createdAtDelta !== 0) {
+    return createdAtDelta > 0;
+  }
+
+  return compareBigIntDesc(candidate.id, current.id) < 0;
+}
+
+async function loadRepresentativeImagesByCategoryIds(
+  categoryIds: readonly bigint[]
+): Promise<Map<DbId, FeaturedCategory["representativeImage"]>> {
+  const uniqueCategoryIds = uniqueBigIntIds(categoryIds);
+  const representativeImagesByCategoryId = new Map<DbId, FeaturedCategory["representativeImage"]>();
+
+  if (uniqueCategoryIds.length === 0) {
+    return representativeImagesByCategoryId;
+  }
+
+  const productCategoryRows = await prisma.product_categories.findMany({
+    where: { category_id: { in: uniqueCategoryIds } },
+    select: {
+      category_id: true,
+      product_id: true,
+    },
+  });
+
+  const productIds = uniqueBigIntIds(productCategoryRows.map((row) => row.product_id));
+
+  if (productIds.length === 0) {
+    return representativeImagesByCategoryId;
+  }
+
+  const publishedProducts = await prisma.products.findMany({
+    where: {
+      id: { in: productIds },
+      status: "published",
+    },
+    select: {
+      id: true,
+      created_at: true,
+    },
+  });
+
+  const publishedProductsById = new Map<DbId, ProductRecencyRecord>();
+
+  for (const product of publishedProducts) {
+    publishedProductsById.set(toDbId(product.id), product);
+  }
+
+  const latestProductByCategoryId = new Map<DbId, ProductRecencyRecord>();
+
+  for (const row of productCategoryRows) {
+    const categoryId = toDbId(row.category_id);
+    const publishedProduct = publishedProductsById.get(toDbId(row.product_id));
+
+    if (publishedProduct === undefined) {
+      continue;
+    }
+
+    const currentProduct = latestProductByCategoryId.get(categoryId);
+
+    if (currentProduct === undefined || isMoreRecentProduct(publishedProduct, currentProduct)) {
+      latestProductByCategoryId.set(categoryId, publishedProduct);
+    }
+  }
+
+  const representativeProductIds = uniqueBigIntIds(
+    [...latestProductByCategoryId.values()].map((product) => product.id)
+  );
+  const primaryImagesByProductId = await loadPrimaryProductImagesByProductIds(representativeProductIds);
+
+  for (const categoryId of uniqueCategoryIds) {
+    const key = toDbId(categoryId);
+    const latestProduct = latestProductByCategoryId.get(key);
+
+    if (latestProduct === undefined) {
+      representativeImagesByCategoryId.set(key, null);
+      continue;
+    }
+
+    representativeImagesByCategoryId.set(
+      key,
+      getRepresentativeImage(primaryImagesByProductId.get(toDbId(latestProduct.id)) ?? null)
+    );
+  }
+
+  return representativeImagesByCategoryId;
+}
+
+async function loadPublishedVariantOffersByProductIds(
+  productIds: readonly bigint[]
+): Promise<Map<DbId, PublishedVariantOfferRecord[]>> {
+  const uniqueProductIds = uniqueBigIntIds(productIds);
+  const variantRowsByProductId = new Map<DbId, PublishedVariantOfferRecord[]>();
+
+  if (uniqueProductIds.length === 0) {
+    return variantRowsByProductId;
+  }
+
+  const variantRows = await prisma.product_variants.findMany({
+    where: {
+      product_id: { in: uniqueProductIds },
+      status: "published",
+    },
+    select: publishedVariantOfferSelect,
+  });
+
+  for (const variantRow of variantRows) {
+    const productId = toDbId(variantRow.product_id);
+    const productVariants = variantRowsByProductId.get(productId);
+
+    if (productVariants) {
+      productVariants.push(variantRow);
+      continue;
+    }
+
+    variantRowsByProductId.set(productId, [variantRow]);
+  }
+
+  return variantRowsByProductId;
+}
+
+function getNativeSimpleOfferFields(source: SimpleOfferNativeSource) {
+  return {
+    sku: source.simple_sku,
+    price: source.simple_price?.toString() ?? null,
+    compareAtPrice: source.simple_compare_at_price?.toString() ?? null,
+    stockQuantity: source.simple_stock_quantity,
+  };
+}
+
+async function getPublishedProductIdsMatchingVariantColor(
+  searchQuery: string
+): Promise<bigint[]> {
+  const rows = await prisma.product_variants.findMany({
+    where: {
+      status: "published",
+      color_name: {
+        contains: searchQuery,
+        mode: "insensitive",
+      },
+    },
+    select: { product_id: true },
+  });
+
+  return uniqueBigIntIds(rows.map((row) => row.product_id));
+}
+
+async function buildPublishedProductsWhere(
+  filters: PublishedProductListFilters
+): Promise<Prisma.productsWhereInput> {
+  const where: Prisma.productsWhereInput = {
+    status: "published",
+  };
+  const andClauses: Prisma.productsWhereInput[] = [];
+
+  if (filters.searchQuery !== null) {
+    const matchingVariantProductIds = await getPublishedProductIdsMatchingVariantColor(
+      filters.searchQuery
+    );
+
+    andClauses.push({
+      OR: [
+        {
+          name: {
+            contains: filters.searchQuery,
+            mode: "insensitive",
+          },
+        },
+        {
+          slug: {
+            contains: filters.searchQuery,
+            mode: "insensitive",
+          },
+        },
+        {
+          product_categories: {
+            some: {
+              categories: {
+                OR: [
+                  {
+                    name: {
+                      contains: filters.searchQuery,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    slug: {
+                      contains: filters.searchQuery,
+                      mode: "insensitive",
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+        ...(matchingVariantProductIds.length > 0
+          ? [
+              {
+                id: {
+                  in: matchingVariantProductIds,
+                },
+              },
+            ]
+          : []),
+      ],
+    });
+  }
+
+  if (filters.categorySlug !== null) {
+    andClauses.push({
+      product_categories: {
+        some: {
+          categories: {
+            slug: filters.categorySlug,
+          },
+        },
+      },
+    });
+  }
+
+  if (andClauses.length > 0) {
+    where.AND = andClauses;
+  }
+
+  return where;
+}
+
+function getPublishedProductsOrderBy(
+  filters: PublishedProductListFilters
+): Prisma.productsOrderByWithRelationInput[] {
+  if (
+    filters.searchQuery === null &&
+    filters.categorySlug === null &&
+    !filters.onlyAvailable
+  ) {
+    return [{ is_featured: "desc" }, { created_at: "desc" }, { id: "desc" }];
+  }
+
+  return [{ created_at: "desc" }, { id: "desc" }];
+}
+
 // --- Homepage reads ---
 
 async function getPublishedHomepageRow() {
@@ -53,103 +555,57 @@ async function getPublishedHomepageRow() {
   });
 }
 
-// $queryRaw requis : LEFT JOIN LATERAL n'est pas supporté par Prisma ORM.
-// La representativeImage de chaque catégorie est sélectionnée par critère LATERAL
-// (produit publié le plus récent dans la catégorie).
-// Revoir si Prisma ajoute le support natif LATERAL.
 async function listHomepageFeaturedCategories(
   homepageContentId: string
 ): Promise<FeaturedCategory[]> {
-  const rows = await prisma.$queryRaw<CategoryRow[]>(
-    Prisma.sql`
-      SELECT
-        c.id::text AS id,
-        c.name,
-        c.slug,
-        c.description,
-        c.created_at,
-        c.updated_at,
-        rep_img.file_path AS rep_image_file_path,
-        rep_img.alt_text  AS rep_image_alt_text
-      FROM homepage_featured_categories hfc
-      JOIN categories c ON c.id = hfc.category_id
-      LEFT JOIN LATERAL (
-        SELECT pi.file_path, pi.alt_text
-        FROM product_categories pc
-        JOIN products p  ON p.id  = pc.product_id
-        JOIN product_images pi ON pi.product_id = p.id AND pi.is_primary = TRUE
-        WHERE pc.category_id = c.id
-          AND p.status = 'published'
-        ORDER BY p.created_at DESC
-        LIMIT 1
-      ) rep_img ON TRUE
-      WHERE hfc.homepage_content_id = ${BigInt(homepageContentId)}
-      ORDER BY hfc.sort_order ASC, c.id ASC
-    `
+  const rows = await prisma.homepage_featured_categories.findMany({
+    where: { homepage_content_id: BigInt(homepageContentId) },
+    orderBy: [{ sort_order: "asc" }, { category_id: "asc" }],
+    select: {
+      categories: {
+        select: featuredCategorySelect,
+      },
+    },
+  });
+  const categories = rows.map((row) => row.categories);
+  const representativeImagesByCategoryId = await loadRepresentativeImagesByCategoryIds(
+    categories.map((category) => category.id)
   );
 
-  return rows.map(mapCategory);
+  return categories.map((category) =>
+    mapFeaturedCategoryRecord(
+      category,
+      representativeImagesByCategoryId.get(toDbId(category.id)) ?? null
+    )
+  );
 }
 
-// $queryRaw requis : LEFT JOIN LATERAL n'est pas supporté par Prisma ORM.
-// La sélection de l'image primaire d'un produit suit un critère complexe de priorité
-// (image produit > image variante publiée, is_primary, sort_order) non exprimable via include.
-// Revoir si Prisma ajoute le support natif LATERAL.
 async function listHomepageFeaturedProducts(
   homepageContentId: string
 ): Promise<PublishedProductSummary[]> {
-  const rows = await prisma.$queryRaw<ProductSummaryRow[]>(
-    Prisma.sql`
-      SELECT
-        p.id::text AS id,
-        p.name,
-        p.slug,
-        p.short_description,
-        p.description,
-        p.product_type,
-        p.simple_sku,
-        p.simple_price::text AS simple_price,
-        p.simple_compare_at_price::text AS simple_compare_at_price,
-        p.simple_stock_quantity,
-        p.is_featured,
-        p.seo_title,
-        p.seo_description,
-        p.created_at,
-        p.updated_at,
-        primary_image.id::text AS primary_image_id,
-        primary_image.product_id::text AS primary_image_product_id,
-        primary_image.variant_id::text AS primary_image_variant_id,
-        primary_image.file_path AS primary_image_file_path,
-        primary_image.alt_text AS primary_image_alt_text,
-        primary_image.sort_order AS primary_image_sort_order,
-        primary_image.is_primary AS primary_image_is_primary,
-        primary_image.created_at AS primary_image_created_at,
-        primary_image.updated_at AS primary_image_updated_at
-      FROM homepage_featured_products hfp
-      JOIN products p ON p.id = hfp.product_id
-      LEFT JOIN LATERAL (
-        SELECT
-          pi.id, pi.product_id, pi.variant_id,
-          pi.file_path, pi.alt_text, pi.sort_order,
-          pi.is_primary, pi.created_at, pi.updated_at
-        FROM product_images pi
-        LEFT JOIN product_variants pv ON pv.id = pi.variant_id
-        WHERE pi.product_id = p.id
-          AND (pi.variant_id IS NULL OR pv.status = 'published')
-        ORDER BY
-          CASE WHEN pi.variant_id IS NULL THEN 0 ELSE 1 END ASC,
-          pi.is_primary DESC,
-          pi.sort_order ASC,
-          pi.id ASC
-        LIMIT 1
-      ) AS primary_image ON TRUE
-      WHERE hfp.homepage_content_id = ${BigInt(homepageContentId)}
-        AND p.status = 'published'
-      ORDER BY hfp.sort_order ASC, p.id ASC
-    `
+  const rows = await prisma.homepage_featured_products.findMany({
+    where: {
+      homepage_content_id: BigInt(homepageContentId),
+      products: { status: "published" },
+    },
+    orderBy: [{ sort_order: "asc" }, { product_id: "asc" }],
+    select: {
+      products: {
+        select: publishedProductSummarySelect,
+      },
+    },
+  });
+  const products = rows.map((row) => row.products);
+  const primaryImagesByProductId = await loadPrimaryProductImagesByProductIds(
+    products.map((product) => product.id)
   );
 
-  return rows.map(mapProductSummaryRow);
+  return products.map((product) =>
+    mapPublishedProductSummaryRecord(
+      product,
+      primaryImagesByProductId.get(toDbId(product.id)) ?? null
+    )
+  );
 }
 
 async function listHomepageFeaturedBlogPosts(
@@ -236,266 +692,80 @@ export async function listCatalogFilterCategories(): Promise<CatalogFilterCatego
   return rows.map(mapCatalogFilterCategory);
 }
 
-// $queryRaw requis : plusieurs LEFT JOIN LATERAL non supportés par Prisma ORM :
-// - sélection image primaire avec priorité produit/variante (CASE WHEN + LATERAL)
-// - calcul legacy_simple_offer via array_agg ordonné (LATERAL)
-// - calcul is_available via bool_or (LATERAL)
-// - filtrage onlyAvailable et ordering featured first non exprimables autrement
-// Revoir si Prisma ajoute le support natif LATERAL et des agrégats ordonnés.
 export async function listPublishedProducts(
   filters: PublishedProductListFilters
 ): Promise<PublishedCatalogProductSummary[]> {
-  const rows = await prisma.$queryRaw<ProductCatalogSummaryRow[]>(
-    Prisma.sql`
-      SELECT
-        catalog_products.id,
-        catalog_products.name,
-        catalog_products.slug,
-        catalog_products.short_description,
-        catalog_products.description,
-        catalog_products.product_type,
-        catalog_products.simple_sku,
-        catalog_products.simple_price,
-        catalog_products.simple_compare_at_price,
-        catalog_products.simple_stock_quantity,
-        catalog_products.is_featured,
-        catalog_products.is_available,
-        catalog_products.legacy_exploitable_variant_count,
-        catalog_products.legacy_variant_sku,
-        catalog_products.legacy_variant_price,
-        catalog_products.legacy_variant_compare_at_price,
-        catalog_products.legacy_variant_stock_quantity,
-        catalog_products.seo_title,
-        catalog_products.seo_description,
-        catalog_products.created_at,
-        catalog_products.updated_at,
-        catalog_products.primary_image_id,
-        catalog_products.primary_image_product_id,
-        catalog_products.primary_image_variant_id,
-        catalog_products.primary_image_file_path,
-        catalog_products.primary_image_alt_text,
-        catalog_products.primary_image_sort_order,
-        catalog_products.primary_image_is_primary,
-        catalog_products.primary_image_created_at,
-        catalog_products.primary_image_updated_at
-      FROM (
-        SELECT
-          p.id::text AS id,
-          p.name,
-          p.slug,
-          p.short_description,
-          p.description,
-          p.product_type,
-          p.simple_sku,
-          p.simple_price::text AS simple_price,
-          p.simple_compare_at_price::text AS simple_compare_at_price,
-          p.simple_stock_quantity,
-          p.is_featured,
-          CASE
-            WHEN p.product_type = 'simple' THEN
-              CASE
-                WHEN p.simple_sku IS NOT NULL
-                  AND btrim(p.simple_sku) <> ''
-                  AND p.simple_price IS NOT NULL
-                  AND p.simple_stock_quantity IS NOT NULL
-                THEN p.simple_stock_quantity > 0
-                WHEN COALESCE(legacy_simple_offer.legacy_exploitable_variant_count, 0) = 1
-                  AND legacy_simple_offer.legacy_variant_sku IS NOT NULL
-                  AND btrim(legacy_simple_offer.legacy_variant_sku) <> ''
-                  AND legacy_simple_offer.legacy_variant_price IS NOT NULL
-                  AND legacy_simple_offer.legacy_variant_stock_quantity IS NOT NULL
-                THEN legacy_simple_offer.legacy_variant_stock_quantity > 0
-                ELSE FALSE
-              END
-            ELSE COALESCE(published_variants.has_available_variant, FALSE)
-          END AS is_available,
-          COALESCE(legacy_simple_offer.legacy_exploitable_variant_count, 0)
-            AS legacy_exploitable_variant_count,
-          legacy_simple_offer.legacy_variant_sku,
-          legacy_simple_offer.legacy_variant_price,
-          legacy_simple_offer.legacy_variant_compare_at_price,
-          legacy_simple_offer.legacy_variant_stock_quantity,
-          p.seo_title,
-          p.seo_description,
-          p.created_at,
-          p.updated_at,
-          primary_image.id::text AS primary_image_id,
-          primary_image.product_id::text AS primary_image_product_id,
-          primary_image.variant_id::text AS primary_image_variant_id,
-          primary_image.file_path AS primary_image_file_path,
-          primary_image.alt_text AS primary_image_alt_text,
-          primary_image.sort_order AS primary_image_sort_order,
-          primary_image.is_primary AS primary_image_is_primary,
-          primary_image.created_at AS primary_image_created_at,
-          primary_image.updated_at AS primary_image_updated_at
-        FROM products p
-        LEFT JOIN LATERAL (
-          SELECT
-            pi.id, pi.product_id, pi.variant_id,
-            pi.file_path, pi.alt_text, pi.sort_order,
-            pi.is_primary, pi.created_at, pi.updated_at
-          FROM product_images pi
-          LEFT JOIN product_variants pv ON pv.id = pi.variant_id
-          WHERE pi.product_id = p.id
-            AND (pi.variant_id IS NULL OR pv.status = 'published')
-          ORDER BY
-            CASE WHEN pi.variant_id IS NULL THEN 0 ELSE 1 END ASC,
-            pi.is_primary DESC,
-            pi.sort_order ASC,
-            pi.id ASC
-          LIMIT 1
-        ) AS primary_image ON TRUE
-        LEFT JOIN LATERAL (
-          SELECT
-            COUNT(*)::int AS legacy_exploitable_variant_count,
-            (ARRAY_AGG(pv.sku ORDER BY pv.is_default DESC, pv.id ASC))[1] AS legacy_variant_sku,
-            (ARRAY_AGG(pv.price::text ORDER BY pv.is_default DESC, pv.id ASC))[1] AS legacy_variant_price,
-            (ARRAY_AGG(pv.compare_at_price::text ORDER BY pv.is_default DESC, pv.id ASC))[1] AS legacy_variant_compare_at_price,
-            (ARRAY_AGG(pv.stock_quantity ORDER BY pv.is_default DESC, pv.id ASC))[1] AS legacy_variant_stock_quantity
-          FROM product_variants pv
-          WHERE pv.product_id = p.id
-            AND pv.status = 'published'
-            AND pv.sku IS NOT NULL
-            AND btrim(pv.sku) <> ''
-            AND pv.price IS NOT NULL
-            AND pv.stock_quantity IS NOT NULL
-        ) AS legacy_simple_offer ON TRUE
-        LEFT JOIN LATERAL (
-          SELECT COALESCE(BOOL_OR(pv.stock_quantity > 0), FALSE) AS has_available_variant
-          FROM product_variants pv
-          WHERE pv.product_id = p.id AND pv.status = 'published'
-        ) AS published_variants ON TRUE
-        WHERE p.status = 'published'
-          AND (
-            ${filters.searchQuery}::text IS NULL
-            OR p.name ILIKE '%' || ${filters.searchQuery} || '%'
-            OR p.slug ILIKE '%' || ${filters.searchQuery} || '%'
-            OR EXISTS (
-              SELECT 1
-              FROM product_categories pc
-              JOIN categories c ON c.id = pc.category_id
-              WHERE pc.product_id = p.id
-                AND (
-                  c.name ILIKE '%' || ${filters.searchQuery} || '%'
-                  OR c.slug ILIKE '%' || ${filters.searchQuery} || '%'
-                )
-            )
-            OR EXISTS (
-              SELECT 1
-              FROM product_variants pv
-              WHERE pv.product_id = p.id
-                AND pv.status = 'published'
-                AND pv.color_name ILIKE '%' || ${filters.searchQuery} || '%'
-            )
-          )
-          AND (
-            ${filters.categorySlug}::text IS NULL
-            OR EXISTS (
-              SELECT 1
-              FROM product_categories pc
-              JOIN categories c ON c.id = pc.category_id
-              WHERE pc.product_id = p.id AND c.slug = ${filters.categorySlug}
-            )
-          )
-      ) AS catalog_products
-      WHERE NOT ${filters.onlyAvailable} OR catalog_products.is_available
-      ORDER BY
-        CASE
-          WHEN ${filters.searchQuery}::text IS NULL
-            AND ${filters.categorySlug}::text IS NULL
-            AND NOT ${filters.onlyAvailable}
-            AND catalog_products.is_featured
-          THEN 0
-          ELSE 1
-        END ASC,
-        catalog_products.created_at DESC,
-        catalog_products.id DESC
-    `
-  );
+  const where = await buildPublishedProductsWhere(filters);
+  const products = await prisma.products.findMany({
+    where,
+    orderBy: getPublishedProductsOrderBy(filters),
+    select: publishedProductSummarySelect,
+  });
+  const productIds = products.map((product) => product.id);
+  const [primaryImagesByProductId, variantOffersByProductId] = await Promise.all([
+    loadPrimaryProductImagesByProductIds(productIds),
+    loadPublishedVariantOffersByProductIds(productIds),
+  ]);
 
-  return rows.map(mapCatalogProductSummaryRow);
+  const publishedProducts = products.map((product) => {
+    const productId = toDbId(product.id);
+    const publishedVariantOffers = variantOffersByProductId.get(productId) ?? [];
+    const simpleOffer = resolvePublishedSimpleOffer({
+      productType: toPublishedProductType(product.product_type),
+      native: getNativeSimpleOfferFields(product),
+      legacyOffers: publishedVariantOffers.map(getVariantSimpleOfferFields),
+    });
+    const isAvailable =
+      product.product_type === "simple"
+        ? simpleOffer?.isAvailable ?? false
+        : publishedVariantOffers.some((variant) => variant.stock_quantity > 0);
+
+    return {
+      ...mapPublishedProductSummaryRecord(
+        product,
+        primaryImagesByProductId.get(productId) ?? null
+      ),
+      isAvailable,
+      simpleOffer,
+    } satisfies PublishedCatalogProductSummary;
+  });
+
+  if (!filters.onlyAvailable) {
+    return publishedProducts;
+  }
+
+  return publishedProducts.filter((product) => product.isAvailable);
 }
 
 // --- Product detail reads ---
 
-// $queryRaw requis : LEFT JOIN LATERAL n'est pas supporté par Prisma ORM.
-// Sélection de l'image primaire d'un produit avec priorité complexe.
-// Revoir si Prisma ajoute le support natif LATERAL.
-async function getPublishedProductSummaryRowBySlug(
-  slug: string
-): Promise<ProductSummaryRow | null> {
-  const rows = await prisma.$queryRaw<ProductSummaryRow[]>(
-    Prisma.sql`
-      SELECT
-        p.id::text AS id,
-        p.name,
-        p.slug,
-        p.short_description,
-        p.description,
-        p.product_type,
-        p.simple_sku,
-        p.simple_price::text AS simple_price,
-        p.simple_compare_at_price::text AS simple_compare_at_price,
-        p.simple_stock_quantity,
-        p.is_featured,
-        p.seo_title,
-        p.seo_description,
-        p.created_at,
-        p.updated_at,
-        primary_image.id::text AS primary_image_id,
-        primary_image.product_id::text AS primary_image_product_id,
-        primary_image.variant_id::text AS primary_image_variant_id,
-        primary_image.file_path AS primary_image_file_path,
-        primary_image.alt_text AS primary_image_alt_text,
-        primary_image.sort_order AS primary_image_sort_order,
-        primary_image.is_primary AS primary_image_is_primary,
-        primary_image.created_at AS primary_image_created_at,
-        primary_image.updated_at AS primary_image_updated_at
-      FROM products p
-      LEFT JOIN LATERAL (
-        SELECT
-          pi.id, pi.product_id, pi.variant_id,
-          pi.file_path, pi.alt_text, pi.sort_order,
-          pi.is_primary, pi.created_at, pi.updated_at
-        FROM product_images pi
-        LEFT JOIN product_variants pv ON pv.id = pi.variant_id
-        WHERE pi.product_id = p.id
-          AND (pi.variant_id IS NULL OR pv.status = 'published')
-        ORDER BY
-          CASE WHEN pi.variant_id IS NULL THEN 0 ELSE 1 END ASC,
-          pi.is_primary DESC,
-          pi.sort_order ASC,
-          pi.id ASC
-        LIMIT 1
-      ) AS primary_image ON TRUE
-      WHERE p.status = 'published'
-        AND p.slug = ${slug}
-      LIMIT 1
-    `
-  );
-
-  return rows[0] ?? null;
-}
-
 export async function getPublishedProductBySlug(
   slug: string
 ): Promise<PublishedProductDetail | null> {
-  const productRow = await getPublishedProductSummaryRowBySlug(slug);
+  const productRow = await prisma.products.findFirst({
+    where: {
+      status: "published",
+      slug,
+    },
+    select: publishedProductSummarySelect,
+  });
 
   if (productRow === null) {
     return null;
   }
 
-  const productId = BigInt(productRow.id);
+  const productId = productRow.id;
 
-  const [parentImages, variantRows, variantImageRows] = await Promise.all([
+  const [parentImageRows, variantRows, variantImageRows] = await Promise.all([
     prisma.product_images.findMany({
       where: { product_id: productId, variant_id: null },
       orderBy: [{ sort_order: "asc" }, { id: "asc" }],
+      select: primaryProductImageSelect,
     }),
     prisma.product_variants.findMany({
       where: { product_id: productId, status: "published" },
       orderBy: [{ is_default: "desc" }, { id: "asc" }],
+      select: publishedVariantDetailSelect,
     }),
     prisma.product_images.findMany({
       where: {
@@ -504,94 +774,54 @@ export async function getPublishedProductBySlug(
         product_variants: { status: "published" },
       },
       orderBy: [{ sort_order: "asc" }, { id: "asc" }],
+      select: primaryProductImageSelect,
     }),
   ]);
 
   const allVariantImages = variantImageRows.map(mapPrismaProductImage);
   const imagesByVariantId = groupVariantImagesByVariantId(allVariantImages);
-  const variants = variantRows.map((pv) =>
+  const variants = variantRows.map((pv: PublishedVariantDetailRecord) =>
     mapPrismaProductVariant(pv, imagesByVariantId.get(pv.id.toString()) ?? [])
   );
   const simpleOffer = resolvePublishedSimpleOffer({
-    productType: productRow.product_type,
-    native: {
-      sku: productRow.simple_sku,
-      price: productRow.simple_price,
-      compareAtPrice: productRow.simple_compare_at_price,
-      stockQuantity: productRow.simple_stock_quantity,
-    },
+    productType: toPublishedProductType(productRow.product_type),
+    native: getNativeSimpleOfferFields(productRow),
     legacyOffers: variantRows.map(getVariantSimpleOfferFields),
   });
+  const primaryImage = selectPrimaryProductImage([...parentImageRows, ...variantImageRows]);
 
   return {
-    ...mapProductSummaryRow(productRow),
+    ...mapPublishedProductSummaryRecord(productRow, primaryImage),
     isAvailable: getPublishedProductAvailability({
-      productType: productRow.product_type,
+      productType: toPublishedProductType(productRow.product_type),
       simpleOffer,
       variants,
     }),
     simpleOffer,
-    images: parentImages.map(mapPrismaProductImage),
+    images: parentImageRows.map(mapPrismaProductImage),
     variants,
   };
 }
 
-// $queryRaw requis : LEFT JOIN LATERAL pour la sélection d'image primaire.
-// Revoir si Prisma ajoute le support natif LATERAL.
 export async function listRecentPublishedProducts(
   limit: number
 ): Promise<PublishedProductSummary[]> {
-  const rows = await prisma.$queryRaw<ProductSummaryRow[]>(
-    Prisma.sql`
-      SELECT
-        p.id::text AS id,
-        p.name,
-        p.slug,
-        p.short_description,
-        p.description,
-        p.product_type,
-        p.simple_sku,
-        p.simple_price::text AS simple_price,
-        p.simple_compare_at_price::text AS simple_compare_at_price,
-        p.simple_stock_quantity,
-        p.is_featured,
-        p.seo_title,
-        p.seo_description,
-        p.created_at,
-        p.updated_at,
-        primary_image.id::text AS primary_image_id,
-        primary_image.product_id::text AS primary_image_product_id,
-        primary_image.variant_id::text AS primary_image_variant_id,
-        primary_image.file_path AS primary_image_file_path,
-        primary_image.alt_text AS primary_image_alt_text,
-        primary_image.sort_order AS primary_image_sort_order,
-        primary_image.is_primary AS primary_image_is_primary,
-        primary_image.created_at AS primary_image_created_at,
-        primary_image.updated_at AS primary_image_updated_at
-      FROM products p
-      LEFT JOIN LATERAL (
-        SELECT
-          pi.id, pi.product_id, pi.variant_id,
-          pi.file_path, pi.alt_text, pi.sort_order,
-          pi.is_primary, pi.created_at, pi.updated_at
-        FROM product_images pi
-        LEFT JOIN product_variants pv ON pv.id = pi.variant_id
-        WHERE pi.product_id = p.id
-          AND (pi.variant_id IS NULL OR pv.status = 'published')
-        ORDER BY
-          CASE WHEN pi.variant_id IS NULL THEN 0 ELSE 1 END ASC,
-          pi.is_primary DESC,
-          pi.sort_order ASC,
-          pi.id ASC
-        LIMIT 1
-      ) AS primary_image ON TRUE
-      WHERE p.status = 'published'
-      ORDER BY p.created_at DESC
-      LIMIT ${limit}
-    `
+  const products = await prisma.products.findMany({
+    where: { status: "published" },
+    orderBy: [{ created_at: "desc" }],
+    take: limit,
+    select: publishedProductSummarySelect,
+  });
+  const primaryImagesByProductId = await loadPrimaryProductImagesByProductIds(
+    products.map((product) => product.id)
   );
 
-  return rows.map(mapProductSummaryRow);
+  return products.map((product) =>
+    mapPublishedProductSummaryRecord(
+      product,
+      primaryImagesByProductId.get(toDbId(product.id)) ?? null
+    )
+  );
 }
 
 // --- Blog reads ---

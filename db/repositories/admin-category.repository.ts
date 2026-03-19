@@ -3,24 +3,6 @@ import { prisma } from "@/db/prisma-client";
 
 // --- Internal types ---
 
-// pg may return Date or string for timestamp columns depending on driver configuration
-// (kept for AdminCategoryRow used by $queryRaw reads)
-type TimestampValue = Date | string;
-
-type AdminCategoryRow = {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  is_featured: boolean;
-  image_path: string | null;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-  // Present only when fetched via the lateral-join read queries
-  rep_image_file_path?: string | null;
-  rep_image_alt_text?: string | null;
-};
-
 // Type structurel interne aligné sur ce que Prisma retourne pour categories (sans relations)
 type PrismaCategoryData = {
   id: bigint;
@@ -61,35 +43,52 @@ function isValidCategoryId(id: string): boolean {
   return /^[0-9]+$/.test(id);
 }
 
-function toIsoTimestamp(value: TimestampValue): string {
-  if (value instanceof Date) {
-    return value.toISOString();
+type AdminCategoryRepresentativeImage = NonNullable<AdminCategory["representativeImage"]>;
+
+type RepresentativeImageCandidate = {
+  productId: bigint;
+  createdAt: Date;
+  representativeImage: AdminCategoryRepresentativeImage;
+};
+
+function sortCategoriesForAdmin(rows: readonly PrismaCategoryData[]): PrismaCategoryData[] {
+  return [...rows].sort((a, b) => {
+    const nameCompare = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+
+    if (nameCompare !== 0) {
+      return nameCompare;
+    }
+
+    if (a.id < b.id) {
+      return -1;
+    }
+
+    if (a.id > b.id) {
+      return 1;
+    }
+
+    return 0;
+  });
+}
+
+function isRepresentativeImageCandidateBetter(
+  candidate: RepresentativeImageCandidate,
+  current: RepresentativeImageCandidate
+): boolean {
+  const candidateTime = candidate.createdAt.getTime();
+  const currentTime = current.createdAt.getTime();
+
+  if (candidateTime !== currentTime) {
+    return candidateTime > currentTime;
   }
 
-  return new Date(value).toISOString();
+  return candidate.productId > current.productId;
 }
 
-// Mapper for $queryRaw read results (includes representativeImage from lateral join)
-function mapAdminCategory(row: AdminCategoryRow): AdminCategory {
-  return {
-    id: row.id,
-    name: row.name,
-    slug: row.slug,
-    description: row.description,
-    isFeatured: row.is_featured,
-    imagePath: row.image_path,
-    representativeImage:
-      row.rep_image_file_path != null
-        ? { filePath: row.rep_image_file_path, altText: row.rep_image_alt_text ?? null }
-        : null,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-  };
-}
-
-// Mapper for Prisma mutation results
-// representativeImage is null: mutations do not perform the LEFT JOIN LATERAL
-function mapPrismaCategoryToPublic(row: PrismaCategoryData): AdminCategory {
+function mapPrismaCategoryToPublic(
+  row: PrismaCategoryData,
+  representativeImage: AdminCategory["representativeImage"] = null
+): AdminCategory {
   return {
     id: row.id.toString(),
     name: row.name,
@@ -97,31 +96,123 @@ function mapPrismaCategoryToPublic(row: PrismaCategoryData): AdminCategory {
     description: row.description,
     isFeatured: row.is_featured,
     imagePath: row.image_path,
-    representativeImage: null,
+    representativeImage,
     createdAt: row.created_at.toISOString(),
     updatedAt: row.updated_at.toISOString(),
   };
 }
 
-// $queryRaw requis : LEFT JOIN LATERAL n'est pas supporté par Prisma ORM.
-// Toute réécriture Prisma de cette requête modifierait le contrat fonctionnel
-// (représentative image sélectionnée par critère LATERAL, non par include simple).
-// Revoir si Prisma ajoute le support natif LATERAL.
-// Prisma.sql fragment — embedded in $queryRaw calls below
-// LEFT JOIN LATERAL: image primaire du produit publié le plus récent dans la catégorie
-// Non exprimable proprement via include Prisma (orderBy sur relation imbriquée non supporté)
-const REP_IMAGE_LATERAL_SQL = Prisma.sql`
-  LEFT JOIN LATERAL (
-    SELECT pi.file_path, pi.alt_text
-    FROM   product_categories pc
-    JOIN   products p        ON p.id  = pc.product_id
-    JOIN   product_images pi ON pi.product_id = p.id AND pi.is_primary = true
-    WHERE  pc.category_id = c.id
-      AND  p.status = 'published'
-    ORDER BY p.created_at DESC
-    LIMIT 1
-  ) rep_img ON TRUE
-`;
+async function loadRepresentativeImagesByCategoryIds(
+  categoryIds: readonly string[]
+): Promise<Map<string, AdminCategory["representativeImage"]>> {
+  const representativeImagesByCategoryId = new Map<
+    string,
+    AdminCategory["representativeImage"]
+  >();
+
+  if (categoryIds.length === 0) {
+    return representativeImagesByCategoryId;
+  }
+
+  const categoryIdValues = categoryIds.map((categoryId) => BigInt(categoryId));
+
+  const productLinks = await prisma.product_categories.findMany({
+    where: { category_id: { in: categoryIdValues } },
+    select: { category_id: true, product_id: true },
+  });
+
+  if (productLinks.length === 0) {
+    for (const categoryId of categoryIds) {
+      representativeImagesByCategoryId.set(categoryId, null);
+    }
+
+    return representativeImagesByCategoryId;
+  }
+
+  const productIds = [...new Set(productLinks.map((link) => link.product_id.toString()))].map(
+    (productId) => BigInt(productId)
+  );
+
+  const publishedProducts = await prisma.products.findMany({
+    where: {
+      id: { in: productIds },
+      status: "published",
+    },
+    select: { id: true, created_at: true },
+  });
+
+  if (publishedProducts.length === 0) {
+    for (const categoryId of categoryIds) {
+      representativeImagesByCategoryId.set(categoryId, null);
+    }
+
+    return representativeImagesByCategoryId;
+  }
+
+  const publishedProductIds = publishedProducts.map((product) => product.id);
+  const primaryProductImages = await prisma.product_images.findMany({
+    where: {
+      product_id: { in: publishedProductIds },
+      is_primary: true,
+      variant_id: null,
+    },
+    select: { product_id: true, file_path: true, alt_text: true },
+  });
+
+  const imageByProductId = new Map<string, AdminCategoryRepresentativeImage>();
+
+  for (const image of primaryProductImages) {
+    imageByProductId.set(image.product_id.toString(), {
+      filePath: image.file_path,
+      altText: image.alt_text,
+    });
+  }
+
+  const candidateByProductId = new Map<string, RepresentativeImageCandidate>();
+
+  for (const product of publishedProducts) {
+    const representativeImage = imageByProductId.get(product.id.toString());
+
+    if (representativeImage === undefined) {
+      continue;
+    }
+
+    candidateByProductId.set(product.id.toString(), {
+      productId: product.id,
+      createdAt: product.created_at,
+      representativeImage,
+    });
+  }
+
+  const bestCandidateByCategoryId = new Map<string, RepresentativeImageCandidate>();
+
+  for (const link of productLinks) {
+    const categoryId = link.category_id.toString();
+    const candidate = candidateByProductId.get(link.product_id.toString());
+
+    if (candidate === undefined) {
+      continue;
+    }
+
+    const current = bestCandidateByCategoryId.get(categoryId);
+
+    if (
+      current === undefined ||
+      isRepresentativeImageCandidateBetter(candidate, current)
+    ) {
+      bestCandidateByCategoryId.set(categoryId, candidate);
+    }
+  }
+
+  for (const categoryId of categoryIds) {
+    representativeImagesByCategoryId.set(
+      categoryId,
+      bestCandidateByCategoryId.get(categoryId)?.representativeImage ?? null
+    );
+  }
+
+  return representativeImagesByCategoryId;
+}
 
 // Absorbs known Prisma errors and maps them to public domain errors.
 // P2002: unique constraint violation — categories has only one unique constraint (slug)
@@ -146,16 +237,17 @@ function mapPrismaRepositoryError(error: unknown): never {
 // --- Public functions ---
 
 export async function listAdminCategories(): Promise<AdminCategory[]> {
-  const rows = await prisma.$queryRaw<AdminCategoryRow[]>(Prisma.sql`
-    SELECT id::text AS id, name, slug, description, is_featured, image_path, created_at, updated_at,
-           rep_img.file_path AS rep_image_file_path,
-           rep_img.alt_text  AS rep_image_alt_text
-    FROM   categories c
-    ${REP_IMAGE_LATERAL_SQL}
-    ORDER BY lower(c.name) ASC, c.id ASC
-  `);
+  const categories = sortCategoriesForAdmin(await prisma.categories.findMany());
+  const representativeImagesByCategoryId = await loadRepresentativeImagesByCategoryIds(
+    categories.map((category) => category.id.toString())
+  );
 
-  return rows.map(mapAdminCategory);
+  return categories.map((category) =>
+    mapPrismaCategoryToPublic(
+      category,
+      representativeImagesByCategoryId.get(category.id.toString()) ?? null
+    )
+  );
 }
 
 export async function findAdminCategoryById(id: string): Promise<AdminCategory | null> {
@@ -163,18 +255,17 @@ export async function findAdminCategoryById(id: string): Promise<AdminCategory |
     return null;
   }
 
-  const rows = await prisma.$queryRaw<AdminCategoryRow[]>(Prisma.sql`
-    SELECT id::text AS id, name, slug, description, is_featured, image_path, created_at, updated_at,
-           rep_img.file_path AS rep_image_file_path,
-           rep_img.alt_text  AS rep_image_alt_text
-    FROM   categories c
-    ${REP_IMAGE_LATERAL_SQL}
-    WHERE  c.id = ${BigInt(id)}
-    LIMIT  1
-  `);
+  const category = await prisma.categories.findUnique({
+    where: { id: BigInt(id) },
+  });
 
-  const row = rows[0] ?? null;
-  return row !== null ? mapAdminCategory(row) : null;
+  if (category === null) {
+    return null;
+  }
+
+  const representativeImagesByCategoryId = await loadRepresentativeImagesByCategoryIds([id]);
+
+  return mapPrismaCategoryToPublic(category, representativeImagesByCategoryId.get(id) ?? null);
 }
 
 export async function createAdminCategory(input: CreateAdminCategoryInput): Promise<AdminCategory> {

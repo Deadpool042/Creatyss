@@ -1,10 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  AdminProductRepositoryError,
-  deleteAdminProduct,
-} from "@/db/repositories/products/admin-product.repository";
+import { deleteAdminProduct } from "@/db/repositories/products/admin-product.repository";
+import { AdminProductRepositoryError } from "@/db/repositories/products/admin-product.types";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 
 export async function deleteProductAction(formData: FormData): Promise<void> {

@@ -1,33 +1,5 @@
 import { prisma } from "@/db/prisma-client";
 
-type CreateAdminProductImageInput = {
-  productId: string;
-  variantId: string | null;
-  filePath: string;
-  altText: string | null;
-  sortOrder: number;
-  isPrimary: boolean;
-};
-
-type UpdateAdminProductImageInput = {
-  id: string;
-  productId: string;
-  altText: string | null;
-  sortOrder: number;
-  isPrimary: boolean;
-};
-
-type UpsertAdminPrimaryProductImageInput = {
-  productId: string;
-  filePath: string;
-};
-
-type UpsertAdminPrimaryVariantImageInput = {
-  productId: string;
-  variantId: string;
-  filePath: string;
-};
-
 // Structural type aligned with what Prisma returns for product_images (without relations)
 type PrismaProductImageData = {
   id: bigint;
@@ -44,9 +16,11 @@ type PrismaProductImageData = {
 import {
   AdminProductImageRepositoryError,
   type AdminProductImage,
+  type CreateAdminProductImageInput,
+  type UpdateAdminProductImageInput,
+  type UpsertAdminPrimaryProductImageInput,
+  type UpsertAdminPrimaryVariantImageInput,
 } from "./admin-product-image.types";
-export { AdminProductImageRepositoryError };
-export type { AdminProductImage };
 
 function isValidNumericId(value: string): boolean {
   return /^[0-9]+$/.test(value);

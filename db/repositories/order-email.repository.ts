@@ -1,6 +1,12 @@
 import { prisma } from "@/db/prisma-client";
-import type { OrderEmailEventType, OrderEmailEventStatus, OrderEmailEvent } from "./order-email.types";
-export type { OrderEmailEventType, OrderEmailEventStatus, OrderEmailEvent };
+import type {
+  CreateOrderEmailEventIfAbsentInput,
+  MarkOrderEmailEventFailedInput,
+  MarkOrderEmailEventSentInput,
+  OrderEmailEvent,
+  OrderEmailEventStatus,
+  OrderEmailEventType,
+} from "./order-email.types";
 
 function mapPrismaOrderEmailEvent(row: {
   id: bigint;
@@ -30,11 +36,9 @@ function mapPrismaOrderEmailEvent(row: {
   };
 }
 
-export async function createOrderEmailEventIfAbsent(input: {
-  orderId: string;
-  eventType: OrderEmailEventType;
-  recipientEmail: string;
-}): Promise<OrderEmailEvent | null> {
+export async function createOrderEmailEventIfAbsent(
+  input: CreateOrderEmailEventIfAbsentInput
+): Promise<OrderEmailEvent | null> {
   if (!/^[0-9]+$/.test(input.orderId)) {
     return null;
   }
@@ -68,10 +72,7 @@ export async function createOrderEmailEventIfAbsent(input: {
   return row !== null ? mapPrismaOrderEmailEvent(row) : null;
 }
 
-export async function markOrderEmailEventSent(input: {
-  id: string;
-  providerMessageId: string | null;
-}): Promise<void> {
+export async function markOrderEmailEventSent(input: MarkOrderEmailEventSentInput): Promise<void> {
   if (!/^[0-9]+$/.test(input.id)) {
     return;
   }
@@ -87,10 +88,9 @@ export async function markOrderEmailEventSent(input: {
   });
 }
 
-export async function markOrderEmailEventFailed(input: {
-  id: string;
-  lastError: string;
-}): Promise<void> {
+export async function markOrderEmailEventFailed(
+  input: MarkOrderEmailEventFailedInput
+): Promise<void> {
   if (!/^[0-9]+$/.test(input.id)) {
     return;
   }

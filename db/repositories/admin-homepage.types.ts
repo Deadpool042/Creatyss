@@ -4,7 +4,7 @@ import type {
   HomepageFeaturedProductSelection,
 } from "@/entities/homepage/homepage-types";
 
-type HomepageStatus = "draft" | "published";
+export type AdminHomepageStatus = "draft" | "published";
 
 export type AdminHomepageFeaturedProductSelection = HomepageFeaturedProductSelection;
 
@@ -30,6 +30,18 @@ export type AdminHomepageBlogPostOption = {
   slug: string;
 };
 
+export type UpdateAdminHomepageInput = {
+  id: string;
+  heroTitle: string | null;
+  heroText: string | null;
+  heroImagePath: string | null;
+  editorialTitle: string | null;
+  editorialText: string | null;
+  featuredProducts: AdminHomepageFeaturedProductSelection[];
+  featuredCategories: AdminHomepageFeaturedCategorySelection[];
+  featuredBlogPosts: AdminHomepageFeaturedBlogPostSelection[];
+};
+
 export type AdminHomepageDetail = {
   id: string;
   heroTitle: string | null;
@@ -37,7 +49,7 @@ export type AdminHomepageDetail = {
   heroImagePath: string | null;
   editorialTitle: string | null;
   editorialText: string | null;
-  status: HomepageStatus;
+  status: AdminHomepageStatus;
   createdAt: string;
   updatedAt: string;
   featuredProducts: AdminHomepageFeaturedProductSelection[];
@@ -52,16 +64,16 @@ export type AdminHomepageEditorData = {
   blogPostOptions: AdminHomepageBlogPostOption[];
 };
 
-type HomepageRepositoryErrorCode =
+export type AdminHomepageRepositoryErrorCode =
   | "homepage_missing"
   | "product_missing"
   | "category_missing"
   | "blog_post_missing";
 
 export class AdminHomepageRepositoryError extends Error {
-  readonly code: HomepageRepositoryErrorCode;
+  readonly code: AdminHomepageRepositoryErrorCode;
 
-  constructor(code: HomepageRepositoryErrorCode, message: string) {
+  constructor(code: AdminHomepageRepositoryErrorCode, message: string) {
     super(message);
     this.code = code;
   }

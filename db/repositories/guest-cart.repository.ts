@@ -3,6 +3,7 @@ import { prisma } from "@/db/prisma-client";
 import { normalizeMoneyString, moneyStringToCents, centsToMoneyString } from "@/lib/money";
 
 import type {
+  AddGuestCartItemQuantityInput,
   GuestCartVariant,
   GuestCartItemReference,
   GuestCartLine,
@@ -10,16 +11,10 @@ import type {
   GuestCheckoutDetails,
   GuestCheckoutIssueCode,
   GuestCheckoutContext,
+  RemoveGuestCartItemInput,
+  UpdateGuestCartItemQuantityInput,
+  UpsertGuestCheckoutDetailsInput,
 } from "./guest-cart.types";
-export type {
-  GuestCartVariant,
-  GuestCartItemReference,
-  GuestCartLine,
-  GuestCart,
-  GuestCheckoutDetails,
-  GuestCheckoutIssueCode,
-  GuestCheckoutContext,
-};
 
 function isValidNumericId(value: string): boolean {
   return /^[0-9]+$/.test(value);
@@ -299,11 +294,9 @@ export async function findGuestCartItemById(
   };
 }
 
-export async function addGuestCartItemQuantity(input: {
-  cartId: string;
-  variantId: string;
-  quantity: number;
-}): Promise<void> {
+export async function addGuestCartItemQuantity(
+  input: AddGuestCartItemQuantityInput
+): Promise<void> {
   // Prisma atomic increment on conflict — equivalent to:
   // INSERT ... ON CONFLICT DO UPDATE SET quantity = quantity + excluded.quantity
   await prisma.cart_items.upsert({
@@ -322,11 +315,9 @@ export async function addGuestCartItemQuantity(input: {
   });
 }
 
-export async function updateGuestCartItemQuantity(input: {
-  cartId: string;
-  itemId: string;
-  quantity: number;
-}): Promise<boolean> {
+export async function updateGuestCartItemQuantity(
+  input: UpdateGuestCartItemQuantityInput
+): Promise<boolean> {
   if (!isValidNumericId(input.cartId) || !isValidNumericId(input.itemId)) {
     return false;
   }
@@ -339,10 +330,7 @@ export async function updateGuestCartItemQuantity(input: {
   return result.count > 0;
 }
 
-export async function removeGuestCartItem(input: {
-  cartId: string;
-  itemId: string;
-}): Promise<boolean> {
+export async function removeGuestCartItem(input: RemoveGuestCartItemInput): Promise<boolean> {
   if (!isValidNumericId(input.cartId) || !isValidNumericId(input.itemId)) {
     return false;
   }
@@ -406,27 +394,9 @@ export async function readGuestCheckoutDetailsByCartId(
   return row !== null ? mapPrismaCheckoutDetails(row) : null;
 }
 
-export async function upsertGuestCheckoutDetails(input: {
-  cartId: string;
-  customerEmail: string;
-  customerFirstName: string;
-  customerLastName: string;
-  customerPhone: string | null;
-  shippingAddressLine1: string;
-  shippingAddressLine2: string | null;
-  shippingPostalCode: string;
-  shippingCity: string;
-  shippingCountryCode: "FR";
-  billingSameAsShipping: boolean;
-  billingFirstName: string | null;
-  billingLastName: string | null;
-  billingPhone: string | null;
-  billingAddressLine1: string | null;
-  billingAddressLine2: string | null;
-  billingPostalCode: string | null;
-  billingCity: string | null;
-  billingCountryCode: "FR" | null;
-}): Promise<GuestCheckoutDetails> {
+export async function upsertGuestCheckoutDetails(
+  input: UpsertGuestCheckoutDetailsInput
+): Promise<GuestCheckoutDetails> {
   const data = {
     customer_email: input.customerEmail,
     customer_first_name: input.customerFirstName,

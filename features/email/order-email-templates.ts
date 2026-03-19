@@ -1,4 +1,4 @@
-import type { OrderEmailEventType } from "@/db/repositories/order-email.repository";
+import type { OrderEmailEventType } from "@/db/repositories/order-email.types";
 
 type OrderEmailTemplateInput = {
   eventType: OrderEmailEventType;

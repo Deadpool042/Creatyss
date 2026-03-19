@@ -2,10 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
-import {
-  AdminBlogRepositoryError,
-  createAdminBlogPost,
-} from "@/db/repositories/admin-blog.repository";
+import { createAdminBlogPost } from "@/db/repositories/admin-blog.repository";
+import { AdminBlogRepositoryError } from "@/db/repositories/admin-blog.types";
 import { normalizeBlogPostSlug } from "@/entities/blog/blog-post-input";
 
 import { BlogPostFormSchema, parseCoverImageSelection } from "../schemas/blog-post-form-schema";

@@ -12,3 +12,19 @@ export type PaymentStartContext = {
   stripeCheckoutSessionId: string | null;
   stripePaymentIntentId: string | null;
 };
+
+export type SaveStripeCheckoutSessionForOrderInput = {
+  orderId: string;
+  stripeCheckoutSessionId: string;
+  stripePaymentIntentId: string | null;
+};
+
+export type MarkPaymentSucceededByCheckoutSessionIdInput = {
+  stripeCheckoutSessionId: string;
+  stripePaymentIntentId: string | null;
+};
+
+export type MarkPaymentFailedByCheckoutSessionIdInput = {
+  stripeCheckoutSessionId: string;
+  stripePaymentIntentId: string | null;
+};

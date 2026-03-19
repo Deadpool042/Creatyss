@@ -13,44 +13,19 @@ import { canChangeProductTypeToSimple } from "@/entities/product/product-type-ru
 import { type ProductType } from "@/entities/product/product-input";
 import {
   AdminProductRepositoryError,
+  type AdminProductPublishContext,
+  type AdminProductStatus,
   type AdminProductSummary,
   type AdminProductCategoryAssignment,
   type AdminProductDetail,
+  type CreateAdminProductInput,
+  type UpdateAdminProductInput,
+  type UpdateAdminSimpleProductOfferInput,
 } from "./admin-product.types";
-export { AdminProductRepositoryError };
-export type { AdminProductSummary, AdminProductCategoryAssignment, AdminProductDetail };
-
-type AdminProductStatus = "draft" | "published";
-
 
 type AdminProductTypeRow = {
   id: string;
   product_type: ProductType;
-};
-
-type CreateAdminProductInput = {
-  name: string;
-  slug: string;
-  shortDescription: string | null;
-  description: string | null;
-  seoTitle: string | null;
-  seoDescription: string | null;
-  status: AdminProductStatus;
-  productType: ProductType;
-  isFeatured: boolean;
-  categoryIds: string[];
-};
-
-type UpdateAdminProductInput = CreateAdminProductInput & {
-  id: string;
-};
-
-type UpdateAdminSimpleProductOfferInput = {
-  id: string;
-  sku: string;
-  price: string;
-  compareAtPrice: string | null;
-  stockQuantity: number;
 };
 
 // --- Internal helpers ---
@@ -272,12 +247,6 @@ async function loadAdminProductDetailInTx(
 }
 
 // --- Public functions ---
-
-export type AdminProductPublishContext = {
-  status: "draft" | "published";
-  productType: ProductType;
-  variantCount: number;
-};
 
 export async function findAdminProductPublishContext(
   id: string

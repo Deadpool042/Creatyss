@@ -15,3 +15,19 @@ export type OrderEmailEvent = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type CreateOrderEmailEventIfAbsentInput = {
+  orderId: string;
+  eventType: OrderEmailEventType;
+  recipientEmail: string;
+};
+
+export type MarkOrderEmailEventSentInput = {
+  id: string;
+  providerMessageId: string | null;
+};
+
+export type MarkOrderEmailEventFailedInput = {
+  id: string;
+  lastError: string;
+};

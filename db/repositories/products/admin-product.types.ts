@@ -5,9 +5,40 @@ import type {
 import type { ProductType } from "@/entities/product/product-input";
 import type { ProductTypeCompatibilityErrorCode } from "@/entities/product/product-type-rules";
 
-type AdminProductStatus = "draft" | "published";
+export type AdminProductStatus = "draft" | "published";
 
-type ProductRepositoryErrorCode =
+export type CreateAdminProductInput = {
+  name: string;
+  slug: string;
+  shortDescription: string | null;
+  description: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
+  status: AdminProductStatus;
+  productType: ProductType;
+  isFeatured: boolean;
+  categoryIds: string[];
+};
+
+export type UpdateAdminProductInput = CreateAdminProductInput & {
+  id: string;
+};
+
+export type UpdateAdminSimpleProductOfferInput = {
+  id: string;
+  sku: string;
+  price: string;
+  compareAtPrice: string | null;
+  stockQuantity: number;
+};
+
+export type AdminProductPublishContext = {
+  status: AdminProductStatus;
+  productType: ProductType;
+  variantCount: number;
+};
+
+export type AdminProductRepositoryErrorCode =
   | "sku_taken"
   | "slug_taken"
   | "category_missing"
@@ -56,9 +87,9 @@ export type AdminProductDetail = {
 };
 
 export class AdminProductRepositoryError extends Error {
-  readonly code: ProductRepositoryErrorCode;
+  readonly code: AdminProductRepositoryErrorCode;
 
-  constructor(code: ProductRepositoryErrorCode, message: string) {
+  constructor(code: AdminProductRepositoryErrorCode, message: string) {
     super(message);
     this.code = code;
   }

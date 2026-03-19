@@ -12,7 +12,7 @@ type DatabaseHealth =
 
 export async function checkDatabaseHealth(): Promise<DatabaseHealth> {
   try {
-    await prisma.$queryRaw`SELECT 1`;
+    await prisma.$connect();
 
     return { ok: true };
   } catch (error) {

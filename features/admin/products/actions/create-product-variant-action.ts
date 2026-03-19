@@ -1,10 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  AdminProductVariantRepositoryError,
-  createAdminProductVariant,
-} from "@/db/repositories/products/admin-product-variant.repository";
+import { createAdminProductVariant } from "@/db/repositories/products/admin-product-variant.repository";
+import { AdminProductVariantRepositoryError } from "@/db/repositories/products/admin-product-variant.types";
 import { validateProductVariantInput } from "@/entities/product/product-variant-input";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 

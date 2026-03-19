@@ -1,4 +1,19 @@
-type AdminBlogPostStatus = "draft" | "published";
+export type AdminBlogPostStatus = "draft" | "published";
+
+export type CreateAdminBlogPostInput = {
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
+  coverImagePath: string | null;
+  status: AdminBlogPostStatus;
+};
+
+export type UpdateAdminBlogPostInput = CreateAdminBlogPostInput & {
+  id: string;
+};
 
 export type AdminBlogPostSummary = {
   id: string;
@@ -19,12 +34,12 @@ export type AdminBlogPostDetail = AdminBlogPostSummary & {
   seoDescription: string | null;
 };
 
-type BlogRepositoryErrorCode = "slug_taken" | "blog_post_referenced";
+export type AdminBlogRepositoryErrorCode = "slug_taken" | "blog_post_referenced";
 
 export class AdminBlogRepositoryError extends Error {
-  readonly code: BlogRepositoryErrorCode;
+  readonly code: AdminBlogRepositoryErrorCode;
 
-  constructor(code: BlogRepositoryErrorCode, message: string) {
+  constructor(code: AdminBlogRepositoryErrorCode, message: string) {
     super(message);
     this.code = code;
   }

@@ -2,10 +2,10 @@
 
 import { redirect } from "next/navigation";
 import {
-  AdminProductRepositoryError,
   findAdminProductPublishContext,
   updateAdminProduct,
 } from "@/db/repositories/products/admin-product.repository";
+import { AdminProductRepositoryError } from "@/db/repositories/products/admin-product.types";
 import { normalizeProductSlug } from "@/entities/product/product-input";
 import { getProductPublishability } from "@/entities/product/product-publishability";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";

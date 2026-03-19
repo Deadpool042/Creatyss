@@ -1,11 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  AdminBlogRepositoryError,
-  deleteAdminBlogPost,
-  findAdminBlogPostById,
-} from "@/db/repositories/admin-blog.repository";
+import { deleteAdminBlogPost, findAdminBlogPostById } from "@/db/repositories/admin-blog.repository";
+import { AdminBlogRepositoryError } from "@/db/repositories/admin-blog.types";
 
 function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string") {

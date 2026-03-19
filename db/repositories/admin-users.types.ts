@@ -10,3 +10,9 @@ export type AdminUser = {
 export type AdminUserWithPassword = AdminUser & {
   passwordHash: string;
 };
+
+export type CreateAdminUserInput = {
+  email: string;
+  displayName: string;
+  passwordHash: string;
+};
