@@ -18,6 +18,28 @@ Cette documentation ne décrit donc pas V21 complet comme un état déjà attein
 - le statut réel des lots
 - le contenu effectivement livré par V21-2A
 
+## Pourquoi V21 existe
+
+V20 a documenté un état stabilisé de `db/`, mais il a aussi rendu visibles des limites structurelles qui n'étaient plus technologiques.
+
+Ces limites sont observables dans le code actuel :
+
+- [order.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/order.repository.ts) : 728 lignes
+- [admin-product.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/admin-product.repository.ts) : 592 lignes
+- [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts) : 570 lignes après V21-2A
+- [guest-cart.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/guest-cart.repository.ts) : 449 lignes
+- [admin-homepage.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/admin-homepage.repository.ts) : 425 lignes
+- [admin-category.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/admin-category.repository.ts) : 365 lignes
+
+Les problèmes que V21 traite sont donc :
+
+- des repositories publics encore trop gros
+- une séparation interne encore incomplète entre façade, queries, helpers et contrats
+- une arborescence `db/repositories/` encore hétérogène selon les domaines
+- des exceptions de façade publique encore présentes, par exemple le ré-export de types dans [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts)
+
+V21 n'existe pas pour refaire la migration Prisma. Cette migration est terminée en V19. V21 existe pour rendre la structure interne de `db/` plus lisible et plus maintenable.
+
 ## Objectif global réel de V21
 
 V21 vise à rendre `db/` plus modulaire sans changer le comportement métier, les contrats publics ni les chemins publics déjà consommés par `app/` et `features/`.
@@ -31,6 +53,49 @@ Concrètement, V21 cherche à :
 - extraire les lectures Prisma canoniques dans `queries/`
 - extraire les helpers batch et reconstruction mémoire dans `helpers/`
 - éviter tout refactor transversal hors périmètre du lot traité
+
+## Ce que V21 ne fait pas
+
+V21 ne couvre pas :
+
+- une nouvelle migration technologique
+- une refonte des contrats publics de `db/`
+- un changement des signatures runtime des repositories
+- une réorganisation globale des imports consumers hors lot explicite
+- une introduction de couche `services/`
+- une réintroduction de SQL brut
+- un déplacement de logique métier hors de `entities/`
+- une modification de schéma ou de migrations SQL
+
+V21 ne cherche pas non plus à rendre tous les domaines parfaitement homogènes en une seule fois. La démarche reste incrémentale.
+
+## Dépendances avec V19 et V20
+
+### Dépendance à V19
+
+V21 dépend directement de V19.
+
+V19 a figé les invariants suivants :
+
+- Prisma ORM uniquement dans `db/`
+- contrats publics explicités
+- disparition du raw SQL runtime
+- règles techniques déjà normalisées, par exemple autour de l'image primaire produit
+
+V21 ne remet pas en cause ces invariants. Il travaille à l'intérieur de ce cadre.
+
+### Dépendance à V20
+
+V21 dépend directement de V20.
+
+V20 a fourni :
+
+- l'inventaire des domaines
+- l'identification des gros repositories
+- la doctrine de modularisation interne
+- les règles d'évolution des façades publiques
+
+V21 transforme progressivement cette doctrine en structure réelle dans le code. À ce stade, cette transformation n'a commencé que sur `catalog`.
 
 ## Découpage des lots V21
 
@@ -90,6 +155,8 @@ Statut : non réalisé.
 
 Statut : non réalisé.
 
+Le détail d'exécution est documenté dans [roadmap.md](./roadmap.md).
+
 ## Focus explicite sur V21-2A
 
 V21-2A n'a pas cherché à “finir” `catalog`.
@@ -121,6 +188,16 @@ Après V21-2A, les points suivants restent hors périmètre ou non traités :
 - modularisation de `order`
 - modularisation de `products`
 - modularisation des petits domaines plats
+
+## Lecture de la doctrine V21
+
+La doctrine générale de cette version est documentée dans :
+
+- [doctrine.md](./doctrine.md)
+- [scope.md](./scope.md)
+- [roadmap.md](./roadmap.md)
+
+Ces documents complètent la documentation de lot déjà produite pour V21-2A.
 
 ## Rôle de cette documentation
 

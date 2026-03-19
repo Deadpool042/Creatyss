@@ -1,5 +1,17 @@
 # Structure interne actuelle de `db/repositories/catalog/`
 
+## Position de cette structure dans la doctrine V21
+
+La structure actuelle de `catalog` est le premier exemple réellement implémenté de la doctrine V21.
+
+Elle matérialise trois règles de la version :
+
+- la façade publique reste stable
+- les contrats publics peuvent être déplacés derrière une façade `*.types.ts`
+- les lectures Prisma simples et les helpers techniques peuvent sortir du repository sans changer l'API publique
+
+Cette structure ne doit pas être lue comme une cible déjà atteinte partout dans `db/`. Elle doit être lue comme un premier domaine pilote déjà refactoré.
+
 ## Arborescence actuelle
 
 Après V21-2A, la structure réelle du domaine est :
@@ -202,3 +214,34 @@ Il a créé un premier découpage interne fonctionnel :
 - `queries/` pour les lectures Prisma simples
 
 Cette structure est réelle dans le code. Elle reste incomplète sur les flux catalogue les plus denses.
+
+## Ce qui est transposable aux autres domaines
+
+Les éléments suivants sont directement transposables à d'autres domaines V21 :
+
+- garder `*.repository.ts` comme façade publique stable
+- garder `*.types.ts` comme façade publique de types
+- déplacer les contrats volumineux derrière un sous-dossier `types/`
+- extraire les lectures Prisma simples réutilisées dans `queries/`
+- extraire les helpers batch et reconstruction mémoire dans `helpers/`
+- conserver dans la façade les flows encore trop denses pour être sortis sans risque
+
+Cette logique est particulièrement transposable à :
+
+- `order`
+- `products`
+- `admin-homepage`
+- `guest-cart`
+
+## Ce qui est spécifique à `catalog`
+
+Certains choix de cette structure restent propres au domaine `catalog` :
+
+- le helper central d'image primaire produit
+- la reconstruction batch de `representativeImage` pour les catégories de homepage
+- le partage du `publishedProductSummarySelect` entre homepage et recent products
+- le fait que le domaine soit un domaine de lecture storefront, sans mutation
+
+Ces éléments ne doivent pas être transformés en abstraction cross-domain.
+
+Ils doivent rester locaux tant qu'un autre domaine n'a pas exactement la même responsabilité technique.
