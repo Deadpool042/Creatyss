@@ -1,5 +1,7 @@
 import { type PoolClient } from "pg";
-import { db, queryFirst, queryRows } from "@/db/client";
+import { db } from "@/db/client";
+import { Prisma } from "@prisma/client";
+import { prisma } from "@/db/prisma-client";
 import {
   clearNativeSimpleProductOfferFields,
   syncLegacyVariantCommercialFieldsFromSimpleProduct,
@@ -64,10 +66,6 @@ type AdminProductCategoryRow = {
 type AdminProductTypeRow = {
   id: string;
   product_type: ProductType;
-};
-
-type DeletedProductRow = {
-  id: string;
 };
 
 type CountRow = {
@@ -289,6 +287,20 @@ function mapRepositoryError(error: unknown): never {
       "product_referenced",
       "Product is still referenced by other records."
     );
+  }
+
+  throw error;
+}
+
+// Absorbs known Prisma errors and maps them to public domain errors.
+function mapPrismaRepositoryError(error: unknown): never {
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code === "P2003") {
+      throw new AdminProductRepositoryError(
+        "product_referenced",
+        "Product is still referenced by other records."
+      );
+    }
   }
 
   throw error;
@@ -554,64 +566,47 @@ export async function findAdminProductPublishContext(
     return null;
   }
 
-  const row = await queryFirst<{
-    status: "draft" | "published";
-    product_type: ProductType;
-    variant_count: number;
-  }>(
-    `
-      select
-        p.status,
-        p.product_type,
-        (
-          select count(*)::int
-          from product_variants pv
-          where pv.product_id = p.id
-        ) as variant_count
-      from products p
-      where p.id = $1::bigint
-    `,
-    [id]
-  );
+  // product_variants is introspected as 1:1 in Prisma → _count.product_variants unavailable.
+  // Two queries: product fields + separate variant count.
+  const product = await prisma.products.findUnique({
+    where: { id: BigInt(id) },
+    select: { status: true, product_type: true },
+  });
 
-  if (row === null) {
+  if (product === null) {
     return null;
   }
 
+  const variantCount = await prisma.product_variants.count({
+    where: { product_id: BigInt(id) },
+  });
+
   return {
-    status: row.status,
-    productType: row.product_type,
-    variantCount: row.variant_count,
+    status: product.status as "draft" | "published",
+    productType: product.product_type as ProductType,
+    variantCount,
   };
 }
 
 export async function listAdminProducts(): Promise<AdminProductSummary[]> {
-  const rows = await queryRows<AdminProductSummaryRow>(
-    `
-      select
-        p.id::text as id,
-        p.name,
-        p.slug,
-        p.short_description,
-        p.status,
-        p.product_type,
-        p.is_featured,
-        (
-          select count(*)::int
-          from product_categories pc
-          where pc.product_id = p.id
-        ) as category_count,
-        (
-          select count(*)::int
-          from product_variants pv
-          where pv.product_id = p.id
-        ) as variant_count,
-        p.created_at,
-        p.updated_at
-      from products p
-      order by p.created_at desc, p.id desc
-    `
-  );
+  // product_variants is introspected as 1:1 in Prisma (partial unique index on product_id)
+  // → _count.product_variants is unavailable. Using $queryRaw to preserve sub-query counts.
+  const rows = await prisma.$queryRaw<AdminProductSummaryRow[]>(Prisma.sql`
+    SELECT
+      p.id::text AS id,
+      p.name,
+      p.slug,
+      p.short_description,
+      p.status,
+      p.product_type,
+      p.is_featured,
+      (SELECT count(*)::int FROM product_categories pc WHERE pc.product_id = p.id) AS category_count,
+      (SELECT count(*)::int FROM product_variants pv WHERE pv.product_id = p.id) AS variant_count,
+      p.created_at,
+      p.updated_at
+    FROM products p
+    ORDER BY p.created_at DESC, p.id DESC
+  `);
 
   return rows.map(mapAdminProductSummary);
 }
@@ -621,19 +616,82 @@ export async function findAdminProductById(id: string): Promise<AdminProductDeta
     return null;
   }
 
-  const client = await db.connect();
+  const product = await prisma.products.findUnique({
+    where: { id: BigInt(id) },
+    include: {
+      product_categories: {
+        include: { categories: true },
+      },
+    },
+  });
 
-  try {
-    const row = await readAdminProductRowById(client, id);
-
-    if (row === null) {
-      return null;
-    }
-
-    return await readAdminProductDetailFromRow(client, row);
-  } finally {
-    client.release();
+  if (product === null) {
+    return null;
   }
+
+  // Map native simple offer fields (Decimal → string)
+  const nativeSimpleOfferFields: SimpleProductOfferFields = {
+    sku: product.simple_sku,
+    price: product.simple_price !== null ? product.simple_price.toString() : null,
+    compareAtPrice:
+      product.simple_compare_at_price !== null
+        ? product.simple_compare_at_price.toString()
+        : null,
+    stockQuantity: product.simple_stock_quantity,
+  };
+
+  // Categories — sorted case-insensitively to mirror: lower(c.name) asc, c.id asc
+  const categories: AdminProductCategoryAssignment[] = [...product.product_categories]
+    .sort((a, b) => {
+      const nameCompare = a.categories.name
+        .toLowerCase()
+        .localeCompare(b.categories.name.toLowerCase());
+      if (nameCompare !== 0) return nameCompare;
+      return a.category_id < b.category_id ? -1 : a.category_id > b.category_id ? 1 : 0;
+    })
+    .map((pc) => ({
+      id: pc.category_id.toString(),
+      name: pc.categories.name,
+      slug: pc.categories.slug,
+    }));
+
+  // Resolve simple offer from native fields + legacy variants (simple products only)
+  let simpleOffer: SimpleProductOffer | null = null;
+
+  if (product.product_type === "simple") {
+    const legacyVariants = await prisma.product_variants.findMany({
+      where: { product_id: BigInt(id) },
+      orderBy: [{ is_default: "desc" }, { id: "asc" }],
+    });
+
+    const legacyOffers: SimpleProductOfferFields[] = legacyVariants.map((v) => ({
+      sku: v.sku,
+      price: v.price.toString(),
+      compareAtPrice: v.compare_at_price !== null ? v.compare_at_price.toString() : null,
+      stockQuantity: v.stock_quantity,
+    }));
+
+    simpleOffer = resolveSimpleProductOffer({ native: nativeSimpleOfferFields, legacyOffers });
+  }
+
+  return {
+    id: product.id.toString(),
+    name: product.name,
+    slug: product.slug,
+    shortDescription: product.short_description,
+    description: product.description,
+    seoTitle: product.seo_title,
+    seoDescription: product.seo_description,
+    status: product.status as AdminProductStatus,
+    productType: product.product_type as ProductType,
+    isFeatured: product.is_featured,
+    categories,
+    categoryIds: categories.map((c) => c.id),
+    simpleOfferFields: nativeSimpleOfferFields,
+    simpleOffer,
+    createdAt: product.created_at.toISOString(),
+    updatedAt: product.updated_at.toISOString(),
+  };
 }
 
 export async function createAdminProduct(
@@ -816,19 +874,17 @@ export async function toggleAdminProductStatus(id: string): Promise<"draft" | "p
     return null;
   }
 
-  const row = await queryFirst<{ status: "draft" | "published" }>(
-    `
-      update products
-      set
-        status = case when status = 'published' then 'draft' else 'published' end,
-        updated_at = now()
-      where id = $1::bigint
-      returning status
-    `,
-    [id]
-  );
+  // Atomic toggle via $queryRaw — not expressible via Prisma ORM (row self-reference in SET clause)
+  const rows = await prisma.$queryRaw<{ status: "draft" | "published" }[]>(Prisma.sql`
+    UPDATE products
+    SET
+      status     = CASE WHEN status = 'published' THEN 'draft' ELSE 'published' END,
+      updated_at = NOW()
+    WHERE id = ${BigInt(id)}
+    RETURNING status
+  `);
 
-  return row?.status ?? null;
+  return rows[0]?.status ?? null;
 }
 
 export async function deleteAdminProduct(id: string): Promise<boolean> {
@@ -837,17 +893,14 @@ export async function deleteAdminProduct(id: string): Promise<boolean> {
   }
 
   try {
-    const row = await queryFirst<DeletedProductRow>(
-      `
-        delete from products
-        where id = $1::bigint
-        returning id::text as id
-      `,
-      [id]
-    );
+    await prisma.products.delete({ where: { id: BigInt(id) } });
 
-    return row !== null;
+    return true;
   } catch (error) {
-    mapRepositoryError(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+      return false;
+    }
+
+    mapPrismaRepositoryError(error);
   }
 }

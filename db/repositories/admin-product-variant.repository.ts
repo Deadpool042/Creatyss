@@ -1,5 +1,6 @@
 import { type PoolClient } from "pg";
-import { db, queryRows } from "@/db/client";
+import { db } from "@/db/client";
+import { prisma } from "@/db/prisma-client";
 import { syncNativeSimpleProductOfferFromLegacyVariant } from "@/db/repositories/simple-product-admin-compatibility";
 import {
   canDeleteVariantForProductType,
@@ -239,17 +240,27 @@ export async function listAdminProductVariants(productId: string): Promise<Admin
     return [];
   }
 
-  const rows = await queryRows<AdminProductVariantRow>(
-    `
-      select ${PRODUCT_VARIANT_COLUMNS}
-      from product_variants
-      where product_id = $1::bigint
-      order by is_default desc, id asc
-    `,
-    [productId]
-  );
+  const rows = await prisma.product_variants.findMany({
+    where: { product_id: BigInt(productId) },
+    orderBy: [{ is_default: "desc" }, { id: "asc" }],
+  });
 
-  return rows.map(mapAdminProductVariant);
+  return rows.map((v) => ({
+    id: v.id.toString(),
+    productId: v.product_id.toString(),
+    name: v.name,
+    colorName: v.color_name,
+    colorHex: v.color_hex,
+    sku: v.sku,
+    price: v.price.toString(),
+    compareAtPrice: v.compare_at_price !== null ? v.compare_at_price.toString() : null,
+    stockQuantity: v.stock_quantity,
+    isDefault: v.is_default,
+    status: v.status as AdminProductVariantStatus,
+    isAvailable: v.status === "published" && v.stock_quantity > 0,
+    createdAt: v.created_at.toISOString(),
+    updatedAt: v.updated_at.toISOString(),
+  }));
 }
 
 export async function createAdminProductVariant(

@@ -1,5 +1,6 @@
 import { type PoolClient } from "pg";
-import { db, queryFirst, queryRows } from "@/db/client";
+import { db } from "@/db/client";
+import { prisma } from "@/db/prisma-client";
 
 type TimestampValue = Date | string;
 
@@ -16,10 +17,6 @@ type AdminProductImageRow = {
 };
 
 type ExistingRow = {
-  id: string;
-};
-
-type DeletedImageRow = {
   id: string;
 };
 
@@ -58,6 +55,19 @@ type UpsertAdminPrimaryVariantImageInput = {
 
 type UpsertPrimaryImageInScopeInput = PrimaryImageScopeInput & {
   filePath: string;
+};
+
+// Structural type aligned with what Prisma returns for product_images (without relations)
+type PrismaProductImageData = {
+  id: bigint;
+  product_id: bigint;
+  variant_id: bigint | null;
+  file_path: string;
+  alt_text: string | null;
+  sort_order: number;
+  is_primary: boolean;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type AdminProductImage = {
@@ -104,6 +114,20 @@ function mapAdminProductImage(row: AdminProductImageRow): AdminProductImage {
     isPrimary: row.is_primary,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at),
+  };
+}
+
+function mapPrismaProductImage(row: PrismaProductImageData): AdminProductImage {
+  return {
+    id: row.id.toString(),
+    productId: row.product_id.toString(),
+    variantId: row.variant_id !== null ? row.variant_id.toString() : null,
+    filePath: row.file_path,
+    altText: row.alt_text,
+    sortOrder: row.sort_order,
+    isPrimary: row.is_primary,
+    createdAt: row.created_at.toISOString(),
+    updatedAt: row.updated_at.toISOString(),
   };
 }
 
@@ -460,26 +484,12 @@ export async function listAdminProductImages(productId: string): Promise<AdminPr
     return [];
   }
 
-  const rows = await queryRows<AdminProductImageRow>(
-    `
-      select
-        pi.id::text as id,
-        pi.product_id::text as product_id,
-        pi.variant_id::text as variant_id,
-        pi.file_path,
-        pi.alt_text,
-        pi.sort_order,
-        pi.is_primary,
-        pi.created_at,
-        pi.updated_at
-      from product_images pi
-      where pi.product_id = $1::bigint
-      order by pi.variant_id nulls first, pi.sort_order asc, pi.id asc
-    `,
-    [productId]
-  );
+  const rows = await prisma.product_images.findMany({
+    where: { product_id: BigInt(productId) },
+    orderBy: [{ variant_id: { sort: "asc", nulls: "first" } }, { sort_order: "asc" }, { id: "asc" }],
+  });
 
-  return rows.map(mapAdminProductImage);
+  return rows.map(mapPrismaProductImage);
 }
 
 export async function findAdminPrimaryProductImage(
@@ -489,28 +499,11 @@ export async function findAdminPrimaryProductImage(
     return null;
   }
 
-  const row = await queryFirst<AdminProductImageRow>(
-    `
-      select
-        pi.id::text as id,
-        pi.product_id::text as product_id,
-        pi.variant_id::text as variant_id,
-        pi.file_path,
-        pi.alt_text,
-        pi.sort_order,
-        pi.is_primary,
-        pi.created_at,
-        pi.updated_at
-      from product_images pi
-      where pi.product_id = $1::bigint
-        and pi.variant_id is null
-        and pi.is_primary
-      limit 1
-    `,
-    [productId]
-  );
+  const row = await prisma.product_images.findFirst({
+    where: { product_id: BigInt(productId), variant_id: null, is_primary: true },
+  });
 
-  return row ? mapAdminProductImage(row) : null;
+  return row !== null ? mapPrismaProductImage(row) : null;
 }
 
 export async function findAdminPrimaryVariantImage(
@@ -521,28 +514,11 @@ export async function findAdminPrimaryVariantImage(
     return null;
   }
 
-  const row = await queryFirst<AdminProductImageRow>(
-    `
-      select
-        pi.id::text as id,
-        pi.product_id::text as product_id,
-        pi.variant_id::text as variant_id,
-        pi.file_path,
-        pi.alt_text,
-        pi.sort_order,
-        pi.is_primary,
-        pi.created_at,
-        pi.updated_at
-      from product_images pi
-      where pi.product_id = $1::bigint
-        and pi.variant_id = $2::bigint
-        and pi.is_primary
-      limit 1
-    `,
-    [productId, variantId]
-  );
+  const row = await prisma.product_images.findFirst({
+    where: { product_id: BigInt(productId), variant_id: BigInt(variantId), is_primary: true },
+  });
 
-  return row ? mapAdminProductImage(row) : null;
+  return row !== null ? mapPrismaProductImage(row) : null;
 }
 
 export async function createAdminProductImage(
@@ -784,17 +760,11 @@ export async function deleteAdminProductImage(
     return false;
   }
 
-  const row = await queryFirst<DeletedImageRow>(
-    `
-      delete from product_images
-      where id = $1::bigint
-        and product_id = $2::bigint
-      returning id::text as id
-    `,
-    [imageId, productId]
-  );
+  const result = await prisma.product_images.deleteMany({
+    where: { id: BigInt(imageId), product_id: BigInt(productId) },
+  });
 
-  return row !== null;
+  return result.count > 0;
 }
 
 export async function deleteAdminPrimaryProductImage(productId: string): Promise<boolean> {
@@ -802,18 +772,11 @@ export async function deleteAdminPrimaryProductImage(productId: string): Promise
     return false;
   }
 
-  const row = await queryFirst<DeletedImageRow>(
-    `
-      delete from product_images
-      where product_id = $1::bigint
-        and variant_id is null
-        and is_primary
-      returning id::text as id
-    `,
-    [productId]
-  );
+  const result = await prisma.product_images.deleteMany({
+    where: { product_id: BigInt(productId), variant_id: null, is_primary: true },
+  });
 
-  return row !== null;
+  return result.count > 0;
 }
 
 export async function deleteAdminPrimaryVariantImage(
@@ -824,16 +787,9 @@ export async function deleteAdminPrimaryVariantImage(
     return false;
   }
 
-  const row = await queryFirst<DeletedImageRow>(
-    `
-      delete from product_images
-      where product_id = $1::bigint
-        and variant_id = $2::bigint
-        and is_primary
-      returning id::text as id
-    `,
-    [productId, variantId]
-  );
+  const result = await prisma.product_images.deleteMany({
+    where: { product_id: BigInt(productId), variant_id: BigInt(variantId), is_primary: true },
+  });
 
-  return row !== null;
+  return result.count > 0;
 }
