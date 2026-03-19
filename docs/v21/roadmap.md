@@ -13,11 +13,11 @@ Il ne décrit pas des lots déjà livrés au-delà de ce qui est visible dans le
 
 ## Vue d'ensemble
 
-| Lot | Domaine | Statut | Dépendances directes | Objectif | Risque | Critère de fin |
+| Lot | Zone traitée | Statut | Dépendances directes | Objectif | Risque | Critère de fin |
 | --- | --- | --- | --- | --- | --- | --- |
 | `V21-1` | cadrage | fait | aucune | figer l'audit réel de `db/repositories/` | faible | plan de lots validé, aucun code modifié |
-| `V21-2A` | `catalog` socle interne | fait | `V21-1` | extraire les blocs stables de `catalog` | faible à moyen | façades publiques stables, `queries/` et `helpers/` initiaux en place |
-| `V21-2B` | `catalog` cœur | à faire | `V21-2A` | traiter `listPublishedProducts` et `getPublishedProductBySlug` | élevé | cœur `catalog` internalisé sans changement de comportement |
+| `V21-2A` | façade storefront `catalog` | fait | `V21-1` | extraire les blocs stables de la façade publique `catalog` | faible à moyen | façades publiques stables, `queries/` et `helpers/` initiaux en place |
+| `V21-2B` | façade storefront `catalog` | à faire | `V21-2A` | traiter `listPublishedProducts` et `getPublishedProductBySlug` dans la façade `catalog` | élevé | cœur de la façade `catalog` internalisé sans changement de comportement |
 | `V21-3` | `order` | à faire | `V21-1`, `V21-2A` | modulariser `order` derrière ses façades publiques | élevé | `order.repository.ts` allégé, invariants transactionnels intacts |
 | `V21-4A` | `products` socle partagé | à faire | `V21-1`, `V21-3` | sortir le cœur partagé du domaine `products` | moyen à élevé | `admin-product.repository.ts` réduit, compatibilité produit simple intacte |
 | `V21-4B` | `products` variantes et images | à faire | `V21-4A` | modulariser variantes et images | élevé | règles `is_default` et `is_primary` inchangées, façades stables |
@@ -39,8 +39,8 @@ Ordre de travail retenu :
 
 Cet ordre est conservateur :
 
-- `catalog` a servi de premier domaine pilote
-- `order` reste prioritaire après `catalog`
+- la façade publique `catalog` a servi de première façade pilote
+- `order` reste prioritaire après ce premier jalon storefront
 - `products` vient ensuite car sa structure est déjà partiellement découpée mais encore dense
 - les petits domaines sont traités en dernier, seulement si le gain structurel reste supérieur au churn
 
@@ -64,13 +64,13 @@ Pourquoi ce lot :
 - préserver les façades publiques existantes
 - fixer un ordre de travail cohérent avant écriture
 
-### `V21-2A` — `catalog` : extraction du socle interne
+### `V21-2A` — `catalog` : extraction du socle interne de la façade publique
 
 Statut : fait.
 
 Contenu :
 
-- maintien de [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts) comme façade publique
+- maintien de [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts) comme façade publique de lecture storefront
 - maintien de [catalog.types.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.types.ts) comme façade publique de types
 - extraction des outputs publics vers [types/outputs.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/types/outputs.ts)
 - extraction du helper d'image primaire vers [helpers/primary-image.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/helpers/primary-image.ts)
@@ -79,11 +79,11 @@ Contenu :
 
 Pourquoi ce lot :
 
-- créer un premier découpage interne réel
+- créer un premier découpage interne réel sur une façade publique historique
 - réduire immédiatement la densité de `catalog.repository.ts`
-- garder hors périmètre les deux flux les plus lourds du domaine
+- garder hors périmètre les deux flux les plus lourds de la façade
 
-### `V21-2B` — `catalog` : finalisation des extractions restantes
+### `V21-2B` — `catalog` : finalisation de la façade publique
 
 Statut : à faire.
 
@@ -96,12 +96,13 @@ Contenu prévu :
 
 Pourquoi ce lot :
 
-- finaliser la modularisation de `catalog`
+- finaliser la modularisation interne de la façade publique `catalog`
 - sortir les flux encore denses qui sont restés en façade après V21-2A
 
 Dépendance :
 
 - `V21-2A` a déjà extrait les blocs stables réutilisables nécessaires pour traiter ce lot plus tard sans changer l'API publique
+- la sémantique métier sous-jacente reste portée par `products`, `categories`, `homepage` et `blog`
 
 ### `V21-3` — `order`
 
@@ -192,10 +193,10 @@ Pourquoi ce lot :
 
 - `V21-2A` dépend de l'audit `V21-1`
 - `V21-2B` dépend directement de `V21-2A`
-- `V21-3` dépend de la doctrine et du séquençage posés par `V21-1` et du premier domaine pilote `V21-2A`
+- `V21-3` dépend de la doctrine et du séquençage posés par `V21-1` et de la première façade publique pilote `V21-2A`
 - `V21-4A` dépend du retour d'expérience de `V21-3` sur un domaine transactionnel plus dense
 - `V21-4B` dépend de `V21-4A`
-- `V21-5` dépend de la stabilisation des décisions prises sur `catalog`, `order` et `products`
+- `V21-5` dépend de la stabilisation des décisions prises sur la façade storefront `catalog`, puis sur `order` et `products`
 - `V21-final-state` dépend de la fermeture documentaire des lots précédents
 
 ### Dépendances de compatibilité

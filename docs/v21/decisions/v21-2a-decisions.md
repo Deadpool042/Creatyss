@@ -4,13 +4,15 @@
 
 ### Décision prise
 
-`db/repositories/catalog/catalog.repository.ts` est resté le point d'entrée public unique du domaine.
+`db/repositories/catalog/catalog.repository.ts` est resté le point d'entrée public unique de la façade publique de lecture.
 
 ### Conséquence
 
 - aucun chemin public n'a changé
 - aucune signature runtime n'a changé
 - aucun consumer `app/` ou `features/` n'a été modifié
+
+La sémantique métier sous-jacente reste répartie entre `homepage`, `categories`, `products` et `blog`.
 
 ## Décision 2 — Garder `catalog.types.ts` comme façade publique stable
 
@@ -49,7 +51,7 @@ Le lot n'a pas déplacé `listPublishedProducts` hors de `catalog.repository.ts`
 
 ### Raison
 
-Cette fonction reste la zone la plus dense du domaine :
+Cette fonction reste la zone la plus dense de la façade :
 
 - construction de `where`
 - ordering conditionnel
@@ -130,7 +132,7 @@ Les façades publiques sont restées stables. Aucun recâblage n'était nécessa
 
 ### Conséquence
 
-Le lot est resté strictement local au domaine `catalog`.
+Le lot est resté strictement local à la façade publique `catalog`.
 
 ## Règles de compatibilité retenues
 

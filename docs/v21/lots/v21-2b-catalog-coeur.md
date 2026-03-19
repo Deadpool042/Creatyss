@@ -1,8 +1,8 @@
-# V21-2B — `catalog` : cœur du domaine
+# V21-2B — `catalog` : cœur de la façade de lecture
 
 ## Summary
 
-V21-2B est le lot prévu pour traiter le cœur restant du domaine `catalog` après V21-2A.
+V21-2B est le lot prévu pour traiter le cœur restant de la façade publique de lecture `catalog` après V21-2A.
 
 Ce lot vise les deux flux les plus denses encore présents dans [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts) :
 
@@ -20,12 +20,14 @@ Réduire encore la densité de `catalog.repository.ts` en internalisant les bloc
 
 ## Audit de départ / contexte réel
 
-Après V21-2A, l'état réel du domaine est :
+Après V21-2A, l'état réel de cette façade publique est :
 
 - `catalog.repository.ts` : 570 lignes
 - `catalog.mappers.ts` : 190 lignes
 - `catalog.types.ts` : façade publique
 - `types/`, `queries/` et `helpers/` déjà introduits pour les blocs les plus stables
+
+Le chemin `db/repositories/catalog/**` reste historique. Dans cette documentation, `catalog` n'est pas traité comme un domaine métier autonome, mais comme une façade storefront agrégée au-dessus de `homepage`, `categories`, `products` et `blog`.
 
 Les densités restantes sont concentrées dans :
 

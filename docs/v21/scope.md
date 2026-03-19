@@ -14,19 +14,44 @@ Le périmètre de travail est :
   - `helpers/`
   - `mappers/` quand le gain est réel
 
-## Domaines visés par V21
+## Façades publiques visées
 
-Les domaines explicitement visés à ce stade sont :
+Les façades publiques prioritairement visées sont :
 
-- `catalog`
 - `order`
 - `products`
-- puis, si le gain structurel est réel :
-  - `admin-category`
-  - `admin-homepage`
-  - `payment`
-  - `guest-cart`
-  - `order-email`
+- `catalog`
+
+Cas particulier explicitement retenu :
+
+- `catalog` est une façade publique de lecture / storefront read model, conservée pour compatibilité des chemins existants
+- cette façade agrège aujourd'hui des lectures publiques liées à `homepage`, `categories`, `products` et `blog`
+- `catalog` n'est pas documenté dans V21 comme un domaine métier autonome au même niveau que `order` ou `products`
+
+## Domaines métier visés par V21
+
+Les domaines métier réellement concernés par V21 sont :
+
+- `products`
+- `categories`
+- `orders`
+- `payment`
+- `homepage`
+- `blog`
+
+Ces domaines ne sont pas tous portés par un repository public de même nom. Dans le code actuel, une partie des lectures publiques `homepage`, `categories`, `products` et `blog` reste agrégée derrière la façade `catalog`.
+
+## Petits périmètres secondaires potentiels
+
+En plus des zones prioritaires, V21 peut traiter des périmètres secondaires si le gain structurel est net :
+
+- `admin-category`
+- `admin-homepage`
+- `guest-cart`
+- `order-email`
+- `payment`
+
+Ces zones ne doivent pas être découpées par symétrie. Elles ne sont traitées que si le bénéfice structurel dépasse clairement le churn.
 
 ## Ce que V21 traite réellement
 
@@ -79,7 +104,7 @@ Changer les chemins publics ou les exports sans lot dédié augmente fortement l
 
 Toucher en même temps à la structure interne et au comportement rend la validation beaucoup plus difficile, surtout sur :
 
-- `catalog`
+- la façade publique `catalog`
 - `order`
 - `products`
 

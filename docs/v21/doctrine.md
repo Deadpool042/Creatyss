@@ -6,11 +6,49 @@ Cette doctrine fixe les règles d'architecture appliquées aux lots V21.
 
 Elle ne décrit pas un état déjà homogène dans tout `db/`. Elle fixe le cadre de refactor interne utilisé pour faire évoluer le code existant sans changer sa surface publique.
 
+## Distinction entre repository métier et façade de lecture agrégée
+
+### Repository métier
+
+Un repository métier reste centré sur un domaine identifiable du projet.
+
+Exemples réels dans le code actuel :
+
+- `order.repository.ts`
+- `admin-product.repository.ts`
+- `admin-category.repository.ts`
+- `admin-homepage.repository.ts`
+
+Un repository métier peut porter des lectures, des writes et des transactions tant qu'ils restent dans le même périmètre métier.
+
+### Façade de lecture agrégée
+
+Une façade de lecture agrégée expose un point d'entrée public unique pour des besoins de lecture storefront, mais agrège plusieurs domaines métier sous-jacents.
+
+Exemple réel actuel :
+
+- [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts)
+
+Cette façade agrège aujourd'hui des lectures publiques liées à :
+
+- `homepage`
+- `categories`
+- `products`
+- `blog`
+
+Le chemin historique `db/repositories/catalog/**` est conservé pour compatibilité. Ce chemin ne change pas la nature architecturale de la façade.
+
+### Règle opposable
+
+Un repository qui agrège plusieurs domaines pour des besoins storefront ne doit pas être documenté comme domaine métier autonome, même si son chemin historique est conservé.
+
+Dans V21, cette règle s'applique explicitement à `catalog`.
+
 ## Définition d'une façade publique
 
 ### `*.repository.ts`
 
-Dans V21, un fichier `*.repository.ts` reste la façade publique runtime d'un domaine.
+Dans V21, un fichier `*.repository.ts` reste la façade publique runtime d'un domaine métier ou d'une façade de lecture agrégée.
 
 Une façade publique runtime :
 
@@ -28,7 +66,7 @@ Une façade publique runtime n'est pas le lieu privilégié pour :
 
 ### `*.types.ts`
 
-Dans V21, un fichier `*.types.ts` reste la façade publique de types d'un domaine.
+Dans V21, un fichier `*.types.ts` reste la façade publique de types d'un domaine métier ou d'une façade de lecture agrégée.
 
 Une façade publique de types :
 
@@ -68,7 +106,7 @@ Quand un lot introduit des fichiers internes, la compatibilité publique est pr�
 
 ### Ce qui va dans `queries/`
 
-`queries/` porte des lectures Prisma canoniques locales au domaine.
+`queries/` porte des lectures Prisma canoniques locales à un domaine métier ou à une façade de lecture agrégée.
 
 Peuvent aller dans `queries/` :
 
@@ -97,7 +135,7 @@ Exemples réels après V21-2A :
 
 ### Ce qui va dans `helpers/`
 
-`helpers/` porte les blocs techniques locaux au domaine qui ne sont pas, à eux seuls, des queries publiques ou des contrats publics.
+`helpers/` porte les blocs techniques locaux à un domaine métier ou à une façade de lecture agrégée qui ne sont pas, à eux seuls, des queries publiques ou des contrats publics.
 
 Peuvent aller dans `helpers/` :
 
@@ -125,7 +163,7 @@ Exemples réels après V21-2A :
 
 ### Ce qui va dans `types/`
 
-`types/` porte les contrats publics internes au domaine quand le domaine devient trop gros pour un seul `*.types.ts`.
+`types/` porte les contrats publics internes au domaine métier ou à la façade publique quand le périmètre devient trop gros pour un seul `*.types.ts`.
 
 Peuvent aller dans `types/` :
 
@@ -145,7 +183,7 @@ Peuvent aller dans `types/` :
 
 ### État réel de V21
 
-Après V21-2A, seul `catalog` utilise réellement un sous-dossier `types/`, et seulement pour `outputs.ts`.
+Après V21-2A, seule la façade publique `catalog` utilise réellement un sous-dossier `types/`, et seulement pour `outputs.ts`.
 
 V21 n'impose pas encore un découpage systématique `inputs.ts / outputs.ts / errors.ts / status.ts` à tous les domaines.
 
@@ -202,7 +240,7 @@ Un mapper transforme une row Prisma ou une structure interne vers un contrat ou 
 
 Un mapper peut rester :
 
-- dans `catalog.mappers.ts` si plusieurs flows du domaine l'utilisent déjà
+- dans `catalog.mappers.ts` si plusieurs flows de la façade publique l'utilisent déjà
 - dans le repository si son extraction n'apporte rien
 - dans un futur sous-dossier `mappers/` si le volume devient réellement trop grand
 
@@ -214,9 +252,9 @@ Le découpage est proportionné à la complexité réelle. À ce stade, `catalog
 
 ## Règles de nommage et de structure
 
-### Structure locale au domaine
+### Structure locale au domaine ou à la façade publique conservée
 
-La structure cible V21 reste locale au domaine :
+La structure cible V21 reste locale au domaine métier ou à la façade publique conservée :
 
 ```text
 db/repositories/<domaine>/

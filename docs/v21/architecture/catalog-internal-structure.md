@@ -1,8 +1,8 @@
-# Structure interne actuelle de `db/repositories/catalog/`
+# Structure interne actuelle de la façade publique `db/repositories/catalog/`
 
 ## Position de cette structure dans la doctrine V21
 
-La structure actuelle de `catalog` est le premier exemple réellement implémenté de la doctrine V21.
+La structure actuelle de `catalog` est le premier exemple réellement implémenté de la doctrine V21 sur une façade publique de lecture agrégée.
 
 Elle matérialise trois règles de la version :
 
@@ -10,11 +10,31 @@ Elle matérialise trois règles de la version :
 - les contrats publics peuvent être déplacés derrière une façade `*.types.ts`
 - les lectures Prisma simples et les helpers techniques peuvent sortir du repository sans changer l'API publique
 
-Cette structure ne doit pas être lue comme une cible déjà atteinte partout dans `db/`. Elle doit être lue comme un premier domaine pilote déjà refactoré.
+Cette structure ne doit pas être lue comme une cible déjà atteinte partout dans `db/`. Elle doit être lue comme une première façade publique pilote déjà refactorée.
+
+## Pourquoi `catalog` n'est pas un domaine métier
+
+Le code actuel de [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts) montre que `catalog` agrège plusieurs lectures publiques distinctes :
+
+- homepage publique
+- catégories mises en avant
+- listing produit
+- détail produit
+- produits récents
+- blog public
+
+Cette façade de lecture traverse donc plusieurs domaines métier déjà visibles dans le reste du repository :
+
+- `homepage`
+- `categories`
+- `products`
+- `blog`
+
+Le chemin historique `db/repositories/catalog/**` est conservé pour compatibilité. Il ne transforme pas `catalog` en domaine métier homogène.
 
 ## Arborescence actuelle
 
-Après V21-2A, la structure réelle du domaine est :
+Après V21-2A, la structure réelle de cette façade publique est :
 
 ```text
 db/repositories/catalog/
@@ -34,11 +54,11 @@ db/repositories/catalog/
 
 ## Rôle de la façade publique `catalog.repository.ts`
 
-`catalog.repository.ts` reste l'unique point d'entrée public du domaine.
+`catalog.repository.ts` reste l'unique point d'entrée public de cette façade de lecture storefront.
 
 Il expose encore :
 
-- les ré-exports de types publics du domaine
+- les ré-exports de types publics de la façade
 - toutes les fonctions publiques storefront
 
 Il orchestre encore :
@@ -61,7 +81,7 @@ Après V21-2A, ce fichier ne porte plus les helpers extraits les plus stables. I
 
 ## Rôle de `catalog.types.ts`
 
-`catalog.types.ts` est resté la façade publique de types du domaine.
+`catalog.types.ts` est resté la façade publique de types de cette façade de lecture.
 
 Le fichier ne définit plus directement les contrats. Il ré-exporte l'ensemble des types publics depuis `types/outputs.ts`.
 
@@ -71,7 +91,7 @@ Ce choix a gardé inchangé le chemin public :
 
 ## Rôle de `types/outputs.ts`
 
-`types/outputs.ts` est devenu la source de vérité des outputs publics du domaine `catalog`.
+`types/outputs.ts` est devenu la source de vérité des outputs publics exposés par la façade `catalog`.
 
 Le fichier contient :
 
@@ -193,17 +213,17 @@ Le fichier `catalog.mappers.ts` n'a pas été redécoupé non plus. Il reste un 
 
 1. `listPublishedProducts` est resté hors périmètre du lot.
 2. `getPublishedProductBySlug` est resté hors périmètre du lot.
-3. le lot a privilégié l'extraction des blocs déjà stabilisés par V19, pas une refonte complète du domaine.
+3. le lot a privilégié l'extraction des blocs déjà stabilisés par V19, pas une refonte complète de cette façade de lecture.
 
 Le résultat est volontaire :
 
 - la façade publique a été allégée
 - les helpers et queries les plus lisibles ont été sortis
-- le cœur le plus risqué du domaine est resté local pour préserver le comportement
+- le cœur le plus risqué de la façade est resté local pour préserver le comportement
 
 ## Lecture actuelle
 
-V21-2A n'a pas transformé `catalog` en domaine entièrement modulaire.
+V21-2A n'a pas transformé `catalog` en façade entièrement modulaire.
 
 Il a créé un premier découpage interne fonctionnel :
 
@@ -217,7 +237,7 @@ Cette structure est réelle dans le code. Elle reste incomplète sur les flux ca
 
 ## Ce qui est transposable aux autres domaines
 
-Les éléments suivants sont directement transposables à d'autres domaines V21 :
+Les éléments suivants sont directement transposables à d'autres domaines métier V21 ou à d'autres façades publiques si elles apparaissaient un jour dans le code :
 
 - garder `*.repository.ts` comme façade publique stable
 - garder `*.types.ts` comme façade publique de types
@@ -235,12 +255,12 @@ Cette logique est particulièrement transposable à :
 
 ## Ce qui est spécifique à `catalog`
 
-Certains choix de cette structure restent propres au domaine `catalog` :
+Certains choix de cette structure restent propres à la façade publique `catalog` :
 
 - le helper central d'image primaire produit
 - la reconstruction batch de `representativeImage` pour les catégories de homepage
 - le partage du `publishedProductSummarySelect` entre homepage et recent products
-- le fait que le domaine soit un domaine de lecture storefront, sans mutation
+- le fait que `catalog` soit une façade de lecture storefront sans mutation
 
 Ces éléments ne doivent pas être transformés en abstraction cross-domain.
 

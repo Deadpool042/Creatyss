@@ -1,12 +1,12 @@
-# V21-2A — `catalog` : socle interne
+# V21-2A — `catalog` : socle interne de la façade de lecture
 
 ## Résumé du lot
 
-V21-2A a modularisé le domaine `db/repositories/catalog/**` sans changer sa surface publique.
+V21-2A a modularisé la façade publique de lecture `db/repositories/catalog/**` sans changer sa surface publique.
 
 Le lot a conservé :
 
-- `catalog.repository.ts` comme façade publique du domaine
+- `catalog.repository.ts` comme façade publique de lecture storefront
 - `catalog.types.ts` comme façade publique des contrats
 - les signatures runtime exportées
 - les contrats publics exportés
@@ -44,7 +44,7 @@ L'audit de départ du lot a constaté :
   - la reconstruction mémoire de `representativeImage`
   - les queries homepage, recent products et blog
   - les zones plus denses `listPublishedProducts` et `getPublishedProductBySlug`
-- `catalog.types.ts` portait directement l'ensemble des contrats publics du domaine
+- `catalog.types.ts` portait directement l'ensemble des contrats publics exposés par cette façade
 - aucun consumer hors `catalog/**` n'avait besoin d'être modifié si les façades publiques restaient stables
 
 Le point de départ documenté avant refactor était :
@@ -190,11 +190,11 @@ Types publics inchangés :
 
 ### `catalog.repository.ts`
 
-Fichier public du domaine. Il continue d'exposer toute la surface publique catalogue.
+Fichier public de la façade de lecture. Il continue d'exposer toute la surface publique storefront portée aujourd'hui par `catalog`.
 
 Après le lot, il orchestre encore :
 
-- les fonctions publiques du domaine
+- les fonctions publiques de la façade
 - les mappings vers `FeaturedCategory` et `PublishedProductSummary`
 - les lectures catalogue encore non extraites
 - la logique locale de filtres catalogue
@@ -206,7 +206,7 @@ Façade publique des contrats. Le fichier ne duplique plus les définitions. Il 
 
 ### `types/outputs.ts`
 
-Source de vérité des outputs publics du domaine `catalog`.
+Source de vérité des outputs publics exposés par la façade `catalog`.
 
 Le fichier contient :
 
@@ -226,7 +226,7 @@ Le fichier contient :
 
 ### `helpers/primary-image.ts`
 
-Helper interne du domaine pour la sélection et le chargement batch de l'image primaire produit.
+Helper interne de la façade pour la sélection et le chargement batch de l'image primaire produit.
 
 Le fichier expose :
 
@@ -243,7 +243,7 @@ La règle de sélection est restée inchangée :
 
 ### `helpers/category-representative-image.ts`
 
-Helper interne du domaine pour reconstruire en batch `representativeImage` des catégories mises en avant de la homepage.
+Helper interne de la façade pour reconstruire en batch `representativeImage` des catégories mises en avant de la homepage.
 
 Le fichier :
 
@@ -297,7 +297,7 @@ V21-2A a extrait hors de `catalog.repository.ts` :
 
 Le lot a laissé dans `catalog.repository.ts` :
 
-- le ré-export public des types du domaine
+- le ré-export public des types exposés par la façade
 - `getPublishedHomepageContent`
 - `listPublishedFeaturedCategories`
 - `listCatalogFilterCategories`
@@ -347,7 +347,7 @@ Résultat :
 Risques résiduels observables après le lot :
 
 - `catalog.repository.ts` reste un fichier dense
-- `listPublishedProducts` reste la zone la plus complexe du domaine
+- `listPublishedProducts` reste la zone la plus complexe de la façade
 - `getPublishedProductBySlug` reste dans la façade publique avec sa logique de reconstruction locale
 - `catalog.mappers.ts` reste un fichier utilitaire large
 
@@ -357,14 +357,14 @@ Le lot n'a pas introduit de nouveau risque fonctionnel identifié. Il n'a pas no
 
 Limites visibles après V21-2A :
 
-- le domaine `catalog` n'est pas encore entièrement internalisé
+- la façade `catalog` n'est pas encore entièrement internalisée
 - la façade publique reste partiellement épaisse
 - les types publics restent regroupés dans un seul fichier interne `types/outputs.ts`
-- `catalog.repository.ts` ré-exporte encore les types publics du domaine
+- `catalog.repository.ts` ré-exporte encore les types publics exposés par la façade
 
 ## Conclusion de lot
 
-V21-2A a livré un premier découpage interne réel du domaine `catalog` sans toucher à sa surface publique.
+V21-2A a livré un premier découpage interne réel de la façade publique `catalog` sans toucher à sa surface publique.
 
 Le lot a atteint son objectif :
 
@@ -373,4 +373,4 @@ Le lot a atteint son objectif :
 - les lectures Prisma simples homepage / blog / recent products ont été sorties du repository
 - `catalog.repository.ts` est resté le point d'entrée public unique
 
-Le lot n'a pas cherché à terminer la modularisation du domaine. Il a préparé le terrain pour un lot ultérieur sur les zones restantes.
+Le lot n'a pas cherché à terminer la modularisation de cette façade de lecture. Il a préparé le terrain pour un lot ultérieur sur les zones restantes.
