@@ -1,10 +1,10 @@
 import { Prisma } from "@prisma/client";
-import { queryFirst } from "@/db/client";
 import { prisma } from "@/db/prisma-client";
 
 // --- Internal types ---
 
 // pg may return Date or string for timestamp columns depending on driver configuration
+// (kept for AdminCategoryRow used by $queryRaw reads)
 type TimestampValue = Date | string;
 
 type AdminCategoryRow = {
@@ -21,8 +21,16 @@ type AdminCategoryRow = {
   rep_image_alt_text?: string | null;
 };
 
-type DeletedCategoryRow = {
-  id: string;
+// Type structurel interne aligné sur ce que Prisma retourne pour categories (sans relations)
+type PrismaCategoryData = {
+  id: bigint;
+  name: string;
+  slug: string;
+  description: string | null;
+  is_featured: boolean;
+  image_path: string | null;
+  created_at: Date;
+  updated_at: Date;
 };
 
 type CreateAdminCategoryInput = {
@@ -42,11 +50,6 @@ type UpdateAdminCategoryInput = CreateAdminCategoryInput & {
 };
 
 type RepositoryErrorCode = "slug_taken" | "category_referenced";
-
-type PostgreSqlErrorLike = Error & {
-  code: string;
-  constraint?: string;
-};
 
 // --- Public types ---
 
@@ -73,20 +76,8 @@ export class AdminCategoryRepositoryError extends Error {
 
 // --- Internal helpers ---
 
-const PG_UNIQUE_VIOLATION = "23505";
-const PG_FOREIGN_KEY_VIOLATION = "23503";
-const CATEGORY_SLUG_CONSTRAINT = "categories_slug_key";
-
-// Single column list used by all category queries — no summary/detail distinction for this entity
-const CATEGORY_COLUMNS =
-  "id::text as id, name, slug, description, is_featured, image_path, created_at, updated_at";
-
 function isValidCategoryId(id: string): boolean {
   return /^[0-9]+$/.test(id);
-}
-
-function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
-  return error instanceof Error && typeof (error as { code?: unknown }).code === "string";
 }
 
 function toIsoTimestamp(value: TimestampValue): string {
@@ -97,6 +88,7 @@ function toIsoTimestamp(value: TimestampValue): string {
   return new Date(value).toISOString();
 }
 
+// Mapper for $queryRaw read results (includes representativeImage from lateral join)
 function mapAdminCategory(row: AdminCategoryRow): AdminCategory {
   return {
     id: row.id,
@@ -111,6 +103,22 @@ function mapAdminCategory(row: AdminCategoryRow): AdminCategory {
         : null,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at),
+  };
+}
+
+// Mapper for Prisma mutation results
+// representativeImage is null: mutations do not perform the LEFT JOIN LATERAL
+function mapPrismaCategoryToPublic(row: PrismaCategoryData): AdminCategory {
+  return {
+    id: row.id.toString(),
+    name: row.name,
+    slug: row.slug,
+    description: row.description,
+    isFeatured: row.is_featured,
+    imagePath: row.image_path,
+    representativeImage: null,
+    createdAt: row.created_at.toISOString(),
+    updatedAt: row.updated_at.toISOString(),
   };
 }
 
@@ -130,20 +138,16 @@ const REP_IMAGE_LATERAL_SQL = Prisma.sql`
   ) rep_img ON TRUE
 `;
 
-// Builds the ordered parameter array shared by INSERT and UPDATE queries.
-// Create: buildCategoryWriteParams(input)          → $1=name … $4=isFeatured
-// Update: [input.id, ...buildCategoryWriteParams(input)] → $1=id, $2=name … $5=isFeatured
-function buildCategoryWriteParams(input: CreateAdminCategoryInput): unknown[] {
-  return [input.name, input.slug, input.description, input.isFeatured];
-}
-
-function mapRepositoryError(error: unknown): never {
-  if (isPostgreSqlErrorLike(error)) {
-    if (error.code === PG_UNIQUE_VIOLATION && error.constraint === CATEGORY_SLUG_CONSTRAINT) {
+// Absorbs known Prisma errors and maps them to public domain errors.
+// P2002: unique constraint violation — categories has only one unique constraint (slug)
+// P2003: foreign key constraint violation — category still referenced
+function mapPrismaRepositoryError(error: unknown): never {
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code === "P2002") {
       throw new AdminCategoryRepositoryError("slug_taken", "Category slug already exists.");
     }
 
-    if (error.code === PG_FOREIGN_KEY_VIOLATION) {
+    if (error.code === "P2003") {
       throw new AdminCategoryRepositoryError(
         "category_referenced",
         "Category is still referenced by other records."
@@ -190,22 +194,18 @@ export async function findAdminCategoryById(id: string): Promise<AdminCategory |
 
 export async function createAdminCategory(input: CreateAdminCategoryInput): Promise<AdminCategory> {
   try {
-    const row = await queryFirst<AdminCategoryRow>(
-      `
-        insert into categories (name, slug, description, is_featured)
-        values ($1, $2, $3, $4)
-        returning ${CATEGORY_COLUMNS}
-      `,
-      buildCategoryWriteParams(input)
-    );
+    const row = await prisma.categories.create({
+      data: {
+        name: input.name,
+        slug: input.slug,
+        description: input.description,
+        is_featured: input.isFeatured,
+      },
+    });
 
-    if (row === null) {
-      throw new Error("Failed to create category.");
-    }
-
-    return mapAdminCategory(row);
+    return mapPrismaCategoryToPublic(row);
   } catch (error) {
-    mapRepositoryError(error);
+    mapPrismaRepositoryError(error);
   }
 }
 
@@ -217,27 +217,23 @@ export async function updateAdminCategory(
   }
 
   try {
-    const row = await queryFirst<AdminCategoryRow>(
-      `
-        update categories
-        set
-          name = $2,
-          slug = $3,
-          description = $4,
-          is_featured = $5
-        where id = $1::bigint
-        returning ${CATEGORY_COLUMNS}
-      `,
-      [input.id, ...buildCategoryWriteParams(input)]
-    );
+    const row = await prisma.categories.update({
+      where: { id: BigInt(input.id) },
+      data: {
+        name: input.name,
+        slug: input.slug,
+        description: input.description,
+        is_featured: input.isFeatured,
+      },
+    });
 
-    if (row === null) {
+    return mapPrismaCategoryToPublic(row);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
       return null;
     }
 
-    return mapAdminCategory(row);
-  } catch (error) {
-    mapRepositoryError(error);
+    mapPrismaRepositoryError(error);
   }
 }
 
@@ -247,18 +243,15 @@ export async function deleteAdminCategory(id: string): Promise<boolean> {
   }
 
   try {
-    const row = await queryFirst<DeletedCategoryRow>(
-      `
-        delete from categories
-        where id = $1::bigint
-        returning id::text as id
-      `,
-      [id]
-    );
+    await prisma.categories.delete({ where: { id: BigInt(id) } });
 
-    return row !== null;
+    return true;
   } catch (error) {
-    mapRepositoryError(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+      return false;
+    }
+
+    mapPrismaRepositoryError(error);
   }
 }
 
@@ -269,21 +262,20 @@ export async function updateAdminCategoryImage(
     return null;
   }
 
-  const row = await queryFirst<AdminCategoryRow>(
-    `
-      update categories
-      set image_path = $2
-      where id = $1::bigint
-      returning ${CATEGORY_COLUMNS}
-    `,
-    [input.id, input.imagePath]
-  );
+  try {
+    const row = await prisma.categories.update({
+      where: { id: BigInt(input.id) },
+      data: { image_path: input.imagePath },
+    });
 
-  if (row === null) {
-    return null;
+    return mapPrismaCategoryToPublic(row);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+      return null;
+    }
+
+    mapPrismaRepositoryError(error);
   }
-
-  return mapAdminCategory(row);
 }
 
 export async function countProductsForCategory(id: string): Promise<number> {
