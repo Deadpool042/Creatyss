@@ -1,1 +1,1 @@
-export type { FeaturedCategory } from "@/db/catalog";
+export type { FeaturedCategory } from "@/db/repositories/catalog/catalog.repository";

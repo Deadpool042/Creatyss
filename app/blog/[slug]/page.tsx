@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getPublishedBlogPostBySlug } from "@/db/catalog";
+import { getPublishedBlogPostBySlug } from "@/db/repositories/catalog/catalog.repository";
 import { getUploadsPublicPath } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";

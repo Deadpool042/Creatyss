@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getPublishedHomepageContent, listRecentPublishedProducts } from "@/db/catalog";
+import { getPublishedHomepageContent, listRecentPublishedProducts } from "@/db/repositories/catalog/catalog.repository";
 import { getUploadsPublicPath } from "@/lib/uploads";
 import {
   HomepageHeroSection,

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/notice";
-import { getPublishedProductBySlug } from "@/db/catalog";
+import { getPublishedProductBySlug } from "@/db/repositories/catalog/catalog.repository";
 import { addToCartAction } from "@/features/cart";
 import {
   getOfferAvailabilityMessage,

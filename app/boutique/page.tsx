@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { listCatalogFilterCategories, listPublishedProducts } from "@/db/catalog";
+import { listCatalogFilterCategories, listPublishedProducts } from "@/db/repositories/catalog/catalog.repository";
 import {
   CATALOG_AVAILABILITY_FILTER_VALUE,
   validateCatalogFilterInput,

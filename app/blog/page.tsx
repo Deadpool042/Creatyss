@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listPublishedBlogPosts } from "@/db/catalog";
+import { listPublishedBlogPosts } from "@/db/repositories/catalog/catalog.repository";
 
 export const dynamic = "force-dynamic";
 
