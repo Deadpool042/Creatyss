@@ -8,7 +8,7 @@ Le périmètre de travail est :
 
 - `db/repositories/**`
 - les façades publiques `*.repository.ts` et `*.types.ts`
-- les futurs sous-dossiers internes locaux au domaine :
+- les futurs sous-dossiers internes locaux au domaine métier ou à la façade publique concernée :
   - `types/`
   - `queries/`
   - `helpers/`

@@ -55,7 +55,7 @@ Contenu :
 - audit réel de `db/repositories/`
 - identification des plus gros fichiers
 - inventaire des extractions naturelles
-- définition de la structure cible minimale par domaine
+- définition de la structure cible minimale par domaine ou façade publique
 - séquençage par lots sûrs
 
 Pourquoi ce lot :
@@ -211,7 +211,7 @@ Tous les lots V21 dépendent des invariants hérités de V19 :
 Tous les lots V21 dépendent aussi de la doctrine V20 :
 
 - repository comme façade publique
-- modularisation interne locale au domaine
+- modularisation interne locale au domaine ou à la façade publique conservée
 - pas de couche `services/`
 - pas de structure globale `db/queries/`
 

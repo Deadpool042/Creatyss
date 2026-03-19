@@ -12,6 +12,8 @@ Elle matérialise trois règles de la version :
 
 Cette structure ne doit pas être lue comme une cible déjà atteinte partout dans `db/`. Elle doit être lue comme une première façade publique pilote déjà refactorée.
 
+Le chemin `db/repositories/catalog/**` est conservé pour compatibilité, mais il ne correspond pas à un domaine métier autonome.
+
 ## Pourquoi `catalog` n'est pas un domaine métier
 
 Le code actuel de [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts) montre que `catalog` agrège plusieurs lectures publiques distinctes :
