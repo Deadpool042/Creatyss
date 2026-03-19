@@ -10,6 +10,30 @@ import {
   resolvePublishedSimpleOffer,
   mapBlogPostSummary,
 } from "./catalog.mappers";
+import {
+  loadRepresentativeImagesByCategoryIds,
+} from "./helpers/category-representative-image";
+import {
+  loadPrimaryProductImagesByProductIds,
+  primaryProductImageSelect,
+  selectPrimaryProductImage,
+} from "./helpers/primary-image";
+import {
+  getPublishedBlogPostRowBySlug,
+  listPublishedBlogPostRows,
+} from "./queries/blog.queries";
+import {
+  getPublishedHomepageRow as readPublishedHomepageRow,
+  listHomepageFeaturedBlogPostRows as readHomepageFeaturedBlogPostRows,
+  listHomepageFeaturedCategoryRecords as readHomepageFeaturedCategoryRecords,
+  listHomepageFeaturedProductRows as readHomepageFeaturedProductRows,
+  type FeaturedCategoryRecord,
+} from "./queries/homepage.queries";
+import {
+  listRecentPublishedProductRows,
+  publishedProductSummarySelect,
+  type PublishedProductSummaryRecord,
+} from "./queries/recent-products.queries";
 
 import type {
   DbId,
@@ -40,57 +64,6 @@ export type {
   PublishedBlogPostDetail,
   PublishedHomepageContent,
 } from "./catalog.types";
-
-const featuredCategorySelect = Prisma.validator<Prisma.categoriesSelect>()({
-  id: true,
-  name: true,
-  slug: true,
-  description: true,
-  created_at: true,
-  updated_at: true,
-});
-
-type FeaturedCategoryRecord = Prisma.categoriesGetPayload<{
-  select: typeof featuredCategorySelect;
-}>;
-
-const publishedProductSummarySelect = Prisma.validator<Prisma.productsSelect>()({
-  id: true,
-  name: true,
-  slug: true,
-  short_description: true,
-  description: true,
-  product_type: true,
-  simple_sku: true,
-  simple_price: true,
-  simple_compare_at_price: true,
-  simple_stock_quantity: true,
-  is_featured: true,
-  seo_title: true,
-  seo_description: true,
-  created_at: true,
-  updated_at: true,
-});
-
-type PublishedProductSummaryRecord = Prisma.productsGetPayload<{
-  select: typeof publishedProductSummarySelect;
-}>;
-
-const primaryProductImageSelect = Prisma.validator<Prisma.product_imagesSelect>()({
-  id: true,
-  product_id: true,
-  variant_id: true,
-  file_path: true,
-  alt_text: true,
-  sort_order: true,
-  is_primary: true,
-  created_at: true,
-  updated_at: true,
-});
-
-type PrimaryProductImageRecord = Prisma.product_imagesGetPayload<{
-  select: typeof primaryProductImageSelect;
-}>;
 
 const publishedVariantOfferSelect = Prisma.validator<Prisma.product_variantsSelect>()({
   product_id: true,
@@ -123,11 +96,6 @@ type PublishedVariantDetailRecord = Prisma.product_variantsGetPayload<{
   select: typeof publishedVariantDetailSelect;
 }>;
 
-type ProductRecencyRecord = {
-  id: bigint;
-  created_at: Date;
-};
-
 type SimpleOfferNativeSource = Pick<
   PublishedProductSummaryRecord,
   "simple_sku" | "simple_price" | "simple_compare_at_price" | "simple_stock_quantity"
@@ -157,19 +125,6 @@ function toDbId(id: bigint): DbId {
 
 function toPublishedProductType(value: string): PublishedProductSummary["productType"] {
   return value as PublishedProductSummary["productType"];
-}
-
-function getRepresentativeImage(
-  primaryImage: PublishedProductImage | null
-): FeaturedCategory["representativeImage"] {
-  if (primaryImage === null) {
-    return null;
-  }
-
-  return {
-    filePath: primaryImage.filePath,
-    altText: primaryImage.altText,
-  };
 }
 
 function mapFeaturedCategoryRecord(
@@ -205,192 +160,6 @@ function mapPublishedProductSummaryRecord(
     updatedAt: product.updated_at.toISOString(),
     primaryImage,
   };
-}
-
-function compareBigIntAsc(left: bigint, right: bigint): number {
-  if (left < right) {
-    return -1;
-  }
-
-  if (left > right) {
-    return 1;
-  }
-
-  return 0;
-}
-
-function compareBigIntDesc(left: bigint, right: bigint): number {
-  return compareBigIntAsc(right, left);
-}
-
-function comparePrimaryProductImages(
-  left: PrimaryProductImageRecord,
-  right: PrimaryProductImageRecord
-): number {
-  const leftVariantPriority = left.variant_id === null ? 0 : 1;
-  const rightVariantPriority = right.variant_id === null ? 0 : 1;
-
-  if (leftVariantPriority !== rightVariantPriority) {
-    return leftVariantPriority - rightVariantPriority;
-  }
-
-  if (left.is_primary !== right.is_primary) {
-    return left.is_primary ? -1 : 1;
-  }
-
-  if (left.sort_order !== right.sort_order) {
-    return left.sort_order - right.sort_order;
-  }
-
-  return compareBigIntAsc(left.id, right.id);
-}
-
-function selectPrimaryProductImage(
-  candidates: readonly PrimaryProductImageRecord[]
-): PublishedProductImage | null {
-  let selectedCandidate: PrimaryProductImageRecord | null = null;
-
-  for (const candidate of candidates) {
-    if (selectedCandidate === null || comparePrimaryProductImages(candidate, selectedCandidate) < 0) {
-      selectedCandidate = candidate;
-    }
-  }
-
-  return selectedCandidate === null ? null : mapPrismaProductImage(selectedCandidate);
-}
-
-async function loadPrimaryProductImagesByProductIds(
-  productIds: readonly bigint[]
-): Promise<Map<DbId, PublishedProductImage | null>> {
-  const uniqueProductIds = uniqueBigIntIds(productIds);
-  const imagesByProductId = new Map<DbId, PublishedProductImage | null>();
-
-  if (uniqueProductIds.length === 0) {
-    return imagesByProductId;
-  }
-
-  const imageRows = await prisma.product_images.findMany({
-    where: {
-      product_id: { in: uniqueProductIds },
-      OR: [{ variant_id: null }, { product_variants: { status: "published" } }],
-    },
-    select: primaryProductImageSelect,
-  });
-
-  const candidatesByProductId = new Map<DbId, PrimaryProductImageRecord[]>();
-
-  for (const imageRow of imageRows) {
-    const productId = toDbId(imageRow.product_id);
-    const productImages = candidatesByProductId.get(productId);
-
-    if (productImages) {
-      productImages.push(imageRow);
-      continue;
-    }
-
-    candidatesByProductId.set(productId, [imageRow]);
-  }
-
-  for (const productId of uniqueProductIds) {
-    const key = toDbId(productId);
-    imagesByProductId.set(key, selectPrimaryProductImage(candidatesByProductId.get(key) ?? []));
-  }
-
-  return imagesByProductId;
-}
-
-function isMoreRecentProduct(
-  candidate: ProductRecencyRecord,
-  current: ProductRecencyRecord
-): boolean {
-  const createdAtDelta = candidate.created_at.getTime() - current.created_at.getTime();
-
-  if (createdAtDelta !== 0) {
-    return createdAtDelta > 0;
-  }
-
-  return compareBigIntDesc(candidate.id, current.id) < 0;
-}
-
-async function loadRepresentativeImagesByCategoryIds(
-  categoryIds: readonly bigint[]
-): Promise<Map<DbId, FeaturedCategory["representativeImage"]>> {
-  const uniqueCategoryIds = uniqueBigIntIds(categoryIds);
-  const representativeImagesByCategoryId = new Map<DbId, FeaturedCategory["representativeImage"]>();
-
-  if (uniqueCategoryIds.length === 0) {
-    return representativeImagesByCategoryId;
-  }
-
-  const productCategoryRows = await prisma.product_categories.findMany({
-    where: { category_id: { in: uniqueCategoryIds } },
-    select: {
-      category_id: true,
-      product_id: true,
-    },
-  });
-
-  const productIds = uniqueBigIntIds(productCategoryRows.map((row) => row.product_id));
-
-  if (productIds.length === 0) {
-    return representativeImagesByCategoryId;
-  }
-
-  const publishedProducts = await prisma.products.findMany({
-    where: {
-      id: { in: productIds },
-      status: "published",
-    },
-    select: {
-      id: true,
-      created_at: true,
-    },
-  });
-
-  const publishedProductsById = new Map<DbId, ProductRecencyRecord>();
-
-  for (const product of publishedProducts) {
-    publishedProductsById.set(toDbId(product.id), product);
-  }
-
-  const latestProductByCategoryId = new Map<DbId, ProductRecencyRecord>();
-
-  for (const row of productCategoryRows) {
-    const categoryId = toDbId(row.category_id);
-    const publishedProduct = publishedProductsById.get(toDbId(row.product_id));
-
-    if (publishedProduct === undefined) {
-      continue;
-    }
-
-    const currentProduct = latestProductByCategoryId.get(categoryId);
-
-    if (currentProduct === undefined || isMoreRecentProduct(publishedProduct, currentProduct)) {
-      latestProductByCategoryId.set(categoryId, publishedProduct);
-    }
-  }
-
-  const representativeProductIds = uniqueBigIntIds(
-    [...latestProductByCategoryId.values()].map((product) => product.id)
-  );
-  const primaryImagesByProductId = await loadPrimaryProductImagesByProductIds(representativeProductIds);
-
-  for (const categoryId of uniqueCategoryIds) {
-    const key = toDbId(categoryId);
-    const latestProduct = latestProductByCategoryId.get(key);
-
-    if (latestProduct === undefined) {
-      representativeImagesByCategoryId.set(key, null);
-      continue;
-    }
-
-    representativeImagesByCategoryId.set(
-      key,
-      getRepresentativeImage(primaryImagesByProductId.get(toDbId(latestProduct.id)) ?? null)
-    );
-  }
-
-  return representativeImagesByCategoryId;
 }
 
 async function loadPublishedVariantOffersByProductIds(
@@ -550,24 +319,13 @@ function getPublishedProductsOrderBy(
 // --- Homepage reads ---
 
 async function getPublishedHomepageRow() {
-  return prisma.homepage_content.findFirst({
-    where: { status: "published" },
-  });
+  return readPublishedHomepageRow();
 }
 
 async function listHomepageFeaturedCategories(
   homepageContentId: string
 ): Promise<FeaturedCategory[]> {
-  const rows = await prisma.homepage_featured_categories.findMany({
-    where: { homepage_content_id: BigInt(homepageContentId) },
-    orderBy: [{ sort_order: "asc" }, { category_id: "asc" }],
-    select: {
-      categories: {
-        select: featuredCategorySelect,
-      },
-    },
-  });
-  const categories = rows.map((row) => row.categories);
+  const categories = await readHomepageFeaturedCategoryRecords(homepageContentId);
   const representativeImagesByCategoryId = await loadRepresentativeImagesByCategoryIds(
     categories.map((category) => category.id)
   );
@@ -583,19 +341,7 @@ async function listHomepageFeaturedCategories(
 async function listHomepageFeaturedProducts(
   homepageContentId: string
 ): Promise<PublishedProductSummary[]> {
-  const rows = await prisma.homepage_featured_products.findMany({
-    where: {
-      homepage_content_id: BigInt(homepageContentId),
-      products: { status: "published" },
-    },
-    orderBy: [{ sort_order: "asc" }, { product_id: "asc" }],
-    select: {
-      products: {
-        select: publishedProductSummarySelect,
-      },
-    },
-  });
-  const products = rows.map((row) => row.products);
+  const products = await readHomepageFeaturedProductRows(homepageContentId);
   const primaryImagesByProductId = await loadPrimaryProductImagesByProductIds(
     products.map((product) => product.id)
   );
@@ -611,28 +357,7 @@ async function listHomepageFeaturedProducts(
 async function listHomepageFeaturedBlogPosts(
   homepageContentId: string
 ): Promise<PublishedBlogPostSummary[]> {
-  const rows = await prisma.homepage_featured_blog_posts.findMany({
-    where: {
-      homepage_content_id: BigInt(homepageContentId),
-      blog_posts: { status: "published" },
-    },
-    orderBy: [{ sort_order: "asc" }, { blog_post_id: "asc" }],
-    select: {
-      blog_posts: {
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          excerpt: true,
-          cover_image_path: true,
-          published_at: true,
-          created_at: true,
-          updated_at: true,
-        },
-      },
-    },
-  });
-
+  const rows = await readHomepageFeaturedBlogPostRows(homepageContentId);
   return rows.map((row) => mapBlogPostSummary(row.blog_posts));
 }
 
@@ -806,12 +531,7 @@ export async function getPublishedProductBySlug(
 export async function listRecentPublishedProducts(
   limit: number
 ): Promise<PublishedProductSummary[]> {
-  const products = await prisma.products.findMany({
-    where: { status: "published" },
-    orderBy: [{ created_at: "desc" }],
-    take: limit,
-    select: publishedProductSummarySelect,
-  });
+  const products = await listRecentPublishedProductRows(limit);
   const primaryImagesByProductId = await loadPrimaryProductImagesByProductIds(
     products.map((product) => product.id)
   );
@@ -827,20 +547,7 @@ export async function listRecentPublishedProducts(
 // --- Blog reads ---
 
 export async function listPublishedBlogPosts(): Promise<PublishedBlogPostSummary[]> {
-  const rows = await prisma.blog_posts.findMany({
-    where: { status: "published" },
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      excerpt: true,
-      cover_image_path: true,
-      published_at: true,
-      created_at: true,
-      updated_at: true,
-    },
-    orderBy: [{ published_at: { sort: "desc", nulls: "last" } }, { id: "desc" }],
-  });
+  const rows = await listPublishedBlogPostRows();
 
   return rows.map(mapBlogPostSummary);
 }
@@ -848,22 +555,7 @@ export async function listPublishedBlogPosts(): Promise<PublishedBlogPostSummary
 export async function getPublishedBlogPostBySlug(
   slug: string
 ): Promise<PublishedBlogPostDetail | null> {
-  const row = await prisma.blog_posts.findFirst({
-    where: { status: "published", slug },
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      excerpt: true,
-      content: true,
-      cover_image_path: true,
-      published_at: true,
-      seo_title: true,
-      seo_description: true,
-      created_at: true,
-      updated_at: true,
-    },
-  });
+  const row = await getPublishedBlogPostRowBySlug(slug);
 
   if (row === null) {
     return null;

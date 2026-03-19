@@ -1,0 +1,204 @@
+# Structure interne actuelle de `db/repositories/catalog/`
+
+## Arborescence actuelle
+
+Après V21-2A, la structure réelle du domaine est :
+
+```text
+db/repositories/catalog/
+├── catalog.mappers.ts
+├── catalog.repository.ts
+├── catalog.types.ts
+├── helpers/
+│   ├── category-representative-image.ts
+│   └── primary-image.ts
+├── queries/
+│   ├── blog.queries.ts
+│   ├── homepage.queries.ts
+│   └── recent-products.queries.ts
+└── types/
+    └── outputs.ts
+```
+
+## Rôle de la façade publique `catalog.repository.ts`
+
+`catalog.repository.ts` reste l'unique point d'entrée public du domaine.
+
+Il expose encore :
+
+- les ré-exports de types publics du domaine
+- toutes les fonctions publiques storefront
+
+Il orchestre encore :
+
+- la homepage publique
+- les catégories mises en avant
+- les filtres catalogue
+- le listing catalogue
+- le détail produit public
+- les produits récents
+- le blog public
+
+Après V21-2A, ce fichier ne porte plus les helpers extraits les plus stables. Il reste néanmoins partiellement épais parce qu'il contient encore :
+
+- `listPublishedProducts`
+- `getPublishedProductBySlug`
+- les builders de filtres et d'ordering du catalogue
+- des mappings publics légers
+- le chargement local des offres de variantes publiées
+
+## Rôle de `catalog.types.ts`
+
+`catalog.types.ts` est resté la façade publique de types du domaine.
+
+Le fichier ne définit plus directement les contrats. Il ré-exporte l'ensemble des types publics depuis `types/outputs.ts`.
+
+Ce choix a gardé inchangé le chemin public :
+
+- `@/db/repositories/catalog/catalog.types`
+
+## Rôle de `types/outputs.ts`
+
+`types/outputs.ts` est devenu la source de vérité des outputs publics du domaine `catalog`.
+
+Le fichier contient :
+
+- les identifiants publics (`DbId`)
+- les montants publics (`MoneyAmount`)
+- les types homepage (`FeaturedCategory`, `PublishedHomepageContent`)
+- les types catalogue (`CatalogFilterCategory`, `PublishedProductSummary`, `PublishedCatalogProductSummary`, `PublishedProductDetail`)
+- les types image et variante (`PublishedProductImage`, `PublishedProductVariant`)
+- les types blog (`PublishedBlogPostSummary`, `PublishedBlogPostDetail`)
+
+Le fichier ne contient pas de lecture Prisma, de helper ou de mapping.
+
+## Rôle de `helpers/primary-image.ts`
+
+`helpers/primary-image.ts` porte une responsabilité unique : la sélection et le chargement batch de l'image primaire produit.
+
+Exports internes :
+
+- `primaryProductImageSelect`
+- `selectPrimaryProductImage`
+- `loadPrimaryProductImagesByProductIds`
+
+Ce helper centralise :
+
+- le `select` Prisma sur `product_images`
+- le comparateur d'image primaire
+- le choix d'une image unique par produit
+- le batch loading par `product_id`
+
+La règle de priorité documentée en V19 et V20 est restée implémentée ici :
+
+1. image de produit parent (`variant_id === null`)
+2. `is_primary === true`
+3. `sort_order ASC`
+4. `id ASC`
+
+## Rôle de `helpers/category-representative-image.ts`
+
+`helpers/category-representative-image.ts` porte la reconstruction batch de `representativeImage` pour les catégories mises en avant de la homepage.
+
+Le helper :
+
+- lit les relations `product_categories`
+- lit les produits publiés concernés
+- choisit le produit le plus récent par catégorie
+- délègue la sélection de l'image au helper `primary-image`
+- retourne une map prête à être consommée par la façade publique
+
+Le fichier ne publie qu'une fonction :
+
+- `loadRepresentativeImagesByCategoryIds`
+
+## Rôle de `queries/homepage.queries.ts`
+
+`queries/homepage.queries.ts` regroupe les lectures Prisma simples de la homepage publique.
+
+Exports internes :
+
+- `featuredCategorySelect`
+- `FeaturedCategoryRecord`
+- `getPublishedHomepageRow`
+- `listHomepageFeaturedCategoryRecords`
+- `listHomepageFeaturedProductRows`
+- `listHomepageFeaturedBlogPostRows`
+
+Le fichier ne mappe pas vers les contrats publics. Il retourne des lignes Prisma ou des sélections internes.
+
+## Rôle de `queries/blog.queries.ts`
+
+`queries/blog.queries.ts` regroupe les lectures Prisma simples du blog public.
+
+Exports internes :
+
+- `listPublishedBlogPostRows`
+- `getPublishedBlogPostRowBySlug`
+
+Le mapping final vers `PublishedBlogPostSummary` ou `PublishedBlogPostDetail` reste orchestré par `catalog.repository.ts` via `mapBlogPostSummary`.
+
+## Rôle de `queries/recent-products.queries.ts`
+
+`queries/recent-products.queries.ts` regroupe :
+
+- le `select` résumé produit partagé
+- le type Prisma associé
+- la lecture Prisma des produits récents publiés
+
+Exports internes :
+
+- `publishedProductSummarySelect`
+- `PublishedProductSummaryRecord`
+- `listRecentPublishedProductRows`
+
+Ce fichier est utilisé à la fois par le repository et par `homepage.queries.ts`.
+
+## Ce qui n'a pas encore été internalisé
+
+Après V21-2A, les éléments suivants ne sont pas encore sortis de `catalog.repository.ts` :
+
+- `listPublishedProducts`
+- `getPublishedProductBySlug`
+- `loadPublishedVariantOffersByProductIds`
+- `getNativeSimpleOfferFields`
+- `getPublishedProductIdsMatchingVariantColor`
+- `buildPublishedProductsWhere`
+- `getPublishedProductsOrderBy`
+- `mapFeaturedCategoryRecord`
+- `mapPublishedProductSummaryRecord`
+
+Le fichier `catalog.mappers.ts` n'a pas été redécoupé non plus. Il reste un fichier partagé pour :
+
+- les mappers d'image et de variante
+- la résolution de l'offre simple
+- le calcul de disponibilité
+- le mapping des posts de blog
+
+## Pourquoi `catalog.repository.ts` reste une façade partiellement épaisse
+
+`catalog.repository.ts` reste partiellement épais pour trois raisons observables :
+
+1. `listPublishedProducts` est resté hors périmètre du lot.
+2. `getPublishedProductBySlug` est resté hors périmètre du lot.
+3. le lot a privilégié l'extraction des blocs déjà stabilisés par V19, pas une refonte complète du domaine.
+
+Le résultat est volontaire :
+
+- la façade publique a été allégée
+- les helpers et queries les plus lisibles ont été sortis
+- le cœur le plus risqué du domaine est resté local pour préserver le comportement
+
+## Lecture actuelle
+
+V21-2A n'a pas transformé `catalog` en domaine entièrement modulaire.
+
+Il a créé un premier découpage interne fonctionnel :
+
+- `catalog.repository.ts` comme façade publique
+- `catalog.types.ts` comme façade publique de types
+- `types/` pour les outputs publics
+- `helpers/` pour le batch loading et la reconstruction mémoire
+- `queries/` pour les lectures Prisma simples
+
+Cette structure est réelle dans le code. Elle reste incomplète sur les flux catalogue les plus denses.
