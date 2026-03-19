@@ -18,6 +18,30 @@ Cette documentation ne décrit donc pas V21 complet comme un état déjà attein
 - le statut réel des lots
 - le contenu effectivement livré par V21-2A
 
+## Ce qui est déjà fait
+
+Lots réellement terminés à ce stade :
+
+- [V21-1 — cadrage et audit](./lots/v21-1-cadrage-audit.md)
+- [V21-2A — `catalog` : socle interne](./lots/v21-2a-catalog-socle-interne.md)
+
+Ce qui est déjà visible dans le code :
+
+- `catalog` possède désormais une première structure interne `types/`, `queries/`, `helpers/`
+- les façades publiques [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts) et [catalog.types.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.types.ts) sont restées stables
+- aucun autre domaine `db/` n'a encore été modularisé au niveau V21
+
+## Ce qui reste à faire
+
+Lots restant à exécuter :
+
+- [V21-2B — `catalog` : cœur du domaine](./lots/v21-2b-catalog-coeur.md)
+- [V21-3 — `order`](./lots/v21-3-order-internal-modularization.md)
+- [V21-4A — `products` : socle partagé](./lots/v21-4a-products-shared-core.md)
+- [V21-4B — `products` : variantes et images](./lots/v21-4b-products-variants-images.md)
+- [V21-5 — domaines restants](./lots/v21-5-small-domains-structural-cleanup.md)
+- [V21 — état final attendu](./lots/v21-final-state.md)
+
 ## Pourquoi V21 existe
 
 V20 a documenté un état stabilisé de `db/`, mais il a aussi rendu visibles des limites structurelles qui n'étaient plus technologiques.
@@ -105,8 +129,10 @@ Découpage de travail retenu à ce stade :
 - `V21-2A` — `catalog` : extraction du socle interne sûr
 - `V21-2B` — `catalog` : finalisation des extractions restantes
 - `V21-3` — `order`
-- `V21-4` — `products`
+- `V21-4A` — `products` : socle partagé
+- `V21-4B` — `products` : variantes et images
 - `V21-5` — petits domaines restants
+- `V21-final-state` — état cible de `db/repositories/` après V21
 
 ## Statut actuel de V21
 
@@ -147,11 +173,19 @@ Statut : non réalisé.
 
 Statut : non réalisé.
 
-### `V21-4`
+### `V21-4A`
+
+Statut : non réalisé.
+
+### `V21-4B`
 
 Statut : non réalisé.
 
 ### `V21-5`
+
+Statut : non réalisé.
+
+### `V21-final-state`
 
 Statut : non réalisé.
 
@@ -189,6 +223,34 @@ Après V21-2A, les points suivants restent hors périmètre ou non traités :
 - modularisation de `products`
 - modularisation des petits domaines plats
 
+## Ordre de reprise du code
+
+L'ordre de reprise du code reste :
+
+1. `V21-2B`
+2. `V21-3`
+3. `V21-4A`
+4. `V21-4B`
+5. `V21-5`
+
+Cet ordre n'est pas interchangeable dans cette documentation :
+
+- `catalog` reste le domaine pilote jusqu'à la fin de `V21-2B`
+- `order` reste le premier domaine transactionnel prioritaire après `catalog`
+- `products` vient après `order`
+- les petits domaines restent en dernier et seulement si le gain structurel est net
+
+## Ce qui ne sera pas codé avant documentation complète
+
+Tant que la documentation V21 n'était pas complète, aucun lot au-delà de V21-2A ne devait reprendre le code.
+
+Cette condition est désormais couverte dans `docs/v21/**` par :
+
+- [roadmap.md](./roadmap.md)
+- [doctrine.md](./doctrine.md)
+- [scope.md](./scope.md)
+- les fiches de lot de [`lots/`](./lots/)
+
 ## Lecture de la doctrine V21
 
 La doctrine générale de cette version est documentée dans :
@@ -213,3 +275,28 @@ La doctrine de fond reste dans :
 
 - [V19](../v19/README.md) pour la stabilisation Prisma
 - [V20](../v20/README.md) pour la doctrine modulaire de `db/`
+
+## Navigation V21
+
+### Cadre général
+
+- [README](./README.md)
+- [roadmap](./roadmap.md)
+- [doctrine](./doctrine.md)
+- [scope](./scope.md)
+
+### Lots
+
+- [V21-1 — cadrage et audit](./lots/v21-1-cadrage-audit.md)
+- [V21-2A — `catalog` : socle interne](./lots/v21-2a-catalog-socle-interne.md)
+- [V21-2B — `catalog` : cœur du domaine](./lots/v21-2b-catalog-coeur.md)
+- [V21-3 — `order`](./lots/v21-3-order-internal-modularization.md)
+- [V21-4A — `products` : socle partagé](./lots/v21-4a-products-shared-core.md)
+- [V21-4B — `products` : variantes et images](./lots/v21-4b-products-variants-images.md)
+- [V21-5 — domaines restants](./lots/v21-5-small-domains-structural-cleanup.md)
+- [V21 — état final attendu](./lots/v21-final-state.md)
+
+### Architecture et décisions
+
+- [architecture/catalog-internal-structure](./architecture/catalog-internal-structure.md)
+- [decisions/v21-2a-decisions](./decisions/v21-2a-decisions.md)

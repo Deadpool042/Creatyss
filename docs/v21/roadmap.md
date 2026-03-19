@@ -13,14 +13,16 @@ Il ne décrit pas des lots déjà livrés au-delà de ce qui est visible dans le
 
 ## Vue d'ensemble
 
-| Lot | Domaine | Statut | Dépendances directes |
-| --- | --- | --- | --- |
-| `V21-1` | cadrage | fait | aucune |
-| `V21-2A` | `catalog` socle interne | fait | `V21-1` |
-| `V21-2B` | `catalog` finalisation | à faire | `V21-2A` |
-| `V21-3` | `order` | à faire | `V21-1`, `V21-2A` |
-| `V21-4` | `products` | à faire | `V21-1`, `V21-3` |
-| `V21-5` | petits domaines restants | à faire | `V21-1`, `V21-3`, `V21-4` |
+| Lot | Domaine | Statut | Dépendances directes | Objectif | Risque | Critère de fin |
+| --- | --- | --- | --- | --- | --- | --- |
+| `V21-1` | cadrage | fait | aucune | figer l'audit réel de `db/repositories/` | faible | plan de lots validé, aucun code modifié |
+| `V21-2A` | `catalog` socle interne | fait | `V21-1` | extraire les blocs stables de `catalog` | faible à moyen | façades publiques stables, `queries/` et `helpers/` initiaux en place |
+| `V21-2B` | `catalog` cœur | à faire | `V21-2A` | traiter `listPublishedProducts` et `getPublishedProductBySlug` | élevé | cœur `catalog` internalisé sans changement de comportement |
+| `V21-3` | `order` | à faire | `V21-1`, `V21-2A` | modulariser `order` derrière ses façades publiques | élevé | `order.repository.ts` allégé, invariants transactionnels intacts |
+| `V21-4A` | `products` socle partagé | à faire | `V21-1`, `V21-3` | sortir le cœur partagé du domaine `products` | moyen à élevé | `admin-product.repository.ts` réduit, compatibilité produit simple intacte |
+| `V21-4B` | `products` variantes et images | à faire | `V21-4A` | modulariser variantes et images | élevé | règles `is_default` et `is_primary` inchangées, façades stables |
+| `V21-5` | petits domaines restants | à faire | `V21-1`, `V21-3`, `V21-4A`, `V21-4B` | nettoyer seulement les domaines où le gain est net | moyen | domaines utiles clarifiés sans churn opportuniste |
+| `V21-final-state` | état final | à faire | `V21-2B`, `V21-3`, `V21-4A`, `V21-4B`, `V21-5` | figer l'état cible final de `db/repositories/` | faible | structure V21 documentée et cohérente avec le code livré |
 
 ## Ordre d'exécution retenu
 
@@ -30,8 +32,10 @@ Ordre de travail retenu :
 2. `V21-2A`
 3. `V21-2B`
 4. `V21-3`
-5. `V21-4`
-6. `V21-5`
+5. `V21-4A`
+6. `V21-4B`
+7. `V21-5`
+8. `V21-final-state`
 
 Cet ordre est conservateur :
 
@@ -114,22 +118,35 @@ Pourquoi ce lot :
 - [order.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/order.repository.ts) reste le plus gros repository plat du projet
 - le domaine combine lectures publiques, lectures admin, orchestration transactionnelle et helpers de stock
 
-### `V21-4` — `products`
+### `V21-4A` — `products` : socle partagé
 
 Statut : à faire.
 
 Contenu prévu :
 
-- modularisation interne de `db/repositories/products/**`
-- introduction de `types/`, `queries/`, `helpers/` locaux
-- réduction de [admin-product.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/admin-product.repository.ts)
-- conservation de [simple-product-compat.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/simple-product-compat.ts) tant que son rôle reste strictement interne et lisible
+- extraction du cœur partagé autour de [admin-product.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/admin-product.repository.ts)
+- introduction de `types/`, `queries/`, `helpers/` locaux au domaine
+- conservation du rôle actuel de [simple-product-compat.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/simple-product-compat.ts)
 
 Pourquoi ce lot :
 
-- le domaine est déjà partiellement découpé en plusieurs repositories publics
-- la densité reste forte sur `admin-product`
-- l'articulation produit / variantes / images / compatibilité doit être clarifiée sans changer la surface publique
+- [admin-product.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/admin-product.repository.ts) reste la plus grosse façade du domaine `products`
+- le domaine mélange encore chargement du détail, catégories, publication et compatibilité simple produit
+
+### `V21-4B` — `products` : variantes et images
+
+Statut : à faire.
+
+Contenu prévu :
+
+- modularisation interne de [admin-product-variant.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/admin-product-variant.repository.ts)
+- modularisation interne de [admin-product-image.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/admin-product-image.repository.ts)
+- clarification des helpers variantes / images autour des mêmes façades publiques
+
+Pourquoi ce lot :
+
+- les règles `is_default` et `is_primary` restent critiques et techniques
+- les repositories variantes et images sont déjà séparés publiquement mais restent encore denses en interne
 
 ### `V21-5` — petits domaines restants
 
@@ -153,6 +170,22 @@ Règle de ce lot :
 - ne traiter que les domaines où le gain structurel est net
 - ne pas refactorer par symétrie
 
+### `V21-final-state` — état final attendu
+
+Statut : à faire.
+
+Contenu prévu :
+
+- figer l'état final attendu de `db/repositories/` après les lots V21
+- expliciter les façades publiques conservées
+- expliciter les sous-dossiers internes réellement introduits
+- expliciter ce qui restera volontairement hors V21
+
+Pourquoi ce lot :
+
+- fermer V21 avec une vue finale cohérente avec le code livré
+- éviter qu'une doctrine incomplète reste implicite après les refactors
+
 ## Dépendances entre lots
 
 ### Dépendances structurelles
@@ -160,8 +193,10 @@ Règle de ce lot :
 - `V21-2A` dépend de l'audit `V21-1`
 - `V21-2B` dépend directement de `V21-2A`
 - `V21-3` dépend de la doctrine et du séquençage posés par `V21-1` et du premier domaine pilote `V21-2A`
-- `V21-4` dépend du retour d'expérience de `V21-3` sur un domaine transactionnel plus dense
+- `V21-4A` dépend du retour d'expérience de `V21-3` sur un domaine transactionnel plus dense
+- `V21-4B` dépend de `V21-4A`
 - `V21-5` dépend de la stabilisation des décisions prises sur `catalog`, `order` et `products`
+- `V21-final-state` dépend de la fermeture documentaire des lots précédents
 
 ### Dépendances de compatibilité
 
