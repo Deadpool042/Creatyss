@@ -1,4 +1,6 @@
-import { queryFirst, queryRows } from "@/db/client";
+import { Prisma } from "@prisma/client";
+import { queryFirst } from "@/db/client";
+import { prisma } from "@/db/prisma-client";
 
 // --- Internal types ---
 
@@ -17,10 +19,6 @@ type AdminCategoryRow = {
   // Present only when fetched via the lateral-join read queries
   rep_image_file_path?: string | null;
   rep_image_alt_text?: string | null;
-};
-
-type ProductCountRow = {
-  product_count: number;
 };
 
 type DeletedCategoryRow = {
@@ -116,17 +114,20 @@ function mapAdminCategory(row: AdminCategoryRow): AdminCategory {
   };
 }
 
-const REP_IMAGE_LATERAL = `
-  left join lateral (
-    select pi.file_path, pi.alt_text
-    from   product_categories pc
-    join   products p        on p.id  = pc.product_id
-    join   product_images pi on pi.product_id = p.id and pi.is_primary = true
-    where  pc.category_id = c.id
-      and  p.status = 'published'
-    order by p.created_at desc
-    limit 1
-  ) rep_img on true
+// Prisma.sql fragment — embedded in $queryRaw calls below
+// LEFT JOIN LATERAL: image primaire du produit publié le plus récent dans la catégorie
+// Non exprimable proprement via include Prisma (orderBy sur relation imbriquée non supporté)
+const REP_IMAGE_LATERAL_SQL = Prisma.sql`
+  LEFT JOIN LATERAL (
+    SELECT pi.file_path, pi.alt_text
+    FROM   product_categories pc
+    JOIN   products p        ON p.id  = pc.product_id
+    JOIN   product_images pi ON pi.product_id = p.id AND pi.is_primary = true
+    WHERE  pc.category_id = c.id
+      AND  p.status = 'published'
+    ORDER BY p.created_at DESC
+    LIMIT 1
+  ) rep_img ON TRUE
 `;
 
 // Builds the ordered parameter array shared by INSERT and UPDATE queries.
@@ -156,16 +157,14 @@ function mapRepositoryError(error: unknown): never {
 // --- Public functions ---
 
 export async function listAdminCategories(): Promise<AdminCategory[]> {
-  const rows = await queryRows<AdminCategoryRow>(
-    `
-      select ${CATEGORY_COLUMNS},
-             rep_img.file_path as rep_image_file_path,
-             rep_img.alt_text  as rep_image_alt_text
-      from categories c
-      ${REP_IMAGE_LATERAL}
-      order by lower(c.name) asc, c.id asc
-    `
-  );
+  const rows = await prisma.$queryRaw<AdminCategoryRow[]>(Prisma.sql`
+    SELECT id::text AS id, name, slug, description, is_featured, image_path, created_at, updated_at,
+           rep_img.file_path AS rep_image_file_path,
+           rep_img.alt_text  AS rep_image_alt_text
+    FROM   categories c
+    ${REP_IMAGE_LATERAL_SQL}
+    ORDER BY lower(c.name) ASC, c.id ASC
+  `);
 
   return rows.map(mapAdminCategory);
 }
@@ -175,24 +174,18 @@ export async function findAdminCategoryById(id: string): Promise<AdminCategory |
     return null;
   }
 
-  const row = await queryFirst<AdminCategoryRow>(
-    `
-      select ${CATEGORY_COLUMNS},
-             rep_img.file_path as rep_image_file_path,
-             rep_img.alt_text  as rep_image_alt_text
-      from categories c
-      ${REP_IMAGE_LATERAL}
-      where c.id = $1::bigint
-      limit 1
-    `,
-    [id]
-  );
+  const rows = await prisma.$queryRaw<AdminCategoryRow[]>(Prisma.sql`
+    SELECT id::text AS id, name, slug, description, is_featured, image_path, created_at, updated_at,
+           rep_img.file_path AS rep_image_file_path,
+           rep_img.alt_text  AS rep_image_alt_text
+    FROM   categories c
+    ${REP_IMAGE_LATERAL_SQL}
+    WHERE  c.id = ${BigInt(id)}
+    LIMIT  1
+  `);
 
-  if (row === null) {
-    return null;
-  }
-
-  return mapAdminCategory(row);
+  const row = rows[0] ?? null;
+  return row !== null ? mapAdminCategory(row) : null;
 }
 
 export async function createAdminCategory(input: CreateAdminCategoryInput): Promise<AdminCategory> {
@@ -298,14 +291,7 @@ export async function countProductsForCategory(id: string): Promise<number> {
     return 0;
   }
 
-  const row = await queryFirst<ProductCountRow>(
-    `
-      select count(*)::int as product_count
-      from product_categories
-      where category_id = $1::bigint
-    `,
-    [id]
-  );
-
-  return row?.product_count ?? 0;
+  return prisma.product_categories.count({
+    where: { category_id: BigInt(id) },
+  });
 }
