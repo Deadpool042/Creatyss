@@ -1,7 +1,8 @@
-import { type PoolClient } from "pg";
-import { db } from "@/db/client";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/db/prisma-client";
-import { syncNativeSimpleProductOfferFromLegacyVariant } from "@/db/repositories/simple-product-admin-compatibility";
+import {
+  syncNativeSimpleProductOfferFromLegacyVariant,
+} from "@/db/repositories/simple-product-admin-compatibility";
 import {
   canDeleteVariantForProductType,
   canCreateVariantForProductType,
@@ -11,63 +12,14 @@ import { type ProductType } from "@/entities/product/product-input";
 
 // --- Internal types ---
 
-// pg may return Date or string for timestamp columns depending on driver configuration
-type TimestampValue = Date | string;
-
 type AdminProductVariantStatus = "draft" | "published";
-
-type AdminProductVariantRow = {
-  id: string;
-  product_id: string;
-  name: string;
-  color_name: string;
-  color_hex: string | null;
-  sku: string;
-  price: string;
-  compare_at_price: string | null;
-  stock_quantity: number;
-  is_default: boolean;
-  status: AdminProductVariantStatus;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
 
 type ProductCompatibilityRow = {
   id: string;
   product_type: ProductType;
 };
 
-type CountRow = {
-  variant_count: number;
-};
-
-type DeletedVariantRow = {
-  id: string;
-};
-
-type CreateAdminProductVariantInput = {
-  productId: string;
-  name: string;
-  colorName: string;
-  colorHex: string | null;
-  sku: string;
-  price: string;
-  compareAtPrice: string | null;
-  stockQuantity: number;
-  isDefault: boolean;
-  status: AdminProductVariantStatus;
-};
-
-type UpdateAdminProductVariantInput = CreateAdminProductVariantInput & {
-  id: string;
-};
-
 type RepositoryErrorCode = "sku_taken" | ProductTypeCompatibilityErrorCode;
-
-type PostgreSqlErrorLike = Error & {
-  code: string;
-  constraint?: string;
-};
 
 // --- Public types ---
 
@@ -99,153 +51,26 @@ export class AdminProductVariantRepositoryError extends Error {
 
 // --- Internal helpers ---
 
-const PG_UNIQUE_VIOLATION = "23505";
-const VARIANT_SKU_CONSTRAINT = "product_variants_sku_key";
-
-// Full column list shared by list, create (returning), and update (returning) — no alias prefix needed (single-table queries)
-const PRODUCT_VARIANT_COLUMNS =
-  "id::text as id, product_id::text as product_id, name, color_name, color_hex, sku, price::text as price, compare_at_price::text as compare_at_price, stock_quantity, is_default, status, created_at, updated_at";
-
 function isValidNumericId(value: string): boolean {
   return /^[0-9]+$/.test(value);
 }
 
-function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
-  return error instanceof Error && typeof (error as { code?: unknown }).code === "string";
-}
-
-function toIsoTimestamp(value: TimestampValue): string {
-  if (value instanceof Date) {
-    return value.toISOString();
-  }
-
-  return new Date(value).toISOString();
-}
-
-function mapAdminProductVariant(row: AdminProductVariantRow): AdminProductVariant {
+function mapVariantFromPrisma(v: {
+  id: bigint;
+  product_id: bigint;
+  name: string;
+  color_name: string;
+  color_hex: string | null;
+  sku: string;
+  price: { toString(): string };
+  compare_at_price: { toString(): string } | null;
+  stock_quantity: number;
+  is_default: boolean;
+  status: string;
+  created_at: Date;
+  updated_at: Date;
+}): AdminProductVariant {
   return {
-    id: row.id,
-    productId: row.product_id,
-    name: row.name,
-    colorName: row.color_name,
-    colorHex: row.color_hex,
-    sku: row.sku,
-    price: row.price,
-    compareAtPrice: row.compare_at_price,
-    stockQuantity: row.stock_quantity,
-    isDefault: row.is_default,
-    status: row.status,
-    isAvailable: row.status === "published" && row.stock_quantity > 0,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-  };
-}
-
-// Builds the 9 shared field parameters — productId is NOT included; callers prepend it.
-// Create: [input.productId, ...buildProductVariantWriteParams(input)] → $1=productId, $2=name … $10=status
-// Update: [input.id, input.productId, ...buildProductVariantWriteParams(input)] → $1=id, $2=productId, $3=name … $11=status
-function buildProductVariantWriteParams(input: CreateAdminProductVariantInput): unknown[] {
-  return [
-    input.name,
-    input.colorName,
-    input.colorHex,
-    input.sku,
-    input.price,
-    input.compareAtPrice,
-    input.stockQuantity,
-    input.isDefault,
-    input.status,
-  ];
-}
-
-function mapRepositoryError(error: unknown): never {
-  if (isPostgreSqlErrorLike(error)) {
-    if (error.code === PG_UNIQUE_VIOLATION && error.constraint === VARIANT_SKU_CONSTRAINT) {
-      throw new AdminProductVariantRepositoryError("sku_taken", "Variant SKU already exists.");
-    }
-  }
-
-  throw error;
-}
-
-// --- Internal transaction helpers ---
-
-async function readProductTypeById(
-  client: PoolClient,
-  productId: string
-): Promise<ProductCompatibilityRow | null> {
-  const result = await client.query<ProductCompatibilityRow>(
-    `
-      select
-        id::text as id,
-        product_type
-      from products
-      where id = $1::bigint
-      limit 1
-    `,
-    [productId]
-  );
-
-  return result.rows[0] ?? null;
-}
-
-async function countVariantsForProduct(client: PoolClient, productId: string): Promise<number> {
-  const result = await client.query<CountRow>(
-    `
-      select count(*)::int as variant_count
-      from product_variants
-      where product_id = $1::bigint
-    `,
-    [productId]
-  );
-
-  return result.rows[0]?.variant_count ?? 0;
-}
-
-async function clearDefaultVariant(
-  client: PoolClient,
-  productId: string,
-  excludedVariantId?: string
-): Promise<void> {
-  if (excludedVariantId) {
-    await client.query(
-      `
-        update product_variants
-        set is_default = false
-        where product_id = $1::bigint
-          and id <> $2::bigint
-          and is_default
-      `,
-      [productId, excludedVariantId]
-    );
-
-    return;
-  }
-
-  await client.query(
-    `
-      update product_variants
-      set is_default = false
-      where product_id = $1::bigint
-        and is_default
-    `,
-    [productId]
-  );
-}
-
-// --- Public functions ---
-
-export async function listAdminProductVariants(productId: string): Promise<AdminProductVariant[]> {
-  if (!isValidNumericId(productId)) {
-    return [];
-  }
-
-  const rows = await prisma.product_variants.findMany({
-    where: { product_id: BigInt(productId) },
-    orderBy: [{ is_default: "desc" }, { id: "asc" }],
-  });
-
-  return rows.map((v) => ({
     id: v.id.toString(),
     productId: v.product_id.toString(),
     name: v.name,
@@ -260,161 +85,220 @@ export async function listAdminProductVariants(productId: string): Promise<Admin
     isAvailable: v.status === "published" && v.stock_quantity > 0,
     createdAt: v.created_at.toISOString(),
     updatedAt: v.updated_at.toISOString(),
-  }));
+  };
 }
 
-export async function createAdminProductVariant(
-  input: CreateAdminProductVariantInput
-): Promise<AdminProductVariant | null> {
+function mapVariantPrismaError(error: unknown): never {
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (
+      error.code === "P2002" &&
+      typeof error.meta?.target === "object" &&
+      Array.isArray(error.meta.target) &&
+      error.meta.target.includes("sku")
+    ) {
+      throw new AdminProductVariantRepositoryError("sku_taken", "Variant SKU already exists.");
+    }
+  }
+
+  throw error;
+}
+
+async function readProductTypeInTx(
+  tx: Prisma.TransactionClient,
+  productId: string
+): Promise<ProductCompatibilityRow | null> {
+  const row = await tx.products.findUnique({
+    where: { id: BigInt(productId) },
+    select: { id: true, product_type: true },
+  });
+
+  if (row === null) {
+    return null;
+  }
+
+  return { id: row.id.toString(), product_type: row.product_type as ProductType };
+}
+
+async function countVariantsInTx(
+  tx: Prisma.TransactionClient,
+  productId: string
+): Promise<number> {
+  return tx.product_variants.count({ where: { product_id: BigInt(productId) } });
+}
+
+async function clearDefaultVariantInTx(
+  tx: Prisma.TransactionClient,
+  productId: string,
+  excludedVariantId?: string
+): Promise<void> {
+  await tx.product_variants.updateMany({
+    where: {
+      product_id: BigInt(productId),
+      is_default: true,
+      ...(excludedVariantId ? { NOT: { id: BigInt(excludedVariantId) } } : {}),
+    },
+    data: { is_default: false },
+  });
+}
+
+// --- Public functions ---
+
+export async function listAdminProductVariants(productId: string): Promise<AdminProductVariant[]> {
+  if (!isValidNumericId(productId)) {
+    return [];
+  }
+
+  const rows = await prisma.product_variants.findMany({
+    where: { product_id: BigInt(productId) },
+    orderBy: [{ is_default: "desc" }, { id: "asc" }],
+  });
+
+  return rows.map(mapVariantFromPrisma);
+}
+
+export async function createAdminProductVariant(input: {
+  productId: string;
+  name: string;
+  colorName: string;
+  colorHex: string | null;
+  sku: string;
+  price: string;
+  compareAtPrice: string | null;
+  stockQuantity: number;
+  isDefault: boolean;
+  status: AdminProductVariantStatus;
+}): Promise<AdminProductVariant | null> {
   if (!isValidNumericId(input.productId)) {
     return null;
   }
 
-  const client = await db.connect();
+  return prisma
+    .$transaction(async (tx) => {
+      const product = await readProductTypeInTx(tx, input.productId);
 
-  try {
-    await client.query("begin");
+      if (product === null) {
+        return null;
+      }
 
-    const product = await readProductTypeById(client, input.productId);
+      const existingVariantCount = await countVariantsInTx(tx, input.productId);
 
-    if (product === null) {
-      await client.query("rollback");
-      return null;
-    }
+      if (!canCreateVariantForProductType(product.product_type, existingVariantCount)) {
+        throw new AdminProductVariantRepositoryError(
+          "simple_product_single_variant_only",
+          "A simple product can only have one sellable variant."
+        );
+      }
 
-    const existingVariantCount = await countVariantsForProduct(client, input.productId);
+      if (input.isDefault) {
+        await clearDefaultVariantInTx(tx, input.productId);
+      }
 
-    if (!canCreateVariantForProductType(product.product_type, existingVariantCount)) {
-      throw new AdminProductVariantRepositoryError(
-        "simple_product_single_variant_only",
-        "A simple product can only have one sellable variant."
-      );
-    }
-
-    if (input.isDefault) {
-      await clearDefaultVariant(client, input.productId);
-    }
-
-    const result = await client.query<AdminProductVariantRow>(
-      `
-        insert into product_variants (
-          product_id,
-          name,
-          color_name,
-          color_hex,
-          sku,
-          price,
-          compare_at_price,
-          stock_quantity,
-          is_default,
-          status
-        )
-        values ($1::bigint, $2, $3, $4, $5, $6::numeric, $7::numeric, $8, $9, $10)
-        returning ${PRODUCT_VARIANT_COLUMNS}
-      `,
-      [input.productId, ...buildProductVariantWriteParams(input)]
-    );
-
-    const row = result.rows[0];
-
-    if (!row) {
-      throw new Error("Failed to create product variant.");
-    }
-
-    if (product.product_type === "simple") {
-      await syncNativeSimpleProductOfferFromLegacyVariant(client, {
-        productId: input.productId,
-        variantId: row.id,
+      const row = await tx.product_variants.create({
+        data: {
+          product_id: BigInt(input.productId),
+          name: input.name,
+          color_name: input.colorName,
+          color_hex: input.colorHex,
+          sku: input.sku,
+          price: input.price,
+          compare_at_price: input.compareAtPrice,
+          stock_quantity: input.stockQuantity,
+          is_default: input.isDefault,
+          status: input.status,
+        },
       });
-    }
 
-    await client.query("commit");
+      if (product.product_type === "simple") {
+        await syncNativeSimpleProductOfferFromLegacyVariant(tx, {
+          productId: input.productId,
+          variantId: row.id.toString(),
+        });
+      }
 
-    return mapAdminProductVariant(row);
-  } catch (error) {
-    await client.query("rollback");
+      return mapVariantFromPrisma(row);
+    })
+    .catch((error) => {
+      if (error instanceof AdminProductVariantRepositoryError) {
+        throw error;
+      }
 
-    if (error instanceof AdminProductVariantRepositoryError) {
-      throw error;
-    }
-
-    mapRepositoryError(error);
-  } finally {
-    client.release();
-  }
+      mapVariantPrismaError(error);
+    });
 }
 
-export async function updateAdminProductVariant(
-  input: UpdateAdminProductVariantInput
-): Promise<AdminProductVariant | null> {
+export async function updateAdminProductVariant(input: {
+  id: string;
+  productId: string;
+  name: string;
+  colorName: string;
+  colorHex: string | null;
+  sku: string;
+  price: string;
+  compareAtPrice: string | null;
+  stockQuantity: number;
+  isDefault: boolean;
+  status: AdminProductVariantStatus;
+}): Promise<AdminProductVariant | null> {
   if (!isValidNumericId(input.productId) || !isValidNumericId(input.id)) {
     return null;
   }
 
-  const client = await db.connect();
+  return prisma
+    .$transaction(async (tx) => {
+      const product = await readProductTypeInTx(tx, input.productId);
 
-  try {
-    await client.query("begin");
+      if (product === null) {
+        return null;
+      }
 
-    const product = await readProductTypeById(client, input.productId);
+      if (input.isDefault) {
+        await clearDefaultVariantInTx(tx, input.productId, input.id);
+      }
 
-    if (product === null) {
-      await client.query("rollback");
-      return null;
-    }
-
-    if (input.isDefault) {
-      await clearDefaultVariant(client, input.productId, input.id);
-    }
-
-    const result = await client.query<AdminProductVariantRow>(
-      `
-        update product_variants
-        set
-          name = $3,
-          color_name = $4,
-          color_hex = $5,
-          sku = $6,
-          price = $7::numeric,
-          compare_at_price = $8::numeric,
-          stock_quantity = $9,
-          is_default = $10,
-          status = $11
-        where id = $1::bigint
-          and product_id = $2::bigint
-        returning ${PRODUCT_VARIANT_COLUMNS}
-      `,
-      [input.id, input.productId, ...buildProductVariantWriteParams(input)]
-    );
-
-    const row = result.rows[0];
-
-    if (!row) {
-      await client.query("rollback");
-      return null;
-    }
-
-    if (product.product_type === "simple") {
-      await syncNativeSimpleProductOfferFromLegacyVariant(client, {
-        productId: input.productId,
-        variantId: input.id,
+      // updateMany preserves the original WHERE id + product_id condition atomically
+      const updateResult = await tx.product_variants.updateMany({
+        where: { id: BigInt(input.id), product_id: BigInt(input.productId) },
+        data: {
+          name: input.name,
+          color_name: input.colorName,
+          color_hex: input.colorHex,
+          sku: input.sku,
+          price: input.price,
+          compare_at_price: input.compareAtPrice,
+          stock_quantity: input.stockQuantity,
+          is_default: input.isDefault,
+          status: input.status,
+        },
       });
-    }
 
-    await client.query("commit");
+      if (updateResult.count === 0) {
+        return null;
+      }
 
-    return mapAdminProductVariant(row);
-  } catch (error) {
-    await client.query("rollback");
+      const row = await tx.product_variants.findUnique({
+        where: { id: BigInt(input.id) },
+      });
 
-    if (error instanceof AdminProductVariantRepositoryError) {
-      throw error;
-    }
+      if (row === null) {
+        return null;
+      }
 
-    mapRepositoryError(error);
-  } finally {
-    client.release();
-  }
+      if (product.product_type === "simple") {
+        await syncNativeSimpleProductOfferFromLegacyVariant(tx, {
+          productId: input.productId,
+          variantId: input.id,
+        });
+      }
+
+      return mapVariantFromPrisma(row);
+    })
+    .catch((error) => {
+      if (error instanceof AdminProductVariantRepositoryError) {
+        throw error;
+      }
+
+      mapVariantPrismaError(error);
+    });
 }
 
 export async function deleteAdminProductVariant(
@@ -425,62 +309,42 @@ export async function deleteAdminProductVariant(
     return false;
   }
 
-  const client = await db.connect();
+  return prisma
+    .$transaction(async (tx) => {
+      const product = await readProductTypeInTx(tx, productId);
 
-  try {
-    await client.query("begin");
+      if (product === null) {
+        return false;
+      }
 
-    const product = await readProductTypeById(client, productId);
+      const existingVariantCount = await countVariantsInTx(tx, productId);
 
-    if (product === null) {
-      await client.query("rollback");
-      return false;
-    }
+      if (!canDeleteVariantForProductType(product.product_type, existingVariantCount)) {
+        throw new AdminProductVariantRepositoryError(
+          "simple_product_requires_sellable_variant",
+          "A simple product must keep its single sellable variant."
+        );
+      }
 
-    const existingVariantCount = await countVariantsForProduct(client, productId);
-
-    if (!canDeleteVariantForProductType(product.product_type, existingVariantCount)) {
-      throw new AdminProductVariantRepositoryError(
-        "simple_product_requires_sellable_variant",
-        "A simple product must keep its single sellable variant."
-      );
-    }
-
-    const result = await client.query<DeletedVariantRow>(
-      `
-        delete from product_variants
-        where id = $1::bigint
-          and product_id = $2::bigint
-        returning id::text as id
-      `,
-      [variantId, productId]
-    );
-
-    const row = result.rows[0] ?? null;
-
-    if (row === null) {
-      await client.query("rollback");
-      return false;
-    }
-
-    if (product.product_type === "simple") {
-      await syncNativeSimpleProductOfferFromLegacyVariant(client, {
-        productId,
+      const result = await tx.product_variants.deleteMany({
+        where: { id: BigInt(variantId), product_id: BigInt(productId) },
       });
-    }
 
-    await client.query("commit");
+      if (result.count === 0) {
+        return false;
+      }
 
-    return true;
-  } catch (error) {
-    await client.query("rollback");
+      if (product.product_type === "simple") {
+        await syncNativeSimpleProductOfferFromLegacyVariant(tx, { productId });
+      }
 
-    if (error instanceof AdminProductVariantRepositoryError) {
+      return true;
+    })
+    .catch((error) => {
+      if (error instanceof AdminProductVariantRepositoryError) {
+        throw error;
+      }
+
       throw error;
-    }
-
-    mapRepositoryError(error);
-  } finally {
-    client.release();
-  }
+    });
 }

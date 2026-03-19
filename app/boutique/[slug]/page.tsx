@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -151,11 +152,13 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
           <div className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel p-6">
             {productDisplayImage ? (
               <figure className="overflow-hidden rounded-lg bg-media-surface min-h-56">
-                <img
+                <Image
                   alt={productDisplayImage.altText ?? product.name}
-                  className="block h-full w-full object-cover"
+                  className="block w-full object-cover"
                   loading="lazy"
                   src={getImageUrl(uploadsPublicPath, productDisplayImage.filePath)}
+                  width={800}
+                  height={600}
                 />
               </figure>
             ) : (
@@ -354,11 +357,13 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                     className="overflow-hidden rounded-lg bg-media-surface min-h-40"
                     key={singleOfferDisplayImage.id}
                   >
-                    <img
+                    <Image
                       alt={singleOfferDisplayImage.altText ?? singleOffer.name}
-                      className="block h-full w-full object-cover"
+                      className="block w-full object-cover"
                       loading="lazy"
                       src={getImageUrl(uploadsPublicPath, singleOfferDisplayImage.filePath)}
+                      width={600}
+                      height={450}
                     />
                   </figure>
                 </div>
@@ -493,11 +498,13 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                         className="overflow-hidden rounded-lg bg-media-surface min-h-40"
                         key={variantDisplayImage.id}
                       >
-                        <img
+                        <Image
                           alt={variantDisplayImage.altText ?? variant.name}
-                          className="block h-full w-full object-cover"
+                          className="block w-full object-cover"
                           loading="lazy"
                           src={getImageUrl(uploadsPublicPath, variantDisplayImage.filePath)}
+                          width={600}
+                          height={450}
                         />
                       </figure>
                     </div>

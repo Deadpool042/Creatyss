@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PLACEHOLDER_FILENAME } from "@/components/shared/placeholderImage";
-import { type FeaturedCategory } from "@/db/catalog";
+import { type FeaturedCategory } from "@/features/homepage/types";
 
 type TagStyle = "light" | "vert" | "terra";
 

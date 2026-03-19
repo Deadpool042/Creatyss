@@ -42,9 +42,11 @@ export function DataTable<TData, TValue>({
   initialSorting = [],
   renderToolbar,
 }: DataTableProps<TData, TValue>) {
+  "use no memo";
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,

@@ -5,7 +5,7 @@ import { ArrowDownIcon, ArrowUpIcon, ArrowUpDownIcon } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { AdminProductSummary } from "@/db/repositories/admin-product.repository";
+import type { AdminProductSummary } from "@/features/admin/products/types/product-detail-types";
 import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
 import { getProductPublishability } from "@/entities/product/product-publishability";
 import { ProductRowActions } from "./product-row-actions";

@@ -2,7 +2,7 @@ import { AdminFormField } from "@/components/admin/admin-form-field";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
+import { type AdminProductImage } from "@/features/admin/products/types/product-detail-types";
 import {
   updateProductImageAction,
   deleteProductImageAction,

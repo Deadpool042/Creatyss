@@ -1,4 +1,4 @@
-import type { OrderStatus } from "@/db/repositories/order.repository";
+import type { OrderStatus } from "@/entities/order/order-status-transition";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";

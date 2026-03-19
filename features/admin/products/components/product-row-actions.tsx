@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { AdminProductSummary } from "@/db/repositories/admin-product.repository";
+import type { AdminProductSummary } from "@/features/admin/products/types/product-detail-types";
 import { getProductPublishability } from "@/entities/product/product-publishability";
 import { toggleProductStatusAction, deleteProductAction } from "@/features/admin/products/actions";
 

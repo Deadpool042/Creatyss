@@ -5,7 +5,7 @@ import { ArrowDownIcon, ArrowUpIcon, ArrowUpDownIcon } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { AdminOrderSummary } from "@/db/repositories/order.repository";
+import type { AdminOrderSummary } from "@/features/admin/orders/types/order-detail-types";
 import {
   getOrderStatusLabel,
   getPaymentStatusLabel,

@@ -1,9 +1,14 @@
+import Image from "next/image";
 import { Notice } from "@/components/shared/notice";
 import { SectionIntro } from "@/components/shared/section-intro";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { Button } from "@/components/ui/button";
-import { type AdminMediaAsset } from "@/db/admin-media";
-import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
+import {
+  type AdminMediaAsset,
+  type AdminProductImage,
+  type PrimaryImageScope,
+  type PrimaryImageState,
+} from "@/features/admin/products/types/product-detail-types";
 import {
   getImageUrl,
   getPrimaryImageEmptyMessage,
@@ -11,10 +16,6 @@ import {
   getPrimaryImageFallbackMessage,
   getPrimaryImageSubmitLabel,
 } from "@/features/admin/products/mappers/product-detail-mappers";
-import {
-  type PrimaryImageScope,
-  type PrimaryImageState,
-} from "@/features/admin/products/types/product-detail-types";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 
 type PrimaryImageFormAction = (formData: FormData) => Promise<void>;
@@ -53,10 +54,12 @@ function renderImagePreview(uploadsPublicPath: string, image: AdminProductImage)
 
   return (
     <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
-      <img
+      <Image
         alt={image.altText ?? "Image produit"}
         className="aspect-16/10 w-full object-cover"
         src={imageUrl}
+        width={400}
+        height={250}
       />
     </div>
   );

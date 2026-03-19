@@ -1,5 +1,6 @@
 import { access } from "node:fs/promises";
 import path from "node:path";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -195,11 +196,13 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
               <Card key={asset.id} className="grid content-start gap-3 p-5">
                 {asset.previewUrl ? (
                   <div className="min-h-48 overflow-hidden rounded-xl bg-muted/20">
-                    <img
+                    <Image
                       alt={asset.originalName}
-                      className="block h-full w-full object-cover"
+                      className="block w-full object-cover"
                       loading="lazy"
                       src={asset.previewUrl}
+                      width={400}
+                      height={300}
                     />
                   </div>
                 ) : (

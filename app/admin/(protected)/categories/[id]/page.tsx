@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -178,10 +179,12 @@ export default async function EditAdminCategoryPage({
 
         {currentImageUrl ? (
           <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
-            <img
+            <Image
               alt={category.name}
               className="aspect-video w-full object-cover"
               src={currentImageUrl}
+              width={800}
+              height={450}
             />
           </div>
         ) : (

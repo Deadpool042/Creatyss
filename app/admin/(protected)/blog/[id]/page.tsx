@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -151,10 +152,12 @@ export default async function EditAdminBlogPostPage({
 
           {coverImageUrl ? (
             <div className="min-h-56 overflow-hidden rounded-xl bg-muted/20">
-              <img
+              <Image
                 alt={blogPost.title}
-                className="block h-full w-full object-cover"
+                className="block w-full object-cover"
                 src={coverImageUrl}
+                width={900}
+                height={500}
               />
             </div>
           ) : (

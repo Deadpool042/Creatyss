@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { type AdminCategory } from "@/db/repositories/admin-category.repository";
@@ -20,7 +21,7 @@ export function AdminCategoryCard({ category }: AdminCategoryCardProps) {
     >
       {imageUrl ? (
         <div className="overflow-hidden">
-          <img alt={category.name} className="aspect-video w-full object-cover" src={imageUrl} />
+          <Image alt={category.name} className="aspect-video w-full object-cover" src={imageUrl} width={800} height={450} />
         </div>
       ) : (
         <div className="flex aspect-video items-center justify-center bg-muted/30 text-xs text-muted-foreground">

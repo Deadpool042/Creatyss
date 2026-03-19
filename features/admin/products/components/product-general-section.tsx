@@ -5,8 +5,10 @@ import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type AdminCategory } from "@/db/repositories/admin-category.repository";
-import { type AdminProductDetail } from "@/db/repositories/admin-product.repository";
+import {
+  type AdminCategory,
+  type AdminProductDetail,
+} from "@/features/admin/products/types/product-detail-types";
 import { updateProductAction } from "@/features/admin/products/actions";
 import { isCategoryAssigned } from "@/features/admin/products/mappers/product-detail-mappers";
 

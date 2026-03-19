@@ -1,4 +1,4 @@
-import type { AdminOrderDetail } from "@/db/repositories/order.repository";
+import type { AdminOrderDetail } from "@/features/admin/orders/types/order-detail-types";
 import { SectionIntro } from "@/components/shared/section-intro";
 import {
   formatOrderDateTime,

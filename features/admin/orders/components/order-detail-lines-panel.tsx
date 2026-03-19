@@ -1,4 +1,4 @@
-import type { AdminOrderDetail } from "@/db/repositories/order.repository";
+import type { AdminOrderDetail } from "@/features/admin/orders/types/order-detail-types";
 import { Separator } from "@/components/ui/separator";
 
 type OrderDetailLinesPanelProps = Readonly<{

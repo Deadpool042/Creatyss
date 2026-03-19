@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getPublishedBlogPostBySlug } from "@/db/catalog";
 import { getUploadsPublicPath } from "@/lib/uploads";
@@ -89,7 +90,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {coverImagePath ? (
           <figure className="article-cover">
-            <img alt={post.title} src={coverImagePath} />
+            <Image alt={post.title} src={coverImagePath} width={900} height={450} />
           </figure>
         ) : (
           <div className="media-placeholder">Aucun visuel de couverture.</div>

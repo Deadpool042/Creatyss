@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DataTable } from "@/components/ui/data-table";
-import type { AdminOrderSummary } from "@/db/repositories/order.repository";
+import type { AdminOrderSummary } from "@/features/admin/orders/types/order-detail-types";
 import type { OrderStatus } from "@/entities/order/order-status-transition";
 import { getOrderStatusLabel } from "@/entities/order/order-status-presentation";
 import { orderColumns } from "./order-columns";

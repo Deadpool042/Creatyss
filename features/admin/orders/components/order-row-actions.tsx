@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { AdminOrderSummary } from "@/db/repositories/order.repository";
+import type { AdminOrderSummary } from "@/features/admin/orders/types/order-detail-types";
 import { updateOrderStatusAction } from "@/features/admin/orders/actions";
 
 type OrderRowActionsProps = {

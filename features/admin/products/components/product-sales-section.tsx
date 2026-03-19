@@ -6,10 +6,12 @@ import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { type AdminMediaAsset } from "@/db/admin-media";
-import { type AdminProductDetail } from "@/db/repositories/admin-product.repository";
-import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
-import { type AdminProductVariant } from "@/db/repositories/admin-product-variant.repository";
+import {
+  type AdminMediaAsset,
+  type AdminProductDetail,
+  type AdminProductImage,
+  type AdminProductVariant,
+} from "@/features/admin/products/types/product-detail-types";
 import { type ProductAdminPresentation } from "@/entities/product/product-admin-presentation";
 import {
   createProductVariantAction,

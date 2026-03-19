@@ -2,7 +2,7 @@
 
 import type { SortingState } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
-import type { AdminProductSummary } from "@/db/repositories/admin-product.repository";
+import type { AdminProductSummary } from "@/features/admin/products/types/product-detail-types";
 import { productColumns } from "./product-columns";
 
 type ProductsListTableProps = {

@@ -1,5 +1,3 @@
-import { type PoolClient } from "pg";
-import { db } from "@/db/client";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/db/prisma-client";
 import {
@@ -17,17 +15,12 @@ import {
 } from "@/entities/product/product-type-rules";
 import { type ProductType } from "@/entities/product/product-input";
 
+// pg may return Date or string for timestamp columns depending on driver configuration
 type TimestampValue = Date | string;
 
 type AdminProductStatus = "draft" | "published";
 
-type AdminProductSimpleFieldsRow = {
-  simple_sku: string | null;
-  simple_price: string | null;
-  simple_compare_at_price: string | null;
-  simple_stock_quantity: number | null;
-};
-
+// Used by listAdminProducts $queryRaw
 type AdminProductSummaryRow = {
   id: string;
   name: string;
@@ -42,46 +35,9 @@ type AdminProductSummaryRow = {
   updated_at: TimestampValue;
 };
 
-type AdminProductRow = AdminProductSimpleFieldsRow & {
-  id: string;
-  name: string;
-  slug: string;
-  short_description: string | null;
-  description: string | null;
-  seo_title: string | null;
-  seo_description: string | null;
-  status: AdminProductStatus;
-  product_type: ProductType;
-  is_featured: boolean;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
-
-type AdminProductCategoryRow = {
-  id: string;
-  name: string;
-  slug: string;
-};
-
 type AdminProductTypeRow = {
   id: string;
   product_type: ProductType;
-};
-
-type CountRow = {
-  matched_count: number;
-};
-
-type AdminLegacySimpleOfferCandidateRow = {
-  sku: string | null;
-  price: string | null;
-  compare_at_price: string | null;
-  stock_quantity: number | null;
-};
-
-type PostgreSqlErrorLike = Error & {
-  code: string;
-  constraint?: string;
 };
 
 type CreateAdminProductInput = {
@@ -166,46 +122,10 @@ export class AdminProductRepositoryError extends Error {
   }
 }
 
-const ADMIN_PRODUCT_DETAIL_COLUMNS =
-  "id::text as id, name, slug, short_description, description, seo_title, seo_description, status, product_type, simple_sku, simple_price::text as simple_price, simple_compare_at_price::text as simple_compare_at_price, simple_stock_quantity, is_featured, created_at, updated_at";
-
-const ADMIN_PRODUCT_GENERAL_INSERT_COLUMNS =
-  "name, slug, short_description, description, seo_title, seo_description, status, product_type, is_featured";
-
-const ADMIN_PRODUCT_GENERAL_UPDATE_SET_CLAUSE = `
-  name = $2,
-  slug = $3,
-  short_description = $4,
-  description = $5,
-  seo_title = $6,
-  seo_description = $7,
-  status = $8,
-  product_type = $9,
-  is_featured = $10
-`;
-
-const ADMIN_SIMPLE_PRODUCT_OFFER_UPDATE_SET_CLAUSE = `
-  simple_sku = $2,
-  simple_price = $3::numeric,
-  simple_compare_at_price = $4::numeric,
-  simple_stock_quantity = $5
-`;
+// --- Internal helpers ---
 
 function isValidProductId(id: string): boolean {
   return /^[0-9]+$/.test(id);
-}
-
-function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
-  if (!(error instanceof Error)) {
-    return false;
-  }
-
-  const candidate = error as Error & {
-    code?: unknown;
-    constraint?: unknown;
-  };
-
-  return typeof candidate.code === "string";
 }
 
 function toIsoTimestamp(value: TimestampValue): string {
@@ -214,6 +134,10 @@ function toIsoTimestamp(value: TimestampValue): string {
   }
 
   return new Date(value).toISOString();
+}
+
+function normalizeCategoryIds(categoryIds: readonly string[]): string[] {
+  return [...new Set(categoryIds)];
 }
 
 function mapAdminProductSummary(row: AdminProductSummaryRow): AdminProductSummary {
@@ -232,69 +156,30 @@ function mapAdminProductSummary(row: AdminProductSummaryRow): AdminProductSummar
   };
 }
 
-function mapAdminProductDetail(
-  row: AdminProductRow,
-  categories: AdminProductCategoryAssignment[],
-  simpleOffer: SimpleProductOffer | null
-): AdminProductDetail {
-  return {
-    id: row.id,
-    name: row.name,
-    slug: row.slug,
-    shortDescription: row.short_description,
-    description: row.description,
-    seoTitle: row.seo_title,
-    seoDescription: row.seo_description,
-    status: row.status,
-    productType: row.product_type,
-    isFeatured: row.is_featured,
-    categories,
-    categoryIds: categories.map((category) => category.id),
-    simpleOfferFields: getNativeSimpleOfferFields(row),
-    simpleOffer,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-  };
-}
-
-function mapCategoryAssignment(row: AdminProductCategoryRow): AdminProductCategoryAssignment {
-  return {
-    id: row.id,
-    name: row.name,
-    slug: row.slug,
-  };
-}
-
-function mapRepositoryError(error: unknown): never {
-  if (
-    isPostgreSqlErrorLike(error) &&
-    error.code === "23505" &&
-    error.constraint === "products_slug_key"
-  ) {
-    throw new AdminProductRepositoryError("slug_taken", "Product slug already exists.");
-  }
-
-  if (
-    isPostgreSqlErrorLike(error) &&
-    error.code === "23505" &&
-    error.constraint === "product_variants_sku_key"
-  ) {
-    throw new AdminProductRepositoryError("sku_taken", "Variant SKU already exists.");
-  }
-
-  if (isPostgreSqlErrorLike(error) && error.code === "23503") {
-    throw new AdminProductRepositoryError(
-      "product_referenced",
-      "Product is still referenced by other records."
-    );
-  }
-
-  throw error;
-}
-
 // Absorbs known Prisma errors and maps them to public domain errors.
+// P2002 target inspection distinguishes slug (products) vs sku (product_variants).
 function mapPrismaRepositoryError(error: unknown): never {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code === "P2002") {
+      const target = error.meta?.target;
+      const targets = Array.isArray(target)
+        ? target
+        : typeof target === "string"
+          ? [target]
+          : [];
+
+      const hasSlug = targets.some((t) => String(t).includes("slug"));
+      const hasSku = targets.some((t) => String(t).includes("sku"));
+
+      if (hasSlug) {
+        throw new AdminProductRepositoryError("slug_taken", "Product slug already exists.");
+      }
+
+      if (hasSku) {
+        throw new AdminProductRepositoryError("sku_taken", "Variant SKU already exists.");
+      }
+    }
+
     if (error.code === "P2003") {
       throw new AdminProductRepositoryError(
         "product_referenced",
@@ -304,39 +189,6 @@ function mapPrismaRepositoryError(error: unknown): never {
   }
 
   throw error;
-}
-
-function normalizeCategoryIds(categoryIds: readonly string[]): string[] {
-  return [...new Set(categoryIds)];
-}
-
-function getNativeSimpleOfferFields(row: AdminProductSimpleFieldsRow): SimpleProductOfferFields {
-  return {
-    sku: row.simple_sku,
-    price: row.simple_price,
-    compareAtPrice: row.simple_compare_at_price,
-    stockQuantity: row.simple_stock_quantity,
-  };
-}
-
-function buildAdminProductWriteParams(input: CreateAdminProductInput): unknown[] {
-  return [
-    input.name,
-    input.slug,
-    input.shortDescription,
-    input.description,
-    input.seoTitle,
-    input.seoDescription,
-    input.status,
-    input.productType,
-    input.isFeatured,
-  ];
-}
-
-function buildAdminSimpleProductOfferWriteParams(
-  input: UpdateAdminSimpleProductOfferInput
-): unknown[] {
-  return [input.sku, input.price, input.compareAtPrice, input.stockQuantity];
 }
 
 function assertCanSaveAsSimpleProduct(productType: ProductType, variantCount: number): void {
@@ -366,192 +218,152 @@ function assertCompatibleLegacyVariantCountForNativeSimpleOffer(variantCount: nu
   }
 }
 
-async function listAssignedCategoriesByProductId(
-  client: PoolClient,
-  productId: string
-): Promise<AdminProductCategoryAssignment[]> {
-  const result = await client.query<AdminProductCategoryRow>(
-    `
-      select
-        c.id::text as id,
-        c.name,
-        c.slug
-      from product_categories pc
-      join categories c
-        on c.id = pc.category_id
-      where pc.product_id = $1::bigint
-      order by lower(c.name) asc, c.id asc
-    `,
-    [productId]
-  );
+// --- Internal transaction helpers ---
 
-  return result.rows.map(mapCategoryAssignment);
-}
+type TxClient = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
 
-async function listLegacySimpleOfferCandidatesByProductId(
-  client: PoolClient,
-  productId: string
-): Promise<SimpleProductOfferFields[]> {
-  const result = await client.query<AdminLegacySimpleOfferCandidateRow>(
-    `
-      select
-        pv.sku,
-        pv.price::text as price,
-        pv.compare_at_price::text as compare_at_price,
-        pv.stock_quantity
-      from product_variants pv
-      where pv.product_id = $1::bigint
-      order by pv.is_default desc, pv.id asc
-    `,
-    [productId]
-  );
-
-  return result.rows.map((row) => ({
-    sku: row.sku,
-    price: row.price,
-    compareAtPrice: row.compare_at_price,
-    stockQuantity: row.stock_quantity,
-  }));
-}
-
-async function readAdminSimpleProductOffer(
-  client: PoolClient,
-  row: AdminProductRow
-): Promise<SimpleProductOffer | null> {
-  if (row.product_type !== "simple") {
-    return null;
-  }
-
-  const legacyOffers = await listLegacySimpleOfferCandidatesByProductId(client, row.id);
-
-  return resolveSimpleProductOffer({
-    native: getNativeSimpleOfferFields(row),
-    legacyOffers,
-  });
-}
-
-async function ensureCategoriesExist(
-  client: PoolClient,
+async function ensureCategoriesExistInTx(
+  tx: TxClient,
   categoryIds: readonly string[]
 ): Promise<string[]> {
-  const normalizedCategoryIds = normalizeCategoryIds(categoryIds);
+  const normalizedIds = normalizeCategoryIds(categoryIds);
 
-  if (normalizedCategoryIds.length === 0) {
+  if (normalizedIds.length === 0) {
     return [];
   }
 
-  const result = await client.query<CountRow>(
-    `
-      select count(*)::int as matched_count
-      from categories
-      where id = any($1::bigint[])
-    `,
-    [normalizedCategoryIds]
-  );
+  const count = await tx.categories.count({
+    where: { id: { in: normalizedIds.map(BigInt) } },
+  });
 
-  const matchedCount = result.rows[0]?.matched_count ?? 0;
-
-  if (matchedCount !== normalizedCategoryIds.length) {
+  if (count !== normalizedIds.length) {
     throw new AdminProductRepositoryError(
       "category_missing",
       "At least one selected category does not exist."
     );
   }
 
-  return normalizedCategoryIds;
+  return normalizedIds;
 }
 
-async function countVariantsByProductId(client: PoolClient, productId: string): Promise<number> {
-  const result = await client.query<CountRow>(
-    `
-      select count(*)::int as matched_count
-      from product_variants
-      where product_id = $1::bigint
-    `,
-    [productId]
-  );
-
-  return result.rows[0]?.matched_count ?? 0;
+async function countVariantsInTx(tx: TxClient, productId: string): Promise<number> {
+  return tx.product_variants.count({ where: { product_id: BigInt(productId) } });
 }
 
-async function readProductTypeById(
-  client: PoolClient,
+async function readProductTypeInTx(
+  tx: TxClient,
   productId: string
 ): Promise<AdminProductTypeRow | null> {
-  const result = await client.query<AdminProductTypeRow>(
-    `
-      select
-        p.id::text as id,
-        p.product_type
-      from products p
-      where p.id = $1::bigint
-      limit 1
-    `,
-    [productId]
-  );
+  const row = await tx.products.findUnique({
+    where: { id: BigInt(productId) },
+    select: { id: true, product_type: true },
+  });
 
-  return result.rows[0] ?? null;
+  if (row === null) {
+    return null;
+  }
+
+  return { id: row.id.toString(), product_type: row.product_type as ProductType };
 }
 
-async function readAdminProductRowById(
-  client: PoolClient,
-  productId: string
-): Promise<AdminProductRow | null> {
-  const result = await client.query<AdminProductRow>(
-    `
-      select ${ADMIN_PRODUCT_DETAIL_COLUMNS}
-      from products
-      where id = $1::bigint
-      limit 1
-    `,
-    [productId]
-  );
-
-  return result.rows[0] ?? null;
-}
-
-async function readAdminProductDetailFromRow(
-  client: PoolClient,
-  row: AdminProductRow
-): Promise<AdminProductDetail> {
-  const [categories, simpleOffer] = await Promise.all([
-    listAssignedCategoriesByProductId(client, row.id),
-    readAdminSimpleProductOffer(client, row),
-  ]);
-
-  return mapAdminProductDetail(row, categories, simpleOffer);
-}
-
-async function replaceProductCategories(
-  client: PoolClient,
+async function replaceProductCategoriesInTx(
+  tx: TxClient,
   productId: string,
   categoryIds: readonly string[]
 ): Promise<void> {
-  await client.query(
-    `
-      delete from product_categories
-      where product_id = $1::bigint
-    `,
-    [productId]
-  );
+  await tx.product_categories.deleteMany({ where: { product_id: BigInt(productId) } });
 
-  if (categoryIds.length === 0) {
-    return;
+  if (categoryIds.length > 0) {
+    await tx.product_categories.createMany({
+      data: categoryIds.map((cid) => ({
+        product_id: BigInt(productId),
+        category_id: BigInt(cid),
+      })),
+    });
+  }
+}
+
+// Mirrors findAdminProductById but uses tx for transactional consistency.
+async function loadAdminProductDetailInTx(
+  tx: TxClient,
+  productId: string
+): Promise<AdminProductDetail | null> {
+  const product = await tx.products.findUnique({
+    where: { id: BigInt(productId) },
+    include: {
+      product_categories: {
+        include: { categories: true },
+      },
+    },
+  });
+
+  if (product === null) {
+    return null;
   }
 
-  await client.query(
-    `
-      insert into product_categories (
-        product_id,
-        category_id
-      )
-      select
-        $1::bigint,
-        unnest($2::bigint[])
-    `,
-    [productId, categoryIds]
-  );
+  const nativeSimpleOfferFields: SimpleProductOfferFields = {
+    sku: product.simple_sku,
+    price: product.simple_price !== null ? product.simple_price.toString() : null,
+    compareAtPrice:
+      product.simple_compare_at_price !== null
+        ? product.simple_compare_at_price.toString()
+        : null,
+    stockQuantity: product.simple_stock_quantity,
+  };
+
+  const categories: AdminProductCategoryAssignment[] = [...product.product_categories]
+    .sort((a, b) => {
+      const nameCompare = a.categories.name
+        .toLowerCase()
+        .localeCompare(b.categories.name.toLowerCase());
+      if (nameCompare !== 0) return nameCompare;
+      return a.category_id < b.category_id ? -1 : a.category_id > b.category_id ? 1 : 0;
+    })
+    .map((pc) => ({
+      id: pc.category_id.toString(),
+      name: pc.categories.name,
+      slug: pc.categories.slug,
+    }));
+
+  let simpleOffer: SimpleProductOffer | null = null;
+
+  if (product.product_type === "simple") {
+    const legacyVariants = await tx.product_variants.findMany({
+      where: { product_id: BigInt(productId) },
+      orderBy: [{ is_default: "desc" }, { id: "asc" }],
+    });
+
+    const legacyOffers: SimpleProductOfferFields[] = legacyVariants.map((v) => ({
+      sku: v.sku,
+      price: v.price.toString(),
+      compareAtPrice: v.compare_at_price !== null ? v.compare_at_price.toString() : null,
+      stockQuantity: v.stock_quantity,
+    }));
+
+    simpleOffer = resolveSimpleProductOffer({ native: nativeSimpleOfferFields, legacyOffers });
+  }
+
+  return {
+    id: product.id.toString(),
+    name: product.name,
+    slug: product.slug,
+    shortDescription: product.short_description,
+    description: product.description,
+    seoTitle: product.seo_title,
+    seoDescription: product.seo_description,
+    status: product.status as AdminProductStatus,
+    productType: product.product_type as ProductType,
+    isFeatured: product.is_featured,
+    categories,
+    categoryIds: categories.map((c) => c.id),
+    simpleOfferFields: nativeSimpleOfferFields,
+    simpleOffer,
+    createdAt: product.created_at.toISOString(),
+    updatedAt: product.updated_at.toISOString(),
+  };
 }
+
+// --- Public functions ---
 
 export type AdminProductPublishContext = {
   status: "draft" | "published";
@@ -697,53 +509,42 @@ export async function findAdminProductById(id: string): Promise<AdminProductDeta
 export async function createAdminProduct(
   input: CreateAdminProductInput
 ): Promise<AdminProductDetail> {
-  const client = await db.connect();
+  return prisma
+    .$transaction(async (tx) => {
+      const categoryIds = await ensureCategoriesExistInTx(tx, input.categoryIds);
 
-  try {
-    await client.query("begin");
+      const product = await tx.products.create({
+        data: {
+          name: input.name,
+          slug: input.slug,
+          short_description: input.shortDescription,
+          description: input.description,
+          seo_title: input.seoTitle,
+          seo_description: input.seoDescription,
+          status: input.status,
+          product_type: input.productType,
+          is_featured: input.isFeatured,
+        },
+      });
 
-    const categoryIds = await ensureCategoriesExist(client, input.categoryIds);
-    const result = await client.query<AdminProductRow>(
-      `
-        insert into products (${ADMIN_PRODUCT_GENERAL_INSERT_COLUMNS})
-        values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-        returning ${ADMIN_PRODUCT_DETAIL_COLUMNS}
-      `,
-      buildAdminProductWriteParams(input)
-    );
+      await replaceProductCategoriesInTx(tx, product.id.toString(), categoryIds);
+      await clearNativeSimpleProductOfferFields(tx, product.id.toString());
 
-    const row = result.rows[0];
+      const detail = await loadAdminProductDetailInTx(tx, product.id.toString());
 
-    if (!row) {
-      throw new Error("Failed to create product.");
-    }
+      if (detail === null) {
+        throw new Error("Failed to reload product after creation.");
+      }
 
-    await replaceProductCategories(client, row.id, categoryIds);
+      return detail;
+    })
+    .catch((error) => {
+      if (error instanceof AdminProductRepositoryError) {
+        throw error;
+      }
 
-    await clearNativeSimpleProductOfferFields(client, row.id);
-
-    const refreshedRow = await readAdminProductRowById(client, row.id);
-
-    if (!refreshedRow) {
-      throw new Error("Failed to reload product after creation.");
-    }
-
-    const productDetail = await readAdminProductDetailFromRow(client, refreshedRow);
-
-    await client.query("commit");
-
-    return productDetail;
-  } catch (error) {
-    await client.query("rollback");
-
-    if (error instanceof AdminProductRepositoryError) {
-      throw error;
-    }
-
-    mapRepositoryError(error);
-  } finally {
-    client.release();
-  }
+      mapPrismaRepositoryError(error);
+    });
 }
 
 export async function updateAdminProduct(
@@ -753,50 +554,47 @@ export async function updateAdminProduct(
     return null;
   }
 
-  const client = await db.connect();
+  return prisma
+    .$transaction(async (tx) => {
+      const categoryIds = await ensureCategoriesExistInTx(tx, input.categoryIds);
+      const variantCount = await countVariantsInTx(tx, input.id);
 
-  try {
-    await client.query("begin");
+      assertCanSaveAsSimpleProduct(input.productType, variantCount);
 
-    const categoryIds = await ensureCategoriesExist(client, input.categoryIds);
-    const variantCount = await countVariantsByProductId(client, input.id);
+      try {
+        await tx.products.update({
+          where: { id: BigInt(input.id) },
+          data: {
+            name: input.name,
+            slug: input.slug,
+            short_description: input.shortDescription,
+            description: input.description,
+            seo_title: input.seoTitle,
+            seo_description: input.seoDescription,
+            status: input.status,
+            product_type: input.productType,
+            is_featured: input.isFeatured,
+          },
+        });
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2025") {
+          return null;
+        }
 
-    assertCanSaveAsSimpleProduct(input.productType, variantCount);
+        throw e;
+      }
 
-    const result = await client.query<AdminProductRow>(
-      `
-        update products
-        set ${ADMIN_PRODUCT_GENERAL_UPDATE_SET_CLAUSE}
-        where id = $1::bigint
-        returning ${ADMIN_PRODUCT_DETAIL_COLUMNS}
-      `,
-      [input.id, ...buildAdminProductWriteParams(input)]
-    );
+      await replaceProductCategoriesInTx(tx, input.id, categoryIds);
 
-    const row = result.rows[0];
+      return loadAdminProductDetailInTx(tx, input.id);
+    })
+    .catch((error) => {
+      if (error instanceof AdminProductRepositoryError) {
+        throw error;
+      }
 
-    if (!row) {
-      await client.query("rollback");
-      return null;
-    }
-
-    await replaceProductCategories(client, row.id, categoryIds);
-    const productDetail = await readAdminProductDetailFromRow(client, row);
-
-    await client.query("commit");
-
-    return productDetail;
-  } catch (error) {
-    await client.query("rollback");
-
-    if (error instanceof AdminProductRepositoryError) {
-      throw error;
-    }
-
-    mapRepositoryError(error);
-  } finally {
-    client.release();
-  }
+      mapPrismaRepositoryError(error);
+    });
 }
 
 export async function updateAdminSimpleProductOffer(
@@ -806,67 +604,57 @@ export async function updateAdminSimpleProductOffer(
     return null;
   }
 
-  const client = await db.connect();
+  return prisma
+    .$transaction(async (tx) => {
+      const product = await readProductTypeInTx(tx, input.id);
 
-  try {
-    await client.query("begin");
+      if (product === null) {
+        return null;
+      }
 
-    const product = await readProductTypeById(client, input.id);
+      assertProductSupportsNativeSimpleOffer(product.product_type);
 
-    if (product === null) {
-      await client.query("rollback");
-      return null;
-    }
+      const variantCount = await countVariantsInTx(tx, input.id);
 
-    assertProductSupportsNativeSimpleOffer(product.product_type);
+      assertCompatibleLegacyVariantCountForNativeSimpleOffer(variantCount);
 
-    const variantCount = await countVariantsByProductId(client, input.id);
+      try {
+        await tx.products.update({
+          where: { id: BigInt(input.id) },
+          data: {
+            simple_sku: input.sku,
+            simple_price: input.price,
+            simple_compare_at_price: input.compareAtPrice,
+            simple_stock_quantity: input.stockQuantity,
+          },
+        });
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2025") {
+          return null;
+        }
 
-    assertCompatibleLegacyVariantCountForNativeSimpleOffer(variantCount);
+        throw e;
+      }
 
-    const result = await client.query<AdminProductRow>(
-      `
-        update products
-        set ${ADMIN_SIMPLE_PRODUCT_OFFER_UPDATE_SET_CLAUSE}
-        where id = $1::bigint
-        returning ${ADMIN_PRODUCT_DETAIL_COLUMNS}
-      `,
-      [input.id, ...buildAdminSimpleProductOfferWriteParams(input)]
-    );
+      if (variantCount === 1) {
+        await syncLegacyVariantCommercialFieldsFromSimpleProduct(tx, {
+          productId: input.id,
+          sku: input.sku,
+          price: input.price,
+          compareAtPrice: input.compareAtPrice,
+          stockQuantity: input.stockQuantity,
+        });
+      }
 
-    const row = result.rows[0];
+      return loadAdminProductDetailInTx(tx, input.id);
+    })
+    .catch((error) => {
+      if (error instanceof AdminProductRepositoryError) {
+        throw error;
+      }
 
-    if (!row) {
-      await client.query("rollback");
-      return null;
-    }
-
-    if (variantCount === 1) {
-      await syncLegacyVariantCommercialFieldsFromSimpleProduct(client, {
-        productId: input.id,
-        sku: input.sku,
-        price: input.price,
-        compareAtPrice: input.compareAtPrice,
-        stockQuantity: input.stockQuantity,
-      });
-    }
-
-    const productDetail = await readAdminProductDetailFromRow(client, row);
-
-    await client.query("commit");
-
-    return productDetail;
-  } catch (error) {
-    await client.query("rollback");
-
-    if (error instanceof AdminProductRepositoryError) {
-      throw error;
-    }
-
-    mapRepositoryError(error);
-  } finally {
-    client.release();
-  }
+      mapPrismaRepositoryError(error);
+    });
 }
 
 export async function toggleAdminProductStatus(id: string): Promise<"draft" | "published" | null> {

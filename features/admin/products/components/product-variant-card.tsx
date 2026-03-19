@@ -4,9 +4,11 @@ import { AdminFormField } from "@/components/admin/admin-form-field";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { type AdminMediaAsset } from "@/db/admin-media";
-import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
-import { type AdminProductVariant } from "@/db/repositories/admin-product-variant.repository";
+import {
+  type AdminMediaAsset,
+  type AdminProductImage,
+  type AdminProductVariant,
+} from "@/features/admin/products/types/product-detail-types";
 import { type ProductAdminPresentation } from "@/entities/product/product-admin-presentation";
 import {
   createProductImageAction,

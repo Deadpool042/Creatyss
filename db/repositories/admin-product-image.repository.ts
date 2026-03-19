@@ -1,24 +1,4 @@
-import { type PoolClient } from "pg";
-import { db } from "@/db/client";
 import { prisma } from "@/db/prisma-client";
-
-type TimestampValue = Date | string;
-
-type AdminProductImageRow = {
-  id: string;
-  product_id: string;
-  variant_id: string | null;
-  file_path: string;
-  alt_text: string | null;
-  sort_order: number;
-  is_primary: boolean;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
-
-type ExistingRow = {
-  id: string;
-};
 
 type CreateAdminProductImageInput = {
   productId: string;
@@ -37,11 +17,6 @@ type UpdateAdminProductImageInput = {
   isPrimary: boolean;
 };
 
-type PrimaryImageScopeInput = {
-  productId: string;
-  variantId: string | null;
-};
-
 type UpsertAdminPrimaryProductImageInput = {
   productId: string;
   filePath: string;
@@ -50,10 +25,6 @@ type UpsertAdminPrimaryProductImageInput = {
 type UpsertAdminPrimaryVariantImageInput = {
   productId: string;
   variantId: string;
-  filePath: string;
-};
-
-type UpsertPrimaryImageInScopeInput = PrimaryImageScopeInput & {
   filePath: string;
 };
 
@@ -95,28 +66,6 @@ function isValidNumericId(value: string): boolean {
   return /^[0-9]+$/.test(value);
 }
 
-function toIsoTimestamp(value: TimestampValue): string {
-  if (value instanceof Date) {
-    return value.toISOString();
-  }
-
-  return new Date(value).toISOString();
-}
-
-function mapAdminProductImage(row: AdminProductImageRow): AdminProductImage {
-  return {
-    id: row.id,
-    productId: row.product_id,
-    variantId: row.variant_id,
-    filePath: row.file_path,
-    altText: row.alt_text,
-    sortOrder: row.sort_order,
-    isPrimary: row.is_primary,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-  };
-}
-
 function mapPrismaProductImage(row: PrismaProductImageData): AdminProductImage {
   return {
     id: row.id.toString(),
@@ -131,353 +80,111 @@ function mapPrismaProductImage(row: PrismaProductImageData): AdminProductImage {
   };
 }
 
-async function productExists(client: PoolClient, productId: string): Promise<boolean> {
-  const result = await client.query<ExistingRow>(
-    `
-      select id::text as id
-      from products
-      where id = $1::bigint
-      limit 1
-    `,
-    [productId]
-  );
+// --- Internal transaction helpers ---
 
-  return result.rows.length > 0;
+type TxClient = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
+
+async function productExistsInTx(tx: TxClient, productId: string): Promise<boolean> {
+  return (await tx.products.count({ where: { id: BigInt(productId) } })) > 0;
 }
 
-async function variantExistsForProduct(
-  client: PoolClient,
+async function variantExistsInTx(
+  tx: TxClient,
   productId: string,
   variantId: string
 ): Promise<boolean> {
-  const result = await client.query<ExistingRow>(
-    `
-      select id::text as id
-      from product_variants
-      where id = $1::bigint
-        and product_id = $2::bigint
-      limit 1
-    `,
-    [variantId, productId]
+  return (
+    (await tx.product_variants.count({
+      where: { id: BigInt(variantId), product_id: BigInt(productId) },
+    })) > 0
   );
-
-  return result.rows.length > 0;
 }
 
-async function clearPrimaryImageInScope(
-  client: PoolClient,
+// Mirrors the original: product scope filters on product_id + variant_id IS NULL,
+// variant scope filters on variant_id only (matching original SQL).
+async function clearPrimaryImageInScopeTx(
+  tx: TxClient,
   productId: string,
   variantId: string | null,
   excludedImageId?: string
 ): Promise<void> {
   if (variantId === null) {
-    if (excludedImageId) {
-      await client.query(
-        `
-          update product_images
-          set is_primary = false
-          where product_id = $1::bigint
-            and variant_id is null
-            and id <> $2::bigint
-            and is_primary
-        `,
-        [productId, excludedImageId]
-      );
-
-      return;
-    }
-
-    await client.query(
-      `
-        update product_images
-        set is_primary = false
-        where product_id = $1::bigint
-          and variant_id is null
-          and is_primary
-      `,
-      [productId]
-    );
-
-    return;
+    await tx.product_images.updateMany({
+      where: {
+        product_id: BigInt(productId),
+        variant_id: null,
+        is_primary: true,
+        ...(excludedImageId ? { NOT: { id: BigInt(excludedImageId) } } : {}),
+      },
+      data: { is_primary: false },
+    });
+  } else {
+    await tx.product_images.updateMany({
+      where: {
+        variant_id: BigInt(variantId),
+        is_primary: true,
+        ...(excludedImageId ? { NOT: { id: BigInt(excludedImageId) } } : {}),
+      },
+      data: { is_primary: false },
+    });
   }
-
-  if (excludedImageId) {
-    await client.query(
-      `
-        update product_images
-        set is_primary = false
-        where variant_id = $1::bigint
-          and id <> $2::bigint
-          and is_primary
-      `,
-      [variantId, excludedImageId]
-    );
-
-    return;
-  }
-
-  await client.query(
-    `
-      update product_images
-      set is_primary = false
-      where variant_id = $1::bigint
-        and is_primary
-    `,
-    [variantId]
-  );
 }
 
-async function findProductImageRow(
-  client: PoolClient,
-  productId: string,
-  imageId: string
-): Promise<AdminProductImageRow | null> {
-  const result = await client.query<AdminProductImageRow>(
-    `
-      select
-        pi.id::text as id,
-        pi.product_id::text as product_id,
-        pi.variant_id::text as variant_id,
-        pi.file_path,
-        pi.alt_text,
-        pi.sort_order,
-        pi.is_primary,
-        pi.created_at,
-        pi.updated_at
-      from product_images pi
-      where pi.id = $1::bigint
-        and pi.product_id = $2::bigint
-      limit 1
-    `,
-    [imageId, productId]
-  );
-
-  return result.rows[0] ?? null;
-}
-
-async function findPrimaryImageRowInScope(
-  client: PoolClient,
-  productId: string,
-  variantId: string | null
-): Promise<AdminProductImageRow | null> {
-  if (variantId === null) {
-    const result = await client.query<AdminProductImageRow>(
-      `
-        select
-          pi.id::text as id,
-          pi.product_id::text as product_id,
-          pi.variant_id::text as variant_id,
-          pi.file_path,
-          pi.alt_text,
-          pi.sort_order,
-          pi.is_primary,
-          pi.created_at,
-          pi.updated_at
-        from product_images pi
-        where pi.product_id = $1::bigint
-          and pi.variant_id is null
-          and pi.is_primary
-        limit 1
-      `,
-      [productId]
-    );
-
-    return result.rows[0] ?? null;
-  }
-
-  const result = await client.query<AdminProductImageRow>(
-    `
-      select
-        pi.id::text as id,
-        pi.product_id::text as product_id,
-        pi.variant_id::text as variant_id,
-        pi.file_path,
-        pi.alt_text,
-        pi.sort_order,
-        pi.is_primary,
-        pi.created_at,
-        pi.updated_at
-      from product_images pi
-      where pi.product_id = $1::bigint
-        and pi.variant_id = $2::bigint
-        and pi.is_primary
-      limit 1
-    `,
-    [productId, variantId]
-  );
-
-  return result.rows[0] ?? null;
-}
-
-function resolvePrimaryImageTargetRow(input: {
-  existingPrimaryImage: AdminProductImageRow | null;
-  existingScopedImage: AdminProductImageRow | null;
-}): AdminProductImageRow | null {
-  return input.existingScopedImage ?? input.existingPrimaryImage ?? null;
-}
-
-async function findImageRowByFilePathInScope(
-  client: PoolClient,
+async function setPrimaryImageInScopeTx(
+  tx: TxClient,
   productId: string,
   variantId: string | null,
   filePath: string
-): Promise<AdminProductImageRow | null> {
-  if (variantId === null) {
-    const result = await client.query<AdminProductImageRow>(
-      `
-        select
-          pi.id::text as id,
-          pi.product_id::text as product_id,
-          pi.variant_id::text as variant_id,
-          pi.file_path,
-          pi.alt_text,
-          pi.sort_order,
-          pi.is_primary,
-          pi.created_at,
-          pi.updated_at
-        from product_images pi
-        where pi.product_id = $1::bigint
-          and pi.variant_id is null
-          and pi.file_path = $2
-        order by pi.id asc
-        limit 1
-      `,
-      [productId, filePath]
-    );
+): Promise<AdminProductImage> {
+  const scopeWhere =
+    variantId !== null
+      ? { product_id: BigInt(productId), variant_id: BigInt(variantId) }
+      : { product_id: BigInt(productId), variant_id: null };
 
-    return result.rows[0] ?? null;
-  }
-
-  const result = await client.query<AdminProductImageRow>(
-    `
-      select
-        pi.id::text as id,
-        pi.product_id::text as product_id,
-        pi.variant_id::text as variant_id,
-        pi.file_path,
-        pi.alt_text,
-        pi.sort_order,
-        pi.is_primary,
-        pi.created_at,
-        pi.updated_at
-      from product_images pi
-      where pi.product_id = $1::bigint
-        and pi.variant_id = $2::bigint
-        and pi.file_path = $3
-      order by pi.id asc
-      limit 1
-    `,
-    [productId, variantId, filePath]
-  );
-
-  return result.rows[0] ?? null;
-}
-
-async function updatePrimaryImageRow(
-  client: PoolClient,
-  imageId: string,
-  filePath: string
-): Promise<AdminProductImageRow> {
-  const result = await client.query<AdminProductImageRow>(
-    `
-      update product_images
-      set
-        file_path = $2,
-        alt_text = null,
-        sort_order = 0,
-        is_primary = true
-      where id = $1::bigint
-      returning
-        id::text as id,
-        product_id::text as product_id,
-        variant_id::text as variant_id,
-        file_path,
-        alt_text,
-        sort_order,
-        is_primary,
-        created_at,
-        updated_at
-    `,
-    [imageId, filePath]
-  );
-
-  const row = result.rows[0];
-
-  if (row === undefined) {
-    throw new Error("Failed to update primary product image.");
-  }
-
-  return row;
-}
-
-async function insertPrimaryImageRow(
-  client: PoolClient,
-  input: UpsertPrimaryImageInScopeInput
-): Promise<AdminProductImageRow> {
-  const result = await client.query<AdminProductImageRow>(
-    `
-      insert into product_images (
-        product_id,
-        variant_id,
-        file_path,
-        alt_text,
-        sort_order,
-        is_primary
-      )
-      values ($1::bigint, $2::bigint, $3, null, 0, true)
-      returning
-        id::text as id,
-        product_id::text as product_id,
-        variant_id::text as variant_id,
-        file_path,
-        alt_text,
-        sort_order,
-        is_primary,
-        created_at,
-        updated_at
-    `,
-    [input.productId, input.variantId, input.filePath]
-  );
-
-  const row = result.rows[0];
-
-  if (row === undefined) {
-    throw new Error("Failed to insert primary product image.");
-  }
-
-  return row;
-}
-
-async function setPrimaryImageInScope(
-  client: PoolClient,
-  input: UpsertPrimaryImageInScopeInput
-): Promise<AdminProductImageRow> {
-  const existingPrimaryImage = await findPrimaryImageRowInScope(
-    client,
-    input.productId,
-    input.variantId
-  );
-  const existingScopedImage = await findImageRowByFilePathInScope(
-    client,
-    input.productId,
-    input.variantId,
-    input.filePath
-  );
-  const targetImage = resolvePrimaryImageTargetRow({
-    existingPrimaryImage,
-    existingScopedImage,
+  const existingPrimary = await tx.product_images.findFirst({
+    where: { ...scopeWhere, is_primary: true },
   });
 
-  if (targetImage !== null) {
-    await clearPrimaryImageInScope(client, input.productId, input.variantId, targetImage.id);
+  const existingScoped = await tx.product_images.findFirst({
+    where: { ...scopeWhere, file_path: filePath },
+    orderBy: { id: "asc" },
+  });
 
-    return updatePrimaryImageRow(client, targetImage.id, input.filePath);
+  const targetImage = existingScoped ?? existingPrimary ?? null;
+
+  if (targetImage !== null) {
+    await clearPrimaryImageInScopeTx(
+      tx,
+      productId,
+      variantId,
+      targetImage.id.toString()
+    );
+
+    const updated = await tx.product_images.update({
+      where: { id: targetImage.id },
+      data: { file_path: filePath, alt_text: null, sort_order: 0, is_primary: true },
+    });
+
+    return mapPrismaProductImage(updated);
   }
 
-  await clearPrimaryImageInScope(client, input.productId, input.variantId);
+  await clearPrimaryImageInScopeTx(tx, productId, variantId);
 
-  return insertPrimaryImageRow(client, input);
+  const created = await tx.product_images.create({
+    data: {
+      product_id: BigInt(productId),
+      variant_id: variantId !== null ? BigInt(variantId) : null,
+      file_path: filePath,
+      alt_text: null,
+      sort_order: 0,
+      is_primary: true,
+    },
+  });
+
+  return mapPrismaProductImage(created);
 }
+
+// --- Public functions ---
 
 export async function listAdminProductImages(productId: string): Promise<AdminProductImage[]> {
   if (!isValidNumericId(productId)) {
@@ -532,19 +239,14 @@ export async function createAdminProductImage(
     throw new AdminProductImageRepositoryError("Selected variant does not belong to this product.");
   }
 
-  const client = await db.connect();
-
-  try {
-    await client.query("begin");
-
-    if (!(await productExists(client, input.productId))) {
-      await client.query("rollback");
+  return prisma.$transaction(async (tx) => {
+    if (!(await productExistsInTx(tx, input.productId))) {
       return null;
     }
 
     if (
       input.variantId !== null &&
-      !(await variantExistsForProduct(client, input.productId, input.variantId))
+      !(await variantExistsInTx(tx, input.productId, input.variantId))
     ) {
       throw new AdminProductImageRepositoryError(
         "Selected variant does not belong to this product."
@@ -552,61 +254,22 @@ export async function createAdminProductImage(
     }
 
     if (input.isPrimary) {
-      await clearPrimaryImageInScope(client, input.productId, input.variantId);
+      await clearPrimaryImageInScopeTx(tx, input.productId, input.variantId);
     }
 
-    const result = await client.query<AdminProductImageRow>(
-      `
-        insert into product_images (
-          product_id,
-          variant_id,
-          file_path,
-          alt_text,
-          sort_order,
-          is_primary
-        )
-        values ($1::bigint, $2::bigint, $3, $4, $5, $6)
-        returning
-          id::text as id,
-          product_id::text as product_id,
-          variant_id::text as variant_id,
-          file_path,
-          alt_text,
-          sort_order,
-          is_primary,
-          created_at,
-          updated_at
-      `,
-      [
-        input.productId,
-        input.variantId,
-        input.filePath,
-        input.altText,
-        input.sortOrder,
-        input.isPrimary,
-      ]
-    );
+    const row = await tx.product_images.create({
+      data: {
+        product_id: BigInt(input.productId),
+        variant_id: input.variantId !== null ? BigInt(input.variantId) : null,
+        file_path: input.filePath,
+        alt_text: input.altText,
+        sort_order: input.sortOrder,
+        is_primary: input.isPrimary,
+      },
+    });
 
-    const row = result.rows[0];
-
-    if (!row) {
-      throw new Error("Failed to create product image.");
-    }
-
-    await client.query("commit");
-
-    return mapAdminProductImage(row);
-  } catch (error) {
-    await client.query("rollback");
-
-    if (error instanceof AdminProductImageRepositoryError) {
-      throw error;
-    }
-
-    throw error;
-  } finally {
-    client.release();
-  }
+    return mapPrismaProductImage(row);
+  });
 }
 
 export async function upsertAdminPrimaryProductImage(
@@ -616,31 +279,13 @@ export async function upsertAdminPrimaryProductImage(
     return null;
   }
 
-  const client = await db.connect();
-
-  try {
-    await client.query("begin");
-
-    if (!(await productExists(client, input.productId))) {
-      await client.query("rollback");
+  return prisma.$transaction(async (tx) => {
+    if (!(await productExistsInTx(tx, input.productId))) {
       return null;
     }
 
-    const row = await setPrimaryImageInScope(client, {
-      productId: input.productId,
-      variantId: null,
-      filePath: input.filePath,
-    });
-
-    await client.query("commit");
-
-    return mapAdminProductImage(row);
-  } catch (error) {
-    await client.query("rollback");
-    throw error;
-  } finally {
-    client.release();
-  }
+    return setPrimaryImageInScopeTx(tx, input.productId, null, input.filePath);
+  });
 }
 
 export async function upsertAdminPrimaryVariantImage(
@@ -650,42 +295,19 @@ export async function upsertAdminPrimaryVariantImage(
     return null;
   }
 
-  const client = await db.connect();
-
-  try {
-    await client.query("begin");
-
-    if (!(await productExists(client, input.productId))) {
-      await client.query("rollback");
+  return prisma.$transaction(async (tx) => {
+    if (!(await productExistsInTx(tx, input.productId))) {
       return null;
     }
 
-    if (!(await variantExistsForProduct(client, input.productId, input.variantId))) {
+    if (!(await variantExistsInTx(tx, input.productId, input.variantId))) {
       throw new AdminProductImageRepositoryError(
         "Selected variant does not belong to this product."
       );
     }
 
-    const row = await setPrimaryImageInScope(client, {
-      productId: input.productId,
-      variantId: input.variantId,
-      filePath: input.filePath,
-    });
-
-    await client.query("commit");
-
-    return mapAdminProductImage(row);
-  } catch (error) {
-    await client.query("rollback");
-
-    if (error instanceof AdminProductImageRepositoryError) {
-      throw error;
-    }
-
-    throw error;
-  } finally {
-    client.release();
-  }
+    return setPrimaryImageInScopeTx(tx, input.productId, input.variantId, input.filePath);
+  });
 }
 
 export async function updateAdminProductImage(
@@ -695,61 +317,29 @@ export async function updateAdminProductImage(
     return null;
   }
 
-  const client = await db.connect();
-
-  try {
-    await client.query("begin");
-
-    const currentImage = await findProductImageRow(client, input.productId, input.id);
+  return prisma.$transaction(async (tx) => {
+    const currentImage = await tx.product_images.findFirst({
+      where: { id: BigInt(input.id), product_id: BigInt(input.productId) },
+    });
 
     if (currentImage === null) {
-      await client.query("rollback");
       return null;
     }
 
     if (input.isPrimary) {
-      await clearPrimaryImageInScope(client, input.productId, currentImage.variant_id, input.id);
+      const variantId =
+        currentImage.variant_id !== null ? currentImage.variant_id.toString() : null;
+
+      await clearPrimaryImageInScopeTx(tx, input.productId, variantId, input.id);
     }
 
-    const result = await client.query<AdminProductImageRow>(
-      `
-        update product_images
-        set
-          alt_text = $3,
-          sort_order = $4,
-          is_primary = $5
-        where id = $1::bigint
-          and product_id = $2::bigint
-        returning
-          id::text as id,
-          product_id::text as product_id,
-          variant_id::text as variant_id,
-          file_path,
-          alt_text,
-          sort_order,
-          is_primary,
-          created_at,
-          updated_at
-      `,
-      [input.id, input.productId, input.altText, input.sortOrder, input.isPrimary]
-    );
+    const updated = await tx.product_images.update({
+      where: { id: BigInt(input.id) },
+      data: { alt_text: input.altText, sort_order: input.sortOrder, is_primary: input.isPrimary },
+    });
 
-    const row = result.rows[0];
-
-    if (!row) {
-      await client.query("rollback");
-      return null;
-    }
-
-    await client.query("commit");
-
-    return mapAdminProductImage(row);
-  } catch (error) {
-    await client.query("rollback");
-    throw error;
-  } finally {
-    client.release();
-  }
+    return mapPrismaProductImage(updated);
+  });
 }
 
 export async function deleteAdminProductImage(

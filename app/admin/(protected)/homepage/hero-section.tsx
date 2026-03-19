@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -42,10 +43,12 @@ export function HeroSection({
     >
       {heroImageUrl ? (
         <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
-          <img
+          <Image
             alt={heroTitle ?? "Image principale actuelle"}
             className="aspect-[16/7] w-full object-cover"
             src={heroImageUrl}
+            width={1600}
+            height={700}
           />
         </div>
       ) : (
