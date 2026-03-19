@@ -1,5 +1,6 @@
 import { db, queryFirst, queryRows } from "@/db/client";
 import type { PoolClient } from "pg";
+import { normalizeMoneyString, moneyStringToCents, centsToMoneyString } from "@/lib/money";
 import { listOrderEmailEventsByOrderId } from "@/db/repositories/order-email.repository";
 import { createOrderReference } from "@/entities/order/order-reference";
 import { resolveOrderStatusTransition } from "@/entities/order/order-status-transition";
@@ -190,34 +191,6 @@ function toIsoTimestamp(value: TimestampValue): string {
   }
 
   return new Date(value).toISOString();
-}
-
-function normalizeMoneyString(value: string): string {
-  const match = value.match(/^(\d+)(?:\.(\d{1,2}))?$/);
-
-  if (!match) {
-    return "0.00";
-  }
-
-  const [, major, minor = ""] = match;
-
-  return `${major}.${minor.padEnd(2, "0")}`;
-}
-
-function moneyStringToCents(value: string): number {
-  const normalizedValue = normalizeMoneyString(value);
-  const [major, minor] = normalizedValue.split(".");
-
-  return Number.parseInt(major ?? "0", 10) * 100 + Number.parseInt(minor ?? "0", 10);
-}
-
-function centsToMoneyString(cents: number): string {
-  const sign = cents < 0 ? "-" : "";
-  const normalizedValue = Math.abs(cents);
-  const major = Math.floor(normalizedValue / 100);
-  const minor = normalizedValue % 100;
-
-  return `${sign}${major}.${minor.toString().padStart(2, "0")}`;
 }
 
 function checkoutDraftIsComplete(row: CheckoutDraftRow | null): row is CheckoutDraftRow {

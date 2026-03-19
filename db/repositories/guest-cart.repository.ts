@@ -1,16 +1,134 @@
-import { db, queryFirst, queryRows } from "@/db/client";
+import type { Prisma } from "@prisma/client";
+import { prisma } from "@/db/prisma-client";
+import { normalizeMoneyString, moneyStringToCents, centsToMoneyString } from "@/lib/money";
 
-type TimestampValue = Date | string;
-type ProductStatus = "draft" | "published";
-type ProductVariantStatus = "draft" | "published";
-
-type GuestCartIdRow = {
-  id: string;
+import type {
+  GuestCartVariant,
+  GuestCartItemReference,
+  GuestCartLine,
+  GuestCart,
+  GuestCheckoutDetails,
+  GuestCheckoutIssueCode,
+  GuestCheckoutContext,
+} from "./guest-cart.types";
+export type {
+  GuestCartVariant,
+  GuestCartItemReference,
+  GuestCartLine,
+  GuestCart,
+  GuestCheckoutDetails,
+  GuestCheckoutIssueCode,
+  GuestCheckoutContext,
 };
 
-type GuestCartCheckoutDetailsRow = {
-  id: string;
-  cart_id: string;
+function isValidNumericId(value: string): boolean {
+  return /^[0-9]+$/.test(value);
+}
+
+// --- Internal availability helpers ---
+
+function isGuestCartVariantAvailable(v: {
+  status: string;
+  stock_quantity: number;
+  products: { status: string };
+}): boolean {
+  return v.products.status === "published" && v.status === "published" && v.stock_quantity > 0;
+}
+
+function isGuestCartLineAvailable(v: {
+  status: string;
+  stock_quantity: number;
+  products: { status: string };
+  quantity: number;
+}): boolean {
+  return (
+    v.products.status === "published" &&
+    v.status === "published" &&
+    v.stock_quantity >= v.quantity &&
+    v.stock_quantity > 0
+  );
+}
+
+// --- Internal mappers ---
+
+function mapPrismaVariant(row: {
+  id: bigint;
+  product_id: bigint;
+  name: string;
+  color_name: string;
+  color_hex: string | null;
+  sku: string;
+  price: Prisma.Decimal;
+  stock_quantity: number;
+  status: string;
+  products: { slug: string; name: string; status: string };
+}): GuestCartVariant {
+  return {
+    id: row.id.toString(),
+    productId: row.product_id.toString(),
+    productSlug: row.products.slug,
+    productName: row.products.name,
+    productStatus: row.products.status as GuestCartVariant["productStatus"],
+    name: row.name,
+    colorName: row.color_name,
+    colorHex: row.color_hex,
+    sku: row.sku,
+    price: normalizeMoneyString(row.price.toString()),
+    stockQuantity: row.stock_quantity,
+    status: row.status as GuestCartVariant["status"],
+    isAvailable: isGuestCartVariantAvailable({ ...row, products: row.products }),
+  };
+}
+
+function mapPrismaCartLine(item: {
+  id: bigint;
+  product_variant_id: bigint;
+  quantity: number;
+  created_at: Date;
+  updated_at: Date;
+  product_variants: {
+    product_id: bigint;
+    name: string;
+    color_name: string;
+    color_hex: string | null;
+    sku: string;
+    price: Prisma.Decimal;
+    stock_quantity: number;
+    status: string;
+    products: { id: bigint; slug: string; name: string; status: string };
+  };
+}): GuestCartLine {
+  const pv = item.product_variants;
+  const unitPrice = normalizeMoneyString(pv.price.toString());
+  const lineTotal = centsToMoneyString(moneyStringToCents(unitPrice) * item.quantity);
+
+  return {
+    id: item.id.toString(),
+    variantId: item.product_variant_id.toString(),
+    quantity: item.quantity,
+    productId: pv.products.id.toString(),
+    productSlug: pv.products.slug,
+    productName: pv.products.name,
+    variantName: pv.name,
+    colorName: pv.color_name,
+    colorHex: pv.color_hex,
+    sku: pv.sku,
+    unitPrice,
+    lineTotal,
+    isAvailable: isGuestCartLineAvailable({
+      status: pv.status,
+      stock_quantity: pv.stock_quantity,
+      products: pv.products,
+      quantity: item.quantity,
+    }),
+    createdAt: item.created_at.toISOString(),
+    updatedAt: item.updated_at.toISOString(),
+  };
+}
+
+function mapPrismaCheckoutDetails(row: {
+  id: bigint;
+  cart_id: bigint;
   customer_email: string | null;
   customer_first_name: string | null;
   customer_last_name: string | null;
@@ -29,237 +147,12 @@ type GuestCartCheckoutDetailsRow = {
   billing_postal_code: string | null;
   billing_city: string | null;
   billing_country_code: string | null;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
-
-type GuestCartVariantRow = {
-  id: string;
-  product_id: string;
-  product_slug: string;
-  product_name: string;
-  product_status: ProductStatus;
-  name: string;
-  color_name: string;
-  color_hex: string | null;
-  sku: string;
-  price: string;
-  stock_quantity: number;
-  status: ProductVariantStatus;
-};
-
-type GuestCartItemReferenceRow = {
-  id: string;
-  product_variant_id: string;
-  quantity: number;
-};
-
-type GuestCartLineRow = {
-  cart_id: string;
-  id: string;
-  product_variant_id: string;
-  quantity: number;
-  product_id: string;
-  product_slug: string;
-  product_name: string;
-  product_status: ProductStatus;
-  variant_name: string;
-  color_name: string;
-  color_hex: string | null;
-  sku: string;
-  unit_price: string;
-  stock_quantity: number;
-  variant_status: ProductVariantStatus;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
-
-export type GuestCartVariant = {
-  id: string;
-  productId: string;
-  productSlug: string;
-  productName: string;
-  productStatus: ProductStatus;
-  name: string;
-  colorName: string;
-  colorHex: string | null;
-  sku: string;
-  price: string;
-  stockQuantity: number;
-  status: ProductVariantStatus;
-  isAvailable: boolean;
-};
-
-export type GuestCartItemReference = {
-  id: string;
-  variantId: string;
-  quantity: number;
-};
-
-export type GuestCartLine = {
-  id: string;
-  variantId: string;
-  quantity: number;
-  productId: string;
-  productSlug: string;
-  productName: string;
-  variantName: string;
-  colorName: string;
-  colorHex: string | null;
-  sku: string;
-  unitPrice: string;
-  lineTotal: string;
-  isAvailable: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type GuestCart = {
-  id: string;
-  itemCount: number;
-  subtotal: string;
-  lines: GuestCartLine[];
-};
-
-export type GuestCheckoutDetails = {
-  id: string;
-  cartId: string;
-  customerEmail: string | null;
-  customerFirstName: string | null;
-  customerLastName: string | null;
-  customerPhone: string | null;
-  shippingAddressLine1: string | null;
-  shippingAddressLine2: string | null;
-  shippingPostalCode: string | null;
-  shippingCity: string | null;
-  shippingCountryCode: "FR" | null;
-  billingSameAsShipping: boolean;
-  billingFirstName: string | null;
-  billingLastName: string | null;
-  billingPhone: string | null;
-  billingAddressLine1: string | null;
-  billingAddressLine2: string | null;
-  billingPostalCode: string | null;
-  billingCity: string | null;
-  billingCountryCode: "FR" | null;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type GuestCheckoutIssueCode = "empty_cart" | "cart_unavailable";
-
-export type GuestCheckoutContext = {
-  cart: GuestCart | null;
-  draft: GuestCheckoutDetails | null;
-  issues: GuestCheckoutIssueCode[];
-};
-
-function isValidNumericId(value: string): boolean {
-  return /^[0-9]+$/.test(value);
-}
-
-function toIsoTimestamp(value: TimestampValue): string {
-  if (value instanceof Date) {
-    return value.toISOString();
-  }
-
-  return new Date(value).toISOString();
-}
-
-function normalizeMoneyString(value: string): string {
-  const match = value.match(/^(\d+)(?:\.(\d{1,2}))?$/);
-
-  if (!match) {
-    return "0.00";
-  }
-
-  const [, major, minor = ""] = match;
-
-  return `${major}.${minor.padEnd(2, "0")}`;
-}
-
-function moneyStringToCents(value: string): number {
-  const normalizedValue = normalizeMoneyString(value);
-  const [major, minor] = normalizedValue.split(".");
-
-  return Number.parseInt(major ?? "0", 10) * 100 + Number.parseInt(minor ?? "0", 10);
-}
-
-function centsToMoneyString(cents: number): string {
-  const sign = cents < 0 ? "-" : "";
-  const normalizedValue = Math.abs(cents);
-  const major = Math.floor(normalizedValue / 100);
-  const minor = normalizedValue % 100;
-
-  return `${sign}${major}.${minor.toString().padStart(2, "0")}`;
-}
-
-function isGuestCartVariantAvailable(row: GuestCartVariantRow): boolean {
-  return row.product_status === "published" && row.status === "published" && row.stock_quantity > 0;
-}
-
-function isGuestCartLineAvailable(row: GuestCartLineRow): boolean {
-  return (
-    row.product_status === "published" &&
-    row.variant_status === "published" &&
-    row.stock_quantity >= row.quantity &&
-    row.stock_quantity > 0
-  );
-}
-
-function mapGuestCartItemReference(row: GuestCartItemReferenceRow): GuestCartItemReference {
+  created_at: Date;
+  updated_at: Date;
+}): GuestCheckoutDetails {
   return {
-    id: row.id,
-    variantId: row.product_variant_id,
-    quantity: row.quantity,
-  };
-}
-
-function mapGuestCartVariant(row: GuestCartVariantRow): GuestCartVariant {
-  return {
-    id: row.id,
-    productId: row.product_id,
-    productSlug: row.product_slug,
-    productName: row.product_name,
-    productStatus: row.product_status,
-    name: row.name,
-    colorName: row.color_name,
-    colorHex: row.color_hex,
-    sku: row.sku,
-    price: normalizeMoneyString(row.price),
-    stockQuantity: row.stock_quantity,
-    status: row.status,
-    isAvailable: isGuestCartVariantAvailable(row),
-  };
-}
-
-function mapGuestCartLine(row: GuestCartLineRow): GuestCartLine {
-  const unitPrice = normalizeMoneyString(row.unit_price);
-  const lineTotal = centsToMoneyString(moneyStringToCents(unitPrice) * row.quantity);
-
-  return {
-    id: row.id,
-    variantId: row.product_variant_id,
-    quantity: row.quantity,
-    productId: row.product_id,
-    productSlug: row.product_slug,
-    productName: row.product_name,
-    variantName: row.variant_name,
-    colorName: row.color_name,
-    colorHex: row.color_hex,
-    sku: row.sku,
-    unitPrice,
-    lineTotal,
-    isAvailable: isGuestCartLineAvailable(row),
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-  };
-}
-
-function mapGuestCheckoutDetails(row: GuestCartCheckoutDetailsRow): GuestCheckoutDetails {
-  return {
-    id: row.id,
-    cartId: row.cart_id,
+    id: row.id.toString(),
+    cartId: row.cart_id.toString(),
     customerEmail: row.customer_email,
     customerFirstName: row.customer_first_name,
     customerLastName: row.customer_last_name,
@@ -278,8 +171,24 @@ function mapGuestCheckoutDetails(row: GuestCartCheckoutDetailsRow): GuestCheckou
     billingPostalCode: row.billing_postal_code,
     billingCity: row.billing_city,
     billingCountryCode: row.billing_country_code as "FR" | null,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
+    createdAt: row.created_at.toISOString(),
+    updatedAt: row.updated_at.toISOString(),
+  };
+}
+
+function buildGuestCart(
+  cartId: string,
+  items: Parameters<typeof mapPrismaCartLine>[0][]
+): GuestCart {
+  const lines = items.map(mapPrismaCartLine);
+  const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
+  const subtotalCents = lines.reduce((sum, line) => sum + moneyStringToCents(line.lineTotal), 0);
+
+  return {
+    id: cartId,
+    itemCount,
+    subtotal: centsToMoneyString(subtotalCents),
+    lines,
   };
 }
 
@@ -295,54 +204,24 @@ function getGuestCheckoutIssues(cart: GuestCart | null): GuestCheckoutIssueCode[
   return [];
 }
 
-function buildGuestCartFromLineRows(rows: readonly GuestCartLineRow[]): GuestCart | null {
-  const firstRow = rows[0];
-
-  if (!firstRow) {
-    return null;
-  }
-
-  const lines = rows.map(mapGuestCartLine);
-  const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
-  const subtotalCents = lines.reduce((sum, line) => sum + moneyStringToCents(line.lineTotal), 0);
-
-  return {
-    id: firstRow.cart_id,
-    itemCount,
-    subtotal: centsToMoneyString(subtotalCents),
-    lines,
-  };
-}
+// --- Public functions ---
 
 export async function findGuestCartIdByToken(token: string): Promise<string | null> {
-  const row = await queryFirst<GuestCartIdRow>(
-    `
-      select id::text as id
-      from carts
-      where token = $1
-      limit 1
-    `,
-    [token]
-  );
+  const row = await prisma.carts.findUnique({
+    where: { token },
+    select: { id: true },
+  });
 
-  return row?.id ?? null;
+  return row?.id.toString() ?? null;
 }
 
 export async function createGuestCart(token: string): Promise<string> {
-  const row = await queryFirst<GuestCartIdRow>(
-    `
-      insert into carts (token)
-      values ($1)
-      returning id::text as id
-    `,
-    [token]
-  );
+  const row = await prisma.carts.create({
+    data: { token },
+    select: { id: true },
+  });
 
-  if (!row) {
-    throw new Error("Guest cart creation failed.");
-  }
-
-  return row.id;
+  return row.id.toString();
 }
 
 export async function findGuestCartVariantById(
@@ -352,30 +231,23 @@ export async function findGuestCartVariantById(
     return null;
   }
 
-  const row = await queryFirst<GuestCartVariantRow>(
-    `
-      select
-        pv.id::text as id,
-        pv.product_id::text as product_id,
-        p.slug as product_slug,
-        p.name as product_name,
-        p.status as product_status,
-        pv.name,
-        pv.color_name,
-        pv.color_hex,
-        pv.sku,
-        pv.price::text as price,
-        pv.stock_quantity,
-        pv.status
-      from product_variants pv
-      inner join products p on p.id = pv.product_id
-      where pv.id = $1::bigint
-      limit 1
-    `,
-    [variantId]
-  );
+  const row = await prisma.product_variants.findUnique({
+    where: { id: BigInt(variantId) },
+    select: {
+      id: true,
+      product_id: true,
+      name: true,
+      color_name: true,
+      color_hex: true,
+      sku: true,
+      price: true,
+      stock_quantity: true,
+      status: true,
+      products: { select: { slug: true, name: true, status: true } },
+    },
+  });
 
-  return row ? mapGuestCartVariant(row) : null;
+  return row ? mapPrismaVariant(row) : null;
 }
 
 export async function findGuestCartItemByVariant(
@@ -386,21 +258,23 @@ export async function findGuestCartItemByVariant(
     return null;
   }
 
-  const row = await queryFirst<GuestCartItemReferenceRow>(
-    `
-      select
-        id::text as id,
-        product_variant_id::text as product_variant_id,
-        quantity
-      from cart_items
-      where cart_id = $1::bigint
-        and product_variant_id = $2::bigint
-      limit 1
-    `,
-    [cartId, variantId]
-  );
+  const row = await prisma.cart_items.findUnique({
+    where: {
+      cart_id_product_variant_id: {
+        cart_id: BigInt(cartId),
+        product_variant_id: BigInt(variantId),
+      },
+    },
+    select: { id: true, product_variant_id: true, quantity: true },
+  });
 
-  return row ? mapGuestCartItemReference(row) : null;
+  if (row === null) return null;
+
+  return {
+    id: row.id.toString(),
+    variantId: row.product_variant_id.toString(),
+    quantity: row.quantity,
+  };
 }
 
 export async function findGuestCartItemById(
@@ -411,21 +285,18 @@ export async function findGuestCartItemById(
     return null;
   }
 
-  const row = await queryFirst<GuestCartItemReferenceRow>(
-    `
-      select
-        id::text as id,
-        product_variant_id::text as product_variant_id,
-        quantity
-      from cart_items
-      where cart_id = $1::bigint
-        and id = $2::bigint
-      limit 1
-    `,
-    [cartId, itemId]
-  );
+  const row = await prisma.cart_items.findFirst({
+    where: { id: BigInt(itemId), cart_id: BigInt(cartId) },
+    select: { id: true, product_variant_id: true, quantity: true },
+  });
 
-  return row ? mapGuestCartItemReference(row) : null;
+  if (row === null) return null;
+
+  return {
+    id: row.id.toString(),
+    variantId: row.product_variant_id.toString(),
+    quantity: row.quantity,
+  };
 }
 
 export async function addGuestCartItemQuantity(input: {
@@ -433,16 +304,22 @@ export async function addGuestCartItemQuantity(input: {
   variantId: string;
   quantity: number;
 }): Promise<void> {
-  await db.query(
-    `
-      insert into cart_items (cart_id, product_variant_id, quantity)
-      values ($1::bigint, $2::bigint, $3)
-      on conflict (cart_id, product_variant_id)
-      do update
-      set quantity = cart_items.quantity + excluded.quantity
-    `,
-    [input.cartId, input.variantId, input.quantity]
-  );
+  // Prisma atomic increment on conflict — equivalent to:
+  // INSERT ... ON CONFLICT DO UPDATE SET quantity = quantity + excluded.quantity
+  await prisma.cart_items.upsert({
+    where: {
+      cart_id_product_variant_id: {
+        cart_id: BigInt(input.cartId),
+        product_variant_id: BigInt(input.variantId),
+      },
+    },
+    create: {
+      cart_id: BigInt(input.cartId),
+      product_variant_id: BigInt(input.variantId),
+      quantity: input.quantity,
+    },
+    update: { quantity: { increment: input.quantity } },
+  });
 }
 
 export async function updateGuestCartItemQuantity(input: {
@@ -450,69 +327,69 @@ export async function updateGuestCartItemQuantity(input: {
   itemId: string;
   quantity: number;
 }): Promise<boolean> {
-  const row = await queryFirst<GuestCartIdRow>(
-    `
-      update cart_items
-      set quantity = $3
-      where cart_id = $1::bigint
-        and id = $2::bigint
-      returning id::text as id
-    `,
-    [input.cartId, input.itemId, input.quantity]
-  );
+  if (!isValidNumericId(input.cartId) || !isValidNumericId(input.itemId)) {
+    return false;
+  }
 
-  return row !== null;
+  const result = await prisma.cart_items.updateMany({
+    where: { id: BigInt(input.itemId), cart_id: BigInt(input.cartId) },
+    data: { quantity: input.quantity },
+  });
+
+  return result.count > 0;
 }
 
 export async function removeGuestCartItem(input: {
   cartId: string;
   itemId: string;
 }): Promise<boolean> {
-  const row = await queryFirst<GuestCartIdRow>(
-    `
-      delete from cart_items
-      where cart_id = $1::bigint
-        and id = $2::bigint
-      returning id::text as id
-    `,
-    [input.cartId, input.itemId]
-  );
+  if (!isValidNumericId(input.cartId) || !isValidNumericId(input.itemId)) {
+    return false;
+  }
 
-  return row !== null;
+  const result = await prisma.cart_items.deleteMany({
+    where: { id: BigInt(input.itemId), cart_id: BigInt(input.cartId) },
+  });
+
+  return result.count > 0;
 }
 
 export async function readGuestCartByToken(token: string): Promise<GuestCart | null> {
-  const rows = await queryRows<GuestCartLineRow>(
-    `
-      select
-        c.id::text as cart_id,
-        ci.id::text as id,
-        ci.product_variant_id::text as product_variant_id,
-        ci.quantity,
-        p.id::text as product_id,
-        p.slug as product_slug,
-        p.name as product_name,
-        p.status as product_status,
-        pv.name as variant_name,
-        pv.color_name,
-        pv.color_hex,
-        pv.sku,
-        pv.price::text as unit_price,
-        pv.stock_quantity,
-        pv.status as variant_status,
-        ci.created_at,
-        ci.updated_at
-      from carts c
-      inner join cart_items ci on ci.cart_id = c.id
-      inner join product_variants pv on pv.id = ci.product_variant_id
-      inner join products p on p.id = pv.product_id
-      where c.token = $1
-      order by ci.created_at asc, ci.id asc
-    `,
-    [token]
-  );
+  const cartRow = await prisma.carts.findUnique({
+    where: { token },
+    select: {
+      id: true,
+      cart_items: {
+        select: {
+          id: true,
+          product_variant_id: true,
+          quantity: true,
+          created_at: true,
+          updated_at: true,
+          product_variants: {
+            select: {
+              product_id: true,
+              name: true,
+              color_name: true,
+              color_hex: true,
+              sku: true,
+              price: true,
+              stock_quantity: true,
+              status: true,
+              products: { select: { id: true, slug: true, name: true, status: true } },
+            },
+          },
+        },
+        orderBy: [{ created_at: "asc" }, { id: "asc" }],
+      },
+    },
+  });
 
-  return buildGuestCartFromLineRows(rows);
+  if (cartRow === null || cartRow.cart_items.length === 0) {
+    return null;
+  }
+
+  return buildGuestCart(cartRow.id.toString(), cartRow.cart_items);
 }
 
 export async function readGuestCheckoutDetailsByCartId(
@@ -522,39 +399,11 @@ export async function readGuestCheckoutDetailsByCartId(
     return null;
   }
 
-  const row = await queryFirst<GuestCartCheckoutDetailsRow>(
-    `
-      select
-        id::text as id,
-        cart_id::text as cart_id,
-        customer_email,
-        customer_first_name,
-        customer_last_name,
-        customer_phone,
-        shipping_address_line_1,
-        shipping_address_line_2,
-        shipping_postal_code,
-        shipping_city,
-        shipping_country_code,
-        billing_same_as_shipping,
-        billing_first_name,
-        billing_last_name,
-        billing_phone,
-        billing_address_line_1,
-        billing_address_line_2,
-        billing_postal_code,
-        billing_city,
-        billing_country_code,
-        created_at,
-        updated_at
-      from cart_checkout_details
-      where cart_id = $1::bigint
-      limit 1
-    `,
-    [cartId]
-  );
+  const row = await prisma.cart_checkout_details.findUnique({
+    where: { cart_id: BigInt(cartId) },
+  });
 
-  return row ? mapGuestCheckoutDetails(row) : null;
+  return row !== null ? mapPrismaCheckoutDetails(row) : null;
 }
 
 export async function upsertGuestCheckoutDetails(input: {
@@ -578,123 +427,34 @@ export async function upsertGuestCheckoutDetails(input: {
   billingCity: string | null;
   billingCountryCode: "FR" | null;
 }): Promise<GuestCheckoutDetails> {
-  const row = await queryFirst<GuestCartCheckoutDetailsRow>(
-    `
-      insert into cart_checkout_details (
-        cart_id,
-        customer_email,
-        customer_first_name,
-        customer_last_name,
-        customer_phone,
-        shipping_address_line_1,
-        shipping_address_line_2,
-        shipping_postal_code,
-        shipping_city,
-        shipping_country_code,
-        billing_same_as_shipping,
-        billing_first_name,
-        billing_last_name,
-        billing_phone,
-        billing_address_line_1,
-        billing_address_line_2,
-        billing_postal_code,
-        billing_city,
-        billing_country_code
-      )
-      values (
-        $1::bigint,
-        $2,
-        $3,
-        $4,
-        $5,
-        $6,
-        $7,
-        $8,
-        $9,
-        $10,
-        $11,
-        $12,
-        $13,
-        $14,
-        $15,
-        $16,
-        $17,
-        $18,
-        $19
-      )
-      on conflict (cart_id)
-      do update
-      set
-        customer_email = excluded.customer_email,
-        customer_first_name = excluded.customer_first_name,
-        customer_last_name = excluded.customer_last_name,
-        customer_phone = excluded.customer_phone,
-        shipping_address_line_1 = excluded.shipping_address_line_1,
-        shipping_address_line_2 = excluded.shipping_address_line_2,
-        shipping_postal_code = excluded.shipping_postal_code,
-        shipping_city = excluded.shipping_city,
-        shipping_country_code = excluded.shipping_country_code,
-        billing_same_as_shipping = excluded.billing_same_as_shipping,
-        billing_first_name = excluded.billing_first_name,
-        billing_last_name = excluded.billing_last_name,
-        billing_phone = excluded.billing_phone,
-        billing_address_line_1 = excluded.billing_address_line_1,
-        billing_address_line_2 = excluded.billing_address_line_2,
-        billing_postal_code = excluded.billing_postal_code,
-        billing_city = excluded.billing_city,
-        billing_country_code = excluded.billing_country_code
-      returning
-        id::text as id,
-        cart_id::text as cart_id,
-        customer_email,
-        customer_first_name,
-        customer_last_name,
-        customer_phone,
-        shipping_address_line_1,
-        shipping_address_line_2,
-        shipping_postal_code,
-        shipping_city,
-        shipping_country_code,
-        billing_same_as_shipping,
-        billing_first_name,
-        billing_last_name,
-        billing_phone,
-        billing_address_line_1,
-        billing_address_line_2,
-        billing_postal_code,
-        billing_city,
-        billing_country_code,
-        created_at,
-        updated_at
-    `,
-    [
-      input.cartId,
-      input.customerEmail,
-      input.customerFirstName,
-      input.customerLastName,
-      input.customerPhone,
-      input.shippingAddressLine1,
-      input.shippingAddressLine2,
-      input.shippingPostalCode,
-      input.shippingCity,
-      input.shippingCountryCode,
-      input.billingSameAsShipping,
-      input.billingFirstName,
-      input.billingLastName,
-      input.billingPhone,
-      input.billingAddressLine1,
-      input.billingAddressLine2,
-      input.billingPostalCode,
-      input.billingCity,
-      input.billingCountryCode,
-    ]
-  );
+  const data = {
+    customer_email: input.customerEmail,
+    customer_first_name: input.customerFirstName,
+    customer_last_name: input.customerLastName,
+    customer_phone: input.customerPhone,
+    shipping_address_line_1: input.shippingAddressLine1,
+    shipping_address_line_2: input.shippingAddressLine2,
+    shipping_postal_code: input.shippingPostalCode,
+    shipping_city: input.shippingCity,
+    shipping_country_code: input.shippingCountryCode,
+    billing_same_as_shipping: input.billingSameAsShipping,
+    billing_first_name: input.billingFirstName,
+    billing_last_name: input.billingLastName,
+    billing_phone: input.billingPhone,
+    billing_address_line_1: input.billingAddressLine1,
+    billing_address_line_2: input.billingAddressLine2,
+    billing_postal_code: input.billingPostalCode,
+    billing_city: input.billingCity,
+    billing_country_code: input.billingCountryCode,
+  };
 
-  if (!row) {
-    throw new Error("Guest checkout details save failed.");
-  }
+  const row = await prisma.cart_checkout_details.upsert({
+    where: { cart_id: BigInt(input.cartId) },
+    create: { cart_id: BigInt(input.cartId), ...data },
+    update: data,
+  });
 
-  return mapGuestCheckoutDetails(row);
+  return mapPrismaCheckoutDetails(row);
 }
 
 export async function readGuestCheckoutContextByToken(

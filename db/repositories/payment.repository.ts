@@ -1,44 +1,9 @@
-import { db, queryFirst } from "@/db/client";
+import { prisma } from "@/db/prisma-client";
 import type { PaymentStatus, PaymentStartContext } from "./payment.types";
 export type { PaymentStatus, PaymentStartContext };
 
-type TimestampValue = Date | string;
-type OrderStatus = "pending" | "paid" | "preparing" | "shipped" | "cancelled";
-
-type PaymentStartContextRow = {
-  order_id: string;
-  reference: string;
-  order_status: OrderStatus;
-  customer_email: string;
-  total_amount: string;
-  payment_status: PaymentStatus;
-  stripe_checkout_session_id: string | null;
-  stripe_payment_intent_id: string | null;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
-
-type PaymentForUpdateRow = {
-  order_id: string;
-  order_status: OrderStatus;
-  payment_status: PaymentStatus;
-};
-
 function isValidOrderReference(value: string): boolean {
   return /^CRY-[A-Z0-9]{10}$/.test(value);
-}
-
-function mapPaymentStartContext(row: PaymentStartContextRow): PaymentStartContext {
-  return {
-    orderId: row.order_id,
-    reference: row.reference,
-    orderStatus: row.order_status,
-    customerEmail: row.customer_email,
-    totalAmount: row.total_amount,
-    paymentStatus: row.payment_status,
-    stripeCheckoutSessionId: row.stripe_checkout_session_id,
-    stripePaymentIntentId: row.stripe_payment_intent_id,
-  };
 }
 
 export async function findPaymentStartContextByOrderReference(
@@ -48,32 +13,38 @@ export async function findPaymentStartContextByOrderReference(
     return null;
   }
 
-  const row = await queryFirst<PaymentStartContextRow>(
-    `
-      select
-        o.id::text as order_id,
-        o.reference,
-        o.status as order_status,
-        o.customer_email,
-        o.total_amount::text as total_amount,
-        p.status as payment_status,
-        p.stripe_checkout_session_id,
-        p.stripe_payment_intent_id,
-        p.created_at,
-        p.updated_at
-      from orders o
-      inner join payments p on p.order_id = o.id
-      where o.reference = $1
-      limit 1
-    `,
-    [reference]
-  );
+  const row = await prisma.payments.findFirst({
+    where: { orders: { reference } },
+    select: {
+      status: true,
+      stripe_checkout_session_id: true,
+      stripe_payment_intent_id: true,
+      orders: {
+        select: {
+          id: true,
+          reference: true,
+          status: true,
+          customer_email: true,
+          total_amount: true,
+        },
+      },
+    },
+  });
 
   if (row === null) {
     return null;
   }
 
-  return mapPaymentStartContext(row);
+  return {
+    orderId: row.orders.id.toString(),
+    reference: row.orders.reference,
+    orderStatus: row.orders.status as PaymentStartContext["orderStatus"],
+    customerEmail: row.orders.customer_email,
+    totalAmount: row.orders.total_amount.toString(),
+    paymentStatus: row.status as PaymentStatus,
+    stripeCheckoutSessionId: row.stripe_checkout_session_id,
+    stripePaymentIntentId: row.stripe_payment_intent_id,
+  };
 }
 
 export async function saveStripeCheckoutSessionForOrder(input: {
@@ -81,151 +52,115 @@ export async function saveStripeCheckoutSessionForOrder(input: {
   stripeCheckoutSessionId: string;
   stripePaymentIntentId: string | null;
 }): Promise<void> {
-  await db.query(
-    `
-      insert into payments (
-        order_id,
-        provider,
-        method,
-        status,
-        amount,
-        currency,
-        stripe_checkout_session_id,
-        stripe_payment_intent_id
-      )
-      select
-        o.id,
-        'stripe',
-        'card',
-        'pending',
-        o.total_amount,
-        'eur',
-        $2,
-        $3
-      from orders o
-      where o.id = $1::bigint
-      on conflict (order_id) do update
-      set
-        status = 'pending',
-        stripe_checkout_session_id = excluded.stripe_checkout_session_id,
-        stripe_payment_intent_id = excluded.stripe_payment_intent_id
-    `,
-    [input.orderId, input.stripeCheckoutSessionId, input.stripePaymentIntentId]
-  );
+  const order = await prisma.orders.findUnique({
+    where: { id: BigInt(input.orderId) },
+    select: { total_amount: true },
+  });
+
+  if (order === null) {
+    return;
+  }
+
+  await prisma.payments.upsert({
+    where: { order_id: BigInt(input.orderId) },
+    create: {
+      order_id: BigInt(input.orderId),
+      provider: "stripe",
+      method: "card",
+      status: "pending",
+      amount: order.total_amount,
+      currency: "eur",
+      stripe_checkout_session_id: input.stripeCheckoutSessionId,
+      stripe_payment_intent_id: input.stripePaymentIntentId,
+    },
+    update: {
+      status: "pending",
+      stripe_checkout_session_id: input.stripeCheckoutSessionId,
+      stripe_payment_intent_id: input.stripePaymentIntentId,
+    },
+  });
 }
 
 export async function markPaymentSucceededByCheckoutSessionId(input: {
   stripeCheckoutSessionId: string;
   stripePaymentIntentId: string | null;
 }): Promise<string | null> {
-  const client = await db.connect();
+  // Serializable isolation reproduces the SELECT FOR UPDATE semantics of the original SQL:
+  // prevents two concurrent webhook calls from both reading status="pending" and both updating.
+  return prisma.$transaction(
+    async (tx) => {
+      const row = await tx.payments.findFirst({
+        where: { stripe_checkout_session_id: input.stripeCheckoutSessionId },
+        select: {
+          id: true,
+          order_id: true,
+          status: true,
+          orders: { select: { status: true } },
+        },
+      });
 
-  try {
-    await client.query("begin");
+      if (row === null) {
+        return null;
+      }
 
-    const result = await client.query<PaymentForUpdateRow>(
-      `
-        select
-          p.order_id::text as order_id,
-          o.status as order_status,
-          p.status as payment_status
-        from payments p
-        inner join orders o on o.id = p.order_id
-        where p.stripe_checkout_session_id = $1
-        limit 1
-        for update of p, o
-      `,
-      [input.stripeCheckoutSessionId]
-    );
-    const row = result.rows[0];
+      if (row.status !== "succeeded") {
+        await tx.payments.update({
+          where: { id: row.id },
+          data: {
+            status: "succeeded",
+            // coalesce($2, stripe_payment_intent_id): only update if new value provided
+            ...(input.stripePaymentIntentId !== null
+              ? { stripe_payment_intent_id: input.stripePaymentIntentId }
+              : {}),
+          },
+        });
+      }
 
-    if (!row) {
-      await client.query("commit");
-      return null;
-    }
+      if (row.orders.status === "pending") {
+        await tx.orders.update({
+          where: { id: row.order_id },
+          data: { status: "paid" },
+        });
+      }
 
-    if (row.payment_status !== "succeeded") {
-      await client.query(
-        `
-          update payments
-          set
-            status = 'succeeded',
-            stripe_payment_intent_id = coalesce($2, stripe_payment_intent_id)
-          where stripe_checkout_session_id = $1
-        `,
-        [input.stripeCheckoutSessionId, input.stripePaymentIntentId]
-      );
-    }
-
-    if (row.order_status === "pending") {
-      await client.query(
-        `
-          update orders
-          set status = 'paid'
-          where id = $1::bigint
-        `,
-        [row.order_id]
-      );
-    }
-
-    await client.query("commit");
-    return row.order_id;
-  } catch (error) {
-    await client.query("rollback");
-    throw error;
-  } finally {
-    client.release();
-  }
+      return row.order_id.toString();
+    },
+    { isolationLevel: "Serializable" }
+  );
 }
 
 export async function markPaymentFailedByCheckoutSessionId(input: {
   stripeCheckoutSessionId: string;
   stripePaymentIntentId: string | null;
 }): Promise<void> {
-  const client = await db.connect();
+  // Serializable isolation reproduces the SELECT FOR UPDATE semantics of the original SQL.
+  await prisma.$transaction(
+    async (tx) => {
+      const row = await tx.payments.findFirst({
+        where: { stripe_checkout_session_id: input.stripeCheckoutSessionId },
+        select: {
+          id: true,
+          status: true,
+        },
+      });
 
-  try {
-    await client.query("begin");
+      if (row === null) {
+        return;
+      }
 
-    const result = await client.query<PaymentForUpdateRow>(
-      `
-        select
-          p.order_id::text as order_id,
-          o.status as order_status,
-          p.status as payment_status
-        from payments p
-        inner join orders o on o.id = p.order_id
-        where p.stripe_checkout_session_id = $1
-        limit 1
-        for update of p, o
-      `,
-      [input.stripeCheckoutSessionId]
-    );
-    const row = result.rows[0];
-
-    if (!row) {
-      await client.query("commit");
-      return;
-    }
-
-    if (row.payment_status !== "succeeded") {
-      await client.query(
-        `
-          update payments
-          set
-            status = 'failed',
-            stripe_payment_intent_id = coalesce($2, stripe_payment_intent_id)
-          where stripe_checkout_session_id = $1
-        `,
-        [input.stripeCheckoutSessionId, input.stripePaymentIntentId]
-      );
-    }
-
-    await client.query("commit");
-  } catch (error) {
-    await client.query("rollback");
-    throw error;
-  } finally {
-    client.release();
-  }
+      if (row.status !== "succeeded") {
+        await tx.payments.update({
+          where: { id: row.id },
+          data: {
+            status: "failed",
+            // coalesce($2, stripe_payment_intent_id): only update if new value provided
+            ...(input.stripePaymentIntentId !== null
+              ? { stripe_payment_intent_id: input.stripePaymentIntentId }
+              : {}),
+          },
+        });
+      }
+    },
+    { isolationLevel: "Serializable" }
+  );
 }
