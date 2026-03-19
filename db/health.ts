@@ -1,4 +1,4 @@
-import { db } from "@/db/client";
+import { prisma } from "@/db/prisma-client";
 import { getErrorMessage } from "@/lib/errors";
 
 type DatabaseHealth =
@@ -12,7 +12,7 @@ type DatabaseHealth =
 
 export async function checkDatabaseHealth(): Promise<DatabaseHealth> {
   try {
-    await db.query("select 1");
+    await prisma.$queryRaw`SELECT 1`;
 
     return { ok: true };
   } catch (error) {
