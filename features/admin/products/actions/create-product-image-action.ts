@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import {
   AdminProductImageRepositoryError,
   createAdminProductImage,
-} from "@/db/repositories/admin-product-image.repository";
+} from "@/db/repositories/products/admin-product-image.repository";
 import { validateCreateProductImageInput } from "@/entities/product/product-image-input";
 import {
   appendImageScope,

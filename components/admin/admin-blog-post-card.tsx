@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { type AdminBlogPostSummary } from "@/db/repositories/admin-blog.repository";
+import { type AdminBlogPostSummary } from "@/features/admin/blog/types/blog-types";
 
 const blogDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",

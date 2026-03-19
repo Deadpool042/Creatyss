@@ -1,4 +1,4 @@
-import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/admin-media";
+import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/repositories/admin-media.repository";
 
 export function normalizeNumericIdFromForm(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string") {

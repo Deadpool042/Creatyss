@@ -3,7 +3,7 @@ import { Notice } from "@/components/shared/notice";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { getAdminHomepageEditorData } from "@/db/repositories/admin-homepage.repository";
-import { listAdminMediaAssets } from "@/db/admin-media";
+import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
 import { updateHomepageAction } from "@/features/admin/homepage";
 import { getUploadsPublicPath } from "@/lib/uploads";
 import {

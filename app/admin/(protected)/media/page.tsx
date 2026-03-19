@@ -11,7 +11,7 @@ import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
-import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/admin-media";
+import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/repositories/admin-media.repository";
 import { requireAuthenticatedAdmin } from "@/lib/admin-auth";
 import { uploadAdminMedia, MediaUploadError } from "@/features/admin/media";
 import { getUploadsDirectory, getUploadsPublicPath } from "@/lib/uploads";

@@ -49,30 +49,11 @@ type UpdateAdminCategoryInput = CreateAdminCategoryInput & {
   id: string;
 };
 
-type RepositoryErrorCode = "slug_taken" | "category_referenced";
-
 // --- Public types ---
 
-export type AdminCategory = {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  isFeatured: boolean;
-  imagePath: string | null;
-  representativeImage: { filePath: string; altText: string | null } | null;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export class AdminCategoryRepositoryError extends Error {
-  readonly code: RepositoryErrorCode;
-
-  constructor(code: RepositoryErrorCode, message: string) {
-    super(message);
-    this.code = code;
-  }
-}
+import { AdminCategoryRepositoryError, type AdminCategory } from "./admin-category.types";
+export { AdminCategoryRepositoryError };
+export type { AdminCategory };
 
 // --- Internal helpers ---
 
@@ -122,6 +103,10 @@ function mapPrismaCategoryToPublic(row: PrismaCategoryData): AdminCategory {
   };
 }
 
+// $queryRaw requis : LEFT JOIN LATERAL n'est pas supporté par Prisma ORM.
+// Toute réécriture Prisma de cette requête modifierait le contrat fonctionnel
+// (représentative image sélectionnée par critère LATERAL, non par include simple).
+// Revoir si Prisma ajoute le support natif LATERAL.
 // Prisma.sql fragment — embedded in $queryRaw calls below
 // LEFT JOIN LATERAL: image primaire du produit publié le plus récent dans la catégorie
 // Non exprimable proprement via include Prisma (orderBy sur relation imbriquée non supporté)

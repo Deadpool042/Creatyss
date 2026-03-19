@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { type AdminCategory } from "@/db/repositories/admin-category.repository";
+import { type AdminCategory } from "@/features/admin/categories/types/category-types";
 import { getUploadsPublicPath } from "@/lib/uploads";
 
 type AdminCategoryCardProps = {

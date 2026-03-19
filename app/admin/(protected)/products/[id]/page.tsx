@@ -3,12 +3,12 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/shared/notice";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { listAdminMediaAssets } from "@/db/admin-media";
+import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
 import { listAdminCategories } from "@/db/repositories/admin-category.repository";
-import { findAdminProductById } from "@/db/repositories/admin-product.repository";
+import { findAdminProductById } from "@/db/repositories/products/admin-product.repository";
 import { getProductPublishability } from "@/entities/product/product-publishability";
-import { listAdminProductImages } from "@/db/repositories/admin-product-image.repository";
-import { listAdminProductVariants } from "@/db/repositories/admin-product-variant.repository";
+import { listAdminProductImages } from "@/db/repositories/products/admin-product-image.repository";
+import { listAdminProductVariants } from "@/db/repositories/products/admin-product-variant.repository";
 import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
 import { getUploadsPublicPath } from "@/lib/uploads";
 import {

@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { deleteAdminProductImage } from "@/db/repositories/admin-product-image.repository";
+import { deleteAdminProductImage } from "@/db/repositories/products/admin-product-image.repository";
 import {
   appendImageScope,
   normalizeImageScopeFromForm,

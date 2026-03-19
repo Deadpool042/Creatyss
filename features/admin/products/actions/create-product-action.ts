@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import {
   AdminProductRepositoryError,
   createAdminProduct,
-} from "@/db/repositories/admin-product.repository";
+} from "@/db/repositories/products/admin-product.repository";
 
 import { ProductFormSchema } from "../schemas/product-form-schema";
 import { normalizeProductSlug } from "@/entities/product/product-input";

@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { listAdminMediaAssets } from "@/db/admin-media";
+import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
 import {
   AdminBlogRepositoryError,
   createAdminBlogPost,

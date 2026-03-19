@@ -9,7 +9,7 @@ import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
-import { listAdminMediaAssets } from "@/db/admin-media";
+import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
 import { findAdminBlogPostById } from "@/db/repositories/admin-blog.repository";
 import { deleteBlogPostAction, updateBlogPostAction } from "@/features/admin/blog";
 import { getBlogPostPublishability } from "@/entities/blog/blog-post-publishability";

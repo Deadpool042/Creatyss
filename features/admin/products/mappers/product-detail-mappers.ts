@@ -1,7 +1,6 @@
-import { type AdminMediaAsset } from "@/db/admin-media";
-import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
-
 import {
+  type AdminMediaAsset,
+  type AdminProductImage,
   type PrimaryImageScope,
   type PrimaryImageState,
   type ProductDetailSearchParams,

@@ -1,64 +1,32 @@
-import { queryFirst, queryRows } from "@/db/client";
+import { prisma } from "@/db/prisma-client";
+import type { OrderEmailEventType, OrderEmailEventStatus, OrderEmailEvent } from "./order-email.types";
+export type { OrderEmailEventType, OrderEmailEventStatus, OrderEmailEvent };
 
-export type OrderEmailEventType = "order_created" | "payment_succeeded" | "order_shipped";
-
-export type OrderEmailEventStatus = "pending" | "sent" | "failed";
-
-type TimestampValue = Date | string;
-
-type OrderEmailEventRow = {
-  id: string;
-  order_id: string;
-  event_type: OrderEmailEventType;
-  status: OrderEmailEventStatus;
+function mapPrismaOrderEmailEvent(row: {
+  id: bigint;
+  order_id: bigint;
+  event_type: string;
+  status: string;
   recipient_email: string;
-  provider: "resend" | "brevo";
+  provider: string;
   provider_message_id: string | null;
   last_error: string | null;
-  sent_at: TimestampValue | null;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
-
-export type OrderEmailEvent = {
-  id: string;
-  orderId: string;
-  eventType: OrderEmailEventType;
-  status: OrderEmailEventStatus;
-  recipientEmail: string;
-  provider: "resend" | "brevo";
-  providerMessageId: string | null;
-  lastError: string | null;
-  sentAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-};
-
-function isValidNumericId(value: string): boolean {
-  return /^[0-9]+$/.test(value);
-}
-
-function toIsoTimestamp(value: TimestampValue): string {
-  if (value instanceof Date) {
-    return value.toISOString();
-  }
-
-  return new Date(value).toISOString();
-}
-
-function mapOrderEmailEvent(row: OrderEmailEventRow): OrderEmailEvent {
+  sent_at: Date | null;
+  created_at: Date;
+  updated_at: Date;
+}): OrderEmailEvent {
   return {
-    id: row.id,
-    orderId: row.order_id,
-    eventType: row.event_type,
-    status: row.status,
+    id: row.id.toString(),
+    orderId: row.order_id.toString(),
+    eventType: row.event_type as OrderEmailEventType,
+    status: row.status as OrderEmailEventStatus,
     recipientEmail: row.recipient_email,
-    provider: row.provider,
+    provider: row.provider as "resend" | "brevo",
     providerMessageId: row.provider_message_id,
     lastError: row.last_error,
-    sentAt: row.sent_at ? toIsoTimestamp(row.sent_at) : null,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
+    sentAt: row.sent_at !== null ? row.sent_at.toISOString() : null,
+    createdAt: row.created_at.toISOString(),
+    updatedAt: row.updated_at.toISOString(),
   };
 }
 
@@ -67,115 +35,84 @@ export async function createOrderEmailEventIfAbsent(input: {
   eventType: OrderEmailEventType;
   recipientEmail: string;
 }): Promise<OrderEmailEvent | null> {
-  if (!isValidNumericId(input.orderId)) {
+  if (!/^[0-9]+$/.test(input.orderId)) {
     return null;
   }
 
-  const row = await queryFirst<OrderEmailEventRow>(
-    `
-      insert into order_email_events (
-        order_id,
-        event_type,
-        status,
-        recipient_email,
-        provider
-      )
-      values (
-        $1::bigint,
-        $2,
-        'pending',
-        $3,
-        'brevo'
-      )
-      on conflict (order_id, event_type) do nothing
-      returning
-        id::text as id,
-        order_id::text as order_id,
-        event_type,
-        status,
-        recipient_email,
-        provider,
-        provider_message_id,
-        last_error,
-        sent_at,
-        created_at,
-        updated_at
-    `,
-    [input.orderId, input.eventType, input.recipientEmail]
-  );
+  const results = await prisma.order_email_events.createMany({
+    data: [
+      {
+        order_id: BigInt(input.orderId),
+        event_type: input.eventType,
+        status: "pending",
+        recipient_email: input.recipientEmail,
+        provider: "brevo",
+      },
+    ],
+    skipDuplicates: true,
+  });
 
-  return row ? mapOrderEmailEvent(row) : null;
+  if (results.count === 0) {
+    return null;
+  }
+
+  // Fetch the just-created event to return it
+  const row = await prisma.order_email_events.findFirst({
+    where: {
+      order_id: BigInt(input.orderId),
+      event_type: input.eventType,
+    },
+    orderBy: { created_at: "desc" },
+  });
+
+  return row !== null ? mapPrismaOrderEmailEvent(row) : null;
 }
 
 export async function markOrderEmailEventSent(input: {
   id: string;
   providerMessageId: string | null;
 }): Promise<void> {
-  if (!isValidNumericId(input.id)) {
+  if (!/^[0-9]+$/.test(input.id)) {
     return;
   }
 
-  await queryFirst(
-    `
-      update order_email_events
-      set
-        status = 'sent',
-        provider_message_id = $2,
-        last_error = null,
-        sent_at = now()
-      where id = $1::bigint
-      returning id
-    `,
-    [input.id, input.providerMessageId]
-  );
+  await prisma.order_email_events.update({
+    where: { id: BigInt(input.id) },
+    data: {
+      status: "sent",
+      provider_message_id: input.providerMessageId,
+      last_error: null,
+      sent_at: new Date(),
+    },
+  });
 }
 
 export async function markOrderEmailEventFailed(input: {
   id: string;
   lastError: string;
 }): Promise<void> {
-  if (!isValidNumericId(input.id)) {
+  if (!/^[0-9]+$/.test(input.id)) {
     return;
   }
 
-  await queryFirst(
-    `
-      update order_email_events
-      set
-        status = 'failed',
-        last_error = $2
-      where id = $1::bigint
-      returning id
-    `,
-    [input.id, input.lastError]
-  );
+  await prisma.order_email_events.update({
+    where: { id: BigInt(input.id) },
+    data: {
+      status: "failed",
+      last_error: input.lastError,
+    },
+  });
 }
 
 export async function listOrderEmailEventsByOrderId(orderId: string): Promise<OrderEmailEvent[]> {
-  if (!isValidNumericId(orderId)) {
+  if (!/^[0-9]+$/.test(orderId)) {
     return [];
   }
 
-  const rows = await queryRows<OrderEmailEventRow>(
-    `
-      select
-        id::text as id,
-        order_id::text as order_id,
-        event_type,
-        status,
-        recipient_email,
-        provider,
-        provider_message_id,
-        last_error,
-        sent_at,
-        created_at,
-        updated_at
-      from order_email_events
-      where order_id = $1::bigint
-      order by created_at asc, id asc
-    `,
-    [orderId]
-  );
+  const rows = await prisma.order_email_events.findMany({
+    where: { order_id: BigInt(orderId) },
+    orderBy: [{ created_at: "asc" }, { id: "asc" }],
+  });
 
-  return rows.map(mapOrderEmailEvent);
+  return rows.map(mapPrismaOrderEmailEvent);
 }

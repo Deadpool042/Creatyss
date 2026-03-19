@@ -5,7 +5,7 @@ import {
   getOrderStatusSummary,
   getPaymentStatusLabel,
 } from "@/entities/order/order-status-presentation";
-import { type AdminOrderSummary } from "@/db/repositories/order.repository";
+import { type AdminOrderSummary } from "@/features/admin/orders/types/order-detail-types";
 
 const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",

@@ -41,26 +41,12 @@ type PrismaProductImageData = {
   updated_at: Date;
 };
 
-export type AdminProductImage = {
-  id: string;
-  productId: string;
-  variantId: string | null;
-  filePath: string;
-  altText: string | null;
-  sortOrder: number;
-  isPrimary: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export class AdminProductImageRepositoryError extends Error {
-  readonly code: "variant_missing";
-
-  constructor(message: string) {
-    super(message);
-    this.code = "variant_missing";
-  }
-}
+import {
+  AdminProductImageRepositoryError,
+  type AdminProductImage,
+} from "./admin-product-image.types";
+export { AdminProductImageRepositoryError };
+export type { AdminProductImage };
 
 function isValidNumericId(value: string): boolean {
   return /^[0-9]+$/.test(value);

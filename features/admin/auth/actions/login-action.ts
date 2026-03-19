@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { findAdminUserByEmail } from "@/db/admin-users";
+import { findAdminUserByEmail } from "@/db/repositories/admin-users.repository";
 import {
   ADMIN_SESSION_COOKIE_NAME,
   ADMIN_SESSION_DURATION_SECONDS,

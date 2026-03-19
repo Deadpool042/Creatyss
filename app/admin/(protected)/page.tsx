@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { listAdminOrders } from "@/db/repositories/order.repository";
-import { listAdminProducts } from "@/db/repositories/admin-product.repository";
+import { listAdminProducts } from "@/db/repositories/products/admin-product.repository";
 import { getOrderStatusLabel } from "@/entities/order/order-status-presentation";
 
 export const dynamic = "force-dynamic";

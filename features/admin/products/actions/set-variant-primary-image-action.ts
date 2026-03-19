@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import {
   AdminProductImageRepositoryError,
   upsertAdminPrimaryVariantImage,
-} from "@/db/repositories/admin-product-image.repository";
+} from "@/db/repositories/products/admin-product-image.repository";
 import {
   appendImageScope,
   findAdminMediaAssetById,

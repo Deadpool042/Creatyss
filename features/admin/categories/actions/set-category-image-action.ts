@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { listAdminMediaAssets } from "@/db/admin-media";
+import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
 import { updateAdminCategoryImage } from "@/db/repositories/admin-category.repository";
 
 function normalizeCategoryId(value: FormDataEntryValue | null): string | null {

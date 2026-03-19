@@ -36,37 +36,15 @@ type UpdateAdminBlogPostInput = CreateAdminBlogPostInput & {
   id: string;
 };
 
-type RepositoryErrorCode = "slug_taken" | "blog_post_referenced";
-
 // --- Public types ---
 
-export type AdminBlogPostSummary = {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  coverImagePath: string | null;
-  status: AdminBlogPostStatus;
-  publishedAt: string | null;
-  hasContent: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type AdminBlogPostDetail = AdminBlogPostSummary & {
-  content: string | null;
-  seoTitle: string | null;
-  seoDescription: string | null;
-};
-
-export class AdminBlogRepositoryError extends Error {
-  readonly code: RepositoryErrorCode;
-
-  constructor(code: RepositoryErrorCode, message: string) {
-    super(message);
-    this.code = code;
-  }
-}
+import {
+  AdminBlogRepositoryError,
+  type AdminBlogPostSummary,
+  type AdminBlogPostDetail,
+} from "./admin-blog.types";
+export { AdminBlogRepositoryError };
+export type { AdminBlogPostSummary, AdminBlogPostDetail };
 
 // --- Internal helpers ---
 
@@ -217,21 +195,29 @@ export async function toggleAdminBlogPostStatus(id: string): Promise<"draft" | "
     return null;
   }
 
-  // Atomic toggle via $queryRaw — not expressible via Prisma ORM (row self-reference in SET clause)
-  const rows = await prisma.$queryRaw<{ status: "draft" | "published" }[]>(Prisma.sql`
-    UPDATE blog_posts
-    SET
-      status       = CASE WHEN status = 'published' THEN 'draft' ELSE 'published' END,
-      published_at = CASE
-        WHEN status = 'published' THEN NULL
-        ELSE COALESCE(published_at, NOW())
-      END,
-      updated_at   = NOW()
-    WHERE id = ${BigInt(id)}
-    RETURNING status
-  `);
+  return prisma.$transaction(async (tx) => {
+    const existing = await tx.blog_posts.findUnique({
+      where: { id: BigInt(id) },
+      select: { status: true, published_at: true },
+    });
 
-  return rows[0]?.status ?? null;
+    if (existing === null) {
+      return null;
+    }
+
+    const newStatus: "draft" | "published" =
+      existing.status === "published" ? "draft" : "published";
+    const newPublishedAt =
+      newStatus === "published" ? (existing.published_at ?? new Date()) : null;
+
+    const updated = await tx.blog_posts.update({
+      where: { id: BigInt(id) },
+      data: { status: newStatus, published_at: newPublishedAt },
+      select: { status: true },
+    });
+
+    return updated.status as "draft" | "published";
+  });
 }
 
 export async function deleteAdminBlogPost(id: string): Promise<boolean> {

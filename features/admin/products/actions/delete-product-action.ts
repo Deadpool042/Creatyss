@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import {
   AdminProductRepositoryError,
   deleteAdminProduct,
-} from "@/db/repositories/admin-product.repository";
+} from "@/db/repositories/products/admin-product.repository";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 
 export async function deleteProductAction(formData: FormData): Promise<void> {

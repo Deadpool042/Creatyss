@@ -3,37 +3,25 @@ import { prisma } from "@/db/prisma-client";
 import {
   clearNativeSimpleProductOfferFields,
   syncLegacyVariantCommercialFieldsFromSimpleProduct,
-} from "@/db/repositories/simple-product-admin-compatibility";
+} from "@/db/repositories/products/simple-product-compat";
 import {
   resolveSimpleProductOffer,
   type SimpleProductOffer,
   type SimpleProductOfferFields,
 } from "@/entities/product/simple-product-offer";
-import {
-  canChangeProductTypeToSimple,
-  type ProductTypeCompatibilityErrorCode,
-} from "@/entities/product/product-type-rules";
+import { canChangeProductTypeToSimple } from "@/entities/product/product-type-rules";
 import { type ProductType } from "@/entities/product/product-input";
-
-// pg may return Date or string for timestamp columns depending on driver configuration
-type TimestampValue = Date | string;
+import {
+  AdminProductRepositoryError,
+  type AdminProductSummary,
+  type AdminProductCategoryAssignment,
+  type AdminProductDetail,
+} from "./admin-product.types";
+export { AdminProductRepositoryError };
+export type { AdminProductSummary, AdminProductCategoryAssignment, AdminProductDetail };
 
 type AdminProductStatus = "draft" | "published";
 
-// Used by listAdminProducts $queryRaw
-type AdminProductSummaryRow = {
-  id: string;
-  name: string;
-  slug: string;
-  short_description: string | null;
-  status: AdminProductStatus;
-  product_type: ProductType;
-  is_featured: boolean;
-  category_count: number;
-  variant_count: number;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
 
 type AdminProductTypeRow = {
   id: string;
@@ -65,96 +53,16 @@ type UpdateAdminSimpleProductOfferInput = {
   stockQuantity: number;
 };
 
-type RepositoryErrorCode =
-  | "sku_taken"
-  | "slug_taken"
-  | "category_missing"
-  | "product_referenced"
-  | "simple_product_offer_requires_simple_product"
-  | "simple_product_multiple_legacy_variants"
-  | ProductTypeCompatibilityErrorCode;
-
-export type AdminProductSummary = {
-  id: string;
-  name: string;
-  slug: string;
-  shortDescription: string | null;
-  status: AdminProductStatus;
-  productType: ProductType;
-  isFeatured: boolean;
-  categoryCount: number;
-  variantCount: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type AdminProductCategoryAssignment = {
-  id: string;
-  name: string;
-  slug: string;
-};
-
-export type AdminProductDetail = {
-  id: string;
-  name: string;
-  slug: string;
-  shortDescription: string | null;
-  description: string | null;
-  seoTitle: string | null;
-  seoDescription: string | null;
-  status: AdminProductStatus;
-  productType: ProductType;
-  isFeatured: boolean;
-  categories: AdminProductCategoryAssignment[];
-  categoryIds: string[];
-  simpleOfferFields: SimpleProductOfferFields;
-  simpleOffer: SimpleProductOffer | null;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export class AdminProductRepositoryError extends Error {
-  readonly code: RepositoryErrorCode;
-
-  constructor(code: RepositoryErrorCode, message: string) {
-    super(message);
-    this.code = code;
-  }
-}
-
 // --- Internal helpers ---
 
 function isValidProductId(id: string): boolean {
   return /^[0-9]+$/.test(id);
 }
 
-function toIsoTimestamp(value: TimestampValue): string {
-  if (value instanceof Date) {
-    return value.toISOString();
-  }
-
-  return new Date(value).toISOString();
-}
-
 function normalizeCategoryIds(categoryIds: readonly string[]): string[] {
   return [...new Set(categoryIds)];
 }
 
-function mapAdminProductSummary(row: AdminProductSummaryRow): AdminProductSummary {
-  return {
-    id: row.id,
-    name: row.name,
-    slug: row.slug,
-    shortDescription: row.short_description,
-    status: row.status,
-    productType: row.product_type,
-    isFeatured: row.is_featured,
-    categoryCount: row.category_count,
-    variantCount: row.variant_count,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-  };
-}
 
 // Absorbs known Prisma errors and maps them to public domain errors.
 // P2002 target inspection distinguishes slug (products) vs sku (product_variants).
@@ -401,26 +309,37 @@ export async function findAdminProductPublishContext(
 }
 
 export async function listAdminProducts(): Promise<AdminProductSummary[]> {
-  // product_variants is introspected as 1:1 in Prisma (partial unique index on product_id)
-  // → _count.product_variants is unavailable. Using $queryRaw to preserve sub-query counts.
-  const rows = await prisma.$queryRaw<AdminProductSummaryRow[]>(Prisma.sql`
-    SELECT
-      p.id::text AS id,
-      p.name,
-      p.slug,
-      p.short_description,
-      p.status,
-      p.product_type,
-      p.is_featured,
-      (SELECT count(*)::int FROM product_categories pc WHERE pc.product_id = p.id) AS category_count,
-      (SELECT count(*)::int FROM product_variants pv WHERE pv.product_id = p.id) AS variant_count,
-      p.created_at,
-      p.updated_at
-    FROM products p
-    ORDER BY p.created_at DESC, p.id DESC
-  `);
+  // product_variants is introspected as 1:1 in Prisma (partial unique index on product_id) →
+  // _count.product_variants is unavailable. Variant count is obtained via a separate groupBy
+  // then joined in memory. category_count uses _count.product_categories (array relation).
+  const [products, variantCounts] = await Promise.all([
+    prisma.products.findMany({
+      orderBy: [{ created_at: "desc" }, { id: "desc" }],
+      include: { _count: { select: { product_categories: true } } },
+    }),
+    prisma.product_variants.groupBy({
+      by: ["product_id"],
+      _count: { id: true },
+    }),
+  ]);
 
-  return rows.map(mapAdminProductSummary);
+  const variantCountMap = new Map(
+    variantCounts.map((vc) => [vc.product_id.toString(), vc._count.id])
+  );
+
+  return products.map((p) => ({
+    id: p.id.toString(),
+    name: p.name,
+    slug: p.slug,
+    shortDescription: p.short_description,
+    status: p.status as AdminProductStatus,
+    productType: p.product_type as ProductType,
+    isFeatured: p.is_featured,
+    categoryCount: p._count.product_categories,
+    variantCount: variantCountMap.get(p.id.toString()) ?? 0,
+    createdAt: p.created_at.toISOString(),
+    updatedAt: p.updated_at.toISOString(),
+  }));
 }
 
 export async function findAdminProductById(id: string): Promise<AdminProductDetail | null> {
@@ -662,17 +581,27 @@ export async function toggleAdminProductStatus(id: string): Promise<"draft" | "p
     return null;
   }
 
-  // Atomic toggle via $queryRaw — not expressible via Prisma ORM (row self-reference in SET clause)
-  const rows = await prisma.$queryRaw<{ status: "draft" | "published" }[]>(Prisma.sql`
-    UPDATE products
-    SET
-      status     = CASE WHEN status = 'published' THEN 'draft' ELSE 'published' END,
-      updated_at = NOW()
-    WHERE id = ${BigInt(id)}
-    RETURNING status
-  `);
+  return prisma.$transaction(async (tx) => {
+    const existing = await tx.products.findUnique({
+      where: { id: BigInt(id) },
+      select: { status: true },
+    });
 
-  return rows[0]?.status ?? null;
+    if (existing === null) {
+      return null;
+    }
+
+    const newStatus: "draft" | "published" =
+      existing.status === "published" ? "draft" : "published";
+
+    const updated = await tx.products.update({
+      where: { id: BigInt(id) },
+      data: { status: newStatus },
+      select: { status: true },
+    });
+
+    return updated.status as "draft" | "published";
+  });
 }
 
 export async function deleteAdminProduct(id: string): Promise<boolean> {

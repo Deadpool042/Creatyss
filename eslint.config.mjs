@@ -137,6 +137,48 @@ export default defineConfig([
     },
   },
 
+  // ─── Architecture : components/admin/ ───────────────────────────────────
+  // Les composants admin partagés n'accèdent pas directement à la couche db/
+  // — passer par les hubs de types features/admin/**/types/
+  {
+    files: ["components/admin/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/db", "@/db/**"],
+              message:
+                "components/admin/ ne doit pas importer directement depuis db/ — passer par les hubs de types features/admin/**/types/",
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  // ─── Architecture : features/**/mappers/ ─────────────────────────────────
+  // Les mappers feature n'accèdent pas directement à la couche db/
+  // — passer par les hubs de types features/**/types/
+  {
+    files: ["features/**/mappers/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/db", "@/db/**"],
+              message:
+                "Les mappers feature ne doivent pas importer directement depuis db/ — passer par les hubs de types features/**/types/",
+            },
+          ],
+        },
+      ],
+    },
+  },
+
   // ─── Architecture : features/**/schemas/ ─────────────────────────────────
   // Les schémas Zod restent purs — pas de dépendance UI
   {

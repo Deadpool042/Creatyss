@@ -7,7 +7,7 @@ import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
-import { listAdminMediaAssets } from "@/db/admin-media";
+import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
 import { createBlogPostAction } from "@/features/admin/blog";
 
 export const dynamic = "force-dynamic";

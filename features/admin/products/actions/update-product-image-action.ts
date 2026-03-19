@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { updateAdminProductImage } from "@/db/repositories/admin-product-image.repository";
+import { updateAdminProductImage } from "@/db/repositories/products/admin-product-image.repository";
 import { validateUpdateProductImageInput } from "@/entities/product/product-image-input";
 import {
   appendImageScope,

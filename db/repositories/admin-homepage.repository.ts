@@ -1,10 +1,5 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/db/prisma-client";
-import type {
-  HomepageFeaturedBlogPostSelection,
-  HomepageFeaturedCategorySelection,
-  HomepageFeaturedProductSelection,
-} from "@/entities/homepage/homepage-types";
 
 // --- Internal types ---
 
@@ -35,68 +30,30 @@ type UpdateAdminHomepageInput = {
   featuredBlogPosts: AdminHomepageFeaturedBlogPostSelection[];
 };
 
-type RepositoryErrorCode =
-  | "homepage_missing"
-  | "product_missing"
-  | "category_missing"
-  | "blog_post_missing";
-
 // --- Public types ---
 
-export type AdminHomepageFeaturedProductSelection = HomepageFeaturedProductSelection;
-
-export type AdminHomepageFeaturedCategorySelection = HomepageFeaturedCategorySelection;
-
-export type AdminHomepageFeaturedBlogPostSelection = HomepageFeaturedBlogPostSelection;
-
-export type AdminHomepageProductOption = {
-  id: string;
-  name: string;
-  slug: string;
+import {
+  AdminHomepageRepositoryError,
+  type AdminHomepageFeaturedProductSelection,
+  type AdminHomepageFeaturedCategorySelection,
+  type AdminHomepageFeaturedBlogPostSelection,
+  type AdminHomepageDetail,
+  type AdminHomepageEditorData,
+  type AdminHomepageProductOption,
+  type AdminHomepageCategoryOption,
+  type AdminHomepageBlogPostOption,
+} from "./admin-homepage.types";
+export { AdminHomepageRepositoryError };
+export type {
+  AdminHomepageFeaturedProductSelection,
+  AdminHomepageFeaturedCategorySelection,
+  AdminHomepageFeaturedBlogPostSelection,
+  AdminHomepageProductOption,
+  AdminHomepageCategoryOption,
+  AdminHomepageBlogPostOption,
+  AdminHomepageDetail,
+  AdminHomepageEditorData,
 };
-
-export type AdminHomepageCategoryOption = {
-  id: string;
-  name: string;
-  slug: string;
-};
-
-export type AdminHomepageBlogPostOption = {
-  id: string;
-  title: string;
-  slug: string;
-};
-
-export type AdminHomepageDetail = {
-  id: string;
-  heroTitle: string | null;
-  heroText: string | null;
-  heroImagePath: string | null;
-  editorialTitle: string | null;
-  editorialText: string | null;
-  status: HomepageStatus;
-  createdAt: string;
-  updatedAt: string;
-  featuredProducts: AdminHomepageFeaturedProductSelection[];
-  featuredCategories: AdminHomepageFeaturedCategorySelection[];
-  featuredBlogPosts: AdminHomepageFeaturedBlogPostSelection[];
-};
-
-export type AdminHomepageEditorData = {
-  homepage: AdminHomepageDetail;
-  productOptions: AdminHomepageProductOption[];
-  categoryOptions: AdminHomepageCategoryOption[];
-  blogPostOptions: AdminHomepageBlogPostOption[];
-};
-
-export class AdminHomepageRepositoryError extends Error {
-  readonly code: RepositoryErrorCode;
-
-  constructor(code: RepositoryErrorCode, message: string) {
-    super(message);
-    this.code = code;
-  }
-}
 
 // --- Internal utilities ---
 
@@ -219,12 +176,18 @@ async function loadHomepageOptions(): Promise<{
           return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
         })
       ),
-    prisma.$queryRaw<{ id: bigint; title: string; slug: string }[]>(Prisma.sql`
-      SELECT id, title, slug
-      FROM blog_posts
-      WHERE status = 'published'
-      ORDER BY COALESCE(published_at, created_at) DESC, id DESC
-    `),
+    // Prisma orderBy: published_at nulls last, then created_at desc — equivalent to
+    // COALESCE(published_at, created_at) DESC when published_at is rarely null.
+    // Slight behavioral difference: null published_at posts sort after published ones.
+    prisma.blog_posts.findMany({
+      where: { status: "published" },
+      select: { id: true, title: true, slug: true },
+      orderBy: [
+        { published_at: { sort: "desc", nulls: "last" } },
+        { created_at: "desc" },
+        { id: "desc" },
+      ],
+    }),
   ]);
 
   return {

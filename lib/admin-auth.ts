@@ -311,7 +311,7 @@ export async function getCurrentAdmin(): Promise<CurrentAdminResult> {
     return { status: "invalid" };
   }
 
-  const { findAdminUserById } = await import("../db/admin-users");
+  const { findAdminUserById } = await import("../db/repositories/admin-users.repository");
   const admin = await findAdminUserById(session.payload.adminId);
 
   if (admin === null) {

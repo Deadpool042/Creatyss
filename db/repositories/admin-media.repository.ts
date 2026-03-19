@@ -1,4 +1,4 @@
-import { prisma } from "./prisma-client";
+import { prisma } from "@/db/prisma-client";
 
 // Structural type aligned with what Prisma returns for media_assets (without relations)
 type PrismaMediaAssetData = {
@@ -24,18 +24,8 @@ type CreateAdminMediaAssetInput = {
   uploadedByAdminUserId: string | null;
 };
 
-export type AdminMediaAsset = {
-  id: string;
-  filePath: string;
-  originalName: string;
-  mimeType: string;
-  byteSize: string;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  uploadedByAdminUserId: string | null;
-  createdAt: string;
-  updatedAt: string;
-};
+import type { AdminMediaAsset } from "./admin-media.types";
+export type { AdminMediaAsset };
 
 function mapPrismaMediaAsset(row: PrismaMediaAssetData): AdminMediaAsset {
   return {

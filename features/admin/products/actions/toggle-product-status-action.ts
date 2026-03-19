@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import {
   findAdminProductPublishContext,
   toggleAdminProductStatus,
-} from "@/db/repositories/admin-product.repository";
+} from "@/db/repositories/products/admin-product.repository";
 import { getProductPublishability } from "@/entities/product/product-publishability";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 

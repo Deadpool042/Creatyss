@@ -1,8 +1,9 @@
 import { db, queryFirst } from "@/db/client";
+import type { PaymentStatus, PaymentStartContext } from "./payment.types";
+export type { PaymentStatus, PaymentStartContext };
 
 type TimestampValue = Date | string;
 type OrderStatus = "pending" | "paid" | "preparing" | "shipped" | "cancelled";
-export type PaymentStatus = "pending" | "succeeded" | "failed";
 
 type PaymentStartContextRow = {
   order_id: string;
@@ -21,17 +22,6 @@ type PaymentForUpdateRow = {
   order_id: string;
   order_status: OrderStatus;
   payment_status: PaymentStatus;
-};
-
-export type PaymentStartContext = {
-  orderId: string;
-  reference: string;
-  orderStatus: OrderStatus;
-  customerEmail: string;
-  totalAmount: string;
-  paymentStatus: PaymentStatus;
-  stripeCheckoutSessionId: string | null;
-  stripePaymentIntentId: string | null;
 };
 
 function isValidOrderReference(value: string): boolean {

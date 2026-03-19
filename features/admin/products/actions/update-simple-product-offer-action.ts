@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import {
   AdminProductRepositoryError,
   updateAdminSimpleProductOffer,
-} from "@/db/repositories/admin-product.repository";
+} from "@/db/repositories/products/admin-product.repository";
 import { validateSimpleProductOfferInput } from "@/entities/product/simple-product-offer-input";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 

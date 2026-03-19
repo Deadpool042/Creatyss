@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { deleteAdminPrimaryVariantImage } from "@/db/repositories/admin-product-image.repository";
+import { deleteAdminPrimaryVariantImage } from "@/db/repositories/products/admin-product-image.repository";
 import { appendImageScope, normalizeNumericIdFromForm } from "./action-helpers";
 
 type VariantPrimaryImageDeleteErrorCode = "delete_failed" | "invalid_variant" | "missing_image";

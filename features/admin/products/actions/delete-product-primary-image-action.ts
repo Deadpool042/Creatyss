@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { deleteAdminPrimaryProductImage } from "@/db/repositories/admin-product-image.repository";
+import { deleteAdminPrimaryProductImage } from "@/db/repositories/products/admin-product-image.repository";
 import { appendImageScope, normalizeNumericIdFromForm } from "./action-helpers";
 
 type ProductPrimaryImageDeleteErrorCode = "delete_failed" | "missing_image";

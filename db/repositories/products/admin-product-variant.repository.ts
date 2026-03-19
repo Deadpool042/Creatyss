@@ -2,13 +2,18 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/db/prisma-client";
 import {
   syncNativeSimpleProductOfferFromLegacyVariant,
-} from "@/db/repositories/simple-product-admin-compatibility";
+} from "@/db/repositories/products/simple-product-compat";
 import {
   canDeleteVariantForProductType,
   canCreateVariantForProductType,
-  type ProductTypeCompatibilityErrorCode,
 } from "@/entities/product/product-type-rules";
 import { type ProductType } from "@/entities/product/product-input";
+import {
+  AdminProductVariantRepositoryError,
+  type AdminProductVariant,
+} from "./admin-product-variant.types";
+export { AdminProductVariantRepositoryError };
+export type { AdminProductVariant };
 
 // --- Internal types ---
 
@@ -18,36 +23,6 @@ type ProductCompatibilityRow = {
   id: string;
   product_type: ProductType;
 };
-
-type RepositoryErrorCode = "sku_taken" | ProductTypeCompatibilityErrorCode;
-
-// --- Public types ---
-
-export type AdminProductVariant = {
-  id: string;
-  productId: string;
-  name: string;
-  colorName: string;
-  colorHex: string | null;
-  sku: string;
-  price: string;
-  compareAtPrice: string | null;
-  stockQuantity: number;
-  isDefault: boolean;
-  status: AdminProductVariantStatus;
-  isAvailable: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export class AdminProductVariantRepositoryError extends Error {
-  readonly code: RepositoryErrorCode;
-
-  constructor(code: RepositoryErrorCode, message: string) {
-    super(message);
-    this.code = code;
-  }
-}
 
 // --- Internal helpers ---
 

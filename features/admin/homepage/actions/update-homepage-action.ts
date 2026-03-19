@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { getAdminMediaAssetById } from "@/db/admin-media";
+import { getAdminMediaAssetById } from "@/db/repositories/admin-media.repository";
 import {
   AdminHomepageRepositoryError,
   getAdminHomepageCurrentHeroImagePath,

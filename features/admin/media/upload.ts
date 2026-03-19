@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
-import { createAdminMediaAsset, type AdminMediaAsset } from "@/db/admin-media";
+import { createAdminMediaAsset, type AdminMediaAsset } from "@/db/repositories/admin-media.repository";
 import { ensureUploadsDirectory } from "@/lib/uploads";
 
 const MAX_MEDIA_FILE_SIZE_BYTES = 10 * 1024 * 1024;

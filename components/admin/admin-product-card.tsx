@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminProductPresentation } from "@/entities/product/product-admin-presentation";
-import { type AdminProductSummary } from "@/db/repositories/admin-product.repository";
+import { type AdminProductSummary } from "@/features/admin/products/types/product-detail-types";
 import { Badge } from "@/components/ui/badge";
 
 function getStatusLabel(status: string): string {

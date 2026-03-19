@@ -1,6 +1,9 @@
-import type { OrderEmailEventStatus, OrderStatus } from "@/db/repositories/order.repository";
+import type { OrderStatus } from "@/entities/order/order-status-transition";
 
-import { type OrderDetailSearchParams } from "../types/order-detail-types";
+import {
+  type OrderDetailSearchParams,
+  type OrderEmailEventStatus,
+} from "../types/order-detail-types";
 
 const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",
