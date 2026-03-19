@@ -1,18 +1,17 @@
-import { queryFirst, queryRows } from "./client";
+import { prisma } from "./prisma-client";
 
-type TimestampValue = Date | string;
-
-type AdminMediaAssetRow = {
-  id: string;
+// Structural type aligned with what Prisma returns for media_assets (without relations)
+type PrismaMediaAssetData = {
+  id: bigint;
   file_path: string;
   original_name: string;
   mime_type: string;
-  byte_size: string;
+  byte_size: bigint;
   image_width: number | null;
   image_height: number | null;
-  uploaded_by_admin_user_id: string | null;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
+  uploaded_by_admin_user_id: bigint | null;
+  created_at: Date;
+  updated_at: Date;
 };
 
 type CreateAdminMediaAssetInput = {
@@ -38,119 +37,55 @@ export type AdminMediaAsset = {
   updatedAt: string;
 };
 
-function toIsoTimestamp(value: TimestampValue): string {
-  if (value instanceof Date) {
-    return value.toISOString();
-  }
-
-  return new Date(value).toISOString();
-}
-
-function mapAdminMediaAsset(row: AdminMediaAssetRow): AdminMediaAsset {
+function mapPrismaMediaAsset(row: PrismaMediaAssetData): AdminMediaAsset {
   return {
-    id: row.id,
+    id: row.id.toString(),
     filePath: row.file_path,
     originalName: row.original_name,
     mimeType: row.mime_type,
-    byteSize: row.byte_size,
+    byteSize: row.byte_size.toString(),
     imageWidth: row.image_width,
     imageHeight: row.image_height,
-    uploadedByAdminUserId: row.uploaded_by_admin_user_id,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
+    uploadedByAdminUserId:
+      row.uploaded_by_admin_user_id !== null
+        ? row.uploaded_by_admin_user_id.toString()
+        : null,
+    createdAt: row.created_at.toISOString(),
+    updatedAt: row.updated_at.toISOString(),
   };
 }
 
 export async function listAdminMediaAssets(): Promise<AdminMediaAsset[]> {
-  const rows = await queryRows<AdminMediaAssetRow>(
-    `
-      select
-        id::text as id,
-        file_path,
-        original_name,
-        mime_type,
-        byte_size::text as byte_size,
-        image_width,
-        image_height,
-        uploaded_by_admin_user_id::text as uploaded_by_admin_user_id,
-        created_at,
-        updated_at
-      from media_assets
-      order by created_at desc, id desc
-    `
-  );
+  const rows = await prisma.media_assets.findMany({
+    orderBy: [{ created_at: "desc" }, { id: "desc" }],
+  });
 
-  return rows.map(mapAdminMediaAsset);
+  return rows.map(mapPrismaMediaAsset);
 }
 
 export async function getAdminMediaAssetById(id: string): Promise<AdminMediaAsset | null> {
-  const row = await queryFirst<AdminMediaAssetRow>(
-    `
-      select
-        id::text as id,
-        file_path,
-        original_name,
-        mime_type,
-        byte_size::text as byte_size,
-        image_width,
-        image_height,
-        uploaded_by_admin_user_id::text as uploaded_by_admin_user_id,
-        created_at,
-        updated_at
-      from media_assets
-      where id = $1::bigint
-    `,
-    [id]
-  );
+  const row = await prisma.media_assets.findUnique({
+    where: { id: BigInt(id) },
+  });
 
-  if (row === null) {
-    return null;
-  }
-
-  return mapAdminMediaAsset(row);
+  return row !== null ? mapPrismaMediaAsset(row) : null;
 }
 
 export async function createAdminMediaAsset(
   input: CreateAdminMediaAssetInput
 ): Promise<AdminMediaAsset> {
-  const row = await queryFirst<AdminMediaAssetRow>(
-    `
-      insert into media_assets (
-        file_path,
-        original_name,
-        mime_type,
-        byte_size,
-        image_width,
-        image_height,
-        uploaded_by_admin_user_id
-      )
-      values ($1, $2, $3, $4::bigint, $5, $6, $7::bigint)
-      returning
-        id::text as id,
-        file_path,
-        original_name,
-        mime_type,
-        byte_size::text as byte_size,
-        image_width,
-        image_height,
-        uploaded_by_admin_user_id::text as uploaded_by_admin_user_id,
-        created_at,
-        updated_at
-    `,
-    [
-      input.filePath,
-      input.originalName,
-      input.mimeType,
-      input.byteSize,
-      input.imageWidth,
-      input.imageHeight,
-      input.uploadedByAdminUserId,
-    ]
-  );
+  const row = await prisma.media_assets.create({
+    data: {
+      file_path: input.filePath,
+      original_name: input.originalName,
+      mime_type: input.mimeType,
+      byte_size: BigInt(input.byteSize),
+      image_width: input.imageWidth,
+      image_height: input.imageHeight,
+      uploaded_by_admin_user_id:
+        input.uploadedByAdminUserId !== null ? BigInt(input.uploadedByAdminUserId) : null,
+    },
+  });
 
-  if (row === null) {
-    throw new Error("Failed to create media asset.");
-  }
-
-  return mapAdminMediaAsset(row);
+  return mapPrismaMediaAsset(row);
 }
