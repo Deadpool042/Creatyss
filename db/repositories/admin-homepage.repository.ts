@@ -3,7 +3,7 @@ import { db, queryFirst, queryRows } from "@/db/client";
 import type {
   HomepageFeaturedBlogPostSelection,
   HomepageFeaturedCategorySelection,
-  HomepageFeaturedProductSelection
+  HomepageFeaturedProductSelection,
 } from "@/entities/homepage/homepage-types";
 
 // --- Internal types ---
@@ -82,14 +82,11 @@ type RepositoryErrorCode =
 
 // --- Public types ---
 
-export type AdminHomepageFeaturedProductSelection =
-  HomepageFeaturedProductSelection;
+export type AdminHomepageFeaturedProductSelection = HomepageFeaturedProductSelection;
 
-export type AdminHomepageFeaturedCategorySelection =
-  HomepageFeaturedCategorySelection;
+export type AdminHomepageFeaturedCategorySelection = HomepageFeaturedCategorySelection;
 
-export type AdminHomepageFeaturedBlogPostSelection =
-  HomepageFeaturedBlogPostSelection;
+export type AdminHomepageFeaturedBlogPostSelection = HomepageFeaturedBlogPostSelection;
 
 export type AdminHomepageProductOption = {
   id: string;
@@ -165,15 +162,11 @@ function mapProductOption(row: ProductOptionRow): AdminHomepageProductOption {
   return { id: row.id, name: row.name, slug: row.slug };
 }
 
-function mapCategoryOption(
-  row: CategoryOptionRow
-): AdminHomepageCategoryOption {
+function mapCategoryOption(row: CategoryOptionRow): AdminHomepageCategoryOption {
   return { id: row.id, name: row.name, slug: row.slug };
 }
 
-function mapBlogPostOption(
-  row: BlogPostOptionRow
-): AdminHomepageBlogPostOption {
+function mapBlogPostOption(row: BlogPostOptionRow): AdminHomepageBlogPostOption {
   return { id: row.id, title: row.title, slug: row.slug };
 }
 
@@ -195,7 +188,7 @@ function mapHomepageDetail(
     updatedAt: toIsoTimestamp(row.updated_at),
     featuredProducts,
     featuredCategories,
-    featuredBlogPosts
+    featuredBlogPosts,
   };
 }
 
@@ -229,7 +222,7 @@ async function listHomepageFeaturedProducts(
 
   return rows.map((row) => ({
     productId: row.product_id,
-    sortOrder: row.sort_order
+    sortOrder: row.sort_order,
   }));
 }
 
@@ -250,7 +243,7 @@ async function listHomepageFeaturedCategories(
 
   return rows.map((row) => ({
     categoryId: row.category_id,
-    sortOrder: row.sort_order
+    sortOrder: row.sort_order,
   }));
 }
 
@@ -271,7 +264,7 @@ async function listHomepageFeaturedBlogPosts(
 
   return rows.map((row) => ({
     blogPostId: row.blog_post_id,
-    sortOrder: row.sort_order
+    sortOrder: row.sort_order,
   }));
 }
 
@@ -281,12 +274,11 @@ async function loadHomepageFeaturedSelections(homepageId: string): Promise<{
   featuredCategories: AdminHomepageFeaturedCategorySelection[];
   featuredBlogPosts: AdminHomepageFeaturedBlogPostSelection[];
 }> {
-  const [featuredProducts, featuredCategories, featuredBlogPosts] =
-    await Promise.all([
-      listHomepageFeaturedProducts(homepageId),
-      listHomepageFeaturedCategories(homepageId),
-      listHomepageFeaturedBlogPosts(homepageId)
-    ]);
+  const [featuredProducts, featuredCategories, featuredBlogPosts] = await Promise.all([
+    listHomepageFeaturedProducts(homepageId),
+    listHomepageFeaturedCategories(homepageId),
+    listHomepageFeaturedBlogPosts(homepageId),
+  ]);
 
   return { featuredProducts, featuredCategories, featuredBlogPosts };
 }
@@ -320,22 +312,19 @@ async function loadHomepageOptions(): Promise<{
         where status = 'published'
         order by coalesce(published_at, created_at) desc, id desc
       `
-    )
+    ),
   ]);
 
   return {
     productOptions: productRows.map(mapProductOption),
     categoryOptions: categoryRows.map(mapCategoryOption),
-    blogPostOptions: blogPostRows.map(mapBlogPostOption)
+    blogPostOptions: blogPostRows.map(mapBlogPostOption),
   };
 }
 
 // --- Homepage validation ---
 
-async function ensureHomepageExists(
-  client: PoolClient,
-  homepageId: string
-): Promise<void> {
+async function ensureHomepageExists(client: PoolClient, homepageId: string): Promise<void> {
   const result = await client.query<{ id: string }>(
     `
       select id::text as id
@@ -348,10 +337,7 @@ async function ensureHomepageExists(
   );
 
   if (result.rows.length === 0) {
-    throw new AdminHomepageRepositoryError(
-      "homepage_missing",
-      "Published homepage was not found."
-    );
+    throw new AdminHomepageRepositoryError("homepage_missing", "Published homepage was not found.");
   }
 }
 
@@ -359,9 +345,7 @@ async function ensurePublishedProductsExist(
   client: PoolClient,
   selections: readonly AdminHomepageFeaturedProductSelection[]
 ): Promise<void> {
-  const productIds = normalizeUniqueIds(
-    selections.map((selection) => selection.productId)
-  );
+  const productIds = normalizeUniqueIds(selections.map((selection) => selection.productId));
 
   if (productIds.length === 0) {
     return;
@@ -391,9 +375,7 @@ async function ensureCategoriesExist(
   client: PoolClient,
   selections: readonly AdminHomepageFeaturedCategorySelection[]
 ): Promise<void> {
-  const categoryIds = normalizeUniqueIds(
-    selections.map((selection) => selection.categoryId)
-  );
+  const categoryIds = normalizeUniqueIds(selections.map((selection) => selection.categoryId));
 
   if (categoryIds.length === 0) {
     return;
@@ -422,9 +404,7 @@ async function ensurePublishedBlogPostsExist(
   client: PoolClient,
   selections: readonly AdminHomepageFeaturedBlogPostSelection[]
 ): Promise<void> {
-  const blogPostIds = normalizeUniqueIds(
-    selections.map((selection) => selection.blogPostId)
-  );
+  const blogPostIds = normalizeUniqueIds(selections.map((selection) => selection.blogPostId));
 
   if (blogPostIds.length === 0) {
     return;
@@ -496,7 +476,7 @@ async function replaceHomepageFeaturedProducts(
     [
       homepageId,
       selections.map((selection) => selection.productId),
-      selections.map((selection) => selection.sortOrder)
+      selections.map((selection) => selection.sortOrder),
     ]
   );
 }
@@ -534,7 +514,7 @@ async function replaceHomepageFeaturedCategories(
     [
       homepageId,
       selections.map((selection) => selection.categoryId),
-      selections.map((selection) => selection.sortOrder)
+      selections.map((selection) => selection.sortOrder),
     ]
   );
 }
@@ -572,7 +552,7 @@ async function replaceHomepageFeaturedBlogPosts(
     [
       homepageId,
       selections.map((selection) => selection.blogPostId),
-      selections.map((selection) => selection.sortOrder)
+      selections.map((selection) => selection.sortOrder),
     ]
   );
 }
@@ -619,7 +599,7 @@ export async function getAdminHomepageEditorData(): Promise<AdminHomepageEditorD
 
   const [selections, options] = await Promise.all([
     loadHomepageFeaturedSelections(homepageRow.id),
-    loadHomepageOptions()
+    loadHomepageOptions(),
   ]);
 
   return {
@@ -629,7 +609,7 @@ export async function getAdminHomepageEditorData(): Promise<AdminHomepageEditorD
       selections.featuredCategories,
       selections.featuredBlogPosts
     ),
-    ...options
+    ...options,
   };
 }
 
@@ -666,7 +646,7 @@ export async function updateAdminHomepage(
         input.heroText,
         input.heroImagePath,
         input.editorialTitle,
-        input.editorialText
+        input.editorialText,
       ]
     );
 

@@ -3,11 +3,11 @@
 import { redirect } from "next/navigation";
 import {
   AdminProductRepositoryError,
-  createAdminProduct
+  createAdminProduct,
 } from "@/db/repositories/admin-product.repository";
-import { normalizeProductSlug } from "@/entities/product/product-input";
 
 import { ProductFormSchema } from "../schemas/product-form-schema";
+import { normalizeProductSlug } from "@/entities/product/product-input";
 
 function mapProductFormError(field: PropertyKey | undefined): string {
   switch (field) {
@@ -37,7 +37,7 @@ export async function createProductAction(formData: FormData): Promise<void> {
     status: formData.get("status"),
     productType: formData.get("productType"),
     isFeatured: formData.get("isFeatured"),
-    categoryIds: formData.getAll("categoryIds")
+    categoryIds: formData.getAll("categoryIds"),
   });
 
   if (!parsed.success) {
@@ -57,17 +57,11 @@ export async function createProductAction(formData: FormData): Promise<void> {
     const product = await createAdminProduct({ ...parsed.data, slug });
     createdProductId = product.id;
   } catch (error) {
-    if (
-      error instanceof AdminProductRepositoryError &&
-      error.code === "slug_taken"
-    ) {
+    if (error instanceof AdminProductRepositoryError && error.code === "slug_taken") {
       redirect("/admin/products/new?error=slug_taken");
     }
 
-    if (
-      error instanceof AdminProductRepositoryError &&
-      error.code === "category_missing"
-    ) {
+    if (error instanceof AdminProductRepositoryError && error.code === "category_missing") {
       redirect("/admin/products/new?error=invalid_category_ids");
     }
 

@@ -7,7 +7,7 @@ declare global {
 
 function createPool() {
   return new Pool({
-    connectionString: env.databaseUrl
+    connectionString: env.databaseUrl,
   });
 }
 

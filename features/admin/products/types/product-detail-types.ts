@@ -1,9 +1,6 @@
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
 
-export type ProductDetailSearchParams = Record<
-  string,
-  string | string[] | undefined
->;
+export type ProductDetailSearchParams = Record<string, string | string[] | undefined>;
 
 export type PrimaryImageScope = "product" | "variant";
 

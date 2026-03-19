@@ -5,10 +5,7 @@ export type ValidatedCategoryInput = {
   isFeatured: boolean;
 };
 
-export type CategoryInputErrorCode =
-  | "missing_name"
-  | "missing_slug"
-  | "invalid_slug";
+export type CategoryInputErrorCode = "missing_name" | "missing_slug" | "invalid_slug";
 
 type CategoryInputSource = {
   name: FormDataEntryValue | string | null | undefined;
@@ -27,9 +24,7 @@ export type CategoryInputValidationResult =
       code: CategoryInputErrorCode;
     };
 
-function readTrimmedString(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
+function readTrimmedString(value: FormDataEntryValue | string | null | undefined): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -48,15 +43,13 @@ export function normalizeCategorySlug(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-export function validateCategoryInput(
-  input: CategoryInputSource
-): CategoryInputValidationResult {
+export function validateCategoryInput(input: CategoryInputSource): CategoryInputValidationResult {
   const name = readTrimmedString(input.name);
 
   if (name === null || name.length === 0) {
     return {
       ok: false,
-      code: "missing_name"
+      code: "missing_name",
     };
   }
 
@@ -65,7 +58,7 @@ export function validateCategoryInput(
   if (rawSlug === null || rawSlug.length === 0) {
     return {
       ok: false,
-      code: "missing_slug"
+      code: "missing_slug",
     };
   }
 
@@ -74,15 +67,13 @@ export function validateCategoryInput(
   if (normalizedSlug.length === 0) {
     return {
       ok: false,
-      code: "invalid_slug"
+      code: "invalid_slug",
     };
   }
 
   const descriptionValue = readTrimmedString(input.description);
   const isFeaturedValue =
-    input.isFeatured === "on" ||
-    input.isFeatured === "true" ||
-    input.isFeatured === "1";
+    input.isFeatured === "on" || input.isFeatured === "true" || input.isFeatured === "1";
 
   return {
     ok: true,
@@ -90,10 +81,8 @@ export function validateCategoryInput(
       name,
       slug: normalizedSlug,
       description:
-        descriptionValue === null || descriptionValue.length === 0
-          ? null
-          : descriptionValue,
-      isFeatured: isFeaturedValue
-    }
+        descriptionValue === null || descriptionValue.length === 0 ? null : descriptionValue,
+      isFeatured: isFeaturedValue,
+    },
   };
 }

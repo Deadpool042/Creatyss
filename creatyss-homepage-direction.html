@@ -1,2165 +1,2997 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Creatyss — Direction Artistique Homepage</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    /* ============================================================
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creatyss — Direction Artistique Homepage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ============================================================
        DESIGN TOKENS
     ============================================================ */
-    :root {
-      /* — Backgrounds & Surfaces */
-      --bg-base:        #F8F4EF;   /* Lin chaud – fond principal */
-      --bg-off-white:   #FDFCF9;   /* Blanc cassé – sections alternées */
-      --bg-parchment:   #F0EAE1;   /* Parchemin – cartes, encarts */
-      --bg-deep:        #1C1610;   /* Brun profond – sections sombres */
-      --bg-mid:         #2E241C;   /* Brun moyen – footer, headers */
+      :root {
+        /* — Backgrounds & Surfaces */
+        --bg-base: #f8f4ef; /* Lin chaud – fond principal */
+        --bg-off-white: #fdfcf9; /* Blanc cassé – sections alternées */
+        --bg-parchment: #f0eae1; /* Parchemin – cartes, encarts */
+        --bg-deep: #1c1610; /* Brun profond – sections sombres */
+        --bg-mid: #2e241c; /* Brun moyen – footer, headers */
 
-      /* — Textes */
-      --text-primary:   #1C1610;   /* Brun profond – titres principaux */
-      --text-secondary: #5A4A3C;   /* Brun moyen – corps de texte */
-      --text-muted:     #9B8C7E;   /* Brun clair – labels, métadonnées */
-      --text-inverse:   #F8F4EF;   /* Lin chaud inversé – sur fonds sombres */
+        /* — Textes */
+        --text-primary: #1c1610; /* Brun profond – titres principaux */
+        --text-secondary: #5a4a3c; /* Brun moyen – corps de texte */
+        --text-muted: #9b8c7e; /* Brun clair – labels, métadonnées */
+        --text-inverse: #f8f4ef; /* Lin chaud inversé – sur fonds sombres */
 
-      /* — Bordures & Séparateurs */
-      --border-light:   #E4DBCF;   /* Sable clair – bordures délicates */
-      --border-mid:     #C9BEB0;   /* Sable moyen – cadres, encarts */
+        /* — Bordures & Séparateurs */
+        --border-light: #e4dbcf; /* Sable clair – bordures délicates */
+        --border-mid: #c9beb0; /* Sable moyen – cadres, encarts */
 
-      /* — Couleurs d'accent (issues des produits) */
-      --accent-bordeaux:   #8B2E2E;   /* Rouge profond – sacs bordeaux */
-      --accent-terracotta: #C4764A;   /* Terracotta – sacs safran/abricot */
-      --accent-vert:       #6B7A5E;   /* Vert naturel – sacs vert/basil */
-      --accent-bleu:       #7B93A3;   /* Bleu ardoise – sacs bleu doux */
-      --accent-or:         #C9A96E;   /* Or chaud – ferrures, rivets */
-      --accent-ecru:       #D4C9B2;   /* Écru – sacs naturels */
+        /* — Couleurs d'accent (issues des produits) */
+        --accent-bordeaux: #8b2e2e; /* Rouge profond – sacs bordeaux */
+        --accent-terracotta: #c4764a; /* Terracotta – sacs safran/abricot */
+        --accent-vert: #6b7a5e; /* Vert naturel – sacs vert/basil */
+        --accent-bleu: #7b93a3; /* Bleu ardoise – sacs bleu doux */
+        --accent-or: #c9a96e; /* Or chaud – ferrures, rivets */
+        --accent-ecru: #d4c9b2; /* Écru – sacs naturels */
 
-      /* — Typographies */
-      --font-display: 'Cormorant Garamond', Georgia, serif;
-      --font-body:    'Jost', system-ui, sans-serif;
+        /* — Typographies */
+        --font-display: "Cormorant Garamond", Georgia, serif;
+        --font-body: "Jost", system-ui, sans-serif;
 
-      /* — Espacements */
-      --space-xs:  4px;
-      --space-sm:  8px;
-      --space-md:  16px;
-      --space-lg:  32px;
-      --space-xl:  64px;
-      --space-2xl: 96px;
-      --space-3xl: 128px;
+        /* — Espacements */
+        --space-xs: 4px;
+        --space-sm: 8px;
+        --space-md: 16px;
+        --space-lg: 32px;
+        --space-xl: 64px;
+        --space-2xl: 96px;
+        --space-3xl: 128px;
 
-      /* — Radius */
-      --radius-sm: 2px;
-      --radius-md: 4px;
-    }
+        /* — Radius */
+        --radius-sm: 2px;
+        --radius-md: 4px;
+      }
 
-    /* ============================================================
+      /* ============================================================
        RESET & BASE
     ============================================================ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    html { scroll-behavior: smooth; }
+      html {
+        scroll-behavior: smooth;
+      }
 
-    body {
-      font-family: var(--font-body);
-      background: var(--bg-base);
-      color: var(--text-primary);
-      font-size: 15px;
-      line-height: 1.7;
-      font-weight: 300;
-      -webkit-font-smoothing: antialiased;
-    }
+      body {
+        font-family: var(--font-body);
+        background: var(--bg-base);
+        color: var(--text-primary);
+        font-size: 15px;
+        line-height: 1.7;
+        font-weight: 300;
+        -webkit-font-smoothing: antialiased;
+      }
 
-    /* ============================================================
+      /* ============================================================
        DOC WRAPPER & NAV
     ============================================================ */
-    .doc-nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: var(--bg-deep);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 var(--space-xl);
-      height: 52px;
-    }
-    .doc-nav-logo {
-      font-family: var(--font-display);
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--text-inverse);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-    .doc-nav-label {
-      font-family: var(--font-body);
-      font-size: 10px;
-      font-weight: 400;
-      color: var(--text-muted);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-    .doc-nav-links {
-      display: flex;
-      gap: var(--space-lg);
-      list-style: none;
-    }
-    .doc-nav-links a {
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .doc-nav-links a:hover { color: var(--text-inverse); }
+      .doc-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: var(--bg-deep);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 var(--space-xl);
+        height: 52px;
+      }
+      .doc-nav-logo {
+        font-family: var(--font-display);
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--text-inverse);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+      .doc-nav-label {
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 400;
+        color: var(--text-muted);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      .doc-nav-links {
+        display: flex;
+        gap: var(--space-lg);
+        list-style: none;
+      }
+      .doc-nav-links a {
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.5);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .doc-nav-links a:hover {
+        color: var(--text-inverse);
+      }
 
-    /* ============================================================
+      /* ============================================================
        MAIN LAYOUT
     ============================================================ */
-    .doc-main { padding-top: 52px; }
+      .doc-main {
+        padding-top: 52px;
+      }
 
-    /* ============================================================
+      /* ============================================================
        SHARED SECTION STYLES
     ============================================================ */
-    .section {
-      padding: var(--space-3xl) var(--space-xl);
-    }
-    .section--dark {
-      background: var(--bg-deep);
-      color: var(--text-inverse);
-    }
-    .section--alt {
-      background: var(--bg-off-white);
-    }
-    .section--parchment {
-      background: var(--bg-parchment);
-    }
-    .section-label {
-      display: inline-block;
-      font-family: var(--font-body);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: var(--space-lg);
-    }
-    .section-label--inverse {
-      color: rgba(255,255,255,0.4);
-    }
-    h1, h2, h3, h4 {
-      font-family: var(--font-display);
-      font-weight: 400;
-      line-height: 1.15;
-    }
-    h1 { font-size: clamp(48px, 7vw, 88px); letter-spacing: -0.01em; }
-    h2 { font-size: clamp(32px, 4vw, 52px); }
-    h3 { font-size: clamp(22px, 2.5vw, 32px); }
-    h4 { font-size: 18px; font-weight: 500; letter-spacing: 0.05em; }
+      .section {
+        padding: var(--space-3xl) var(--space-xl);
+      }
+      .section--dark {
+        background: var(--bg-deep);
+        color: var(--text-inverse);
+      }
+      .section--alt {
+        background: var(--bg-off-white);
+      }
+      .section--parchment {
+        background: var(--bg-parchment);
+      }
+      .section-label {
+        display: inline-block;
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: var(--space-lg);
+      }
+      .section-label--inverse {
+        color: rgba(255, 255, 255, 0.4);
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        line-height: 1.15;
+      }
+      h1 {
+        font-size: clamp(48px, 7vw, 88px);
+        letter-spacing: -0.01em;
+      }
+      h2 {
+        font-size: clamp(32px, 4vw, 52px);
+      }
+      h3 {
+        font-size: clamp(22px, 2.5vw, 32px);
+      }
+      h4 {
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+      }
 
-    .eyebrow {
-      font-family: var(--font-body);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: var(--space-sm);
-      display: block;
-    }
-    .eyebrow--accent { color: var(--accent-terracotta); }
+      .eyebrow {
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: var(--space-sm);
+        display: block;
+      }
+      .eyebrow--accent {
+        color: var(--accent-terracotta);
+      }
 
-    p { color: var(--text-secondary); max-width: 60ch; }
-    p.wide { max-width: 80ch; }
+      p {
+        color: var(--text-secondary);
+        max-width: 60ch;
+      }
+      p.wide {
+        max-width: 80ch;
+      }
 
-    /* ============================================================
+      /* ============================================================
        DIVIDER
     ============================================================ */
-    .divider {
-      width: 40px;
-      height: 1px;
-      background: var(--border-mid);
-      margin: var(--space-lg) 0;
-    }
-    .divider--accent { background: var(--accent-terracotta); }
-    .divider--center { margin-left: auto; margin-right: auto; }
+      .divider {
+        width: 40px;
+        height: 1px;
+        background: var(--border-mid);
+        margin: var(--space-lg) 0;
+      }
+      .divider--accent {
+        background: var(--accent-terracotta);
+      }
+      .divider--center {
+        margin-left: auto;
+        margin-right: auto;
+      }
 
-    /* ============================================================
+      /* ============================================================
        BUTTONS
     ============================================================ */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 28px;
-      font-family: var(--font-body);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: all 0.25s;
-    }
-    .btn-primary {
-      background: var(--text-primary);
-      color: var(--text-inverse);
-    }
-    .btn-primary:hover { background: var(--bg-mid); }
-    .btn-outline {
-      background: transparent;
-      color: var(--text-primary);
-      border: 1px solid var(--border-mid);
-    }
-    .btn-outline:hover { border-color: var(--text-primary); }
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-primary);
-      padding: 0;
-      letter-spacing: 0.15em;
-      border-bottom: 1px solid var(--border-mid);
-      border-radius: 0;
-    }
-    .btn-ghost:hover { border-color: var(--text-primary); }
-    .btn-ghost--inverse {
-      color: var(--text-inverse);
-      border-color: rgba(255,255,255,0.3);
-    }
-    .btn-ghost--inverse:hover { border-color: var(--text-inverse); }
-    .btn-arrow::after { content: '→'; font-size: 14px; font-family: serif; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 28px;
+        font-family: var(--font-body);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        transition: all 0.25s;
+      }
+      .btn-primary {
+        background: var(--text-primary);
+        color: var(--text-inverse);
+      }
+      .btn-primary:hover {
+        background: var(--bg-mid);
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid var(--border-mid);
+      }
+      .btn-outline:hover {
+        border-color: var(--text-primary);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--text-primary);
+        padding: 0;
+        letter-spacing: 0.15em;
+        border-bottom: 1px solid var(--border-mid);
+        border-radius: 0;
+      }
+      .btn-ghost:hover {
+        border-color: var(--text-primary);
+      }
+      .btn-ghost--inverse {
+        color: var(--text-inverse);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+      .btn-ghost--inverse:hover {
+        border-color: var(--text-inverse);
+      }
+      .btn-arrow::after {
+        content: "→";
+        font-size: 14px;
+        font-family: serif;
+      }
 
-    /* ============================================================
+      /* ============================================================
        § 1 — COVER / HERO
     ============================================================ */
-    #hero { padding: 0; }
+      #hero {
+        padding: 0;
+      }
 
-    .hero-cover {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 100vh;
-    }
-    .hero-image-side {
-      background: var(--bg-parchment);
-      position: relative;
-      overflow: hidden;
-      min-height: 100vh;
-    }
-    .hero-image-placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(160deg, #D4C9B2 0%, #BFB3A0 40%, #C4A88A 100%);
-    }
-    .hero-image-placeholder-inner {
-      text-align: center;
-      color: rgba(255,255,255,0.6);
-    }
-    .hero-image-placeholder-inner span {
-      display: block;
-      font-size: 10px;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      font-family: var(--font-body);
-      margin-top: 8px;
-    }
-    .hero-bag-icon {
-      width: 80px;
-      height: 80px;
-      opacity: 0.4;
-    }
+      .hero-cover {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 100vh;
+      }
+      .hero-image-side {
+        background: var(--bg-parchment);
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+      }
+      .hero-image-placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(160deg, #d4c9b2 0%, #bfb3a0 40%, #c4a88a 100%);
+      }
+      .hero-image-placeholder-inner {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .hero-image-placeholder-inner span {
+        display: block;
+        font-size: 10px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        font-family: var(--font-body);
+        margin-top: 8px;
+      }
+      .hero-bag-icon {
+        width: 80px;
+        height: 80px;
+        opacity: 0.4;
+      }
 
-    /* Simulated bag silhouette */
-    .bag-silhouette {
-      width: 120px;
-      height: 140px;
-      background: rgba(255,255,255,0.25);
-      border-radius: 12px 12px 8px 8px;
-      position: relative;
-      margin: 0 auto;
-    }
-    .bag-silhouette::before {
-      content: '';
-      position: absolute;
-      top: -28px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 50px;
-      height: 28px;
-      border: 2px solid rgba(255,255,255,0.4);
-      border-bottom: none;
-      border-radius: 40px 40px 0 0;
-    }
-    .bag-silhouette::after {
-      content: '';
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 30px;
-      height: 2px;
-      background: rgba(255,255,255,0.3);
-    }
+      /* Simulated bag silhouette */
+      .bag-silhouette {
+        width: 120px;
+        height: 140px;
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 12px 12px 8px 8px;
+        position: relative;
+        margin: 0 auto;
+      }
+      .bag-silhouette::before {
+        content: "";
+        position: absolute;
+        top: -28px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 28px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-bottom: none;
+        border-radius: 40px 40px 0 0;
+      }
+      .bag-silhouette::after {
+        content: "";
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.3);
+      }
 
-    .hero-content-side {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: var(--space-3xl) var(--space-xl) var(--space-3xl) 80px;
-      background: var(--bg-base);
-    }
-    .hero-tagline {
-      font-family: var(--font-display);
-      font-size: clamp(44px, 5.5vw, 76px);
-      font-weight: 300;
-      line-height: 1.1;
-      letter-spacing: -0.01em;
-      color: var(--text-primary);
-      margin-bottom: var(--space-xl);
-    }
-    .hero-tagline em {
-      font-style: italic;
-      font-weight: 300;
-    }
-    .hero-tagline strong {
-      font-weight: 500;
-      display: block;
-    }
-    .hero-sub {
-      font-size: 13px;
-      font-weight: 300;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-      margin-bottom: var(--space-xl);
-      max-width: 36ch;
-    }
-    .hero-ctas {
-      display: flex;
-      align-items: center;
-      gap: var(--space-lg);
-    }
-    .hero-scroll-indicator {
-      position: absolute;
-      bottom: var(--space-lg);
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-    }
-    .hero-scroll-indicator span {
-      font-size: 9px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      font-weight: 400;
-    }
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--border-mid), transparent);
-    }
+      .hero-content-side {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: var(--space-3xl) var(--space-xl) var(--space-3xl) 80px;
+        background: var(--bg-base);
+      }
+      .hero-tagline {
+        font-family: var(--font-display);
+        font-size: clamp(44px, 5.5vw, 76px);
+        font-weight: 300;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+        color: var(--text-primary);
+        margin-bottom: var(--space-xl);
+      }
+      .hero-tagline em {
+        font-style: italic;
+        font-weight: 300;
+      }
+      .hero-tagline strong {
+        font-weight: 500;
+        display: block;
+      }
+      .hero-sub {
+        font-size: 13px;
+        font-weight: 300;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+        margin-bottom: var(--space-xl);
+        max-width: 36ch;
+      }
+      .hero-ctas {
+        display: flex;
+        align-items: center;
+        gap: var(--space-lg);
+      }
+      .hero-scroll-indicator {
+        position: absolute;
+        bottom: var(--space-lg);
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-muted);
+      }
+      .hero-scroll-indicator span {
+        font-size: 9px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+      .scroll-line {
+        width: 1px;
+        height: 40px;
+        background: linear-gradient(to bottom, var(--border-mid), transparent);
+      }
 
-    /* ============================================================
+      /* ============================================================
        § 2 — MANIFESTO / MARQUE
     ============================================================ */
-    #manifesto {
-      text-align: center;
-      padding: var(--space-3xl) var(--space-xl);
-    }
-    .manifesto-quote {
-      font-family: var(--font-display);
-      font-size: clamp(24px, 3vw, 40px);
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.5;
-      color: var(--text-primary);
-      max-width: 700px;
-      margin: 0 auto var(--space-lg);
-    }
-    .manifesto-attribution {
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-    .manifesto-ornament {
-      font-family: var(--font-display);
-      font-size: 80px;
-      font-weight: 300;
-      color: var(--border-light);
-      line-height: 0.5;
-      margin-bottom: var(--space-md);
-      display: block;
-    }
+      #manifesto {
+        text-align: center;
+        padding: var(--space-3xl) var(--space-xl);
+      }
+      .manifesto-quote {
+        font-family: var(--font-display);
+        font-size: clamp(24px, 3vw, 40px);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.5;
+        color: var(--text-primary);
+        max-width: 700px;
+        margin: 0 auto var(--space-lg);
+      }
+      .manifesto-attribution {
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+      .manifesto-ornament {
+        font-family: var(--font-display);
+        font-size: 80px;
+        font-weight: 300;
+        color: var(--border-light);
+        line-height: 0.5;
+        margin-bottom: var(--space-md);
+        display: block;
+      }
 
-    /* ============================================================
+      /* ============================================================
        § 3 — COLLECTIONS
     ============================================================ */
-    #collections {
-      padding: var(--space-2xl) var(--space-xl);
-    }
-    .collections-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: var(--space-xl);
-    }
-    .collections-grid {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr;
-      grid-template-rows: auto auto;
-      gap: 16px;
-    }
-    .collection-card {
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .collection-card:first-child {
-      grid-row: span 2;
-    }
-    .card-image {
-      width: 100%;
-      aspect-ratio: 3/4;
-      display: block;
-      position: relative;
-      overflow: hidden;
-    }
-    .card-image--tall { aspect-ratio: 2/3; }
-    .card-image--short { aspect-ratio: 4/3; }
-    .card-image-bg {
-      position: absolute;
-      inset: 0;
-      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .collection-card:hover .card-image-bg { transform: scale(1.04); }
+      #collections {
+        padding: var(--space-2xl) var(--space-xl);
+      }
+      .collections-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: var(--space-xl);
+      }
+      .collections-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 16px;
+      }
+      .collection-card {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+      }
+      .collection-card:first-child {
+        grid-row: span 2;
+      }
+      .card-image {
+        width: 100%;
+        aspect-ratio: 3/4;
+        display: block;
+        position: relative;
+        overflow: hidden;
+      }
+      .card-image--tall {
+        aspect-ratio: 2/3;
+      }
+      .card-image--short {
+        aspect-ratio: 4/3;
+      }
+      .card-image-bg {
+        position: absolute;
+        inset: 0;
+        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .collection-card:hover .card-image-bg {
+        transform: scale(1.04);
+      }
 
-    /* Collection card color themes */
-    .theme-vert    { background: linear-gradient(145deg, #8E9E82 0%, #6B7A5E 100%); }
-    .theme-bordeaux { background: linear-gradient(145deg, #A84040 0%, #6B2020 100%); }
-    .theme-safran  { background: linear-gradient(145deg, #D4905A 0%, #B8703C 100%); }
-    .theme-ecru    { background: linear-gradient(145deg, #D4C9B2 0%, #B8AD98 100%); }
-    .theme-bleu    { background: linear-gradient(145deg, #8EB0C4 0%, #6A8FA6 100%); }
-    .theme-naturel { background: linear-gradient(145deg, #C4B89A 0%, #A89C82 100%); }
+      /* Collection card color themes */
+      .theme-vert {
+        background: linear-gradient(145deg, #8e9e82 0%, #6b7a5e 100%);
+      }
+      .theme-bordeaux {
+        background: linear-gradient(145deg, #a84040 0%, #6b2020 100%);
+      }
+      .theme-safran {
+        background: linear-gradient(145deg, #d4905a 0%, #b8703c 100%);
+      }
+      .theme-ecru {
+        background: linear-gradient(145deg, #d4c9b2 0%, #b8ad98 100%);
+      }
+      .theme-bleu {
+        background: linear-gradient(145deg, #8eb0c4 0%, #6a8fa6 100%);
+      }
+      .theme-naturel {
+        background: linear-gradient(145deg, #c4b89a 0%, #a89c82 100%);
+      }
 
-    .card-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(20,14,8,0.65) 0%, transparent 55%);
-    }
-    .card-info {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: var(--space-lg);
-      color: var(--text-inverse);
-    }
-    .card-info-name {
-      font-family: var(--font-display);
-      font-size: 20px;
-      font-weight: 400;
-      margin-bottom: 4px;
-    }
-    .card-info-count {
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      opacity: 0.6;
-      font-weight: 400;
-    }
-    .card-pill {
-      position: absolute;
-      top: var(--space-md);
-      left: var(--space-md);
-      background: rgba(255,255,255,0.9);
-      color: var(--text-secondary);
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 5px 10px;
-      backdrop-filter: blur(4px);
-    }
+      .card-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(20, 14, 8, 0.65) 0%, transparent 55%);
+      }
+      .card-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: var(--space-lg);
+        color: var(--text-inverse);
+      }
+      .card-info-name {
+        font-family: var(--font-display);
+        font-size: 20px;
+        font-weight: 400;
+        margin-bottom: 4px;
+      }
+      .card-info-count {
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        opacity: 0.6;
+        font-weight: 400;
+      }
+      .card-pill {
+        position: absolute;
+        top: var(--space-md);
+        left: var(--space-md);
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--text-secondary);
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        backdrop-filter: blur(4px);
+      }
 
-    /* ============================================================
+      /* ============================================================
        § 4 — SAVOIR-FAIRE
     ============================================================ */
-    #savoirfaire {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 600px;
-    }
-    .savoirfaire-content {
-      padding: var(--space-3xl) var(--space-xl);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background: var(--bg-off-white);
-    }
-    .savoirfaire-image {
-      background: linear-gradient(145deg, #D4C9B2 0%, #BFB3A0 100%);
-      position: relative;
-      overflow: hidden;
-      min-height: 500px;
-    }
-    .savoirfaire-image-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, #C4B89A 0%, #9E8E76 50%, #6B5A46 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .atelier-detail {
-      text-align: center;
-      color: rgba(255,255,255,0.5);
-      font-size: 10px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      font-family: var(--font-body);
-    }
+      #savoirfaire {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 600px;
+      }
+      .savoirfaire-content {
+        padding: var(--space-3xl) var(--space-xl);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: var(--bg-off-white);
+      }
+      .savoirfaire-image {
+        background: linear-gradient(145deg, #d4c9b2 0%, #bfb3a0 100%);
+        position: relative;
+        overflow: hidden;
+        min-height: 500px;
+      }
+      .savoirfaire-image-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, #c4b89a 0%, #9e8e76 50%, #6b5a46 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .atelier-detail {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 10px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        font-family: var(--font-body);
+      }
 
-    .values-list {
-      list-style: none;
-      margin-top: var(--space-lg);
-    }
-    .values-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--space-md);
-      padding: var(--space-md) 0;
-      border-bottom: 1px solid var(--border-light);
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-    .values-list li:last-child { border-bottom: none; }
-    .values-num {
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 400;
-      color: var(--accent-terracotta);
-      line-height: 1;
-      min-width: 32px;
-    }
+      .values-list {
+        list-style: none;
+        margin-top: var(--space-lg);
+      }
+      .values-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-md);
+        padding: var(--space-md) 0;
+        border-bottom: 1px solid var(--border-light);
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+      .values-list li:last-child {
+        border-bottom: none;
+      }
+      .values-num {
+        font-family: var(--font-display);
+        font-size: 22px;
+        font-weight: 400;
+        color: var(--accent-terracotta);
+        line-height: 1;
+        min-width: 32px;
+      }
 
-    /* ============================================================
+      /* ============================================================
        § 5 — PRODUITS PHARES
     ============================================================ */
-    #products {
-      padding: var(--space-2xl) var(--space-xl);
-      background: var(--bg-base);
-    }
-    .products-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: var(--space-xl);
-    }
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-    }
-    .product-card {
-      cursor: pointer;
-    }
-    .product-card-image {
-      width: 100%;
-      aspect-ratio: 3/4;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: var(--space-md);
-      background: var(--bg-parchment);
-    }
-    .product-card-image-bg {
-      position: absolute;
-      inset: 0;
-      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .product-card:hover .product-card-image-bg { transform: scale(1.04); }
-    .product-card-name {
-      font-family: var(--font-display);
-      font-size: 17px;
-      font-weight: 400;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-    .product-card-detail {
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-      margin-bottom: var(--space-sm);
-    }
-    .product-card-price {
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--text-secondary);
-    }
-    .product-card-badge {
-      position: absolute;
-      top: var(--space-sm);
-      right: var(--space-sm);
-      background: var(--bg-deep);
-      color: var(--text-inverse);
-      font-size: 8px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 4px 8px;
-    }
-    .product-swatch {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin-right: 4px;
-      vertical-align: middle;
-    }
+      #products {
+        padding: var(--space-2xl) var(--space-xl);
+        background: var(--bg-base);
+      }
+      .products-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: var(--space-xl);
+      }
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+      }
+      .product-card {
+        cursor: pointer;
+      }
+      .product-card-image {
+        width: 100%;
+        aspect-ratio: 3/4;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: var(--space-md);
+        background: var(--bg-parchment);
+      }
+      .product-card-image-bg {
+        position: absolute;
+        inset: 0;
+        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .product-card:hover .product-card-image-bg {
+        transform: scale(1.04);
+      }
+      .product-card-name {
+        font-family: var(--font-display);
+        font-size: 17px;
+        font-weight: 400;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+      }
+      .product-card-detail {
+        font-size: 11px;
+        color: var(--text-muted);
+        letter-spacing: 0.1em;
+        margin-bottom: var(--space-sm);
+      }
+      .product-card-price {
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--text-secondary);
+      }
+      .product-card-badge {
+        position: absolute;
+        top: var(--space-sm);
+        right: var(--space-sm);
+        background: var(--bg-deep);
+        color: var(--text-inverse);
+        font-size: 8px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        padding: 4px 8px;
+      }
+      .product-swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 4px;
+        vertical-align: middle;
+      }
 
-    /* ============================================================
+      /* ============================================================
        § 6 — EDITORIAL STRIP
     ============================================================ */
-    #editorial {
-      padding: 0;
-      background: var(--bg-deep);
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      min-height: 480px;
-    }
-    .editorial-panel {
-      padding: var(--space-2xl) var(--space-xl);
-      border-right: 1px solid rgba(255,255,255,0.06);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
-    .editorial-panel:last-child { border-right: none; }
-    .editorial-panel-stat {
-      font-family: var(--font-display);
-      font-size: clamp(48px, 6vw, 72px);
-      font-weight: 300;
-      color: var(--text-inverse);
-      line-height: 1;
-      margin-bottom: var(--space-sm);
-    }
-    .editorial-panel-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: var(--space-lg);
-    }
-    .editorial-panel-text {
-      font-size: 13px;
-      font-weight: 300;
-      color: rgba(255,255,255,0.55);
-      line-height: 1.7;
-      max-width: 30ch;
-    }
-    .editorial-panel-accent {
-      width: 24px;
-      height: 2px;
-      background: var(--accent-terracotta);
-      margin-bottom: var(--space-md);
-    }
+      #editorial {
+        padding: 0;
+        background: var(--bg-deep);
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        min-height: 480px;
+      }
+      .editorial-panel {
+        padding: var(--space-2xl) var(--space-xl);
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      .editorial-panel:last-child {
+        border-right: none;
+      }
+      .editorial-panel-stat {
+        font-family: var(--font-display);
+        font-size: clamp(48px, 6vw, 72px);
+        font-weight: 300;
+        color: var(--text-inverse);
+        line-height: 1;
+        margin-bottom: var(--space-sm);
+      }
+      .editorial-panel-label {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+        margin-bottom: var(--space-lg);
+      }
+      .editorial-panel-text {
+        font-size: 13px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.7;
+        max-width: 30ch;
+      }
+      .editorial-panel-accent {
+        width: 24px;
+        height: 2px;
+        background: var(--accent-terracotta);
+        margin-bottom: var(--space-md);
+      }
 
-    /* ============================================================
+      /* ============================================================
        § 7 — NOUVEAUTÉS (Horizontal Scroll)
     ============================================================ */
-    #nouveautes {
-      padding: var(--space-2xl) 0 var(--space-2xl) var(--space-xl);
-      overflow: hidden;
-      background: var(--bg-off-white);
-    }
-    .nouveautes-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      padding-right: var(--space-xl);
-      margin-bottom: var(--space-xl);
-    }
-    .nouveautes-scroll {
-      display: flex;
-      gap: 20px;
-      overflow-x: auto;
-      padding-bottom: var(--space-md);
-      scrollbar-width: none;
-    }
-    .nouveautes-scroll::-webkit-scrollbar { display: none; }
-    .nouveaute-card {
-      flex: 0 0 280px;
-      cursor: pointer;
-    }
-    .nouveaute-image {
-      width: 100%;
-      aspect-ratio: 3/4;
-      background: var(--bg-parchment);
-      margin-bottom: var(--space-md);
-      position: relative;
-      overflow: hidden;
-    }
-    .nouveaute-image-bg {
-      position: absolute;
-      inset: 0;
-    }
-    .nouveaute-name {
-      font-family: var(--font-display);
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-    .nouveaute-price {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-    .nouveaute-tag {
-      position: absolute;
-      top: var(--space-sm);
-      left: var(--space-sm);
-      background: var(--accent-terracotta);
-      color: white;
-      font-size: 8px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 4px 8px;
-    }
+      #nouveautes {
+        padding: var(--space-2xl) 0 var(--space-2xl) var(--space-xl);
+        overflow: hidden;
+        background: var(--bg-off-white);
+      }
+      .nouveautes-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding-right: var(--space-xl);
+        margin-bottom: var(--space-xl);
+      }
+      .nouveautes-scroll {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        padding-bottom: var(--space-md);
+        scrollbar-width: none;
+      }
+      .nouveautes-scroll::-webkit-scrollbar {
+        display: none;
+      }
+      .nouveaute-card {
+        flex: 0 0 280px;
+        cursor: pointer;
+      }
+      .nouveaute-image {
+        width: 100%;
+        aspect-ratio: 3/4;
+        background: var(--bg-parchment);
+        margin-bottom: var(--space-md);
+        position: relative;
+        overflow: hidden;
+      }
+      .nouveaute-image-bg {
+        position: absolute;
+        inset: 0;
+      }
+      .nouveaute-name {
+        font-family: var(--font-display);
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+      }
+      .nouveaute-price {
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .nouveaute-tag {
+        position: absolute;
+        top: var(--space-sm);
+        left: var(--space-sm);
+        background: var(--accent-terracotta);
+        color: white;
+        font-size: 8px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        padding: 4px 8px;
+      }
 
-    /* ============================================================
+      /* ============================================================
        § 8 — CRÉATRICE PORTRAIT
     ============================================================ */
-    #creatrice {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 600px;
-    }
-    .creatrice-image {
-      background: linear-gradient(160deg, #C4B49A 0%, #9A8468 50%, #6E5C48 100%);
-      position: relative;
-      overflow: hidden;
-      min-height: 500px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .portrait-placeholder {
-      color: rgba(255,255,255,0.3);
-      text-align: center;
-      font-size: 10px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-    }
-    .creatrice-content {
-      padding: var(--space-3xl) var(--space-xl) var(--space-3xl) 80px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background: var(--bg-base);
-    }
-    .creatrice-quote {
-      font-family: var(--font-display);
-      font-size: clamp(20px, 2.5vw, 28px);
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.55;
-      color: var(--text-primary);
-      margin: var(--space-lg) 0;
-    }
-    .creatrice-name {
-      font-family: var(--font-body);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
+      #creatrice {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 600px;
+      }
+      .creatrice-image {
+        background: linear-gradient(160deg, #c4b49a 0%, #9a8468 50%, #6e5c48 100%);
+        position: relative;
+        overflow: hidden;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .portrait-placeholder {
+        color: rgba(255, 255, 255, 0.3);
+        text-align: center;
+        font-size: 10px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+      }
+      .creatrice-content {
+        padding: var(--space-3xl) var(--space-xl) var(--space-3xl) 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: var(--bg-base);
+      }
+      .creatrice-quote {
+        font-family: var(--font-display);
+        font-size: clamp(20px, 2.5vw, 28px);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.55;
+        color: var(--text-primary);
+        margin: var(--space-lg) 0;
+      }
+      .creatrice-name {
+        font-family: var(--font-body);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
 
-    /* ============================================================
+      /* ============================================================
        § 9 — NEWSLETTER
     ============================================================ */
-    #newsletter {
-      padding: var(--space-2xl) var(--space-xl);
-      text-align: center;
-      background: var(--bg-parchment);
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-    }
-    .newsletter-form {
-      display: flex;
-      gap: 0;
-      max-width: 440px;
-      margin: var(--space-xl) auto 0;
-      border: 1px solid var(--border-mid);
-    }
-    .newsletter-input {
-      flex: 1;
-      padding: 14px 20px;
-      font-family: var(--font-body);
-      font-size: 13px;
-      font-weight: 300;
-      color: var(--text-primary);
-      background: var(--bg-off-white);
-      border: none;
-      outline: none;
-    }
-    .newsletter-input::placeholder { color: var(--text-muted); }
-    .newsletter-btn {
-      padding: 14px 24px;
-      font-family: var(--font-body);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      background: var(--text-primary);
-      color: var(--text-inverse);
-      border: none;
-      cursor: pointer;
-    }
+      #newsletter {
+        padding: var(--space-2xl) var(--space-xl);
+        text-align: center;
+        background: var(--bg-parchment);
+        border-top: 1px solid var(--border-light);
+        border-bottom: 1px solid var(--border-light);
+      }
+      .newsletter-form {
+        display: flex;
+        gap: 0;
+        max-width: 440px;
+        margin: var(--space-xl) auto 0;
+        border: 1px solid var(--border-mid);
+      }
+      .newsletter-input {
+        flex: 1;
+        padding: 14px 20px;
+        font-family: var(--font-body);
+        font-size: 13px;
+        font-weight: 300;
+        color: var(--text-primary);
+        background: var(--bg-off-white);
+        border: none;
+        outline: none;
+      }
+      .newsletter-input::placeholder {
+        color: var(--text-muted);
+      }
+      .newsletter-btn {
+        padding: 14px 24px;
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        background: var(--text-primary);
+        color: var(--text-inverse);
+        border: none;
+        cursor: pointer;
+      }
 
-    /* ============================================================
+      /* ============================================================
        § 10 — FOOTER
     ============================================================ */
-    #footer {
-      background: var(--bg-deep);
-      padding: var(--space-2xl) var(--space-xl) var(--space-xl);
-    }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      gap: var(--space-xl);
-      margin-bottom: var(--space-2xl);
-    }
-    .footer-logo {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 400;
-      color: var(--text-inverse);
-      letter-spacing: 0.1em;
-      margin-bottom: var(--space-md);
-    }
-    .footer-tagline {
-      font-size: 11px;
-      font-weight: 300;
-      color: rgba(255,255,255,0.35);
-      line-height: 1.7;
-      max-width: 28ch;
-    }
-    .footer-col-title {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
-      margin-bottom: var(--space-md);
-    }
-    .footer-links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .footer-links a {
-      font-size: 13px;
-      font-weight: 300;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--text-inverse); }
-    .footer-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: var(--space-lg);
-      border-top: 1px solid rgba(255,255,255,0.06);
-      font-size: 10px;
-      color: rgba(255,255,255,0.25);
-      letter-spacing: 0.1em;
-    }
+      #footer {
+        background: var(--bg-deep);
+        padding: var(--space-2xl) var(--space-xl) var(--space-xl);
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: var(--space-xl);
+        margin-bottom: var(--space-2xl);
+      }
+      .footer-logo {
+        font-family: var(--font-display);
+        font-size: 24px;
+        font-weight: 400;
+        color: var(--text-inverse);
+        letter-spacing: 0.1em;
+        margin-bottom: var(--space-md);
+      }
+      .footer-tagline {
+        font-size: 11px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.35);
+        line-height: 1.7;
+        max-width: 28ch;
+      }
+      .footer-col-title {
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+        margin-bottom: var(--space-md);
+      }
+      .footer-links {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .footer-links a {
+        font-size: 13px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.5);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--text-inverse);
+      }
+      .footer-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: var(--space-lg);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.25);
+        letter-spacing: 0.1em;
+      }
 
-    /* ============================================================
+      /* ============================================================
        ════════ DOC SECTIONS — COLOR PALETTE ════════
     ============================================================ */
-    .doc-section {
-      padding: var(--space-3xl) var(--space-xl);
-      border-top: 1px solid var(--border-light);
-    }
-    .doc-section-title {
-      font-family: var(--font-body);
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-    .doc-section-heading {
-      font-family: var(--font-display);
-      font-size: clamp(28px, 3vw, 42px);
-      font-weight: 400;
-      color: var(--text-primary);
-      margin-bottom: var(--space-xl);
-    }
+      .doc-section {
+        padding: var(--space-3xl) var(--space-xl);
+        border-top: 1px solid var(--border-light);
+      }
+      .doc-section-title {
+        font-family: var(--font-body);
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+      }
+      .doc-section-heading {
+        font-family: var(--font-display);
+        font-size: clamp(28px, 3vw, 42px);
+        font-weight: 400;
+        color: var(--text-primary);
+        margin-bottom: var(--space-xl);
+      }
 
-    /* Color palette display */
-    .palette-group {
-      margin-bottom: var(--space-2xl);
-    }
-    .palette-group-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: var(--space-md);
-    }
-    .palette-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .color-chip {
-      flex: 0 0 auto;
-      width: 160px;
-    }
-    .color-chip-swatch {
-      height: 80px;
-      width: 100%;
-      margin-bottom: 10px;
-      position: relative;
-    }
-    .color-chip-name {
-      font-family: var(--font-body);
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 2px;
-    }
-    .color-chip-hex {
-      font-family: 'Courier New', monospace;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-    .color-chip-usage {
-      font-size: 10px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-    .color-chip--border { border: 1px solid var(--border-light); }
+      /* Color palette display */
+      .palette-group {
+        margin-bottom: var(--space-2xl);
+      }
+      .palette-group-label {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: var(--space-md);
+      }
+      .palette-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .color-chip {
+        flex: 0 0 auto;
+        width: 160px;
+      }
+      .color-chip-swatch {
+        height: 80px;
+        width: 100%;
+        margin-bottom: 10px;
+        position: relative;
+      }
+      .color-chip-name {
+        font-family: var(--font-body);
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--text-primary);
+        margin-bottom: 2px;
+      }
+      .color-chip-hex {
+        font-family: "Courier New", monospace;
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+      }
+      .color-chip-usage {
+        font-size: 10px;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+      .color-chip--border {
+        border: 1px solid var(--border-light);
+      }
 
-    /* Typography specimens */
-    .type-specimen {
-      padding: var(--space-xl) 0;
-      border-bottom: 1px solid var(--border-light);
-    }
-    .type-specimen:last-child { border-bottom: none; }
-    .type-meta {
-      display: flex;
-      gap: var(--space-xl);
-      margin-bottom: var(--space-lg);
-    }
-    .type-meta-item {
-      font-size: 10px;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-    }
-    .type-meta-item strong {
-      display: block;
-      font-weight: 500;
-      color: var(--text-secondary);
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-    .specimen-display {
-      font-family: var(--font-display);
-      font-size: clamp(40px, 6vw, 72px);
-      font-weight: 300;
-      line-height: 1.1;
-      color: var(--text-primary);
-    }
-    .specimen-display-italic {
-      font-family: var(--font-display);
-      font-size: clamp(40px, 6vw, 72px);
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.1;
-      color: var(--text-primary);
-    }
-    .specimen-body {
-      font-family: var(--font-body);
-      font-size: 15px;
-      font-weight: 300;
-      line-height: 1.75;
-      color: var(--text-secondary);
-    }
-    .specimen-label {
-      font-family: var(--font-body);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
+      /* Typography specimens */
+      .type-specimen {
+        padding: var(--space-xl) 0;
+        border-bottom: 1px solid var(--border-light);
+      }
+      .type-specimen:last-child {
+        border-bottom: none;
+      }
+      .type-meta {
+        display: flex;
+        gap: var(--space-xl);
+        margin-bottom: var(--space-lg);
+      }
+      .type-meta-item {
+        font-size: 10px;
+        color: var(--text-muted);
+        letter-spacing: 0.1em;
+      }
+      .type-meta-item strong {
+        display: block;
+        font-weight: 500;
+        color: var(--text-secondary);
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+      }
+      .specimen-display {
+        font-family: var(--font-display);
+        font-size: clamp(40px, 6vw, 72px);
+        font-weight: 300;
+        line-height: 1.1;
+        color: var(--text-primary);
+      }
+      .specimen-display-italic {
+        font-family: var(--font-display);
+        font-size: clamp(40px, 6vw, 72px);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.1;
+        color: var(--text-primary);
+      }
+      .specimen-body {
+        font-family: var(--font-body);
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 1.75;
+        color: var(--text-secondary);
+      }
+      .specimen-label {
+        font-family: var(--font-body);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
 
-    /* Section wireframe */
-    .wireframe-section {
-      background: var(--bg-off-white);
-      border: 1px solid var(--border-light);
-      margin-bottom: 12px;
-      padding: var(--space-lg) var(--space-xl);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .wireframe-section-num {
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 300;
-      color: var(--border-mid);
-      min-width: 48px;
-    }
-    .wireframe-section-info { flex: 1; padding: 0 var(--space-lg); }
-    .wireframe-section-name {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 400;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-    .wireframe-section-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      max-width: 60ch;
-    }
-    .wireframe-section-tags {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      min-width: 200px;
-      justify-content: flex-end;
-    }
-    .tag {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      background: var(--bg-parchment);
-      color: var(--text-muted);
-      border: 1px solid var(--border-light);
-    }
-    .tag--accent { background: var(--accent-terracotta); color: white; border-color: transparent; }
-    .tag--dark { background: var(--bg-deep); color: var(--text-inverse); border-color: transparent; }
-    .tag--vert { background: var(--accent-vert); color: white; border-color: transparent; }
-    .tag--bordeaux { background: var(--accent-bordeaux); color: white; border-color: transparent; }
+      /* Section wireframe */
+      .wireframe-section {
+        background: var(--bg-off-white);
+        border: 1px solid var(--border-light);
+        margin-bottom: 12px;
+        padding: var(--space-lg) var(--space-xl);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .wireframe-section-num {
+        font-family: var(--font-display);
+        font-size: 28px;
+        font-weight: 300;
+        color: var(--border-mid);
+        min-width: 48px;
+      }
+      .wireframe-section-info {
+        flex: 1;
+        padding: 0 var(--space-lg);
+      }
+      .wireframe-section-name {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 400;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+      }
+      .wireframe-section-desc {
+        font-size: 12px;
+        color: var(--text-muted);
+        max-width: 60ch;
+      }
+      .wireframe-section-tags {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        min-width: 200px;
+        justify-content: flex-end;
+      }
+      .tag {
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        background: var(--bg-parchment);
+        color: var(--text-muted);
+        border: 1px solid var(--border-light);
+      }
+      .tag--accent {
+        background: var(--accent-terracotta);
+        color: white;
+        border-color: transparent;
+      }
+      .tag--dark {
+        background: var(--bg-deep);
+        color: var(--text-inverse);
+        border-color: transparent;
+      }
+      .tag--vert {
+        background: var(--accent-vert);
+        color: white;
+        border-color: transparent;
+      }
+      .tag--bordeaux {
+        background: var(--accent-bordeaux);
+        color: white;
+        border-color: transparent;
+      }
 
-    /* Grid */
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
-    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-xl); }
+      /* Grid */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-xl);
+      }
+      .three-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: var(--space-xl);
+      }
 
-    /* Callout boxes */
-    .callout {
-      background: var(--bg-parchment);
-      border-left: 3px solid var(--accent-terracotta);
-      padding: var(--space-lg) var(--space-xl);
-      margin: var(--space-lg) 0;
-    }
-    .callout-title {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent-terracotta);
-      margin-bottom: var(--space-sm);
-    }
-    .callout p { font-size: 13px; color: var(--text-secondary); max-width: 100%; }
+      /* Callout boxes */
+      .callout {
+        background: var(--bg-parchment);
+        border-left: 3px solid var(--accent-terracotta);
+        padding: var(--space-lg) var(--space-xl);
+        margin: var(--space-lg) 0;
+      }
+      .callout-title {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent-terracotta);
+        margin-bottom: var(--space-sm);
+      }
+      .callout p {
+        font-size: 13px;
+        color: var(--text-secondary);
+        max-width: 100%;
+      }
 
-    /* Tone examples */
-    .tone-example {
-      border: 1px solid var(--border-light);
-      padding: var(--space-lg) var(--space-xl);
-      margin-bottom: 12px;
-    }
-    .tone-example-label {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: var(--space-sm);
-    }
-    .tone-bad {
-      font-size: 13px;
-      color: #B00020;
-      text-decoration: line-through;
-      margin-bottom: 6px;
-    }
-    .tone-good {
-      font-size: 13px;
-      color: var(--accent-vert);
-      font-family: var(--font-display);
-      font-style: italic;
-      font-weight: 400;
-    }
+      /* Tone examples */
+      .tone-example {
+        border: 1px solid var(--border-light);
+        padding: var(--space-lg) var(--space-xl);
+        margin-bottom: 12px;
+      }
+      .tone-example-label {
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: var(--space-sm);
+      }
+      .tone-bad {
+        font-size: 13px;
+        color: #b00020;
+        text-decoration: line-through;
+        margin-bottom: 6px;
+      }
+      .tone-good {
+        font-size: 13px;
+        color: var(--accent-vert);
+        font-family: var(--font-display);
+        font-style: italic;
+        font-weight: 400;
+      }
 
-    /* Responsive hint */
-    .mobile-note {
-      background: var(--bg-deep);
-      color: rgba(255,255,255,0.7);
-      padding: var(--space-md) var(--space-lg);
-      font-size: 12px;
-      font-weight: 300;
-      margin: var(--space-sm) 0;
-      border-left: 3px solid var(--accent-bleu);
-    }
-    .mobile-note strong {
-      color: var(--accent-bleu);
-      font-weight: 500;
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 4px;
-    }
+      /* Responsive hint */
+      .mobile-note {
+        background: var(--bg-deep);
+        color: rgba(255, 255, 255, 0.7);
+        padding: var(--space-md) var(--space-lg);
+        font-size: 12px;
+        font-weight: 300;
+        margin: var(--space-sm) 0;
+        border-left: 3px solid var(--accent-bleu);
+      }
+      .mobile-note strong {
+        color: var(--accent-bleu);
+        font-weight: 500;
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 4px;
+      }
 
-    /* ============================================================
+      /* ============================================================
        PAGE INTRO
     ============================================================ */
-    .page-intro {
-      background: var(--bg-deep);
-      padding: var(--space-3xl) var(--space-xl);
-      text-align: center;
-    }
-    .page-intro-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 8px 16px;
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: var(--space-lg);
-    }
-    .page-intro-title {
-      font-family: var(--font-display);
-      font-size: clamp(36px, 5vw, 64px);
-      font-weight: 300;
-      color: var(--text-inverse);
-      line-height: 1.15;
-      margin-bottom: var(--space-lg);
-    }
-    .page-intro-subtitle {
-      font-size: 14px;
-      font-weight: 300;
-      color: rgba(255,255,255,0.45);
-      max-width: 60ch;
-      margin: 0 auto;
-      line-height: 1.75;
-    }
+      .page-intro {
+        background: var(--bg-deep);
+        padding: var(--space-3xl) var(--space-xl);
+        text-align: center;
+      }
+      .page-intro-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 8px 16px;
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: var(--space-lg);
+      }
+      .page-intro-title {
+        font-family: var(--font-display);
+        font-size: clamp(36px, 5vw, 64px);
+        font-weight: 300;
+        color: var(--text-inverse);
+        line-height: 1.15;
+        margin-bottom: var(--space-lg);
+      }
+      .page-intro-subtitle {
+        font-size: 14px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.45);
+        max-width: 60ch;
+        margin: 0 auto;
+        line-height: 1.75;
+      }
 
-    /* ============================================================
+      /* ============================================================
        PRINT / EXPORT
     ============================================================ */
-    @media print {
-      .doc-nav { display: none; }
-      .doc-main { padding-top: 0; }
-    }
+      @media print {
+        .doc-nav {
+          display: none;
+        }
+        .doc-main {
+          padding-top: 0;
+        }
+      }
 
-    @media (max-width: 900px) {
-      .doc-nav-links { display: none; }
-      .hero-cover { grid-template-columns: 1fr; }
-      .hero-image-side { min-height: 60vw; }
-      #savoirfaire { grid-template-columns: 1fr; }
-      #creatrice { grid-template-columns: 1fr; }
-      #editorial { grid-template-columns: 1fr; }
-      .collections-grid { grid-template-columns: 1fr 1fr; }
-      .products-grid { grid-template-columns: 1fr 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-      .two-col { grid-template-columns: 1fr; }
-      .three-col { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
+      @media (max-width: 900px) {
+        .doc-nav-links {
+          display: none;
+        }
+        .hero-cover {
+          grid-template-columns: 1fr;
+        }
+        .hero-image-side {
+          min-height: 60vw;
+        }
+        #savoirfaire {
+          grid-template-columns: 1fr;
+        }
+        #creatrice {
+          grid-template-columns: 1fr;
+        }
+        #editorial {
+          grid-template-columns: 1fr;
+        }
+        .collections-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .products-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+        .three-col {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── DOC NAVIGATION ── -->
+    <nav class="doc-nav">
+      <div style="display: flex; align-items: center; gap: 20px">
+        <span class="doc-nav-logo">Creatyss</span>
+        <span class="doc-nav-label">Direction Artistique Homepage — v1.0</span>
+      </div>
+      <ul class="doc-nav-links">
+        <li><a href="#palette">Palette</a></li>
+        <li><a href="#typo">Typographie</a></li>
+        <li><a href="#structure">Structure</a></li>
+        <li><a href="#tone">Ton éditorial</a></li>
+        <li><a href="#preview">Aperçu</a></li>
+      </ul>
+    </nav>
 
-<!-- ── DOC NAVIGATION ── -->
-<nav class="doc-nav">
-  <div style="display:flex; align-items:center; gap:20px">
-    <span class="doc-nav-logo">Creatyss</span>
-    <span class="doc-nav-label">Direction Artistique Homepage — v1.0</span>
-  </div>
-  <ul class="doc-nav-links">
-    <li><a href="#palette">Palette</a></li>
-    <li><a href="#typo">Typographie</a></li>
-    <li><a href="#structure">Structure</a></li>
-    <li><a href="#tone">Ton éditorial</a></li>
-    <li><a href="#preview">Aperçu</a></li>
-  </ul>
-</nav>
-
-<!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════
      PAGE INTRO
 ══════════════════════════════════════════════════ -->
-<div class="doc-main">
-<section class="page-intro">
-  <div class="page-intro-badge">
-    <span>●</span> Direction artistique complète
-  </div>
-  <h1 class="page-intro-title">
-    Creatyss<br>
-    <em>Homepage Design Brief</em>
-  </h1>
-  <p class="page-intro-subtitle">
-    Direction artistique complète — palette colorimétrique, typographie, structure de page,
-    ton éditorial, et recommandations desktop &amp; mobile. Prêt à maquetter.
-  </p>
-</section>
+    <div class="doc-main">
+      <section class="page-intro">
+        <div class="page-intro-badge"><span>●</span> Direction artistique complète</div>
+        <h1 class="page-intro-title">
+          Creatyss<br />
+          <em>Homepage Design Brief</em>
+        </h1>
+        <p class="page-intro-subtitle">
+          Direction artistique complète — palette colorimétrique, typographie, structure de page,
+          ton éditorial, et recommandations desktop &amp; mobile. Prêt à maquetter.
+        </p>
+      </section>
 
-
-<!-- ══════════════════════════════════════════════════
+      <!-- ══════════════════════════════════════════════════
      § PALETTE COLORIMÉTRIQUE
 ══════════════════════════════════════════════════ -->
-<section class="doc-section" id="palette">
-  <div class="doc-section-title">01 — Identité visuelle</div>
-  <h2 class="doc-section-heading">Palette colorimétrique</h2>
+      <section class="doc-section" id="palette">
+        <div class="doc-section-title">01 — Identité visuelle</div>
+        <h2 class="doc-section-heading">Palette colorimétrique</h2>
 
-  <div class="callout">
-    <div class="callout-title">Principe directeur</div>
-    <p>Le fond ne colore pas — les sacs colorent. La palette de base est pensée comme un écrin neutre et chaleureux, inspiré des matières naturelles (lin, parchemin, bois clair), qui met les produits en valeur sans jamais les concurrencer. Les accents viennent exclusivement des couleurs de collection : vert naturel, terracotta, bordeaux, bleu ardoise.</p>
-  </div>
-
-  <!-- Backgrounds & Surfaces -->
-  <div class="palette-group">
-    <div class="palette-group-label">Fonds & Surfaces</div>
-    <div class="palette-row">
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#F8F4EF;"></div>
-        <div class="color-chip-name">Lin chaud</div>
-        <div class="color-chip-hex">#F8F4EF</div>
-        <div class="color-chip-usage">Fond principal — 80 % des surfaces</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#FDFCF9;"></div>
-        <div class="color-chip-name">Blanc cassé</div>
-        <div class="color-chip-hex">#FDFCF9</div>
-        <div class="color-chip-usage">Sections alternées, cartes produit</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#F0EAE1; border:1px solid #E4DBCF;"></div>
-        <div class="color-chip-name">Parchemin</div>
-        <div class="color-chip-hex">#F0EAE1</div>
-        <div class="color-chip-usage">Encarts, newsletter, sections douces</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#1C1610;"></div>
-        <div class="color-chip-name">Brun profond</div>
-        <div class="color-chip-hex">#1C1610</div>
-        <div class="color-chip-usage">Sections sombres, footer, badges</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#2E241C;"></div>
-        <div class="color-chip-name">Brun nuit</div>
-        <div class="color-chip-hex">#2E241C</div>
-        <div class="color-chip-usage">Footer profond, fonds sombres alt.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Textes -->
-  <div class="palette-group">
-    <div class="palette-group-label">Textes</div>
-    <div class="palette-row">
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#1C1610;"></div>
-        <div class="color-chip-name">Primaire</div>
-        <div class="color-chip-hex">#1C1610</div>
-        <div class="color-chip-usage">Titres, texte fort</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#5A4A3C;"></div>
-        <div class="color-chip-name">Secondaire</div>
-        <div class="color-chip-hex">#5A4A3C</div>
-        <div class="color-chip-usage">Corps de texte, descriptions</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#9B8C7E;"></div>
-        <div class="color-chip-name">Atténué</div>
-        <div class="color-chip-hex">#9B8C7E</div>
-        <div class="color-chip-usage">Labels, prix, métadonnées, légendes</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#F8F4EF; border:1px solid #E4DBCF;"></div>
-        <div class="color-chip-name">Inversé</div>
-        <div class="color-chip-hex">#F8F4EF</div>
-        <div class="color-chip-usage">Texte sur fonds sombres</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bordures -->
-  <div class="palette-group">
-    <div class="palette-group-label">Bordures & Séparateurs</div>
-    <div class="palette-row">
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#E4DBCF;"></div>
-        <div class="color-chip-name">Sable clair</div>
-        <div class="color-chip-hex">#E4DBCF</div>
-        <div class="color-chip-usage">Lignes fines, dividers, contours</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#C9BEB0;"></div>
-        <div class="color-chip-name">Sable moyen</div>
-        <div class="color-chip-hex">#C9BEB0</div>
-        <div class="color-chip-usage">Cadres, encarts, inputs</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Accents produits -->
-  <div class="palette-group">
-    <div class="palette-group-label">Accents — Couleurs produits (usage sobre et ponctuel)</div>
-    <div class="palette-row">
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#C4764A;"></div>
-        <div class="color-chip-name">Terracotta</div>
-        <div class="color-chip-hex">#C4764A</div>
-        <div class="color-chip-usage">Accent <strong>principal</strong> — tags Nouveau, CTA accent, dividers, badges</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#8B2E2E;"></div>
-        <div class="color-chip-name">Bordeaux</div>
-        <div class="color-chip-hex">#8B2E2E</div>
-        <div class="color-chip-usage">Accent fort — tags collection, survols</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#6B7A5E;"></div>
-        <div class="color-chip-name">Vert naturel</div>
-        <div class="color-chip-hex">#6B7A5E</div>
-        <div class="color-chip-usage">Accent doux — nature, savoir-faire, matières</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#7B93A3;"></div>
-        <div class="color-chip-name">Bleu ardoise</div>
-        <div class="color-chip-hex">#7B93A3</div>
-        <div class="color-chip-usage">Accent doux — sacs bleus, variantes</div>
-      </div>
-      <div class="color-chip">
-        <div class="color-chip-swatch" style="background:#C9A96E;"></div>
-        <div class="color-chip-name">Or chaud</div>
-        <div class="color-chip-hex">#C9A96E</div>
-        <div class="color-chip-usage">Ferrures, rivets, détails premium</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Justification -->
-  <div style="margin-top: var(--space-2xl);">
-    <div class="doc-section-title" style="margin-bottom:var(--space-md);">Justification colorimétrique</div>
-    <div class="two-col">
-      <div>
-        <h4 style="font-family: var(--font-display); font-weight:400; font-size:20px; margin-bottom:var(--space-md);">Pourquoi cette base neutre ?</h4>
-        <p style="font-size:13px; line-height:1.8; max-width:100%;">Le site actuel présente des sacs aux coloris intenses et variés — vert anis, bordeaux, safran, écru. Si la page d'accueil adopte elle-même une couleur forte, les sacs s'y noient. À l'inverse, un fond lin chaud crée un contraste naturel qui fait immédiatement ressortir les teintes des produits, comme une vitrine de joaillier fond velours.</p>
-        <div class="divider" style="margin: var(--space-md) 0;"></div>
-        <p style="font-size:13px; line-height:1.8; max-width:100%;">La chaleur des bruns et lins est directement extraite des matières utilisées : toiles, cuirs, tissus naturels que l'on voit sur les sacs. Cela crée une cohérence sémantique forte entre l'interface et les produits.</p>
-      </div>
-      <div>
-        <h4 style="font-family: var(--font-display); font-weight:400; font-size:20px; margin-bottom:var(--space-md);">Pourquoi le terracotta comme accent principal ?</h4>
-        <p style="font-size:13px; line-height:1.8; max-width:100%;">Le terracotta est visuellement présent dans plusieurs sacs (tons safran, abricot chaud), il est à la fois chaud, artisanal et premium. Contrairement au rose/violet, il évoque la terre, la céramique, l'atelier — parfaitement aligné avec le positionnement fait-main. Il ponctue sans dominer.</p>
-        <div class="divider" style="margin: var(--space-md) 0;"></div>
-        <p style="font-size:13px; line-height:1.8; max-width:100%;">Le bordeaux et le vert naturel sont des accents secondaires, utilisés uniquement pour les tags de collection, jamais sur les fonds de section. Ils rappellent les teintes phares de la gamme.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- UI Tokens -->
-  <div style="margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid var(--border-light);">
-    <div class="doc-section-title" style="margin-bottom:var(--space-md);">Tokens UI — Application</div>
-    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:12px;">
-      <div class="tone-example" style="margin:0; background:var(--bg-off-white);">
-        <div class="tone-example-label">Background page</div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:16px; height:16px; background:#F8F4EF; border:1px solid #E4DBCF;"></div>
-          <span style="font-size:12px; color:var(--text-secondary);">#F8F4EF — Lin chaud</span>
+        <div class="callout">
+          <div class="callout-title">Principe directeur</div>
+          <p>
+            Le fond ne colore pas — les sacs colorent. La palette de base est pensée comme un écrin
+            neutre et chaleureux, inspiré des matières naturelles (lin, parchemin, bois clair), qui
+            met les produits en valeur sans jamais les concurrencer. Les accents viennent
+            exclusivement des couleurs de collection : vert naturel, terracotta, bordeaux, bleu
+            ardoise.
+          </p>
         </div>
-      </div>
-      <div class="tone-example" style="margin:0; background:var(--bg-off-white);">
-        <div class="tone-example-label">Bouton CTA principal</div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:16px; height:16px; background:#1C1610;"></div>
-          <span style="font-size:12px; color:var(--text-secondary);">#1C1610 fond / #F8F4EF texte</span>
-        </div>
-      </div>
-      <div class="tone-example" style="margin:0; background:var(--bg-off-white);">
-        <div class="tone-example-label">Bouton CTA secondaire</div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:16px; height:16px; background:transparent; border:1px solid #C9BEB0;"></div>
-          <span style="font-size:12px; color:var(--text-secondary);">Outline #C9BEB0 / texte #1C1610</span>
-        </div>
-      </div>
-      <div class="tone-example" style="margin:0; background:var(--bg-off-white);">
-        <div class="tone-example-label">Tag Nouveauté</div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:16px; height:16px; background:#C4764A;"></div>
-          <span style="font-size:12px; color:var(--text-secondary);">#C4764A — Terracotta</span>
-        </div>
-      </div>
-      <div class="tone-example" style="margin:0; background:var(--bg-off-white);">
-        <div class="tone-example-label">Liens & hover</div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:16px; height:16px; background:#1C1610; opacity:0.7;"></div>
-          <span style="font-size:12px; color:var(--text-secondary);">Opacity 0.6 → 1.0 au survol</span>
-        </div>
-      </div>
-      <div class="tone-example" style="margin:0; background:var(--bg-off-white);">
-        <div class="tone-example-label">Input / Formulaire</div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div style="width:16px; height:16px; background:#FDFCF9; border:1px solid #C9BEB0;"></div>
-          <span style="font-size:12px; color:var(--text-secondary);">Fond #FDFCF9, bordure #C9BEB0</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
+        <!-- Backgrounds & Surfaces -->
+        <div class="palette-group">
+          <div class="palette-group-label">Fonds & Surfaces</div>
+          <div class="palette-row">
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #f8f4ef"></div>
+              <div class="color-chip-name">Lin chaud</div>
+              <div class="color-chip-hex">#F8F4EF</div>
+              <div class="color-chip-usage">Fond principal — 80 % des surfaces</div>
+            </div>
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #fdfcf9"></div>
+              <div class="color-chip-name">Blanc cassé</div>
+              <div class="color-chip-hex">#FDFCF9</div>
+              <div class="color-chip-usage">Sections alternées, cartes produit</div>
+            </div>
+            <div class="color-chip">
+              <div
+                class="color-chip-swatch"
+                style="background: #f0eae1; border: 1px solid #e4dbcf"
+              ></div>
+              <div class="color-chip-name">Parchemin</div>
+              <div class="color-chip-hex">#F0EAE1</div>
+              <div class="color-chip-usage">Encarts, newsletter, sections douces</div>
+            </div>
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #1c1610"></div>
+              <div class="color-chip-name">Brun profond</div>
+              <div class="color-chip-hex">#1C1610</div>
+              <div class="color-chip-usage">Sections sombres, footer, badges</div>
+            </div>
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #2e241c"></div>
+              <div class="color-chip-name">Brun nuit</div>
+              <div class="color-chip-hex">#2E241C</div>
+              <div class="color-chip-usage">Footer profond, fonds sombres alt.</div>
+            </div>
+          </div>
+        </div>
 
-<!-- ══════════════════════════════════════════════════
+        <!-- Textes -->
+        <div class="palette-group">
+          <div class="palette-group-label">Textes</div>
+          <div class="palette-row">
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #1c1610"></div>
+              <div class="color-chip-name">Primaire</div>
+              <div class="color-chip-hex">#1C1610</div>
+              <div class="color-chip-usage">Titres, texte fort</div>
+            </div>
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #5a4a3c"></div>
+              <div class="color-chip-name">Secondaire</div>
+              <div class="color-chip-hex">#5A4A3C</div>
+              <div class="color-chip-usage">Corps de texte, descriptions</div>
+            </div>
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #9b8c7e"></div>
+              <div class="color-chip-name">Atténué</div>
+              <div class="color-chip-hex">#9B8C7E</div>
+              <div class="color-chip-usage">Labels, prix, métadonnées, légendes</div>
+            </div>
+            <div class="color-chip">
+              <div
+                class="color-chip-swatch"
+                style="background: #f8f4ef; border: 1px solid #e4dbcf"
+              ></div>
+              <div class="color-chip-name">Inversé</div>
+              <div class="color-chip-hex">#F8F4EF</div>
+              <div class="color-chip-usage">Texte sur fonds sombres</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bordures -->
+        <div class="palette-group">
+          <div class="palette-group-label">Bordures & Séparateurs</div>
+          <div class="palette-row">
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #e4dbcf"></div>
+              <div class="color-chip-name">Sable clair</div>
+              <div class="color-chip-hex">#E4DBCF</div>
+              <div class="color-chip-usage">Lignes fines, dividers, contours</div>
+            </div>
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #c9beb0"></div>
+              <div class="color-chip-name">Sable moyen</div>
+              <div class="color-chip-hex">#C9BEB0</div>
+              <div class="color-chip-usage">Cadres, encarts, inputs</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accents produits -->
+        <div class="palette-group">
+          <div class="palette-group-label">
+            Accents — Couleurs produits (usage sobre et ponctuel)
+          </div>
+          <div class="palette-row">
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #c4764a"></div>
+              <div class="color-chip-name">Terracotta</div>
+              <div class="color-chip-hex">#C4764A</div>
+              <div class="color-chip-usage">
+                Accent <strong>principal</strong> — tags Nouveau, CTA accent, dividers, badges
+              </div>
+            </div>
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #8b2e2e"></div>
+              <div class="color-chip-name">Bordeaux</div>
+              <div class="color-chip-hex">#8B2E2E</div>
+              <div class="color-chip-usage">Accent fort — tags collection, survols</div>
+            </div>
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #6b7a5e"></div>
+              <div class="color-chip-name">Vert naturel</div>
+              <div class="color-chip-hex">#6B7A5E</div>
+              <div class="color-chip-usage">Accent doux — nature, savoir-faire, matières</div>
+            </div>
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #7b93a3"></div>
+              <div class="color-chip-name">Bleu ardoise</div>
+              <div class="color-chip-hex">#7B93A3</div>
+              <div class="color-chip-usage">Accent doux — sacs bleus, variantes</div>
+            </div>
+            <div class="color-chip">
+              <div class="color-chip-swatch" style="background: #c9a96e"></div>
+              <div class="color-chip-name">Or chaud</div>
+              <div class="color-chip-hex">#C9A96E</div>
+              <div class="color-chip-usage">Ferrures, rivets, détails premium</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Justification -->
+        <div style="margin-top: var(--space-2xl)">
+          <div class="doc-section-title" style="margin-bottom: var(--space-md)">
+            Justification colorimétrique
+          </div>
+          <div class="two-col">
+            <div>
+              <h4
+                style="
+                  font-family: var(--font-display);
+                  font-weight: 400;
+                  font-size: 20px;
+                  margin-bottom: var(--space-md);
+                "
+              >
+                Pourquoi cette base neutre ?
+              </h4>
+              <p style="font-size: 13px; line-height: 1.8; max-width: 100%">
+                Le site actuel présente des sacs aux coloris intenses et variés — vert anis,
+                bordeaux, safran, écru. Si la page d'accueil adopte elle-même une couleur forte, les
+                sacs s'y noient. À l'inverse, un fond lin chaud crée un contraste naturel qui fait
+                immédiatement ressortir les teintes des produits, comme une vitrine de joaillier
+                fond velours.
+              </p>
+              <div class="divider" style="margin: var(--space-md) 0"></div>
+              <p style="font-size: 13px; line-height: 1.8; max-width: 100%">
+                La chaleur des bruns et lins est directement extraite des matières utilisées :
+                toiles, cuirs, tissus naturels que l'on voit sur les sacs. Cela crée une cohérence
+                sémantique forte entre l'interface et les produits.
+              </p>
+            </div>
+            <div>
+              <h4
+                style="
+                  font-family: var(--font-display);
+                  font-weight: 400;
+                  font-size: 20px;
+                  margin-bottom: var(--space-md);
+                "
+              >
+                Pourquoi le terracotta comme accent principal ?
+              </h4>
+              <p style="font-size: 13px; line-height: 1.8; max-width: 100%">
+                Le terracotta est visuellement présent dans plusieurs sacs (tons safran, abricot
+                chaud), il est à la fois chaud, artisanal et premium. Contrairement au rose/violet,
+                il évoque la terre, la céramique, l'atelier — parfaitement aligné avec le
+                positionnement fait-main. Il ponctue sans dominer.
+              </p>
+              <div class="divider" style="margin: var(--space-md) 0"></div>
+              <p style="font-size: 13px; line-height: 1.8; max-width: 100%">
+                Le bordeaux et le vert naturel sont des accents secondaires, utilisés uniquement
+                pour les tags de collection, jamais sur les fonds de section. Ils rappellent les
+                teintes phares de la gamme.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- UI Tokens -->
+        <div
+          style="
+            margin-top: var(--space-2xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--border-light);
+          "
+        >
+          <div class="doc-section-title" style="margin-bottom: var(--space-md)">
+            Tokens UI — Application
+          </div>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+              gap: 12px;
+            "
+          >
+            <div class="tone-example" style="margin: 0; background: var(--bg-off-white)">
+              <div class="tone-example-label">Background page</div>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div
+                  style="width: 16px; height: 16px; background: #f8f4ef; border: 1px solid #e4dbcf"
+                ></div>
+                <span style="font-size: 12px; color: var(--text-secondary)"
+                  >#F8F4EF — Lin chaud</span
+                >
+              </div>
+            </div>
+            <div class="tone-example" style="margin: 0; background: var(--bg-off-white)">
+              <div class="tone-example-label">Bouton CTA principal</div>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div style="width: 16px; height: 16px; background: #1c1610"></div>
+                <span style="font-size: 12px; color: var(--text-secondary)"
+                  >#1C1610 fond / #F8F4EF texte</span
+                >
+              </div>
+            </div>
+            <div class="tone-example" style="margin: 0; background: var(--bg-off-white)">
+              <div class="tone-example-label">Bouton CTA secondaire</div>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div
+                  style="
+                    width: 16px;
+                    height: 16px;
+                    background: transparent;
+                    border: 1px solid #c9beb0;
+                  "
+                ></div>
+                <span style="font-size: 12px; color: var(--text-secondary)"
+                  >Outline #C9BEB0 / texte #1C1610</span
+                >
+              </div>
+            </div>
+            <div class="tone-example" style="margin: 0; background: var(--bg-off-white)">
+              <div class="tone-example-label">Tag Nouveauté</div>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div style="width: 16px; height: 16px; background: #c4764a"></div>
+                <span style="font-size: 12px; color: var(--text-secondary)"
+                  >#C4764A — Terracotta</span
+                >
+              </div>
+            </div>
+            <div class="tone-example" style="margin: 0; background: var(--bg-off-white)">
+              <div class="tone-example-label">Liens & hover</div>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div style="width: 16px; height: 16px; background: #1c1610; opacity: 0.7"></div>
+                <span style="font-size: 12px; color: var(--text-secondary)"
+                  >Opacity 0.6 → 1.0 au survol</span
+                >
+              </div>
+            </div>
+            <div class="tone-example" style="margin: 0; background: var(--bg-off-white)">
+              <div class="tone-example-label">Input / Formulaire</div>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div
+                  style="width: 16px; height: 16px; background: #fdfcf9; border: 1px solid #c9beb0"
+                ></div>
+                <span style="font-size: 12px; color: var(--text-secondary)"
+                  >Fond #FDFCF9, bordure #C9BEB0</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
      § TYPOGRAPHIE
 ══════════════════════════════════════════════════ -->
-<section class="doc-section" id="typo" style="background: var(--bg-off-white);">
-  <div class="doc-section-title">02 — Identité typographique</div>
-  <h2 class="doc-section-heading">Typographies recommandées</h2>
+      <section class="doc-section" id="typo" style="background: var(--bg-off-white)">
+        <div class="doc-section-title">02 — Identité typographique</div>
+        <h2 class="doc-section-heading">Typographies recommandées</h2>
 
-  <div class="callout">
-    <div class="callout-title">Principe directeur</div>
-    <p>Deux familles complémentaires : un serif élégant et expressif pour les titres et moments clés, un sans-serif épuré et léger pour le corps, les labels et la navigation. Ce duo est caractéristique des maisons de mode et marques artisanales premium françaises.</p>
-  </div>
+        <div class="callout">
+          <div class="callout-title">Principe directeur</div>
+          <p>
+            Deux familles complémentaires : un serif élégant et expressif pour les titres et moments
+            clés, un sans-serif épuré et léger pour le corps, les labels et la navigation. Ce duo
+            est caractéristique des maisons de mode et marques artisanales premium françaises.
+          </p>
+        </div>
 
-  <!-- Cormorant -->
-  <div class="type-specimen">
-    <div class="type-meta">
-      <div class="type-meta-item"><strong>Famille</strong>Cormorant Garamond</div>
-      <div class="type-meta-item"><strong>Type</strong>Serif Display</div>
-      <div class="type-meta-item"><strong>Source</strong>Google Fonts (gratuit)</div>
-      <div class="type-meta-item"><strong>Usage</strong>Titres H1–H3, citations, manifesto</div>
-    </div>
-    <div style="display:flex; flex-direction:column; gap:var(--space-md);">
-      <div class="specimen-display">Savoir-faire français</div>
-      <div class="specimen-display-italic">Chaque sac, une histoire unique.</div>
-      <div style="font-family: var(--font-display); font-size: 24px; font-weight: 500; letter-spacing:0.05em; color: var(--text-primary);">Cormorant Medium — Sous-titres & produits</div>
-      <div style="font-family: var(--font-display); font-size: 14px; font-weight: 400; letter-spacing: 0.15em; text-transform:uppercase; color: var(--text-muted);">CORMORANT SMALL CAPS — Catégories</div>
-    </div>
-    <div class="mobile-note" style="margin-top:var(--space-lg);">
-      <strong>Pourquoi Cormorant Garamond ?</strong>
-      Inspiré du Garamond historique, il est particulièrement adapté aux marques artisanales et de mode haut de gamme. Ses empattements fins et ses italiques expressifs créent immédiatement une impression de raffinement. Parfait pour les manifestes et les slogans poétiques.
-    </div>
-  </div>
+        <!-- Cormorant -->
+        <div class="type-specimen">
+          <div class="type-meta">
+            <div class="type-meta-item"><strong>Famille</strong>Cormorant Garamond</div>
+            <div class="type-meta-item"><strong>Type</strong>Serif Display</div>
+            <div class="type-meta-item"><strong>Source</strong>Google Fonts (gratuit)</div>
+            <div class="type-meta-item">
+              <strong>Usage</strong>Titres H1–H3, citations, manifesto
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: var(--space-md)">
+            <div class="specimen-display">Savoir-faire français</div>
+            <div class="specimen-display-italic">Chaque sac, une histoire unique.</div>
+            <div
+              style="
+                font-family: var(--font-display);
+                font-size: 24px;
+                font-weight: 500;
+                letter-spacing: 0.05em;
+                color: var(--text-primary);
+              "
+            >
+              Cormorant Medium — Sous-titres & produits
+            </div>
+            <div
+              style="
+                font-family: var(--font-display);
+                font-size: 14px;
+                font-weight: 400;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--text-muted);
+              "
+            >
+              CORMORANT SMALL CAPS — Catégories
+            </div>
+          </div>
+          <div class="mobile-note" style="margin-top: var(--space-lg)">
+            <strong>Pourquoi Cormorant Garamond ?</strong>
+            Inspiré du Garamond historique, il est particulièrement adapté aux marques artisanales
+            et de mode haut de gamme. Ses empattements fins et ses italiques expressifs créent
+            immédiatement une impression de raffinement. Parfait pour les manifestes et les slogans
+            poétiques.
+          </div>
+        </div>
 
-  <!-- Jost -->
-  <div class="type-specimen">
-    <div class="type-meta">
-      <div class="type-meta-item"><strong>Famille</strong>Jost</div>
-      <div class="type-meta-item"><strong>Type</strong>Sans-serif géométrique</div>
-      <div class="type-meta-item"><strong>Source</strong>Google Fonts (gratuit)</div>
-      <div class="type-meta-item"><strong>Usage</strong>Navigation, corps, labels, boutons</div>
-    </div>
-    <div style="display:flex; flex-direction:column; gap:var(--space-md);">
-      <div class="specimen-body">Chaque création est pensée, dessinée et cousue à la main, dans notre atelier en France. Des matières sélectionnées avec soin, des finitions irréprochables, pour un objet qui dure et s'apprécie.</div>
-      <div style="font-family: var(--font-body); font-size: 11px; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase; color: var(--text-muted);">JOST MEDIUM — LABELS & NAVIGATION</div>
-      <div style="font-family: var(--font-body); font-size: 13px; font-weight: 300; color: var(--text-muted);">Jost Light 300 — Prix, détails, métadonnées</div>
-    </div>
-    <div class="mobile-note" style="margin-top:var(--space-lg);">
-      <strong>Alternative : DM Sans ou Outfit</strong>
-      Si Jost ne convient pas, DM Sans offre une lisibilité légèrement supérieure sur mobile. Outfit est une option plus neutre mais moins caractérielle. Éviter Montserrat (trop présent, trop générique) et Raleway (trop fin sur petits écrans).
-    </div>
-  </div>
+        <!-- Jost -->
+        <div class="type-specimen">
+          <div class="type-meta">
+            <div class="type-meta-item"><strong>Famille</strong>Jost</div>
+            <div class="type-meta-item"><strong>Type</strong>Sans-serif géométrique</div>
+            <div class="type-meta-item"><strong>Source</strong>Google Fonts (gratuit)</div>
+            <div class="type-meta-item">
+              <strong>Usage</strong>Navigation, corps, labels, boutons
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: var(--space-md)">
+            <div class="specimen-body">
+              Chaque création est pensée, dessinée et cousue à la main, dans notre atelier en
+              France. Des matières sélectionnées avec soin, des finitions irréprochables, pour un
+              objet qui dure et s'apprécie.
+            </div>
+            <div
+              style="
+                font-family: var(--font-body);
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.35em;
+                text-transform: uppercase;
+                color: var(--text-muted);
+              "
+            >
+              JOST MEDIUM — LABELS & NAVIGATION
+            </div>
+            <div
+              style="
+                font-family: var(--font-body);
+                font-size: 13px;
+                font-weight: 300;
+                color: var(--text-muted);
+              "
+            >
+              Jost Light 300 — Prix, détails, métadonnées
+            </div>
+          </div>
+          <div class="mobile-note" style="margin-top: var(--space-lg)">
+            <strong>Alternative : DM Sans ou Outfit</strong>
+            Si Jost ne convient pas, DM Sans offre une lisibilité légèrement supérieure sur mobile.
+            Outfit est une option plus neutre mais moins caractérielle. Éviter Montserrat (trop
+            présent, trop générique) et Raleway (trop fin sur petits écrans).
+          </div>
+        </div>
 
-  <!-- Échelle -->
-  <div style="margin-top: var(--space-xl); padding-top: var(--space-xl); border-top: 1px solid var(--border-light);">
-    <div class="doc-section-title" style="margin-bottom:var(--space-lg);">Échelle typographique</div>
-    <div style="display:flex; flex-direction:column; gap:16px;">
-      <div style="display:grid; grid-template-columns:200px 1fr; gap:var(--space-lg); align-items:center; padding:var(--space-md) 0; border-bottom:1px solid var(--border-light);">
-        <div style="font-size:11px; color:var(--text-muted);"><strong style="display:block; color:var(--text-secondary); font-size:11px;">H1 / Hero</strong>Cormorant 300 — 72–88px clamp</div>
-        <div style="font-family:var(--font-display); font-size:clamp(36px,5vw,72px); font-weight:300; line-height:1.1;">L'atelier fait main</div>
-      </div>
-      <div style="display:grid; grid-template-columns:200px 1fr; gap:var(--space-lg); align-items:center; padding:var(--space-md) 0; border-bottom:1px solid var(--border-light);">
-        <div style="font-size:11px; color:var(--text-muted);"><strong style="display:block; color:var(--text-secondary); font-size:11px;">H2 / Section</strong>Cormorant 400 — 42–52px clamp</div>
-        <div style="font-family:var(--font-display); font-size:clamp(28px,4vw,48px); font-weight:400; line-height:1.2;">Nos collections</div>
-      </div>
-      <div style="display:grid; grid-template-columns:200px 1fr; gap:var(--space-lg); align-items:center; padding:var(--space-md) 0; border-bottom:1px solid var(--border-light);">
-        <div style="font-size:11px; color:var(--text-muted);"><strong style="display:block; color:var(--text-secondary); font-size:11px;">H3 / Sous-titre</strong>Cormorant 500 — 24–32px</div>
-        <div style="font-family:var(--font-display); font-size:28px; font-weight:500;">Sac Bandoulière Vert Anis</div>
-      </div>
-      <div style="display:grid; grid-template-columns:200px 1fr; gap:var(--space-lg); align-items:center; padding:var(--space-md) 0; border-bottom:1px solid var(--border-light);">
-        <div style="font-size:11px; color:var(--text-muted);"><strong style="display:block; color:var(--text-secondary); font-size:11px;">Eyebrow</strong>Jost 500, caps, 10px, +0.35em</div>
-        <div style="font-family:var(--font-body); font-size:10px; font-weight:500; letter-spacing:0.35em; text-transform:uppercase; color:var(--text-muted);">SAVOIR-FAIRE ARTISANAL</div>
-      </div>
-      <div style="display:grid; grid-template-columns:200px 1fr; gap:var(--space-lg); align-items:center; padding:var(--space-md) 0; border-bottom:1px solid var(--border-light);">
-        <div style="font-size:11px; color:var(--text-muted);"><strong style="display:block; color:var(--text-secondary); font-size:11px;">Corps</strong>Jost 300 — 14–15px, line-height 1.75</div>
-        <div style="font-family:var(--font-body); font-size:14px; font-weight:300; line-height:1.75; color:var(--text-secondary);">Chaque sac est une pièce unique, entièrement façonnée à la main dans notre atelier.</div>
-      </div>
-      <div style="display:grid; grid-template-columns:200px 1fr; gap:var(--space-lg); align-items:center; padding:var(--space-md) 0;">
-        <div style="font-size:11px; color:var(--text-muted);"><strong style="display:block; color:var(--text-secondary); font-size:11px;">Bouton / Label</strong>Jost 500, caps, 10–11px, +0.2em</div>
-        <a class="btn btn-primary">Découvrir la collection</a>
-      </div>
-    </div>
-  </div>
-</section>
+        <!-- Échelle -->
+        <div
+          style="
+            margin-top: var(--space-xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--border-light);
+          "
+        >
+          <div class="doc-section-title" style="margin-bottom: var(--space-lg)">
+            Échelle typographique
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 16px">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 200px 1fr;
+                gap: var(--space-lg);
+                align-items: center;
+                padding: var(--space-md) 0;
+                border-bottom: 1px solid var(--border-light);
+              "
+            >
+              <div style="font-size: 11px; color: var(--text-muted)">
+                <strong style="display: block; color: var(--text-secondary); font-size: 11px"
+                  >H1 / Hero</strong
+                >Cormorant 300 — 72–88px clamp
+              </div>
+              <div
+                style="
+                  font-family: var(--font-display);
+                  font-size: clamp(36px, 5vw, 72px);
+                  font-weight: 300;
+                  line-height: 1.1;
+                "
+              >
+                L'atelier fait main
+              </div>
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 200px 1fr;
+                gap: var(--space-lg);
+                align-items: center;
+                padding: var(--space-md) 0;
+                border-bottom: 1px solid var(--border-light);
+              "
+            >
+              <div style="font-size: 11px; color: var(--text-muted)">
+                <strong style="display: block; color: var(--text-secondary); font-size: 11px"
+                  >H2 / Section</strong
+                >Cormorant 400 — 42–52px clamp
+              </div>
+              <div
+                style="
+                  font-family: var(--font-display);
+                  font-size: clamp(28px, 4vw, 48px);
+                  font-weight: 400;
+                  line-height: 1.2;
+                "
+              >
+                Nos collections
+              </div>
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 200px 1fr;
+                gap: var(--space-lg);
+                align-items: center;
+                padding: var(--space-md) 0;
+                border-bottom: 1px solid var(--border-light);
+              "
+            >
+              <div style="font-size: 11px; color: var(--text-muted)">
+                <strong style="display: block; color: var(--text-secondary); font-size: 11px"
+                  >H3 / Sous-titre</strong
+                >Cormorant 500 — 24–32px
+              </div>
+              <div style="font-family: var(--font-display); font-size: 28px; font-weight: 500">
+                Sac Bandoulière Vert Anis
+              </div>
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 200px 1fr;
+                gap: var(--space-lg);
+                align-items: center;
+                padding: var(--space-md) 0;
+                border-bottom: 1px solid var(--border-light);
+              "
+            >
+              <div style="font-size: 11px; color: var(--text-muted)">
+                <strong style="display: block; color: var(--text-secondary); font-size: 11px"
+                  >Eyebrow</strong
+                >Jost 500, caps, 10px, +0.35em
+              </div>
+              <div
+                style="
+                  font-family: var(--font-body);
+                  font-size: 10px;
+                  font-weight: 500;
+                  letter-spacing: 0.35em;
+                  text-transform: uppercase;
+                  color: var(--text-muted);
+                "
+              >
+                SAVOIR-FAIRE ARTISANAL
+              </div>
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 200px 1fr;
+                gap: var(--space-lg);
+                align-items: center;
+                padding: var(--space-md) 0;
+                border-bottom: 1px solid var(--border-light);
+              "
+            >
+              <div style="font-size: 11px; color: var(--text-muted)">
+                <strong style="display: block; color: var(--text-secondary); font-size: 11px"
+                  >Corps</strong
+                >Jost 300 — 14–15px, line-height 1.75
+              </div>
+              <div
+                style="
+                  font-family: var(--font-body);
+                  font-size: 14px;
+                  font-weight: 300;
+                  line-height: 1.75;
+                  color: var(--text-secondary);
+                "
+              >
+                Chaque sac est une pièce unique, entièrement façonnée à la main dans notre atelier.
+              </div>
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 200px 1fr;
+                gap: var(--space-lg);
+                align-items: center;
+                padding: var(--space-md) 0;
+              "
+            >
+              <div style="font-size: 11px; color: var(--text-muted)">
+                <strong style="display: block; color: var(--text-secondary); font-size: 11px"
+                  >Bouton / Label</strong
+                >Jost 500, caps, 10–11px, +0.2em
+              </div>
+              <a class="btn btn-primary">Découvrir la collection</a>
+            </div>
+          </div>
+        </div>
+      </section>
 
-
-<!-- ══════════════════════════════════════════════════
+      <!-- ══════════════════════════════════════════════════
      § STRUCTURE HOMEPAGE
 ══════════════════════════════════════════════════ -->
-<section class="doc-section" id="structure">
-  <div class="doc-section-title">03 — Architecture de page</div>
-  <h2 class="doc-section-heading">Structure de la homepage</h2>
+      <section class="doc-section" id="structure">
+        <div class="doc-section-title">03 — Architecture de page</div>
+        <h2 class="doc-section-heading">Structure de la homepage</h2>
 
-  <div class="callout">
-    <div class="callout-title">Principe directeur</div>
-    <p>10 sections courtes, aérées, focalisées. Chaque section a un seul rôle. L'alternance de fonds (lin chaud / blanc cassé / sombre) rythme la lecture sans avoir besoin de couleurs fortes. Les photos produits sont les seuls éléments colorés vraiment présents.</p>
-  </div>
+        <div class="callout">
+          <div class="callout-title">Principe directeur</div>
+          <p>
+            10 sections courtes, aérées, focalisées. Chaque section a un seul rôle. L'alternance de
+            fonds (lin chaud / blanc cassé / sombre) rythme la lecture sans avoir besoin de couleurs
+            fortes. Les photos produits sont les seuls éléments colorés vraiment présents.
+          </p>
+        </div>
 
-  <!-- S0 : Nav -->
-  <div class="wireframe-section" style="background:var(--bg-deep); border-color: rgba(255,255,255,0.08);">
-    <div class="wireframe-section-num" style="color:rgba(255,255,255,0.15);">0</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name" style="color:var(--text-inverse);">Navigation — Header</div>
-      <div class="wireframe-section-desc" style="color:rgba(255,255,255,0.4);">Logo centré (Cormorant Garamond). Liens gauche + panier/favoris droite. Transparente sur le hero, opaque fond lin au scroll. Hauteur : 64px. Filet 1px inférieur au scroll.</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag" style="background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.4); border-color:rgba(255,255,255,0.1);">Sticky</span>
-      <span class="tag" style="background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.4); border-color:rgba(255,255,255,0.1);">Transparent → Lin</span>
-    </div>
-  </div>
+        <!-- S0 : Nav -->
+        <div
+          class="wireframe-section"
+          style="background: var(--bg-deep); border-color: rgba(255, 255, 255, 0.08)"
+        >
+          <div class="wireframe-section-num" style="color: rgba(255, 255, 255, 0.15)">0</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name" style="color: var(--text-inverse)">
+              Navigation — Header
+            </div>
+            <div class="wireframe-section-desc" style="color: rgba(255, 255, 255, 0.4)">
+              Logo centré (Cormorant Garamond). Liens gauche + panier/favoris droite. Transparente
+              sur le hero, opaque fond lin au scroll. Hauteur : 64px. Filet 1px inférieur au scroll.
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span
+              class="tag"
+              style="
+                background: rgba(255, 255, 255, 0.07);
+                color: rgba(255, 255, 255, 0.4);
+                border-color: rgba(255, 255, 255, 0.1);
+              "
+              >Sticky</span
+            >
+            <span
+              class="tag"
+              style="
+                background: rgba(255, 255, 255, 0.07);
+                color: rgba(255, 255, 255, 0.4);
+                border-color: rgba(255, 255, 255, 0.1);
+              "
+              >Transparent → Lin</span
+            >
+          </div>
+        </div>
 
-  <!-- S1 : Hero -->
-  <div class="wireframe-section">
-    <div class="wireframe-section-num">1</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name">Hero — Split Editorial</div>
-      <div class="wireframe-section-desc">100 vh. Gauche : grande photo produit ou ambiance atelier (plein cadre). Droite : fond lin, H1 Cormorant + sous-titre Jost Light + 2 CTA (Découvrir / Voir les sacs). Proportion 55/45 ou 60/40 (photo majoritaire).</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag tag--accent">Photo pleine</span>
-      <span class="tag">100vh</span>
-      <span class="tag">Split</span>
-    </div>
-  </div>
+        <!-- S1 : Hero -->
+        <div class="wireframe-section">
+          <div class="wireframe-section-num">1</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name">Hero — Split Editorial</div>
+            <div class="wireframe-section-desc">
+              100 vh. Gauche : grande photo produit ou ambiance atelier (plein cadre). Droite : fond
+              lin, H1 Cormorant + sous-titre Jost Light + 2 CTA (Découvrir / Voir les sacs).
+              Proportion 55/45 ou 60/40 (photo majoritaire).
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span class="tag tag--accent">Photo pleine</span>
+            <span class="tag">100vh</span>
+            <span class="tag">Split</span>
+          </div>
+        </div>
 
-  <!-- S2 : Manifesto -->
-  <div class="wireframe-section" style="background:var(--bg-parchment);">
-    <div class="wireframe-section-num">2</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name">Manifeste de marque</div>
-      <div class="wireframe-section-desc">Centré, 1 ou 2 lignes max. Citation Cormorant italique. Attribution "— Créations Creatyss, France". Filet décoratif 40px. Beaucoup d'air (padding 80–100px vertical). Pas d'image, la typographie fait tout.</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag">Centré</span>
-      <span class="tag">Parchemin</span>
-      <span class="tag">Minimaliste</span>
-    </div>
-  </div>
+        <!-- S2 : Manifesto -->
+        <div class="wireframe-section" style="background: var(--bg-parchment)">
+          <div class="wireframe-section-num">2</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name">Manifeste de marque</div>
+            <div class="wireframe-section-desc">
+              Centré, 1 ou 2 lignes max. Citation Cormorant italique. Attribution "— Créations
+              Creatyss, France". Filet décoratif 40px. Beaucoup d'air (padding 80–100px vertical).
+              Pas d'image, la typographie fait tout.
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span class="tag">Centré</span>
+            <span class="tag">Parchemin</span>
+            <span class="tag">Minimaliste</span>
+          </div>
+        </div>
 
-  <!-- S3 : Collections -->
-  <div class="wireframe-section">
-    <div class="wireframe-section-num">3</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name">Collections — Grille éditoriale</div>
-      <div class="wireframe-section-desc">Grille 3 colonnes asymétrique (grande | petite | petite) avec rangée 2 (petite | petite | grande). Photos produits/ambiance. Overlay gradient bas. Noms de collection en Cormorant. Tags colorés selon la collection (bordeaux, vert, terracotta). Hover : zoom discret.</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag tag--dark">Grille 3 col</span>
-      <span class="tag">Asymétrique</span>
-      <span class="tag tag--accent">Liens collections</span>
-    </div>
-  </div>
+        <!-- S3 : Collections -->
+        <div class="wireframe-section">
+          <div class="wireframe-section-num">3</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name">Collections — Grille éditoriale</div>
+            <div class="wireframe-section-desc">
+              Grille 3 colonnes asymétrique (grande | petite | petite) avec rangée 2 (petite |
+              petite | grande). Photos produits/ambiance. Overlay gradient bas. Noms de collection
+              en Cormorant. Tags colorés selon la collection (bordeaux, vert, terracotta). Hover :
+              zoom discret.
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span class="tag tag--dark">Grille 3 col</span>
+            <span class="tag">Asymétrique</span>
+            <span class="tag tag--accent">Liens collections</span>
+          </div>
+        </div>
 
-  <!-- S4 : Savoir-faire -->
-  <div class="wireframe-section" style="background:var(--bg-off-white);">
-    <div class="wireframe-section-num">4</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name">Savoir-faire & Histoire</div>
-      <div class="wireframe-section-desc">Split 50/50. Gauche : photo atelier ou gros plan couture (fond chaud). Droite : eyebrow + H2 + texte court (max 50 mots) + liste de 3 valeurs numérotées + CTA ghost. Fond blanc cassé à droite.</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag">Split 50/50</span>
-      <span class="tag tag--vert">Artisanal</span>
-    </div>
-  </div>
+        <!-- S4 : Savoir-faire -->
+        <div class="wireframe-section" style="background: var(--bg-off-white)">
+          <div class="wireframe-section-num">4</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name">Savoir-faire & Histoire</div>
+            <div class="wireframe-section-desc">
+              Split 50/50. Gauche : photo atelier ou gros plan couture (fond chaud). Droite :
+              eyebrow + H2 + texte court (max 50 mots) + liste de 3 valeurs numérotées + CTA ghost.
+              Fond blanc cassé à droite.
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span class="tag">Split 50/50</span>
+            <span class="tag tag--vert">Artisanal</span>
+          </div>
+        </div>
 
-  <!-- S5 : Produits phares -->
-  <div class="wireframe-section">
-    <div class="wireframe-section-num">5</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name">Sélection — Produits phares</div>
-      <div class="wireframe-section-desc">4 produits en grille. Ratio image 3:4 (portrait). Nom en Cormorant, détail couleur + matière en Jost Light, prix. Badge "Pièce unique" en fond sombre. Hover : zoom image + apparition d'un CTA discret. Bouton "Voir tous les sacs" centré sous la grille.</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag">Grille 4 col</span>
-      <span class="tag tag--dark">Produits</span>
-      <span class="tag">Lin chaud</span>
-    </div>
-  </div>
+        <!-- S5 : Produits phares -->
+        <div class="wireframe-section">
+          <div class="wireframe-section-num">5</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name">Sélection — Produits phares</div>
+            <div class="wireframe-section-desc">
+              4 produits en grille. Ratio image 3:4 (portrait). Nom en Cormorant, détail couleur +
+              matière en Jost Light, prix. Badge "Pièce unique" en fond sombre. Hover : zoom image +
+              apparition d'un CTA discret. Bouton "Voir tous les sacs" centré sous la grille.
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span class="tag">Grille 4 col</span>
+            <span class="tag tag--dark">Produits</span>
+            <span class="tag">Lin chaud</span>
+          </div>
+        </div>
 
-  <!-- S6 : Strip édito -->
-  <div class="wireframe-section" style="background:var(--bg-deep);">
-    <div class="wireframe-section-num" style="color:rgba(255,255,255,0.15);">6</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name" style="color:var(--text-inverse);">Preuves & Engagement — Strip sombre</div>
-      <div class="wireframe-section-desc" style="color:rgba(255,255,255,0.4);">3 colonnes sur fond brun profond. Chiffres monumentaux Cormorant (ex : "100 %", "Depuis 2018", "Unique"). Label en Jost caps. Texte court. Filet terracotta 2px en tête de chaque colonne. Intime, sobre, premium.</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag" style="background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.4); border-color:rgba(255,255,255,0.1);">Fond sombre</span>
-      <span class="tag" style="background:var(--accent-terracotta); color:white; border:none;">Chiffres clés</span>
-    </div>
-  </div>
+        <!-- S6 : Strip édito -->
+        <div class="wireframe-section" style="background: var(--bg-deep)">
+          <div class="wireframe-section-num" style="color: rgba(255, 255, 255, 0.15)">6</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name" style="color: var(--text-inverse)">
+              Preuves & Engagement — Strip sombre
+            </div>
+            <div class="wireframe-section-desc" style="color: rgba(255, 255, 255, 0.4)">
+              3 colonnes sur fond brun profond. Chiffres monumentaux Cormorant (ex : "100 %",
+              "Depuis 2018", "Unique"). Label en Jost caps. Texte court. Filet terracotta 2px en
+              tête de chaque colonne. Intime, sobre, premium.
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span
+              class="tag"
+              style="
+                background: rgba(255, 255, 255, 0.07);
+                color: rgba(255, 255, 255, 0.4);
+                border-color: rgba(255, 255, 255, 0.1);
+              "
+              >Fond sombre</span
+            >
+            <span
+              class="tag"
+              style="background: var(--accent-terracotta); color: white; border: none"
+              >Chiffres clés</span
+            >
+          </div>
+        </div>
 
-  <!-- S7 : Nouveautés -->
-  <div class="wireframe-section" style="background:var(--bg-off-white);">
-    <div class="wireframe-section-num">7</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name">Nouveautés — Scroll horizontal</div>
-      <div class="wireframe-section-desc">Header section + scroll horizontal masqué. Cards 280px largeur, ratio 3:4. Tag "Nouveau" terracotta. Touches de couleurs vives via les photos. Flèches discrètes. Sur mobile : scroll natif.</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag">Horizontal scroll</span>
-      <span class="tag tag--accent">Nouveau</span>
-    </div>
-  </div>
+        <!-- S7 : Nouveautés -->
+        <div class="wireframe-section" style="background: var(--bg-off-white)">
+          <div class="wireframe-section-num">7</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name">Nouveautés — Scroll horizontal</div>
+            <div class="wireframe-section-desc">
+              Header section + scroll horizontal masqué. Cards 280px largeur, ratio 3:4. Tag
+              "Nouveau" terracotta. Touches de couleurs vives via les photos. Flèches discrètes. Sur
+              mobile : scroll natif.
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span class="tag">Horizontal scroll</span>
+            <span class="tag tag--accent">Nouveau</span>
+          </div>
+        </div>
 
-  <!-- S8 : Créatrice -->
-  <div class="wireframe-section">
-    <div class="wireframe-section-num">8</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name">Portrait — La créatrice</div>
-      <div class="wireframe-section-desc">Split inversé (texte gauche, photo droite ou photo gauche). Photo portrait chaleureux en atelier. Eyebrow "À propos" + H2 + citation personnelle Cormorant italique + texte 40 mots max + signature manuscrite (SVG/image) + CTA "Notre histoire".</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag">Portrait</span>
-      <span class="tag">Split</span>
-      <span class="tag tag--vert">Histoire</span>
-    </div>
-  </div>
+        <!-- S8 : Créatrice -->
+        <div class="wireframe-section">
+          <div class="wireframe-section-num">8</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name">Portrait — La créatrice</div>
+            <div class="wireframe-section-desc">
+              Split inversé (texte gauche, photo droite ou photo gauche). Photo portrait chaleureux
+              en atelier. Eyebrow "À propos" + H2 + citation personnelle Cormorant italique + texte
+              40 mots max + signature manuscrite (SVG/image) + CTA "Notre histoire".
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span class="tag">Portrait</span>
+            <span class="tag">Split</span>
+            <span class="tag tag--vert">Histoire</span>
+          </div>
+        </div>
 
-  <!-- S9 : Newsletter -->
-  <div class="wireframe-section" style="background:var(--bg-parchment);">
-    <div class="wireframe-section-num">9</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name">Newsletter — Invitation sobre</div>
-      <div class="wireframe-section-desc">Centré, H2 Cormorant court + sous-titre Jost Light 13px + formulaire en ligne (input + bouton côte à côte). Pas d'image, pas d'icônes. Fond parchemin, bordure sable. Note de confidentialité discrète.</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag">Centré</span>
-      <span class="tag">Parchemin</span>
-    </div>
-  </div>
+        <!-- S9 : Newsletter -->
+        <div class="wireframe-section" style="background: var(--bg-parchment)">
+          <div class="wireframe-section-num">9</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name">Newsletter — Invitation sobre</div>
+            <div class="wireframe-section-desc">
+              Centré, H2 Cormorant court + sous-titre Jost Light 13px + formulaire en ligne (input +
+              bouton côte à côte). Pas d'image, pas d'icônes. Fond parchemin, bordure sable. Note de
+              confidentialité discrète.
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span class="tag">Centré</span>
+            <span class="tag">Parchemin</span>
+          </div>
+        </div>
 
-  <!-- S10 : Footer -->
-  <div class="wireframe-section" style="background:var(--bg-deep);">
-    <div class="wireframe-section-num" style="color:rgba(255,255,255,0.15);">10</div>
-    <div class="wireframe-section-info">
-      <div class="wireframe-section-name" style="color:var(--text-inverse);">Footer</div>
-      <div class="wireframe-section-desc" style="color:rgba(255,255,255,0.4);">Grille 4 colonnes : Marque + tagline | Collections | Aide/Infos | Contact & Réseaux. Logo Cormorant. Liens Jost Light 13px. Séparateur fin. Bas de page : copyright + mentions légales. Fond brun profond, textes atténués.</div>
-    </div>
-    <div class="wireframe-section-tags">
-      <span class="tag" style="background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.4); border-color:rgba(255,255,255,0.1);">Fond sombre</span>
-      <span class="tag" style="background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.4); border-color:rgba(255,255,255,0.1);">4 colonnes</span>
-    </div>
-  </div>
+        <!-- S10 : Footer -->
+        <div class="wireframe-section" style="background: var(--bg-deep)">
+          <div class="wireframe-section-num" style="color: rgba(255, 255, 255, 0.15)">10</div>
+          <div class="wireframe-section-info">
+            <div class="wireframe-section-name" style="color: var(--text-inverse)">Footer</div>
+            <div class="wireframe-section-desc" style="color: rgba(255, 255, 255, 0.4)">
+              Grille 4 colonnes : Marque + tagline | Collections | Aide/Infos | Contact & Réseaux.
+              Logo Cormorant. Liens Jost Light 13px. Séparateur fin. Bas de page : copyright +
+              mentions légales. Fond brun profond, textes atténués.
+            </div>
+          </div>
+          <div class="wireframe-section-tags">
+            <span
+              class="tag"
+              style="
+                background: rgba(255, 255, 255, 0.07);
+                color: rgba(255, 255, 255, 0.4);
+                border-color: rgba(255, 255, 255, 0.1);
+              "
+              >Fond sombre</span
+            >
+            <span
+              class="tag"
+              style="
+                background: rgba(255, 255, 255, 0.07);
+                color: rgba(255, 255, 255, 0.4);
+                border-color: rgba(255, 255, 255, 0.1);
+              "
+              >4 colonnes</span
+            >
+          </div>
+        </div>
 
-  <!-- Responsive notes -->
-  <div style="margin-top: var(--space-2xl);">
-    <div class="doc-section-title" style="margin-bottom:var(--space-lg);">Indications Desktop vs Mobile</div>
-    <div class="two-col">
-      <div>
-        <h4 style="font-family:var(--font-display); font-weight:400; font-size:18px; margin-bottom:var(--space-md); color:var(--text-primary);">Desktop (≥ 1200px)</h4>
-        <div class="mobile-note" style="border-color:var(--accent-or);">
-          <strong>Hero</strong>Split 55/45, image gauche, texte droite. H1 72px+. Scroll indicator vertical.</div>
-        <div class="mobile-note" style="border-color:var(--accent-or);">
-          <strong>Navigation</strong>Logo centré, 5 liens horizontaux, panier à droite. Padding 0–80px.</div>
-        <div class="mobile-note" style="border-color:var(--accent-or);">
-          <strong>Grilles</strong>Collections : 3 colonnes. Produits : 4 colonnes. Nouveautés : scroll 5+ cards visibles.</div>
-        <div class="mobile-note" style="border-color:var(--accent-or);">
-          <strong>Espacements</strong>Padding sections : 96–128px vertical, 80px horizontal.</div>
-      </div>
-      <div>
-        <h4 style="font-family:var(--font-display); font-weight:400; font-size:18px; margin-bottom:var(--space-md); color:var(--text-primary);">Mobile (≤ 768px)</h4>
-        <div class="mobile-note">
-          <strong>Hero</strong>Pleine largeur, image en hauteur fixe (70vw), texte dessous. H1 40–48px. CTA empilés.</div>
-        <div class="mobile-note">
-          <strong>Navigation</strong>Logo centré, burger menu à gauche, panier à droite. Drawer latéral.</div>
-        <div class="mobile-note">
-          <strong>Grilles</strong>Collections : 1+2 colonnes. Produits : 2 colonnes. Strip édito : 1 colonne empilée.</div>
-        <div class="mobile-note">
-          <strong>Splits</strong>Tous les splits passent en colonne unique (image au-dessus, texte dessous).</div>
-        <div class="mobile-note">
-          <strong>Espacements</strong>Padding sections : 56–64px vertical, 20px horizontal.</div>
-      </div>
-    </div>
-  </div>
-</section>
+        <!-- Responsive notes -->
+        <div style="margin-top: var(--space-2xl)">
+          <div class="doc-section-title" style="margin-bottom: var(--space-lg)">
+            Indications Desktop vs Mobile
+          </div>
+          <div class="two-col">
+            <div>
+              <h4
+                style="
+                  font-family: var(--font-display);
+                  font-weight: 400;
+                  font-size: 18px;
+                  margin-bottom: var(--space-md);
+                  color: var(--text-primary);
+                "
+              >
+                Desktop (≥ 1200px)
+              </h4>
+              <div class="mobile-note" style="border-color: var(--accent-or)">
+                <strong>Hero</strong>Split 55/45, image gauche, texte droite. H1 72px+. Scroll
+                indicator vertical.
+              </div>
+              <div class="mobile-note" style="border-color: var(--accent-or)">
+                <strong>Navigation</strong>Logo centré, 5 liens horizontaux, panier à droite.
+                Padding 0–80px.
+              </div>
+              <div class="mobile-note" style="border-color: var(--accent-or)">
+                <strong>Grilles</strong>Collections : 3 colonnes. Produits : 4 colonnes. Nouveautés
+                : scroll 5+ cards visibles.
+              </div>
+              <div class="mobile-note" style="border-color: var(--accent-or)">
+                <strong>Espacements</strong>Padding sections : 96–128px vertical, 80px horizontal.
+              </div>
+            </div>
+            <div>
+              <h4
+                style="
+                  font-family: var(--font-display);
+                  font-weight: 400;
+                  font-size: 18px;
+                  margin-bottom: var(--space-md);
+                  color: var(--text-primary);
+                "
+              >
+                Mobile (≤ 768px)
+              </h4>
+              <div class="mobile-note">
+                <strong>Hero</strong>Pleine largeur, image en hauteur fixe (70vw), texte dessous. H1
+                40–48px. CTA empilés.
+              </div>
+              <div class="mobile-note">
+                <strong>Navigation</strong>Logo centré, burger menu à gauche, panier à droite.
+                Drawer latéral.
+              </div>
+              <div class="mobile-note">
+                <strong>Grilles</strong>Collections : 1+2 colonnes. Produits : 2 colonnes. Strip
+                édito : 1 colonne empilée.
+              </div>
+              <div class="mobile-note">
+                <strong>Splits</strong>Tous les splits passent en colonne unique (image au-dessus,
+                texte dessous).
+              </div>
+              <div class="mobile-note">
+                <strong>Espacements</strong>Padding sections : 56–64px vertical, 20px horizontal.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-
-<!-- ══════════════════════════════════════════════════
+      <!-- ══════════════════════════════════════════════════
      § TON ÉDITORIAL
 ══════════════════════════════════════════════════ -->
-<section class="doc-section" id="tone" style="background:var(--bg-off-white);">
-  <div class="doc-section-title">04 — Voix de marque</div>
-  <h2 class="doc-section-heading">Ton éditorial</h2>
+      <section class="doc-section" id="tone" style="background: var(--bg-off-white)">
+        <div class="doc-section-title">04 — Voix de marque</div>
+        <h2 class="doc-section-heading">Ton éditorial</h2>
 
-  <div class="callout">
-    <div class="callout-title">Positionnement éditorial</div>
-    <p>La voix de Creatyss est celle d'une artisane passionnée et confiante, pas d'une grande maison froide. Chaleureuse mais jamais familière. Poétique mais jamais précieuse. Sobre mais jamais ennuyeuse. On parle comme quelqu'un qui sait ce qu'il fait, et qui y met son cœur.</p>
-  </div>
+        <div class="callout">
+          <div class="callout-title">Positionnement éditorial</div>
+          <p>
+            La voix de Creatyss est celle d'une artisane passionnée et confiante, pas d'une grande
+            maison froide. Chaleureuse mais jamais familière. Poétique mais jamais précieuse. Sobre
+            mais jamais ennuyeuse. On parle comme quelqu'un qui sait ce qu'il fait, et qui y met son
+            cœur.
+          </p>
+        </div>
 
-  <div class="two-col" style="margin-top:var(--space-xl);">
-    <div>
-      <div style="margin-bottom:var(--space-lg);">
-        <div class="eyebrow eyebrow--accent">Ce que la voix EST</div>
-        <ul style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-top:var(--space-md);">
-          <li style="display:flex; gap:10px; font-size:13px; color:var(--text-secondary);"><span style="color:var(--accent-vert); font-weight:500;">✓</span> Élégante et directe</li>
-          <li style="display:flex; gap:10px; font-size:13px; color:var(--text-secondary);"><span style="color:var(--accent-vert); font-weight:500;">✓</span> Sensible aux matières, aux gestes</li>
-          <li style="display:flex; gap:10px; font-size:13px; color:var(--text-secondary);"><span style="color:var(--accent-vert); font-weight:500;">✓</span> Fière de son origine française</li>
-          <li style="display:flex; gap:10px; font-size:13px; color:var(--text-secondary);"><span style="color:var(--accent-vert); font-weight:500;">✓</span> Sobre dans les promesses, généreuse dans les détails</li>
-          <li style="display:flex; gap:10px; font-size:13px; color:var(--text-secondary);"><span style="color:var(--accent-vert); font-weight:500;">✓</span> Qui crée de l'intimité sans être familière</li>
-        </ul>
-      </div>
-    </div>
-    <div>
-      <div style="margin-bottom:var(--space-lg);">
-        <div class="eyebrow" style="color:#B00020;">Ce que la voix N'EST PAS</div>
-        <ul style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-top:var(--space-md);">
-          <li style="display:flex; gap:10px; font-size:13px; color:var(--text-secondary);"><span style="color:#B00020; font-weight:500;">✗</span> Exclamative ou enthousiaste à outrance</li>
-          <li style="display:flex; gap:10px; font-size:13px; color:var(--text-secondary);"><span style="color:#B00020; font-weight:500;">✗</span> Trop technique ou descriptive</li>
-          <li style="display:flex; gap:10px; font-size:13px; color:var(--text-secondary);"><span style="color:#B00020; font-weight:500;">✗</span> Commerciale ou insistante</li>
-          <li style="display:flex; gap:10px; font-size:13px; color:var(--text-secondary);"><span style="color:#B00020; font-weight:500;">✗</span> Stéréotypée "accessoire féminin"</li>
-          <li style="display:flex; gap:10px; font-size:13px; color:var(--text-secondary);"><span style="color:#B00020; font-weight:500;">✗</span> Grandiloquente ou prétentieuse</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+        <div class="two-col" style="margin-top: var(--space-xl)">
+          <div>
+            <div style="margin-bottom: var(--space-lg)">
+              <div class="eyebrow eyebrow--accent">Ce que la voix EST</div>
+              <ul
+                style="
+                  list-style: none;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 10px;
+                  margin-top: var(--space-md);
+                "
+              >
+                <li style="display: flex; gap: 10px; font-size: 13px; color: var(--text-secondary)">
+                  <span style="color: var(--accent-vert); font-weight: 500">✓</span> Élégante et
+                  directe
+                </li>
+                <li style="display: flex; gap: 10px; font-size: 13px; color: var(--text-secondary)">
+                  <span style="color: var(--accent-vert); font-weight: 500">✓</span> Sensible aux
+                  matières, aux gestes
+                </li>
+                <li style="display: flex; gap: 10px; font-size: 13px; color: var(--text-secondary)">
+                  <span style="color: var(--accent-vert); font-weight: 500">✓</span> Fière de son
+                  origine française
+                </li>
+                <li style="display: flex; gap: 10px; font-size: 13px; color: var(--text-secondary)">
+                  <span style="color: var(--accent-vert); font-weight: 500">✓</span> Sobre dans les
+                  promesses, généreuse dans les détails
+                </li>
+                <li style="display: flex; gap: 10px; font-size: 13px; color: var(--text-secondary)">
+                  <span style="color: var(--accent-vert); font-weight: 500">✓</span> Qui crée de
+                  l'intimité sans être familière
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div style="margin-bottom: var(--space-lg)">
+              <div class="eyebrow" style="color: #b00020">Ce que la voix N'EST PAS</div>
+              <ul
+                style="
+                  list-style: none;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 10px;
+                  margin-top: var(--space-md);
+                "
+              >
+                <li style="display: flex; gap: 10px; font-size: 13px; color: var(--text-secondary)">
+                  <span style="color: #b00020; font-weight: 500">✗</span> Exclamative ou
+                  enthousiaste à outrance
+                </li>
+                <li style="display: flex; gap: 10px; font-size: 13px; color: var(--text-secondary)">
+                  <span style="color: #b00020; font-weight: 500">✗</span> Trop technique ou
+                  descriptive
+                </li>
+                <li style="display: flex; gap: 10px; font-size: 13px; color: var(--text-secondary)">
+                  <span style="color: #b00020; font-weight: 500">✗</span> Commerciale ou insistante
+                </li>
+                <li style="display: flex; gap: 10px; font-size: 13px; color: var(--text-secondary)">
+                  <span style="color: #b00020; font-weight: 500">✗</span> Stéréotypée "accessoire
+                  féminin"
+                </li>
+                <li style="display: flex; gap: 10px; font-size: 13px; color: var(--text-secondary)">
+                  <span style="color: #b00020; font-weight: 500">✗</span> Grandiloquente ou
+                  prétentieuse
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-  <!-- Exemples de copies -->
-  <div style="margin-top:var(--space-2xl);">
-    <div class="doc-section-title" style="margin-bottom:var(--space-lg);">Exemples de copies par section</div>
+        <!-- Exemples de copies -->
+        <div style="margin-top: var(--space-2xl)">
+          <div class="doc-section-title" style="margin-bottom: var(--space-lg)">
+            Exemples de copies par section
+          </div>
 
-    <div class="tone-example">
-      <div class="tone-example-label">Hero — Accroche principale</div>
-      <div class="tone-bad">Découvrez nos magnifiques sacs faits main ! Commandez maintenant !</div>
-      <div class="tone-good">Façonnés ici,<br>portés partout.</div>
-    </div>
+          <div class="tone-example">
+            <div class="tone-example-label">Hero — Accroche principale</div>
+            <div class="tone-bad">
+              Découvrez nos magnifiques sacs faits main ! Commandez maintenant !
+            </div>
+            <div class="tone-good">Façonnés ici,<br />portés partout.</div>
+          </div>
 
-    <div class="tone-example">
-      <div class="tone-example-label">Manifeste — Citation de marque</div>
-      <div class="tone-bad">Nous faisons des sacs de qualité pour les femmes modernes.</div>
-      <div class="tone-good">« Chaque couture est une intention, chaque sac une pièce qui ne ressemblera à aucune autre. »</div>
-    </div>
+          <div class="tone-example">
+            <div class="tone-example-label">Manifeste — Citation de marque</div>
+            <div class="tone-bad">Nous faisons des sacs de qualité pour les femmes modernes.</div>
+            <div class="tone-good">
+              « Chaque couture est une intention, chaque sac une pièce qui ne ressemblera à aucune
+              autre. »
+            </div>
+          </div>
 
-    <div class="tone-example">
-      <div class="tone-example-label">Savoir-faire — Description courte</div>
-      <div class="tone-bad">Nos sacs sont fabriqués à la main avec de bonnes matières et beaucoup d'amour !</div>
-      <div class="tone-good">Du dessin à la dernière piqûre, chaque étape se fait ici, à la main. Sans série, sans compromise.</div>
-    </div>
+          <div class="tone-example">
+            <div class="tone-example-label">Savoir-faire — Description courte</div>
+            <div class="tone-bad">
+              Nos sacs sont fabriqués à la main avec de bonnes matières et beaucoup d'amour !
+            </div>
+            <div class="tone-good">
+              Du dessin à la dernière piqûre, chaque étape se fait ici, à la main. Sans série, sans
+              compromise.
+            </div>
+          </div>
 
-    <div class="tone-example">
-      <div class="tone-example-label">CTA Bouton</div>
-      <div class="tone-bad">ACHETEZ MAINTENANT / CLIQUEZ ICI</div>
-      <div class="tone-good">Découvrir la collection &nbsp;→ &nbsp;/&nbsp; Explorer les sacs &nbsp;→ &nbsp;/&nbsp; Notre histoire &nbsp;→</div>
-    </div>
+          <div class="tone-example">
+            <div class="tone-example-label">CTA Bouton</div>
+            <div class="tone-bad">ACHETEZ MAINTENANT / CLIQUEZ ICI</div>
+            <div class="tone-good">
+              Découvrir la collection &nbsp;→ &nbsp;/&nbsp; Explorer les sacs &nbsp;→ &nbsp;/&nbsp;
+              Notre histoire &nbsp;→
+            </div>
+          </div>
 
-    <div class="tone-example">
-      <div class="tone-example-label">Newsletter — Invitation</div>
-      <div class="tone-bad">Inscrivez-vous à notre newsletter pour recevoir nos offres !</div>
-      <div class="tone-good">Recevoir les nouvelles de l'atelier — nouvelles créations, coulisses, apparitions en marché.</div>
-    </div>
+          <div class="tone-example">
+            <div class="tone-example-label">Newsletter — Invitation</div>
+            <div class="tone-bad">Inscrivez-vous à notre newsletter pour recevoir nos offres !</div>
+            <div class="tone-good">
+              Recevoir les nouvelles de l'atelier — nouvelles créations, coulisses, apparitions en
+              marché.
+            </div>
+          </div>
 
-    <div class="tone-example">
-      <div class="tone-example-label">Produit — Sous-titre carte</div>
-      <div class="tone-bad">Très beau sac en tissu imperméable avec fermeture éclair</div>
-      <div class="tone-good">Bandoulière, tissu expansé — Pièce unique</div>
-    </div>
-  </div>
-</section>
+          <div class="tone-example">
+            <div class="tone-example-label">Produit — Sous-titre carte</div>
+            <div class="tone-bad">Très beau sac en tissu imperméable avec fermeture éclair</div>
+            <div class="tone-good">Bandoulière, tissu expansé — Pièce unique</div>
+          </div>
+        </div>
+      </section>
 
-
-<!-- ══════════════════════════════════════════════════
+      <!-- ══════════════════════════════════════════════════
      § APERÇU VISUEL
 ══════════════════════════════════════════════════ -->
-<section class="doc-section" id="preview" style="padding:0; background:var(--bg-base);">
-  <div style="padding: var(--space-3xl) var(--space-xl) var(--space-xl);">
-    <div class="doc-section-title">05 — Aperçu</div>
-    <h2 class="doc-section-heading">Rendu de la homepage</h2>
-    <p style="font-size:13px; color:var(--text-muted); margin-top:-var(--space-md);">Simulation visuelle section par section. Les aplats colorés représentent les emplacements photos.</p>
-  </div>
-</section>
+      <section class="doc-section" id="preview" style="padding: 0; background: var(--bg-base)">
+        <div style="padding: var(--space-3xl) var(--space-xl) var(--space-xl)">
+          <div class="doc-section-title">05 — Aperçu</div>
+          <h2 class="doc-section-heading">Rendu de la homepage</h2>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: -var(--space-md)">
+            Simulation visuelle section par section. Les aplats colorés représentent les
+            emplacements photos.
+          </p>
+        </div>
+      </section>
 
-<!-- ====== HOMEPAGE PREVIEW ====== -->
+      <!-- ====== HOMEPAGE PREVIEW ====== -->
 
-<!-- NAV PREVIEW -->
-<div style="background:var(--bg-base); border-bottom:1px solid var(--border-light); padding:0 var(--space-xl); height:64px; display:flex; align-items:center; justify-content:space-between; position:relative; z-index:10;">
-  <div style="display:flex; gap:var(--space-xl);">
-    <a href="#" style="font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); text-decoration:none;">Collections</a>
-    <a href="#" style="font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); text-decoration:none;">Nouveautés</a>
-  </div>
-  <div style="font-family:var(--font-display); font-size:22px; font-weight:400; letter-spacing:0.15em; color:var(--text-primary);">CREATYSS</div>
-  <div style="display:flex; gap:var(--space-xl);">
-    <a href="#" style="font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); text-decoration:none;">L'Atelier</a>
-    <a href="#" style="font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); text-decoration:none;">Contact</a>
-  </div>
-</div>
-
-<!-- S1: HERO -->
-<section id="hero">
-  <div class="hero-cover">
-    <div class="hero-image-side">
-      <div class="hero-image-placeholder">
-        <div class="hero-image-placeholder-inner">
-          <div class="bag-silhouette"></div>
-          <span style="margin-top:24px;">Photo éditoriale produit</span>
-          <span style="opacity:0.6; font-size:9px;">Portrait, éclairage chaud, fond naturel</span>
+      <!-- NAV PREVIEW -->
+      <div
+        style="
+          background: var(--bg-base);
+          border-bottom: 1px solid var(--border-light);
+          padding: 0 var(--space-xl);
+          height: 64px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+          z-index: 10;
+        "
+      >
+        <div style="display: flex; gap: var(--space-xl)">
+          <a
+            href="#"
+            style="
+              font-size: 10px;
+              font-weight: 500;
+              letter-spacing: 0.2em;
+              text-transform: uppercase;
+              color: var(--text-muted);
+              text-decoration: none;
+            "
+            >Collections</a
+          >
+          <a
+            href="#"
+            style="
+              font-size: 10px;
+              font-weight: 500;
+              letter-spacing: 0.2em;
+              text-transform: uppercase;
+              color: var(--text-muted);
+              text-decoration: none;
+            "
+            >Nouveautés</a
+          >
+        </div>
+        <div
+          style="
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: var(--text-primary);
+          "
+        >
+          CREATYSS
+        </div>
+        <div style="display: flex; gap: var(--space-xl)">
+          <a
+            href="#"
+            style="
+              font-size: 10px;
+              font-weight: 500;
+              letter-spacing: 0.2em;
+              text-transform: uppercase;
+              color: var(--text-muted);
+              text-decoration: none;
+            "
+            >L'Atelier</a
+          >
+          <a
+            href="#"
+            style="
+              font-size: 10px;
+              font-weight: 500;
+              letter-spacing: 0.2em;
+              text-transform: uppercase;
+              color: var(--text-muted);
+              text-decoration: none;
+            "
+            >Contact</a
+          >
         </div>
       </div>
-    </div>
-    <div class="hero-content-side">
-      <span class="eyebrow eyebrow--accent">Créations exclusives — France</span>
-      <h1 class="hero-tagline">
-        Façonnés<br>
-        <em>ici,</em><br>
-        <strong>portés partout.</strong>
-      </h1>
-      <p class="hero-sub">Sacs à main, cabas et pochettes faits à la main,<br>pièce par pièce, dans notre atelier français.</p>
-      <div class="hero-ctas">
-        <a class="btn btn-primary btn-arrow">Découvrir la collection</a>
-        <a class="btn btn-ghost">Notre atelier</a>
-      </div>
-    </div>
-    <div class="hero-scroll-indicator">
-      <div class="scroll-line"></div>
-      <span>Scroll</span>
-    </div>
-  </div>
-</section>
 
-<!-- S2: MANIFESTO -->
-<section id="manifesto">
-  <span class="manifesto-ornament">"</span>
-  <blockquote class="manifesto-quote">
-    Chaque couture est une intention,<br>chaque sac une pièce qui ne ressemblera à aucune autre.
-  </blockquote>
-  <div class="divider divider--center divider--accent"></div>
-  <p class="manifesto-attribution">— Créations Creatyss, fabriqué en France</p>
-</section>
-
-<!-- S3: COLLECTIONS -->
-<section id="collections" style="background:var(--bg-off-white);">
-  <div class="collections-header">
-    <div>
-      <span class="eyebrow">L'univers Creatyss</span>
-      <h2 style="font-family:var(--font-display); font-size:clamp(28px,3.5vw,44px); font-weight:400;">Nos collections</h2>
-    </div>
-    <a class="btn btn-ghost btn-arrow">Tout voir</a>
-  </div>
-  <div class="collections-grid">
-    <div class="collection-card">
-      <div class="card-image card-image--tall">
-        <div class="card-image-bg theme-bordeaux"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info">
-          <div class="card-info-name">Sacs à main</div>
-          <div class="card-info-count">12 créations</div>
+      <!-- S1: HERO -->
+      <section id="hero">
+        <div class="hero-cover">
+          <div class="hero-image-side">
+            <div class="hero-image-placeholder">
+              <div class="hero-image-placeholder-inner">
+                <div class="bag-silhouette"></div>
+                <span style="margin-top: 24px">Photo éditoriale produit</span>
+                <span style="opacity: 0.6; font-size: 9px"
+                  >Portrait, éclairage chaud, fond naturel</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="hero-content-side">
+            <span class="eyebrow eyebrow--accent">Créations exclusives — France</span>
+            <h1 class="hero-tagline">
+              Façonnés<br />
+              <em>ici,</em><br />
+              <strong>portés partout.</strong>
+            </h1>
+            <p class="hero-sub">
+              Sacs à main, cabas et pochettes faits à la main,<br />pièce par pièce, dans notre
+              atelier français.
+            </p>
+            <div class="hero-ctas">
+              <a class="btn btn-primary btn-arrow">Découvrir la collection</a>
+              <a class="btn btn-ghost">Notre atelier</a>
+            </div>
+          </div>
+          <div class="hero-scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+          </div>
         </div>
-        <div class="card-pill">Collection phare</div>
-      </div>
-    </div>
-    <div class="collection-card">
-      <div class="card-image card-image--short">
-        <div class="card-image-bg theme-vert"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info">
-          <div class="card-info-name" style="font-size:16px;">Cabas</div>
-          <div class="card-info-count">6 créations</div>
+      </section>
+
+      <!-- S2: MANIFESTO -->
+      <section id="manifesto">
+        <span class="manifesto-ornament">"</span>
+        <blockquote class="manifesto-quote">
+          Chaque couture est une intention,<br />chaque sac une pièce qui ne ressemblera à aucune
+          autre.
+        </blockquote>
+        <div class="divider divider--center divider--accent"></div>
+        <p class="manifesto-attribution">— Créations Creatyss, fabriqué en France</p>
+      </section>
+
+      <!-- S3: COLLECTIONS -->
+      <section id="collections" style="background: var(--bg-off-white)">
+        <div class="collections-header">
+          <div>
+            <span class="eyebrow">L'univers Creatyss</span>
+            <h2
+              style="
+                font-family: var(--font-display);
+                font-size: clamp(28px, 3.5vw, 44px);
+                font-weight: 400;
+              "
+            >
+              Nos collections
+            </h2>
+          </div>
+          <a class="btn btn-ghost btn-arrow">Tout voir</a>
         </div>
-      </div>
-    </div>
-    <div class="collection-card">
-      <div class="card-image card-image--short">
-        <div class="card-image-bg theme-safran"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info">
-          <div class="card-info-name" style="font-size:16px;">Bandoulière</div>
-          <div class="card-info-count">8 créations</div>
+        <div class="collections-grid">
+          <div class="collection-card">
+            <div class="card-image card-image--tall">
+              <div class="card-image-bg theme-bordeaux"></div>
+              <div class="card-overlay"></div>
+              <div class="card-info">
+                <div class="card-info-name">Sacs à main</div>
+                <div class="card-info-count">12 créations</div>
+              </div>
+              <div class="card-pill">Collection phare</div>
+            </div>
+          </div>
+          <div class="collection-card">
+            <div class="card-image card-image--short">
+              <div class="card-image-bg theme-vert"></div>
+              <div class="card-overlay"></div>
+              <div class="card-info">
+                <div class="card-info-name" style="font-size: 16px">Cabas</div>
+                <div class="card-info-count">6 créations</div>
+              </div>
+            </div>
+          </div>
+          <div class="collection-card">
+            <div class="card-image card-image--short">
+              <div class="card-image-bg theme-safran"></div>
+              <div class="card-overlay"></div>
+              <div class="card-info">
+                <div class="card-info-name" style="font-size: 16px">Bandoulière</div>
+                <div class="card-info-count">8 créations</div>
+              </div>
+            </div>
+          </div>
+          <div class="collection-card">
+            <div class="card-image card-image--short">
+              <div class="card-image-bg theme-bleu"></div>
+              <div class="card-overlay"></div>
+              <div class="card-info">
+                <div class="card-info-name" style="font-size: 16px">Mini sacs</div>
+                <div class="card-info-count">9 créations</div>
+              </div>
+            </div>
+          </div>
+          <div class="collection-card">
+            <div class="card-image card-image--short">
+              <div class="card-image-bg theme-ecru"></div>
+              <div class="card-overlay"></div>
+              <div class="card-info">
+                <div class="card-info-name" style="font-size: 16px">Pochettes</div>
+                <div class="card-info-count">7 créations</div>
+              </div>
+            </div>
+          </div>
+          <div class="collection-card">
+            <div class="card-image card-image--short">
+              <div class="card-image-bg theme-naturel"></div>
+              <div class="card-overlay"></div>
+              <div class="card-info">
+                <div class="card-info-name" style="font-size: 16px">Trousses</div>
+                <div class="card-info-count">5 créations</div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="collection-card">
-      <div class="card-image card-image--short">
-        <div class="card-image-bg theme-bleu"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info">
-          <div class="card-info-name" style="font-size:16px;">Mini sacs</div>
-          <div class="card-info-count">9 créations</div>
+      </section>
+
+      <!-- S4: SAVOIR-FAIRE -->
+      <section id="savoirfaire">
+        <div class="savoirfaire-image">
+          <div class="savoirfaire-image-overlay">
+            <div class="atelier-detail">
+              <div
+                style="
+                  width: 40px;
+                  height: 1px;
+                  background: rgba(255, 255, 255, 0.2);
+                  margin: 0 auto 16px;
+                "
+              ></div>
+              Photo atelier<br />Détail couture / mains<br />
+              <span style="color: rgba(255, 255, 255, 0.2); font-size: 9px"
+                >Lumière naturelle, ton chaud</span
+              >
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="collection-card">
-      <div class="card-image card-image--short">
-        <div class="card-image-bg theme-ecru"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info">
-          <div class="card-info-name" style="font-size:16px;">Pochettes</div>
-          <div class="card-info-count">7 créations</div>
+        <div class="savoirfaire-content">
+          <span class="eyebrow eyebrow--accent">Atelier &amp; savoir-faire</span>
+          <h2
+            style="
+              font-family: var(--font-display);
+              font-size: clamp(28px, 3.5vw, 44px);
+              font-weight: 400;
+              line-height: 1.2;
+              max-width: 14ch;
+            "
+          >
+            Du dessin à la dernière piqûre
+          </h2>
+          <div class="divider divider--accent"></div>
+          <p style="font-size: 13px; line-height: 1.85; max-width: 44ch">
+            Chaque sac naît d'une idée, se dessine sur papier, se découpe dans des matières
+            choisies, et se coud entièrement à la main. Aucun modèle n'est reproduit à l'identique.
+          </p>
+          <ul class="values-list">
+            <li>
+              <span class="values-num">01</span
+              ><span>Matières sélectionnées pour leur qualité et leur durabilité</span>
+            </li>
+            <li>
+              <span class="values-num">02</span
+              ><span>Fabrication 100 % française, sans sous-traitance</span>
+            </li>
+            <li>
+              <span class="values-num">03</span
+              ><span>Chaque pièce est unique — numérotée et signée</span>
+            </li>
+          </ul>
+          <a
+            class="btn btn-ghost btn-arrow"
+            style="margin-top: var(--space-lg); display: inline-flex"
+            >Notre processus</a
+          >
         </div>
-      </div>
-    </div>
-    <div class="collection-card">
-      <div class="card-image card-image--short">
-        <div class="card-image-bg theme-naturel"></div>
-        <div class="card-overlay"></div>
-        <div class="card-info">
-          <div class="card-info-name" style="font-size:16px;">Trousses</div>
-          <div class="card-info-count">5 créations</div>
+      </section>
+
+      <!-- S5: PRODUITS -->
+      <section id="products">
+        <div class="products-header">
+          <div>
+            <span class="eyebrow">À la une</span>
+            <h2
+              style="
+                font-family: var(--font-display);
+                font-size: clamp(28px, 3.5vw, 44px);
+                font-weight: 400;
+              "
+            >
+              Sélection du moment
+            </h2>
+          </div>
+          <a class="btn btn-outline">Voir tous les sacs</a>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-card-image">
+              <div
+                class="product-card-image-bg"
+                style="background: linear-gradient(145deg, #a84040 0%, #6b2020 100%)"
+              ></div>
+              <div class="product-card-badge">Pièce unique</div>
+            </div>
+            <div class="product-card-name">Sac Bordeaux</div>
+            <div class="product-card-detail">
+              <span class="product-swatch" style="background: #8b2e2e"></span>Bordeaux · Tissu
+              étanche
+            </div>
+            <div class="product-card-price">64 €</div>
+          </div>
+          <div class="product-card">
+            <div class="product-card-image">
+              <div
+                class="product-card-image-bg"
+                style="background: linear-gradient(145deg, #8e9e82 0%, #5e7050 100%)"
+              ></div>
+            </div>
+            <div class="product-card-name">Cabas Vert Anis</div>
+            <div class="product-card-detail">
+              <span class="product-swatch" style="background: #6b7a5e"></span>Vert · Écru · Vinyle
+            </div>
+            <div class="product-card-price">72 €</div>
+          </div>
+          <div class="product-card">
+            <div class="product-card-image">
+              <div
+                class="product-card-image-bg"
+                style="background: linear-gradient(145deg, #d4905a 0%, #b8703c 100%)"
+              ></div>
+              <div class="product-card-badge">Nouveau</div>
+            </div>
+            <div class="product-card-name">Mini Safran</div>
+            <div class="product-card-detail">
+              <span class="product-swatch" style="background: #c4764a"></span>Safran · Cuir
+              synthétique
+            </div>
+            <div class="product-card-price">30 €</div>
+          </div>
+          <div class="product-card">
+            <div class="product-card-image">
+              <div
+                class="product-card-image-bg"
+                style="background: linear-gradient(145deg, #8eb0c4 0%, #5c8099 100%)"
+              ></div>
+            </div>
+            <div class="product-card-name">Bandoulière Gris-Bleu</div>
+            <div class="product-card-detail">
+              <span class="product-swatch" style="background: #7b93a3"></span>Bleu ardoise · Tissé
+            </div>
+            <div class="product-card-price">64 €</div>
+          </div>
+        </div>
+      </section>
 
-<!-- S4: SAVOIR-FAIRE -->
-<section id="savoirfaire">
-  <div class="savoirfaire-image">
-    <div class="savoirfaire-image-overlay">
-      <div class="atelier-detail">
-        <div style="width:40px; height:1px; background:rgba(255,255,255,0.2); margin:0 auto 16px;"></div>
-        Photo atelier<br>Détail couture / mains<br>
-        <span style="color:rgba(255,255,255,0.2); font-size:9px;">Lumière naturelle, ton chaud</span>
-      </div>
-    </div>
-  </div>
-  <div class="savoirfaire-content">
-    <span class="eyebrow eyebrow--accent">Atelier &amp; savoir-faire</span>
-    <h2 style="font-family:var(--font-display); font-size:clamp(28px,3.5vw,44px); font-weight:400; line-height:1.2; max-width:14ch;">Du dessin à la dernière piqûre</h2>
-    <div class="divider divider--accent"></div>
-    <p style="font-size:13px; line-height:1.85; max-width:44ch;">Chaque sac naît d'une idée, se dessine sur papier, se découpe dans des matières choisies, et se coud entièrement à la main. Aucun modèle n'est reproduit à l'identique.</p>
-    <ul class="values-list">
-      <li><span class="values-num">01</span><span>Matières sélectionnées pour leur qualité et leur durabilité</span></li>
-      <li><span class="values-num">02</span><span>Fabrication 100 % française, sans sous-traitance</span></li>
-      <li><span class="values-num">03</span><span>Chaque pièce est unique — numérotée et signée</span></li>
-    </ul>
-    <a class="btn btn-ghost btn-arrow" style="margin-top:var(--space-lg); display:inline-flex;">Notre processus</a>
-  </div>
-</section>
+      <!-- S6: EDITORIAL STRIP -->
+      <section id="editorial">
+        <div class="editorial-panel">
+          <div class="editorial-panel-accent"></div>
+          <div class="editorial-panel-stat">100 %</div>
+          <div class="editorial-panel-label">Fait main</div>
+          <div class="editorial-panel-text">
+            Du premier trait de crayon à la dernière piqûre, chaque geste est humain.
+          </div>
+        </div>
+        <div class="editorial-panel">
+          <div class="editorial-panel-accent"></div>
+          <div class="editorial-panel-stat">0</div>
+          <div class="editorial-panel-label">Pièce identique</div>
+          <div class="editorial-panel-text">
+            Chaque création est unique. Vous ne porterez jamais le même sac que quelqu'un d'autre.
+          </div>
+        </div>
+        <div class="editorial-panel">
+          <div class="editorial-panel-accent"></div>
+          <div class="editorial-panel-stat">FR</div>
+          <div class="editorial-panel-label">Fabriqué en France</div>
+          <div class="editorial-panel-text">
+            Notre atelier est en France. Les matières sont sourcées localement et en circuit court.
+          </div>
+        </div>
+      </section>
 
-<!-- S5: PRODUITS -->
-<section id="products">
-  <div class="products-header">
-    <div>
-      <span class="eyebrow">À la une</span>
-      <h2 style="font-family:var(--font-display); font-size:clamp(28px,3.5vw,44px); font-weight:400;">Sélection du moment</h2>
-    </div>
-    <a class="btn btn-outline">Voir tous les sacs</a>
-  </div>
-  <div class="products-grid">
-    <div class="product-card">
-      <div class="product-card-image">
-        <div class="product-card-image-bg" style="background:linear-gradient(145deg, #A84040 0%, #6B2020 100%);"></div>
-        <div class="product-card-badge">Pièce unique</div>
-      </div>
-      <div class="product-card-name">Sac Bordeaux</div>
-      <div class="product-card-detail"><span class="product-swatch" style="background:#8B2E2E;"></span>Bordeaux · Tissu étanche</div>
-      <div class="product-card-price">64 €</div>
-    </div>
-    <div class="product-card">
-      <div class="product-card-image">
-        <div class="product-card-image-bg" style="background:linear-gradient(145deg, #8E9E82 0%, #5E7050 100%);"></div>
-      </div>
-      <div class="product-card-name">Cabas Vert Anis</div>
-      <div class="product-card-detail"><span class="product-swatch" style="background:#6B7A5E;"></span>Vert · Écru · Vinyle</div>
-      <div class="product-card-price">72 €</div>
-    </div>
-    <div class="product-card">
-      <div class="product-card-image">
-        <div class="product-card-image-bg" style="background:linear-gradient(145deg, #D4905A 0%, #B8703C 100%);"></div>
-        <div class="product-card-badge">Nouveau</div>
-      </div>
-      <div class="product-card-name">Mini Safran</div>
-      <div class="product-card-detail"><span class="product-swatch" style="background:#C4764A;"></span>Safran · Cuir synthétique</div>
-      <div class="product-card-price">30 €</div>
-    </div>
-    <div class="product-card">
-      <div class="product-card-image">
-        <div class="product-card-image-bg" style="background:linear-gradient(145deg, #8EB0C4 0%, #5C8099 100%);"></div>
-      </div>
-      <div class="product-card-name">Bandoulière Gris-Bleu</div>
-      <div class="product-card-detail"><span class="product-swatch" style="background:#7B93A3;"></span>Bleu ardoise · Tissé</div>
-      <div class="product-card-price">64 €</div>
-    </div>
-  </div>
-</section>
+      <!-- S7: NOUVEAUTÉS -->
+      <section id="nouveautes">
+        <div class="nouveautes-header">
+          <div>
+            <span class="eyebrow">Vient d'arriver</span>
+            <h2
+              style="
+                font-family: var(--font-display);
+                font-size: clamp(28px, 3.5vw, 44px);
+                font-weight: 400;
+              "
+            >
+              Nouveautés
+            </h2>
+          </div>
+          <a class="btn btn-ghost btn-arrow" style="margin-right: 80px">Toutes les nouveautés</a>
+        </div>
+        <div class="nouveautes-scroll">
+          <div class="nouveaute-card">
+            <div class="nouveaute-image">
+              <div
+                class="nouveaute-image-bg"
+                style="background: linear-gradient(145deg, #c4b49a, #8a6f56)"
+              ></div>
+              <div class="nouveaute-tag">Nouveau</div>
+            </div>
+            <div class="nouveaute-name">Pochette Écru</div>
+            <div class="nouveaute-price">30 €</div>
+          </div>
+          <div class="nouveaute-card">
+            <div class="nouveaute-image">
+              <div
+                class="nouveaute-image-bg"
+                style="background: linear-gradient(145deg, #d4905a, #a86040)"
+              ></div>
+              <div class="nouveaute-tag">Nouveau</div>
+            </div>
+            <div class="nouveaute-name">Mini Terracotta</div>
+            <div class="nouveaute-price">34 €</div>
+          </div>
+          <div class="nouveaute-card">
+            <div class="nouveaute-image">
+              <div
+                class="nouveaute-image-bg"
+                style="background: linear-gradient(145deg, #7a9e8a, #4e7060)"
+              ></div>
+              <div class="nouveaute-tag">Nouveau</div>
+            </div>
+            <div class="nouveaute-name">Cabas Basil</div>
+            <div class="nouveaute-price">78 €</div>
+          </div>
+          <div class="nouveaute-card">
+            <div class="nouveaute-image">
+              <div
+                class="nouveaute-image-bg"
+                style="background: linear-gradient(145deg, #9090b0, #606080)"
+              ></div>
+              <div class="nouveaute-tag">Nouveau</div>
+            </div>
+            <div class="nouveaute-name">Bandoulière Ardoise</div>
+            <div class="nouveaute-price">68 €</div>
+          </div>
+          <div class="nouveaute-card">
+            <div class="nouveaute-image">
+              <div
+                class="nouveaute-image-bg"
+                style="background: linear-gradient(145deg, #b87860, #8a5040)"
+              ></div>
+            </div>
+            <div class="nouveaute-name">Sac Terracotta Profond</div>
+            <div class="nouveaute-price">72 €</div>
+          </div>
+        </div>
+      </section>
 
-<!-- S6: EDITORIAL STRIP -->
-<section id="editorial">
-  <div class="editorial-panel">
-    <div class="editorial-panel-accent"></div>
-    <div class="editorial-panel-stat">100 %</div>
-    <div class="editorial-panel-label">Fait main</div>
-    <div class="editorial-panel-text">Du premier trait de crayon à la dernière piqûre, chaque geste est humain.</div>
-  </div>
-  <div class="editorial-panel">
-    <div class="editorial-panel-accent"></div>
-    <div class="editorial-panel-stat">0</div>
-    <div class="editorial-panel-label">Pièce identique</div>
-    <div class="editorial-panel-text">Chaque création est unique. Vous ne porterez jamais le même sac que quelqu'un d'autre.</div>
-  </div>
-  <div class="editorial-panel">
-    <div class="editorial-panel-accent"></div>
-    <div class="editorial-panel-stat">FR</div>
-    <div class="editorial-panel-label">Fabriqué en France</div>
-    <div class="editorial-panel-text">Notre atelier est en France. Les matières sont sourcées localement et en circuit court.</div>
-  </div>
-</section>
+      <!-- S8: CRÉATRICE -->
+      <section id="creatrice">
+        <div class="creatrice-image">
+          <div class="portrait-placeholder">
+            Photo de la créatrice<br />en atelier, lumière naturelle
+          </div>
+        </div>
+        <div class="creatrice-content">
+          <span class="eyebrow eyebrow--accent">L'artisane</span>
+          <h2
+            style="
+              font-family: var(--font-display);
+              font-size: clamp(28px, 3.5vw, 44px);
+              font-weight: 400;
+              line-height: 1.2;
+            "
+          >
+            Derrière chaque sac,<br /><em>une main.</em>
+          </h2>
+          <blockquote class="creatrice-quote">
+            « Je coud par passion, mais aussi par conviction — que les objets qu'on porte méritent
+            d'être pensés, faits avec soin, et destinés à durer. »
+          </blockquote>
+          <div class="creatrice-name">— La créatrice, Creatyss</div>
+          <a
+            class="btn btn-ghost btn-arrow"
+            style="margin-top: var(--space-xl); display: inline-flex"
+            >Notre histoire</a
+          >
+        </div>
+      </section>
 
-<!-- S7: NOUVEAUTÉS -->
-<section id="nouveautes">
-  <div class="nouveautes-header">
-    <div>
-      <span class="eyebrow">Vient d'arriver</span>
-      <h2 style="font-family:var(--font-display); font-size:clamp(28px,3.5vw,44px); font-weight:400;">Nouveautés</h2>
-    </div>
-    <a class="btn btn-ghost btn-arrow" style="margin-right:80px;">Toutes les nouveautés</a>
-  </div>
-  <div class="nouveautes-scroll">
-    <div class="nouveaute-card">
-      <div class="nouveaute-image">
-        <div class="nouveaute-image-bg" style="background:linear-gradient(145deg,#C4B49A,#8A6F56);"></div>
-        <div class="nouveaute-tag">Nouveau</div>
-      </div>
-      <div class="nouveaute-name">Pochette Écru</div>
-      <div class="nouveaute-price">30 €</div>
-    </div>
-    <div class="nouveaute-card">
-      <div class="nouveaute-image">
-        <div class="nouveaute-image-bg" style="background:linear-gradient(145deg,#D4905A,#A86040);"></div>
-        <div class="nouveaute-tag">Nouveau</div>
-      </div>
-      <div class="nouveaute-name">Mini Terracotta</div>
-      <div class="nouveaute-price">34 €</div>
-    </div>
-    <div class="nouveaute-card">
-      <div class="nouveaute-image">
-        <div class="nouveaute-image-bg" style="background:linear-gradient(145deg,#7A9E8A,#4E7060);"></div>
-        <div class="nouveaute-tag">Nouveau</div>
-      </div>
-      <div class="nouveaute-name">Cabas Basil</div>
-      <div class="nouveaute-price">78 €</div>
-    </div>
-    <div class="nouveaute-card">
-      <div class="nouveaute-image">
-        <div class="nouveaute-image-bg" style="background:linear-gradient(145deg,#9090B0,#606080);"></div>
-        <div class="nouveaute-tag">Nouveau</div>
-      </div>
-      <div class="nouveaute-name">Bandoulière Ardoise</div>
-      <div class="nouveaute-price">68 €</div>
-    </div>
-    <div class="nouveaute-card">
-      <div class="nouveaute-image">
-        <div class="nouveaute-image-bg" style="background:linear-gradient(145deg,#B87860,#8A5040);"></div>
-      </div>
-      <div class="nouveaute-name">Sac Terracotta Profond</div>
-      <div class="nouveaute-price">72 €</div>
-    </div>
-  </div>
-</section>
+      <!-- S9: NEWSLETTER -->
+      <section id="newsletter">
+        <span class="eyebrow eyebrow--accent" style="display: block; margin-bottom: var(--space-sm)"
+          >Restez proche de l'atelier</span
+        >
+        <h2
+          style="
+            font-family: var(--font-display);
+            font-size: clamp(24px, 3vw, 40px);
+            font-weight: 400;
+            margin-bottom: var(--space-sm);
+          "
+        >
+          Nouvelles créations, coulisses &amp; marchés
+        </h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin: 0 auto; max-width: 46ch">
+          Quelques nouvelles par mois, jamais plus. Pour ceux qui aiment les belles choses faites
+          avec soin.
+        </p>
+        <div class="newsletter-form">
+          <input type="email" class="newsletter-input" placeholder="Votre adresse email" />
+          <button class="newsletter-btn">S'abonner</button>
+        </div>
+        <p style="font-size: 10px; color: var(--text-muted); margin-top: var(--space-md)">
+          Pas de spam · Désabonnement en un clic
+        </p>
+      </section>
 
-<!-- S8: CRÉATRICE -->
-<section id="creatrice">
-  <div class="creatrice-image">
-    <div class="portrait-placeholder">
-      Photo de la créatrice<br>en atelier, lumière naturelle
+      <!-- S10: FOOTER -->
+      <footer id="footer">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">Creatyss</div>
+            <div class="footer-tagline">
+              Créations exclusives faites main. Fabrication française, pièces uniques, amour du
+              détail.
+            </div>
+          </div>
+          <div>
+            <div class="footer-col-title">Collections</div>
+            <ul class="footer-links">
+              <li><a href="#">Sacs à main</a></li>
+              <li><a href="#">Cabas</a></li>
+              <li><a href="#">Bandoulières</a></li>
+              <li><a href="#">Pochettes & Mini</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="footer-col-title">Informations</div>
+            <ul class="footer-links">
+              <li><a href="#">L'atelier</a></li>
+              <li><a href="#">Notre histoire</a></li>
+              <li><a href="#">Commandes sur mesure</a></li>
+              <li><a href="#">Marchés artisanaux</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="footer-col-title">Contact</div>
+            <ul class="footer-links">
+              <li><a href="#">Instagram</a></li>
+              <li><a href="#">Facebook</a></li>
+              <li><a href="#">Nous écrire</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Creatyss — Tous droits réservés</span>
+          <span>Mentions légales · CGV · Politique de confidentialité</span>
+        </div>
+      </footer>
     </div>
-  </div>
-  <div class="creatrice-content">
-    <span class="eyebrow eyebrow--accent">L'artisane</span>
-    <h2 style="font-family:var(--font-display); font-size:clamp(28px,3.5vw,44px); font-weight:400; line-height:1.2;">Derrière chaque sac,<br><em>une main.</em></h2>
-    <blockquote class="creatrice-quote">
-      « Je coud par passion, mais aussi par conviction — que les objets qu'on porte méritent d'être pensés, faits avec soin, et destinés à durer. »
-    </blockquote>
-    <div class="creatrice-name">— La créatrice, Creatyss</div>
-    <a class="btn btn-ghost btn-arrow" style="margin-top:var(--space-xl); display:inline-flex;">Notre histoire</a>
-  </div>
-</section>
-
-<!-- S9: NEWSLETTER -->
-<section id="newsletter">
-  <span class="eyebrow eyebrow--accent" style="display:block; margin-bottom:var(--space-sm);">Restez proche de l'atelier</span>
-  <h2 style="font-family:var(--font-display); font-size:clamp(24px,3vw,40px); font-weight:400; margin-bottom:var(--space-sm);">Nouvelles créations, coulisses &amp; marchés</h2>
-  <p style="font-size:13px; color:var(--text-muted); margin:0 auto; max-width:46ch;">Quelques nouvelles par mois, jamais plus. Pour ceux qui aiment les belles choses faites avec soin.</p>
-  <div class="newsletter-form">
-    <input type="email" class="newsletter-input" placeholder="Votre adresse email" />
-    <button class="newsletter-btn">S'abonner</button>
-  </div>
-  <p style="font-size:10px; color:var(--text-muted); margin-top:var(--space-md);">Pas de spam · Désabonnement en un clic</p>
-</section>
-
-<!-- S10: FOOTER -->
-<footer id="footer">
-  <div class="footer-grid">
-    <div>
-      <div class="footer-logo">Creatyss</div>
-      <div class="footer-tagline">Créations exclusives faites main. Fabrication française, pièces uniques, amour du détail.</div>
-    </div>
-    <div>
-      <div class="footer-col-title">Collections</div>
-      <ul class="footer-links">
-        <li><a href="#">Sacs à main</a></li>
-        <li><a href="#">Cabas</a></li>
-        <li><a href="#">Bandoulières</a></li>
-        <li><a href="#">Pochettes & Mini</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Informations</div>
-      <ul class="footer-links">
-        <li><a href="#">L'atelier</a></li>
-        <li><a href="#">Notre histoire</a></li>
-        <li><a href="#">Commandes sur mesure</a></li>
-        <li><a href="#">Marchés artisanaux</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Contact</div>
-      <ul class="footer-links">
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">Facebook</a></li>
-        <li><a href="#">Nous écrire</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 Creatyss — Tous droits réservés</span>
-    <span>Mentions légales · CGV · Politique de confidentialité</span>
-  </div>
-</footer>
-
-</div><!-- /doc-main -->
-
-</body>
+    <!-- /doc-main -->
+  </body>
 </html>

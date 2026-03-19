@@ -7,7 +7,7 @@ import {
   HOMEPAGE_FEATURED_PRODUCTS_MAX_COUNT,
   HOMEPAGE_HERO_TEXT_MAX_LENGTH,
   HOMEPAGE_HERO_TITLE_MAX_LENGTH,
-  validateHomepageInput
+  validateHomepageInput,
 } from "@/entities/homepage/homepage-input";
 
 describe("validateHomepageInput", () => {
@@ -22,17 +22,17 @@ describe("validateHomepageInput", () => {
       featuredProductIds: ["11", "10"],
       featuredProductSortOrders: {
         "10": "0",
-        "11": "2"
+        "11": "2",
       },
       featuredCategoryIds: ["21"],
       featuredCategorySortOrders: {
-        "21": "1"
+        "21": "1",
       },
       featuredBlogPostIds: ["31", "30"],
       featuredBlogPostSortOrders: {
         "30": "1",
-        "31": "0"
-      }
+        "31": "0",
+      },
     });
 
     expect(result).toEqual({
@@ -42,37 +42,37 @@ describe("validateHomepageInput", () => {
         heroTitle: "Hero title",
         heroText: "Hero text",
         heroImage: {
-          kind: "keep_current"
+          kind: "keep_current",
         },
         editorialTitle: "Editorial title",
         editorialText: "Editorial text",
         featuredProducts: [
           {
             productId: "10",
-            sortOrder: 0
+            sortOrder: 0,
           },
           {
             productId: "11",
-            sortOrder: 2
-          }
+            sortOrder: 2,
+          },
         ],
         featuredCategories: [
           {
             categoryId: "21",
-            sortOrder: 1
-          }
+            sortOrder: 1,
+          },
         ],
         featuredBlogPosts: [
           {
             blogPostId: "31",
-            sortOrder: 0
+            sortOrder: 0,
           },
           {
             blogPostId: "30",
-            sortOrder: 1
-          }
-        ]
-      }
+            sortOrder: 1,
+          },
+        ],
+      },
     });
   });
 
@@ -89,7 +89,7 @@ describe("validateHomepageInput", () => {
       featuredCategoryIds: [],
       featuredCategorySortOrders: {},
       featuredBlogPostIds: [],
-      featuredBlogPostSortOrders: {}
+      featuredBlogPostSortOrders: {},
     });
 
     expect(result).toEqual({
@@ -99,14 +99,14 @@ describe("validateHomepageInput", () => {
         heroTitle: null,
         heroText: null,
         heroImage: {
-          kind: "clear"
+          kind: "clear",
         },
         editorialTitle: null,
         editorialText: null,
         featuredProducts: [],
         featuredCategories: [],
-        featuredBlogPosts: []
-      }
+        featuredBlogPosts: [],
+      },
     });
   });
 
@@ -124,11 +124,11 @@ describe("validateHomepageInput", () => {
         featuredCategoryIds: [],
         featuredCategorySortOrders: {},
         featuredBlogPostIds: [],
-        featuredBlogPostSortOrders: {}
+        featuredBlogPostSortOrders: {},
       })
     ).toEqual({
       ok: false,
-      code: "invalid_hero_image"
+      code: "invalid_hero_image",
     });
   });
 
@@ -144,16 +144,16 @@ describe("validateHomepageInput", () => {
         featuredProductIds: ["10", "11"],
         featuredProductSortOrders: {
           "10": "0",
-          "11": "0"
+          "11": "0",
         },
         featuredCategoryIds: [],
         featuredCategorySortOrders: {},
         featuredBlogPostIds: [],
-        featuredBlogPostSortOrders: {}
+        featuredBlogPostSortOrders: {},
       })
     ).toEqual({
       ok: false,
-      code: "duplicate_product_sort_order"
+      code: "duplicate_product_sort_order",
     });
   });
 
@@ -170,14 +170,14 @@ describe("validateHomepageInput", () => {
         featuredProductSortOrders: {},
         featuredCategoryIds: ["cat-1"],
         featuredCategorySortOrders: {
-          "cat-1": "0"
+          "cat-1": "0",
         },
         featuredBlogPostIds: [],
-        featuredBlogPostSortOrders: {}
+        featuredBlogPostSortOrders: {},
       })
     ).toEqual({
       ok: false,
-      code: "invalid_category_selection"
+      code: "invalid_category_selection",
     });
   });
 
@@ -195,11 +195,11 @@ describe("validateHomepageInput", () => {
         featuredCategoryIds: [],
         featuredCategorySortOrders: {},
         featuredBlogPostIds: [],
-        featuredBlogPostSortOrders: {}
+        featuredBlogPostSortOrders: {},
       })
     ).toEqual({
       ok: false,
-      code: "hero_title_too_long"
+      code: "hero_title_too_long",
     });
   });
 
@@ -217,11 +217,11 @@ describe("validateHomepageInput", () => {
         featuredCategoryIds: [],
         featuredCategorySortOrders: {},
         featuredBlogPostIds: [],
-        featuredBlogPostSortOrders: {}
+        featuredBlogPostSortOrders: {},
       })
     ).toEqual({
       ok: false,
-      code: "hero_text_too_long"
+      code: "hero_text_too_long",
     });
   });
 
@@ -239,11 +239,11 @@ describe("validateHomepageInput", () => {
         featuredCategoryIds: [],
         featuredCategorySortOrders: {},
         featuredBlogPostIds: [],
-        featuredBlogPostSortOrders: {}
+        featuredBlogPostSortOrders: {},
       })
     ).toEqual({
       ok: false,
-      code: "editorial_title_too_long"
+      code: "editorial_title_too_long",
     });
   });
 
@@ -261,18 +261,17 @@ describe("validateHomepageInput", () => {
         featuredCategoryIds: [],
         featuredCategorySortOrders: {},
         featuredBlogPostIds: [],
-        featuredBlogPostSortOrders: {}
+        featuredBlogPostSortOrders: {},
       })
     ).toEqual({
       ok: false,
-      code: "editorial_text_too_long"
+      code: "editorial_text_too_long",
     });
   });
 
   it("rejette une liste de produits depassant la cardinalite maximale", () => {
-    const ids = Array.from(
-      { length: HOMEPAGE_FEATURED_PRODUCTS_MAX_COUNT + 1 },
-      (_, i) => String(i + 1)
+    const ids = Array.from({ length: HOMEPAGE_FEATURED_PRODUCTS_MAX_COUNT + 1 }, (_, i) =>
+      String(i + 1)
     );
     const sortOrders = Object.fromEntries(ids.map((id, i) => [id, String(i)]));
 
@@ -289,18 +288,17 @@ describe("validateHomepageInput", () => {
         featuredCategoryIds: [],
         featuredCategorySortOrders: {},
         featuredBlogPostIds: [],
-        featuredBlogPostSortOrders: {}
+        featuredBlogPostSortOrders: {},
       })
     ).toEqual({
       ok: false,
-      code: "too_many_featured_products"
+      code: "too_many_featured_products",
     });
   });
 
   it("rejette une liste de categories depassant la cardinalite maximale", () => {
-    const ids = Array.from(
-      { length: HOMEPAGE_FEATURED_CATEGORIES_MAX_COUNT + 1 },
-      (_, i) => String(i + 1)
+    const ids = Array.from({ length: HOMEPAGE_FEATURED_CATEGORIES_MAX_COUNT + 1 }, (_, i) =>
+      String(i + 1)
     );
     const sortOrders = Object.fromEntries(ids.map((id, i) => [id, String(i)]));
 
@@ -317,18 +315,17 @@ describe("validateHomepageInput", () => {
         featuredCategoryIds: ids,
         featuredCategorySortOrders: sortOrders,
         featuredBlogPostIds: [],
-        featuredBlogPostSortOrders: {}
+        featuredBlogPostSortOrders: {},
       })
     ).toEqual({
       ok: false,
-      code: "too_many_featured_categories"
+      code: "too_many_featured_categories",
     });
   });
 
   it("rejette une liste d'articles depassant la cardinalite maximale", () => {
-    const ids = Array.from(
-      { length: HOMEPAGE_FEATURED_BLOG_POSTS_MAX_COUNT + 1 },
-      (_, i) => String(i + 1)
+    const ids = Array.from({ length: HOMEPAGE_FEATURED_BLOG_POSTS_MAX_COUNT + 1 }, (_, i) =>
+      String(i + 1)
     );
     const sortOrders = Object.fromEntries(ids.map((id, i) => [id, String(i)]));
 
@@ -345,11 +342,11 @@ describe("validateHomepageInput", () => {
         featuredCategoryIds: [],
         featuredCategorySortOrders: {},
         featuredBlogPostIds: ids,
-        featuredBlogPostSortOrders: sortOrders
+        featuredBlogPostSortOrders: sortOrders,
       })
     ).toEqual({
       ok: false,
-      code: "too_many_featured_blog_posts"
+      code: "too_many_featured_blog_posts",
     });
   });
 });

@@ -1,14 +1,9 @@
 import { describe, expect, it } from "vitest";
-import {
-  normalizeBlogPostSlug,
-  validateBlogPostInput
-} from "@/entities/blog/blog-post-input";
+import { normalizeBlogPostSlug, validateBlogPostInput } from "@/entities/blog/blog-post-input";
 
 describe("normalizeBlogPostSlug", () => {
   it("normalise le slug article", () => {
-    expect(normalizeBlogPostSlug("  Journal / Édition Été  ")).toBe(
-      "journal-edition-ete"
-    );
+    expect(normalizeBlogPostSlug("  Journal / Édition Été  ")).toBe("journal-edition-ete");
   });
 });
 
@@ -23,7 +18,7 @@ describe("validateBlogPostInput", () => {
       seoDescription: "  SEO description  ",
       status: "published",
       currentCoverImagePath: null,
-      coverImageMediaAssetId: "42"
+      coverImageMediaAssetId: "42",
     });
 
     expect(result).toEqual({
@@ -38,9 +33,9 @@ describe("validateBlogPostInput", () => {
         status: "published",
         coverImage: {
           kind: "media_asset",
-          mediaAssetId: "42"
-        }
-      }
+          mediaAssetId: "42",
+        },
+      },
     });
   });
 
@@ -54,7 +49,7 @@ describe("validateBlogPostInput", () => {
       seoDescription: "",
       status: "draft",
       currentCoverImagePath: "blog/cover.jpg",
-      coverImageMediaAssetId: "__keep_current__"
+      coverImageMediaAssetId: "__keep_current__",
     });
 
     expect(result).toEqual({
@@ -69,9 +64,9 @@ describe("validateBlogPostInput", () => {
         status: "draft",
         coverImage: {
           kind: "keep_current",
-          filePath: "blog/cover.jpg"
-        }
-      }
+          filePath: "blog/cover.jpg",
+        },
+      },
     });
   });
 
@@ -86,11 +81,11 @@ describe("validateBlogPostInput", () => {
         seoDescription: null,
         status: "draft",
         currentCoverImagePath: "",
-        coverImageMediaAssetId: "__keep_current__"
+        coverImageMediaAssetId: "__keep_current__",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_cover_image"
+      code: "invalid_cover_image",
     });
   });
 
@@ -105,11 +100,11 @@ describe("validateBlogPostInput", () => {
         seoDescription: null,
         status: "scheduled",
         currentCoverImagePath: null,
-        coverImageMediaAssetId: ""
+        coverImageMediaAssetId: "",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_status"
+      code: "invalid_status",
     });
   });
 });

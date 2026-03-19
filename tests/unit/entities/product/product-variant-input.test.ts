@@ -12,7 +12,7 @@ describe("validateProductVariantInput", () => {
       compareAtPrice: "149.00",
       stockQuantity: " 12 ",
       isDefault: "true",
-      status: "published"
+      status: "published",
     });
 
     expect(result).toEqual({
@@ -26,8 +26,8 @@ describe("validateProductVariantInput", () => {
         compareAtPrice: "149.00",
         stockQuantity: 12,
         isDefault: true,
-        status: "published"
-      }
+        status: "published",
+      },
     });
   });
 
@@ -41,7 +41,7 @@ describe("validateProductVariantInput", () => {
       compareAtPrice: "",
       stockQuantity: "0",
       isDefault: null,
-      status: "draft"
+      status: "draft",
     });
 
     expect(result).toEqual({
@@ -55,8 +55,8 @@ describe("validateProductVariantInput", () => {
         compareAtPrice: null,
         stockQuantity: 0,
         isDefault: false,
-        status: "draft"
-      }
+        status: "draft",
+      },
     });
   });
 
@@ -71,11 +71,11 @@ describe("validateProductVariantInput", () => {
         compareAtPrice: "",
         stockQuantity: "1",
         isDefault: null,
-        status: "draft"
+        status: "draft",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_color_hex"
+      code: "invalid_color_hex",
     });
   });
 
@@ -90,11 +90,11 @@ describe("validateProductVariantInput", () => {
         compareAtPrice: "9.99",
         stockQuantity: "1",
         isDefault: null,
-        status: "draft"
+        status: "draft",
       })
     ).toEqual({
       ok: false,
-      code: "compare_at_price_below_price"
+      code: "compare_at_price_below_price",
     });
   });
 
@@ -109,11 +109,11 @@ describe("validateProductVariantInput", () => {
         compareAtPrice: "",
         stockQuantity: "",
         isDefault: null,
-        status: "draft"
+        status: "draft",
       })
     ).toEqual({
       ok: false,
-      code: "missing_stock_quantity"
+      code: "missing_stock_quantity",
     });
   });
 
@@ -128,11 +128,11 @@ describe("validateProductVariantInput", () => {
         compareAtPrice: "",
         stockQuantity: "-1",
         isDefault: null,
-        status: "draft"
+        status: "draft",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_stock_quantity"
+      code: "invalid_stock_quantity",
     });
 
     expect(
@@ -145,11 +145,11 @@ describe("validateProductVariantInput", () => {
         compareAtPrice: "",
         stockQuantity: "1.5",
         isDefault: null,
-        status: "draft"
+        status: "draft",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_stock_quantity"
+      code: "invalid_stock_quantity",
     });
   });
 });

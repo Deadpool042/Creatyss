@@ -20,20 +20,22 @@ type FeaturedBlogPostsSectionProps = {
 
 export function FeaturedBlogPostsSection({
   blogPostOptions,
-  blogPostSelectionMap
+  blogPostSelectionMap,
 }: FeaturedBlogPostsSectionProps) {
   return (
     <AdminFormSection
       contentClassName="gap-5"
       description="En complément, choisissez les articles publiés à afficher sur la page d'accueil."
       eyebrow="Articles"
-      title="Articles mis en avant">
+      title="Articles mis en avant"
+    >
       {blogPostOptions.length > 0 ? (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {blogPostOptions.map(post => (
+          {blogPostOptions.map((post) => (
             <Card
               className="rounded-xl border border-border/70 bg-card/95 text-card-foreground shadow-sm"
-              key={post.id}>
+              key={post.id}
+            >
               <div className="grid gap-4 px-3">
                 <label className="flex items-start gap-3 text-sm leading-6 text-foreground">
                   <input
@@ -44,23 +46,18 @@ export function FeaturedBlogPostsSection({
                     value={post.id}
                   />
                   <span className="grid gap-1">
-                    <span className="font-medium text-foreground">
-                      {post.title}
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      {post.slug}
-                    </span>
+                    <span className="font-medium text-foreground">{post.title}</span>
+                    <span className="text-sm text-muted-foreground">{post.slug}</span>
                   </span>
                 </label>
 
                 <AdminFormField
                   className="max-w-28"
                   htmlFor={`homepage-featured-blog-post-sort-order-${post.id}`}
-                  label="Ordre">
+                  label="Ordre"
+                >
                   <Input
-                    defaultValue={
-                      blogPostSelectionMap.get(post.id)?.toString() ?? ""
-                    }
+                    defaultValue={blogPostSelectionMap.get(post.id)?.toString() ?? ""}
                     id={`homepage-featured-blog-post-sort-order-${post.id}`}
                     min="0"
                     name={`featuredBlogPostSortOrder:${post.id}`}
@@ -72,9 +69,7 @@ export function FeaturedBlogPostsSection({
           ))}
         </div>
       ) : (
-        <Notice tone="note">
-          Publiez d&apos;abord un article pour l&apos;afficher ici.
-        </Notice>
+        <Notice tone="note">Publiez d&apos;abord un article pour l&apos;afficher ici.</Notice>
       )}
     </AdminFormSection>
   );

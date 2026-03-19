@@ -1,9 +1,6 @@
 import { queryFirst, queryRows } from "@/db/client";
 
-export type OrderEmailEventType =
-  | "order_created"
-  | "payment_succeeded"
-  | "order_shipped";
+export type OrderEmailEventType = "order_created" | "payment_succeeded" | "order_shipped";
 
 export type OrderEmailEventStatus = "pending" | "sent" | "failed";
 
@@ -61,7 +58,7 @@ function mapOrderEmailEvent(row: OrderEmailEventRow): OrderEmailEvent {
     lastError: row.last_error,
     sentAt: row.sent_at ? toIsoTimestamp(row.sent_at) : null,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
@@ -154,9 +151,7 @@ export async function markOrderEmailEventFailed(input: {
   );
 }
 
-export async function listOrderEmailEventsByOrderId(
-  orderId: string
-): Promise<OrderEmailEvent[]> {
+export async function listOrderEmailEventsByOrderId(orderId: string): Promise<OrderEmailEvent[]> {
   if (!isValidNumericId(orderId)) {
     return [];
   }

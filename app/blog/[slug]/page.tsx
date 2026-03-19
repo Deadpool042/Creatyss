@@ -6,7 +6,7 @@ import { getUploadsPublicPath } from "@/lib/uploads";
 export const dynamic = "force-dynamic";
 
 const blogDateFormatter = new Intl.DateTimeFormat("fr-FR", {
-  dateStyle: "long"
+  dateStyle: "long",
 });
 
 type BlogPostPageProps = Readonly<{
@@ -15,9 +15,7 @@ type BlogPostPageProps = Readonly<{
   }>;
 }>;
 
-type BlogPostMetadataSource = NonNullable<
-  Awaited<ReturnType<typeof getPublishedBlogPostBySlug>>
->;
+type BlogPostMetadataSource = NonNullable<Awaited<ReturnType<typeof getPublishedBlogPostBySlug>>>;
 
 function truncateMetadataDescription(value: string): string {
   const normalizedValue = value.replace(/\s+/g, " ").trim();
@@ -29,9 +27,7 @@ function truncateMetadataDescription(value: string): string {
   return `${normalizedValue.slice(0, 157).trimEnd()}...`;
 }
 
-function getBlogPostMetadataDescription(
-  blogPost: BlogPostMetadataSource
-): string {
+function getBlogPostMetadataDescription(blogPost: BlogPostMetadataSource): string {
   if (blogPost.seoDescription) {
     return blogPost.seoDescription;
   }
@@ -47,22 +43,20 @@ function getBlogPostMetadataDescription(
   return "Article Creatyss.";
 }
 
-export async function generateMetadata({
-  params
-}: BlogPostPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPublishedBlogPostBySlug(slug);
 
   if (post === null) {
     return {
       title: "Article Creatyss",
-      description: "Article Creatyss."
+      description: "Article Creatyss.",
     };
   }
 
   return {
     title: post.seoTitle ?? post.title,
-    description: getBlogPostMetadataDescription(post)
+    description: getBlogPostMetadataDescription(post),
   };
 }
 
@@ -82,9 +76,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <div className="page">
       <article className="section grid gap-3 max-w-[52rem]">
-        <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
-          Blog
-        </p>
+        <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Blog</p>
         <h1 className="m-0">{post.title}</h1>
 
         {post.publishedAt ? (
@@ -93,9 +85,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </p>
         ) : null}
 
-        {post.excerpt ? (
-          <p className="mt-4 leading-relaxed">{post.excerpt}</p>
-        ) : null}
+        {post.excerpt ? <p className="mt-4 leading-relaxed">{post.excerpt}</p> : null}
 
         {coverImagePath ? (
           <figure className="article-cover">

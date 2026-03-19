@@ -3,7 +3,7 @@ import {
   getOrderPaymentNotice,
   getOrderStatusLabel,
   getOrderStatusSummary,
-  getPaymentStatusLabel
+  getPaymentStatusLabel,
 } from "@/entities/order/order-status-presentation";
 
 describe("order-status-presentation", () => {
@@ -18,13 +18,12 @@ describe("order-status-presentation", () => {
     expect(
       getOrderStatusSummary({
         orderStatus: "pending",
-        paymentStatus: "pending"
+        paymentStatus: "pending",
       })
     ).toEqual({
       title: "Commande en attente de paiement",
-      description:
-        "La commande est créée, mais le paiement doit encore être confirmé.",
-      nextStep: "Finalisez le paiement pour lancer le traitement de la commande."
+      description: "La commande est créée, mais le paiement doit encore être confirmé.",
+      nextStep: "Finalisez le paiement pour lancer le traitement de la commande.",
     });
   });
 
@@ -32,14 +31,13 @@ describe("order-status-presentation", () => {
     expect(
       getOrderStatusSummary({
         orderStatus: "shipped",
-        paymentStatus: "succeeded"
+        paymentStatus: "succeeded",
       })
     ).toEqual({
       title: "Commande expédiée",
-      description:
-        "La commande a quitté l'atelier et est en cours d'acheminement.",
+      description: "La commande a quitté l'atelier et est en cours d'acheminement.",
       nextStep:
-        "Consultez la date d'expédition et la référence de suivi si elles sont disponibles."
+        "Consultez la date d'expédition et la référence de suivi si elles sont disponibles.",
     });
   });
 
@@ -48,21 +46,21 @@ describe("order-status-presentation", () => {
       getOrderPaymentNotice({
         orderStatus: "pending",
         paymentStatus: "pending",
-        paymentParam: "cancelled"
+        paymentParam: "cancelled",
       })
     ).toEqual({
       kind: "alert",
-      text: "Le paiement a été interrompu. Vous pouvez le relancer."
+      text: "Le paiement a été interrompu. Vous pouvez le relancer.",
     });
 
     expect(
       getOrderPaymentNotice({
         orderStatus: "pending",
-        paymentStatus: "failed"
+        paymentStatus: "failed",
       })
     ).toEqual({
       kind: "alert",
-      text: "Le paiement n'a pas abouti. Vous pouvez le relancer."
+      text: "Le paiement n'a pas abouti. Vous pouvez le relancer.",
     });
   });
 });

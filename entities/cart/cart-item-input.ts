@@ -24,9 +24,7 @@ export type CartItemInputValidationResult =
       code: CartItemInputErrorCode;
     };
 
-function readTrimmedString(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
+function readTrimmedString(value: FormDataEntryValue | string | null | undefined): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -72,22 +70,20 @@ function normalizeQuantity(
   return numericValue;
 }
 
-export function validateCartItemInput(
-  input: CartItemInputSource
-): CartItemInputValidationResult {
+export function validateCartItemInput(input: CartItemInputSource): CartItemInputValidationResult {
   const variantId = normalizeNumericId(input.variantId);
 
   if (variantId === null) {
     return {
       ok: false,
-      code: "missing_variant_id"
+      code: "missing_variant_id",
     };
   }
 
   if (variantId === undefined) {
     return {
       ok: false,
-      code: "invalid_variant_id"
+      code: "invalid_variant_id",
     };
   }
 
@@ -96,14 +92,14 @@ export function validateCartItemInput(
   if (quantity === null) {
     return {
       ok: false,
-      code: "missing_quantity"
+      code: "missing_quantity",
     };
   }
 
   if (quantity === undefined) {
     return {
       ok: false,
-      code: "invalid_quantity"
+      code: "invalid_quantity",
     };
   }
 
@@ -111,7 +107,7 @@ export function validateCartItemInput(
     ok: true,
     data: {
       variantId,
-      quantity
-    }
+      quantity,
+    },
   };
 }

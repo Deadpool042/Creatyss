@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import {
   AdminBlogRepositoryError,
   deleteAdminBlogPost,
-  findAdminBlogPostById
+  findAdminBlogPostById,
 } from "@/db/repositories/admin-blog.repository";
 
 function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
@@ -41,10 +41,7 @@ export async function deleteBlogPostAction(formData: FormData): Promise<void> {
       redirect("/admin/blog?error=missing_blog_post");
     }
   } catch (error) {
-    if (
-      error instanceof AdminBlogRepositoryError &&
-      error.code === "blog_post_referenced"
-    ) {
+    if (error instanceof AdminBlogRepositoryError && error.code === "blog_post_referenced") {
       redirect(`/admin/blog/${blogPostId}?error=referenced`);
     }
 

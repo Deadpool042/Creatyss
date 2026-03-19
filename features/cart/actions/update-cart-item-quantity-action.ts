@@ -5,14 +5,12 @@ import {
   findGuestCartIdByToken,
   findGuestCartItemById,
   findGuestCartVariantById,
-  updateGuestCartItemQuantity
+  updateGuestCartItemQuantity,
 } from "@/db/repositories/guest-cart.repository";
 import { validateCartItemInput } from "@/entities/cart/cart-item-input";
 import { readCartSessionToken } from "@/lib/cart-session";
 
-function normalizeCartItemId(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
+function normalizeCartItemId(value: FormDataEntryValue | string | null | undefined): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -26,9 +24,7 @@ function normalizeCartItemId(
   return normalizedValue;
 }
 
-export async function updateCartItemQuantityAction(
-  formData: FormData
-): Promise<void> {
+export async function updateCartItemQuantityAction(formData: FormData): Promise<void> {
   const itemId = normalizeCartItemId(formData.get("itemId"));
 
   if (itemId === null) {
@@ -55,7 +51,7 @@ export async function updateCartItemQuantityAction(
 
   const validation = validateCartItemInput({
     variantId: existingItem.variantId,
-    quantity: formData.get("quantity")
+    quantity: formData.get("quantity"),
   });
 
   if (!validation.ok) {
@@ -80,7 +76,7 @@ export async function updateCartItemQuantityAction(
     const updated = await updateGuestCartItemQuantity({
       cartId,
       itemId,
-      quantity: validation.data.quantity
+      quantity: validation.data.quantity,
     });
 
     if (!updated) {

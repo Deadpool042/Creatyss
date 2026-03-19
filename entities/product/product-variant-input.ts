@@ -47,9 +47,7 @@ export type ProductVariantInputValidationResult =
       code: ProductVariantInputErrorCode;
     };
 
-function readTrimmedString(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
+function readTrimmedString(value: FormDataEntryValue | string | null | undefined): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -131,7 +129,7 @@ export function validateProductVariantInput(
   if (name === null || name.length === 0) {
     return {
       ok: false,
-      code: "missing_variant_name"
+      code: "missing_variant_name",
     };
   }
 
@@ -140,7 +138,7 @@ export function validateProductVariantInput(
   if (colorName === null || colorName.length === 0) {
     return {
       ok: false,
-      code: "missing_color_name"
+      code: "missing_color_name",
     };
   }
 
@@ -149,7 +147,7 @@ export function validateProductVariantInput(
   if (colorHex === undefined) {
     return {
       ok: false,
-      code: "invalid_color_hex"
+      code: "invalid_color_hex",
     };
   }
 
@@ -158,7 +156,7 @@ export function validateProductVariantInput(
   if (sku === null || sku.length === 0) {
     return {
       ok: false,
-      code: "missing_sku"
+      code: "missing_sku",
     };
   }
 
@@ -167,14 +165,14 @@ export function validateProductVariantInput(
   if (price === null) {
     return {
       ok: false,
-      code: "missing_price"
+      code: "missing_price",
     };
   }
 
   if (price === undefined) {
     return {
       ok: false,
-      code: "invalid_price"
+      code: "invalid_price",
     };
   }
 
@@ -183,14 +181,14 @@ export function validateProductVariantInput(
   if (compareAtPrice === undefined) {
     return {
       ok: false,
-      code: "invalid_compare_at_price"
+      code: "invalid_compare_at_price",
     };
   }
 
   if (compareAtPrice !== null && Number(compareAtPrice) < Number(price)) {
     return {
       ok: false,
-      code: "compare_at_price_below_price"
+      code: "compare_at_price_below_price",
     };
   }
 
@@ -199,14 +197,14 @@ export function validateProductVariantInput(
   if (stockQuantity === null) {
     return {
       ok: false,
-      code: "missing_stock_quantity"
+      code: "missing_stock_quantity",
     };
   }
 
   if (stockQuantity === undefined) {
     return {
       ok: false,
-      code: "invalid_stock_quantity"
+      code: "invalid_stock_quantity",
     };
   }
 
@@ -215,7 +213,7 @@ export function validateProductVariantInput(
   if (!isVariantStatus(status)) {
     return {
       ok: false,
-      code: "invalid_variant_status"
+      code: "invalid_variant_status",
     };
   }
 
@@ -229,11 +227,8 @@ export function validateProductVariantInput(
       price,
       compareAtPrice,
       stockQuantity,
-      isDefault:
-        input.isDefault === "on" ||
-        input.isDefault === "true" ||
-        input.isDefault === "1",
-      status
-    }
+      isDefault: input.isDefault === "on" || input.isDefault === "true" || input.isDefault === "1",
+      status,
+    },
   };
 }

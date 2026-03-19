@@ -3,13 +3,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import {
-  listCatalogFilterCategories,
-  listPublishedProducts
-} from "@/db/catalog";
+import { listCatalogFilterCategories, listPublishedProducts } from "@/db/catalog";
 import {
   CATALOG_AVAILABILITY_FILTER_VALUE,
-  validateCatalogFilterInput
+  validateCatalogFilterInput,
 } from "@/entities/catalog/catalog-filter-input";
 import { validateCatalogSearchQuery } from "@/entities/catalog/catalog-search-input";
 import { getUploadsPublicPath } from "@/lib/uploads";
@@ -26,9 +23,7 @@ type ProductsPageProps = Readonly<{
   searchParams: Promise<BoutiqueSearchParams>;
 }>;
 
-function getFirstSearchParamValue(
-  value: string | string[] | undefined
-): string | null {
+function getFirstSearchParamValue(value: string | string[] | undefined): string | null {
   if (Array.isArray(value)) {
     return value[0] ?? null;
   }
@@ -46,16 +41,12 @@ function getBoutiqueMetadata(input: {
 
   if (input.searchQuery !== null) {
     titleSegments.push(`Recherche ${input.searchQuery}`);
-    descriptionSegments.push(
-      `Résultats du catalogue Creatyss pour ${input.searchQuery}.`
-    );
+    descriptionSegments.push(`Résultats du catalogue Creatyss pour ${input.searchQuery}.`);
   }
 
   if (input.categoryLabel !== null) {
     titleSegments.push(input.categoryLabel);
-    descriptionSegments.push(
-      `Sélection de produits pour la catégorie ${input.categoryLabel}.`
-    );
+    descriptionSegments.push(`Sélection de produits pour la catégorie ${input.categoryLabel}.`);
   }
 
   if (input.onlyAvailable) {
@@ -67,13 +58,13 @@ function getBoutiqueMetadata(input: {
     return {
       title: "Boutique Creatyss",
       description:
-        "Découvrez les produits publiés, les pièces mises en avant et les essentiels du catalogue Creatyss."
+        "Découvrez les produits publiés, les pièces mises en avant et les essentiels du catalogue Creatyss.",
     };
   }
 
   return {
     title: `${titleSegments.join(" · ")} | Boutique Creatyss`,
-    description: descriptionSegments.join(" ")
+    description: descriptionSegments.join(" "),
   };
 }
 
@@ -81,32 +72,24 @@ function getImageUrl(uploadsPublicPath: string, filePath: string): string {
   return `${uploadsPublicPath}/${filePath.replace(/^\/+/, "")}`;
 }
 
-export async function generateMetadata({
-  searchParams
-}: ProductsPageProps): Promise<Metadata> {
+export async function generateMetadata({ searchParams }: ProductsPageProps): Promise<Metadata> {
   const resolvedSearchParams = await searchParams;
-  const searchQuery = validateCatalogSearchQuery(
-    getFirstSearchParamValue(resolvedSearchParams.q)
-  );
+  const searchQuery = validateCatalogSearchQuery(getFirstSearchParamValue(resolvedSearchParams.q));
   const filters = validateCatalogFilterInput({
     category: getFirstSearchParamValue(resolvedSearchParams.category),
-    availability: getFirstSearchParamValue(resolvedSearchParams.availability)
+    availability: getFirstSearchParamValue(resolvedSearchParams.availability),
   });
-  const categories =
-    filters.categorySlug === null ? [] : await listCatalogFilterCategories();
+  const categories = filters.categorySlug === null ? [] : await listCatalogFilterCategories();
   const selectedCategory =
     filters.categorySlug === null
       ? null
-      : categories.find((category) => category.slug === filters.categorySlug) ??
-        null;
+      : (categories.find((category) => category.slug === filters.categorySlug) ?? null);
 
   return getBoutiqueMetadata({
     searchQuery,
     categoryLabel:
-      filters.categorySlug === null
-        ? null
-        : selectedCategory?.name ?? filters.categorySlug,
-    onlyAvailable: filters.onlyAvailable
+      filters.categorySlug === null ? null : (selectedCategory?.name ?? filters.categorySlug),
+    onlyAvailable: filters.onlyAvailable,
   });
 }
 
@@ -114,31 +97,27 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const resolvedSearchParams = await searchParams;
   const rawQuery = getFirstSearchParamValue(resolvedSearchParams.q);
   const rawCategory = getFirstSearchParamValue(resolvedSearchParams.category);
-  const rawAvailability = getFirstSearchParamValue(
-    resolvedSearchParams.availability
-  );
+  const rawAvailability = getFirstSearchParamValue(resolvedSearchParams.availability);
   const searchQuery = validateCatalogSearchQuery(rawQuery);
   const filters = validateCatalogFilterInput({
     category: rawCategory,
-    availability: rawAvailability
+    availability: rawAvailability,
   });
   const [products, categories] = await Promise.all([
     listPublishedProducts({
       searchQuery,
       categorySlug: filters.categorySlug,
-      onlyAvailable: filters.onlyAvailable
+      onlyAvailable: filters.onlyAvailable,
     }),
-    listCatalogFilterCategories()
+    listCatalogFilterCategories(),
   ]);
   const uploadsPublicPath = getUploadsPublicPath();
   const selectedCategory =
     filters.categorySlug === null
       ? null
-      : categories.find((category) => category.slug === filters.categorySlug) ?? null;
+      : (categories.find((category) => category.slug === filters.categorySlug) ?? null);
   const selectedCategoryLabel =
-    filters.categorySlug === null
-      ? null
-      : selectedCategory?.name ?? filters.categorySlug;
+    filters.categorySlug === null ? null : (selectedCategory?.name ?? filters.categorySlug);
   const activeFilters: string[] = [];
 
   if (searchQuery !== null) {
@@ -169,17 +148,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </h1>
           {hasEditorialListing ? (
             <p className="leading-relaxed text-muted-foreground">
-              Une sélection de produits déjà disponibles, avec les pièces mises
-              en avant en premier.
+              Une sélection de produits déjà disponibles, avec les pièces mises en avant en premier.
             </p>
           ) : null}
         </div>
 
         {/* Compact filter bar */}
-        <form
-          action="/boutique"
-          className="mt-6 flex flex-wrap items-end gap-3"
-          method="get">
+        <form action="/boutique" className="mt-6 flex flex-wrap items-end gap-3" method="get">
           <div className="min-w-40 flex-1">
             <Input
               defaultValue={searchQuery ?? ""}
@@ -193,12 +168,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             <select
               className="h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
               defaultValue={filters.categorySlug ?? ""}
-              name="category">
+              name="category"
+            >
               <option value="">Toutes les catégories</option>
               {categories.map((category) => (
-                <option
-                  key={category.id}
-                  value={category.slug}>
+                <option key={category.id} value={category.slug}>
                   {category.name}
                 </option>
               ))}
@@ -216,16 +190,15 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             <span>Disponibles</span>
           </label>
 
-          <Button
-            size="sm"
-            type="submit">
+          <Button size="sm" type="submit">
             Filtrer
           </Button>
 
           {hasActiveFilters ? (
             <Link
               className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-              href="/boutique">
+              href="/boutique"
+            >
               Tout voir
             </Link>
           ) : null}
@@ -235,9 +208,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             <span>Filtres :</span>
             {activeFilters.map((filter) => (
-              <Badge
-                key={filter}
-                variant="secondary">
+              <Badge key={filter} variant="secondary">
                 {filter}
               </Badge>
             ))}
@@ -251,12 +222,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           {products.map((product) => (
             <article
               className="group grid grid-rows-[auto_1fr] overflow-hidden rounded-xl border border-surface-border bg-shell-surface shadow-card transition-shadow hover:shadow-soft"
-              key={product.id}>
+              key={product.id}
+            >
               {/* Image zone */}
-              <Link
-                className="block"
-                href={`/boutique/${product.slug}`}
-                tabIndex={-1}>
+              <Link className="block" href={`/boutique/${product.slug}`} tabIndex={-1}>
                 {product.primaryImage !== null ? (
                   <figure className="relative aspect-[4/3] overflow-hidden bg-media-surface">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -282,14 +251,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     {product.isFeatured ? "Pièce phare" : "Produit"}
                   </p>
-                  <Badge
-                    variant="outline">
-                    <span
-                      className={
-                        product.isAvailable
-                          ? "text-emerald-700"
-                          : "text-destructive"
-                      }>
+                  <Badge variant="outline">
+                    <span className={product.isAvailable ? "text-emerald-700" : "text-destructive"}>
                       {product.isAvailable ? "Disponible" : "Indisponible"}
                     </span>
                   </Badge>
@@ -298,7 +261,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 <h3 className="m-0 text-base font-semibold leading-snug">
                   <Link
                     className="transition-colors hover:text-brand"
-                    href={`/boutique/${product.slug}`}>
+                    href={`/boutique/${product.slug}`}
+                  >
                     {product.name}
                   </Link>
                 </h3>
@@ -331,7 +295,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             {hasActiveFilters ? (
               <Link
                 className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                href="/boutique">
+                href="/boutique"
+              >
                 Voir tous les produits
               </Link>
             ) : null}

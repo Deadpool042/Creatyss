@@ -2,12 +2,12 @@ import { db, queryFirst, queryRows } from "@/db/client";
 import type { PoolClient } from "pg";
 import {
   listOrderEmailEventsByOrderId,
-  type OrderEmailEvent
+  type OrderEmailEvent,
 } from "@/db/repositories/order-email.repository";
 import { createOrderReference } from "@/entities/order/order-reference";
 import {
   resolveOrderStatusTransition,
-  type OrderStatus
+  type OrderStatus,
 } from "@/entities/order/order-status-transition";
 
 type TimestampValue = Date | string;
@@ -351,7 +351,7 @@ function mapOrderPayment(row: OrderRow): OrderPayment {
     amount: normalizeMoneyString(row.payment_amount ?? row.total_amount),
     currency: (row.payment_currency ?? "eur") as "eur",
     stripeCheckoutSessionId: row.stripe_checkout_session_id,
-    stripePaymentIntentId: row.stripe_payment_intent_id
+    stripePaymentIntentId: row.stripe_payment_intent_id,
   };
 }
 
@@ -367,14 +367,11 @@ function mapOrderLine(row: OrderItemRow): OrderLine {
     unitPrice: normalizeMoneyString(row.unit_price),
     quantity: row.quantity,
     lineTotal: normalizeMoneyString(row.line_total),
-    createdAt: toIsoTimestamp(row.created_at)
+    createdAt: toIsoTimestamp(row.created_at),
   };
 }
 
-function mapOrderRow(
-  row: OrderRow,
-  lines: OrderItemRow[]
-): PublicOrderConfirmation {
+function mapOrderRow(row: OrderRow, lines: OrderItemRow[]): PublicOrderConfirmation {
   return {
     id: row.id,
     reference: row.reference,
@@ -403,7 +400,7 @@ function mapOrderRow(
     payment: mapOrderPayment(row),
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at),
-    lines: lines.map(mapOrderLine)
+    lines: lines.map(mapOrderLine),
   };
 }
 
@@ -419,7 +416,7 @@ function mapAdminOrderSummary(row: OrderSummaryRow): AdminOrderSummary {
     totalAmount: normalizeMoneyString(row.total_amount),
     lineCount: row.line_count,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
@@ -430,7 +427,7 @@ function mapOrderEmailContext(row: OrderEmailContextRow): OrderEmailContext {
     customerEmail: row.customer_email,
     customerFirstName: row.customer_first_name,
     totalAmount: normalizeMoneyString(row.total_amount),
-    trackingReference: row.tracking_reference
+    trackingReference: row.tracking_reference,
   };
 }
 
@@ -515,17 +512,14 @@ async function insertOrderWithUniqueReference(
           input.checkout.billing_postal_code,
           input.checkout.billing_city,
           input.checkout.billing_country_code,
-          input.totalAmount
+          input.totalAmount,
         ]
       );
 
       const row = result.rows[0];
 
       if (!row) {
-        throw new OrderRepositoryError(
-          "create_failed",
-          "Order creation failed."
-        );
+        throw new OrderRepositoryError("create_failed", "Order creation failed.");
       }
 
       return row;
@@ -542,10 +536,7 @@ async function insertOrderWithUniqueReference(
     }
   }
 
-  throw new OrderRepositoryError(
-    "create_failed",
-    "Order reference generation failed."
-  );
+  throw new OrderRepositoryError("create_failed", "Order reference generation failed.");
 }
 
 async function readLockedCartIdByToken(
@@ -607,10 +598,7 @@ function assertCompleteCheckoutDraft(
   checkoutDraft: CheckoutDraftRow | null
 ): asserts checkoutDraft is CheckoutDraftRow {
   if (!checkoutDraftIsComplete(checkoutDraft)) {
-    throw new OrderRepositoryError(
-      "missing_checkout",
-      "Checkout draft is missing."
-    );
+    throw new OrderRepositoryError("missing_checkout", "Checkout draft is missing.");
   }
 }
 
@@ -646,24 +634,17 @@ async function readLockedOrderSourceLinesByCartId(
   return result.rows;
 }
 
-function assertOrderSourceLinesCanBeOrdered(
-  sourceLines: readonly OrderSourceLineRow[]
-): void {
+function assertOrderSourceLinesCanBeOrdered(sourceLines: readonly OrderSourceLineRow[]): void {
   if (sourceLines.length === 0) {
     throw new OrderRepositoryError("empty_cart", "Guest cart is empty.");
   }
 
   if (sourceLines.some((line) => !sourceLineIsAvailable(line))) {
-    throw new OrderRepositoryError(
-      "cart_unavailable",
-      "Guest cart is no longer available."
-    );
+    throw new OrderRepositoryError("cart_unavailable", "Guest cart is no longer available.");
   }
 }
 
-function calculateOrderTotalAmount(
-  sourceLines: readonly OrderSourceLineRow[]
-): string {
+function calculateOrderTotalAmount(sourceLines: readonly OrderSourceLineRow[]): string {
   const totalAmountCents = sourceLines.reduce((sum, line) => {
     return sum + moneyStringToCents(line.unit_price) * line.quantity;
   }, 0);
@@ -706,9 +687,7 @@ async function insertOrderItemsFromSourceLines(
 ): Promise<void> {
   for (const line of sourceLines) {
     const unitPrice = normalizeMoneyString(line.unit_price);
-    const lineTotal = centsToMoneyString(
-      moneyStringToCents(unitPrice) * line.quantity
-    );
+    const lineTotal = centsToMoneyString(moneyStringToCents(unitPrice) * line.quantity);
 
     await client.query(
       `
@@ -747,7 +726,7 @@ async function insertOrderItemsFromSourceLines(
         line.sku,
         unitPrice,
         line.quantity,
-        lineTotal
+        lineTotal,
       ]
     );
   }
@@ -769,10 +748,7 @@ async function decrementVariantStockFromSourceLines(
   }
 }
 
-async function deleteCartById(
-  client: PoolClient,
-  cartId: string
-): Promise<void> {
+async function deleteCartById(client: PoolClient, cartId: string): Promise<void> {
   await client.query(
     `
       delete from carts
@@ -802,13 +778,10 @@ async function readLockedOrderStatusById(
   return result.rows[0] ?? null;
 }
 
-function getOrderStatusTransitionOrThrow(
-  currentStatus: OrderStatus,
-  nextStatus: OrderStatus
-) {
+function getOrderStatusTransitionOrThrow(currentStatus: OrderStatus, nextStatus: OrderStatus) {
   const transition = resolveOrderStatusTransition({
     currentStatus,
-    nextStatus
+    nextStatus,
   });
 
   if (!transition.ok) {
@@ -821,10 +794,7 @@ function getOrderStatusTransitionOrThrow(
   return transition;
 }
 
-async function restockOrderItems(
-  client: PoolClient,
-  orderId: string
-): Promise<void> {
+async function restockOrderItems(client: PoolClient, orderId: string): Promise<void> {
   await client.query(
     `
       update product_variants pv
@@ -844,9 +814,7 @@ async function restockOrderItems(
   );
 }
 
-export async function createOrderFromGuestCartToken(
-  token: string
-): Promise<CreatedOrderRow> {
+export async function createOrderFromGuestCartToken(token: string): Promise<CreatedOrderRow> {
   const client = await db.connect();
 
   try {
@@ -861,16 +829,13 @@ export async function createOrderFromGuestCartToken(
     const checkoutRow = await readLockedCheckoutDraftByCartId(client, cartRow.id);
     assertCompleteCheckoutDraft(checkoutRow);
 
-    const sourceLines = await readLockedOrderSourceLinesByCartId(
-      client,
-      cartRow.id
-    );
+    const sourceLines = await readLockedOrderSourceLinesByCartId(client, cartRow.id);
     assertOrderSourceLinesCanBeOrdered(sourceLines);
 
     const totalAmount = calculateOrderTotalAmount(sourceLines);
     const createdOrder = await insertOrderWithUniqueReference(client, {
       checkout: checkoutRow,
-      totalAmount
+      totalAmount,
     });
 
     await insertPendingOrderPayment(client, createdOrder.id, totalAmount);
@@ -910,16 +875,10 @@ export async function updateOrderStatus(input: {
     const orderRow = await readLockedOrderStatusById(client, input.id);
 
     if (orderRow === null) {
-      throw new OrderRepositoryError(
-        "missing_order",
-        "Order is missing."
-      );
+      throw new OrderRepositoryError("missing_order", "Order is missing.");
     }
 
-    const transition = getOrderStatusTransitionOrThrow(
-      orderRow.status,
-      input.nextStatus
-    );
+    const transition = getOrderStatusTransitionOrThrow(orderRow.status, input.nextStatus);
 
     if (transition.shouldRestock) {
       await restockOrderItems(client, input.id);
@@ -966,10 +925,7 @@ export async function shipOrder(input: {
     const orderRow = await readLockedOrderStatusById(client, input.id);
 
     if (orderRow === null) {
-      throw new OrderRepositoryError(
-        "missing_order",
-        "Order is missing."
-      );
+      throw new OrderRepositoryError("missing_order", "Order is missing.");
     }
 
     getOrderStatusTransitionOrThrow(orderRow.status, "shipped");
@@ -1071,9 +1027,7 @@ async function readOrderRowById(id: string): Promise<OrderRow | null> {
   );
 }
 
-async function readOrderEmailContextRowById(
-  id: string
-): Promise<OrderEmailContextRow | null> {
+async function readOrderEmailContextRowById(id: string): Promise<OrderEmailContextRow | null> {
   if (!isValidNumericId(id)) {
     return null;
   }
@@ -1137,9 +1091,7 @@ export async function findPublicOrderByReference(
   return mapOrderRow(orderRow, orderItems);
 }
 
-export async function findOrderEmailContextById(
-  id: string
-): Promise<OrderEmailContext | null> {
+export async function findOrderEmailContextById(id: string): Promise<OrderEmailContext | null> {
   const row = await readOrderEmailContextRowById(id);
 
   return row ? mapOrderEmailContext(row) : null;
@@ -1171,9 +1123,7 @@ export async function listAdminOrders(): Promise<AdminOrderSummary[]> {
   return rows.map(mapAdminOrderSummary);
 }
 
-export async function findAdminOrderById(
-  id: string
-): Promise<AdminOrderDetail | null> {
+export async function findAdminOrderById(id: string): Promise<AdminOrderDetail | null> {
   const orderRow = await readOrderRowById(id);
 
   if (orderRow === null) {
@@ -1185,6 +1135,6 @@ export async function findAdminOrderById(
 
   return {
     ...mapOrderRow(orderRow, orderItems),
-    emailEvents
+    emailEvents,
   };
 }

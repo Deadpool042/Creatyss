@@ -4,11 +4,10 @@ import { loginAsSeedAdmin } from "../admin/admin-auth";
 import {
   getAdminProductDetailUrlWithoutSearch,
   openAdminProductFromList,
-  uploadAdminMediaImage
+  uploadAdminMediaImage,
 } from "../admin/product-test-helpers";
 
-const PRIMARY_IMAGE_SUBMIT_BUTTON_PATTERN =
-  /^(Définir|Remplacer) l'image principale$/;
+const PRIMARY_IMAGE_SUBMIT_BUTTON_PATTERN = /^(Définir|Remplacer) l'image principale$/;
 
 function getProductPrimaryImageBlock(page: Page): Locator {
   return page
@@ -17,8 +16,8 @@ function getProductPrimaryImageBlock(page: Page): Locator {
       has: page.getByRole("heading", {
         exact: true,
         level: 3,
-        name: "Image principale du produit"
-      })
+        name: "Image principale du produit",
+      }),
     })
     .first();
 }
@@ -30,8 +29,8 @@ function getVariantCard(page: Page, variantName: string): Locator {
       has: page.getByRole("heading", {
         level: 3,
         name: variantName,
-        exact: true
-      })
+        exact: true,
+      }),
     })
     .first();
 }
@@ -43,8 +42,8 @@ function getVariantPrimaryImageBlock(page: Page, variantName: string): Locator {
       has: page.getByRole("heading", {
         level: 3,
         name: variantName,
-        exact: true
-      })
+        exact: true,
+      }),
     })
     .first();
 
@@ -54,15 +53,13 @@ function getVariantPrimaryImageBlock(page: Page, variantName: string): Locator {
       has: page.getByRole("heading", {
         exact: true,
         level: 3,
-        name: "Image principale de la déclinaison"
-      })
+        name: "Image principale de la déclinaison",
+      }),
     })
     .first();
 }
 
-test("affiche publiquement l'image principale produit choisie dans l'admin", async ({
-  page
-}) => {
+test("affiche publiquement l'image principale produit choisie dans l'admin", async ({ page }) => {
   test.setTimeout(90_000);
 
   const suffix = `${Date.now()}-${Math.floor(Math.random() * 10_000)}`;
@@ -81,39 +78,33 @@ test("affiche publiquement l'image principale produit choisie dans l'admin", asy
 
   await Promise.all([
     page.waitForURL(/image_status=primary_updated&image_scope=product$/, {
-      timeout: 15_000
+      timeout: 15_000,
     }),
-    primaryImageBlock
-      .getByRole("button", { name: "Remplacer l'image principale" })
-      .click()
+    primaryImageBlock.getByRole("button", { name: "Remplacer l'image principale" }).click(),
   ]);
 
   await page.goto(productDetailUrl, {
-    waitUntil: "domcontentloaded"
+    waitUntil: "domcontentloaded",
   });
 
   const adminImageSrc =
-    (await getProductPrimaryImageBlock(page)
-      .locator("img")
-      .first()
-      .getAttribute("src")) ?? "";
+    (await getProductPrimaryImageBlock(page).locator("img").first().getAttribute("src")) ?? "";
 
   expect(adminImageSrc).not.toBe("");
 
   await page.goto("/boutique/pochette-sable", {
-    waitUntil: "domcontentloaded"
+    waitUntil: "domcontentloaded",
   });
 
-  await expect(
-    page.getByRole("heading", { name: "Image principale" })
-  ).toBeVisible();
-  await expect(
-    page.locator(".product-gallery .product-media img")
-  ).toHaveAttribute("src", adminImageSrc);
+  await expect(page.getByRole("heading", { name: "Image principale" })).toBeVisible();
+  await expect(page.locator(".product-gallery .product-media img")).toHaveAttribute(
+    "src",
+    adminImageSrc
+  );
 });
 
 test("affiche publiquement l'image principale de déclinaison choisie dans l'admin", async ({
-  page
+  page,
 }) => {
   test.setTimeout(90_000);
 
@@ -133,29 +124,27 @@ test("affiche publiquement l'image principale de déclinaison choisie dans l'adm
 
   await Promise.all([
     page.waitForURL(/image_status=primary_updated&image_scope=variant$/, {
-      timeout: 15_000
+      timeout: 15_000,
     }),
     primaryImageBlock
       .getByRole("button", {
-        name: PRIMARY_IMAGE_SUBMIT_BUTTON_PATTERN
+        name: PRIMARY_IMAGE_SUBMIT_BUTTON_PATTERN,
       })
-      .click()
+      .click(),
   ]);
 
   await page.goto(productDetailUrl, {
-    waitUntil: "domcontentloaded"
+    waitUntil: "domcontentloaded",
   });
 
   const adminImageSrc =
-    (await getVariantPrimaryImageBlock(page, "Camel")
-      .locator("img")
-      .first()
-      .getAttribute("src")) ?? "";
+    (await getVariantPrimaryImageBlock(page, "Camel").locator("img").first().getAttribute("src")) ??
+    "";
 
   expect(adminImageSrc).not.toBe("");
 
   await page.goto("/boutique/sac-camel", {
-    waitUntil: "domcontentloaded"
+    waitUntil: "domcontentloaded",
   });
 
   await expect(

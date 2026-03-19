@@ -13,7 +13,7 @@ export function SectionIntro({
   title,
   description,
   titleAs = "h2",
-  className
+  className,
 }: SectionIntroProps) {
   const TitleTag = titleAs;
 
@@ -25,9 +25,7 @@ export function SectionIntro({
         </p>
       ) : null}
       <TitleTag>{title}</TitleTag>
-      {description ? (
-        <p className="leading-[1.65] text-muted-foreground">{description}</p>
-      ) : null}
+      {description ? <p className="leading-[1.65] text-muted-foreground">{description}</p> : null}
     </div>
   );
 }

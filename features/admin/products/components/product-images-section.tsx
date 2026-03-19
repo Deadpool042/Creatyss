@@ -11,7 +11,7 @@ import { type AdminProductImage } from "@/db/repositories/admin-product-image.re
 import {
   createProductImageAction,
   deleteProductPrimaryImageAction,
-  setProductPrimaryImageAction
+  setProductPrimaryImageAction,
 } from "@/features/admin/products/actions";
 
 import { type PrimaryImageState } from "../types/product-detail-types";
@@ -45,7 +45,7 @@ export function ProductImagesSection({
   productId,
   productImageMessage,
   productPrimaryImageState,
-  uploadsPublicPath
+  uploadsPublicPath,
 }: ProductImagesSectionProps) {
   const hasMediaAssets = mediaAssets.length > 0;
   const imageMediaAssetId = `product-image-media-asset-${productId}`;
@@ -57,15 +57,14 @@ export function ProductImagesSection({
       {productImageMessage.status ? (
         <Notice tone="success">{productImageMessage.status}</Notice>
       ) : null}
-      {productImageMessage.error ? (
-        <Notice tone="alert">{productImageMessage.error}</Notice>
-      ) : null}
+      {productImageMessage.error ? <Notice tone="alert">{productImageMessage.error}</Notice> : null}
 
       <AdminFormSection
         contentClassName="gap-6"
         description="Commencez par l'image principale du produit. Les réglages d'images plus détaillés restent disponibles plus bas si nécessaire."
         eyebrow="Images produit"
-        title="Images du produit">
+        title="Images du produit"
+      >
         <ProductPrimaryImageManager
           currentMediaAssetId={currentProductPrimaryMediaAssetId}
           deleteAction={deleteProductPrimaryImageAction}
@@ -90,67 +89,35 @@ export function ProductImagesSection({
           />
 
           {hasMediaAssets ? (
-            <form
-              action={createProductImageAction}
-              className="grid gap-4">
-              <input
-                name="productId"
-                type="hidden"
-                value={productId}
-              />
-              <input
-                name="variantId"
-                type="hidden"
-                value=""
-              />
-              <input
-                name="imageScope"
-                type="hidden"
-                value="product"
-              />
+            <form action={createProductImageAction} className="grid gap-4">
+              <input name="productId" type="hidden" value={productId} />
+              <input name="variantId" type="hidden" value="" />
+              <input name="imageScope" type="hidden" value="product" />
 
-              <AdminFormField
-                htmlFor={imageMediaAssetId}
-                label="Média existant">
+              <AdminFormField htmlFor={imageMediaAssetId} label="Média existant">
                 <select
                   className={nativeSelectClassName}
                   defaultValue=""
                   id={imageMediaAssetId}
-                  name="mediaAssetId">
-                  <option
-                    disabled
-                    value="">
+                  name="mediaAssetId"
+                >
+                  <option disabled value="">
                     Sélectionnez un média
                   </option>
-                  {mediaAssets.map(mediaAsset => (
-                    <option
-                      key={mediaAsset.id}
-                      value={mediaAsset.id}>
+                  {mediaAssets.map((mediaAsset) => (
+                    <option key={mediaAsset.id} value={mediaAsset.id}>
                       {mediaAsset.originalName} · {mediaAsset.mimeType}
                     </option>
                   ))}
                 </select>
               </AdminFormField>
 
-              <AdminFormField
-                htmlFor={imageAltTextId}
-                label="Texte alternatif">
-                <Input
-                  id={imageAltTextId}
-                  name="altText"
-                  type="text"
-                />
+              <AdminFormField htmlFor={imageAltTextId} label="Texte alternatif">
+                <Input id={imageAltTextId} name="altText" type="text" />
               </AdminFormField>
 
-              <AdminFormField
-                htmlFor={imageSortOrderId}
-                label="Ordre">
-                <Input
-                  defaultValue="0"
-                  id={imageSortOrderId}
-                  name="sortOrder"
-                  type="number"
-                />
+              <AdminFormField htmlFor={imageSortOrderId} label="Ordre">
+                <Input defaultValue="0" id={imageSortOrderId} name="sortOrder" type="number" />
               </AdminFormField>
 
               <label className="flex items-start gap-3 text-sm leading-6 text-foreground">
@@ -164,9 +131,7 @@ export function ProductImagesSection({
               </label>
 
               <AdminFormActions>
-                <Button
-                  className="w-full sm:w-fit"
-                  type="submit">
+                <Button className="w-full sm:w-fit" type="submit">
                   Ajouter une image produit
                 </Button>
               </AdminFormActions>
@@ -177,7 +142,7 @@ export function ProductImagesSection({
 
           {parentImages.length > 0 ? (
             <div className="grid gap-4 w-fit grid-cols-[repeat(auto-fit,minmax(240px,1fr))]">
-              {parentImages.map(image => (
+              {parentImages.map((image) => (
                 <ProductImageCard
                   image={image}
                   imageScope="product"

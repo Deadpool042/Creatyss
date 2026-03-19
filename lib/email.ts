@@ -18,23 +18,21 @@ export async function sendEmail(input: SendEmailInput): Promise<string | null> {
     method: "POST",
     headers: {
       "api-key": getBrevoApiKey(),
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       sender: parseEmailFrom(getEmailFrom()),
       to: [{ email: input.to }],
       subject: input.subject,
       textContent: input.text,
-      htmlContent: input.html
-    })
+      htmlContent: input.html,
+    }),
   });
 
   if (!response.ok) {
     const body = await response.text();
 
-    throw new Error(
-      `Brevo request failed with status ${response.status}: ${body}`
-    );
+    throw new Error(`Brevo request failed with status ${response.status}: ${body}`);
   }
 
   const payload = (await response.json()) as BrevoEmailResponse;

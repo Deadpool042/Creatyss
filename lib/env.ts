@@ -23,9 +23,7 @@ function readRequiredSecretEnv(name: string, invalidPlaceholders: string[]) {
   const value = readRequiredEnv(name);
 
   if (invalidPlaceholders.includes(value.trim())) {
-    throw new Error(
-      `Invalid placeholder value for environment variable: ${name}`
-    );
+    throw new Error(`Invalid placeholder value for environment variable: ${name}`);
   }
 
   return value;
@@ -51,10 +49,7 @@ export const env = {
   appUrl: readEnv("APP_URL", "http://localhost:3000"),
   adminSessionSecret: readRequiredEnv("ADMIN_SESSION_SECRET"),
   cartSessionSecret: readRequiredEnv("CART_SESSION_SECRET"),
-  databaseUrl: readEnv(
-    "DATABASE_URL",
-    "postgresql://creatyss:creatyss@db:5432/creatyss"
-  ),
+  databaseUrl: readEnv("DATABASE_URL", "postgresql://creatyss:creatyss@db:5432/creatyss"),
   nodeEnv: process.env.NODE_ENV ?? "development",
-  uploadsDir: readEnv("UPLOADS_DIR", "public/uploads")
+  uploadsDir: readEnv("UPLOADS_DIR", "public/uploads"),
 } as const;

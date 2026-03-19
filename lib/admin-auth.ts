@@ -1,9 +1,4 @@
-import {
-  createHmac,
-  randomBytes,
-  scrypt as scryptCallback,
-  timingSafeEqual
-} from "node:crypto";
+import { createHmac, randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
 
 const ADMIN_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ADMIN_PASSWORD_MIN_LENGTH = 12;
@@ -28,7 +23,7 @@ export const adminSessionCookieOptions = {
   httpOnly: true,
   path: "/",
   sameSite: "lax" as const,
-  secure: process.env.NODE_ENV === "production"
+  secure: process.env.NODE_ENV === "production",
 };
 export const ADMIN_SESSION_DURATION_SECONDS = ADMIN_SESSION_MAX_AGE_SECONDS;
 
@@ -75,9 +70,7 @@ function isValidEmail(email: string): boolean {
   return ADMIN_EMAIL_PATTERN.test(email);
 }
 
-function isExactAdminSessionPayload(
-  value: unknown
-): value is AdminSessionPayload {
+function isExactAdminSessionPayload(value: unknown): value is AdminSessionPayload {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     return false;
   }
@@ -99,19 +92,11 @@ function isExactAdminSessionPayload(
   );
 }
 
-function signAdminSessionPayload(
-  payloadEncoded: string,
-  secret: string
-): string {
-  return createHmac("sha256", secret)
-    .update(payloadEncoded, "utf8")
-    .digest("base64url");
+function signAdminSessionPayload(payloadEncoded: string, secret: string): string {
+  return createHmac("sha256", secret).update(payloadEncoded, "utf8").digest("base64url");
 }
 
-function verifyAdminSessionValue(
-  sessionValue: string,
-  secret: string
-): SessionVerificationResult {
+function verifyAdminSessionValue(sessionValue: string, secret: string): SessionVerificationResult {
   const segments = sessionValue.split(".");
 
   if (segments.length !== 2) {
@@ -124,10 +109,7 @@ function verifyAdminSessionValue(
     return { status: "malformed" };
   }
 
-  const expectedSignature = Buffer.from(
-    signAdminSessionPayload(payloadEncoded, secret),
-    "utf8"
-  );
+  const expectedSignature = Buffer.from(signAdminSessionPayload(payloadEncoded, secret), "utf8");
   const actualSignature = Buffer.from(signatureEncoded, "utf8");
 
   if (actualSignature.length !== expectedSignature.length) {
@@ -166,7 +148,7 @@ function verifyAdminSessionValue(
 
   return {
     status: "valid",
-    payload: payloadValue
+    payload: payloadValue,
   };
 }
 
@@ -179,18 +161,13 @@ function parseStoredPasswordHash(value: string) {
 
   const [algorithm, version, saltEncoded, hashEncoded] = parts;
 
-  if (
-    algorithm !== SCRYPT_PREFIX ||
-    version !== SCRYPT_VERSION ||
-    !saltEncoded ||
-    !hashEncoded
-  ) {
+  if (algorithm !== SCRYPT_PREFIX || version !== SCRYPT_VERSION || !saltEncoded || !hashEncoded) {
     return null;
   }
 
   return {
     hashEncoded,
-    saltEncoded
+    saltEncoded,
   };
 }
 
@@ -234,7 +211,7 @@ export function normalizeAdminLoginCredentials(input: {
 
   return {
     email,
-    password
+    password,
   };
 }
 
@@ -258,7 +235,7 @@ export function normalizeAdminBootstrapInput(input: {
   return {
     email,
     displayName,
-    password
+    password,
   };
 }
 
@@ -290,9 +267,7 @@ export async function verifyAdminPassword(
 
   const actualHash = Buffer.from(parsedHash.hashEncoded, "utf8");
   const expectedHash = Buffer.from(
-    (await deriveScryptKey(password, parsedHash.saltEncoded)).toString(
-      "base64url"
-    ),
+    (await deriveScryptKey(password, parsedHash.saltEncoded)).toString("base64url"),
     "utf8"
   );
 
@@ -303,17 +278,13 @@ export async function verifyAdminPassword(
   return timingSafeEqual(actualHash, expectedHash);
 }
 
-export async function createAdminSessionValue(
-  adminId: string
-): Promise<string> {
+export async function createAdminSessionValue(adminId: string): Promise<string> {
   const payload: AdminSessionPayload = {
     adminId,
     exp: Math.floor(Date.now() / 1000) + ADMIN_SESSION_MAX_AGE_SECONDS,
-    v: ADMIN_SESSION_VERSION
+    v: ADMIN_SESSION_VERSION,
   };
-  const payloadEncoded = Buffer.from(JSON.stringify(payload), "utf8").toString(
-    "base64url"
-  );
+  const payloadEncoded = Buffer.from(JSON.stringify(payload), "utf8").toString("base64url");
   const secret = await getAdminSessionSecret();
   const signatureEncoded = signAdminSessionPayload(payloadEncoded, secret);
 
@@ -353,7 +324,7 @@ export async function getCurrentAdmin(): Promise<CurrentAdminResult> {
 
   return {
     status: "authenticated",
-    admin
+    admin,
   };
 }
 

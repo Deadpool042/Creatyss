@@ -61,6 +61,7 @@ La migration suit un principe strict : **une feature à la fois, une responsabil
 Pendant toute la durée de V18, `pg` et Prisma coexistent dans le même projet. Un repository peut être migré vers Prisma sans toucher aux autres.
 
 La migration d'un repository suit cet ordre :
+
 1. Lectures (queries) d'abord
 2. Mutations (create / update / delete) ensuite
 3. Suppression de l'ancien repository une fois les deux étapes validées
@@ -69,15 +70,15 @@ La migration d'un repository suit cet ordre :
 
 ## Ordre des lots
 
-| Lot | Objectif |
-|---|---|
-| V18-1 | Setup Prisma : installation, introspection, client singleton, Docker |
-| V18-2 | Lectures pilote sur `categories` via Prisma |
+| Lot   | Objectif                                                                                     |
+| ----- | -------------------------------------------------------------------------------------------- |
+| V18-1 | Setup Prisma : installation, introspection, client singleton, Docker                         |
+| V18-2 | Lectures pilote sur `categories` via Prisma                                                  |
 | V18-3 | Mutations pilote sur `categories` — migration interne complète, interface publique identique |
-| V18-4 | Extension : `blog` et `admin-media` |
-| V18-5 | Extension : `products` sans transactions (variantes, images) |
-| V18-6 | Transactions : `products` (changeProductType) et `homepage` |
-| V18-7 | Commandes, storefront, décommission de `db/client.ts` et `pg` |
+| V18-4 | Extension : `blog` et `admin-media`                                                          |
+| V18-5 | Extension : `products` sans transactions (variantes, images)                                 |
+| V18-6 | Transactions : `products` (changeProductType) et `homepage`                                  |
+| V18-7 | Commandes, storefront, décommission de `db/client.ts` et `pg`                                |
 
 ---
 

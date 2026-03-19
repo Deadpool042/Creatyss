@@ -22,27 +22,27 @@ Analyse de tous les fichiers sous `components/` (hors `components/admin/` et `co
 
 #### Storefront public — 0 pattern extractible
 
-| Composant | Raison du refus |
-|-----------|----------------|
+| Composant                                 | Raison du refus                                                                                                                                                |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `components/public/public-site-shell.tsx` | Nom "Creatyss" hardcodé, logo `/uploads/logo.svg`, nav links hardcodés ("Accueil", "Boutique", "Blog"), labels français, variables CSS `--shell-*` spécifiques |
-| `app/page.tsx` (homepage) | Storytelling Creatyss, données catalogue, labels français, classes CSS spécifiques |
-| `app/boutique/` | Catalogue Creatyss, modèle de données spécifique, français |
-| `app/blog/` | Narration éditoriale Creatyss, français |
-| `app/panier/` `app/checkout/` | Logique métier panier/commande, "France" hardcodé |
+| `app/page.tsx` (homepage)                 | Storytelling Creatyss, données catalogue, labels français, classes CSS spécifiques                                                                             |
+| `app/boutique/`                           | Catalogue Creatyss, modèle de données spécifique, français                                                                                                     |
+| `app/blog/`                               | Narration éditoriale Creatyss, français                                                                                                                        |
+| `app/panier/` `app/checkout/`             | Logique métier panier/commande, "France" hardcodé                                                                                                              |
 
 **Conclusion storefront** : rien n'est extractible tel quel. Tout le storefront est couplé au projet Creatyss.
 
 #### `components/ui/` — candidats génériques
 
-| Composant | Extractible ? | Raison |
-|-----------|---------------|--------|
-| `empty.tsx` | **OUI** | Compound empty state, zéro couplage, 100% token-driven, API propre |
-| `spinner.tsx` | **OUI** | Trivial, universel, zéro couplage |
-| `item.tsx` | Pas dans V15-5 | Excellente primitive liste, mais pas un pattern public storefront — V15-6 |
-| `field.tsx` | Pas dans V15-5 | Excellente primitive formulaire, idem — V15-6 |
-| `input-group.tsx` | Pas dans V15-5 | Primitive formulaire — V15-6 |
-| `data-table.tsx` | NON | Strings français hardcodées ("Filtrer...", "Aucun résultat.", "Précédent", "Suivant") |
-| `combobox.tsx` | NON | Dépendance `@base-ui/react` non standard, complexité élevée |
+| Composant         | Extractible ?  | Raison                                                                                |
+| ----------------- | -------------- | ------------------------------------------------------------------------------------- |
+| `empty.tsx`       | **OUI**        | Compound empty state, zéro couplage, 100% token-driven, API propre                    |
+| `spinner.tsx`     | **OUI**        | Trivial, universel, zéro couplage                                                     |
+| `item.tsx`        | Pas dans V15-5 | Excellente primitive liste, mais pas un pattern public storefront — V15-6             |
+| `field.tsx`       | Pas dans V15-5 | Excellente primitive formulaire, idem — V15-6                                         |
+| `input-group.tsx` | Pas dans V15-5 | Primitive formulaire — V15-6                                                          |
+| `data-table.tsx`  | NON            | Strings français hardcodées ("Filtrer...", "Aucun résultat.", "Précédent", "Suivant") |
+| `combobox.tsx`    | NON            | Dépendance `@base-ui/react` non standard, complexité élevée                           |
 
 #### Artefacts scaffold (hors périmètre)
 
@@ -58,6 +58,7 @@ Analyse de tous les fichiers sous `components/` (hors `components/admin/` et `co
 **Fichier** : `components/ui/empty.tsx`
 
 **Pourquoi** :
+
 - Explicitement mentionné comme cible probable dans le roadmap V15-5
 - Composant compound : `Empty`, `EmptyHeader`, `EmptyMedia`, `EmptyTitle`, `EmptyDescription`, `EmptyContent`
 - Zéro contenu Creatyss
@@ -73,6 +74,7 @@ Analyse de tous les fichiers sous `components/` (hors `components/admin/` et `co
 **Fichier** : `components/ui/spinner.tsx`
 
 **Pourquoi** :
+
 - Composant trivial, universellement utile
 - Zéro couplage, zéro contenu projet
 - `role="status"` + `aria-label="Loading"` corrects
@@ -94,6 +96,7 @@ Extraire quoi que ce soit du storefront public tel quel reviendrait à extraire 
 ### `item`, `field`, `input-group`
 
 Ces composants sont d'excellentes primitives UI génériques. Ils sont cependant :
+
 - des primitives transverses (admin + public), pas des patterns publics storefront spécifiques
 - mieux placés dans un lot de consolidation des primitives UI (V15-6)
 
@@ -138,16 +141,16 @@ pnpm run typecheck → clean (0 erreur)
 
 Le registry passe de 6 à 8 items :
 
-| # | Nom | Type | Couche |
-|---|-----|------|--------|
-| 1 | `notice` | `registry:component` | Transverse |
-| 2 | `section-intro` | `registry:component` | Transverse |
-| 3 | `admin-form-actions` | `registry:component` | Admin |
-| 4 | `admin-form-field` | `registry:component` | Admin |
-| 5 | `admin-page-shell` | `registry:component` | Admin |
-| 6 | `admin-form-section` | `registry:component` | Admin |
-| 7 | `empty` | `registry:ui` | Transverse |
-| 8 | `spinner` | `registry:ui` | Transverse |
+| #   | Nom                  | Type                 | Couche     |
+| --- | -------------------- | -------------------- | ---------- |
+| 1   | `notice`             | `registry:component` | Transverse |
+| 2   | `section-intro`      | `registry:component` | Transverse |
+| 3   | `admin-form-actions` | `registry:component` | Admin      |
+| 4   | `admin-form-field`   | `registry:component` | Admin      |
+| 5   | `admin-page-shell`   | `registry:component` | Admin      |
+| 6   | `admin-form-section` | `registry:component` | Admin      |
+| 7   | `empty`              | `registry:ui`        | Transverse |
+| 8   | `spinner`            | `registry:ui`        | Transverse |
 
 ---
 

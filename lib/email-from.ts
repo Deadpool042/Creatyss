@@ -12,9 +12,7 @@ export function parseEmailFrom(value: string): EmailSender {
     return { email: normalizedValue };
   }
 
-  const match = /^(?<name>.+?)\s*<(?<email>[^<>\s@]+@[^<>\s@]+\.[^<>\s@]+)>$/.exec(
-    normalizedValue
-  );
+  const match = /^(?<name>.+?)\s*<(?<email>[^<>\s@]+@[^<>\s@]+\.[^<>\s@]+)>$/.exec(normalizedValue);
 
   const name = match?.groups?.name?.trim().replace(/^"|"$/g, "");
   const email = match?.groups?.email?.trim();

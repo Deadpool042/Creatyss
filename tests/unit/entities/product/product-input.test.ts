@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  normalizeProductSlug,
-  validateProductInput
-} from "@/entities/product/product-input";
+import { normalizeProductSlug, validateProductInput } from "@/entities/product/product-input";
 
 describe("normalizeProductSlug", () => {
   it("normalise le slug produit", () => {
@@ -24,7 +21,7 @@ describe("validateProductInput", () => {
       status: "published",
       productType: "variable",
       isFeatured: "1",
-      categoryIds: ["1", "2", "1"]
+      categoryIds: ["1", "2", "1"],
     });
 
     expect(result).toEqual({
@@ -39,8 +36,8 @@ describe("validateProductInput", () => {
         status: "published",
         productType: "variable",
         isFeatured: true,
-        categoryIds: ["1", "2"]
-      }
+        categoryIds: ["1", "2"],
+      },
     });
   });
 
@@ -55,7 +52,7 @@ describe("validateProductInput", () => {
       status: "draft",
       productType: "simple",
       isFeatured: null,
-      categoryIds: undefined
+      categoryIds: undefined,
     });
 
     expect(result).toEqual({
@@ -70,8 +67,8 @@ describe("validateProductInput", () => {
         status: "draft",
         productType: "simple",
         isFeatured: false,
-        categoryIds: []
-      }
+        categoryIds: [],
+      },
     });
   });
 
@@ -87,11 +84,11 @@ describe("validateProductInput", () => {
         status: "archived",
         productType: "variable",
         isFeatured: null,
-        categoryIds: []
+        categoryIds: [],
       })
     ).toEqual({
       ok: false,
-      code: "invalid_status"
+      code: "invalid_status",
     });
   });
 
@@ -107,11 +104,11 @@ describe("validateProductInput", () => {
         status: "draft",
         productType: "variable",
         isFeatured: null,
-        categoryIds: ["1", "abc"]
+        categoryIds: ["1", "abc"],
       })
     ).toEqual({
       ok: false,
-      code: "invalid_category_ids"
+      code: "invalid_category_ids",
     });
   });
 
@@ -127,11 +124,11 @@ describe("validateProductInput", () => {
         status: "draft",
         productType: "configurable",
         isFeatured: null,
-        categoryIds: []
+        categoryIds: [],
       })
     ).toEqual({
       ok: false,
-      code: "invalid_product_type"
+      code: "invalid_product_type",
     });
   });
 });

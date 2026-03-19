@@ -6,19 +6,11 @@ describe("getAdminProductPresentation", () => {
     const presentation = getAdminProductPresentation("simple", 0);
 
     expect(presentation.typeLabel).toBe("Produit simple");
-    expect(presentation.sellableCountLabel).toBe(
-      "Informations de vente à compléter"
-    );
+    expect(presentation.sellableCountLabel).toBe("Informations de vente à compléter");
     expect(presentation.sectionTitle).toBe("Informations de vente");
-    expect(presentation.createActionLabel).toBe(
-      "Définir les informations de vente"
-    );
-    expect(presentation.saveActionLabel).toBe(
-      "Enregistrer les informations de vente"
-    );
-    expect(presentation.emptyTitle).toBe(
-      "Les informations de vente ne sont pas encore complètes"
-    );
+    expect(presentation.createActionLabel).toBe("Définir les informations de vente");
+    expect(presentation.saveActionLabel).toBe("Enregistrer les informations de vente");
+    expect(presentation.emptyTitle).toBe("Les informations de vente ne sont pas encore complètes");
   });
 
   it("retourne le vocabulaire V6 pour un produit avec déclinaisons", () => {

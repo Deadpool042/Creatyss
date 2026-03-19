@@ -195,11 +195,7 @@ function centsToMoneyString(cents: number): string {
 }
 
 function isGuestCartVariantAvailable(row: GuestCartVariantRow): boolean {
-  return (
-    row.product_status === "published" &&
-    row.status === "published" &&
-    row.stock_quantity > 0
-  );
+  return row.product_status === "published" && row.status === "published" && row.stock_quantity > 0;
 }
 
 function isGuestCartLineAvailable(row: GuestCartLineRow): boolean {
@@ -211,13 +207,11 @@ function isGuestCartLineAvailable(row: GuestCartLineRow): boolean {
   );
 }
 
-function mapGuestCartItemReference(
-  row: GuestCartItemReferenceRow
-): GuestCartItemReference {
+function mapGuestCartItemReference(row: GuestCartItemReferenceRow): GuestCartItemReference {
   return {
     id: row.id,
     variantId: row.product_variant_id,
-    quantity: row.quantity
+    quantity: row.quantity,
   };
 }
 
@@ -235,7 +229,7 @@ function mapGuestCartVariant(row: GuestCartVariantRow): GuestCartVariant {
     price: normalizeMoneyString(row.price),
     stockQuantity: row.stock_quantity,
     status: row.status,
-    isAvailable: isGuestCartVariantAvailable(row)
+    isAvailable: isGuestCartVariantAvailable(row),
   };
 }
 
@@ -258,13 +252,11 @@ function mapGuestCartLine(row: GuestCartLineRow): GuestCartLine {
     lineTotal,
     isAvailable: isGuestCartLineAvailable(row),
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
-function mapGuestCheckoutDetails(
-  row: GuestCartCheckoutDetailsRow
-): GuestCheckoutDetails {
+function mapGuestCheckoutDetails(row: GuestCartCheckoutDetailsRow): GuestCheckoutDetails {
   return {
     id: row.id,
     cartId: row.cart_id,
@@ -287,7 +279,7 @@ function mapGuestCheckoutDetails(
     billingCity: row.billing_city,
     billingCountryCode: row.billing_country_code as "FR" | null,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
@@ -303,9 +295,7 @@ function getGuestCheckoutIssues(cart: GuestCart | null): GuestCheckoutIssueCode[
   return [];
 }
 
-function buildGuestCartFromLineRows(
-  rows: readonly GuestCartLineRow[]
-): GuestCart | null {
+function buildGuestCartFromLineRows(rows: readonly GuestCartLineRow[]): GuestCart | null {
   const firstRow = rows[0];
 
   if (!firstRow) {
@@ -314,16 +304,13 @@ function buildGuestCartFromLineRows(
 
   const lines = rows.map(mapGuestCartLine);
   const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
-  const subtotalCents = lines.reduce(
-    (sum, line) => sum + moneyStringToCents(line.lineTotal),
-    0
-  );
+  const subtotalCents = lines.reduce((sum, line) => sum + moneyStringToCents(line.lineTotal), 0);
 
   return {
     id: firstRow.cart_id,
     itemCount,
     subtotal: centsToMoneyString(subtotalCents),
-    lines
+    lines,
   };
 }
 
@@ -699,7 +686,7 @@ export async function upsertGuestCheckoutDetails(input: {
       input.billingAddressLine2,
       input.billingPostalCode,
       input.billingCity,
-      input.billingCountryCode
+      input.billingCountryCode,
     ]
   );
 
@@ -721,12 +708,12 @@ export async function readGuestCheckoutContextByToken(
 
   const [cart, draft] = await Promise.all([
     readGuestCartByToken(token),
-    readGuestCheckoutDetailsByCartId(cartId)
+    readGuestCheckoutDetailsByCartId(cartId),
   ]);
 
   return {
     cart,
     draft,
-    issues: getGuestCheckoutIssues(cart)
+    issues: getGuestCheckoutIssues(cart),
   };
 }

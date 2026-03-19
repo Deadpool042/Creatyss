@@ -8,9 +8,9 @@ import {
   getOrderPaymentNotice,
   getOrderStatusLabel,
   getOrderStatusSummary,
-  getPaymentStatusLabel
+  getPaymentStatusLabel,
 } from "@/entities/order/order-status-presentation";
-import { startOrderPaymentAction } from "@/features/payment/actions/start-order-payment-action";
+import { startOrderPaymentAction } from "@/features/payment";
 
 export const dynamic = "force-dynamic";
 
@@ -25,12 +25,12 @@ type OrderConfirmationPageProps = Readonly<{
 
 const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",
-  timeStyle: "short"
+  timeStyle: "short",
 });
 
 export default async function OrderConfirmationPage({
   params,
-  searchParams
+  searchParams,
 }: OrderConfirmationPageProps) {
   const { reference } = await params;
   const resolvedSearchParams = await searchParams;
@@ -45,31 +45,28 @@ export default async function OrderConfirmationPage({
 
   const summary = getOrderStatusSummary({
     orderStatus: order.status,
-    paymentStatus: order.payment.status
+    paymentStatus: order.payment.status,
   });
   const paymentMessage = getOrderPaymentNotice({
     paymentStatus: order.payment.status,
     orderStatus: order.status,
-    paymentParam
+    paymentParam,
   });
 
   return (
     <div className="page">
       <section className="section">
         <div className="mb-6 grid gap-2">
-          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
-            Confirmation
-          </p>
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Confirmation</p>
           <h1 className="m-0">{summary.title}</h1>
           <p className="mt-1 leading-relaxed text-muted-foreground">
-            {summary.description} Retrouvez ici le paiement, l&apos;état de la
-            commande et les informations utiles pour la suite.
+            {summary.description} Retrouvez ici le paiement, l&apos;état de la commande et les
+            informations utiles pour la suite.
           </p>
         </div>
 
         {paymentMessage ? (
-          <Notice
-            tone={paymentMessage.kind === "success" ? "success" : "alert"}>
+          <Notice tone={paymentMessage.kind === "success" ? "success" : "alert"}>
             {paymentMessage.text}
           </Notice>
         ) : null}
@@ -78,23 +75,15 @@ export default async function OrderConfirmationPage({
           <div className="grid gap-4">
             <article className="store-card checkout-line">
               <div className="grid gap-1">
-                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
-                  Synthèse
-                </p>
+                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Synthèse</p>
                 <h2>{summary.title}</h2>
                 <p className="card-copy">{summary.description}</p>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {summary.nextStep}
-                </p>
+                <p className="text-sm leading-relaxed text-muted-foreground">{summary.nextStep}</p>
               </div>
 
               <div className="flex flex-wrap gap-2">
-                <Badge variant="secondary">
-                  {getOrderStatusLabel(order.status)}
-                </Badge>
-                <Badge variant="secondary">
-                  {getPaymentStatusLabel(order.payment.status)}
-                </Badge>
+                <Badge variant="secondary">{getOrderStatusLabel(order.status)}</Badge>
+                <Badge variant="secondary">{getPaymentStatusLabel(order.payment.status)}</Badge>
               </div>
             </article>
 
@@ -117,9 +106,7 @@ export default async function OrderConfirmationPage({
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Paiement
                 </p>
-                <p className="card-copy">
-                  {getPaymentStatusLabel(order.payment.status)}
-                </p>
+                <p className="card-copy">{getPaymentStatusLabel(order.payment.status)}</p>
               </div>
 
               <div className="grid gap-1">
@@ -134,17 +121,13 @@ export default async function OrderConfirmationPage({
 
             <article className="store-card checkout-line">
               <div className="grid gap-1">
-                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
-                  Cliente
-                </p>
+                <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Cliente</p>
                 <h2>
                   {order.customerFirstName} {order.customerLastName}
                 </h2>
                 <p className="card-copy">{order.customerEmail}</p>
                 {order.customerPhone ? (
-                  <p className="text-[0.95rem] text-foreground/68">
-                    {order.customerPhone}
-                  </p>
+                  <p className="text-[0.95rem] text-foreground/68">{order.customerPhone}</p>
                 ) : null}
               </div>
             </article>
@@ -162,9 +145,7 @@ export default async function OrderConfirmationPage({
                 <p className="card-copy">
                   {order.shippingPostalCode} {order.shippingCity}
                 </p>
-                <p className="text-[0.95rem] text-foreground/68">
-                  {order.shippingCountryCode}
-                </p>
+                <p className="text-[0.95rem] text-foreground/68">{order.shippingCountryCode}</p>
                 {order.shippedAt ? (
                   <p className="text-[0.95rem] text-foreground/68">
                     Date d&apos;expédition :{" "}
@@ -186,18 +167,14 @@ export default async function OrderConfirmationPage({
                 </p>
                 <h2>Adresse de facturation</h2>
                 {order.billingSameAsShipping ? (
-                  <p className="card-copy">
-                    Identique à l&apos;adresse de livraison.
-                  </p>
+                  <p className="card-copy">Identique à l&apos;adresse de livraison.</p>
                 ) : (
                   <>
                     <p className="card-copy">
                       {order.billingFirstName} {order.billingLastName}
                     </p>
                     {order.billingPhone ? (
-                      <p className="text-[0.95rem] text-foreground/68">
-                        {order.billingPhone}
-                      </p>
+                      <p className="text-[0.95rem] text-foreground/68">{order.billingPhone}</p>
                     ) : null}
                     <p className="card-copy">{order.billingAddressLine1}</p>
                     {order.billingAddressLine2 ? (
@@ -206,9 +183,7 @@ export default async function OrderConfirmationPage({
                     <p className="card-copy">
                       {order.billingPostalCode} {order.billingCity}
                     </p>
-                    <p className="text-[0.95rem] text-foreground/68">
-                      {order.billingCountryCode}
-                    </p>
+                    <p className="text-[0.95rem] text-foreground/68">{order.billingCountryCode}</p>
                   </>
                 )}
               </div>
@@ -224,10 +199,8 @@ export default async function OrderConfirmationPage({
             </div>
 
             <div className="grid gap-4">
-              {order.lines.map(line => (
-                <article
-                  className="store-card checkout-line"
-                  key={line.id}>
+              {order.lines.map((line) => (
+                <article className="store-card checkout-line" key={line.id}>
                   <div className="grid gap-1">
                     <h3>{line.productName}</h3>
                     <p className="text-[0.95rem] text-foreground/68">
@@ -277,11 +250,7 @@ export default async function OrderConfirmationPage({
             <div className="flex flex-wrap gap-3">
               {order.status === "pending" ? (
                 <form action={startOrderPaymentAction}>
-                  <input
-                    name="reference"
-                    type="hidden"
-                    value={order.reference}
-                  />
+                  <input name="reference" type="hidden" value={order.reference} />
                   <Button type="submit">Payer la commande</Button>
                 </form>
               ) : null}
@@ -290,7 +259,8 @@ export default async function OrderConfirmationPage({
               </Button>
               <Link
                 className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                href="/panier">
+                href="/panier"
+              >
                 Voir le panier
               </Link>
             </div>

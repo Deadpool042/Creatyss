@@ -4,14 +4,11 @@ import { redirect } from "next/navigation";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import {
   AdminBlogRepositoryError,
-  createAdminBlogPost
+  createAdminBlogPost,
 } from "@/db/repositories/admin-blog.repository";
 import { normalizeBlogPostSlug } from "@/entities/blog/blog-post-input";
 
-import {
-  BlogPostFormSchema,
-  parseCoverImageSelection
-} from "../schemas/blog-post-form-schema";
+import { BlogPostFormSchema, parseCoverImageSelection } from "../schemas/blog-post-form-schema";
 
 function mapBlogPostFormError(field: PropertyKey | undefined): string {
   switch (field) {
@@ -36,7 +33,7 @@ export async function createBlogPostAction(formData: FormData): Promise<void> {
     seoDescription: formData.get("seoDescription"),
     status: formData.get("status"),
     coverImageMediaAssetId: formData.get("coverImageMediaAssetId"),
-    currentCoverImagePath: null
+    currentCoverImagePath: null,
   });
 
   if (!parsed.success) {
@@ -64,7 +61,7 @@ export async function createBlogPostAction(formData: FormData): Promise<void> {
   if (coverImage.data.kind === "media_asset") {
     const mediaAssetId = coverImage.data.mediaAssetId;
     const mediaAssets = await listAdminMediaAssets();
-    const mediaAsset = mediaAssets.find(asset => asset.id === mediaAssetId);
+    const mediaAsset = mediaAssets.find((asset) => asset.id === mediaAssetId);
 
     if (mediaAsset === undefined) {
       redirect("/admin/blog/new?error=cover_media_missing");
@@ -84,14 +81,11 @@ export async function createBlogPostAction(formData: FormData): Promise<void> {
       seoTitle: parsed.data.seoTitle,
       seoDescription: parsed.data.seoDescription,
       coverImagePath,
-      status: parsed.data.status
+      status: parsed.data.status,
     });
     createdBlogPostId = blogPost.id;
   } catch (error) {
-    if (
-      error instanceof AdminBlogRepositoryError &&
-      error.code === "slug_taken"
-    ) {
+    if (error instanceof AdminBlogRepositoryError && error.code === "slug_taken") {
       redirect("/admin/blog/new?error=slug_taken");
     }
 

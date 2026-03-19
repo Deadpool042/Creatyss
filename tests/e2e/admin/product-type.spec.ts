@@ -7,37 +7,29 @@ import {
   createUniqueAdminProductIdentity,
   getAdminProductDetailUrlWithoutSearch,
   getSimpleOfferForm,
-  openAdminProductFromList
+  openAdminProductFromList,
 } from "./product-test-helpers";
 
-test("edits a simple product natively without creating a legacy variant", async ({
-  page
-}) => {
+test("edits a simple product natively without creating a legacy variant", async ({ page }) => {
   test.setTimeout(90_000);
 
   const product = createUniqueAdminProductIdentity({
     namePrefix: "Produit simple",
-    slugPrefix: "produit-simple"
+    slugPrefix: "produit-simple",
   });
 
   await loginAsSeedAdmin(page);
   await test.step("crée un produit simple depuis l'admin", async () => {
     await createSimpleAdminProduct(page, {
       name: product.name,
-      slug: product.slug
+      slug: product.slug,
     });
 
-    await expect(page).toHaveURL(
-      /\/admin\/products\/[0-9]+\?product_status=created$/
-    );
+    await expect(page).toHaveURL(/\/admin\/products\/[0-9]+\?product_status=created$/);
     await expect(page.getByText("Produit créé avec succès.")).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "Informations de vente" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Informations de vente" })).toBeVisible();
     await expect(getSimpleOfferForm(page)).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "Données existantes" })
-    ).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Données existantes" })).toHaveCount(0);
   });
 
   await test.step("enregistre les informations de vente natives", async () => {
@@ -52,44 +44,36 @@ test("edits a simple product natively without creating a legacy variant", async 
       page.waitForURL(/simple_offer_status=updated$/, { timeout: 15_000 }),
       simpleOfferForm
         .getByRole("button", { name: "Enregistrer les informations de vente" })
-        .click()
+        .click(),
     ]);
 
     await expect(page).toHaveURL(/simple_offer_status=updated$/);
     await expect(
-      page.getByText(
-        "Les informations de vente ont été mises à jour avec succès."
-      )
+      page.getByText("Les informations de vente ont été mises à jour avec succès.")
     ).toBeVisible();
-    await expect(simpleOfferForm.getByLabel("SKU")).toHaveValue(
-      `SIMPLE-${product.suffix}`
-    );
-    await expect(
-      simpleOfferForm.getByLabel("Prix", { exact: true })
-    ).toHaveValue("49.00");
+    await expect(simpleOfferForm.getByLabel("SKU")).toHaveValue(`SIMPLE-${product.suffix}`);
+    await expect(simpleOfferForm.getByLabel("Prix", { exact: true })).toHaveValue("49.00");
   });
 });
 
 test("shows a clear incoherent state when a simple product has multiple legacy variants", async ({
-  page
+  page,
 }) => {
   test.setTimeout(90_000);
 
   const product = createUniqueAdminProductIdentity({
     namePrefix: "Produit simple incoherent",
-    slugPrefix: "produit-simple-incoherent"
+    slugPrefix: "produit-simple-incoherent",
   });
 
   await loginAsSeedAdmin(page);
   await test.step("crée un produit simple", async () => {
     await createSimpleAdminProduct(page, {
       name: product.name,
-      slug: product.slug
+      slug: product.slug,
     });
 
-    await expect(page).toHaveURL(
-      /\/admin\/products\/[0-9]+\?product_status=created$/
-    );
+    await expect(page).toHaveURL(/\/admin\/products\/[0-9]+\?product_status=created$/);
   });
 
   await test.step("injecte deux déclinaisons legacy puis recharge la page détail", async () => {
@@ -103,7 +87,7 @@ test("shows a clear incoherent state when a simple product has multiple legacy v
       compareAtPrice: null,
       stockQuantity: 2,
       isDefault: true,
-      status: "published"
+      status: "published",
     });
     createLegacyVariantForProduct({
       productSlug: product.slug,
@@ -115,7 +99,7 @@ test("shows a clear incoherent state when a simple product has multiple legacy v
       compareAtPrice: null,
       stockQuantity: 1,
       isDefault: false,
-      status: "draft"
+      status: "draft",
     });
 
     await page.goto(getAdminProductDetailUrlWithoutSearch(page.url()));
@@ -129,12 +113,10 @@ test("shows a clear incoherent state when a simple product has multiple legacy v
     ).toBeVisible();
     await expect(
       page.getByRole("button", {
-        name: "Enregistrer les informations de vente"
+        name: "Enregistrer les informations de vente",
       })
     ).toHaveCount(0);
-    await expect(
-      page.getByRole("heading", { name: "Déclinaisons existantes" })
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Déclinaisons existantes" })).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Enregistrer la déclinaison existante" })
     ).toHaveCount(2);
@@ -142,7 +124,7 @@ test("shows a clear incoherent state when a simple product has multiple legacy v
 });
 
 test("refuses unsafe conversion from variable to simple when several variants exist", async ({
-  page
+  page,
 }) => {
   await loginAsSeedAdmin(page);
   await page.goto("/admin/products");
@@ -157,12 +139,10 @@ test("refuses unsafe conversion from variable to simple when several variants ex
 
   await Promise.all([
     page.waitForURL(/\/admin\/products\/[0-9]+(?:\?product_error=.*)?$/, {
-      timeout: 15_000
+      timeout: 15_000,
     }),
-    page.getByRole("button", { name: "Enregistrer le produit" }).click()
+    page.getByRole("button", { name: "Enregistrer le produit" }).click(),
   ]);
 
-  await expect(
-    page.getByText(/produit simple.*déclinaison/i).first()
-  ).toBeVisible();
+  await expect(page.getByText(/produit simple.*déclinaison/i).first()).toBeVisible();
 });

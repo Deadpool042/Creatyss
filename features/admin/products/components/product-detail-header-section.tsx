@@ -10,17 +10,12 @@ type ProductDetailHeaderSectionProps = Readonly<{
   };
 }>;
 
-export function ProductDetailHeaderSection({
-  summary
-}: ProductDetailHeaderSectionProps) {
+export function ProductDetailHeaderSection({ summary }: ProductDetailHeaderSectionProps) {
   return (
     <div className="flex flex-wrap gap-2">
       <Badge variant="outline">{summary.statusLabel}</Badge>
       <Badge variant="outline">{summary.typeLabel}</Badge>
-      <Badge
-        variant={
-          summary.featuredLabel === "Mis en avant" ? "secondary" : "outline"
-        }>
+      <Badge variant={summary.featuredLabel === "Mis en avant" ? "secondary" : "outline"}>
         {summary.featuredLabel}
       </Badge>
       <Badge variant="secondary">{summary.categoryLabel}</Badge>

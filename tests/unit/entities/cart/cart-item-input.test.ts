@@ -6,14 +6,14 @@ describe("validateCartItemInput", () => {
     expect(
       validateCartItemInput({
         variantId: " 12 ",
-        quantity: " 3 "
+        quantity: " 3 ",
       })
     ).toEqual({
       ok: true,
       data: {
         variantId: "12",
-        quantity: 3
-      }
+        quantity: 3,
+      },
     });
   });
 
@@ -21,11 +21,11 @@ describe("validateCartItemInput", () => {
     expect(
       validateCartItemInput({
         variantId: "",
-        quantity: "1"
+        quantity: "1",
       })
     ).toEqual({
       ok: false,
-      code: "missing_variant_id"
+      code: "missing_variant_id",
     });
   });
 
@@ -33,11 +33,11 @@ describe("validateCartItemInput", () => {
     expect(
       validateCartItemInput({
         variantId: "abc",
-        quantity: "1"
+        quantity: "1",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_variant_id"
+      code: "invalid_variant_id",
     });
   });
 
@@ -45,11 +45,11 @@ describe("validateCartItemInput", () => {
     expect(
       validateCartItemInput({
         variantId: "1",
-        quantity: ""
+        quantity: "",
       })
     ).toEqual({
       ok: false,
-      code: "missing_quantity"
+      code: "missing_quantity",
     });
   });
 
@@ -57,31 +57,31 @@ describe("validateCartItemInput", () => {
     expect(
       validateCartItemInput({
         variantId: "1",
-        quantity: "0"
+        quantity: "0",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_quantity"
+      code: "invalid_quantity",
     });
 
     expect(
       validateCartItemInput({
         variantId: "1",
-        quantity: "-1"
+        quantity: "-1",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_quantity"
+      code: "invalid_quantity",
     });
 
     expect(
       validateCartItemInput({
         variantId: "1",
-        quantity: "1.5"
+        quantity: "1.5",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_quantity"
+      code: "invalid_quantity",
     });
   });
 });

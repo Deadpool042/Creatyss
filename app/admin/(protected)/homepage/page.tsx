@@ -4,7 +4,7 @@ import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { getAdminHomepageEditorData } from "@/db/repositories/admin-homepage.repository";
 import { listAdminMediaAssets } from "@/db/admin-media";
-import { updateHomepageAction } from "@/features/admin/homepage/actions/update-homepage-action";
+import { updateHomepageAction } from "@/features/admin/homepage";
 import { getUploadsPublicPath } from "@/lib/uploads";
 import {
   buildBlogPostSelectionMap,
@@ -13,7 +13,7 @@ import {
   getHomepageErrorMessage,
   getHomepageImageUrl,
   getHomepageStatusMessage,
-  readHomepageSearchParam
+  readHomepageSearchParam,
 } from "./homepage-page-helpers";
 import { EditorialSection } from "./editorial-section";
 import { FeaturedBlogPostsSection } from "./featured-blog-posts-section";
@@ -27,13 +27,11 @@ type AdminHomepagePageProps = Readonly<{
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }>;
 
-export default async function AdminHomepagePage({
-  searchParams
-}: AdminHomepagePageProps) {
+export default async function AdminHomepagePage({ searchParams }: AdminHomepagePageProps) {
   const [resolvedSearchParams, editorData, mediaAssets] = await Promise.all([
     searchParams,
     getAdminHomepageEditorData(),
-    listAdminMediaAssets()
+    listAdminMediaAssets(),
   ]);
   const successMessage = getHomepageStatusMessage(
     readHomepageSearchParam(resolvedSearchParams, "status")
@@ -47,7 +45,8 @@ export default async function AdminHomepagePage({
       <AdminPageShell
         description="La page d'accueil ne peut pas être modifiée tant qu'aucune version publiée n'existe."
         eyebrow="Accueil"
-        title="Édition de la page d'accueil">
+        title="Édition de la page d'accueil"
+      >
         <Notice tone="alert">
           {explicitErrorMessage ?? "La page d'accueil publiée est introuvable."}
         </Notice>
@@ -55,49 +54,30 @@ export default async function AdminHomepagePage({
     );
   }
 
-  const { homepage, productOptions, categoryOptions, blogPostOptions } =
-    editorData;
-  const productSelectionMap = buildProductSelectionMap(
-    homepage.featuredProducts
-  );
-  const categorySelectionMap = buildCategorySelectionMap(
-    homepage.featuredCategories
-  );
-  const blogPostSelectionMap = buildBlogPostSelectionMap(
-    homepage.featuredBlogPosts
-  );
+  const { homepage, productOptions, categoryOptions, blogPostOptions } = editorData;
+  const productSelectionMap = buildProductSelectionMap(homepage.featuredProducts);
+  const categorySelectionMap = buildCategorySelectionMap(homepage.featuredCategories);
+  const blogPostSelectionMap = buildBlogPostSelectionMap(homepage.featuredBlogPosts);
   const uploadsPublicPath = getUploadsPublicPath();
-  const heroImageUrl = getHomepageImageUrl(
-    uploadsPublicPath,
-    homepage.heroImagePath
-  );
+  const heroImageUrl = getHomepageImageUrl(uploadsPublicPath, homepage.heroImagePath);
   const currentHeroMediaAsset =
     homepage.heroImagePath === null
       ? null
-      : (mediaAssets.find(asset => asset.filePath === homepage.heroImagePath) ??
-        null);
+      : (mediaAssets.find((asset) => asset.filePath === homepage.heroImagePath) ?? null);
   const heroImageSelectValue =
-    currentHeroMediaAsset?.id ??
-    (homepage.heroImagePath !== null ? "__keep_current__" : "");
+    currentHeroMediaAsset?.id ?? (homepage.heroImagePath !== null ? "__keep_current__" : "");
 
   return (
     <AdminPageShell
       description="Commencez par la bannière principale, puis complétez le bloc éditorial et les sélections mises en avant."
       eyebrow="Accueil"
-      title="Édition de la page d'accueil">
+      title="Édition de la page d'accueil"
+    >
       {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
-      {explicitErrorMessage ? (
-        <Notice tone="alert">{explicitErrorMessage}</Notice>
-      ) : null}
+      {explicitErrorMessage ? <Notice tone="alert">{explicitErrorMessage}</Notice> : null}
 
-      <form
-        action={updateHomepageAction}
-        className="space-y-6">
-        <input
-          name="homepageId"
-          type="hidden"
-          value={homepage.id}
-        />
+      <form action={updateHomepageAction} className="space-y-6">
+        <input name="homepageId" type="hidden" value={homepage.id} />
 
         <HeroSection
           currentHeroMediaAsset={currentHeroMediaAsset}
@@ -130,10 +110,7 @@ export default async function AdminHomepagePage({
         />
 
         <AdminFormActions className="justify-start sm:justify-end">
-          <Button
-            className="w-full sm:w-auto"
-            size="lg"
-            type="submit">
+          <Button className="w-full sm:w-auto" size="lg" type="submit">
             Enregistrer la page d&apos;accueil
           </Button>
         </AdminFormActions>

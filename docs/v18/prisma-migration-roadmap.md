@@ -199,8 +199,8 @@ Fichier simple, une seule table `media_assets`.
 
 ### Fichiers concernés
 
-| Fichier                                    | Action                                     |
-| ------------------------------------------ | ------------------------------------------ |
+| Fichier                                    | Action                                        |
+| ------------------------------------------ | --------------------------------------------- |
 | `db/repositories/admin-blog.repository.ts` | Migré vers Prisma — supprimé après validation |
 | `db/admin-media.ts`                        | Migré vers Prisma — supprimé après validation |
 
@@ -253,11 +253,11 @@ Migration complète : pas de transaction dans ce repository.
 
 ### Fichiers concernés
 
-| Fichier                                               | Action                                         |
-| ----------------------------------------------------- | ---------------------------------------------- |
+| Fichier                                               | Action                                           |
+| ----------------------------------------------------- | ------------------------------------------------ |
 | `db/repositories/admin-product.repository.ts`         | Partiellement migré — fonctions sans transaction |
-| `db/repositories/admin-product-variant.repository.ts` | Migré vers Prisma — supprimé après validation  |
-| `db/repositories/admin-product-image.repository.ts`   | Migré vers Prisma — supprimé après validation  |
+| `db/repositories/admin-product-variant.repository.ts` | Migré vers Prisma — supprimé après validation    |
+| `db/repositories/admin-product-image.repository.ts`   | Migré vers Prisma — supprimé après validation    |
 
 ### Points d'attention
 
@@ -306,11 +306,11 @@ Transaction complexe multi-tables :
 
 ### Fichiers concernés
 
-| Fichier                                                 | Action                                               |
-| ------------------------------------------------------- | ---------------------------------------------------- |
+| Fichier                                                 | Action                                                                 |
+| ------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `db/repositories/admin-product.repository.ts`           | Finalisation — fonctions transactionnelles + supprimé après validation |
-| `db/repositories/simple-product-admin-compatibility.ts` | Migré vers Prisma — supprimé après validation        |
-| `db/repositories/admin-homepage.repository.ts`          | Migré vers Prisma — supprimé après validation        |
+| `db/repositories/simple-product-admin-compatibility.ts` | Migré vers Prisma — supprimé après validation                          |
+| `db/repositories/admin-homepage.repository.ts`          | Migré vers Prisma — supprimé après validation                          |
 
 ### Points d'attention
 
@@ -369,16 +369,16 @@ Si un consommateur résiduel est détecté à l'étape 1, la décommission est b
 
 ### Fichiers concernés
 
-| Fichier                                       | Action                                                                      |
-| --------------------------------------------- | --------------------------------------------------------------------------- |
-| `db/repositories/order-email.repository.ts`   | Migré vers Prisma — supprimé après validation                               |
-| `db/admin-users.ts`                           | Migré vers Prisma — supprimé après validation                               |
-| `db/repositories/guest-cart.repository.ts`    | Migré vers Prisma — supprimé après validation                               |
-| `db/catalog.ts`                               | Migré vers Prisma — supprimé après validation                               |
-| `db/repositories/payment.repository.ts`       | Migré vers Prisma — supprimé après validation                               |
-| `db/repositories/order.repository.ts`         | Migré vers Prisma — supprimé après validation                               |
-| `db/client.ts`                                | Supprimé uniquement quand tous les consommateurs sont migrés et validés     |
-| `package.json`                                | Suppression de `pg` et `@types/pg` après suppression de `db/client.ts`     |
+| Fichier                                     | Action                                                                  |
+| ------------------------------------------- | ----------------------------------------------------------------------- |
+| `db/repositories/order-email.repository.ts` | Migré vers Prisma — supprimé après validation                           |
+| `db/admin-users.ts`                         | Migré vers Prisma — supprimé après validation                           |
+| `db/repositories/guest-cart.repository.ts`  | Migré vers Prisma — supprimé après validation                           |
+| `db/catalog.ts`                             | Migré vers Prisma — supprimé après validation                           |
+| `db/repositories/payment.repository.ts`     | Migré vers Prisma — supprimé après validation                           |
+| `db/repositories/order.repository.ts`       | Migré vers Prisma — supprimé après validation                           |
+| `db/client.ts`                              | Supprimé uniquement quand tous les consommateurs sont migrés et validés |
+| `package.json`                              | Suppression de `pg` et `@types/pg` après suppression de `db/client.ts`  |
 
 ### Points d'attention
 

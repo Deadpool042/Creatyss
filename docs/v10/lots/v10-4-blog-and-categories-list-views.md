@@ -13,6 +13,7 @@ Migrer la page articles de blog vers une Table simple shadcn. Maintenir la page 
 ### Décision : Table simple (pas DataTable)
 
 La page articles ne justifie pas TanStack Table :
+
 - Volume faible (< 50 articles sur la majorité des boutiques)
 - Pas de filtre multi-critères nécessaire
 - Pas de pagination dans l'immédiat
@@ -30,13 +31,13 @@ Table HTML rendue côté serveur avec les composants shadcn Table. Pas de `"use 
 
 ### Colonnes
 
-| Colonne     | Source                   | Notes                         |
-|-------------|--------------------------|-------------------------------|
-| Titre       | `post.title`             | Lien vers `/admin/blog/[id]`  |
-| Slug        | `post.slug`              |                               |
-| Statut      | `post.isPublished`       | "Publié" / "Brouillon"        |
-| Date        | `post.publishedAt`       | Formatée, ou "—" si nulle     |
-| Actions     | —                        | Lien "Modifier"               |
+| Colonne | Source             | Notes                        |
+| ------- | ------------------ | ---------------------------- |
+| Titre   | `post.title`       | Lien vers `/admin/blog/[id]` |
+| Slug    | `post.slug`        |                              |
+| Statut  | `post.isPublished` | "Publié" / "Brouillon"       |
+| Date    | `post.publishedAt` | Formatée, ou "—" si nulle    |
+| Actions | —                  | Lien "Modifier"              |
 
 ### Structure cible
 
@@ -82,9 +83,7 @@ export default async function AdminBlogPage() {
               <TableCell className="form-note">{post.slug}</TableCell>
               <TableCell>{post.isPublished ? "Publié" : "Brouillon"}</TableCell>
               <TableCell>
-                {post.publishedAt
-                  ? dateFormatter.format(new Date(post.publishedAt))
-                  : "—"}
+                {post.publishedAt ? dateFormatter.format(new Date(post.publishedAt)) : "—"}
               </TableCell>
               <TableCell>
                 <Link href={`/admin/blog/${post.id}`} className="link link-subtle">
@@ -97,9 +96,7 @@ export default async function AdminBlogPage() {
       </Table>
 
       {posts.length === 0 ? (
-        <div className="admin-empty-state">
-          {/* empty state existant conservé */}
-        </div>
+        <div className="admin-empty-state">{/* empty state existant conservé */}</div>
       ) : null}
     </div>
   );
@@ -112,7 +109,7 @@ Vérifier si le repository blog expose déjà une fonction de liste. Adapter si 
 
 ```typescript
 // db/repositories/blog.repository.ts
-export async function findAdminBlogPostList(): Promise<AdminBlogPostListItem[]>
+export async function findAdminBlogPostList(): Promise<AdminBlogPostListItem[]>;
 
 type AdminBlogPostListItem = {
   id: string;
@@ -120,7 +117,7 @@ type AdminBlogPostListItem = {
   title: string;
   isPublished: boolean;
   publishedAt: Date | null;
-}
+};
 ```
 
 ---
@@ -132,6 +129,7 @@ type AdminBlogPostListItem = {
 La page catégories reste avec sa grille de cartes `AdminCategoryCard`.
 
 Justification :
+
 - Volume maximal prévisible : < 20 catégories
 - Pas de filtre ni de tri nécessaire
 - Les cartes permettent une lecture visuelle rapide (nom + image)
@@ -146,15 +144,18 @@ Cette décision est explicite. Elle n'est pas un oubli ni un défaut de motivati
 ## Travail à réaliser
 
 ### Articles de blog
+
 1. Vérifier/adapter le type `AdminBlogPostListItem` dans le repository
 2. Modifier `app/admin/blog/page.tsx` pour utiliser les composants `Table*`
 3. Supprimer `AdminBlogPostCard` si plus utilisée ailleurs (vérifier avec grep)
 4. **Ne pas** importer `@tanstack/react-table` dans ce fichier
 
 ### Catégories
+
 - Aucune modification requise
 
 ### Vérifications
+
 - `pnpm run typecheck`
 - Navigation manuelle vers `/admin/blog`
 - Vérifier que les liens vers les fiches articles fonctionnent

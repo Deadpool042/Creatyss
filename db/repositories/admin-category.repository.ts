@@ -88,10 +88,7 @@ function isValidCategoryId(id: string): boolean {
 }
 
 function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
-  return (
-    error instanceof Error &&
-    typeof (error as { code?: unknown }).code === "string"
-  );
+  return error instanceof Error && typeof (error as { code?: unknown }).code === "string";
 }
 
 function toIsoTimestamp(value: TimestampValue): string {
@@ -115,7 +112,7 @@ function mapAdminCategory(row: AdminCategoryRow): AdminCategory {
         ? { filePath: row.rep_image_file_path, altText: row.rep_image_alt_text ?? null }
         : null,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
@@ -141,14 +138,8 @@ function buildCategoryWriteParams(input: CreateAdminCategoryInput): unknown[] {
 
 function mapRepositoryError(error: unknown): never {
   if (isPostgreSqlErrorLike(error)) {
-    if (
-      error.code === PG_UNIQUE_VIOLATION &&
-      error.constraint === CATEGORY_SLUG_CONSTRAINT
-    ) {
-      throw new AdminCategoryRepositoryError(
-        "slug_taken",
-        "Category slug already exists."
-      );
+    if (error.code === PG_UNIQUE_VIOLATION && error.constraint === CATEGORY_SLUG_CONSTRAINT) {
+      throw new AdminCategoryRepositoryError("slug_taken", "Category slug already exists.");
     }
 
     if (error.code === PG_FOREIGN_KEY_VIOLATION) {
@@ -179,9 +170,7 @@ export async function listAdminCategories(): Promise<AdminCategory[]> {
   return rows.map(mapAdminCategory);
 }
 
-export async function findAdminCategoryById(
-  id: string
-): Promise<AdminCategory | null> {
+export async function findAdminCategoryById(id: string): Promise<AdminCategory | null> {
   if (!isValidCategoryId(id)) {
     return null;
   }
@@ -206,9 +195,7 @@ export async function findAdminCategoryById(
   return mapAdminCategory(row);
 }
 
-export async function createAdminCategory(
-  input: CreateAdminCategoryInput
-): Promise<AdminCategory> {
+export async function createAdminCategory(input: CreateAdminCategoryInput): Promise<AdminCategory> {
   try {
     const row = await queryFirst<AdminCategoryRow>(
       `

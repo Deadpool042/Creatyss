@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/notice";
 import { getPublishedProductBySlug } from "@/db/catalog";
-import { addToCartAction } from "@/features/cart/actions/add-to-cart-action";
+import { addToCartAction } from "@/features/cart";
 import {
   getOfferAvailabilityMessage,
   getProductAvailabilityLabel,
@@ -15,7 +15,7 @@ import {
   getProductPageStatusSummary,
   getSimpleOfferCardTitle,
   getVariantAvailabilityLabel,
-  getVariantDefaultBadgeLabel
+  getVariantDefaultBadgeLabel,
 } from "@/entities/product/product-public-presentation";
 import { getUploadsPublicPath } from "@/lib/uploads";
 
@@ -31,9 +31,7 @@ type ProductPageProps = Readonly<{
   }>;
 }>;
 
-type ProductMetadataSource = NonNullable<
-  Awaited<ReturnType<typeof getPublishedProductBySlug>>
->;
+type ProductMetadataSource = NonNullable<Awaited<ReturnType<typeof getPublishedProductBySlug>>>;
 
 function getCartStatusMessage(status: string | undefined): string | null {
   switch (status) {
@@ -64,10 +62,7 @@ function getCartErrorMessage(error: string | undefined): string | null {
 
 function getProductMetadataDescription(product: ProductMetadataSource): string {
   return (
-    product.seoDescription ??
-    product.shortDescription ??
-    product.description ??
-    "Produit Creatyss."
+    product.seoDescription ?? product.shortDescription ?? product.description ?? "Produit Creatyss."
   );
 }
 
@@ -78,32 +73,27 @@ function getImageUrl(uploadsPublicPath: string, filePath: string): string {
 function getDisplayImage<TImage extends { isPrimary: boolean }>(
   images: readonly TImage[]
 ): TImage | null {
-  return images.find(image => image.isPrimary) ?? images[0] ?? null;
+  return images.find((image) => image.isPrimary) ?? images[0] ?? null;
 }
 
-export async function generateMetadata({
-  params
-}: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = await getPublishedProductBySlug(slug);
 
   if (product === null) {
     return {
       title: "Produit Creatyss",
-      description: "Produit Creatyss."
+      description: "Produit Creatyss.",
     };
   }
 
   return {
     title: product.seoTitle ?? product.name,
-    description: getProductMetadataDescription(product)
+    description: getProductMetadataDescription(product),
   };
 }
 
-export default async function ProductPage({
-  params,
-  searchParams
-}: ProductPageProps) {
+export default async function ProductPage({ params, searchParams }: ProductPageProps) {
   const { slug } = await params;
   const resolvedSearchParams = await searchParams;
   const cartStatusParam = Array.isArray(resolvedSearchParams.cart_status)
@@ -121,39 +111,26 @@ export default async function ProductPage({
   }
 
   const uploadsPublicPath = getUploadsPublicPath();
-  const availableVariantCount = product.variants.filter(
-    variant => variant.isAvailable
-  ).length;
+  const availableVariantCount = product.variants.filter((variant) => variant.isAvailable).length;
   const productStatusSummary = getProductPageStatusSummary({
     productType: product.productType,
     totalVariantCount: product.variants.length,
-    availableVariantCount
+    availableVariantCount,
   });
-  const offerSectionPresentation = getProductOfferSectionPresentation(
-    product.productType
-  );
+  const offerSectionPresentation = getProductOfferSectionPresentation(product.productType);
   const isSimpleProduct = product.productType === "simple";
-  const singleOffer =
-    isSimpleProduct && product.variants.length === 1
-      ? product.variants[0]
-      : null;
+  const singleOffer = isSimpleProduct && product.variants.length === 1 ? product.variants[0] : null;
   const productDisplayImage = getDisplayImage(product.images);
-  const singleOfferDisplayImage = singleOffer
-    ? getDisplayImage(singleOffer.images)
-    : null;
+  const singleOfferDisplayImage = singleOffer ? getDisplayImage(singleOffer.images) : null;
 
   return (
     <div className="grid gap-10">
       <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
         <div className="mb-8 grid gap-2">
-          <p className="text-sm font-bold uppercase tracking-widest text-brand">
-            Produit
-          </p>
+          <p className="text-sm font-bold uppercase tracking-widest text-brand">Produit</p>
           <h1 className="m-0">{product.name}</h1>
           {product.shortDescription ? (
-            <p className="leading-relaxed text-muted-foreground">
-              {product.shortDescription}
-            </p>
+            <p className="leading-relaxed text-muted-foreground">{product.shortDescription}</p>
           ) : null}
         </div>
 
@@ -162,14 +139,13 @@ export default async function ProductPage({
             <span>{cartStatusMessage}</span>
             <Link
               className="font-medium underline-offset-4 transition-colors hover:underline"
-              href="/panier">
+              href="/panier"
+            >
               Voir le panier
             </Link>
           </div>
         ) : null}
-        {cartErrorMessage ? (
-          <Notice tone="alert">{cartErrorMessage}</Notice>
-        ) : null}
+        {cartErrorMessage ? <Notice tone="alert">{cartErrorMessage}</Notice> : null}
 
         <div className="grid gap-6 min-[900px]:grid-cols-[minmax(0,1.1fr)_minmax(18rem,0.9fr)] min-[900px]:items-start">
           <div className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel p-6">
@@ -179,10 +155,7 @@ export default async function ProductPage({
                   alt={productDisplayImage.altText ?? product.name}
                   className="block h-full w-full object-cover"
                   loading="lazy"
-                  src={getImageUrl(
-                    uploadsPublicPath,
-                    productDisplayImage.filePath
-                  )}
+                  src={getImageUrl(uploadsPublicPath, productDisplayImage.filePath)}
                 />
               </figure>
             ) : (
@@ -199,21 +172,14 @@ export default async function ProductPage({
                   Disponibilité du produit
                 </p>
                 <Badge variant="outline">
-                  <span
-                    className={
-                      product.isAvailable
-                        ? "text-emerald-700"
-                        : "text-destructive"
-                    }>
+                  <span className={product.isAvailable ? "text-emerald-700" : "text-destructive"}>
                     {getProductAvailabilityLabel(product.isAvailable)}
                   </span>
                 </Badge>
               </div>
 
               <h2>{productStatusSummary.title}</h2>
-              <p className="leading-relaxed">
-                {productStatusSummary.description}
-              </p>
+              <p className="leading-relaxed">{productStatusSummary.description}</p>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {productStatusSummary.nextStep}
               </p>
@@ -301,11 +267,8 @@ export default async function ProductPage({
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="outline">
                     <span
-                      className={
-                        singleOffer.isAvailable
-                          ? "text-emerald-700"
-                          : "text-destructive"
-                      }>
+                      className={singleOffer.isAvailable ? "text-emerald-700" : "text-destructive"}
+                    >
                       {getProductAvailabilityLabel(singleOffer.isAvailable)}
                     </span>
                   </Badge>
@@ -317,9 +280,7 @@ export default async function ProductPage({
                   <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
                     Prix
                   </p>
-                  <p className="text-2xl font-bold leading-tight">
-                    {singleOffer.price}
-                  </p>
+                  <p className="text-2xl font-bold leading-tight">{singleOffer.price}</p>
                   {singleOffer.compareAtPrice ? (
                     <p className="text-sm text-muted-foreground">
                       Prix barré : {singleOffer.compareAtPrice}
@@ -333,36 +294,23 @@ export default async function ProductPage({
                   </p>
                   <p
                     className={
-                      singleOffer.isAvailable
-                        ? "leading-relaxed"
-                        : "text-sm text-muted-foreground"
-                    }>
+                      singleOffer.isAvailable ? "leading-relaxed" : "text-sm text-muted-foreground"
+                    }
+                  >
                     {getOfferAvailabilityMessage({
                       productType: product.productType,
-                      isAvailable: singleOffer.isAvailable
+                      isAvailable: singleOffer.isAvailable,
                     })}
                   </p>
                 </div>
 
                 {singleOffer.isAvailable ? (
-                  <form
-                    action={addToCartAction}
-                    className="grid gap-4">
-                    <input
-                      name="productSlug"
-                      type="hidden"
-                      value={product.slug}
-                    />
-                    <input
-                      name="variantId"
-                      type="hidden"
-                      value={singleOffer.id}
-                    />
+                  <form action={addToCartAction} className="grid gap-4">
+                    <input name="productSlug" type="hidden" value={product.slug} />
+                    <input name="variantId" type="hidden" value={singleOffer.id} />
 
                     <div className="grid gap-2 max-w-[10rem]">
-                      <Label htmlFor={`quantity-${singleOffer.id}`}>
-                        Quantité
-                      </Label>
+                      <Label htmlFor={`quantity-${singleOffer.id}`}>Quantité</Label>
                       <Input
                         defaultValue="1"
                         id={`quantity-${singleOffer.id}`}
@@ -404,15 +352,13 @@ export default async function ProductPage({
                 <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
                   <figure
                     className="overflow-hidden rounded-lg bg-media-surface min-h-40"
-                    key={singleOfferDisplayImage.id}>
+                    key={singleOfferDisplayImage.id}
+                  >
                     <img
                       alt={singleOfferDisplayImage.altText ?? singleOffer.name}
                       className="block h-full w-full object-cover"
                       loading="lazy"
-                      src={getImageUrl(
-                        uploadsPublicPath,
-                        singleOfferDisplayImage.filePath
-                      )}
+                      src={getImageUrl(uploadsPublicPath, singleOfferDisplayImage.filePath)}
                     />
                   </figure>
                 </div>
@@ -435,13 +381,14 @@ export default async function ProductPage({
           )
         ) : product.variants.length > 0 ? (
           <div className="grid gap-5 grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
-            {product.variants.map(variant => {
+            {product.variants.map((variant) => {
               const variantDisplayImage = getDisplayImage(variant.images);
 
               return (
                 <article
                   className="grid gap-5 rounded-lg border border-surface-border bg-surface-panel-soft p-6"
-                  key={variant.id}>
+                  key={variant.id}
+                >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="grid gap-1">
                       <h3>{variant.name}</h3>
@@ -459,11 +406,8 @@ export default async function ProductPage({
                       ) : null}
                       <Badge variant="outline">
                         <span
-                          className={
-                            variant.isAvailable
-                              ? "text-emerald-700"
-                              : "text-destructive"
-                          }>
+                          className={variant.isAvailable ? "text-emerald-700" : "text-destructive"}
+                        >
                           {getVariantAvailabilityLabel(variant.isAvailable)}
                         </span>
                       </Badge>
@@ -475,9 +419,7 @@ export default async function ProductPage({
                       <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
                         Prix
                       </p>
-                      <p className="text-2xl font-bold leading-tight">
-                        {variant.price}
-                      </p>
+                      <p className="text-2xl font-bold leading-tight">{variant.price}</p>
                       {variant.compareAtPrice ? (
                         <p className="text-sm text-muted-foreground">
                           Prix barré : {variant.compareAtPrice}
@@ -491,36 +433,23 @@ export default async function ProductPage({
                       </p>
                       <p
                         className={
-                          variant.isAvailable
-                            ? "leading-relaxed"
-                            : "text-sm text-muted-foreground"
-                        }>
+                          variant.isAvailable ? "leading-relaxed" : "text-sm text-muted-foreground"
+                        }
+                      >
                         {getOfferAvailabilityMessage({
                           productType: product.productType,
-                          isAvailable: variant.isAvailable
+                          isAvailable: variant.isAvailable,
                         })}
                       </p>
                     </div>
 
                     {variant.isAvailable ? (
-                      <form
-                        action={addToCartAction}
-                        className="grid gap-4">
-                        <input
-                          name="productSlug"
-                          type="hidden"
-                          value={product.slug}
-                        />
-                        <input
-                          name="variantId"
-                          type="hidden"
-                          value={variant.id}
-                        />
+                      <form action={addToCartAction} className="grid gap-4">
+                        <input name="productSlug" type="hidden" value={product.slug} />
+                        <input name="variantId" type="hidden" value={variant.id} />
 
                         <div className="grid gap-2 max-w-[10rem]">
-                          <Label htmlFor={`quantity-${variant.id}`}>
-                            Quantité
-                          </Label>
+                          <Label htmlFor={`quantity-${variant.id}`}>Quantité</Label>
                           <Input
                             defaultValue="1"
                             id={`quantity-${variant.id}`}
@@ -562,15 +491,13 @@ export default async function ProductPage({
                     <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
                       <figure
                         className="overflow-hidden rounded-lg bg-media-surface min-h-40"
-                        key={variantDisplayImage.id}>
+                        key={variantDisplayImage.id}
+                      >
                         <img
                           alt={variantDisplayImage.altText ?? variant.name}
                           className="block h-full w-full object-cover"
                           loading="lazy"
-                          src={getImageUrl(
-                            uploadsPublicPath,
-                            variantDisplayImage.filePath
-                          )}
+                          src={getImageUrl(uploadsPublicPath, variantDisplayImage.filePath)}
                         />
                       </figure>
                     </div>

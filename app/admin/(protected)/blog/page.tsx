@@ -10,10 +10,10 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "@/components/ui/table";
 import { listAdminBlogPosts } from "@/db/repositories/admin-blog.repository";
-import { toggleBlogPostStatusAction } from "@/features/admin/blog/actions";
+import { toggleBlogPostStatusAction } from "@/features/admin/blog";
 
 export const dynamic = "force-dynamic";
 
@@ -43,12 +43,10 @@ function getErrorMessage(error: string | undefined): string | null {
 }
 
 const blogDateFormatter = new Intl.DateTimeFormat("fr-FR", {
-  dateStyle: "medium"
+  dateStyle: "medium",
 });
 
-export default async function AdminBlogPage({
-  searchParams
-}: AdminBlogPageProps) {
+export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps) {
   const resolvedSearchParams = await searchParams;
   const statusParam = Array.isArray(resolvedSearchParams.status)
     ? resolvedSearchParams.status[0]
@@ -63,16 +61,14 @@ export default async function AdminBlogPage({
   return (
     <AdminPageShell
       actions={
-        <Button
-          asChild
-          size="sm"
-          variant="outline">
+        <Button asChild size="sm" variant="outline">
           <Link href="/admin/blog/new">Nouvel article</Link>
         </Button>
       }
       description="Gérez les articles, leur statut de publication et leur visuel de couverture depuis une page simple et lisible."
       eyebrow="Blog"
-      title="Articles">
+      title="Articles"
+    >
       {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
@@ -89,52 +85,42 @@ export default async function AdminBlogPage({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {blogPosts.map(post => (
+              {blogPosts.map((post) => (
                 <TableRow key={post.id}>
                   <TableCell>
                     <Link
                       className="text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                      href={`/admin/blog/${post.id}`}>
+                      href={`/admin/blog/${post.id}`}
+                    >
                       {post.title}
                     </Link>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
-                    {post.slug}
-                  </TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{post.slug}</TableCell>
                   <TableCell>
-                    <Badge
-                      variant={
-                        post.status === "published" ? "secondary" : "outline"
-                      }>
+                    <Badge variant={post.status === "published" ? "secondary" : "outline"}>
                       {post.status === "published" ? "Publié" : "Brouillon"}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {post.publishedAt
-                      ? blogDateFormatter.format(new Date(post.publishedAt))
-                      : "—"}
+                    {post.publishedAt ? blogDateFormatter.format(new Date(post.publishedAt)) : "—"}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Link
                         className="text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                        href={`/admin/blog/${post.id}`}>
+                        href={`/admin/blog/${post.id}`}
+                      >
                         Modifier l&apos;article
                       </Link>
 
                       <form action={toggleBlogPostStatusAction}>
-                        <input
-                          type="hidden"
-                          name="postId"
-                          value={post.id}
-                        />
+                        <input type="hidden" name="postId" value={post.id} />
                         <button
                           className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline disabled:cursor-not-allowed disabled:opacity-50"
                           disabled={post.status === "draft" && !post.hasContent}
-                          type="submit">
-                          {post.status === "published"
-                            ? "Passer en brouillon"
-                            : "Publier"}
+                          type="submit"
+                        >
+                          {post.status === "published" ? "Passer en brouillon" : "Publier"}
                         </button>
                       </form>
                     </div>

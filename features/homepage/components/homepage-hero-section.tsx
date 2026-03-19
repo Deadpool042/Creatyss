@@ -11,10 +11,9 @@ type HomepageHeroSectionProps = {
 export function HomepageHeroSection({
   heroImagePath,
   heroText,
-  heroTitle
+  heroTitle,
 }: HomepageHeroSectionProps) {
-  const resolvedTitle =
-    heroTitle ?? "Des sacs faits main, nulle part ailleurs.";
+  const resolvedTitle = heroTitle ?? "Des sacs faits main, nulle part ailleurs.";
   const resolvedText =
     heroText ??
     "Chaque sac Creatyss est dessiné, coupé et cousu dans notre atelier en France. Aucun modèle n'est reproduit à l'identique.";
@@ -44,10 +43,7 @@ export function HomepageHeroSection({
         {/* Photo annotation overlay — masqué si image réelle */}
         {!heroImagePath && (
           <div className="absolute inset-0 flex items-center justify-center px-8 text-center ">
-            <PlaceholderImage
-              alt={resolvedTitle}
-              className="h-1/2 opacity-30"
-            />
+            <PlaceholderImage alt={resolvedTitle} className="h-1/2 opacity-30" />
             {/* <div className="text-[0.58rem] font-normal uppercase tracking-[0.34em] text-white/30 min-[1100px]:text-[0.66rem]">
               <p>Photo éditoriale</p>
               <p className="mt-2">Sac principal en situation</p>
@@ -92,11 +88,10 @@ export function HomepageHeroSection({
             {/* CTA primaire compact */}
             <Link
               className="inline-flex items-center gap-2.5 rounded-lg bg-primary px-7 py-3.5 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-primary/90"
-              href="/boutique">
+              href="/boutique"
+            >
               Découvrir les collections
-              <span
-                aria-hidden="true"
-                className="text-xs">
+              <span aria-hidden="true" className="text-xs">
                 →
               </span>
             </Link>
@@ -104,11 +99,10 @@ export function HomepageHeroSection({
             {/* CTA secondaire ghost éditorial */}
             <Link
               className="inline-flex items-center gap-2.5 border-b border-hero-border pb-1 text-[0.68rem] font-medium uppercase tracking-[0.22em] text-hero-ink transition-colors hover:border-hero-ink lg:pb-1"
-              href="/blog">
+              href="/blog"
+            >
               Notre atelier
-              <span
-                aria-hidden="true"
-                className="text-xs">
+              <span aria-hidden="true" className="text-xs">
                 →
               </span>
             </Link>

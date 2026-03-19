@@ -40,12 +40,12 @@ docs/v11/
 
 ## Séquence des lots
 
-| Lot    | Titre                                       | Dépendances |
-|--------|---------------------------------------------|-------------|
-| V11-1  | Row actions + confirmations sûres           | V10-2       |
-| V11-2  | Workflows opérationnels commandes           | V11-1       |
-| V11-3  | Gestion rapide produits                     | V11-1       |
-| V11-4  | Feedback admin + réduction friction restant | V11-1       |
+| Lot   | Titre                                       | Dépendances |
+| ----- | ------------------------------------------- | ----------- |
+| V11-1 | Row actions + confirmations sûres           | V10-2       |
+| V11-2 | Workflows opérationnels commandes           | V11-1       |
+| V11-3 | Gestion rapide produits                     | V11-1       |
+| V11-4 | Feedback admin + réduction friction restant | V11-1       |
 
 V11-1 est la fondation. V11-2, V11-3 et V11-4 peuvent être parallélisés après V11-1.
 

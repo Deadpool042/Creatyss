@@ -75,12 +75,7 @@
   --page-foreground: oklch(0.22 0.02 55);
 
   --body-background:
-    radial-gradient(
-      circle at top,
-      oklch(0.83 0.05 45 / 0.22),
-      transparent 36rem
-    ),
-    var(--page-bg);
+    radial-gradient(circle at top, oklch(0.83 0.05 45 / 0.22), transparent 36rem), var(--page-bg);
 
   /* ==========================================================================
      Shared surfaces
@@ -151,7 +146,7 @@
   --hero-ink-soft: rgb(90 74 60);
   --hero-ink-muted: rgb(155 140 126);
   --hero-border: rgb(201 190 176);
-  --hero-vignette: rgb(20 12 6 / 0.10);
+  --hero-vignette: rgb(20 12 6 / 0.1);
 
   /* ==========================================================================
      Band — always-dark editorial band (guarantees strip)
@@ -163,7 +158,7 @@
   --band-foreground: rgb(255 255 255 / 0.85);
   --band-foreground-muted: rgb(255 255 255 / 0.55);
   --band-icon: rgb(255 255 255 / 0.45);
-  --band-eyebrow: rgb(255 255 255 / 0.30);
+  --band-eyebrow: rgb(255 255 255 / 0.3);
   --band-form-border: rgb(255 255 255 / 0.15);
 
   /* ==========================================================================
@@ -225,12 +220,7 @@
   --page-foreground: oklch(0.94 0.008 72);
 
   --body-background:
-    radial-gradient(
-      circle at top,
-      oklch(0.5 0.08 45 / 0.18),
-      transparent 32rem
-    ),
-    var(--page-bg);
+    radial-gradient(circle at top, oklch(0.5 0.08 45 / 0.18), transparent 32rem), var(--page-bg);
 
   /* ==========================================================================
      Shared surfaces
@@ -311,7 +301,7 @@
   --band-foreground: rgb(255 255 255 / 0.85);
   --band-foreground-muted: rgb(255 255 255 / 0.55);
   --band-icon: rgb(255 255 255 / 0.45);
-  --band-eyebrow: rgb(255 255 255 / 0.30);
+  --band-eyebrow: rgb(255 255 255 / 0.3);
   --band-form-border: rgb(255 255 255 / 0.15);
 
   /* ==========================================================================

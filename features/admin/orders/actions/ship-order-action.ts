@@ -1,11 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  OrderRepositoryError,
-  shipOrder
-} from "@/db/repositories/order.repository";
-import { sendOrderTransactionalEmail } from "@/features/email/send-order-transactional-email";
+import { OrderRepositoryError, shipOrder } from "@/db/repositories/order.repository";
+import { sendOrderTransactionalEmail } from "@/features/email";
 import { validateShipmentInput } from "@/entities/order/shipment-input";
 
 function normalizeNumericId(value: FormDataEntryValue | null): string | null {
@@ -33,7 +30,7 @@ export async function shipOrderAction(formData: FormData): Promise<void> {
   try {
     const updatedStatus = await shipOrder({
       id: orderId,
-      trackingReference: shipmentInput.data.trackingReference
+      trackingReference: shipmentInput.data.trackingReference,
     });
 
     if (updatedStatus === null) {
@@ -42,20 +39,14 @@ export async function shipOrderAction(formData: FormData): Promise<void> {
 
     await sendOrderTransactionalEmail({
       orderId,
-      eventType: "order_shipped"
+      eventType: "order_shipped",
     });
   } catch (error) {
-    if (
-      error instanceof OrderRepositoryError &&
-      error.code === "missing_order"
-    ) {
+    if (error instanceof OrderRepositoryError && error.code === "missing_order") {
       redirect("/admin/orders?error=missing_order");
     }
 
-    if (
-      error instanceof OrderRepositoryError &&
-      error.code === "invalid_status_transition"
-    ) {
+    if (error instanceof OrderRepositoryError && error.code === "invalid_status_transition") {
       redirect(`/admin/orders/${orderId}?order_error=invalid_transition`);
     }
 

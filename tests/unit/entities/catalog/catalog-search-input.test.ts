@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   MAX_CATALOG_SEARCH_QUERY_LENGTH,
   normalizeCatalogSearchQuery,
-  validateCatalogSearchQuery
+  validateCatalogSearchQuery,
 } from "@/entities/catalog/catalog-search-input";
 
 describe("normalizeCatalogSearchQuery", () => {
@@ -24,8 +24,6 @@ describe("validateCatalogSearchQuery", () => {
   it("borne la longueur maximale de la requete", () => {
     const longQuery = "a".repeat(MAX_CATALOG_SEARCH_QUERY_LENGTH + 25);
 
-    expect(validateCatalogSearchQuery(longQuery)).toBe(
-      "a".repeat(MAX_CATALOG_SEARCH_QUERY_LENGTH)
-    );
+    expect(validateCatalogSearchQuery(longQuery)).toBe("a".repeat(MAX_CATALOG_SEARCH_QUERY_LENGTH));
   });
 });

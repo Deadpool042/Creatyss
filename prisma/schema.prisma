@@ -1,0 +1,351 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["partialIndexes"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model admin_users {
+  id            BigInt         @id @default(autoincrement())
+  email         String
+  password_hash String
+  display_name  String
+  is_active     Boolean        @default(true)
+  created_at    DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime       @default(now()) @db.Timestamptz(6)
+  media_assets  media_assets[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model blog_posts {
+  id                           BigInt                         @id @default(autoincrement())
+  title                        String
+  slug                         String                         @unique
+  excerpt                      String?
+  content                      String?
+  cover_image_path             String?
+  status                       String                         @default("draft")
+  published_at                 DateTime?                      @db.Timestamptz(6)
+  seo_title                    String?
+  seo_description              String?
+  created_at                   DateTime                       @default(now()) @db.Timestamptz(6)
+  updated_at                   DateTime                       @default(now()) @db.Timestamptz(6)
+  homepage_featured_blog_posts homepage_featured_blog_posts[]
+
+  @@index([status, published_at(sort: Desc)])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model cart_checkout_details {
+  id                       BigInt   @id @default(autoincrement())
+  cart_id                  BigInt   @unique
+  customer_email           String?
+  customer_first_name      String?
+  customer_last_name       String?
+  customer_phone           String?
+  shipping_address_line_1  String?
+  shipping_address_line_2  String?
+  shipping_postal_code     String?
+  shipping_city            String?
+  shipping_country_code    String?
+  billing_same_as_shipping Boolean  @default(true)
+  billing_first_name       String?
+  billing_last_name        String?
+  billing_phone            String?
+  billing_address_line_1   String?
+  billing_address_line_2   String?
+  billing_postal_code      String?
+  billing_city             String?
+  billing_country_code     String?
+  created_at               DateTime @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime @default(now()) @db.Timestamptz(6)
+  carts                    carts    @relation(fields: [cart_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model cart_items {
+  id                 BigInt           @id @default(autoincrement())
+  cart_id            BigInt
+  product_variant_id BigInt
+  quantity           Int
+  created_at         DateTime         @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime         @default(now()) @db.Timestamptz(6)
+  carts              carts            @relation(fields: [cart_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product_variants   product_variants @relation(fields: [product_variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([cart_id, product_variant_id])
+  @@index([product_variant_id])
+}
+
+model carts {
+  id                    BigInt                 @id @default(autoincrement())
+  token                 String                 @unique
+  created_at            DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime               @default(now()) @db.Timestamptz(6)
+  cart_checkout_details cart_checkout_details?
+  cart_items            cart_items[]
+}
+
+model categories {
+  id                           BigInt                         @id @default(autoincrement())
+  name                         String
+  slug                         String                         @unique
+  description                  String?
+  is_featured                  Boolean                        @default(false)
+  created_at                   DateTime                       @default(now()) @db.Timestamptz(6)
+  updated_at                   DateTime                       @default(now()) @db.Timestamptz(6)
+  image_path                   String?
+  homepage_featured_categories homepage_featured_categories[]
+  product_categories           product_categories[]
+
+  @@index([is_featured])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model homepage_content {
+  id                           BigInt                         @id @default(autoincrement())
+  hero_title                   String?
+  hero_text                    String?
+  hero_image_path              String?
+  editorial_title              String?
+  editorial_text               String?
+  status                       String                         @unique(map: "homepage_content_published_key", where: raw("(status = 'published'::text)")) @default("draft")
+  created_at                   DateTime                       @default(now()) @db.Timestamptz(6)
+  updated_at                   DateTime                       @default(now()) @db.Timestamptz(6)
+  homepage_featured_blog_posts homepage_featured_blog_posts[]
+  homepage_featured_categories homepage_featured_categories[]
+  homepage_featured_products   homepage_featured_products[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model homepage_featured_blog_posts {
+  id                  BigInt           @id @default(autoincrement())
+  homepage_content_id BigInt
+  blog_post_id        BigInt
+  sort_order          Int              @default(0)
+  created_at          DateTime         @default(now()) @db.Timestamptz(6)
+  blog_posts          blog_posts       @relation(fields: [blog_post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  homepage_content    homepage_content @relation(fields: [homepage_content_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([homepage_content_id, blog_post_id], map: "homepage_featured_blog_posts_homepage_content_id_blog_post_id_k")
+  @@unique([homepage_content_id, sort_order])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model homepage_featured_categories {
+  id                  BigInt           @id @default(autoincrement())
+  homepage_content_id BigInt
+  category_id         BigInt
+  sort_order          Int              @default(0)
+  created_at          DateTime         @default(now()) @db.Timestamptz(6)
+  categories          categories       @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  homepage_content    homepage_content @relation(fields: [homepage_content_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([homepage_content_id, category_id], map: "homepage_featured_categories_homepage_content_id_category_id_ke")
+  @@unique([homepage_content_id, sort_order])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model homepage_featured_products {
+  id                  BigInt           @id @default(autoincrement())
+  homepage_content_id BigInt
+  product_id          BigInt
+  sort_order          Int              @default(0)
+  created_at          DateTime         @default(now()) @db.Timestamptz(6)
+  homepage_content    homepage_content @relation(fields: [homepage_content_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  products            products         @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([homepage_content_id, product_id])
+  @@unique([homepage_content_id, sort_order])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model media_assets {
+  id                        BigInt       @id @default(autoincrement())
+  file_path                 String       @unique
+  original_name             String
+  mime_type                 String
+  byte_size                 BigInt
+  image_width               Int?
+  image_height              Int?
+  uploaded_by_admin_user_id BigInt?
+  created_at                DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at                DateTime     @default(now()) @db.Timestamptz(6)
+  admin_users               admin_users? @relation(fields: [uploaded_by_admin_user_id], references: [id], onUpdate: NoAction)
+
+  @@index([created_at(sort: Desc), id(sort: Desc)], map: "media_assets_created_at_idx")
+  @@index([uploaded_by_admin_user_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model order_email_events {
+  id                  BigInt    @id @default(autoincrement())
+  order_id            BigInt
+  event_type          String
+  status              String    @default("pending")
+  recipient_email     String
+  provider            String
+  provider_message_id String?
+  last_error          String?
+  sent_at             DateTime? @db.Timestamptz(6)
+  created_at          DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime  @default(now()) @db.Timestamptz(6)
+  orders              orders    @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([order_id, event_type], map: "order_email_events_order_event_key")
+  @@index([order_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model order_items {
+  id                        BigInt            @id @default(autoincrement())
+  order_id                  BigInt
+  source_product_variant_id BigInt?
+  product_name              String
+  variant_name              String
+  color_name                String
+  color_hex                 String?
+  sku                       String
+  unit_price                Decimal           @db.Decimal(10, 2)
+  quantity                  Int
+  line_total                Decimal           @db.Decimal(10, 2)
+  created_at                DateTime          @default(now()) @db.Timestamptz(6)
+  orders                    orders            @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product_variants          product_variants? @relation(fields: [source_product_variant_id], references: [id], onUpdate: NoAction)
+
+  @@index([order_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model orders {
+  id                       BigInt               @id @default(autoincrement())
+  reference                String               @unique
+  status                   String               @default("pending")
+  customer_email           String
+  customer_first_name      String
+  customer_last_name       String
+  customer_phone           String?
+  shipping_address_line_1  String
+  shipping_address_line_2  String?
+  shipping_postal_code     String
+  shipping_city            String
+  shipping_country_code    String
+  billing_same_as_shipping Boolean              @default(true)
+  billing_first_name       String?
+  billing_last_name        String?
+  billing_phone            String?
+  billing_address_line_1   String?
+  billing_address_line_2   String?
+  billing_postal_code      String?
+  billing_city             String?
+  billing_country_code     String?
+  total_amount             Decimal              @db.Decimal(10, 2)
+  created_at               DateTime             @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime             @default(now()) @db.Timestamptz(6)
+  shipped_at               DateTime?            @db.Timestamptz(6)
+  tracking_reference       String?
+  order_email_events       order_email_events[]
+  order_items              order_items[]
+  payments                 payments?
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model payments {
+  id                         BigInt   @id @default(autoincrement())
+  order_id                   BigInt   @unique
+  provider                   String
+  method                     String
+  status                     String   @default("pending")
+  amount                     Decimal  @db.Decimal(10, 2)
+  currency                   String   @default("eur")
+  stripe_checkout_session_id String?  @unique
+  stripe_payment_intent_id   String?
+  created_at                 DateTime @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime @default(now()) @db.Timestamptz(6)
+  orders                     orders   @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([status])
+}
+
+model product_categories {
+  product_id  BigInt
+  category_id BigInt
+  created_at  DateTime   @default(now()) @db.Timestamptz(6)
+  categories  categories @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  products    products   @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([product_id, category_id])
+  @@index([category_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model product_images {
+  id               BigInt            @id @default(autoincrement())
+  product_id       BigInt            @unique(map: "product_images_primary_product_key", where: raw("(is_primary AND (variant_id IS NULL))"))
+  variant_id       BigInt?
+  file_path        String
+  alt_text         String?
+  sort_order       Int               @default(0)
+  is_primary       Boolean           @default(false)
+  created_at       DateTime          @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime          @default(now()) @db.Timestamptz(6)
+  products         products          @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product_variants product_variants? @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([product_id, sort_order, id], map: "product_images_product_id_sort_order_idx")
+  @@index([variant_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model product_variants {
+  id               BigInt          @id @default(autoincrement())
+  product_id       BigInt          @unique(map: "product_variants_default_per_product_key", where: raw("is_default"))
+  name             String
+  color_name       String
+  color_hex        String?
+  sku              String          @unique
+  price            Decimal         @db.Decimal(10, 2)
+  compare_at_price Decimal?        @db.Decimal(10, 2)
+  is_default       Boolean         @default(false)
+  status           String          @default("draft")
+  created_at       DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime        @default(now()) @db.Timestamptz(6)
+  stock_quantity   Int             @default(0)
+  cart_items       cart_items[]
+  order_items      order_items[]
+  product_images   product_images[]
+  products         products         @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([product_id, id])
+  @@index([product_id, status])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model products {
+  id                         BigInt                       @id @default(autoincrement())
+  name                       String
+  slug                       String                       @unique
+  short_description          String?
+  description                String?
+  status                     String                       @default("draft")
+  is_featured                Boolean                      @default(false)
+  seo_title                  String?
+  seo_description            String?
+  created_at                 DateTime                     @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime                     @default(now()) @db.Timestamptz(6)
+  product_type               String                       @default("variable")
+  simple_sku                 String?
+  simple_price               Decimal?                     @db.Decimal(12, 2)
+  simple_compare_at_price    Decimal?                     @db.Decimal(12, 2)
+  simple_stock_quantity      Int?
+  homepage_featured_products homepage_featured_products[]
+  product_categories         product_categories[]
+  product_images             product_images?
+  product_variants           product_variants?
+
+  @@index([is_featured])
+  @@index([status])
+}

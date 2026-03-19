@@ -5,12 +5,10 @@ import {
   AdminCategoryRepositoryError,
   countProductsForCategory,
   deleteAdminCategory,
-  findAdminCategoryById
+  findAdminCategoryById,
 } from "@/db/repositories/admin-category.repository";
 
-function normalizeCategoryId(
-  value: FormDataEntryValue | null
-): string | null {
+function normalizeCategoryId(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -50,10 +48,7 @@ export async function deleteCategoryAction(formData: FormData): Promise<void> {
       redirect("/admin/categories?error=missing_category");
     }
   } catch (error) {
-    if (
-      error instanceof AdminCategoryRepositoryError &&
-      error.code === "category_referenced"
-    ) {
+    if (error instanceof AdminCategoryRepositoryError && error.code === "category_referenced") {
       redirect(`/admin/categories/${categoryId}?error=referenced`);
     }
 

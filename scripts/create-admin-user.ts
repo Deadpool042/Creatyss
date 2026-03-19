@@ -28,7 +28,7 @@ function parseCliArguments(argv: readonly string[]): CliArguments {
   const parsed: CliArguments = {
     email: null,
     displayName: null,
-    passwordStdin: false
+    passwordStdin: false,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -82,9 +82,7 @@ async function main() {
   }
 
   if (args.email === null || args.displayName === null) {
-    throw new Error(
-      "Usage: --email <email> --display-name <display name> --password-stdin"
-    );
+    throw new Error("Usage: --email <email> --display-name <display name> --password-stdin");
   }
 
   const password = await readPasswordFromStdin();
@@ -92,7 +90,7 @@ async function main() {
   const normalizedInput = adminAuth.normalizeAdminBootstrapInput({
     email: args.email,
     displayName: args.displayName,
-    password
+    password,
   });
 
   if (normalizedInput === null) {
@@ -102,7 +100,7 @@ async function main() {
   }
 
   const pool = new Pool({
-    connectionString: readDatabaseUrl()
+    connectionString: readDatabaseUrl(),
   });
 
   try {
@@ -117,14 +115,10 @@ async function main() {
     );
 
     if (existingAdmin.rows.length > 0) {
-      throw new Error(
-        `Admin user already exists for email: ${normalizedInput.email}`
-      );
+      throw new Error(`Admin user already exists for email: ${normalizedInput.email}`);
     }
 
-    const passwordHash = await adminAuth.hashAdminPassword(
-      normalizedInput.password
-    );
+    const passwordHash = await adminAuth.hashAdminPassword(normalizedInput.password);
     const createdAdmin = await pool.query<CreatedAdminRow>(
       `
         insert into admin_users (
@@ -143,17 +137,14 @@ async function main() {
       throw new Error("Failed to create admin user.");
     }
 
-    process.stdout.write(
-      `Admin user created for ${normalizedInput.email} (id: ${adminId}).\n`
-    );
+    process.stdout.write(`Admin user created for ${normalizedInput.email} (id: ${adminId}).\n`);
   } finally {
     await pool.end();
   }
 }
 
 main().catch((error: unknown) => {
-  const message =
-    error instanceof Error ? error.message : "Unknown admin bootstrap error.";
+  const message = error instanceof Error ? error.message : "Unknown admin bootstrap error.";
 
   process.stderr.write(`${message}\n`);
   process.exitCode = 1;

@@ -6,14 +6,10 @@ import {
   createGuestCart,
   findGuestCartIdByToken,
   findGuestCartItemByVariant,
-  findGuestCartVariantById
+  findGuestCartVariantById,
 } from "@/db/repositories/guest-cart.repository";
 import { validateCartItemInput } from "@/entities/cart/cart-item-input";
-import {
-  createCartToken,
-  readCartSessionToken,
-  setCartSessionToken
-} from "@/lib/cart-session";
+import { createCartToken, readCartSessionToken, setCartSessionToken } from "@/lib/cart-session";
 
 function normalizeProductSlug(
   value: FormDataEntryValue | string | null | undefined
@@ -36,7 +32,7 @@ export async function addToCartAction(formData: FormData): Promise<void> {
 
   const validation = validateCartItemInput({
     variantId: formData.get("variantId"),
-    quantity: formData.get("quantity")
+    quantity: formData.get("quantity"),
   });
 
   if (!validation.ok) {
@@ -67,8 +63,7 @@ export async function addToCartAction(formData: FormData): Promise<void> {
   }
 
   const existingItem = await findGuestCartItemByVariant(cartId, variant.id);
-  const targetQuantity =
-    (existingItem?.quantity ?? 0) + validation.data.quantity;
+  const targetQuantity = (existingItem?.quantity ?? 0) + validation.data.quantity;
 
   if (variant.stockQuantity < targetQuantity) {
     redirect(`/boutique/${productSlug}?cart_error=insufficient_stock`);
@@ -78,7 +73,7 @@ export async function addToCartAction(formData: FormData): Promise<void> {
     await addGuestCartItemQuantity({
       cartId,
       variantId: variant.id,
-      quantity: validation.data.quantity
+      quantity: validation.data.quantity,
     });
   } catch (error) {
     console.error(error);

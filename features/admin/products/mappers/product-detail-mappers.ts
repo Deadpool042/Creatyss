@@ -1,7 +1,11 @@
 import { type AdminMediaAsset } from "@/db/admin-media";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
 
-import { type PrimaryImageScope, type PrimaryImageState, type ProductDetailSearchParams } from "../types/product-detail-types";
+import {
+  type PrimaryImageScope,
+  type PrimaryImageState,
+  type ProductDetailSearchParams,
+} from "../types/product-detail-types";
 
 export function readProductDetailSearchParam(
   searchParams: ProductDetailSearchParams,
@@ -20,9 +24,7 @@ export function getProductStatusLabel(status: "draft" | "published"): string {
   return status === "published" ? "Publié" : "Brouillon";
 }
 
-export function getProductStatusMessage(
-  status: string | undefined
-): string | null {
+export function getProductStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "created":
       return "Produit créé avec succès.";
@@ -60,9 +62,7 @@ export function getProductErrorMessage(error: string | undefined): string | null
   }
 }
 
-export function getVariantStatusMessage(
-  status: string | undefined
-): string | null {
+export function getVariantStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "created":
       return "Déclinaison créée avec succès.";
@@ -75,9 +75,7 @@ export function getVariantStatusMessage(
   }
 }
 
-export function getSimpleOfferStatusMessage(
-  status: string | undefined
-): string | null {
+export function getSimpleOfferStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "updated":
       return "Les informations de vente ont été mises à jour avec succès.";
@@ -86,9 +84,7 @@ export function getSimpleOfferStatusMessage(
   }
 }
 
-export function getSimpleOfferErrorMessage(
-  error: string | undefined
-): string | null {
+export function getSimpleOfferErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_sku":
       return "Le SKU est obligatoire.";
@@ -244,10 +240,7 @@ export function getDeleteErrorMessage(error: string | undefined): string | null 
   }
 }
 
-export function getImageUrl(
-  uploadsPublicPath: string,
-  filePath: string | null
-): string | null {
+export function getImageUrl(uploadsPublicPath: string, filePath: string | null): string | null {
   if (typeof filePath !== "string") {
     return null;
   }
@@ -261,9 +254,7 @@ export function getImageUrl(
   return `${uploadsPublicPath}/${normalizedFilePath}`;
 }
 
-export function groupVariantImages(
-  images: AdminProductImage[]
-): Map<string, AdminProductImage[]> {
+export function groupVariantImages(images: AdminProductImage[]): Map<string, AdminProductImage[]> {
   const groupedImages = new Map<string, AdminProductImage[]>();
 
   for (const image of images) {
@@ -279,17 +270,15 @@ export function groupVariantImages(
   return groupedImages;
 }
 
-export function getPrimaryImageState(
-  images: AdminProductImage[]
-): PrimaryImageState {
-  const primaryImage = images.find(image => image.isPrimary) ?? null;
+export function getPrimaryImageState(images: AdminProductImage[]): PrimaryImageState {
+  const primaryImage = images.find((image) => image.isPrimary) ?? null;
   const displayImage = primaryImage ?? images[0] ?? null;
 
   return {
     primaryImage,
     displayImage,
     extraImageCount: displayImage === null ? 0 : Math.max(images.length - 1, 0),
-    usesFallbackImage: primaryImage === null && displayImage !== null
+    usesFallbackImage: primaryImage === null && displayImage !== null,
   };
 }
 
@@ -299,9 +288,7 @@ export function getPrimaryImageEmptyMessage(scope: PrimaryImageScope): string {
     : "Aucune image principale définie pour cette déclinaison.";
 }
 
-export function getPrimaryImageFallbackMessage(
-  scope: PrimaryImageScope
-): string {
+export function getPrimaryImageFallbackMessage(scope: PrimaryImageScope): string {
   return scope === "product"
     ? "Aucune image principale du produit n'est encore définie. Une image existante reste associée au produit, mais elle n'est pas encore marquée comme principale."
     : "Aucune image principale n'est encore définie pour cette déclinaison. Une image existante reste associée, sans être marquée comme principale.";
@@ -313,19 +300,14 @@ export function getPrimaryImageExtraImagesMessage(
 ): string {
   const scopeLabel = scope === "product" ? "ce produit" : "cette déclinaison";
   const imageLabel = extraImageCount > 1 ? "images" : "image";
-  const extraLabel =
-    extraImageCount > 1 ? "supplémentaires restent" : "supplémentaire reste";
+  const extraLabel = extraImageCount > 1 ? "supplémentaires restent" : "supplémentaire reste";
   const associationLabel = extraImageCount > 1 ? "associées" : "associée";
 
   return `${extraImageCount} ${imageLabel} ${extraLabel} ${associationLabel} à ${scopeLabel}. Les réglages complémentaires restent disponibles plus bas.`;
 }
 
-export function getPrimaryImageSubmitLabel(
-  hasPrimaryImage: boolean
-): string {
-  return hasPrimaryImage
-    ? "Remplacer l'image principale"
-    : "Définir l'image principale";
+export function getPrimaryImageSubmitLabel(hasPrimaryImage: boolean): string {
+  return hasPrimaryImage ? "Remplacer l'image principale" : "Définir l'image principale";
 }
 
 export function findMediaAssetByFilePath(
@@ -336,9 +318,7 @@ export function findMediaAssetByFilePath(
     return null;
   }
 
-  return (
-    mediaAssets.find(mediaAsset => mediaAsset.filePath === filePath) ?? null
-  );
+  return mediaAssets.find((mediaAsset) => mediaAsset.filePath === filePath) ?? null;
 }
 
 export function isCategoryAssigned(
@@ -367,13 +347,9 @@ export function getSimpleOfferFormDefaults(product: {
     sku: product.simpleOfferFields.sku ?? product.simpleOffer?.sku ?? "",
     price: product.simpleOfferFields.price ?? product.simpleOffer?.price ?? "",
     compareAtPrice:
-      product.simpleOfferFields.compareAtPrice ??
-      product.simpleOffer?.compareAtPrice ??
-      "",
+      product.simpleOfferFields.compareAtPrice ?? product.simpleOffer?.compareAtPrice ?? "",
     stockQuantity: String(
-      product.simpleOfferFields.stockQuantity ??
-        product.simpleOffer?.stockQuantity ??
-        0
-    )
+      product.simpleOfferFields.stockQuantity ?? product.simpleOffer?.stockQuantity ?? 0
+    ),
   };
 }

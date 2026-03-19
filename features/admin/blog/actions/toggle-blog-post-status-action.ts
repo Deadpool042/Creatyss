@@ -21,9 +21,7 @@ function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
   return normalizedValue;
 }
 
-export async function toggleBlogPostStatusAction(
-  formData: FormData
-): Promise<void> {
+export async function toggleBlogPostStatusAction(formData: FormData): Promise<void> {
   const postId = normalizeBlogPostId(formData.get("postId"));
 
   if (postId === null) {

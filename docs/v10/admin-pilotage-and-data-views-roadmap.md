@@ -6,45 +6,45 @@
 
 Actuellement : 2 boutons de navigation (Produits, Commandes). Aucune donnée opérationnelle. Page fonctionnelle mais vide de sens.
 
-| Signal attendu           | État actuel | Lot     |
-|--------------------------|-------------|---------|
-| Commandes en attente     | Absent      | V10-1   |
-| Paiements non confirmés  | Absent      | V10-1   |
-| Stocks bas               | Absent      | V10-1   |
-| Total commandes du mois  | Absent      | V10-1   |
+| Signal attendu          | État actuel | Lot   |
+| ----------------------- | ----------- | ----- |
+| Commandes en attente    | Absent      | V10-1 |
+| Paiements non confirmés | Absent      | V10-1 |
+| Stocks bas              | Absent      | V10-1 |
+| Total commandes du mois | Absent      | V10-1 |
 
 ### Page commandes — `app/admin/commandes/page.tsx`
 
 Actuellement : grille de cartes `AdminOrderCard`. Pas de tri, pas de filtre.
 
-| Besoin                        | État actuel   | Lot     |
-|-------------------------------|---------------|---------|
-| Vue tabulaire dense           | Absent        | V10-3   |
-| Filtre par statut commande    | Absent        | V10-3   |
-| Filtre par statut paiement    | Absent        | V10-3   |
-| Tri par date                  | Absent        | V10-3   |
-| Pagination                    | Absent        | V10-3   |
+| Besoin                     | État actuel | Lot   |
+| -------------------------- | ----------- | ----- |
+| Vue tabulaire dense        | Absent      | V10-3 |
+| Filtre par statut commande | Absent      | V10-3 |
+| Filtre par statut paiement | Absent      | V10-3 |
+| Tri par date               | Absent      | V10-3 |
+| Pagination                 | Absent      | V10-3 |
 
 ### Page produits — `app/admin/produits/page.tsx`
 
 Actuellement : grille de cartes `AdminProductCard`. Filtre par catégorie présent (searchParams).
 
-| Besoin                     | État actuel                   | Lot     |
-|----------------------------|-------------------------------|---------|
-| Vue tabulaire dense        | Absent                        | V10-3   |
-| Filtre par catégorie       | Présent (searchParams)        | Conserver |
-| Tri par nom                | Absent                        | V10-3   |
-| Tri par prix               | Absent                        | V10-3   |
-| Indicateur stock           | Présent dans AdminProductCard | Migrer  |
+| Besoin               | État actuel                   | Lot       |
+| -------------------- | ----------------------------- | --------- |
+| Vue tabulaire dense  | Absent                        | V10-3     |
+| Filtre par catégorie | Présent (searchParams)        | Conserver |
+| Tri par nom          | Absent                        | V10-3     |
+| Tri par prix         | Absent                        | V10-3     |
+| Indicateur stock     | Présent dans AdminProductCard | Migrer    |
 
 ### Page articles — `app/admin/blog/page.tsx`
 
 Actuellement : grille de cartes `AdminBlogPostCard`.
 
-| Besoin                  | État actuel | Lot     |
-|-------------------------|-------------|---------|
-| Vue tabulaire légère    | Absent      | V10-4   |
-| Filtre statut publié    | Absent      | V10-4   |
+| Besoin               | État actuel | Lot   |
+| -------------------- | ----------- | ----- |
+| Vue tabulaire légère | Absent      | V10-4 |
+| Filtre statut publié | Absent      | V10-4 |
 
 ### Page catégories — `app/admin/categories/page.tsx`
 
@@ -88,22 +88,26 @@ V10-2  Table pattern foundation     ─── (standalone)
 ```
 
 ### Lot V10-1 — Dashboard foundation
+
 - Nouvelles requêtes DB (ou réutilisation des repositories existants)
 - Composants de signal sur le dashboard
 - Aucune dépendance sur V10-2
 
 ### Lot V10-2 — Table pattern foundation
+
 - Installation `table.tsx` via CLI
 - Installation `@tanstack/react-table`
 - Écriture de `data-table.tsx` générique
 - Aucune page migrée dans ce lot — uniquement le socle
 
 ### Lot V10-3 — Orders + products list views
+
 - Migration page commandes : DataTable + `columns.tsx` commandes
 - Migration page produits : DataTable + `columns.tsx` produits
 - Suppression des cartes correspondantes ou cohabitation temporaire
 
 ### Lot V10-4 — Blog + categories list views
+
 - Migration page articles : Table simple shadcn (pas TanStack)
 - Page catégories : aucune modification
 - Suppression de `AdminBlogPostCard` si plus utilisée

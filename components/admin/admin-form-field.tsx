@@ -15,20 +15,16 @@ export function AdminFormField({
   htmlFor,
   description,
   className,
-  children
+  children,
 }: AdminFormFieldProps) {
   return (
     <div className={cn("grid gap-2", className)}>
-      <Label
-        className="text-sm font-medium leading-5 text-foreground"
-        htmlFor={htmlFor}>
+      <Label className="text-sm font-medium leading-5 text-foreground" htmlFor={htmlFor}>
         {label}
       </Label>
 
       {description ? (
-        <p className="text-sm leading-6 text-muted-foreground">
-          {description}
-        </p>
+        <p className="text-sm leading-6 text-muted-foreground">{description}</p>
       ) : null}
 
       {children}

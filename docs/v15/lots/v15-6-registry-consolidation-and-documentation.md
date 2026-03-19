@@ -14,11 +14,11 @@
 
 ### Candidats restants examinés
 
-| Composant | Verdict | Raison |
-|-----------|---------|--------|
-| `item.tsx` | **Extrait** | Compound list-item, zéro couplage, 100% token-driven, CVA, `asChild`, API propre |
-| `field.tsx` | **Extrait** | Compound form field avec déduplication d'erreurs, orientations responsive, zéro couplage |
-| `input-group.tsx` | **Extrait** | Compound input avec addons inline/block, gestion complète focus/invalid, zéro couplage |
+| Composant         | Verdict     | Raison                                                                                   |
+| ----------------- | ----------- | ---------------------------------------------------------------------------------------- |
+| `item.tsx`        | **Extrait** | Compound list-item, zéro couplage, 100% token-driven, CVA, `asChild`, API propre         |
+| `field.tsx`       | **Extrait** | Compound form field avec déduplication d'erreurs, orientations responsive, zéro couplage |
+| `input-group.tsx` | **Extrait** | Compound input avec addons inline/block, gestion complète focus/invalid, zéro couplage   |
 
 Les trois composants passent tous les critères : aucun contenu Creatyss, entièrement pilotés par les tokens du thème, API lisible, CVA standard, utilisables dans n'importe quel projet.
 
@@ -34,29 +34,29 @@ pnpm run typecheck → clean (0 erreur)
 
 ### Couche Admin (4 items)
 
-| Item | Type | Dépendances registry | Description |
-|------|------|----------------------|-------------|
-| `admin-form-actions` | `registry:component` | — | Flex row wrapper pour les boutons d'action d'un formulaire admin |
-| `admin-form-field` | `registry:component` | `label` | Champ de formulaire admin avec label, description optionnelle et slot input |
-| `admin-page-shell` | `registry:component` | — | Shell de page admin : eyebrow, titre, description, slot actions, séparateur |
-| `admin-form-section` | `registry:component` | `card`, `separator`, `@creatyss/section-intro` | Section de formulaire admin en card avec header optionnel |
+| Item                 | Type                 | Dépendances registry                           | Description                                                                 |
+| -------------------- | -------------------- | ---------------------------------------------- | --------------------------------------------------------------------------- |
+| `admin-form-actions` | `registry:component` | —                                              | Flex row wrapper pour les boutons d'action d'un formulaire admin            |
+| `admin-form-field`   | `registry:component` | `label`                                        | Champ de formulaire admin avec label, description optionnelle et slot input |
+| `admin-page-shell`   | `registry:component` | —                                              | Shell de page admin : eyebrow, titre, description, slot actions, séparateur |
+| `admin-form-section` | `registry:component` | `card`, `separator`, `@creatyss/section-intro` | Section de formulaire admin en card avec header optionnel                   |
 
 ### Couche Transverse — composants (2 items)
 
-| Item | Type | Dépendances registry | Description |
-|------|------|----------------------|-------------|
-| `notice` | `registry:component` | — | Message de feedback inline : `success`, `alert`, `note` |
-| `section-intro` | `registry:component` | — | Bloc eyebrow + titre + description pour les sections. `h2` ou `h3` |
+| Item            | Type                 | Dépendances registry | Description                                                        |
+| --------------- | -------------------- | -------------------- | ------------------------------------------------------------------ |
+| `notice`        | `registry:component` | —                    | Message de feedback inline : `success`, `alert`, `note`            |
+| `section-intro` | `registry:component` | —                    | Bloc eyebrow + titre + description pour les sections. `h2` ou `h3` |
 
 ### Couche Transverse — primitives UI (5 items)
 
-| Item | Type | Dépendances registry | Description |
-|------|------|----------------------|-------------|
-| `empty` | `registry:ui` | — | Compound empty state : conteneur centré en tirets, icon, titre, description, contenu |
-| `spinner` | `registry:ui` | — | Loading spinner `Loader2Icon` avec `animate-spin` et `role="status"` |
-| `item` | `registry:ui` | `separator` | Compound list-item : media, contenu, titre, description, actions, header, footer |
-| `field` | `registry:ui` | `label`, `separator` | Compound form field : orientations `vertical`/`horizontal`/`responsive`, erreurs, légende |
-| `input-group` | `registry:ui` | `button`, `input`, `textarea` | Compound input avec addons inline et block, texte, bouton, gestion états |
+| Item          | Type          | Dépendances registry          | Description                                                                               |
+| ------------- | ------------- | ----------------------------- | ----------------------------------------------------------------------------------------- |
+| `empty`       | `registry:ui` | —                             | Compound empty state : conteneur centré en tirets, icon, titre, description, contenu      |
+| `spinner`     | `registry:ui` | —                             | Loading spinner `Loader2Icon` avec `animate-spin` et `role="status"`                      |
+| `item`        | `registry:ui` | `separator`                   | Compound list-item : media, contenu, titre, description, actions, header, footer          |
+| `field`       | `registry:ui` | `label`, `separator`          | Compound form field : orientations `vertical`/`horizontal`/`responsive`, erreurs, légende |
+| `input-group` | `registry:ui` | `button`, `input`, `textarea` | Compound input avec addons inline et block, texte, bouton, gestion états                  |
 
 ---
 
@@ -66,24 +66,24 @@ pnpm run typecheck → clean (0 erreur)
 
 Tout le storefront public est volontairement conservé dans le projet.
 
-| Zone | Raison |
-|------|--------|
-| `public-site-shell` | Nom de marque Creatyss, nav hardcodée, labels français, variables CSS `--shell-*` spécifiques |
-| Pages boutique / catalogue | Logique métier catalogue, modèle de données Creatyss, contenu français |
-| Pages blog | Narration éditoriale spécifique |
-| Pages panier / checkout | Flux commande, données client, "France" hardcodé |
+| Zone                       | Raison                                                                                        |
+| -------------------------- | --------------------------------------------------------------------------------------------- |
+| `public-site-shell`        | Nom de marque Creatyss, nav hardcodée, labels français, variables CSS `--shell-*` spécifiques |
+| Pages boutique / catalogue | Logique métier catalogue, modèle de données Creatyss, contenu français                        |
+| Pages blog                 | Narration éditoriale spécifique                                                               |
+| Pages panier / checkout    | Flux commande, données client, "France" hardcodé                                              |
 
 **Ce n'est pas un oubli.** Le storefront est par nature variable selon le client et le projet. L'extraire serait extraire l'identité Creatyss, pas un pattern réutilisable.
 
 ### Primitives non extraites
 
-| Composant | Raison |
-|-----------|--------|
-| `data-table` | Strings français hardcodées dans la pagination et les états vides |
-| `combobox` | Dépendance `@base-ui/react` non standard, complexité élevée |
-| `auth-shell` | Une couleur décorative hardcodée, hors périmètre |
-| `badge` (étendu) | Extension mineure de shadcn, gain trop faible |
-| `card` (étendu) | Extension mineure de shadcn (`size`, `CardAction`), shadcn le fera probablement lui-même |
+| Composant        | Raison                                                                                   |
+| ---------------- | ---------------------------------------------------------------------------------------- |
+| `data-table`     | Strings français hardcodées dans la pagination et les états vides                        |
+| `combobox`       | Dépendance `@base-ui/react` non standard, complexité élevée                              |
+| `auth-shell`     | Une couleur décorative hardcodée, hors périmètre                                         |
+| `badge` (étendu) | Extension mineure de shadcn, gain trop faible                                            |
+| `card` (étendu)  | Extension mineure de shadcn (`size`, `CardAction`), shadcn le fera probablement lui-même |
 
 ### Artefacts scaffold
 
@@ -99,8 +99,8 @@ Le thème est la variable principale d'adaptation entre projets. Changer de thè
 
 ### Fichiers
 
-| Fichier | Description |
-|---------|-------------|
+| Fichier               | Description                                                                                    |
+| --------------------- | ---------------------------------------------------------------------------------------------- |
 | `themes/creatyss.css` | Identité Creatyss : amber brand `oklch(0.523 0.112 53.7)`, sidebar clair, `--radius: 0.625rem` |
 | `themes/novamart.css` | Identité client test : indigo brand `oklch(0.52 0.18 262)`, sidebar sombre, `--radius: 0.5rem` |
 
@@ -174,6 +174,7 @@ npx shadcn add @creatyss/admin-form-section --dry-run
 ```
 
 Règles du schéma shadcn :
+
 - La clé **doit commencer par `@`**
 - L'URL **doit contenir `{name}`**
 - Seules `url`, `params`, `headers` sont valides dans l'objet (pas `style`)
@@ -181,6 +182,7 @@ Règles du schéma shadcn :
 ### Résolution des dépendances
 
 Le CLI shadcn résout automatiquement :
+
 - les dépendances shadcn standard (`card`, `separator`, `label`, `button`, etc.)
 - les dépendances `@creatyss/*` croisées (ex : `admin-form-section` → `@creatyss/section-intro`)
 
@@ -217,6 +219,7 @@ Le registry Creatyss constitue un premier noyau solide et honnête :
 - **5 primitives UI** génériques (`empty`, `spinner`, `item`, `field`, `input-group`) utilisables dans tout projet React / Next.js avec shadcn
 
 Ces 11 items sont :
+
 - zéro couplage Creatyss
 - 100% token-driven
 - compatibles avec les deux thèmes testés
@@ -240,5 +243,6 @@ Ce qui manque pour aller plus loin n'est pas dans le registry — c'est l'usage 
 Tous les lots V15-1 → V15-6 sont validés.
 
 La suite logique n'est pas une nouvelle vague d'extraction, mais :
+
 - l'utilisation réelle de cette base sur un autre projet
 - ou le retour aux sujets métier du projet courant (fonctionnalités e-commerce, paiements, stock)

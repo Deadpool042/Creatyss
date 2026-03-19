@@ -4,7 +4,7 @@ import { Notice } from "@/components/shared/notice";
 import { AdminEmptyState } from "@/components/admin";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { listAdminProducts } from "@/db/repositories/admin-product.repository";
-import { ProductsListTable } from "@/features/admin/products/components";
+import { ProductsListTable } from "@/features/admin/products";
 
 export const dynamic = "force-dynamic";
 
@@ -33,9 +33,7 @@ function getErrorMessage(error: string | undefined): string | null {
   }
 }
 
-export default async function AdminProductsPage({
-  searchParams
-}: AdminProductsPageProps) {
+export default async function AdminProductsPage({ searchParams }: AdminProductsPageProps) {
   const resolvedSearchParams = await searchParams;
   const statusParam = Array.isArray(resolvedSearchParams.status)
     ? resolvedSearchParams.status[0]
@@ -56,7 +54,8 @@ export default async function AdminProductsPage({
       }
       description="Gérez les produits, leurs catégories, leurs déclinaisons et leurs images depuis un seul espace."
       eyebrow="Produits"
-      title="Produits">
+      title="Produits"
+    >
       {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 

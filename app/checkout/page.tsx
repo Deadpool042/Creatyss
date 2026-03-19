@@ -5,10 +5,9 @@ import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/notice";
 import {
   readGuestCheckoutContextByToken,
-  type GuestCheckoutContext
+  type GuestCheckoutContext,
 } from "@/db/repositories/guest-cart.repository";
-import { createOrderAction } from "@/features/checkout/actions/create-order-action";
-import { saveGuestCheckoutAction } from "@/features/checkout/actions/save-guest-checkout-action";
+import { createOrderAction, saveGuestCheckoutAction } from "@/features/checkout";
 import { readCartSessionToken } from "@/lib/cart-session";
 
 export const dynamic = "force-dynamic";
@@ -86,9 +85,7 @@ async function readCheckoutContext(): Promise<GuestCheckoutContext | null> {
   return readGuestCheckoutContextByToken(cartToken);
 }
 
-export default async function CheckoutPage({
-  searchParams
-}: CheckoutPageProps) {
+export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
   const resolvedSearchParams = await searchParams;
   const statusParam = Array.isArray(resolvedSearchParams.status)
     ? resolvedSearchParams.status[0]
@@ -113,27 +110,20 @@ export default async function CheckoutPage({
     <div className="page">
       <section className="section">
         <div className="mb-6 grid gap-2">
-          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
-            Commande
-          </p>
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Commande</p>
           <h1 className="m-0">Finaliser la commande</h1>
           <p className="mt-1 leading-relaxed text-muted-foreground">
-            Renseignez vos informations, puis créez la commande quand le panier
-            est prêt.
+            Renseignez vos informations, puis créez la commande quand le panier est prêt.
           </p>
         </div>
 
         {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
-        {checkoutIssueMessage ? (
-          <Notice tone="alert">{checkoutIssueMessage}</Notice>
-        ) : null}
+        {checkoutIssueMessage ? <Notice tone="alert">{checkoutIssueMessage}</Notice> : null}
 
         {cart ? (
           <div className="checkout-layout">
-            <form
-              className="grid gap-4 content-start"
-              noValidate>
+            <form className="grid gap-4 content-start" noValidate>
               <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
                 <div className="grid gap-1">
                   <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
@@ -274,8 +264,7 @@ export default async function CheckoutPage({
                 </label>
 
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  Laissez la case cochée pour réutiliser l&apos;adresse de
-                  livraison.
+                  Laissez la case cochée pour réutiliser l&apos;adresse de livraison.
                 </p>
 
                 <div className="grid gap-4">
@@ -369,31 +358,26 @@ export default async function CheckoutPage({
                 {canSave ? (
                   <>
                     <p className="text-sm leading-relaxed text-muted-foreground">
-                      Créez la commande une fois vos informations complètes.
-                      Vous pouvez aussi les enregistrer pour plus tard.
+                      Créez la commande une fois vos informations complètes. Vous pouvez aussi les
+                      enregistrer pour plus tard.
                     </p>
-                    <Button
-                      formAction={createOrderAction}
-                      type="submit">
+                    <Button formAction={createOrderAction} type="submit">
                       Créer la commande
                     </Button>
-                    <Button
-                      formAction={saveGuestCheckoutAction}
-                      type="submit"
-                      variant="ghost">
+                    <Button formAction={saveGuestCheckoutAction} type="submit" variant="ghost">
                       Enregistrer mes informations
                     </Button>
                   </>
                 ) : (
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    La commande reste bloquée tant que le panier n&apos;est pas
-                    corrigé.
+                    La commande reste bloquée tant que le panier n&apos;est pas corrigé.
                   </p>
                 )}
 
                 <Link
                   className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                  href="/panier">
+                  href="/panier"
+                >
                   Retour au panier
                 </Link>
               </div>
@@ -409,10 +393,8 @@ export default async function CheckoutPage({
 
               {cart.lines.length > 0 ? (
                 <div className="grid gap-4">
-                  {cart.lines.map(line => (
-                    <article
-                      className="store-card checkout-line"
-                      key={line.id}>
+                  {cart.lines.map((line) => (
+                    <article className="store-card checkout-line" key={line.id}>
                       <div className="grid gap-1">
                         <h3>{line.productName}</h3>
                         <p className="text-[0.95rem] text-foreground/68">
@@ -453,13 +435,11 @@ export default async function CheckoutPage({
                         <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                           Disponibilité
                         </p>
-                        <p className="card-copy">
-                          {getAvailabilityLabel(line.isAvailable)}
-                        </p>
+                        <p className="card-copy">{getAvailabilityLabel(line.isAvailable)}</p>
                         {!line.isAvailable ? (
                           <Notice tone="alert">
-                            Cette ligne bloque la commande tant qu&apos;elle
-                            n&apos;est pas corrigée dans le panier.
+                            Cette ligne bloque la commande tant qu&apos;elle n&apos;est pas corrigée
+                            dans le panier.
                           </Notice>
                         ) : null}
                       </div>
@@ -500,8 +480,7 @@ export default async function CheckoutPage({
             </p>
             <h2>Ajoutez d&apos;abord un article au panier</h2>
             <p className="card-copy">
-              Ajoutez d&apos;abord un article disponible au panier pour
-              finaliser la commande.
+              Ajoutez d&apos;abord un article disponible au panier pour finaliser la commande.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <Button asChild>
@@ -509,7 +488,8 @@ export default async function CheckoutPage({
               </Button>
               <Link
                 className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                href="/panier">
+                href="/panier"
+              >
                 Retour au panier
               </Link>
             </div>

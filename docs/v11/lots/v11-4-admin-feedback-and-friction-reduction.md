@@ -8,6 +8,7 @@ V11-2 et V11-3 peuvent être parallèles ou terminés — V11-4 est indépendant
 ## Objectif
 
 Compléter V11 sur deux axes :
+
 1. **Blog** — exposer un toggle de statut depuis la Table (même logique que V11-3 pour les produits)
 2. **Feedback** — documenter et stabiliser le pattern de feedback admin pour éviter la divergence à l'avenir
 
@@ -20,6 +21,7 @@ Compléter V11 sur deux axes :
 ### Cible
 
 Remplacer la colonne "Actions" par deux éléments :
+
 - Lien "Modifier l'article" (conservé)
 - Bouton "Publier" ou "Passer en brouillon" selon le statut actuel
 
@@ -37,7 +39,8 @@ Pas de nouveau Client Component nécessaire si l'on évite l'AlertDialog (le tog
   <div className="flex items-center gap-3">
     <Link
       className="text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
-      href={`/admin/blog/${post.id}`}>
+      href={`/admin/blog/${post.id}`}
+    >
       Modifier l&apos;article
     </Link>
 
@@ -45,7 +48,8 @@ Pas de nouveau Client Component nécessaire si l'on évite l'AlertDialog (le tog
       <input type="hidden" name="postId" value={post.id} />
       <button
         className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-        type="submit">
+        type="submit"
+      >
         {post.status === "published" ? "Passer en brouillon" : "Publier"}
       </button>
     </form>
@@ -66,10 +70,11 @@ Pas de nouveau Client Component nécessaire si l'on évite l'AlertDialog (le tog
 // Sortie : redirect vers /admin/blog/${postId}?status=updated
 //          ou /admin/blog?error=missing_blog_post si article introuvable
 
-export async function toggleBlogPostStatusAction(formData: FormData): Promise<void>
+export async function toggleBlogPostStatusAction(formData: FormData): Promise<void>;
 ```
 
 La logique de `published_at` respecte le comportement existant de `updateAdminBlogPost` :
+
 - Premier passage à published → `published_at = now()`
 - Republication après dépublication → `published_at` ne change pas (`coalesce` existant)
 - Passage à draft → `published_at = null`
@@ -79,9 +84,7 @@ La logique de `published_at` respecte le comportement existant de `updateAdminBl
 Ajouter dans `admin-blog.repository.ts` :
 
 ```typescript
-export async function toggleAdminBlogPostStatus(
-  id: string
-): Promise<"draft" | "published" | null>
+export async function toggleAdminBlogPostStatus(id: string): Promise<"draft" | "published" | null>;
 ```
 
 Même principe que `toggleAdminProductStatus` en V11-3 — action légère sans charger le formulaire complet.
@@ -107,12 +110,14 @@ Le feedback admin repose sur des redirects avec searchParams. Ce pattern est uti
 Chaque page décode ces paramètres dans sa fonction `getStatusMessage` / `getErrorMessage` et affiche un `<Notice tone="success|alert">`.
 
 **Forces du pattern actuel :**
+
 - Server-safe : aucune hydratation client nécessaire
 - Persistant au refresh : le paramètre reste dans l'URL jusqu'à navigation
 - Simple à tester (e2e : `expect(page.getByText("..."))`toBeVisible())
 - Cohérent avec l'architecture Server Components
 
 **Limites du pattern actuel :**
+
 - Invisible si l'utilisateur navigue directement sur une URL avec paramètre sans context
 - Peu adapté pour des feedbacks multiples simultanés (rare en contexte Creatyss)
 - Légèrement verbeux côté paramètre URL (mais acceptable)
@@ -122,11 +127,13 @@ Chaque page décode ces paramètres dans sa fonction `getStatusMessage` / `getEr
 `sonner.tsx` est installé dans `components/ui/`. Il n'est actuellement utilisé nulle part dans l'admin.
 
 **Sonner est approprié pour :**
+
 - Une action rapide depuis la liste dont le résultat est secondaire
 - Un feedback "léger" qui ne nécessite pas de persister dans l'URL
 - Exemple : toggle de statut depuis la liste — si l'admin le fait en passant, un toast discret est plus fluide qu'un redirect vers la fiche
 
 **Sonner est inapproprié pour :**
+
 - Les actions critiques (annulation de commande, suppression)
 - Les erreurs importantes qui méritent l'attention
 - Les succès dont l'admin a besoin de voir le résultat détaillé sur la fiche
@@ -136,10 +143,12 @@ Chaque page décode ces paramètres dans sa fonction `getStatusMessage` / `getEr
 Le pattern `redirect + searchParams + Notice` reste le standard par défaut. Sonner peut être introduit **optionnellement** dans V11-4 pour les toggles de statut depuis les listes, si l'équipe juge cela plus confortable. Ce n'est pas une obligation — sa valeur dépend de la fréquence d'utilisation.
 
 Si Sonner est introduit, il nécessite :
+
 - Un `<Toaster />` dans le layout admin (`app/admin/layout.tsx`)
 - Un pattern de déclenchement depuis un Client Component (le toast ne peut pas être déclenché depuis un Server Action directement)
 
 Ce dernier point est la principale complexité : les toggles de statut sont aujourd'hui des Server Actions qui redirigent. Pour afficher un toast à la place du redirect, il faut soit :
+
 - Conserver le redirect et afficher le toast à l'arrivée (lecture d'un searchParam dans un Client Component)
 - Gérer l'action côté client avec `startTransition` + `useActionState` (plus complexe)
 
@@ -149,12 +158,12 @@ La première approche (redirect + toast déclenché à la lecture d'un searchPar
 
 À la clôture de V11, ces règles sont la référence pour les équipes futures :
 
-| Cas | Pattern recommandé |
-|-----|--------------------|
-| Succès d'action critique (annulation, suppression) | `redirect + searchParams + Notice` sur la page cible |
-| Erreur d'action | `redirect + searchParams + Notice` sur la page cible |
-| Succès d'action sûre et fréquente depuis liste | `redirect + searchParams + Notice` ou `Sonner` optionnel |
-| Confirmation avant action destructive | `AlertDialog` — toujours |
+| Cas                                                | Pattern recommandé                                       |
+| -------------------------------------------------- | -------------------------------------------------------- |
+| Succès d'action critique (annulation, suppression) | `redirect + searchParams + Notice` sur la page cible     |
+| Erreur d'action                                    | `redirect + searchParams + Notice` sur la page cible     |
+| Succès d'action sûre et fréquente depuis liste     | `redirect + searchParams + Notice` ou `Sonner` optionnel |
+| Confirmation avant action destructive              | `AlertDialog` — toujours                                 |
 
 ## Travail à réaliser
 

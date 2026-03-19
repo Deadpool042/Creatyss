@@ -107,8 +107,8 @@ function validateCoverImageSelection(
     return {
       ok: true,
       data: {
-        kind: "clear"
-      }
+        kind: "clear",
+      },
     };
   }
 
@@ -116,7 +116,7 @@ function validateCoverImageSelection(
     if (currentPath === null) {
       return {
         ok: false,
-        code: "invalid_cover_image"
+        code: "invalid_cover_image",
       };
     }
 
@@ -124,15 +124,15 @@ function validateCoverImageSelection(
       ok: true,
       data: {
         kind: "keep_current",
-        filePath: currentPath
-      }
+        filePath: currentPath,
+      },
     };
   }
 
   if (!/^[0-9]+$/.test(selection)) {
     return {
       ok: false,
-      code: "invalid_cover_image"
+      code: "invalid_cover_image",
     };
   }
 
@@ -140,20 +140,18 @@ function validateCoverImageSelection(
     ok: true,
     data: {
       kind: "media_asset",
-      mediaAssetId: selection
-    }
+      mediaAssetId: selection,
+    },
   };
 }
 
-export function validateBlogPostInput(
-  input: BlogPostInputSource
-): BlogPostInputValidationResult {
+export function validateBlogPostInput(input: BlogPostInputSource): BlogPostInputValidationResult {
   const title = readTrimmedString(input.title);
 
   if (title === null || title.length === 0) {
     return {
       ok: false,
-      code: "missing_title"
+      code: "missing_title",
     };
   }
 
@@ -162,7 +160,7 @@ export function validateBlogPostInput(
   if (rawSlug === null || rawSlug.length === 0) {
     return {
       ok: false,
-      code: "missing_slug"
+      code: "missing_slug",
     };
   }
 
@@ -171,7 +169,7 @@ export function validateBlogPostInput(
   if (normalizedSlug.length === 0) {
     return {
       ok: false,
-      code: "invalid_slug"
+      code: "invalid_slug",
     };
   }
 
@@ -180,7 +178,7 @@ export function validateBlogPostInput(
   if (!isBlogPostStatus(status)) {
     return {
       ok: false,
-      code: "invalid_status"
+      code: "invalid_status",
     };
   }
 
@@ -203,7 +201,7 @@ export function validateBlogPostInput(
       seoTitle: normalizeOptionalText(input.seoTitle),
       seoDescription: normalizeOptionalText(input.seoDescription),
       status,
-      coverImage: coverImageValidation.data
-    }
+      coverImage: coverImageValidation.data,
+    },
   };
 }

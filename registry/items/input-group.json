@@ -3,14 +3,8 @@
   "name": "input-group",
   "type": "registry:ui",
   "description": "Compound input wrapper with inline and block addon slots, icon/text/button addons, borderless Input and Textarea sub-components, and full focus/invalid state handling.",
-  "dependencies": [
-    "class-variance-authority"
-  ],
-  "registryDependencies": [
-    "button",
-    "input",
-    "textarea"
-  ],
+  "dependencies": ["class-variance-authority"],
+  "registryDependencies": ["button", "input", "textarea"],
   "files": [
     {
       "path": "components/ui/input-group.tsx",

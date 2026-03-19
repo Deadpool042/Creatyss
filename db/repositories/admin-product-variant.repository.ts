@@ -4,7 +4,7 @@ import { syncNativeSimpleProductOfferFromLegacyVariant } from "@/db/repositories
 import {
   canDeleteVariantForProductType,
   canCreateVariantForProductType,
-  type ProductTypeCompatibilityErrorCode
+  type ProductTypeCompatibilityErrorCode,
 } from "@/entities/product/product-type-rules";
 import { type ProductType } from "@/entities/product/product-input";
 
@@ -110,10 +110,7 @@ function isValidNumericId(value: string): boolean {
 }
 
 function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
-  return (
-    error instanceof Error &&
-    typeof (error as { code?: unknown }).code === "string"
-  );
+  return error instanceof Error && typeof (error as { code?: unknown }).code === "string";
 }
 
 function toIsoTimestamp(value: TimestampValue): string {
@@ -124,9 +121,7 @@ function toIsoTimestamp(value: TimestampValue): string {
   return new Date(value).toISOString();
 }
 
-function mapAdminProductVariant(
-  row: AdminProductVariantRow
-): AdminProductVariant {
+function mapAdminProductVariant(row: AdminProductVariantRow): AdminProductVariant {
   return {
     id: row.id,
     productId: row.product_id,
@@ -141,16 +136,14 @@ function mapAdminProductVariant(
     status: row.status,
     isAvailable: row.status === "published" && row.stock_quantity > 0,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
 // Builds the 9 shared field parameters — productId is NOT included; callers prepend it.
 // Create: [input.productId, ...buildProductVariantWriteParams(input)] → $1=productId, $2=name … $10=status
 // Update: [input.id, input.productId, ...buildProductVariantWriteParams(input)] → $1=id, $2=productId, $3=name … $11=status
-function buildProductVariantWriteParams(
-  input: CreateAdminProductVariantInput
-): unknown[] {
+function buildProductVariantWriteParams(input: CreateAdminProductVariantInput): unknown[] {
   return [
     input.name,
     input.colorName,
@@ -160,20 +153,14 @@ function buildProductVariantWriteParams(
     input.compareAtPrice,
     input.stockQuantity,
     input.isDefault,
-    input.status
+    input.status,
   ];
 }
 
 function mapRepositoryError(error: unknown): never {
   if (isPostgreSqlErrorLike(error)) {
-    if (
-      error.code === PG_UNIQUE_VIOLATION &&
-      error.constraint === VARIANT_SKU_CONSTRAINT
-    ) {
-      throw new AdminProductVariantRepositoryError(
-        "sku_taken",
-        "Variant SKU already exists."
-      );
+    if (error.code === PG_UNIQUE_VIOLATION && error.constraint === VARIANT_SKU_CONSTRAINT) {
+      throw new AdminProductVariantRepositoryError("sku_taken", "Variant SKU already exists.");
     }
   }
 
@@ -201,10 +188,7 @@ async function readProductTypeById(
   return result.rows[0] ?? null;
 }
 
-async function countVariantsForProduct(
-  client: PoolClient,
-  productId: string
-): Promise<number> {
+async function countVariantsForProduct(client: PoolClient, productId: string): Promise<number> {
   const result = await client.query<CountRow>(
     `
       select count(*)::int as variant_count
@@ -250,9 +234,7 @@ async function clearDefaultVariant(
 
 // --- Public functions ---
 
-export async function listAdminProductVariants(
-  productId: string
-): Promise<AdminProductVariant[]> {
+export async function listAdminProductVariants(productId: string): Promise<AdminProductVariant[]> {
   if (!isValidNumericId(productId)) {
     return [];
   }
@@ -289,17 +271,9 @@ export async function createAdminProductVariant(
       return null;
     }
 
-    const existingVariantCount = await countVariantsForProduct(
-      client,
-      input.productId
-    );
+    const existingVariantCount = await countVariantsForProduct(client, input.productId);
 
-    if (
-      !canCreateVariantForProductType(
-        product.product_type,
-        existingVariantCount
-      )
-    ) {
+    if (!canCreateVariantForProductType(product.product_type, existingVariantCount)) {
       throw new AdminProductVariantRepositoryError(
         "simple_product_single_variant_only",
         "A simple product can only have one sellable variant."
@@ -339,7 +313,7 @@ export async function createAdminProductVariant(
     if (product.product_type === "simple") {
       await syncNativeSimpleProductOfferFromLegacyVariant(client, {
         productId: input.productId,
-        variantId: row.id
+        variantId: row.id,
       });
     }
 
@@ -412,7 +386,7 @@ export async function updateAdminProductVariant(
     if (product.product_type === "simple") {
       await syncNativeSimpleProductOfferFromLegacyVariant(client, {
         productId: input.productId,
-        variantId: input.id
+        variantId: input.id,
       });
     }
 
@@ -454,12 +428,7 @@ export async function deleteAdminProductVariant(
 
     const existingVariantCount = await countVariantsForProduct(client, productId);
 
-    if (
-      !canDeleteVariantForProductType(
-        product.product_type,
-        existingVariantCount
-      )
-    ) {
+    if (!canDeleteVariantForProductType(product.product_type, existingVariantCount)) {
       throw new AdminProductVariantRepositoryError(
         "simple_product_requires_sellable_variant",
         "A simple product must keep its single sellable variant."
@@ -485,7 +454,7 @@ export async function deleteAdminProductVariant(
 
     if (product.product_type === "simple") {
       await syncNativeSimpleProductOfferFromLegacyVariant(client, {
-        productId
+        productId,
       });
     }
 

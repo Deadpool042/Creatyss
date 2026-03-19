@@ -17,34 +17,22 @@ test("saves a guest checkout draft", async ({ page }) => {
 
   await page.goto("/checkout");
 
-  await expect(
-    page.getByRole("heading", { name: "Finaliser la commande" })
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Finaliser la commande" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Panier final" })).toBeVisible();
 
   await page.locator('input[name="customerFirstName"]').fill("Jeanne");
   await page.locator('input[name="customerLastName"]').fill("Dupont");
   await page.locator('input[name="customerEmail"]').fill("jeanne@example.com");
-  await page
-    .locator('input[name="shippingAddressLine1"]')
-    .fill("12 rue des Tanneurs");
+  await page.locator('input[name="shippingAddressLine1"]').fill("12 rue des Tanneurs");
   await page.locator('input[name="shippingPostalCode"]').fill("75001");
   await page.locator('input[name="shippingCity"]').fill("Paris");
 
-  await page
-    .getByRole("button", { name: "Enregistrer mes informations" })
-    .click();
+  await page.getByRole("button", { name: "Enregistrer mes informations" }).click();
 
   await expect(page).toHaveURL(/\/checkout\?status=saved$/);
-  await expect(
-    page.getByText("Les informations de commande ont été enregistrées.")
-  ).toBeVisible();
-  await expect(page.locator('input[name="customerFirstName"]')).toHaveValue(
-    "Jeanne"
-  );
-  await expect(page.locator('input[name="customerEmail"]')).toHaveValue(
-    "jeanne@example.com"
-  );
+  await expect(page.getByText("Les informations de commande ont été enregistrées.")).toBeVisible();
+  await expect(page.locator('input[name="customerFirstName"]')).toHaveValue("Jeanne");
+  await expect(page.locator('input[name="customerEmail"]')).toHaveValue("jeanne@example.com");
 });
 
 test("rejects an invalid French postal code", async ({ page }) => {
@@ -55,15 +43,11 @@ test("rejects an invalid French postal code", async ({ page }) => {
   await page.locator('input[name="customerFirstName"]').fill("Jeanne");
   await page.locator('input[name="customerLastName"]').fill("Dupont");
   await page.locator('input[name="customerEmail"]').fill("jeanne@example.com");
-  await page
-    .locator('input[name="shippingAddressLine1"]')
-    .fill("12 rue des Tanneurs");
+  await page.locator('input[name="shippingAddressLine1"]').fill("12 rue des Tanneurs");
   await page.locator('input[name="shippingPostalCode"]').fill("7501");
   await page.locator('input[name="shippingCity"]').fill("Paris");
 
-  await page
-    .getByRole("button", { name: "Enregistrer mes informations" })
-    .click();
+  await page.getByRole("button", { name: "Enregistrer mes informations" }).click();
 
   await expect(page).toHaveURL(/\/checkout\?error=invalid_shipping_postal_code$/);
   await expect(

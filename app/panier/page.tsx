@@ -3,12 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/notice";
-import {
-  readGuestCartByToken,
-  type GuestCart
-} from "@/db/repositories/guest-cart.repository";
-import { updateCartItemQuantityAction } from "@/features/cart/actions/update-cart-item-quantity-action";
-import { removeCartItemAction } from "@/features/cart/actions/remove-cart-item-action";
+import { readGuestCartByToken, type GuestCart } from "@/db/repositories/guest-cart.repository";
+import { updateCartItemQuantityAction, removeCartItemAction } from "@/features/cart";
 import { readCartSessionToken } from "@/lib/cart-session";
 
 export const dynamic = "force-dynamic";
@@ -77,20 +73,17 @@ export default async function CartPage({ searchParams }: CartPageProps) {
   const statusMessage = getStatusMessage(statusParam);
   const errorMessage = getErrorMessage(errorParam);
   const cart = await readGuestCart();
-  const hasUnavailableLine =
-    cart?.lines.some(line => !line.isAvailable) ?? false;
+  const hasUnavailableLine = cart?.lines.some((line) => !line.isAvailable) ?? false;
 
   return (
     <div className="page">
       <section className="section">
         <div className="mb-6 grid gap-2">
-          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
-            Panier
-          </p>
+          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Panier</p>
           <h1 className="m-0">Votre panier</h1>
           <p className="mt-1 leading-relaxed text-muted-foreground">
-            Vérifiez la disponibilité de vos articles, puis ajustez les
-            quantités avant de finaliser la commande.
+            Vérifiez la disponibilité de vos articles, puis ajustez les quantités avant de finaliser
+            la commande.
           </p>
         </div>
 
@@ -100,10 +93,8 @@ export default async function CartPage({ searchParams }: CartPageProps) {
         {cart && cart.lines.length > 0 ? (
           <div className="cart-layout">
             <div className="grid gap-4">
-              {cart.lines.map(line => (
-                <article
-                  className="store-card cart-line"
-                  key={line.id}>
+              {cart.lines.map((line) => (
+                <article className="store-card cart-line" key={line.id}>
                   <div className="grid gap-1">
                     <p className="text-[0.95rem] text-foreground/68">Produit</p>
                     <h2>{line.productName}</h2>
@@ -138,25 +129,17 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Disponibilité
                     </p>
-                    <p className="card-copy">
-                      {getAvailabilityLabel(line.isAvailable)}
-                    </p>
+                    <p className="card-copy">{getAvailabilityLabel(line.isAvailable)}</p>
                     {!line.isAvailable ? (
                       <Notice tone="alert">
-                        Cette ligne bloque la commande. Revenez à la fiche
-                        produit ou supprimez-la pour continuer.
+                        Cette ligne bloque la commande. Revenez à la fiche produit ou supprimez-la
+                        pour continuer.
                       </Notice>
                     ) : null}
                   </div>
 
-                  <form
-                    action={updateCartItemQuantityAction}
-                    className="grid gap-4">
-                    <input
-                      name="itemId"
-                      type="hidden"
-                      value={line.id}
-                    />
+                  <form action={updateCartItemQuantityAction} className="grid gap-4">
+                    <input name="itemId" type="hidden" value={line.id} />
 
                     <div className="grid gap-2 max-w-[10rem]">
                       <Label htmlFor={`quantity-${line.id}`}>Quantité</Label>
@@ -177,23 +160,17 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                   </form>
 
                   <form action={removeCartItemAction}>
-                    <input
-                      name="itemId"
-                      type="hidden"
-                      value={line.id}
-                    />
+                    <input name="itemId" type="hidden" value={line.id} />
 
-                    <Button
-                      size="sm"
-                      type="submit"
-                      variant="ghost">
+                    <Button size="sm" type="submit" variant="ghost">
                       Supprimer la ligne
                     </Button>
                   </form>
 
                   <Link
                     className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                    href={`/boutique/${line.productSlug}`}>
+                    href={`/boutique/${line.productSlug}`}
+                  >
                     Retour à la fiche produit
                   </Link>
                 </article>
@@ -203,8 +180,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
             <aside className="product-panel cart-summary">
               {hasUnavailableLine ? (
                 <Notice tone="alert">
-                  Au moins une ligne bloque la commande. Corrigez le panier
-                  avant de continuer.
+                  Au moins une ligne bloque la commande. Corrigez le panier avant de continuer.
                 </Notice>
               ) : null}
 
@@ -229,22 +205,16 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                 <p className="card-copy">{cart.subtotal}</p>
               </div>
 
-              <Button
-                asChild
-                className="w-full">
+              <Button asChild className="w-full">
                 <Link href="/checkout">Finaliser la commande</Link>
               </Button>
             </aside>
           </div>
         ) : (
           <div className="empty-state">
-            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
-              Panier vide
-            </p>
+            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Panier vide</p>
             <h2>Aucun article n&apos;a encore été ajouté au panier</h2>
-            <p className="card-copy">
-              Ajoutez un article disponible depuis une fiche produit.
-            </p>
+            <p className="card-copy">Ajoutez un article disponible depuis une fiche produit.</p>
             <Button asChild>
               <Link href="/boutique">Voir la boutique</Link>
             </Button>

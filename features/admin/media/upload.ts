@@ -13,7 +13,7 @@ const ALLOWED_INPUT_FORMATS = new Set(["jpeg", "png", "webp"]);
 // WebP encoding settings applied to every upload.
 const WEBP_OPTIONS: sharp.WebpOptions = {
   quality: 85,
-  effort: 4
+  effort: 4,
 };
 
 type UploadAdminMediaInput = {
@@ -57,9 +57,7 @@ function buildStoredRelativePath() {
   return `media/${year}/${month}/${randomUUID()}.webp`;
 }
 
-export async function uploadAdminMedia(
-  input: UploadAdminMediaInput
-): Promise<AdminMediaAsset> {
+export async function uploadAdminMedia(input: UploadAdminMediaInput): Promise<AdminMediaAsset> {
   if (!isFile(input.file)) {
     throw new MediaUploadError("missing_file", "A media file is required.");
   }
@@ -71,10 +69,7 @@ export async function uploadAdminMedia(
   }
 
   if (inputBuffer.length > MAX_MEDIA_FILE_SIZE_BYTES) {
-    throw new MediaUploadError(
-      "file_too_large",
-      "The uploaded file exceeds the 10 MB limit."
-    );
+    throw new MediaUploadError("file_too_large", "The uploaded file exceeds the 10 MB limit.");
   }
 
   // Detect format and validate before any conversion.
@@ -110,10 +105,7 @@ export async function uploadAdminMedia(
     outputWidth = result.info.width ?? null;
     outputHeight = result.info.height ?? null;
   } catch {
-    throw new MediaUploadError(
-      "unsupported_file",
-      "The image could not be converted to WebP."
-    );
+    throw new MediaUploadError("unsupported_file", "The image could not be converted to WebP.");
   }
 
   const relativeFilePath = buildStoredRelativePath();
@@ -139,16 +131,14 @@ export async function uploadAdminMedia(
       imageWidth: outputWidth,
       mimeType: "image/webp",
       originalName: normalizeOriginalName(input.file.name),
-      uploadedByAdminUserId: input.adminUserId
+      uploadedByAdminUserId: input.adminUserId,
     });
   } catch (error) {
     await unlink(absoluteFilePath).catch(() => undefined);
 
     throw new MediaUploadError(
       "database_insert_failed",
-      error instanceof Error
-        ? error.message
-        : "Failed to persist media asset metadata."
+      error instanceof Error ? error.message : "Failed to persist media asset metadata."
     );
   }
 }

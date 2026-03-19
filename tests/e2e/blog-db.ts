@@ -24,14 +24,11 @@ function runBlogDatabaseSql(sql: string): void {
     "-d",
     "creatyss",
     "-c",
-    sql
+    sql,
   ]);
 }
 
-export function createBlogPostDraftWithoutContent(input: {
-  slug: string;
-  title: string;
-}): void {
+export function createBlogPostDraftWithoutContent(input: { slug: string; title: string }): void {
   assertValidBlogPostSlug(input.slug);
 
   runBlogDatabaseSql(`

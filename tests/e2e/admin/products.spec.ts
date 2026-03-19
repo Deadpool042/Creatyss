@@ -10,7 +10,7 @@ const TEST_PRODUCT_SLUG = "test-incoherent-simple-e2e";
 const TEST_PRODUCT_NAME = "Test Incohérent E2E";
 
 test("affiche la page liste admin des produits avec le lien d'action et la zone de contenu", async ({
-  page
+  page,
 }) => {
   await loginAsSeedAdmin(page);
 
@@ -18,9 +18,7 @@ test("affiche la page liste admin des produits avec le lien d'action et la zone 
   await expect(page).toHaveURL(/\/admin\/products$/);
 
   await expect(page.getByRole("heading", { name: "Produits" })).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: "Nouveau produit" })
-  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Nouveau produit" })).toBeVisible();
 
   const productCards = page.locator("article.admin-product-card");
 
@@ -35,14 +33,12 @@ test("affiche la page liste admin des produits avec le lien d'action et la zone 
   await expect(page.locator(".empty-state")).toBeVisible();
   await expect(
     page.getByRole("heading", {
-      name: "Le catalogue ne contient pas encore de produit"
+      name: "Le catalogue ne contient pas encore de produit",
     })
   ).toBeVisible();
 });
 
-test("refuse la publication d'un produit simple avec plusieurs déclinaisons", async ({
-  page
-}) => {
+test("refuse la publication d'un produit simple avec plusieurs déclinaisons", async ({ page }) => {
   // Cleanup any leftover state from a previous failed run
   deleteProductBySlug(TEST_PRODUCT_SLUG);
 
@@ -86,7 +82,7 @@ test("refuse la publication d'un produit simple avec plusieurs déclinaisons", a
 
     // Open the DropdownMenu using the exact accessible name of the trigger button
     const actionsButton = page.getByRole("button", {
-      name: `Actions produit ${TEST_PRODUCT_NAME}`
+      name: `Actions produit ${TEST_PRODUCT_NAME}`,
     });
     await expect(actionsButton).toBeVisible();
     await actionsButton.focus();
@@ -95,15 +91,14 @@ test("refuse la publication d'un produit simple avec plusieurs déclinaisons", a
     // Wait for the Radix portal menu to appear, then verify "Publier" is disabled
     const menu = page.getByRole("menu");
     await expect(menu).toBeVisible();
-    await expect(
-      menu.locator('[role="menuitem"]').filter({ hasText: "Publier" })
-    ).toHaveAttribute("aria-disabled", "true");
+    await expect(menu.locator('[role="menuitem"]').filter({ hasText: "Publier" })).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
 
     // Close the menu and navigate to the detail page
     await page.keyboard.press("Escape");
-    await productRow
-      .getByRole("link", { name: "Modifier le produit" })
-      .click();
+    await productRow.getByRole("link", { name: "Modifier le produit" }).click();
 
     await expect(page).toHaveURL(/\/admin\/products\/\d+$/);
 
@@ -116,9 +111,7 @@ test("refuse la publication d'un produit simple avec plusieurs déclinaisons", a
     await page.locator('select[id^="product-status"]').selectOption("published");
     await page.getByRole("button", { name: "Enregistrer le produit" }).click();
 
-    await expect(page).toHaveURL(
-      /product_error=simple_product_incoherent_variants/
-    );
+    await expect(page).toHaveURL(/product_error=simple_product_incoherent_variants/);
     await expect(
       page.getByText("Ce produit simple a plusieurs déclinaisons").first()
     ).toBeVisible();

@@ -20,7 +20,7 @@ function runDatabaseSql(sql: string): void {
     "-d",
     "creatyss",
     "-c",
-    sql
+    sql,
   ]);
 }
 

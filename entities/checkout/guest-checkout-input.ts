@@ -114,14 +114,14 @@ export function validateGuestCheckoutInput(
   if (customerEmail === null) {
     return {
       ok: false,
-      code: "missing_customer_email"
+      code: "missing_customer_email",
     };
   }
 
   if (!isValidEmail(customerEmail)) {
     return {
       ok: false,
-      code: "invalid_customer_email"
+      code: "invalid_customer_email",
     };
   }
 
@@ -130,7 +130,7 @@ export function validateGuestCheckoutInput(
   if (customerFirstName === null) {
     return {
       ok: false,
-      code: "missing_customer_first_name"
+      code: "missing_customer_first_name",
     };
   }
 
@@ -139,7 +139,7 @@ export function validateGuestCheckoutInput(
   if (customerLastName === null) {
     return {
       ok: false,
-      code: "missing_customer_last_name"
+      code: "missing_customer_last_name",
     };
   }
 
@@ -148,7 +148,7 @@ export function validateGuestCheckoutInput(
   if (shippingAddressLine1 === null) {
     return {
       ok: false,
-      code: "missing_shipping_address_line_1"
+      code: "missing_shipping_address_line_1",
     };
   }
 
@@ -157,14 +157,14 @@ export function validateGuestCheckoutInput(
   if (shippingPostalCode === null) {
     return {
       ok: false,
-      code: "missing_shipping_postal_code"
+      code: "missing_shipping_postal_code",
     };
   }
 
   if (!isValidFrenchPostalCode(shippingPostalCode)) {
     return {
       ok: false,
-      code: "invalid_shipping_postal_code"
+      code: "invalid_shipping_postal_code",
     };
   }
 
@@ -173,13 +173,11 @@ export function validateGuestCheckoutInput(
   if (shippingCity === null) {
     return {
       ok: false,
-      code: "missing_shipping_city"
+      code: "missing_shipping_city",
     };
   }
 
-  const billingSameAsShipping = normalizeBillingSameAsShipping(
-    input.billingSameAsShipping
-  );
+  const billingSameAsShipping = normalizeBillingSameAsShipping(input.billingSameAsShipping);
 
   if (billingSameAsShipping) {
     return {
@@ -202,8 +200,8 @@ export function validateGuestCheckoutInput(
         billingAddressLine2: null,
         billingPostalCode: null,
         billingCity: null,
-        billingCountryCode: null
-      }
+        billingCountryCode: null,
+      },
     };
   }
 
@@ -212,7 +210,7 @@ export function validateGuestCheckoutInput(
   if (billingFirstName === null) {
     return {
       ok: false,
-      code: "missing_billing_first_name"
+      code: "missing_billing_first_name",
     };
   }
 
@@ -221,7 +219,7 @@ export function validateGuestCheckoutInput(
   if (billingLastName === null) {
     return {
       ok: false,
-      code: "missing_billing_last_name"
+      code: "missing_billing_last_name",
     };
   }
 
@@ -230,7 +228,7 @@ export function validateGuestCheckoutInput(
   if (billingAddressLine1 === null) {
     return {
       ok: false,
-      code: "missing_billing_address_line_1"
+      code: "missing_billing_address_line_1",
     };
   }
 
@@ -239,14 +237,14 @@ export function validateGuestCheckoutInput(
   if (billingPostalCode === null) {
     return {
       ok: false,
-      code: "missing_billing_postal_code"
+      code: "missing_billing_postal_code",
     };
   }
 
   if (!isValidFrenchPostalCode(billingPostalCode)) {
     return {
       ok: false,
-      code: "invalid_billing_postal_code"
+      code: "invalid_billing_postal_code",
     };
   }
 
@@ -255,7 +253,7 @@ export function validateGuestCheckoutInput(
   if (billingCity === null) {
     return {
       ok: false,
-      code: "missing_billing_city"
+      code: "missing_billing_city",
     };
   }
 
@@ -279,7 +277,7 @@ export function validateGuestCheckoutInput(
       billingAddressLine2: normalizeOptionalText(input.billingAddressLine2),
       billingPostalCode,
       billingCity,
-      billingCountryCode: "FR"
-    }
+      billingCountryCode: "FR",
+    },
   };
 }

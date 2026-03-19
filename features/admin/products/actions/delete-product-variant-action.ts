@@ -3,13 +3,11 @@
 import { redirect } from "next/navigation";
 import {
   AdminProductVariantRepositoryError,
-  deleteAdminProductVariant
+  deleteAdminProductVariant,
 } from "@/db/repositories/admin-product-variant.repository";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 
-export async function deleteProductVariantAction(
-  formData: FormData
-): Promise<void> {
+export async function deleteProductVariantAction(formData: FormData): Promise<void> {
   const productId = normalizeNumericIdFromForm(formData.get("productId"));
   const variantId = normalizeNumericIdFromForm(formData.get("variantId"));
 

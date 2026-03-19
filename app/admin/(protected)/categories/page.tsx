@@ -37,9 +37,7 @@ function getErrorMessage(error: string | undefined): string | null {
   }
 }
 
-export default async function AdminCategoriesPage({
-  searchParams
-}: AdminCategoriesPageProps) {
+export default async function AdminCategoriesPage({ searchParams }: AdminCategoriesPageProps) {
   const resolvedSearchParams = await searchParams;
   const statusParam = Array.isArray(resolvedSearchParams.status)
     ? resolvedSearchParams.status[0]
@@ -54,26 +52,21 @@ export default async function AdminCategoriesPage({
   return (
     <AdminPageShell
       actions={
-        <Button
-          asChild
-          size="sm"
-          variant="outline">
+        <Button asChild size="sm" variant="outline">
           <Link href="/admin/categories/new">Nouvelle catégorie</Link>
         </Button>
       }
       description="Gérez les catégories du catalogue avec un formulaire simple et des validations côté serveur."
       eyebrow="Catégories"
-      title="Catégories">
+      title="Catégories"
+    >
       {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       {categories.length > 0 ? (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4">
-          {categories.map(category => (
-            <AdminCategoryCard
-              key={category.id}
-              category={category}
-            />
+          {categories.map((category) => (
+            <AdminCategoryCard key={category.id} category={category} />
           ))}
         </div>
       ) : (

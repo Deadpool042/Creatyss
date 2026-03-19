@@ -26,7 +26,7 @@ export function validateShipmentInput(formData: FormData): ShipmentInputResult {
   return {
     ok: true,
     data: {
-      trackingReference: normalizeOptionalText(formData.get("trackingReference"))
-    }
+      trackingReference: normalizeOptionalText(formData.get("trackingReference")),
+    },
   };
 }

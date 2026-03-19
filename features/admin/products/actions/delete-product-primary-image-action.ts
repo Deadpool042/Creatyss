@@ -10,23 +10,14 @@ function redirectToProductPrimaryImageError(
   productId: string,
   code: ProductPrimaryImageDeleteErrorCode
 ): never {
-  redirect(
-    appendImageScope(`/admin/products/${productId}?image_error=${code}`, "product")
-  );
+  redirect(appendImageScope(`/admin/products/${productId}?image_error=${code}`, "product"));
 }
 
-function redirectToProductPrimaryImageStatus(
-  productId: string,
-  status: "primary_deleted"
-): never {
-  redirect(
-    appendImageScope(`/admin/products/${productId}?image_status=${status}`, "product")
-  );
+function redirectToProductPrimaryImageStatus(productId: string, status: "primary_deleted"): never {
+  redirect(appendImageScope(`/admin/products/${productId}?image_status=${status}`, "product"));
 }
 
-export async function deleteProductPrimaryImageAction(
-  formData: FormData
-): Promise<void> {
+export async function deleteProductPrimaryImageAction(formData: FormData): Promise<void> {
   const productId = normalizeNumericIdFromForm(formData.get("productId"));
 
   if (productId === null) {

@@ -8,12 +8,10 @@ export type OrderStatusSummary = {
   nextStep: string;
 };
 
-export type OrderStatusNotice =
-  | {
-      kind: "success" | "alert";
-      text: string;
-    }
-  | null;
+export type OrderStatusNotice = {
+  kind: "success" | "alert";
+  text: string;
+} | null;
 
 export function getOrderStatusLabel(status: OrderStatus): string {
   switch (status) {
@@ -52,26 +50,26 @@ export function getOrderStatusSummary(input: {
       return {
         title: "Commande annulée",
         description: "La commande a été annulée et n'est plus en cours de traitement.",
-        nextStep: "Aucune autre action n'est disponible pour cette commande."
+        nextStep: "Aucune autre action n'est disponible pour cette commande.",
       };
     case "shipped":
       return {
         title: "Commande expédiée",
         description: "La commande a quitté l'atelier et est en cours d'acheminement.",
         nextStep:
-          "Consultez la date d'expédition et la référence de suivi si elles sont disponibles."
+          "Consultez la date d'expédition et la référence de suivi si elles sont disponibles.",
       };
     case "preparing":
       return {
         title: "Commande en préparation",
         description: "Le paiement est confirmé et la commande est en cours de préparation.",
-        nextStep: "Expédiez la commande lorsqu'elle est prête."
+        nextStep: "Expédiez la commande lorsqu'elle est prête.",
       };
     case "paid":
       return {
         title: "Commande payée",
         description: "Le paiement a bien été confirmé pour cette commande.",
-        nextStep: "Passez la commande en préparation avant l'expédition."
+        nextStep: "Passez la commande en préparation avant l'expédition.",
       };
     case "pending":
     default:
@@ -79,14 +77,14 @@ export function getOrderStatusSummary(input: {
         return {
           title: "Paiement à relancer",
           description: "La commande existe toujours, mais le paiement n'a pas abouti.",
-          nextStep: "Vous pouvez relancer le paiement depuis cette page."
+          nextStep: "Vous pouvez relancer le paiement depuis cette page.",
         };
       }
 
       return {
         title: "Commande en attente de paiement",
         description: "La commande est créée, mais le paiement doit encore être confirmé.",
-        nextStep: "Finalisez le paiement pour lancer le traitement de la commande."
+        nextStep: "Finalisez le paiement pour lancer le traitement de la commande.",
       };
   }
 }
@@ -99,14 +97,14 @@ export function getOrderPaymentNotice(input: {
   if (input.orderStatus === "cancelled") {
     return {
       kind: "alert",
-      text: "Cette commande a été annulée."
+      text: "Cette commande a été annulée.",
     };
   }
 
   if (input.paymentStatus === "failed" || input.paymentParam === "failed") {
     return {
       kind: "alert",
-      text: "Le paiement n'a pas abouti. Vous pouvez le relancer."
+      text: "Le paiement n'a pas abouti. Vous pouvez le relancer.",
     };
   }
 
@@ -114,22 +112,22 @@ export function getOrderPaymentNotice(input: {
     case "cancelled":
       return {
         kind: "alert",
-        text: "Le paiement a été interrompu. Vous pouvez le relancer."
+        text: "Le paiement a été interrompu. Vous pouvez le relancer.",
       };
     case "return":
       return {
         kind: "alert",
-        text: "Le paiement est en cours de confirmation. Rechargez la page dans quelques instants si besoin."
+        text: "Le paiement est en cours de confirmation. Rechargez la page dans quelques instants si besoin.",
       };
     case "already_paid":
       return {
         kind: "success",
-        text: "Cette commande est déjà payée."
+        text: "Cette commande est déjà payée.",
       };
     case "unavailable":
       return {
         kind: "alert",
-        text: "Cette commande ne peut pas être payée dans son état actuel."
+        text: "Cette commande ne peut pas être payée dans son état actuel.",
       };
     default:
       return null;

@@ -12,10 +12,7 @@ import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/admin-media";
 import { requireAuthenticatedAdmin } from "@/lib/admin-auth";
-import {
-  uploadAdminMedia,
-  MediaUploadError
-} from "@/features/admin/media/upload";
+import { uploadAdminMedia, MediaUploadError } from "@/features/admin/media";
 import { getUploadsDirectory, getUploadsPublicPath } from "@/lib/uploads";
 import { Card } from "@/components/ui/card";
 
@@ -23,7 +20,7 @@ export const dynamic = "force-dynamic";
 
 const mediaDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "medium",
-  timeStyle: "short"
+  timeStyle: "short",
 });
 
 type MediaPageProps = Readonly<{
@@ -114,9 +111,9 @@ async function buildMediaListItems(): Promise<AdminMediaListItem[]> {
   const assets = await listAdminMediaAssets();
 
   return Promise.all(
-    assets.map(async asset => ({
+    assets.map(async (asset) => ({
       ...asset,
-      previewUrl: await resolvePreviewUrl(asset.filePath)
+      previewUrl: await resolvePreviewUrl(asset.filePath),
     }))
   );
 }
@@ -129,11 +126,10 @@ async function uploadMediaAction(formData: FormData) {
   try {
     await uploadAdminMedia({
       adminUserId: admin.id,
-      file: formData.get("file")
+      file: formData.get("file"),
     });
   } catch (error) {
-    const errorCode =
-      error instanceof MediaUploadError ? error.code : "upload_failed";
+    const errorCode = error instanceof MediaUploadError ? error.code : "upload_failed";
 
     redirect(`/admin/media?error=${errorCode}`);
   }
@@ -149,8 +145,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
   const errorParam = Array.isArray(resolvedSearchParams.error)
     ? resolvedSearchParams.error[0]
     : resolvedSearchParams.error;
-  const successMessage =
-    statusParam === "uploaded" ? "Média importé avec succès." : null;
+  const successMessage = statusParam === "uploaded" ? "Média importé avec succès." : null;
   const errorMessage = getErrorMessage(errorParam);
   const assets = await buildMediaListItems();
 
@@ -158,20 +153,18 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
     <AdminPageShell
       description="Importez d'abord vos visuels, puis réutilisez-les dans les produits, le blog et la page d'accueil."
       eyebrow="Médias"
-      title="Bibliothèque médias">
+      title="Bibliothèque médias"
+    >
       {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <AdminFormSection
         description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP. Taille maximale : 10 MB."
         eyebrow="Import"
-        title="Importer une image">
-        <form
-          action={uploadMediaAction}
-          className="grid gap-4">
-          <AdminFormField
-            htmlFor="media-file"
-            label="Image">
+        title="Importer une image"
+      >
+        <form action={uploadMediaAction} className="grid gap-4">
+          <AdminFormField htmlFor="media-file" label="Image">
             <Input
               accept="image/jpeg,image/png,image/webp"
               id="media-file"
@@ -198,10 +191,8 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
 
         {assets.length > 0 ? (
           <div className="admin-media-grid grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
-            {assets.map(asset => (
-              <Card
-                key={asset.id}
-                className="grid content-start gap-3 p-5">
+            {assets.map((asset) => (
+              <Card key={asset.id} className="grid content-start gap-3 p-5">
                 {asset.previewUrl ? (
                   <div className="min-h-48 overflow-hidden rounded-xl bg-muted/20">
                     <img
@@ -221,9 +212,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Nom original
                   </p>
-                  <p className="text-sm text-foreground">
-                    {asset.originalName}
-                  </p>
+                  <p className="text-sm text-foreground">{asset.originalName}</p>
                 </div>
 
                 <div className="grid gap-1">
@@ -239,9 +228,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Taille
                   </p>
-                  <p className="text-sm text-foreground">
-                    {formatByteSize(asset.byteSize)}
-                  </p>
+                  <p className="text-sm text-foreground">{formatByteSize(asset.byteSize)}</p>
                 </div>
 
                 <div className="grid gap-1">
@@ -266,9 +253,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Chemin
                   </p>
-                  <p className="break-all text-sm text-foreground">
-                    {asset.filePath}
-                  </p>
+                  <p className="break-all text-sm text-foreground">{asset.filePath}</p>
                 </div>
               </Card>
             ))}

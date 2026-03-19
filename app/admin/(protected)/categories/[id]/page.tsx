@@ -11,10 +11,12 @@ import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { findAdminCategoryById } from "@/db/repositories/admin-category.repository";
 import { getUploadsPublicPath } from "@/lib/uploads";
-import { deleteCategoryAction } from "@/features/admin/categories/actions/delete-category-action";
-import { updateCategoryAction } from "@/features/admin/categories/actions/update-category-action";
-import { setCategoryImageAction } from "@/features/admin/categories/actions/set-category-image-action";
-import { deleteCategoryImageAction } from "@/features/admin/categories/actions/delete-category-image-action";
+import {
+  deleteCategoryAction,
+  updateCategoryAction,
+  setCategoryImageAction,
+  deleteCategoryImageAction,
+} from "@/features/admin/categories";
 
 export const dynamic = "force-dynamic";
 
@@ -79,13 +81,13 @@ const nativeSelectClassName =
 
 export default async function EditAdminCategoryPage({
   params,
-  searchParams
+  searchParams,
 }: EditAdminCategoryPageProps) {
   const { id } = await params;
   const [category, mediaAssets, resolvedSearchParams] = await Promise.all([
     findAdminCategoryById(id),
     listAdminMediaAssets(),
-    searchParams
+    searchParams,
   ]);
 
   if (category === null) {
@@ -112,61 +114,35 @@ export default async function EditAdminCategoryPage({
     ? `${uploadsPublicPath}/${category.imagePath.replace(/^\/+/, "")}`
     : null;
   const currentMediaAsset = category.imagePath
-    ? (mediaAssets.find(a => a.filePath === category.imagePath) ?? null)
+    ? (mediaAssets.find((a) => a.filePath === category.imagePath) ?? null)
     : null;
 
   return (
     <AdminPageShell
       actions={
-        <Button
-          asChild
-          size="sm"
-          variant="outline">
+        <Button asChild size="sm" variant="outline">
           <Link href="/admin/categories">Retour à la liste</Link>
         </Button>
       }
       description="Modifiez d'abord les informations de la catégorie. La suppression reste disponible séparément en bas de page."
       eyebrow="Catégories"
-      title="Modifier la catégorie">
+      title="Modifier la catégorie"
+    >
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <AdminFormSection>
-        <form
-          action={updateCategoryAction}
-          className="grid gap-4">
-          <input
-            name="categoryId"
-            type="hidden"
-            value={category.id}
-          />
+        <form action={updateCategoryAction} className="grid gap-4">
+          <input name="categoryId" type="hidden" value={category.id} />
 
-          <AdminFormField
-            htmlFor="cat-name"
-            label="Nom">
-            <Input
-              defaultValue={category.name}
-              id="cat-name"
-              name="name"
-              required
-              type="text"
-            />
+          <AdminFormField htmlFor="cat-name" label="Nom">
+            <Input defaultValue={category.name} id="cat-name" name="name" required type="text" />
           </AdminFormField>
 
-          <AdminFormField
-            htmlFor="cat-slug"
-            label="Slug">
-            <Input
-              defaultValue={category.slug}
-              id="cat-slug"
-              name="slug"
-              required
-              type="text"
-            />
+          <AdminFormField htmlFor="cat-slug" label="Slug">
+            <Input defaultValue={category.slug} id="cat-slug" name="slug" required type="text" />
           </AdminFormField>
 
-          <AdminFormField
-            htmlFor="cat-description"
-            label="Description">
+          <AdminFormField htmlFor="cat-description" label="Description">
             <Textarea
               defaultValue={category.description ?? ""}
               id="cat-description"
@@ -195,13 +171,10 @@ export default async function EditAdminCategoryPage({
       <AdminFormSection
         description="Cette image illustre la catégorie dans l'interface d'administration. Sélectionnez un média depuis la bibliothèque."
         eyebrow="Visuel"
-        title="Image de la catégorie">
-        {imageErrorMessage ? (
-          <Notice tone="alert">{imageErrorMessage}</Notice>
-        ) : null}
-        {imageStatusMessage ? (
-          <Notice tone="success">{imageStatusMessage}</Notice>
-        ) : null}
+        title="Image de la catégorie"
+      >
+        {imageErrorMessage ? <Notice tone="alert">{imageErrorMessage}</Notice> : null}
+        {imageStatusMessage ? <Notice tone="success">{imageStatusMessage}</Notice> : null}
 
         {currentImageUrl ? (
           <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
@@ -218,31 +191,20 @@ export default async function EditAdminCategoryPage({
         )}
 
         {mediaAssets.length > 0 ? (
-          <form
-            action={setCategoryImageAction}
-            className="grid gap-4">
-            <input
-              name="categoryId"
-              type="hidden"
-              value={category.id}
-            />
-            <AdminFormField
-              htmlFor="cat-image-media-asset"
-              label="Choisir un média">
+          <form action={setCategoryImageAction} className="grid gap-4">
+            <input name="categoryId" type="hidden" value={category.id} />
+            <AdminFormField htmlFor="cat-image-media-asset" label="Choisir un média">
               <select
                 className={nativeSelectClassName}
                 defaultValue={currentMediaAsset?.id ?? ""}
                 id="cat-image-media-asset"
-                name="mediaAssetId">
-                <option
-                  disabled
-                  value="">
+                name="mediaAssetId"
+              >
+                <option disabled value="">
                   Sélectionnez un média
                 </option>
-                {mediaAssets.map(asset => (
-                  <option
-                    key={asset.id}
-                    value={asset.id}>
+                {mediaAssets.map((asset) => (
+                  <option key={asset.id} value={asset.id}>
                     {asset.originalName} · {asset.mimeType}
                   </option>
                 ))}
@@ -259,7 +221,8 @@ export default async function EditAdminCategoryPage({
             Aucun média disponible.{" "}
             <Link
               className="underline underline-offset-4 hover:text-foreground"
-              href="/admin/media">
+              href="/admin/media"
+            >
               Importer un média
             </Link>
           </p>
@@ -267,16 +230,13 @@ export default async function EditAdminCategoryPage({
 
         {category.imagePath ? (
           <form action={deleteCategoryImageAction}>
-            <input
-              name="categoryId"
-              type="hidden"
-              value={category.id}
-            />
+            <input name="categoryId" type="hidden" value={category.id} />
             <Button
               className="w-fit px-0 text-destructive hover:bg-transparent hover:text-destructive"
               size="sm"
               type="submit"
-              variant="ghost">
+              variant="ghost"
+            >
               Supprimer l&apos;image
             </Button>
           </form>
@@ -286,17 +246,12 @@ export default async function EditAdminCategoryPage({
       <AdminFormSection
         description="La suppression est refusée tant que cette catégorie est encore utilisée par un produit."
         eyebrow="Suppression"
-        title="Supprimer cette catégorie">
+        title="Supprimer cette catégorie"
+      >
         <form action={deleteCategoryAction}>
-          <input
-            name="categoryId"
-            type="hidden"
-            value={category.id}
-          />
+          <input name="categoryId" type="hidden" value={category.id} />
 
-          <Button
-            type="submit"
-            variant="destructive">
+          <Button type="submit" variant="destructive">
             Supprimer la catégorie
           </Button>
         </form>

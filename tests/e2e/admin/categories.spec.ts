@@ -19,14 +19,10 @@ test("creates, updates and deletes a category", async ({ page }) => {
   await expect(page).toHaveURL(/\/admin\/categories\?status=created$/);
   await expect(page.getByText("Catégorie créée avec succès.")).toBeVisible();
 
-  const createdCategoryCard = page
-    .getByRole("article")
-    .filter({ hasText: categoryName });
+  const createdCategoryCard = page.getByRole("article").filter({ hasText: categoryName });
 
   await expect(createdCategoryCard).toContainText(normalizedSlug);
-  await createdCategoryCard
-    .getByRole("link", { name: "Modifier la catégorie" })
-    .click();
+  await createdCategoryCard.getByRole("link", { name: "Modifier la catégorie" }).click();
 
   await expect(page).toHaveURL(/\/admin\/categories\/[0-9]+$/);
 
@@ -35,24 +31,16 @@ test("creates, updates and deletes a category", async ({ page }) => {
   await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
 
   await expect(page).toHaveURL(/\/admin\/categories\?status=updated$/);
-  await expect(
-    page.getByText("Catégorie mise à jour avec succès.")
-  ).toBeVisible();
+  await expect(page.getByText("Catégorie mise à jour avec succès.")).toBeVisible();
 
-  const updatedCategoryCard = page
-    .getByRole("article")
-    .filter({ hasText: updatedCategoryName });
+  const updatedCategoryCard = page.getByRole("article").filter({ hasText: updatedCategoryName });
 
   await expect(updatedCategoryCard).toContainText(updatedSlug);
-  await updatedCategoryCard
-    .getByRole("link", { name: "Modifier la catégorie" })
-    .click();
+  await updatedCategoryCard.getByRole("link", { name: "Modifier la catégorie" }).click();
 
   await page.getByRole("button", { name: "Supprimer la catégorie" }).click();
 
   await expect(page).toHaveURL(/\/admin\/categories\?status=deleted$/);
-  await expect(
-    page.getByText("Catégorie supprimée avec succès.")
-  ).toBeVisible();
+  await expect(page.getByText("Catégorie supprimée avec succès.")).toBeVisible();
   await expect(page.getByText(updatedCategoryName)).toHaveCount(0);
 });

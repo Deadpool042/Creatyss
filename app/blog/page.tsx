@@ -4,7 +4,7 @@ import { listPublishedBlogPosts } from "@/db/catalog";
 export const dynamic = "force-dynamic";
 
 const blogDateFormatter = new Intl.DateTimeFormat("fr-FR", {
-  dateStyle: "long"
+  dateStyle: "long",
 });
 
 export default async function BlogPage() {
@@ -14,9 +14,7 @@ export default async function BlogPage() {
     <div className="grid gap-10">
       <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
         <div className="mb-8 grid gap-2">
-          <p className="text-sm font-bold uppercase tracking-widest text-brand">
-            Blog
-          </p>
+          <p className="text-sm font-bold uppercase tracking-widest text-brand">Blog</p>
           <h1 className="m-0">Articles publiés</h1>
         </div>
 
@@ -25,14 +23,13 @@ export default async function BlogPage() {
             {posts.map((post) => (
               <article
                 className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6 shadow-card"
-                key={post.id}>
+                key={post.id}
+              >
                 <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                   Article
                 </p>
                 <h3>
-                  <Link
-                    className="transition-colors hover:text-brand"
-                    href={`/blog/${post.slug}`}>
+                  <Link className="transition-colors hover:text-brand" href={`/blog/${post.slug}`}>
                     {post.title}
                   </Link>
                 </h3>
@@ -49,13 +46,10 @@ export default async function BlogPage() {
           </div>
         ) : (
           <div className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
-            <p className="text-sm font-bold uppercase tracking-widest text-brand">
-              Blog vide
-            </p>
+            <p className="text-sm font-bold uppercase tracking-widest text-brand">Blog vide</p>
             <h2>Aucun article publié</h2>
             <p className="leading-relaxed text-muted-foreground">
-              Les articles publics apparaîtront ici dès qu&apos;ils seront
-              publiés.
+              Les articles publics apparaîtront ici dès qu&apos;ils seront publiés.
             </p>
           </div>
         )}

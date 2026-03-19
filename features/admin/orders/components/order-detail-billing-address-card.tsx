@@ -13,16 +13,10 @@ type OrderDetailBillingAddressCardProps = Readonly<{
   };
 }>;
 
-export function OrderDetailBillingAddressCard({
-  billing
-}: OrderDetailBillingAddressCardProps) {
+export function OrderDetailBillingAddressCard({ billing }: OrderDetailBillingAddressCardProps) {
   return (
     <article className="grid gap-3 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
-      <SectionIntro
-        className="grid gap-2"
-        eyebrow="Facturation"
-        title="Adresse de facturation"
-      />
+      <SectionIntro className="grid gap-2" eyebrow="Facturation" title="Adresse de facturation" />
 
       {billing.sameAsShipping ? (
         <p className="card-copy text-sm leading-6 text-foreground">
@@ -31,24 +25,16 @@ export function OrderDetailBillingAddressCard({
       ) : (
         <>
           {billing.fullName ? (
-            <p className="card-copy text-sm leading-6 text-foreground">
-              {billing.fullName}
-            </p>
+            <p className="card-copy text-sm leading-6 text-foreground">{billing.fullName}</p>
           ) : null}
           {billing.phone ? (
-            <p className="card-meta text-sm leading-6 text-muted-foreground">
-              {billing.phone}
-            </p>
+            <p className="card-meta text-sm leading-6 text-muted-foreground">{billing.phone}</p>
           ) : null}
           {billing.line1 ? (
-            <p className="card-copy text-sm leading-6 text-foreground">
-              {billing.line1}
-            </p>
+            <p className="card-copy text-sm leading-6 text-foreground">{billing.line1}</p>
           ) : null}
           {billing.line2 ? (
-            <p className="card-copy text-sm leading-6 text-foreground">
-              {billing.line2}
-            </p>
+            <p className="card-copy text-sm leading-6 text-foreground">{billing.line2}</p>
           ) : null}
           {billing.postalCode && billing.city ? (
             <p className="card-copy text-sm leading-6 text-foreground">

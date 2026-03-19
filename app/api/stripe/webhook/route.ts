@@ -1,20 +1,16 @@
 import type Stripe from "stripe";
 import {
   markPaymentFailedByCheckoutSessionId,
-  markPaymentSucceededByCheckoutSessionId
+  markPaymentSucceededByCheckoutSessionId,
 } from "@/db/repositories/payment.repository";
-import { sendOrderTransactionalEmail } from "@/features/email/send-order-transactional-email";
+import { sendOrderTransactionalEmail } from "@/features/email";
 import { getStripeWebhookSecret } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
 
-function extractStripePaymentIntentId(
-  session: Stripe.Checkout.Session
-): string | null {
-  return typeof session.payment_intent === "string"
-    ? session.payment_intent
-    : null;
+function extractStripePaymentIntentId(session: Stripe.Checkout.Session): string | null {
+  return typeof session.payment_intent === "string" ? session.payment_intent : null;
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -29,11 +25,7 @@ export async function POST(request: Request): Promise<Response> {
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(
-      payload,
-      signature,
-      getStripeWebhookSecret()
-    );
+    event = stripe.webhooks.constructEvent(payload, signature, getStripeWebhookSecret());
   } catch (error) {
     console.error(error);
     return new Response("Invalid Stripe webhook signature.", { status: 400 });
@@ -46,13 +38,13 @@ export async function POST(request: Request): Promise<Response> {
 
         const orderId = await markPaymentSucceededByCheckoutSessionId({
           stripeCheckoutSessionId: session.id,
-          stripePaymentIntentId: extractStripePaymentIntentId(session)
+          stripePaymentIntentId: extractStripePaymentIntentId(session),
         });
 
         if (orderId !== null) {
           await sendOrderTransactionalEmail({
             orderId,
-            eventType: "payment_succeeded"
+            eventType: "payment_succeeded",
           });
         }
         break;
@@ -63,7 +55,7 @@ export async function POST(request: Request): Promise<Response> {
 
         await markPaymentFailedByCheckoutSessionId({
           stripeCheckoutSessionId: session.id,
-          stripePaymentIntentId: extractStripePaymentIntentId(session)
+          stripePaymentIntentId: extractStripePaymentIntentId(session),
         });
         break;
       }

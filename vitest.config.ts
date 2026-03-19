@@ -6,12 +6,12 @@ const rootDirectory = fileURLToPath(new URL("./", import.meta.url));
 export default defineConfig({
   resolve: {
     alias: {
-      "@": rootDirectory
-    }
+      "@": rootDirectory,
+    },
   },
   test: {
     environment: "node",
     include: ["tests/unit/**/*.test.ts"],
-    passWithNoTests: true
-  }
+    passWithNoTests: true,
+  },
 });

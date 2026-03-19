@@ -33,12 +33,12 @@ docs/v10/
 
 ## Séquence des lots
 
-| Lot    | Titre                              | Dépendances   |
-|--------|------------------------------------|---------------|
-| V10-1  | Dashboard foundation               | aucune        |
-| V10-2  | Table pattern foundation           | aucune        |
-| V10-3  | Orders + products list views       | V10-2         |
-| V10-4  | Blog + categories list views       | V10-2         |
+| Lot   | Titre                        | Dépendances |
+| ----- | ---------------------------- | ----------- |
+| V10-1 | Dashboard foundation         | aucune      |
+| V10-2 | Table pattern foundation     | aucune      |
+| V10-3 | Orders + products list views | V10-2       |
+| V10-4 | Blog + categories list views | V10-2       |
 
 V10-1 et V10-2 sont parallélisables. V10-3 et V10-4 requièrent V10-2.
 

@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "js/ts.tsdk.path": "node_modules/typescript/lib",

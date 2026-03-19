@@ -5,17 +5,11 @@ test.beforeEach(() => {
   resetSimpleProductCatalogState();
 });
 
-test("renders a simple product as a single purchasable offer", async ({
-  page
-}) => {
+test("renders a simple product as a single purchasable offer", async ({ page }) => {
   await page.goto("/boutique/pochette-sable");
 
-  await expect(
-    page.getByRole("heading", { level: 2, name: "Produit disponible" })
-  ).toBeVisible();
-  await expect(
-    page.getByText("Ce produit est disponible à l'achat.")
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Produit disponible" })).toBeVisible();
+  await expect(page.getByText("Ce produit est disponible à l'achat.")).toBeVisible();
   await expect(
     page.getByRole("heading", { level: 2, name: "Informations de vente" })
   ).toBeVisible();
@@ -36,20 +30,16 @@ test("renders a simple product as a single purchasable offer", async ({
   await expect(
     offerCard.getByText("Choisissez la quantité puis ajoutez ce produit au panier.")
   ).toBeVisible();
-  await expect(
-    offerCard.getByRole("button", { name: "Ajouter au panier" })
-  ).toBeVisible();
+  await expect(offerCard.getByRole("button", { name: "Ajouter au panier" })).toBeVisible();
 });
 
-test("shows a discreet unavailable state for a simple product", async ({
-  page
-}) => {
+test("shows a discreet unavailable state for a simple product", async ({ page }) => {
   await page.goto("/boutique/besace-nuit");
 
   await expect(
     page.getByRole("heading", {
       level: 2,
-      name: "Produit temporairement indisponible"
+      name: "Produit temporairement indisponible",
     })
   ).toBeVisible();
   await expect(
@@ -60,13 +50,9 @@ test("shows a discreet unavailable state for a simple product", async ({
     .locator("article")
     .filter({ has: page.getByRole("heading", { name: "Produit simple" }) });
 
-  await expect(
-    offerCard.getByText(/^Temporairement indisponible$/)
-  ).toBeVisible();
+  await expect(offerCard.getByText(/^Temporairement indisponible$/)).toBeVisible();
   await expect(
     offerCard.getByText("Ce produit n'est pas disponible pour le moment.")
   ).toBeVisible();
-  await expect(
-    offerCard.getByRole("button", { name: "Ajouter au panier" })
-  ).toHaveCount(0);
+  await expect(offerCard.getByRole("button", { name: "Ajouter au panier" })).toHaveCount(0);
 });

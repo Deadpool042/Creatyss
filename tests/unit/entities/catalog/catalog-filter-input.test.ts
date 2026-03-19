@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   CATALOG_AVAILABILITY_FILTER_VALUE,
-  validateCatalogFilterInput
+  validateCatalogFilterInput,
 } from "@/entities/catalog/catalog-filter-input";
 
 describe("validateCatalogFilterInput", () => {
@@ -9,11 +9,11 @@ describe("validateCatalogFilterInput", () => {
     expect(
       validateCatalogFilterInput({
         category: "  Edition-Atelier  ",
-        availability: null
+        availability: null,
       })
     ).toEqual({
       categorySlug: "edition-atelier",
-      onlyAvailable: false
+      onlyAvailable: false,
     });
   });
 
@@ -21,11 +21,11 @@ describe("validateCatalogFilterInput", () => {
     expect(
       validateCatalogFilterInput({
         category: "   ",
-        availability: null
+        availability: null,
       })
     ).toEqual({
       categorySlug: null,
-      onlyAvailable: false
+      onlyAvailable: false,
     });
   });
 
@@ -33,11 +33,11 @@ describe("validateCatalogFilterInput", () => {
     expect(
       validateCatalogFilterInput({
         category: null,
-        availability: CATALOG_AVAILABILITY_FILTER_VALUE
+        availability: CATALOG_AVAILABILITY_FILTER_VALUE,
       })
     ).toEqual({
       categorySlug: null,
-      onlyAvailable: true
+      onlyAvailable: true,
     });
   });
 
@@ -45,11 +45,11 @@ describe("validateCatalogFilterInput", () => {
     expect(
       validateCatalogFilterInput({
         category: null,
-        availability: "yes"
+        availability: "yes",
       })
     ).toEqual({
       categorySlug: null,
-      onlyAvailable: false
+      onlyAvailable: false,
     });
   });
 });

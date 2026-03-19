@@ -55,11 +55,11 @@ Remplacer `<div className="page-header">` + HTML manuel par `<PageHeader>`.
 
 Remplacer les messages système visibles de page par `<Notice>`.
 
-| Avant | Après |
-|---|---|
-| `<p className="admin-success">…</p>` | `<Notice tone="success">…</Notice>` |
-| `<p className="admin-alert" role="alert">…</p>` | `<Notice tone="alert">…</Notice>` |
-| `<p className="admin-muted-note">…</p>` (message système) | `<Notice tone="note">…</Notice>` |
+| Avant                                                     | Après                               |
+| --------------------------------------------------------- | ----------------------------------- |
+| `<p className="admin-success">…</p>`                      | `<Notice tone="success">…</Notice>` |
+| `<p className="admin-alert" role="alert">…</p>`           | `<Notice tone="alert">…</Notice>`   |
+| `<p className="admin-muted-note">…</p>` (message système) | `<Notice tone="note">…</Notice>`    |
 
 - `Notice tone="alert"` ajoute automatiquement `role="alert"`. Ne pas le redéfinir manuellement.
 - `Notice` est réservé aux **messages système visibles de page** : confirmations d'action, erreurs serveur, alertes globales.
@@ -112,103 +112,103 @@ Toutes les classes existantes (`.button`, `.store-card`, `.admin-homepage-sectio
 
 ### `app/admin/(protected)/media/page.tsx`
 
-| Élément | Avant | Après |
-|---|---|---|
-| Section upload | `<section className="store-card admin-upload-card">` | `<Card className="store-card admin-upload-card">` |
-| Cards de la grille médias | construites avec Tailwind | `<Card className="p-5 grid gap-3 content-start">` |
-| Bouton upload | `<button className="button">` | `<Button className="button">` |
+| Élément                   | Avant                                                | Après                                             |
+| ------------------------- | ---------------------------------------------------- | ------------------------------------------------- |
+| Section upload            | `<section className="store-card admin-upload-card">` | `<Card className="store-card admin-upload-card">` |
+| Cards de la grille médias | construites avec Tailwind                            | `<Card className="p-5 grid gap-3 content-start">` |
+| Bouton upload             | `<button className="button">`                        | `<Button className="button">`                     |
 
 ### `app/admin/(protected)/homepage/page.tsx`
 
-| Élément | Avant | Après |
-|---|---|---|
-| Items produits/catégories/articles | `<div className="store-card admin-homepage-option">` | `<Card className="store-card admin-homepage-option">` |
-| Bouton enregistrement | `<button className="button">` | `<Button className="button">` |
-| 5 `<section className="admin-homepage-section">` | conservées | conservées (sémantique de groupement de champs) |
+| Élément                                          | Avant                                                | Après                                                 |
+| ------------------------------------------------ | ---------------------------------------------------- | ----------------------------------------------------- |
+| Items produits/catégories/articles               | `<div className="store-card admin-homepage-option">` | `<Card className="store-card admin-homepage-option">` |
+| Bouton enregistrement                            | `<button className="button">`                        | `<Button className="button">`                         |
+| 5 `<section className="admin-homepage-section">` | conservées                                           | conservées (sémantique de groupement de champs)       |
 
 ### `app/admin/(protected)/orders/[id]/page.tsx`
 
-| Élément | Avant | Après |
-|---|---|---|
-| Bouton "Marquer comme expédiée" | `<button className="button">` | `<Button className="button">` |
-| Bouton de transition (conditionnel) | `<button className="button [admin-danger-button]">` | `<Button className="button [admin-danger-button]">` |
-| 8 `<article className="store-card checkout-line">` | conservés | conservés (`getByRole("article")` dans les tests) |
+| Élément                                            | Avant                                               | Après                                               |
+| -------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
+| Bouton "Marquer comme expédiée"                    | `<button className="button">`                       | `<Button className="button">`                       |
+| Bouton de transition (conditionnel)                | `<button className="button [admin-danger-button]">` | `<Button className="button [admin-danger-button]">` |
+| 8 `<article className="store-card checkout-line">` | conservés                                           | conservés (`getByRole("article")` dans les tests)   |
 
 ### `app/admin/(protected)/products/[id]/page.tsx`
 
-| Élément | Avant | Après |
-|---|---|---|
-| Bouton "Enregistrer le produit" | `<button className="button">` | `<Button className="button">` |
-| Bouton "Enregistrer les informations de vente" | `<button className="button">` | `<Button className="button">` |
-| Bouton "Supprimer le produit" | `<button className="button admin-danger-button">` | `<Button className="button admin-danger-button">` |
-| `<article>` (variant cards, image cards) | conservés | conservés (`getByRole("article")` dans les tests) |
-| Boutons dans `.map()` (déclinaisons, images) | non migrés | hors périmètre — lot dédié à prévoir |
+| Élément                                        | Avant                                             | Après                                             |
+| ---------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
+| Bouton "Enregistrer le produit"                | `<button className="button">`                     | `<Button className="button">`                     |
+| Bouton "Enregistrer les informations de vente" | `<button className="button">`                     | `<Button className="button">`                     |
+| Bouton "Supprimer le produit"                  | `<button className="button admin-danger-button">` | `<Button className="button admin-danger-button">` |
+| `<article>` (variant cards, image cards)       | conservés                                         | conservés (`getByRole("article")` dans les tests) |
+| Boutons dans `.map()` (déclinaisons, images)   | non migrés                                        | hors périmètre — lot dédié à prévoir              |
 
 ### `app/admin/(protected)/orders/page.tsx`
 
 Lot de cohérence UI — `Button` et `Card` ne sont pas migrés sur cette page.
 
-| Élément | Avant | Après |
-|---|---|---|
-| Header inline | `<div className="page-header">` + HTML manuel | `<PageHeader>` (composant maison) |
-| Alerte inline | `<p className="admin-alert">` | `<Notice tone="alert">` (composant maison) |
-| `<article className="store-card">` dans `.map()` | conservé | conservé — sémantique `article` utile, `getByRole("article")` ciblé par `orders.spec.ts` |
-| `Button` | — | non applicable — aucun `<button>` dans cette page |
-| `Card` | — | non applicable — le seul `store-card` est un `<article>`, préservé |
+| Élément                                          | Avant                                         | Après                                                                                    |
+| ------------------------------------------------ | --------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Header inline                                    | `<div className="page-header">` + HTML manuel | `<PageHeader>` (composant maison)                                                        |
+| Alerte inline                                    | `<p className="admin-alert">`                 | `<Notice tone="alert">` (composant maison)                                               |
+| `<article className="store-card">` dans `.map()` | conservé                                      | conservé — sémantique `article` utile, `getByRole("article")` ciblé par `orders.spec.ts` |
+| `Button`                                         | —                                             | non applicable — aucun `<button>` dans cette page                                        |
+| `Card`                                           | —                                             | non applicable — le seul `store-card` est un `<article>`, préservé                       |
 
 ### `app/admin/(protected)/categories/page.tsx`
 
 Lot de cohérence UI — `Button` et `Card` ne sont pas applicables sur cette page, comme pour `orders/page.tsx`.
 
-| Élément | Avant | Après |
-|---|---|---|
-| Header inline | `<div className="page-header">` + HTML manuel | `<PageHeader>` avec prop `actions` (composant maison) |
-| Lien "Nouvelle catégorie" | `<Link className="button">` passé en inline | `<Link className="button">` passé en prop `actions` — inchangé |
-| Message succès inline | `<p className="admin-success">` | `<Notice tone="success">` (composant maison) |
-| Message erreur inline | `<p className="admin-alert" role="alert">` | `<Notice tone="alert">` (composant maison) |
-| `<article className="store-card admin-category-card">` dans `.map()` | conservé | conservé — sémantique `article` utile, `getByRole("article")` ciblé par `categories.spec.ts` |
-| `Button` | — | non applicable — aucun `<button>` dans cette page |
-| `Card` | — | non applicable — le seul `store-card` est un `<article>`, préservé |
+| Élément                                                              | Avant                                         | Après                                                                                        |
+| -------------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Header inline                                                        | `<div className="page-header">` + HTML manuel | `<PageHeader>` avec prop `actions` (composant maison)                                        |
+| Lien "Nouvelle catégorie"                                            | `<Link className="button">` passé en inline   | `<Link className="button">` passé en prop `actions` — inchangé                               |
+| Message succès inline                                                | `<p className="admin-success">`               | `<Notice tone="success">` (composant maison)                                                 |
+| Message erreur inline                                                | `<p className="admin-alert" role="alert">`    | `<Notice tone="alert">` (composant maison)                                                   |
+| `<article className="store-card admin-category-card">` dans `.map()` | conservé                                      | conservé — sémantique `article` utile, `getByRole("article")` ciblé par `categories.spec.ts` |
+| `Button`                                                             | —                                             | non applicable — aucun `<button>` dans cette page                                            |
+| `Card`                                                               | —                                             | non applicable — le seul `store-card` est un `<article>`, préservé                           |
 
 ### `app/admin/(protected)/blog/page.tsx`
 
 Lot de cohérence UI — `Button` et `Card` ne sont pas applicables sur cette page, comme pour `orders/page.tsx` et `categories/page.tsx`.
 
-| Élément | Avant | Après |
-|---|---|---|
-| Header inline | `<div className="page-header">` + HTML manuel | `<PageHeader>` avec prop `actions` (composant maison) |
-| Lien "Nouvel article" | `<Link className="button">` passé en inline | `<Link className="button">` passé en prop `actions` — inchangé |
-| Message succès inline | `<p className="admin-success">` | `<Notice tone="success">` (composant maison) |
-| Message erreur inline | `<p className="admin-alert" role="alert">` | `<Notice tone="alert">` (composant maison) |
-| `<article className="store-card admin-blog-card">` dans `.map()` | conservé | conservé — sémantique `article` utile |
-| `Button` | — | non applicable — aucun `<button>` dans cette page |
-| `Card` | — | non applicable — le seul `store-card` est un `<article>`, préservé |
+| Élément                                                          | Avant                                         | Après                                                              |
+| ---------------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------ |
+| Header inline                                                    | `<div className="page-header">` + HTML manuel | `<PageHeader>` avec prop `actions` (composant maison)              |
+| Lien "Nouvel article"                                            | `<Link className="button">` passé en inline   | `<Link className="button">` passé en prop `actions` — inchangé     |
+| Message succès inline                                            | `<p className="admin-success">`               | `<Notice tone="success">` (composant maison)                       |
+| Message erreur inline                                            | `<p className="admin-alert" role="alert">`    | `<Notice tone="alert">` (composant maison)                         |
+| `<article className="store-card admin-blog-card">` dans `.map()` | conservé                                      | conservé — sémantique `article` utile                              |
+| `Button`                                                         | —                                             | non applicable — aucun `<button>` dans cette page                  |
+| `Card`                                                           | —                                             | non applicable — le seul `store-card` est un `<article>`, préservé |
 
 ### `app/admin/(protected)/products/new/page.tsx`
 
-| Élément | Avant | Après |
-|---|---|---|
-| Header inline | `<div className="page-header">` + HTML manuel | `<PageHeader>` avec prop `actions` (composant maison) |
-| Lien "Retour à la liste" | `<Link className="link-subtle button">` passé en inline | `<Link className="link-subtle button">` passé en prop `actions` — inchangé |
-| Message erreur inline | `<p className="admin-alert" role="alert">` | `<Notice tone="alert">` (composant maison) |
-| Bouton de soumission | `<button className="button" type="submit">` | `<Button className="button" type="submit">` |
-| `<section className="section admin-product-form-section">` | conservée | conservée — groupement sémantique du formulaire |
-| `<p className="admin-muted-note">` | conservé | conservé — texte d'aide contextuel dans le formulaire, hors périmètre Notice |
-| `Card` | — | non applicable — aucun `.store-card` dans cette page |
+| Élément                                                    | Avant                                                   | Après                                                                        |
+| ---------------------------------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Header inline                                              | `<div className="page-header">` + HTML manuel           | `<PageHeader>` avec prop `actions` (composant maison)                        |
+| Lien "Retour à la liste"                                   | `<Link className="link-subtle button">` passé en inline | `<Link className="link-subtle button">` passé en prop `actions` — inchangé   |
+| Message erreur inline                                      | `<p className="admin-alert" role="alert">`              | `<Notice tone="alert">` (composant maison)                                   |
+| Bouton de soumission                                       | `<button className="button" type="submit">`             | `<Button className="button" type="submit">`                                  |
+| `<section className="section admin-product-form-section">` | conservée                                               | conservée — groupement sémantique du formulaire                              |
+| `<p className="admin-muted-note">`                         | conservé                                                | conservé — texte d'aide contextuel dans le formulaire, hors périmètre Notice |
+| `Card`                                                     | —                                                       | non applicable — aucun `.store-card` dans cette page                         |
 
 ### `app/admin/(protected)/products/page.tsx`
 
 Lot de cohérence UI — `Button` et `Card` ne sont pas applicables sur cette page, comme pour `orders/page.tsx`, `categories/page.tsx` et `blog/page.tsx`.
 
-| Élément | Avant | Après |
-|---|---|---|
-| Header inline | `<div className="page-header">` + HTML manuel | `<PageHeader>` avec prop `actions` (composant maison) |
-| Lien \"Nouveau produit\" | `<Link className="button">` passé en inline | `<Link className="button">` passé en prop `actions` — inchangé |
-| Message succès inline | `<p className="admin-success">` | `<Notice tone="success">` (composant maison) |
-| Message erreur inline | `<p className="admin-alert" role="alert">` | `<Notice tone="alert">` (composant maison) |
-| `<article className="store-card admin-product-card">` dans `.map()` | conservé | conservé — sémantique `article` utile, `getByRole("article")` dépendant dans les tests |
-| `Button` | — | non applicable — aucun `<button>` dans cette page |
-| `Card` | — | non applicable — le seul `store-card` est un `<article>`, préservé |
+| Élément                                                             | Avant                                         | Après                                                                                  |
+| ------------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Header inline                                                       | `<div className="page-header">` + HTML manuel | `<PageHeader>` avec prop `actions` (composant maison)                                  |
+| Lien \"Nouveau produit\"                                            | `<Link className="button">` passé en inline   | `<Link className="button">` passé en prop `actions` — inchangé                         |
+| Message succès inline                                               | `<p className="admin-success">`               | `<Notice tone="success">` (composant maison)                                           |
+| Message erreur inline                                               | `<p className="admin-alert" role="alert">`    | `<Notice tone="alert">` (composant maison)                                             |
+| `<article className="store-card admin-product-card">` dans `.map()` | conservé                                      | conservé — sémantique `article` utile, `getByRole("article")` dépendant dans les tests |
+| `Button`                                                            | —                                             | non applicable — aucun `<button>` dans cette page                                      |
+| `Card`                                                              | —                                             | non applicable — le seul `store-card` est un `<article>`, préservé                     |
 
 ## Éléments délibérément hors périmètre à ce stade
 

@@ -7,7 +7,7 @@ import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormSection } from "@/components/admin/admin-form-section";
 import { AdminFormField } from "@/components/admin/admin-form-field";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
-import { createCategoryAction } from "@/features/admin/categories/actions/create-category-action";
+import { createCategoryAction } from "@/features/admin/categories";
 
 export const dynamic = "force-dynamic";
 
@@ -34,9 +34,7 @@ function getErrorMessage(error: string | undefined): string | null {
   }
 }
 
-export default async function NewAdminCategoryPage({
-  searchParams
-}: NewAdminCategoryPageProps) {
+export default async function NewAdminCategoryPage({ searchParams }: NewAdminCategoryPageProps) {
   const resolvedSearchParams = await searchParams;
   const errorParam = Array.isArray(resolvedSearchParams.error)
     ? resolvedSearchParams.error[0]
@@ -46,61 +44,32 @@ export default async function NewAdminCategoryPage({
   return (
     <AdminPageShell
       actions={
-        <Button
-          asChild
-          size="sm"
-          variant="outline">
+        <Button asChild size="sm" variant="outline">
           <Link href="/admin/categories">Retour à la liste</Link>
         </Button>
       }
       description="Créez une catégorie simple pour organiser le catalogue."
       eyebrow="Catégories"
-      title="Nouvelle catégorie">
+      title="Nouvelle catégorie"
+    >
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <AdminFormSection>
-        <form
-          action={createCategoryAction}
-          className="grid gap-4">
-          <AdminFormField
-            htmlFor="cat-name"
-            label="Nom">
-            <Input
-              id="cat-name"
-              name="name"
-              required
-              type="text"
-            />
+        <form action={createCategoryAction} className="grid gap-4">
+          <AdminFormField htmlFor="cat-name" label="Nom">
+            <Input id="cat-name" name="name" required type="text" />
           </AdminFormField>
 
-          <AdminFormField
-            htmlFor="cat-slug"
-            label="Slug">
-            <Input
-              id="cat-slug"
-              name="slug"
-              required
-              type="text"
-            />
+          <AdminFormField htmlFor="cat-slug" label="Slug">
+            <Input id="cat-slug" name="slug" required type="text" />
           </AdminFormField>
 
-          <AdminFormField
-            htmlFor="cat-description"
-            label="Description">
-            <Textarea
-              id="cat-description"
-              name="description"
-              rows={5}
-            />
+          <AdminFormField htmlFor="cat-description" label="Description">
+            <Textarea id="cat-description" name="description" rows={5} />
           </AdminFormField>
 
           <label className="flex items-center gap-3 text-sm text-foreground">
-            <input
-              className="size-4"
-              name="isFeatured"
-              type="checkbox"
-              value="on"
-            />
+            <input className="size-4" name="isFeatured" type="checkbox" value="on" />
             <span>Mettre cette catégorie en avant</span>
           </label>
 

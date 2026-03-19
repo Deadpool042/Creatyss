@@ -3,13 +3,8 @@
   "name": "field",
   "type": "registry:ui",
   "description": "Compound form field system with orientation variants, label, description, error deduplication, separator with optional label, fieldset, and legend. Requires Tailwind v4 container queries.",
-  "dependencies": [
-    "class-variance-authority"
-  ],
-  "registryDependencies": [
-    "label",
-    "separator"
-  ],
+  "dependencies": ["class-variance-authority"],
+  "registryDependencies": ["label", "separator"],
   "files": [
     {
       "path": "components/ui/field.tsx",

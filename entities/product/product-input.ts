@@ -45,9 +45,7 @@ export type ProductInputValidationResult =
       code: ProductInputErrorCode;
     };
 
-function readTrimmedString(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
+function readTrimmedString(value: FormDataEntryValue | string | null | undefined): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -114,15 +112,13 @@ function isProductType(value: string | null): value is ProductType {
   return value === "simple" || value === "variable";
 }
 
-export function validateProductInput(
-  input: ProductInputSource
-): ProductInputValidationResult {
+export function validateProductInput(input: ProductInputSource): ProductInputValidationResult {
   const name = readTrimmedString(input.name);
 
   if (name === null || name.length === 0) {
     return {
       ok: false,
-      code: "missing_name"
+      code: "missing_name",
     };
   }
 
@@ -131,7 +127,7 @@ export function validateProductInput(
   if (rawSlug === null || rawSlug.length === 0) {
     return {
       ok: false,
-      code: "missing_slug"
+      code: "missing_slug",
     };
   }
 
@@ -140,7 +136,7 @@ export function validateProductInput(
   if (normalizedSlug.length === 0) {
     return {
       ok: false,
-      code: "invalid_slug"
+      code: "invalid_slug",
     };
   }
 
@@ -149,7 +145,7 @@ export function validateProductInput(
   if (!isProductStatus(status)) {
     return {
       ok: false,
-      code: "invalid_status"
+      code: "invalid_status",
     };
   }
 
@@ -158,7 +154,7 @@ export function validateProductInput(
   if (!isProductType(productType)) {
     return {
       ok: false,
-      code: "invalid_product_type"
+      code: "invalid_product_type",
     };
   }
 
@@ -167,7 +163,7 @@ export function validateProductInput(
   if (categoryIds === null) {
     return {
       ok: false,
-      code: "invalid_category_ids"
+      code: "invalid_category_ids",
     };
   }
 
@@ -183,10 +179,8 @@ export function validateProductInput(
       status,
       productType,
       isFeatured:
-        input.isFeatured === "on" ||
-        input.isFeatured === "true" ||
-        input.isFeatured === "1",
-      categoryIds
-    }
+        input.isFeatured === "on" || input.isFeatured === "true" || input.isFeatured === "1",
+      categoryIds,
+    },
   };
 }

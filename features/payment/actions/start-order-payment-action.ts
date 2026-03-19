@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import {
   findPaymentStartContextByOrderReference,
   markPaymentFailedByCheckoutSessionId,
-  saveStripeCheckoutSessionForOrder
+  saveStripeCheckoutSessionForOrder,
 } from "@/db/repositories/payment.repository";
 import { env } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
@@ -25,8 +25,7 @@ function moneyStringToCents(value: string): number {
 
 export async function startOrderPaymentAction(formData: FormData): Promise<void> {
   const referenceValue = formData.get("reference");
-  const reference =
-    typeof referenceValue === "string" ? referenceValue.trim() : "";
+  const reference = typeof referenceValue === "string" ? referenceValue.trim() : "";
 
   if (reference.length === 0) {
     redirect("/checkout?error=payment_unavailable");
@@ -63,7 +62,7 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
       );
       const existingSessionState = resolveStripeCheckoutSessionState({
         status: existingSession.status,
-        url: existingSession.url ?? null
+        url: existingSession.url ?? null,
       });
 
       switch (existingSessionState.kind) {
@@ -76,7 +75,7 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
         case "replace":
           await markPaymentFailedByCheckoutSessionId({
             stripeCheckoutSessionId: paymentContext.stripeCheckoutSessionId,
-            stripePaymentIntentId: paymentContext.stripePaymentIntentId
+            stripePaymentIntentId: paymentContext.stripePaymentIntentId,
           });
           break;
         case "unavailable":
@@ -99,18 +98,18 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
             currency: "eur",
             unit_amount: moneyStringToCents(paymentContext.totalAmount),
             product_data: {
-              name: `Commande ${paymentContext.reference}`
-            }
+              name: `Commande ${paymentContext.reference}`,
+            },
           },
-          quantity: 1
-        }
+          quantity: 1,
+        },
       ],
       metadata: {
         orderId: paymentContext.orderId,
-        orderReference: paymentContext.reference
+        orderReference: paymentContext.reference,
       },
       success_url: `${env.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=return`,
-      cancel_url: `${env.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=cancelled`
+      cancel_url: `${env.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=cancelled`,
     });
 
     if (!session.url) {
@@ -121,9 +120,7 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
       orderId: paymentContext.orderId,
       stripeCheckoutSessionId: session.id,
       stripePaymentIntentId:
-        typeof session.payment_intent === "string"
-          ? session.payment_intent
-          : null
+        typeof session.payment_intent === "string" ? session.payment_intent : null,
     });
     redirectTarget = session.url;
   } catch (error) {

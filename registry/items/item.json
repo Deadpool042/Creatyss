@@ -3,13 +3,8 @@
   "name": "item",
   "type": "registry:ui",
   "description": "Compound list-item component with optional media, content, title, description, actions, header, and footer slots. Supports default, outline, and muted variants.",
-  "dependencies": [
-    "class-variance-authority",
-    "radix-ui"
-  ],
-  "registryDependencies": [
-    "separator"
-  ],
+  "dependencies": ["class-variance-authority", "radix-ui"],
+  "registryDependencies": ["separator"],
   "files": [
     {
       "path": "components/ui/item.tsx",

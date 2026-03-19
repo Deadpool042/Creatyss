@@ -8,15 +8,11 @@ type ProtectedAdminLayoutProps = {
   children: React.ReactNode;
 };
 
-export default async function ProtectedAdminLayout({
-  children
-}: ProtectedAdminLayoutProps) {
+export default async function ProtectedAdminLayout({ children }: ProtectedAdminLayoutProps) {
   const admin = await requireAuthenticatedAdmin();
 
   return (
-    <AdminShell
-      displayName={admin.displayName}
-      email={admin.email}>
+    <AdminShell displayName={admin.displayName} email={admin.email}>
       {children}
     </AdminShell>
   );

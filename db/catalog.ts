@@ -1,7 +1,7 @@
 import {
   resolveSimpleProductOffer,
   type SimpleProductOffer,
-  type SimpleProductOfferFields
+  type SimpleProductOfferFields,
 } from "@/entities/product/simple-product-offer";
 import { queryFirst, queryRows } from "./client";
 
@@ -258,23 +258,19 @@ function mapCategory(row: CategoryRow): FeaturedCategory {
         ? { filePath: row.rep_image_file_path, altText: row.rep_image_alt_text }
         : null,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
-function mapCatalogFilterCategory(
-  row: CatalogFilterCategoryRow
-): CatalogFilterCategory {
+function mapCatalogFilterCategory(row: CatalogFilterCategoryRow): CatalogFilterCategory {
   return {
     id: row.id,
     name: row.name,
-    slug: row.slug
+    slug: row.slug,
   };
 }
 
-function mapPrimaryProductImage(
-  row: ProductSummaryRow
-): PublishedProductImage | null {
+function mapPrimaryProductImage(row: ProductSummaryRow): PublishedProductImage | null {
   if (
     row.primary_image_id === null ||
     row.primary_image_product_id === null ||
@@ -296,7 +292,7 @@ function mapPrimaryProductImage(
     sortOrder: row.primary_image_sort_order,
     isPrimary: row.primary_image_is_primary,
     createdAt: toIsoTimestamp(row.primary_image_created_at),
-    updatedAt: toIsoTimestamp(row.primary_image_updated_at)
+    updatedAt: toIsoTimestamp(row.primary_image_updated_at),
   };
 }
 
@@ -313,18 +309,16 @@ function mapProductSummary(row: ProductSummaryRow): PublishedProductSummary {
     seoDescription: row.seo_description,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at),
-    primaryImage: mapPrimaryProductImage(row)
+    primaryImage: mapPrimaryProductImage(row),
   };
 }
 
-function getNativeSimpleOfferFields(
-  row: ProductSimpleFieldsRow
-): SimpleProductOfferFields {
+function getNativeSimpleOfferFields(row: ProductSimpleFieldsRow): SimpleProductOfferFields {
   return {
     sku: row.simple_sku,
     price: row.simple_price,
     compareAtPrice: row.simple_compare_at_price,
-    stockQuantity: row.simple_stock_quantity
+    stockQuantity: row.simple_stock_quantity,
   };
 }
 
@@ -339,13 +333,11 @@ function resolvePublishedSimpleOffer(input: {
 
   return resolveSimpleProductOffer({
     native: input.native,
-    legacyOffers: input.legacyOffers
+    legacyOffers: input.legacyOffers,
   });
 }
 
-function getCatalogLegacySimpleOffers(
-  row: ProductCatalogSummaryRow
-): SimpleProductOfferFields[] {
+function getCatalogLegacySimpleOffers(row: ProductCatalogSummaryRow): SimpleProductOfferFields[] {
   if (row.legacy_exploitable_variant_count !== 1) {
     return [];
   }
@@ -355,24 +347,22 @@ function getCatalogLegacySimpleOffers(
       sku: row.legacy_variant_sku,
       price: row.legacy_variant_price,
       compareAtPrice: row.legacy_variant_compare_at_price,
-      stockQuantity: row.legacy_variant_stock_quantity
-    }
+      stockQuantity: row.legacy_variant_stock_quantity,
+    },
   ];
 }
 
-function mapCatalogProductSummary(
-  row: ProductCatalogSummaryRow
-): PublishedCatalogProductSummary {
+function mapCatalogProductSummary(row: ProductCatalogSummaryRow): PublishedCatalogProductSummary {
   const simpleOffer = resolvePublishedSimpleOffer({
     productType: row.product_type,
     native: getNativeSimpleOfferFields(row),
-    legacyOffers: getCatalogLegacySimpleOffers(row)
+    legacyOffers: getCatalogLegacySimpleOffers(row),
   });
 
   return {
     ...mapProductSummary(row),
     isAvailable: row.is_available,
-    simpleOffer
+    simpleOffer,
   };
 }
 
@@ -386,18 +376,16 @@ function mapProductImage(row: ProductImageRow): PublishedProductImage {
     sortOrder: row.sort_order,
     isPrimary: row.is_primary,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
-function getVariantSimpleOfferFields(
-  row: ProductVariantRow
-): SimpleProductOfferFields {
+function getVariantSimpleOfferFields(row: ProductVariantRow): SimpleProductOfferFields {
   return {
     sku: row.sku,
     price: row.price,
     compareAtPrice: row.compare_at_price,
-    stockQuantity: row.stock_quantity
+    stockQuantity: row.stock_quantity,
   };
 }
 
@@ -419,7 +407,7 @@ function mapPublishedProductVariant(
     isAvailable: row.stock_quantity > 0,
     createdAt: toIsoTimestamp(row.created_at),
     updatedAt: toIsoTimestamp(row.updated_at),
-    images
+    images,
   };
 }
 
@@ -456,7 +444,7 @@ function getPublishedProductAvailability(input: {
     return input.simpleOffer?.isAvailable ?? false;
   }
 
-  return input.variants.some(variant => variant.isAvailable);
+  return input.variants.some((variant) => variant.isAvailable);
 }
 
 function mapBlogPostSummary(row: BlogPostSummaryRow): PublishedBlogPostSummary {
@@ -468,7 +456,7 @@ function mapBlogPostSummary(row: BlogPostSummaryRow): PublishedBlogPostSummary {
     coverImagePath: row.cover_image_path,
     publishedAt: toNullableIsoTimestamp(row.published_at),
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
@@ -630,12 +618,11 @@ export async function getPublishedHomepageContent(): Promise<PublishedHomepageCo
     return null;
   }
 
-  const [featuredProducts, featuredCategories, featuredBlogPosts] =
-    await Promise.all([
-      listHomepageFeaturedProducts(homepageRow.id),
-      listHomepageFeaturedCategories(homepageRow.id),
-      listHomepageFeaturedBlogPosts(homepageRow.id)
-    ]);
+  const [featuredProducts, featuredCategories, featuredBlogPosts] = await Promise.all([
+    listHomepageFeaturedProducts(homepageRow.id),
+    listHomepageFeaturedCategories(homepageRow.id),
+    listHomepageFeaturedBlogPosts(homepageRow.id),
+  ]);
 
   return {
     id: homepageRow.id,
@@ -648,13 +635,11 @@ export async function getPublishedHomepageContent(): Promise<PublishedHomepageCo
     updatedAt: toIsoTimestamp(homepageRow.updated_at),
     featuredProducts,
     featuredCategories,
-    featuredBlogPosts
+    featuredBlogPosts,
   };
 }
 
-export async function listPublishedFeaturedCategories(): Promise<
-  FeaturedCategory[]
-> {
+export async function listPublishedFeaturedCategories(): Promise<FeaturedCategory[]> {
   const homepageRow = await getPublishedHomepageRow();
 
   if (homepageRow === null) {
@@ -664,9 +649,7 @@ export async function listPublishedFeaturedCategories(): Promise<
   return listHomepageFeaturedCategories(homepageRow.id);
 }
 
-export async function listCatalogFilterCategories(): Promise<
-  CatalogFilterCategory[]
-> {
+export async function listCatalogFilterCategories(): Promise<CatalogFilterCategory[]> {
   const rows = await queryRows<CatalogFilterCategoryRow>(
     `
       select
@@ -886,9 +869,7 @@ async function listPublishedCatalogProductRows(
   );
 }
 
-async function getPublishedProductRowBySlug(
-  slug: string
-): Promise<ProductSummaryRow | null> {
+async function getPublishedProductRowBySlug(slug: string): Promise<ProductSummaryRow | null> {
   return queryFirst<ProductSummaryRow>(
     `
       select
@@ -951,9 +932,7 @@ async function getPublishedProductRowBySlug(
   );
 }
 
-async function listPublishedParentProductImages(
-  productId: DbId
-): Promise<ProductImageRow[]> {
+async function listPublishedParentProductImages(productId: DbId): Promise<ProductImageRow[]> {
   return queryRows<ProductImageRow>(
     `
       select
@@ -975,9 +954,7 @@ async function listPublishedParentProductImages(
   );
 }
 
-async function listPublishedProductVariants(
-  productId: DbId
-): Promise<ProductVariantRow[]> {
+async function listPublishedProductVariants(productId: DbId): Promise<ProductVariantRow[]> {
   return queryRows<ProductVariantRow>(
     `
       select
@@ -1002,9 +979,7 @@ async function listPublishedProductVariants(
   );
 }
 
-async function listPublishedVariantImages(
-  productId: DbId
-): Promise<ProductImageRow[]> {
+async function listPublishedVariantImages(productId: DbId): Promise<ProductImageRow[]> {
   return queryRows<ProductImageRow>(
     `
       select
@@ -1050,17 +1025,17 @@ export async function getPublishedProductBySlug(
   const [parentImageRows, variantRows, variantImageRows] = await Promise.all([
     listPublishedParentProductImages(productRow.id),
     listPublishedProductVariants(productRow.id),
-    listPublishedVariantImages(productRow.id)
+    listPublishedVariantImages(productRow.id),
   ]);
 
   const imagesByVariantId = groupVariantImagesByVariantId(variantImageRows);
-  const variants: PublishedProductVariant[] = variantRows.map(row =>
+  const variants: PublishedProductVariant[] = variantRows.map((row) =>
     mapPublishedProductVariant(row, imagesByVariantId.get(row.id) ?? [])
   );
   const simpleOffer = resolvePublishedSimpleOffer({
     productType: productRow.product_type,
     native: getNativeSimpleOfferFields(productRow),
-    legacyOffers: variantRows.map(getVariantSimpleOfferFields)
+    legacyOffers: variantRows.map(getVariantSimpleOfferFields),
   });
 
   return {
@@ -1068,11 +1043,11 @@ export async function getPublishedProductBySlug(
     isAvailable: getPublishedProductAvailability({
       productType: productRow.product_type,
       simpleOffer,
-      variants
+      variants,
     }),
     simpleOffer,
     images: parentImageRows.map(mapProductImage),
-    variants
+    variants,
   };
 }
 
@@ -1143,9 +1118,7 @@ export async function listRecentPublishedProducts(
   return rows.map(mapProductSummary);
 }
 
-export async function listPublishedBlogPosts(): Promise<
-  PublishedBlogPostSummary[]
-> {
+export async function listPublishedBlogPosts(): Promise<PublishedBlogPostSummary[]> {
   const rows = await queryRows<BlogPostSummaryRow>(
     `
       select
@@ -1199,6 +1172,6 @@ export async function getPublishedBlogPostBySlug(
     ...mapBlogPostSummary(row),
     content: row.content,
     seoTitle: row.seo_title,
-    seoDescription: row.seo_description
+    seoDescription: row.seo_description,
   };
 }

@@ -1,13 +1,13 @@
 import type {
   HomepageFeaturedBlogPostSelection,
   HomepageFeaturedCategorySelection,
-  HomepageFeaturedProductSelection
+  HomepageFeaturedProductSelection,
 } from "./homepage-types";
 
 export type {
   HomepageFeaturedBlogPostSelection,
   HomepageFeaturedCategorySelection,
-  HomepageFeaturedProductSelection
+  HomepageFeaturedProductSelection,
 };
 
 // --- Validation constants ---
@@ -124,9 +124,7 @@ function normalizeRequiredNumericId(value: RawInputValue): string | null {
   return normalizedValue;
 }
 
-function normalizeSelectedIds(
-  values: readonly RawInputValue[]
-): string[] | null {
+function normalizeSelectedIds(values: readonly RawInputValue[]): string[] | null {
   const normalizedIds: string[] = [];
 
   for (const value of values) {
@@ -170,7 +168,7 @@ function validateSelections<TSelection>({
   invalidSortOrderCode,
   selectedIds,
   sortOrders,
-  toSelection
+  toSelection,
 }: SelectionValidationOptions<TSelection>):
   | { ok: true; data: TSelection[] }
   | { ok: false; code: HomepageInputErrorCode } {
@@ -202,17 +200,13 @@ function validateSelections<TSelection>({
 
   return {
     ok: true,
-    data: validatedSelections.map((selection) =>
-      toSelection(selection.id, selection.sortOrder)
-    )
+    data: validatedSelections.map((selection) => toSelection(selection.id, selection.sortOrder)),
   };
 }
 
 function validateHeroImageSelection(
   heroImageMediaAssetId: RawInputValue
-):
-  | { ok: true; data: HomepageHeroImageSelection }
-  | { ok: false; code: HomepageInputErrorCode } {
+): { ok: true; data: HomepageHeroImageSelection } | { ok: false; code: HomepageInputErrorCode } {
   const selection = readTrimmedString(heroImageMediaAssetId);
 
   if (selection === null || selection.length === 0) {
@@ -232,9 +226,7 @@ function validateHeroImageSelection(
 
 // --- Public function ---
 
-export function validateHomepageInput(
-  input: HomepageInputSource
-): HomepageInputValidationResult {
+export function validateHomepageInput(input: HomepageInputSource): HomepageInputValidationResult {
   const homepageId = normalizeRequiredNumericId(input.homepageId);
 
   if (homepageId === null) {
@@ -261,19 +253,13 @@ export function validateHomepageInput(
 
   const editorialTitle = normalizeOptionalText(input.editorialTitle);
 
-  if (
-    editorialTitle !== null &&
-    editorialTitle.length > HOMEPAGE_EDITORIAL_TITLE_MAX_LENGTH
-  ) {
+  if (editorialTitle !== null && editorialTitle.length > HOMEPAGE_EDITORIAL_TITLE_MAX_LENGTH) {
     return { ok: false, code: "editorial_title_too_long" };
   }
 
   const editorialText = normalizeOptionalText(input.editorialText);
 
-  if (
-    editorialText !== null &&
-    editorialText.length > HOMEPAGE_EDITORIAL_TEXT_MAX_LENGTH
-  ) {
+  if (editorialText !== null && editorialText.length > HOMEPAGE_EDITORIAL_TEXT_MAX_LENGTH) {
     return { ok: false, code: "editorial_text_too_long" };
   }
 
@@ -287,16 +273,14 @@ export function validateHomepageInput(
     invalidSelectionCode: "invalid_product_selection",
     invalidSortOrderCode: "invalid_product_sort_order",
     duplicateSortOrderCode: "duplicate_product_sort_order",
-    toSelection: (id, sortOrder) => ({ productId: id, sortOrder })
+    toSelection: (id, sortOrder) => ({ productId: id, sortOrder }),
   });
 
   if (!featuredProducts.ok) {
     return featuredProducts;
   }
 
-  if (
-    input.featuredCategoryIds.length > HOMEPAGE_FEATURED_CATEGORIES_MAX_COUNT
-  ) {
+  if (input.featuredCategoryIds.length > HOMEPAGE_FEATURED_CATEGORIES_MAX_COUNT) {
     return { ok: false, code: "too_many_featured_categories" };
   }
 
@@ -306,16 +290,14 @@ export function validateHomepageInput(
     invalidSelectionCode: "invalid_category_selection",
     invalidSortOrderCode: "invalid_category_sort_order",
     duplicateSortOrderCode: "duplicate_category_sort_order",
-    toSelection: (id, sortOrder) => ({ categoryId: id, sortOrder })
+    toSelection: (id, sortOrder) => ({ categoryId: id, sortOrder }),
   });
 
   if (!featuredCategories.ok) {
     return featuredCategories;
   }
 
-  if (
-    input.featuredBlogPostIds.length > HOMEPAGE_FEATURED_BLOG_POSTS_MAX_COUNT
-  ) {
+  if (input.featuredBlogPostIds.length > HOMEPAGE_FEATURED_BLOG_POSTS_MAX_COUNT) {
     return { ok: false, code: "too_many_featured_blog_posts" };
   }
 
@@ -325,7 +307,7 @@ export function validateHomepageInput(
     invalidSelectionCode: "invalid_blog_post_selection",
     invalidSortOrderCode: "invalid_blog_post_sort_order",
     duplicateSortOrderCode: "duplicate_blog_post_sort_order",
-    toSelection: (id, sortOrder) => ({ blogPostId: id, sortOrder })
+    toSelection: (id, sortOrder) => ({ blogPostId: id, sortOrder }),
   });
 
   if (!featuredBlogPosts.ok) {
@@ -343,7 +325,7 @@ export function validateHomepageInput(
       editorialText,
       featuredProducts: featuredProducts.data,
       featuredCategories: featuredCategories.data,
-      featuredBlogPosts: featuredBlogPosts.data
-    }
+      featuredBlogPosts: featuredBlogPosts.data,
+    },
   };
 }

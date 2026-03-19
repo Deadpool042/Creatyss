@@ -5,16 +5,10 @@ type OrderDetailPaymentCardProps = Readonly<{
   payment: AdminOrderDetail["payment"];
 }>;
 
-export function OrderDetailPaymentCard({
-  payment
-}: OrderDetailPaymentCardProps) {
+export function OrderDetailPaymentCard({ payment }: OrderDetailPaymentCardProps) {
   return (
     <article className="grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
-      <SectionIntro
-        className="grid gap-2"
-        eyebrow="Paiement"
-        title="État du paiement"
-      />
+      <SectionIntro className="grid gap-2" eyebrow="Paiement" title="État du paiement" />
 
       <div className="grid gap-3">
         <p className="card-copy rounded-lg border border-border/60 bg-muted/10 p-3 text-sm leading-6 text-foreground">

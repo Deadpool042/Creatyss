@@ -8,6 +8,7 @@ V10-3 terminé : DataTable produits avec `product-columns.tsx` et `products-list
 ## Objectif
 
 Deux actions fréquentes sur les produits nécessitent aujourd'hui de naviguer sur la fiche complète :
+
 1. Publier ou dépublier un produit
 2. Supprimer un produit
 
@@ -17,13 +18,13 @@ V11-3 rend ces deux actions accessibles depuis la liste, avec les protections ap
 
 ### Actions existantes (Server Actions dans `features/admin/products/actions/`)
 
-| Action | Fichier | Usage actuel |
-|--------|---------|-------------|
-| `createProductAction` | `create-product-action.ts` | Formulaire création |
-| `updateProductAction` | `update-product-action.ts` | Formulaire édition général |
-| `deleteProductAction` | `delete-product-action.ts` | Fiche produit, danger zone |
-| `updateSimpleProductOfferAction` | `update-simple-product-offer-action.ts` | Section vente |
-| (variantes, images…) | autres fichiers | Fiche produit |
+| Action                           | Fichier                                 | Usage actuel               |
+| -------------------------------- | --------------------------------------- | -------------------------- |
+| `createProductAction`            | `create-product-action.ts`              | Formulaire création        |
+| `updateProductAction`            | `update-product-action.ts`              | Formulaire édition général |
+| `deleteProductAction`            | `delete-product-action.ts`              | Fiche produit, danger zone |
+| `updateSimpleProductOfferAction` | `update-simple-product-offer-action.ts` | Section vente              |
+| (variantes, images…)             | autres fichiers                         | Fiche produit              |
 
 ### Ce que V11-3 ajoute
 
@@ -50,7 +51,7 @@ Cette action est justifiée car `updateProductAction` requiert tous les champs d
 // Sortie : redirect vers /admin/products/${productId}?product_status=updated
 //          ou /admin/products?error=missing_product si produit introuvable
 
-export async function toggleProductStatusAction(formData: FormData): Promise<void>
+export async function toggleProductStatusAction(formData: FormData): Promise<void>;
 ```
 
 ### Contraintes
@@ -69,7 +70,7 @@ Une fonction légère est suffisante :
 
 ```typescript
 // Dans admin-product.repository.ts
-export async function toggleAdminProductStatus(id: string): Promise<"draft" | "published" | null>
+export async function toggleAdminProductStatus(id: string): Promise<"draft" | "published" | null>;
 // Retourne le nouveau statut si succès, null si produit introuvable
 ```
 
@@ -153,8 +154,7 @@ export function ProductRowActions({ product }: ProductRowActionsProps) {
             <DropdownMenuItem asChild>
               <Link href={`/admin/products/${product.id}`}>Modifier</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => toggleFormRef.current?.requestSubmit()}>
+            <DropdownMenuItem onClick={() => toggleFormRef.current?.requestSubmit()}>
               {toggleLabel}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -170,15 +170,16 @@ export function ProductRowActions({ product }: ProductRowActionsProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Supprimer « {product.name} » ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Cette action est irréversible. Le produit sera supprimé avec ses
-              déclinaisons et ses images.
+              Cette action est irréversible. Le produit sera supprimé avec ses déclinaisons et ses
+              images.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Conserver le produit</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => deleteFormRef.current?.requestSubmit()}>
+              onClick={() => deleteFormRef.current?.requestSubmit()}
+            >
               Supprimer le produit
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -213,6 +214,7 @@ Ces redirects s'appuient sur les messages déjà définis dans `products/page.ts
 ## Sélecteurs e2e à préserver
 
 `tests/e2e/admin/products.spec.ts` utilise :
+
 - `page.locator("article.admin-product-card")` — dans la cellule `name` de `product-columns.tsx`
 - `productCards.first().getByRole("link", { name: "Modifier le produit" })` — lien dans la cellule nom
 

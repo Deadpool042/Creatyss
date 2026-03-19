@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server";
-import {
-  ADMIN_SESSION_COOKIE_NAME,
-  adminSessionCookieOptions
-} from "@/lib/admin-auth";
+import { ADMIN_SESSION_COOKIE_NAME, adminSessionCookieOptions } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
   const response = NextResponse.redirect(new URL("/admin/login", request.url));
@@ -12,7 +9,7 @@ export async function POST(request: Request) {
     value: "",
     ...adminSessionCookieOptions,
     expires: new Date(0),
-    maxAge: 0
+    maxAge: 0,
   });
 
   return response;

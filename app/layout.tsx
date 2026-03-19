@@ -11,7 +11,7 @@ import { ThemeProvider } from "@/components/shared/theme-provider";
 const jost = Jost({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap"
+  display: "swap",
 });
 
 const cormorant = Cormorant_Garamond({
@@ -19,12 +19,12 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-serif",
   weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
-  display: "swap"
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Creatyss",
-  description: "Boutique publique minimale de Creatyss."
+  description: "Boutique publique minimale de Creatyss.",
 };
 
 type RootLayoutProps = Readonly<{
@@ -36,13 +36,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html
       lang="fr"
       className={cn("font-sans", jost.variable, cormorant.variable)}
-      suppressHydrationWarning>
+      suppressHydrationWarning
+    >
       <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange>
+          disableTransitionOnChange
+        >
           <TooltipProvider>
             <PublicSiteShell>{children}</PublicSiteShell>
           </TooltipProvider>

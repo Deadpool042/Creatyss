@@ -9,7 +9,7 @@ const savoirFaireImagePath = "/uploads/savoir-faire-placeholder.webp";
 
 export function HomepageSavoirFaireSection({
   editorialText,
-  editorialTitle
+  editorialTitle,
 }: HomepageSavoirFaireSectionProps) {
   return (
     <section className="grid overflow-hidden rounded-xl border border-hero-border/50 bg-hero-bg min-[860px]:grid-cols-[0.95fr_1.05fr] dark:border-hero-border">
@@ -35,12 +35,9 @@ export function HomepageSavoirFaireSection({
             100%
           </div>
           <div className="flex-1">
-            <p className="text-[0.82rem] font-medium text-white/96">
-              Fait main en France
-            </p>
+            <p className="text-[0.82rem] font-medium text-white/96">Fait main en France</p>
             <p className="mt-0.5 text-[0.75rem] font-light leading-relaxed text-white/72 dark:text-white/78">
-              Chaque geste, de la découpe à la finition, est réalisé dans
-              l'atelier Creatyss.
+              Chaque geste, de la découpe à la finition, est réalisé dans l'atelier Creatyss.
             </p>
           </div>
         </div>
@@ -70,8 +67,7 @@ export function HomepageSavoirFaireSection({
               01
             </span>
             <span className="text-[0.82rem] font-light leading-[1.6] text-hero-ink-soft dark:text-foreground/72">
-              Matières choisies pour leur tenue, leur toucher et leur
-              durabilité.
+              Matières choisies pour leur tenue, leur toucher et leur durabilité.
             </span>
           </li>
           <li className="grid grid-cols-[1.75rem_1fr] items-start gap-4.5 border-t border-hero-border/60 py-4 dark:border-hero-border">
@@ -79,8 +75,7 @@ export function HomepageSavoirFaireSection({
               02
             </span>
             <span className="text-[0.82rem] font-light leading-[1.6] text-hero-ink-soft dark:text-foreground/72">
-              Fabrication artisanale, attentive aux finitions et au juste
-              rythme.
+              Fabrication artisanale, attentive aux finitions et au juste rythme.
             </span>
           </li>
           <li className="grid grid-cols-[1.75rem_1fr] items-start gap-4.5 border-t border-b border-hero-border/60 py-4 dark:border-hero-border">
@@ -88,8 +83,7 @@ export function HomepageSavoirFaireSection({
               03
             </span>
             <span className="text-[0.82rem] font-light leading-[1.6] text-hero-ink-soft dark:text-foreground/72">
-              Des pièces singulières pensées pour accompagner le quotidien avec
-              élégance.
+              Des pièces singulières pensées pour accompagner le quotidien avec élégance.
             </span>
           </li>
         </ul>

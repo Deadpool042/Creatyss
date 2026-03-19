@@ -7,7 +7,7 @@ type OrderDetailShippingCardProps = Readonly<{
 
 export function OrderDetailShippingCard({
   shippedAtLabel,
-  trackingReference
+  trackingReference,
 }: OrderDetailShippingCardProps) {
   return (
     <article className="grid gap-3 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">

@@ -9,23 +9,23 @@ describe("resolveSimpleProductOffer", () => {
           sku: "SIMPLE-001",
           price: "49",
           compareAtPrice: "59",
-          stockQuantity: 3
+          stockQuantity: 3,
         },
         legacyOffers: [
           {
             sku: "LEGACY-001",
             price: "39.00",
             compareAtPrice: null,
-            stockQuantity: 8
-          }
-        ]
+            stockQuantity: 8,
+          },
+        ],
       })
     ).toEqual({
       sku: "SIMPLE-001",
       price: "49.00",
       compareAtPrice: "59.00",
       stockQuantity: 3,
-      isAvailable: true
+      isAvailable: true,
     });
   });
 
@@ -36,23 +36,23 @@ describe("resolveSimpleProductOffer", () => {
           sku: null,
           price: "49.00",
           compareAtPrice: null,
-          stockQuantity: 3
+          stockQuantity: 3,
         },
         legacyOffers: [
           {
             sku: "LEGACY-001",
             price: "39.00",
             compareAtPrice: null,
-            stockQuantity: 0
-          }
-        ]
+            stockQuantity: 0,
+          },
+        ],
       })
     ).toEqual({
       sku: "LEGACY-001",
       price: "39.00",
       compareAtPrice: null,
       stockQuantity: 0,
-      isAvailable: false
+      isAvailable: false,
     });
   });
 
@@ -63,16 +63,16 @@ describe("resolveSimpleProductOffer", () => {
           sku: " ",
           price: "49.00",
           compareAtPrice: null,
-          stockQuantity: 3
+          stockQuantity: 3,
         },
         legacyOffers: [
           {
             sku: " ",
             price: "39.00",
             compareAtPrice: null,
-            stockQuantity: 4
-          }
-        ]
+            stockQuantity: 4,
+          },
+        ],
       })
     ).toBeNull();
   });
@@ -84,22 +84,22 @@ describe("resolveSimpleProductOffer", () => {
           sku: null,
           price: null,
           compareAtPrice: null,
-          stockQuantity: null
+          stockQuantity: null,
         },
         legacyOffers: [
           {
             sku: "LEGACY-001",
             price: "39.00",
             compareAtPrice: null,
-            stockQuantity: 4
+            stockQuantity: 4,
           },
           {
             sku: "LEGACY-002",
             price: "42.00",
             compareAtPrice: null,
-            stockQuantity: 2
-          }
-        ]
+            stockQuantity: 2,
+          },
+        ],
       })
     ).toBeNull();
   });

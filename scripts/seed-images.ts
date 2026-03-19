@@ -75,10 +75,7 @@ type Manifest = {
 const FORCE = process.argv.includes("--force");
 const ROOT = process.cwd();
 const SEED_DIR = path.join(ROOT, "seed_data", "images");
-const UPLOADS_DIR = (process.env.UPLOADS_DIR ?? "public/uploads").replace(
-  /\/$/,
-  ""
-);
+const UPLOADS_DIR = (process.env.UPLOADS_DIR ?? "public/uploads").replace(/\/$/, "");
 const UPLOADS_ABS = path.join(ROOT, UPLOADS_DIR);
 
 const WEBP_OPTIONS: sharp.WebpOptions = { quality: 85, effort: 4 };
@@ -119,20 +116,24 @@ async function convertToWebpIfNeeded(
   if (!FORCE && existsSync(dest)) {
     process.stdout.write(`  skip (exists): ${path.relative(ROOT, dest)}\n`);
     // Read existing size/dimensions for DB upsert accuracy.
-    const { size, width, height } = await sharp(dest).metadata().then(m => ({
-      size: 0, // we won't re-stat; 0 triggers ON CONFLICT DO NOTHING path
-      width: m.width ?? null,
-      height: m.height ?? null
-    }));
+    const {
+      size: _size,
+      width,
+      height,
+    } = await sharp(dest)
+      .metadata()
+      .then((m) => ({
+        size: 0, // we won't re-stat; 0 triggers ON CONFLICT DO NOTHING path
+        width: m.width ?? null,
+        height: m.height ?? null,
+      }));
     const buf = await readFile(dest);
     return { ok: true, byteSize: buf.length, width, height };
   }
 
   await mkdir(path.dirname(dest), { recursive: true });
 
-  const { data, info } = await sharp(src)
-    .webp(WEBP_OPTIONS)
-    .toBuffer({ resolveWithObject: true });
+  const { data, info } = await sharp(src).webp(WEBP_OPTIONS).toBuffer({ resolveWithObject: true });
 
   await writeFile(dest, data, { flag: FORCE ? "w" : "wx" });
   process.stdout.write(
@@ -143,7 +144,7 @@ async function convertToWebpIfNeeded(
     ok: true,
     byteSize: data.length,
     width: info.width ?? null,
-    height: info.height ?? null
+    height: info.height ?? null,
   };
 }
 
@@ -216,9 +217,7 @@ async function main() {
     process.stdout.write("==> Product images\n");
 
     for (const product of manifest.products ?? []) {
-      const realImages = (product.images ?? []).filter(
-        img => img.src.trim() !== ""
-      );
+      const realImages = (product.images ?? []).filter((img) => img.src.trim() !== "");
       if (realImages.length === 0) continue;
 
       process.stdout.write(`  product: ${product.slug}\n`);
@@ -227,23 +226,12 @@ async function main() {
         const src = path.join(SEED_DIR, img.src);
         const destRelative = toWebpDestRelative(img.src);
         const dest = path.join(UPLOADS_ABS, destRelative);
-        const originalName =
-          path.basename(img.src).replace(/\.[^.]+$/, "") + ".webp";
+        const originalName = path.basename(img.src).replace(/\.[^.]+$/, "") + ".webp";
 
-        const { ok, byteSize, width, height } = await convertToWebpIfNeeded(
-          src,
-          dest
-        );
+        const { ok, byteSize, width, height } = await convertToWebpIfNeeded(src, dest);
         if (!ok) continue;
 
-        await upsertMediaAsset(
-          pool,
-          destRelative,
-          originalName,
-          byteSize,
-          width,
-          height
-        );
+        await upsertMediaAsset(pool, destRelative, originalName, byteSize, width, height);
 
         if (img.isPrimary) {
           await pool.query(
@@ -289,28 +277,17 @@ async function main() {
       const src = path.join(SEED_DIR, img.src);
       const destRelative = toWebpDestRelative(img.src);
       const dest = path.join(UPLOADS_ABS, destRelative);
-      const originalName =
-        path.basename(img.src).replace(/\.[^.]+$/, "") + ".webp";
+      const originalName = path.basename(img.src).replace(/\.[^.]+$/, "") + ".webp";
 
-      const { ok, byteSize, width, height } = await convertToWebpIfNeeded(
-        src,
-        dest
-      );
+      const { ok, byteSize, width, height } = await convertToWebpIfNeeded(src, dest);
       if (!ok) continue;
 
-      await upsertMediaAsset(
-        pool,
-        destRelative,
-        originalName,
-        byteSize,
-        width,
-        height
-      );
+      await upsertMediaAsset(pool, destRelative, originalName, byteSize, width, height);
 
-      await pool.query(
-        `update categories set image_path = $2 where slug = $1`,
-        [category.slug, destRelative]
-      );
+      await pool.query(`update categories set image_path = $2 where slug = $1`, [
+        category.slug,
+        destRelative,
+      ]);
     }
 
     process.stdout.write("==> Done.\n");
@@ -320,8 +297,7 @@ async function main() {
 }
 
 main().catch((error: unknown) => {
-  const message =
-    error instanceof Error ? error.message : "Unknown seed-images error.";
+  const message = error instanceof Error ? error.message : "Unknown seed-images error.";
   process.stderr.write(`seed-images: ${message}\n`);
   process.exitCode = 1;
 });

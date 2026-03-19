@@ -1,11 +1,8 @@
 import { notFound } from "next/navigation";
-import {
-  getPublishedHomepageContent,
-  listRecentPublishedProducts
-} from "@/db/catalog";
+import { getPublishedHomepageContent, listRecentPublishedProducts } from "@/db/catalog";
 import { getUploadsPublicPath } from "@/lib/uploads";
-import { HomepageHeroSection } from "@/features/homepage/components/homepage-hero-section";
 import {
+  HomepageHeroSection,
   HomepageAboutSection,
   HomepageCollectionsSection,
   HomepageEventsSection,
@@ -14,8 +11,8 @@ import {
   HomepageJournalSection,
   HomepageNewArrivalsSection,
   HomepageNewsletterSection,
-  HomepageSavoirFaireSection
-} from "@/features/homepage/components";
+  HomepageSavoirFaireSection,
+} from "@/features/homepage";
 
 export const revalidate = 60;
 
@@ -34,11 +31,11 @@ export const metadata = {
         url: "https://creatyss.com/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Visuel de présentation de Creatyss"
-      }
+        alt: "Visuel de présentation de Creatyss",
+      },
     ],
     locale: "fr_FR",
-    type: "website"
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
@@ -48,16 +45,16 @@ export const metadata = {
     images: [
       {
         url: "https://creatyss.com/twitter-image.jpg",
-        alt: "Visuel de présentation de Creatyss"
-      }
-    ]
-  }
+        alt: "Visuel de présentation de Creatyss",
+      },
+    ],
+  },
 };
 
 export default async function HomePage() {
   const [homepage, recentProducts] = await Promise.all([
     getPublishedHomepageContent(),
-    listRecentPublishedProducts(4)
+    listRecentPublishedProducts(4),
   ]);
 
   if (homepage === null) {
@@ -104,9 +101,7 @@ export default async function HomePage() {
 
         <div className="grid gap-8 min-[900px]:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <HomepageEventsSection />
-          <HomepageJournalSection
-            featuredPost={homepage.featuredBlogPosts[0] ?? null}
-          />
+          <HomepageJournalSection featuredPost={homepage.featuredBlogPosts[0] ?? null} />
         </div>
       </div>
       <HomepageNewsletterSection />

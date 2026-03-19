@@ -4,7 +4,7 @@ import {
   createOrderEmailEventIfAbsent,
   markOrderEmailEventFailed,
   markOrderEmailEventSent,
-  type OrderEmailEventType
+  type OrderEmailEventType,
 } from "@/db/repositories/order-email.repository";
 import { findOrderEmailContextById } from "@/db/repositories/order.repository";
 import { buildOrderEmailTemplate } from "@/features/email/order-email-templates";
@@ -33,24 +33,21 @@ export async function sendOrderTransactionalEmail(input: {
     const emailEvent = await createOrderEmailEventIfAbsent({
       orderId: order.id,
       eventType: input.eventType,
-      recipientEmail: order.customerEmail
+      recipientEmail: order.customerEmail,
     });
 
     if (emailEvent === null) {
       return;
     }
 
-    const orderUrl = new URL(
-      `/checkout/confirmation/${order.reference}`,
-      env.appUrl
-    ).toString();
+    const orderUrl = new URL(`/checkout/confirmation/${order.reference}`, env.appUrl).toString();
     const template = buildOrderEmailTemplate({
       eventType: input.eventType,
       customerFirstName: order.customerFirstName,
       reference: order.reference,
       totalAmount: order.totalAmount,
       orderUrl,
-      trackingReference: order.trackingReference
+      trackingReference: order.trackingReference,
     });
 
     try {
@@ -58,18 +55,18 @@ export async function sendOrderTransactionalEmail(input: {
         to: order.customerEmail,
         subject: template.subject,
         text: template.text,
-        html: template.html
+        html: template.html,
       });
 
       await markOrderEmailEventSent({
         id: emailEvent.id,
-        providerMessageId
+        providerMessageId,
       });
     } catch (error) {
       console.error(error);
       await markOrderEmailEventFailed({
         id: emailEvent.id,
-        lastError: formatEmailError(error)
+        lastError: formatEmailError(error),
       });
     }
   } catch (error) {

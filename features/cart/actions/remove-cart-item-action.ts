@@ -3,13 +3,11 @@
 import { redirect } from "next/navigation";
 import {
   findGuestCartIdByToken,
-  removeGuestCartItem
+  removeGuestCartItem,
 } from "@/db/repositories/guest-cart.repository";
 import { readCartSessionToken } from "@/lib/cart-session";
 
-function normalizeCartItemId(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
+function normalizeCartItemId(value: FormDataEntryValue | string | null | undefined): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -45,7 +43,7 @@ export async function removeCartItemAction(formData: FormData): Promise<void> {
   try {
     const removed = await removeGuestCartItem({
       cartId,
-      itemId
+      itemId,
     });
 
     if (!removed) {

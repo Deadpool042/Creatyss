@@ -93,13 +93,13 @@ Le répertoire `components/ui/` contient un ensemble étendu de primitives shadc
 
 Dans l'admin, les composants constituant la base stable effectivement utilisée :
 
-| Composant | Origine | Usage actuel principal |
-| --- | --- | --- |
-| `Button` | shadcn/ui | Formulaires de soumission, actions principales |
-| `Card` | shadcn/ui | Sections de contenu, upload, grilles, surfaces |
-| `PageHeader` | maison | En-tête des pages admin migrées |
-| `Notice` | maison | Messages système (succès, alerte, note) |
-| `SectionIntro` | maison | En-tête de section dans les pages détail et formulaires |
+| Composant      | Origine   | Usage actuel principal                                  |
+| -------------- | --------- | ------------------------------------------------------- |
+| `Button`       | shadcn/ui | Formulaires de soumission, actions principales          |
+| `Card`         | shadcn/ui | Sections de contenu, upload, grilles, surfaces          |
+| `PageHeader`   | maison    | En-tête des pages admin migrées                         |
+| `Notice`       | maison    | Messages système (succès, alerte, note)                 |
+| `SectionIntro` | maison    | En-tête de section dans les pages détail et formulaires |
 
 D'autres primitives shadcn sont présentes (`Sidebar`, `Sheet`, `ScrollArea`, `Separator`, `Tooltip`, `Label`, `Input`, `Textarea`, `Select`, `Checkbox`, etc.) mais pas encore toutes utilisées de manière homogène dans l'admin.
 
@@ -344,11 +344,11 @@ La cible V7 est mobile-first. Règles explicites :
 
 ### Groupes de navigation
 
-| Groupe | Destinations |
-| --- | --- |
-| Catalogue | Produits, Catégories |
-| Contenu | Page d'accueil, Blog |
-| Opérations | Commandes, Médias |
+| Groupe     | Destinations         |
+| ---------- | -------------------- |
+| Catalogue  | Produits, Catégories |
+| Contenu    | Page d'accueil, Blog |
+| Opérations | Commandes, Médias    |
 
 "Accueil admin" reste un lien solo au-dessus des groupes.
 

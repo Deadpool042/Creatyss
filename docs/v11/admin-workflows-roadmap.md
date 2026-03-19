@@ -13,25 +13,25 @@
 
 ### Ce qui crée de la friction ou du risque
 
-| Point | Page / Composant | Problème |
-|-------|------------------|----------|
-| "Annuler la commande" | `order-detail-actions-card.tsx` | Aucune confirmation — action irréversible en un clic |
-| "Supprimer le produit" | `product-danger-zone-section.tsx` | Aucune confirmation — suppression définitive en un clic |
-| Paid → Preparing | Liste commandes | 3 étapes : liste → fiche → bouton. Transition la plus fréquente en prod |
-| Publier / Dépublier | Liste produits | Nécessite la fiche complète pour un simple toggle de statut |
-| Publier un article | Table blog | Nécessite la fiche pour un simple changement de statut |
-| Actions par ligne | DataTable commandes | Colonne "Voir le détail" uniquement — pas d'action contextuelle |
-| Actions par ligne | DataTable produits | Cellule nom avec lien — pas de colonne d'actions dédiée |
+| Point                  | Page / Composant                  | Problème                                                                |
+| ---------------------- | --------------------------------- | ----------------------------------------------------------------------- |
+| "Annuler la commande"  | `order-detail-actions-card.tsx`   | Aucune confirmation — action irréversible en un clic                    |
+| "Supprimer le produit" | `product-danger-zone-section.tsx` | Aucune confirmation — suppression définitive en un clic                 |
+| Paid → Preparing       | Liste commandes                   | 3 étapes : liste → fiche → bouton. Transition la plus fréquente en prod |
+| Publier / Dépublier    | Liste produits                    | Nécessite la fiche complète pour un simple toggle de statut             |
+| Publier un article     | Table blog                        | Nécessite la fiche pour un simple changement de statut                  |
+| Actions par ligne      | DataTable commandes               | Colonne "Voir le détail" uniquement — pas d'action contextuelle         |
+| Actions par ligne      | DataTable produits                | Cellule nom avec lien — pas de colonne d'actions dédiée                 |
 
 ## Composants shadcn disponibles pour V11
 
 Tous déjà installés dans `components/ui/` :
 
-| Composant | Usage |
-|-----------|-------|
-| `alert-dialog.tsx` | Confirmations destructives |
-| `dropdown-menu.tsx` | Row actions multi-choix |
-| `sonner.tsx` | Feedback succès léger (optionnel) |
+| Composant           | Usage                             |
+| ------------------- | --------------------------------- |
+| `alert-dialog.tsx`  | Confirmations destructives        |
+| `dropdown-menu.tsx` | Row actions multi-choix           |
+| `sonner.tsx`        | Feedback succès léger (optionnel) |
 
 Aucune nouvelle installation de composant shadcn n'est requise pour V11.
 
@@ -44,10 +44,12 @@ Aucune nouvelle installation de composant shadcn n'est requise pour V11.
 **Périmètre :** patterns fondateurs et corrections de vulnérabilités existantes
 
 Ce lot définit les deux patterns fondateurs de V11 :
+
 1. Le pattern `DropdownMenu` pour les colonnes d'actions dans les DataTable
 2. Le pattern `AlertDialog` pour les confirmations destructives
 
 Ce lot applique immédiatement ces patterns aux deux vulnérabilités actuelles les plus critiques :
+
 - `AlertDialog` sur "Annuler la commande" (order detail)
 - `AlertDialog` sur "Supprimer le produit" (product detail)
 
@@ -58,6 +60,7 @@ Ce lot applique immédiatement ces patterns aux deux vulnérabilités actuelles 
 **Périmètre :** DataTable commandes — colonne d'actions + quick transition
 
 Ce lot ajoute à la DataTable commandes une colonne d'actions par ligne :
+
 - Lien vers le détail (toujours)
 - Quick action contextuelle selon statut : pour une commande payée, transition directe vers "en préparation" depuis la liste
 - `AlertDialog` pour "Annuler" si exposée depuis la liste
@@ -71,6 +74,7 @@ L'expédition reste sur la fiche — elle nécessite la saisie de la référence
 **Périmètre :** DataTable produits — colonne d'actions + toggle statut + suppression depuis liste
 
 Ce lot ajoute à la DataTable produits une colonne d'actions par ligne :
+
 - Lien "Modifier" vers la fiche (toujours)
 - Toggle Publier / Brouillon — action directe, feedback via redirect
 - Supprimer — avec `AlertDialog` obligatoire, depuis la liste
@@ -84,6 +88,7 @@ Un nouveau Server Action ciblé peut être nécessaire pour le toggle de statut.
 **Périmètre :** Table blog quick publish + revue pattern feedback
 
 Ce lot complète V11 :
+
 - Table blog : colonne d'actions avec toggle Publier / Brouillon + lien "Modifier"
 - Revue du pattern de feedback : documenter quand redirect-searchParams, quand Sonner
 - Identification d'éventuelles frictions résiduelles hors commandes/produits/blog

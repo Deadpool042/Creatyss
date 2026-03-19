@@ -15,12 +15,12 @@ Extraire les patterns de carte récurrents des pages liste vers `components/admi
 
 ## Périmètre
 
-| Page | Lignes | Composant admin cible |
-| --- | --- | --- |
-| `orders/page.tsx` | ~109 | `AdminOrderCard` |
-| `categories/page.tsx` | ~108 | `AdminCategoryCard` |
-| `blog/page.tsx` | ~119 | `AdminBlogPostCard` |
-| `products/page.tsx` | ~130 | `AdminProductCard` |
+| Page                  | Lignes | Composant admin cible |
+| --------------------- | ------ | --------------------- |
+| `orders/page.tsx`     | ~109   | `AdminOrderCard`      |
+| `categories/page.tsx` | ~108   | `AdminCategoryCard`   |
+| `blog/page.tsx`       | ~119   | `AdminBlogPostCard`   |
+| `products/page.tsx`   | ~130   | `AdminProductCard`    |
 
 Ces composants existent déjà dans `components/admin/`. Ce lot vise à vérifier leur cohérence avec la doctrine V7 et à les stabiliser si nécessaire.
 

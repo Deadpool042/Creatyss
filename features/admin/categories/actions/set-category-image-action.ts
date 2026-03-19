@@ -4,9 +4,7 @@ import { redirect } from "next/navigation";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import { updateAdminCategoryImage } from "@/db/repositories/admin-category.repository";
 
-function normalizeCategoryId(
-  value: FormDataEntryValue | null
-): string | null {
+function normalizeCategoryId(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -37,7 +35,7 @@ export async function setCategoryImageAction(formData: FormData): Promise<void> 
   }
 
   const mediaAssets = await listAdminMediaAssets();
-  const mediaAsset = mediaAssets.find(asset => asset.id === mediaAssetId);
+  const mediaAsset = mediaAssets.find((asset) => asset.id === mediaAssetId);
 
   if (mediaAsset === undefined) {
     redirect(`/admin/categories/${categoryId}?image_error=media_not_found`);
@@ -45,7 +43,7 @@ export async function setCategoryImageAction(formData: FormData): Promise<void> 
 
   const category = await updateAdminCategoryImage({
     id: categoryId,
-    imagePath: mediaAsset.filePath
+    imagePath: mediaAsset.filePath,
   });
 
   if (category === null) {

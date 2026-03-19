@@ -20,7 +20,7 @@ export function SurfaceSection({
   headerActions,
   children,
   className,
-  contentClassName
+  contentClassName,
 }: SurfaceSectionProps) {
   const Tag = as as ElementType;
   const TitleTag = titleAs as ElementType;
@@ -31,22 +31,19 @@ export function SurfaceSection({
       className={cn(
         "w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10",
         className
-      )}>
+      )}
+    >
       {hasHeader ? (
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div className="grid gap-2">
             {eyebrow ? (
-              <p className="text-sm font-bold uppercase tracking-widest text-brand">
-                {eyebrow}
-              </p>
+              <p className="text-sm font-bold uppercase tracking-widest text-brand">{eyebrow}</p>
             ) : null}
 
             {title ? <TitleTag>{title}</TitleTag> : null}
           </div>
 
-          {headerActions ? (
-            <div className="shrink-0">{headerActions}</div>
-          ) : null}
+          {headerActions ? <div className="shrink-0">{headerActions}</div> : null}
         </div>
       ) : null}
 

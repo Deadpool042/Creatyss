@@ -19,18 +19,14 @@ export const cartSessionCookieOptions = {
   maxAge: CART_SESSION_MAX_AGE_SECONDS,
   path: "/",
   sameSite: "lax" as const,
-  secure: process.env.NODE_ENV === "production"
+  secure: process.env.NODE_ENV === "production",
 };
 
 function signCartToken(token: string): string {
-  return createHmac("sha256", env.cartSessionSecret)
-    .update(token, "utf8")
-    .digest("base64url");
+  return createHmac("sha256", env.cartSessionSecret).update(token, "utf8").digest("base64url");
 }
 
-function verifyCartSessionValue(
-  cookieValue: string | undefined
-): CartSessionVerificationResult {
+function verifyCartSessionValue(cookieValue: string | undefined): CartSessionVerificationResult {
   if (!cookieValue) {
     return { status: "missing" };
   }
@@ -60,7 +56,7 @@ function verifyCartSessionValue(
 
   return {
     status: "valid",
-    token
+    token,
   };
 }
 
@@ -99,6 +95,6 @@ export async function clearCartSessionToken(): Promise<void> {
 
   cookieStore.set(CART_SESSION_COOKIE_NAME, "", {
     ...cartSessionCookieOptions,
-    maxAge: 0
+    maxAge: 0,
   });
 }

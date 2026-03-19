@@ -11,7 +11,7 @@ import { getProductPublishability } from "@/entities/product/product-publishabil
 import { ProductRowActions } from "./product-row-actions";
 
 const productDateFormatter = new Intl.DateTimeFormat("fr-FR", {
-  dateStyle: "medium"
+  dateStyle: "medium",
 });
 
 function getProductStatusLabel(status: AdminProductSummary["status"]) {
@@ -24,7 +24,7 @@ function getProductStatusBadgeVariant(status: AdminProductSummary["status"]) {
 
 function SortableHeader<TData>({
   column,
-  title
+  title,
 }: {
   column: Column<TData, unknown>;
   title: string;
@@ -36,7 +36,8 @@ function SortableHeader<TData>({
       className="-ml-2 h-8 px-2 text-left font-semibold text-foreground hover:bg-muted/60"
       size="sm"
       variant="ghost"
-      onClick={() => column.toggleSorting(direction === "asc")}>
+      onClick={() => column.toggleSorting(direction === "asc")}
+    >
       {title}
       {direction === "asc" ? (
         <ArrowUpIcon className="size-3.5" />
@@ -52,12 +53,7 @@ function SortableHeader<TData>({
 export const productColumns: ColumnDef<AdminProductSummary>[] = [
   {
     accessorKey: "name",
-    header: ({ column }) => (
-      <SortableHeader
-        column={column}
-        title="Produit"
-      />
-    ),
+    header: ({ column }) => <SortableHeader column={column} title="Produit" />,
     filterFn: (row, _columnId, filterValue) => {
       const query = String(filterValue ?? "")
         .trim()
@@ -76,33 +72,25 @@ export const productColumns: ColumnDef<AdminProductSummary>[] = [
 
       return (
         <article className="admin-product-card grid min-w-[16rem] gap-1.5 py-1">
-          <h3 className="text-sm font-semibold text-foreground">
-            {product.name}
-          </h3>
+          <h3 className="text-sm font-semibold text-foreground">{product.name}</h3>
           <p className="text-sm text-muted-foreground">{product.slug}</p>
           {product.shortDescription ? (
-            <p className="line-clamp-2 text-sm text-foreground/80">
-              {product.shortDescription}
-            </p>
+            <p className="line-clamp-2 text-sm text-foreground/80">{product.shortDescription}</p>
           ) : null}
           <Link
             className="inline-flex w-fit items-center text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
-            href={`/admin/products/${product.id}`}>
+            href={`/admin/products/${product.id}`}
+          >
             Modifier le produit
           </Link>
         </article>
       );
-    }
+    },
   },
   {
     id: "status",
-    accessorFn: product => getProductStatusLabel(product.status),
-    header: ({ column }) => (
-      <SortableHeader
-        column={column}
-        title="Statut"
-      />
-    ),
+    accessorFn: (product) => getProductStatusLabel(product.status),
+    header: ({ column }) => <SortableHeader column={column} title="Statut" />,
     cell: ({ row }) => {
       const product = row.original;
       const publishability =
@@ -120,72 +108,47 @@ export const productColumns: ColumnDef<AdminProductSummary>[] = [
           ) : null}
         </div>
       );
-    }
+    },
   },
   {
     id: "type",
-    accessorFn: product =>
-      getAdminProductPresentation(product.productType, product.variantCount)
-        .typeLabel,
-    header: ({ column }) => (
-      <SortableHeader
-        column={column}
-        title="Type"
-      />
-    ),
+    accessorFn: (product) =>
+      getAdminProductPresentation(product.productType, product.variantCount).typeLabel,
+    header: ({ column }) => <SortableHeader column={column} title="Type" />,
     cell: ({ row }) => {
       const presentation = getAdminProductPresentation(
         row.original.productType,
         row.original.variantCount
       );
 
-      return (
-        <span className="text-sm text-foreground">
-          {presentation.typeLabel}
-        </span>
-      );
-    }
+      return <span className="text-sm text-foreground">{presentation.typeLabel}</span>;
+    },
   },
   {
     id: "featured",
-    accessorFn: product => (product.isFeatured ? 1 : 0),
-    header: ({ column }) => (
-      <SortableHeader
-        column={column}
-        title="Mise en avant"
-      />
-    ),
+    accessorFn: (product) => (product.isFeatured ? 1 : 0),
+    header: ({ column }) => <SortableHeader column={column} title="Mise en avant" />,
     cell: ({ row }) => (
       <Badge variant={row.original.isFeatured ? "secondary" : "outline"}>
         {row.original.isFeatured ? "Mis en avant" : "Standard"}
       </Badge>
-    )
+    ),
   },
   {
     id: "categoryCount",
-    accessorFn: product => product.categoryCount,
-    header: ({ column }) => (
-      <SortableHeader
-        column={column}
-        title="Catégories"
-      />
-    ),
+    accessorFn: (product) => product.categoryCount,
+    header: ({ column }) => <SortableHeader column={column} title="Catégories" />,
     cell: ({ row }) => (
       <span className="text-sm text-muted-foreground">
         {row.original.categoryCount} catégorie
         {row.original.categoryCount > 1 ? "s" : ""}
       </span>
-    )
+    ),
   },
   {
     id: "sales",
-    accessorFn: product => product.variantCount,
-    header: ({ column }) => (
-      <SortableHeader
-        column={column}
-        title="Vente"
-      />
-    ),
+    accessorFn: (product) => product.variantCount,
+    header: ({ column }) => <SortableHeader column={column} title="Vente" />,
     cell: ({ row }) => {
       const presentation = getAdminProductPresentation(
         row.original.productType,
@@ -193,32 +156,25 @@ export const productColumns: ColumnDef<AdminProductSummary>[] = [
       );
 
       return (
-        <span className="text-sm text-muted-foreground">
-          {presentation.sellableCountLabel}
-        </span>
+        <span className="text-sm text-muted-foreground">{presentation.sellableCountLabel}</span>
       );
-    }
+    },
   },
   {
     id: "updatedAt",
-    accessorFn: product => new Date(product.updatedAt),
-    header: ({ column }) => (
-      <SortableHeader
-        column={column}
-        title="Mis à jour"
-      />
-    ),
+    accessorFn: (product) => new Date(product.updatedAt),
+    header: ({ column }) => <SortableHeader column={column} title="Mis à jour" />,
     sortingFn: "datetime",
     cell: ({ row }) => (
       <span className="text-sm text-muted-foreground">
         {productDateFormatter.format(new Date(row.original.updatedAt))}
       </span>
-    )
+    ),
   },
   {
     id: "actions",
     header: "",
     enableSorting: false,
     cell: ({ row }) => <ProductRowActions product={row.original} />,
-  }
+  },
 ];

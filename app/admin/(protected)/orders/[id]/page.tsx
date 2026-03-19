@@ -8,7 +8,7 @@ import { getAllowedOrderStatusTransitions } from "@/entities/order/order-status-
 import {
   getOrderStatusLabel,
   getOrderStatusSummary,
-  getPaymentStatusLabel
+  getPaymentStatusLabel,
 } from "@/entities/order/order-status-presentation";
 import {
   OrderDetailActionsCard,
@@ -19,15 +19,13 @@ import {
   OrderDetailPaymentCard,
   OrderDetailShippingAddressCard,
   OrderDetailShippingCard,
-  OrderDetailSummaryCard
-} from "@/features/admin/orders/components";
-import {
+  OrderDetailSummaryCard,
   formatOptionalOrderDateTime,
   formatOrderDateTime,
   getOrderDetailErrorMessage,
   getOrderDetailStatusMessage,
-  readOrderDetailSearchParam
-} from "@/features/admin/orders/mappers/order-detail-mappers";
+  readOrderDetailSearchParam,
+} from "@/features/admin/orders";
 
 export const dynamic = "force-dynamic";
 
@@ -43,18 +41,12 @@ type AdminOrderDetailPageProps = Readonly<{
 
 export default async function AdminOrderDetailPage({
   params,
-  searchParams
+  searchParams,
 }: AdminOrderDetailPageProps) {
   const { id } = await params;
   const resolvedSearchParams = await searchParams;
-  const orderStatusParam = readOrderDetailSearchParam(
-    resolvedSearchParams,
-    "order_status"
-  );
-  const orderErrorParam = readOrderDetailSearchParam(
-    resolvedSearchParams,
-    "order_error"
-  );
+  const orderStatusParam = readOrderDetailSearchParam(resolvedSearchParams, "order_status");
+  const orderErrorParam = readOrderDetailSearchParam(resolvedSearchParams, "order_error");
   const order = await findAdminOrderById(id);
 
   if (order === null) {
@@ -64,7 +56,7 @@ export default async function AdminOrderDetailPage({
   const allowedTransitions = getAllowedOrderStatusTransitions(order.status);
   const summary = getOrderStatusSummary({
     orderStatus: order.status,
-    paymentStatus: order.payment.status
+    paymentStatus: order.payment.status,
   });
   const statusMessage = getOrderDetailStatusMessage(orderStatusParam);
   const errorMessage = getOrderDetailErrorMessage(orderErrorParam);
@@ -76,50 +68,46 @@ export default async function AdminOrderDetailPage({
     trackingReference: order.trackingReference,
     createdAtLabel: formatOrderDateTime(order.createdAt),
     statusLabel: orderStatusLabel,
-    paymentStatusLabel
+    paymentStatusLabel,
   };
   const shippingInfo = {
     shippedAtLabel: formatOptionalOrderDateTime(order.shippedAt),
-    trackingReference: order.trackingReference
+    trackingReference: order.trackingReference,
   };
   const customer = {
     fullName: `${order.customerFirstName} ${order.customerLastName}`,
     email: order.customerEmail,
-    phone: order.customerPhone
+    phone: order.customerPhone,
   };
   const shippingAddress = {
     line1: order.shippingAddressLine1,
     line2: order.shippingAddressLine2,
     postalCode: order.shippingPostalCode,
     city: order.shippingCity,
-    countryCode: order.shippingCountryCode
+    countryCode: order.shippingCountryCode,
   };
   const billing = {
     sameAsShipping: order.billingSameAsShipping,
-    fullName:
-      `${order.billingFirstName ?? ""} ${order.billingLastName ?? ""}`.trim() ||
-      null,
+    fullName: `${order.billingFirstName ?? ""} ${order.billingLastName ?? ""}`.trim() || null,
     phone: order.billingPhone,
     line1: order.billingAddressLine1,
     line2: order.billingAddressLine2,
     postalCode: order.billingPostalCode,
     city: order.billingCity,
-    countryCode: order.billingCountryCode
+    countryCode: order.billingCountryCode,
   };
 
   return (
     <AdminPageShell
       actions={
-        <Button
-          asChild
-          size="sm"
-          variant="outline">
+        <Button asChild size="sm" variant="outline">
           <Link href="/admin/orders">Retour aux commandes</Link>
         </Button>
       }
       description="Repérez d'abord l'état de la commande, appliquez l'action utile si nécessaire, puis consultez les détails."
       eyebrow="Commandes"
-      title={`Commande ${order.reference}`}>
+      title={`Commande ${order.reference}`}
+    >
       {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
@@ -131,10 +119,7 @@ export default async function AdminOrderDetailPage({
             summary={summary}
           />
 
-          <OrderDetailActionsCard
-            allowedTransitions={allowedTransitions}
-            order={orderMeta}
-          />
+          <OrderDetailActionsCard allowedTransitions={allowedTransitions} order={orderMeta} />
 
           <OrderDetailShippingCard
             shippedAtLabel={shippingInfo.shippedAtLabel}
@@ -152,10 +137,7 @@ export default async function AdminOrderDetailPage({
           <OrderDetailBillingAddressCard billing={billing} />
         </div>
 
-        <OrderDetailLinesPanel
-          lines={order.lines}
-          totalAmount={order.totalAmount}
-        />
+        <OrderDetailLinesPanel lines={order.lines} totalAmount={order.totalAmount} />
       </div>
     </AdminPageShell>
   );

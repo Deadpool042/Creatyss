@@ -2,7 +2,7 @@ import { Notice } from "@/components/shared/notice";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { listAdminOrders } from "@/db/repositories/order.repository";
-import { OrdersListTable } from "@/features/admin/orders/components";
+import { OrdersListTable } from "@/features/admin/orders";
 
 export const dynamic = "force-dynamic";
 
@@ -12,9 +12,7 @@ type AdminOrdersPageProps = Readonly<{
   }>;
 }>;
 
-export default async function AdminOrdersPage({
-  searchParams
-}: AdminOrdersPageProps) {
+export default async function AdminOrdersPage({ searchParams }: AdminOrdersPageProps) {
   const resolvedSearchParams = await searchParams;
   const errorParam = Array.isArray(resolvedSearchParams.error)
     ? resolvedSearchParams.error[0]
@@ -31,7 +29,8 @@ export default async function AdminOrdersPage({
     <AdminPageShell
       description="Suivez les commandes créées sur la boutique avec les principales informations de suivi."
       eyebrow="Commandes"
-      title="Commandes">
+      title="Commandes"
+    >
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       {orders.length > 0 ? (

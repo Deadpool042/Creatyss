@@ -17,6 +17,7 @@ Migrer les pages commandes et produits de la grille de cartes vers la DataTable.
 ### État cible
 
 DataTable avec :
+
 - Colonnes : référence, client (nom + email), statut commande, statut paiement, total, date de création
 - Filtre texte sur la colonne référence ou email client
 - Filtre par statut commande (sélecteur ou filtre de colonne)
@@ -29,7 +30,7 @@ Déterminer le type retourné par le repository commandes pour la liste admin. A
 
 ```typescript
 // db/repositories/order.repository.ts
-export async function findAdminOrderList(): Promise<AdminOrderListItem[]>
+export async function findAdminOrderList(): Promise<AdminOrderListItem[]>;
 
 type AdminOrderListItem = {
   id: string;
@@ -39,9 +40,9 @@ type AdminOrderListItem = {
   customerEmail: string;
   status: OrderStatus;
   paymentStatus: PaymentStatus;
-  totalAmount: string;  // formaté
+  totalAmount: string; // formaté
   createdAt: Date;
-}
+};
 ```
 
 ### Colonnes
@@ -126,6 +127,7 @@ export default async function AdminCommandesPage() {
 ### Sort par défaut
 
 Configurer `initialState` dans `DataTable` ou dans la page pour trier par `createdAt` décroissant :
+
 ```typescript
 initialState: {
   sorting: [{ id: "createdAt", desc: true }],
@@ -144,6 +146,7 @@ initialState: {
 ### État cible
 
 DataTable avec :
+
 - Colonnes : nom produit, catégorie, prix de base, nombre de variantes, statut (actif/inactif)
 - Tri par nom (alpha)
 - Tri par prix
@@ -157,17 +160,17 @@ DataTable avec :
 
 ```typescript
 // db/repositories/product.repository.ts (ou existant)
-export async function findAdminProductList(categorySlug?: string): Promise<AdminProductListItem[]>
+export async function findAdminProductList(categorySlug?: string): Promise<AdminProductListItem[]>;
 
 type AdminProductListItem = {
   id: string;
   slug: string;
   name: string;
   categoryName: string;
-  basePrice: string;  // formaté
+  basePrice: string; // formaté
   variantCount: number;
   isActive: boolean;
-}
+};
 ```
 
 ### Colonnes
@@ -215,12 +218,14 @@ export const productColumns: ColumnDef<AdminProductListItem>[] = [
 ## Travail à réaliser
 
 ### Commandes
+
 1. Vérifier/adapter le type `AdminOrderListItem` dans le repository
 2. Créer `features/orders/columns.tsx`
 3. Modifier `app/admin/commandes/page.tsx`
 4. Supprimer `AdminOrderCard` si plus utilisée ailleurs (vérifier avec grep)
 
 ### Produits
+
 1. Vérifier/adapter le type `AdminProductListItem` dans le repository
 2. Créer `features/products/columns.tsx`
 3. Modifier `app/admin/produits/page.tsx`
@@ -228,6 +233,7 @@ export const productColumns: ColumnDef<AdminProductListItem>[] = [
 5. Supprimer `AdminProductCard` si plus utilisée ailleurs (vérifier avec grep)
 
 ### Vérifications
+
 - `pnpm run typecheck`
 - Navigation manuelle vers `/admin/commandes` et `/admin/produits`
 - Vérifier que le tri et le filtre fonctionnent

@@ -1,18 +1,7 @@
 import { AuthShell } from "@/components/admin/auth-shell";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel
-} from "@/components/ui/field";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 
@@ -33,9 +22,7 @@ function LoginSidebar() {
             <p className="text-[11px] uppercase tracking-[0.24em] text-primary-foreground/60">
               Administration
             </p>
-            <p className="text-sm font-medium text-primary-foreground">
-              Creatyss
-            </p>
+            <p className="text-sm font-medium text-primary-foreground">Creatyss</p>
           </div>
         </div>
 
@@ -47,8 +34,8 @@ function LoginSidebar() {
             Une interface sobre pour piloter la boutique avec clarté.
           </h1>
           <p className="max-w-lg text-base leading-7 text-primary-foreground/70">
-            Gérez les produits, les contenus et les commandes depuis un espace
-            pensé pour rester lisible, rapide et rassurant au quotidien.
+            Gérez les produits, les contenus et les commandes depuis un espace pensé pour rester
+            lisible, rapide et rassurant au quotidien.
           </p>
         </div>
       </div>
@@ -93,12 +80,7 @@ export function LoginForm({ action, showError = false }: LoginFormProps) {
 
         <CardHeader className="space-y-4 px-8 pb-6 pt-8">
           <div className="flex justify-center">
-            <Image
-              src="/uploads/logo.svg"
-              alt="Creatyss Logo"
-              width={150}
-              height={150}
-            />
+            <Image src="/uploads/logo.svg" alt="Creatyss Logo" width={150} height={150} />
           </div>
           <div className="space-y-2">
             <p className="text-[11px] font-medium uppercase tracking-[0.26em] text-muted-foreground">
@@ -108,21 +90,16 @@ export function LoginForm({ action, showError = false }: LoginFormProps) {
               Connexion
             </CardTitle>
             <CardDescription className="text-[15px] leading-7 text-muted-foreground">
-              Connectez-vous pour accéder à l&apos;espace d&apos;administration
-              Creatyss.
+              Connectez-vous pour accéder à l&apos;espace d&apos;administration Creatyss.
             </CardDescription>
           </div>
         </CardHeader>
 
         <CardContent className="px-8 pb-8">
-          <form
-            action={action}
-            className="space-y-6">
+          <form action={action} className="space-y-6">
             <FieldGroup className="space-y-5">
               <Field className="space-y-2.5">
-                <FieldLabel
-                  htmlFor="email"
-                  className="text-sm font-medium text-foreground">
+                <FieldLabel htmlFor="email" className="text-sm font-medium text-foreground">
                   Email
                 </FieldLabel>
                 <Input
@@ -136,9 +113,7 @@ export function LoginForm({ action, showError = false }: LoginFormProps) {
               </Field>
 
               <Field className="space-y-2.5">
-                <FieldLabel
-                  htmlFor="password"
-                  className="text-sm font-medium text-foreground">
+                <FieldLabel htmlFor="password" className="text-sm font-medium text-foreground">
                   Mot de passe
                 </FieldLabel>
                 <Input
@@ -154,7 +129,8 @@ export function LoginForm({ action, showError = false }: LoginFormProps) {
               {showError ? (
                 <FieldDescription
                   role="alert"
-                  className="rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm font-medium text-destructive">
+                  className="rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm font-medium text-destructive"
+                >
                   Identifiants invalides.
                 </FieldDescription>
               ) : null}
@@ -162,7 +138,8 @@ export function LoginForm({ action, showError = false }: LoginFormProps) {
               <Field className="pt-2">
                 <Button
                   type="submit"
-                  className="h-12 w-full rounded-2xl bg-primary text-sm font-medium text-primary-foreground shadow-lg transition hover:bg-primary/90">
+                  className="h-12 w-full rounded-2xl bg-primary text-sm font-medium text-primary-foreground shadow-lg transition hover:bg-primary/90"
+                >
                   Se connecter
                 </Button>
               </Field>

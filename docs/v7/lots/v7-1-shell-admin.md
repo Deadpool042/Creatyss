@@ -48,11 +48,11 @@ La base du shell est déjà engagée (`AdminSidebar`, `AdminSidebarLink`, layout
 - Identité admin : `displayName` et `email` visibles dans la sidebar ; bouton "Se déconnecter" structurel
 - Groupes de navigation :
 
-| Groupe | Destinations |
-| --- | --- |
-| Catalogue | Produits, Catégories |
-| Contenu | Page d'accueil, Blog |
-| Opérations | Commandes, Médias |
+| Groupe     | Destinations         |
+| ---------- | -------------------- |
+| Catalogue  | Produits, Catégories |
+| Contenu    | Page d'accueil, Blog |
+| Opérations | Commandes, Médias    |
 
 "Accueil admin" reste un lien solo au-dessus des groupes.
 

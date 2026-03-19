@@ -8,7 +8,7 @@ import {
   ADMIN_SESSION_DURATION_SECONDS,
   adminSessionCookieOptions,
   createAdminSessionValue,
-  verifyAdminPassword
+  verifyAdminPassword,
 } from "@/lib/admin-auth";
 
 import { LoginSchema } from "../schemas/login-schema";
@@ -16,7 +16,7 @@ import { LoginSchema } from "../schemas/login-schema";
 export async function loginAction(formData: FormData): Promise<void> {
   const parsed = LoginSchema.safeParse({
     email: formData.get("email"),
-    password: formData.get("password")
+    password: formData.get("password"),
   });
 
   if (!parsed.success) {
@@ -31,10 +31,7 @@ export async function loginAction(formData: FormData): Promise<void> {
     redirect("/admin/login?error=invalid_credentials");
   }
 
-  const isPasswordValid = await verifyAdminPassword(
-    password,
-    adminUser.passwordHash
-  );
+  const isPasswordValid = await verifyAdminPassword(password, adminUser.passwordHash);
 
   if (!isPasswordValid) {
     redirect("/admin/login?error=invalid_credentials");
@@ -47,7 +44,7 @@ export async function loginAction(formData: FormData): Promise<void> {
     name: ADMIN_SESSION_COOKIE_NAME,
     value: sessionValue,
     ...adminSessionCookieOptions,
-    maxAge: ADMIN_SESSION_DURATION_SECONDS
+    maxAge: ADMIN_SESSION_DURATION_SECONDS,
   });
 
   redirect("/admin");

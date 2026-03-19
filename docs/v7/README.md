@@ -18,15 +18,15 @@ Trois axes :
 
 ## Documents V7
 
-| Fichier | Rôle |
-| --- | --- |
-| `admin-ui-ux-doctrine.md` | Cadre général, stable et transversal |
-| `admin-ui-ux-roadmap.md` | Stratégie de migration, ordre des chantiers |
-| `lots/v7-1-shell-admin.md` | Lot V7-1 — fondation shell admin |
-| `lots/v7-2-pages-listes.md` | Lot V7-2 — pages listes simples |
-| `lots/v7-3-formulaires-intermediaires.md` | Lot V7-3 — formulaires intermédiaires |
-| `lots/v7-4-detail-commande.md` | Lot V7-4 — détail commande |
-| `lots/v7-5-detail-produit.md` | Lot V7-5 — détail produit |
+| Fichier                                   | Rôle                                        |
+| ----------------------------------------- | ------------------------------------------- |
+| `admin-ui-ux-doctrine.md`                 | Cadre général, stable et transversal        |
+| `admin-ui-ux-roadmap.md`                  | Stratégie de migration, ordre des chantiers |
+| `lots/v7-1-shell-admin.md`                | Lot V7-1 — fondation shell admin            |
+| `lots/v7-2-pages-listes.md`               | Lot V7-2 — pages listes simples             |
+| `lots/v7-3-formulaires-intermediaires.md` | Lot V7-3 — formulaires intermédiaires       |
+| `lots/v7-4-detail-commande.md`            | Lot V7-4 — détail commande                  |
+| `lots/v7-5-detail-produit.md`             | Lot V7-5 — détail produit                   |
 
 ## Ordre de lecture conseillé
 

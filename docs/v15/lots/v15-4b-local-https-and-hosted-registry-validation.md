@@ -28,30 +28,32 @@ V15-4B a résolu ce point en mettant en place un environnement local HTTPS avec 
 Deux services ajoutés au `docker-compose.yml` :
 
 **`traefik`** — reverse proxy local
+
 - ports 80 et 443
 - routing par label Docker
 - TLS servi depuis les certs mkcert montés
 
 **`registry`** — serveur nginx statique
+
 - sert les fichiers JSON du répertoire `registry/`
 - accessible uniquement via Traefik
 
 ### URLs locales
 
-| URL | Cible |
-|-----|-------|
-| `https://creatyss.localhost` | Application Next.js |
+| URL                                   | Cible                    |
+| ------------------------------------- | ------------------------ |
+| `https://creatyss.localhost`          | Application Next.js      |
 | `https://registry.creatyss.localhost` | Registry shadcn Creatyss |
 
 ### Fichiers de configuration
 
-| Fichier | Rôle |
-|---------|------|
-| `docker/traefik/traefik.yml` | Configuration Traefik (entrypoints, providers) |
-| `docker/traefik/tls.yml` | Déclaration des certificats TLS |
-| `docker/traefik/certs/local.crt` | Certificat mkcert (gitignored) |
-| `docker/traefik/certs/local.key` | Clé privée mkcert (gitignored) |
-| `docker/registry/nginx.conf` | Configuration nginx pour le registry |
+| Fichier                          | Rôle                                           |
+| -------------------------------- | ---------------------------------------------- |
+| `docker/traefik/traefik.yml`     | Configuration Traefik (entrypoints, providers) |
+| `docker/traefik/tls.yml`         | Déclaration des certificats TLS                |
+| `docker/traefik/certs/local.crt` | Certificat mkcert (gitignored)                 |
+| `docker/traefik/certs/local.key` | Clé privée mkcert (gitignored)                 |
+| `docker/registry/nginx.conf`     | Configuration nginx pour le registry           |
 
 ### Routes nginx
 

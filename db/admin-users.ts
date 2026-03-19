@@ -49,22 +49,18 @@ function mapAdminUser(row: AdminUserRow): AdminUser {
     displayName: row.display_name,
     isActive: row.is_active,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
-function mapAdminUserWithPassword(
-  row: AdminUserWithPasswordRow
-): AdminUserWithPassword {
+function mapAdminUserWithPassword(row: AdminUserWithPasswordRow): AdminUserWithPassword {
   return {
     ...mapAdminUser(row),
-    passwordHash: row.password_hash
+    passwordHash: row.password_hash,
   };
 }
 
-export async function findAdminUserByEmail(
-  email: string
-): Promise<AdminUserWithPassword | null> {
+export async function findAdminUserByEmail(email: string): Promise<AdminUserWithPassword | null> {
   const row = await queryFirst<AdminUserWithPasswordRow>(
     `
       select
@@ -113,9 +109,7 @@ export async function findAdminUserById(id: string): Promise<AdminUser | null> {
   return mapAdminUser(row);
 }
 
-export async function createAdminUser(
-  input: CreateAdminUserInput
-): Promise<AdminUser> {
+export async function createAdminUser(input: CreateAdminUserInput): Promise<AdminUser> {
   const row = await queryFirst<AdminUserRow>(
     `
       insert into admin_users (

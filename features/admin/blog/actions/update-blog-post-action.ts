@@ -4,15 +4,12 @@ import { redirect } from "next/navigation";
 import { listAdminMediaAssets } from "@/db/admin-media";
 import {
   AdminBlogRepositoryError,
-  updateAdminBlogPost
+  updateAdminBlogPost,
 } from "@/db/repositories/admin-blog.repository";
 import { normalizeBlogPostSlug } from "@/entities/blog/blog-post-input";
 import { getBlogPostPublishability } from "@/entities/blog/blog-post-publishability";
 
-import {
-  BlogPostFormSchema,
-  parseCoverImageSelection
-} from "../schemas/blog-post-form-schema";
+import { BlogPostFormSchema, parseCoverImageSelection } from "../schemas/blog-post-form-schema";
 
 function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string") {
@@ -57,7 +54,7 @@ export async function updateBlogPostAction(formData: FormData): Promise<void> {
     seoDescription: formData.get("seoDescription"),
     status: formData.get("status"),
     coverImageMediaAssetId: formData.get("coverImageMediaAssetId"),
-    currentCoverImagePath: formData.get("currentCoverImagePath")
+    currentCoverImagePath: formData.get("currentCoverImagePath"),
   });
 
   if (!parsed.success) {
@@ -73,7 +70,7 @@ export async function updateBlogPostAction(formData: FormData): Promise<void> {
 
   if (parsed.data.status === "published") {
     const publishability = getBlogPostPublishability({
-      content: parsed.data.content
+      content: parsed.data.content,
     });
 
     if (!publishability.ok) {
@@ -97,7 +94,7 @@ export async function updateBlogPostAction(formData: FormData): Promise<void> {
   } else if (coverImage.data.kind === "media_asset") {
     const mediaAssetId = coverImage.data.mediaAssetId;
     const mediaAssets = await listAdminMediaAssets();
-    const mediaAsset = mediaAssets.find(asset => asset.id === mediaAssetId);
+    const mediaAsset = mediaAssets.find((asset) => asset.id === mediaAssetId);
 
     if (mediaAsset === undefined) {
       redirect(`/admin/blog/${blogPostId}?error=cover_media_missing`);
@@ -116,17 +113,14 @@ export async function updateBlogPostAction(formData: FormData): Promise<void> {
       seoTitle: parsed.data.seoTitle,
       seoDescription: parsed.data.seoDescription,
       coverImagePath,
-      status: parsed.data.status
+      status: parsed.data.status,
     });
 
     if (blogPost === null) {
       redirect("/admin/blog?error=missing_blog_post");
     }
   } catch (error) {
-    if (
-      error instanceof AdminBlogRepositoryError &&
-      error.code === "slug_taken"
-    ) {
+    if (error instanceof AdminBlogRepositoryError && error.code === "slug_taken") {
       redirect(`/admin/blog/${blogPostId}?error=slug_taken`);
     }
 

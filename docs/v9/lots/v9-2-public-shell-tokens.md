@@ -13,20 +13,22 @@ Le shell public (`components/public/public-site-shell.tsx`) a été partiellemen
 
 ```tsx
 // Header
-className="... bg-[rgba(245,242,234,0.92)] supports-[backdrop-filter]:bg-[rgba(245,242,234,0.84)] ..."
+className =
+  "... bg-[rgba(245,242,234,0.92)] supports-[backdrop-filter]:bg-[rgba(245,242,234,0.84)] ...";
 
 // Drawer mobile
-className="... bg-[rgba(245,242,234,0.98)] supports-[backdrop-filter]:bg-[rgba(245,242,234,0.94)]"
+className =
+  "... bg-[rgba(245,242,234,0.98)] supports-[backdrop-filter]:bg-[rgba(245,242,234,0.94)]";
 ```
 
 Ces quatre valeurs RGBA codent toutes la même couleur de fond (`245,242,234` — la teinte chaude de l'arrière-plan public) avec différents niveaux d'opacité selon le contexte :
 
-| Valeur | Opacité | Contexte |
-|--------|---------|---------|
-| `rgba(245,242,234, 0.92)` | 92 % | Header par défaut |
-| `rgba(245,242,234, 0.84)` | 84 % | Header avec `backdrop-filter` actif |
-| `rgba(245,242,234, 0.98)` | 98 % | Drawer mobile par défaut |
-| `rgba(245,242,234, 0.94)` | 94 % | Drawer mobile avec `backdrop-filter` actif |
+| Valeur                    | Opacité | Contexte                                   |
+| ------------------------- | ------- | ------------------------------------------ |
+| `rgba(245,242,234, 0.92)` | 92 %    | Header par défaut                          |
+| `rgba(245,242,234, 0.84)` | 84 %    | Header avec `backdrop-filter` actif        |
+| `rgba(245,242,234, 0.98)` | 98 %    | Drawer mobile par défaut                   |
+| `rgba(245,242,234, 0.94)` | 94 %    | Drawer mobile avec `backdrop-filter` actif |
 
 V8-1 a posé le token `--background` en OKLCH. La couleur de fond RGB n'est pas encore exposée comme composante séparable. Ce lot doit résoudre ce décalage.
 
@@ -82,6 +84,7 @@ pnpm run typecheck
 ```
 
 Vérification visuelle :
+
 - Le header est translucide et flotte correctement sur toutes les pages publiques (accueil, boutique, blog, panier).
 - L'effet `backdrop-blur` fonctionne sur les navigateurs compatibles.
 - Le drawer mobile s'affiche avec le bon fond sur mobile.

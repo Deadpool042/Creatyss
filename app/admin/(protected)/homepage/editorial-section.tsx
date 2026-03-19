@@ -8,19 +8,14 @@ type EditorialSectionProps = {
   editorialText: string | null;
 };
 
-export function EditorialSection({
-  editorialTitle,
-  editorialText
-}: EditorialSectionProps) {
+export function EditorialSection({ editorialTitle, editorialText }: EditorialSectionProps) {
   return (
     <AdminFormSection
       description="Complétez ensuite le texte éditorial affiché sous la bannière principale."
       eyebrow="Éditorial"
-      title="Bloc éditorial">
-
-      <AdminFormField
-        htmlFor="homepage-editorial-title"
-        label="Titre éditorial">
+      title="Bloc éditorial"
+    >
+      <AdminFormField htmlFor="homepage-editorial-title" label="Titre éditorial">
         <Input
           defaultValue={editorialTitle ?? ""}
           id="homepage-editorial-title"
@@ -29,9 +24,7 @@ export function EditorialSection({
         />
       </AdminFormField>
 
-      <AdminFormField
-        htmlFor="homepage-editorial-text"
-        label="Texte éditorial">
+      <AdminFormField htmlFor="homepage-editorial-text" label="Texte éditorial">
         <Textarea
           defaultValue={editorialText ?? ""}
           id="homepage-editorial-text"

@@ -10,20 +10,20 @@ import {
   NewspaperIcon,
   ShoppingBagIcon,
   ShoppingCartIcon,
-  UserIcon
+  UserIcon,
 } from "lucide-react";
 import { ModeToggle } from "../shared/mode-toggle";
 
 const publicLinksLeft = [
   { href: "/", label: "Accueil", icon: HouseIcon },
   { href: "/boutique", label: "Collections", icon: ShoppingBagIcon },
-  { href: "/blog", label: "Blog", icon: NewspaperIcon }
+  { href: "/blog", label: "Blog", icon: NewspaperIcon },
 ] as const;
 
 const publicLinksRight = [
   { href: "/contact", label: "", icon: MailIcon },
   { href: "/mon-compte", label: "", icon: UserIcon },
-  { href: "/panier", label: "", icon: ShoppingCartIcon }
+  { href: "/panier", label: "", icon: ShoppingCartIcon },
 ] as const;
 
 type PublicSiteShellProps = Readonly<{
@@ -50,10 +50,8 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
     <div className="min-h-screen">
       <header className="site-header-blur sticky top-0 z-30 border-b border-shell-border">
         <div className="mx-auto grid min-h-16 w-full max-w-430 grid-cols-[1fr_auto_1fr] items-center gap-6 px-6 xl:px-12">
-          <nav
-            aria-label="Navigation principale"
-            className="hidden items-center gap-4 md:flex">
-            {publicLinksLeft.map(link => (
+          <nav aria-label="Navigation principale" className="hidden items-center gap-4 md:flex">
+            {publicLinksLeft.map((link) => (
               <Link
                 className={`px-1.5 py-2 text-[0.68rem] font-medium uppercase tracking-[0.28em] transition-colors ${
                   isPublicLinkActive(pathname, link.href)
@@ -61,7 +59,8 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
                     : "text-foreground/72 hover:text-foreground"
                 }`}
                 href={link.href}
-                key={link.href}>
+                key={link.href}
+              >
                 {link.label}
               </Link>
             ))}
@@ -69,7 +68,8 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
 
           <Link
             className="mx-auto hidden min-w-0 items-center gap-2.5 text-foreground md:flex"
-            href="/">
+            href="/"
+          >
             <Image
               src="/uploads/logo.svg"
               alt=""
@@ -84,7 +84,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
           </Link>
 
           <div className="hidden items-center justify-self-end md:flex md:gap-1.5">
-            {publicLinksRight.map(link => {
+            {publicLinksRight.map((link) => {
               const isActive = isPublicLinkActive(pathname, link.href);
 
               if (link.icon) {
@@ -105,7 +105,8 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
                         : "text-foreground/72 hover:bg-surface-subtle hover:text-foreground"
                     }`}
                     href={link.href}
-                    key={link.href}>
+                    key={link.href}
+                  >
                     <Icon className="size-[0.95rem]" />
                   </Link>
                 );
@@ -114,12 +115,11 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
               return (
                 <Link
                   className={`px-1.5 py-2 text-[0.68rem] font-medium uppercase tracking-[0.28em] transition-colors ${
-                    isActive
-                      ? "text-foreground"
-                      : "text-foreground/72 hover:text-foreground"
+                    isActive ? "text-foreground" : "text-foreground/72 hover:text-foreground"
                   }`}
                   href={link.href}
-                  key={link.href}>
+                  key={link.href}
+                >
                   {link.label}
                 </Link>
               );
@@ -128,9 +128,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
           </div>
 
           <div className="col-span-3 flex min-h-16 items-center justify-between md:hidden">
-            <Link
-              className="flex min-w-0 items-center gap-2 text-foreground"
-              href="/">
+            <Link className="flex min-w-0 items-center gap-2 text-foreground" href="/">
               <Image
                 src="/uploads/logo.svg"
                 alt=""
@@ -152,7 +150,8 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
                     ? "bg-surface-subtle text-foreground"
                     : "text-foreground/72 hover:bg-surface-subtle hover:text-foreground"
                 }`}
-                href="/contact">
+                href="/contact"
+              >
                 <MailIcon className="size-[0.95rem]" />
               </Link>
 
@@ -163,7 +162,8 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
                     ? "bg-surface-subtle text-foreground"
                     : "text-foreground/72 hover:bg-surface-subtle hover:text-foreground"
                 }`}
-                href="/mon-compte">
+                href="/mon-compte"
+              >
                 <UserIcon className="size-[0.95rem]" />
               </Link>
 
@@ -175,9 +175,10 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
 
       <nav
         aria-label="Navigation principale mobile"
-        className="site-header-blur fixed inset-x-0 bottom-0 z-30 border-t border-shell-border md:hidden">
+        className="site-header-blur fixed inset-x-0 bottom-0 z-30 border-t border-shell-border md:hidden"
+      >
         <div className="mx-auto grid w-full max-w-430 grid-cols-3 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
-          {publicLinksLeft.map(link => {
+          {publicLinksLeft.map((link) => {
             const Icon = link.icon;
             const isActive = isPublicLinkActive(pathname, link.href);
 
@@ -189,7 +190,8 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
                     : "text-foreground/70 hover:bg-surface-subtle hover:text-foreground"
                 }`}
                 href={link.href}
-                key={link.href}>
+                key={link.href}
+              >
                 <Icon className="size-[1.05rem]" />
                 <span>{link.label}</span>
               </Link>

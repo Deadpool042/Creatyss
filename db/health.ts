@@ -18,7 +18,7 @@ export async function checkDatabaseHealth(): Promise<DatabaseHealth> {
   } catch (error) {
     return {
       ok: false,
-      message: getErrorMessage(error)
+      message: getErrorMessage(error),
     };
   }
 }

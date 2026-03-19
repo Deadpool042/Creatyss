@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
-import { LoginForm } from "@/features/admin/auth/components/login-form";
-import { loginAction } from "@/features/admin/auth/actions/login-action";
+import { LoginForm, loginAction } from "@/features/admin/auth";
 import { getCurrentAdmin } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
@@ -11,9 +10,7 @@ type AdminLoginPageProps = Readonly<{
   }>;
 }>;
 
-export default async function AdminLoginPage({
-  searchParams
-}: AdminLoginPageProps) {
+export default async function AdminLoginPage({ searchParams }: AdminLoginPageProps) {
   const currentAdmin = await getCurrentAdmin();
 
   if (currentAdmin.status === "authenticated") {
@@ -30,10 +27,5 @@ export default async function AdminLoginPage({
     : resolvedSearchParams.error;
   const showError = errorParam === "invalid_credentials";
 
-  return (
-    <LoginForm
-      action={loginAction}
-      showError={showError}
-    />
-  );
+  return <LoginForm action={loginAction} showError={showError} />;
 }

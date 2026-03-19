@@ -2,9 +2,7 @@
   background: var(--shell-surface);
 }
 
-@supports (
-  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
-) {
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .site-header-blur {
     background: var(--shell-surface-blur);
     -webkit-backdrop-filter: blur(4px);
@@ -16,9 +14,7 @@
   background: var(--shell-drawer);
 }
 
-@supports (
-  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
-) {
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .shell-drawer {
     background: var(--shell-drawer-blur);
     -webkit-backdrop-filter: blur(4px);

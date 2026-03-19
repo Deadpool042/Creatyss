@@ -20,9 +20,9 @@ import {
   Truck,
   Users,
   Wrench,
-  Zap
+  Zap,
+  type LucideIcon,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -33,7 +33,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  SidebarSeparator
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
 
 import { AdminSidebarGroup } from "./admin-sidebar-group";
@@ -67,8 +67,8 @@ const SHOP_GROUP: AdminNavGroup = {
   defaultOpen: true,
   items: [
     { href: "/admin/products", label: "Produits", icon: Package },
-    { href: "/admin/categories", label: "Catégories", icon: Tag }
-  ]
+    { href: "/admin/categories", label: "Catégories", icon: Tag },
+  ],
 };
 
 const COMMERCE_GROUP: AdminNavGroup = {
@@ -83,23 +83,23 @@ const COMMERCE_GROUP: AdminNavGroup = {
       label: "Paiements",
       icon: CreditCard,
       disabled: true,
-      badge: "Bientôt"
+      badge: "Bientôt",
     },
     {
       href: "/admin/customers",
       label: "Clients",
       icon: Users,
       disabled: true,
-      badge: "Bientôt"
+      badge: "Bientôt",
     },
     {
       href: "/admin/shipping",
       label: "Livraisons",
       icon: Truck,
       disabled: true,
-      badge: "Bientôt"
-    }
-  ]
+      badge: "Bientôt",
+    },
+  ],
 };
 
 const MARKETING_GROUP: AdminNavGroup = {
@@ -113,37 +113,37 @@ const MARKETING_GROUP: AdminNavGroup = {
       label: "Newsletter",
       icon: Mail,
       disabled: true,
-      badge: "Bientôt"
+      badge: "Bientôt",
     },
     {
       href: "/admin/promotions",
       label: "Promotions",
       icon: Megaphone,
       disabled: true,
-      badge: "Bientôt"
+      badge: "Bientôt",
     },
     {
       href: "/admin/coupons",
       label: "Codes promo",
       icon: BadgePercent,
       disabled: true,
-      badge: "Bientôt"
+      badge: "Bientôt",
     },
     {
       href: "/admin/seo",
       label: "SEO",
       icon: Search,
       disabled: true,
-      badge: "Bientôt"
+      badge: "Bientôt",
     },
     {
       href: "/admin/automations",
       label: "Automations",
       icon: Zap,
       disabled: true,
-      badge: "Bientôt"
-    }
-  ]
+      badge: "Bientôt",
+    },
+  ],
 };
 
 const CONTENT_GROUP: AdminNavGroup = {
@@ -153,8 +153,8 @@ const CONTENT_GROUP: AdminNavGroup = {
   defaultOpen: true,
   items: [
     { href: "/admin/homepage", label: "Page d'accueil", icon: Globe },
-    { href: "/admin/blog", label: "Blog", icon: FileText }
-  ]
+    { href: "/admin/blog", label: "Blog", icon: FileText },
+  ],
 };
 
 const MAINTENANCE_GROUP: AdminNavGroup = {
@@ -168,9 +168,9 @@ const MAINTENANCE_GROUP: AdminNavGroup = {
       label: "Maintenance",
       icon: Wrench,
       disabled: true,
-      badge: "Bientôt"
-    }
-  ]
+      badge: "Bientôt",
+    },
+  ],
 };
 
 const SETTINGS_GROUP: AdminNavGroup = {
@@ -184,26 +184,19 @@ const SETTINGS_GROUP: AdminNavGroup = {
       label: "Paramètres",
       icon: Settings,
       disabled: true,
-      badge: "Bientôt"
-    }
-  ]
+      badge: "Bientôt",
+    },
+  ],
 };
 
 export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
   return (
-    <Sidebar
-      collapsible="icon"
-      className="border-r border-sidebar-border/70 bg-sidebar">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border/70 bg-sidebar">
       <SidebarHeader className="border-b border-sidebar-border/70 p-2 group-data-[collapsible=icon]:hidden">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              asChild
-              className="rounded-xl hover:bg-sidebar-accent/40">
-              <a
-                href="/admin"
-                aria-label="Administration Creatyss">
+            <SidebarMenuButton size="lg" asChild className="rounded-xl hover:bg-sidebar-accent/40">
+              <a href="/admin" aria-label="Administration Creatyss">
                 <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand/10">
                   <LayoutDashboard className="size-4 text-brand" />
                 </div>
@@ -222,15 +215,10 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
       </SidebarHeader>
 
       <SidebarContent className="px-2 py-2">
-        <nav
-          aria-label="Navigation admin"
-          className="flex flex-col gap-0">
+        <nav aria-label="Navigation admin" className="flex flex-col gap-0">
           {/* Items racine — portée globale */}
           <SidebarMenu className="gap-0.5 py-1">
-            <AdminSidebarLink
-              href="/admin"
-              icon={LayoutDashboard}
-              tooltip="Tableau de bord">
+            <AdminSidebarLink href="/admin" icon={LayoutDashboard} tooltip="Tableau de bord">
               Tableau de bord
             </AdminSidebarLink>
           </SidebarMenu>
@@ -238,10 +226,7 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
           <SidebarSeparator className="mx-2 my-1 opacity-40" />
 
           <SidebarMenu className="gap-0.5 py-1">
-            <AdminSidebarLink
-              href="/admin/media"
-              icon={ImageIcon}
-              tooltip="Médiathèque">
+            <AdminSidebarLink href="/admin/media" icon={ImageIcon} tooltip="Médiathèque">
               Médias
             </AdminSidebarLink>
           </SidebarMenu>
@@ -263,9 +248,7 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
       <SidebarFooter className="border-t border-sidebar-border/70 p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              className="rounded-xl hover:bg-sidebar-accent/40">
+            <SidebarMenuButton size="lg" className="rounded-xl hover:bg-sidebar-accent/40">
               <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-accent/60 text-sm font-semibold text-sidebar-foreground">
                 {displayName.charAt(0).toUpperCase()}
               </div>
@@ -273,24 +256,19 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
                 <span className="truncate text-sm font-medium text-sidebar-foreground">
                   {displayName}
                 </span>
-                <span className="truncate text-xs text-muted-foreground">
-                  {email}
-                </span>
+                <span className="truncate text-xs text-muted-foreground">{email}</span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <form
-              action="/admin/logout"
-              method="post">
+            <form action="/admin/logout" method="post">
               <SidebarMenuButton
                 type="submit"
                 tooltip="Se déconnecter"
-                className="h-9 rounded-lg text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground">
+                className="h-9 rounded-lg text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+              >
                 <LogOut className="size-4" />
-                <span className="group-data-[collapsible=icon]:hidden">
-                  Se déconnecter
-                </span>
+                <span className="group-data-[collapsible=icon]:hidden">Se déconnecter</span>
               </SidebarMenuButton>
             </form>
           </SidebarMenuItem>

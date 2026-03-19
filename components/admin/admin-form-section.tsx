@@ -19,17 +19,17 @@ export function AdminFormSection({
   eyebrow,
   description,
   className,
-  contentClassName
+  contentClassName,
 }: AdminFormSectionProps) {
-  const hasIntro =
-    title !== undefined || eyebrow !== undefined || description !== undefined;
+  const hasIntro = title !== undefined || eyebrow !== undefined || description !== undefined;
 
   return (
     <Card
       className={cn(
         "gap-0 rounded-xl border border-border/70 bg-card py-0 text-card-foreground shadow-sm",
         className
-      )}>
+      )}
+    >
       {hasIntro ? (
         <>
           <div className="grid gap-2 px-5 pt-5">
@@ -46,9 +46,7 @@ export function AdminFormSection({
         </>
       ) : null}
 
-      <div className={cn("grid gap-4 px-5 py-5", contentClassName)}>
-        {children}
-      </div>
+      <div className={cn("grid gap-4 px-5 py-5", contentClassName)}>{children}</div>
     </Card>
   );
 }

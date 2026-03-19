@@ -25,7 +25,6 @@ export function validateCatalogFilterInput(input: {
 }): CatalogFilterInput {
   return {
     categorySlug: normalizeCatalogCategorySlug(input.category),
-    onlyAvailable:
-      input.availability === CATALOG_AVAILABILITY_FILTER_VALUE
+    onlyAvailable: input.availability === CATALOG_AVAILABILITY_FILTER_VALUE,
   };
 }

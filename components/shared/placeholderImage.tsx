@@ -8,10 +8,7 @@ type PlaceholderImageProps = {
   className?: string;
 };
 
-export default function PlaceholderImage({
-  alt = "Creatyss",
-  className
-}: PlaceholderImageProps) {
+export default function PlaceholderImage({ alt = "Creatyss", className }: PlaceholderImageProps) {
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-surface-subtle">
       <div className="relative h-1/3 w-1/2">

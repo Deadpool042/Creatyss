@@ -52,9 +52,7 @@ export type UpdateProductImageValidationResult =
       code: ProductImageInputErrorCode;
     };
 
-function readTrimmedString(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
+function readTrimmedString(value: FormDataEntryValue | string | null | undefined): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -74,9 +72,7 @@ function normalizeOptionalText(
   return normalizedValue;
 }
 
-function normalizeSortOrder(
-  value: FormDataEntryValue | string | null | undefined
-): number | null {
+function normalizeSortOrder(value: FormDataEntryValue | string | null | undefined): number | null {
   const normalizedValue = readTrimmedString(value);
 
   if (normalizedValue === null || normalizedValue.length === 0) {
@@ -114,14 +110,14 @@ export function validateCreateProductImageInput(
   if (mediaAssetId === null || mediaAssetId.length === 0) {
     return {
       ok: false,
-      code: "missing_media_asset"
+      code: "missing_media_asset",
     };
   }
 
   if (!/^[0-9]+$/.test(mediaAssetId)) {
     return {
       ok: false,
-      code: "invalid_media_asset"
+      code: "invalid_media_asset",
     };
   }
 
@@ -130,7 +126,7 @@ export function validateCreateProductImageInput(
   if (variantId === undefined) {
     return {
       ok: false,
-      code: "invalid_variant"
+      code: "invalid_variant",
     };
   }
 
@@ -139,7 +135,7 @@ export function validateCreateProductImageInput(
   if (sortOrder === null) {
     return {
       ok: false,
-      code: "invalid_sort_order"
+      code: "invalid_sort_order",
     };
   }
 
@@ -150,11 +146,8 @@ export function validateCreateProductImageInput(
       variantId,
       altText: normalizeOptionalText(input.altText),
       sortOrder,
-      isPrimary:
-        input.isPrimary === "on" ||
-        input.isPrimary === "true" ||
-        input.isPrimary === "1"
-    }
+      isPrimary: input.isPrimary === "on" || input.isPrimary === "true" || input.isPrimary === "1",
+    },
   };
 }
 
@@ -166,7 +159,7 @@ export function validateUpdateProductImageInput(
   if (sortOrder === null) {
     return {
       ok: false,
-      code: "invalid_sort_order"
+      code: "invalid_sort_order",
     };
   }
 
@@ -175,10 +168,7 @@ export function validateUpdateProductImageInput(
     data: {
       altText: normalizeOptionalText(input.altText),
       sortOrder,
-      isPrimary:
-        input.isPrimary === "on" ||
-        input.isPrimary === "true" ||
-        input.isPrimary === "1"
-    }
+      isPrimary: input.isPrimary === "on" || input.isPrimary === "true" || input.isPrimary === "1",
+    },
   };
 }

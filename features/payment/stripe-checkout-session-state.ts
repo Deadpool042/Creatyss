@@ -28,24 +28,24 @@ export function resolveStripeCheckoutSessionState(
       if (typeof input.url === "string" && input.url.length > 0) {
         return {
           kind: "reuse",
-          url: input.url
+          url: input.url,
         };
       }
 
       return {
-        kind: "unavailable"
+        kind: "unavailable",
       };
     case "complete":
       return {
-        kind: "await_confirmation"
+        kind: "await_confirmation",
       };
     case "expired":
       return {
-        kind: "replace"
+        kind: "replace",
       };
     default:
       return {
-        kind: "unavailable"
+        kind: "unavailable",
       };
   }
 }

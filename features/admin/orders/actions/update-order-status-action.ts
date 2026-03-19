@@ -1,10 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  OrderRepositoryError,
-  updateOrderStatus
-} from "@/db/repositories/order.repository";
+import { OrderRepositoryError, updateOrderStatus } from "@/db/repositories/order.repository";
 import type { OrderStatus } from "@/entities/order/order-status-transition";
 
 function normalizeNumericId(value: FormDataEntryValue | null): string | null {
@@ -48,24 +45,18 @@ export async function updateOrderStatusAction(formData: FormData): Promise<void>
   try {
     const updatedStatus = await updateOrderStatus({
       id: orderId,
-      nextStatus
+      nextStatus,
     });
 
     if (updatedStatus === null) {
       redirect("/admin/orders?error=missing_order");
     }
   } catch (error) {
-    if (
-      error instanceof OrderRepositoryError &&
-      error.code === "missing_order"
-    ) {
+    if (error instanceof OrderRepositoryError && error.code === "missing_order") {
       redirect("/admin/orders?error=missing_order");
     }
 
-    if (
-      error instanceof OrderRepositoryError &&
-      error.code === "invalid_status_transition"
-    ) {
+    if (error instanceof OrderRepositoryError && error.code === "invalid_status_transition") {
       redirect(`/admin/orders/${orderId}?order_error=invalid_transition`);
     }
 

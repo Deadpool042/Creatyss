@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import {
   readGuestCheckoutContextByToken,
-  upsertGuestCheckoutDetails
+  upsertGuestCheckoutDetails,
 } from "@/db/repositories/guest-cart.repository";
 import { validateGuestCheckoutInput } from "@/entities/checkout/guest-checkout-input";
 import { readCartSessionToken } from "@/lib/cart-session";
@@ -51,7 +51,7 @@ export async function saveGuestCheckoutAction(formData: FormData): Promise<void>
     billingAddressLine1: formData.get("billingAddressLine1"),
     billingAddressLine2: formData.get("billingAddressLine2"),
     billingPostalCode: formData.get("billingPostalCode"),
-    billingCity: formData.get("billingCity")
+    billingCity: formData.get("billingCity"),
   });
 
   if (!validation.ok) {
@@ -61,7 +61,7 @@ export async function saveGuestCheckoutAction(formData: FormData): Promise<void>
   try {
     await upsertGuestCheckoutDetails({
       cartId: cart.id,
-      ...validation.data
+      ...validation.data,
     });
   } catch (error) {
     console.error(error);

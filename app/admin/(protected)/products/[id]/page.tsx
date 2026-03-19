@@ -27,15 +27,13 @@ import {
   getVariantErrorMessage,
   getVariantStatusMessage,
   groupVariantImages,
-  readProductDetailSearchParam
-} from "@/features/admin/products/mappers/product-detail-mappers";
-import {
+  readProductDetailSearchParam,
   ProductDangerZoneSection,
   ProductDetailHeaderSection,
   ProductGeneralSection,
   ProductImagesSection,
-  ProductSalesSection
-} from "@/features/admin/products/components";
+  ProductSalesSection,
+} from "@/features/admin/products";
 
 export const dynamic = "force-dynamic";
 
@@ -46,10 +44,7 @@ type ProductDetailPageProps = Readonly<{
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }>;
 
-export default async function ProductDetailPage({
-  params,
-  searchParams
-}: ProductDetailPageProps) {
+export default async function ProductDetailPage({ params, searchParams }: ProductDetailPageProps) {
   const { id } = await params;
   const resolvedSearchParams = await searchParams;
   const product = await findAdminProductById(id);
@@ -62,31 +57,25 @@ export default async function ProductDetailPage({
     listAdminCategories(),
     listAdminProductVariants(product.id),
     listAdminProductImages(product.id),
-    listAdminMediaAssets()
+    listAdminMediaAssets(),
   ]);
 
   const uploadsPublicPath = getUploadsPublicPath();
-  const parentImages = images.filter(image => image.variantId === null);
+  const parentImages = images.filter((image) => image.variantId === null);
   const variantImagesById = groupVariantImages(images);
   const productPrimaryImageState = getPrimaryImageState(parentImages);
   const currentProductPrimaryMediaAsset = findMediaAssetByFilePath(
     mediaAssets,
     productPrimaryImageState.displayImage?.filePath ?? null
   );
-  const imageScope = readProductDetailSearchParam(
-    resolvedSearchParams,
-    "image_scope"
-  );
-  const productPresentation = getAdminProductPresentation(
-    product.productType,
-    variants.length
-  );
+  const imageScope = readProductDetailSearchParam(resolvedSearchParams, "image_scope");
+  const productPresentation = getAdminProductPresentation(product.productType, variants.length);
   const isSimpleProduct = product.productType === "simple";
   const detailSellableCountLabel = getDetailSellableCountLabel({
     productType: product.productType,
     variantCount: variants.length,
     simpleOffer: product.simpleOffer,
-    fallbackLabel: productPresentation.sellableCountLabel
+    fallbackLabel: productPresentation.sellableCountLabel,
   });
   const salesState = {
     isSimpleProduct,
@@ -94,13 +83,9 @@ export default async function ProductDetailPage({
     showLegacyVariantCompatibilityBlock: isSimpleProduct && variants.length > 0,
     showVariantCreateForm: !isSimpleProduct,
     simpleProductHasNoLegacyVariant: isSimpleProduct && variants.length === 0,
-    simpleProductHasSingleLegacyVariant:
-      isSimpleProduct && variants.length === 1,
-    simpleProductHasInconsistentVariantCount:
-      isSimpleProduct && variants.length > 1,
-    simpleOfferFormDefaults: isSimpleProduct
-      ? getSimpleOfferFormDefaults(product)
-      : null,
+    simpleProductHasSingleLegacyVariant: isSimpleProduct && variants.length === 1,
+    simpleProductHasInconsistentVariantCount: isSimpleProduct && variants.length > 1,
+    simpleOfferFormDefaults: isSimpleProduct ? getSimpleOfferFormDefaults(product) : null,
     simpleOfferStatusMessage: getSimpleOfferStatusMessage(
       readProductDetailSearchParam(resolvedSearchParams, "simple_offer_status")
     ),
@@ -121,42 +106,38 @@ export default async function ProductDetailPage({
             ),
             error: getImageErrorMessage(
               readProductDetailSearchParam(resolvedSearchParams, "image_error")
-            )
+            ),
           }
         : {
             status: null,
-            error: null
-          }
+            error: null,
+          },
   };
 
   return (
     <AdminPageShell
       actions={
-        <Button
-          asChild
-          size="sm"
-          variant="outline">
+        <Button asChild size="sm" variant="outline">
           <Link href="/admin/products">Retour à la liste</Link>
         </Button>
       }
       description="Commencez par les informations générales, puis complétez les informations de vente ou les déclinaisons selon le type du produit."
       eyebrow="Produits"
-      title="Modifier le produit">
+      title="Modifier le produit"
+    >
       <ProductDetailHeaderSection
         summary={{
           statusLabel: getProductStatusLabel(product.status),
           typeLabel: productPresentation.typeLabel,
           featuredLabel: product.isFeatured ? "Mis en avant" : "Standard",
           categoryLabel: `${product.categories.length} catégorie${product.categories.length > 1 ? "s" : ""}`,
-          sellableLabel: detailSellableCountLabel
+          sellableLabel: detailSellableCountLabel,
         }}
       />
 
       {product.status === "draft" &&
       !getProductPublishability(product.productType, variants.length).ok ? (
-        <Notice tone="alert">
-          {getProductErrorMessage("simple_product_incoherent_variants")}
-        </Notice>
+        <Notice tone="alert">{getProductErrorMessage("simple_product_incoherent_variants")}</Notice>
       ) : null}
 
       <ProductGeneralSection
@@ -171,9 +152,7 @@ export default async function ProductDetailPage({
       />
 
       <ProductImagesSection
-        currentProductPrimaryMediaAssetId={
-          currentProductPrimaryMediaAsset?.id ?? ""
-        }
+        currentProductPrimaryMediaAssetId={currentProductPrimaryMediaAsset?.id ?? ""}
         mediaAssets={mediaAssets}
         parentImages={parentImages}
         productId={product.id}
@@ -181,21 +160,15 @@ export default async function ProductDetailPage({
           imageScope !== "variant"
             ? {
                 status: getImageStatusMessage(
-                  readProductDetailSearchParam(
-                    resolvedSearchParams,
-                    "image_status"
-                  )
+                  readProductDetailSearchParam(resolvedSearchParams, "image_status")
                 ),
                 error: getImageErrorMessage(
-                  readProductDetailSearchParam(
-                    resolvedSearchParams,
-                    "image_error"
-                  )
-                )
+                  readProductDetailSearchParam(resolvedSearchParams, "image_error")
+                ),
               }
             : {
                 status: null,
-                error: null
+                error: null,
               }
         }
         productPrimaryImageState={productPrimaryImageState}

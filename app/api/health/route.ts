@@ -14,14 +14,14 @@ export async function GET() {
     database: database.ok ? "ok" : "unavailable",
     uploads: "ready",
     uploadsPublicPath: getUploadsPublicPath(),
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
 
   if (!database.ok) {
     return NextResponse.json(
       {
         ...body,
-        error: "database_connection_failed"
+        error: "database_connection_failed",
       },
       { status: 503 }
     );

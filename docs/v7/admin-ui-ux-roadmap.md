@@ -8,14 +8,14 @@ Pour le cadre général, voir `admin-ui-ux-doctrine.md`.
 
 ## Ordre des chantiers
 
-| Lot | Objet | État |
-| --- | --- | --- |
-| V7-1 | Fondation shell admin — sidebar, navigation mobile | Engagé, à stabiliser |
-| V7-2 | Pages listes simples — extraction des cartes de liste | À faire |
-| V7-3 | Formulaires intermédiaires — découpage des sections | À faire |
-| V7-4 | Détail commande — découpage de `orders/[id]/page.tsx` | À faire |
-| V7-5 | Détail produit — découpage de `products/[id]/page.tsx` | À faire |
-| V7-6+ | Cohérence et finitions — à définir selon les besoins constatés | Non planifié |
+| Lot   | Objet                                                          | État                 |
+| ----- | -------------------------------------------------------------- | -------------------- |
+| V7-1  | Fondation shell admin — sidebar, navigation mobile             | Engagé, à stabiliser |
+| V7-2  | Pages listes simples — extraction des cartes de liste          | À faire              |
+| V7-3  | Formulaires intermédiaires — découpage des sections            | À faire              |
+| V7-4  | Détail commande — découpage de `orders/[id]/page.tsx`          | À faire              |
+| V7-5  | Détail produit — découpage de `products/[id]/page.tsx`         | À faire              |
+| V7-6+ | Cohérence et finitions — à définir selon les besoins constatés | Non planifié         |
 
 La fondation shell (V7-1) est déjà engagée et sert de base de référence pour guider les lots suivants. Elle doit être stabilisée avant d'être considérée comme complète selon la doctrine.
 

@@ -11,6 +11,7 @@ V8-1 terminé. Les tokens `--brand` et la couverture dark mode sont disponibles.
 ## Périmètre strict
 
 **In scope :**
+
 - `AdminProductCard` : migration hors `.store-card`, `.admin-product-card`, `.admin-chip`
 - `AdminOrderCard` : migration hors `.admin-chip` pour les statuts
 - `AdminBlogPostCard` : migration hors `.admin-chip`
@@ -18,6 +19,7 @@ V8-1 terminé. Les tokens `--brand` et la couverture dark mode sont disponibles.
 - `AdminEmptyState` : migration hors `.empty-state`
 
 **Out of scope :**
+
 - `AdminFormField`, `AdminFormSection`, `AdminFormActions` — déjà conformes, ne pas toucher
 - Ajout de nouvelles fonctionnalités aux composants (nouvelles actions, nouveaux champs)
 - Modification de la logique de rendu ou des données affichées
@@ -33,6 +35,7 @@ Ces composants utilisent actuellement deux systèmes en tension : des classes CS
 Le composant `Badge` de shadcn (`components/ui/badge.tsx`) est la cible de remplacement pour toutes les utilisations de `.admin-chip`. Il propose des variants sémantiques (`default`, `secondary`, `destructive`, `outline`) et est dark compliant via les tokens shadcn.
 
 Le choix du variant doit refléter la sémantique du contenu :
+
 - Tag de catégorie, label neutre → `secondary` ou `outline`
 - Statut actif / publié → `default`
 - Statut erreur / annulé → `destructive`
@@ -62,6 +65,7 @@ grep -n "admin-chip\|store-card\|admin-product-card\|admin-order\|admin-blog\|ad
 ## Critères de qualité
 
 Un composant est considéré migré dans ce lot quand :
+
 - aucune classe CSS legacy n'est la source de vérité pour son rendu visuel
 - il utilise `Badge` pour les statuts et tags, `Card` pour la structure si applicable
 - il est dark compliant : son rendu en dark mode repose sur des tokens, pas sur des valeurs codées

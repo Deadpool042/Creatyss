@@ -77,12 +77,12 @@ En revanche, les **critères de requête fonctionnels** sont acceptables dans un
 
 La ligne de partage :
 
-| Acceptable dans Prisma | Interdit dans Prisma |
-|---|---|
-| `where: { status: "published" }` dans `listPublishedProducts` | Calculer si un produit est publiable |
-| `orderBy: { createdAt: "desc" }` | Décider si une transition de statut est autorisée |
-| `include: { variants: true }` | Appliquer une règle de prix ou de stock |
-| `take: 10` (pagination) | Calculer un slug depuis un nom |
+| Acceptable dans Prisma                                        | Interdit dans Prisma                              |
+| ------------------------------------------------------------- | ------------------------------------------------- |
+| `where: { status: "published" }` dans `listPublishedProducts` | Calculer si un produit est publiable              |
+| `orderBy: { createdAt: "desc" }`                              | Décider si une transition de statut est autorisée |
+| `include: { variants: true }`                                 | Appliquer une règle de prix ou de stock           |
+| `take: 10` (pagination)                                       | Calculer un slug depuis un nom                    |
 
 Exemple interdit — règle métier dans Prisma :
 
@@ -175,11 +175,11 @@ Ces repositories sont à traiter **en dernier** (V18-4 et V18-5) en raison de le
 
 Les erreurs PostgreSQL actuellement interceptées manuellement (`code === "23505"`) sont remplacées par les codes d'erreur Prisma :
 
-| Erreur actuelle | Équivalent Prisma |
-|---|---|
+| Erreur actuelle             | Équivalent Prisma                            |
+| --------------------------- | -------------------------------------------- |
 | `23505` (contrainte unique) | `PrismaClientKnownRequestError` code `P2002` |
-| `23503` (clé étrangère) | `PrismaClientKnownRequestError` code `P2003` |
-| Ligne non trouvée | `PrismaClientKnownRequestError` code `P2025` |
+| `23503` (clé étrangère)     | `PrismaClientKnownRequestError` code `P2003` |
+| Ligne non trouvée           | `PrismaClientKnownRequestError` code `P2025` |
 
 Les `RepositoryError` métier (ex. `AdminCategoryRepositoryError`) sont conservées — elles absorbent les erreurs Prisma de la même façon qu'elles absorbaient les erreurs `pg`.
 
@@ -187,13 +187,13 @@ Les `RepositoryError` métier (ex. `AdminCategoryRepositoryError`) sont conserv�
 
 ## Ce qui reste hors Prisma
 
-| Couche | Reste hors Prisma |
-|---|---|
-| `entities/` | Logique métier, validators, règles, normalisations |
-| `features/*/schemas/` | Validation Zod des formulaires et payloads |
-| `features/*/mappers/` | Transformations UI, label builders |
-| `db/migrations/` | Workflow SQL + Makefile inchangé |
-| `lib/` | Helpers techniques (env, auth, uploads) |
+| Couche                | Reste hors Prisma                                  |
+| --------------------- | -------------------------------------------------- |
+| `entities/`           | Logique métier, validators, règles, normalisations |
+| `features/*/schemas/` | Validation Zod des formulaires et payloads         |
+| `features/*/mappers/` | Transformations UI, label builders                 |
+| `db/migrations/`      | Workflow SQL + Makefile inchangé                   |
+| `lib/`                | Helpers techniques (env, auth, uploads)            |
 
 ---
 
@@ -212,19 +212,19 @@ Les `RepositoryError` métier (ex. `AdminCategoryRepositoryError`) sont conserv�
 
 ## Priorité de migration des repositories
 
-| Repository | Priorité | Raison |
-|---|---|---|
-| `admin-category.repository.ts` | Haute — pilote | Simple, peu de tables, déjà pilote V17 Zod |
-| `admin-blog.repository.ts` | Haute | Pas de transaction, structure simple |
-| `admin-media.ts` | Haute | Simple, fichier non-repository |
-| `admin-product.repository.ts` | Moyenne | Transactions, compatibilité simple product |
-| `admin-product-variant.repository.ts` | Moyenne | Dépend de admin-product |
-| `admin-product-image.repository.ts` | Moyenne | Dépend de admin-product |
-| `admin-homepage.repository.ts` | Moyenne | Transactions, jointures complexes |
-| `admin-users.ts` | Basse | Peu d'usages, lié à l'auth session |
-| `order.repository.ts` | Basse | Complexité maximale — transactions, webhooks, checkout |
-| `payment.repository.ts` | Basse | Couplé à Stripe et order |
-| `order-email.repository.ts` | Basse | Couplé à order |
-| `guest-cart.repository.ts` | Basse | Couplé au checkout |
-| `simple-product-admin-compatibility.ts` | Basse | Legacy bridge — traiter en dernier |
-| `catalog.ts` | Basse | Storefront, non prioritaire |
+| Repository                              | Priorité       | Raison                                                 |
+| --------------------------------------- | -------------- | ------------------------------------------------------ |
+| `admin-category.repository.ts`          | Haute — pilote | Simple, peu de tables, déjà pilote V17 Zod             |
+| `admin-blog.repository.ts`              | Haute          | Pas de transaction, structure simple                   |
+| `admin-media.ts`                        | Haute          | Simple, fichier non-repository                         |
+| `admin-product.repository.ts`           | Moyenne        | Transactions, compatibilité simple product             |
+| `admin-product-variant.repository.ts`   | Moyenne        | Dépend de admin-product                                |
+| `admin-product-image.repository.ts`     | Moyenne        | Dépend de admin-product                                |
+| `admin-homepage.repository.ts`          | Moyenne        | Transactions, jointures complexes                      |
+| `admin-users.ts`                        | Basse          | Peu d'usages, lié à l'auth session                     |
+| `order.repository.ts`                   | Basse          | Complexité maximale — transactions, webhooks, checkout |
+| `payment.repository.ts`                 | Basse          | Couplé à Stripe et order                               |
+| `order-email.repository.ts`             | Basse          | Couplé à order                                         |
+| `guest-cart.repository.ts`              | Basse          | Couplé au checkout                                     |
+| `simple-product-admin-compatibility.ts` | Basse          | Legacy bridge — traiter en dernier                     |
+| `catalog.ts`                            | Basse          | Storefront, non prioritaire                            |

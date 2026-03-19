@@ -12,8 +12,8 @@ describe("validateShipmentInput", () => {
     expect(result).toEqual({
       ok: true,
       data: {
-        trackingReference: "COLISSIMO-123456"
-      }
+        trackingReference: "COLISSIMO-123456",
+      },
     });
   });
 
@@ -27,8 +27,8 @@ describe("validateShipmentInput", () => {
     expect(result).toEqual({
       ok: true,
       data: {
-        trackingReference: null
-      }
+        trackingReference: null,
+      },
     });
   });
 });

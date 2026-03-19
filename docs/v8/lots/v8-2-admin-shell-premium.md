@@ -11,6 +11,7 @@ V8-1 terminé — les tokens `--brand` et `--sidebar-*` dark doivent être dispo
 ## Périmètre strict
 
 **In scope :**
+
 - Passage de `collapsible="offcanvas"` à `collapsible="icon"` sur `<Sidebar>`
 - Ajout de `SidebarRail` comme handle visuel de toggle desktop
 - Prop `tooltip` sur `SidebarMenuButton` pour chaque lien de navigation (actif en mode icon)
@@ -19,6 +20,7 @@ V8-1 terminé — les tokens `--brand` et `--sidebar-*` dark doivent être dispo
 - Retrait de `"use client"` de `AdminShell` si aucun hook ou state client propre n'est présent
 
 **Out of scope :**
+
 - Modification des groupes de navigation ou de leurs liens
 - Animations ou transitions personnalisées
 - Gestion explicite de la persistance (le mécanisme cookie natif shadcn suffit)
@@ -50,13 +52,13 @@ Les classes `-mb-16 -mt-8` dans `AdminShell` compensent un padding du layout par
 
 ## Comportement attendu après ce lot
 
-| Contexte | Comportement |
-|---|---|
-| Desktop — sidebar ouverte | Navigation pleine avec labels |
-| Desktop — sidebar réduite | Icônes seules, labels en tooltip au hover |
-| Mobile | Overlay via `SidebarTrigger` |
-| `SidebarRail` | Handle visuel de toggle, bord droit de la sidebar |
-| Refresh / navigation | État sidebar persisté via cookie |
+| Contexte                  | Comportement                                      |
+| ------------------------- | ------------------------------------------------- |
+| Desktop — sidebar ouverte | Navigation pleine avec labels                     |
+| Desktop — sidebar réduite | Icônes seules, labels en tooltip au hover         |
+| Mobile                    | Overlay via `SidebarTrigger`                      |
+| `SidebarRail`             | Handle visuel de toggle, bord droit de la sidebar |
+| Refresh / navigation      | État sidebar persisté via cookie                  |
 
 ## Vérifications de fin de lot
 
@@ -66,6 +68,7 @@ pnpm exec playwright test --grep "admin"
 ```
 
 Test manuel :
+
 1. Desktop : cliquer `SidebarRail` → sidebar se réduit en icônes
 2. Mode icon : hovering un lien → tooltip s'affiche
 3. Mobile : `SidebarTrigger` → overlay fonctionne

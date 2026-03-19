@@ -5,12 +5,10 @@ import { deleteAdminProductImage } from "@/db/repositories/admin-product-image.r
 import {
   appendImageScope,
   normalizeImageScopeFromForm,
-  normalizeNumericIdFromForm
+  normalizeNumericIdFromForm,
 } from "@/features/admin/products/actions/action-helpers";
 
-export async function deleteProductImageAction(
-  formData: FormData
-): Promise<void> {
+export async function deleteProductImageAction(formData: FormData): Promise<void> {
   const productId = normalizeNumericIdFromForm(formData.get("productId"));
   const imageId = normalizeNumericIdFromForm(formData.get("imageId"));
   const imageScope = normalizeImageScopeFromForm(formData.get("imageScope"));
@@ -21,10 +19,7 @@ export async function deleteProductImageAction(
 
   if (imageId === null) {
     redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=missing_image`,
-        imageScope
-      )
+      appendImageScope(`/admin/products/${productId}?image_error=missing_image`, imageScope)
     );
   }
 
@@ -33,26 +28,15 @@ export async function deleteProductImageAction(
 
     if (!wasDeleted) {
       redirect(
-        appendImageScope(
-          `/admin/products/${productId}?image_error=missing_image`,
-          imageScope
-        )
+        appendImageScope(`/admin/products/${productId}?image_error=missing_image`, imageScope)
       );
     }
   } catch (error) {
     console.error(error);
     redirect(
-      appendImageScope(
-        `/admin/products/${productId}?image_error=delete_failed`,
-        imageScope
-      )
+      appendImageScope(`/admin/products/${productId}?image_error=delete_failed`, imageScope)
     );
   }
 
-  redirect(
-    appendImageScope(
-      `/admin/products/${productId}?image_status=deleted`,
-      imageScope
-    )
-  );
+  redirect(appendImageScope(`/admin/products/${productId}?image_status=deleted`, imageScope));
 }

@@ -67,10 +67,7 @@ const SKIP_IMAGES = process.argv.includes("--skip-images");
 const FORCE = process.argv.includes("--force");
 
 const ROOT = process.cwd();
-const UPLOADS_DIR = (process.env.UPLOADS_DIR ?? "public/uploads").replace(
-  /\/$/,
-  ""
-);
+const UPLOADS_DIR = (process.env.UPLOADS_DIR ?? "public/uploads").replace(/\/$/, "");
 const UPLOADS_ABS = path.join(ROOT, UPLOADS_DIR);
 
 // Maps WooCommerce category slugs → Creatyss category slugs.
@@ -79,8 +76,8 @@ const CATEGORY_SLUG_MAP: Record<string, string> = {
   "les-sacs-a-bandouliere": "sacs-a-bandouliere",
   "sacs-creatyss": "sacs-a-main",
   "mini-sacs": "mini-sacs",
-  "pochettes": "pochettes-trousses",
-  "sacs-a-dos": "sacs-a-dos"
+  pochettes: "pochettes-trousses",
+  "sacs-a-dos": "sacs-a-dos",
 };
 
 const WEBP_OPTIONS: sharp.WebpOptions = { quality: 85, effort: 4 };
@@ -120,7 +117,7 @@ function toDecimalPrice(minorStr: string, minorUnit: number): number {
 
 /** Generate a SKU from a slug when the product has none. */
 function slugToSku(slug: string): string {
-  const parts = slug.split("-").map(p => p.slice(0, 3).toUpperCase());
+  const parts = slug.split("-").map((p) => p.slice(0, 3).toUpperCase());
   return parts.slice(0, 4).join("") + "-IMP";
 }
 
@@ -163,7 +160,7 @@ async function downloadAndConvert(
   return {
     byteSize: data.length,
     width: info.width ?? null,
-    height: info.height ?? null
+    height: info.height ?? null,
   };
 }
 
@@ -176,22 +173,16 @@ async function main() {
   const categoriesPath = path.join(ROOT, "seed_data", "categories.creatyss.json");
 
   if (!existsSync(productsPath) || !existsSync(categoriesPath)) {
-    process.stderr.write(
-      "Missing seed_data/products.creatyss.json or categories.creatyss.json.\n"
-    );
+    process.stderr.write("Missing seed_data/products.creatyss.json or categories.creatyss.json.\n");
     process.exitCode = 1;
     return;
   }
 
   const products: WcProduct[] = JSON.parse(
-    await import("node:fs").then(fs =>
-      fs.readFileSync(productsPath, "utf-8")
-    )
+    await import("node:fs").then((fs) => fs.readFileSync(productsPath, "utf-8"))
   );
   const wcCategories: WcCategory[] = JSON.parse(
-    await import("node:fs").then(fs =>
-      fs.readFileSync(categoriesPath, "utf-8")
-    )
+    await import("node:fs").then((fs) => fs.readFileSync(categoriesPath, "utf-8"))
   );
 
   const pool = new Pool({ connectionString: readDatabaseUrl() });
@@ -327,7 +318,7 @@ async function main() {
           const { byteSize, width, height } = converted ?? {
             byteSize: 0,
             width: null,
-            height: null
+            height: null,
           };
 
           // Upsert media_assets
@@ -379,13 +370,13 @@ async function main() {
 
           if (converted !== null) {
             process.stdout.write(
-              `  ${isPrimary ? "★" : " "} ${slug}/${filename} (${Math.round((converted.byteSize) / 1024)} kB)\n`
+              `  ${isPrimary ? "★" : " "} ${slug}/${filename} (${Math.round(converted.byteSize / 1024)} kB)\n`
             );
           }
 
           // Small delay to be polite to the origin server
           if (converted !== null) {
-            await new Promise(r => setTimeout(r, 80));
+            await new Promise((r) => setTimeout(r, 80));
           }
         }
       }
@@ -405,8 +396,6 @@ async function main() {
 }
 
 main().catch((err: unknown) => {
-  process.stderr.write(
-    `import-woocommerce: ${err instanceof Error ? err.message : err}\n`
-  );
+  process.stderr.write(`import-woocommerce: ${err instanceof Error ? err.message : err}\n`);
   process.exitCode = 1;
 });

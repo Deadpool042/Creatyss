@@ -103,14 +103,11 @@ function mapAdminProductImage(row: AdminProductImageRow): AdminProductImage {
     sortOrder: row.sort_order,
     isPrimary: row.is_primary,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
-async function productExists(
-  client: PoolClient,
-  productId: string
-): Promise<boolean> {
+async function productExists(client: PoolClient, productId: string): Promise<boolean> {
   const result = await client.query<ExistingRow>(
     `
       select id::text as id
@@ -444,16 +441,11 @@ async function setPrimaryImageInScope(
   );
   const targetImage = resolvePrimaryImageTargetRow({
     existingPrimaryImage,
-    existingScopedImage
+    existingScopedImage,
   });
 
   if (targetImage !== null) {
-    await clearPrimaryImageInScope(
-      client,
-      input.productId,
-      input.variantId,
-      targetImage.id
-    );
+    await clearPrimaryImageInScope(client, input.productId, input.variantId, targetImage.id);
 
     return updatePrimaryImageRow(client, targetImage.id, input.filePath);
   }
@@ -463,9 +455,7 @@ async function setPrimaryImageInScope(
   return insertPrimaryImageRow(client, input);
 }
 
-export async function listAdminProductImages(
-  productId: string
-): Promise<AdminProductImage[]> {
+export async function listAdminProductImages(productId: string): Promise<AdminProductImage[]> {
   if (!isValidNumericId(productId)) {
     return [];
   }
@@ -563,9 +553,7 @@ export async function createAdminProductImage(
   }
 
   if (input.variantId !== null && !isValidNumericId(input.variantId)) {
-    throw new AdminProductImageRepositoryError(
-      "Selected variant does not belong to this product."
-    );
+    throw new AdminProductImageRepositoryError("Selected variant does not belong to this product.");
   }
 
   const client = await db.connect();
@@ -619,7 +607,7 @@ export async function createAdminProductImage(
         input.filePath,
         input.altText,
         input.sortOrder,
-        input.isPrimary
+        input.isPrimary,
       ]
     );
 
@@ -665,7 +653,7 @@ export async function upsertAdminPrimaryProductImage(
     const row = await setPrimaryImageInScope(client, {
       productId: input.productId,
       variantId: null,
-      filePath: input.filePath
+      filePath: input.filePath,
     });
 
     await client.query("commit");
@@ -696,9 +684,7 @@ export async function upsertAdminPrimaryVariantImage(
       return null;
     }
 
-    if (
-      !(await variantExistsForProduct(client, input.productId, input.variantId))
-    ) {
+    if (!(await variantExistsForProduct(client, input.productId, input.variantId))) {
       throw new AdminProductImageRepositoryError(
         "Selected variant does not belong to this product."
       );
@@ -707,7 +693,7 @@ export async function upsertAdminPrimaryVariantImage(
     const row = await setPrimaryImageInScope(client, {
       productId: input.productId,
       variantId: input.variantId,
-      filePath: input.filePath
+      filePath: input.filePath,
     });
 
     await client.query("commit");
@@ -746,12 +732,7 @@ export async function updateAdminProductImage(
     }
 
     if (input.isPrimary) {
-      await clearPrimaryImageInScope(
-        client,
-        input.productId,
-        currentImage.variant_id,
-        input.id
-      );
+      await clearPrimaryImageInScope(client, input.productId, currentImage.variant_id, input.id);
     }
 
     const result = await client.query<AdminProductImageRow>(
@@ -816,9 +797,7 @@ export async function deleteAdminProductImage(
   return row !== null;
 }
 
-export async function deleteAdminPrimaryProductImage(
-  productId: string
-): Promise<boolean> {
+export async function deleteAdminPrimaryProductImage(productId: string): Promise<boolean> {
   if (!isValidNumericId(productId)) {
     return false;
   }

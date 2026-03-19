@@ -2,16 +2,16 @@ import { type PoolClient } from "pg";
 import { db, queryFirst, queryRows } from "@/db/client";
 import {
   clearNativeSimpleProductOfferFields,
-  syncLegacyVariantCommercialFieldsFromSimpleProduct
+  syncLegacyVariantCommercialFieldsFromSimpleProduct,
 } from "@/db/repositories/simple-product-admin-compatibility";
 import {
   resolveSimpleProductOffer,
   type SimpleProductOffer,
-  type SimpleProductOfferFields
+  type SimpleProductOfferFields,
 } from "@/entities/product/simple-product-offer";
 import {
   canChangeProductTypeToSimple,
-  type ProductTypeCompatibilityErrorCode
+  type ProductTypeCompatibilityErrorCode,
 } from "@/entities/product/product-type-rules";
 import { type ProductType } from "@/entities/product/product-input";
 
@@ -218,9 +218,7 @@ function toIsoTimestamp(value: TimestampValue): string {
   return new Date(value).toISOString();
 }
 
-function mapAdminProductSummary(
-  row: AdminProductSummaryRow
-): AdminProductSummary {
+function mapAdminProductSummary(row: AdminProductSummaryRow): AdminProductSummary {
   return {
     id: row.id,
     name: row.name,
@@ -232,7 +230,7 @@ function mapAdminProductSummary(
     categoryCount: row.category_count,
     variantCount: row.variant_count,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
@@ -257,17 +255,15 @@ function mapAdminProductDetail(
     simpleOfferFields: getNativeSimpleOfferFields(row),
     simpleOffer,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
-function mapCategoryAssignment(
-  row: AdminProductCategoryRow
-): AdminProductCategoryAssignment {
+function mapCategoryAssignment(row: AdminProductCategoryRow): AdminProductCategoryAssignment {
   return {
     id: row.id,
     name: row.name,
-    slug: row.slug
+    slug: row.slug,
   };
 }
 
@@ -277,10 +273,7 @@ function mapRepositoryError(error: unknown): never {
     error.code === "23505" &&
     error.constraint === "products_slug_key"
   ) {
-    throw new AdminProductRepositoryError(
-      "slug_taken",
-      "Product slug already exists."
-    );
+    throw new AdminProductRepositoryError("slug_taken", "Product slug already exists.");
   }
 
   if (
@@ -288,10 +281,7 @@ function mapRepositoryError(error: unknown): never {
     error.code === "23505" &&
     error.constraint === "product_variants_sku_key"
   ) {
-    throw new AdminProductRepositoryError(
-      "sku_taken",
-      "Variant SKU already exists."
-    );
+    throw new AdminProductRepositoryError("sku_taken", "Variant SKU already exists.");
   }
 
   if (isPostgreSqlErrorLike(error) && error.code === "23503") {
@@ -308,20 +298,16 @@ function normalizeCategoryIds(categoryIds: readonly string[]): string[] {
   return [...new Set(categoryIds)];
 }
 
-function getNativeSimpleOfferFields(
-  row: AdminProductSimpleFieldsRow
-): SimpleProductOfferFields {
+function getNativeSimpleOfferFields(row: AdminProductSimpleFieldsRow): SimpleProductOfferFields {
   return {
     sku: row.simple_sku,
     price: row.simple_price,
     compareAtPrice: row.simple_compare_at_price,
-    stockQuantity: row.simple_stock_quantity
+    stockQuantity: row.simple_stock_quantity,
   };
 }
 
-function buildAdminProductWriteParams(
-  input: CreateAdminProductInput
-): unknown[] {
+function buildAdminProductWriteParams(input: CreateAdminProductInput): unknown[] {
   return [
     input.name,
     input.slug,
@@ -331,29 +317,18 @@ function buildAdminProductWriteParams(
     input.seoDescription,
     input.status,
     input.productType,
-    input.isFeatured
+    input.isFeatured,
   ];
 }
 
 function buildAdminSimpleProductOfferWriteParams(
   input: UpdateAdminSimpleProductOfferInput
 ): unknown[] {
-  return [
-    input.sku,
-    input.price,
-    input.compareAtPrice,
-    input.stockQuantity
-  ];
+  return [input.sku, input.price, input.compareAtPrice, input.stockQuantity];
 }
 
-function assertCanSaveAsSimpleProduct(
-  productType: ProductType,
-  variantCount: number
-): void {
-  if (
-    productType === "simple" &&
-    !canChangeProductTypeToSimple(variantCount)
-  ) {
+function assertCanSaveAsSimpleProduct(productType: ProductType, variantCount: number): void {
+  if (productType === "simple" && !canChangeProductTypeToSimple(variantCount)) {
     throw new AdminProductRepositoryError(
       "simple_product_requires_single_variant",
       "A simple product can only have one sellable variant."
@@ -370,9 +345,7 @@ function assertProductSupportsNativeSimpleOffer(productType: ProductType): void 
   }
 }
 
-function assertCompatibleLegacyVariantCountForNativeSimpleOffer(
-  variantCount: number
-): void {
+function assertCompatibleLegacyVariantCountForNativeSimpleOffer(variantCount: number): void {
   if (variantCount > 1) {
     throw new AdminProductRepositoryError(
       "simple_product_multiple_legacy_variants",
@@ -425,7 +398,7 @@ async function listLegacySimpleOfferCandidatesByProductId(
     sku: row.sku,
     price: row.price,
     compareAtPrice: row.compare_at_price,
-    stockQuantity: row.stock_quantity
+    stockQuantity: row.stock_quantity,
   }));
 }
 
@@ -437,14 +410,11 @@ async function readAdminSimpleProductOffer(
     return null;
   }
 
-  const legacyOffers = await listLegacySimpleOfferCandidatesByProductId(
-    client,
-    row.id
-  );
+  const legacyOffers = await listLegacySimpleOfferCandidatesByProductId(client, row.id);
 
   return resolveSimpleProductOffer({
     native: getNativeSimpleOfferFields(row),
-    legacyOffers
+    legacyOffers,
   });
 }
 
@@ -479,10 +449,7 @@ async function ensureCategoriesExist(
   return normalizedCategoryIds;
 }
 
-async function countVariantsByProductId(
-  client: PoolClient,
-  productId: string
-): Promise<number> {
+async function countVariantsByProductId(client: PoolClient, productId: string): Promise<number> {
   const result = await client.query<CountRow>(
     `
       select count(*)::int as matched_count
@@ -537,7 +504,7 @@ async function readAdminProductDetailFromRow(
 ): Promise<AdminProductDetail> {
   const [categories, simpleOffer] = await Promise.all([
     listAssignedCategoriesByProductId(client, row.id),
-    readAdminSimpleProductOffer(client, row)
+    readAdminSimpleProductOffer(client, row),
   ]);
 
   return mapAdminProductDetail(row, categories, simpleOffer);
@@ -649,9 +616,7 @@ export async function listAdminProducts(): Promise<AdminProductSummary[]> {
   return rows.map(mapAdminProductSummary);
 }
 
-export async function findAdminProductById(
-  id: string
-): Promise<AdminProductDetail | null> {
+export async function findAdminProductById(id: string): Promise<AdminProductDetail | null> {
   if (!isValidProductId(id)) {
     return null;
   }
@@ -824,7 +789,7 @@ export async function updateAdminSimpleProductOffer(
         sku: input.sku,
         price: input.price,
         compareAtPrice: input.compareAtPrice,
-        stockQuantity: input.stockQuantity
+        stockQuantity: input.stockQuantity,
       });
     }
 
@@ -846,9 +811,7 @@ export async function updateAdminSimpleProductOffer(
   }
 }
 
-export async function toggleAdminProductStatus(
-  id: string
-): Promise<"draft" | "published" | null> {
+export async function toggleAdminProductStatus(id: string): Promise<"draft" | "published" | null> {
   if (!isValidProductId(id)) {
     return null;
   }

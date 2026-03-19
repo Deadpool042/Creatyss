@@ -64,7 +64,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -72,7 +72,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { AdminOrderSummary } from "@/db/repositories/order.repository";
 import { updateOrderStatusAction } from "@/features/admin/orders/actions/update-order-status-action";
@@ -91,46 +91,21 @@ export function OrderRowActions({ order }: OrderRowActionsProps) {
   return (
     <>
       {/* Formulaires cachés pour les Server Actions */}
-      <form
-        ref={preparingFormRef}
-        action={updateOrderStatusAction}>
-        <input
-          type="hidden"
-          name="orderId"
-          value={order.id}
-        />
-        <input
-          type="hidden"
-          name="nextStatus"
-          value="preparing"
-        />
+      <form ref={preparingFormRef} action={updateOrderStatusAction}>
+        <input type="hidden" name="orderId" value={order.id} />
+        <input type="hidden" name="nextStatus" value="preparing" />
       </form>
-      <form
-        ref={cancelFormRef}
-        action={updateOrderStatusAction}>
-        <input
-          type="hidden"
-          name="orderId"
-          value={order.id}
-        />
-        <input
-          type="hidden"
-          name="nextStatus"
-          value="cancelled"
-        />
+      <form ref={cancelFormRef} action={updateOrderStatusAction}>
+        <input type="hidden" name="orderId" value={order.id} />
+        <input type="hidden" name="nextStatus" value="cancelled" />
       </form>
 
       <AlertDialog>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-8">
+            <Button variant="ghost" size="icon" className="size-8">
               <MoreHorizontalIcon className="size-4" />
-              <span className="sr-only">
-                Actions commande {order.reference}
-              </span>
+              <span className="sr-only">Actions commande {order.reference}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -139,8 +114,7 @@ export function OrderRowActions({ order }: OrderRowActionsProps) {
             </DropdownMenuItem>
 
             {canPrepare ? (
-              <DropdownMenuItem
-                onClick={() => preparingFormRef.current?.requestSubmit()}>
+              <DropdownMenuItem onClick={() => preparingFormRef.current?.requestSubmit()}>
                 Marquer en préparation
               </DropdownMenuItem>
             ) : null}
@@ -160,19 +134,18 @@ export function OrderRowActions({ order }: OrderRowActionsProps) {
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              Annuler la commande {order.reference} ?
-            </AlertDialogTitle>
+            <AlertDialogTitle>Annuler la commande {order.reference} ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Cette action est irréversible. La commande sera annulée et le
-              stock des articles sera rétabli automatiquement.
+              Cette action est irréversible. La commande sera annulée et le stock des articles sera
+              rétabli automatiquement.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Garder la commande</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => cancelFormRef.current?.requestSubmit()}>
+              onClick={() => cancelFormRef.current?.requestSubmit()}
+            >
               Annuler la commande
             </AlertDialogAction>
           </AlertDialogFooter>

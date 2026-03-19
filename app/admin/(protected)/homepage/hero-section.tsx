@@ -31,14 +31,15 @@ export function HeroSection({
   heroImageSelectValue,
   heroImagePath,
   currentHeroMediaAsset,
-  mediaAssets
+  mediaAssets,
 }: HeroSectionProps) {
   return (
     <AdminFormSection
       contentClassName="gap-5"
       description="Renseignez ici le titre, le texte et l'image visibles en haut de la page d'accueil."
       eyebrow="Mise en avant principale"
-      title="Bannière principale">
+      title="Bannière principale"
+    >
       {heroImageUrl ? (
         <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
           <img
@@ -53,9 +54,7 @@ export function HeroSection({
         </div>
       )}
 
-      <AdminFormField
-        htmlFor="homepage-hero-title"
-        label="Titre principal">
+      <AdminFormField htmlFor="homepage-hero-title" label="Titre principal">
         <Input
           defaultValue={heroTitle ?? ""}
           id="homepage-hero-title"
@@ -64,35 +63,25 @@ export function HeroSection({
         />
       </AdminFormField>
 
-      <AdminFormField
-        htmlFor="homepage-hero-text"
-        label="Texte principal">
-        <Textarea
-          defaultValue={heroText ?? ""}
-          id="homepage-hero-text"
-          name="heroText"
-          rows={4}
-        />
+      <AdminFormField htmlFor="homepage-hero-text" label="Texte principal">
+        <Textarea defaultValue={heroText ?? ""} id="homepage-hero-text" name="heroText" rows={4} />
       </AdminFormField>
 
-      <AdminFormField
-        htmlFor="homepage-hero-image"
-        label="Image principale">
+      <AdminFormField htmlFor="homepage-hero-image" label="Image principale">
         <select
           className={nativeSelectClassName}
           defaultValue={heroImageSelectValue}
           id="homepage-hero-image"
-          name="heroImageMediaAssetId">
+          name="heroImageMediaAssetId"
+        >
           {heroImagePath !== null && currentHeroMediaAsset === null ? (
             <option value="__keep_current__">
               Conserver l&apos;image actuelle ({heroImagePath})
             </option>
           ) : null}
           <option value="">Aucune image principale</option>
-          {mediaAssets.map(mediaAsset => (
-            <option
-              key={mediaAsset.id}
-              value={mediaAsset.id}>
+          {mediaAssets.map((mediaAsset) => (
+            <option key={mediaAsset.id} value={mediaAsset.id}>
               {mediaAsset.originalName} · {mediaAsset.mimeType}
             </option>
           ))}
@@ -104,7 +93,8 @@ export function HeroSection({
           Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
           <Link
             className="font-medium text-primary underline-offset-4 hover:underline"
-            href="/admin/media">
+            href="/admin/media"
+          >
             la bibliothèque médias
           </Link>
           .

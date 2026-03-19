@@ -5,7 +5,7 @@ import { upsertAdminPrimaryProductImage } from "@/db/repositories/admin-product-
 import {
   appendImageScope,
   findAdminMediaAssetById,
-  normalizeNumericIdFromForm
+  normalizeNumericIdFromForm,
 } from "@/features/admin/products/actions/action-helpers";
 
 type ProductPrimaryImageErrorCode =
@@ -14,9 +14,7 @@ type ProductPrimaryImageErrorCode =
   | "missing_media_asset"
   | "save_failed";
 
-function readMediaAssetId(
-  value: FormDataEntryValue | null
-):
+function readMediaAssetId(value: FormDataEntryValue | null):
   | {
       ok: true;
       mediaAssetId: string;
@@ -28,7 +26,7 @@ function readMediaAssetId(
   if (value === null || (typeof value === "string" && value.trim().length === 0)) {
     return {
       ok: false,
-      code: "missing_media_asset"
+      code: "missing_media_asset",
     };
   }
 
@@ -37,13 +35,13 @@ function readMediaAssetId(
   if (mediaAssetId === null) {
     return {
       ok: false,
-      code: "invalid_media_asset"
+      code: "invalid_media_asset",
     };
   }
 
   return {
     ok: true,
-    mediaAssetId
+    mediaAssetId,
   };
 }
 
@@ -51,23 +49,14 @@ function redirectToProductPrimaryImageError(
   productId: string,
   code: ProductPrimaryImageErrorCode
 ): never {
-  redirect(
-    appendImageScope(`/admin/products/${productId}?image_error=${code}`, "product")
-  );
+  redirect(appendImageScope(`/admin/products/${productId}?image_error=${code}`, "product"));
 }
 
-function redirectToProductPrimaryImageStatus(
-  productId: string,
-  status: "primary_updated"
-): never {
-  redirect(
-    appendImageScope(`/admin/products/${productId}?image_status=${status}`, "product")
-  );
+function redirectToProductPrimaryImageStatus(productId: string, status: "primary_updated"): never {
+  redirect(appendImageScope(`/admin/products/${productId}?image_status=${status}`, "product"));
 }
 
-export async function setProductPrimaryImageAction(
-  formData: FormData
-): Promise<void> {
+export async function setProductPrimaryImageAction(formData: FormData): Promise<void> {
   const productId = normalizeNumericIdFromForm(formData.get("productId"));
 
   if (productId === null) {
@@ -89,7 +78,7 @@ export async function setProductPrimaryImageAction(
   try {
     const image = await upsertAdminPrimaryProductImage({
       productId,
-      filePath: mediaAsset.filePath
+      filePath: mediaAsset.filePath,
     });
 
     if (image === null) {

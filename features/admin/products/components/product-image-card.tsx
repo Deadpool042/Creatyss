@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { type AdminProductImage } from "@/db/repositories/admin-product-image.repository";
 import {
   updateProductImageAction,
-  deleteProductImageAction
+  deleteProductImageAction,
 } from "@/features/admin/products/actions";
 import { getImageUrl } from "@/features/admin/products/mappers/product-detail-mappers";
 import Image from "next/image";
@@ -23,10 +23,7 @@ type ProductImageCardProps = Readonly<{
   uploadsPublicPath: string;
 }>;
 
-function renderImagePreview(
-  uploadsPublicPath: string,
-  image: AdminProductImage
-) {
+function renderImagePreview(uploadsPublicPath: string, image: AdminProductImage) {
   const imageUrl = getImageUrl(uploadsPublicPath, image.filePath);
 
   if (imageUrl === null) {
@@ -54,7 +51,7 @@ export function ProductImageCard({
   image,
   imageScope,
   productId,
-  uploadsPublicPath
+  uploadsPublicPath,
 }: ProductImageCardProps) {
   const altTextId = `image-alt-${image.id}`;
   const sortOrderId = `image-sort-order-${image.id}`;
@@ -70,44 +67,19 @@ export function ProductImageCard({
           </Badge>
           <Badge variant="secondary">Ordre {image.sortOrder}</Badge>
         </div>
-        <p className="text-sm leading-6 text-muted-foreground">
-          {image.filePath}
-        </p>
+        <p className="text-sm leading-6 text-muted-foreground">{image.filePath}</p>
       </div>
 
-      <form
-        action={updateProductImageAction}
-        className="space-y-4">
-        <input
-          name="productId"
-          type="hidden"
-          value={productId}
-        />
-        <input
-          name="imageId"
-          type="hidden"
-          value={image.id}
-        />
-        <input
-          name="imageScope"
-          type="hidden"
-          value={imageScope}
-        />
+      <form action={updateProductImageAction} className="space-y-4">
+        <input name="productId" type="hidden" value={productId} />
+        <input name="imageId" type="hidden" value={image.id} />
+        <input name="imageScope" type="hidden" value={imageScope} />
 
-        <AdminFormField
-          htmlFor={altTextId}
-          label="Texte alternatif">
-          <Input
-            defaultValue={image.altText ?? ""}
-            id={altTextId}
-            name="altText"
-            type="text"
-          />
+        <AdminFormField htmlFor={altTextId} label="Texte alternatif">
+          <Input defaultValue={image.altText ?? ""} id={altTextId} name="altText" type="text" />
         </AdminFormField>
 
-        <AdminFormField
-          htmlFor={sortOrderId}
-          label="Ordre">
+        <AdminFormField htmlFor={sortOrderId} label="Ordre">
           <Input
             defaultValue={String(image.sortOrder)}
             id={sortOrderId}
@@ -132,36 +104,23 @@ export function ProductImageCard({
         </label>
 
         <div className="flex flex-wrap items-center gap-3">
-          <Button
-            className="w-full sm:w-fit"
-            type="submit">
+          <Button className="w-full sm:w-fit" type="submit">
             Mettre à jour l&apos;image
           </Button>
         </div>
       </form>
 
       <form action={deleteProductImageAction}>
-        <input
-          name="productId"
-          type="hidden"
-          value={productId}
-        />
-        <input
-          name="imageId"
-          type="hidden"
-          value={image.id}
-        />
-        <input
-          name="imageScope"
-          type="hidden"
-          value={imageScope}
-        />
+        <input name="productId" type="hidden" value={productId} />
+        <input name="imageId" type="hidden" value={image.id} />
+        <input name="imageScope" type="hidden" value={imageScope} />
 
         <Button
           className={subtleDestructiveButtonClassName}
           size="sm"
           variant="ghost"
-          type="submit">
+          type="submit"
+        >
           Supprimer l&apos;image
         </Button>
       </form>

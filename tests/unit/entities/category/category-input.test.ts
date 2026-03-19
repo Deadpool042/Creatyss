@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  normalizeCategorySlug,
-  validateCategoryInput
-} from "@/entities/category/category-input";
+import { normalizeCategorySlug, validateCategoryInput } from "@/entities/category/category-input";
 
 describe("normalizeCategorySlug", () => {
   it("normalise un slug avec accents, espaces et ponctuation", () => {
@@ -16,7 +13,7 @@ describe("validateCategoryInput", () => {
       name: "  Sacs iconiques  ",
       slug: "  Été 2026 / Sacs !  ",
       description: "  Collection phare  ",
-      isFeatured: "on"
+      isFeatured: "on",
     });
 
     expect(result).toEqual({
@@ -25,8 +22,8 @@ describe("validateCategoryInput", () => {
         name: "Sacs iconiques",
         slug: "ete-2026-sacs",
         description: "Collection phare",
-        isFeatured: true
-      }
+        isFeatured: true,
+      },
     });
   });
 
@@ -35,7 +32,7 @@ describe("validateCategoryInput", () => {
       name: "Categorie",
       slug: "categorie",
       description: "   ",
-      isFeatured: null
+      isFeatured: null,
     });
 
     expect(result).toEqual({
@@ -44,8 +41,8 @@ describe("validateCategoryInput", () => {
         name: "Categorie",
         slug: "categorie",
         description: null,
-        isFeatured: false
-      }
+        isFeatured: false,
+      },
     });
   });
 
@@ -55,11 +52,11 @@ describe("validateCategoryInput", () => {
         name: "   ",
         slug: "categorie",
         description: null,
-        isFeatured: null
+        isFeatured: null,
       })
     ).toEqual({
       ok: false,
-      code: "missing_name"
+      code: "missing_name",
     });
   });
 
@@ -69,11 +66,11 @@ describe("validateCategoryInput", () => {
         name: "Categorie",
         slug: "!!!",
         description: null,
-        isFeatured: null
+        isFeatured: null,
       })
     ).toEqual({
       ok: false,
-      code: "invalid_slug"
+      code: "invalid_slug",
     });
   });
 });

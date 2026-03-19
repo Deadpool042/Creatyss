@@ -1,9 +1,4 @@
-export type OrderStatus =
-  | "pending"
-  | "paid"
-  | "preparing"
-  | "shipped"
-  | "cancelled";
+export type OrderStatus = "pending" | "paid" | "preparing" | "shipped" | "cancelled";
 
 type AllowedTransitions = Record<OrderStatus, readonly OrderStatus[]>;
 
@@ -12,7 +7,7 @@ const ALLOWED_ORDER_STATUS_TRANSITIONS: AllowedTransitions = {
   paid: ["preparing", "cancelled"],
   preparing: ["shipped", "cancelled"],
   shipped: [],
-  cancelled: []
+  cancelled: [],
 };
 
 export type OrderStatusTransitionResult =
@@ -46,7 +41,6 @@ export function resolveOrderStatusTransition(input: {
 
   return {
     ok: true,
-    shouldRestock:
-      input.nextStatus === "cancelled" && input.currentStatus !== "cancelled"
+    shouldRestock: input.nextStatus === "cancelled" && input.currentStatus !== "cancelled",
   };
 }

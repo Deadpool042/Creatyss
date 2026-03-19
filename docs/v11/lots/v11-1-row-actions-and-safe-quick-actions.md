@@ -6,6 +6,7 @@ V10-2 terminé : `components/ui/data-table.tsx`, `components/ui/table.tsx`, `@ta
 V10-3 terminé : colonnes DataTable commandes et produits définies dans `order-columns.tsx` et `product-columns.tsx`.
 
 Composants shadcn disponibles sans installation supplémentaire :
+
 - `components/ui/alert-dialog.tsx`
 - `components/ui/dropdown-menu.tsx`
 
@@ -26,9 +27,7 @@ Toute action irréversible doit passer par un `AlertDialog` avant d'atteindre le
 `app/admin/(protected)/orders/[id]/order-detail-actions-card.tsx` — lignes concernées :
 
 ```tsx
-<Button
-  variant={nextStatus === "cancelled" ? "destructive" : "outline"}
-  type="submit">
+<Button variant={nextStatus === "cancelled" ? "destructive" : "outline"} type="submit">
   {getOrderTransitionLabel(nextStatus)}
 </Button>
 ```
@@ -38,6 +37,7 @@ Pour `nextStatus === "cancelled"`, ce bouton soumet immédiatement un `<form act
 ### Cible
 
 Le bouton "Annuler la commande" déclenche un `AlertDialog` avec :
+
 - **Titre :** "Annuler cette commande ?"
 - **Description :** "Cette action est irréversible. La commande sera annulée et le stock des articles sera rétabli."
 - **Bouton confirmer :** "Annuler la commande" (variant destructive)
@@ -95,15 +95,16 @@ export function OrderCancelConfirmDialog({ orderId }: OrderCancelConfirmDialogPr
           <AlertDialogHeader>
             <AlertDialogTitle>Annuler cette commande ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Cette action est irréversible. La commande sera annulée et le stock
-              des articles sera rétabli automatiquement.
+              Cette action est irréversible. La commande sera annulée et le stock des articles sera
+              rétabli automatiquement.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Garder la commande</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => formRef.current?.requestSubmit()}>
+              onClick={() => formRef.current?.requestSubmit()}
+            >
               Annuler la commande
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -143,6 +144,7 @@ Suppression immédiate sans confirmation. Conséquences : produit supprimé avec
 ### Cible
 
 Le bouton "Supprimer le produit" déclenche un `AlertDialog` avec :
+
 - **Titre :** "Supprimer ce produit ?"
 - **Description :** "Cette action est irréversible. Le produit sera supprimé avec ses déclinaisons et ses images."
 - **Bouton confirmer :** "Supprimer le produit" (variant destructive)
@@ -221,12 +223,12 @@ export function EntityRowActions({ entity }) {
 
 ### Règles de décision : bouton inline vs DropdownMenu
 
-| Cas | Pattern recommandé |
-|-----|--------------------|
-| 1 action par ligne | Lien ou bouton inline — pas de menu |
-| 2 actions homogènes | Peut rester inline si elles tiennent dans la cellule |
-| 2+ actions dont une destructive | `DropdownMenu` |
-| 3+ actions | `DropdownMenu` systématique |
+| Cas                             | Pattern recommandé                                   |
+| ------------------------------- | ---------------------------------------------------- |
+| 1 action par ligne              | Lien ou bouton inline — pas de menu                  |
+| 2 actions homogènes             | Peut rester inline si elles tiennent dans la cellule |
+| 2+ actions dont une destructive | `DropdownMenu`                                       |
+| 3+ actions                      | `DropdownMenu` systématique                          |
 
 ## Travail à réaliser dans ce lot
 

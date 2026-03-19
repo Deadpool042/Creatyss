@@ -4,9 +4,7 @@ import { useState } from "react";
 
 export function HomepageNewsletterSection() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -16,7 +14,7 @@ export function HomepageNewsletterSection() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email }),
       });
       if (res.ok) {
         setStatus("success");
@@ -32,7 +30,8 @@ export function HomepageNewsletterSection() {
   return (
     <section
       aria-labelledby="newsletter-title"
-      className="-mx-4 bg-band-bg px-4 py-20 text-center md:-mx-6 md:px-6 min-[900px]:py-24 xl:-mx-12 xl:px-12">
+      className="-mx-4 bg-band-bg px-4 py-20 text-center md:-mx-6 md:px-6 min-[900px]:py-24 xl:-mx-12 xl:px-12"
+    >
       {/* Eyebrow */}
       <p className="mb-4 text-[0.62rem] font-medium uppercase tracking-[0.32em] text-band-eyebrow">
         Restez proche de l'atelier
@@ -41,7 +40,8 @@ export function HomepageNewsletterSection() {
       {/* H2 */}
       <h2
         className="mb-4 font-serif text-[1.75rem] font-light leading-[1.2] text-white min-[900px]:text-[2.5rem]"
-        id="newsletter-title">
+        id="newsletter-title"
+      >
         Nouvelles créations, <br className="hidden min-[480px]:block" />
         coulisses &amp; marchés
       </h2>
@@ -62,10 +62,9 @@ export function HomepageNewsletterSection() {
         <form
           className="mx-auto flex max-w-110 flex-col border border-band-form-border min-[480px]:flex-row"
           noValidate
-          onSubmit={handleSubmit}>
-          <label
-            className="sr-only"
-            htmlFor="nl-email">
+          onSubmit={handleSubmit}
+        >
+          <label className="sr-only" htmlFor="nl-email">
             Votre adresse email
           </label>
           <input
@@ -74,7 +73,7 @@ export function HomepageNewsletterSection() {
             disabled={status === "loading"}
             id="nl-email"
             name="email"
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Votre adresse email"
             required
             type="email"
@@ -83,7 +82,8 @@ export function HomepageNewsletterSection() {
           <button
             className="cursor-pointer bg-brand px-6 py-3.75 text-[0.62rem] font-medium uppercase tracking-[0.2em] text-white transition-colors hover:bg-brand/85 disabled:opacity-60"
             disabled={status === "loading"}
-            type="submit">
+            type="submit"
+          >
             {status === "loading" ? "…" : "S'abonner"}
           </button>
         </form>

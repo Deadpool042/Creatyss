@@ -19,30 +19,30 @@ La situation actuelle est la suivante : les namespaces admin et public partagent
 
 ## Pages concernées
 
-| Page | Classes `admin-*` présentes |
-|------|-----------------------------|
-| `app/boutique/page.tsx` | `.admin-field`, `.admin-input`, `.admin-checkbox` |
-| `app/boutique/[slug]/page.tsx` | `.admin-field`, `.admin-input`, `.admin-inline-actions`, `.admin-success`, `.admin-alert` |
-| `app/panier/page.tsx` | `.admin-success`, `.admin-alert`, `.admin-field`, `.admin-input`, `.admin-inline-actions` |
-| `app/checkout/page.tsx` | `.admin-form`, `.admin-homepage-section`, `.admin-panels`, `.admin-field`, `.admin-input`, `.admin-checkbox`, `.admin-muted-note`, `.admin-inline-actions`, `.admin-success`, `.admin-alert` |
-| `app/checkout/confirmation/[reference]/page.tsx` | `.admin-chip`, `.admin-product-tags`, `.admin-muted-note`, `.admin-inline-actions`, `.admin-success`, `.admin-alert` |
+| Page                                             | Classes `admin-*` présentes                                                                                                                                                                  |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app/boutique/page.tsx`                          | `.admin-field`, `.admin-input`, `.admin-checkbox`                                                                                                                                            |
+| `app/boutique/[slug]/page.tsx`                   | `.admin-field`, `.admin-input`, `.admin-inline-actions`, `.admin-success`, `.admin-alert`                                                                                                    |
+| `app/panier/page.tsx`                            | `.admin-success`, `.admin-alert`, `.admin-field`, `.admin-input`, `.admin-inline-actions`                                                                                                    |
+| `app/checkout/page.tsx`                          | `.admin-form`, `.admin-homepage-section`, `.admin-panels`, `.admin-field`, `.admin-input`, `.admin-checkbox`, `.admin-muted-note`, `.admin-inline-actions`, `.admin-success`, `.admin-alert` |
+| `app/checkout/confirmation/[reference]/page.tsx` | `.admin-chip`, `.admin-product-tags`, `.admin-muted-note`, `.admin-inline-actions`, `.admin-success`, `.admin-alert`                                                                         |
 
 ## Table de correspondance
 
-| Classe admin actuelle | Classe publique V9 | Nature |
-|----------------------|-------------------|--------|
-| `.admin-field` | `.form-field` | Conteneur label + input |
-| `.admin-input` | `.form-input` | Input, select, textarea |
-| `.admin-checkbox` | `.form-checkbox` | Conteneur label + checkbox |
-| `.admin-panels` | `.form-panels` | Grille de champs côte à côte |
-| `.admin-form` | `.form` | Wrapper de formulaire |
-| `.admin-homepage-section` | `.form-section` | Section de formulaire avec titre |
-| `.admin-inline-actions` | `.form-actions` | Groupe de boutons d'action |
-| `.admin-muted-note` | `.form-note` | Note contextuelle atténuée |
-| `.admin-success` | `.notice-success` | Message de confirmation/succès |
-| `.admin-alert` | `.notice-error` | Message d'erreur |
-| `.admin-chip` | `.status-tag` | Badge de statut individuel |
-| `.admin-product-tags` | `.status-tag-group` | Groupe de badges de statut |
+| Classe admin actuelle     | Classe publique V9  | Nature                           |
+| ------------------------- | ------------------- | -------------------------------- |
+| `.admin-field`            | `.form-field`       | Conteneur label + input          |
+| `.admin-input`            | `.form-input`       | Input, select, textarea          |
+| `.admin-checkbox`         | `.form-checkbox`    | Conteneur label + checkbox       |
+| `.admin-panels`           | `.form-panels`      | Grille de champs côte à côte     |
+| `.admin-form`             | `.form`             | Wrapper de formulaire            |
+| `.admin-homepage-section` | `.form-section`     | Section de formulaire avec titre |
+| `.admin-inline-actions`   | `.form-actions`     | Groupe de boutons d'action       |
+| `.admin-muted-note`       | `.form-note`        | Note contextuelle atténuée       |
+| `.admin-success`          | `.notice-success`   | Message de confirmation/succès   |
+| `.admin-alert`            | `.notice-error`     | Message d'erreur                 |
+| `.admin-chip`             | `.status-tag`       | Badge de statut individuel       |
+| `.admin-product-tags`     | `.status-tag-group` | Groupe de badges de statut       |
 
 ## Travail attendu
 

@@ -3,14 +3,12 @@
 import { redirect } from "next/navigation";
 import {
   AdminProductRepositoryError,
-  updateAdminSimpleProductOffer
+  updateAdminSimpleProductOffer,
 } from "@/db/repositories/admin-product.repository";
 import { validateSimpleProductOfferInput } from "@/entities/product/simple-product-offer-input";
 import { normalizeNumericIdFromForm } from "@/features/admin/products/actions/action-helpers";
 
-export async function updateSimpleProductOfferAction(
-  formData: FormData
-): Promise<void> {
+export async function updateSimpleProductOfferAction(formData: FormData): Promise<void> {
   const productId = normalizeNumericIdFromForm(formData.get("productId"));
 
   if (productId === null) {
@@ -21,7 +19,7 @@ export async function updateSimpleProductOfferAction(
     sku: formData.get("sku"),
     price: formData.get("price"),
     compareAtPrice: formData.get("compareAtPrice"),
-    stockQuantity: formData.get("stockQuantity")
+    stockQuantity: formData.get("stockQuantity"),
   });
 
   if (!validation.ok) {
@@ -31,17 +29,14 @@ export async function updateSimpleProductOfferAction(
   try {
     const product = await updateAdminSimpleProductOffer({
       id: productId,
-      ...validation.data
+      ...validation.data,
     });
 
     if (product === null) {
       redirect("/admin/products?error=missing_product");
     }
   } catch (error) {
-    if (
-      error instanceof AdminProductRepositoryError &&
-      error.code === "sku_taken"
-    ) {
+    if (error instanceof AdminProductRepositoryError && error.code === "sku_taken") {
       redirect(`/admin/products/${productId}?simple_offer_error=sku_taken`);
     }
 

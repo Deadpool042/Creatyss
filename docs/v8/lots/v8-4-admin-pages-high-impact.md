@@ -12,12 +12,14 @@ Affiner la structure et la cohérence visuelle des pages admin les plus consult�
 ## Périmètre strict
 
 **In scope :**
+
 - Structure d'en-tête de page (titre, description, actions) — homogénéisation
 - Utilisation de `AdminFormSection`, `AdminFormField`, `AdminFormActions` là où ils s'appliquent et ne sont pas encore utilisés
 - Utilisation des composants migrés V8-3 dans les pages
 - Cohérence des espacements et de la hiérarchie typographique entre pages
 
 **Out of scope :**
+
 - Modification des Server Actions ou de la logique métier
 - Changement des données affichées ou de leur source
 - Nouveaux formulaires ou nouveaux champs
@@ -25,12 +27,12 @@ Affiner la structure et la cohérence visuelle des pages admin les plus consult�
 
 ## Pages cibles
 
-| Route | Priorité | Raison |
-|---|---|---|
-| `/admin` (dashboard) | Haute | Première page vue à chaque connexion |
-| `/admin/homepage` | Haute | Page de formulaires complexe, sections extraites en V7 |
-| `/admin/products/[id]` | Haute | Page de détail produit — nombreux champs |
-| `/admin/orders/[id]` | Haute | Page de détail commande — statuts, timeline |
+| Route                  | Priorité | Raison                                                 |
+| ---------------------- | -------- | ------------------------------------------------------ |
+| `/admin` (dashboard)   | Haute    | Première page vue à chaque connexion                   |
+| `/admin/homepage`      | Haute    | Page de formulaires complexe, sections extraites en V7 |
+| `/admin/products/[id]` | Haute    | Page de détail produit — nombreux champs               |
+| `/admin/orders/[id]`   | Haute    | Page de détail commande — statuts, timeline            |
 
 ## Analyse préalable obligatoire
 
@@ -48,6 +50,7 @@ ls app/admin/\(protected\)/orders/
 ### En-tête de page
 
 Toutes les pages haute visibilité doivent avoir une structure d'en-tête reconnaissable :
+
 - Un titre de niveau `h1` ou équivalent sémantique, visible et distinct
 - Une description optionnelle (contexte, instructions courtes)
 - Des actions de page si applicables (bouton créer, sauvegarder, etc.) — positionnées de manière cohérente par rapport au titre
@@ -65,6 +68,7 @@ Les pages qui affichent des statuts (commandes) ou des tags (produits) utilisent
 ## Critères de qualité
 
 Une page est V8-conforme dans ce lot quand :
+
 - son en-tête est structuré et lisible
 - ses sections de formulaire utilisent les composants admin dédiés
 - elle n'importe pas de classe CSS legacy

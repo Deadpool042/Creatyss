@@ -15,30 +15,21 @@ const ADMIN_LOGIN_RETRY_DELAY_MS = 1_000;
 function isRecoverableAdminLoginNavigationError(error: unknown): boolean {
   return (
     error instanceof Error &&
-    (error.message.includes("ERR_ABORTED") ||
-      error.message.includes("Timeout"))
+    (error.message.includes("ERR_ABORTED") || error.message.includes("Timeout"))
   );
 }
 
 async function waitForAdminLoginForm(page: Page): Promise<void> {
-  await expect(
-    page.getByRole("heading", { name: ADMIN_LOGIN_READY_HEADING })
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: ADMIN_LOGIN_READY_HEADING })).toBeVisible();
   await expect(page.getByLabel("Email")).toBeVisible();
   await expect(page.getByLabel("Mot de passe")).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Se connecter" })
-  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Se connecter" })).toBeVisible();
 }
 
 async function waitForAdminShell(page: Page): Promise<void> {
   await expect(page).toHaveURL(ADMIN_HOME_URL_PATTERN);
-  await expect(
-    page.getByRole("heading", { name: ADMIN_HOME_READY_HEADING })
-  ).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: ADMIN_LOGOUT_BUTTON_LABEL })
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: ADMIN_HOME_READY_HEADING })).toBeVisible();
+  await expect(page.getByRole("button", { name: ADMIN_LOGOUT_BUTTON_LABEL })).toBeVisible();
 }
 
 async function gotoAdminLogin(page: Page): Promise<void> {
@@ -46,7 +37,7 @@ async function gotoAdminLogin(page: Page): Promise<void> {
     try {
       await page.goto(ADMIN_LOGIN_PATH, {
         timeout: ADMIN_LOGIN_NAVIGATION_TIMEOUT_MS,
-        waitUntil: "domcontentloaded"
+        waitUntil: "domcontentloaded",
       });
       return;
     } catch (error) {
@@ -70,9 +61,9 @@ export async function loginAsSeedAdmin(page: Page): Promise<void> {
 
   await Promise.all([
     page.waitForURL(ADMIN_HOME_URL_PATTERN, {
-      timeout: ADMIN_LOGIN_SUBMIT_TIMEOUT_MS
+      timeout: ADMIN_LOGIN_SUBMIT_TIMEOUT_MS,
     }),
-    page.getByRole("button", { name: "Se connecter" }).click()
+    page.getByRole("button", { name: "Se connecter" }).click(),
   ]);
 
   await waitForAdminShell(page);

@@ -3,7 +3,7 @@ import {
   canChangeProductTypeToSimple,
   canCreateVariantForProductType,
   canDeleteVariantForProductType,
-  isProductType
+  isProductType,
 } from "@/entities/product/product-type-rules";
 
 describe("isProductType", () => {

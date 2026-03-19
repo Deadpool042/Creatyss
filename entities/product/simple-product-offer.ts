@@ -55,27 +55,19 @@ function normalizeMoney(value: string | null | undefined): string | null {
 }
 
 function normalizeStockQuantity(value: number | null | undefined): number | null {
-  if (
-    typeof value !== "number" ||
-    !Number.isSafeInteger(value) ||
-    value < 0
-  ) {
+  if (typeof value !== "number" || !Number.isSafeInteger(value) || value < 0) {
     return null;
   }
 
   return value;
 }
 
-function toResolvedOffer(
-  fields: SimpleProductOfferFields
-): SimpleProductOffer | null {
+function toResolvedOffer(fields: SimpleProductOfferFields): SimpleProductOffer | null {
   const sku = normalizeText(fields.sku);
   const price = normalizeMoney(fields.price);
   const stockQuantity = normalizeStockQuantity(fields.stockQuantity);
   const compareAtPrice =
-    fields.compareAtPrice === null
-      ? null
-      : normalizeMoney(fields.compareAtPrice);
+    fields.compareAtPrice === null ? null : normalizeMoney(fields.compareAtPrice);
 
   if (sku === null || price === null || stockQuantity === null) {
     return null;
@@ -90,7 +82,7 @@ function toResolvedOffer(
     price,
     compareAtPrice,
     stockQuantity,
-    isAvailable: stockQuantity > 0
+    isAvailable: stockQuantity > 0,
   };
 }
 
@@ -103,7 +95,7 @@ function resolveSimpleProductOfferInternal(input: {
   if (nativeOffer !== null) {
     return {
       source: "native",
-      offer: nativeOffer
+      offer: nativeOffer,
     };
   }
 
@@ -116,18 +108,18 @@ function resolveSimpleProductOfferInternal(input: {
 
     if (legacyOffer === undefined) {
       return {
-        source: "incoherent"
+        source: "incoherent",
       };
     }
 
     return {
       source: "legacy",
-      offer: legacyOffer
+      offer: legacyOffer,
     };
   }
 
   return {
-    source: "incoherent"
+    source: "incoherent",
   };
 }
 

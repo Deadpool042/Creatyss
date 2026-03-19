@@ -6,13 +6,6 @@ type AdminFormActionsProps = Readonly<{
   className?: string;
 }>;
 
-export function AdminFormActions({
-  children,
-  className
-}: AdminFormActionsProps) {
-  return (
-    <div className={cn("flex flex-wrap items-center gap-3", className)}>
-      {children}
-    </div>
-  );
+export function AdminFormActions({ children, className }: AdminFormActionsProps) {
+  return <div className={cn("flex flex-wrap items-center gap-3", className)}>{children}</div>;
 }

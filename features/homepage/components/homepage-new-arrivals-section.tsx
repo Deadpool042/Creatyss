@@ -20,17 +20,14 @@ type HomepageNewArrivalsSectionProps = {
   uploadsPublicPath: string;
 };
 
-function buildImageSrc(
-  uploadsPublicPath: string,
-  image: NewArrivalImage | null
-): string | null {
+function buildImageSrc(uploadsPublicPath: string, image: NewArrivalImage | null): string | null {
   if (image === null) return null;
   return `${uploadsPublicPath}/${image.filePath.replace(/^\/+/, "")}`;
 }
 
 export function HomepageNewArrivalsSection({
   products,
-  uploadsPublicPath
+  uploadsPublicPath,
 }: HomepageNewArrivalsSectionProps) {
   const displayed = products.slice(0, 4);
 
@@ -46,7 +43,8 @@ export function HomepageNewArrivalsSection({
           </p>
           <h2
             className="font-serif text-3xl font-normal leading-[1.15] tracking-tight text-foreground min-[900px]:text-[2.9rem]"
-            id="homepage-new-arrivals-title">
+            id="homepage-new-arrivals-title"
+          >
             Nouveautés
           </h2>
         </div>
@@ -54,11 +52,10 @@ export function HomepageNewArrivalsSection({
         {/* btn-ghost — border-b seul, cohérent avec les autres sections */}
         <Link
           className="inline-flex items-center gap-2.5 self-start border-b border-border pb-0.5 text-[0.65rem] font-medium uppercase tracking-[0.22em] text-foreground transition-colors hover:border-foreground min-[900px]:self-auto"
-          href="/boutique">
+          href="/boutique"
+        >
           Tout voir
-          <span
-            aria-hidden="true"
-            className="font-serif text-sm">
+          <span aria-hidden="true" className="font-serif text-sm">
             →
           </span>
         </Link>
@@ -68,28 +65,19 @@ export function HomepageNewArrivalsSection({
           Chaque carte est flex-none avec une largeur viewport-relative sur mobile,
           puis flex-1 sur desktop pour distribuer les 3-4 cartes équitablement. */}
       <div className="grid grid-cols-2 gap-5 min-[900px]:grid-cols-4">
-        {displayed.map(product => {
-          const imageSrc = buildImageSrc(
-            uploadsPublicPath,
-            product.primaryImage
-          );
+        {displayed.map((product) => {
+          const imageSrc = buildImageSrc(uploadsPublicPath, product.primaryImage);
 
           return (
-            <article
-              className="group"
-              key={product.id}>
-              <Link
-                className="block"
-                href={`/boutique/${product.slug}`}>
+            <article className="group" key={product.id}>
+              <Link className="block" href={`/boutique/${product.slug}`}>
                 {/* Image — aspect-[2/3] plus allongé que la sélection (3/4)
                     rounded cohérent avec les cards collections + featured
                     hover : scale 1.05 légèrement plus vif que la sélection (1.04) */}
                 <div className="relative aspect-2/3 overflow-hidden rounded-lg bg-surface-subtle transition-shadow duration-500 group-hover:shadow-card">
                   {imageSrc && product.primaryImage?.filePath !== PLACEHOLDER_FILENAME ? (
                     <Image
-                      alt={
-                        product.primaryImage?.altText?.trim() || product.name
-                      }
+                      alt={product.primaryImage?.altText?.trim() || product.name}
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
                       fill
                       sizes="(min-width: 900px) 25vw, (min-width: 640px) 46vw, 76vw"

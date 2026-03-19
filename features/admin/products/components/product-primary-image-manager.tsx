@@ -9,11 +9,11 @@ import {
   getPrimaryImageEmptyMessage,
   getPrimaryImageExtraImagesMessage,
   getPrimaryImageFallbackMessage,
-  getPrimaryImageSubmitLabel
+  getPrimaryImageSubmitLabel,
 } from "@/features/admin/products/mappers/product-detail-mappers";
 import {
   type PrimaryImageScope,
-  type PrimaryImageState
+  type PrimaryImageState,
 } from "@/features/admin/products/types/product-detail-types";
 import { ProductMediaLibraryNotice } from "./product-media-library-notice";
 
@@ -40,10 +40,7 @@ type ProductPrimaryImageManagerProps = Readonly<{
   variantId?: string;
 }>;
 
-function renderImagePreview(
-  uploadsPublicPath: string,
-  image: AdminProductImage
-) {
+function renderImagePreview(uploadsPublicPath: string, image: AdminProductImage) {
   const imageUrl = getImageUrl(uploadsPublicPath, image.filePath);
 
   if (imageUrl === null) {
@@ -77,7 +74,7 @@ export function ProductPrimaryImageManager({
   state,
   title,
   uploadsPublicPath,
-  variantId
+  variantId,
 }: ProductPrimaryImageManagerProps) {
   const selectId = `${scope}-primary-media-asset-${variantId ?? productId}`;
 
@@ -110,39 +107,22 @@ export function ProductPrimaryImageManager({
       ) : null}
 
       {mediaAssets.length > 0 ? (
-        <form
-          action={setAction}
-          className={formClassName}>
-          <input
-            name="productId"
-            type="hidden"
-            value={productId}
-          />
-          {variantId ? (
-            <input
-              name="variantId"
-              type="hidden"
-              value={variantId}
-            />
-          ) : null}
+        <form action={setAction} className={formClassName}>
+          <input name="productId" type="hidden" value={productId} />
+          {variantId ? <input name="variantId" type="hidden" value={variantId} /> : null}
 
-          <AdminFormField
-            htmlFor={selectId}
-            label="Média existant">
+          <AdminFormField htmlFor={selectId} label="Média existant">
             <select
               className={nativeSelectClassName}
               defaultValue={currentMediaAssetId}
               id={selectId}
-              name="mediaAssetId">
-              <option
-                disabled
-                value="">
+              name="mediaAssetId"
+            >
+              <option disabled value="">
                 Sélectionnez un média
               </option>
-              {mediaAssets.map(mediaAsset => (
-                <option
-                  key={mediaAsset.id}
-                  value={mediaAsset.id}>
+              {mediaAssets.map((mediaAsset) => (
+                <option key={mediaAsset.id} value={mediaAsset.id}>
                   {mediaAsset.originalName} · {mediaAsset.mimeType}
                 </option>
               ))}
@@ -150,9 +130,7 @@ export function ProductPrimaryImageManager({
           </AdminFormField>
 
           <div className="flex flex-wrap items-center gap-3">
-            <Button
-              className="w-full sm:w-fit"
-              type="submit">
+            <Button className="w-full sm:w-fit" type="submit">
               {getPrimaryImageSubmitLabel(state.primaryImage !== null)}
             </Button>
           </div>
@@ -163,24 +141,15 @@ export function ProductPrimaryImageManager({
 
       {state.primaryImage ? (
         <form action={deleteAction}>
-          <input
-            name="productId"
-            type="hidden"
-            value={productId}
-          />
-          {variantId ? (
-            <input
-              name="variantId"
-              type="hidden"
-              value={variantId}
-            />
-          ) : null}
+          <input name="productId" type="hidden" value={productId} />
+          {variantId ? <input name="variantId" type="hidden" value={variantId} /> : null}
 
           <Button
             className={subtleDestructiveButtonClassName}
             size="sm"
             variant="ghost"
-            type="submit">
+            type="submit"
+          >
             Supprimer l&apos;image principale
           </Button>
         </form>

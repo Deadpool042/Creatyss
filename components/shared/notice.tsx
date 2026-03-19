@@ -21,9 +21,7 @@ function getNoticeClassName(tone: NoticeTone): string {
 
 export function Notice({ tone, children }: NoticeProps) {
   return (
-    <p
-      className={getNoticeClassName(tone)}
-      role={tone === "alert" ? "alert" : undefined}>
+    <p className={getNoticeClassName(tone)} role={tone === "alert" ? "alert" : undefined}>
       {children}
     </p>
   );

@@ -57,7 +57,7 @@ function mapAdminMediaAsset(row: AdminMediaAssetRow): AdminMediaAsset {
     imageHeight: row.image_height,
     uploadedByAdminUserId: row.uploaded_by_admin_user_id,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
@@ -83,9 +83,7 @@ export async function listAdminMediaAssets(): Promise<AdminMediaAsset[]> {
   return rows.map(mapAdminMediaAsset);
 }
 
-export async function getAdminMediaAssetById(
-  id: string
-): Promise<AdminMediaAsset | null> {
+export async function getAdminMediaAssetById(id: string): Promise<AdminMediaAsset | null> {
   const row = await queryFirst<AdminMediaAssetRow>(
     `
       select
@@ -146,7 +144,7 @@ export async function createAdminMediaAsset(
       input.byteSize,
       input.imageWidth,
       input.imageHeight,
-      input.uploadedByAdminUserId
+      input.uploadedByAdminUserId,
     ]
   );
 

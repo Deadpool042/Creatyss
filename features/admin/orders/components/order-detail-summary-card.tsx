@@ -12,7 +12,7 @@ type OrderDetailSummaryCardProps = Readonly<{
 export function OrderDetailSummaryCard({
   summary,
   orderStatusLabel,
-  paymentStatusLabel
+  paymentStatusLabel,
 }: OrderDetailSummaryCardProps) {
   return (
     <article className="grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
@@ -27,14 +27,10 @@ export function OrderDetailSummaryCard({
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Badge
-          className="rounded-full px-2.5 py-1 text-xs font-medium"
-          variant="outline">
+        <Badge className="rounded-full px-2.5 py-1 text-xs font-medium" variant="outline">
           {orderStatusLabel}
         </Badge>
-        <Badge
-          className="rounded-full px-2.5 py-1 text-xs font-medium"
-          variant="outline">
+        <Badge className="rounded-full px-2.5 py-1 text-xs font-medium" variant="outline">
           {paymentStatusLabel}
         </Badge>
       </div>

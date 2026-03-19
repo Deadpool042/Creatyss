@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import {
   AdminProductRepositoryError,
   findAdminProductPublishContext,
-  updateAdminProduct
+  updateAdminProduct,
 } from "@/db/repositories/admin-product.repository";
 import { normalizeProductSlug } from "@/entities/product/product-input";
 import { getProductPublishability } from "@/entities/product/product-publishability";
@@ -46,7 +46,7 @@ export async function updateProductAction(formData: FormData): Promise<void> {
     status: formData.get("status"),
     productType: formData.get("productType"),
     isFeatured: formData.get("isFeatured"),
-    categoryIds: formData.getAll("categoryIds")
+    categoryIds: formData.getAll("categoryIds"),
   });
 
   if (!parsed.success) {
@@ -70,9 +70,7 @@ export async function updateProductAction(formData: FormData): Promise<void> {
       );
 
       if (!publishability.ok) {
-        redirect(
-          `/admin/products/${productId}?product_error=${publishability.code}`
-        );
+        redirect(`/admin/products/${productId}?product_error=${publishability.code}`);
       }
     }
   }
@@ -81,24 +79,18 @@ export async function updateProductAction(formData: FormData): Promise<void> {
     const product = await updateAdminProduct({
       id: productId,
       ...parsed.data,
-      slug
+      slug,
     });
 
     if (product === null) {
       redirect("/admin/products?error=missing_product");
     }
   } catch (error) {
-    if (
-      error instanceof AdminProductRepositoryError &&
-      error.code === "slug_taken"
-    ) {
+    if (error instanceof AdminProductRepositoryError && error.code === "slug_taken") {
       redirect(`/admin/products/${productId}?product_error=slug_taken`);
     }
 
-    if (
-      error instanceof AdminProductRepositoryError &&
-      error.code === "category_missing"
-    ) {
+    if (error instanceof AdminProductRepositoryError && error.code === "category_missing") {
       redirect(`/admin/products/${productId}?product_error=invalid_category_ids`);
     }
 
@@ -106,9 +98,7 @@ export async function updateProductAction(formData: FormData): Promise<void> {
       error instanceof AdminProductRepositoryError &&
       error.code === "simple_product_requires_single_variant"
     ) {
-      redirect(
-        `/admin/products/${productId}?product_error=simple_product_requires_single_variant`
-      );
+      redirect(`/admin/products/${productId}?product_error=simple_product_requires_single_variant`);
     }
 
     console.error(error);

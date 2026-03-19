@@ -4,7 +4,7 @@ import { type OrderDetailSearchParams } from "../types/order-detail-types";
 
 const orderDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",
-  timeStyle: "short"
+  timeStyle: "short",
 });
 
 export function readOrderDetailSearchParam(
@@ -20,9 +20,7 @@ export function readOrderDetailSearchParam(
   return value;
 }
 
-export function getOrderDetailStatusMessage(
-  status: string | undefined
-): string | null {
+export function getOrderDetailStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "updated":
       return "Le statut de la commande a été mis à jour.";
@@ -33,9 +31,7 @@ export function getOrderDetailStatusMessage(
   }
 }
 
-export function getOrderDetailErrorMessage(
-  error: string | undefined
-): string | null {
+export function getOrderDetailErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "invalid_transition":
       return "Cette transition n'est pas autorisée.";
@@ -83,9 +79,7 @@ export function getEmailEventLabel(eventType: string): string {
   }
 }
 
-export function getEmailEventStatusLabel(
-  status: OrderEmailEventStatus
-): string {
+export function getEmailEventStatusLabel(status: OrderEmailEventStatus): string {
   switch (status) {
     case "sent":
       return "Envoyé";

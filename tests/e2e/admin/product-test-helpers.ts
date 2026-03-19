@@ -20,7 +20,7 @@ export function createUniqueAdminProductIdentity(input: {
   return {
     suffix,
     name: `${input.namePrefix} ${suffix}`,
-    slug: `${input.slugPrefix}-${suffix}`
+    slug: `${input.slugPrefix}-${suffix}`,
   };
 }
 
@@ -37,7 +37,7 @@ export async function createSimpleAdminProduct(
   }
 ): Promise<string> {
   await page.goto("/admin/products/new", {
-    waitUntil: "domcontentloaded"
+    waitUntil: "domcontentloaded",
   });
 
   await page.getByLabel("Nom").fill(input.name);
@@ -51,39 +51,31 @@ export async function createSimpleAdminProduct(
 
   await Promise.all([
     page.waitForURL(/\/admin\/products\/[0-9]+\?product_status=created$/, {
-      timeout: 15_000
+      timeout: 15_000,
     }),
-    page.getByRole("button", { name: "Créer le produit" }).click()
+    page.getByRole("button", { name: "Créer le produit" }).click(),
   ]);
 
   return getAdminProductDetailUrlWithoutSearch(page.url());
 }
 
-export async function openAdminProduct(
-  page: Page,
-  productDetailUrl: string
-): Promise<void> {
+export async function openAdminProduct(page: Page, productDetailUrl: string): Promise<void> {
   await page.goto(productDetailUrl, {
-    waitUntil: "domcontentloaded"
+    waitUntil: "domcontentloaded",
   });
 
   await expect(page).toHaveURL(
-    new RegExp(
-      `${productDetailUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:\\?.*)?$`
-    )
+    new RegExp(`${productDetailUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:\\?.*)?$`)
   );
 }
 
-export async function openAdminProductFromList(
-  page: Page,
-  productName: string
-): Promise<void> {
+export async function openAdminProductFromList(page: Page, productName: string): Promise<void> {
   await page.goto("/admin/products", {
-    waitUntil: "networkidle"
+    waitUntil: "networkidle",
   });
 
   const searchInput = page.getByRole("textbox", {
-    name: "Chercher un produit..."
+    name: "Chercher un produit...",
   });
 
   await expect(searchInput).toBeVisible();
@@ -92,7 +84,7 @@ export async function openAdminProductFromList(
   const row = page.getByRole("row").filter({ hasText: productName }).first();
   const editLink = row.getByRole("link", {
     name: "Modifier le produit",
-    exact: true
+    exact: true,
   });
 
   await expect(row).toBeVisible();
@@ -100,9 +92,9 @@ export async function openAdminProductFromList(
 
   await Promise.all([
     page.waitForURL(/\/admin\/products\/[0-9]+(?:\?.*)?$/, {
-      timeout: 15_000
+      timeout: 15_000,
     }),
-    editLink.click()
+    editLink.click(),
   ]);
 }
 
@@ -111,30 +103,27 @@ export function getSimpleOfferForm(page: Page): Locator {
     .locator("form")
     .filter({
       has: page.getByRole("button", {
-        name: "Enregistrer les informations de vente"
-      })
+        name: "Enregistrer les informations de vente",
+      }),
     })
     .first();
 }
 
-export async function uploadAdminMediaImage(
-  page: Page,
-  fileName: string
-): Promise<void> {
+export async function uploadAdminMediaImage(page: Page, fileName: string): Promise<void> {
   await page.goto("/admin/media", {
-    waitUntil: "domcontentloaded"
+    waitUntil: "domcontentloaded",
   });
 
   await page.locator('input[type="file"][name="file"]').setInputFiles({
     name: fileName,
     mimeType: "image/png",
-    buffer: SAMPLE_PNG_BYTES
+    buffer: SAMPLE_PNG_BYTES,
   });
 
   await Promise.all([
     page.waitForURL(/\/admin\/media\?status=uploaded$/, {
-      timeout: 15_000
+      timeout: 15_000,
     }),
-    page.getByRole("button", { name: "Importer le média" }).click()
+    page.getByRole("button", { name: "Importer le média" }).click(),
   ]);
 }

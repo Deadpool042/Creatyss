@@ -12,7 +12,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,14 +20,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { AdminProductSummary } from "@/db/repositories/admin-product.repository";
 import { getProductPublishability } from "@/entities/product/product-publishability";
-import {
-  toggleProductStatusAction,
-  deleteProductAction
-} from "@/features/admin/products/actions";
+import { toggleProductStatusAction, deleteProductAction } from "@/features/admin/products/actions";
 
 type ProductRowActionsProps = {
   product: AdminProductSummary;
@@ -37,8 +34,7 @@ export function ProductRowActions({ product }: ProductRowActionsProps) {
   const toggleFormRef = useRef<HTMLFormElement>(null);
   const deleteFormRef = useRef<HTMLFormElement>(null);
 
-  const toggleLabel =
-    product.status === "published" ? "Passer en brouillon" : "Publier";
+  const toggleLabel = product.status === "published" ? "Passer en brouillon" : "Publier";
 
   const isToggleDisabled =
     product.status === "draft" &&
@@ -46,32 +42,17 @@ export function ProductRowActions({ product }: ProductRowActionsProps) {
 
   return (
     <>
-      <form
-        ref={toggleFormRef}
-        action={toggleProductStatusAction}>
-        <input
-          type="hidden"
-          name="productId"
-          value={product.id}
-        />
+      <form ref={toggleFormRef} action={toggleProductStatusAction}>
+        <input type="hidden" name="productId" value={product.id} />
       </form>
-      <form
-        ref={deleteFormRef}
-        action={deleteProductAction}>
-        <input
-          type="hidden"
-          name="productId"
-          value={product.id}
-        />
+      <form ref={deleteFormRef} action={deleteProductAction}>
+        <input type="hidden" name="productId" value={product.id} />
       </form>
 
       <AlertDialog>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-8">
+            <Button variant="ghost" size="icon" className="size-8">
               <MoreHorizontalIcon className="size-4" />
               <span className="sr-only">Actions produit {product.name}</span>
             </Button>
@@ -82,7 +63,8 @@ export function ProductRowActions({ product }: ProductRowActionsProps) {
             </DropdownMenuItem>
             <DropdownMenuItem
               disabled={isToggleDisabled}
-              onClick={() => toggleFormRef.current?.requestSubmit()}>
+              onClick={() => toggleFormRef.current?.requestSubmit()}
+            >
               {toggleLabel}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -98,15 +80,16 @@ export function ProductRowActions({ product }: ProductRowActionsProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Supprimer « {product.name} » ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Cette action est irréversible. Le produit sera supprimé avec ses
-              déclinaisons et ses images.
+              Cette action est irréversible. Le produit sera supprimé avec ses déclinaisons et ses
+              images.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Conserver le produit</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => deleteFormRef.current?.requestSubmit()}>
+              onClick={() => deleteFormRef.current?.requestSubmit()}
+            >
               Supprimer le produit
             </AlertDialogAction>
           </AlertDialogFooter>

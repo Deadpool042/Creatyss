@@ -49,7 +49,7 @@ function runProductDatabaseSql(sql: string): void {
     "-d",
     "creatyss",
     "-c",
-    sql
+    sql,
   ]);
 }
 
@@ -61,10 +61,7 @@ function toSqlNullableText(value: string | null): string {
   return `'${escapeSqlLiteral(value)}'`;
 }
 
-export function createSimpleProductDraft(input: {
-  slug: string;
-  name: string;
-}): void {
+export function createSimpleProductDraft(input: { slug: string; name: string }): void {
   assertValidProductSlug(input.slug);
 
   runProductDatabaseSql(`
@@ -88,9 +85,7 @@ export function deleteProductBySlug(slug: string): void {
     `);
 }
 
-export function createLegacyVariantForProduct(
-  input: LegacyVariantSeedInput
-): void {
+export function createLegacyVariantForProduct(input: LegacyVariantSeedInput): void {
   assertValidProductSlug(input.productSlug);
   assertValidMoneyValue(input.price);
   assertValidStockQuantity(input.stockQuantity);

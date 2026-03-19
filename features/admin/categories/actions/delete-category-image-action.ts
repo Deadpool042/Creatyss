@@ -3,9 +3,7 @@
 import { redirect } from "next/navigation";
 import { updateAdminCategoryImage } from "@/db/repositories/admin-category.repository";
 
-function normalizeCategoryId(
-  value: FormDataEntryValue | null
-): string | null {
+function normalizeCategoryId(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -19,9 +17,7 @@ function normalizeCategoryId(
   return normalizedValue;
 }
 
-export async function deleteCategoryImageAction(
-  formData: FormData
-): Promise<void> {
+export async function deleteCategoryImageAction(formData: FormData): Promise<void> {
   const categoryId = normalizeCategoryId(formData.get("categoryId"));
 
   if (categoryId === null) {
@@ -30,7 +26,7 @@ export async function deleteCategoryImageAction(
 
   const category = await updateAdminCategoryImage({
     id: categoryId,
-    imagePath: null
+    imagePath: null,
   });
 
   if (category === null) {

@@ -25,9 +25,7 @@ export function getAdminProductPresentation(
     return {
       typeLabel: "Produit simple",
       sellableCountLabel:
-        variantCount === 0
-          ? "Informations de vente à compléter"
-          : "Informations de vente prêtes",
+        variantCount === 0 ? "Informations de vente à compléter" : "Informations de vente prêtes",
       sectionEyebrow: "Produit simple",
       sectionTitle: "Informations de vente",
       sectionDescription:
@@ -41,7 +39,7 @@ export function getAdminProductPresentation(
       emptyEyebrow: "Informations de vente",
       emptyTitle: "Les informations de vente ne sont pas encore complètes",
       emptyDescription:
-        "Renseignez la référence, le prix et le stock pour finaliser ce produit simple."
+        "Renseignez la référence, le prix et le stock pour finaliser ce produit simple.",
     };
   }
 
@@ -61,6 +59,6 @@ export function getAdminProductPresentation(
     emptyEyebrow: "Aucune déclinaison",
     emptyTitle: "Ce produit n'a pas encore de déclinaison",
     emptyDescription:
-      "Ajoutez une première déclinaison pour renseigner sa référence, son prix, son statut et son stock."
+      "Ajoutez une première déclinaison pour renseigner sa référence, son prix, son statut et son stock.",
   };
 }

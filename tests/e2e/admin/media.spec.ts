@@ -5,22 +5,16 @@ test("affiche la page médias avec le formulaire d'import et la bibliothèque", 
   await loginAsSeedAdmin(page);
   await page.goto("/admin/media");
 
-  await expect(
-    page.getByRole("heading", { name: "Bibliothèque médias" })
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Bibliothèque médias" })).toBeVisible();
 
-  await expect(
-    page.getByRole("heading", { name: "Importer une image" })
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Importer une image" })).toBeVisible();
 
   await expect(page.locator('input[type="file"][name="file"]')).toBeVisible();
 
-  await expect(
-    page.getByRole("button", { name: "Importer le média" })
-  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Importer le média" })).toBeVisible();
 
   const bibliothequeLocale = page.getByRole("heading", {
-    name: "Bibliothèque locale"
+    name: "Bibliothèque locale",
   });
   await expect(bibliothequeLocale).toBeVisible();
 

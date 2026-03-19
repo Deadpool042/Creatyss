@@ -6,17 +6,17 @@ import {
   createUniqueAdminProductIdentity,
   getAdminProductDetailUrlWithoutSearch,
   getSimpleOfferForm,
-  openAdminProductFromList
+  openAdminProductFromList,
 } from "./product-test-helpers";
 
 test("updates a native simple offer and keeps a single legacy variant in sync", async ({
-  page
+  page,
 }) => {
   test.setTimeout(90_000);
 
   const product = createUniqueAdminProductIdentity({
     namePrefix: "Produit simple sync",
-    slugPrefix: "produit-simple-sync"
+    slugPrefix: "produit-simple-sync",
   });
   const initialSku = `SYNC-${product.suffix}-INITIAL`;
   const updatedSku = `SYNC-${product.suffix}-UPDATED`;
@@ -26,12 +26,10 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
     await createSimpleAdminProduct(page, {
       name: product.name,
       slug: product.slug,
-      status: "published"
+      status: "published",
     });
 
-    await expect(page).toHaveURL(
-      /\/admin\/products\/[0-9]+\?product_status=created$/
-    );
+    await expect(page).toHaveURL(/\/admin\/products\/[0-9]+\?product_status=created$/);
   });
 
   await test.step("injecte une déclinaison legacy unique puis recharge le détail", async () => {
@@ -45,7 +43,7 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
       compareAtPrice: "99.00",
       stockQuantity: 4,
       isDefault: true,
-      status: "published"
+      status: "published",
     });
 
     await page.goto(getAdminProductDetailUrlWithoutSearch(page.url()));
@@ -68,7 +66,7 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
       page.waitForURL(/simple_offer_status=updated$/, { timeout: 15_000 }),
       simpleOfferForm
         .getByRole("button", { name: "Enregistrer les informations de vente" })
-        .click()
+        .click(),
     ]);
 
     await expect(page).toHaveURL(/simple_offer_status=updated$/);
@@ -84,18 +82,10 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
       .first();
 
     await expect(legacyVariantCard.getByLabel("SKU")).toHaveValue(updatedSku);
-    await expect(
-      legacyVariantCard.getByLabel("Prix", { exact: true })
-    ).toHaveValue("109.00");
-    await expect(legacyVariantCard.getByLabel("Prix barré")).toHaveValue(
-      "129.00"
-    );
-    await expect(legacyVariantCard.getByLabel("Stock disponible")).toHaveValue(
-      "0"
-    );
-    await expect(legacyVariantCard.getByLabel("Statut")).toHaveValue(
-      "published"
-    );
+    await expect(legacyVariantCard.getByLabel("Prix", { exact: true })).toHaveValue("109.00");
+    await expect(legacyVariantCard.getByLabel("Prix barré")).toHaveValue("129.00");
+    await expect(legacyVariantCard.getByLabel("Stock disponible")).toHaveValue("0");
+    await expect(legacyVariantCard.getByLabel("Statut")).toHaveValue("published");
   });
 
   await test.step("répercute aussi la disponibilité sur la page publique", async () => {
@@ -104,19 +94,17 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
     await expect(
       page.getByRole("heading", {
         level: 2,
-        name: "Produit temporairement indisponible"
+        name: "Produit temporairement indisponible",
       })
     ).toBeVisible();
     await expect(page.getByText("109.00").first()).toBeVisible();
     await expect(page.getByText("Prix barré : 129.00")).toBeVisible();
-    await expect(
-      page.getByText("Temporairement indisponible").first()
-    ).toBeVisible();
+    await expect(page.getByText("Temporairement indisponible").first()).toBeVisible();
   });
 });
 
 test("updates variant stock and reflects simple availability on the product page", async ({
-  page
+  page,
 }) => {
   await loginAsSeedAdmin(page);
   await page.goto("/admin/products");
@@ -133,34 +121,24 @@ test("updates variant stock and reflects simple availability on the product page
       .filter({ hasText: "SKU SAC-CAMEL-001" })
       .first();
 
-    await expect(
-      variantCard.getByText(/Disponibilité actuelle :\s*Disponible/)
-    ).toBeVisible();
+    await expect(variantCard.getByText(/Disponibilité actuelle :\s*Disponible/)).toBeVisible();
 
     await variantCard.getByLabel("Stock disponible").fill("0");
 
     await Promise.all([
       page.waitForURL(/variant_status=updated$/, { timeout: 15_000 }),
-      variantCard
-        .getByRole("button", { name: "Enregistrer la déclinaison" })
-        .click()
+      variantCard.getByRole("button", { name: "Enregistrer la déclinaison" }).click(),
     ]);
 
     await expect(page).toHaveURL(/variant_status=updated$/);
+    await expect(page.getByText("Déclinaison mise à jour avec succès.")).toBeVisible();
     await expect(
-      page.getByText("Déclinaison mise à jour avec succès.")
-    ).toBeVisible();
-    await expect(
-      variantCard.getByText(
-        /Disponibilité actuelle :\s*Temporairement indisponible/
-      )
+      variantCard.getByText(/Disponibilité actuelle :\s*Temporairement indisponible/)
     ).toBeVisible();
 
     await page.goto("/boutique/sac-camel");
 
-    await expect(
-      page.getByText("Temporairement indisponible").first()
-    ).toBeVisible();
+    await expect(page.getByText("Temporairement indisponible").first()).toBeVisible();
     await expect(page.getByText("Stock disponible :")).toHaveCount(0);
   });
 
@@ -177,15 +155,11 @@ test("updates variant stock and reflects simple availability on the product page
 
     await Promise.all([
       page.waitForURL(/variant_status=updated$/, { timeout: 15_000 }),
-      variantCard
-        .getByRole("button", { name: "Enregistrer la déclinaison" })
-        .click()
+      variantCard.getByRole("button", { name: "Enregistrer la déclinaison" }).click(),
     ]);
 
     await expect(page).toHaveURL(/variant_status=updated$/);
-    await expect(
-      variantCard.getByText(/Disponibilité actuelle :\s*Disponible/)
-    ).toBeVisible();
+    await expect(variantCard.getByText(/Disponibilité actuelle :\s*Disponible/)).toBeVisible();
 
     await page.goto("/boutique/sac-camel");
     await expect(page.getByText("Disponible").first()).toBeVisible();

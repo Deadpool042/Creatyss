@@ -1,11 +1,6 @@
-import {
-  listAdminMediaAssets,
-  type AdminMediaAsset
-} from "@/db/admin-media";
+import { listAdminMediaAssets, type AdminMediaAsset } from "@/db/admin-media";
 
-export function normalizeNumericIdFromForm(
-  value: FormDataEntryValue | null
-): string | null {
+export function normalizeNumericIdFromForm(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -29,10 +24,7 @@ export function normalizeImageScopeFromForm(
   return value;
 }
 
-export function appendImageScope(
-  path: string,
-  imageScope: "product" | "variant" | null
-): string {
+export function appendImageScope(path: string, imageScope: "product" | "variant" | null): string {
   if (imageScope === null) {
     return path;
   }

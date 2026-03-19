@@ -26,21 +26,19 @@ function wrapHtml(input: {
 
   return [
     "<!doctype html>",
-    "<html lang=\"fr\">",
-    "<body style=\"font-family:Arial,sans-serif;color:#222;line-height:1.5;\">",
+    '<html lang="fr">',
+    '<body style="font-family:Arial,sans-serif;color:#222;line-height:1.5;">',
     `<h1 style="font-size:24px;">${input.title}</h1>`,
     `<p>Bonjour ${input.greeting},</p>`,
     paragraphs,
     `<p><a href="${input.ctaUrl}">${input.ctaLabel}</a></p>`,
     "<p>Creatyss</p>",
     "</body>",
-    "</html>"
+    "</html>",
   ].join("");
 }
 
-export function buildOrderEmailTemplate(
-  input: OrderEmailTemplateInput
-): OrderEmailTemplate {
+export function buildOrderEmailTemplate(input: OrderEmailTemplateInput): OrderEmailTemplate {
   const customerName = input.customerFirstName.trim() || "cliente";
 
   switch (input.eventType) {
@@ -49,7 +47,7 @@ export function buildOrderEmailTemplate(
       const body = [
         `Nous confirmons la reception du paiement pour votre commande ${input.reference}.`,
         `Montant confirme : ${input.totalAmount} EUR.`,
-        "Vous pouvez suivre la suite du traitement depuis la page de confirmation de commande."
+        "Vous pouvez suivre la suite du traitement depuis la page de confirmation de commande.",
       ];
 
       return {
@@ -61,15 +59,15 @@ export function buildOrderEmailTemplate(
           "",
           `Suivre la commande : ${input.orderUrl}`,
           "",
-          "Creatyss"
+          "Creatyss",
         ].join("\n"),
         html: wrapHtml({
           title: "Paiement confirme",
           greeting: customerName,
           body,
           ctaLabel: "Voir la commande",
-          ctaUrl: input.orderUrl
-        })
+          ctaUrl: input.orderUrl,
+        }),
       };
     }
 
@@ -81,7 +79,7 @@ export function buildOrderEmailTemplate(
       const body = [
         `Votre commande ${input.reference} a ete expediee.`,
         trackingLine,
-        "Vous pouvez consulter le recapitulatif de commande a tout moment."
+        "Vous pouvez consulter le recapitulatif de commande a tout moment.",
       ];
 
       return {
@@ -93,15 +91,15 @@ export function buildOrderEmailTemplate(
           "",
           `Suivre la commande : ${input.orderUrl}`,
           "",
-          "Creatyss"
+          "Creatyss",
         ].join("\n"),
         html: wrapHtml({
           title: "Commande expediee",
           greeting: customerName,
           body,
           ctaLabel: "Voir la commande",
-          ctaUrl: input.orderUrl
-        })
+          ctaUrl: input.orderUrl,
+        }),
       };
     }
 
@@ -111,7 +109,7 @@ export function buildOrderEmailTemplate(
       const body = [
         `Votre commande ${input.reference} a bien ete enregistree.`,
         `Montant de la commande : ${input.totalAmount} EUR.`,
-        "Vous pouvez suivre son paiement et son traitement depuis la page de confirmation."
+        "Vous pouvez suivre son paiement et son traitement depuis la page de confirmation.",
       ];
 
       return {
@@ -123,15 +121,15 @@ export function buildOrderEmailTemplate(
           "",
           `Suivre la commande : ${input.orderUrl}`,
           "",
-          "Creatyss"
+          "Creatyss",
         ].join("\n"),
         html: wrapHtml({
           title: "Commande creee",
           greeting: customerName,
           body,
           ctaLabel: "Voir la commande",
-          ctaUrl: input.orderUrl
-        })
+          ctaUrl: input.orderUrl,
+        }),
       };
     }
   }

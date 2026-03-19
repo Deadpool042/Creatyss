@@ -5,9 +5,7 @@ test("redirects unauthenticated admin access to login", async ({ page }) => {
   await page.goto("/admin");
 
   await expect(page).toHaveURL(/\/admin\/login$/);
-  await expect(
-    page.getByRole("heading", { name: "Connexion" })
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Connexion" })).toBeVisible();
 });
 
 test("logs in and logs out the seeded admin", async ({ page }) => {
@@ -16,9 +14,7 @@ test("logs in and logs out the seeded admin", async ({ page }) => {
   await page.getByRole("button", { name: "Se déconnecter" }).click();
 
   await expect(page).toHaveURL(/\/admin\/login$/);
-  await expect(
-    page.getByRole("heading", { name: "Connexion" })
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Connexion" })).toBeVisible();
 });
 
 test("rejects the inactive seeded admin", async ({ page }) => {

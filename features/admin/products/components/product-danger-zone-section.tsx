@@ -9,18 +9,17 @@ type ProductDangerZoneSectionProps = Readonly<{
 
 export function ProductDangerZoneSection({
   deleteErrorMessage,
-  productId
+  productId,
 }: ProductDangerZoneSectionProps) {
   return (
     <section className="space-y-4">
-      {deleteErrorMessage ? (
-        <Notice tone="alert">{deleteErrorMessage}</Notice>
-      ) : null}
+      {deleteErrorMessage ? <Notice tone="alert">{deleteErrorMessage}</Notice> : null}
 
       <AdminFormSection
         description="La suppression retire aussi les catégories associées, les déclinaisons et les images rattachées."
         eyebrow="Suppression"
-        title="Supprimer ce produit">
+        title="Supprimer ce produit"
+      >
         <ProductDeleteConfirmDialog productId={productId} />
       </AdminFormSection>
     </section>

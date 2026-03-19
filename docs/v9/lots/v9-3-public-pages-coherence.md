@@ -14,16 +14,16 @@ Ce lot ne change pas le contenu, les libellés, ni la logique. Il aligne la stru
 
 ## Pages concernées
 
-| Route | Priorité | Raison |
-|-------|----------|--------|
-| `/` | Haute | Première page visitée |
-| `/boutique` | Haute | Page catalogue principale |
-| `/boutique/[slug]` | Haute | Fiche produit, page transactionnelle |
-| `/panier` | Haute | Parcours d'achat |
-| `/checkout` | Haute | Parcours d'achat |
-| `/checkout/confirmation/[reference]` | Haute | Fin de parcours |
-| `/blog` | Moyenne | Page listant les articles |
-| `/blog/[slug]` | Moyenne | Article individuel |
+| Route                                | Priorité | Raison                               |
+| ------------------------------------ | -------- | ------------------------------------ |
+| `/`                                  | Haute    | Première page visitée                |
+| `/boutique`                          | Haute    | Page catalogue principale            |
+| `/boutique/[slug]`                   | Haute    | Fiche produit, page transactionnelle |
+| `/panier`                            | Haute    | Parcours d'achat                     |
+| `/checkout`                          | Haute    | Parcours d'achat                     |
+| `/checkout/confirmation/[reference]` | Haute    | Fin de parcours                      |
+| `/blog`                              | Moyenne  | Page listant les articles            |
+| `/blog/[slug]`                       | Moyenne  | Article individuel                   |
 
 ## Patterns à vérifier
 
@@ -97,6 +97,7 @@ Pour chaque page de la liste :
 3. Corriger sans changer les textes, les libellés, le comportement ni la logique.
 
 Les corrections attendues sont principalement :
+
 - Ajouter un `.eyebrow` manquant dans un `.page-header`.
 - Ajouter un `role="alert"` manquant sur un `.notice-error`.
 - Aligner un état vide qui s'écarterait du pattern (ex. : titre `h2` au lieu de `h2`, ou classe manquante).

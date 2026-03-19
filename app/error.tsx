@@ -23,9 +23,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         <p className="mt-1 leading-relaxed text-muted-foreground">
           Le site a rencontré une erreur inattendue.
         </p>
-        <p className="text-sm text-muted-foreground">
-          {error.message || "Erreur inconnue."}
-        </p>
+        <p className="text-sm text-muted-foreground">{error.message || "Erreur inconnue."}</p>
         <Button type="button" onClick={() => reset()}>
           Recharger cette vue
         </Button>

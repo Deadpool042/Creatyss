@@ -26,23 +26,21 @@ const DEV_ADMINS: readonly SeedAdminDefinition[] = [
     email: "admin@creatyss.local",
     displayName: "Admin Creatyss",
     password: "AdminDev123!",
-    isActive: true
+    isActive: true,
   },
   {
     email: "inactive-admin@creatyss.local",
     displayName: "Admin Creatyss Inactive",
     password: "AdminDev123!",
-    isActive: false
-  }
+    isActive: false,
+  },
 ];
 
 async function main() {
-  const adminAuth = await import(
-    new URL("../lib/admin-auth.ts", import.meta.url).href
-  );
+  const adminAuth = await import(new URL("../lib/admin-auth.ts", import.meta.url).href);
 
   const pool = new Pool({
-    connectionString: readDatabaseUrl()
+    connectionString: readDatabaseUrl(),
   });
 
   try {
@@ -50,7 +48,7 @@ async function main() {
       const normalizedInput = adminAuth.normalizeAdminBootstrapInput({
         email: admin.email,
         displayName: admin.displayName,
-        password: admin.password
+        password: admin.password,
       });
 
       if (normalizedInput === null) {
@@ -67,9 +65,7 @@ async function main() {
         [normalizedInput.email]
       );
 
-      const passwordHash = await adminAuth.hashAdminPassword(
-        normalizedInput.password
-      );
+      const passwordHash = await adminAuth.hashAdminPassword(normalizedInput.password);
 
       if (existingAdmin.rows.length > 0) {
         await pool.query(
@@ -82,17 +78,10 @@ async function main() {
               updated_at = now()
             where lower(email) = lower($1)
           `,
-          [
-            normalizedInput.email,
-            normalizedInput.displayName,
-            passwordHash,
-            admin.isActive
-          ]
+          [normalizedInput.email, normalizedInput.displayName, passwordHash, admin.isActive]
         );
 
-        process.stdout.write(
-          `Admin user updated for ${normalizedInput.email}.\n`
-        );
+        process.stdout.write(`Admin user updated for ${normalizedInput.email}.\n`);
 
         continue;
       }
@@ -107,17 +96,10 @@ async function main() {
           )
           values ($1, $2, $3, $4)
         `,
-        [
-          normalizedInput.email,
-          passwordHash,
-          normalizedInput.displayName,
-          admin.isActive
-        ]
+        [normalizedInput.email, passwordHash, normalizedInput.displayName, admin.isActive]
       );
 
-      process.stdout.write(
-        `Admin user created for ${normalizedInput.email}.\n`
-      );
+      process.stdout.write(`Admin user created for ${normalizedInput.email}.\n`);
     }
   } finally {
     await pool.end();
@@ -125,8 +107,7 @@ async function main() {
 }
 
 main().catch((error: unknown) => {
-  const message =
-    error instanceof Error ? error.message : "Unknown dev admin seed error.";
+  const message = error instanceof Error ? error.message : "Unknown dev admin seed error.";
 
   process.stderr.write(`${message}\n`);
   process.exitCode = 1;

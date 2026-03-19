@@ -24,6 +24,7 @@ npx shadcn@latest add table
 ```
 
 Génère dans `components/ui/` :
+
 ```
 table.tsx   ← Table, TableHeader, TableBody, TableRow, TableHead, TableCell, TableCaption
 ```
@@ -169,9 +170,17 @@ Dans le bloc admin (`/* — Admin area — */` ou équivalent) :
 
 ```css
 /* — Admin : data table — */
-.admin-data-table { display: grid; gap: 1rem; }
-.admin-data-table-toolbar { display: flex; gap: 0.75rem; }
-.admin-data-table-filter { max-width: 24rem; }
+.admin-data-table {
+  display: grid;
+  gap: 1rem;
+}
+.admin-data-table-toolbar {
+  display: flex;
+  gap: 0.75rem;
+}
+.admin-data-table-filter {
+  max-width: 24rem;
+}
 .admin-data-table-pagination {
   display: flex;
   align-items: center;
@@ -187,7 +196,7 @@ Chaque entité qui utilise DataTable doit avoir son fichier `columns.tsx` coloca
 
 ```typescript
 // features/<entity>/columns.tsx
-"use client";  // requis pour les accessorKey avec callbacks onClick
+"use client"; // requis pour les accessorKey avec callbacks onClick
 
 import type { ColumnDef } from "@tanstack/react-table";
 import type { MonEntite } from "@/db/repositories/<entite>.repository";

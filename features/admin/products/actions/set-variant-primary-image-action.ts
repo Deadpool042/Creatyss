@@ -3,12 +3,12 @@
 import { redirect } from "next/navigation";
 import {
   AdminProductImageRepositoryError,
-  upsertAdminPrimaryVariantImage
+  upsertAdminPrimaryVariantImage,
 } from "@/db/repositories/admin-product-image.repository";
 import {
   appendImageScope,
   findAdminMediaAssetById,
-  normalizeNumericIdFromForm
+  normalizeNumericIdFromForm,
 } from "@/features/admin/products/actions/action-helpers";
 
 type VariantPrimaryImageErrorCode =
@@ -19,9 +19,7 @@ type VariantPrimaryImageErrorCode =
   | "save_failed"
   | "variant_missing";
 
-function readMediaAssetId(
-  value: FormDataEntryValue | null
-):
+function readMediaAssetId(value: FormDataEntryValue | null):
   | {
       ok: true;
       mediaAssetId: string;
@@ -33,7 +31,7 @@ function readMediaAssetId(
   if (value === null || (typeof value === "string" && value.trim().length === 0)) {
     return {
       ok: false,
-      code: "missing_media_asset"
+      code: "missing_media_asset",
     };
   }
 
@@ -42,19 +40,17 @@ function readMediaAssetId(
   if (mediaAssetId === null) {
     return {
       ok: false,
-      code: "invalid_media_asset"
+      code: "invalid_media_asset",
     };
   }
 
   return {
     ok: true,
-    mediaAssetId
+    mediaAssetId,
   };
 }
 
-function readVariantId(
-  value: FormDataEntryValue | null
-):
+function readVariantId(value: FormDataEntryValue | null):
   | {
       ok: true;
       variantId: string;
@@ -68,13 +64,13 @@ function readVariantId(
   if (variantId === null) {
     return {
       ok: false,
-      code: "invalid_variant"
+      code: "invalid_variant",
     };
   }
 
   return {
     ok: true,
-    variantId
+    variantId,
   };
 }
 
@@ -82,23 +78,14 @@ function redirectToVariantPrimaryImageError(
   productId: string,
   code: VariantPrimaryImageErrorCode
 ): never {
-  redirect(
-    appendImageScope(`/admin/products/${productId}?image_error=${code}`, "variant")
-  );
+  redirect(appendImageScope(`/admin/products/${productId}?image_error=${code}`, "variant"));
 }
 
-function redirectToVariantPrimaryImageStatus(
-  productId: string,
-  status: "primary_updated"
-): never {
-  redirect(
-    appendImageScope(`/admin/products/${productId}?image_status=${status}`, "variant")
-  );
+function redirectToVariantPrimaryImageStatus(productId: string, status: "primary_updated"): never {
+  redirect(appendImageScope(`/admin/products/${productId}?image_status=${status}`, "variant"));
 }
 
-export async function setVariantPrimaryImageAction(
-  formData: FormData
-): Promise<void> {
+export async function setVariantPrimaryImageAction(formData: FormData): Promise<void> {
   const productId = normalizeNumericIdFromForm(formData.get("productId"));
 
   if (productId === null) {
@@ -127,17 +114,14 @@ export async function setVariantPrimaryImageAction(
     const image = await upsertAdminPrimaryVariantImage({
       productId,
       variantId: variantResult.variantId,
-      filePath: mediaAsset.filePath
+      filePath: mediaAsset.filePath,
     });
 
     if (image === null) {
       redirect("/admin/products?error=missing_product");
     }
   } catch (error) {
-    if (
-      error instanceof AdminProductImageRepositoryError &&
-      error.code === "variant_missing"
-    ) {
+    if (error instanceof AdminProductImageRepositoryError && error.code === "variant_missing") {
       redirectToVariantPrimaryImageError(productId, "variant_missing");
     }
 

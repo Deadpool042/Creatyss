@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   validateCreateProductImageInput,
-  validateUpdateProductImageInput
+  validateUpdateProductImageInput,
 } from "@/entities/product/product-image-input";
 
 describe("validateCreateProductImageInput", () => {
@@ -11,7 +11,7 @@ describe("validateCreateProductImageInput", () => {
       variantId: " ",
       altText: "  Image principale  ",
       sortOrder: "",
-      isPrimary: "on"
+      isPrimary: "on",
     });
 
     expect(result).toEqual({
@@ -21,8 +21,8 @@ describe("validateCreateProductImageInput", () => {
         variantId: null,
         altText: "Image principale",
         sortOrder: 0,
-        isPrimary: true
-      }
+        isPrimary: true,
+      },
     });
   });
 
@@ -33,11 +33,11 @@ describe("validateCreateProductImageInput", () => {
         variantId: null,
         altText: null,
         sortOrder: "0",
-        isPrimary: null
+        isPrimary: null,
       })
     ).toEqual({
       ok: false,
-      code: "invalid_media_asset"
+      code: "invalid_media_asset",
     });
   });
 
@@ -48,11 +48,11 @@ describe("validateCreateProductImageInput", () => {
         variantId: "variant-1",
         altText: null,
         sortOrder: "0",
-        isPrimary: null
+        isPrimary: null,
       })
     ).toEqual({
       ok: false,
-      code: "invalid_variant"
+      code: "invalid_variant",
     });
   });
 });
@@ -62,7 +62,7 @@ describe("validateUpdateProductImageInput", () => {
     const result = validateUpdateProductImageInput({
       altText: "  Detail produit  ",
       sortOrder: "4",
-      isPrimary: "1"
+      isPrimary: "1",
     });
 
     expect(result).toEqual({
@@ -70,8 +70,8 @@ describe("validateUpdateProductImageInput", () => {
       data: {
         altText: "Detail produit",
         sortOrder: 4,
-        isPrimary: true
-      }
+        isPrimary: true,
+      },
     });
   });
 
@@ -80,11 +80,11 @@ describe("validateUpdateProductImageInput", () => {
       validateUpdateProductImageInput({
         altText: null,
         sortOrder: "-1",
-        isPrimary: null
+        isPrimary: null,
       })
     ).toEqual({
       ok: false,
-      code: "invalid_sort_order"
+      code: "invalid_sort_order",
     });
   });
 });

@@ -1,7 +1,7 @@
 import type {
   AdminHomepageFeaturedBlogPostSelection,
   AdminHomepageFeaturedCategorySelection,
-  AdminHomepageFeaturedProductSelection
+  AdminHomepageFeaturedProductSelection,
 } from "@/db/repositories/admin-homepage.repository";
 import {
   HOMEPAGE_EDITORIAL_TEXT_MAX_LENGTH,
@@ -10,13 +10,10 @@ import {
   HOMEPAGE_FEATURED_CATEGORIES_MAX_COUNT,
   HOMEPAGE_FEATURED_PRODUCTS_MAX_COUNT,
   HOMEPAGE_HERO_TEXT_MAX_LENGTH,
-  HOMEPAGE_HERO_TITLE_MAX_LENGTH
+  HOMEPAGE_HERO_TITLE_MAX_LENGTH,
 } from "@/entities/homepage/homepage-input";
 
-export type HomepageSearchParams = Record<
-  string,
-  string | string[] | undefined
->;
+export type HomepageSearchParams = Record<string, string | string[] | undefined>;
 
 export function readHomepageSearchParam(
   searchParams: HomepageSearchParams,
@@ -31,9 +28,7 @@ export function readHomepageSearchParam(
   return value;
 }
 
-export function getHomepageStatusMessage(
-  status: string | undefined
-): string | null {
+export function getHomepageStatusMessage(status: string | undefined): string | null {
   switch (status) {
     case "updated":
       return "Page d'accueil enregistrée avec succès.";
@@ -42,9 +37,7 @@ export function getHomepageStatusMessage(
   }
 }
 
-export function getHomepageErrorMessage(
-  error: string | undefined
-): string | null {
+export function getHomepageErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_homepage":
       return "La page d'accueil publiée est introuvable.";
@@ -100,25 +93,19 @@ export function getHomepageErrorMessage(
 export function buildProductSelectionMap(
   selections: readonly AdminHomepageFeaturedProductSelection[]
 ): Map<string, number> {
-  return new Map(
-    selections.map(selection => [selection.productId, selection.sortOrder])
-  );
+  return new Map(selections.map((selection) => [selection.productId, selection.sortOrder]));
 }
 
 export function buildCategorySelectionMap(
   selections: readonly AdminHomepageFeaturedCategorySelection[]
 ): Map<string, number> {
-  return new Map(
-    selections.map(selection => [selection.categoryId, selection.sortOrder])
-  );
+  return new Map(selections.map((selection) => [selection.categoryId, selection.sortOrder]));
 }
 
 export function buildBlogPostSelectionMap(
   selections: readonly AdminHomepageFeaturedBlogPostSelection[]
 ): Map<string, number> {
-  return new Map(
-    selections.map(selection => [selection.blogPostId, selection.sortOrder])
-  );
+  return new Map(selections.map((selection) => [selection.blogPostId, selection.sortOrder]));
 }
 
 export function getHomepageImageUrl(

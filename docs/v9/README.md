@@ -12,13 +12,13 @@ V9 n'est pas une refonte visuelle. C'est une consolidation technique.
 
 V8-5 a supprimé les classes CSS admin orphelines — mais n'a pu toucher qu'aux classes qui n'étaient plus référencées nulle part. À l'issue de V8, les classes `admin-*` sont encore utilisées dans cinq pages publiques :
 
-| Page | Classes `admin-*` présentes |
-|------|-----------------------------|
-| `app/boutique/page.tsx` | `.admin-field`, `.admin-input`, `.admin-checkbox` |
-| `app/boutique/[slug]/page.tsx` | `.admin-field`, `.admin-input`, `.admin-inline-actions`, `.admin-success`, `.admin-alert` |
-| `app/panier/page.tsx` | `.admin-success`, `.admin-alert`, `.admin-field`, `.admin-input`, `.admin-inline-actions` |
-| `app/checkout/page.tsx` | `.admin-form`, `.admin-homepage-section`, `.admin-panels`, `.admin-field`, `.admin-input`, `.admin-checkbox`, `.admin-muted-note`, `.admin-inline-actions`, `.admin-success`, `.admin-alert` |
-| `app/checkout/confirmation/[reference]/page.tsx` | `.admin-chip`, `.admin-product-tags`, `.admin-muted-note`, `.admin-inline-actions`, `.admin-success`, `.admin-alert` |
+| Page                                             | Classes `admin-*` présentes                                                                                                                                                                  |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app/boutique/page.tsx`                          | `.admin-field`, `.admin-input`, `.admin-checkbox`                                                                                                                                            |
+| `app/boutique/[slug]/page.tsx`                   | `.admin-field`, `.admin-input`, `.admin-inline-actions`, `.admin-success`, `.admin-alert`                                                                                                    |
+| `app/panier/page.tsx`                            | `.admin-success`, `.admin-alert`, `.admin-field`, `.admin-input`, `.admin-inline-actions`                                                                                                    |
+| `app/checkout/page.tsx`                          | `.admin-form`, `.admin-homepage-section`, `.admin-panels`, `.admin-field`, `.admin-input`, `.admin-checkbox`, `.admin-muted-note`, `.admin-inline-actions`, `.admin-success`, `.admin-alert` |
+| `app/checkout/confirmation/[reference]/page.tsx` | `.admin-chip`, `.admin-product-tags`, `.admin-muted-note`, `.admin-inline-actions`, `.admin-success`, `.admin-alert`                                                                         |
 
 Par ailleurs, le shell public (`components/public/public-site-shell.tsx`) utilise des valeurs RGBA codées en dur pour les fonds du header et du drawer, sans bénéficier des tokens CSS posés en V8-1.
 
@@ -41,11 +41,11 @@ Il n'existe pas non plus de doctrine CSS propre au front public : pas de critèr
 
 ## Lots
 
-| Lot | Titre | Prérequis |
-|-----|-------|-----------|
-| V9-1 | Découplage CSS public/admin | — |
-| V9-2 | Shell public et tokens V8 | V8-1 complété (acquis) |
-| V9-3 | Cohérence des pages publiques | V9-1 complété |
+| Lot  | Titre                         | Prérequis              |
+| ---- | ----------------------------- | ---------------------- |
+| V9-1 | Découplage CSS public/admin   | —                      |
+| V9-2 | Shell public et tokens V8     | V8-1 complété (acquis) |
+| V9-3 | Cohérence des pages publiques | V9-1 complété          |
 
 **Séquence :**
 

@@ -31,9 +31,7 @@ export type SimpleProductOfferInputValidationResult =
       code: SimpleProductOfferInputErrorCode;
     };
 
-function readTrimmedString(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
+function readTrimmedString(value: FormDataEntryValue | string | null | undefined): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -97,7 +95,7 @@ export function validateSimpleProductOfferInput(
   if (sku === null) {
     return {
       ok: false,
-      code: "missing_sku"
+      code: "missing_sku",
     };
   }
 
@@ -106,14 +104,14 @@ export function validateSimpleProductOfferInput(
   if (price === null) {
     return {
       ok: false,
-      code: "missing_price"
+      code: "missing_price",
     };
   }
 
   if (price === undefined) {
     return {
       ok: false,
-      code: "invalid_price"
+      code: "invalid_price",
     };
   }
 
@@ -122,14 +120,14 @@ export function validateSimpleProductOfferInput(
   if (compareAtPrice === undefined) {
     return {
       ok: false,
-      code: "invalid_compare_at_price"
+      code: "invalid_compare_at_price",
     };
   }
 
   if (compareAtPrice !== null && Number(compareAtPrice) < Number(price)) {
     return {
       ok: false,
-      code: "compare_at_price_below_price"
+      code: "compare_at_price_below_price",
     };
   }
 
@@ -138,14 +136,14 @@ export function validateSimpleProductOfferInput(
   if (stockQuantity === null) {
     return {
       ok: false,
-      code: "missing_stock_quantity"
+      code: "missing_stock_quantity",
     };
   }
 
   if (stockQuantity === undefined) {
     return {
       ok: false,
-      code: "invalid_stock_quantity"
+      code: "invalid_stock_quantity",
     };
   }
 
@@ -155,7 +153,7 @@ export function validateSimpleProductOfferInput(
       sku,
       price,
       compareAtPrice,
-      stockQuantity
-    }
+      stockQuantity,
+    },
   };
 }

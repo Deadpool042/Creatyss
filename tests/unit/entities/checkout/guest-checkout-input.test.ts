@@ -19,7 +19,7 @@ describe("validateGuestCheckoutInput", () => {
       billingAddressLine1: "",
       billingAddressLine2: "",
       billingPostalCode: "",
-      billingCity: ""
+      billingCity: "",
     });
 
     expect(result).toEqual({
@@ -42,8 +42,8 @@ describe("validateGuestCheckoutInput", () => {
         billingAddressLine2: null,
         billingPostalCode: null,
         billingCity: null,
-        billingCountryCode: null
-      }
+        billingCountryCode: null,
+      },
     });
   });
 
@@ -64,7 +64,7 @@ describe("validateGuestCheckoutInput", () => {
       billingAddressLine1: "20 avenue Victor Hugo",
       billingAddressLine2: "",
       billingPostalCode: "33000",
-      billingCity: "Bordeaux"
+      billingCity: "Bordeaux",
     });
 
     expect(result).toEqual({
@@ -87,8 +87,8 @@ describe("validateGuestCheckoutInput", () => {
         billingAddressLine2: null,
         billingPostalCode: "33000",
         billingCity: "Bordeaux",
-        billingCountryCode: "FR"
-      }
+        billingCountryCode: "FR",
+      },
     });
   });
 
@@ -110,11 +110,11 @@ describe("validateGuestCheckoutInput", () => {
         billingAddressLine1: "",
         billingAddressLine2: "",
         billingPostalCode: "",
-        billingCity: ""
+        billingCity: "",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_customer_email"
+      code: "invalid_customer_email",
     });
   });
 
@@ -136,11 +136,11 @@ describe("validateGuestCheckoutInput", () => {
         billingAddressLine1: "",
         billingAddressLine2: "",
         billingPostalCode: "",
-        billingCity: ""
+        billingCity: "",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_shipping_postal_code"
+      code: "invalid_shipping_postal_code",
     });
   });
 
@@ -162,11 +162,11 @@ describe("validateGuestCheckoutInput", () => {
         billingAddressLine1: "20 avenue Victor Hugo",
         billingAddressLine2: "",
         billingPostalCode: "3300",
-        billingCity: "Bordeaux"
+        billingCity: "Bordeaux",
       })
     ).toEqual({
       ok: false,
-      code: "invalid_billing_postal_code"
+      code: "invalid_billing_postal_code",
     });
   });
 });

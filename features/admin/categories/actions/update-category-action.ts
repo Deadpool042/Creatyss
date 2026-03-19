@@ -3,15 +3,13 @@
 import { redirect } from "next/navigation";
 import {
   AdminCategoryRepositoryError,
-  updateAdminCategory
+  updateAdminCategory,
 } from "@/db/repositories/admin-category.repository";
 import { normalizeCategorySlug } from "@/entities/category/category-input";
 
 import { CategoryFormSchema } from "../schemas/category-form-schema";
 
-function normalizeCategoryId(
-  value: FormDataEntryValue | null
-): string | null {
+function normalizeCategoryId(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string") {
     return null;
   }
@@ -36,17 +34,13 @@ export async function updateCategoryAction(formData: FormData): Promise<void> {
     name: formData.get("name"),
     slug: formData.get("slug"),
     description: formData.get("description"),
-    isFeatured: formData.get("isFeatured")
+    isFeatured: formData.get("isFeatured"),
   });
 
   if (!parsed.success) {
     const field = parsed.error.issues[0]?.path[0];
     const code =
-      field === "name"
-        ? "missing_name"
-        : field === "slug"
-          ? "missing_slug"
-          : "save_failed";
+      field === "name" ? "missing_name" : field === "slug" ? "missing_slug" : "save_failed";
     redirect(`/admin/categories/${categoryId}?error=${code}`);
   }
 
@@ -62,17 +56,14 @@ export async function updateCategoryAction(formData: FormData): Promise<void> {
       name: parsed.data.name,
       slug,
       description: parsed.data.description,
-      isFeatured: parsed.data.isFeatured
+      isFeatured: parsed.data.isFeatured,
     });
 
     if (category === null) {
       redirect("/admin/categories?error=missing_category");
     }
   } catch (error) {
-    if (
-      error instanceof AdminCategoryRepositoryError &&
-      error.code === "slug_taken"
-    ) {
+    if (error instanceof AdminCategoryRepositoryError && error.code === "slug_taken") {
       redirect(`/admin/categories/${categoryId}?error=slug_taken`);
     }
 

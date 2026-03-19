@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   resolveStripeCheckoutSessionState,
-  type StripeCheckoutSessionStateInput
-} from "@/features/payment/stripe-checkout-session-state";
+  type StripeCheckoutSessionStateInput,
+} from "@/features/payment";
 
 function resolve(input: StripeCheckoutSessionStateInput) {
   return resolveStripeCheckoutSessionState(input);
@@ -13,11 +13,11 @@ describe("resolveStripeCheckoutSessionState", () => {
     expect(
       resolve({
         status: "open",
-        url: "https://checkout.stripe.com/c/pay/cs_test_123"
+        url: "https://checkout.stripe.com/c/pay/cs_test_123",
       })
     ).toEqual({
       kind: "reuse",
-      url: "https://checkout.stripe.com/c/pay/cs_test_123"
+      url: "https://checkout.stripe.com/c/pay/cs_test_123",
     });
   });
 
@@ -25,10 +25,10 @@ describe("resolveStripeCheckoutSessionState", () => {
     expect(
       resolve({
         status: "complete",
-        url: null
+        url: null,
       })
     ).toEqual({
-      kind: "await_confirmation"
+      kind: "await_confirmation",
     });
   });
 
@@ -36,10 +36,10 @@ describe("resolveStripeCheckoutSessionState", () => {
     expect(
       resolve({
         status: "expired",
-        url: null
+        url: null,
       })
     ).toEqual({
-      kind: "replace"
+      kind: "replace",
     });
   });
 
@@ -47,10 +47,10 @@ describe("resolveStripeCheckoutSessionState", () => {
     expect(
       resolve({
         status: "open",
-        url: null
+        url: null,
       })
     ).toEqual({
-      kind: "unavailable"
+      kind: "unavailable",
     });
   });
 });

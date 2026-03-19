@@ -38,9 +38,7 @@ function isValidOrderReference(value: string): boolean {
   return /^CRY-[A-Z0-9]{10}$/.test(value);
 }
 
-function mapPaymentStartContext(
-  row: PaymentStartContextRow
-): PaymentStartContext {
+function mapPaymentStartContext(row: PaymentStartContextRow): PaymentStartContext {
   return {
     orderId: row.order_id,
     reference: row.reference,
@@ -49,7 +47,7 @@ function mapPaymentStartContext(
     totalAmount: row.total_amount,
     paymentStatus: row.payment_status,
     stripeCheckoutSessionId: row.stripe_checkout_session_id,
-    stripePaymentIntentId: row.stripe_payment_intent_id
+    stripePaymentIntentId: row.stripe_payment_intent_id,
   };
 }
 
@@ -122,11 +120,7 @@ export async function saveStripeCheckoutSessionForOrder(input: {
         stripe_checkout_session_id = excluded.stripe_checkout_session_id,
         stripe_payment_intent_id = excluded.stripe_payment_intent_id
     `,
-    [
-      input.orderId,
-      input.stripeCheckoutSessionId,
-      input.stripePaymentIntentId
-    ]
+    [input.orderId, input.stripeCheckoutSessionId, input.stripePaymentIntentId]
   );
 }
 

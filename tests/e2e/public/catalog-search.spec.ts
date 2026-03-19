@@ -1,8 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("searches published products by name or variant color", async ({
-  page
-}) => {
+test("searches published products by name or variant color", async ({ page }) => {
   await page.goto("/boutique");
 
   await page.getByLabel("Recherche").fill("Sable");
@@ -13,17 +11,11 @@ test("searches published products by name or variant color", async ({
   const resultsSummary = page.getByText(/résultats pour/i);
   await expect(resultsSummary).toContainText("Sable");
 
-  await expect(
-    page.getByRole("heading", { name: "Pochette Sable", exact: true })
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "Cabas Moka", exact: true })
-  ).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Pochette Sable", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Cabas Moka", exact: true })).toHaveCount(0);
 });
 
-test("shows a discreet empty state and reset link when nothing matches", async ({
-  page
-}) => {
+test("shows a discreet empty state and reset link when nothing matches", async ({ page }) => {
   await page.goto("/boutique");
 
   await page.getByLabel("Recherche").fill("introuvable-xyz");
@@ -32,14 +24,12 @@ test("shows a discreet empty state and reset link when nothing matches", async (
   await expect(page).toHaveURL(/\/boutique\?q=introuvable-xyz&category=$/);
   await expect(
     page.getByRole("heading", {
-      name: /aucun produit ne correspond/i
+      name: /aucun produit ne correspond/i,
     })
   ).toBeVisible();
 
   await page.getByRole("link", { name: "Voir tous les produits" }).click();
 
   await expect(page).toHaveURL(/\/boutique$/);
-  await expect(
-    page.getByRole("heading", { name: "Pochette Sable", exact: true })
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pochette Sable", exact: true })).toBeVisible();
 });

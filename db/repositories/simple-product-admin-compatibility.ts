@@ -109,7 +109,7 @@ export async function syncNativeSimpleProductOfferFromLegacyVariant(
       legacyVariantFields.sku,
       legacyVariantFields.price,
       legacyVariantFields.compare_at_price,
-      legacyVariantFields.stock_quantity
+      legacyVariantFields.stock_quantity,
     ]
   );
 }
@@ -142,7 +142,7 @@ export async function syncLegacyVariantCommercialFieldsFromSimpleProduct(
       input.price,
       input.compareAtPrice,
       input.stockQuantity,
-      legacyVariantId
+      legacyVariantId,
     ]
   );
 

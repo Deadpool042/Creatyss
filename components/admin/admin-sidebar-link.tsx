@@ -14,16 +14,10 @@ type AdminSidebarLinkProps = {
   children: React.ReactNode;
 };
 
-export function AdminSidebarLink({
-  href,
-  icon: Icon,
-  tooltip,
-  children
-}: AdminSidebarLinkProps) {
+export function AdminSidebarLink({ href, icon: Icon, tooltip, children }: AdminSidebarLinkProps) {
   const pathname = usePathname();
 
-  const isActive =
-    pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`));
+  const isActive = pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`));
 
   return (
     <SidebarMenuItem>
@@ -36,11 +30,10 @@ export function AdminSidebarLink({
           isActive
             ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
             : "text-sidebar-foreground/75 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-        )}>
+        )}
+      >
         <Link href={href}>
-          <Icon
-            className={cn("size-4 shrink-0", isActive && "text-brand")}
-          />
+          <Icon className={cn("size-4 shrink-0", isActive && "text-brand")} />
           {children}
         </Link>
       </SidebarMenuButton>

@@ -6,15 +6,11 @@ import { SectionIntro } from "@/components/shared/section-intro";
 import { Notice } from "@/components/shared/notice";
 import { AdminFormActions } from "@/components/admin/admin-form-actions";
 import { AdminFormField } from "@/components/admin/admin-form-field";
-import {
-  updateOrderStatusAction,
-  shipOrderAction
-} from "@/features/admin/orders/actions";
+import { updateOrderStatusAction, shipOrderAction } from "@/features/admin/orders/actions";
 import { OrderCancelConfirmDialog } from "./order-cancel-confirm-dialog";
 import { getOrderTransitionLabel } from "@/features/admin/orders/mappers/order-detail-mappers";
 
-const detailCardClassName =
-  "grid gap-1 rounded-lg border border-border/60 bg-muted/10 p-3";
+const detailCardClassName = "grid gap-1 rounded-lg border border-border/60 bg-muted/10 p-3";
 
 const detailLabelClassName =
   "text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground";
@@ -33,15 +29,10 @@ type OrderDetailActionsCardProps = Readonly<{
   allowedTransitions: readonly OrderStatus[];
 }>;
 
-export function OrderDetailActionsCard({
-  order,
-  allowedTransitions
-}: OrderDetailActionsCardProps) {
+export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetailActionsCardProps) {
   const shippingFieldId = `tracking-reference-${order.id}`;
   const canShip = allowedTransitions.includes("shipped");
-  const statusTransitions = allowedTransitions.filter(
-    nextStatus => nextStatus !== "shipped"
-  );
+  const statusTransitions = allowedTransitions.filter((nextStatus) => nextStatus !== "shipped");
 
   return (
     <article className="grid gap-5 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
@@ -81,16 +72,11 @@ export function OrderDetailActionsCard({
           {canShip ? (
             <form
               action={shipOrderAction}
-              className="grid gap-4 rounded-lg border border-border/60 bg-muted/10 p-4">
-              <input
-                name="orderId"
-                type="hidden"
-                value={order.id}
-              />
+              className="grid gap-4 rounded-lg border border-border/60 bg-muted/10 p-4"
+            >
+              <input name="orderId" type="hidden" value={order.id} />
 
-              <AdminFormField
-                htmlFor={shippingFieldId}
-                label="Référence de suivi optionnelle">
+              <AdminFormField htmlFor={shippingFieldId} label="Référence de suivi optionnelle">
                 <Input
                   defaultValue={order.trackingReference ?? ""}
                   id={shippingFieldId}
@@ -100,9 +86,7 @@ export function OrderDetailActionsCard({
                 />
               </AdminFormField>
 
-              <Button
-                className="w-full sm:w-fit"
-                type="submit">
+              <Button className="w-full sm:w-fit" type="submit">
                 Marquer comme expédiée
               </Button>
             </form>
@@ -110,29 +94,14 @@ export function OrderDetailActionsCard({
 
           {statusTransitions.length > 0 ? (
             <AdminFormActions className="gap-2">
-              {statusTransitions.map(nextStatus =>
+              {statusTransitions.map((nextStatus) =>
                 nextStatus === "cancelled" ? (
-                  <OrderCancelConfirmDialog
-                    key={nextStatus}
-                    orderId={order.id}
-                  />
+                  <OrderCancelConfirmDialog key={nextStatus} orderId={order.id} />
                 ) : (
-                  <form
-                    action={updateOrderStatusAction}
-                    key={nextStatus}>
-                    <input
-                      name="orderId"
-                      type="hidden"
-                      value={order.id}
-                    />
-                    <input
-                      name="nextStatus"
-                      type="hidden"
-                      value={nextStatus}
-                    />
-                    <Button
-                      variant="outline"
-                      type="submit">
+                  <form action={updateOrderStatusAction} key={nextStatus}>
+                    <input name="orderId" type="hidden" value={order.id} />
+                    <input name="nextStatus" type="hidden" value={nextStatus} />
+                    <Button variant="outline" type="submit">
                       {getOrderTransitionLabel(nextStatus)}
                     </Button>
                   </form>
@@ -142,9 +111,7 @@ export function OrderDetailActionsCard({
           ) : null}
         </>
       ) : (
-        <Notice tone="note">
-          Aucune autre action n&apos;est disponible pour cette commande.
-        </Notice>
+        <Notice tone="note">Aucune autre action n&apos;est disponible pour cette commande.</Notice>
       )}
     </article>
   );

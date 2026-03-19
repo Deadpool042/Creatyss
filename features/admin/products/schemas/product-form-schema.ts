@@ -1,31 +1,22 @@
 import { z } from "zod";
 
 function formText(min = 1) {
-  return z.preprocess(
-    v => (typeof v === "string" ? v.trim() : ""),
-    z.string().min(min)
-  );
+  return z.preprocess((v) => (typeof v === "string" ? v.trim() : ""), z.string().min(min));
 }
 
 function formOptionalText() {
   return z.preprocess(
-    v => (typeof v === "string" && v.trim().length > 0 ? v.trim() : null),
+    (v) => (typeof v === "string" && v.trim().length > 0 ? v.trim() : null),
     z.string().nullable()
   );
 }
 
 function formCheckbox() {
-  return z.preprocess(
-    v => v === "on" || v === "true" || v === "1",
-    z.boolean()
-  );
+  return z.preprocess((v) => v === "on" || v === "true" || v === "1", z.boolean());
 }
 
 function formEnum<T extends string>(values: readonly [T, ...T[]]) {
-  return z.preprocess(
-    v => (typeof v === "string" ? v.trim() : ""),
-    z.enum(values)
-  );
+  return z.preprocess((v) => (typeof v === "string" ? v.trim() : ""), z.enum(values));
 }
 
 export const ProductFormSchema = z.object({
@@ -39,9 +30,9 @@ export const ProductFormSchema = z.object({
   productType: formEnum(["simple", "variable"] as const),
   isFeatured: formCheckbox(),
   categoryIds: z.preprocess(
-    v => (Array.isArray(v) ? v : []),
+    (v) => (Array.isArray(v) ? v : []),
     z.array(z.string().regex(/^[0-9]+$/))
-  )
+  ),
 });
 
 export type ProductFormInput = z.infer<typeof ProductFormSchema>;

@@ -97,10 +97,7 @@ function isValidBlogPostId(id: string): boolean {
 }
 
 function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
-  return (
-    error instanceof Error &&
-    typeof (error as { code?: unknown }).code === "string"
-  );
+  return error instanceof Error && typeof (error as { code?: unknown }).code === "string";
 }
 
 function toIsoTimestamp(value: TimestampValue): string {
@@ -111,9 +108,7 @@ function toIsoTimestamp(value: TimestampValue): string {
   return new Date(value).toISOString();
 }
 
-function mapAdminBlogPostSummary(
-  row: AdminBlogPostSummaryRow
-): AdminBlogPostSummary {
+function mapAdminBlogPostSummary(row: AdminBlogPostSummaryRow): AdminBlogPostSummary {
   return {
     id: row.id,
     title: row.title,
@@ -121,11 +116,10 @@ function mapAdminBlogPostSummary(
     excerpt: row.excerpt,
     coverImagePath: row.cover_image_path,
     status: row.status,
-    publishedAt:
-      row.published_at === null ? null : toIsoTimestamp(row.published_at),
+    publishedAt: row.published_at === null ? null : toIsoTimestamp(row.published_at),
     hasContent: row.has_content,
     createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at)
+    updatedAt: toIsoTimestamp(row.updated_at),
   };
 }
 
@@ -134,7 +128,7 @@ function mapAdminBlogPostDetail(row: AdminBlogPostRow): AdminBlogPostDetail {
     ...mapAdminBlogPostSummary(row),
     content: row.content,
     seoTitle: row.seo_title,
-    seoDescription: row.seo_description
+    seoDescription: row.seo_description,
   };
 }
 
@@ -150,20 +144,14 @@ function buildBlogPostWriteParams(input: CreateAdminBlogPostInput): unknown[] {
     input.seoTitle,
     input.seoDescription,
     input.coverImagePath,
-    input.status
+    input.status,
   ];
 }
 
 function mapRepositoryError(error: unknown): never {
   if (isPostgreSqlErrorLike(error)) {
-    if (
-      error.code === PG_UNIQUE_VIOLATION &&
-      error.constraint === BLOG_POST_SLUG_CONSTRAINT
-    ) {
-      throw new AdminBlogRepositoryError(
-        "slug_taken",
-        "Blog post slug already exists."
-      );
+    if (error.code === PG_UNIQUE_VIOLATION && error.constraint === BLOG_POST_SLUG_CONSTRAINT) {
+      throw new AdminBlogRepositoryError("slug_taken", "Blog post slug already exists.");
     }
 
     if (error.code === PG_FOREIGN_KEY_VIOLATION) {
@@ -201,9 +189,7 @@ export async function listAdminBlogPosts(): Promise<AdminBlogPostSummary[]> {
   return rows.map(mapAdminBlogPostSummary);
 }
 
-export async function findAdminBlogPostById(
-  id: string
-): Promise<AdminBlogPostDetail | null> {
+export async function findAdminBlogPostById(id: string): Promise<AdminBlogPostDetail | null> {
   if (!isValidBlogPostId(id)) {
     return null;
   }
@@ -302,9 +288,7 @@ export async function updateAdminBlogPost(
   }
 }
 
-export async function toggleAdminBlogPostStatus(
-  id: string
-): Promise<"draft" | "published" | null> {
+export async function toggleAdminBlogPostStatus(id: string): Promise<"draft" | "published" | null> {
   if (!isValidBlogPostId(id)) {
     return null;
   }

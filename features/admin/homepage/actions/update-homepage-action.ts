@@ -5,7 +5,7 @@ import { getAdminMediaAssetById } from "@/db/admin-media";
 import {
   AdminHomepageRepositoryError,
   getAdminHomepageCurrentHeroImagePath,
-  updateAdminHomepage
+  updateAdminHomepage,
 } from "@/db/repositories/admin-homepage.repository";
 import { validateHomepageInput } from "@/entities/homepage/homepage-input";
 
@@ -56,7 +56,7 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
     heroTitle: formData.get("heroTitle"),
     heroText: formData.get("heroText"),
     editorialTitle: formData.get("editorialTitle"),
-    editorialText: formData.get("editorialText")
+    editorialText: formData.get("editorialText"),
   });
 
   if (!textParsed.success) {
@@ -75,20 +75,11 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
     editorialTitle: formData.get("editorialTitle"),
     editorialText: formData.get("editorialText"),
     featuredProductIds: formData.getAll("featuredProductIds"),
-    featuredProductSortOrders: collectSortOrdersByPrefix(
-      formData,
-      "featuredProductSortOrder:"
-    ),
+    featuredProductSortOrders: collectSortOrdersByPrefix(formData, "featuredProductSortOrder:"),
     featuredCategoryIds: formData.getAll("featuredCategoryIds"),
-    featuredCategorySortOrders: collectSortOrdersByPrefix(
-      formData,
-      "featuredCategorySortOrder:"
-    ),
+    featuredCategorySortOrders: collectSortOrdersByPrefix(formData, "featuredCategorySortOrder:"),
     featuredBlogPostIds: formData.getAll("featuredBlogPostIds"),
-    featuredBlogPostSortOrders: collectSortOrdersByPrefix(
-      formData,
-      "featuredBlogPostSortOrder:"
-    )
+    featuredBlogPostSortOrders: collectSortOrdersByPrefix(formData, "featuredBlogPostSortOrder:"),
   });
 
   if (!validation.ok) {
@@ -98,9 +89,7 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
   let heroImagePath: string | null = null;
 
   if (validation.data.heroImage.kind === "keep_current") {
-    heroImagePath = await getAdminHomepageCurrentHeroImagePath(
-      validation.data.homepageId
-    );
+    heroImagePath = await getAdminHomepageCurrentHeroImagePath(validation.data.homepageId);
   } else if (validation.data.heroImage.kind === "media_asset") {
     const mediaAssetId = validation.data.heroImage.mediaAssetId;
     const mediaAsset = await getAdminMediaAssetById(mediaAssetId);
@@ -126,36 +115,24 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
       // Sélections : issues de l'entity validator (logique déduplication + sort orders)
       featuredProducts: validation.data.featuredProducts,
       featuredCategories: validation.data.featuredCategories,
-      featuredBlogPosts: validation.data.featuredBlogPosts
+      featuredBlogPosts: validation.data.featuredBlogPosts,
     });
 
     wasUpdated = homepage !== null;
   } catch (error) {
-    if (
-      error instanceof AdminHomepageRepositoryError &&
-      error.code === "homepage_missing"
-    ) {
+    if (error instanceof AdminHomepageRepositoryError && error.code === "homepage_missing") {
       redirect("/admin/homepage?error=missing_homepage");
     }
 
-    if (
-      error instanceof AdminHomepageRepositoryError &&
-      error.code === "product_missing"
-    ) {
+    if (error instanceof AdminHomepageRepositoryError && error.code === "product_missing") {
       redirect("/admin/homepage?error=product_missing");
     }
 
-    if (
-      error instanceof AdminHomepageRepositoryError &&
-      error.code === "category_missing"
-    ) {
+    if (error instanceof AdminHomepageRepositoryError && error.code === "category_missing") {
       redirect("/admin/homepage?error=category_missing");
     }
 
-    if (
-      error instanceof AdminHomepageRepositoryError &&
-      error.code === "blog_post_missing"
-    ) {
+    if (error instanceof AdminHomepageRepositoryError && error.code === "blog_post_missing") {
       redirect("/admin/homepage?error=blog_post_missing");
     }
 

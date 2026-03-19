@@ -13,6 +13,7 @@ Ce lot ne crée pas de nouveaux composants. Il normalise ce qui existe.
 ## Périmètre strict
 
 **In scope :**
+
 - Introduction du token `--brand` (couleur de marque `#8f5d2d`) dans `globals.css`
 - Déclinaison dark du token `--brand` si la valeur doit être ajustée
 - Remplacement de toutes les occurrences de la valeur arbitraire dans les composants actifs
@@ -20,6 +21,7 @@ Ce lot ne crée pas de nouveaux composants. Il normalise ce qui existe.
 - Vérification de la couverture dark mode des surfaces principales listées ci-dessous
 
 **Out of scope :**
+
 - Modification du shell (V8-2)
 - Migration des composants cards (V8-3)
 - Introduction de nouvelles dépendances npm
@@ -51,17 +53,17 @@ Le dark mode est activé via `next-themes` (classe `.dark` sur `<html>`). shadcn
 
 ### Surfaces à couvrir
 
-| Surface | Tokens attendus |
-|---|---|
-| Fond page et layout | `--background`, `--foreground` |
-| Sidebar | `--sidebar-background`, `--sidebar-foreground`, `--sidebar-accent`, `--sidebar-accent-foreground`, `--sidebar-border`, `--sidebar-ring` |
-| Cards et panneaux | `--card`, `--card-foreground`, `--border` |
-| Formulaires | `--input`, `--ring`, `--muted`, `--muted-foreground` |
-| Boutons primaires et secondaires | `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground` |
-| États destructifs | `--destructive`, `--destructive-foreground` |
-| Couleur de marque | `--brand` (déclinaison dark) |
-| États interactifs | `--accent`, `--accent-foreground` |
-| Badges et statuts | Vérification visuelle des variants `Badge` en dark |
+| Surface                          | Tokens attendus                                                                                                                         |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Fond page et layout              | `--background`, `--foreground`                                                                                                          |
+| Sidebar                          | `--sidebar-background`, `--sidebar-foreground`, `--sidebar-accent`, `--sidebar-accent-foreground`, `--sidebar-border`, `--sidebar-ring` |
+| Cards et panneaux                | `--card`, `--card-foreground`, `--border`                                                                                               |
+| Formulaires                      | `--input`, `--ring`, `--muted`, `--muted-foreground`                                                                                    |
+| Boutons primaires et secondaires | `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`                                                            |
+| États destructifs                | `--destructive`, `--destructive-foreground`                                                                                             |
+| Couleur de marque                | `--brand` (déclinaison dark)                                                                                                            |
+| États interactifs                | `--accent`, `--accent-foreground`                                                                                                       |
+| Badges et statuts                | Vérification visuelle des variants `Badge` en dark                                                                                      |
 
 ### Méthode
 
@@ -73,6 +75,7 @@ Le dark mode est activé via `next-themes` (classe `.dark` sur `<html>`). shadcn
 ### Critères de qualité dark mode
 
 Une surface est **dark compliant** quand :
+
 - son rendu repose uniquement sur des tokens CSS sémantiques
 - aucune valeur de couleur en dur n'est présente dans ses composants
 - le contraste texte/fond est lisible (pas besoin d'un audit WCAG formel — jugement visuel suffit pour ce lot)
