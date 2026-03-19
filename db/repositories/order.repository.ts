@@ -1,5 +1,5 @@
-import { db, queryFirst, queryRows } from "@/db/client";
-import type { PoolClient } from "pg";
+import { Prisma } from "@prisma/client";
+import { prisma } from "@/db/prisma-client";
 import { normalizeMoneyString, moneyStringToCents, centsToMoneyString } from "@/lib/money";
 import { listOrderEmailEventsByOrderId } from "@/db/repositories/order-email.repository";
 import { createOrderReference } from "@/entities/order/order-reference";
@@ -33,16 +33,11 @@ export type {
   OrderEmailEventStatus,
 };
 
-type TimestampValue = Date | string;
-type ProductStatus = "draft" | "published";
-type ProductVariantStatus = "draft" | "published";
+// --- Internal types ---
 
-type CartIdRow = {
-  id: string;
-};
+type TxClient = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
 
-type CheckoutDraftRow = {
-  id: string;
+type CheckoutDraftFields = {
   customer_email: string | null;
   customer_first_name: string | null;
   customer_last_name: string | null;
@@ -63,25 +58,203 @@ type CheckoutDraftRow = {
   billing_country_code: string | null;
 };
 
-type OrderSourceLineRow = {
-  cart_item_id: string;
-  product_variant_id: string;
+// Required fields after validation — billing fields remain nullable (valid when billingSameAsShipping)
+type CompleteCheckoutDraft = CheckoutDraftFields & {
+  customer_email: string;
+  customer_first_name: string;
+  customer_last_name: string;
+  shipping_address_line_1: string;
+  shipping_postal_code: string;
+  shipping_city: string;
+  shipping_country_code: "FR";
+};
+
+type CartLineData = {
+  id: bigint;
+  product_variant_id: bigint;
   quantity: number;
+  product_variants: {
+    name: string;
+    color_name: string;
+    color_hex: string | null;
+    sku: string;
+    price: Prisma.Decimal;
+    stock_quantity: number;
+    status: string;
+    products: { name: string; status: string };
+  };
+};
+
+// --- Validation helpers ---
+
+function isValidNumericId(value: string): boolean {
+  return /^[0-9]+$/.test(value);
+}
+
+function isValidOrderReference(value: string): boolean {
+  return /^CRY-[A-Z0-9]{10}$/.test(value);
+}
+
+function checkoutDraftIsComplete(
+  draft: CheckoutDraftFields | null
+): draft is CompleteCheckoutDraft {
+  if (draft === null) {
+    return false;
+  }
+
+  if (
+    draft.customer_email === null ||
+    draft.customer_first_name === null ||
+    draft.customer_last_name === null ||
+    draft.shipping_address_line_1 === null ||
+    draft.shipping_postal_code === null ||
+    draft.shipping_city === null ||
+    draft.shipping_country_code !== "FR"
+  ) {
+    return false;
+  }
+
+  if (draft.billing_same_as_shipping) {
+    return true;
+  }
+
+  return (
+    draft.billing_first_name !== null &&
+    draft.billing_last_name !== null &&
+    draft.billing_address_line_1 !== null &&
+    draft.billing_postal_code !== null &&
+    draft.billing_city !== null &&
+    draft.billing_country_code === "FR"
+  );
+}
+
+function assertCompleteCheckoutDraft(
+  draft: CheckoutDraftFields | null
+): asserts draft is CompleteCheckoutDraft {
+  if (!checkoutDraftIsComplete(draft)) {
+    throw new OrderRepositoryError("missing_checkout", "Checkout draft is missing.");
+  }
+}
+
+function sourceLineIsAvailable(line: CartLineData): boolean {
+  return (
+    line.product_variants.products.status === "published" &&
+    line.product_variants.status === "published" &&
+    line.product_variants.stock_quantity >= line.quantity &&
+    line.product_variants.stock_quantity > 0
+  );
+}
+
+function assertOrderSourceLinesCanBeOrdered(lines: readonly CartLineData[]): void {
+  if (lines.length === 0) {
+    throw new OrderRepositoryError("empty_cart", "Guest cart is empty.");
+  }
+
+  if (lines.some((line) => !sourceLineIsAvailable(line))) {
+    throw new OrderRepositoryError("cart_unavailable", "Guest cart is no longer available.");
+  }
+}
+
+function calculateOrderTotalAmount(lines: readonly CartLineData[]): string {
+  const totalCents = lines.reduce((sum, line) => {
+    const unitPrice = normalizeMoneyString(line.product_variants.price.toString());
+    return sum + moneyStringToCents(unitPrice) * line.quantity;
+  }, 0);
+
+  return centsToMoneyString(totalCents);
+}
+
+// --- Transaction helpers ---
+
+async function restockOrderItemsInTx(tx: TxClient, orderId: bigint): Promise<void> {
+  const groups = await tx.order_items.groupBy({
+    by: ["source_product_variant_id"],
+    where: {
+      order_id: orderId,
+      source_product_variant_id: { not: null },
+    },
+    _sum: { quantity: true },
+  });
+
+  for (const group of groups) {
+    if (group.source_product_variant_id === null) {
+      continue;
+    }
+
+    await tx.product_variants.update({
+      where: { id: group.source_product_variant_id },
+      data: { stock_quantity: { increment: group._sum.quantity ?? 0 } },
+    });
+  }
+}
+
+function getOrderStatusTransitionOrThrow(currentStatus: OrderStatus, nextStatus: OrderStatus) {
+  const transition = resolveOrderStatusTransition({ currentStatus, nextStatus });
+
+  if (!transition.ok) {
+    throw new OrderRepositoryError(
+      "invalid_status_transition",
+      "Order status transition is invalid."
+    );
+  }
+
+  return transition;
+}
+
+// --- Internal mappers ---
+
+function mapPrismaOrderLine(oi: {
+  id: bigint;
+  source_product_variant_id: bigint | null;
   product_name: string;
-  product_status: ProductStatus;
   variant_name: string;
-  variant_status: ProductVariantStatus;
   color_name: string;
   color_hex: string | null;
   sku: string;
-  unit_price: string;
-  stock_quantity: number;
-};
+  unit_price: Prisma.Decimal;
+  quantity: number;
+  line_total: Prisma.Decimal;
+  created_at: Date;
+}): OrderLine {
+  return {
+    id: oi.id.toString(),
+    sourceProductVariantId: oi.source_product_variant_id?.toString() ?? null,
+    productName: oi.product_name,
+    variantName: oi.variant_name,
+    colorName: oi.color_name,
+    colorHex: oi.color_hex,
+    sku: oi.sku,
+    unitPrice: normalizeMoneyString(oi.unit_price.toString()),
+    quantity: oi.quantity,
+    lineTotal: normalizeMoneyString(oi.line_total.toString()),
+    createdAt: oi.created_at.toISOString(),
+  };
+}
 
-type OrderRow = {
-  id: string;
+function mapPrismaOrderPayment(payment: {
+  status: string;
+  provider: string;
+  method: string;
+  amount: Prisma.Decimal;
+  currency: string;
+  stripe_checkout_session_id: string | null;
+  stripe_payment_intent_id: string | null;
+}): OrderPayment {
+  return {
+    status: payment.status as PaymentStatus,
+    provider: payment.provider as PaymentProvider,
+    method: payment.method as PaymentMethod,
+    amount: normalizeMoneyString(payment.amount.toString()),
+    currency: payment.currency as "eur",
+    stripeCheckoutSessionId: payment.stripe_checkout_session_id,
+    stripePaymentIntentId: payment.stripe_payment_intent_id,
+  };
+}
+
+type OrderWithPaymentAndItems = {
+  id: bigint;
   reference: string;
-  status: OrderStatus;
+  status: string;
   customer_email: string;
   customer_first_name: string;
   customer_last_name: string;
@@ -100,172 +273,40 @@ type OrderRow = {
   billing_postal_code: string | null;
   billing_city: string | null;
   billing_country_code: string | null;
-  shipped_at: TimestampValue | null;
+  shipped_at: Date | null;
   tracking_reference: string | null;
-  total_amount: string;
-  payment_status: PaymentStatus | null;
-  payment_provider: PaymentProvider | null;
-  payment_method: PaymentMethod | null;
-  payment_amount: string | null;
-  payment_currency: string | null;
-  stripe_checkout_session_id: string | null;
-  stripe_payment_intent_id: string | null;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
+  total_amount: Prisma.Decimal;
+  created_at: Date;
+  updated_at: Date;
+  payments: {
+    status: string;
+    provider: string;
+    method: string;
+    amount: Prisma.Decimal;
+    currency: string;
+    stripe_checkout_session_id: string | null;
+    stripe_payment_intent_id: string | null;
+  } | null;
+  order_items: Parameters<typeof mapPrismaOrderLine>[0][];
 };
 
-type OrderItemRow = {
-  id: string;
-  order_id: string;
-  source_product_variant_id: string | null;
-  product_name: string;
-  variant_name: string;
-  color_name: string;
-  color_hex: string | null;
-  sku: string;
-  unit_price: string;
-  quantity: number;
-  line_total: string;
-  created_at: TimestampValue;
-};
+function mapPrismaOrder(row: OrderWithPaymentAndItems): PublicOrderConfirmation {
+  const payment: OrderPayment = row.payments
+    ? mapPrismaOrderPayment(row.payments)
+    : {
+        status: "pending",
+        provider: "stripe",
+        method: "card",
+        amount: normalizeMoneyString(row.total_amount.toString()),
+        currency: "eur",
+        stripeCheckoutSessionId: null,
+        stripePaymentIntentId: null,
+      };
 
-type OrderSummaryRow = {
-  id: string;
-  reference: string;
-  status: OrderStatus;
-  payment_status: PaymentStatus | null;
-  customer_email: string;
-  customer_first_name: string;
-  customer_last_name: string;
-  total_amount: string;
-  line_count: number;
-  created_at: TimestampValue;
-  updated_at: TimestampValue;
-};
-
-type OrderEmailContextRow = {
-  id: string;
-  reference: string;
-  customer_email: string;
-  customer_first_name: string;
-  total_amount: string;
-  tracking_reference: string | null;
-};
-
-type CreatedOrderRow = {
-  id: string;
-  reference: string;
-};
-
-type OrderStatusRow = {
-  id: string;
-  status: OrderStatus;
-};
-
-type PostgreSqlErrorLike = Error & {
-  code: string;
-  constraint?: string;
-};
-
-function isValidNumericId(value: string): boolean {
-  return /^[0-9]+$/.test(value);
-}
-
-function isValidOrderReference(value: string): boolean {
-  return /^CRY-[A-Z0-9]{10}$/.test(value);
-}
-
-function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
-  if (!(error instanceof Error)) {
-    return false;
-  }
-
-  const candidate = error as PostgreSqlErrorLike;
-
-  return typeof candidate.code === "string";
-}
-
-function toIsoTimestamp(value: TimestampValue): string {
-  if (value instanceof Date) {
-    return value.toISOString();
-  }
-
-  return new Date(value).toISOString();
-}
-
-function checkoutDraftIsComplete(row: CheckoutDraftRow | null): row is CheckoutDraftRow {
-  if (row === null) {
-    return false;
-  }
-
-  if (
-    row.customer_email === null ||
-    row.customer_first_name === null ||
-    row.customer_last_name === null ||
-    row.shipping_address_line_1 === null ||
-    row.shipping_postal_code === null ||
-    row.shipping_city === null ||
-    row.shipping_country_code !== "FR"
-  ) {
-    return false;
-  }
-
-  if (row.billing_same_as_shipping) {
-    return true;
-  }
-
-  return (
-    row.billing_first_name !== null &&
-    row.billing_last_name !== null &&
-    row.billing_address_line_1 !== null &&
-    row.billing_postal_code !== null &&
-    row.billing_city !== null &&
-    row.billing_country_code === "FR"
-  );
-}
-
-function sourceLineIsAvailable(row: OrderSourceLineRow): boolean {
-  return (
-    row.product_status === "published" &&
-    row.variant_status === "published" &&
-    row.stock_quantity >= row.quantity &&
-    row.stock_quantity > 0
-  );
-}
-
-function mapOrderPayment(row: OrderRow): OrderPayment {
   return {
-    status: row.payment_status ?? "pending",
-    provider: row.payment_provider ?? "stripe",
-    method: row.payment_method ?? "card",
-    amount: normalizeMoneyString(row.payment_amount ?? row.total_amount),
-    currency: (row.payment_currency ?? "eur") as "eur",
-    stripeCheckoutSessionId: row.stripe_checkout_session_id,
-    stripePaymentIntentId: row.stripe_payment_intent_id,
-  };
-}
-
-function mapOrderLine(row: OrderItemRow): OrderLine {
-  return {
-    id: row.id,
-    sourceProductVariantId: row.source_product_variant_id,
-    productName: row.product_name,
-    variantName: row.variant_name,
-    colorName: row.color_name,
-    colorHex: row.color_hex,
-    sku: row.sku,
-    unitPrice: normalizeMoneyString(row.unit_price),
-    quantity: row.quantity,
-    lineTotal: normalizeMoneyString(row.line_total),
-    createdAt: toIsoTimestamp(row.created_at),
-  };
-}
-
-function mapOrderRow(row: OrderRow, lines: OrderItemRow[]): PublicOrderConfirmation {
-  return {
-    id: row.id,
+    id: row.id.toString(),
     reference: row.reference,
-    status: row.status,
+    status: row.status as OrderStatus,
     customerEmail: row.customer_email,
     customerFirstName: row.customer_first_name,
     customerLastName: row.customer_last_name,
@@ -284,142 +325,324 @@ function mapOrderRow(row: OrderRow, lines: OrderItemRow[]): PublicOrderConfirmat
     billingPostalCode: row.billing_postal_code,
     billingCity: row.billing_city,
     billingCountryCode: row.billing_country_code as "FR" | null,
-    shippedAt: row.shipped_at ? toIsoTimestamp(row.shipped_at) : null,
+    shippedAt: row.shipped_at?.toISOString() ?? null,
     trackingReference: row.tracking_reference,
-    totalAmount: normalizeMoneyString(row.total_amount),
-    payment: mapOrderPayment(row),
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-    lines: lines.map(mapOrderLine),
+    totalAmount: normalizeMoneyString(row.total_amount.toString()),
+    payment,
+    createdAt: row.created_at.toISOString(),
+    updatedAt: row.updated_at.toISOString(),
+    lines: row.order_items.map(mapPrismaOrderLine),
   };
 }
 
-function mapAdminOrderSummary(row: OrderSummaryRow): AdminOrderSummary {
+// --- Order reads ---
+
+const ORDER_SELECT = {
+  id: true,
+  reference: true,
+  status: true,
+  customer_email: true,
+  customer_first_name: true,
+  customer_last_name: true,
+  customer_phone: true,
+  shipping_address_line_1: true,
+  shipping_address_line_2: true,
+  shipping_postal_code: true,
+  shipping_city: true,
+  shipping_country_code: true,
+  billing_same_as_shipping: true,
+  billing_first_name: true,
+  billing_last_name: true,
+  billing_phone: true,
+  billing_address_line_1: true,
+  billing_address_line_2: true,
+  billing_postal_code: true,
+  billing_city: true,
+  billing_country_code: true,
+  shipped_at: true,
+  tracking_reference: true,
+  total_amount: true,
+  created_at: true,
+  updated_at: true,
+  payments: {
+    select: {
+      status: true,
+      provider: true,
+      method: true,
+      amount: true,
+      currency: true,
+      stripe_checkout_session_id: true,
+      stripe_payment_intent_id: true,
+    },
+  },
+  order_items: {
+    select: {
+      id: true,
+      source_product_variant_id: true,
+      product_name: true,
+      variant_name: true,
+      color_name: true,
+      color_hex: true,
+      sku: true,
+      unit_price: true,
+      quantity: true,
+      line_total: true,
+      created_at: true,
+    },
+    orderBy: { id: "asc" as const },
+  },
+} as const;
+
+export async function findPublicOrderByReference(
+  reference: string
+): Promise<PublicOrderConfirmation | null> {
+  if (!isValidOrderReference(reference)) {
+    return null;
+  }
+
+  const row = await prisma.orders.findUnique({
+    where: { reference },
+    select: ORDER_SELECT,
+  });
+
+  return row !== null ? mapPrismaOrder(row) : null;
+}
+
+export async function findOrderEmailContextById(id: string): Promise<OrderEmailContext | null> {
+  if (!isValidNumericId(id)) {
+    return null;
+  }
+
+  const row = await prisma.orders.findUnique({
+    where: { id: BigInt(id) },
+    select: {
+      id: true,
+      reference: true,
+      customer_email: true,
+      customer_first_name: true,
+      total_amount: true,
+      tracking_reference: true,
+    },
+  });
+
+  if (row === null) {
+    return null;
+  }
+
   return {
-    id: row.id,
+    id: row.id.toString(),
     reference: row.reference,
-    status: row.status,
-    paymentStatus: row.payment_status ?? "pending",
+    customerEmail: row.customer_email,
+    customerFirstName: row.customer_first_name,
+    totalAmount: normalizeMoneyString(row.total_amount.toString()),
+    trackingReference: row.tracking_reference,
+  };
+}
+
+export async function listAdminOrders(): Promise<AdminOrderSummary[]> {
+  const rows = await prisma.orders.findMany({
+    orderBy: [{ created_at: "desc" }, { id: "desc" }],
+    select: {
+      id: true,
+      reference: true,
+      status: true,
+      customer_email: true,
+      customer_first_name: true,
+      customer_last_name: true,
+      total_amount: true,
+      created_at: true,
+      updated_at: true,
+      payments: { select: { status: true } },
+      _count: { select: { order_items: true } },
+    },
+  });
+
+  return rows.map((row) => ({
+    id: row.id.toString(),
+    reference: row.reference,
+    status: row.status as OrderStatus,
+    paymentStatus: (row.payments?.status ?? "pending") as PaymentStatus,
     customerEmail: row.customer_email,
     customerFirstName: row.customer_first_name,
     customerLastName: row.customer_last_name,
-    totalAmount: normalizeMoneyString(row.total_amount),
-    lineCount: row.line_count,
-    createdAt: toIsoTimestamp(row.created_at),
-    updatedAt: toIsoTimestamp(row.updated_at),
-  };
+    totalAmount: normalizeMoneyString(row.total_amount.toString()),
+    lineCount: row._count.order_items,
+    createdAt: row.created_at.toISOString(),
+    updatedAt: row.updated_at.toISOString(),
+  }));
 }
 
-function mapOrderEmailContext(row: OrderEmailContextRow): OrderEmailContext {
-  return {
-    id: row.id,
-    reference: row.reference,
-    customerEmail: row.customer_email,
-    customerFirstName: row.customer_first_name,
-    totalAmount: normalizeMoneyString(row.total_amount),
-    trackingReference: row.tracking_reference,
-  };
-}
-
-async function insertOrderWithUniqueReference(
-  client: PoolClient,
-  input: {
-    checkout: CheckoutDraftRow;
-    totalAmount: string;
+export async function findAdminOrderById(id: string): Promise<AdminOrderDetail | null> {
+  if (!isValidNumericId(id)) {
+    return null;
   }
-): Promise<CreatedOrderRow> {
+
+  const row = await prisma.orders.findUnique({
+    where: { id: BigInt(id) },
+    select: ORDER_SELECT,
+  });
+
+  if (row === null) {
+    return null;
+  }
+
+  const emailEvents = await listOrderEmailEventsByOrderId(id);
+
+  return {
+    ...mapPrismaOrder(row),
+    emailEvents,
+  };
+}
+
+// --- Order mutations ---
+
+// Serializable isolation reproduces the SELECT FOR UPDATE semantics of the original SQL:
+// - Prevents concurrent checkouts from the same cart from over-decrementing stock.
+// - Ensures cart existence check and deletion are atomic.
+// The retry loop for reference uniqueness is OUTSIDE the transaction since a failed
+// Prisma operation inside a transaction causes an automatic rollback.
+export async function createOrderFromGuestCartToken(
+  token: string
+): Promise<{ id: string; reference: string }> {
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const reference = createOrderReference();
 
     try {
-      const result = await client.query<CreatedOrderRow>(
-        `
-          insert into orders (
-            reference,
-            status,
-            customer_email,
-            customer_first_name,
-            customer_last_name,
-            customer_phone,
-            shipping_address_line_1,
-            shipping_address_line_2,
-            shipping_postal_code,
-            shipping_city,
-            shipping_country_code,
-            billing_same_as_shipping,
-            billing_first_name,
-            billing_last_name,
-            billing_phone,
-            billing_address_line_1,
-            billing_address_line_2,
-            billing_postal_code,
-            billing_city,
-            billing_country_code,
-            total_amount
-          )
-          values (
-            $1,
-            'pending',
-            $2,
-            $3,
-            $4,
-            $5,
-            $6,
-            $7,
-            $8,
-            $9,
-            $10,
-            $11,
-            $12,
-            $13,
-            $14,
-            $15,
-            $16,
-            $17,
-            $18,
-            $19,
-            $20::numeric
-          )
-          returning id::text as id, reference
-        `,
-        [
-          reference,
-          input.checkout.customer_email,
-          input.checkout.customer_first_name,
-          input.checkout.customer_last_name,
-          input.checkout.customer_phone,
-          input.checkout.shipping_address_line_1,
-          input.checkout.shipping_address_line_2,
-          input.checkout.shipping_postal_code,
-          input.checkout.shipping_city,
-          input.checkout.shipping_country_code,
-          input.checkout.billing_same_as_shipping,
-          input.checkout.billing_first_name,
-          input.checkout.billing_last_name,
-          input.checkout.billing_phone,
-          input.checkout.billing_address_line_1,
-          input.checkout.billing_address_line_2,
-          input.checkout.billing_postal_code,
-          input.checkout.billing_city,
-          input.checkout.billing_country_code,
-          input.totalAmount,
-        ]
+      return await prisma.$transaction(
+        async (tx) => {
+          // 1. Find cart
+          const cartRow = await tx.carts.findUnique({
+            where: { token },
+            select: { id: true },
+          });
+
+          if (cartRow === null) {
+            throw new OrderRepositoryError("missing_cart", "Guest cart is missing.");
+          }
+
+          // 2. Find checkout draft
+          const draftRow = await tx.cart_checkout_details.findUnique({
+            where: { cart_id: cartRow.id },
+          });
+
+          assertCompleteCheckoutDraft(draftRow);
+
+          // 3. Read cart items with variant + product info (locked via Serializable)
+          const cartItems = await tx.cart_items.findMany({
+            where: { cart_id: cartRow.id },
+            orderBy: [{ created_at: "asc" }, { id: "asc" }],
+            select: {
+              id: true,
+              product_variant_id: true,
+              quantity: true,
+              product_variants: {
+                select: {
+                  name: true,
+                  color_name: true,
+                  color_hex: true,
+                  sku: true,
+                  price: true,
+                  stock_quantity: true,
+                  status: true,
+                  products: { select: { name: true, status: true } },
+                },
+              },
+            },
+          });
+
+          // 4. Validate
+          assertOrderSourceLinesCanBeOrdered(cartItems);
+
+          // 5. Calculate total
+          const totalAmount = calculateOrderTotalAmount(cartItems);
+
+          // 6. Create order (with the pre-generated reference from the outer loop)
+          const createdOrder = await tx.orders.create({
+            data: {
+              reference,
+              status: "pending",
+              customer_email: draftRow.customer_email,
+              customer_first_name: draftRow.customer_first_name,
+              customer_last_name: draftRow.customer_last_name,
+              customer_phone: draftRow.customer_phone,
+              shipping_address_line_1: draftRow.shipping_address_line_1,
+              shipping_address_line_2: draftRow.shipping_address_line_2,
+              shipping_postal_code: draftRow.shipping_postal_code,
+              shipping_city: draftRow.shipping_city,
+              shipping_country_code: draftRow.shipping_country_code,
+              billing_same_as_shipping: draftRow.billing_same_as_shipping,
+              billing_first_name: draftRow.billing_first_name,
+              billing_last_name: draftRow.billing_last_name,
+              billing_phone: draftRow.billing_phone,
+              billing_address_line_1: draftRow.billing_address_line_1,
+              billing_address_line_2: draftRow.billing_address_line_2,
+              billing_postal_code: draftRow.billing_postal_code,
+              billing_city: draftRow.billing_city,
+              billing_country_code: draftRow.billing_country_code,
+              total_amount: totalAmount,
+            },
+            select: { id: true, reference: true },
+          });
+
+          // 7. Create pending payment
+          await tx.payments.create({
+            data: {
+              order_id: createdOrder.id,
+              provider: "stripe",
+              method: "card",
+              status: "pending",
+              amount: totalAmount,
+              currency: "eur",
+            },
+          });
+
+          // 8. Create order items
+          await tx.order_items.createMany({
+            data: cartItems.map((line) => {
+              const unitPrice = normalizeMoneyString(line.product_variants.price.toString());
+              const lineTotal = centsToMoneyString(moneyStringToCents(unitPrice) * line.quantity);
+
+              return {
+                order_id: createdOrder.id,
+                source_product_variant_id: line.product_variant_id,
+                product_name: line.product_variants.products.name,
+                variant_name: line.product_variants.name,
+                color_name: line.product_variants.color_name,
+                color_hex: line.product_variants.color_hex,
+                sku: line.product_variants.sku,
+                unit_price: unitPrice,
+                quantity: line.quantity,
+                line_total: lineTotal,
+              };
+            }),
+          });
+
+          // 9. Decrement stock (atomic per variant via { decrement })
+          for (const line of cartItems) {
+            await tx.product_variants.update({
+              where: { id: line.product_variant_id },
+              data: { stock_quantity: { decrement: line.quantity } },
+            });
+          }
+
+          // 10. Delete cart (cascades to cart_items and cart_checkout_details)
+          await tx.carts.delete({ where: { id: cartRow.id } });
+
+          return { id: createdOrder.id.toString(), reference: createdOrder.reference };
+        },
+        { isolationLevel: "Serializable" }
       );
-
-      const row = result.rows[0];
-
-      if (!row) {
-        throw new OrderRepositoryError("create_failed", "Order creation failed.");
+    } catch (error) {
+      // Retry on reference uniqueness collision only
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+        const target = (error.meta as { target?: string[] } | undefined)?.target;
+        if (Array.isArray(target) && target.includes("reference")) {
+          continue;
+        }
       }
 
-      return row;
-    } catch (error) {
-      if (
-        isPostgreSqlErrorLike(error) &&
-        error.code === "23505" &&
-        error.constraint === "orders_reference_key"
-      ) {
-        continue;
+      if (error instanceof OrderRepositoryError) {
+        throw error;
       }
 
       throw error;
@@ -427,326 +650,6 @@ async function insertOrderWithUniqueReference(
   }
 
   throw new OrderRepositoryError("create_failed", "Order reference generation failed.");
-}
-
-async function readLockedCartIdByToken(
-  client: PoolClient,
-  token: string
-): Promise<CartIdRow | null> {
-  const result = await client.query<CartIdRow>(
-    `
-      select id::text as id
-      from carts
-      where token = $1
-      limit 1
-      for update
-    `,
-    [token]
-  );
-
-  return result.rows[0] ?? null;
-}
-
-async function readLockedCheckoutDraftByCartId(
-  client: PoolClient,
-  cartId: string
-): Promise<CheckoutDraftRow | null> {
-  const result = await client.query<CheckoutDraftRow>(
-    `
-      select
-        id::text as id,
-        customer_email,
-        customer_first_name,
-        customer_last_name,
-        customer_phone,
-        shipping_address_line_1,
-        shipping_address_line_2,
-        shipping_postal_code,
-        shipping_city,
-        shipping_country_code,
-        billing_same_as_shipping,
-        billing_first_name,
-        billing_last_name,
-        billing_phone,
-        billing_address_line_1,
-        billing_address_line_2,
-        billing_postal_code,
-        billing_city,
-        billing_country_code
-      from cart_checkout_details
-      where cart_id = $1::bigint
-      limit 1
-      for update
-    `,
-    [cartId]
-  );
-
-  return result.rows[0] ?? null;
-}
-
-function assertCompleteCheckoutDraft(
-  checkoutDraft: CheckoutDraftRow | null
-): asserts checkoutDraft is CheckoutDraftRow {
-  if (!checkoutDraftIsComplete(checkoutDraft)) {
-    throw new OrderRepositoryError("missing_checkout", "Checkout draft is missing.");
-  }
-}
-
-async function readLockedOrderSourceLinesByCartId(
-  client: PoolClient,
-  cartId: string
-): Promise<OrderSourceLineRow[]> {
-  const result = await client.query<OrderSourceLineRow>(
-    `
-      select
-        ci.id::text as cart_item_id,
-        ci.product_variant_id::text as product_variant_id,
-        ci.quantity,
-        p.name as product_name,
-        p.status as product_status,
-        pv.name as variant_name,
-        pv.status as variant_status,
-        pv.color_name,
-        pv.color_hex,
-        pv.sku,
-        pv.price::text as unit_price,
-        pv.stock_quantity
-      from cart_items ci
-      inner join product_variants pv on pv.id = ci.product_variant_id
-      inner join products p on p.id = pv.product_id
-      where ci.cart_id = $1::bigint
-      order by ci.created_at asc, ci.id asc
-      for update of ci, pv
-    `,
-    [cartId]
-  );
-
-  return result.rows;
-}
-
-function assertOrderSourceLinesCanBeOrdered(sourceLines: readonly OrderSourceLineRow[]): void {
-  if (sourceLines.length === 0) {
-    throw new OrderRepositoryError("empty_cart", "Guest cart is empty.");
-  }
-
-  if (sourceLines.some((line) => !sourceLineIsAvailable(line))) {
-    throw new OrderRepositoryError("cart_unavailable", "Guest cart is no longer available.");
-  }
-}
-
-function calculateOrderTotalAmount(sourceLines: readonly OrderSourceLineRow[]): string {
-  const totalAmountCents = sourceLines.reduce((sum, line) => {
-    return sum + moneyStringToCents(line.unit_price) * line.quantity;
-  }, 0);
-
-  return centsToMoneyString(totalAmountCents);
-}
-
-async function insertPendingOrderPayment(
-  client: PoolClient,
-  orderId: string,
-  totalAmount: string
-): Promise<void> {
-  await client.query(
-    `
-      insert into payments (
-        order_id,
-        provider,
-        method,
-        status,
-        amount,
-        currency
-      )
-      values (
-        $1::bigint,
-        'stripe',
-        'card',
-        'pending',
-        $2::numeric,
-        'eur'
-      )
-    `,
-    [orderId, totalAmount]
-  );
-}
-
-async function insertOrderItemsFromSourceLines(
-  client: PoolClient,
-  orderId: string,
-  sourceLines: readonly OrderSourceLineRow[]
-): Promise<void> {
-  for (const line of sourceLines) {
-    const unitPrice = normalizeMoneyString(line.unit_price);
-    const lineTotal = centsToMoneyString(moneyStringToCents(unitPrice) * line.quantity);
-
-    await client.query(
-      `
-        insert into order_items (
-          order_id,
-          source_product_variant_id,
-          product_name,
-          variant_name,
-          color_name,
-          color_hex,
-          sku,
-          unit_price,
-          quantity,
-          line_total
-        )
-        values (
-          $1::bigint,
-          $2::bigint,
-          $3,
-          $4,
-          $5,
-          $6,
-          $7,
-          $8::numeric,
-          $9,
-          $10::numeric
-        )
-      `,
-      [
-        orderId,
-        line.product_variant_id,
-        line.product_name,
-        line.variant_name,
-        line.color_name,
-        line.color_hex,
-        line.sku,
-        unitPrice,
-        line.quantity,
-        lineTotal,
-      ]
-    );
-  }
-}
-
-async function decrementVariantStockFromSourceLines(
-  client: PoolClient,
-  sourceLines: readonly OrderSourceLineRow[]
-): Promise<void> {
-  for (const line of sourceLines) {
-    await client.query(
-      `
-        update product_variants
-        set stock_quantity = stock_quantity - $2
-        where id = $1::bigint
-      `,
-      [line.product_variant_id, line.quantity]
-    );
-  }
-}
-
-async function deleteCartById(client: PoolClient, cartId: string): Promise<void> {
-  await client.query(
-    `
-      delete from carts
-      where id = $1::bigint
-    `,
-    [cartId]
-  );
-}
-
-async function readLockedOrderStatusById(
-  client: PoolClient,
-  id: string
-): Promise<OrderStatusRow | null> {
-  const result = await client.query<OrderStatusRow>(
-    `
-      select
-        id::text as id,
-        status
-      from orders
-      where id = $1::bigint
-      limit 1
-      for update
-    `,
-    [id]
-  );
-
-  return result.rows[0] ?? null;
-}
-
-function getOrderStatusTransitionOrThrow(currentStatus: OrderStatus, nextStatus: OrderStatus) {
-  const transition = resolveOrderStatusTransition({
-    currentStatus,
-    nextStatus,
-  });
-
-  if (!transition.ok) {
-    throw new OrderRepositoryError(
-      "invalid_status_transition",
-      "Order status transition is invalid."
-    );
-  }
-
-  return transition;
-}
-
-async function restockOrderItems(client: PoolClient, orderId: string): Promise<void> {
-  await client.query(
-    `
-      update product_variants pv
-      set stock_quantity = pv.stock_quantity + restock.total_quantity
-      from (
-        select
-          source_product_variant_id as product_variant_id,
-          sum(quantity)::integer as total_quantity
-        from order_items
-        where order_id = $1::bigint
-          and source_product_variant_id is not null
-        group by source_product_variant_id
-      ) restock
-      where pv.id = restock.product_variant_id
-    `,
-    [orderId]
-  );
-}
-
-export async function createOrderFromGuestCartToken(token: string): Promise<CreatedOrderRow> {
-  const client = await db.connect();
-
-  try {
-    await client.query("begin");
-
-    const cartRow = await readLockedCartIdByToken(client, token);
-
-    if (!cartRow) {
-      throw new OrderRepositoryError("missing_cart", "Guest cart is missing.");
-    }
-
-    const checkoutRow = await readLockedCheckoutDraftByCartId(client, cartRow.id);
-    assertCompleteCheckoutDraft(checkoutRow);
-
-    const sourceLines = await readLockedOrderSourceLinesByCartId(client, cartRow.id);
-    assertOrderSourceLinesCanBeOrdered(sourceLines);
-
-    const totalAmount = calculateOrderTotalAmount(sourceLines);
-    const createdOrder = await insertOrderWithUniqueReference(client, {
-      checkout: checkoutRow,
-      totalAmount,
-    });
-
-    await insertPendingOrderPayment(client, createdOrder.id, totalAmount);
-    await insertOrderItemsFromSourceLines(client, createdOrder.id, sourceLines);
-    await decrementVariantStockFromSourceLines(client, sourceLines);
-    await deleteCartById(client, cartRow.id);
-
-    await client.query("commit");
-
-    return createdOrder;
-  } catch (error) {
-    await client.query("rollback");
-
-    if (error instanceof OrderRepositoryError) {
-      throw error;
-    }
-
-    throw error;
-  } finally {
-    client.release();
-  }
 }
 
 export async function updateOrderStatus(input: {
@@ -757,46 +660,43 @@ export async function updateOrderStatus(input: {
     return null;
   }
 
-  const client = await db.connect();
+  const orderId = BigInt(input.id);
 
-  try {
-    await client.query("begin");
+  // Serializable isolation reproduces SELECT FOR UPDATE semantics.
+  return prisma
+    .$transaction(
+      async (tx) => {
+        const row = await tx.orders.findUnique({
+          where: { id: orderId },
+          select: { status: true },
+        });
 
-    const orderRow = await readLockedOrderStatusById(client, input.id);
+        if (row === null) {
+          throw new OrderRepositoryError("missing_order", "Order is missing.");
+        }
 
-    if (orderRow === null) {
-      throw new OrderRepositoryError("missing_order", "Order is missing.");
-    }
+        const transition = getOrderStatusTransitionOrThrow(
+          row.status as OrderStatus,
+          input.nextStatus
+        );
 
-    const transition = getOrderStatusTransitionOrThrow(orderRow.status, input.nextStatus);
+        if (transition.shouldRestock) {
+          await restockOrderItemsInTx(tx, orderId);
+        }
 
-    if (transition.shouldRestock) {
-      await restockOrderItems(client, input.id);
-    }
+        await tx.orders.update({
+          where: { id: orderId },
+          data: { status: input.nextStatus },
+        });
 
-    await client.query(
-      `
-        update orders
-        set status = $2
-        where id = $1::bigint
-      `,
-      [input.id, input.nextStatus]
-    );
-
-    await client.query("commit");
-
-    return input.nextStatus;
-  } catch (error) {
-    await client.query("rollback");
-
-    if (error instanceof OrderRepositoryError) {
+        return input.nextStatus;
+      },
+      { isolationLevel: "Serializable" }
+    )
+    .catch((error) => {
+      if (error instanceof OrderRepositoryError) throw error;
       throw error;
-    }
-
-    throw error;
-  } finally {
-    client.release();
-  }
+    });
 }
 
 export async function shipOrder(input: {
@@ -807,224 +707,38 @@ export async function shipOrder(input: {
     return null;
   }
 
-  const client = await db.connect();
+  const orderId = BigInt(input.id);
 
-  try {
-    await client.query("begin");
+  // Serializable isolation reproduces SELECT FOR UPDATE semantics.
+  return prisma
+    .$transaction(
+      async (tx) => {
+        const row = await tx.orders.findUnique({
+          where: { id: orderId },
+          select: { status: true },
+        });
 
-    const orderRow = await readLockedOrderStatusById(client, input.id);
+        if (row === null) {
+          throw new OrderRepositoryError("missing_order", "Order is missing.");
+        }
 
-    if (orderRow === null) {
-      throw new OrderRepositoryError("missing_order", "Order is missing.");
-    }
+        getOrderStatusTransitionOrThrow(row.status as OrderStatus, "shipped");
 
-    getOrderStatusTransitionOrThrow(orderRow.status, "shipped");
+        await tx.orders.update({
+          where: { id: orderId },
+          data: {
+            status: "shipped",
+            shipped_at: new Date(),
+            tracking_reference: input.trackingReference,
+          },
+        });
 
-    await client.query(
-      `
-        update orders
-        set
-          status = 'shipped',
-          shipped_at = now(),
-          tracking_reference = $2
-        where id = $1::bigint
-      `,
-      [input.id, input.trackingReference]
-    );
-
-    await client.query("commit");
-
-    return "shipped";
-  } catch (error) {
-    await client.query("rollback");
-
-    if (error instanceof OrderRepositoryError) {
+        return "shipped" as OrderStatus;
+      },
+      { isolationLevel: "Serializable" }
+    )
+    .catch((error) => {
+      if (error instanceof OrderRepositoryError) throw error;
       throw error;
-    }
-
-    throw error;
-  } finally {
-    client.release();
-  }
-}
-
-const ORDER_WITH_PAYMENT_SELECT = `
-  select
-    o.id::text as id,
-    o.reference,
-    o.status,
-    o.customer_email,
-    o.customer_first_name,
-    o.customer_last_name,
-    o.customer_phone,
-    o.shipping_address_line_1,
-    o.shipping_address_line_2,
-    o.shipping_postal_code,
-    o.shipping_city,
-    o.shipping_country_code,
-    o.billing_same_as_shipping,
-    o.billing_first_name,
-    o.billing_last_name,
-    o.billing_phone,
-    o.billing_address_line_1,
-    o.billing_address_line_2,
-    o.billing_postal_code,
-    o.billing_city,
-    o.billing_country_code,
-    o.shipped_at,
-    o.tracking_reference,
-    o.total_amount::text as total_amount,
-    p.status as payment_status,
-    p.provider as payment_provider,
-    p.method as payment_method,
-    p.amount::text as payment_amount,
-    p.currency as payment_currency,
-    p.stripe_checkout_session_id,
-    p.stripe_payment_intent_id,
-    o.created_at,
-    o.updated_at
-  from orders o
-  left join payments p on p.order_id = o.id
-`;
-
-async function readOrderRowByReference(reference: string): Promise<OrderRow | null> {
-  if (!isValidOrderReference(reference)) {
-    return null;
-  }
-
-  return queryFirst<OrderRow>(
-    `
-      ${ORDER_WITH_PAYMENT_SELECT}
-      where o.reference = $1
-      limit 1
-    `,
-    [reference]
-  );
-}
-
-async function readOrderRowById(id: string): Promise<OrderRow | null> {
-  if (!isValidNumericId(id)) {
-    return null;
-  }
-
-  return queryFirst<OrderRow>(
-    `
-      ${ORDER_WITH_PAYMENT_SELECT}
-      where o.id = $1::bigint
-      limit 1
-    `,
-    [id]
-  );
-}
-
-async function readOrderEmailContextRowById(id: string): Promise<OrderEmailContextRow | null> {
-  if (!isValidNumericId(id)) {
-    return null;
-  }
-
-  return queryFirst<OrderEmailContextRow>(
-    `
-      select
-        o.id::text as id,
-        o.reference,
-        o.customer_email,
-        o.customer_first_name,
-        o.total_amount::text as total_amount,
-        o.tracking_reference
-      from orders o
-      where o.id = $1::bigint
-      limit 1
-    `,
-    [id]
-  );
-}
-
-async function readOrderItemRows(orderId: string): Promise<OrderItemRow[]> {
-  if (!isValidNumericId(orderId)) {
-    return [];
-  }
-
-  return queryRows<OrderItemRow>(
-    `
-      select
-        id::text as id,
-        order_id::text as order_id,
-        source_product_variant_id::text as source_product_variant_id,
-        product_name,
-        variant_name,
-        color_name,
-        color_hex,
-        sku,
-        unit_price::text as unit_price,
-        quantity,
-        line_total::text as line_total,
-        created_at
-      from order_items
-      where order_id = $1::bigint
-      order by id asc
-    `,
-    [orderId]
-  );
-}
-
-export async function findPublicOrderByReference(
-  reference: string
-): Promise<PublicOrderConfirmation | null> {
-  const orderRow = await readOrderRowByReference(reference);
-
-  if (orderRow === null) {
-    return null;
-  }
-
-  const orderItems = await readOrderItemRows(orderRow.id);
-
-  return mapOrderRow(orderRow, orderItems);
-}
-
-export async function findOrderEmailContextById(id: string): Promise<OrderEmailContext | null> {
-  const row = await readOrderEmailContextRowById(id);
-
-  return row ? mapOrderEmailContext(row) : null;
-}
-
-export async function listAdminOrders(): Promise<AdminOrderSummary[]> {
-  const rows = await queryRows<OrderSummaryRow>(
-    `
-      select
-        o.id::text as id,
-        o.reference,
-        o.status,
-        p.status as payment_status,
-        o.customer_email,
-        o.customer_first_name,
-        o.customer_last_name,
-        o.total_amount::text as total_amount,
-        count(oi.id)::integer as line_count,
-        o.created_at,
-        o.updated_at
-      from orders o
-      left join payments p on p.order_id = o.id
-      left join order_items oi on oi.order_id = o.id
-      group by o.id, p.status
-      order by o.created_at desc, o.id desc
-    `
-  );
-
-  return rows.map(mapAdminOrderSummary);
-}
-
-export async function findAdminOrderById(id: string): Promise<AdminOrderDetail | null> {
-  const orderRow = await readOrderRowById(id);
-
-  if (orderRow === null) {
-    return null;
-  }
-
-  const orderItems = await readOrderItemRows(orderRow.id);
-  const emailEvents = await listOrderEmailEventsByOrderId(orderRow.id);
-
-  return {
-    ...mapOrderRow(orderRow, orderItems),
-    emailEvents,
-  };
+    });
 }
