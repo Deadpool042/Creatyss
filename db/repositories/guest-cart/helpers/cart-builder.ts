@@ -1,7 +1,7 @@
 import { centsToMoneyString, moneyStringToCents } from "@/lib/money";
 import { mapPrismaCartLine } from "./mappers";
 
-import type { GuestCart, GuestCheckoutIssueCode } from "../../guest-cart.types";
+import type { GuestCart, GuestCheckoutIssueCode } from "../types/internal";
 
 export function buildGuestCart(
   cartId: string,

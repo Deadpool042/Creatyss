@@ -1,4 +1,4 @@
-import { AdminHomepageRepositoryError } from "../../admin-homepage.types";
+import { AdminHomepageRepositoryError } from "../types/internal";
 import type { TxClient } from "../types/tx";
 
 type HomepageFeaturedProductSelection = {

@@ -6,7 +6,7 @@ import type {
   GuestCartLine,
   GuestCartVariant,
   GuestCheckoutDetails,
-} from "../../guest-cart.types";
+} from "../types/internal";
 
 export type PrismaGuestCartVariantRow = {
   id: bigint;
