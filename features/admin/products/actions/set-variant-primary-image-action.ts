@@ -119,7 +119,10 @@ export async function setVariantPrimaryImageAction(formData: FormData): Promise<
       redirect("/admin/products?error=missing_product");
     }
   } catch (error) {
-    if (error instanceof AdminProductImageRepositoryError && error.code === "variant_missing") {
+    if (
+      error instanceof AdminProductImageRepositoryError &&
+      (error.code === "variant_id_invalid" || error.code === "variant_not_found")
+    ) {
       redirectToVariantPrimaryImageError(productId, "variant_missing");
     }
 

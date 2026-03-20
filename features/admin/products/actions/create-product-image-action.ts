@@ -55,7 +55,10 @@ export async function createProductImageAction(formData: FormData): Promise<void
       redirect("/admin/products?error=missing_product");
     }
   } catch (error) {
-    if (error instanceof AdminProductImageRepositoryError && error.code === "variant_missing") {
+    if (
+      error instanceof AdminProductImageRepositoryError &&
+      (error.code === "variant_id_invalid" || error.code === "variant_not_found")
+    ) {
       redirect(
         appendImageScope(`/admin/products/${productId}?image_error=variant_missing`, imageScope)
       );

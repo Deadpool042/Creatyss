@@ -153,7 +153,10 @@ export async function createAdminProductImage(
   }
 
   if (input.variantId !== null && !isValidNumericId(input.variantId)) {
-    throw new AdminProductImageRepositoryError("Selected variant does not belong to this product.");
+    throw new AdminProductImageRepositoryError(
+      "variant_id_invalid",
+      "Variant ID is not a valid numeric identifier."
+    );
   }
 
   return prisma.$transaction(async (tx) => {
@@ -166,6 +169,7 @@ export async function createAdminProductImage(
       !(await variantExistsInTx(tx, input.productId, input.variantId))
     ) {
       throw new AdminProductImageRepositoryError(
+        "variant_not_found",
         "Selected variant does not belong to this product."
       );
     }
@@ -219,6 +223,7 @@ export async function upsertAdminPrimaryVariantImage(
 
     if (!(await variantExistsInTx(tx, input.productId, input.variantId))) {
       throw new AdminProductImageRepositoryError(
+        "variant_not_found",
         "Selected variant does not belong to this product."
       );
     }

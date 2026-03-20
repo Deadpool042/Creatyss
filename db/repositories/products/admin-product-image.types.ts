@@ -38,13 +38,15 @@ export type UpsertAdminPrimaryVariantImageInput = {
   filePath: string;
 };
 
-export type AdminProductImageRepositoryErrorCode = "variant_missing";
+export type AdminProductImageRepositoryErrorCode =
+  | "variant_id_invalid"
+  | "variant_not_found";
 
 export class AdminProductImageRepositoryError extends Error {
   readonly code: AdminProductImageRepositoryErrorCode;
 
-  constructor(message: string) {
+  constructor(code: AdminProductImageRepositoryErrorCode, message: string) {
     super(message);
-    this.code = "variant_missing";
+    this.code = code;
   }
 }

@@ -7,7 +7,6 @@ Ce document fixe l'ordre d'exécution de V21 tel qu'il est retenu à ce stade.
 Il ne décrit pas des lots déjà livrés au-delà de ce qui est visible dans le code. Il décrit :
 
 - les lots réalisés
-- les lots encore à faire
 - leurs dépendances
 - l'ordre de traitement retenu
 
@@ -17,12 +16,12 @@ Il ne décrit pas des lots déjà livrés au-delà de ce qui est visible dans le
 | --- | --- | --- | --- | --- | --- | --- |
 | `V21-1` | cadrage | fait | aucune | figer l'audit réel de `db/repositories/` | faible | plan de lots validé, aucun code modifié |
 | `V21-2A` | façade storefront `catalog` | fait | `V21-1` | extraire les blocs stables de la façade publique `catalog` | faible à moyen | façades publiques stables, `queries/` et `helpers/` initiaux en place |
-| `V21-2B` | façade storefront `catalog` | à faire | `V21-2A` | traiter `listPublishedProducts` et `getPublishedProductBySlug` dans la façade `catalog` | élevé | cœur de la façade `catalog` internalisé sans changement de comportement |
-| `V21-3` | `order` | à faire | `V21-1`, `V21-2A`, `V21-2B` | modulariser `order` derrière ses façades publiques | élevé | `order.repository.ts` allégé, invariants transactionnels intacts |
-| `V21-4A` | `products` socle partagé | à faire | `V21-1`, `V21-3` | sortir le cœur partagé du domaine `products` | moyen à élevé | `admin-product.repository.ts` réduit, compatibilité produit simple intacte |
-| `V21-4B` | `products` variantes et images | à faire | `V21-4A` | modulariser variantes et images | élevé | règles `is_default` et `is_primary` inchangées, façades stables |
-| `V21-5` | petits domaines restants | à faire | `V21-1`, `V21-3`, `V21-4A`, `V21-4B` | nettoyer seulement les domaines où le gain est net | moyen | domaines utiles clarifiés sans churn opportuniste |
-| `V21-final-state` | état final | à faire | `V21-2B`, `V21-3`, `V21-4A`, `V21-4B`, `V21-5` | figer l'état cible final de `db/repositories/` | faible | structure V21 documentée et cohérente avec le code livré |
+| `V21-2B` | façade storefront `catalog` | fait | `V21-2A` | traiter `listPublishedProducts` et `getPublishedProductBySlug` dans la façade `catalog` | élevé | cœur de la façade `catalog` internalisé sans changement de comportement |
+| `V21-3` | `order` | fait | `V21-1`, `V21-2A`, `V21-2B` | modulariser `order` derrière ses façades publiques | élevé | `order.repository.ts` allégé, invariants transactionnels intacts |
+| `V21-4A` | `products` socle partagé | fait | `V21-1`, `V21-3` | sortir le cœur partagé du domaine `products` | moyen à élevé | `admin-product.repository.ts` réduit, compatibilité produit simple intacte |
+| `V21-4B` | `products` variantes et images | fait | `V21-4A` | modulariser variantes et images | élevé | règles `is_default` et `is_primary` inchangées, façades stables |
+| `V21-5` | petits domaines restants | fait | `V21-1`, `V21-3`, `V21-4A`, `V21-4B` | nettoyer seulement les domaines où le gain est net | moyen | domaines utiles clarifiés sans churn opportuniste |
+| `V21-final-state` | état final | fait | `V21-2B`, `V21-3`, `V21-4A`, `V21-4B`, `V21-5` | figer l'état cible final de `db/repositories/` | faible | structure V21 documentée et cohérente avec le code livré |
 
 ## Ordre d'exécution retenu
 
@@ -85,9 +84,9 @@ Pourquoi ce lot :
 
 ### `V21-2B` — `catalog` : finalisation de la façade publique
 
-Statut : à faire.
+Statut : fait.
 
-Contenu prévu :
+Contenu livré :
 
 - traitement de `listPublishedProducts`
 - traitement de `getPublishedProductBySlug`
@@ -105,9 +104,9 @@ Dépendance :
 
 ### `V21-3` — `order`
 
-Statut : à faire.
+Statut : fait.
 
-Contenu prévu :
+Contenu livré :
 
 - dépôt des fichiers internes dans le dossier existant `db/repositories/orders/`
 - maintien de [order.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/order.repository.ts) et [order.types.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/order.types.ts) comme façades publiques
@@ -120,9 +119,9 @@ Pourquoi ce lot :
 
 ### `V21-4A` — `products` : socle partagé
 
-Statut : à faire.
+Statut : fait.
 
-Contenu prévu :
+Contenu livré :
 
 - extraction du cœur partagé autour de [admin-product.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/admin-product.repository.ts)
 - introduction de `types/`, `queries/`, `helpers/` locaux au domaine
@@ -135,9 +134,9 @@ Pourquoi ce lot :
 
 ### `V21-4B` — `products` : variantes et images
 
-Statut : à faire.
+Statut : fait.
 
-Contenu prévu :
+Contenu livré :
 
 - modularisation interne de [admin-product-variant.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/admin-product-variant.repository.ts)
 - modularisation interne de [admin-product-image.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/admin-product-image.repository.ts)
@@ -150,9 +149,9 @@ Pourquoi ce lot :
 
 ### `V21-5` — petits domaines restants
 
-Statut : à faire.
+Statut : fait.
 
-Périmètre prévu :
+Périmètre traité :
 
 - `admin-category`
 - `admin-homepage`
@@ -172,9 +171,9 @@ Règle de ce lot :
 
 ### `V21-final-state` — état final attendu
 
-Statut : à faire.
+Statut : fait.
 
-Contenu prévu :
+Contenu livré :
 
 - figer l'état final attendu de `db/repositories/` après les lots V21
 - expliciter les façades publiques conservées

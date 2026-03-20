@@ -49,11 +49,11 @@ Quatre décisions s'appliquent à tous les lots V21 sans exception. Elles sont d
 |---|---|---|
 | V21-1 | Cadrage et audit de `db/repositories/` | Terminé |
 | V21-2A | `catalog` — socle interne de la façade de lecture | Terminé |
-| V21-2B | `catalog` — cœur de la façade (`listPublishedProducts`, `getPublishedProductBySlug`) | Décisions arrêtées |
-| V21-3 | `order` — modularisation interne (728 lignes) | Décisions arrêtées |
-| V21-4A | `products` — socle partagé (`admin-product.repository.ts`, 592 lignes) | Décisions arrêtées |
-| V21-4B | `products` — variantes et images | Décisions arrêtées |
-| V21-5 | Petits domaines restants | Décisions arrêtées |
+| V21-2B | `catalog` — cœur de la façade (`listPublishedProducts`, `getPublishedProductBySlug`) | Terminé |
+| V21-3 | `order` — modularisation interne (728 lignes) | Terminé |
+| V21-4A | `products` — socle partagé (`admin-product.repository.ts`, 592 lignes) | Terminé |
+| V21-4B | `products` — variantes et images | Terminé |
+| V21-5 | Petits domaines restants | Terminé |
 
 ## Résumé par lot
 
@@ -142,8 +142,9 @@ Huit domaines audités. Trois GO, cinq NO-GO.
 ### Fait
 
 - Audit complet de `db/repositories/` (V21-1)
-- Modularisation de la façade de lecture `catalog` en deux lots (V21-2A terminé, V21-2B décidé)
-- Toutes les décisions lot par lot documentées et tranchées pour V21-2B, V21-3, V21-4A, V21-4B, V21-5
+- Modularisation complète de la façade de lecture `catalog` en deux lots (V21-2A, V21-2B)
+- Modularisation interne de `order`, `products`, `admin-category`, `admin-homepage` et `guest-cart`
+- Tous les lots V21 exécutés et figés dans la documentation de clôture
 - Décisions transverses T-1 à T-4 fixées et opposables
 
 ### Volontairement non fait dans V21

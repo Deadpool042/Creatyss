@@ -59,12 +59,10 @@ db/repositories/catalog/
     ├── blog.queries.ts                         # lectures Prisma blog public (V21-2A)
     ├── homepage.queries.ts                     # lectures Prisma homepage publique (V21-2A)
     ├── recent-products.queries.ts              # select résumé produit + lecture produits récents (V21-2A)
-    └── [nouveaux fichiers V21-2B]              # extraction des 5 fonctions : listPublishedProducts,
-                                               # getPublishedProductBySlug, loadPublishedVariantOffersByProductIds,
-                                               # buildPublishedProductsWhere, getPublishedProductsOrderBy
-                                               # vers catalog-listing.queries.ts et/ou product-detail.queries.ts
-                                               # + getNativeSimpleOfferFields, getPublishedProductIdsMatchingVariantColor
-                                               # (effets de bord structurels nécessaires, pas de "volontairement non fait")
+    ├── catalog-listing.queries.ts              # listPublishedProducts, buildPublishedProductsWhere,
+    │                                           # getPublishedProductsOrderBy, loadPublishedVariantOffersByProductIds,
+    │                                           # getNativeSimpleOfferFields, getPublishedProductIdsMatchingVariantColor (V21-2B)
+    └── product-detail.queries.ts               # getPublishedProductBySlug (V21-2B)
 ```
 
 #### `orders/` — V21-3 (sous-dossier interne de `order.repository.ts`)
@@ -74,14 +72,17 @@ Façades publiques à la racine de `db/repositories/` (non bougées) :
 ```text
 db/repositories/
 ├── order.repository.ts                         # façade publique runtime — point d'entrée stable
-├── order.types.ts                              # façade publique de types — stable
-└── orders/                                     # sous-dossier interne — existe déjà vide, V21-3 le remplit
+├── order.types.ts                              # façade publique de types — ré-exporte depuis orders/types/public.ts
+└── orders/
     ├── types/
-    │   └── tx-client.ts                        # TxClient extrait depuis order.repository.ts (T-2)
+    │   ├── internal.ts                         # TxClient + types transactionnels internes
+    │   └── public.ts                           # source de vérité des contrats publics ré-exportés par order.types.ts
     ├── queries/
-    │   └── [lectures internes publiques et admin extraites]
-    └── helpers/                                # ou mappers/ selon lisibilité réelle après extraction
-        └── [mappers de lignes de commande, paiement, helpers transactionnels, restock]
+    │   └── order-reads.queries.ts              # lectures internes publiques et admin extraites
+    └── helpers/
+        ├── mappers.ts                          # mappers de lignes de commande, paiement, contextes email
+        ├── transactions.ts                     # helpers transactionnels, checkout, restock, shipping
+        └── validation.ts                       # validations locales du domaine
 ```
 
 #### `products/` — V21-4A + V21-4B
@@ -95,64 +96,66 @@ db/repositories/products/
 ├── admin-product-image.repository.ts           # façade publique plate — reste plate (T-2, pas de sous-dossier propre)
 ├── admin-product-image.types.ts                # façade publique de types (AdminProductImageRepositoryError gelée — T-4)
 ├── simple-product-compat.ts                    # hors périmètre V21 — non touché
-└── products/                                   # sous-dossier interne partagé entre les 3 façades
-    ├── types/
-    │   ├── tx-client.ts                        # TxClient partagé (V21-4A, T-2)
-    │   └── product-type-row.ts                 # ProductTypeRow canonique intra-domaine (V21-4A)
-    ├── queries/
-    │   ├── read-product-type.ts                # readProductTypeInTx (V21-4A)
-    │   ├── count-variants.ts                   # countVariantsInTx (V21-4A)
-    │   ├── product-exists.ts                   # productExistsInTx (V21-4B)
-    │   └── variant-exists.ts                   # variantExistsInTx (V21-4B)
-    └── helpers/
-        ├── ensure-categories.ts                # ensureCategoriesExistInTx (V21-4A)
-        ├── replace-categories.ts               # replaceProductCategoriesInTx (V21-4A)
-        ├── clear-default-variant.ts            # clearDefaultVariantInTx (V21-4B)
-        └── clear-primary-image.ts              # clearPrimaryImageInScopeTx (V21-4B)
+├── types/                                      # sous-structure interne partagée entre les 3 façades publiques
+│   ├── tx-client.ts                            # TxClient partagé (V21-4A, T-2)
+│   └── product-type-row.ts                     # ProductTypeRow canonique intra-domaine (V21-4A)
+├── queries/
+│   ├── read-product-type.ts                    # readProductTypeInTx (V21-4A)
+│   ├── count-variants.ts                       # countVariantsInTx (V21-4A)
+│   ├── product-exists.ts                       # productExistsInTx (V21-4B)
+│   └── variant-exists.ts                       # variantExistsInTx (V21-4B)
+└── helpers/
+    ├── ensure-categories.ts                    # ensureCategoriesExistInTx (V21-4A)
+    ├── replace-categories.ts                   # replaceProductCategoriesInTx (V21-4A)
+    ├── clear-default-variant.ts                # clearDefaultVariantInTx (V21-4B)
+    └── clear-primary-image.ts                  # clearPrimaryImageInScopeTx (V21-4B)
 ```
 
 #### `admin-category/` — V21-5
 
 ```text
-db/repositories/admin-category/
+db/repositories/
 ├── admin-category.repository.ts                # façade publique — stable
 ├── admin-category.types.ts                     # façade publique de types
-├── queries/
-│   └── representative-image.queries.ts         # loadRepresentativeImagesByCategoryIds
-└── helpers/
-    └── sort.ts                                 # sortCategoriesForAdmin, isRepresentativeImageCandidateBetter
+└── admin-category/
+    ├── queries/
+    │   └── representative-image.queries.ts     # loadRepresentativeImagesByCategoryIds
+    └── helpers/
+        └── sort.ts                             # sortCategoriesForAdmin, isRepresentativeImageCandidateBetter
 ```
 
 #### `admin-homepage/` — V21-5
 
 ```text
-db/repositories/admin-homepage/
+db/repositories/
 ├── admin-homepage.repository.ts                # façade publique — stable
 ├── admin-homepage.types.ts                     # façade publique de types
-├── types/
-│   └── tx.ts                                   # TxClient extrait (V21-5, T-2 appliqué)
-├── queries/
-│   ├── featured-selections.queries.ts          # listHomepageFeaturedProducts, listHomepageFeaturedCategories,
-│   │                                           # listHomepageFeaturedBlogPosts, loadHomepageFeaturedSelections
-│   └── homepage-options.queries.ts             # loadHomepageOptions
-└── helpers/
-    ├── transaction-guards.ts                   # ensureHomepageExistsInTx, ensurePublishedProductsExistInTx,
-    │                                           # ensureCategoriesExistInTx, ensurePublishedBlogPostsExistInTx
-    └── transaction-writes.ts                   # replaceHomepageFeaturedProductsInTx,
-                                               # replaceHomepageFeaturedCategoriesInTx,
-                                               # replaceHomepageFeaturedBlogPostsInTx
+└── admin-homepage/
+    ├── types/
+    │   └── tx.ts                               # TxClient extrait (V21-5, T-2 appliqué)
+    ├── queries/
+    │   ├── featured-selections.queries.ts      # listHomepageFeaturedProducts, listHomepageFeaturedCategories,
+    │   │                                       # listHomepageFeaturedBlogPosts, loadHomepageFeaturedSelections
+    │   └── homepage-options.queries.ts         # loadHomepageOptions
+    └── helpers/
+        ├── transaction-guards.ts               # ensureHomepageExistsInTx, ensurePublishedProductsExistInTx,
+        │                                       # ensureCategoriesExistInTx, ensurePublishedBlogPostsExistInTx
+        └── transaction-writes.ts               # replaceHomepageFeaturedProductsInTx,
+                                                # replaceHomepageFeaturedCategoriesInTx,
+                                                # replaceHomepageFeaturedBlogPostsInTx
 ```
 
 #### `guest-cart/` — V21-5
 
 ```text
-db/repositories/guest-cart/
+db/repositories/
 ├── guest-cart.repository.ts                    # façade publique — stable
 ├── guest-cart.types.ts                         # façade publique de types
-└── helpers/
-    ├── availability.ts                         # isGuestCartVariantAvailable, isGuestCartLineAvailable
-    ├── mappers.ts                              # mapPrismaVariant, mapPrismaCartLine, mapPrismaCheckoutDetails
-    └── cart-builder.ts                         # buildGuestCart, getGuestCheckoutIssues
+└── guest-cart/
+    └── helpers/
+        ├── availability.ts                     # isGuestCartVariantAvailable, isGuestCartLineAvailable
+        ├── mappers.ts                          # mapPrismaVariant, mapPrismaCartLine, mapPrismaCheckoutDetails
+        └── cart-builder.ts                     # buildGuestCart, getGuestCheckoutIssues
 ```
 
 ### Domaines volontairement plats après V21
@@ -179,22 +182,27 @@ Liste exhaustive des fichiers `*.repository.ts` et `*.types.ts` qui restent des 
 | `order.repository.ts` | `db/repositories/order.repository` |
 | `order.types.ts` | `db/repositories/order.types` |
 | `order-email.repository.ts` | `db/repositories/order-email.repository` |
+| `order-email.types.ts` | `db/repositories/order-email.types` |
 | `admin-product.repository.ts` | `db/repositories/products/admin-product.repository` |
 | `admin-product.types.ts` | `db/repositories/products/admin-product.types` |
 | `admin-product-variant.repository.ts` | `db/repositories/products/admin-product-variant.repository` |
 | `admin-product-variant.types.ts` | `db/repositories/products/admin-product-variant.types` |
 | `admin-product-image.repository.ts` | `db/repositories/products/admin-product-image.repository` |
 | `admin-product-image.types.ts` | `db/repositories/products/admin-product-image.types` |
-| `admin-category.repository.ts` | `db/repositories/admin-category/admin-category.repository` |
-| `admin-category.types.ts` | `db/repositories/admin-category/admin-category.types` |
-| `admin-homepage.repository.ts` | `db/repositories/admin-homepage/admin-homepage.repository` |
-| `admin-homepage.types.ts` | `db/repositories/admin-homepage/admin-homepage.types` |
-| `guest-cart.repository.ts` | `db/repositories/guest-cart/guest-cart.repository` |
-| `guest-cart.types.ts` | `db/repositories/guest-cart/guest-cart.types` |
+| `admin-category.repository.ts` | `db/repositories/admin-category.repository` |
+| `admin-category.types.ts` | `db/repositories/admin-category.types` |
+| `admin-homepage.repository.ts` | `db/repositories/admin-homepage.repository` |
+| `admin-homepage.types.ts` | `db/repositories/admin-homepage.types` |
+| `guest-cart.repository.ts` | `db/repositories/guest-cart.repository` |
+| `guest-cart.types.ts` | `db/repositories/guest-cart.types` |
 | `payment.repository.ts` | `db/repositories/payment.repository` |
+| `payment.types.ts` | `db/repositories/payment.types` |
 | `admin-blog.repository.ts` | `db/repositories/admin-blog.repository` |
+| `admin-blog.types.ts` | `db/repositories/admin-blog.types` |
 | `admin-users.repository.ts` | `db/repositories/admin-users.repository` |
+| `admin-users.types.ts` | `db/repositories/admin-users.types` |
 | `admin-media.repository.ts` | `db/repositories/admin-media.repository` |
+| `admin-media.types.ts` | `db/repositories/admin-media.types` |
 
 ---
 
@@ -206,10 +214,10 @@ Liste exhaustive des fichiers `*.repository.ts` et `*.types.ts` qui restent des 
 | catalog | V21-2A | `catalog/helpers/` | `primary-image.ts`, `category-representative-image.ts` |
 | catalog | V21-2A | `catalog/queries/` | `homepage.queries.ts`, `blog.queries.ts`, `recent-products.queries.ts` |
 | catalog | V21-2B | `catalog/helpers/` (extension) | `product-summary.ts` — `mapPublishedProductSummaryRecord` (effet de bord structurel) |
-| catalog | V21-2B | `catalog/queries/` (extension) | nouveaux fichiers pour les 5 fonctions extraites + `getNativeSimpleOfferFields`, `getPublishedProductIdsMatchingVariantColor` (effets de bord structurels) |
-| order | V21-3 | `orders/types/` | `tx-client.ts` — alias TxClient partagé |
-| order | V21-3 | `orders/queries/` | lectures internes publiques et admin extraites |
-| order | V21-3 | `orders/helpers/` ou `orders/mappers/` | mappers de lignes de commande et de paiement, helpers transactionnels, restock |
+| catalog | V21-2B | `catalog/queries/` (extension) | `catalog-listing.queries.ts`, `product-detail.queries.ts` |
+| order | V21-3 | `orders/types/` | `internal.ts` — TxClient + types internes transactionnels ; `public.ts` — contrats publics ré-exportés par `order.types.ts` |
+| order | V21-3 | `orders/queries/` | `order-reads.queries.ts` |
+| order | V21-3 | `orders/helpers/` | `mappers.ts`, `transactions.ts`, `validation.ts` |
 | products | V21-4A | `products/types/` | `tx-client.ts`, `product-type-row.ts` |
 | products | V21-4A | `products/queries/` | `read-product-type.ts`, `count-variants.ts` |
 | products | V21-4A | `products/helpers/` | `ensure-categories.ts`, `replace-categories.ts` |
@@ -242,9 +250,9 @@ Liste exhaustive des fichiers `*.repository.ts` et `*.types.ts` qui restent des 
 
 Les asymétries suivantes sont des choix, non des dettes.
 
-**`catalog` vs `order` vs `products` : structures internes différentes.** Chaque domaine a sa propre arborescence interne, adaptée à ses blocs réels. `catalog` est une façade de lecture agrégée sans mutation. `order` centralise des flux transactionnels lourds. `products` partage un sous-dossier interne entre trois façades publiques. Aucune structure uniforme n'est imposée.
+**`catalog` vs `order` vs `products` : structures internes différentes.** Chaque domaine a sa propre arborescence interne, adaptée à ses blocs réels. `catalog` est une façade de lecture agrégée sans mutation. `order` centralise des flux transactionnels lourds. `products` partage des sous-dossiers internes entre trois façades publiques. Aucune structure uniforme n'est imposée.
 
-**`admin-product-image` reste plate, ses extractions vivent dans `products/` partagé.** Trois façades publiques (`admin-product`, `admin-product-variant`, `admin-product-image`) utilisent un unique sous-dossier interne `products/`. `admin-product-image.repository.ts` ne crée pas de sous-dossier propre : ses blocs extraits (`productExistsInTx`, `variantExistsInTx`, `clearPrimaryImageInScopeTx`) sont déposés dans le `products/` commun. C'est une asymétrie intentionnelle : 3 façades, 1 sous-dossier partagé.
+**Le répertoire `db/repositories/products/` porte à la fois trois façades publiques et des sous-dossiers internes partagés.** Trois façades publiques (`admin-product`, `admin-product-variant`, `admin-product-image`) cohabitent avec `types/`, `queries/` et `helpers/`. `admin-product-image.repository.ts` ne crée pas de sous-dossier propre : ses blocs extraits (`productExistsInTx`, `variantExistsInTx`, `clearPrimaryImageInScopeTx`) vivent dans cette structure partagée. C'est une asymétrie intentionnelle : 3 façades publiques, 1 structure interne commune.
 
 **`orders/` (pluriel) comme sous-dossier interne de `order.repository.ts` (singulier).** L'asymétrie de nommage entre la façade publique (`order.repository.ts` au singulier) et le sous-dossier interne (`orders/` au pluriel) est documentée et intentionnelle. Ce sous-dossier préexistait à V21-3.
 
@@ -269,10 +277,11 @@ Les asymétries suivantes sont des choix, non des dettes.
 - Les exports publics de `catalog.repository.ts` et `catalog.types.ts` sont identiques avant et après
 
 **V21-3 — terminé quand :**
-- Les helpers de transaction sont sortis dans `db/repositories/orders/helpers/`
-- Les lectures internes (publiques et admin) sont sorties dans `db/repositories/orders/queries/`
-- Les mappers de lignes de commande et de paiement sont sortis dans `db/repositories/orders/helpers/` ou `orders/mappers/`
-- `TxClient` est extrait dans `db/repositories/orders/types/tx-client.ts`
+- Les helpers de transaction sont sortis dans `db/repositories/orders/helpers/transactions.ts`
+- Les lectures internes (publiques et admin) sont sorties dans `db/repositories/orders/queries/order-reads.queries.ts`
+- Les mappers de lignes de commande et de paiement sont sortis dans `db/repositories/orders/helpers/mappers.ts`
+- `TxClient` et les types transactionnels internes vivent dans `db/repositories/orders/types/internal.ts`
+- `order.types.ts` ré-exporte depuis `db/repositories/orders/types/public.ts`
 - `order.repository.ts` et `order.types.ts` restent façades publiques stables
 - L'isolation `Serializable`, le retry de génération de référence et le restock sont préservés
 
