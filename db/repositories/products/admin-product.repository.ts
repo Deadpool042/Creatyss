@@ -4,11 +4,6 @@ import {
   clearNativeSimpleProductOfferFields,
   syncLegacyVariantCommercialFieldsFromSimpleProduct,
 } from "@/db/repositories/products/simple-product-compat";
-import {
-  resolveSimpleProductOffer,
-  type SimpleProductOffer,
-  type SimpleProductOfferFields,
-} from "@/entities/product/simple-product-offer";
 import { canChangeProductTypeToSimple } from "@/entities/product/product-type-rules";
 import { type ProductType } from "@/entities/product/product-input";
 import {
@@ -16,7 +11,6 @@ import {
   type AdminProductPublishContext,
   type AdminProductStatus,
   type AdminProductSummary,
-  type AdminProductCategoryAssignment,
   type AdminProductDetail,
   type CreateAdminProductInput,
   type UpdateAdminProductInput,
@@ -26,7 +20,7 @@ import { ensureCategoriesExistInTx } from "./helpers/ensure-categories";
 import { replaceProductCategoriesInTx } from "./helpers/replace-categories";
 import { countVariantsInTx } from "./queries/count-variants";
 import { readProductTypeInTx } from "./queries/read-product-type";
-import type { TxClient } from "./types/tx-client";
+import { loadAdminProductDetail } from "./queries/load-admin-product-detail";
 
 // --- Internal helpers ---
 
@@ -100,86 +94,6 @@ function assertCompatibleLegacyVariantCountForNativeSimpleOffer(variantCount: nu
   }
 }
 
-// Mirrors findAdminProductById but uses tx for transactional consistency.
-async function loadAdminProductDetailInTx(
-  tx: TxClient,
-  productId: string
-): Promise<AdminProductDetail | null> {
-  const product = await tx.products.findUnique({
-    where: { id: BigInt(productId) },
-    include: {
-      product_categories: {
-        include: { categories: true },
-      },
-    },
-  });
-
-  if (product === null) {
-    return null;
-  }
-
-  const nativeSimpleOfferFields: SimpleProductOfferFields = {
-    sku: product.simple_sku,
-    price: product.simple_price !== null ? product.simple_price.toString() : null,
-    compareAtPrice:
-      product.simple_compare_at_price !== null
-        ? product.simple_compare_at_price.toString()
-        : null,
-    stockQuantity: product.simple_stock_quantity,
-  };
-
-  const categories: AdminProductCategoryAssignment[] = [...product.product_categories]
-    .sort((a, b) => {
-      const nameCompare = a.categories.name
-        .toLowerCase()
-        .localeCompare(b.categories.name.toLowerCase());
-      if (nameCompare !== 0) return nameCompare;
-      return a.category_id < b.category_id ? -1 : a.category_id > b.category_id ? 1 : 0;
-    })
-    .map((pc) => ({
-      id: pc.category_id.toString(),
-      name: pc.categories.name,
-      slug: pc.categories.slug,
-    }));
-
-  let simpleOffer: SimpleProductOffer | null = null;
-
-  if (product.product_type === "simple") {
-    const legacyVariants = await tx.product_variants.findMany({
-      where: { product_id: BigInt(productId) },
-      orderBy: [{ is_default: "desc" }, { id: "asc" }],
-    });
-
-    const legacyOffers: SimpleProductOfferFields[] = legacyVariants.map((v) => ({
-      sku: v.sku,
-      price: v.price.toString(),
-      compareAtPrice: v.compare_at_price !== null ? v.compare_at_price.toString() : null,
-      stockQuantity: v.stock_quantity,
-    }));
-
-    simpleOffer = resolveSimpleProductOffer({ native: nativeSimpleOfferFields, legacyOffers });
-  }
-
-  return {
-    id: product.id.toString(),
-    name: product.name,
-    slug: product.slug,
-    shortDescription: product.short_description,
-    description: product.description,
-    seoTitle: product.seo_title,
-    seoDescription: product.seo_description,
-    status: product.status as AdminProductStatus,
-    productType: product.product_type as ProductType,
-    isFeatured: product.is_featured,
-    categories,
-    categoryIds: categories.map((c) => c.id),
-    simpleOfferFields: nativeSimpleOfferFields,
-    simpleOffer,
-    createdAt: product.created_at.toISOString(),
-    updatedAt: product.updated_at.toISOString(),
-  };
-}
-
 // --- Public functions ---
 
 export async function findAdminProductPublishContext(
@@ -250,82 +164,7 @@ export async function findAdminProductById(id: string): Promise<AdminProductDeta
     return null;
   }
 
-  const product = await prisma.products.findUnique({
-    where: { id: BigInt(id) },
-    include: {
-      product_categories: {
-        include: { categories: true },
-      },
-    },
-  });
-
-  if (product === null) {
-    return null;
-  }
-
-  // Map native simple offer fields (Decimal → string)
-  const nativeSimpleOfferFields: SimpleProductOfferFields = {
-    sku: product.simple_sku,
-    price: product.simple_price !== null ? product.simple_price.toString() : null,
-    compareAtPrice:
-      product.simple_compare_at_price !== null
-        ? product.simple_compare_at_price.toString()
-        : null,
-    stockQuantity: product.simple_stock_quantity,
-  };
-
-  // Categories — sorted case-insensitively to mirror: lower(c.name) asc, c.id asc
-  const categories: AdminProductCategoryAssignment[] = [...product.product_categories]
-    .sort((a, b) => {
-      const nameCompare = a.categories.name
-        .toLowerCase()
-        .localeCompare(b.categories.name.toLowerCase());
-      if (nameCompare !== 0) return nameCompare;
-      return a.category_id < b.category_id ? -1 : a.category_id > b.category_id ? 1 : 0;
-    })
-    .map((pc) => ({
-      id: pc.category_id.toString(),
-      name: pc.categories.name,
-      slug: pc.categories.slug,
-    }));
-
-  // Resolve simple offer from native fields + legacy variants (simple products only)
-  let simpleOffer: SimpleProductOffer | null = null;
-
-  if (product.product_type === "simple") {
-    const legacyVariants = await prisma.product_variants.findMany({
-      where: { product_id: BigInt(id) },
-      orderBy: [{ is_default: "desc" }, { id: "asc" }],
-    });
-
-    const legacyOffers: SimpleProductOfferFields[] = legacyVariants.map((v) => ({
-      sku: v.sku,
-      price: v.price.toString(),
-      compareAtPrice: v.compare_at_price !== null ? v.compare_at_price.toString() : null,
-      stockQuantity: v.stock_quantity,
-    }));
-
-    simpleOffer = resolveSimpleProductOffer({ native: nativeSimpleOfferFields, legacyOffers });
-  }
-
-  return {
-    id: product.id.toString(),
-    name: product.name,
-    slug: product.slug,
-    shortDescription: product.short_description,
-    description: product.description,
-    seoTitle: product.seo_title,
-    seoDescription: product.seo_description,
-    status: product.status as AdminProductStatus,
-    productType: product.product_type as ProductType,
-    isFeatured: product.is_featured,
-    categories,
-    categoryIds: categories.map((c) => c.id),
-    simpleOfferFields: nativeSimpleOfferFields,
-    simpleOffer,
-    createdAt: product.created_at.toISOString(),
-    updatedAt: product.updated_at.toISOString(),
-  };
+  return loadAdminProductDetail(prisma, id);
 }
 
 export async function createAdminProduct(
@@ -361,7 +200,7 @@ export async function createAdminProduct(
       await replaceProductCategoriesInTx(tx, product.id.toString(), categoryIds);
       await clearNativeSimpleProductOfferFields(tx, product.id.toString());
 
-      const detail = await loadAdminProductDetailInTx(tx, product.id.toString());
+      const detail = await loadAdminProductDetail(tx, product.id.toString());
 
       if (detail === null) {
         throw new Error("Failed to reload product after creation.");
@@ -426,7 +265,7 @@ export async function updateAdminProduct(
 
       await replaceProductCategoriesInTx(tx, input.id, categoryIds);
 
-      return loadAdminProductDetailInTx(tx, input.id);
+      return loadAdminProductDetail(tx, input.id);
     })
     .catch((error) => {
       if (error instanceof AdminProductRepositoryError) {
@@ -486,7 +325,7 @@ export async function updateAdminSimpleProductOffer(
         });
       }
 
-      return loadAdminProductDetailInTx(tx, input.id);
+      return loadAdminProductDetail(tx, input.id);
     })
     .catch((error) => {
       if (error instanceof AdminProductRepositoryError) {
