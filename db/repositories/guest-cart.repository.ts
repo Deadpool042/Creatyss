@@ -1,15 +1,16 @@
-import type { Prisma } from "@prisma/client";
 import { prisma } from "@/db/prisma-client";
-import { normalizeMoneyString, moneyStringToCents, centsToMoneyString } from "@/lib/money";
+import { buildGuestCart, getGuestCheckoutIssues } from "./guest-cart/helpers/cart-builder";
+import {
+  mapPrismaCheckoutDetails,
+  mapPrismaVariant,
+} from "./guest-cart/helpers/mappers";
 
 import type {
   AddGuestCartItemQuantityInput,
+  GuestCart,
   GuestCartVariant,
   GuestCartItemReference,
-  GuestCartLine,
-  GuestCart,
   GuestCheckoutDetails,
-  GuestCheckoutIssueCode,
   GuestCheckoutContext,
   RemoveGuestCartItemInput,
   UpdateGuestCartItemQuantityInput,
@@ -18,185 +19,6 @@ import type {
 
 function isValidNumericId(value: string): boolean {
   return /^[0-9]+$/.test(value);
-}
-
-// --- Internal availability helpers ---
-
-function isGuestCartVariantAvailable(v: {
-  status: string;
-  stock_quantity: number;
-  products: { status: string };
-}): boolean {
-  return v.products.status === "published" && v.status === "published" && v.stock_quantity > 0;
-}
-
-function isGuestCartLineAvailable(v: {
-  status: string;
-  stock_quantity: number;
-  products: { status: string };
-  quantity: number;
-}): boolean {
-  return (
-    v.products.status === "published" &&
-    v.status === "published" &&
-    v.stock_quantity >= v.quantity &&
-    v.stock_quantity > 0
-  );
-}
-
-// --- Internal mappers ---
-
-function mapPrismaVariant(row: {
-  id: bigint;
-  product_id: bigint;
-  name: string;
-  color_name: string;
-  color_hex: string | null;
-  sku: string;
-  price: Prisma.Decimal;
-  stock_quantity: number;
-  status: string;
-  products: { slug: string; name: string; status: string };
-}): GuestCartVariant {
-  return {
-    id: row.id.toString(),
-    productId: row.product_id.toString(),
-    productSlug: row.products.slug,
-    productName: row.products.name,
-    productStatus: row.products.status as GuestCartVariant["productStatus"],
-    name: row.name,
-    colorName: row.color_name,
-    colorHex: row.color_hex,
-    sku: row.sku,
-    price: normalizeMoneyString(row.price.toString()),
-    stockQuantity: row.stock_quantity,
-    status: row.status as GuestCartVariant["status"],
-    isAvailable: isGuestCartVariantAvailable({ ...row, products: row.products }),
-  };
-}
-
-function mapPrismaCartLine(item: {
-  id: bigint;
-  product_variant_id: bigint;
-  quantity: number;
-  created_at: Date;
-  updated_at: Date;
-  product_variants: {
-    product_id: bigint;
-    name: string;
-    color_name: string;
-    color_hex: string | null;
-    sku: string;
-    price: Prisma.Decimal;
-    stock_quantity: number;
-    status: string;
-    products: { id: bigint; slug: string; name: string; status: string };
-  };
-}): GuestCartLine {
-  const pv = item.product_variants;
-  const unitPrice = normalizeMoneyString(pv.price.toString());
-  const lineTotal = centsToMoneyString(moneyStringToCents(unitPrice) * item.quantity);
-
-  return {
-    id: item.id.toString(),
-    variantId: item.product_variant_id.toString(),
-    quantity: item.quantity,
-    productId: pv.products.id.toString(),
-    productSlug: pv.products.slug,
-    productName: pv.products.name,
-    variantName: pv.name,
-    colorName: pv.color_name,
-    colorHex: pv.color_hex,
-    sku: pv.sku,
-    unitPrice,
-    lineTotal,
-    isAvailable: isGuestCartLineAvailable({
-      status: pv.status,
-      stock_quantity: pv.stock_quantity,
-      products: pv.products,
-      quantity: item.quantity,
-    }),
-    createdAt: item.created_at.toISOString(),
-    updatedAt: item.updated_at.toISOString(),
-  };
-}
-
-function mapPrismaCheckoutDetails(row: {
-  id: bigint;
-  cart_id: bigint;
-  customer_email: string | null;
-  customer_first_name: string | null;
-  customer_last_name: string | null;
-  customer_phone: string | null;
-  shipping_address_line_1: string | null;
-  shipping_address_line_2: string | null;
-  shipping_postal_code: string | null;
-  shipping_city: string | null;
-  shipping_country_code: string | null;
-  billing_same_as_shipping: boolean;
-  billing_first_name: string | null;
-  billing_last_name: string | null;
-  billing_phone: string | null;
-  billing_address_line_1: string | null;
-  billing_address_line_2: string | null;
-  billing_postal_code: string | null;
-  billing_city: string | null;
-  billing_country_code: string | null;
-  created_at: Date;
-  updated_at: Date;
-}): GuestCheckoutDetails {
-  return {
-    id: row.id.toString(),
-    cartId: row.cart_id.toString(),
-    customerEmail: row.customer_email,
-    customerFirstName: row.customer_first_name,
-    customerLastName: row.customer_last_name,
-    customerPhone: row.customer_phone,
-    shippingAddressLine1: row.shipping_address_line_1,
-    shippingAddressLine2: row.shipping_address_line_2,
-    shippingPostalCode: row.shipping_postal_code,
-    shippingCity: row.shipping_city,
-    shippingCountryCode: row.shipping_country_code as "FR" | null,
-    billingSameAsShipping: row.billing_same_as_shipping,
-    billingFirstName: row.billing_first_name,
-    billingLastName: row.billing_last_name,
-    billingPhone: row.billing_phone,
-    billingAddressLine1: row.billing_address_line_1,
-    billingAddressLine2: row.billing_address_line_2,
-    billingPostalCode: row.billing_postal_code,
-    billingCity: row.billing_city,
-    billingCountryCode: row.billing_country_code as "FR" | null,
-    createdAt: row.created_at.toISOString(),
-    updatedAt: row.updated_at.toISOString(),
-  };
-}
-
-function buildGuestCart(
-  cartId: string,
-  items: Parameters<typeof mapPrismaCartLine>[0][]
-): GuestCart {
-  const lines = items.map(mapPrismaCartLine);
-  const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
-  const subtotalCents = lines.reduce((sum, line) => sum + moneyStringToCents(line.lineTotal), 0);
-
-  return {
-    id: cartId,
-    itemCount,
-    subtotal: centsToMoneyString(subtotalCents),
-    lines,
-  };
-}
-
-function getGuestCheckoutIssues(cart: GuestCart | null): GuestCheckoutIssueCode[] {
-  if (cart === null || cart.lines.length === 0) {
-    return ["empty_cart"];
-  }
-
-  if (cart.lines.some((line) => !line.isAvailable)) {
-    return ["cart_unavailable"];
-  }
-
-  return [];
 }
 
 // --- Public functions ---
