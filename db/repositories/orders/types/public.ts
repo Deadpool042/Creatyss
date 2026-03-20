@@ -1,7 +1,6 @@
 import type { OrderStatus } from "@/entities/order/order-status-transition";
 
 export type { OrderStatus } from "@/entities/order/order-status-transition";
-export type { OrderEmailEventStatus } from "@/db/repositories/order-email.types";
 
 export type PaymentStatus = "pending" | "succeeded" | "failed";
 export type PaymentProvider = "stripe";
