@@ -21,6 +21,9 @@ import {
   type UpsertAdminPrimaryProductImageInput,
   type UpsertAdminPrimaryVariantImageInput,
 } from "./admin-product-image.types";
+import { clearPrimaryImageInScopeTx } from "./helpers/clear-primary-image";
+import { productExistsInTx } from "./queries/product-exists";
+import { variantExistsInTx } from "./queries/variant-exists";
 
 function isValidNumericId(value: string): boolean {
   return /^[0-9]+$/.test(value);
@@ -43,52 +46,6 @@ function mapPrismaProductImage(row: PrismaProductImageData): AdminProductImage {
 // --- Internal transaction helpers ---
 
 type TxClient = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
-
-async function productExistsInTx(tx: TxClient, productId: string): Promise<boolean> {
-  return (await tx.products.count({ where: { id: BigInt(productId) } })) > 0;
-}
-
-async function variantExistsInTx(
-  tx: TxClient,
-  productId: string,
-  variantId: string
-): Promise<boolean> {
-  return (
-    (await tx.product_variants.count({
-      where: { id: BigInt(variantId), product_id: BigInt(productId) },
-    })) > 0
-  );
-}
-
-// Mirrors the original: product scope filters on product_id + variant_id IS NULL,
-// variant scope filters on variant_id only (matching original SQL).
-async function clearPrimaryImageInScopeTx(
-  tx: TxClient,
-  productId: string,
-  variantId: string | null,
-  excludedImageId?: string
-): Promise<void> {
-  if (variantId === null) {
-    await tx.product_images.updateMany({
-      where: {
-        product_id: BigInt(productId),
-        variant_id: null,
-        is_primary: true,
-        ...(excludedImageId ? { NOT: { id: BigInt(excludedImageId) } } : {}),
-      },
-      data: { is_primary: false },
-    });
-  } else {
-    await tx.product_images.updateMany({
-      where: {
-        variant_id: BigInt(variantId),
-        is_primary: true,
-        ...(excludedImageId ? { NOT: { id: BigInt(excludedImageId) } } : {}),
-      },
-      data: { is_primary: false },
-    });
-  }
-}
 
 async function setPrimaryImageInScopeTx(
   tx: TxClient,

@@ -7,7 +7,6 @@ import {
   canDeleteVariantForProductType,
   canCreateVariantForProductType,
 } from "@/entities/product/product-type-rules";
-import { type ProductType } from "@/entities/product/product-input";
 import {
   AdminProductVariantRepositoryError,
   type AdminProductVariantStatus,
@@ -15,11 +14,9 @@ import {
   type CreateAdminProductVariantInput,
   type UpdateAdminProductVariantInput,
 } from "./admin-product-variant.types";
-
-type ProductCompatibilityRow = {
-  id: string;
-  product_type: ProductType;
-};
+import { clearDefaultVariantInTx } from "./helpers/clear-default-variant";
+import { countVariantsInTx } from "./queries/count-variants";
+import { readProductTypeInTx } from "./queries/read-product-type";
 
 // --- Internal helpers ---
 
@@ -73,44 +70,6 @@ function mapVariantPrismaError(error: unknown): never {
   }
 
   throw error;
-}
-
-async function readProductTypeInTx(
-  tx: Prisma.TransactionClient,
-  productId: string
-): Promise<ProductCompatibilityRow | null> {
-  const row = await tx.products.findUnique({
-    where: { id: BigInt(productId) },
-    select: { id: true, product_type: true },
-  });
-
-  if (row === null) {
-    return null;
-  }
-
-  return { id: row.id.toString(), product_type: row.product_type as ProductType };
-}
-
-async function countVariantsInTx(
-  tx: Prisma.TransactionClient,
-  productId: string
-): Promise<number> {
-  return tx.product_variants.count({ where: { product_id: BigInt(productId) } });
-}
-
-async function clearDefaultVariantInTx(
-  tx: Prisma.TransactionClient,
-  productId: string,
-  excludedVariantId?: string
-): Promise<void> {
-  await tx.product_variants.updateMany({
-    where: {
-      product_id: BigInt(productId),
-      is_default: true,
-      ...(excludedVariantId ? { NOT: { id: BigInt(excludedVariantId) } } : {}),
-    },
-    data: { is_default: false },
-  });
 }
 
 // --- Public functions ---
