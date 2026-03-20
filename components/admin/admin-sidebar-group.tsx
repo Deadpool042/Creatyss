@@ -74,7 +74,7 @@ export function AdminSidebarGroup({ group }: AdminSidebarGroupProps) {
           </CollapsibleTrigger>
         </SidebarGroupLabel>
 
-        <CollapsibleContent className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up group-data-[collapsible=icon]:hidden">
+        <CollapsibleContent className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up group-data-[collapsible=icon]:hidden ml-2">
           <SidebarGroupContent className="pt-1">
             <SidebarMenu className="gap-1">
               {group.items.map((item) =>

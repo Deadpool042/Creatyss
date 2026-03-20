@@ -1,7 +1,7 @@
 import { loadPrimaryProductImagesByProductIds } from "./primary-image";
 import { prisma } from "@/db/prisma-client";
 
-import type { DbId, FeaturedCategory, PublishedProductImage } from "../catalog.types";
+import type { DbId, FeaturedCategory, PublishedProductImage } from "../types/outputs";
 
 type ProductRecencyRecord = {
   id: bigint;
@@ -133,7 +133,8 @@ export async function loadRepresentativeImagesByCategoryIds(
   const representativeProductIds = uniqueBigIntIds(
     [...latestProductByCategoryId.values()].map((product) => product.id)
   );
-  const primaryImagesByProductId = await loadPrimaryProductImagesByProductIds(representativeProductIds);
+  const primaryImagesByProductId =
+    await loadPrimaryProductImagesByProductIds(representativeProductIds);
 
   for (const categoryId of uniqueCategoryIds) {
     const key = toDbId(categoryId);

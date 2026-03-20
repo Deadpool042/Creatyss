@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/db/prisma-client";
 import { mapPrismaProductImage } from "../catalog.mappers";
 
-import type { DbId, PublishedProductImage } from "../catalog.types";
+import type { DbId, PublishedProductImage } from "../types/outputs";
 
 export const primaryProductImageSelect = Prisma.validator<Prisma.product_imagesSelect>()({
   id: true,
@@ -82,7 +82,10 @@ export function selectPrimaryProductImage(
   let selectedCandidate: PrimaryProductImageRecord | null = null;
 
   for (const candidate of candidates) {
-    if (selectedCandidate === null || comparePrimaryProductImages(candidate, selectedCandidate) < 0) {
+    if (
+      selectedCandidate === null ||
+      comparePrimaryProductImages(candidate, selectedCandidate) < 0
+    ) {
       selectedCandidate = candidate;
     }
   }

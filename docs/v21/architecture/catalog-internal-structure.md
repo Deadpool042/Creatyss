@@ -267,3 +267,77 @@ Certains choix de cette structure restent propres à la façade publique `catalo
 Ces éléments ne doivent pas être transformés en abstraction cross-domain.
 
 Ils doivent rester locaux tant qu'un autre domaine n'a pas exactement la même responsabilité technique.
+
+## Cible post-V21-2B
+
+### Arborescence cible après V21-2B
+
+```text
+db/repositories/catalog/
+├── catalog.repository.ts                        # façade publique — réduite après extraction des 5 fonctions
+├── catalog.types.ts                             # façade publique de types — inchangée
+├── catalog.mappers.ts                           # helpers de mapping — inchangé, hors périmètre V21-2B
+├── types/
+│   └── outputs.ts                              # types internes — inchangé
+├── helpers/
+│   ├── primary-image.ts                        # helper batch image primaire — inchangé
+│   ├── category-representative-image.ts        # helper batch image représentative catégorie — inchangé
+│   └── product-summary.ts                      # nouveau V21-2B — mapPublishedProductSummaryRecord (effet de bord structurel)
+└── queries/
+    ├── blog.queries.ts                         # queries blog — inchangées
+    ├── homepage.queries.ts                     # queries homepage — inchangées
+    ├── recent-products.queries.ts              # queries produits récents — inchangées ou étendues
+    └── [nouveaux fichiers pour les 5 fonctions extraites]
+```
+
+### Blocs fonctionnels à externaliser dans `queries/`
+
+V21-2B extrait cinq fonctions de `catalog.repository.ts` vers de nouveaux fichiers internes sous `queries/`. La forme exacte des fichiers est déterminée au moment de l'exécution. Les blocs fonctionnels et leurs destinations probables sont :
+
+**Bloc listing catalogue**
+
+Fonctions : `listPublishedProducts`, `buildPublishedProductsWhere`, `getPublishedProductsOrderBy`, `loadPublishedVariantOffersByProductIds`
+
+Destination probable : `queries/catalog-listing.queries.ts` ou découpage en deux fichiers distincts (`queries/catalog-filters.queries.ts` pour les builders de filtres et d'ordering, `queries/catalog-listing.queries.ts` pour le chargement des données).
+
+**Bloc détail produit**
+
+Fonction : `getPublishedProductBySlug`
+
+Destination probable : `queries/product-detail.queries.ts`
+
+### Rôle attendu de `catalog.repository.ts` après V21-2B
+
+Après V21-2B, `catalog.repository.ts` reste l'unique point d'entrée public de la façade de lecture storefront. Il continue d'exposer les mêmes fonctions publiques et les mêmes ré-exports de types.
+
+Il orchestre encore, en délégant vers les nouveaux fichiers internes :
+
+- la homepage publique (inchangé)
+- les catégories mises en avant (inchangé)
+- les filtres catalogue (délégué vers `queries/`)
+- le listing catalogue (délégué vers `queries/`)
+- le détail produit public (délégué vers `queries/`)
+- les produits récents (inchangé)
+- le blog public (inchangé)
+
+Il conserve localement après V21-2B :
+
+- `mapFeaturedCategoryRecord` — hors périmètre d'extraction, tous ses appelants restent dans la façade
+
+Les fonctions suivantes quittent `catalog.repository.ts` dans V21-2B comme effet de bord structurel nécessaire de l'extraction de leurs appelants directs (les garder en façade créerait un cycle interne → façade interdit par la doctrine) :
+
+- `getNativeSimpleOfferFields` — déplacée avec `listPublishedProducts` et `getPublishedProductBySlug` dans `queries/`
+- `getPublishedProductIdsMatchingVariantColor` — déplacée avec `buildPublishedProductsWhere` dans `queries/`
+- `mapPublishedProductSummaryRecord` — extraite dans `helpers/product-summary.ts`
+
+### Ce qui ne change pas entre V21-2A et V21-2B
+
+- `catalog.types.ts` — inchangé
+- `catalog.mappers.ts` — inchangé
+- `types/outputs.ts` — inchangé
+- `helpers/primary-image.ts` — inchangé
+- `helpers/category-representative-image.ts` — inchangé
+- `queries/blog.queries.ts` — inchangé
+- `queries/homepage.queries.ts` — inchangé
+- `queries/recent-products.queries.ts` — inchangé ou étendu uniquement si nécessaire
+- la surface publique de `catalog.repository.ts` — inchangée

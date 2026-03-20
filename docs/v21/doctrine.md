@@ -187,6 +187,19 @@ Après V21-2A, seule la façade publique `catalog` utilise réellement un sous-d
 
 V21 n'impose pas encore un découpage systématique `inputs.ts / outputs.ts / errors.ts / status.ts` à tous les domaines.
 
+## Règle d'import interne
+
+À l'intérieur d'un domaine modularisé, les fichiers internes (`helpers/`, `queries/`, `mappers/` s'il existe) doivent importer les types directement depuis la source de vérité interne (ex. `./types/outputs.ts`), et non depuis la façade publique (`catalog.types.ts`).
+
+La façade publique de types est réservée aux consumers externes au domaine.
+
+Cette règle s'applique à partir de V21-2B pour le domaine `catalog`, et sera étendue aux autres domaines au fil des lots.
+
+Exemple :
+
+- un fichier `queries/listing.queries.ts` importe depuis `../types/outputs.ts`, pas depuis `../catalog.types.ts`
+- `catalog.types.ts` reste le point d'entrée pour `app/`, `features/` et `components/`
+
 ## Ce qui ne doit jamais être extrait
 
 V21 ne sort pas d'un repository, sauf lot explicite très justifié :

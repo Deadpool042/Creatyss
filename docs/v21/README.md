@@ -1,308 +1,196 @@
 # V21 — Modularisation interne de `db/`
 
-## Résumé
+## Objectif global
 
-V21 ouvre la phase de modularisation interne de la couche `db/` après la stabilisation Prisma de V19 et la doctrine de structure posée par V20.
+V21 rend la couche `db/repositories/` plus lisible et plus maintenable sans changer son comportement, ses contrats publics ni ses chemins d'import.
 
-L'objectif n'est pas de changer l'API publique de `db/`. L'objectif est de réduire la taille des gros repositories, de sortir les blocs internes lisibles et réutilisables, et de garder les fichiers publics comme façades stables.
+L'API publique de `db/` reste intacte. Chaque `*.repository.ts` reste le point d'entrée public de son domaine. Chaque `*.types.ts` reste la façade publique de types. Les consumers dans `app/`, `features/` et `components/` ne sont pas recâblés.
 
-À la date de cette documentation :
-
-- V21-1 a produit l'audit de cadrage de `db/repositories/`
-- V21-2A a été implémenté sur `db/repositories/catalog/**`
-- aucun autre lot V21 n'a encore été implémenté
-
-`catalog` est conservé comme façade publique de lecture pour compatibilité des chemins existants. Il n'est pas traité ici comme domaine métier autonome au même niveau que `products`, `orders` ou `categories`.
-
-Cette documentation ne décrit donc pas V21 complet comme un état déjà atteint. Elle documente :
-
-- la cible de travail retenue pour V21
-- le statut réel des lots
-- le contenu effectivement livré par V21-2A
-
-## Ce qui est déjà fait
-
-Lots réellement terminés à ce stade :
-
-- [V21-1 — cadrage et audit](./lots/v21-1-cadrage-audit.md)
-- [V21-2A — `catalog` : socle interne](./lots/v21-2a-catalog-socle-interne.md)
-
-Ce qui est déjà visible dans le code :
-
-- la façade publique `catalog` possède désormais une première structure interne `types/`, `queries/`, `helpers/`
-- les façades publiques [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts) et [catalog.types.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.types.ts) sont restées stables
-- aucun autre domaine `db/` n'a encore été modularisé au niveau V21
-
-## Ce qui reste à faire
-
-Lots restant à exécuter :
-
-- [V21-2B — `catalog` : cœur de la façade de lecture](./lots/v21-2b-catalog-coeur.md)
-- [V21-3 — `order`](./lots/v21-3-order-internal-modularization.md)
-- [V21-4A — `products` : socle partagé](./lots/v21-4a-products-shared-core.md)
-- [V21-4B — `products` : variantes et images](./lots/v21-4b-products-variants-images.md)
-- [V21-5 — domaines restants](./lots/v21-5-small-domains-structural-cleanup.md)
-- [V21 — état final attendu](./lots/v21-final-state.md)
-
-## Pourquoi V21 existe
-
-V20 a documenté un état stabilisé de `db/`, mais il a aussi rendu visibles des limites structurelles qui n'étaient plus technologiques.
-
-Ces limites sont observables dans le code actuel :
-
-- [order.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/order.repository.ts) : 728 lignes
-- [admin-product.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/products/admin-product.repository.ts) : 592 lignes
-- [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts) : 570 lignes après V21-2A
-- [guest-cart.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/guest-cart.repository.ts) : 449 lignes
-- [admin-homepage.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/admin-homepage.repository.ts) : 425 lignes
-- [admin-category.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/admin-category.repository.ts) : 365 lignes
-
-Les problèmes que V21 traite sont donc :
-
-- des repositories publics encore trop gros
-- une séparation interne encore incomplète entre façade, queries, helpers et contrats
-- une arborescence `db/repositories/` encore hétérogène selon les domaines
-- des exceptions de façade publique encore présentes, par exemple le ré-export de types dans [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts)
-
-Dans ce cadre, [catalog.repository.ts](/Users/laurent/Desktop/CREATYSS/db/repositories/catalog/catalog.repository.ts) ne doit pas être lu comme un domaine métier autonome. Le fichier concentre plusieurs projections publiques de lecture storefront : homepage, catégories mises en avant, listing produit, détail produit, produits récents et blog public.
-
-V21 n'existe pas pour refaire la migration Prisma. Cette migration est terminée en V19. V21 existe pour rendre la structure interne de `db/` plus lisible et plus maintenable.
-
-## Objectif global réel de V21
-
-V21 vise à rendre `db/` plus modulaire sans changer le comportement métier, les contrats publics ni les chemins publics déjà consommés par `app/` et `features/`.
-
-Concrètement, V21 cherche à :
-
-- réduire la taille des mega-files de `db/repositories/`
-- introduire des sous-dossiers internes locaux au domaine
-- garder `*.repository.ts` comme points d'entrée publics
-- conserver `*.types.ts` comme façades de contrats publics
-- extraire les lectures Prisma canoniques dans `queries/`
-- extraire les helpers batch et reconstruction mémoire dans `helpers/`
-- éviter tout refactor transversal hors périmètre du lot traité
+V21 ne réécrit pas l'architecture de `db/`. Il extrait, depuis des fichiers devenus trop denses, des blocs internes vers des sous-dossiers locaux au domaine : `queries/`, `helpers/`, `types/`. Ce travail est incrémental, domaine par domaine, lot par lot.
 
 ## Ce que V21 ne fait pas
 
-V21 ne couvre pas :
+- Aucune modification des signatures runtime des repositories
+- Aucun changement des contrats publics exportés
+- Aucun changement des chemins publics déjà consommés
+- Aucune introduction d'une couche `services/`
+- Aucun raw SQL, `$queryRaw`, `$executeRaw`
+- Aucun refactor par symétrie entre domaines
+- Aucune harmonisation qui n'est pas portée par un lot explicite
+- Aucune modification du schéma ou des migrations SQL
 
-- une nouvelle migration technologique
-- une refonte des contrats publics de `db/`
-- un changement des signatures runtime des repositories
-- une réorganisation globale des imports consumers hors lot explicite
-- une introduction de couche `services/`
-- une réintroduction de SQL brut
-- un déplacement de logique métier hors de `entities/`
-- une modification de schéma ou de migrations SQL
+## Doctrine
 
-V21 ne cherche pas non plus à rendre tous les domaines parfaitement homogènes en une seule fois. La démarche reste incrémentale.
+La doctrine complète est dans [`doctrine.md`](./doctrine.md). Les principes directeurs sont :
 
-## Dépendances avec V19 et V20
+**Modularisation pragmatique.** Un bloc est extrait uniquement si le gain de lisibilité est net et démontrable. La taille d'un fichier n'est pas une raison suffisante à elle seule. En cas de doute entre extraire et ne pas extraire, la décision est de ne pas extraire.
 
-### Dépendance à V19
+**Pas de refactor par symétrie.** Un domaine n'est pas découpé parce qu'un autre l'a été. Chaque domaine est évalué sur ses propres blocs.
 
-V21 dépend directement de V19.
+**Invariants de façade.** Les `*.repository.ts` restent la façade publique runtime. L'extraction de blocs internes se fait par délégation depuis cette façade, jamais par remplacement de son API. Les `*.types.ts` restent la façade publique de types, réservée aux consumers externes.
 
-V19 a figé les invariants suivants :
+**Règle d'import interne.** À l'intérieur d'un domaine modularisé, les fichiers internes importent leurs types depuis la source de vérité interne (`types/`), jamais depuis la façade publique `*.types.ts`.
 
-- Prisma ORM uniquement dans `db/`
-- contrats publics explicités
-- disparition du raw SQL runtime
-- règles techniques déjà normalisées, par exemple autour de l'image primaire produit
+## Décisions transverses
 
-V21 ne remet pas en cause ces invariants. Il travaille à l'intérieur de ce cadre.
+Quatre décisions s'appliquent à tous les lots V21 sans exception. Elles sont documentées intégralement dans [`decisions/v21-cross-lots-decisions.md`](./decisions/v21-cross-lots-decisions.md).
 
-### Dépendance à V20
+**T-1 — Duplication locale des petites fonctions utilitaires.** Les petites fonctions utilitaires génériques (`isValidNumericId`, `toDbId`, `uniqueBigIntIds`, etc.) sont dupliquées localement dans chaque fichier qui en a besoin. Aucune extraction vers un fichier partagé cross-domain. Cela évite un couplage artificiel entre domaines pour des fonctions sans logique métier propre.
 
-V21 dépend directement de V20.
+**T-2 — TxClient dans les domaines modularisés.** Si un domaine crée un sous-dossier interne dans V21, l'alias `TxClient` est extrait dans `<domaine>/types/` et partagé entre tous les fichiers internes. Si le domaine reste un fichier plat, `TxClient` reste défini localement dans ce fichier. Pas d'extraction sans sous-dossier.
 
-V20 a fourni :
+**T-3 — Position des error mappers.** Les fonctions qui mappent des erreurs Prisma vers des erreurs publiques du repository restent dans la façade `*.repository.ts`. Elles ne sont jamais extraites dans `helpers/` ou `queries/`. Déplacer un error mapper hors de la façade briserait la lisibilité du contrat d'erreur observable depuis l'extérieur.
 
-- l'inventaire des domaines
-- l'identification des gros repositories
-- la doctrine de modularisation interne
-- les règles d'évolution des façades publiques
+**T-4 — Gel de `AdminProductImageRepositoryError`.** Cette classe reste dans son état actuel pendant toute la durée de V21. Son inconsistance structurelle avec les autres types d'erreur du domaine `products` est une dette connue et gelée. Tout correctif nécessite un lot dédié.
 
-V21 transforme progressivement cette doctrine en structure réelle dans le code. À ce stade, cette transformation n'a commencé que sur la façade publique `catalog`.
+## Séquencement des lots
 
-## Découpage des lots V21
+| Lot | Domaine | Statut |
+|---|---|---|
+| V21-1 | Cadrage et audit de `db/repositories/` | Terminé |
+| V21-2A | `catalog` — socle interne de la façade de lecture | Terminé |
+| V21-2B | `catalog` — cœur de la façade (`listPublishedProducts`, `getPublishedProductBySlug`) | Décisions arrêtées |
+| V21-3 | `order` — modularisation interne (728 lignes) | Décisions arrêtées |
+| V21-4A | `products` — socle partagé (`admin-product.repository.ts`, 592 lignes) | Décisions arrêtées |
+| V21-4B | `products` — variantes et images | Décisions arrêtées |
+| V21-5 | Petits domaines restants | Décisions arrêtées |
 
-Découpage de travail retenu à ce stade :
+## Résumé par lot
 
-- `V21-1` — cadrage et audit concret de `db/repositories/`
-- `V21-2A` — `catalog` : extraction du socle interne d'une façade publique de lecture
-- `V21-2B` — `catalog` : finalisation de la façade publique de lecture
-- `V21-3` — `order`
-- `V21-4A` — `products` : socle partagé
-- `V21-4B` — `products` : variantes et images
-- `V21-5` — petits domaines restants
-- `V21-final-state` — état cible de `db/repositories/` après V21
+### V21-1 — Cadrage
 
-## Statut actuel de V21
+Audit de `db/repositories/`. Identification des fichiers prioritaires, définition de la structure cible locale par domaine, séquençage.
 
-### `V21-1`
+### V21-2A — `catalog` : socle interne (terminé)
 
-Statut : réalisé.
+Premier lot d'extraction sur la façade de lecture storefront `catalog`. Résultat visible dans le code :
 
-Résultat :
+- `catalog.types.ts` ré-exporte depuis `types/outputs.ts`
+- `helpers/primary-image.ts` — image primaire produit
+- `helpers/category-representative-image.ts` — image représentative de catégorie
+- `queries/homepage.queries.ts`, `queries/blog.queries.ts`, `queries/recent-products.queries.ts`
+- `listPublishedProducts` et `getPublishedProductBySlug` sont restés dans la façade (hors périmètre V21-2A)
+- `catalog.mappers.ts` non touché
 
-- identification des gros fichiers prioritaires
-- définition d'une structure cible locale par domaine
-- séquençage par lots compatibles avec les chemins publics existants
+`catalog` est une **façade de lecture agrégée**, pas un domaine métier autonome. Elle agrège des lectures storefront sur `homepage`, `categories`, `products` et `blog`. Le chemin historique `db/repositories/catalog/**` est conservé pour compatibilité.
 
-### `V21-2A`
+### V21-2B — `catalog` : cœur de la façade
 
-Statut : réalisé.
+Extraction de `listPublishedProducts`, `getPublishedProductBySlug`, `loadPublishedVariantOffersByProductIds`, `buildPublishedProductsWhere`, `getPublishedProductsOrderBy` vers `queries/`.
 
-Résultat :
+Volontairement hors périmètre : `mapFeaturedCategoryRecord`, `mapPublishedProductSummaryRecord`, `getNativeSimpleOfferFields`, `getPublishedProductIdsMatchingVariantColor`, `catalog.mappers.ts`.
 
-- `db/repositories/catalog/catalog.repository.ts` est resté la façade publique de lecture storefront, conservée pour compatibilité
-- `db/repositories/catalog/catalog.types.ts` est resté la façade publique des contrats
-- les contrats publics exposés par cette façade ont été déplacés dans `db/repositories/catalog/types/outputs.ts`
-- les helpers internes d'image primaire et d'image représentative de catégorie ont été extraits dans `helpers/`
-- les queries simples homepage, blog et recent products ont été extraites dans `queries/`
-- `listPublishedProducts` et `getPublishedProductBySlug` sont restés dans `catalog.repository.ts`
+### V21-3 — `order` : modularisation interne
 
-Cette implémentation n'a pas requalifié `catalog` en domaine métier. Le chemin historique `db/repositories/catalog/**` a été conservé pour préserver la compatibilité des imports publics.
+`order.repository.ts` : 728 lignes. Responsabilités mélangées : validations, mappers, helpers transactionnels, restock, lectures publiques et admin, création de commande, transitions de statut, expédition.
 
-Documentation de référence pour ce lot :
+Blocs cibles : `orders/types/` (TxClient), `orders/queries/` (lectures internes), `orders/helpers/` ou `orders/mappers/` (mappers de lignes et de paiement, helpers de transaction).
 
-- [Lot V21-2A — catalog socle interne](./lots/v21-2a-catalog-socle-interne.md)
-- [Architecture interne actuelle de `catalog`](./architecture/catalog-internal-structure.md)
-- [Décisions V21-2A](./decisions/v21-2a-decisions.md)
+Invariants critiques : isolation Serializable, retry de génération de référence, restock sur transitions, validation du checkout draft.
 
-### `V21-2B`
+`order.repository.ts` et `order.types.ts` restent façades publiques stables. `order-email.repository.ts` hors périmètre V21-3.
 
-Statut : non réalisé.
+### V21-4A — `products` : socle partagé
 
-### `V21-3`
+`admin-product.repository.ts` : 592 lignes. Blocs extraits vers `products/types/`, `products/queries/`, `products/helpers/` :
 
-Statut : non réalisé.
+| Bloc extrait | Destination |
+|---|---|
+| `TxClient` | `products/types/tx-client.ts` |
+| `AdminProductTypeRow` → `ProductTypeRow` | `products/types/product-type-row.ts` |
+| `readProductTypeInTx` | `products/queries/read-product-type.ts` |
+| `countVariantsInTx` | `products/queries/count-variants.ts` |
+| `ensureCategoriesExistInTx` | `products/helpers/ensure-categories.ts` |
+| `replaceProductCategoriesInTx` | `products/helpers/replace-categories.ts` |
 
-### `V21-4A`
+Volontairement en façade : `mapPrismaRepositoryError` (T-3), `isValidProductId` et `normalizeCategoryIds` (T-1), `assertCanSaveAsSimpleProduct` et asserts voisins (couplés aux erreurs publiques, trop courts pour justifier l'extraction), `loadAdminProductDetailInTx` (flow complexe combinant lecture + mapping + requête conditionnelle). `simple-product-compat.ts` non touché.
 
-Statut : non réalisé.
+`admin-product-variant.repository.ts` non modifié dans V21-4A. Sa migration vers les fichiers partagés est documentée comme dette à résorber en V21-4B.
 
-### `V21-4B`
+### V21-4B — `products` : variantes et images
 
-Statut : non réalisé.
+`admin-product-variant.repository.ts` (303 lignes) et `admin-product-image.repository.ts` (345 lignes).
 
-### `V21-5`
+**Variantes :** migration vers les fichiers créés en V21-4A (`ProductTypeRow`, `readProductTypeInTx`, `countVariantsInTx`), extraction de `clearDefaultVariantInTx` vers `products/helpers/clear-default-variant.ts`. En façade : `mapVariantFromPrisma` (couplé aux types publics, règle d'import interne), `mapVariantPrismaError` (T-3), `isValidNumericId` (T-1).
 
-Statut : non réalisé.
+**Images :** extraction de `productExistsInTx` et `variantExistsInTx` vers `products/queries/`, `clearPrimaryImageInScopeTx` vers `products/helpers/clear-primary-image.ts`. En façade : `setPrimaryImageInScopeTx` (orchestre un flow complet avec `mapPrismaProductImage`, extraction inverserait la direction d'import), `mapPrismaProductImage` (couplé aux types publics), `TxClient` local (T-2 : `admin-product-image` reste un fichier plat non modularisé). `AdminProductImageRepositoryError` gelée (T-4).
 
-### `V21-final-state`
+### V21-5 — Petits domaines restants
 
-Statut : non réalisé.
+Huit domaines audités. Trois GO, cinq NO-GO.
 
-Le détail d'exécution est documenté dans [roadmap.md](./roadmap.md).
+**GO :**
 
-## Focus explicite sur V21-2A
+| Domaine | Lignes | Blocs extraits |
+|---|---|---|
+| admin-category | 366 | `loadRepresentativeImagesByCategoryIds` → `queries/representative-image.queries.ts` ; `sortCategoriesForAdmin` + `isRepresentativeImageCandidateBetter` → `helpers/sort.ts` |
+| admin-homepage | 426 | Lectures sélections → `queries/featured-selections.queries.ts` ; options éditeur → `queries/homepage-options.queries.ts` ; validations transactionnelles → `helpers/transaction-guards.ts` ; écritures transactionnelles → `helpers/transaction-writes.ts` ; `TxClient` → `types/tx.ts` |
+| guest-cart | 450 | Disponibilité → `helpers/availability.ts` ; mappers → `helpers/mappers.ts` ; agrégation panier → `helpers/cart-builder.ts` |
 
-V21-2A n'a pas cherché à “finir” la façade `catalog`.
+**NO-GO :**
 
-Le lot a traité uniquement les extractions les plus stables et les moins risquées :
+| Domaine | Lignes | Motif |
+|---|---|---|
+| payment | 167 | Deux transactions Serializable à criticité élevée, responsabilité cohérente, aucun bloc extractible sans risque |
+| order-email | 119 | Responsabilité unique, trop compact |
+| admin-blog | 221 | Blocs trop couplés (mappers interdépendants, transaction intégrée à l'orchestration), règle de prudence V21 |
+| admin-users | 59 | Responsabilité unique |
+| admin-media | 70 | Responsabilité unique |
 
-- façade de types
-- helper d'image primaire
-- helper de reconstruction batch des catégories mises en avant
-- queries simples homepage / blog / recent products
+## Ce qui a été fait vs ce qui a été volontairement non fait
 
-Le lot n'a pas traité les zones les plus lourdes de cette façade de lecture :
+### Fait
 
-- `listPublishedProducts`
-- `getPublishedProductBySlug`
-- `catalog.mappers.ts`
+- Audit complet de `db/repositories/` (V21-1)
+- Modularisation de la façade de lecture `catalog` en deux lots (V21-2A terminé, V21-2B décidé)
+- Toutes les décisions lot par lot documentées et tranchées pour V21-2B, V21-3, V21-4A, V21-4B, V21-5
+- Décisions transverses T-1 à T-4 fixées et opposables
 
-Ce découpage est volontaire. Il a permis de réduire la taille du repository public sans toucher au cœur le plus dense de cette façade storefront.
+### Volontairement non fait dans V21
 
-## Ce qui reste hors périmètre après V21-2A
+- Harmonisation des error types entre `admin-product-image` et les autres façades du domaine `products` (dette gelée, T-4)
+- Extraction de `catalog.mappers.ts`
+- Extraction de `mapFeaturedCategoryRecord` hors de `catalog.repository.ts`
+- Modularisation de `payment`, `order-email`, `admin-blog`, `admin-users`, `admin-media` (NO-GO explicite V21-5)
+- Extraction de `loadAdminProductDetailInTx` hors de `admin-product.repository.ts`
+- Extraction de `setPrimaryImageInScopeTx` hors de `admin-product-image.repository.ts`
+- Toute modification des contrats publics, signatures runtime, ou chemins d'import consumers
 
-Après V21-2A, les points suivants restent hors périmètre ou non traités :
+## Dépendances
 
-- internalisation de `listPublishedProducts`
-- internalisation de `getPublishedProductBySlug`
-- refactor de `catalog.mappers.ts`
-- suppression du ré-export public de types depuis `catalog.repository.ts`
-- migration du consumer [features/homepage/types.ts](/Users/laurent/Desktop/CREATYSS/features/homepage/types.ts)
-- modularisation de `order`
-- modularisation de `products`
-- modularisation des petits domaines plats
+V21 travaille à l'intérieur du cadre posé par :
 
-## Ordre de reprise du code
+- **V19** : Prisma ORM uniquement dans `db/`, contrats publics explicités, disparition du raw SQL runtime
+- **V20** : inventaire des domaines, identification des gros repositories, doctrine de modularisation interne
 
-L'ordre de reprise du code reste :
+Ces deux versions sont les références de fond. V21 transforme la doctrine de V20 en structure réelle dans le code.
 
-1. `V21-2B`
-2. `V21-3`
-3. `V21-4A`
-4. `V21-4B`
-5. `V21-5`
-
-Cet ordre n'est pas interchangeable dans cette documentation :
-
-- la façade publique `catalog` reste la première façade pilote jusqu'à la fin de `V21-2B`
-- `order` reste le premier domaine transactionnel prioritaire après cette façade de lecture
-- `products` vient après `order`
-- les petits domaines restent en dernier et seulement si le gain structurel est net
-
-## Ce qui ne sera pas codé avant documentation complète
-
-Tant que la documentation V21 n'était pas complète, aucun lot au-delà de V21-2A ne devait reprendre le code.
-
-Cette condition est désormais couverte dans `docs/v21/**` par :
-
-- [roadmap.md](./roadmap.md)
-- [doctrine.md](./doctrine.md)
-- [scope.md](./scope.md)
-- les fiches de lot de [`lots/`](./lots/)
-
-## Lecture de la doctrine V21
-
-La doctrine générale de cette version est documentée dans :
-
-- [doctrine.md](./doctrine.md)
-- [scope.md](./scope.md)
-- [roadmap.md](./roadmap.md)
-
-Ces documents complètent la documentation de lot déjà produite pour V21-2A.
-
-## Rôle de cette documentation
-
-`docs/v21/**` n'est pas une nouvelle doctrine abstraite sur Prisma.
-
-Cette arborescence sert à :
-
-- documenter ce qui a été réellement refactoré dans V21
-- figer les règles de compatibilité utilisées pendant cette phase
-- préparer les lots suivants sans réécrire l'histoire du code
-
-La doctrine de fond reste dans :
-
-- [V19](../v19/README.md) pour la stabilisation Prisma
-- [V20](../v20/README.md) pour la doctrine modulaire de `db/`
-
-## Navigation V21
+## Navigation
 
 ### Cadre général
 
-- [README](./README.md)
-- [roadmap](./roadmap.md)
-- [doctrine](./doctrine.md)
-- [scope](./scope.md)
+- [doctrine.md](./doctrine.md)
+- [scope.md](./scope.md)
+- [roadmap.md](./roadmap.md)
+- [decisions/v21-cross-lots-decisions.md](./decisions/v21-cross-lots-decisions.md)
 
 ### Lots
 
 - [V21-1 — cadrage et audit](./lots/v21-1-cadrage-audit.md)
-- [V21-2A — `catalog` : socle interne de la façade de lecture](./lots/v21-2a-catalog-socle-interne.md)
-- [V21-2B — `catalog` : cœur de la façade de lecture](./lots/v21-2b-catalog-coeur.md)
+- [V21-2A — `catalog` : socle interne](./lots/v21-2a-catalog-socle-interne.md)
+- [V21-2B — `catalog` : cœur de la façade](./lots/v21-2b-catalog-coeur.md)
 - [V21-3 — `order`](./lots/v21-3-order-internal-modularization.md)
 - [V21-4A — `products` : socle partagé](./lots/v21-4a-products-shared-core.md)
 - [V21-4B — `products` : variantes et images](./lots/v21-4b-products-variants-images.md)
 - [V21-5 — domaines restants](./lots/v21-5-small-domains-structural-cleanup.md)
 - [V21 — état final attendu](./lots/v21-final-state.md)
 
-### Architecture et décisions
+### Décisions et architecture
 
-- [architecture/catalog-internal-structure](./architecture/catalog-internal-structure.md)
-- [decisions/v21-2a-decisions](./decisions/v21-2a-decisions.md)
+- [decisions/v21-cross-lots-decisions.md](./decisions/v21-cross-lots-decisions.md)
+- [decisions/v21-2a-decisions.md](./decisions/v21-2a-decisions.md)
+- [decisions/v21-2b-decisions.md](./decisions/v21-2b-decisions.md)
+- [decisions/v21-4a-decisions.md](./decisions/v21-4a-decisions.md)
+- [decisions/v21-4b-decisions.md](./decisions/v21-4b-decisions.md)
+- [decisions/v21-5-decisions.md](./decisions/v21-5-decisions.md)
+- [architecture/catalog-internal-structure.md](./architecture/catalog-internal-structure.md)

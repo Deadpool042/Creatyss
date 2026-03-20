@@ -18,6 +18,8 @@ Réduire la densité de `order.repository.ts` en sortant les lectures, helpers t
 
 ## Audit de départ / contexte réel
 
+**Note préalable :** le dossier `db/repositories/orders/` existe déjà dans le repo au démarrage de V21-3. Il a été créé vide par anticipation. V21-3 n'a donc pas à créer ce dossier — il doit y déposer les fichiers internes extraits conformément au périmètre défini. Ne pas supprimer ce dossier vide : il est intentionnel.
+
 État réel actuel :
 
 - `order.repository.ts` : 728 lignes
@@ -44,7 +46,7 @@ V21-3 doit couvrir :
 - la modularisation interne de `order.repository.ts`
 - la conservation de `order.repository.ts` comme façade publique
 - la conservation de `order.types.ts` comme façade publique de types
-- l'introduction d'une structure interne locale sous `db/repositories/orders/`
+- le dépôt des fichiers internes extraits dans le dossier existant `db/repositories/orders/`
 
 ## Hors périmètre exact
 
@@ -60,9 +62,9 @@ V21-3 ne doit pas couvrir :
 
 - `db/repositories/order.repository.ts`
 - `db/repositories/order.types.ts`
-- nouveaux fichiers internes sous `db/repositories/orders/types/`
-- nouveaux fichiers internes sous `db/repositories/orders/queries/`
-- nouveaux fichiers internes sous `db/repositories/orders/helpers/`
+- nouveaux fichiers internes à déposer dans le dossier existant `db/repositories/orders/types/`
+- nouveaux fichiers internes à déposer dans le dossier existant `db/repositories/orders/queries/`
+- nouveaux fichiers internes à déposer dans le dossier existant `db/repositories/orders/helpers/`
 
 ## Invariants à préserver
 
@@ -94,9 +96,10 @@ Risques principaux :
 
 V21-3 est considéré terminé quand :
 
-- `order.repository.ts` est sensiblement allégé
-- les helpers de transaction, lectures et mappings internes sont sortis de la façade
-- les façades publiques restent strictement stables
+- les helpers de transaction sont sortis de `order.repository.ts` dans `db/repositories/orders/helpers/`
+- les lectures internes (publiques et admin) sont sorties de `order.repository.ts` dans `db/repositories/orders/queries/`
+- les mappers de lignes de commande et de paiement sont sortis de `order.repository.ts` dans `db/repositories/orders/helpers/` ou `db/repositories/orders/mappers/`
+- les façades publiques `order.repository.ts` et `order.types.ts` restent strictement stables
 - la sémantique `Serializable`, le retry de référence et le restock sont préservés
 - `typecheck` et `lint` passent
 
@@ -109,6 +112,14 @@ Compatibilité attendue :
 - mêmes exports publics
 - mêmes signatures runtime
 
+## Règle d'import interne
+
+À l'intérieur du domaine `order`, les fichiers internes déposés sous `db/repositories/orders/` doivent importer les types directement depuis la source de vérité interne (ex. `./types/` ou `../orders/types/`), et non depuis la façade publique `order.types.ts`.
+
+La façade publique `order.types.ts` est réservée aux consumers externes au domaine (`app/`, `features/`, `components/`).
+
+Cette règle est cohérente avec la règle d'import interne établie pour `catalog` dans V21-2B et documentée dans [doctrine.md](../doctrine.md).
+
 ## Décisions ou ambiguïtés connues
 
 Décisions déjà retenues :
@@ -116,6 +127,9 @@ Décisions déjà retenues :
 - `order.repository.ts` reste le point d'entrée public
 - `order.types.ts` reste la façade de types
 - `order-email.repository.ts` ne fait pas partie de ce lot
+- le dossier `db/repositories/orders/` existe déjà et ne doit pas être recréé
+
+**Décision — type de transaction Prisma (`TxClient`) :** dans `order.repository.ts`, le type de transaction est défini localement comme `type TxClient = Parameters<Parameters<typeof prisma.$transaction>[0]>[0]`. Ce type est interne au domaine `order`. Il ne fait pas partie de la façade publique `order.types.ts`. Pour V21-3, ce type doit être extrait dans `db/repositories/orders/types/` et partagé entre tous les fichiers internes du domaine. Les fichiers internes sous `orders/` doivent importer `TxClient` depuis ce fichier partagé et non redéfinir chacun leur propre alias local.
 
 Ambiguïtés connues :
 
