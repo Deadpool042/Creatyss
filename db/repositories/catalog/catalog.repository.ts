@@ -1,19 +1,10 @@
+//db/repositories/catalog/catalog.repository.ts
 import { prisma } from "@/db/prisma-client";
-import {
-  mapCatalogFilterCategory,
-  mapBlogPostSummary,
-} from "./catalog.mappers";
-import {
-  loadRepresentativeImagesByCategoryIds,
-} from "./helpers/category-representative-image";
-import {
-  loadPrimaryProductImagesByProductIds,
-} from "./helpers/primary-image";
+import { mapCatalogFilterCategory, mapBlogPostSummary } from "./catalog.mappers";
+import { loadRepresentativeImagesByCategoryIds } from "./helpers/category-representative-image";
+import { loadPrimaryProductImagesByProductIds } from "./helpers/primary-image";
 import { mapPublishedProductSummaryRecord } from "./helpers/product-summary";
-import {
-  getPublishedBlogPostRowBySlug,
-  listPublishedBlogPostRows,
-} from "./queries/blog.queries";
+import { getPublishedBlogPostRowBySlug, listPublishedBlogPostRows } from "./queries/blog.queries";
 import {
   getPublishedHomepageRow as readPublishedHomepageRow,
   listHomepageFeaturedBlogPostRows as readHomepageFeaturedBlogPostRows,
@@ -21,15 +12,9 @@ import {
   listHomepageFeaturedProductRows as readHomepageFeaturedProductRows,
   type FeaturedCategoryRecord,
 } from "./queries/homepage.queries";
-import {
-  listRecentPublishedProductRows,
-} from "./queries/recent-products.queries";
-import {
-  listPublishedProductRows,
-} from "./queries/catalog-listing.queries";
-import {
-  getPublishedProductDetailBySlug,
-} from "./queries/product-detail.queries";
+import { listRecentPublishedProductRows } from "./queries/recent-products.queries";
+import { listPublishedProductRows } from "./queries/catalog-listing.queries";
+import { getPublishedProductDetailBySlug } from "./queries/product-detail.queries";
 
 import type {
   DbId,

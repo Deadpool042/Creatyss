@@ -22,11 +22,11 @@ import {
   type UpdateAdminProductInput,
   type UpdateAdminSimpleProductOfferInput,
 } from "./admin-product.types";
-
-type AdminProductTypeRow = {
-  id: string;
-  product_type: ProductType;
-};
+import { ensureCategoriesExistInTx } from "./helpers/ensure-categories";
+import { replaceProductCategoriesInTx } from "./helpers/replace-categories";
+import { countVariantsInTx } from "./queries/count-variants";
+import { readProductTypeInTx } from "./queries/read-product-type";
+import type { TxClient } from "./types/tx-client";
 
 // --- Internal helpers ---
 
@@ -37,7 +37,6 @@ function isValidProductId(id: string): boolean {
 function normalizeCategoryIds(categoryIds: readonly string[]): string[] {
   return [...new Set(categoryIds)];
 }
-
 
 // Absorbs known Prisma errors and maps them to public domain errors.
 // P2002 target inspection distinguishes slug (products) vs sku (product_variants).
@@ -98,71 +97,6 @@ function assertCompatibleLegacyVariantCountForNativeSimpleOffer(variantCount: nu
       "simple_product_multiple_legacy_variants",
       "A simple product with multiple legacy variants is incoherent."
     );
-  }
-}
-
-// --- Internal transaction helpers ---
-
-type TxClient = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
-
-async function ensureCategoriesExistInTx(
-  tx: TxClient,
-  categoryIds: readonly string[]
-): Promise<string[]> {
-  const normalizedIds = normalizeCategoryIds(categoryIds);
-
-  if (normalizedIds.length === 0) {
-    return [];
-  }
-
-  const count = await tx.categories.count({
-    where: { id: { in: normalizedIds.map(BigInt) } },
-  });
-
-  if (count !== normalizedIds.length) {
-    throw new AdminProductRepositoryError(
-      "category_missing",
-      "At least one selected category does not exist."
-    );
-  }
-
-  return normalizedIds;
-}
-
-async function countVariantsInTx(tx: TxClient, productId: string): Promise<number> {
-  return tx.product_variants.count({ where: { product_id: BigInt(productId) } });
-}
-
-async function readProductTypeInTx(
-  tx: TxClient,
-  productId: string
-): Promise<AdminProductTypeRow | null> {
-  const row = await tx.products.findUnique({
-    where: { id: BigInt(productId) },
-    select: { id: true, product_type: true },
-  });
-
-  if (row === null) {
-    return null;
-  }
-
-  return { id: row.id.toString(), product_type: row.product_type as ProductType };
-}
-
-async function replaceProductCategoriesInTx(
-  tx: TxClient,
-  productId: string,
-  categoryIds: readonly string[]
-): Promise<void> {
-  await tx.product_categories.deleteMany({ where: { product_id: BigInt(productId) } });
-
-  if (categoryIds.length > 0) {
-    await tx.product_categories.createMany({
-      data: categoryIds.map((cid) => ({
-        product_id: BigInt(productId),
-        category_id: BigInt(cid),
-      })),
-    });
   }
 }
 
@@ -399,7 +333,16 @@ export async function createAdminProduct(
 ): Promise<AdminProductDetail> {
   return prisma
     .$transaction(async (tx) => {
-      const categoryIds = await ensureCategoriesExistInTx(tx, input.categoryIds);
+      const categoryIds = await ensureCategoriesExistInTx(
+        tx,
+        normalizeCategoryIds(input.categoryIds),
+        () => {
+          throw new AdminProductRepositoryError(
+            "category_missing",
+            "At least one selected category does not exist."
+          );
+        }
+      );
 
       const product = await tx.products.create({
         data: {
@@ -444,7 +387,16 @@ export async function updateAdminProduct(
 
   return prisma
     .$transaction(async (tx) => {
-      const categoryIds = await ensureCategoriesExistInTx(tx, input.categoryIds);
+      const categoryIds = await ensureCategoriesExistInTx(
+        tx,
+        normalizeCategoryIds(input.categoryIds),
+        () => {
+          throw new AdminProductRepositoryError(
+            "category_missing",
+            "At least one selected category does not exist."
+          );
+        }
+      );
       const variantCount = await countVariantsInTx(tx, input.id);
 
       assertCanSaveAsSimpleProduct(input.productType, variantCount);

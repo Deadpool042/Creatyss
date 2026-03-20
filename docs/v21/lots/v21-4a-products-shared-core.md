@@ -52,6 +52,15 @@ V21-4A ne doit pas couvrir :
 - nouveaux fichiers internes sous `db/repositories/products/queries/`
 - nouveaux fichiers internes sous `db/repositories/products/helpers/`
 
+## Fichiers internes attendus après V21-4A
+
+- `db/repositories/products/types/tx-client.ts`
+- `db/repositories/products/types/product-type-row.ts`
+- `db/repositories/products/queries/read-product-type.ts`
+- `db/repositories/products/queries/count-variants.ts`
+- `db/repositories/products/helpers/ensure-categories.ts`
+- `db/repositories/products/helpers/replace-categories.ts`
+
 ## Invariants à préserver
 
 Invariants critiques :
@@ -77,6 +86,9 @@ Risques principaux :
 - `pnpm run typecheck`
 - `pnpm run lint`
 - vérification ciblée des façades `admin-product.repository.ts` et `admin-product.types.ts`
+- vérification que les 8 exports nommés de `admin-product.repository.ts` sont strictement inchangés
+- vérification que `admin-product.types.ts` conserve strictement le même ensemble d'exports
+- vérification qu'aucun consumer hors `db/repositories/products/**` n'est modifié
 - vérification de l'absence de changement sur `simple-product-compat.ts`
 
 ## Critères de fin
@@ -100,31 +112,31 @@ V21-4A est considéré terminé quand :
 
 ### Fonctions exportées depuis `admin-product.repository.ts`
 
-| Fonction | Signature résumée |
-|---|---|
-| `findAdminProductPublishContext` | `(id: string) => Promise<AdminProductPublishContext \| null>` |
-| `listAdminProducts` | `() => Promise<AdminProductSummary[]>` |
-| `findAdminProductById` | `(id: string) => Promise<AdminProductDetail \| null>` |
-| `createAdminProduct` | `(input: CreateAdminProductInput) => Promise<AdminProductDetail>` |
-| `updateAdminProduct` | `(input: UpdateAdminProductInput) => Promise<AdminProductDetail \| null>` |
-| `updateAdminSimpleProductOffer` | `(input: UpdateAdminSimpleProductOfferInput) => Promise<AdminProductDetail \| null>` |
-| `toggleAdminProductStatus` | `(id: string) => Promise<"draft" \| "published" \| null>` |
-| `deleteAdminProduct` | `(id: string) => Promise<boolean>` |
+| Fonction                         | Signature résumée                                                                    |
+| -------------------------------- | ------------------------------------------------------------------------------------ |
+| `findAdminProductPublishContext` | `(id: string) => Promise<AdminProductPublishContext \| null>`                        |
+| `listAdminProducts`              | `() => Promise<AdminProductSummary[]>`                                               |
+| `findAdminProductById`           | `(id: string) => Promise<AdminProductDetail \| null>`                                |
+| `createAdminProduct`             | `(input: CreateAdminProductInput) => Promise<AdminProductDetail>`                    |
+| `updateAdminProduct`             | `(input: UpdateAdminProductInput) => Promise<AdminProductDetail \| null>`            |
+| `updateAdminSimpleProductOffer`  | `(input: UpdateAdminSimpleProductOfferInput) => Promise<AdminProductDetail \| null>` |
+| `toggleAdminProductStatus`       | `(id: string) => Promise<"draft" \| "published" \| null>`                            |
+| `deleteAdminProduct`             | `(id: string) => Promise<boolean>`                                                   |
 
 ### Types et classes exportés depuis `admin-product.types.ts`
 
-| Export | Nature |
-|---|---|
-| `AdminProductStatus` | type alias (`"draft" \| "published"`) |
-| `CreateAdminProductInput` | type |
-| `UpdateAdminProductInput` | type |
-| `UpdateAdminSimpleProductOfferInput` | type |
-| `AdminProductPublishContext` | type |
-| `AdminProductRepositoryErrorCode` | type union |
-| `AdminProductSummary` | type |
-| `AdminProductCategoryAssignment` | type |
-| `AdminProductDetail` | type |
-| `AdminProductRepositoryError` | classe |
+| Export                               | Nature                                |
+| ------------------------------------ | ------------------------------------- |
+| `AdminProductStatus`                 | type alias (`"draft" \| "published"`) |
+| `CreateAdminProductInput`            | type                                  |
+| `UpdateAdminProductInput`            | type                                  |
+| `UpdateAdminSimpleProductOfferInput` | type                                  |
+| `AdminProductPublishContext`         | type                                  |
+| `AdminProductRepositoryErrorCode`    | type union                            |
+| `AdminProductSummary`                | type                                  |
+| `AdminProductCategoryAssignment`     | type                                  |
+| `AdminProductDetail`                 | type                                  |
+| `AdminProductRepositoryError`        | classe                                |
 
 ## Exports publics après V21-4A
 
@@ -138,27 +150,27 @@ Les fichiers extraits dans `types/`, `queries/` et `helpers/` sont des fichiers 
 
 ### Blocs extraits
 
-| Bloc | Destination | Motif |
-|---|---|---|
-| `TxClient` | `products/types/tx-client.ts` | domaine modularisé — décision transverse T-2 : extraction requise dès lors qu'un sous-dossier interne est créé |
-| `AdminProductTypeRow` (renommé `ProductTypeRow`) | `products/types/product-type-row.ts` | type de row Prisma partagé intra-domaine — utilisé par `readProductTypeInTx` dans les deux repositorys du domaine |
-| `readProductTypeInTx` | `products/queries/read-product-type.ts` | lecture pure, partageable avec V21-4B ; extraction dans V21-4A, consommation par `admin-product-variant.repository.ts` reportée à V21-4B |
-| `countVariantsInTx` | `products/queries/count-variants.ts` | même motif que `readProductTypeInTx` |
-| `ensureCategoriesExistInTx` | `products/helpers/ensure-categories.ts` | fonction autonome (~20 lignes), responsabilité unique (lecture + guard catégories), volumineuse suffisamment pour justifier l'extraction |
-| `replaceProductCategoriesInTx` | `products/helpers/replace-categories.ts` | mutation transactionnelle pure et autonome (deleteMany + createMany) |
+| Bloc                                             | Destination                              | Motif                                                                                                                                    |
+| ------------------------------------------------ | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `TxClient`                                       | `products/types/tx-client.ts`            | domaine modularisé — décision transverse T-2 : extraction requise dès lors qu'un sous-dossier interne est créé                           |
+| `AdminProductTypeRow` (renommé `ProductTypeRow`) | `products/types/product-type-row.ts`     | type de row Prisma partagé intra-domaine — utilisé par `readProductTypeInTx` dans les deux repositorys du domaine                        |
+| `readProductTypeInTx`                            | `products/queries/read-product-type.ts`  | lecture pure, partageable avec V21-4B ; extraction dans V21-4A, consommation par `admin-product-variant.repository.ts` reportée à V21-4B |
+| `countVariantsInTx`                              | `products/queries/count-variants.ts`     | même motif que `readProductTypeInTx`                                                                                                     |
+| `ensureCategoriesExistInTx`                      | `products/helpers/ensure-categories.ts`  | fonction autonome (~20 lignes), responsabilité unique (lecture + guard catégories), volumineuse suffisamment pour justifier l'extraction |
+| `replaceProductCategoriesInTx`                   | `products/helpers/replace-categories.ts` | mutation transactionnelle pure et autonome (deleteMany + createMany)                                                                     |
 
 ### Blocs conservés dans la façade
 
-| Bloc | Motif |
-|---|---|
-| `isValidProductId` | petite fonction utilitaire (1 ligne) — duplication locale, décision transverse T-1 |
-| `normalizeCategoryIds` | petite fonction utilitaire (1 ligne) — duplication locale, décision transverse T-1 |
-| `mapPrismaRepositoryError` | error mapper produisant des erreurs publiques (`AdminProductRepositoryError`) — décision transverse T-3 |
-| `assertCanSaveAsSimpleProduct` | courte (5 lignes), lance une `AdminProductRepositoryError` publique, extraction n'apporte pas de gain de lisibilité mesurable |
-| `assertProductSupportsNativeSimpleOffer` | même motif |
-| `assertCompatibleLegacyVariantCountForNativeSimpleOffer` | même motif |
-| `loadAdminProductDetailInTx` | combine lecture Prisma + mapping complet vers `AdminProductDetail` + requête conditionnelle variantes legacy — extraction diluerait la lecture du flow transactionnel |
-| 8 fonctions publiques exportées | invariant de façade — voir section "Exports publics" |
+| Bloc                                                     | Motif                                                                                                                                                                 |
+| -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `isValidProductId`                                       | petite fonction utilitaire (1 ligne) — duplication locale, décision transverse T-1                                                                                    |
+| `normalizeCategoryIds`                                   | petite fonction utilitaire (1 ligne) — duplication locale, décision transverse T-1                                                                                    |
+| `mapPrismaRepositoryError`                               | error mapper produisant des erreurs publiques (`AdminProductRepositoryError`) — décision transverse T-3                                                               |
+| `assertCanSaveAsSimpleProduct`                           | courte (5 lignes), lance une `AdminProductRepositoryError` publique, extraction n'apporte pas de gain de lisibilité mesurable                                         |
+| `assertProductSupportsNativeSimpleOffer`                 | même motif                                                                                                                                                            |
+| `assertCompatibleLegacyVariantCountForNativeSimpleOffer` | même motif                                                                                                                                                            |
+| `loadAdminProductDetailInTx`                             | combine lecture Prisma + mapping complet vers `AdminProductDetail` + requête conditionnelle variantes legacy — extraction diluerait la lecture du flow transactionnel |
+| 8 fonctions publiques exportées                          | invariant de façade — voir section "Exports publics"                                                                                                                  |
 
 ## Ce qui reste volontairement dans la façade après V21-4A
 
@@ -201,6 +213,13 @@ Compatibilité attendue :
 - mêmes chemins publics `admin-product.repository.ts` et `admin-product.types.ts`
 - mêmes exports publics
 - mêmes signatures runtime
+
+## Règles d'import internes
+
+- `admin-product.repository.ts` peut importer depuis `./types/*`, `./queries/*`, `./helpers/*`, `./admin-product.types` et `./simple-product-compat`
+- les fichiers internes sous `types/`, `queries/` et `helpers/` ne doivent jamais importer depuis `admin-product.repository.ts`
+- les fichiers internes sous `types/`, `queries/` et `helpers/` ne doivent jamais importer depuis `admin-product.types.ts`
+- les fichiers internes ne doivent pas créer de dépendances circulaires entre eux
 
 ## Décisions préalables
 
