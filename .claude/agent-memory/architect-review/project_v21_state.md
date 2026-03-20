@@ -27,7 +27,7 @@ Domaines plats (NO-GO V21) :
 
 1. AdminProductImageRepositoryError — constructeur sans `code` paramètre (code hardcodé à "variant_missing"), incohérent avec les autres error classes du domaine. Gelé T-4 V21.
 2. transaction-guards.ts (admin-homepage) importe AdminHomepageRepositoryError depuis la façade publique ../../admin-homepage.types — violation doctrine V21 (import interne depuis façade publique). Toléré dans V21 car error class non dupliquée.
-3. orders/types/public.ts importe OrderEmailEvent depuis @/db/repositories/order-email.types — couplage inter-domaine dans un fichier de types internes.
+3. ~~orders/types/public.ts importe OrderEmailEvent depuis @/db/repositories/order-email.types~~ — RÉSOLU au 2026-03-20. AdminOrderDetail déplacé dans order.types.ts (façade), OrderEmailEvent importé uniquement au niveau façade.
 4. catalog.mappers.ts (190 lignes) non touché dans V21 — volontaire mais reste dense.
 5. loadAdminProductDetailInTx (admin-product.repository.ts) — logique complexe en façade, dupliquée avec findAdminProductById (même corps ~80 lignes).
 6. guest-cart helpers importent depuis ../../guest-cart.types (façade publique) — même pattern violation que admin-homepage.

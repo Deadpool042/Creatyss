@@ -29,6 +29,6 @@ V21 est ENTIÈREMENT TERMINÉ au 2026-03-20. Tous les lots V21-1 à V21-5 + fina
 1. AdminProductImageRepositoryError — constructeur sans `code` paramètre (hardcodé "variant_missing"). Gelé T-4.
 2. transaction-guards.ts (admin-homepage) importe AdminHomepageRepositoryError depuis ../../admin-homepage.types (façade publique) — violation doctrine import interne.
 3. guest-cart/helpers/mappers.ts et cart-builder.ts importent depuis ../../guest-cart.types (façade publique) — même violation.
-4. orders/types/public.ts importe OrderEmailEvent depuis @/db/repositories/order-email.types — couplage inter-domaine dans types internes.
+4. ~~orders/types/public.ts importe OrderEmailEvent~~ — RÉSOLU au 2026-03-20. AdminOrderDetail repositionné dans order.types.ts (façade).
 5. loadAdminProductDetailInTx — dupliqué avec findAdminProductById (~80 lignes identiques). Décision volontaire T-3 / complexité.
 6. catalog.mappers.ts (190 lignes) non découpé — volontaire V21.

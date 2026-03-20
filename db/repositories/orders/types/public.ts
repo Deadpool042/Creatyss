@@ -1,4 +1,3 @@
-import type { OrderEmailEvent } from "@/db/repositories/order-email.types";
 import type { OrderStatus } from "@/entities/order/order-status-transition";
 
 export type { OrderStatus } from "@/entities/order/order-status-transition";
@@ -84,10 +83,6 @@ export type OrderEmailContext = {
   customerFirstName: string;
   totalAmount: string;
   trackingReference: string | null;
-};
-
-export type AdminOrderDetail = PublicOrderConfirmation & {
-  emailEvents: OrderEmailEvent[];
 };
 
 export type CreateOrderFromGuestCartResult = {
