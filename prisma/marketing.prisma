@@ -1,0 +1,70 @@
+// -----------------------------------------------------------------------------
+// Domaine: marketing
+// Responsabilité: campagnes, opérations et activations marketing.
+// -----------------------------------------------------------------------------
+// prisma/marketing.prisma
+
+enum MarketingCampaignStatus {
+  DRAFT
+  SCHEDULED
+  ACTIVE
+  PAUSED
+  COMPLETED
+  ARCHIVED
+}
+
+enum MarketingCampaignChannel {
+  EMAIL
+  SOCIAL
+  ONSITE
+  MANUAL
+}
+
+model MarketingCampaign {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  name        String
+  description String?
+
+  status  MarketingCampaignStatus  @default(DRAFT)
+  channel MarketingCampaignChannel
+
+  startsAt DateTime?
+  endsAt   DateTime?
+
+  budgetAmount Decimal?      @db.Decimal(12, 2)
+  currencyCode CurrencyCode?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store                   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  links MarketingCampaignLink[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([status])
+  @@index([channel])
+  @@index([startsAt])
+  @@index([endsAt])
+  @@map("marketing_campaigns")
+}
+
+model MarketingCampaignLink {
+  id                  String @id @default(cuid())
+  marketingCampaignId String
+
+  subjectType String
+  subjectId   String
+
+  createdAt DateTime @default(now())
+
+  marketingCampaign MarketingCampaign @relation(fields: [marketingCampaignId], references: [id], onDelete: Cascade)
+
+  @@unique([marketingCampaignId, subjectType, subjectId])
+  @@index([marketingCampaignId])
+  @@index([subjectType, subjectId])
+  @@map("marketing_campaign_links")
+}

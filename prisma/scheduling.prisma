@@ -1,0 +1,41 @@
+// -----------------------------------------------------------------------------
+// Domaine: scheduling
+// Responsabilité: planification métier temporelle.
+// -----------------------------------------------------------------------------
+// prisma/scheduling.prisma
+
+enum SchedulingEntryStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  FAILED
+}
+
+model SchedulingEntry {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  subjectType String
+  subjectId   String
+  actionCode  String
+
+  status       SchedulingEntryStatus @default(ACTIVE)
+  scheduledFor DateTime
+  executedAt   DateTime?
+  cancelledAt  DateTime?
+  failedAt     DateTime?
+
+  payload Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([subjectType, subjectId])
+  @@index([actionCode])
+  @@index([status])
+  @@index([scheduledFor])
+  @@map("scheduling_entries")
+}

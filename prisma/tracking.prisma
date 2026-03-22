@@ -1,0 +1,61 @@
+// -----------------------------------------------------------------------------
+// Domaine: tracking
+// Responsabilité: signaux de mesure structurés.
+// -----------------------------------------------------------------------------
+// prisma/tracking.prisma
+
+enum TrackingEventStatus {
+  RECORDED
+  IGNORED
+  REJECTED
+}
+
+enum TrackingActorKind {
+  VISITOR
+  CUSTOMER
+  USER
+}
+
+model TrackingEvent {
+  id      String @id @default(cuid())
+  storeId String
+
+  eventName String
+  actorKind TrackingActorKind
+
+  visitorKey String?
+  customerId String?
+  userId     String?
+
+  sessionKey  String?
+  pageUrl     String?
+  referrerUrl String?
+  source      String?
+  medium      String?
+  campaign    String?
+
+  subjectType String?
+  subjectId   String?
+
+  status     TrackingEventStatus @default(RECORDED)
+  occurredAt DateTime            @default(now())
+
+  payload Json?
+
+  createdAt DateTime @default(now())
+
+  store    Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  user     User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([eventName])
+  @@index([actorKind])
+  @@index([visitorKey])
+  @@index([customerId])
+  @@index([userId])
+  @@index([sessionKey])
+  @@index([subjectType, subjectId])
+  @@index([occurredAt])
+  @@map("tracking_events")
+}

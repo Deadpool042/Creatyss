@@ -1,0 +1,80 @@
+// -----------------------------------------------------------------------------
+// Domaine: template-system
+// Responsabilité: templates réutilisables, variants, slots.
+// -----------------------------------------------------------------------------
+// prisma/template-system.prisma
+
+enum TemplateDefinitionStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum TemplateUsageKind {
+  EMAIL
+  NOTIFICATION
+  PAGE_SECTION
+  EVENT
+  MARKETING
+  GENERIC
+}
+
+model TemplateDefinition {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  name        String
+  description String?
+
+  usageKind TemplateUsageKind
+  status    TemplateDefinitionStatus @default(DRAFT)
+
+  subject  String?
+  htmlBody String?
+  textBody String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store    Store             @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  variants TemplateVariant[]
+  emails   EmailMessage[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([usageKind])
+  @@index([status])
+  @@map("template_definitions")
+}
+
+model TemplateVariant {
+  id                   String @id @default(cuid())
+  templateDefinitionId String
+
+  code    String?
+  locale  String?
+  channel String?
+  name    String?
+
+  subject  String?
+  htmlBody String?
+  textBody String?
+
+  isDefault Boolean                  @default(false)
+  status    TemplateDefinitionStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  templateDefinition TemplateDefinition @relation(fields: [templateDefinitionId], references: [id], onDelete: Cascade)
+  emails             EmailMessage[]
+
+  @@unique([templateDefinitionId, code])
+  @@index([templateDefinitionId])
+  @@index([locale])
+  @@index([channel])
+  @@index([isDefault])
+  @@index([status])
+  @@map("template_variants")
+}

@@ -1,0 +1,63 @@
+// -----------------------------------------------------------------------------
+// Domaine: localization
+// Responsabilité: locales, valeurs localisées, fallback.
+// -----------------------------------------------------------------------------
+// prisma/localization.prisma
+
+enum LocalizationValueStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+model LocaleDefinition {
+  id      String @id @default(cuid())
+  storeId String
+
+  code         String
+  languageCode String
+  countryCode  String?
+  label        String
+
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store  Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  values LocalizedValue[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([isDefault])
+  @@index([isActive])
+  @@map("locale_definitions")
+}
+
+model LocalizedValue {
+  id       String @id @default(cuid())
+  storeId  String
+  localeId String
+
+  subjectType String
+  subjectId   String
+  fieldName   String
+
+  value  String
+  status LocalizationValueStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store  Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  locale LocaleDefinition @relation(fields: [localeId], references: [id], onDelete: Cascade)
+
+  @@unique([localeId, subjectType, subjectId, fieldName])
+  @@index([storeId])
+  @@index([localeId])
+  @@index([subjectType, subjectId])
+  @@index([fieldName])
+  @@index([status])
+  @@map("localized_values")
+}

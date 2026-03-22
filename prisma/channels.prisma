@@ -1,0 +1,76 @@
+// -----------------------------------------------------------------------------
+// Domaine: channels
+// Responsabilité: canaux de diffusion catalogue (Google Shopping, Meta, custom).
+// -----------------------------------------------------------------------------
+// prisma/channels.prisma
+
+enum ChannelKind {
+  GOOGLE_SHOPPING
+  META_CATALOG
+  CUSTOM
+}
+
+enum ChannelStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum ChannelPublicationStatus {
+  NOT_SUBMITTED
+  PENDING
+  APPROVED
+  REJECTED
+  REMOVED
+}
+
+model Channel {
+  id      String @id @default(cuid())
+  storeId String
+
+  kind   ChannelKind
+  name   String
+  status ChannelStatus @default(ACTIVE)
+
+  externalId String?
+  config     Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store        Store                       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  publications ChannelProductPublication[]
+
+  @@unique([storeId, kind, name])
+  @@index([storeId])
+  @@index([kind])
+  @@index([status])
+  @@map("channels")
+}
+
+model ChannelProductPublication {
+  id        String @id @default(cuid())
+  channelId String
+  productId String
+
+  status ChannelPublicationStatus @default(NOT_SUBMITTED)
+
+  submittedAt DateTime?
+  approvedAt  DateTime?
+  rejectedAt  DateTime?
+  removedAt   DateTime?
+
+  rejectionReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([channelId, productId])
+  @@index([channelId])
+  @@index([productId])
+  @@index([status])
+  @@map("channel_product_publications")
+}

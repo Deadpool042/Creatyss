@@ -1,13 +1,14 @@
+import { randomUUID } from "node:crypto";
 import { Pool } from "pg";
 
 type SeedAdminDefinition = {
   email: string;
   displayName: string;
   password: string;
-  isActive: boolean;
+  status: "active" | "disabled";
 };
 
-type ExistingAdminRow = {
+type ExistingUserRow = {
   id: string;
 };
 
@@ -26,13 +27,13 @@ const DEV_ADMINS: readonly SeedAdminDefinition[] = [
     email: "admin@creatyss.local",
     displayName: "Admin Creatyss",
     password: "AdminDev123!",
-    isActive: true,
+    status: "active",
   },
   {
     email: "inactive-admin@creatyss.local",
     displayName: "Admin Creatyss Inactive",
     password: "AdminDev123!",
-    isActive: false,
+    status: "disabled",
   },
 ];
 
@@ -55,10 +56,10 @@ async function main() {
         throw new Error(`Invalid seeded admin input for email: ${admin.email}`);
       }
 
-      const existingAdmin = await pool.query<ExistingAdminRow>(
+      const existingUser = await pool.query<ExistingUserRow>(
         `
           select id::text as id
-          from admin_users
+          from users
           where lower(email) = lower($1)
           limit 1
         `,
@@ -67,36 +68,46 @@ async function main() {
 
       const passwordHash = await adminAuth.hashAdminPassword(normalizedInput.password);
 
-      if (existingAdmin.rows.length > 0) {
+      if (existingUser.rows.length > 0) {
         await pool.query(
           `
-            update admin_users
+            update users
             set
               display_name = $2,
               password_hash = $3,
-              is_active = $4,
+              role = 'admin',
+              status = $4,
               updated_at = now()
             where lower(email) = lower($1)
           `,
-          [normalizedInput.email, normalizedInput.displayName, passwordHash, admin.isActive]
+          [normalizedInput.email, normalizedInput.displayName, passwordHash, admin.status]
         );
 
         process.stdout.write(`Admin user updated for ${normalizedInput.email}.\n`);
-
         continue;
       }
 
       await pool.query(
         `
-          insert into admin_users (
+          insert into users (
+            id,
             email,
             password_hash,
             display_name,
-            is_active
+            role,
+            status,
+            created_at,
+            updated_at
           )
-          values ($1, $2, $3, $4)
+          values ($1, $2, $3, $4, 'admin', $5, now(), now())
         `,
-        [normalizedInput.email, passwordHash, normalizedInput.displayName, admin.isActive]
+        [
+          randomUUID(),
+          normalizedInput.email,
+          passwordHash,
+          normalizedInput.displayName,
+          admin.status,
+        ]
       );
 
       process.stdout.write(`Admin user created for ${normalizedInput.email}.\n`);

@@ -1,0 +1,78 @@
+// -----------------------------------------------------------------------------
+// Domaine: webhooks
+// Responsabilité: abonnements, deliveries, retries, sécurité webhook.
+// -----------------------------------------------------------------------------
+// prisma/webhooks.prisma
+
+enum WebhookStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum WebhookEventStatus {
+  PENDING
+  DELIVERED
+  FAILED
+  CANCELLED
+}
+
+model WebhookEndpoint {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  code        String
+  name        String
+  description String?
+
+  url        String
+  secretHash String
+
+  status           WebhookStatus @default(ACTIVE)
+  subscribedEvents Json
+
+  lastDeliveredAt DateTime?
+  lastFailedAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store      Store?            @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  deliveries WebhookDelivery[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([status])
+  @@map("webhook_endpoints")
+}
+
+model WebhookDelivery {
+  id         String @id @default(cuid())
+  endpointId String
+
+  eventName String
+  eventKey  String?
+  status    WebhookEventStatus @default(PENDING)
+
+  payload            Json?
+  responseStatusCode Int?
+  responseBody       String?
+
+  attemptCount Int       @default(0)
+  nextRetryAt  DateTime?
+
+  deliveredAt DateTime?
+  failedAt    DateTime?
+  cancelledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  endpoint WebhookEndpoint @relation(fields: [endpointId], references: [id], onDelete: Cascade)
+
+  @@index([endpointId])
+  @@index([eventName])
+  @@index([status])
+  @@index([nextRetryAt])
+  @@map("webhook_deliveries")
+}

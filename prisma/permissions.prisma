@@ -1,0 +1,62 @@
+// -----------------------------------------------------------------------------
+// Domaine: permissions
+// Responsabilité: permissions fines, scope et assignations.
+// -----------------------------------------------------------------------------
+// prisma/permissions.prisma
+
+enum PermissionStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum PermissionScopeType {
+  PLATFORM
+  STORE
+  DOMAIN
+}
+
+model Permission {
+  id String @id @default(cuid())
+
+  code        String  @unique
+  resource    String
+  action      String
+  description String?
+
+  scopeType   PermissionScopeType
+  status      PermissionStatus    @default(ACTIVE)
+  isSensitive Boolean             @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  roleLinks      RolePermission[]
+  apiClientLinks ApiClientPermission[]
+
+  @@index([resource])
+  @@index([action])
+  @@index([scopeType])
+  @@index([status])
+  @@index([isSensitive])
+  @@map("permissions")
+}
+
+model RolePermission {
+  id           String  @id @default(cuid())
+  roleId       String
+  permissionId String
+  grantedById  String?
+
+  grantedAt DateTime @default(now())
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  grantedBy  User?      @relation(fields: [grantedById], references: [id], onDelete: SetNull)
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+  @@index([grantedById])
+  @@map("role_permissions")
+}

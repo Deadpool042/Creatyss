@@ -1,0 +1,64 @@
+// -----------------------------------------------------------------------------
+// Domaine: users
+// Responsabilité: comptes humains internes de la plateforme / boutique.
+// -----------------------------------------------------------------------------
+// prisma/users.prisma
+
+enum UserStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+  DISABLED
+  ARCHIVED
+}
+
+model User {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  email       String  @unique
+  firstName   String?
+  lastName    String?
+  displayName String?
+
+  status UserStatus @default(INVITED)
+
+  lastSeenAt  DateTime?
+  invitedAt   DateTime?
+  activatedAt DateTime?
+  suspendedAt DateTime?
+  disabledAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store        Store?        @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  authIdentity AuthIdentity?
+
+  directUserRoles             UserRole[]            @relation("UserRoleUser")
+  assignedUserRoles           UserRole[]            @relation("UserRoleAssignedBy")
+  grantedApiClientPermissions ApiClientPermission[]
+  grantedRolePermissions      RolePermission[]
+  requestedRecoveryFlows      AuthRecoveryRequest[]
+  auditLogs                   AuditLog[]
+  notifications               Notification[]
+  emailMessages               EmailMessage[]
+  supportTicketsAssigned      SupportTicket[]
+  supportMessages             SupportMessage[]
+  legalAcceptances            LegalAcceptance[]
+  consentRecords              ConsentRecord[]
+  observabilityRecords        ObservabilityRecord[]
+  approvalRequestsRequested   ApprovalRequest[]     @relation("ApprovalRequestedBy")
+  approvalRequestsReviewed    ApprovalRequest[]     @relation("ApprovalReviewedBy")
+  fraudRiskReviews            FraudRiskAssessment[]
+  crmNotes                    CrmNote[]
+  aiContentGenerations        AiContentGeneration[]
+  subscriptions               Subscription[]
+  exportRequests              ExportRequest[]
+  importRequests              ImportRequest[]
+  trackingEvents              TrackingEvent[]
+
+  @@index([storeId])
+  @@index([status])
+  @@map("users")
+}

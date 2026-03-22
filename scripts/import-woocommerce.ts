@@ -1,401 +1,583 @@
-/**
- * Import WooCommerce data into the Creatyss database.
- *
- * Reads:
- *   seed_data/products.creatyss.json
- *   seed_data/categories.creatyss.json
- *
- * Populates:
- *   categories, products, product_variants, product_categories,
- *   media_assets, product_images
- *
- * Usage:
- *   node --experimental-strip-types scripts/import-woocommerce.ts
- *   node --experimental-strip-types scripts/import-woocommerce.ts --skip-images
- *   node --experimental-strip-types scripts/import-woocommerce.ts --force
- *
- * Flags:
- *   --skip-images  Skip image download/conversion (fast, data-only run)
- *   --force        Re-download + re-convert images even if they already exist
- *
- * Idempotent — safe to run multiple times.
- */
-
+import { createHash, randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
 import { Pool } from "pg";
 
-// ---------------------------------------------------------------------------
-// WooCommerce types
-// ---------------------------------------------------------------------------
+type CliOptions = {
+  skipImages: boolean;
+};
 
-type WcProduct = {
+type WooCategory = {
   id: number;
   name: string;
   slug: string;
-  sku: string;
+  description: string;
+};
+
+type WooImage = {
+  id: number;
+  src: string;
+  name?: string;
+  alt?: string;
+};
+
+type WooProductCategoryRef = {
+  id: number;
+  name: string;
+  slug: string;
+};
+
+type WooProduct = {
+  id: number;
+  name: string;
+  slug: string;
+  type: "simple" | "variable" | string;
+  status: string;
+  featured: boolean;
+  description: string;
   short_description: string;
-  description: string;
-  on_sale: boolean;
-  prices: {
-    price: string;
-    regular_price: string;
-    sale_price: string;
-    currency_minor_unit: number;
-  };
-  categories: { id: number; name: string; slug: string }[];
-  images: { id: number; src: string; alt: string; name: string }[];
+  sku: string;
+  price: string;
+  regular_price: string;
+  sale_price: string;
+  stock_quantity: number | null;
+  manage_stock: boolean;
+  images: WooImage[];
+  categories: WooProductCategoryRef[];
 };
 
-type WcCategory = {
+type WooVariation = {
   id: number;
-  name: string;
-  slug: string;
-  description: string;
-  parent: number;
-  count: number;
-  image: { src: string; alt: string } | null;
+  sku: string;
+  price: string;
+  regular_price: string;
+  sale_price: string;
+  stock_quantity: number | null;
 };
 
-// ---------------------------------------------------------------------------
-// Config
-// ---------------------------------------------------------------------------
-
-const SKIP_IMAGES = process.argv.includes("--skip-images");
-const FORCE = process.argv.includes("--force");
+type DbIdRow = {
+  id: string;
+};
 
 const ROOT = process.cwd();
 const UPLOADS_DIR = (process.env.UPLOADS_DIR ?? "public/uploads").replace(/\/$/, "");
 const UPLOADS_ABS = path.join(ROOT, UPLOADS_DIR);
-
-// Maps WooCommerce category slugs → Creatyss category slugs.
-// Adjust if needed.
-const CATEGORY_SLUG_MAP: Record<string, string> = {
-  "les-sacs-a-bandouliere": "sacs-a-bandouliere",
-  "sacs-creatyss": "sacs-a-main",
-  "mini-sacs": "mini-sacs",
-  pochettes: "pochettes-trousses",
-  "sacs-a-dos": "sacs-a-dos",
-};
-
 const WEBP_OPTIONS: sharp.WebpOptions = { quality: 85, effort: 4 };
 
 function readDatabaseUrl(): string {
-  const v = process.env.DATABASE_URL?.trim();
-  return v && v.length > 0 ? v : "postgresql://creatyss:creatyss@db:5432/creatyss";
+  const value = process.env.DATABASE_URL;
+  if (value && value.trim().length > 0) return value.trim();
+  return "postgresql://creatyss:creatyss@db:5432/creatyss";
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-/** Strip HTML tags and decode common entities. */
-function stripHtml(html: string | null | undefined): string {
-  if (!html) return "";
-  return html
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/p>/gi, "\n\n")
-    .replace(/<[^>]+>/g, "")
-    .replace(/&rsquo;|&#8217;/g, "'")
-    .replace(/&lsquo;|&#8216;/g, "'")
-    .replace(/&rdquo;|&#8221;/g, '"')
-    .replace(/&ldquo;|&#8220;/g, '"')
-    .replace(/&amp;/g, "&")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&gt;/g, ">")
-    .replace(/&lt;/g, "<")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
+function readRequiredEnv(name: string): string {
+  const value = process.env[name];
+  if (!value || value.trim().length === 0) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+  return value.trim();
 }
 
-/** Convert price from WooCommerce minor units to decimal. */
-function toDecimalPrice(minorStr: string, minorUnit: number): number {
-  return Number(minorStr) / Math.pow(10, minorUnit);
+function parseCliOptions(argv: readonly string[]): CliOptions {
+  return {
+    skipImages: argv.includes("--skip-images"),
+  };
 }
 
-/** Generate a SKU from a slug when the product has none. */
-function slugToSku(slug: string): string {
-  const parts = slug.split("-").map((p) => p.slice(0, 3).toUpperCase());
-  return parts.slice(0, 4).join("") + "-IMP";
+function normalizeMoneyToCents(value: string | null | undefined): number | null {
+  if (!value || value.trim() === "") return null;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return null;
+  return Math.round(parsed * 100);
 }
 
-/**
- * Download an image URL, convert to WebP, write to disk.
- * Returns { byteSize, width, height } on success, null if skipped/failed.
- */
-async function downloadAndConvert(
-  url: string,
-  dest: string
-): Promise<{ byteSize: number; width: number | null; height: number | null } | null> {
-  if (!FORCE && existsSync(dest)) {
-    return null; // already done
+function normalizeStatus(value: string): "draft" | "published" | "archived" {
+  if (value === "publish") return "published";
+  if (value === "draft") return "draft";
+  return "archived";
+}
+
+function buildWooUrl(pathname: string, params?: Record<string, string | number>): string {
+  const baseUrl = readRequiredEnv("WC_BASE_URL").replace(/\/$/, "");
+  const url = new URL(`${baseUrl}/wp-json/wc/v3/${pathname.replace(/^\//, "")}`);
+  url.searchParams.set("consumer_key", readRequiredEnv("WC_CONSUMER_KEY"));
+  url.searchParams.set("consumer_secret", readRequiredEnv("WC_CONSUMER_SECRET"));
+
+  for (const [key, value] of Object.entries(params ?? {})) {
+    url.searchParams.set(key, String(value));
   }
 
-  let inputBuffer: Buffer;
+  return url.toString();
+}
 
-  try {
-    const resp = await fetch(url, { signal: AbortSignal.timeout(15_000) });
-    if (!resp.ok) {
-      process.stderr.write(`  download failed (${resp.status}): ${url}\n`);
-      return null;
-    }
-    inputBuffer = Buffer.from(await resp.arrayBuffer());
-  } catch (err) {
-    process.stderr.write(
-      `  download error: ${url} — ${err instanceof Error ? err.message : err}\n`
+async function fetchJson<T>(url: string): Promise<T> {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`WooCommerce request failed (${response.status}) for ${url}: ${body}`);
+  }
+
+  return (await response.json()) as T;
+}
+
+async function fetchPagedCollection<T>(pathname: string): Promise<T[]> {
+  const results: T[] = [];
+  let page = 1;
+
+  while (true) {
+    const url = buildWooUrl(pathname, { per_page: 100, page });
+    const batch = await fetchJson<T[]>(url);
+
+    if (batch.length === 0) break;
+
+    results.push(...batch);
+
+    if (batch.length < 100) break;
+    page += 1;
+  }
+
+  return results;
+}
+
+async function fetchVariations(productId: number): Promise<WooVariation[]> {
+  return fetchPagedCollection<WooVariation>(`products/${productId}/variations`);
+}
+
+async function ensureCategory(pool: Pool, category: WooCategory): Promise<string> {
+  const existing = await pool.query<DbIdRow>(
+    `select id::text as id from categories where slug = $1 limit 1`,
+    [category.slug]
+  );
+
+  const existingId = existing.rows[0]?.id;
+
+  if (existingId) {
+    await pool.query(
+      `
+        update categories
+        set
+          name = $2,
+          description = $3,
+          status = 'active',
+          updated_at = now()
+        where id = $1
+      `,
+      [existingId, category.name, category.description || null]
     );
-    return null;
+    return existingId;
   }
 
-  await mkdir(path.dirname(dest), { recursive: true });
+  const id = `wc-cat-${category.id}`;
+  await pool.query(
+    `
+      insert into categories (
+        id,
+        slug,
+        name,
+        description,
+        status,
+        is_featured,
+        display_order,
+        created_at,
+        updated_at
+      )
+      values ($1, $2, $3, $4, 'active', false, 0, now(), now())
+    `,
+    [id, category.slug, category.name, category.description || null]
+  );
 
-  const { data, info } = await sharp(inputBuffer)
+  return id;
+}
+
+async function upsertProduct(pool: Pool, product: WooProduct): Promise<string> {
+  const existingProduct = await pool.query<DbIdRow>(
+    `select id::text as id from products where slug = $1 limit 1`,
+    [product.slug]
+  );
+
+  const productId = existingProduct.rows[0]?.id ?? `wc-prod-${product.id}`;
+  const productType = product.type === "variable" ? "variable" : "simple";
+  const status = normalizeStatus(product.status);
+
+  await pool.query(
+    `
+      insert into products (
+        id,
+        slug,
+        name,
+        short_description,
+        description,
+        status,
+        product_type,
+        is_featured,
+        seo_title,
+        seo_description,
+        published_at,
+        simple_sku,
+        simple_price_cents,
+        simple_compare_at_cents,
+        simple_stock_quantity,
+        track_inventory,
+        created_at,
+        updated_at
+      )
+      values (
+        $1,
+        $2,
+        $3,
+        $4,
+        $5,
+        $6::product_status,
+        $7::product_type,
+        $8,
+        $9,
+        $10,
+        case when $6::text = 'published' then now() else null end,
+        $11,
+        $12,
+        $13,
+        $14,
+        $15,
+        now(),
+        now()
+      )
+      on conflict (id) do update
+      set
+        slug = excluded.slug,
+        name = excluded.name,
+        short_description = excluded.short_description,
+        description = excluded.description,
+        status = excluded.status,
+        product_type = excluded.product_type,
+        is_featured = excluded.is_featured,
+        seo_title = excluded.seo_title,
+        seo_description = excluded.seo_description,
+        published_at = excluded.published_at,
+        simple_sku = excluded.simple_sku,
+        simple_price_cents = excluded.simple_price_cents,
+        simple_compare_at_cents = excluded.simple_compare_at_cents,
+        simple_stock_quantity = excluded.simple_stock_quantity,
+        track_inventory = excluded.track_inventory,
+        updated_at = now()
+    `,
+    [
+      productId,
+      product.slug,
+      product.name,
+      product.short_description || null,
+      product.description || null,
+      status,
+      productType,
+      product.featured,
+      product.name,
+      product.short_description || null,
+      product.sku || null,
+      normalizeMoneyToCents(product.price),
+      normalizeMoneyToCents(product.regular_price),
+      product.stock_quantity,
+      product.manage_stock,
+    ]
+  );
+
+  return productId;
+}
+
+async function replaceProductCategories(
+  pool: Pool,
+  productId: string,
+  categoryIds: readonly string[]
+): Promise<void> {
+  await pool.query(`delete from product_categories where product_id = $1`, [productId]);
+
+  for (const categoryId of categoryIds) {
+    await pool.query(
+      `
+        insert into product_categories (product_id, category_id, created_at)
+        values ($1, $2, now())
+      `,
+      [productId, categoryId]
+    );
+  }
+}
+
+async function replaceProductVariants(
+  pool: Pool,
+  productId: string,
+  variations: readonly WooVariation[],
+  fallbackSimpleProduct: WooProduct
+): Promise<void> {
+  await pool.query(`delete from product_variants where product_id = $1`, [productId]);
+
+  if (variations.length === 0) {
+    await pool.query(
+      `
+        insert into product_variants (
+          id,
+          product_id,
+          name,
+          color_name,
+          color_hex,
+          sku,
+          price_cents,
+          compare_at_cents,
+          stock_quantity,
+          track_inventory,
+          is_default,
+          status,
+          sort_order,
+          created_at,
+          updated_at
+        )
+        values (
+          $1, $2, $3, null, null, $4, $5, $6, $7, $8, true, 'published', 0, now(), now()
+        )
+      `,
+      [
+        `${productId}-default`,
+        productId,
+        fallbackSimpleProduct.name,
+        fallbackSimpleProduct.sku || null,
+        normalizeMoneyToCents(fallbackSimpleProduct.price),
+        normalizeMoneyToCents(fallbackSimpleProduct.regular_price),
+        fallbackSimpleProduct.stock_quantity,
+        fallbackSimpleProduct.manage_stock,
+      ]
+    );
+    return;
+  }
+
+  for (const [index, variation] of variations.entries()) {
+    await pool.query(
+      `
+        insert into product_variants (
+          id,
+          product_id,
+          name,
+          color_name,
+          color_hex,
+          sku,
+          price_cents,
+          compare_at_cents,
+          stock_quantity,
+          track_inventory,
+          is_default,
+          status,
+          sort_order,
+          created_at,
+          updated_at
+        )
+        values (
+          $1, $2, $3, null, null, $4, $5, $6, $7, true, $8, 'published', $9, now(), now()
+        )
+      `,
+      [
+        `wc-var-${variation.id}`,
+        productId,
+        variation.sku || `Variation ${index + 1}`,
+        variation.sku || null,
+        normalizeMoneyToCents(variation.price),
+        normalizeMoneyToCents(variation.regular_price),
+        variation.stock_quantity,
+        index === 0,
+        index,
+      ]
+    );
+  }
+}
+
+async function downloadAsWebp(
+  imageUrl: string,
+  destAbsolutePath: string
+): Promise<{
+  byteSize: number;
+  width: number | null;
+  height: number | null;
+  checksumSha256: string;
+}> {
+  const response = await fetch(imageUrl);
+
+  if (!response.ok) {
+    throw new Error(`Failed to download image ${imageUrl}: ${response.status}`);
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  await mkdir(path.dirname(destAbsolutePath), { recursive: true });
+  const { data, info } = await sharp(buffer)
     .webp(WEBP_OPTIONS)
     .toBuffer({ resolveWithObject: true });
-
-  await writeFile(dest, data, { flag: FORCE ? "w" : "wx" });
+  await writeFile(destAbsolutePath, data);
 
   return {
     byteSize: data.length,
     width: info.width ?? null,
     height: info.height ?? null,
+    checksumSha256: createHash("sha256").update(data).digest("hex"),
   };
 }
 
-// ---------------------------------------------------------------------------
-// Main
-// ---------------------------------------------------------------------------
+async function upsertMediaAsset(
+  pool: Pool,
+  storageKey: string,
+  originalName: string,
+  altText: string | null,
+  byteSize: number,
+  width: number | null,
+  height: number | null,
+  checksumSha256: string
+): Promise<string> {
+  const existingByChecksum = await pool.query<DbIdRow>(
+    `
+      select id::text as id
+      from media_assets
+      where checksum_sha256 = $1
+      limit 1
+    `,
+    [checksumSha256]
+  );
 
-async function main() {
-  const productsPath = path.join(ROOT, "seed_data", "products.creatyss.json");
-  const categoriesPath = path.join(ROOT, "seed_data", "categories.creatyss.json");
+  const existingChecksumId = existingByChecksum.rows[0]?.id;
 
-  if (!existsSync(productsPath) || !existsSync(categoriesPath)) {
-    process.stderr.write("Missing seed_data/products.creatyss.json or categories.creatyss.json.\n");
-    process.exitCode = 1;
-    return;
+  if (existingChecksumId) {
+    return existingChecksumId;
   }
 
-  const products: WcProduct[] = JSON.parse(
-    await import("node:fs").then((fs) => fs.readFileSync(productsPath, "utf-8"))
-  );
-  const wcCategories: WcCategory[] = JSON.parse(
-    await import("node:fs").then((fs) => fs.readFileSync(categoriesPath, "utf-8"))
+  const result = await pool.query<DbIdRow>(
+    `
+      insert into media_assets (
+        id,
+        storage_key,
+        original_name,
+        mime_type,
+        byte_size,
+        width,
+        height,
+        alt_text,
+        checksum_sha256,
+        created_at,
+        updated_at
+      )
+      values ($1, $2, $3, 'image/webp', $4::bigint, $5, $6, $7, $8, now(), now())
+      on conflict (storage_key) do update
+      set
+        original_name = excluded.original_name,
+        mime_type = excluded.mime_type,
+        byte_size = excluded.byte_size,
+        width = excluded.width,
+        height = excluded.height,
+        alt_text = excluded.alt_text,
+        checksum_sha256 = excluded.checksum_sha256,
+        updated_at = now()
+      returning id::text as id
+    `,
+    [
+      randomUUID(),
+      storageKey,
+      originalName,
+      String(byteSize),
+      width,
+      height,
+      altText,
+      checksumSha256,
+    ]
   );
 
+  const mediaId = result.rows[0]?.id;
+  if (!mediaId) {
+    throw new Error(`Failed to upsert media asset for ${storageKey}`);
+  }
+
+  return mediaId;
+}
+
+async function replaceProductImages(
+  pool: Pool,
+  productId: string,
+  productSlug: string,
+  images: readonly WooImage[]
+): Promise<void> {
+  await pool.query(`delete from product_images where product_id = $1`, [productId]);
+
+  for (const [index, image] of images.entries()) {
+    const storageKey = `imports/woocommerce/products/${productSlug}/${String(index + 1).padStart(2, "0")}.webp`;
+    const destAbsolutePath = path.join(UPLOADS_ABS, storageKey);
+    const originalName = `${path.basename(image.src).replace(/\.[^.]+$/, "")}.webp`;
+
+    const converted = await downloadAsWebp(image.src, destAbsolutePath);
+    const mediaAssetId = await upsertMediaAsset(
+      pool,
+      storageKey,
+      originalName,
+      image.alt || null,
+      converted.byteSize,
+      converted.width,
+      converted.height,
+      converted.checksumSha256
+    );
+
+    await pool.query(
+      `
+        insert into product_images (
+          id,
+          product_id,
+          media_asset_id,
+          is_primary,
+          sort_order,
+          created_at,
+          updated_at
+        )
+        values ($1, $2, $3, $4, $5, now(), now())
+      `,
+      [randomUUID(), productId, mediaAssetId, index === 0, index]
+    );
+  }
+}
+
+async function main() {
+  const options = parseCliOptions(process.argv.slice(2));
   const pool = new Pool({ connectionString: readDatabaseUrl() });
 
   try {
-    // 1. Categories -----------------------------------------------------------
-    process.stdout.write(`==> Categories (${wcCategories.length})\n`);
+    const categories = await fetchPagedCollection<WooCategory>("products/categories");
+    const products = await fetchPagedCollection<WooProduct>("products");
 
-    for (const wc of wcCategories) {
-      const slug = CATEGORY_SLUG_MAP[wc.slug] ?? wc.slug;
-      const description = stripHtml(wc.description);
+    const categoryIdByWooId = new Map<number, string>();
 
-      await pool.query(
-        `
-          insert into categories (name, slug, description, is_featured)
-          values ($1, $2, $3, false)
-          on conflict (slug) do update
-            set name        = excluded.name,
-                description = excluded.description
-        `,
-        [wc.name, slug, description || null]
-      );
-
-      process.stdout.write(`  ${wc.slug} → ${slug}\n`);
+    for (const category of categories) {
+      const categoryId = await ensureCategory(pool, category);
+      categoryIdByWooId.set(category.id, categoryId);
     }
 
-    // 2. Products -------------------------------------------------------------
-    process.stdout.write(`\n==> Products (${products.length})\n`);
+    for (const product of products) {
+      const productId = await upsertProduct(pool, product);
 
-    let imported = 0;
-    let skippedImages = 0;
+      const categoryIds = product.categories
+        .map((categoryRef) => categoryIdByWooId.get(categoryRef.id))
+        .filter((value): value is string => typeof value === "string");
 
-    for (const wc of products) {
-      const name = wc.name;
-      const slug = wc.slug;
-      const shortDescription = stripHtml(wc.short_description) || null;
-      const description = stripHtml(wc.description) || null;
-      const minorUnit = wc.prices.currency_minor_unit ?? 2;
-      const price = toDecimalPrice(wc.prices.price, minorUnit);
-      const regularPrice = toDecimalPrice(wc.prices.regular_price, minorUnit);
-      const compareAtPrice = regularPrice > price ? regularPrice : null;
-      const sku = wc.sku || slugToSku(slug);
+      await replaceProductCategories(pool, productId, categoryIds);
 
-      // 2a. Upsert product
-      const productRow = await pool.query<{ id: string }>(
-        `
-          insert into products
-            (name, slug, short_description, description,
-             product_type, status, is_featured,
-             seo_title, seo_description,
-             simple_sku, simple_price, simple_compare_at_price)
-          values ($1, $2, $3, $4, 'simple', 'published', false,
-                  $1, $3,
-                  $5, $6, $7)
-          on conflict (slug) do update
-            set name                   = excluded.name,
-                short_description      = excluded.short_description,
-                description            = excluded.description,
-                seo_title              = excluded.seo_title,
-                seo_description        = excluded.seo_description,
-                simple_sku             = excluded.simple_sku,
-                simple_price           = excluded.simple_price,
-                simple_compare_at_price = excluded.simple_compare_at_price
-          returning id::text as id
-        `,
-        [name, slug, shortDescription, description, sku, price, compareAtPrice]
-      );
+      const variations = product.type === "variable" ? await fetchVariations(product.id) : [];
+      await replaceProductVariants(pool, productId, variations, product);
 
-      const productId = productRow.rows[0]!.id;
-
-      // 2b. Upsert default variant.
-      // Two unique constraints can fire on INSERT:
-      //   • (sku) — handled by ON CONFLICT below
-      //   • (product_id) WHERE is_default — partial index, NOT covered by ON CONFLICT (sku)
-      // To avoid the partial-index conflict, demote any existing default variant first.
-      await pool.query(
-        `update product_variants set is_default = false
-         where product_id = $1::bigint and sku <> $2 and is_default = true`,
-        [productId, sku]
-      );
-
-      await pool.query(
-        `
-          insert into product_variants
-            (product_id, name, color_name, color_hex,
-             sku, price, compare_at_price, is_default, status)
-          values ($1::bigint, $2, $2, null,
-                  $3, $4, $5, true, 'published')
-          on conflict (sku) do update
-            set price             = excluded.price,
-                compare_at_price  = excluded.compare_at_price,
-                is_default        = true
-        `,
-        [productId, name, sku, price, compareAtPrice]
-      );
-
-      // 2c. Product ↔ categories
-      for (const wcCat of wc.categories) {
-        const catSlug = CATEGORY_SLUG_MAP[wcCat.slug] ?? wcCat.slug;
-
-        await pool.query(
-          `
-            insert into product_categories (product_id, category_id)
-            select $1::bigint, c.id
-            from   categories c
-            where  c.slug = $2
-              and  not exists (
-                select 1 from product_categories pc
-                where pc.product_id = $1::bigint and pc.category_id = c.id
-              )
-          `,
-          [productId, catSlug]
-        );
+      if (!options.skipImages) {
+        await replaceProductImages(pool, productId, product.slug, product.images);
       }
 
-      // 2d. Images
-      if (!SKIP_IMAGES && wc.images.length > 0) {
-        for (let i = 0; i < wc.images.length; i++) {
-          const img = wc.images[i]!;
-          const isPrimary = i === 0;
-          const filename = `${String(i + 1).padStart(2, "0")}.webp`;
-          const relPath = `seed/products/${slug}/${filename}`;
-          const dest = path.join(UPLOADS_ABS, relPath);
-          const altText = img.alt || name;
-
-          const converted = await downloadAndConvert(img.src, dest);
-
-          if (converted === null && !existsSync(dest)) {
-            skippedImages++;
-            continue; // download failed
-          }
-
-          const { byteSize, width, height } = converted ?? {
-            byteSize: 0,
-            width: null,
-            height: null,
-          };
-
-          // Upsert media_assets
-          if (converted !== null) {
-            await pool.query(
-              `
-                insert into media_assets
-                  (file_path, original_name, mime_type, byte_size, image_width, image_height)
-                values ($1, $2, 'image/webp', $3::bigint, $4, $5)
-                on conflict (file_path) do update
-                  set byte_size    = excluded.byte_size,
-                      image_width  = excluded.image_width,
-                      image_height = excluded.image_height,
-                      updated_at   = now()
-              `,
-              [relPath, filename, String(byteSize), width, height]
-            );
-          }
-
-          // Upsert product_images
-          if (isPrimary) {
-            // Partial unique index: (product_id) WHERE is_primary AND variant_id IS NULL
-            await pool.query(
-              `
-                insert into product_images
-                  (product_id, variant_id, file_path, alt_text, sort_order, is_primary)
-                values ($1::bigint, null, $2, $3, 0, true)
-                on conflict (product_id) where is_primary and variant_id is null
-                do update set
-                  file_path  = excluded.file_path,
-                  alt_text   = excluded.alt_text
-              `,
-              [productId, relPath, altText]
-            );
-          } else {
-            await pool.query(
-              `
-                insert into product_images
-                  (product_id, variant_id, file_path, alt_text, sort_order, is_primary)
-                select $1::bigint, null, $2, $3, $4, false
-                where not exists (
-                  select 1 from product_images
-                  where product_id = $1::bigint and file_path = $2
-                )
-              `,
-              [productId, relPath, altText, i]
-            );
-          }
-
-          if (converted !== null) {
-            process.stdout.write(
-              `  ${isPrimary ? "★" : " "} ${slug}/${filename} (${Math.round(converted.byteSize / 1024)} kB)\n`
-            );
-          }
-
-          // Small delay to be polite to the origin server
-          if (converted !== null) {
-            await new Promise((r) => setTimeout(r, 80));
-          }
-        }
-      }
-
-      imported++;
+      process.stdout.write(`Imported product: ${product.slug}\n`);
     }
 
-    process.stdout.write(
-      `\n==> Done. ${imported} products imported` +
-        (SKIP_IMAGES ? " (images skipped)" : "") +
-        (skippedImages > 0 ? `, ${skippedImages} images failed` : "") +
-        ".\n"
-    );
+    process.stdout.write(`Imported ${products.length} products.\n`);
   } finally {
     await pool.end();
   }
 }
 
-main().catch((err: unknown) => {
-  process.stderr.write(`import-woocommerce: ${err instanceof Error ? err.message : err}\n`);
+main().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : "Unknown WooCommerce import error.";
+  process.stderr.write(`${message}\n`);
   process.exitCode = 1;
 });

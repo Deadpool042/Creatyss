@@ -1,0 +1,60 @@
+// -----------------------------------------------------------------------------
+// Domaine: payments
+// Responsabilité: paiements, opérations, statuts, références PSP traduites.
+// -----------------------------------------------------------------------------
+// prisma/payments.prisma
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum PaymentMethodKind {
+  CARD
+  BANK_TRANSFER
+  GIFT_CARD
+  OTHER
+}
+
+model Payment {
+  id      String @id @default(cuid())
+  orderId String
+
+  status     PaymentStatus     @default(PENDING)
+  methodKind PaymentMethodKind
+
+  amount       Decimal      @db.Decimal(12, 2)
+  currencyCode CurrencyCode
+
+  providerName             String?
+  providerReference        String?
+  providerPaymentIntentRef String?
+
+  authorizedAt DateTime?
+  capturedAt   DateTime?
+  failedAt     DateTime?
+  cancelledAt  DateTime?
+  refundedAt   DateTime?
+
+  failureCode    String?
+  failureMessage String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order                Order                 @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  notifications        Notification[]
+  supportTickets       SupportTicket[]
+  fraudRiskAssessments FraudRiskAssessment[]
+
+  @@index([orderId])
+  @@index([status])
+  @@index([methodKind])
+  @@index([providerReference])
+  @@map("payments")
+}

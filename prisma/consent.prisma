@@ -1,0 +1,91 @@
+// -----------------------------------------------------------------------------
+// Domaine: consent
+// Responsabilité: consentements réglementés, preuves, retraits.
+// -----------------------------------------------------------------------------
+// prisma/consent.prisma
+
+enum ConsentCategoryKind {
+  EMAIL_MARKETING
+  NEWSLETTER
+  ANALYTICS
+  TRACKING
+  PROFILING
+  CUSTOM
+}
+
+enum ConsentStatus {
+  GIVEN
+  REFUSED
+  WITHDRAWN
+}
+
+enum ConsentActorKind {
+  CUSTOMER
+  USER
+  VISITOR
+}
+
+model ConsentCategory {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  kind        ConsentCategoryKind
+  name        String
+  description String?
+
+  isRequired Boolean @default(false)
+  isActive   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store   Store           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  records ConsentRecord[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([kind])
+  @@index([isActive])
+  @@map("consent_categories")
+}
+
+model ConsentRecord {
+  id         String @id @default(cuid())
+  storeId    String
+  categoryId String
+
+  actorKind  ConsentActorKind
+  customerId String?
+  userId     String?
+  visitorKey String?
+
+  status ConsentStatus
+  locale String?
+  source String?
+
+  ipAddress String?
+  userAgent String?
+
+  givenAt     DateTime?
+  refusedAt   DateTime?
+  withdrawnAt DateTime?
+  recordedAt  DateTime  @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store    Store           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  category ConsentCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  customer Customer?       @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  user     User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([customerId])
+  @@index([userId])
+  @@index([visitorKey])
+  @@index([status])
+  @@index([recordedAt])
+  @@map("consent_records")
+}

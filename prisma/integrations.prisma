@@ -1,0 +1,66 @@
+// -----------------------------------------------------------------------------
+// Domaine: integrations
+// Responsabilité: connecteurs provider-specific, mappings, statuts externes.
+// -----------------------------------------------------------------------------
+// prisma/integrations.prisma
+
+enum IntegrationStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum IntegrationProviderKind {
+  PAYMENT
+  SHIPPING
+  ERP
+  E_INVOICING
+  EMAIL
+  CMS
+  OTHER
+}
+
+model Integration {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  code        String
+  name        String
+  description String?
+
+  providerKind IntegrationProviderKind
+  providerName String
+  status       IntegrationStatus       @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store       Store?                  @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  credentials IntegrationCredential[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([providerKind])
+  @@index([status])
+  @@map("integrations")
+}
+
+model IntegrationCredential {
+  id            String @id @default(cuid())
+  integrationId String
+
+  credentialKey String
+  secretHash    String
+  expiresAt     DateTime?
+  revokedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  integration Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+
+  @@unique([integrationId, credentialKey])
+  @@index([integrationId])
+  @@index([expiresAt])
+  @@map("integration_credentials")
+}

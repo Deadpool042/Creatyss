@@ -1,0 +1,68 @@
+// -----------------------------------------------------------------------------
+// Domaine: subscriptions
+// Responsabilité: abonnements récurrents (clients ou utilisateurs internes).
+// -----------------------------------------------------------------------------
+// prisma/subscriptions.prisma
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+  EXPIRED
+}
+
+enum SubscriptionBillingCycle {
+  DAILY
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+model SubscriptionTopic {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  name        String
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store         Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  subscriptions Subscription[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@map("subscription_topics")
+}
+
+model Subscription {
+  id         String  @id @default(cuid())
+  topicId    String
+  customerId String?
+  userId     String?
+
+  status       SubscriptionStatus        @default(ACTIVE)
+  billingCycle SubscriptionBillingCycle?
+
+  startedAt   DateTime  @default(now())
+  renewsAt    DateTime?
+  pausedAt    DateTime?
+  cancelledAt DateTime?
+  expiredAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  topic    SubscriptionTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  customer Customer?         @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  user     User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([topicId])
+  @@index([customerId])
+  @@index([userId])
+  @@index([status])
+  @@map("subscriptions")
+}

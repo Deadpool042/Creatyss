@@ -1,59 +1,86 @@
 BEGIN;
 
-TRUNCATE TABLE homepage_featured_blog_posts,
-homepage_featured_categories,
-homepage_featured_products,
-homepage_content,
+TRUNCATE TABLE product_variant_images,
 product_images,
+product_categories,
 product_variants,
 blog_posts,
-products,
+pages,
 categories,
-admin_users RESTART IDENTITY CASCADE;
+products CASCADE;
 
--- =========================================================
--- CATEGORIES
--- =========================================================
 INSERT INTO
-  categories (name, slug, description, is_featured)
+  categories (
+    id,
+    name,
+    slug,
+    description,
+    status,
+    is_featured,
+    display_order,
+    created_at,
+    updated_at
+  )
 VALUES
   (
+    'cat-sacs-a-main',
     'Sacs à Main',
     'sacs-a-main',
     'Des sacs à main artisanaux aux lignes élégantes, pensés pour accompagner le quotidien avec caractère.',
-    true
+    'active',
+    true,
+    0,
+    now (),
+    now ()
   ),
   (
+    'cat-sacs-a-bandouliere',
     'Sacs à Bandoulière',
     'sacs-a-bandouliere',
     'Des modèles souples et féminins, pratiques à porter et réalisés avec soin.',
-    true
+    'active',
+    true,
+    1,
+    now (),
+    now ()
   ),
   (
+    'cat-mini-sacs',
     'Mini sacs',
     'mini-sacs',
     'Des formats compacts, légers et raffinés pour emporter l''essentiel.',
-    true
+    'active',
+    true,
+    2,
+    now (),
+    now ()
   ),
   (
+    'cat-sacs-a-dos',
     'Sacs à dos',
     'sacs-a-dos',
     'Des sacs à dos artisanaux, conçus pour allier confort, tenue et style.',
-    true
+    'active',
+    true,
+    3,
+    now (),
+    now ()
   ),
   (
+    'cat-pochettes-trousses',
     'Pochettes & Trousses',
     'pochettes-trousses',
     'Des petits formats utiles et soignés, à glisser dans un sac ou à porter seuls.',
-    false
+    'active',
+    false,
+    4,
+    now (),
+    now ()
   );
 
--- =========================================================
--- PRODUCTS
--- SEO volontairement simple : fallback éditable plus tard
--- =========================================================
 INSERT INTO
   products (
+    id,
     name,
     slug,
     short_description,
@@ -61,11 +88,20 @@ INSERT INTO
     product_type,
     status,
     is_featured,
+    published_at,
     seo_title,
-    seo_description
+    seo_description,
+    simple_sku,
+    simple_price_cents,
+    simple_compare_at_cents,
+    simple_stock_quantity,
+    track_inventory,
+    created_at,
+    updated_at
   )
 VALUES
   (
+    'prod-sac-bandouliere-rouge',
     'Sac Bandoulière Rouge',
     'sac-bandouliere-rouge',
     'Sac bandoulière rouge fait main, pratique et élégant.',
@@ -73,10 +109,19 @@ VALUES
     'simple',
     'published',
     true,
+    now (),
     'Sac Bandoulière Rouge',
-    'Sac bandoulière rouge fait main, pratique et élégant.'
+    'Sac bandoulière rouge fait main, pratique et élégant.',
+    'SBR-001',
+    6400,
+    NULL,
+    8,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-sac-bandouliere-sky',
     'Sac Bandoulière Sky',
     'sac-bandouliere-sky',
     'Sac bandoulière bleu ciel, souple et fonctionnel.',
@@ -84,10 +129,19 @@ VALUES
     'simple',
     'published',
     true,
+    now (),
     'Sac Bandoulière Sky',
-    'Sac bandoulière bleu ciel, souple et fonctionnel.'
+    'Sac bandoulière bleu ciel, souple et fonctionnel.',
+    'SBS-001',
+    6400,
+    NULL,
+    6,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-mini-sac-rouge',
     'Mini Sac Rouge',
     'mini-sac-rouge',
     'Mini sac rouge compact, pratique et artisanal.',
@@ -95,10 +149,19 @@ VALUES
     'simple',
     'published',
     true,
+    now (),
     'Mini Sac Rouge',
-    'Mini sac rouge compact, pratique et artisanal.'
+    'Mini sac rouge compact, pratique et artisanal.',
+    'MSR-001',
+    5700,
+    NULL,
+    10,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-mini-sac-cappadocia',
     'Mini Sac Cappadocia',
     'mini-sac-cappadocia',
     'Mini sac Cappadocia compact, souple et élégant.',
@@ -106,10 +169,19 @@ VALUES
     'simple',
     'published',
     true,
+    now (),
     'Mini Sac Cappadocia',
-    'Mini sac Cappadocia compact, souple et élégant.'
+    'Mini sac Cappadocia compact, souple et élégant.',
+    'MSC-001',
+    5700,
+    NULL,
+    9,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-mini-sac-santorini',
     'Mini Sac Santorini',
     'mini-sac-santorini',
     'Mini sac Santorini au format compact et soigné.',
@@ -117,10 +189,19 @@ VALUES
     'simple',
     'published',
     true,
+    now (),
     'Mini Sac Santorini',
-    'Mini sac Santorini au format compact et soigné.'
+    'Mini sac Santorini au format compact et soigné.',
+    'MSS-001',
+    5700,
+    NULL,
+    7,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-mini-sac-fuschia',
     'Mini Sac Fuschia',
     'mini-sac-fuschia',
     'Mini sac Fuschia fait main, coloré et compact.',
@@ -128,10 +209,19 @@ VALUES
     'simple',
     'published',
     false,
+    now (),
     'Mini Sac Fuschia',
-    'Mini sac Fuschia fait main, coloré et compact.'
+    'Mini sac Fuschia fait main, coloré et compact.',
+    'MSF-001',
+    5000,
+    NULL,
+    5,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-mini-sac-safran',
     'Mini Sac Safran',
     'mini-sac-safran',
     'Mini sac Safran artisanal, compact et lumineux.',
@@ -139,10 +229,19 @@ VALUES
     'simple',
     'published',
     false,
+    now (),
     'Mini Sac Safran',
-    'Mini sac Safran artisanal, compact et lumineux.'
+    'Mini sac Safran artisanal, compact et lumineux.',
+    'MSSF-001',
+    5700,
+    NULL,
+    6,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-sac-a-dos-safran',
     'Sac à Dos Safran',
     'sac-a-dos-safran',
     'Sac à dos Safran fait main, pratique et résistant.',
@@ -150,10 +249,19 @@ VALUES
     'simple',
     'published',
     true,
+    now (),
     'Sac à Dos Safran',
-    'Sac à dos Safran fait main, pratique et résistant.'
+    'Sac à dos Safran fait main, pratique et résistant.',
+    'SDS-001',
+    6400,
+    NULL,
+    4,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-pochette-plate-magenta',
     'Pochette plate Magenta',
     'pochette-plate-magenta',
     'Pochette plate Magenta, pratique et faite main.',
@@ -161,10 +269,19 @@ VALUES
     'simple',
     'published',
     false,
+    now (),
     'Pochette plate Magenta',
-    'Pochette plate Magenta, pratique et faite main.'
+    'Pochette plate Magenta, pratique et faite main.',
+    'PPM-001',
+    4400,
+    NULL,
+    8,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-pochette-plate-safran',
     'Pochette plate Safran',
     'pochette-plate-safran',
     'Pochette plate Safran, légère et artisanale.',
@@ -172,10 +289,19 @@ VALUES
     'simple',
     'published',
     false,
+    now (),
     'Pochette plate Safran',
-    'Pochette plate Safran, légère et artisanale.'
+    'Pochette plate Safran, légère et artisanale.',
+    'PPS-001',
+    4400,
+    NULL,
+    8,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-trousse-mini-sac-rouge',
     'Trousse Mini Sac Rouge',
     'trousse-mini-sac-rouge',
     'Petit format rouge polyvalent, fait main.',
@@ -183,10 +309,19 @@ VALUES
     'simple',
     'published',
     false,
+    now (),
     'Trousse Mini Sac Rouge',
-    'Petit format rouge polyvalent, fait main.'
+    'Petit format rouge polyvalent, fait main.',
+    'TMSR-001',
+    3000,
+    NULL,
+    12,
+    true,
+    now (),
+    now ()
   ),
   (
+    'prod-trousse-mini-sac-curry',
     'Trousse Mini Sac Curry',
     'trousse-mini-sac-curry',
     'Petit format curry artisanal, pratique et léger.',
@@ -194,1030 +329,395 @@ VALUES
     'simple',
     'published',
     false,
+    now (),
     'Trousse Mini Sac Curry',
-    'Petit format curry artisanal, pratique et léger.'
+    'Petit format curry artisanal, pratique et léger.',
+    'TMSC-001',
+    3000,
+    NULL,
+    11,
+    true,
+    now (),
+    now ()
   );
 
--- =========================================================
--- VARIANTS
--- =========================================================
 INSERT INTO
   product_variants (
+    id,
     product_id,
     name,
     color_name,
     color_hex,
     sku,
-    price,
-    compare_at_price,
+    price_cents,
+    compare_at_cents,
     stock_quantity,
+    track_inventory,
     is_default,
-    status
+    status,
+    sort_order,
+    created_at,
+    updated_at
   )
 VALUES
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'sac-bandouliere-rouge'
-    ),
+    'var-sbr-001',
+    'prod-sac-bandouliere-rouge',
     'Rouge',
     'Rouge',
     '#B23A48',
     'SBR-001',
-    64.00,
+    6400,
     NULL,
     8,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'sac-bandouliere-sky'
-    ),
+    'var-sbs-001',
+    'prod-sac-bandouliere-sky',
     'Sky',
     'Sky',
     '#87BFD8',
     'SBS-001',
-    64.00,
+    6400,
     NULL,
     6,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-rouge'
-    ),
+    'var-msr-001',
+    'prod-mini-sac-rouge',
     'Rouge',
     'Rouge',
     '#C0392B',
     'MSR-001',
-    57.00,
+    5700,
     NULL,
     10,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-cappadocia'
-    ),
+    'var-msc-001',
+    'prod-mini-sac-cappadocia',
     'Cappadocia',
     'Cappadocia',
     '#C97B63',
     'MSC-001',
-    57.00,
+    5700,
     NULL,
     9,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-santorini'
-    ),
+    'var-mss-001',
+    'prod-mini-sac-santorini',
     'Santorini',
     'Santorini',
     '#5FA8D3',
     'MSS-001',
-    57.00,
+    5700,
     NULL,
     7,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-fuschia'
-    ),
+    'var-msf-001',
+    'prod-mini-sac-fuschia',
     'Fuschia',
     'Fuschia',
     '#D94F8A',
     'MSF-001',
-    50.00,
+    5000,
     NULL,
     5,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-safran'
-    ),
+    'var-mssf-001',
+    'prod-mini-sac-safran',
     'Safran',
     'Safran',
     '#D9A441',
     'MSSF-001',
-    57.00,
+    5700,
     NULL,
     6,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'sac-a-dos-safran'
-    ),
+    'var-sds-001',
+    'prod-sac-a-dos-safran',
     'Safran',
     'Safran',
     '#D9A441',
     'SDS-001',
-    64.00,
+    6400,
     NULL,
     4,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'pochette-plate-magenta'
-    ),
+    'var-ppm-001',
+    'prod-pochette-plate-magenta',
     'Magenta',
     'Magenta',
     '#C2185B',
     'PPM-001',
-    44.00,
+    4400,
     NULL,
     8,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'pochette-plate-safran'
-    ),
+    'var-pps-001',
+    'prod-pochette-plate-safran',
     'Safran',
     'Safran',
     '#D9A441',
     'PPS-001',
-    44.00,
+    4400,
     NULL,
     8,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'trousse-mini-sac-rouge'
-    ),
+    'var-tmsr-001',
+    'prod-trousse-mini-sac-rouge',
     'Rouge',
     'Rouge',
     '#B23A48',
     'TMSR-001',
-    30.00,
+    3000,
     NULL,
     12,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'trousse-mini-sac-curry'
-    ),
+    'var-tmsc-001',
+    'prod-trousse-mini-sac-curry',
     'Curry',
     'Curry',
     '#C68A2B',
     'TMSC-001',
-    30.00,
+    3000,
     NULL,
     11,
     true,
-    'published'
+    true,
+    'published',
+    0,
+    now (),
+    now ()
   );
 
-UPDATE products p
-SET
-  simple_sku = pv.sku,
-  simple_price = pv.price,
-  simple_compare_at_price = pv.compare_at_price,
-  simple_stock_quantity = pv.stock_quantity
-FROM
-  product_variants pv
-WHERE
-  p.product_type = 'simple'
-  AND pv.id = (
-    SELECT
-      pv2.id
-    FROM
-      product_variants pv2
-    WHERE
-      pv2.product_id = p.id
-    ORDER BY
-      pv2.is_default DESC,
-      pv2.id ASC
-    LIMIT
-      1
-  );
-
--- =========================================================
--- PRODUCT IMAGES
--- =========================================================
 INSERT INTO
-  product_images (
-    product_id,
-    variant_id,
-    file_path,
-    alt_text,
-    sort_order,
-    is_primary
-  )
+  product_categories (product_id, category_id, created_at)
 VALUES
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'sac-bandouliere-rouge'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Sac Bandoulière Rouge Creatyss',
-    0,
-    true
+    'prod-sac-bandouliere-rouge',
+    'cat-sacs-a-bandouliere',
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'sac-bandouliere-sky'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Sac Bandoulière Sky Creatyss',
-    0,
-    true
+    'prod-sac-bandouliere-sky',
+    'cat-sacs-a-bandouliere',
+    now ()
+  ),
+  ('prod-mini-sac-rouge', 'cat-mini-sacs', now ()),
+  (
+    'prod-mini-sac-cappadocia',
+    'cat-mini-sacs',
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-rouge'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Mini Sac Rouge Creatyss',
-    0,
-    true
+    'prod-mini-sac-santorini',
+    'cat-mini-sacs',
+    now ()
+  ),
+  ('prod-mini-sac-fuschia', 'cat-mini-sacs', now ()),
+  ('prod-mini-sac-safran', 'cat-mini-sacs', now ()),
+  ('prod-sac-a-dos-safran', 'cat-sacs-a-dos', now ()),
+  (
+    'prod-pochette-plate-magenta',
+    'cat-pochettes-trousses',
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-cappadocia'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Mini Sac Cappadocia Creatyss',
-    0,
-    true
+    'prod-pochette-plate-safran',
+    'cat-pochettes-trousses',
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-santorini'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Mini Sac Santorini Creatyss',
-    0,
-    true
+    'prod-trousse-mini-sac-rouge',
+    'cat-pochettes-trousses',
+    now ()
   ),
   (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-fuschia'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Mini Sac Fuschia Creatyss',
-    0,
-    true
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-safran'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Mini Sac Safran Creatyss',
-    0,
-    true
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'sac-a-dos-safran'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Sac à Dos Safran Creatyss',
-    0,
-    true
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'pochette-plate-magenta'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Pochette plate Magenta Creatyss',
-    0,
-    true
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'pochette-plate-safran'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Pochette plate Safran Creatyss',
-    0,
-    true
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'trousse-mini-sac-rouge'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Trousse Mini Sac Rouge Creatyss',
-    0,
-    true
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'trousse-mini-sac-curry'
-    ),
-    NULL,
-    'creatyss.webp',
-    'Trousse Mini Sac Curry Creatyss',
-    0,
-    true
+    'prod-trousse-mini-sac-curry',
+    'cat-pochettes-trousses',
+    now ()
   );
 
--- =========================================================
--- PRODUCT CATEGORIES
--- =========================================================
-INSERT INTO
-  product_categories (product_id, category_id)
-VALUES
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'sac-bandouliere-rouge'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'sacs-a-bandouliere'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'sac-bandouliere-sky'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'sacs-a-bandouliere'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-rouge'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'mini-sacs'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-cappadocia'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'mini-sacs'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-santorini'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'mini-sacs'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-fuschia'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'mini-sacs'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-safran'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'mini-sacs'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'sac-a-dos-safran'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'sacs-a-dos'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'pochette-plate-magenta'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'pochettes-trousses'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'pochette-plate-safran'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'pochettes-trousses'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'trousse-mini-sac-rouge'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'pochettes-trousses'
-    )
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'trousse-mini-sac-curry'
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'pochettes-trousses'
-    )
-  );
-
--- =========================================================
--- BLOG POSTS
--- =========================================================
 INSERT INTO
   blog_posts (
+    id,
     title,
     slug,
     excerpt,
     content,
-    cover_image_path,
     status,
     published_at,
     seo_title,
-    seo_description
+    seo_description,
+    created_at,
+    updated_at
   )
 VALUES
   (
+    'blog-journal-atelier',
     'Journal Atelier',
     'journal-atelier',
     'Dans les coulisses de l''atelier Creatyss, entre matières, gestes et créations.',
     'Dans l''atelier Creatyss, chaque pièce prend le temps d''exister. Entre le choix des matières, la coupe, l''assemblage et les finitions, le fait main impose un rythme juste. Ce journal ouvre une fenêtre sur ce travail patient, sur les inspirations du moment et sur les pièces qui naissent au fil des jours.',
-    NULL,
     'published',
-    NOW (),
+    now (),
     'Journal Atelier',
-    'Dans les coulisses de l''atelier Creatyss, entre matières, gestes et créations.'
+    'Dans les coulisses de l''atelier Creatyss, entre matières, gestes et créations.',
+    now (),
+    now ()
   ),
   (
+    'blog-matieres-details-finitions',
     'Matières, détails et finitions',
     'matieres-details-finitions',
     'Ce qui donne à une pièce artisanale sa tenue, son toucher et son caractère.',
     'Une création réussie tient autant à sa ligne qu''à la qualité de ses détails. Les matières, la souplesse, la tenue, les coutures, les associations de textures et la précision des finitions participent à la personnalité de chaque pièce.',
-    NULL,
     'published',
-    NOW () - INTERVAL '10 days',
+    now () - interval '10 days',
     'Matières, détails et finitions',
-    'Ce qui donne à une pièce artisanale sa tenue, son toucher et son caractère.'
+    'Ce qui donne à une pièce artisanale sa tenue, son toucher et son caractère.',
+    now (),
+    now ()
   );
 
--- =========================================================
--- HOMEPAGE CONTENT
--- =========================================================
 INSERT INTO
-  homepage_content (
-    hero_title,
-    hero_text,
-    hero_image_path,
-    editorial_title,
-    editorial_text,
-    status
+  pages (
+    id,
+    slug,
+    title,
+    page_type,
+    status,
+    summary,
+    content_json,
+    seo_title,
+    seo_description,
+    is_indexed,
+    published_at,
+    created_at,
+    updated_at
   )
 VALUES
   (
-    'Des sacs faits main, nulle part ailleurs.',
-    'Chez Creatyss, chaque pièce est imaginée et réalisée artisanalement dans un esprit de fabrication locale, de soin du détail et d''élégance au quotidien.',
-    NULL,
-    'L''atelier Creatyss, entre savoir-faire et créations uniques',
-    'Mini sacs, bandoulières, sacs à dos et pochettes prennent forme dans un travail artisanal attentif aux matières, aux finitions et au juste rythme de fabrication.',
-    'published'
-  );
-
--- =========================================================
--- HOMEPAGE FEATURED PRODUCTS
--- =========================================================
-INSERT INTO
-  homepage_featured_products (homepage_content_id, product_id, sort_order)
-VALUES
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
+    'page-home',
+    'home',
+    'Accueil',
+    'homepage',
+    'published',
+    'Page d''accueil Creatyss',
+    jsonb_build_object (
+      'hero',
+      jsonb_build_object (
+        'title',
+        'Des sacs faits main, nulle part ailleurs.',
+        'text',
+        'Chez Creatyss, chaque pièce est imaginée et réalisée artisanalement dans un esprit de fabrication locale, de soin du détail et d''élégance au quotidien.'
+      ),
+      'editorial',
+      jsonb_build_object (
+        'title',
+        'L''atelier Creatyss, entre savoir-faire et créations uniques',
+        'text',
+        'Mini sacs, bandoulières, sacs à dos et pochettes prennent forme dans un travail artisanal attentif aux matières, aux finitions et au juste rythme de fabrication.'
+      ),
+      'featuredProductSlugs',
+      jsonb_build_array (
+        'sac-bandouliere-rouge',
+        'mini-sac-rouge',
+        'mini-sac-cappadocia',
+        'mini-sac-santorini'
+      ),
+      'featuredCategorySlugs',
+      jsonb_build_array (
+        'sacs-a-main',
+        'sacs-a-bandouliere',
+        'mini-sacs',
+        'pochettes-trousses',
+        'sacs-a-dos'
+      ),
+      'featuredBlogPostSlugs',
+      jsonb_build_array ('journal-atelier', 'matieres-details-finitions')
     ),
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'sac-bandouliere-rouge'
-      LIMIT
-        1
-    ),
-    0
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
-    ),
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-rouge'
-      LIMIT
-        1
-    ),
-    1
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
-    ),
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-cappadocia'
-      LIMIT
-        1
-    ),
-    2
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
-    ),
-    (
-      SELECT
-        id
-      FROM
-        products
-      WHERE
-        slug = 'mini-sac-santorini'
-      LIMIT
-        1
-    ),
-    3
-  );
-
--- =========================================================
--- HOMEPAGE FEATURED CATEGORIES
--- =========================================================
-INSERT INTO
-  homepage_featured_categories (homepage_content_id, category_id, sort_order)
-VALUES
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'sacs-a-main'
-      LIMIT
-        1
-    ),
-    0
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'sacs-a-bandouliere'
-      LIMIT
-        1
-    ),
-    1
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'mini-sacs'
-      LIMIT
-        1
-    ),
-    2
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'pochettes-trousses'
-      LIMIT
-        1
-    ),
-    3
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
-    ),
-    (
-      SELECT
-        id
-      FROM
-        categories
-      WHERE
-        slug = 'sacs-a-dos'
-      LIMIT
-        1
-    ),
-    4
-  );
-
--- =========================================================
--- HOMEPAGE FEATURED BLOG POSTS
--- =========================================================
-INSERT INTO
-  homepage_featured_blog_posts (homepage_content_id, blog_post_id, sort_order)
-VALUES
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
-    ),
-    (
-      SELECT
-        id
-      FROM
-        blog_posts
-      WHERE
-        slug = 'journal-atelier'
-      LIMIT
-        1
-    ),
-    0
-  ),
-  (
-    (
-      SELECT
-        id
-      FROM
-        homepage_content
-      WHERE
-        status = 'published'
-      LIMIT
-        1
-    ),
-    (
-      SELECT
-        id
-      FROM
-        blog_posts
-      WHERE
-        slug = 'matieres-details-finitions'
-      LIMIT
-        1
-    ),
-    1
+    'Creatyss — sacs artisanaux faits main',
+    'Sacs artisanaux, mini sacs, bandoulières, sacs à dos et pochettes confectionnés avec soin.',
+    true,
+    now (),
+    now (),
+    now ()
   );
 
 COMMIT;

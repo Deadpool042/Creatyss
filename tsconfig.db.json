@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "db/health.ts",
+    "db/prisma-client.ts",
+    "db/repositories/pages/**/*.ts",
+    "db/repositories/cart/**/*.ts",
+    "db/repositories/email/**/*.ts",
+    "db/repositories/users/**/*.ts",
+    "db/repositories/payments/**/*.ts"
+  ],
+  "exclude": ["node_modules", ".next"]
+}

@@ -1,0 +1,43 @@
+// -----------------------------------------------------------------------------
+// Domaine: workflow
+// Responsabilité: orchestration multi-étapes des processus métier.
+// -----------------------------------------------------------------------------
+// prisma/workflow.prisma
+
+enum WorkflowRunStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+model WorkflowRun {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  workflowCode String
+  subjectType  String
+  subjectId    String
+
+  status      WorkflowRunStatus @default(PENDING)
+  currentStep String?
+  payload     Json?
+  result      Json?
+
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  failedAt    DateTime?
+  cancelledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([workflowCode])
+  @@index([subjectType, subjectId])
+  @@index([status])
+  @@map("workflow_runs")
+}

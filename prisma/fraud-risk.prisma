@@ -1,0 +1,91 @@
+// -----------------------------------------------------------------------------
+// Domaine: fraud-risk
+// Responsabilité: signaux antifraude, assessments, reviews, décisions.
+// -----------------------------------------------------------------------------
+// prisma/fraud-risk.prisma
+
+enum FraudRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum FraudRiskDecisionStatus {
+  PENDING
+  REVIEW_REQUIRED
+  ALLOWED
+  BLOCKED
+  CLEARED
+}
+
+enum FraudRiskSubjectKind {
+  ORDER
+  PAYMENT
+  CUSTOMER
+  CHECKOUT
+}
+
+model FraudRiskAssessment {
+  id      String @id @default(cuid())
+  storeId String
+
+  subjectKind FraudRiskSubjectKind
+  subjectId   String
+
+  level          FraudRiskLevel
+  decisionStatus FraudRiskDecisionStatus @default(PENDING)
+
+  score   Decimal? @db.Decimal(6, 2)
+  summary String?
+  details Json?
+
+  orderId    String?
+  paymentId  String?
+  customerId String?
+  checkoutId String?
+
+  reviewedByUserId String?
+  reviewedAt       DateTime?
+  blockedAt        DateTime?
+  clearedAt        DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store          Store             @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  order          Order?            @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  payment        Payment?          @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+  customer       Customer?         @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  checkout       Checkout?         @relation(fields: [checkoutId], references: [id], onDelete: SetNull)
+  reviewedByUser User?             @relation(fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+  signals        FraudRiskSignal[]
+
+  @@index([storeId])
+  @@index([subjectKind, subjectId])
+  @@index([level])
+  @@index([decisionStatus])
+  @@index([orderId])
+  @@index([paymentId])
+  @@index([customerId])
+  @@index([checkoutId])
+  @@map("fraud_risk_assessments")
+}
+
+model FraudRiskSignal {
+  id           String @id @default(cuid())
+  assessmentId String
+
+  code    String
+  label   String
+  details String?
+  weight  Decimal? @db.Decimal(6, 2)
+
+  createdAt DateTime @default(now())
+
+  assessment FraudRiskAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@index([assessmentId])
+  @@index([code])
+  @@map("fraud_risk_signals")
+}

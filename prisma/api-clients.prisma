@@ -1,0 +1,87 @@
+// -----------------------------------------------------------------------------
+// Domaine: api-clients
+// Responsabilité: clients machine-to-machine, credentials techniques, scopes.
+// -----------------------------------------------------------------------------
+// prisma/api-clients.prisma
+
+enum ApiClientStatus {
+  ACTIVE
+  REVOKED
+  DISABLED
+  ARCHIVED
+}
+
+enum ApiClientScopeType {
+  PLATFORM
+  STORE
+}
+
+model ApiClient {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  code        String  @unique
+  name        String
+  description String?
+
+  scopeType ApiClientScopeType
+  status    ApiClientStatus    @default(ACTIVE)
+
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store                Store?                @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  credentials          ApiClientCredential[]
+  permissions          ApiClientPermission[]
+  auditLogs            AuditLog[]
+  observabilityRecords ObservabilityRecord[]
+
+  @@index([storeId])
+  @@index([scopeType])
+  @@index([status])
+  @@map("api_clients")
+}
+
+model ApiClientCredential {
+  id          String @id @default(cuid())
+  apiClientId String
+
+  credentialKey String
+  secretHash    String
+  label         String?
+  expiresAt     DateTime?
+  revokedAt     DateTime?
+  lastUsedAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  apiClient ApiClient @relation(fields: [apiClientId], references: [id], onDelete: Cascade)
+
+  @@unique([apiClientId, credentialKey])
+  @@index([apiClientId])
+  @@index([expiresAt])
+  @@map("api_client_credentials")
+}
+
+model ApiClientPermission {
+  id           String  @id @default(cuid())
+  apiClientId  String
+  permissionId String
+  grantedById  String?
+
+  grantedAt DateTime @default(now())
+
+  apiClient  ApiClient  @relation(fields: [apiClientId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  grantedBy  User?      @relation(fields: [grantedById], references: [id], onDelete: SetNull)
+
+  @@unique([apiClientId, permissionId])
+  @@index([apiClientId])
+  @@index([permissionId])
+  @@index([grantedById])
+  @@map("api_client_permissions")
+}

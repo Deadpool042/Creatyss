@@ -1,0 +1,43 @@
+// -----------------------------------------------------------------------------
+// Domaine: domain-events
+// Responsabilité: outbox d'événements domaine persistés, replay, observabilité.
+// Distinct du domaine `events` (événements publics boutique).
+// -----------------------------------------------------------------------------
+// prisma/domain-events.prisma
+
+enum DomainEventStatus {
+  PENDING
+  DISPATCHED
+  FAILED
+}
+
+model DomainEvent {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  eventType     String
+  aggregateType String
+  aggregateId   String
+
+  payload Json
+
+  status      DomainEventStatus @default(PENDING)
+  retryCount  Int               @default(0)
+  lastErrorAt DateTime?
+  lastError   String?
+
+  occurredAt   DateTime  @default(now())
+  dispatchedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([eventType])
+  @@index([aggregateType, aggregateId])
+  @@index([status])
+  @@index([occurredAt])
+  @@map("domain_events")
+}

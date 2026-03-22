@@ -1,0 +1,57 @@
+// prisma/categories.prisma
+
+enum CategoryStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+model Category {
+  id       String  @id @default(cuid())
+  storeId  String
+  parentId String?
+
+  slug        String
+  name        String
+  description String?
+
+  status     CategoryStatus @default(DRAFT)
+  sortOrder  Int            @default(0)
+  isFeatured Boolean        @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store        Store             @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  parent       Category?         @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children     Category[]        @relation("CategoryTree")
+  productLinks ProductCategory[]
+  seo          SeoMetadata?
+
+  @@unique([storeId, slug])
+  @@index([storeId])
+  @@index([parentId])
+  @@index([status])
+  @@index([isFeatured])
+  @@map("categories")
+}
+
+model ProductCategory {
+  id         String @id @default(cuid())
+  productId  String
+  categoryId String
+
+  sortOrder Int     @default(0)
+  isPrimary Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, categoryId])
+  @@index([productId])
+  @@index([categoryId])
+  @@index([isPrimary])
+  @@map("product_categories")
+}

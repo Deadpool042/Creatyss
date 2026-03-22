@@ -1,0 +1,87 @@
+// -----------------------------------------------------------------------------
+// Domaine: behavior
+// Responsabilité: lecture comportementale structurée.
+// -----------------------------------------------------------------------------
+// prisma/behavior.prisma
+
+enum BehaviorProfileStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum BehaviorActorKind {
+  VISITOR
+  CUSTOMER
+}
+
+model BehaviorProfile {
+  id      String @id @default(cuid())
+  storeId String
+
+  actorKind  BehaviorActorKind
+  visitorKey String?
+  customerId String?
+
+  status BehaviorProfileStatus @default(ACTIVE)
+
+  lastSeenAt        DateTime?
+  totalSessions     Int       @default(0)
+  totalProductViews Int       @default(0)
+  totalCartAdds     Int       @default(0)
+  totalOrders       Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store    Store                       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer Customer?                   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  segments BehaviorSegmentAssignment[]
+
+  @@unique([storeId, visitorKey])
+  @@unique([storeId, customerId])
+  @@index([storeId])
+  @@index([actorKind])
+  @@index([status])
+  @@index([lastSeenAt])
+  @@map("behavior_profiles")
+}
+
+model BehaviorSegment {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  name        String
+  description String?
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store       Store                       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  assignments BehaviorSegmentAssignment[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([isActive])
+  @@map("behavior_segments")
+}
+
+model BehaviorSegmentAssignment {
+  id                String @id @default(cuid())
+  behaviorProfileId String
+  behaviorSegmentId String
+
+  assignedAt DateTime  @default(now())
+  expiresAt  DateTime?
+
+  behaviorProfile BehaviorProfile @relation(fields: [behaviorProfileId], references: [id], onDelete: Cascade)
+  behaviorSegment BehaviorSegment @relation(fields: [behaviorSegmentId], references: [id], onDelete: Cascade)
+
+  @@unique([behaviorProfileId, behaviorSegmentId])
+  @@index([behaviorProfileId])
+  @@index([behaviorSegmentId])
+  @@index([expiresAt])
+  @@map("behavior_segment_assignments")
+}

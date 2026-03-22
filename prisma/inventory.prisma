@@ -1,0 +1,69 @@
+// -----------------------------------------------------------------------------
+// Domaine: inventory
+// Responsabilité: stocks, ajustements, politique de disponibilité par variante.
+// -----------------------------------------------------------------------------
+// prisma/inventory.prisma
+
+enum InventoryPolicyKind {
+  TRACK
+  DENY_OUT_OF_STOCK
+  ALLOW_BACKORDERS
+  ALLOW_PREORDERS
+  INFINITE
+}
+
+enum InventoryAdjustmentKind {
+  SALE
+  RETURN
+  MANUAL_CORRECTION
+  RECEPTION
+  TRANSFER
+  WRITE_OFF
+}
+
+model InventoryItem {
+  id        String @id @default(cuid())
+  storeId   String
+  variantId String @unique
+
+  policy            InventoryPolicyKind @default(TRACK)
+  quantityOnHand    Int                 @default(0)
+  quantityReserved  Int                 @default(0)
+  quantityAvailable Int                 @default(0)
+
+  lowStockThreshold Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store       Store                 @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  variant     ProductVariant        @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  adjustments InventoryAdjustment[]
+
+  @@index([storeId])
+  @@index([policy])
+  @@map("inventory_items")
+}
+
+model InventoryAdjustment {
+  id              String @id @default(cuid())
+  inventoryItemId String
+
+  kind          InventoryAdjustmentKind
+  delta         Int
+  quantityAfter Int
+
+  reason        String?
+  referenceId   String?
+  referenceKind String?
+
+  occurredAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  inventoryItem InventoryItem @relation(fields: [inventoryItemId], references: [id], onDelete: Cascade)
+
+  @@index([inventoryItemId])
+  @@index([kind])
+  @@index([occurredAt])
+  @@map("inventory_adjustments")
+}

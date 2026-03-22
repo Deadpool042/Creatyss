@@ -1,0 +1,52 @@
+// -----------------------------------------------------------------------------
+// Domaine: seo
+// Responsabilité: metadata SEO, canonical, règles d'indexation.
+// -----------------------------------------------------------------------------
+// prisma/seo.prisma
+
+enum SeoSubjectKind {
+  PAGE
+  BLOG_POST
+  PRODUCT
+  CATEGORY
+}
+
+enum SeoIndexingState {
+  INDEX
+  NOINDEX
+}
+
+model SeoMetadata {
+  id      String @id @default(cuid())
+  storeId String
+
+  metaTitle       String?
+  metaDescription String?
+  canonicalUrl    String?
+
+  indexingState SeoIndexingState @default(INDEX)
+
+  openGraphTitle       String?
+  openGraphDescription String?
+  openGraphImageId     String?
+
+  pageId     String? @unique
+  blogPostId String? @unique
+  productId  String? @unique
+  categoryId String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store          Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  openGraphImage MediaAsset? @relation(fields: [openGraphImageId], references: [id], onDelete: SetNull)
+
+  page     Page?     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  blogPost BlogPost? @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  product  Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([storeId])
+  @@index([indexingState])
+  @@map("seo_metadata")
+}

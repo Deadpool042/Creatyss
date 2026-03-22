@@ -1,0 +1,86 @@
+// -----------------------------------------------------------------------------
+// Domaine: import
+// Responsabilité: imports structurés, validation, application.
+// -----------------------------------------------------------------------------
+// prisma/import.prisma
+
+enum ImportStatus {
+  PENDING
+  VALIDATED
+  RUNNING
+  PARTIALLY_APPLIED
+  APPLIED
+  FAILED
+  CANCELLED
+}
+
+enum ImportFormat {
+  CSV
+  JSON
+  XLSX
+}
+
+model ImportDefinition {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  code        String
+  name        String
+  description String?
+
+  subjectType String
+  format      ImportFormat
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store    Store?          @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  requests ImportRequest[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([subjectType])
+  @@index([isActive])
+  @@map("import_definitions")
+}
+
+model ImportRequest {
+  id                 String  @id @default(cuid())
+  storeId            String?
+  importDefinitionId String
+
+  requestedByUserId String?
+  status            ImportStatus @default(PENDING)
+  format            ImportFormat
+
+  sourceFilename    String?
+  sourcePath        String?
+  parameters        Json?
+  validationSummary Json?
+  resultSummary     Json?
+
+  validatedAt DateTime?
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  failedAt    DateTime?
+  cancelledAt DateTime?
+
+  failureCode    String?
+  failureMessage String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store            Store?           @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  importDefinition ImportDefinition @relation(fields: [importDefinitionId], references: [id], onDelete: Cascade)
+  requestedByUser  User?            @relation(fields: [requestedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([importDefinitionId])
+  @@index([requestedByUserId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("import_requests")
+}

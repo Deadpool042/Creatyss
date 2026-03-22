@@ -1,45 +1,9 @@
-/**
- * Seed images script — run by the `seeder` Docker service at startup.
- *
- * What it does (idempotent):
- *   1. Copies `seed_data/images/creatyss.webp` → `public/uploads/creatyss.webp`
- *      (the placeholder shown when a product/category has no real image).
- *   2. Reads `seed_data/images/manifest.json` and, for each entry that has
- *      real image files on disk, converts them to WebP (quality 85) and writes
- *      them to `public/uploads/seed/…`, then upserts the corresponding
- *      `media_assets`, `product_images`, and `categories` rows in the DB.
- *
- * The dest path always ends in `.webp` regardless of the source extension,
- * keeping the uploads volume consistent with images uploaded via the admin UI.
- *
- * Usage:
- *   node --experimental-strip-types scripts/seed-images.ts           # skip existing files
- *   node --experimental-strip-types scripts/seed-images.ts --force   # overwrite + re-sync DB
- *
- * Adding a real product image:
- *   1. Drop the file in  seed_data/images/products/{slug}/01.jpg  (JPEG/PNG/WebP)
- *   2. Add an entry to  seed_data/images/manifest.json:
- *        { "slug": "my-slug", "images": [{ "src": "products/my-slug/01.jpg",
- *            "altText": "…", "sortOrder": 0, "isPrimary": true }] }
- *   3. Run `make db-seed-images` (or restart Docker so the seeder re-runs).
- *
- * Adding a category image:
- *   1. Drop the file in  seed_data/images/categories/{slug}/cover.jpg
- *   2. Add an entry to  seed_data/images/manifest.json:
- *        { "slug": "my-slug", "image": { "src": "categories/my-slug/cover.jpg",
- *            "altText": "…" } }
- *   3. Same as above.
- */
-
+import { createHash, randomUUID } from "node:crypto";
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
 import { Pool } from "pg";
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 type ProductImageEntry = {
   src: string;
@@ -68,16 +32,11 @@ type Manifest = {
   categories?: CategoryEntry[];
 };
 
-// ---------------------------------------------------------------------------
-// Config
-// ---------------------------------------------------------------------------
-
 const FORCE = process.argv.includes("--force");
 const ROOT = process.cwd();
 const SEED_DIR = path.join(ROOT, "seed_data", "images");
 const UPLOADS_DIR = (process.env.UPLOADS_DIR ?? "public/uploads").replace(/\/$/, "");
 const UPLOADS_ABS = path.join(ROOT, UPLOADS_DIR);
-
 const WEBP_OPTIONS: sharp.WebpOptions = { quality: 85, effort: 4 };
 
 function readDatabaseUrl(): string {
@@ -86,49 +45,38 @@ function readDatabaseUrl(): string {
   return "postgresql://creatyss:creatyss@db:5432/creatyss";
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-/**
- * Returns the dest relative path, always with a .webp extension.
- * e.g. "products/my-slug/01.jpg" → "seed/products/my-slug/01.webp"
- */
 function toWebpDestRelative(src: string): string {
   const withoutExt = src.replace(/\.[^.]+$/, "");
   return `seed/${withoutExt}.webp`;
 }
 
-/**
- * Convert `src` to WebP and write to `dest`.
- * Skips if `dest` already exists and FORCE is false.
- * Returns true if the file was written (or already existed), false if src is missing.
- */
 async function convertToWebpIfNeeded(
   src: string,
   dest: string
-): Promise<{ ok: boolean; byteSize: number; width: number | null; height: number | null }> {
+): Promise<{
+  ok: boolean;
+  byteSize: number;
+  width: number | null;
+  height: number | null;
+  checksumSha256: string | null;
+}> {
   if (!existsSync(src)) {
     process.stdout.write(`  skip (src missing): ${path.relative(ROOT, src)}\n`);
-    return { ok: false, byteSize: 0, width: null, height: null };
+    return { ok: false, byteSize: 0, width: null, height: null, checksumSha256: null };
   }
 
   if (!FORCE && existsSync(dest)) {
     process.stdout.write(`  skip (exists): ${path.relative(ROOT, dest)}\n`);
-    // Read existing size/dimensions for DB upsert accuracy.
-    const {
-      size: _size,
-      width,
-      height,
-    } = await sharp(dest)
-      .metadata()
-      .then((m) => ({
-        size: 0, // we won't re-stat; 0 triggers ON CONFLICT DO NOTHING path
-        width: m.width ?? null,
-        height: m.height ?? null,
-      }));
-    const buf = await readFile(dest);
-    return { ok: true, byteSize: buf.length, width, height };
+    const buffer = await readFile(dest);
+    const metadata = await sharp(buffer).metadata();
+
+    return {
+      ok: true,
+      byteSize: buffer.length,
+      width: metadata.width ?? null,
+      height: metadata.height ?? null,
+      checksumSha256: createHash("sha256").update(buffer).digest("hex"),
+    };
   }
 
   await mkdir(path.dirname(dest), { recursive: true });
@@ -136,6 +84,7 @@ async function convertToWebpIfNeeded(
   const { data, info } = await sharp(src).webp(WEBP_OPTIONS).toBuffer({ resolveWithObject: true });
 
   await writeFile(dest, data, { flag: FORCE ? "w" : "wx" });
+
   process.stdout.write(
     `  converted → ${path.relative(ROOT, dest)} (${Math.round(data.length / 1024)} kB)\n`
   );
@@ -145,46 +94,152 @@ async function convertToWebpIfNeeded(
     byteSize: data.length,
     width: info.width ?? null,
     height: info.height ?? null,
+    checksumSha256: createHash("sha256").update(data).digest("hex"),
   };
 }
 
-/**
- * Upsert a `media_assets` row keyed by `file_path`.
- */
 async function upsertMediaAsset(
   pool: Pool,
-  filePath: string,
+  storageKey: string,
   originalName: string,
+  altText: string | null,
   byteSize: number,
   width: number | null,
-  height: number | null
+  height: number | null,
+  checksumSha256: string | null
+): Promise<string> {
+  const result = await pool.query<{ id: string }>(
+    `
+      insert into media_assets (
+        id,
+        storage_key,
+        original_name,
+        mime_type,
+        byte_size,
+        width,
+        height,
+        alt_text,
+        checksum_sha256,
+        created_at,
+        updated_at
+      )
+      values ($1, $2, $3, 'image/webp', $4::bigint, $5, $6, $7, $8, now(), now())
+      on conflict (storage_key) do update
+        set original_name = excluded.original_name,
+            mime_type = excluded.mime_type,
+            byte_size = excluded.byte_size,
+            width = excluded.width,
+            height = excluded.height,
+            alt_text = excluded.alt_text,
+            checksum_sha256 = excluded.checksum_sha256,
+            updated_at = now()
+      returning id::text as id
+    `,
+    [
+      randomUUID(),
+      storageKey,
+      originalName,
+      String(byteSize),
+      width,
+      height,
+      altText,
+      checksumSha256,
+    ]
+  );
+
+  const mediaId = result.rows[0]?.id;
+
+  if (!mediaId) {
+    throw new Error(`Failed to upsert media asset for ${storageKey}`);
+  }
+
+  return mediaId;
+}
+
+async function upsertProductImage(
+  pool: Pool,
+  productSlug: string,
+  mediaAssetId: string,
+  sortOrder: number,
+  isPrimary: boolean
 ): Promise<void> {
+  const productResult = await pool.query<{ id: string }>(
+    `select id::text as id from products where slug = $1 limit 1`,
+    [productSlug]
+  );
+
+  const productId = productResult.rows[0]?.id;
+
+  if (!productId) {
+    process.stdout.write(`  skip (product missing): ${productSlug}\n`);
+    return;
+  }
+
+  if (isPrimary) {
+    await pool.query(
+      `update product_images set is_primary = false, updated_at = now() where product_id = $1`,
+      [productId]
+    );
+  }
+
+  const existing = await pool.query<{ id: string }>(
+    `
+      select id::text as id
+      from product_images
+      where product_id = $1 and media_asset_id = $2
+      limit 1
+    `,
+    [productId, mediaAssetId]
+  );
+
+  if (existing.rows.length > 0) {
+    await pool.query(
+      `
+        update product_images
+        set is_primary = $3,
+            sort_order = $4,
+            updated_at = now()
+        where id = $1 and media_asset_id = $2
+      `,
+      [existing.rows[0]?.id, mediaAssetId, isPrimary, sortOrder]
+    );
+    return;
+  }
+
   await pool.query(
     `
-      insert into media_assets
-        (file_path, original_name, mime_type, byte_size, image_width, image_height)
-      values ($1, $2, 'image/webp', $3::bigint, $4, $5)
-      on conflict (file_path) do update
-        set original_name = excluded.original_name,
-            byte_size     = excluded.byte_size,
-            image_width   = excluded.image_width,
-            image_height  = excluded.image_height,
-            updated_at    = now()
+      insert into product_images (
+        id,
+        product_id,
+        media_asset_id,
+        is_primary,
+        sort_order,
+        created_at,
+        updated_at
+      )
+      values ($1, $2, $3, $4, $5, now(), now())
     `,
-    [filePath, originalName, String(byteSize), width, height]
+    [randomUUID(), productId, mediaAssetId, isPrimary, sortOrder]
   );
 }
 
-// ---------------------------------------------------------------------------
-// Main
-// ---------------------------------------------------------------------------
+async function setCategoryRepresentativeImage(
+  pool: Pool,
+  categorySlug: string,
+  mediaAssetId: string
+): Promise<void> {
+  await pool.query(
+    `update categories set representative_media_id = $2, updated_at = now() where slug = $1`,
+    [categorySlug, mediaAssetId]
+  );
+}
 
 async function main() {
   const pool = new Pool({ connectionString: readDatabaseUrl() });
 
   try {
-    // 1. Placeholder (creatyss.webp) — copied as-is, already WebP ---------------
     process.stdout.write("==> Placeholder (creatyss.webp)\n");
+
     const placeholderSrc = path.join(SEED_DIR, "creatyss.webp");
     const placeholderDest = path.join(UPLOADS_ABS, "creatyss.webp");
 
@@ -198,13 +253,11 @@ async function main() {
       }
     } else {
       process.stdout.write(
-        "  warning: seed_data/images/creatyss.webp not found.\n" +
-          "  Run `make seed-data-init` to copy it from public/uploads/.\n"
+        "  warning: seed_data/images/creatyss.webp not found. Run `make seed-data-init` first.\n"
       );
       await mkdir(UPLOADS_ABS, { recursive: true });
     }
 
-    // 2. Read manifest -----------------------------------------------------------
     const manifestPath = path.join(SEED_DIR, "manifest.json");
     if (!existsSync(manifestPath)) {
       process.stdout.write("==> No manifest.json — skipping image seed.\n");
@@ -213,7 +266,6 @@ async function main() {
 
     const manifest: Manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
 
-    // 3. Product images ----------------------------------------------------------
     process.stdout.write("==> Product images\n");
 
     for (const product of manifest.products ?? []) {
@@ -222,72 +274,64 @@ async function main() {
 
       process.stdout.write(`  product: ${product.slug}\n`);
 
-      for (const img of realImages) {
-        const src = path.join(SEED_DIR, img.src);
-        const destRelative = toWebpDestRelative(img.src);
-        const dest = path.join(UPLOADS_ABS, destRelative);
-        const originalName = path.basename(img.src).replace(/\.[^.]+$/, "") + ".webp";
+      for (const image of realImages) {
+        const src = path.join(SEED_DIR, image.src);
+        const storageKey = toWebpDestRelative(image.src);
+        const dest = path.join(UPLOADS_ABS, storageKey);
+        const originalName = `${path.basename(image.src).replace(/\.[^.]+$/, "")}.webp`;
 
-        const { ok, byteSize, width, height } = await convertToWebpIfNeeded(src, dest);
-        if (!ok) continue;
+        const converted = await convertToWebpIfNeeded(src, dest);
+        if (!converted.ok) continue;
 
-        await upsertMediaAsset(pool, destRelative, originalName, byteSize, width, height);
+        const mediaAssetId = await upsertMediaAsset(
+          pool,
+          storageKey,
+          originalName,
+          image.altText ?? null,
+          converted.byteSize,
+          converted.width,
+          converted.height,
+          converted.checksumSha256
+        );
 
-        if (img.isPrimary) {
-          await pool.query(
-            `
-              update product_images
-              set    file_path  = $2,
-                     alt_text   = $3,
-                     sort_order = $4
-              where  product_id = (select id from products where slug = $1 limit 1)
-                and  is_primary = true
-            `,
-            [product.slug, destRelative, img.altText ?? null, img.sortOrder]
-          );
-        } else {
-          await pool.query(
-            `
-              insert into product_images
-                (product_id, file_path, alt_text, sort_order, is_primary)
-              select p.id, $2, $3, $4, false
-              from   products p
-              where  p.slug = $1
-                and  not exists (
-                  select 1 from product_images pi
-                  where  pi.product_id = p.id and pi.file_path = $2
-                )
-              limit 1
-            `,
-            [product.slug, destRelative, img.altText ?? null, img.sortOrder]
-          );
-        }
+        await upsertProductImage(
+          pool,
+          product.slug,
+          mediaAssetId,
+          image.sortOrder,
+          image.isPrimary
+        );
       }
     }
 
-    // 4. Category images ---------------------------------------------------------
     process.stdout.write("==> Category images\n");
 
     for (const category of manifest.categories ?? []) {
-      const img = category.image;
-      if (!img) continue;
+      const image = category.image;
+      if (!image) continue;
 
       process.stdout.write(`  category: ${category.slug}\n`);
 
-      const src = path.join(SEED_DIR, img.src);
-      const destRelative = toWebpDestRelative(img.src);
-      const dest = path.join(UPLOADS_ABS, destRelative);
-      const originalName = path.basename(img.src).replace(/\.[^.]+$/, "") + ".webp";
+      const src = path.join(SEED_DIR, image.src);
+      const storageKey = toWebpDestRelative(image.src);
+      const dest = path.join(UPLOADS_ABS, storageKey);
+      const originalName = `${path.basename(image.src).replace(/\.[^.]+$/, "")}.webp`;
 
-      const { ok, byteSize, width, height } = await convertToWebpIfNeeded(src, dest);
-      if (!ok) continue;
+      const converted = await convertToWebpIfNeeded(src, dest);
+      if (!converted.ok) continue;
 
-      await upsertMediaAsset(pool, destRelative, originalName, byteSize, width, height);
+      const mediaAssetId = await upsertMediaAsset(
+        pool,
+        storageKey,
+        originalName,
+        image.altText ?? null,
+        converted.byteSize,
+        converted.width,
+        converted.height,
+        converted.checksumSha256
+      );
 
-      await pool.query(`update categories set image_path = $2 where slug = $1`, [
-        category.slug,
-        destRelative,
-      ]);
+      await setCategoryRepresentativeImage(pool, category.slug, mediaAssetId);
     }
 
     process.stdout.write("==> Done.\n");

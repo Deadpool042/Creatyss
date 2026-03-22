@@ -1,0 +1,83 @@
+// -----------------------------------------------------------------------------
+// Domaine: export
+// Responsabilité: exports structurés, artefacts, statuts.
+// -----------------------------------------------------------------------------
+// prisma/export.prisma
+
+enum ExportStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  EXPIRED
+  CANCELLED
+}
+
+enum ExportFormat {
+  CSV
+  JSON
+  XLSX
+}
+
+model ExportDefinition {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  code        String
+  name        String
+  description String?
+
+  subjectType String
+  format      ExportFormat
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store    Store?          @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  requests ExportRequest[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([subjectType])
+  @@index([isActive])
+  @@map("export_definitions")
+}
+
+model ExportRequest {
+  id                 String  @id @default(cuid())
+  storeId            String?
+  exportDefinitionId String
+
+  requestedByUserId String?
+  status            ExportStatus @default(PENDING)
+  format            ExportFormat
+
+  filters          Json?
+  artifactPath     String?
+  artifactFilename String?
+
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  failedAt    DateTime?
+  expiredAt   DateTime?
+  cancelledAt DateTime?
+
+  failureCode    String?
+  failureMessage String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store            Store?           @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  exportDefinition ExportDefinition @relation(fields: [exportDefinitionId], references: [id], onDelete: Cascade)
+  requestedByUser  User?            @relation(fields: [requestedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([exportDefinitionId])
+  @@index([requestedByUserId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("export_requests")
+}

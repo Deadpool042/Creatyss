@@ -1,0 +1,46 @@
+// -----------------------------------------------------------------------------
+// Domaine: monitoring
+// Responsabilité: supervision technique, santé, checks, alertes.
+// -----------------------------------------------------------------------------
+// prisma/monitoring.prisma
+
+enum MonitoringCheckStatus {
+  HEALTHY
+  DEGRADED
+  FAILED
+}
+
+enum MonitoringCheckKind {
+  DATABASE
+  QUEUE
+  WEBHOOK
+  INTEGRATION
+  STORAGE
+  APPLICATION
+  OTHER
+}
+
+model MonitoringCheck {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  code String
+  name String
+  kind MonitoringCheckKind
+
+  status  MonitoringCheckStatus @default(HEALTHY)
+  summary String?
+
+  checkedAt DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([kind])
+  @@index([status])
+  @@index([checkedAt])
+  @@map("monitoring_checks")
+}

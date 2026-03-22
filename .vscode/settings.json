@@ -4,5 +4,12 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "js/ts.tsdk.path": "node_modules/typescript/lib",
-  "github.copilot.chat.codeGeneration.useInstructionFiles": true
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "prisma.schemaPath": "prisma.config.ts",
+  "files.watcherExclude": {
+    "**/node_modules/**": true
+  },
+  "files.exclude": {
+    "**/node_modules": true
+  }
 }

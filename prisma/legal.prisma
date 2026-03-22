@@ -1,0 +1,92 @@
+// -----------------------------------------------------------------------------
+// Domaine: legal
+// Responsabilité: documents juridiques, versions, acceptations.
+// -----------------------------------------------------------------------------
+// prisma/legal.prisma
+
+enum LegalDocumentStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum LegalDocumentKind {
+  TERMS_OF_SERVICE
+  PRIVACY_POLICY
+  RETURN_POLICY
+  SHIPPING_POLICY
+  LEGAL_NOTICE
+  CUSTOM
+}
+
+model LegalDocument {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  kind        LegalDocumentKind
+  title       String
+  description String?
+
+  status LegalDocumentStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store    Store                  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  versions LegalDocumentVersion[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([kind])
+  @@index([status])
+  @@map("legal_documents")
+}
+
+model LegalDocumentVersion {
+  id              String @id @default(cuid())
+  legalDocumentId String
+
+  versionLabel String
+  title        String?
+  content      String
+
+  locale      String?
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  archivedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  legalDocument LegalDocument     @relation(fields: [legalDocumentId], references: [id], onDelete: Cascade)
+  acceptances   LegalAcceptance[]
+
+  @@unique([legalDocumentId, versionLabel, locale])
+  @@index([legalDocumentId])
+  @@index([isPublished])
+  @@index([publishedAt])
+  @@index([locale])
+  @@map("legal_document_versions")
+}
+
+model LegalAcceptance {
+  id                     String  @id @default(cuid())
+  legalDocumentVersionId String
+  customerId             String?
+  userId                 String?
+
+  acceptedAt DateTime @default(now())
+  ipAddress  String?
+  userAgent  String?
+
+  legalDocumentVersion LegalDocumentVersion @relation(fields: [legalDocumentVersionId], references: [id], onDelete: Cascade)
+  customer             Customer?            @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  user                 User?                @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([legalDocumentVersionId])
+  @@index([customerId])
+  @@index([userId])
+  @@index([acceptedAt])
+  @@map("legal_acceptances")
+}

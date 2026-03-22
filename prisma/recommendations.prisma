@@ -1,0 +1,78 @@
+// -----------------------------------------------------------------------------
+// Domaine: recommendations
+// Responsabilité: recommandations produits / contenus / contextes.
+// -----------------------------------------------------------------------------
+// prisma/recommendations.prisma
+
+enum RecommendationListStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum RecommendationContextKind {
+  PRODUCT
+  CATEGORY
+  CART
+  BLOG_POST
+  EVENT
+  MANUAL
+}
+
+enum RecommendationTargetKind {
+  PRODUCT
+  CATEGORY
+  BLOG_POST
+  EVENT
+}
+
+model RecommendationList {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String?
+  name        String
+  description String?
+
+  contextKind      RecommendationContextKind
+  contextSubjectId String?
+
+  status   RecommendationListStatus @default(ACTIVE)
+  isManual Boolean                  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store                @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  items RecommendationItem[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([contextKind])
+  @@index([contextSubjectId])
+  @@index([status])
+  @@map("recommendation_lists")
+}
+
+model RecommendationItem {
+  id                   String @id @default(cuid())
+  recommendationListId String
+
+  targetKind      RecommendationTargetKind
+  targetSubjectId String
+
+  sortOrder   Int     @default(0)
+  reasonLabel String?
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  recommendationList RecommendationList @relation(fields: [recommendationListId], references: [id], onDelete: Cascade)
+
+  @@unique([recommendationListId, targetKind, targetSubjectId])
+  @@index([recommendationListId])
+  @@index([targetKind, targetSubjectId])
+  @@index([isActive])
+  @@map("recommendation_items")
+}

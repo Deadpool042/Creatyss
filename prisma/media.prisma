@@ -1,0 +1,88 @@
+// -----------------------------------------------------------------------------
+// Domaine: media
+// Responsabilité: assets, variants, metadata, références média.
+// -----------------------------------------------------------------------------
+// prisma/media.prisma
+
+enum MediaAssetKind {
+  IMAGE
+  FILE
+}
+
+enum MediaAssetStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+model MediaAsset {
+  id      String @id @default(cuid())
+  storeId String
+
+  kind   MediaAssetKind   @default(IMAGE)
+  status MediaAssetStatus @default(ACTIVE)
+
+  originalFilename String
+  storagePath      String
+  mimeType         String
+  altText          String?
+
+  width         Int?
+  height        Int?
+  fileSizeBytes Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store              Store                 @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  productLinks       ProductMedia[]
+  variantLinks       ProductVariantMedia[]
+  blogPostCovers     BlogPost[]
+  seoOpenGraphImages SeoMetadata[]
+  events             Event[]
+  pageSections       PageSection[]
+
+  @@index([storeId])
+  @@index([kind])
+  @@index([status])
+  @@map("media_assets")
+}
+
+model ProductMedia {
+  id           String @id @default(cuid())
+  productId    String
+  mediaAssetId String
+
+  sortOrder Int     @default(0)
+  isPrimary Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, mediaAssetId])
+  @@index([productId])
+  @@index([mediaAssetId])
+  @@index([isPrimary])
+  @@map("product_media")
+}
+
+model ProductVariantMedia {
+  id           String @id @default(cuid())
+  variantId    String
+  mediaAssetId String
+
+  sortOrder Int     @default(0)
+  isPrimary Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset     @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+
+  @@unique([variantId, mediaAssetId])
+  @@index([variantId])
+  @@index([mediaAssetId])
+  @@index([isPrimary])
+  @@map("product_variant_media")
+}

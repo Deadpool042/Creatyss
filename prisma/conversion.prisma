@@ -1,0 +1,58 @@
+// -----------------------------------------------------------------------------
+// Domaine: conversion
+// Responsabilité: flows de conversion, étapes, triggers comportementaux.
+// -----------------------------------------------------------------------------
+// prisma/conversion.prisma
+
+enum ConversionFlowStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+enum ConversionTriggerKind {
+  PAGE_VIEW
+  PRODUCT_VIEW
+  ADD_TO_CART
+  CHECKOUT_START
+  PURCHASE
+  CUSTOM
+}
+
+model ConversionFlow {
+  id      String @id @default(cuid())
+  storeId String
+
+  name        String
+  description String?
+  status      ConversionFlowStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  steps ConversionStep[]
+
+  @@index([storeId])
+  @@index([status])
+  @@map("conversion_flows")
+}
+
+model ConversionStep {
+  id               String @id @default(cuid())
+  conversionFlowId String
+
+  name        String
+  sortOrder   Int                   @default(0)
+  triggerKind ConversionTriggerKind
+  config      Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  conversionFlow ConversionFlow @relation(fields: [conversionFlowId], references: [id], onDelete: Cascade)
+
+  @@index([conversionFlowId])
+  @@map("conversion_steps")
+}

@@ -1,0 +1,64 @@
+// -----------------------------------------------------------------------------
+// Domaine: loyalty
+// Responsabilité: comptes fidélité, points, tiers, avantages.
+// -----------------------------------------------------------------------------
+// prisma/loyalty.prisma
+
+enum LoyaltyAccountStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum LoyaltyTransactionType {
+  EARN
+  REDEEM
+  ADJUST
+  EXPIRE
+}
+
+model LoyaltyAccount {
+  id         String @id @default(cuid())
+  storeId    String
+  customerId String
+
+  status        LoyaltyAccountStatus @default(ACTIVE)
+  pointsBalance Int                  @default(0)
+  tierCode      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store        Store                @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer     Customer             @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  transactions LoyaltyTransaction[]
+
+  @@unique([storeId, customerId])
+  @@index([storeId])
+  @@index([status])
+  @@index([tierCode])
+  @@map("loyalty_accounts")
+}
+
+model LoyaltyTransaction {
+  id               String  @id @default(cuid())
+  loyaltyAccountId String
+  orderId          String?
+
+  type         LoyaltyTransactionType
+  points       Int
+  balanceAfter Int
+
+  reason    String?
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+
+  loyaltyAccount LoyaltyAccount @relation(fields: [loyaltyAccountId], references: [id], onDelete: Cascade)
+  order          Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@index([loyaltyAccountId])
+  @@index([orderId])
+  @@index([type])
+  @@index([expiresAt])
+  @@map("loyalty_transactions")
+}

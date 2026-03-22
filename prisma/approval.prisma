@@ -1,0 +1,45 @@
+// -----------------------------------------------------------------------------
+// Domaine: approval
+// Responsabilité: demandes d'approbation, décisions, politiques.
+// -----------------------------------------------------------------------------
+// prisma/approval.prisma
+
+enum ApprovalRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+model ApprovalRequest {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  subjectType String
+  subjectId   String
+
+  requestedByUserId String?
+  reviewedByUserId  String?
+
+  status     ApprovalRequestStatus @default(PENDING)
+  reason     String?
+  reviewNote String?
+
+  requestedAt DateTime  @default(now())
+  reviewedAt  DateTime?
+  cancelledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store           Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  requestedByUser User?  @relation("ApprovalRequestedBy", fields: [requestedByUserId], references: [id], onDelete: SetNull)
+  reviewedByUser  User?  @relation("ApprovalReviewedBy", fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([subjectType, subjectId])
+  @@index([requestedByUserId])
+  @@index([reviewedByUserId])
+  @@index([status])
+  @@map("approval_requests")
+}

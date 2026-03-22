@@ -1,0 +1,88 @@
+// -----------------------------------------------------------------------------
+// Domaine: notifications
+// Responsabilité: notifications transactionnelles et in-app.
+// -----------------------------------------------------------------------------
+// prisma/notifications.prisma
+
+enum NotificationChannel {
+  EMAIL
+  IN_APP
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum NotificationRecipientKind {
+  USER
+  CUSTOMER
+}
+
+enum NotificationType {
+  ORDER_CREATED
+  ORDER_CONFIRMED
+  ORDER_CANCELLED
+  PAYMENT_CAPTURED
+  PAYMENT_FAILED
+  FULFILLMENT_SHIPPED
+  FULFILLMENT_READY_FOR_PICKUP
+  RETURN_REQUESTED
+  RETURN_APPROVED
+  SUPPORT_MESSAGE
+  GENERIC
+}
+
+model Notification {
+  id      String @id @default(cuid())
+  storeId String
+
+  type    NotificationType
+  channel NotificationChannel
+  status  NotificationStatus  @default(PENDING)
+
+  recipientKind NotificationRecipientKind
+  userId        String?
+  customerId    String?
+
+  subject String?
+  title   String?
+  body    String?
+
+  orderId         String?
+  paymentId       String?
+  fulfillmentId   String?
+  returnRequestId String?
+
+  sentAt         DateTime?
+  failedAt       DateTime?
+  cancelledAt    DateTime?
+  failureCode    String?
+  failureMessage String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store         Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  user          User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customer      Customer?      @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  order         Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  payment       Payment?       @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+  fulfillment   Fulfillment?   @relation(fields: [fulfillmentId], references: [id], onDelete: SetNull)
+  returnRequest ReturnRequest? @relation(fields: [returnRequestId], references: [id], onDelete: SetNull)
+  emailMessages EmailMessage[]
+
+  @@index([storeId])
+  @@index([type])
+  @@index([channel])
+  @@index([status])
+  @@index([userId])
+  @@index([customerId])
+  @@index([orderId])
+  @@index([paymentId])
+  @@index([fulfillmentId])
+  @@index([returnRequestId])
+  @@map("notifications")
+}

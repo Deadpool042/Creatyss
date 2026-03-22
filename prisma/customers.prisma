@@ -1,0 +1,90 @@
+// -----------------------------------------------------------------------------
+// Domaine: customers
+// Responsabilité: clients métier de la boutique.
+// -----------------------------------------------------------------------------
+// prisma/customers.prisma
+
+enum CustomerStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+model Customer {
+  id      String @id @default(cuid())
+  storeId String
+
+  email       String
+  firstName   String?
+  lastName    String?
+  displayName String?
+
+  phone String?
+  notes String?
+
+  status                CustomerStatus @default(ACTIVE)
+  acceptsEmailMarketing Boolean        @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store                   Store                    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  addresses               CustomerAddress[]
+  orders                  Order[]
+  carts                   Cart[]
+  checkouts               Checkout[]
+  returnRequests          ReturnRequest[]
+  loyaltyAccounts         LoyaltyAccount[]
+  giftCards               GiftCard[]
+  fraudRiskAssessments    FraudRiskAssessment[]
+  newsletterSubscriptions NewsletterSubscription[]
+  subscriptions           Subscription[]
+  aiConversations         AiConversation[]
+  crmTags                 CrmCustomerTag[]
+  crmNotes                CrmNote[]
+  attributionRecords      AttributionRecord[]
+  behaviorProfiles        BehaviorProfile[]
+  consentRecords          ConsentRecord[]
+  emailMessages           EmailMessage[]
+  eventRegistrations      EventRegistration[]
+  legalAcceptances        LegalAcceptance[]
+  notifications           Notification[]
+  supportTickets          SupportTicket[]
+  supportMessages         SupportMessage[]
+  trackingEvents          TrackingEvent[]
+
+  @@unique([storeId, email])
+  @@index([storeId])
+  @@index([status])
+  @@map("customers")
+}
+
+model CustomerAddress {
+  id         String @id @default(cuid())
+  customerId String
+
+  label     String?
+  firstName String?
+  lastName  String?
+  company   String?
+
+  line1       String
+  line2       String?
+  postalCode  String
+  city        String
+  region      String?
+  countryCode String
+
+  phone String?
+
+  isDefaultBilling  Boolean @default(false)
+  isDefaultShipping Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@map("customer_addresses")
+}

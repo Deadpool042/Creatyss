@@ -1,0 +1,247 @@
+// -----------------------------------------------------------------------------
+// Domaine: store
+// Responsabilité: boutique, configuration, capabilities, identité de boutique.
+// -----------------------------------------------------------------------------
+// prisma/store.prisma
+
+enum StoreStatus {
+  DRAFT
+  ACTIVE
+  SUSPENDED
+  ARCHIVED
+}
+
+enum CurrencyCode {
+  EUR
+  USD
+  GBP
+  CHF
+  CAD
+  AUD
+  JPY
+  DKK
+  NOK
+  SEK
+  PLN
+  CZK
+  HUF
+  RON
+}
+
+enum StoreCapabilityKey {
+  // A. Checkout / clients / vente
+  GUEST_CHECKOUT
+  CUSTOMER_CHECKOUT
+  PROFESSIONAL_CUSTOMERS
+
+  // B. Livraison / transport
+  MULTI_CURRENCY
+  MULTI_CARRIER
+  PICKUP_POINT_DELIVERY
+
+  // C. Pricing / devises / remises
+  DISCOUNTS
+  COUPON_CODES
+  CUSTOMER_SPECIFIC_PRICING
+  CUSTOMER_GROUP_PRICING
+  VOLUME_PRICING
+
+  // D. Fiscalité
+  TAXATION
+  EXCISE_TAX
+
+  // E. Disponibilité produit
+  BACKORDERS
+  PREORDERS
+  GIFT_OPTIONS
+
+  // F. Canaux catalogue
+  PRODUCT_CHANNELS
+  GOOGLE_SHOPPING
+  META_CATALOG
+
+  // G. Marketing / conversion / CRM
+  MARKETING_CAMPAIGNS
+  CONVERSION_FLOWS
+  CRM
+
+  // H. Tracking / mesure / consentement
+  TRACKING
+  COOKIE_CONSENT
+  ANALYTICS
+  ATTRIBUTION
+  MARKETING_PIXELS
+  SERVER_SIDE_TRACKING
+
+  // I. Notifications / newsletter / temps réel
+  NOTIFICATIONS
+  NEWSLETTER
+  REALTIME_NOTIFICATIONS
+
+  // J. Événements publics / social
+  PUBLIC_EVENTS
+  EVENT_REGISTRATIONS
+  EVENT_RESERVATIONS
+  SOCIAL_PUBLISHING
+  AUTOMATIC_SOCIAL_POSTING
+
+  // K. Analyse comportementale
+  BEHAVIORAL_ANALYTICS
+  PRODUCT_VIEW_TRACKING
+  CLICK_TRACKING
+
+  // L. Expérience / contenu / international
+  SEARCH
+  RECOMMENDATIONS
+  ADVANCED_SEO
+  LOCALIZATION
+
+  // M. Pilotage / sécurité / supervision
+  AUDIT_TRAIL
+  BUSINESS_OBSERVABILITY
+  TECHNICAL_MONITORING
+  ADVANCED_PERMISSIONS
+
+  // N. Intégrations externes
+  ERP_INTEGRATION
+  EBP_INTEGRATION
+  ELECTRONIC_INVOICING
+  CHORUS_PRO_INTEGRATION
+
+  // O. Intelligence artificielle (optionable par boutique)
+  AI_CONTENT_GENERATION
+  AI_PUBLIC_ASSISTANT
+  AI_SEO_GENERATION
+  AI_SOCIAL_GENERATION
+}
+
+model Store {
+  id     String      @id @default(cuid())
+  code   String      @unique
+  name   String
+  slug   String      @unique
+  status StoreStatus @default(DRAFT)
+
+  defaultLocale      String @default("fr-FR")
+  defaultCurrency    String @default("EUR")
+  defaultCountryCode String @default("FR")
+  timezone           String @default("Europe/Paris")
+
+  supportEmail String?
+  contactEmail String?
+  legalName    String?
+  brandName    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  capabilities StoreCapability[]
+  users        User[]
+  roles        Role[]
+  apiClients   ApiClient[]
+
+  customers Customer[]
+
+  productTypes      ProductType[]
+  catalogAttributes CatalogAttribute[]
+  products          Product[]
+  categories        Category[]
+  priceLists        PriceList[]
+  mediaAssets       MediaAsset[]
+
+  pages               Page[]
+  blogCategories      BlogCategory[]
+  blogPosts           BlogPost[]
+  seoMetadata         SeoMetadata[]
+  localeDefinitions   LocaleDefinition[]
+  localizedValues     LocalizedValue[]
+  templateDefinitions TemplateDefinition[]
+
+  carts           Cart[]
+  checkouts       Checkout[]
+  orders          Order[]
+  shippingMethods ShippingMethod[]
+  discounts       Discount[]
+
+  giftCards       GiftCard[]
+  loyaltyAccounts LoyaltyAccount[]
+  events          Event[]
+
+  notifications  Notification[]
+  emailMessages  EmailMessage[]
+  supportTickets SupportTicket[]
+
+  legalDocuments    LegalDocument[]
+  consentCategories ConsentCategory[]
+  consentRecords    ConsentRecord[]
+
+  auditLogs            AuditLog[]
+  observabilityRecords ObservabilityRecord[]
+  monitoringChecks     MonitoringCheck[]
+
+  jobs             Job[]
+  webhookEndpoints WebhookEndpoint[]
+  integrations     Integration[]
+
+  exportDefinitions ExportDefinition[]
+  exportRequests    ExportRequest[]
+  importDefinitions ImportDefinition[]
+  importRequests    ImportRequest[]
+
+  marketingCampaigns   MarketingCampaign[]
+  trackingEvents       TrackingEvent[]
+  analyticsMetrics     AnalyticsMetric[]
+  attributionRecords   AttributionRecord[]
+  behaviorProfiles     BehaviorProfile[]
+  behaviorSegments     BehaviorSegment[]
+  searchDocuments      SearchDocument[]
+  recommendationLists  RecommendationList[]
+  fraudRiskAssessments FraudRiskAssessment[]
+
+  // Nouveaux domaines
+  inventoryItems       InventoryItem[]
+  taxRules             TaxRule[]
+  exciseRules          ExciseRule[]
+  commercialDocuments  CommercialDocument[]
+  domainEvents         DomainEvent[]
+  channels             Channel[]
+  conversionFlows      ConversionFlow[]
+  crmTags              CrmTag[]
+  newsletterLists      NewsletterList[]
+  subscriptionTopics   SubscriptionTopic[]
+  socialAccounts       SocialAccount[]
+  dashboards           Dashboard[]
+  aiProviders          AiProvider[]
+  aiDepthPolicies      AiDepthPolicy[]
+  aiUsageSummaries     AiUsageSummary[]
+  featureFlags         FeatureFlag[]
+  workflowRuns         WorkflowRun[]
+  aiContentGenerations AiContentGeneration[]
+  aiConversations      AiConversation[]
+  approvalRequests     ApprovalRequest[]
+  bundles              Bundle[]
+  salesPolicies        SalesPolicy[]
+  schedulingEntries    SchedulingEntry[]
+  socialPosts          SocialPost[]
+
+  @@index([status])
+  @@index([slug])
+  @@map("stores")
+}
+
+model StoreCapability {
+  id        String             @id @default(cuid())
+  storeId   String
+  key       StoreCapabilityKey
+  isEnabled Boolean            @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, key])
+  @@index([storeId])
+  @@index([key])
+  @@map("store_capabilities")
+}

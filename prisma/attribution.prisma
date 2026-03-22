@@ -1,0 +1,67 @@
+// -----------------------------------------------------------------------------
+// Domaine: attribution
+// Responsabilité: attribution marketing et canaux d'origine.
+// -----------------------------------------------------------------------------
+// prisma/attribution.prisma
+
+enum AttributionStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum AttributionModelKind {
+  FIRST_TOUCH
+  LAST_TOUCH
+  ASSISTED
+}
+
+enum AttributionSubjectKind {
+  ORDER
+  CUSTOMER
+  CHECKOUT
+}
+
+model AttributionRecord {
+  id      String @id @default(cuid())
+  storeId String
+
+  subjectKind AttributionSubjectKind
+  subjectId   String
+
+  modelKind AttributionModelKind
+  status    AttributionStatus    @default(ACTIVE)
+
+  source   String?
+  medium   String?
+  campaign String?
+  content  String?
+  term     String?
+
+  visitorKey String?
+  sessionKey String?
+
+  customerId String?
+  orderId    String?
+  checkoutId String?
+
+  attributedAt DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  store    Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  order    Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  checkout Checkout? @relation(fields: [checkoutId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([subjectKind, subjectId])
+  @@index([modelKind])
+  @@index([source, medium, campaign])
+  @@index([visitorKey])
+  @@index([sessionKey])
+  @@index([customerId])
+  @@index([orderId])
+  @@index([checkoutId])
+  @@index([attributedAt])
+  @@map("attribution_records")
+}

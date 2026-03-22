@@ -17,7 +17,18 @@
     "jsx": "react-jsx",
     "incremental": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@db/*": ["./db/*"],
+      "@db-repositories/*": ["./db/repositories/*"],
+      "@db-products/*": ["./db/repositories/products/*"],
+      "@db-blog/*": ["./db/repositories/blog/*"],
+      "@db-cart/*": ["./db/repositories/cart/*"],
+      "@db-email/*": ["./db/repositories/email/*"],
+      "@db-users/*": ["./db/repositories/users/*"],
+      "@db-payments/*": ["./db/repositories/payments/*"],
+      "@db-media/*": ["./db/repositories/media/*"],
+      "@db-orders/*": ["./db/repositories/orders/*"],
+      "@db-pages/*": ["./db/repositories/pages/*"]
     },
     "plugins": [
       {

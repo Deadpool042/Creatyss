@@ -1,0 +1,50 @@
+// -----------------------------------------------------------------------------
+// Domaine: sales-policy
+// Responsabilité: vendabilité, règles d'exposition commerciale.
+// -----------------------------------------------------------------------------
+// prisma/sales-policy.prisma
+
+enum SalesPolicyStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum SalesPolicyTargetKind {
+  PRODUCT
+  PRODUCT_VARIANT
+  CATEGORY
+  BUNDLE
+}
+
+model SalesPolicy {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  name        String
+  description String?
+
+  targetKind SalesPolicyTargetKind
+  targetId   String
+
+  status     SalesPolicyStatus @default(ACTIVE)
+  isSellable Boolean           @default(true)
+  isVisible  Boolean           @default(true)
+
+  startsAt DateTime?
+  endsAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([targetKind, targetId])
+  @@index([status])
+  @@index([startsAt])
+  @@index([endsAt])
+  @@map("sales_policies")
+}

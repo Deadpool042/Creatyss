@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Pool } from "pg";
 
 type CliArguments = {
@@ -6,11 +7,11 @@ type CliArguments = {
   passwordStdin: boolean;
 };
 
-type ExistingAdminRow = {
+type ExistingUserRow = {
   id: string;
 };
 
-type CreatedAdminRow = {
+type CreatedUserRow = {
   id: string;
 };
 
@@ -87,6 +88,7 @@ async function main() {
 
   const password = await readPasswordFromStdin();
   const adminAuth = await import(new URL("../lib/admin-auth.ts", import.meta.url).href);
+
   const normalizedInput = adminAuth.normalizeAdminBootstrapInput({
     email: args.email,
     displayName: args.displayName,
@@ -104,40 +106,47 @@ async function main() {
   });
 
   try {
-    const existingAdmin = await pool.query<ExistingAdminRow>(
+    const existingUser = await pool.query<ExistingUserRow>(
       `
         select id::text as id
-        from admin_users
+        from users
         where lower(email) = lower($1)
         limit 1
       `,
       [normalizedInput.email]
     );
 
-    if (existingAdmin.rows.length > 0) {
-      throw new Error(`Admin user already exists for email: ${normalizedInput.email}`);
+    if (existingUser.rows.length > 0) {
+      throw new Error(`User already exists for email: ${normalizedInput.email}`);
     }
 
     const passwordHash = await adminAuth.hashAdminPassword(normalizedInput.password);
-    const createdAdmin = await pool.query<CreatedAdminRow>(
+
+    const createdUser = await pool.query<CreatedUserRow>(
       `
-        insert into admin_users (
+        insert into users (
+          id,
           email,
           password_hash,
-          display_name
+          display_name,
+          role,
+          status,
+          created_at,
+          updated_at
         )
-        values ($1, $2, $3)
+        values ($1, $2, $3, $4, 'admin', 'active', now(), now())
         returning id::text as id
       `,
-      [normalizedInput.email, passwordHash, normalizedInput.displayName]
+      [randomUUID(), normalizedInput.email, passwordHash, normalizedInput.displayName]
     );
-    const adminId = createdAdmin.rows[0]?.id;
 
-    if (!adminId) {
+    const userId = createdUser.rows[0]?.id;
+
+    if (!userId) {
       throw new Error("Failed to create admin user.");
     }
 
-    process.stdout.write(`Admin user created for ${normalizedInput.email} (id: ${adminId}).\n`);
+    process.stdout.write(`Admin user created for ${normalizedInput.email} (id: ${userId}).\n`);
   } finally {
     await pool.end();
   }
@@ -147,5 +156,5 @@ main().catch((error: unknown) => {
   const message = error instanceof Error ? error.message : "Unknown admin bootstrap error.";
 
   process.stderr.write(`${message}\n`);
-  process.exitCode = 1;
+  process.exit(1);
 });

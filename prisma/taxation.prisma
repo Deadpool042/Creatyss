@@ -1,0 +1,83 @@
+// -----------------------------------------------------------------------------
+// Domaine: taxation
+// Responsabilité: règles fiscales, taux, accises, application par boutique.
+// -----------------------------------------------------------------------------
+// prisma/taxation.prisma
+
+enum TaxRuleKind {
+  STANDARD
+  REDUCED
+  ZERO
+  EXEMPT
+}
+
+enum TaxRuleStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum ExciseRuleStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+model TaxRule {
+  id      String @id @default(cuid())
+  storeId String
+
+  name String
+  code String
+
+  kind TaxRuleKind @default(STANDARD)
+  rate Decimal     @db.Decimal(8, 6)
+
+  countryCode String?
+  regionCode  String?
+
+  productTypeCode String?
+
+  status       TaxRuleStatus @default(ACTIVE)
+  appliesFrom  DateTime?
+  appliesUntil DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([status])
+  @@index([countryCode])
+  @@map("tax_rules")
+}
+
+model ExciseRule {
+  id      String @id @default(cuid())
+  storeId String
+
+  name String
+  code String
+
+  rate          Decimal  @db.Decimal(8, 6)
+  amountPerUnit Decimal? @db.Decimal(12, 2)
+
+  countryCode     String?
+  productTypeCode String?
+
+  status       ExciseRuleStatus @default(ACTIVE)
+  appliesFrom  DateTime?
+  appliesUntil DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([status])
+  @@map("excise_rules")
+}

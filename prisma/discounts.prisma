@@ -1,0 +1,102 @@
+// -----------------------------------------------------------------------------
+// Domaine: discounts
+// Responsabilité: remises, coupons, promotions.
+// -----------------------------------------------------------------------------
+// prisma/discounts.prisma
+
+enum DiscountStatus {
+  DRAFT
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum CouponStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+model Discount {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  name        String
+  description String?
+
+  status DiscountStatus @default(DRAFT)
+  type   DiscountType
+
+  percentageValue  Decimal?      @db.Decimal(5, 2)
+  fixedAmountValue Decimal?      @db.Decimal(12, 2)
+  currencyCode     CurrencyCode?
+
+  startsAt DateTime?
+  endsAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store          Store           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  coupons        Coupon[]
+  orderDiscounts OrderDiscount[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([status])
+  @@index([startsAt])
+  @@index([endsAt])
+  @@map("discounts")
+}
+
+model Coupon {
+  id         String @id @default(cuid())
+  discountId String
+
+  code   String       @unique
+  status CouponStatus @default(ACTIVE)
+
+  maxRedemptions Int?
+  redeemedCount  Int  @default(0)
+
+  startsAt DateTime?
+  endsAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  discount       Discount        @relation(fields: [discountId], references: [id], onDelete: Cascade)
+  orderDiscounts OrderDiscount[]
+
+  @@index([discountId])
+  @@index([status])
+  @@map("coupons")
+}
+
+model OrderDiscount {
+  id         String  @id @default(cuid())
+  orderId    String
+  discountId String?
+  couponId   String?
+
+  codeSnapshot String?
+  nameSnapshot String
+  amount       Decimal @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+
+  order    Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  discount Discount? @relation(fields: [discountId], references: [id], onDelete: SetNull)
+  coupon   Coupon?   @relation(fields: [couponId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@index([discountId])
+  @@index([couponId])
+  @@map("order_discounts")
+}

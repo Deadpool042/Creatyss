@@ -1,0 +1,74 @@
+// -----------------------------------------------------------------------------
+// Domaine: pages
+// Responsabilité: pages éditoriales structurées.
+// -----------------------------------------------------------------------------
+// prisma/pages.prisma
+
+enum PageStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum PageSectionKind {
+  HERO
+  RICH_TEXT
+  IMAGE
+  IMAGE_TEXT
+  FEATURED_PRODUCTS
+  FEATURED_CATEGORIES
+  FEATURED_POSTS
+  EDITORIAL
+  CUSTOM
+}
+
+model Page {
+  id      String @id @default(cuid())
+  storeId String
+
+  slug        String
+  title       String
+  description String?
+
+  status     PageStatus @default(DRAFT)
+  isHomepage Boolean    @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store    Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  sections PageSection[]
+  seo      SeoMetadata?
+
+  @@unique([storeId, slug])
+  @@index([storeId])
+  @@index([status])
+  @@index([isHomepage])
+  @@map("pages")
+}
+
+model PageSection {
+  id     String @id @default(cuid())
+  pageId String
+
+  kind     PageSectionKind
+  title    String?
+  subtitle String?
+
+  content      String?
+  imageAssetId String?
+
+  sortOrder Int     @default(0)
+  isEnabled Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  page       Page        @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  imageAsset MediaAsset? @relation(fields: [imageAssetId], references: [id], onDelete: SetNull)
+
+  @@index([pageId])
+  @@index([kind])
+  @@index([isEnabled])
+  @@map("page_sections")
+}

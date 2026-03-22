@@ -1,0 +1,48 @@
+// -----------------------------------------------------------------------------
+// Domaine: jobs
+// Responsabilité: exécution asynchrone, retries, scheduling technique.
+// -----------------------------------------------------------------------------
+// prisma/jobs.prisma
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+model Job {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  type   String
+  status JobStatus @default(PENDING)
+
+  payload Json?
+  result  Json?
+
+  attemptCount Int @default(0)
+  maxAttempts  Int @default(3)
+
+  scheduledAt DateTime?
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  failedAt    DateTime?
+  cancelledAt DateTime?
+
+  failureCode    String?
+  failureMessage String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([type])
+  @@index([status])
+  @@index([scheduledAt])
+  @@index([startedAt])
+  @@map("jobs")
+}

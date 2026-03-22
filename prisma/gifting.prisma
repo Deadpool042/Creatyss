@@ -1,0 +1,38 @@
+// -----------------------------------------------------------------------------
+// Domaine: gifting
+// Responsabilité: usages cadeau, bénéficiaire, message, présentation.
+// -----------------------------------------------------------------------------
+// prisma/gifting.prisma
+
+enum GiftingStatus {
+  ACTIVE
+  REMOVED
+}
+
+model GiftingContext {
+  id         String  @id @default(cuid())
+  cartId     String? @unique
+  checkoutId String? @unique
+  orderId    String? @unique
+
+  status GiftingStatus @default(ACTIVE)
+
+  recipientFirstName String?
+  recipientLastName  String?
+  recipientEmail     String?
+  recipientPhone     String?
+
+  giftMessage      String?
+  presentationNote String?
+  wantsGiftWrap    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cart     Cart?     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  checkout Checkout? @relation(fields: [checkoutId], references: [id], onDelete: Cascade)
+  order    Order?    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@map("gifting_contexts")
+}

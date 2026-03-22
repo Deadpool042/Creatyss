@@ -1,0 +1,83 @@
+// -----------------------------------------------------------------------------
+// Domaine: shipping
+// Responsabilité: méthodes, zones, options de livraison.
+// -----------------------------------------------------------------------------
+// prisma/shipping.prisma
+
+enum ShippingMethodStatus {
+  ACTIVE
+  DISABLED
+  ARCHIVED
+}
+
+model ShippingMethod {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  name        String
+  description String?
+
+  status    ShippingMethodStatus @default(ACTIVE)
+  sortOrder Int                  @default(0)
+  isDefault Boolean              @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store           Store                    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  rates           ShippingRate[]
+  orderSelections OrderShippingSelection[]
+  checkouts       Checkout[]
+
+  @@unique([storeId, code])
+  @@index([storeId])
+  @@index([status])
+  @@index([isDefault])
+  @@map("shipping_methods")
+}
+
+model ShippingRate {
+  id               String @id @default(cuid())
+  shippingMethodId String
+
+  countryCode       String
+  region            String?
+  postalCodePattern String?
+
+  minSubtotalAmount Decimal? @db.Decimal(12, 2)
+  maxSubtotalAmount Decimal? @db.Decimal(12, 2)
+
+  priceAmount  Decimal      @db.Decimal(12, 2)
+  currencyCode CurrencyCode
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  shippingMethod ShippingMethod @relation(fields: [shippingMethodId], references: [id], onDelete: Cascade)
+
+  @@index([shippingMethodId])
+  @@index([countryCode])
+  @@map("shipping_rates")
+}
+
+model OrderShippingSelection {
+  id               String @id @default(cuid())
+  orderId          String @unique
+  shippingMethodId String
+
+  methodCodeSnapshot String
+  methodNameSnapshot String
+
+  priceAmount  Decimal      @db.Decimal(12, 2)
+  currencyCode CurrencyCode
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order          Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  shippingMethod ShippingMethod @relation(fields: [shippingMethodId], references: [id], onDelete: Restrict)
+
+  @@index([shippingMethodId])
+  @@map("order_shipping_selections")
+}

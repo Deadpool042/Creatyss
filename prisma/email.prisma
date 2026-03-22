@@ -1,0 +1,86 @@
+// -----------------------------------------------------------------------------
+// Domaine: email
+// Responsabilité: messages email structurés au niveau interne.
+// -----------------------------------------------------------------------------
+// prisma/email.prisma
+
+enum EmailStatus {
+  PENDING
+  PREPARED
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum EmailCategory {
+  TRANSACTIONAL
+  SUPPORT
+  NEWSLETTER
+  MARKETING
+  GENERIC
+}
+
+enum EmailRecipientKind {
+  USER
+  CUSTOMER
+  EXTERNAL
+}
+
+model EmailMessage {
+  id      String @id @default(cuid())
+  storeId String
+
+  category EmailCategory
+  status   EmailStatus   @default(PENDING)
+
+  recipientKind EmailRecipientKind
+  userId        String?
+  customerId    String?
+
+  toEmail String
+  toName  String?
+
+  subject  String
+  htmlBody String?
+  textBody String?
+
+  templateDefinitionId String?
+  templateVariantId    String?
+
+  notificationId  String?
+  orderId         String?
+  eventId         String?
+  supportTicketId String?
+
+  preparedAt  DateTime?
+  sentAt      DateTime?
+  failedAt    DateTime?
+  cancelledAt DateTime?
+
+  failureCode    String?
+  failureMessage String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store              Store               @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  user               User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customer           Customer?           @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  order              Order?              @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  event              Event?              @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  notification       Notification?       @relation(fields: [notificationId], references: [id], onDelete: SetNull)
+  supportTicket      SupportTicket?      @relation(fields: [supportTicketId], references: [id], onDelete: SetNull)
+  templateDefinition TemplateDefinition? @relation(fields: [templateDefinitionId], references: [id], onDelete: SetNull)
+  templateVariant    TemplateVariant?    @relation(fields: [templateVariantId], references: [id], onDelete: SetNull)
+
+  @@index([storeId])
+  @@index([category])
+  @@index([status])
+  @@index([userId])
+  @@index([customerId])
+  @@index([notificationId])
+  @@index([orderId])
+  @@index([eventId])
+  @@index([supportTicketId])
+  @@map("email_messages")
+}

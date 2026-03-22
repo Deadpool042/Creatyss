@@ -1,0 +1,49 @@
+// -----------------------------------------------------------------------------
+// Domaine: analytics
+// Responsabilité: vues analytiques consolidées.
+// -----------------------------------------------------------------------------
+// prisma/analytics.prisma
+
+enum AnalyticsMetricStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum AnalyticsPeriodKind {
+  DAY
+  WEEK
+  MONTH
+}
+
+model AnalyticsMetric {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  name        String
+  description String?
+
+  periodKind  AnalyticsPeriodKind
+  periodStart DateTime
+  periodEnd   DateTime
+
+  valueDecimal   Decimal? @db.Decimal(18, 4)
+  valueInt       Int?
+  dimensionKey   String?
+  dimensionValue String?
+
+  status AnalyticsMetricStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId])
+  @@index([code])
+  @@index([periodKind])
+  @@index([periodStart, periodEnd])
+  @@index([dimensionKey, dimensionValue])
+  @@index([status])
+  @@map("analytics_metrics")
+}
