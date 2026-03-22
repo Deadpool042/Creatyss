@@ -166,6 +166,19 @@ V21 travaille à l'intérieur du cadre posé par :
 
 Ces deux versions sont les références de fond. V21 transforme la doctrine de V20 en structure réelle dans le code.
 
+## Note sur l'évolution post-V21
+
+La structure décrite dans ce document reflète l'état du code **au moment où les lots V21 ont été exécutés**. Le codebase a continué d'évoluer après V21.
+
+Écarts significatifs entre les chemins documentés ici et l'état actuel :
+
+- `catalog.repository.ts` n'existe plus comme fichier plat à la racine de `db/repositories/` : le dossier `db/repositories/products/catalog/` est un placeholder vide
+- `admin-product.repository.ts`, `admin-product-variant.repository.ts`, `admin-product-image.repository.ts` n'existent plus : le domaine `products` a été réorganisé en sous-dossiers `admin/product/`, `admin/variant/`, `admin/image/`, etc.
+- `categories` a été extrait comme domaine de premier niveau dans `db/repositories/categories/`, avec ses propres façades publiques
+- `cart` a été restructuré en sous-domaines (`core/`, `guest/`, `customer/`, `checkout/`, `discounts/`, `pricing/`, `shipping/`, `taxation/`, etc.)
+
+Les décisions de doctrine V21 (façades publiques stables, modularisation interne locale, pas de raw SQL) restent valides et applicables à ces nouvelles structures.
+
 ## Navigation
 
 ### Cadre général

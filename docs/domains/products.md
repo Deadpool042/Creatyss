@@ -43,12 +43,13 @@ Le domaine `products` décrit le catalogue interne. Il ne doit pas absorber les 
 
 ## Sous-domaines
 
-- `catalog` : lecture et gestion du produit parent
+- `catalog` : lecture et gestion du produit parent (façade de lecture storefront, voir note ci-dessous)
 - `variants` : variantes catalogue
 - `images` : images et médias liés au catalogue
-- `categories` : catégories produit
 - `deliverables` : typologies ou objets catalogue spécifiques au métier si activés
 - `publication` : statut et exposition catalogue interne
+
+Note sur `categories` : bien que conceptuellement liées au catalogue produit, les catégories constituent un domaine de premier niveau distinct dans l'implémentation actuelle (`db/repositories/categories/`). Leur documentation propre est dans `docs/domains/categories.md`.
 
 ## Entrées
 
@@ -273,7 +274,7 @@ Quelques cas d’erreur typiques :
 Les choix structurants du domaine sont :
 
 - `products` porte le catalogue source interne
-- `products` est distinct de `inventory`Ò
+- `products` est distinct de `inventory`
 - `products` est distinct de `sales-policy`
 - `products` ne porte pas la diffusion externe, qui relève de `channels` et `integrations`
 - `products` ne porte pas les calculs de pricing ou taxation

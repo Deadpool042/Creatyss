@@ -5,12 +5,14 @@ Ce dossier contient une fiche par domaine métier / transverse du socle e-commer
 ## Domaines
 
 - store
+- auth
 - users
 - customers
 - roles
 - permissions
 - feature-flags
 - products
+- categories
 - inventory
 - sales-policy
 - channels

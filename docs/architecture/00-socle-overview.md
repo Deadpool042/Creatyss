@@ -116,6 +116,7 @@ Le socle s’organise autour de plusieurs familles de domaines.
 ### Plateforme / configuration
 
 - `store`
+- `auth`
 - `users`
 - `customers`
 - `roles`
