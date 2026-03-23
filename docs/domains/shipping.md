@@ -1,115 +1,324 @@
-# Domaine shipping
+# Domaine `shipping`
+
+## Objectif
+
+Ce document décrit le domaine `shipping` dans la doctrine courante du socle.
+
+Il précise :
+
+- le rôle du domaine ;
+- sa place dans la modularité du socle ;
+- sa source de vérité ;
+- ses capabilities activables ;
+- ses niveaux de sophistication ;
+- ses objets métier ;
+- ses invariants ;
+- son cycle de vie ;
+- ses règles de cohérence ;
+- ses frontières externes ;
+- ses implications de maintenance, d’exploitation et de coût.
+
+Le domaine `shipping` est structurant pour la réutilisabilité du socle, car il porte la logique de livraison ou d’acheminement de la commande.
+
+Le domaine `shipping` ne doit pas être réduit à un simple coût de port.
+Il doit pouvoir couvrir :
+
+- livraison simple ;
+- options de livraison ;
+- adresse de livraison ;
+- point relais ;
+- méthodes et zones de livraison ;
+- préparation de fulfillment ;
+- articulation avec taxation, checkout, orders et documents ;
+- enrichissement progressif via connecteurs transporteurs si activés.
+
+---
+
+## Position dans la doctrine de modularité
+
+Le domaine `shipping` est classé comme :
+
+- `domaine coeur à capabilities toggleables`
+
+Le domaine existe dans tout projet où une commande implique un acheminement physique ou une logique assimilée de remise.
+En revanche, sa sophistication varie fortement selon le projet.
+
+### Ce qui n’est jamais désactivé
+
+Le domaine conserve toujours :
+
+- une vérité interne sur le mode de livraison retenu ;
+- une cohérence entre commande et contexte de livraison ;
+- une séparation claire entre logique métier de livraison et transporteurs externes ;
+- une articulation explicite avec `checkout`, `orders`, `taxation` et `documents`.
+
+### Ce qui est activable / désactivable par capability
+
+Le domaine `shipping` est lié aux capabilities suivantes :
+
+- `shipping`
+- `shippingAddress`
+- `pickupPointDelivery`
+- `carrierIntegrations`
+- `splitFulfillment`
+- `shippingZones`
+- `shippingRateRules`
+- `digitalOrNoShipping`
+- `returns`
+
+### Ce qui relève d’un niveau
+
+Le domaine porte explicitement plusieurs niveaux de sophistication de livraison.
+
+### Ce qui relève d’un provider ou d’une intégration externe
+
+Relèvent de `integrations` et non du coeur de `shipping` :
+
+- APIs transporteurs ;
+- points relais provider-specific ;
+- génération d’étiquettes externes ;
+- tracking externes ;
+- synchronisation WMS / ERP.
+
+Le domaine `shipping` garde la vérité interne de la livraison retenue par le socle.
+
+---
 
 ## Rôle
 
-Le domaine `shipping` porte la logique de livraison du socle.
+Le domaine `shipping` porte la logique interne de livraison du commerce.
 
-Il décide quelles méthodes de livraison sont disponibles pour un contexte donné, dans quelles zones, avec quelles contraintes, quels coûts estimés et quelles exigences spécifiques comme le domicile, le point relais ou d’autres modalités de remise compatibles avec le socle.
+Il constitue la source de vérité interne pour :
+
+- le mode de livraison retenu ;
+- la cohérence de l’adresse ou du point de retrait ;
+- le coût de livraison validé dans le contexte d’achat ;
+- certaines politiques de livraison applicables ;
+- l’état métier interne des étapes de livraison si le projet les supporte.
+
+Le domaine est distinct :
+
+- de `pricing`, qui porte la vérité économique de l’offre ;
+- de `taxation`, qui porte la logique fiscale ;
+- de `checkout`, qui porte la validation finale du contexte d’achat ;
+- de `orders`, qui porte la commande durable ;
+- de `integrations`, qui parle aux transporteurs externes ;
+- de `documents`, qui porte les documents ou supports de preuve.
+
+---
 
 ## Responsabilités
 
 Le domaine `shipping` prend en charge :
 
-- les transporteurs
-- les méthodes de livraison
-- les zones de livraison
-- l’éligibilité des méthodes selon le contexte
-- les quotes de livraison
-- la sélection d’une méthode de livraison
-- la distinction domicile / point relais / autres modalités compatibles
-- les contraintes de livraison dépendant du contexte boutique, du panier, du pays ou d’autres règles explicites
-- la lecture exploitable par `checkout`, `pricing`, `orders` et `documents`
+- la modélisation des modes de livraison ;
+- les zones de livraison si activées ;
+- les règles d’éligibilité d’un mode de livraison ;
+- la sélection et la validation du mode de livraison ;
+- les coûts de livraison validés dans un contexte ;
+- la cohérence entre adresse, zone, méthode et commande ;
+- les transitions internes utiles à la préparation ou au suivi si le projet les active.
+
+---
 
 ## Ce que le domaine ne doit pas faire
 
 Le domaine `shipping` ne doit pas :
 
-- porter le panier, qui relève de `cart`
-- porter le catalogue source, qui relève de `products`
-- porter la vendabilité contextuelle globale, qui relève de `sales-policy`
-- porter le stock quantitatif, qui relève de `inventory`
-- calculer l’ensemble du pricing transverse, qui relève de `pricing`
-- parler directement aux providers externes, ce qui relève de `integrations`
-- devenir le domaine de fulfillment logistique réel, qui relève de `fulfillment`
+- porter toute la logistique externe ;
+- devenir un wrapper de transporteur ;
+- porter la vérité du paiement ou de la taxation ;
+- laisser un transporteur externe définir à lui seul la vérité coeur de la livraison ;
+- recalculer librement la commande durable après figement.
 
-Le domaine `shipping` décide la livraison possible et son estimation. Il ne remplace ni `cart`, ni `pricing`, ni `fulfillment`.
+---
 
-## Sous-domaines
+## Source de vérité
 
-- `methods` : méthodes de livraison disponibles
-- `zones` : zones géographiques ou logiques de livraison
-- `quotes` : calcul ou lecture des estimations de livraison
-- `selection` : choix d’une méthode de livraison pour un contexte donné
-- `pickup-points` : logique spécifique aux points relais ou assimilés
+Le domaine `shipping` est la source de vérité pour :
+
+- les méthodes de livraison internes ;
+- les zones et règles internes de livraison si activées ;
+- le choix de livraison retenu ;
+- le coût de livraison validé dans le contexte d’achat ;
+- les états internes de préparation / livraison si retenus par le projet.
+
+Le domaine n’est pas la source de vérité pour :
+
+- la commande durable ;
+- les documents externes de transport ;
+- le tracking provider brut ;
+- les étiquettes externes ;
+- les APIs transporteurs.
+
+---
+
+## Objets métier principaux
+
+Les principaux objets métier portés par le domaine sont :
+
+- `ShippingMethod`
+- `ShippingZone`
+- `ShippingRateRule`
+- `ShippingSelection`
+- `ShippingAddressSnapshot`
+- `PickupPointSelection`
+- `ShippingStatus`
+- `ShippingPreparation`
+
+---
+
+## Capabilities activables liées
+
+Le domaine `shipping` est lié aux capabilities suivantes :
+
+- `shipping`
+- `shippingAddress`
+- `pickupPointDelivery`
+- `carrierIntegrations`
+- `splitFulfillment`
+- `shippingZones`
+- `shippingRateRules`
+- `digitalOrNoShipping`
+- `returns`
+
+### Effet si `shipping` est activée
+
+Le domaine porte des méthodes de livraison et une validation de sélection de livraison.
+
+### Effet si `shippingAddress` est activée
+
+Le domaine exige ou exploite une adresse de livraison structurée.
+
+### Effet si `pickupPointDelivery` est activée
+
+Le domaine supporte une sélection de point relais ou retrait.
+
+### Effet si `carrierIntegrations` est activée
+
+Le domaine peut s’appuyer sur des transporteurs via `integrations`, sans leur déléguer sa vérité interne.
+
+### Effet si `splitFulfillment` est activée
+
+Le domaine peut porter une logique de livraison plus éclatée, avec impacts sur états et documents.
+
+### Effet si `shippingZones` est activée
+
+Le domaine distingue plusieurs zones de livraison.
+
+### Effet si `shippingRateRules` est activée
+
+Le domaine calcule ou sélectionne des coûts de livraison selon des règles plus riches.
+
+### Effet si `digitalOrNoShipping` est activée
+
+Le domaine peut reconnaître certains contextes sans livraison physique.
+
+### Effet si `returns` est activée
+
+Le domaine doit rester cohérent avec les flux de retour aval.
+
+---
+
+## Niveaux de sophistication du domaine
+
+### Niveau 1 — essentiel
+
+- livraison simple ;
+- une ou peu de méthodes ;
+- adresse simple ;
+- faible nombre de règles.
+
+### Niveau 2 — standard
+
+- plusieurs méthodes ;
+- zones de livraison ;
+- coûts de livraison plus structurés ;
+- meilleure articulation checkout / order.
+
+### Niveau 3 — avancé
+
+- point relais ;
+- transporteurs externes ;
+- règles tarifaires plus riches ;
+- préparation et statuts internes plus structurés.
+
+### Niveau 4 — expert / multi-contraintes
+
+- split fulfillment ;
+- multi-zones avancées ;
+- coordination plus dense avec transporteurs et documents ;
+- exigences plus fortes d’observability et d’exploitation.
+
+---
 
 ## Entrées
 
 Le domaine reçoit principalement :
 
-- un contexte panier
-- un contexte boutique
-- un contexte géographique
-- les capabilities actives de la boutique
-- éventuellement des données client ou adresse
-- des demandes de lecture des méthodes disponibles
-- des demandes de calcul de quote
-- des demandes de sélection de méthode
+- un contexte de checkout ;
+- une adresse ou un point de retrait ;
+- des capacités boutique ;
+- des règles de zones et coûts ;
+- une commande durable ;
+- des résultats externes traduits de transporteurs si activés.
+
+---
 
 ## Sorties
 
 Le domaine expose principalement :
 
-- une liste de méthodes de livraison éligibles
-- une ou plusieurs quotes monétaires de livraison
-- une décision de sélection de méthode
-- des raisons explicites de refus ou d’inéligibilité
-- une lecture exploitable par `checkout`, `pricing`, `orders` et `documents`
+- une sélection de livraison valide ;
+- un coût de livraison ;
+- un snapshot de livraison figé pour la commande ;
+- des états internes de livraison ou préparation si activés ;
+- des événements métier liés à la livraison.
+
+---
 
 ## Dépendances vers autres domaines
 
-Le domaine `shipping` peut dépendre de :
+Le domaine `shipping` dépend de :
 
-- `cart` pour le contexte panier runtime
-- `products` pour certaines contraintes produit utiles à la livraison
-- `sales-policy` pour vérifier certaines conditions de vente si nécessaire
-- `store` pour le contexte boutique et les capabilities actives
-- `pricing` pour la représentation monétaire commune, sans lui déléguer la décision métier de shipping
-- `audit` pour tracer certains changements sensibles
-- `observability` pour expliquer l’inéligibilité d’une méthode ou l’absence de quote
-
-Les domaines suivants peuvent dépendre de `shipping` :
-
+- `stores`
+- `customers`
+- `checkout`
+- `orders`
 - `pricing`
+- `taxation`
+- `audit`
+- `observability`
+
+Les domaines suivants dépendent de `shipping` :
+
 - `checkout`
 - `orders`
 - `documents`
+- `returns`
+- `integrations`
 - `analytics`
-- `dashboarding`
 
-## Capabilities activables liées
+---
 
-Le domaine `shipping` est directement lié à :
+## Dépendances vers providers / intégrations
 
-- `multiCarrier`
-- `pickupPointDelivery`
+Le domaine `shipping` ne parle pas directement aux transporteurs dans sa logique coeur.
 
-### Effet si `multiCarrier` est activée
+Les flux provider passent par `integrations`, qui prend en charge :
 
-Le domaine peut exposer plusieurs transporteurs et plusieurs familles de méthodes.
+- appels API ;
+- DTO externes ;
+- tracking bruts ;
+- labels ;
+- résultats de point relais ;
+- traduction en résultats internes.
 
-### Effet si `multiCarrier` est désactivée
+Le domaine `shipping` n’accepte pas un payload brut de transporteur comme vérité métier interne.
 
-Le domaine reste structurellement présent, mais n’expose qu’un transporteur ou une famille de livraison par politique de boutique.
+---
 
-### Effet si `pickupPointDelivery` est activée
-
-Le domaine peut exposer des méthodes de type point relais et les contraintes associées.
-
-### Effet si `pickupPointDelivery` est désactivée
-
-Aucune méthode de type point relais ne doit être proposée.
-
-## Rôles/permissions concernés
+## Rôles / permissions concernés
 
 ### Rôles
 
@@ -120,7 +329,8 @@ Les rôles principalement concernés sont :
 - `store_owner`
 - `store_manager`
 - `order_manager`
-- `customer_support` en lecture partielle selon la politique retenue
+- `fulfillment_operator`
+- `customer_support`
 
 ### Permissions
 
@@ -128,58 +338,51 @@ Exemples de permissions concernées :
 
 - `shipping.read`
 - `shipping.write`
-- `orders.read`
-- `orders.write`
-- `pricing.read`
+- `shipping.methods.manage`
+- `shipping.rates.manage`
+- `shipping.prepare`
 - `audit.read`
+
+---
 
 ## Événements émis
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine émet les domain events internes suivants :
 
-- `shipping.method.selected`
-- `shipping.quote.updated`
-- `shipping.zone.updated`
-- `shipping.method.availability.changed`
+- `shipping.method.created`
+- `shipping.method.updated`
+- `shipping.selection.validated`
+- `shipping.preparation.created`
+- `shipping.status.changed`
+- `shipping.pickup_point.selected`
+
+---
 
 ## Événements consommés
 
-Le domaine peut consommer certains événements internes du type :
+Le domaine consomme les domain events internes suivants :
 
-- `cart.updated`
-- `store.capabilities.updated`
-- `customer.updated` si certaines préférences ou données client impactent le shipping
-- événements d’administration liés aux changements de zones ou de méthodes
+- `checkout.updated`
+- `checkout.ready`
+- `order.created`
+- `order.cancelled`
+- `integration.shipping.result.translated`
 
-Il doit toutefois rester maître de sa propre logique de livraison et d’éligibilité.
-
-## Intégrations externes
-
-Le domaine `shipping` ne parle pas directement aux systèmes externes.
-
-Les appels vers :
-
-- transporteurs
-- providers de point relais
-- systèmes logistiques externes
-
-relèvent de :
-
-- `integrations`
-- éventuellement `jobs`
-
-Le domaine `shipping` reste la source de vérité interne de la décision métier de livraison et de la quote interne.
+---
 
 ## Données sensibles / sécurité
 
-Le domaine `shipping` ne porte pas des secrets techniques par lui-même, mais il porte une logique métier sensible car elle impacte le coût et la faisabilité de la livraison.
+Le domaine `shipping` porte une donnée métier sensible.
 
 Points de vigilance :
 
-- contrôle strict des droits d’écriture sur zones et méthodes
-- cohérence entre capabilities actives et méthodes proposées
-- aucune confiance dans une quote envoyée par le client
-- séparation nette entre décision métier de shipping et appel provider externe
+- adresses et points de retrait ;
+- cohérence entre méthode, zone et destination ;
+- protection des informations de livraison ;
+- contrôle des intégrations transporteurs ;
+- pas de fuite de données sensibles dans les logs.
+
+---
 
 ## Observability / audit
 
@@ -187,83 +390,245 @@ Points de vigilance :
 
 Il faut pouvoir comprendre :
 
-- pourquoi une méthode de livraison est éligible ou non
-- pourquoi une quote est disponible, absente ou refusée
-- quelle zone a été retenue
-- quelle capability a influencé la décision
-- si un problème vient de la logique métier ou d’une intégration externe
+- pourquoi une méthode de livraison est proposée ou refusée ;
+- pourquoi un coût de livraison a été retenu ;
+- pourquoi un point relais est valide ou non ;
+- pourquoi une préparation ou un changement d’état a eu lieu ;
+- si un écart provient d’une règle interne ou d’une intégration externe.
 
 ### Audit
 
 Il faut tracer :
 
-- les changements de zones de livraison
-- les changements de méthodes de livraison
-- les changements significatifs de règles de shipping
-- certaines sélections ou corrections manuelles sensibles si elles résultent d’une action humaine importante
+- les changements de méthodes ;
+- les changements de zones ;
+- les changements de règles tarifaires ;
+- les corrections manuelles structurantes ;
+- les actions opérateur importantes sur la préparation de livraison.
 
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `ShippingMethod` : méthode de livraison
-- `ShippingZone` : zone de livraison
-- `ShippingQuote` : estimation monétaire de livraison
-- `ShippingSelection` : sélection de méthode pour un contexte donné
-- `PickupPoint` : point relais ou point de retrait si cette capacité est active
-- `ShippingRejectionReason` : raison explicite d’inéligibilité ou d’absence de quote
+---
 
 ## Invariants métier
 
 Les règles suivantes doivent toujours rester vraies :
 
-- une méthode de livraison est explicite
-- une quote de livraison est monétaire et porte une devise explicite
-- l’éligibilité d’une méthode dépend d’un contexte explicite
-- le domaine `shipping` ne dépend pas directement du provider externe comme source de vérité
-- les autres domaines consomment `shipping` au lieu de reconstruire localement leurs propres règles de livraison
-- le domaine `shipping` reste distinct de `fulfillment`
+- une commande avec livraison physique possède une sélection de livraison cohérente ;
+- une méthode de livraison retenue est compatible avec son contexte ;
+- un coût de livraison figé dans la commande n’est pas recalculé librement après coup ;
+- un transporteur externe ne remplace pas la vérité interne du domaine ;
+- un projet sans besoin avancé ne porte pas d’emblée toute la complexité transporteur ou split fulfillment.
+
+---
+
+## Lifecycle et gouvernance des données
+
+### États principaux
+
+Les états principaux utiles incluent typiquement :
+
+- `PENDING_SELECTION`
+- `SELECTED`
+- `PREPARING`
+- `READY`
+- `SHIPPED`
+- `DELIVERED`
+- `FAILED`
+- `CANCELLED`
+
+Tous les projets n’utilisent pas tous les états.
+
+### Transitions autorisées
+
+Exemples :
+
+- `PENDING_SELECTION -> SELECTED`
+- `SELECTED -> PREPARING`
+- `PREPARING -> READY`
+- `READY -> SHIPPED`
+- `SHIPPED -> DELIVERED`
+- `SELECTED -> CANCELLED`
+
+### Transitions interdites
+
+Exemples :
+
+- `DELIVERED -> PREPARING`
+- `CANCELLED -> SHIPPED`
+- requalification implicite d’un mode de livraison figé sans action métier explicite.
+
+### Règles de conservation / archivage / suppression
+
+- les snapshots de livraison liés à la commande restent compréhensibles ;
+- les changements structurants restent auditables ;
+- la suppression physique n’est pas la stratégie par défaut pour les états significatifs.
+
+---
+
+## Transactions / cohérence / concurrence
+
+### Ce qui doit être atomique
+
+Les opérations suivantes doivent réussir ou échouer ensemble :
+
+- création ou mise à jour structurante d’une méthode ;
+- validation d’une sélection de livraison ;
+- figement du snapshot de livraison pour la commande ;
+- changement de statut interne de préparation ou livraison si porté par le domaine ;
+- écriture des événements `shipping.*` correspondants.
+
+### Ce qui peut être eventual consistency
+
+Les traitements suivants peuvent partir après commit :
+
+- appel transporteur ;
+- génération d’étiquette externe ;
+- tracking externe ;
+- notifications ;
+- analytics ;
+- webhooks sortants.
+
+### Stratégie de concurrence
+
+Le domaine protège explicitement ses invariants par :
+
+- transaction applicative sur les mutations structurantes ;
+- garde sur le statut courant ;
+- cohérence entre commande et sélection de livraison ;
+- déduplication des résultats externes traduits.
+
+Les conflits attendus sont :
+
+- double sélection concurrente ;
+- changement de méthode en concurrence avec complétion checkout ;
+- deux workers sur la même préparation ;
+- résultat externe en désordre.
+
+### Idempotence
+
+Les commandes métier suivantes doivent être idempotentes :
+
+- `select-shipping-method` : clé d’intention = `(checkoutId, selectionIntentId)`
+- `create-shipping-preparation` : clé d’intention = `(orderId, preparationIntentId)`
+- `change-shipping-status` : clé d’intention = `(shippingAggregateId, targetStatus, statusIntentId)`
+- `apply-external-shipping-result` : clé d’intention = `(providerName, externalEventId)`
+
+### Domain events écrits dans la même transaction
+
+Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
+
+- `shipping.method.created`
+- `shipping.method.updated`
+- `shipping.selection.validated`
+- `shipping.preparation.created`
+- `shipping.status.changed`
+- `shipping.pickup_point.selected`
+
+### Effets secondaires après commit
+
+Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
+
+- appel transporteur ;
+- tracking externe ;
+- génération documentaire externe ;
+- analytics ;
+- webhook sortant ;
+- notifications.
+
+---
+
+## Impact maintenance / exploitation
+
+### Niveau de maintenance minimal recommandé
+
+- `M1` pour livraison simple ;
+- `M2` pour zones et coûts enrichis ;
+- `M3` pour points relais et transporteurs ;
+- `M4` pour fulfillment plus dense ou multi-contraintes.
+
+### Pourquoi
+
+Le domaine `shipping` touche directement le checkout, la satisfaction client et le support.
+Plus il monte en richesse, plus il exige :
+
+- observability ;
+- cohérence avec la commande ;
+- supervision des intégrations ;
+- qualité de reprise.
+
+### Points d’exploitation à surveiller
+
+- sélections de livraison invalides ;
+- statuts incohérents ;
+- erreurs transporteurs ;
+- échecs de préparation ;
+- écart entre shipping interne et résultat externe.
+
+---
+
+## Impact coût / complexité
+
+Le coût du domaine `shipping` monte principalement avec :
+
+- `pickupPointDelivery`
+- `carrierIntegrations`
+- `splitFulfillment`
+- `shippingZones`
+- `shippingRateRules`
+
+Lecture relative du coût :
+
+- niveau 1 : `C1`
+- niveau 2 : `C2`
+- niveau 3 : `C3`
+- niveau 4 : `C4`
+
+---
 
 ## Cas d’usage principaux
 
-1. Lister les méthodes de livraison disponibles pour un panier donné
-2. Déterminer la zone de livraison applicable
-3. Calculer ou exposer une quote de livraison
-4. Sélectionner une méthode de livraison
-5. Proposer un point relais si la capability correspondante est active
-6. Exposer au checkout une lecture fiable des choix de livraison disponibles
-7. Exposer au pricing une quote de livraison monétaire cohérente
+1. Définir une méthode de livraison
+2. Valider une sélection de livraison au checkout
+3. Figer un snapshot de livraison dans la commande
+4. Préparer une livraison
+5. Faire évoluer un statut interne de livraison
+
+---
 
 ## Cas limites / erreurs métier
 
 Quelques cas d’erreur typiques :
 
-- méthode de livraison introuvable
-- zone introuvable
-- contexte géographique non supporté
-- capability transport ou point relais désactivée
-- quote impossible à calculer
-- sélection de méthode invalide pour le contexte courant
-- conflit entre contexte panier et contraintes d’une méthode de livraison
+- méthode introuvable ;
+- zone incompatible ;
+- adresse invalide ;
+- point relais invalide ;
+- coût incohérent ;
+- résultat transporteur ambigu ;
+- double sélection concurrente ;
+- transition de statut invalide.
+
+---
 
 ## Décisions d’architecture
 
 Les choix structurants du domaine sont :
 
-- `shipping` porte la logique métier de livraison
-- `shipping` est distinct de `cart`
-- `shipping` est distinct de `pricing`
-- `shipping` est distinct de `integrations`
-- `shipping` expose une décision métier et une quote interne, puis `integrations` parle aux systèmes externes si nécessaire
-- `shipping` reste distinct de `fulfillment`, qui porte l’exécution logistique réelle
-- les décisions de shipping doivent être explicables et auditables
+- `shipping` est un domaine coeur à capabilities toggleables ;
+- la livraison est distincte de pricing, taxation et orders ;
+- les transporteurs restent à la frontière via `integrations` ;
+- le snapshot de livraison est figé dans la commande ;
+- la sophistication monte par capabilities et niveaux ;
+- les effets externes partent après commit.
+
+---
 
 ## Questions explicitement closes
 
 Les points suivants sont considérés comme décidés :
 
-- la logique de livraison relève de `shipping`
-- les zones de livraison relèvent de `shipping`
-- les points relais relèvent de `shipping` tant que l’on parle de choix de livraison, pas d’intégration provider brute
-- l’appel réel aux providers externes relève de `integrations`
-- `shipping` ne remplace ni `cart`, ni `pricing`, ni `fulfillment`, ni `integrations`
+- `shipping` appartient au coeur du socle ;
+- le domaine ne se réduit pas à un coût de port ;
+- les transporteurs externes ne remplacent pas la vérité interne ;
+- point relais et split fulfillment sont toggleables ;
+- la livraison est articulée avec checkout, orders, taxation et documents ;
+- la montée en complexité reste additive.

@@ -1,273 +1,253 @@
-# Domaine permissions
+# Domaine `permissions`
+
+## Objectif
+
+Ce document décrit le domaine `permissions` dans la doctrine courante du socle.
+
+Il précise :
+
+- le rôle du domaine ;
+- sa place dans la modularité du socle ;
+- sa source de vérité ;
+- ses objets métier ;
+- ses invariants ;
+- son cycle de vie ;
+- ses règles de cohérence ;
+- ses implications de maintenance, d’exploitation et de coût.
+
+Le domaine `permissions` porte les droits atomiques du socle.
+
+Il ne doit pas être confondu avec :
+
+- `roles`, qui les agrègent ;
+- `auth`, qui authentifie ;
+- `users`, qui portent les sujets humains ;
+- `api-clients`, qui portent des sujets techniques.
+
+---
+
+## Position dans la doctrine de modularité
+
+Le domaine `permissions` est classé comme :
+
+- `domaine coeur non toggleable`
+
+Le domaine existe dans tout socle sérieux, car les autorisations doivent reposer sur un vocabulaire explicite et stable.
+
+### Ce qui n’est jamais désactivé
+
+Le domaine conserve toujours :
+
+- un référentiel de permissions ;
+- des codes stables ;
+- une gouvernance explicite de création et d’évolution ;
+- une articulation claire avec `roles`.
+
+---
 
 ## Rôle
 
-Le domaine `permissions` porte les droits fins du socle.
+Le domaine `permissions` porte les droits atomiques du socle.
 
-Il définit les actions réellement autorisées sur les ressources applicatives, avec un niveau de granularité supérieur aux simples rôles.
+Il constitue la source de vérité interne pour :
 
-Il constitue la base effective du contrôle d’accès, tandis que `roles` fournit une lecture fonctionnelle de haut niveau.
+- l’existence d’une permission ;
+- son code ;
+- son périmètre logique ;
+- son statut ;
+- sa description.
+
+Le domaine est distinct :
+
+- de `roles`, qui composent ces permissions ;
+- de `users`, qui reçoivent indirectement des permissions via rôles ou policy ;
+- de `auth`, qui authentifie les sujets ;
+- de `api-clients`, qui peuvent se voir attribuer un scope de permissions.
+
+---
 
 ## Responsabilités
 
 Le domaine `permissions` prend en charge :
 
-- la définition des permissions fines
-- la structuration des permissions par ressource et action
-- l’expression explicite des droits applicatifs
-- la lecture fine du contrôle d’accès
-- la combinaison entre permissions, rôles et scopes
-- la base décisionnelle permettant de savoir si une action est autorisée
-- la gouvernance des permissions sensibles
+- la définition des permissions atomiques ;
+- leur nommage stable ;
+- leur description ;
+- leur cycle de vie ;
+- leur lisibilité pour les autres domaines.
+
+---
 
 ## Ce que le domaine ne doit pas faire
 
 Le domaine `permissions` ne doit pas :
 
-- porter les comptes utilisateurs, qui relèvent de `users`
-- porter les rôles de haut niveau, qui relèvent de `roles`
-- porter les capabilities boutique, qui relèvent de `store`
-- porter la logique métier détaillée des domaines commerce
-- devenir un endroit où la logique métier est recodée sous forme de permissions ambiguës
+- porter les rôles ;
+- porter les utilisateurs ;
+- porter les sessions ;
+- devenir un système d’authentification ;
+- laisser des permissions implicites exister hors du référentiel.
 
-Le domaine `permissions` exprime des droits d’accès, pas la totalité de la logique métier.
+---
 
-## Sous-domaines
+## Source de vérité
 
-Le domaine peut rester simple au départ, avec :
+Le domaine `permissions` est la source de vérité pour :
 
-- un référentiel de permissions
-- une lecture des assignations ou associations de permissions aux rôles ou aux utilisateurs selon le modèle retenu
-- une lecture de scope appliqué aux permissions
+- les permissions atomiques ;
+- leur identité ;
+- leur statut ;
+- leur description fonctionnelle.
+
+Le domaine n’est pas la source de vérité pour :
+
+- les rôles ;
+- les assignations ;
+- les utilisateurs ;
+- les clients API ;
+- les sessions.
+
+---
+
+## Objets métier principaux
+
+Les principaux objets métier portés par le domaine sont :
+
+- `Permission`
+- `PermissionStatus`
+- `PermissionScope`
+
+---
+
+## Capabilities activables liées
+
+Le domaine `permissions` est structurel.
+Il n’est pas piloté par des capabilities optionnelles.
+
+Sa richesse augmente avec celle du socle, mais son existence n’est pas optionnelle.
+
+---
+
+## Niveaux de sophistication du domaine
+
+### Niveau 1 — essentiel
+
+- référentiel simple ;
+- codes stables ;
+- peu de scopes.
+
+### Niveau 2 — standard
+
+- meilleure structuration ;
+- descriptions plus complètes ;
+- couverture plus large des domaines.
+
+### Niveau 3 — avancé
+
+- scopes plus fins ;
+- gouvernance plus forte ;
+- meilleure organisation par sous-domaines.
+
+### Niveau 4 — expert / multi-contraintes
+
+- matrice de permissions très dense ;
+- gouvernance plus lourde ;
+- forte exigence de stabilité et d’audit.
+
+---
 
 ## Entrées
 
 Le domaine reçoit principalement :
 
-- des définitions de permissions
-- des changements de gouvernance d’accès
-- des rattachements logiques de permissions à des rôles
-- des demandes d’évaluation d’un droit sur une ressource ou une action
-- des demandes de lecture des permissions disponibles
+- des commandes de création ou mise à jour de permission ;
+- des changements de statut ;
+- des besoins d’extension du référentiel.
+
+---
 
 ## Sorties
 
 Le domaine expose principalement :
 
-- les permissions définies dans le socle
-- leur signification explicite
-- leur rattachement logique à des rôles ou à des profils
-- leur portée éventuelle via un scope
-- le résultat d’une lecture fine des droits applicatifs
+- un référentiel de permissions ;
+- des permissions actives ou inactives ;
+- des événements de changement du référentiel.
+
+---
 
 ## Dépendances vers autres domaines
 
-Le domaine `permissions` peut dépendre de :
+Le domaine `permissions` dépend de :
 
-- `roles` pour la lecture combinée rôle + permissions
-- `users` pour savoir à quel compte les permissions s’appliquent indirectement ou directement
-- `audit` pour tracer les changements sensibles
-- `observability` pour diagnostiquer certains refus d’accès si le modèle d’explication le permet
+- `audit`
+- `observability`
 
-Les domaines suivants peuvent dépendre de `permissions` :
+Les domaines suivants dépendent de `permissions` :
 
-- l’ensemble des couches d’administration
-- `store`
-- les domaines coeur et transverses lorsqu’une action d’écriture ou de lecture sensible doit être autorisée ou refusée
+- `roles`
+- `authz`
+- `api-clients`
+- `admin`
+- tous les domaines protégés
 
-## Capabilities activables liées
+---
 
-Le domaine `permissions` est particulièrement lié à :
+## Dépendances vers providers / intégrations
 
-- `advancedPermissions`
-- `auditTrail`
+Le domaine `permissions` ne dépend d’aucun provider externe comme vérité primaire.
 
-### Effet si `advancedPermissions` est activée
+---
 
-Le modèle de permissions fines devient pleinement actif et structurant.
+## Rôles / permissions concernés
 
-### Effet si `advancedPermissions` est désactivée
+### Rôles
 
-Le système peut fonctionner de manière plus simple, mais le domaine reste conceptuellement présent et la structure du socle ne change pas.
-
-### Effet si `auditTrail` est activée
-
-Les changements de permissions sensibles doivent être tracés de manière renforcée.
-
-## Rôles/permissions concernés
-
-### Rôles principalement concernés
+Les rôles de gouvernance concernés sont notamment :
 
 - `platform_owner`
 - `platform_engineer`
+- `security_operator`
 
-Les rôles boutique ne doivent pas administrer librement les permissions profondes du socle.
-
-### Permissions de gouvernance liées
+### Permissions
 
 Exemples de permissions concernées :
 
 - `permissions.read`
 - `permissions.write`
-- `roles.read`
 - `roles.write`
 - `audit.read`
 
-## Exemples de permissions de référence
-
-Le domaine `permissions` porte notamment des permissions comme :
-
-### Catalogue / contenu
-
-- `catalog.read`
-- `catalog.write`
-- `catalog.publish`
-- `categories.read`
-- `categories.write`
-- `media.read`
-- `media.write`
-- `pages.read`
-- `pages.write`
-- `blog.read`
-- `blog.write`
-- `blog.publish`
-
-### Commerce
-
-- `cart.read`
-- `orders.read`
-- `orders.write`
-- `payments.read`
-- `returns.read`
-- `returns.write`
-- `documents.read`
-- `documents.write`
-
-### Clients / CRM
-
-- `customers.read`
-- `customers.write`
-- `crm.read`
-- `crm.write`
-- `subscriptions.read`
-- `subscriptions.write`
-- `newsletter.read`
-- `newsletter.write`
-
-### Marketing / conversion / diffusion
-
-- `marketing.read`
-- `marketing.write`
-- `conversion.read`
-- `conversion.write`
-- `discounts.read`
-- `discounts.write`
-- `pricing.read`
-- `events.read`
-- `events.write`
-- `events.publish`
-- `social.read`
-- `social.write`
-- `channels.read`
-- `channels.write`
-
-### Shipping / inventaire / fiscalité
-
-- `inventory.read`
-- `inventory.write`
-- `shipping.read`
-- `shipping.write`
-- `taxation.read`
-- `taxation.write`
-
-### Pilotage / plateforme
-
-- `analytics.read`
-- `tracking.read`
-- `tracking.write`
-- `attribution.read`
-- `audit.read`
-- `observability.read`
-- `monitoring.read`
-- `dashboarding.read`
-- `store.settings.read`
-- `store.settings.write`
-- `capabilities.read`
-- `capabilities.write`
-- `integrations.read`
-- `integrations.write`
-- `webhooks.read`
-- `webhooks.write`
-- `api_clients.read`
-- `api_clients.write`
-
-## Scope
-
-Le domaine `permissions` doit être capable d’exprimer qu’une permission ne s’applique pas toujours partout.
-
-Les niveaux minimaux retenus sont :
-
-### Scope plateforme
-
-S’applique à l’ensemble de la plateforme.
-
-### Scope boutique
-
-S’applique à une boutique donnée.
-
-### Scope domaine
-
-S’applique à un domaine précis, éventuellement dans une boutique donnée.
-
-La décision finale d’autorisation doit reposer sur :
-
-- la permission
-- le rôle
-- le scope
-- le contexte d’exécution
-- les capabilities actives si elles conditionnent la fonctionnalité
+---
 
 ## Événements émis
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine émet les domain events internes suivants :
 
 - `permission.created`
 - `permission.updated`
-- `role.permissions.changed`
-- `user.permissions.changed`
+- `permission.disabled`
+
+---
 
 ## Événements consommés
 
-Le domaine peut consommer certains événements de gouvernance liés :
+Le domaine consomme peu d’événements.
+Il peut réagir à certains changements de gouvernance plateforme si le modèle le prévoit.
 
-- à la création d’un rôle
-- à la création d’un utilisateur
-- à l’approbation d’une modification sensible d’accès
-
-Il doit toutefois rester centré sur son propre langage de contrôle d’accès.
-
-## Intégrations externes
-
-Le domaine `permissions` ne doit pas dépendre directement d’un fournisseur externe.
-
-Si une synchronisation d’accès externe existe un jour, elle devra passer par :
-
-- `integrations`
-- et éventuellement `jobs`
-
-Le domaine `permissions` reste la source de vérité interne des droits fins.
+---
 
 ## Données sensibles / sécurité
 
-Le domaine `permissions` manipule des données de gouvernance hautement sensibles.
+Le domaine `permissions` porte une donnée critique de sécurité.
 
 Points de vigilance :
 
-- écriture réservée à des rôles très restreints
-- audit obligatoire des changements critiques
-- validation forte des modifications
-- séparation nette entre rôle, permission et capability
-- prévention des escalades implicites de privilèges
+- une permission mal définie propage un risque à tout le système ;
+- les changements doivent être auditables ;
+- le référentiel doit rester stable et lisible.
+
+---
 
 ## Observability / audit
 
@@ -275,77 +255,200 @@ Points de vigilance :
 
 Il faut pouvoir comprendre :
 
-- pourquoi une action a été autorisée ou refusée
-- quelles permissions ont été prises en compte
-- quel scope a été appliqué
-- quel rôle a contribué à la décision finale
+- quelles permissions existent ;
+- lesquelles sont actives ;
+- pourquoi une permission a changé.
 
 ### Audit
 
 Il faut tracer :
 
-- la création d’une permission
-- la modification d’une permission
-- les rattachements de permissions
-- les changements sensibles affectant les droits effectifs
+- création ;
+- modification ;
+- désactivation.
 
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `PermissionDefinition` : définition d’une permission
-- `PermissionScope` : portée d’application de la permission
-- `RolePermissionAssignment` : rattachement d’une permission à un rôle
-- `UserPermissionView` : lecture consolidée des permissions effectives d’un utilisateur
+---
 
 ## Invariants métier
 
 Les règles suivantes doivent toujours rester vraies :
 
-- une permission possède un identifiant stable et explicite
-- une permission n’est pas un rôle
-- une permission n’est pas une capability
-- le contrôle d’accès final ne repose pas sur une seule dimension isolée
-- les permissions sensibles ne doivent pas être modifiées sans gouvernance stricte
-- une capability désactivée peut neutraliser l’usage d’une permission liée, même si la permission existe
+- une permission possède un code stable ;
+- une permission appartient au référentiel du socle ;
+- les permissions implicites sont interdites ;
+- les rôles agrègent des permissions existantes ;
+- une permission désactivée n’est pas considérée comme active.
+
+---
+
+## Lifecycle et gouvernance des données
+
+### États principaux
+
+Les états principaux incluent typiquement :
+
+- `ACTIVE`
+- `DISABLED`
+- `ARCHIVED`
+
+### Transitions autorisées
+
+Exemples :
+
+- `ACTIVE -> DISABLED`
+- `DISABLED -> ACTIVE`
+- `ACTIVE -> ARCHIVED`
+
+### Transitions interdites
+
+Exemples :
+
+- réactivation implicite d’une permission archivée ;
+- suppression silencieuse d’une permission encore référencée.
+
+### Règles de conservation / archivage / suppression
+
+- le référentiel reste auditables ;
+- les changements historiques doivent rester compréhensibles ;
+- l’archivage est préférable à la suppression implicite des droits structurants.
+
+---
+
+## Transactions / cohérence / concurrence
+
+### Ce qui doit être atomique
+
+Les opérations suivantes doivent réussir ou échouer ensemble :
+
+- création d’une permission ;
+- mise à jour structurante ;
+- changement de statut ;
+- écriture des événements `permission.*` correspondants.
+
+### Ce qui peut être eventual consistency
+
+Les traitements suivants peuvent partir après commit :
+
+- projections admin ;
+- analytics sécurité ;
+- notifications opératoires.
+
+### Stratégie de concurrence
+
+Le domaine protège explicitement ses invariants par :
+
+- transaction applicative sur les changements structurants ;
+- unicité des codes ;
+- refus des doubles créations logiques.
+
+Les conflits attendus sont :
+
+- création concurrente du même code ;
+- changement concurrent de statut ;
+- renommage incohérent.
+
+### Idempotence
+
+Les commandes métier suivantes doivent être idempotentes :
+
+- `upsert-permission` : clé d’intention = `(permissionCode, changeIntentId)`
+- `set-permission-status` : clé d’intention = `(permissionCode, targetStatus, changeIntentId)`
+
+### Domain events écrits dans la même transaction
+
+Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
+
+- `permission.created`
+- `permission.updated`
+- `permission.disabled`
+
+### Effets secondaires après commit
+
+Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
+
+- sync annuaire externe ;
+- notifications ;
+- analytics.
+
+---
+
+## Impact maintenance / exploitation
+
+### Niveau de maintenance minimal recommandé
+
+- `M1` minimum ;
+- `M2` recommandé pour un socle avec plusieurs domaines protégés ;
+- `M3` si la matrice de permissions devient plus dense.
+
+### Pourquoi
+
+Le domaine `permissions` influence toute l’autorisation du socle.
+Sa stabilité est critique.
+
+### Points d’exploitation à surveiller
+
+- permissions non utilisées ;
+- permissions désactivées encore référencées ;
+- doublons logiques ;
+- dérive entre rôle et référentiel.
+
+---
+
+## Impact coût / complexité
+
+Le coût du domaine `permissions` monte principalement avec :
+
+- le volume du référentiel ;
+- la finesse des scopes ;
+- la densité de gouvernance.
+
+Lecture relative du coût :
+
+- niveau 1 : `C1`
+- niveau 2 : `C2`
+- niveau 3 : `C3`
+- niveau 4 : `C4`
+
+---
 
 ## Cas d’usage principaux
 
-1. Définir des permissions fines du socle
-2. Lire le référentiel de permissions
-3. Associer des permissions à un rôle
-4. Évaluer si une action est autorisée dans un contexte donné
-5. Exposer une lecture consolidée des droits effectifs d’un utilisateur
-6. Contrôler des accès sensibles côté plateforme et boutique
+1. Définir une permission
+2. La désactiver
+3. L’utiliser dans un rôle
+4. Maintenir un référentiel stable
+
+---
 
 ## Cas limites / erreurs métier
 
 Quelques cas d’erreur typiques :
 
-- permission introuvable
-- permission invalide
-- scope incohérent
-- tentative de rattachement non autorisée
-- conflit de gouvernance sur une permission critique
-- action refusée malgré un rôle de haut niveau, faute de permission explicite ou à cause d’une capability désactivée
+- code permission dupliqué ;
+- permission archivée réutilisée ;
+- renommage incohérent ;
+- suppression implicite interdite.
+
+---
 
 ## Décisions d’architecture
 
 Les choix structurants du domaine sont :
 
-- `permissions` porte les droits fins du socle
-- `permissions` est distinct de `roles`
-- `permissions` est distinct de `users`
-- la décision finale d’accès dépend du couple rôles + permissions + scope + contexte
-- les capabilities peuvent neutraliser certaines possibilités fonctionnelles sans supprimer la structure du domaine `permissions`
-- les changements sensibles de permissions doivent être auditables
+- `permissions` est un domaine coeur non toggleable ;
+- il porte le référentiel atomique d’autorisation ;
+- il reste distinct de `roles`, `users`, `auth` et `api-clients` ;
+- les permissions implicites sont interdites ;
+- le référentiel reste stable et gouverné.
+
+---
 
 ## Questions explicitement closes
 
 Les points suivants sont considérés comme décidés :
 
-- les permissions sont distinctes des rôles
-- les permissions sont distinctes des capabilities
-- `permissions` ne remplace ni `roles`, ni `users`, ni `store`
-- le contrôle d’accès ne repose pas sur un simple rôle unique de type `admin`
-- la gouvernance des permissions est une responsabilité hautement sensible
+- `permissions` appartient au noyau du socle ;
+- une permission n’est ni un rôle, ni un user ;
+- le référentiel doit rester explicite ;
+- la stabilité des codes est non négociable ;
+- la gouvernance d’autorisation est une responsabilité de premier rang.

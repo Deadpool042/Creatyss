@@ -1,105 +1,297 @@
-# Domaine customers
+# Domaine `customers`
+
+## Objectif
+
+Ce document décrit le domaine `customers` dans la doctrine courante du socle.
+
+Il précise :
+
+- le rôle du domaine ;
+- sa place dans la modularité du socle ;
+- sa source de vérité ;
+- ses capabilities activables ;
+- ses niveaux de sophistication ;
+- ses objets métier ;
+- ses invariants ;
+- son cycle de vie ;
+- ses règles de cohérence ;
+- ses frontières externes ;
+- ses implications de maintenance, d’exploitation et de coût.
+
+Le domaine `customers` est structurant pour la réutilisabilité du socle, car il porte la vérité métier du client de la boutique.
+
+Il doit permettre de couvrir :
+
+- client invité ou enregistré ;
+- contexte B2C ;
+- contexte B2B si activé ;
+- informations de contact ;
+- adresses ;
+- relation durable au commerce.
+
+Le domaine `customers` ne doit pas être confondu avec :
+
+- `auth`, qui porte l’accès ;
+- `users`, qui peut porter une identité plus générale ;
+- `orders`, qui fige un snapshot du client au moment de l’achat.
+
+---
+
+## Position dans la doctrine de modularité
+
+Le domaine `customers` est classé comme :
+
+- `domaine coeur à capabilities toggleables`
+
+Le domaine existe dans tous les projets e-commerce sérieux.
+En revanche, la richesse du modèle client varie selon le projet.
+
+### Ce qui n’est jamais désactivé
+
+Le domaine conserve toujours :
+
+- une vérité interne sur le client métier ;
+- une identité client stable ;
+- une séparation entre client actuel et snapshot figé dans la commande ;
+- une articulation claire avec `auth`, `checkout` et `orders`.
+
+### Ce qui est activable / désactivable par capability
+
+Le domaine `customers` est lié aux capabilities suivantes :
+
+- `guestCheckout`
+- `customerAccounts`
+- `customerAddresses`
+- `b2bCommerce`
+- `vatValidation`
+- `loyalty`
+- `wishlist`
+
+### Ce qui relève d’un niveau
+
+Le domaine porte plusieurs niveaux de sophistication du contexte client.
+
+### Ce qui relève d’un provider ou d’une intégration externe
+
+Relèvent de `integrations` et non du coeur de `customers` :
+
+- CRM externe ;
+- imports clients ;
+- enrichissements externes ;
+- synchronisations marketing.
+
+Le domaine `customers` garde la vérité interne du client métier utilisé par le socle.
+
+---
 
 ## Rôle
 
-Le domaine `customers` porte les clients métier du socle.
+Le domaine `customers` porte la vérité métier du client de la boutique.
 
-Il représente la lecture commerciale et relationnelle d’un client dans une boutique ou dans le contexte global de la plateforme, indépendamment des mécanismes techniques d’authentification ou des simples comptes d’accès.
+Il constitue la source de vérité interne pour :
+
+- l’identité client métier ;
+- les informations client utiles au commerce ;
+- les adresses si activées ;
+- certaines distinctions B2C / B2B si activées ;
+- le contexte client utilisé par `checkout`, `pricing`, `taxation` et `orders`.
+
+Le domaine est distinct :
+
+- de `auth`, qui porte les credentials et sessions ;
+- de `orders`, qui fige un snapshot client à la commande ;
+- de `blog` ou `loyalty`, qui peuvent exploiter le client sans en être la source de vérité ;
+- de `integrations`, qui peut synchroniser un CRM sans remplacer le coeur.
+
+---
 
 ## Responsabilités
 
 Le domaine `customers` prend en charge :
 
-- l’identité métier du client
-- la distinction particulier / professionnel
-- les groupes client
-- les profils de pricing liés au client
-- les informations commerciales utiles au parcours e-commerce
-- le contexte client consommé par `pricing`, `discounts`, `sales-policy`, `checkout` et `orders`
-- les données relationnelles utiles au commerce, sans empiéter sur `crm`
+- la création et gestion du client métier ;
+- les informations de contact ;
+- les adresses si activées ;
+- les contextes B2B si activés ;
+- les relations avec la boutique ;
+- la mise à disposition d’un contexte client exploitable par les autres domaines ;
+- la distinction entre client courant et snapshot figé à la commande.
+
+---
 
 ## Ce que le domaine ne doit pas faire
 
 Le domaine `customers` ne doit pas :
 
-- porter les comptes techniques et la sécurité d’accès, qui relèvent de `users`
-- porter les rôles et permissions d’administration, qui relèvent de `roles` et `permissions`
-- porter l’intégralité de la logique CRM, qui relève de `crm`
-- porter les calculs de prix, de taxes ou de remises, qui relèvent de `pricing`, `taxation` et `discounts`
-- devenir un fourre-tout regroupant toutes les informations possibles sur une personne
+- porter l’authentification ;
+- porter les credentials ;
+- porter la commande ;
+- devenir un CRM complet à lui seul ;
+- laisser un système externe définir le client sans validation locale ;
+- devenir un fourre-tout marketing.
 
-Le domaine `customers` porte le client métier, pas tous les usages possibles d’un profil humain ou d’un compte technique.
+---
 
-## Sous-domaines
+## Source de vérité
 
-- `profile` : identité métier du client
-- `groups` : groupes ou segments tarifaires / commerciaux explicites
-- `pricing-profile` : informations utiles à la personnalisation commerciale et au pricing
+Le domaine `customers` est la source de vérité pour :
+
+- le client métier courant ;
+- ses informations de contact métier ;
+- ses adresses structurées si activées ;
+- ses métadonnées commerciales utiles ;
+- certaines qualifications client B2B / B2C.
+
+Le domaine n’est pas la source de vérité pour :
+
+- le credential de login ;
+- les sessions ;
+- les snapshots figés dans `orders` ;
+- les systèmes externes CRM ;
+- la fidélité ou wishlist si ces domaines existent séparément.
+
+---
+
+## Objets métier principaux
+
+Les principaux objets métier portés par le domaine sont :
+
+- `Customer`
+- `CustomerStatus`
+- `CustomerAddress`
+- `CustomerType`
+- `CustomerCompanyProfile`
+- `CustomerContact`
+- `CustomerStoreRelation`
+
+---
+
+## Capabilities activables liées
+
+Le domaine `customers` est lié aux capabilities suivantes :
+
+- `guestCheckout`
+- `customerAccounts`
+- `customerAddresses`
+- `b2bCommerce`
+- `vatValidation`
+- `loyalty`
+- `wishlist`
+
+### Effet si `guestCheckout` est activée
+
+Le domaine doit coexister avec des parcours sans client pleinement enregistré.
+
+### Effet si `customerAccounts` est activée
+
+Le domaine porte une relation plus durable et explicite au client enregistré.
+
+### Effet si `customerAddresses` est activée
+
+Le domaine gère des adresses structurées réutilisables.
+
+### Effet si `b2bCommerce` est activée
+
+Le domaine distingue des profils entreprise ou assimilés.
+
+### Effet si `vatValidation` est activée
+
+Le domaine peut porter certaines informations structurées utiles à la validation B2B.
+
+### Effet si `loyalty` est activée
+
+Le domaine peut être relié à une logique de fidélité sans devenir cette logique.
+
+### Effet si `wishlist` est activée
+
+Le domaine peut être relié à une logique de wishlist sans en devenir la source de vérité.
+
+---
+
+## Niveaux de sophistication du domaine
+
+### Niveau 1 — essentiel
+
+- client simple ;
+- contact de base ;
+- peu de structure ;
+- parcours invité ou faible compte client.
+
+### Niveau 2 — standard
+
+- comptes clients ;
+- adresses ;
+- meilleure persistance ;
+- meilleur contexte checkout.
+
+### Niveau 3 — avancé
+
+- contexte B2B ;
+- plusieurs adresses ;
+- enrichissement du profil métier ;
+- meilleure gouvernance du client.
+
+### Niveau 4 — expert / multi-contraintes
+
+- profil client fortement structuré ;
+- exigences plus riches d’intégration, d’exploitation ou de segmentation métier.
+
+---
 
 ## Entrées
 
 Le domaine reçoit principalement :
 
-- des créations ou mises à jour de clients métier
-- des changements de type de client
-- des rattachements à des groupes client
-- des demandes de lecture de contexte client pour le pricing, le checkout, les commandes et la politique de vente
+- des commandes de création ou mise à jour de client ;
+- des changements d’adresse ;
+- des rattachements auth -> customer ;
+- des signaux de qualification B2B ;
+- des imports ou résultats externes traduits.
+
+---
 
 ## Sorties
 
 Le domaine expose principalement :
 
-- un profil client métier
-- un type de client (`individual` / `professional`)
-- des groupes client éventuels
-- un profil commercial exploitable par d’autres domaines
-- un contexte client lisible par les domaines de vente, pricing et checkout
+- un client métier ;
+- un contexte client exploitable ;
+- des adresses ;
+- une distinction B2C / B2B ;
+- des événements internes liés au client.
+
+---
 
 ## Dépendances vers autres domaines
 
-Le domaine `customers` peut dépendre de :
+Le domaine `customers` dépend de :
 
-- `users` pour certains liens techniques entre compte et client métier
-- `audit` pour tracer les changements sensibles
-- `observability` pour diagnostiquer certains comportements liés au client
+- `stores`
+- `auth`
+- `audit`
+- `observability`
 
-Les domaines suivants peuvent dépendre de `customers` :
+Les domaines suivants dépendent de `customers` :
 
-- `cart`
-- `discounts`
 - `pricing`
-- `sales-policy`
 - `checkout`
 - `orders`
-- `crm`
-- `documents`
+- `taxation`
+- `analytics`
+- `loyalty` si activé
+- `wishlist` si activé
 
-## Capabilities activables liées
+---
 
-Les capabilities les plus liées à `customers` sont :
+## Dépendances vers providers / intégrations
 
-- `professionalCustomers`
-- `customerSpecificPricing`
-- `customerGroupPricing`
-- `crm`
+Le domaine `customers` peut être synchronisé avec des systèmes externes via `integrations`, mais garde une vérité locale.
 
-### Effet si `professionalCustomers` est activée
+Les imports CRM ou enrichissements externes ne deviennent pas la vérité coeur sans traduction ni validation.
 
-Le domaine doit supporter explicitement les clients professionnels.
+---
 
-### Effet si `professionalCustomers` est désactivée
-
-Le modèle reste structuré, mais seuls les clients particuliers sont effectivement exploitables côté boutique.
-
-### Effet si `customerSpecificPricing` est activée
-
-Le client peut porter des paramètres utiles à des remises ou pricing individualisés.
-
-### Effet si `customerGroupPricing` est activée
-
-Le rattachement à des groupes client influence les domaines `discounts` et `pricing`.
-
-## Rôles/permissions concernés
+## Rôles / permissions concernés
 
 ### Rôles
 
@@ -110,7 +302,7 @@ Les rôles principalement concernés sont :
 - `store_owner`
 - `store_manager`
 - `customer_support`
-- éventuellement `marketing_manager` en lecture selon la politique retenue
+- `customer`
 
 ### Permissions
 
@@ -118,53 +310,48 @@ Exemples de permissions concernées :
 
 - `customers.read`
 - `customers.write`
-- `crm.read`
-- `crm.write`
-- `orders.read`
+- `customers.addresses.manage`
+- `customers.b2b.manage`
+- `audit.read`
+
+---
 
 ## Événements émis
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine émet les domain events internes suivants :
 
 - `customer.created`
 - `customer.updated`
-- `customer.group.changed`
-- `customer.kind.changed`
+- `customer.address.updated`
+- `customer.type.changed`
+- `customer.disabled`
+
+---
 
 ## Événements consommés
 
-Le domaine peut consommer certains événements internes du type :
+Le domaine consomme les domain events internes suivants :
 
-- `user.created` si le lien compte → client métier est modélisé ainsi
-- `order.created` pour enrichir certains états client si la stratégie métier le prévoit
+- `auth.identity.created`
+- `auth.identity.locked`
+- `integration.customer.result.translated`
+- `store.capabilities.updated`
 
-Il doit toutefois rester maître de son propre langage métier.
-
-## Intégrations externes
-
-Le domaine `customers` ne parle pas directement aux systèmes externes.
-
-Les synchronisations éventuelles vers :
-
-- ERP
-- EBP
-- systèmes CRM externes
-- outils marketing
-
-relèvent de `integrations`.
-
-Le domaine `customers` reste la source de vérité métier interne du client.
+---
 
 ## Données sensibles / sécurité
 
-Le domaine `customers` manipule des données sensibles liées à l’identité commerciale d’un client.
+Le domaine `customers` porte une donnée métier sensible.
 
 Points de vigilance :
 
-- contrôle des droits de lecture et d’écriture
-- séparation entre données techniques de compte et données métier client
-- exposition minimale dans l’admin selon le rôle
-- audit des modifications sensibles
+- informations de contact et adresses ;
+- distinction entre donnée client courante et snapshot de commande ;
+- contrôle d’accès aux données client ;
+- imports externes validés ;
+- séparation avec auth et secrets.
+
+---
 
 ## Observability / audit
 
@@ -172,74 +359,225 @@ Points de vigilance :
 
 Il faut pouvoir comprendre :
 
-- quel profil client a été utilisé dans un calcul métier
-- quel type de client a été retenu
-- quel groupe client a été appliqué
-- pourquoi une règle de pricing ou discount s’est appliquée ou non pour un client donné
+- pourquoi un client a été créé ou modifié ;
+- quel contexte client est utilisé au checkout ;
+- si une adresse a changé ;
+- si une qualification B2B a été activée.
 
 ### Audit
 
 Il faut tracer :
 
-- la création d’un client métier
-- les changements de type (`individual` / `professional`)
-- les changements de groupe client
-- certaines modifications sensibles du profil commercial
+- création de client ;
+- changements d’adresse significatifs ;
+- changements de type client ;
+- désactivations ;
+- imports externes structurants.
 
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `CustomerProfile` : profil métier du client
-- `CustomerKind` : type de client (`individual` ou `professional`)
-- `CustomerGroup` : groupe client explicite
-- `CustomerPricingProfile` : profil utilisé pour influencer pricing et remises
+---
 
 ## Invariants métier
 
 Les règles suivantes doivent toujours rester vraies :
 
-- un client métier possède un identifiant stable
-- un client métier a un type explicite
-- les groupes client sont explicites, jamais implicites
-- le client métier ne se confond pas avec un simple compte technique
-- les autres domaines lisent le contexte client via `customers` au lieu de redéfinir leur propre modèle client
+- un client métier possède une identité stable ;
+- `customers` reste distinct de `auth` ;
+- `orders` fige un snapshot du client, pas l’objet client courant ;
+- les autres domaines lisent le contexte client, ils ne le redéfinissent pas ;
+- un projet simple ne porte pas d’emblée toute la richesse B2B si elle n’est pas activée.
+
+---
+
+## Lifecycle et gouvernance des données
+
+### États principaux
+
+Les états principaux incluent typiquement :
+
+- `ACTIVE`
+- `DISABLED`
+- `ARCHIVED`
+
+### Transitions autorisées
+
+Exemples :
+
+- `ACTIVE -> DISABLED`
+- `DISABLED -> ACTIVE`
+- `ACTIVE -> ARCHIVED`
+
+### Transitions interdites
+
+Exemples :
+
+- une réactivation implicite d’un client archivé ;
+- confusion entre désactivation client et suppression des commandes liées.
+
+### Règles de conservation / archivage / suppression
+
+- le client courant peut évoluer sans réécrire le passé des commandes ;
+- les commandes gardent leur snapshot ;
+- les données client restent gouvernées selon une politique explicite ;
+- la suppression physique n’est pas le comportement par défaut des objets structurants.
+
+---
+
+## Transactions / cohérence / concurrence
+
+### Ce qui doit être atomique
+
+Les opérations suivantes doivent réussir ou échouer ensemble :
+
+- création d’un client ;
+- changement structurant de statut ;
+- mise à jour d’adresse structurante ;
+- changement de type client ;
+- écriture des événements `customer.*` correspondants.
+
+### Ce qui peut être eventual consistency
+
+Les traitements suivants peuvent partir après commit :
+
+- synchronisation CRM ;
+- analytics ;
+- enrichissements externes ;
+- notifications ;
+- projections marketing.
+
+### Stratégie de concurrence
+
+Le domaine protège explicitement ses invariants par :
+
+- transaction applicative sur les changements structurants ;
+- unicité logique du client dans son contexte pertinent ;
+- séparation entre client courant et snapshot d’ordre ;
+- validation des imports externes.
+
+Les conflits attendus sont :
+
+- double création logique ;
+- modification d’adresse concurrente ;
+- import externe concurrent ;
+- désactivation concurrente avec usage checkout.
+
+### Idempotence
+
+Les commandes métier suivantes doivent être idempotentes :
+
+- `upsert-customer` : clé d’intention = `(customerRef, changeIntentId)`
+- `upsert-customer-address` : clé d’intention = `(customerId, addressRef, changeIntentId)`
+- `apply-external-customer-result` : clé d’intention = `(providerName, externalEventId)`
+
+### Domain events écrits dans la même transaction
+
+Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
+
+- `customer.created`
+- `customer.updated`
+- `customer.address.updated`
+- `customer.type.changed`
+- `customer.disabled`
+
+### Effets secondaires après commit
+
+Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
+
+- sync CRM ;
+- notifications ;
+- analytics ;
+- segmentation externe ;
+- enrichissements externes.
+
+---
+
+## Impact maintenance / exploitation
+
+### Niveau de maintenance minimal recommandé
+
+- `M1` pour client simple ;
+- `M2` pour comptes et adresses ;
+- `M3` pour B2B ou forte intégration CRM ;
+- `M4` pour contexte client très gouverné ou fortement intégré.
+
+### Pourquoi
+
+Le domaine `customers` touche données sensibles, checkout, taxation, commandes et support.
+
+### Points d’exploitation à surveiller
+
+- créations ;
+- incohérences client / auth ;
+- adresses ;
+- conflits d’import ;
+- dérive B2B / B2C ;
+- usages checkout.
+
+---
+
+## Impact coût / complexité
+
+Le coût du domaine `customers` monte principalement avec :
+
+- `customerAccounts`
+- `customerAddresses`
+- `b2bCommerce`
+- `vatValidation`
+- `loyalty`
+- `wishlist`
+- les intégrations CRM.
+
+Lecture relative du coût :
+
+- niveau 1 : `C1`
+- niveau 2 : `C2`
+- niveau 3 : `C3`
+- niveau 4 : `C4`
+
+---
 
 ## Cas d’usage principaux
 
 1. Créer un client métier
-2. Lire le profil métier d’un client
-3. Déterminer si un client est particulier ou professionnel
-4. Rattacher un client à un groupe commercial
-5. Exposer un contexte client exploitable au pricing et au checkout
-6. Permettre aux commandes et documents d’utiliser la bonne lecture du client
+2. Mettre à jour son profil
+3. Gérer des adresses
+4. Exposer un contexte client au checkout
+5. Alimenter pricing, taxation et orders
+
+---
 
 ## Cas limites / erreurs métier
 
 Quelques cas d’erreur typiques :
 
-- client introuvable
-- type de client invalide
-- groupe client inconnu
-- tentative d’utiliser un profil professionnel alors que la capability associée est désactivée
-- profil commercial incohérent avec les groupes ou règles configurées
+- client introuvable ;
+- adresse introuvable ;
+- qualification B2B incohérente ;
+- rattachement auth / customer ambigu ;
+- import externe ambigu ;
+- client désactivé utilisé dans un parcours inadapté.
+
+---
 
 ## Décisions d’architecture
 
 Les choix structurants du domaine sont :
 
-- `customers` porte le client métier, distinct de `users`
-- `customers` fournit le contexte client exploité par les autres domaines commerce
-- `customers` ne porte ni la sécurité d’accès, ni les permissions admin
-- les groupes et profils de pricing client sont explicites
-- les synchronisations externes sur les clients passent par `integrations`
+- `customers` est un domaine coeur à capabilities toggleables ;
+- le client métier est distinct de l’auth ;
+- le client courant est distinct du snapshot de commande ;
+- le domaine peut monter vers B2B sans imposer cette complexité à tous les projets ;
+- les systèmes externes CRM restent à la frontière ;
+- la gouvernance des données client est explicite.
+
+---
 
 ## Questions explicitement closes
 
 Les points suivants sont considérés comme décidés :
 
-- le client métier est distinct du compte technique
-- le type de client est explicite
-- les groupes client relèvent de `customers`
-- le pricing client spécifique ne transforme pas `customers` en moteur de pricing
-- `customers` ne remplace ni `crm`, ni `users`, ni `discounts`, ni `pricing`
+- `customers` appartient au coeur du socle ;
+- il ne se confond ni avec `auth`, ni avec `orders` ;
+- la richesse du modèle client varie par capabilities et niveaux ;
+- les snapshots de commande figent le contexte client au moment de l’achat ;
+- les intégrations CRM éventuelles restent des intégrations ;
+- les données client doivent rester gouvernées et auditables.

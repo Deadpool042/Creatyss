@@ -1,103 +1,295 @@
-# Domaine returns
+# Domaine `returns`
+
+## Objectif
+
+Ce document décrit le domaine `returns` dans la doctrine courante du socle.
+
+Il précise :
+
+- le rôle du domaine ;
+- sa place dans la modularité du socle ;
+- sa source de vérité ;
+- ses capabilities activables ;
+- ses niveaux de sophistication ;
+- ses objets métier ;
+- ses invariants ;
+- son cycle de vie ;
+- ses règles de cohérence ;
+- ses frontières externes ;
+- ses implications de maintenance, d’exploitation et de coût.
+
+Le domaine `returns` est structurant pour la réutilisabilité du socle dès qu’un projet doit gérer des retours, échanges ou remboursements partiels aval.
+
+Le domaine `returns` ne doit pas être confondu avec :
+
+- `orders`, qui porte la commande durable ;
+- `payments`, qui porte le paiement et le remboursement ;
+- `availability`, qui porte la remise à disposition ou non ;
+- `shipping`, qui porte l’acheminement aller et éventuellement certains flux retour ;
+- `documents`, qui porte les documents de retour ou d’avoir.
+
+Le domaine `returns` porte la **vérité métier du retour**.
+
+---
+
+## Position dans la doctrine de modularité
+
+Le domaine `returns` est classé comme :
+
+- `domaine optionnel toggleable`
+
+Le domaine n’est pas indispensable à tous les projets au démarrage.
+Mais dès qu’un commerce gère des retours structurés, il doit exister comme domaine dédié.
+
+### Ce qui n’est jamais désactivé
+
+Quand le domaine est activé, il conserve toujours :
+
+- une vérité interne sur le retour ;
+- une relation explicite à la commande source ;
+- une cohérence avec remboursement, remise à disposition et documents ;
+- un lifecycle explicite.
+
+### Ce qui est activable / désactivable par capability
+
+Le domaine `returns` est lié aux capabilities suivantes :
+
+- `returns`
+- `partialReturns`
+- `exchangeRequests`
+- `refundRequests`
+- `restocking`
+- `returnShipping`
+- `returnDocuments`
+
+### Ce qui relève d’un niveau
+
+Le domaine porte explicitement plusieurs niveaux de sophistication de retour.
+
+### Ce qui relève d’un provider ou d’une intégration externe
+
+Relèvent de `integrations` et non du coeur de `returns` :
+
+- portails externes de retour ;
+- labels retour transporteur ;
+- WMS retour externes.
+
+Le domaine `returns` garde la vérité interne de la demande et du traitement de retour.
+
+---
 
 ## Rôle
 
-Le domaine `returns` porte les retours, remboursements métier liés au SAV et résolutions post-commande du socle.
+Le domaine `returns` porte la vérité métier du retour après commande.
 
-Il gère les demandes de retour, leur instruction, leur résolution et leurs conséquences métier, sans confondre la commande, le paiement, la logistique d’exécution ou les documents associés.
+Il constitue la source de vérité interne pour :
+
+- l’existence d’une demande ou d’un dossier de retour ;
+- les lignes concernées ;
+- le motif de retour ;
+- le statut du retour ;
+- la décision de remboursement, échange ou remise à disposition si activée ;
+- l’articulation avec paiement, disponibilité, documents et shipping.
+
+Le domaine est distinct :
+
+- de `orders`, qui reste la vérité de la commande source ;
+- de `payments`, qui reste la vérité du remboursement ;
+- de `availability`, qui décide la remise en disponibilité ;
+- de `documents`, qui porte les documents d’avoir ou retour ;
+- de `shipping`, qui peut porter la logistique de retour.
+
+---
 
 ## Responsabilités
 
 Le domaine `returns` prend en charge :
 
-- les demandes de retour
-- les motifs de retour
-- les états métier d’un retour
-- l’acceptation ou le refus d’un retour
-- les résolutions possibles d’un retour
-- le lien entre un retour et une commande ou des lignes de commande
-- la préparation des conséquences métier aval, comme un remboursement, un échange ou une action logistique
-- la lecture consolidée du SAV post-commande
+- la création d’une demande de retour ;
+- l’identification des lignes retournées ;
+- la qualification du retour ;
+- le lifecycle du retour ;
+- la décision interne de traitement (accepté, refusé, remboursé, échangé, restocké selon capabilities) ;
+- l’orchestration cohérente avec les domaines avals ;
+- la traçabilité des étapes du retour.
+
+---
 
 ## Ce que le domaine ne doit pas faire
 
 Le domaine `returns` ne doit pas :
 
-- porter la commande durable, qui relève de `orders`
-- porter le paiement lui-même, qui relève de `payments`
-- porter l’exécution logistique réelle, qui relève de `fulfillment`
-- porter les documents commerciaux ou fiscaux, qui relèvent de `documents`
-- devenir un domaine support générique au sens ticketing large, ce qui relève de `support`
-- parler directement aux systèmes externes, ce qui relève de `integrations`
+- rembourser lui-même sans passer par `payments` ;
+- recréer la commande source ;
+- redéfinir seul la disponibilité ou le restock ;
+- devenir un simple workflow support sans vérité métier ;
+- dépendre entièrement d’un portail externe.
 
-Le domaine `returns` porte le retour métier et sa résolution. Il ne remplace ni `orders`, ni `payments`, ni `fulfillment`, ni `support`.
+---
 
-## Sous-domaines
+## Source de vérité
 
-- `requests` : demandes de retour
-- `resolutions` : résolutions métier des retours
+Le domaine `returns` est la source de vérité pour :
+
+- le retour lui-même ;
+- son statut ;
+- ses lignes ;
+- sa qualification ;
+- son traitement métier.
+
+Le domaine n’est pas la source de vérité pour :
+
+- le remboursement financier effectif ;
+- la commande source ;
+- la disponibilité finale ;
+- les documents d’avoir ;
+- la logistique externe de retour.
+
+---
+
+## Objets métier principaux
+
+Les principaux objets métier portés par le domaine sont :
+
+- `Return`
+- `ReturnLine`
+- `ReturnStatus`
+- `ReturnReason`
+- `RefundDecision`
+- `ExchangeDecision`
+- `RestockDecision`
+
+---
+
+## Capabilities activables liées
+
+Le domaine `returns` est lié aux capabilities suivantes :
+
+- `returns`
+- `partialReturns`
+- `exchangeRequests`
+- `refundRequests`
+- `restocking`
+- `returnShipping`
+- `returnDocuments`
+
+### Effet si `returns` est activée
+
+Le domaine existe et porte des demandes de retour.
+
+### Effet si `partialReturns` est activée
+
+Le domaine peut gérer des retours partiels par ligne ou quantité.
+
+### Effet si `exchangeRequests` est activée
+
+Le domaine peut porter des demandes d’échange en plus du remboursement.
+
+### Effet si `refundRequests` est activée
+
+Le domaine peut piloter une intention de remboursement via `payments`.
+
+### Effet si `restocking` est activée
+
+Le domaine peut déclencher une décision de remise à disposition ou non, sans devenir `availability`.
+
+### Effet si `returnShipping` est activée
+
+Le domaine peut se coordonner avec une logique d’acheminement retour.
+
+### Effet si `returnDocuments` est activée
+
+Le domaine peut se coordonner avec `documents` pour des documents de retour ou d’avoir.
+
+---
+
+## Niveaux de sophistication du domaine
+
+### Niveau 1 — essentiel
+
+- demande de retour simple ;
+- acceptation / refus ;
+- remboursement simple si nécessaire.
+
+### Niveau 2 — standard
+
+- retours partiels ;
+- meilleure qualification des motifs ;
+- meilleure coordination avec documents et remboursements.
+
+### Niveau 3 — avancé
+
+- échanges ;
+- restocking ;
+- retour logistique plus structuré ;
+- meilleure orchestration avec availability et shipping.
+
+### Niveau 4 — expert / multi-contraintes
+
+- retours très structurés ;
+- politiques plus riches ;
+- plus forte gouvernance et observability ;
+- intégrations retour plus denses.
+
+---
 
 ## Entrées
 
 Le domaine reçoit principalement :
 
-- une commande ou des lignes de commande issues de `orders`
-- des demandes de création de retour
-- des motifs et informations de retour
-- des décisions métier d’acceptation, refus ou résolution
-- des signaux internes utiles venant de `payments`, `fulfillment` ou `documents`
-- des demandes de lecture de l’état d’un retour
+- une commande source ;
+- des lignes de commande ;
+- des demandes de retour ;
+- des décisions opérateur ;
+- des résultats de remboursement via `payments` ;
+- des décisions de remise à disposition via `availability` ;
+- des résultats externes traduits de portails ou transporteurs retour si activés.
+
+---
 
 ## Sorties
 
 Le domaine expose principalement :
 
-- une demande de retour
-- un état métier de retour
-- une résolution de retour
-- un rattachement explicite à une commande ou à des lignes de commande
-- une lecture consolidée exploitable par `payments`, `documents`, `fulfillment`, `support`, `analytics` et l’admin
+- un dossier de retour ;
+- un statut de retour ;
+- des lignes de retour ;
+- des décisions métier liées au retour ;
+- des événements liés aux étapes du retour.
+
+---
 
 ## Dépendances vers autres domaines
 
-Le domaine `returns` peut dépendre de :
+Le domaine `returns` dépend de :
 
-- `orders` pour la commande de référence
-- `payments` pour certaines conséquences de remboursement, sans porter lui-même l’état complet du paiement
-- `documents` pour certains liens avec avoirs ou documents aval
-- `fulfillment` pour certains états logistiques utiles au retour
-- `audit` pour tracer les changements sensibles
-- `observability` pour expliquer les refus, blocages ou résolutions
+- `orders`
+- `payments`
+- `availability`
+- `shipping`
+- `documents`
+- `audit`
+- `observability`
 
-Les domaines suivants peuvent dépendre de `returns` :
+Les domaines suivants dépendent de `returns` :
 
 - `payments`
+- `availability`
 - `documents`
-- `fulfillment`
-- `support`
 - `analytics`
-- `dashboarding`
-- `notifications`
+- `customer-support`
 
-## Capabilities activables liées
+---
 
-Le domaine `returns` est un domaine activable du socle.
+## Dépendances vers providers / intégrations
 
-Il est directement lié à :
+Le domaine `returns` peut se coordonner avec des systèmes externes via `integrations`, mais garde une vérité locale.
 
-- `returns`
-- `auditTrail`
-- `businessObservability`
+Les portails de retour ou transporteurs ne remplacent pas le domaine.
 
-### Effet si `returns` est activée
+---
 
-Le domaine devient exploitable et la boutique peut gérer des demandes de retour et leurs résolutions.
-
-### Effet si `returns` est désactivée
-
-Le domaine reste structurellement présent, mais aucune demande de retour ne doit être ouverte côté boutique.
-
-## Rôles/permissions concernés
+## Rôles / permissions concernés
 
 ### Rôles
 
@@ -107,9 +299,10 @@ Les rôles principalement concernés sont :
 - `platform_engineer`
 - `store_owner`
 - `store_manager`
-- `order_manager`
 - `customer_support`
-- `customer` pour ses propres demandes de retour selon le scope retenu
+- `order_manager`
+- `fulfillment_operator`
+- `customer`
 
 ### Permissions
 
@@ -117,62 +310,55 @@ Exemples de permissions concernées :
 
 - `returns.read`
 - `returns.write`
-- `orders.read`
+- `returns.approve`
+- `returns.reject`
+- `returns.restock`
 - `payments.read`
-- `documents.read`
 - `audit.read`
+
+---
 
 ## Événements émis
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine émet les domain events internes suivants :
 
-- `return.requested`
-- `return.accepted`
+- `return.created`
+- `return.approved`
 - `return.rejected`
-- `return.resolution.changed`
-- `return.closed`
+- `return.received`
+- `return.refund.requested`
+- `return.exchange.requested`
+- `return.restock.requested`
+- `return.completed`
+
+---
 
 ## Événements consommés
 
-Le domaine peut consommer certains événements internes du type :
+Le domaine consomme les domain events internes suivants :
 
 - `order.created`
-- `order.cancelled`
 - `payment.refunded`
-- `fulfillment.*` via un langage interne stabilisé si certains retours dépendent d’un état logistique
-- `document.*` si certains avoirs ou documents doivent influencer la lecture du retour
+- `document.generated`
+- `shipping.status.changed`
+- `availability.updated`
+- `integration.return.result.translated`
 
-Il doit toutefois rester maître de son propre cycle de vie métier.
-
-## Intégrations externes
-
-Le domaine `returns` ne doit pas parler directement aux systèmes externes.
-
-Les synchronisations ou échanges avec :
-
-- ERP
-- systèmes logistiques
-- outils SAV externes
-- systèmes comptables
-
-relèvent de :
-
-- `integrations`
-- éventuellement `jobs`
-
-Le domaine `returns` reste la source de vérité interne du retour métier.
+---
 
 ## Données sensibles / sécurité
 
-Le domaine `returns` porte une donnée métier sensible, car il peut déclencher des effets financiers, logistiques et relationnels.
+Le domaine `returns` porte une donnée métier sensible.
 
 Points de vigilance :
 
-- contrôle strict des droits de lecture et d’écriture
-- validation stricte des demandes et résolutions
-- protection des transitions de statut sensibles
-- audit des décisions critiques
-- séparation claire entre décision métier de retour et exécution aval
+- le retour touche commande, argent, stock et support ;
+- un retour ne doit pas être créé librement sans rattachement à une commande valide ;
+- les décisions opérateur doivent être traçables ;
+- les remboursements ne doivent pas être exécutés directement ici ;
+- les données client et produit liées au retour doivent rester gouvernées.
+
+---
 
 ## Observability / audit
 
@@ -180,81 +366,242 @@ Points de vigilance :
 
 Il faut pouvoir comprendre :
 
-- pourquoi un retour a été accepté ou refusé
-- quel motif a été retenu
-- quelle résolution est en vigueur
-- si un blocage provient de la commande, du paiement, de la logistique ou d’une règle de retour
+- pourquoi un retour a été créé ;
+- quelles lignes sont concernées ;
+- pourquoi il a été accepté ou rejeté ;
+- si un remboursement ou échange a été demandé ;
+- si un restock a été déclenché ou refusé.
 
 ### Audit
 
 Il faut tracer :
 
-- la création d’une demande de retour
-- les changements d’état sensibles
-- les acceptations et refus
-- les résolutions choisies
-- les interventions manuelles importantes
+- créations de retours ;
+- validations / refus ;
+- décisions de remboursement ;
+- décisions de restock ;
+- clôtures ;
+- interventions support sensibles.
 
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `ReturnRequest` : demande de retour
-- `ReturnReason` : motif de retour
-- `ReturnStatus` : état métier du retour
-- `ReturnResolution` : résolution retenue
-- `OrderReturnLink` : rattachement entre retour et commande ou lignes de commande
+---
 
 ## Invariants métier
 
 Les règles suivantes doivent toujours rester vraies :
 
-- un retour est rattaché explicitement à une commande ou à des lignes de commande
-- un retour possède un état métier explicite
-- une résolution de retour est explicite lorsqu’elle existe
-- `returns` ne se confond pas avec `payments`, `orders` ou `support`
-- les autres domaines ne doivent pas recréer leur propre vérité divergente du retour métier
-- les effets aval d’un retour passent par les domaines spécialisés concernés
+- un retour est rattaché à une commande existante ;
+- un retour possède un statut explicite ;
+- un remboursement effectif reste dans `payments` ;
+- une remise à disposition effective reste dans `availability` ;
+- le domaine `returns` garde la vérité du workflow retour ;
+- un projet sans capability `returns` n’expose pas ces parcours.
+
+---
+
+## Lifecycle et gouvernance des données
+
+### États principaux
+
+Les états principaux incluent typiquement :
+
+- `REQUESTED`
+- `APPROVED`
+- `REJECTED`
+- `RECEIVED`
+- `REFUND_PENDING`
+- `COMPLETED`
+- `CANCELLED`
+
+### Transitions autorisées
+
+Exemples :
+
+- `REQUESTED -> APPROVED`
+- `REQUESTED -> REJECTED`
+- `APPROVED -> RECEIVED`
+- `RECEIVED -> REFUND_PENDING`
+- `REFUND_PENDING -> COMPLETED`
+- `REQUESTED -> CANCELLED`
+
+### Transitions interdites
+
+Exemples :
+
+- `REJECTED -> REFUND_PENDING`
+- `COMPLETED -> REQUESTED`
+- considérer un retour annulé comme jamais existé.
+
+### Règles de conservation / archivage / suppression
+
+- les retours restent traçables ;
+- les décisions liées au remboursement et au restock restent compréhensibles ;
+- la suppression physique n’est pas le comportement par défaut.
+
+---
+
+## Transactions / cohérence / concurrence
+
+### Ce qui doit être atomique
+
+Les opérations suivantes doivent réussir ou échouer ensemble :
+
+- création d’un retour ;
+- création des lignes de retour ;
+- changement de statut structurant ;
+- décision de remboursement demandée au domaine adéquat ;
+- décision de restock demandée au domaine adéquat ;
+- écriture des événements `return.*` correspondants.
+
+### Ce qui peut être eventual consistency
+
+Les traitements suivants peuvent partir après commit :
+
+- remboursement effectif par `payments` ;
+- remise à disposition effective par `availability` ;
+- génération documentaire ;
+- étiquette retour externe ;
+- analytics ;
+- notifications.
+
+### Stratégie de concurrence
+
+Le domaine protège explicitement ses invariants par :
+
+- transaction applicative sur les décisions structurantes ;
+- garde sur l’état courant du retour ;
+- cohérence avec les lignes de commande source ;
+- déduplication des demandes répétées.
+
+Les conflits attendus sont :
+
+- double demande de retour ;
+- double remboursement logique ;
+- retour et annulation concurrente ;
+- restock concurrent.
+
+### Idempotence
+
+Les commandes métier suivantes doivent être idempotentes :
+
+- `create-return` : clé d’intention = `(orderId, returnIntentId)`
+- `approve-return` : clé d’intention = `(returnId, approvalIntentId)`
+- `reject-return` : clé d’intention = `(returnId, rejectionIntentId)`
+- `request-return-refund` : clé d’intention = `(returnId, refundIntentId)`
+- `request-return-restock` : clé d’intention = `(returnId, restockIntentId)`
+
+### Domain events écrits dans la même transaction
+
+Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
+
+- `return.created`
+- `return.approved`
+- `return.rejected`
+- `return.received`
+- `return.refund.requested`
+- `return.exchange.requested`
+- `return.restock.requested`
+- `return.completed`
+
+### Effets secondaires après commit
+
+Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
+
+- remboursement externe ;
+- restock externe ;
+- génération documentaire ;
+- transport retour externe ;
+- analytics ;
+- notifications.
+
+---
+
+## Impact maintenance / exploitation
+
+### Niveau de maintenance minimal recommandé
+
+- `M2` dès qu’on active les retours ;
+- `M3` pour retours partiels, échanges ou restocking ;
+- `M4` pour politiques retour plus riches ou fortement intégrées.
+
+### Pourquoi
+
+Le domaine `returns` crée vite une forte charge support et touche argent, stock et expérience client.
+
+### Points d’exploitation à surveiller
+
+- retours en attente ;
+- refus ;
+- remboursements non clos ;
+- restocks en attente ;
+- écarts entre retour et commande source.
+
+---
+
+## Impact coût / complexité
+
+Le coût du domaine `returns` monte principalement avec :
+
+- `partialReturns`
+- `exchangeRequests`
+- `refundRequests`
+- `restocking`
+- `returnShipping`
+- `returnDocuments`
+
+Lecture relative du coût :
+
+- niveau 1 : `C2`
+- niveau 2 : `C3`
+- niveau 3 : `C3`
+- niveau 4 : `C4`
+
+---
 
 ## Cas d’usage principaux
 
-1. Créer une demande de retour liée à une commande
-2. Lire l’état d’un retour
-3. Accepter ou refuser une demande de retour
-4. Définir une résolution de retour
-5. Déclencher ensuite les actions aval nécessaires via les domaines spécialisés
-6. Exposer une lecture consolidée du SAV à l’admin, au support et aux autres domaines consommateurs
+1. Créer une demande de retour
+2. Accepter ou rejeter un retour
+3. Demander un remboursement
+4. Déclencher un restock
+5. Clôturer un retour
+
+---
 
 ## Cas limites / erreurs métier
 
 Quelques cas d’erreur typiques :
 
-- retour introuvable
-- commande introuvable
-- ligne de commande non éligible au retour
-- motif invalide
-- transition de statut invalide
-- résolution incompatible avec l’état courant
-- capability returns désactivée
+- commande introuvable ;
+- lignes de retour invalides ;
+- double demande ;
+- statut invalide ;
+- remboursement déjà demandé ;
+- restock incohérent ;
+- retour externe ambigu ;
+- clôture prématurée.
+
+---
 
 ## Décisions d’architecture
 
 Les choix structurants du domaine sont :
 
-- `returns` porte le retour métier du socle
-- `returns` est distinct de `orders`
-- `returns` est distinct de `payments`
-- `returns` est distinct de `documents`
-- `returns` est distinct de `fulfillment`
-- les effets aval d’un retour sont délégués aux domaines spécialisés concernés
-- les transitions sensibles de retour doivent être auditables et observables
+- `returns` est un domaine optionnel toggleable ;
+- il porte la vérité métier du retour ;
+- il reste distinct de `payments`, `availability`, `shipping` et `documents` ;
+- les effets lourds partent après commit ;
+- le domaine garde la cohérence du workflow retour ;
+- la sophistication monte par capabilities et niveaux.
+
+---
 
 ## Questions explicitement closes
 
 Les points suivants sont considérés comme décidés :
 
-- les retours relèvent de `returns`
-- la commande durable relève de `orders`
-- les remboursements relèvent de `payments`
-- l’exécution logistique relève de `fulfillment`
-- `returns` ne remplace ni `orders`, ni `payments`, ni `documents`, ni `support`, ni `integrations`
+- `returns` n’est pas obligatoire pour tous les projets ;
+- dès qu’il est activé, il devient un vrai domaine métier ;
+- les remboursements restent dans `payments` ;
+- le restock reste dans `availability` ;
+- les portails de retour externes restent des intégrations ;
+- la traçabilité du retour est non négociable.

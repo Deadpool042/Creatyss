@@ -1,165 +1,264 @@
-# Domaine roles
+# Domaine `roles`
+
+## Objectif
+
+Ce document décrit le domaine `roles` dans la doctrine courante du socle.
+
+Il précise :
+
+- le rôle du domaine ;
+- sa place dans la modularité du socle ;
+- sa source de vérité ;
+- ses objets métier ;
+- ses invariants ;
+- son cycle de vie ;
+- ses règles de cohérence ;
+- ses implications de maintenance, d’exploitation et de coût.
+
+Le domaine `roles` porte les agrégats d’autorisation attribuables aux utilisateurs ou acteurs internes du socle.
+
+Il ne doit pas être confondu avec :
+
+- `permissions`, qui porte les droits atomiques ;
+- `auth`, qui porte l’authentification ;
+- `users`, qui porte l’identité applicative.
+
+---
+
+## Position dans la doctrine de modularité
+
+Le domaine `roles` est classé comme :
+
+- `domaine coeur non toggleable`
+
+Le domaine existe dans tout socle sérieux, car l’autorisation ne doit pas être codée à la volée ni dispersée.
+
+### Ce qui n’est jamais désactivé
+
+Le domaine conserve toujours :
+
+- une vérité interne des rôles ;
+- un rattachement des permissions aux rôles ;
+- une assignation explicite des rôles aux users ou scopes applicatifs ;
+- un cycle de vie lisible.
+
+---
 
 ## Rôle
 
 Le domaine `roles` porte les rôles applicatifs du socle.
 
-Il définit les profils globaux utilisés pour structurer les accès, les responsabilités et la lecture fonctionnelle des différents acteurs de la plateforme et des boutiques.
+Il constitue la source de vérité interne pour :
+
+- l’existence d’un rôle ;
+- son nom technique ;
+- son statut ;
+- l’ensemble des permissions qu’il agrège ;
+- les scopes d’application s’ils existent.
+
+Le domaine est distinct :
+
+- de `permissions`, qui porte les droits atomiques ;
+- de `users`, qui porte les personnes ;
+- de `auth`, qui porte les credentials et sessions.
+
+---
 
 ## Responsabilités
 
 Le domaine `roles` prend en charge :
 
-- la définition des rôles applicatifs
-- la distinction entre rôles plateforme et rôles boutique
-- la lisibilité fonctionnelle des profils d’accès
-- le rattachement logique des rôles aux comptes utilisateurs
-- la structuration des profils d’administration et d’exploitation
-- le langage de haut niveau utilisé par l’administration pour comprendre qui peut faire quoi
+- la création et gestion des rôles ;
+- l’agrégation de permissions ;
+- l’assignation de rôles aux users ou memberships ;
+- le statut des rôles ;
+- la lisibilité de la gouvernance d’accès.
+
+---
 
 ## Ce que le domaine ne doit pas faire
 
 Le domaine `roles` ne doit pas :
 
-- porter la liste fine des permissions, qui relève de `permissions`
-- porter le compte technique lui-même, qui relève de `users`
-- porter les capacités métier d’une boutique, qui relèvent de `store`
-- porter la logique métier commerce des domaines coeur
-- devenir un système de permissions implicites non maîtrisé
+- porter l’authentification ;
+- porter les utilisateurs eux-mêmes ;
+- porter les droits atomiques comme vérité primaire ;
+- coder des règles d’accès implicites disséminées ailleurs.
 
-Le domaine `roles` décrit des profils d’accès, mais ne remplace pas le moteur de permissions fines.
+---
 
-## Sous-domaines
+## Source de vérité
 
-Le domaine `roles` n’a pas nécessairement besoin d’un découpage complexe au départ.
+Le domaine `roles` est la source de vérité pour :
 
-Il peut rester simple avec :
+- les rôles ;
+- leur statut ;
+- leur composition en permissions ;
+- leur assignation logique.
 
-- un sous-ensemble conceptuel de rôles plateforme
-- un sous-ensemble conceptuel de rôles boutique
+Le domaine n’est pas la source de vérité pour :
+
+- les permissions atomiques elles-mêmes ;
+- les utilisateurs ;
+- les sessions ;
+- les clients API.
+
+---
+
+## Objets métier principaux
+
+Les principaux objets métier portés par le domaine sont :
+
+- `Role`
+- `RoleStatus`
+- `RoleAssignment`
+- `RoleScope`
+
+---
+
+## Capabilities activables liées
+
+Le domaine `roles` n’est pas principalement capability-driven.
+Il reste structurel.
+
+La richesse du modèle peut toutefois augmenter selon :
+
+- `multiStorefront`
+- `b2bCommerce`
+- `adminDelegation`
+
+---
+
+## Niveaux de sophistication du domaine
+
+### Niveau 1 — essentiel
+
+- rôles simples ;
+- peu de scopes ;
+- assignation directe.
+
+### Niveau 2 — standard
+
+- meilleure granularité ;
+- plusieurs contextes d’assignation ;
+- rattachements plus riches.
+
+### Niveau 3 — avancé
+
+- rôles plus nombreux ;
+- scopes plus fins ;
+- gouvernance plus riche.
+
+### Niveau 4 — expert / multi-contraintes
+
+- matrices d’autorisation plus denses ;
+- organisation plus complexe ;
+- audit et gouvernance plus poussés.
+
+---
 
 ## Entrées
 
 Le domaine reçoit principalement :
 
-- des créations ou mises à jour de définitions de rôles
-- des rattachements logiques entre rôles et utilisateurs
-- des demandes de lecture de rôles applicatifs
-- des besoins d’explicitation du profil d’accès d’un utilisateur
+- des commandes de création ou mise à jour de rôle ;
+- des ajouts ou suppressions de permissions dans un rôle ;
+- des assignations à des utilisateurs ou memberships.
+
+---
 
 ## Sorties
 
 Le domaine expose principalement :
 
-- les rôles disponibles
-- leur catégorie (`platform` ou `store`)
-- leur signification fonctionnelle
-- leur rattachement à des utilisateurs ou à des scopes
+- des rôles ;
+- leurs permissions agrégées ;
+- leurs assignations ;
+- des événements liés à la gouvernance d’accès.
+
+---
 
 ## Dépendances vers autres domaines
 
-Le domaine `roles` peut dépendre de :
-
-- `users` pour rattacher des rôles à des comptes
-- `audit` pour tracer les changements sensibles
-- `permissions` pour la lecture combinée finale du contrôle d’accès
-
-Les domaines suivants peuvent dépendre de `roles` :
+Le domaine `roles` dépend de :
 
 - `permissions`
 - `users`
-- `store`
-- les couches d’administration plateforme et boutique
+- `audit`
+- `observability`
 
-## Capabilities activables liées
+Les domaines suivants dépendent de `roles` :
 
-Le domaine `roles` n’est pas une capability métier en soi, mais il est fortement concerné par :
+- `authz`
+- `admin`
+- tous les domaines protégés
 
-- `advancedPermissions`
-- `auditTrail`
+---
 
-### Effet si `advancedPermissions` est activée
+## Dépendances vers providers / intégrations
 
-Le domaine `roles` doit rester lisible tout en s’intégrant à un système de permissions fines plus avancé.
+Le domaine `roles` ne dépend pas d’un provider externe comme vérité primaire.
 
-### Effet si `auditTrail` est activée
+---
 
-Les changements de rôles et rattachements doivent être tracés plus finement.
+## Rôles / permissions concernés
 
-## Rôles/permissions concernés
+### Rôles
 
-### Rôles de référence
-
-Les rôles de référence retenus à ce stade sont :
-
-#### Rôles plateforme
+Les rôles concernés sont auto-référentiels du point de vue gouvernance, par exemple :
 
 - `platform_owner`
 - `platform_engineer`
-
-#### Rôles boutique
-
 - `store_owner`
 - `store_manager`
-- `catalog_manager`
-- `content_editor`
-- `order_manager`
+- `finance_manager`
 - `customer_support`
-- `marketing_manager`
-- `observer`
 
-#### Rôle client
+### Permissions
 
-- `customer`
-
-### Permissions concernées
-
-Exemples de permissions liées à l’administration des rôles :
+Exemples de permissions concernées :
 
 - `roles.read`
 - `roles.write`
+- `roles.assign`
 - `permissions.read`
-- `permissions.write`
 - `audit.read`
+
+---
 
 ## Événements émis
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine émet les domain events internes suivants :
 
 - `role.created`
 - `role.updated`
-- `user.roles.changed`
+- `role.disabled`
+- `role.assignment.updated`
+
+---
 
 ## Événements consommés
 
-Le domaine peut consommer certains événements de gouvernance liés aux comptes ou à l’approbation d’actions sensibles.
-
-Exemples possibles :
+Le domaine consomme les domain events internes suivants :
 
 - `user.created`
-- événements d’approbation si le modèle final impose un contrôle supplémentaire sur certains changements d’accès
+- `user.disabled`
+- `permission.created`
+- `permission.updated`
 
-## Intégrations externes
-
-Le domaine `roles` ne doit pas dépendre directement d’un provider externe.
-
-Toute synchronisation éventuelle d’un référentiel d’accès externe devra passer par :
-
-- `integrations`
-- et éventuellement `jobs`
-
-Le domaine `roles` reste la source de vérité interne des profils applicatifs.
+---
 
 ## Données sensibles / sécurité
 
-Le domaine `roles` manipule des éléments sensibles de gouvernance d’accès.
+Le domaine `roles` porte une donnée critique de sécurité.
 
 Points de vigilance :
 
-- modification réservée à des rôles très restreints
-- traçabilité obligatoire des changements critiques
-- séparation nette entre rôle de haut niveau et permission fine
-- prévention des dérives de type “admin implicite”
+- une mauvaise assignation de rôle crée immédiatement un risque d’accès ;
+- les changements de rôle doivent être auditables ;
+- les rôles ne doivent pas être modifiés sans contrôle.
+
+---
 
 ## Observability / audit
 
@@ -167,72 +266,203 @@ Points de vigilance :
 
 Il faut pouvoir comprendre :
 
-- quels rôles étaient attachés à un utilisateur donné
-- quel profil d’accès de haut niveau était en vigueur lors d’une action
-- comment un acteur était catégorisé dans l’application
+- quels rôles existent ;
+- quelles permissions ils agrègent ;
+- à qui ils sont assignés ;
+- pourquoi un rôle a changé.
 
 ### Audit
 
 Il faut tracer :
 
-- la création d’un rôle
-- la modification d’un rôle
-- le rattachement ou détachement d’un rôle à un utilisateur
-- les changements sensibles touchant à la gouvernance d’accès
+- création de rôle ;
+- changement de composition ;
+- assignation et retrait ;
+- désactivation.
 
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `RoleDefinition` : définition d’un rôle applicatif
-- `RoleCategory` : catégorie du rôle (`platform`, `store`, `customer`)
-- `UserRoleAssignment` : rattachement d’un rôle à un utilisateur
+---
 
 ## Invariants métier
 
 Les règles suivantes doivent toujours rester vraies :
 
-- un rôle possède un identifiant stable et un sens explicite
-- un rôle n’est pas une permission fine
-- les rôles plateforme et boutique restent distingués
-- un rôle ne doit pas embarquer de logique métier cachée implicite
-- le contrôle d’accès final ne repose pas uniquement sur le rôle brut, mais sur le couple rôles + permissions + scope
+- un rôle possède une identité stable ;
+- un rôle agrège des permissions explicites ;
+- une assignation de rôle est traçable ;
+- un rôle désactivé n’est pas traité comme pleinement actif ;
+- le domaine `roles` ne se confond pas avec `permissions`.
+
+---
+
+## Lifecycle et gouvernance des données
+
+### États principaux
+
+Les états principaux incluent typiquement :
+
+- `ACTIVE`
+- `DISABLED`
+- `ARCHIVED`
+
+### Transitions autorisées
+
+Exemples :
+
+- `ACTIVE -> DISABLED`
+- `DISABLED -> ACTIVE`
+- `ACTIVE -> ARCHIVED`
+
+### Transitions interdites
+
+Exemples :
+
+- réactivation implicite d’un rôle archivé ;
+- suppression silencieuse d’un rôle encore référencé.
+
+### Règles de conservation / archivage / suppression
+
+- les rôles et assignations structurantes restent auditables ;
+- l’archivage est préférable à la suppression implicite des éléments critiques.
+
+---
+
+## Transactions / cohérence / concurrence
+
+### Ce qui doit être atomique
+
+Les opérations suivantes doivent réussir ou échouer ensemble :
+
+- création d’un rôle ;
+- mise à jour d’un rôle ;
+- changement de statut ;
+- assignation ou retrait structurant ;
+- écriture des événements `role.*` correspondants.
+
+### Ce qui peut être eventual consistency
+
+Les traitements suivants peuvent partir après commit :
+
+- projections admin ;
+- analytics sécurité ;
+- notifications opératoires.
+
+### Stratégie de concurrence
+
+Le domaine protège explicitement ses invariants par :
+
+- transaction applicative sur les changements structurants ;
+- unicité logique des rôles ;
+- validation des assignations.
+
+Les conflits attendus sont :
+
+- double assignation ;
+- modification concurrente d’un rôle ;
+- suppression / désactivation concurrente.
+
+### Idempotence
+
+Les commandes métier suivantes doivent être idempotentes :
+
+- `upsert-role` : clé d’intention = `(roleCode, changeIntentId)`
+- `assign-role` : clé d’intention = `(subjectRef, roleCode, assignIntentId)`
+- `remove-role` : clé d’intention = `(subjectRef, roleCode, removeIntentId)`
+
+### Domain events écrits dans la même transaction
+
+Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
+
+- `role.created`
+- `role.updated`
+- `role.disabled`
+- `role.assignment.updated`
+
+### Effets secondaires après commit
+
+Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
+
+- sync annuaire externe ;
+- notification opératoire ;
+- analytics.
+
+---
+
+## Impact maintenance / exploitation
+
+### Niveau de maintenance minimal recommandé
+
+- `M1` minimum ;
+- `M2` recommandé dès qu’il y a plusieurs rôles réels ;
+- `M3` pour gouvernance plus fine ou multi-scope.
+
+### Pourquoi
+
+Les rôles structurent l’accès au système.
+Une erreur ici se propage partout.
+
+### Points d’exploitation à surveiller
+
+- rôles désactivés ;
+- assignations incohérentes ;
+- dérives rôle / permission ;
+- changements fréquents.
+
+---
+
+## Impact coût / complexité
+
+Le coût du domaine `roles` monte principalement avec :
+
+- le nombre de rôles ;
+- le nombre de scopes ;
+- la richesse des assignations ;
+- la densité de gouvernance.
+
+Lecture relative du coût :
+
+- niveau 1 : `C1`
+- niveau 2 : `C2`
+- niveau 3 : `C3`
+- niveau 4 : `C4`
+
+---
 
 ## Cas d’usage principaux
 
-1. Définir les rôles applicatifs du socle
-2. Lire les rôles disponibles
-3. Rattacher un rôle à un utilisateur
-4. Distinguer les rôles plateforme des rôles boutique
-5. Exposer une lecture claire du profil d’accès d’un acteur
+1. Créer un rôle
+2. L’assigner à un utilisateur
+3. Le désactiver
+4. Faire évoluer sa composition
+
+---
 
 ## Cas limites / erreurs métier
 
 Quelques cas d’erreur typiques :
 
-- rôle introuvable
-- rôle invalide
-- tentative de rattacher un rôle non autorisé
-- conflit de gouvernance sur un rôle sensible
-- tentative de suppression ou modification d’un rôle structurant sans autorisation suffisante
+- rôle introuvable ;
+- assignation dupliquée ;
+- rôle archivé réutilisé ;
+- rôle sans cohérence de composition.
+
+---
 
 ## Décisions d’architecture
 
 Les choix structurants du domaine sont :
 
-- `roles` porte les profils d’accès de haut niveau
-- `roles` est distinct de `permissions`
-- `roles` est distinct de `users`
-- les rôles plateforme et boutique sont séparés
-- le modèle `admin/customer` unique est abandonné
-- les changements sensibles sur les rôles doivent être auditables
+- `roles` est un domaine coeur non toggleable ;
+- il agrège des permissions ;
+- il reste distinct de `users`, `permissions` et `auth` ;
+- la gouvernance d’accès est explicite et auditable.
+
+---
 
 ## Questions explicitement closes
 
 Les points suivants sont considérés comme décidés :
 
-- les rôles sont distincts des permissions
-- les rôles plateforme et boutique sont distincts
-- `roles` ne remplace ni `permissions`, ni `users`
-- le socle ne repose pas sur un rôle unique `admin`
-- la gouvernance des rôles est une responsabilité sensible et contrôlée
+- `roles` appartient au noyau du socle ;
+- un rôle n’est pas une permission ;
+- l’assignation de rôle est traçable ;
+- la gouvernance d’accès ne doit pas être codée implicitement dans les domaines métier.
