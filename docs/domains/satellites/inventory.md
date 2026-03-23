@@ -1,5 +1,9 @@
 # Domaine `inventory`
 
+> **Statut documentaire** : satellite de `availability`.
+> Le domaine canonique de premier rang est `core/availability.md`.
+> `inventory` porte la vérité quantitative de stock ; il est une spécialisation subordonnée à la disponibilité, pas un domaine coeur autonome.
+
 ## Rôle
 
 Le domaine `inventory` porte la vérité quantitative du stock du socle.

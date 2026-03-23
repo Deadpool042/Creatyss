@@ -1,73 +1,190 @@
-# Domaines du socle
+# Domaines du socle — Vue d'ensemble
 
-Ce dossier contient une fiche par domaine métier / transverse du socle e-commerce.
+Ce dossier contient une fiche par domaine métier ou transverse du socle e-commerce.
 
-## Domaines
+**Source de vérité doctrinale** : [`docs/architecture/`](../architecture/) — lire en priorité les fichiers `00` à `11` avant d'interpréter les fiches de ce dossier.
 
-- store
-- auth
-- users
-- customers
-- roles
-- permissions
-- feature-flags
-- products
-- categories
-- inventory
-- sales-policy
-- channels
-- cart
-- shipping
-- discounts
-- taxation
-- pricing
-- checkout
-- orders
-- payments
-- returns
-- documents
-- marketing
-- conversion
-- crm
-- notifications
-- subscriptions
-- newsletter
-- events
-- domain-events
-- social
-- tracking
-- behavior
-- consent
-- analytics
-- attribution
-- observability
-- monitoring
-- audit
-- search
-- recommendations
-- seo
-- legal
-- localization
-- integrations
-- jobs
-- import
-- export
-- support
-- fulfillment
-- workflow
-- approval
-- scheduling
-- webhooks
-- api-clients
-- loyalty
-- gift-cards
-- gifting
-- fraud-risk
-- bundles
-- catalog-modeling
-- dashboarding
-- template-system
-- media
-- pages
-- blog
-- email
+---
+
+## Hiérarchie documentaire
+
+Tous les fichiers de `docs/domains/` ne sont pas du même rang.
+La structure distingue quatre catégories explicites :
+
+| Catégorie | Signification | Dossier |
+|---|---|---|
+| **core** | Domaines coeur non toggleables ou à capabilities toggleables — présents dans tous les projets | `core/` |
+| **optional** | Domaines optionnels — activés uniquement si un besoin métier réel le justifie | `optional/` |
+| **satellites** | Spécialisations et docs satellites — rattachées à un domaine coeur parent | `satellites/` |
+| **cross-cutting** | Concerns transverses — exploitation, pilotage, diffusion, conformité | `cross-cutting/` |
+
+Un fichier satellite ou cross-cutting **n'est pas au même rang qu'un domaine coeur**.
+Se référer à [`docs/architecture/03-core-domains-and-toggleable-capabilities.md`](../architecture/03-core-domains-and-toggleable-capabilities.md) pour la grille officielle de classification.
+
+---
+
+## core/
+
+Domaines structurellement indispensables. Présents dans tous les projets, toggleables uniquement au niveau de leurs capabilities internes.
+
+Référence doctrine : [`docs/architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md)
+
+### Structure et identité
+
+- [`auth.md`](core/auth.md)
+- [`users.md`](core/users.md)
+- [`roles.md`](core/roles.md)
+- [`permissions.md`](core/permissions.md)
+- [`api-clients.md`](core/api-clients.md)
+
+### Commerce coeur
+
+- [`stores.md`](core/stores.md) — domaine canonique (ancien `store.md`)
+- [`customers.md`](core/customers.md)
+- [`products.md`](core/products.md)
+- [`pricing.md`](core/pricing.md)
+- [`availability.md`](core/availability.md) — domaine canonique de disponibilité
+- [`cart.md`](core/cart.md)
+- [`checkout.md`](core/checkout.md)
+- [`orders.md`](core/orders.md)
+- [`payments.md`](core/payments.md)
+- [`taxation.md`](core/taxation.md)
+- [`shipping.md`](core/shipping.md)
+- [`documents.md`](core/documents.md)
+
+### Infrastructure coeur
+
+- [`domain-events.md`](core/domain-events.md)
+- [`integrations.md`](core/integrations.md)
+- [`webhooks.md`](core/webhooks.md)
+
+---
+
+## optional/
+
+Domaines activés uniquement si un besoin métier réel le justifie. Leur absence ne casse pas le coeur du commerce.
+
+Référence doctrine : [`docs/architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) — section "Domaines optionnels toggleables"
+
+### Commerce enrichi
+
+- [`returns.md`](optional/returns.md)
+- [`gift-cards.md`](optional/gift-cards.md)
+- [`subscriptions.md`](optional/subscriptions.md)
+- [`marketplace.md`](optional/marketplace.md)
+- [`wishlist.md`](optional/wishlist.md)
+- [`loyalty.md`](optional/loyalty.md)
+
+### Contenu et acquisition
+
+- [`blog.md`](optional/blog.md)
+- [`homepage-editorial.md`](optional/homepage-editorial.md)
+- [`reviews.md`](optional/reviews.md)
+- [`pages.md`](optional/pages.md)
+
+### Enrichissement et IA
+
+- [`recommendations.md`](optional/recommendations.md)
+- [`ai-assistance.md`](optional/ai-assistance.md)
+
+---
+
+## satellites/
+
+Spécialisations et docs satellites rattachées à un domaine coeur parent. Ces fichiers approfondissent un domaine coeur ou une capability précise. Ils ne sont pas des domaines autonomes de premier rang.
+
+| Fichier satellite | Domaine coeur parent |
+|---|---|
+| [`categories.md`](satellites/categories.md) | `products` |
+| [`catalog-modeling.md`](satellites/catalog-modeling.md) | `products` |
+| [`bundles.md`](satellites/bundles.md) | `products` |
+| [`media.md`](satellites/media.md) | `products` |
+| [`channels.md`](satellites/channels.md) | `products` + `integrations` |
+| [`inventory.md`](satellites/inventory.md) | `availability` ⚠️ satellite, pas domaine coeur |
+| [`discounts.md`](satellites/discounts.md) | `pricing` ⚠️ satellite, pas domaine coeur |
+| [`sales-policy.md`](satellites/sales-policy.md) | `pricing` + `availability` |
+| [`fulfillment.md`](satellites/fulfillment.md) | `orders` + `shipping` |
+| [`gifting.md`](satellites/gifting.md) | `cart` + `checkout` |
+
+> **Note** : `inventory` et `discounts` sont des satellites de `availability` et `pricing` respectivement.
+> Voir les notes d'alignement en tête de chaque fichier.
+
+---
+
+## cross-cutting/
+
+Concerns transverses qui s'appliquent horizontalement à plusieurs domaines.
+Ils ne sont pas des domaines coeur de premier rang commercial : ce sont des préoccupations d'exploitation, de pilotage, de diffusion, de conformité ou d'infrastructure transverse.
+
+Référence doctrine :
+- [`docs/architecture/08`](../architecture/08-domain-events-jobs-and-async-flows.md) — events, jobs, async
+- [`docs/architecture/09`](../architecture/09-integrations-providers-and-external-boundaries.md) — frontières externes
+- [`docs/architecture/10`](../architecture/10-data-lifecycle-and-governance.md) — gouvernance et cycle de vie
+
+### Exploitation et observabilité
+
+- [`audit.md`](cross-cutting/audit.md)
+- [`observability.md`](cross-cutting/observability.md)
+- [`monitoring.md`](cross-cutting/monitoring.md)
+- [`analytics.md`](cross-cutting/analytics.md)
+- [`dashboarding.md`](cross-cutting/dashboarding.md)
+- [`jobs.md`](cross-cutting/jobs.md)
+- [`events.md`](cross-cutting/events.md)
+- [`scheduling.md`](cross-cutting/scheduling.md)
+
+### Processus et gouvernance
+
+- [`workflow.md`](cross-cutting/workflow.md)
+- [`approval.md`](cross-cutting/approval.md)
+- [`feature-flags.md`](cross-cutting/feature-flags.md)
+- [`export.md`](cross-cutting/export.md)
+- [`import.md`](cross-cutting/import.md)
+
+### Conformité et légal
+
+- [`legal.md`](cross-cutting/legal.md)
+- [`consent.md`](cross-cutting/consent.md)
+- [`localization.md`](cross-cutting/localization.md)
+- [`fraud-risk.md`](cross-cutting/fraud-risk.md)
+
+### Découvrabilité et expérience
+
+- [`search.md`](cross-cutting/search.md)
+- [`seo.md`](cross-cutting/seo.md)
+- [`template-system.md`](cross-cutting/template-system.md)
+
+### Marketing, CRM et diffusion
+
+- [`marketing.md`](cross-cutting/marketing.md)
+- [`crm.md`](cross-cutting/crm.md)
+- [`newsletter.md`](cross-cutting/newsletter.md)
+- [`email.md`](cross-cutting/email.md)
+- [`social.md`](cross-cutting/social.md)
+- [`notifications.md`](cross-cutting/notifications.md)
+
+### Données comportementales et attribution
+
+- [`tracking.md`](cross-cutting/tracking.md)
+- [`attribution.md`](cross-cutting/attribution.md)
+- [`conversion.md`](cross-cutting/conversion.md)
+- [`behavior.md`](cross-cutting/behavior.md)
+
+### Support et relation client
+
+- [`support.md`](cross-cutting/support.md)
+
+---
+
+## Fichiers à la racine
+
+- [`_template.md`](./_template.md) — gabarit de fiche domaine, à utiliser pour toute nouvelle fiche
+
+---
+
+## Règles d'utilisation
+
+1. **Ne pas promouvoir un satellite en domaine coeur** sans revue de la doctrine architecture.
+2. **Ne pas créer un nouveau fichier flat à la racine** — choisir la catégorie adaptée.
+3. **Un domaine optionnel ne contamine pas le coeur** quand il est absent.
+4. **La source de vérité de classification** reste [`docs/architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md).
+5. **Tout nouveau domaine** doit d'abord être classé avant d'être documenté.
