@@ -191,7 +191,7 @@ make test-e2e
 
 ## Base de données
 
-Le schéma PostgreSQL est défini par les fichiers Prisma dans `prisma/*.prisma`.
+Le schéma PostgreSQL est défini par les fichiers Prisma répartis sous `prisma/`, organisés en sous-dossiers par domaine.
 
 Application locale :
 
