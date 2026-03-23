@@ -65,7 +65,7 @@ Le domaine `social` peut dépendre de :
 - `products` pour certaines nouveautés ou mises en avant produit
 - `blog` pour certaines publications éditoriales
 - `events` pour certaines annonces événementielles
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `template-system` pour certains gabarits réutilisables si le modèle final l’exige
 - `audit` pour tracer les changements sensibles
 - `observability` pour expliquer pourquoi une publication sociale a été créée, planifiée, publiée, annulée ou ignorée

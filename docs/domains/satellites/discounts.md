@@ -72,7 +72,7 @@ Le domaine `discounts` peut dépendre de :
 - `cart` pour le contexte panier runtime
 - `customers` pour le type, le groupe ou le profil commercial du client
 - `products` pour certaines règles ciblant des produits, variantes ou catégories
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `pricing` pour certains helpers monétaires communs, sans lui déléguer la décision métier de remise
 - `audit` pour tracer les changements sensibles de règles
 - `observability` pour expliquer pourquoi une remise a été appliquée ou refusée

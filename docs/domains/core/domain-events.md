@@ -105,7 +105,7 @@ Le domaine est distinct :
 - de `cart`, qui porte le panier runtime ;
 - de `checkout`, qui porte la validation finale avant commande ;
 - de `payments`, qui porte la vérité interne du paiement ;
-- de `inventory` ou `availability`, qui porte la disponibilité quantitative ;
+- de `availability`, qui porte la disponibilité ;
 - de `documents`, qui porte la production documentaire ;
 - de `integrations`, qui diffuse ou synchronise vers l’extérieur.
 
@@ -297,7 +297,7 @@ Le domaine `orders` dépend de :
 - `pricing`
 - `taxation`
 - `payments`
-- `inventory` ou `availability`
+- `availability`
 - `audit`
 - `observability`
 

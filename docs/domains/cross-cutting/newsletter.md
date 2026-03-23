@@ -67,7 +67,7 @@ Le domaine `newsletter` peut dépendre de :
 - `crm` pour segmenter ou cibler les destinataires
 - `marketing` pour certaines campagnes ou opérations amont
 - `products`, `blog` et `events` pour certains contenus ou nouveautés à diffuser
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `template-system` pour les gabarits réutilisables si le modèle final l’exige
 - `audit` pour tracer les changements sensibles
 - `observability` pour expliquer pourquoi une campagne a été préparée, envoyée, ignorée ou bloquée

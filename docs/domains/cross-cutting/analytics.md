@@ -69,7 +69,7 @@ Le domaine `analytics` peut dépendre de :
 - `returns` pour certains indicateurs post-commande
 - `products` pour les lectures catalogue
 - `marketing`, `conversion`, `newsletter`, `events`, `social` pour les objets amont utiles à la consolidation analytique
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `audit` pour certaines corrélations sensibles si nécessaire
 - `observability` pour certaines analyses croisées, sans absorber sa responsabilité
 
@@ -79,7 +79,7 @@ Les domaines suivants peuvent dépendre de `analytics` :
 - `marketing`
 - `conversion`
 - `crm`
-- `store`
+- `stores`
 - certaines couches d’administration plateforme ou boutique
 
 ## Capabilities activables liées

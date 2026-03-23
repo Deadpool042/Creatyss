@@ -65,7 +65,7 @@ Le domaine expose principalement :
 
 Le domaine `events` peut dépendre de :
 
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `customers` pour certaines inscriptions ou réservations liées à un client métier
 - `users` pour certains acteurs administratifs ou de gestion interne
 - `pages` ou `media` pour certains contenus ou visuels associés

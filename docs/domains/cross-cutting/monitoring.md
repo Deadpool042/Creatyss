@@ -65,7 +65,7 @@ Le domaine `monitoring` peut dépendre de :
 - `webhooks` pour certains états de livraison critiques
 - `observability` pour certaines corrélations explicatives, sans absorber sa responsabilité
 - `audit` pour certaines corrélations sensibles si nécessaire
-- `store` pour certains contextes de supervision multi-boutiques
+- `stores` pour certains contextes de supervision multi-boutiques
 
 Les domaines suivants peuvent dépendre de `monitoring` :
 

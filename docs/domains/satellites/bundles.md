@@ -71,7 +71,7 @@ Le domaine `bundles` peut dépendre de :
 - `workflow` si le cycle de vie d’un bundle suit un processus structuré
 - `audit` pour tracer certains changements sensibles de composition ou d’activation
 - `observability` pour expliquer pourquoi un bundle est actif, filtré, indisponible ou bloqué
-- `store` pour le contexte boutique et certaines politiques locales
+- `stores` pour le contexte boutique et certaines politiques locales
 
 Les domaines suivants peuvent dépendre de `bundles` :
 

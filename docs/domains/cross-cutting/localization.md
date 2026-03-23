@@ -63,7 +63,7 @@ Le domaine expose principalement :
 
 Le domaine `localization` peut dépendre de :
 
-- `store` pour le contexte boutique, marché, langue par défaut ou politiques locales
+- `stores` pour le contexte boutique, marché, langue par défaut ou politiques locales
 - `pages` pour certains usages de contenus éditoriaux localisés sans absorber leur responsabilité
 - `blog` pour certains contenus éditoriaux localisés sans absorber leur responsabilité
 - `products` pour certains champs catalogue localisés sans absorber leur responsabilité

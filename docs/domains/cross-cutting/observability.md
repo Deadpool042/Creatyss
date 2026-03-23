@@ -67,7 +67,7 @@ Le domaine `observability` peut dépendre de :
 - `tracking` pour certains signaux utiles à la compréhension de parcours
 - `monitoring` pour certaines informations de santé technique corrélées, sans absorber sa responsabilité
 - `audit` pour certaines corrélations sensibles si nécessaire
-- `store` pour le contexte boutique
+- `stores` pour le contexte boutique
 
 Les domaines suivants peuvent dépendre de `observability` :
 

@@ -73,7 +73,7 @@ Le domaine `fulfillment` peut dépendre de :
 - `notifications` pour informer des changements d’état, sans absorber sa responsabilité
 - `audit` pour tracer certaines interventions logistiques sensibles
 - `observability` pour expliquer pourquoi une exécution logistique progresse, bloque ou reste partielle
-- `store` pour le contexte boutique et certaines politiques locales d’exécution
+- `stores` pour le contexte boutique et certaines politiques locales d’exécution
 
 Les domaines suivants peuvent dépendre de `fulfillment` :
 

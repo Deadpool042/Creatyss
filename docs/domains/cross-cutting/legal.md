@@ -15,7 +15,7 @@ Le domaine `legal` prend en charge :
 - les statuts d’activation ou d’applicabilité de contenus juridiques
 - les acceptations juridiques lorsqu’elles relèvent d’un cadre contractuel ou d’usage du socle
 - la lecture gouvernée des obligations ou références juridiques applicables
-- la base juridique consommable par `store`, `customers`, `checkout`, `consent`, `audit`, `dashboarding` et certaines couches d’administration
+- la base juridique consommable par `stores`, `customers`, `checkout`, `consent`, `audit`, `dashboarding` et certaines couches d’administration
 
 ## Ce que le domaine ne doit pas faire
 
@@ -56,14 +56,14 @@ Le domaine expose principalement :
 - des contenus juridiques structurés
 - des versions juridiques applicables
 - des acceptations juridiques lorsqu’elles sont portées par le socle
-- des lectures exploitables par `store`, `customers`, `checkout`, `consent`, `audit`, `dashboarding` et certaines couches d’administration
+- des lectures exploitables par `stores`, `customers`, `checkout`, `consent`, `audit`, `dashboarding` et certaines couches d’administration
 - des structures juridiques prêtes à être consommées par les couches UI ou domaines opérationnels autorisés
 
 ## Dépendances vers autres domaines
 
 Le domaine `legal` peut dépendre de :
 
-- `store` pour le contexte boutique, pays, langue ou politiques locales
+- `stores` pour le contexte boutique, pays, langue ou politiques locales
 - `customers` ou `users` pour certains contextes d’acceptation ou de lecture applicables à un acteur
 - `consent` pour articuler certaines obligations d’information sans absorber sa responsabilité
 - `approval` si certaines publications juridiques nécessitent validation préalable
@@ -73,7 +73,7 @@ Le domaine `legal` peut dépendre de :
 
 Les domaines suivants peuvent dépendre de `legal` :
 
-- `store`
+- `stores`
 - `customers`
 - `checkout`
 - `consent`
@@ -221,7 +221,7 @@ Les règles suivantes doivent toujours rester vraies :
 2. Exposer le contenu juridique applicable à un checkout ou à un compte client
 3. Enregistrer une acceptation juridique lorsqu’elle doit être portée par le socle
 4. Maintenir plusieurs versions selon le contexte, la langue ou le pays si le modèle le prévoit
-5. Fournir à `checkout`, `store` ou `customers` une lecture fiable du cadre juridique applicable
+5. Fournir à `checkout`, `stores` ou `customers` une lecture fiable du cadre juridique applicable
 6. Exposer à l’admin une lecture claire des contenus, versions et acceptations juridiques
 
 ## Cas limites / erreurs métier

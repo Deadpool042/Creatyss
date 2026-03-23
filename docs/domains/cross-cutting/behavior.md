@@ -67,7 +67,7 @@ Le domaine `behavior` peut dépendre de :
 - `tracking` pour les signaux de mesure structurés
 - `consent` pour vérifier si certaines dérivations comportementales sont autorisées dans le cadre retenu
 - `customers` ou `users` pour rattacher certaines lectures à un acteur lorsque cela est permis
-- `store` pour le contexte boutique et certaines politiques locales
+- `stores` pour le contexte boutique et certaines politiques locales
 - `audit` pour tracer certains changements sensibles de règles comportementales
 - `observability` pour expliquer pourquoi un segment ou un état comportemental a été attribué, neutralisé ou non calculé
 

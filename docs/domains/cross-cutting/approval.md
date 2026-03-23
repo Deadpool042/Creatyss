@@ -65,7 +65,7 @@ Le domaine `approval` peut dépendre de :
 
 - `users` pour identifier les acteurs approbateurs
 - `roles` et `permissions` pour vérifier qui peut approuver quoi
-- `store` pour certains contextes boutique ou politiques locales
+- `stores` pour certains contextes boutique ou politiques locales
 - `audit` pour tracer les décisions sensibles
 - `observability` pour expliquer pourquoi une approbation a été accordée, refusée ou bloquée
 

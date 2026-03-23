@@ -68,7 +68,7 @@ Le domaine `seo` peut dépendre de :
 - `blog` pour certains articles publiés
 - `products` pour certains objets catalogue exposés publiquement
 - `events` pour certains événements publics exposés publiquement
-- `store` pour le contexte boutique, langue, domaine ou politiques locales
+- `stores` pour le contexte boutique, langue, domaine ou politiques locales
 - `approval` si certaines publications SEO sensibles nécessitent validation préalable
 - `workflow` si certaines modifications SEO suivent un processus structuré
 - `audit` pour tracer certains changements sensibles de métadonnées ou de politiques SEO

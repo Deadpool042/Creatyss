@@ -68,7 +68,7 @@ Le domaine `workflow` peut dépendre de :
 - `domain-events` pour certains déclencheurs internes
 - `audit` pour tracer certaines transitions sensibles ou avancements manuels
 - `observability` pour expliquer pourquoi un workflow progresse, bloque ou échoue à avancer
-- `store` pour certains contextes boutique ou politiques locales
+- `stores` pour certains contextes boutique ou politiques locales
 
 Les domaines suivants peuvent dépendre de `workflow` :
 

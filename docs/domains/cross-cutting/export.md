@@ -68,7 +68,7 @@ Le domaine `export` peut dépendre de :
 - `jobs` pour l’exécution différée ou lourde d’un export sans absorber sa responsabilité
 - `audit` pour tracer certaines demandes ou consultations sensibles d’export
 - `observability` pour expliquer pourquoi un export a été généré, différé, expiré ou échoué
-- `store` pour le contexte boutique et certaines politiques locales d’export
+- `stores` pour le contexte boutique et certaines politiques locales d’export
 
 Les domaines suivants peuvent dépendre de `export` :
 

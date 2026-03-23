@@ -66,7 +66,7 @@ Le domaine `sales-policy` peut dépendre de :
 - `products` pour lire le catalogue source
 - `inventory` pour certaines contraintes quantitatives ou politiques de disponibilité
 - `customers` pour le contexte client
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `audit` pour tracer certaines règles sensibles si nécessaire
 - `observability` pour expliquer pourquoi un item est ou non vendable
 

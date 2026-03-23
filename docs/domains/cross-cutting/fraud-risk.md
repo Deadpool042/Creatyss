@@ -74,7 +74,7 @@ Le domaine `fraud-risk` peut dépendre de :
 - `approval` si certaines décisions sensibles nécessitent validation humaine ou escalade
 - `audit` pour tracer certaines décisions ou interventions sensibles
 - `observability` pour expliquer pourquoi un niveau de risque, un blocage ou une revue a été appliqué
-- `store` pour le contexte boutique et certaines politiques locales antifraude
+- `stores` pour le contexte boutique et certaines politiques locales antifraude
 
 Les domaines suivants peuvent dépendre de `fraud-risk` :
 

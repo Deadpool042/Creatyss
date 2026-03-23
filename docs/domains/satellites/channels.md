@@ -45,7 +45,7 @@ Le domaine reçoit principalement :
 - des produits et variantes issus de `products`
 - des décisions de vendabilité issues de `sales-policy`
 - des données monétaires lisibles pour le canal concerné
-- des capacités actives de boutique issues de `store`
+- des capacités actives de boutique issues de `stores`
 - des demandes de lecture de statut de diffusion ou d’éligibilité canal
 - des changements de publication catalogue ou de règles canal
 
@@ -65,7 +65,7 @@ Le domaine `channels` peut dépendre de :
 
 - `products` pour le catalogue source
 - `sales-policy` pour la vendabilité contextuelle
-- `store` pour les capabilities et le contexte boutique
+- `stores` pour les capabilities et le contexte boutique
 - `pricing` pour certains montants nécessaires à la projection diffusable
 - `seo` pour certains enrichissements de métadonnées si requis
 - `audit` pour tracer les changements de diffusion sensibles

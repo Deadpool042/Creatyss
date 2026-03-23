@@ -102,7 +102,7 @@ Le domaine est distinct :
 
 - de `products`, qui porte le catalogue ;
 - de `pricing`, qui porte la structure économique ;
-- de `inventory` ou `availability`, qui porte la disponibilité quantitative ;
+- de `availability`, qui porte la disponibilité ;
 - de `checkout`, qui valide le contexte final avant commande ;
 - de `orders`, qui porte la commande durable.
 
@@ -310,7 +310,7 @@ Le domaine `cart` dépend de :
 
 - `products` pour l’identité des articles ou variantes ;
 - `pricing` pour certaines lectures de contexte économique ;
-- `inventory` ou `availability` pour la disponibilité quantitative ;
+- `availability` pour la disponibilité ;
 - `sales-policy` si ce domaine existe pour la vendabilité contextuelle ;
 - `customers` pour les parcours authentifiés ;
 - `stores` pour les capabilities activées ;

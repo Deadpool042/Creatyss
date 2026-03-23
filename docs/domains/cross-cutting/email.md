@@ -67,7 +67,7 @@ Le domaine `email` peut dépendre de :
 - `notifications` pour certains usages transactionnels sans absorber sa responsabilité
 - `newsletter` pour certaines coordinations d’usage sans absorber sa responsabilité
 - `customers` ou `users` pour certains destinataires logiques
-- `store` pour le contexte boutique, langue, branding ou politiques locales
+- `stores` pour le contexte boutique, langue, branding ou politiques locales
 - `audit` pour tracer certains changements sensibles d’émission ou de consultation
 - `observability` pour expliquer pourquoi un email a été préparé, différé, annulé ou marqué en échec
 

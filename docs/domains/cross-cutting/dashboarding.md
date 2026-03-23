@@ -68,7 +68,7 @@ Le domaine `dashboarding` peut dépendre de :
 - `observability` pour certaines synthèses explicatives techniques ou transverses
 - `monitoring` pour certaines synthèses d’état technique en espace plateforme
 - `jobs` et `integrations` pour exposer certains statuts transverses utiles au pilotage
-- `roles`, `permissions` et `store` pour contrôler l’exposition selon le rôle, le scope et le contexte boutique
+- `roles`, `permissions` et `stores` pour contrôler l’exposition selon le rôle, le scope et le contexte boutique
 
 Les domaines suivants peuvent dépendre de `dashboarding` :
 

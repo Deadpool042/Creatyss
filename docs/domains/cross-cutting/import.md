@@ -74,7 +74,7 @@ Le domaine `import` peut dépendre de :
 - `workflow` si le cycle de vie d’un import suit un processus structuré
 - `audit` pour tracer certaines demandes, validations ou applications sensibles d’import
 - `observability` pour expliquer pourquoi un import a été validé, partiellement appliqué, rejeté ou échoué
-- `store` pour le contexte boutique et certaines politiques locales d’import
+- `stores` pour le contexte boutique et certaines politiques locales d’import
 
 Les domaines suivants peuvent dépendre de `import` :
 

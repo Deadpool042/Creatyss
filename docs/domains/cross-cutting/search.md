@@ -70,7 +70,7 @@ Le domaine `search` peut dépendre de :
 - `blog` pour certains articles exposables
 - `events` pour certains événements publics exposables
 - `seo` pour certaines métadonnées ou règles de visibilité référentielle sans absorber sa responsabilité
-- `store` pour le contexte boutique, langue, audience ou politiques locales de recherche
+- `stores` pour le contexte boutique, langue, audience ou politiques locales de recherche
 - `audit` pour tracer certains changements sensibles de politique de recherche
 - `observability` pour expliquer pourquoi un objet est searchable, filtré, masqué ou absent d’un résultat
 

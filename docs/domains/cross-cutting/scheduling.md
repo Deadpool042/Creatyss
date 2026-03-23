@@ -63,7 +63,7 @@ Le domaine expose principalement :
 
 Le domaine `scheduling` peut dépendre de :
 
-- `store` pour certains contextes boutique, fuseaux ou politiques locales
+- `stores` pour certains contextes boutique, fuseaux ou politiques locales
 - `audit` pour tracer certaines modifications sensibles de planification
 - `observability` pour expliquer pourquoi une activation a eu lieu, a été différée ou n’a pas encore été déclenchée
 

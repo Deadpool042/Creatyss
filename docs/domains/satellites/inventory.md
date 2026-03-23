@@ -3,7 +3,7 @@
 > **Statut documentaire** : satellite de `availability`.
 > Le domaine canonique est [`core/availability.md`](../core/availability.md).
 > `inventory` spécialise la vérité quantitative de stock. C'est une déclinaison subordonnée d'`availability`, pas un domaine autonome de premier rang.
-> Voir [`docs/architecture/03`](../../architecture/03-core-domains-and-toggleable-capabilities.md) — "availability ou inventory selon la structuration retenue".
+> Voir [`docs/architecture/03`](../../architecture/03-core-domains-and-toggleable-capabilities.md) — section "Disponibilité / opérabilité commerciale".
 
 ## Rôle
 

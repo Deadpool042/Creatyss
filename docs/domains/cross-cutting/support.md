@@ -71,7 +71,7 @@ Le domaine `support` peut dépendre de :
 - `notifications` pour informer des changements de statut, sans absorber sa responsabilité
 - `audit` pour tracer certaines interventions sensibles
 - `observability` pour certains diagnostics avancés côté plateforme, sans absorber sa responsabilité
-- `store` pour le contexte boutique et les règles d’exposition
+- `stores` pour le contexte boutique et les règles d’exposition
 
 Les domaines suivants peuvent dépendre de `support` :
 

@@ -64,7 +64,7 @@ Le domaine `attribution` peut dépendre de :
 - `newsletter` pour certains événements d’inscription ou de campagne
 - `events` pour certaines inscriptions ou réservations événementielles
 - `marketing` pour relier l’attribution à des campagnes ou opérations amont
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `audit` pour certaines corrélations sensibles si nécessaire
 - `observability` pour expliquer pourquoi une attribution a été retenue, neutralisée ou laissée indéterminée
 

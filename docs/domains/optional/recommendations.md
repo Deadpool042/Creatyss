@@ -67,7 +67,7 @@ Le domaine `recommendations` peut dépendre de :
 - `categories` pour certaines relations ou proximités de catalogue
 - `behavior` pour certains enrichissements contextuels ou comportementaux si autorisés
 - `sales-policy` pour filtrer les suggestions non vendables dans un contexte donné
-- `store` pour le contexte boutique et certaines politiques locales de recommandation
+- `stores` pour le contexte boutique et certaines politiques locales de recommandation
 - `audit` pour tracer certains changements sensibles de règles ou de liaisons explicites
 - `observability` pour expliquer pourquoi une recommandation a été produite, filtrée ou neutralisée
 

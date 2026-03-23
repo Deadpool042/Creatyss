@@ -74,7 +74,7 @@ Le domaine `gifting` peut dépendre de :
 - `shipping` ou `fulfillment` pour certaines préférences d’emballage ou de remise cadeau sans absorber leur responsabilité
 - `audit` pour tracer certaines modifications sensibles de contexte cadeau
 - `observability` pour expliquer pourquoi une option cadeau est active, refusée, masquée ou incomplète
-- `store` pour le contexte boutique et certaines politiques locales
+- `stores` pour le contexte boutique et certaines politiques locales
 
 Les domaines suivants peuvent dépendre de `gifting` :
 

@@ -66,7 +66,7 @@ Le domaine expose principalement :
 
 Le domaine `media` peut dépendre de :
 
-- `store` pour le contexte boutique, langue, branding ou politiques locales
+- `stores` pour le contexte boutique, langue, branding ou politiques locales
 - `approval` si certaines publications ou utilisations de médias nécessitent validation préalable
 - `workflow` si le cycle de vie d’un média suit un processus structuré
 - `audit` pour tracer certains changements sensibles de média, de référence ou de statut

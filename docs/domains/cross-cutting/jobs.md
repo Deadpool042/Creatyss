@@ -68,7 +68,7 @@ Le domaine `jobs` peut dépendre de :
 - `audit` pour tracer certaines reprises ou actions sensibles
 - `observability` pour corréler et expliquer les échecs ou retards
 - `monitoring` pour l’exposition de l’état de santé des files et exécutions
-- `store` pour certains contextes boutique ou multi-boutiques
+- `stores` pour certains contextes boutique ou multi-boutiques
 
 Les domaines suivants peuvent dépendre de `jobs` :
 

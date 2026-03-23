@@ -65,7 +65,7 @@ Le domaine `notifications` peut dépendre de :
 - `users` pour les comptes applicatifs destinataires
 - `customers` pour certains destinataires métier
 - `subscriptions` pour certains sujets ou préférences d’abonnement
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `template-system` pour certains gabarits réutilisables si le modèle final l’exige
 - `audit` pour tracer les opérations sensibles
 - `observability` pour expliquer pourquoi une notification a été générée, envoyée, ignorée ou non exposée

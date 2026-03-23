@@ -70,7 +70,7 @@ Le domaine `pages` peut dépendre de :
 - `workflow` si le cycle de vie d’une page suit un processus structuré
 - `audit` pour tracer certains changements sensibles de page ou de publication
 - `observability` pour expliquer pourquoi une page a été publiée, filtrée, archivée ou non exposée
-- `store` pour le contexte boutique, langue ou politiques locales
+- `stores` pour le contexte boutique, langue ou politiques locales
 
 Les domaines suivants peuvent dépendre de `pages` :
 

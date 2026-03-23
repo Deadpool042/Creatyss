@@ -63,7 +63,7 @@ Le domaine expose principalement :
 
 Le domaine `template-system` peut dépendre de :
 
-- `store` pour certains contextes boutique, langue, branding ou politiques locales
+- `stores` pour certains contextes boutique, langue, branding ou politiques locales
 - `approval` si certaines publications de templates nécessitent validation préalable
 - `workflow` si le cycle de vie d’un template suit un processus structuré
 - `audit` pour tracer certains changements sensibles de templates ou de publication

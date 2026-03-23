@@ -94,7 +94,9 @@ Les domaines suivants sont considérés comme coeur non toggleable.
 
 ### Disponibilité / opérabilité commerciale
 
-- `availability` ou `inventory` selon la structuration retenue
+- `availability` — domaine canonique retenu
+
+`inventory` est une spécialisation documentaire de `availability`, centrée sur la dimension quantitative de stock. Ce n'est pas un domaine de premier rang autonome.
 
 Ces domaines restent présents dans tous les projets.
 Leur comportement peut varier, mais leur existence n’est pas optionnelle.
@@ -217,9 +219,9 @@ Le projet peut commencer simple puis monter en richesse sans changer de domaine.
 
 ---
 
-## `inventory` ou `availability`
+## `availability`
 
-Le domaine de disponibilité est coeur.
+Le domaine de disponibilité est coeur. Le nom canonique retenu est `availability`.
 Ses capabilities peuvent varier :
 
 - `stockTracking`
@@ -227,6 +229,9 @@ Ses capabilities peuvent varier :
 - `preorders`
 - `reservation`
 - `multiWarehouse` si retenu un jour
+
+`inventory` est une spécialisation documentaire subordonnée, utile pour la dimension quantitative de stock.
+Elle est documentée dans `docs/domains/satellites/inventory.md`.
 
 Le coeur de disponibilité reste structurel.
 La sophistication varie.

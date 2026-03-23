@@ -323,7 +323,7 @@ Le domaine `checkout` dépend de :
 - `products`
 - `pricing`
 - `taxation`
-- `inventory` ou `availability`
+- `availability`
 - `customers`
 - `stores`
 - `payments` pour le modèle d’options de paiement

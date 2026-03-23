@@ -65,7 +65,7 @@ Le domaine `consent` peut dépendre de :
 
 - `users` pour certains acteurs authentifiés
 - `customers` pour certains acteurs métier non strictement assimilés à un compte utilisateur
-- `store` pour le contexte boutique et certaines politiques locales
+- `stores` pour le contexte boutique et certaines politiques locales
 - `audit` pour tracer les changements sensibles ou consultations critiques
 - `observability` pour expliquer pourquoi un traitement sensible a été autorisé, bloqué ou neutralisé
 

@@ -60,7 +60,7 @@ Le domaine expose principalement :
 Le domaine `tracking` peut dépendre de :
 
 - `domain-events` pour certains faits métier internes servant de déclencheurs
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `consent` pour la gouvernance de certains signaux de mesure si le modèle final le prévoit
 - `customers` ou `users` pour certains contextes acteur, sans absorber leurs responsabilités
 - `audit` pour tracer certains changements sensibles de configuration tracking

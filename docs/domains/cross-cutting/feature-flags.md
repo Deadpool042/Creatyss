@@ -21,7 +21,7 @@ Le domaine `feature-flags` prend en charge :
 
 Le domaine `feature-flags` ne doit pas :
 
-- remplacer les capabilities métier portées par `store`
+- remplacer les capabilities métier portées par `stores`
 - définir à lui seul la stratégie métier d’une boutique
 - devenir un substitut à un découpage de domaines correct
 - porter toute la configuration transverse du socle
@@ -59,7 +59,7 @@ Le domaine expose principalement :
 
 Le domaine `feature-flags` peut dépendre de :
 
-- `store` si certains flags doivent être contextualisés par boutique
+- `stores` si certains flags doivent être contextualisés par boutique
 - `audit` pour tracer les changements sensibles
 - `observability` pour comprendre quel flag était actif au moment d’un comportement donné
 - `roles` et `permissions` pour restreindre qui peut administrer les flags
@@ -194,7 +194,7 @@ Quelques cas d’erreur typiques :
 - flag invalide
 - activation non autorisée
 - conflit entre flags incompatibles
-- usage d’un flag pour piloter une capability métier qui devrait relever de `store`
+- usage d’un flag pour piloter une capability métier qui devrait relever de `stores`
 
 ## Décisions d’architecture
 
@@ -211,6 +211,6 @@ Les choix structurants du domaine sont :
 Les points suivants sont considérés comme décidés :
 
 - un feature flag est distinct d’une capability
-- `feature-flags` ne remplace pas `store`
+- `feature-flags` ne remplace pas `stores`
 - les flags servent au pilotage technique ou progressif, pas à repousser l’architecture
 - la gouvernance des feature flags est une responsabilité plateforme sensible

@@ -62,7 +62,7 @@ Le domaine expose principalement :
 
 Le domaine `marketing` peut dépendre de :
 
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `products` pour certaines offres ou mises en avant liées au catalogue
 - `pages` ou `media` pour certains supports visuels ou emplacements éditoriaux
 - `workflow` ou `approval` si certaines campagnes doivent être validées avant activation

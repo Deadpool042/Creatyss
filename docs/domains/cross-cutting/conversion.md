@@ -68,7 +68,7 @@ Le domaine `conversion` peut dépendre de :
 - `products` pour les objets catalogue ciblés
 - `marketing` pour certaines campagnes ou fenêtres commerciales
 - `discounts` pour certains dispositifs liés à des seuils ou bénéfices commerciaux, sans absorber leur logique
-- `store` pour le contexte boutique et les capabilities actives
+- `stores` pour le contexte boutique et les capabilities actives
 - `audit` pour tracer les changements sensibles de dispositifs de conversion
 - `observability` pour expliquer pourquoi un dispositif de conversion s’applique ou non
 

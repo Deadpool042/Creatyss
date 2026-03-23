@@ -66,7 +66,7 @@ Le domaine expose principalement :
 
 Le domaine `catalog-modeling` peut dépendre de :
 
-- `store` pour le contexte boutique et certaines politiques locales de modélisation
+- `stores` pour le contexte boutique et certaines politiques locales de modélisation
 - `approval` si certaines évolutions de modèle nécessitent validation préalable
 - `workflow` si certaines évolutions du modèle suivent un processus structuré
 - `audit` pour tracer certains changements sensibles de structure catalogue

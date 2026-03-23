@@ -62,7 +62,7 @@ Le domaine `audit` peut dépendre de :
 
 - `users` pour l’identité technique de l’acteur
 - `roles` et `permissions` pour certaines traces de gouvernance d’accès
-- `store` pour le contexte boutique
+- `stores` pour le contexte boutique
 - `observability` pour certaines corrélations explicatives, sans absorber sa responsabilité
 
 Les domaines suivants peuvent dépendre de `audit` :
@@ -70,7 +70,7 @@ Les domaines suivants peuvent dépendre de `audit` :
 - `roles`
 - `permissions`
 - `users`
-- `store`
+- `stores`
 - `observability`
 - `dashboarding`
 - les couches d’administration plateforme
@@ -80,7 +80,7 @@ Et les domaines émetteurs typiques incluent notamment :
 - `roles`
 - `permissions`
 - `users`
-- `store`
+- `stores`
 - `feature-flags`
 - `integrations`
 - `webhooks`

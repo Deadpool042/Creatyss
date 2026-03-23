@@ -11,12 +11,12 @@ Ce dossier contient une fiche par domaine métier ou transverse du socle e-comme
 Tous les fichiers de `docs/domains/` ne sont pas du même rang **documentaire**.
 La structure distingue quatre catégories explicites :
 
-| Catégorie | Signification | Dossier |
-|---|---|---|
-| **core** | Domaines coeur — présents dans tous les projets, toggleables uniquement au niveau de leurs capabilities internes | `core/` |
-| **optional** | Domaines optionnels — activés uniquement si un besoin métier réel le justifie | `optional/` |
-| **satellites** | Spécialisations et docs satellites — rattachées à un domaine coeur parent | `satellites/` |
-| **cross-cutting** | Concerns transverses — s'appliquent horizontalement à plusieurs domaines | `cross-cutting/` |
+| Catégorie         | Signification                                                                                                    | Dossier          |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **core**          | Domaines coeur — présents dans tous les projets, toggleables uniquement au niveau de leurs capabilities internes | `core/`          |
+| **optional**      | Domaines optionnels — activés uniquement si un besoin métier réel le justifie                                    | `optional/`      |
+| **satellites**    | Spécialisations et docs satellites — rattachées à un domaine coeur parent                                        | `satellites/`    |
+| **cross-cutting** | Concerns transverses — s'appliquent horizontalement à plusieurs domaines                                         | `cross-cutting/` |
 
 ---
 
@@ -107,18 +107,18 @@ Référence doctrine : [`docs/architecture/03`](../architecture/03-core-domains-
 
 Spécialisations et docs satellites rattachées à un domaine coeur parent. Ces fichiers approfondissent un domaine coeur ou une capability précise. Ils n'ont pas d'autonomie de premier rang : leur périmètre est subordonné à leur domaine parent.
 
-| Fichier satellite | Domaine coeur parent |
-|---|---|
-| [`categories.md`](satellites/categories.md) | `products` |
-| [`catalog-modeling.md`](satellites/catalog-modeling.md) | `products` |
-| [`bundles.md`](satellites/bundles.md) | `products` |
-| [`media.md`](satellites/media.md) | `products` |
-| [`channels.md`](satellites/channels.md) | `products` + `integrations` |
-| [`inventory.md`](satellites/inventory.md) | `availability` — voir note de fichier |
-| [`discounts.md`](satellites/discounts.md) | `pricing` — voir note de fichier |
-| [`sales-policy.md`](satellites/sales-policy.md) | `pricing` + `availability` |
-| [`fulfillment.md`](satellites/fulfillment.md) | `orders` + `shipping` |
-| [`gifting.md`](satellites/gifting.md) | `cart` + `checkout` |
+| Fichier satellite                                       | Domaine coeur parent                  |
+| ------------------------------------------------------- | ------------------------------------- |
+| [`categories.md`](satellites/categories.md)             | `products`                            |
+| [`catalog-modeling.md`](satellites/catalog-modeling.md) | `products`                            |
+| [`bundles.md`](satellites/bundles.md)                   | `products`                            |
+| [`media.md`](satellites/media.md)                       | `products`                            |
+| [`channels.md`](satellites/channels.md)                 | `products` + `integrations`           |
+| [`inventory.md`](satellites/inventory.md)               | `availability` — voir note de fichier |
+| [`discounts.md`](satellites/discounts.md)               | `pricing` — voir note de fichier      |
+| [`sales-policy.md`](satellites/sales-policy.md)         | `pricing` + `availability`            |
+| [`fulfillment.md`](satellites/fulfillment.md)           | `orders` + `shipping`                 |
+| [`gifting.md`](satellites/gifting.md)                   | `cart` + `checkout`                   |
 
 ---
 
@@ -128,14 +128,15 @@ Concerns transverses — ces sujets s'appliquent **horizontalement** à plusieur
 
 **Attention** : cette catégorie documentaire ne dit rien sur la criticité. Certains sujets listés ici sont **non-toggleables architecturalement** (voir tableau ci-dessous). D'autres sont des supports d'exploitation, de conformité ou de diffusion.
 
-| Sujet | Criticité architecturale |
-|---|---|
-| `audit` | Non-toggleable — voir [`architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) |
+| Sujet           | Criticité architecturale                                                                                  |
+| --------------- | --------------------------------------------------------------------------------------------------------- |
+| `audit`         | Non-toggleable — voir [`architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) |
 | `observability` | Non-toggleable — voir [`architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) |
-| `jobs` | Non-toggleable — voir [`architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) |
-| autres | Variable — toggleable ou activable selon le projet |
+| `jobs`          | Non-toggleable — voir [`architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) |
+| autres          | Variable — toggleable ou activable selon le projet                                                        |
 
 Référence doctrine :
+
 - [`docs/architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) — classification officielle des domaines
 - [`docs/architecture/08`](../architecture/08-domain-events-jobs-and-async-flows.md) — events, jobs, async
 - [`docs/architecture/09`](../architecture/09-integrations-providers-and-external-boundaries.md) — frontières externes

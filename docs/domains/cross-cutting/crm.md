@@ -65,7 +65,7 @@ Le domaine `crm` peut dépendre de :
 - `customers` pour le client métier de référence
 - `orders` pour certaines lectures relationnelles ou commerciales utiles au contexte CRM
 - `returns` pour certains signaux relationnels si nécessaire
-- `store` pour le contexte boutique
+- `stores` pour le contexte boutique
 - `audit` pour tracer les changements sensibles
 - `observability` pour expliquer certaines classifications ou enrichissements relationnels
 
