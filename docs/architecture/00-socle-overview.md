@@ -1,411 +1,458 @@
-# Socle e-commerce premium+++ — vue d’ensemble
+# Niveaux de maintenance et d’exploitation
 
 ## Objectif
 
-Ce socle a pour objectif de fournir une base e-commerce réutilisable, modulaire, robuste, strictement typée et exploitable à haut niveau de qualité.
+Ce document définit les niveaux de maintenance technique et d’exploitation du socle.
 
-Il ne s’agit pas d’un site unique codé pour un seul besoin.
-Il s’agit d’un socle capable d’alimenter plusieurs boutiques, avec des fonctionnalités activables selon le contexte métier du projet.
+Le niveau fonctionnel d’un projet ne suffit pas à qualifier son coût réel.
+Un même périmètre métier peut exiger :
 
-Le socle doit permettre :
+- peu de maintenance ;
+- une maintenance structurée ;
+- une maintenance avancée ;
+- ou une exploitation quasi critique.
 
-- une exploitation simple côté boutique
-- une administration technique avancée côté créateur / plateforme
-- une séparation nette des responsabilités métier
-- une évolutivité forte sans transformer le code en usine à gaz
+Le socle doit donc qualifier explicitement :
 
-## Principes fondateurs
+- la maintenance ;
+- l’exploitation ;
+- le support ;
+- la surveillance ;
+- la mise à jour ;
+- la reprise.
 
-### 1. Domaine d’abord
+---
 
-Le découpage principal suit les responsabilités métier, pas les écrans ni les composants UI.
+## Principe directeur
 
-Chaque domaine doit avoir :
+Le niveau de maintenance est un axe distinct du niveau fonctionnel.
 
-- un rôle clair
-- des frontières stables
-- une responsabilité propre
-- des dépendances explicites
-
-### 2. Options activables
-
-Le socle est pensé d’emblée comme complet, mais toutes les fonctionnalités ne sont pas forcément actives pour toutes les boutiques.
-
-Une fonctionnalité peut être :
-
-- supportée par le socle
-- activée ou non pour une boutique
-- configurée par boutique
+Deux projets peuvent partager les mêmes capabilities métier et pourtant exiger des niveaux de maintenance très différents.
 
 Exemples :
 
-- multi-devises
-- multi-transporteurs
+- petite boutique locale à faible trafic ;
+- boutique simple mais critique pour le chiffre d’affaires ;
+- boutique multi-pays avec obligations plus fortes ;
+- projet avec plusieurs connecteurs externes sensibles.
+
+Le niveau de maintenance n’est donc jamais déduit uniquement du périmètre visible.
+Il est choisi explicitement.
+
+---
+
+## Ce qui reste non négociable
+
+Même au niveau le plus économique réellement exploitable, le socle impose :
+
+- gestion correcte des secrets ;
+- isolation des environnements ;
+- sauvegardes minimales ;
+- restauration possible ;
+- mises à jour de sécurité ;
+- audit des mutations critiques ;
+- observability minimale ;
+- cohérence transactionnelle ;
+- lifecycle des données ;
+- documentation minimale d’exploitation.
+
+Un “bas niveau” ne signifie jamais “site fragile”.
+
+---
+
+## Échelle des niveaux de maintenance
+
+### Niveau M0 — prototype / exploration
+
+Usage interne, démonstrateur, expérimentation, pré-cadrage.
+
+Caractéristiques :
+
+- pas destiné à la production durable ;
+- faible formalisation opératoire ;
+- pas de promesse de continuité ;
+- peut servir de pré-version, maquette, POC ou lot de découverte.
+
+Ce niveau n’est pas une cible de production pérenne.
+
+### Niveau M1 — exploitation essentielle
+
+Niveau minimal pour une mise en production sérieuse à coût maîtrisé.
+
+Caractéristiques :
+
+- sécurité de base maîtrisée ;
+- sauvegardes simples mais fiables ;
+- monitoring minimal ;
+- mises à jour cadrées ;
+- incidents gérés de façon pragmatique ;
+- documentation d’exploitation courte mais suffisante.
+
+Objectif :
+
+- permettre un lancement propre ;
+- garder un coût récurrent bas ;
+- éviter les zones dangereuses.
+
+### Niveau M2 — exploitation standard
+
+Niveau recommandé pour un commerce exploité régulièrement.
+
+Caractéristiques :
+
+- maintenance planifiée ;
+- observability plus riche ;
+- procédures de reprise mieux formalisées ;
+- tests de restauration plus sérieux ;
+- supervision et diagnostics plus confortables ;
+- meilleure maîtrise des dépendances et des intégrations.
+
+Objectif :
+
+- réduire le risque opérationnel ;
+- améliorer le support ;
+- absorber les évolutions plus sereinement.
+
+### Niveau M3 — exploitation avancée
+
+Niveau adapté aux projets à forte exposition métier ou à complexité technique significative.
+
+Caractéristiques :
+
+- supervision structurée ;
+- politique de mises à jour plus rigoureuse ;
+- reprise opératoire documentée ;
+- alerting plus précis ;
+- meilleure maîtrise de la performance ;
+- revue régulière des intégrations, incidents et points de fragilité.
+
+Objectif :
+
+- sécuriser un commerce plus exigeant ;
+- réduire les incidents longs ;
+- accélérer le diagnostic et la reprise.
+
+### Niveau M4 — exploitation critique / réglementée
+
+Niveau réservé aux projets les plus sensibles.
+
+Caractéristiques :
+
+- gouvernance forte ;
+- exigences élevées de conformité, traçabilité, disponibilité, auditabilité et contrôle ;
+- discipline d’exploitation renforcée ;
+- niveaux de contrôle supérieurs sur sécurité, intégrations, changements et reprise.
+
+Objectif :
+
+- tenir des contextes complexes ou fortement exposés ;
+- encadrer durablement le risque technique et métier.
+
+---
+
+## Axes couverts par la maintenance
+
+Le niveau de maintenance doit être évalué sur tous les axes suivants.
+
+### 1. Sécurité opérationnelle
+
+Inclut :
+
+- gestion des secrets ;
+- rotation / révocation si nécessaire ;
+- revue des accès ;
+- patching de sécurité ;
+- exposition réseau maîtrisée ;
+- revue des points d’entrée sensibles.
+
+### 2. Sauvegarde et restauration
+
+Inclut :
+
+- fréquence des backups ;
+- périmètre sauvegardé ;
+- politique de rétention ;
+- capacité réelle de restauration ;
+- test de restauration.
+
+### 3. Mises à jour et dépendances
+
+Inclut :
+
+- mises à jour runtime ;
+- dépendances applicatives ;
+- dépendances d’intégration ;
+- images Docker / OS / base ;
+- arbitrage entre stabilité et fraîcheur.
+
+### 4. Observability
+
+Inclut :
+
+- logs utiles ;
+- healthchecks ;
+- métriques ;
+- visibilité sur jobs ;
+- visibilité sur erreurs d’intégration ;
+- visibilité sur webhooks, paiements et traitements critiques.
+
+### 5. Gestion d’incident
+
+Inclut :
+
+- diagnostic ;
+- classification ;
+- correction ;
+- reprise ;
+- communication ;
+- réduction du temps de rétablissement.
+
+### 6. Performance et capacité
+
+Inclut :
+
+- temps de réponse ;
+- surveillance des points chauds ;
+- contention DB ;
+- volume des jobs ;
+- impact des intégrations ;
+- évolution du trafic.
+
+### 7. Lifecycle technique
+
+Inclut :
+
+- archivage ;
+- purge ;
+- conservation ;
+- évolution de schéma ;
+- dépréciation de features ;
+- fin de vie d’intégrations.
+
+### 8. Exploitabilité
+
+Inclut :
+
+- runbooks ;
+- commandes utiles ;
+- procédures de relance ;
+- procédures de reprise ;
+- lisibilité de la configuration ;
+- accessibilité du diagnostic pour l’opérateur.
+
+### 9. Qualité de livraison
+
+Inclut :
+
+- build fiable ;
+- checks de type ;
+- tests ;
+- procédure de release ;
+- rollback ou stratégie de correction ;
+- discipline de changement.
+
+---
+
+## Description par niveau
+
+## M1 — exploitation essentielle
+
+Le niveau M1 couvre obligatoirement :
+
+- secrets hors dépôt ;
+- environnement de prod distinct ;
+- sauvegarde régulière ;
+- possibilité de restauration ;
+- patching de sécurité planifié ;
+- monitoring minimal ;
+- logs exploitables ;
+- healthchecks ;
+- documentation courte d’exploitation ;
+- procédure de redémarrage / reprise simple ;
+- revue minimale des dépendances.
+
+Le niveau M1 vise :
+
+- lancement propre ;
+- budget récurrent bas ;
+- socle sain ;
+- charge opératoire raisonnable.
+
+## M2 — exploitation standard
+
+Le niveau M2 ajoute :
+
+- supervision plus structurée ;
+- meilleure visibilité sur les jobs, intégrations et erreurs métier ;
+- procédure de restauration testée ;
+- revue plus régulière des dépendances ;
+- meilleure discipline de release ;
+- surveillance des performances principales ;
+- documentation opératoire enrichie ;
+- analyse d’incidents plus structurée.
+
+Le niveau M2 est recommandé dès qu’un projet dépend réellement de son e-commerce pour son activité.
+
+## M3 — exploitation avancée
+
+Le niveau M3 ajoute :
+
+- alerting plus précis ;
+- pilotage plus fin de la performance ;
+- surveillance renforcée des domaines critiques ;
+- gestion plus formalisée des incidents ;
+- meilleures garanties de reprise ;
+- revues techniques plus régulières ;
+- runbooks plus complets ;
+- maîtrise plus forte des risques liés aux providers et intégrations.
+
+Le niveau M3 est adapté aux projets plus exposés, plus intégrés, plus réglementés ou plus rentables.
+
+## M4 — exploitation critique / réglementée
+
+Le niveau M4 ajoute :
+
+- gouvernance et contrôle renforcés ;
+- exigences plus fortes de traçabilité et de conformité ;
+- discipline accrue sur changements, incidents, accès et intégrations ;
+- contrôle plus rigoureux des impacts métier et réglementaires.
+
+Le niveau M4 ne doit être retenu que lorsqu’il existe un besoin réel.
+Il ne constitue pas le niveau par défaut du socle.
+
+---
+
+## Relation entre maintenance et coût
+
+Le niveau de maintenance impacte directement :
+
+- le coût mensuel ;
+- le coût de support ;
+- la vitesse de diagnostic ;
+- la vitesse de reprise ;
+- le niveau de risque accepté ;
+- la stabilité des évolutions.
+
+Un coût initial agressif n’implique pas une maintenance haute.
+Mais il n’autorise jamais une maintenance dangereuse.
+
+Le bon modèle économique du socle consiste à :
+
+- garder le build initial ciblé ;
+- choisir le niveau minimal de maintenance compatible avec le risque réel ;
+- augmenter le niveau quand le projet ou l’exposition grandit.
+
+---
+
+## Relation entre maintenance et capabilities
+
+Certaines capabilities peuvent exiger un niveau minimal de maintenance.
+
+Exemples :
+
+### M1 minimum compatible
+
+- catalogue simple
+- panier standard
+- checkout simple
+- paiement simple mono-provider
+- contenu éditorial simple
+
+### M2 minimum recommandé
+
+- multi-provider payments
+- abandoned cart relaunch
+- plusieurs intégrations métiers
+- multi-pays UE
+- analytics enrichie
+- automation métier simple
+
+### M3 minimum recommandé
+
 - accises
-- Google Shopping
-- tracking marketing
-- ERP / Chorus Pro
-- événements publics
-- newsletter
-- social publishing
+- fiscalité multi-zone riche
+- paiements fractionnés / BNPL
+- orchestration plus dense d’intégrations
+- obligations documentaires fortes
+- exploitation fortement dépendante du e-commerce
 
-### 3. Séparation plateforme / boutique
+### M4
 
-Le socle distingue :
+- contextes réglementés ou particulièrement critiques
+- exposition forte, audit renforcé, exigences de contrôle supérieures
 
-- l’espace technique plateforme
-- l’espace métier boutique
+---
 
-L’espace plateforme permet au créateur / mainteneur technique de :
+## Maintenance et réutilisabilité
 
-- piloter les capabilities
-- gérer les intégrations
-- superviser l’observabilité
-- contrôler le monitoring
-- gérer les permissions avancées
-- configurer les domaines transverses
+Le modèle par niveaux de maintenance rend le socle plus réutilisable car il permet :
 
-L’espace boutique permet à l’exploitant métier de :
+- de ne pas sur-vendre la technique à un petit projet ;
+- de ne pas sous-protéger un projet plus sensible ;
+- de garder la même architecture de base ;
+- de changer de niveau sans refaire le coeur.
 
-- gérer le catalogue
-- gérer le contenu
-- gérer les commandes
-- gérer les clients
-- utiliser les fonctionnalités autorisées sans exposition à la complexité technique
-
-### 4. Runtime interne avant intégrations externes
-
-Les domaines internes restent la source de vérité métier.
-
-Les systèmes externes ne pilotent pas la logique interne.
-Ils sont intégrés via des adaptateurs dédiés.
-
-Exemples :
-
-- EBP
-- Chorus Pro
-- transporteurs
-- Google Shopping
-- Meta Catalog
-- pixels / analytics providers
-
-### 5. Estimation, validation, figé
-
-Le socle distingue clairement :
-
-- ce qui est estimé
-- ce qui est validé
-- ce qui est figé
-
-Exemples :
-
-- `pricing` estime
-- `checkout` valide
-- `orders` fige
-
-### 6. Aucune logique critique dans l’UI
-
-L’UI consomme le domaine, mais ne porte jamais la logique critique métier.
-
-Les validations, règles de vendabilité, calculs, statuts et décisions métier restent côté serveur et dans les domaines concernés.
-
-## Structure générale du socle
-
-Le socle s’organise autour de plusieurs familles de domaines.
-
-### Plateforme / configuration
-
-- `store`
-- `auth`
-- `users`
-- `customers`
-- `roles`
-- `permissions`
-- `feature-flags`
-
-### Commerce coeur
-
-- `products`
-- `inventory`
-- `sales-policy`
-- `channels`
-- `cart`
-- `shipping`
-- `discounts`
-- `taxation`
-- `pricing`
-- `checkout`
-- `orders`
-- `payments`
-- `returns`
-- `documents`
-
-### Croissance / relation client
-
-- `marketing`
-- `conversion`
-- `crm`
-- `notifications`
-- `subscriptions`
-- `newsletter`
-- `events`
-- `social`
-
-### Mesure / conformité / pilotage
-
-- `domain-events`
-- `tracking`
-- `behavior`
-- `consent`
-- `analytics`
-- `attribution`
-- `observability`
-- `monitoring`
-- `audit`
-
-### Expérience / contenu / international
-
-- `search`
-- `recommendations`
-- `seo`
-- `legal`
-- `localization`
-- `media`
-- `pages`
-- `blog`
-- `email`
-
-### Intégrations / exploitation
-
-- `integrations`
-- `jobs`
-- `import`
-- `export`
-- `support`
-- `fulfillment`
-- `workflow`
-- `approval`
-- `scheduling`
-- `webhooks`
-- `api-clients`
-- `loyalty`
-- `gift-cards`
-- `gifting`
-- `fraud-risk`
-- `bundles`
-- `catalog-modeling`
-- `dashboarding`
-- `template-system`
-
-## Noyau obligatoire et options activables
-
-Le socle comporte un noyau toujours présent, puis des domaines/fonctionnalités activables.
-
-### Noyau obligatoire
-
-Toujours présents dans toute boutique :
-
-- `store`
-- `users`
-- `customers`
-- `roles`
-- `permissions`
-- `products`
-- `cart`
-- `orders`
-- `payments`
-- `media`
-- `pages`
-- `blog`
-- `email`
-- `audit`
-
-### Options activables
-
-Peuvent être activées ou non selon la boutique :
-
-- inventory
-- sales-policy
-- channels
-- shipping
-- discounts
-- taxation
-- pricing
-- checkout
-- returns
-- documents
-- marketing
-- conversion
-- crm
-- notifications
-- subscriptions
-- newsletter
-- events
-- social
-- tracking
-- behavior
-- consent
-- analytics
-- attribution
-- search
-- recommendations
-- seo
-- legal
-- localization
-- integrations
-- jobs
-- import
-- export
-- support
-- fulfillment
-- workflow
-- approval
-- scheduling
-- webhooks
-- api-clients
-- loyalty
-- gift-cards
-- gifting
-- fraud-risk
-- bundles
-- catalog-modeling
-- dashboarding
-- template-system
-
-## Capabilities globales
-
-Les capabilities globales sont portées par `store`.
-Elles définissent ce qu’une boutique active effectivement dans le socle.
-
-Exemples de capabilities :
-
-- guest checkout
-- customer checkout
-- professional customers
-- multi-currency
-- multi-carrier
-- pickup point delivery
-- discounts
-- coupon codes
-- customer-specific pricing
-- customer-group pricing
-- volume pricing
-- taxation
-- excise tax
-- backorders
-- preorders
-- gift options
-- product channels
-- Google Shopping
-- Meta Catalog
-- marketing campaigns
-- conversion flows
-- CRM
-- tracking
-- cookie consent
-- analytics
-- attribution
-- marketing pixels
-- server-side tracking
-- notifications
-- newsletter
-- realtime notifications
-- search
-- recommendations
-- advanced SEO
-- localization
-- audit trail
-- business observability
-- technical monitoring
-- advanced permissions
-- ERP integration
-- EBP integration
-- electronic invoicing
-- Chorus Pro integration
-- public events
-- event registrations
-- event reservations
-- social publishing
-- automatic social posting
-- behavioral analytics
-- product view tracking
-- click tracking
-
-## Rôles plateforme et rôles boutique
-
-Le socle distingue les rôles plateforme et les rôles boutique.
-
-### Rôles plateforme
-
-Ils donnent accès à la gouvernance technique et transverse du socle.
-
-Exemples :
-
-- `platform_owner`
-- `platform_engineer`
-
-### Rôles boutique
-
-Ils donnent accès à l’exploitation métier de la boutique.
-
-Exemples :
-
-- `store_owner`
-- `store_manager`
-- `catalog_manager`
-- `content_editor`
-- `order_manager`
-- `customer_support`
-- `marketing_manager`
-- `observer`
-
-### Cas d’usage cible
-
-Le créateur du socle a accès à :
-
-- la configuration technique
-- les capabilities
-- les intégrations
-- l’audit
-- l’observabilité
-- le monitoring
-- les permissions avancées
-
-L’exploitant de la boutique a accès à :
-
-- catalogue
-- contenu
-- commandes
-- clients
-- promotions autorisées
-- événements autorisés
-- newsletters autorisées
-
-## Règles d’architecture non négociables
-
-- aucun domaine ne doit devenir un fourre-tout
-- `cart` ne porte pas toute la logique shipping/discounts/taxation/pricing
-- `products` ne porte pas toute la politique de vente
-- les intégrations externes sont séparées du coeur métier
-- les traitements asynchrones passent par `jobs`
-- les événements internes passent par `domain-events`
-- l’explication du comportement passe par `observability`
-- la surveillance opérationnelle passe par `monitoring`
-- la traçabilité passe par `audit`
-- les permissions sont fines, pas seulement basées sur un rôle unique
-- les features activables sont pilotées depuis l’espace technique plateforme
-- l’UI ne porte pas les décisions métier critiques
-
-## Finalité du socle
-
-Le socle doit permettre de construire des boutiques :
-
-- élégantes côté expérience
-- robustes côté métier
-- pilotables côté exploitation
-- supervisables côté technique
-- réutilisables sur plusieurs projets
-- configurables sans re-développement structurel systématique
-
-Ce socle n’est pas conçu pour une seule boutique.
-Il est conçu comme une base e-commerce premium, activable par capacités, avec une séparation forte entre métier, plateforme, diffusion, pilotage et intégrations.
+L’objectif n’est pas d’avoir une architecture différente par client.
+L’objectif est d’avoir :
+
+- un même socle ;
+- des capabilities différentes ;
+- des niveaux fonctionnels différents ;
+- des niveaux de maintenance différents.
+
+---
+
+## Règles de décision
+
+### Règle 1
+
+Le niveau M1 est le minimum de production sérieuse.
+
+### Règle 2
+
+Une capability avancée peut imposer un niveau minimal supérieur.
+
+### Règle 3
+
+Le niveau de maintenance est choisi selon le risque, pas uniquement selon le budget.
+
+### Règle 4
+
+Le niveau de maintenance doit rester compréhensible côté client.
+
+### Règle 5
+
+Le niveau choisi doit être compatible avec une montée progressive du projet.
+
+---
+
+## Ce qu’un client achète réellement
+
+Quand un client choisit un projet, il n’achète pas seulement :
+
+- des pages ;
+- des features ;
+- des connecteurs.
+
+Il achète aussi :
+
+- un niveau de sécurité ;
+- un niveau de fiabilité ;
+- un niveau de suivi ;
+- un niveau de capacité d’évolution ;
+- un niveau de reprise en cas de problème.
+
+La maintenance fait donc partie intégrante de la proposition de valeur du socle.
+
+---
+
+## Décisions structurantes
+
+Les points suivants sont considérés comme décidés :
+
+- la maintenance est un axe distinct des features métier ;
+- le socle est exploitable dès le niveau M1 ;
+- M0 n’est pas une cible de production durable ;
+- certaines capabilities imposent un niveau minimal de maintenance ;
+- le coût d’entrée maîtrisé ne doit pas dégrader la robustesse ;
+- la réutilisabilité du socle passe aussi par des niveaux de maintenance lisibles.

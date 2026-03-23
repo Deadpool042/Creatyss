@@ -1,127 +1,104 @@
-# Domaine auth
+# Domaine `auth`
 
 ## Rôle
 
-Le domaine `auth` porte l’authentification structurée du socle.
-
-Il organise les identités d’authentification, credentials, sessions, vérifications d’accès initiales et états d’authentification nécessaires pour permettre à un acteur autorisé d’ouvrir ou de maintenir une session, sans absorber les utilisateurs métier, les rôles, les permissions fines, les clients API machine-to-machine ou la logique métier des domaines protégés.
+Le domaine `auth` porte l’authentification humaine structurée du socle.
+Il organise les identités d’authentification, credentials, sessions, recovery, MFA et états d’accès nécessaires pour permettre à un acteur autorisé d’ouvrir, maintenir ou perdre une session.
 
 ## Responsabilités
 
 Le domaine `auth` prend en charge :
 
 - les identités d’authentification
-- les credentials d’authentification des acteurs humains
+- les credentials de mot de passe
 - les sessions d’authentification
 - le login et le logout
-- la vérification d’état d’authentification
-- les mécanismes de rotation ou de réinitialisation de secret d’accès si le modèle retenu le prévoit
-- le changement de mot de passe par un acteur déjà authentifié
-- le verrouillage, throttling ou durcissement d’accès si le modèle retenu le prévoit
-- la gestion du bootstrap du premier accès admin
-- la gestion des sessions actives et de leur révocation
-- la préparation éventuelle d’un second facteur pour les accès admin sensibles
-- la base d’authentification consommable par `users`, `roles`, `permissions`, `audit`, `observability` et les couches d’administration
+- la révocation de session
+- le bootstrap admin
+- les demandes de recovery
+- le changement de mot de passe
+- l’activation MFA
+- le verrouillage et durcissement d’accès
 
 ## Ce que le domaine ne doit pas faire
 
 Le domaine `auth` ne doit pas :
 
-- porter les utilisateurs métier complets, qui relèvent de `users`
-- porter les rôles fonctionnels, qui relèvent de `roles`
-- porter les permissions fines, qui relèvent de `permissions`
-- porter les clients techniques machine-to-machine, qui relèvent de `api-clients`
-- porter les connecteurs providers externes d’authentification ou d’identité comme vérité métier principale, ce qui relève d’une couche technique ou de `integrations` si nécessaire
-- porter la logique métier des domaines protégés
-- devenir un fourre-tout sécurité absorbant toute la gouvernance d’accès du socle
-- devenir le domaine de vérité de l’autorisation métier fine
+- porter les utilisateurs métier complets
+- porter les rôles fonctionnels
+- porter les permissions fines
+- porter les clients techniques machine-to-machine
+- devenir un domaine généraliste de sécurité absorbant toute la gouvernance d’accès
+- prendre un provider externe d’identité comme vérité primaire du socle
 
-Le domaine `auth` porte l’authentification humaine structurée du socle. Il ne remplace ni `users`, ni `roles`, ni `permissions`, ni `api-clients`.
+Le domaine `auth` porte l’authentification humaine structurée.
+Il ne remplace ni `users`, ni `roles`, ni `permissions`, ni `api-clients`, ni `integrations`.
 
 ## Sous-domaines
 
-- `identities` : identités d’authentification structurées
-- `credentials` : secrets, mots de passe ou éléments d’authentification associés
-- `sessions` : sessions d’authentification actives, expirées ou révoquées
-- `recovery` : réinitialisation ou récupération d’accès si le modèle retenu le prévoit
-- `mfa` : second facteur, méthodes associées et recovery codes si le modèle retenu le prévoit
-- `bootstrap` : initialisation sécurisée du premier accès admin
-- `security-policies` : règles de verrouillage, throttling, expiration ou durcissement d’accès
+- `identities` : identités d’authentification
+- `credentials` : mot de passe et versionnement
+- `sessions` : sessions actives, expirées ou révoquées
+- `recovery` : demandes et codes de récupération
+- `mfa` : enrollment MFA
+- `bootstrap` : initialisation du premier accès admin
 
 ## Entrées
 
 Le domaine reçoit principalement :
 
-- des demandes de login ou logout
-- des vérifications de session ou d’état d’authentification
-- des demandes de création ou mise à jour d’identité d’authentification liées à un utilisateur interne
-- des demandes de changement ou réinitialisation de credential
-- des demandes de création, listing ou révocation de sessions
-- des contextes de boutique, acteur, session, appareil, IP ou surface protégée lorsque le modèle retenu le prévoit
-- des signaux internes utiles au verrouillage, au throttling, à la révocation ou à l’expiration d’une session
-- des demandes d’initialisation du premier accès admin dans un contexte de bootstrap contrôlé
-- des demandes d’activation, désactivation ou vérification d’un second facteur si le modèle retenu le prévoit
+- des commandes de création d’identité
+- des demandes de login et logout
+- des demandes de changement de mot de passe
+- des demandes de recovery
+- des commandes de révocation de session
+- des actions d’activation ou désactivation MFA
 
 ## Sorties
 
 Le domaine expose principalement :
 
-- des identités d’authentification structurées
-- des sessions d’authentification
-- des états de login, logout, session valide, session révoquée ou session expirée
-- des états d’identité comme actif, verrouillé, suspendu, reset requis ou accès non finalisé
-- des lectures exploitables par `users`, `roles`, `permissions`, `audit`, `observability` et les couches d’administration
-- des structures d’authentification prêtes à être consommées par les couches serveur protégées
+- une `AuthIdentity`
+- une `AuthPasswordCredential`
+- une `AuthSession`
+- une `AuthRecoveryRequest`
+- une `AuthMfaEnrollment`
+- un état d’authentification exploitable par les domaines protégés
 
 ## Dépendances vers autres domaines
 
-Le domaine `auth` peut dépendre de :
+Le domaine `auth` dépend de :
 
-- `users` pour rattacher l’identité d’authentification à un compte humain interne
-- `roles` pour enrichir certaines lectures de session ou d’accès initial, sans absorber sa responsabilité
-- `permissions` pour certaines vérifications initiales ou explications d’accès, sans absorber sa responsabilité
-- `approval` pour certains cas exceptionnels de réinitialisation, révocation ou restauration d’accès très sensibles si le modèle retenu le prévoit
-- `audit` pour tracer les connexions, réinitialisations, révocations et événements sensibles d’authentification
-- `observability` pour expliquer pourquoi un accès a été accepté, refusé, verrouillé ou révoqué
-- `store` pour certains contextes boutique si une auth multi-boutique ou multi-scope est retenue
+- `users` pour le rattachement d’identité
+- `roles` et `permissions` pour certains contrôles d’accès initiaux
+- `audit` pour tracer les opérations sensibles
+- `observability` pour diagnostiquer les refus ou anomalies
+- `notifications` pour les emails de recovery après commit
+- `integrations` si un provider externe d’identité est utilisé comme connecteur technique
 
-Les domaines suivants peuvent dépendre de `auth` :
+Les domaines suivants dépendent de `auth` :
 
-- `users`
-- `roles`
-- `permissions`
+- tous les domaines protégés
+- `admin`
 - `audit`
 - `observability`
-- toutes les couches d’administration protégées
 
 ## Capabilities activables liées
 
-Le domaine `auth` n’est pas une capability métier optionnelle au sens strict du noyau.
+Le domaine `auth` est lié à :
 
-Il fait partie du socle structurel de sécurité de l’application.
+- `adminBootstrap`
+- `passwordRecovery`
+- `mfa`
+- `sessionManagement`
 
-En revanche, certaines formes d’authentification ou de durcissement peuvent dépendre de choix techniques ou de politiques activées, par exemple :
+### Effet si `mfa` est activée
 
-- `advancedPermissions`
-- `auditTrail`
-- certaines politiques de monitoring ou d’observabilité technique
+Le domaine exige ou supporte une vérification MFA selon la politique retenue.
 
-### Règle
+### Effet si `passwordRecovery` est activée
 
-Le domaine `auth` reste présent même si la V1 garde une authentification simple.
-
-Dans le cadre actuel du projet, l’authentification peut rester centrée sur l’admin interne, sans auth client avancée obligatoire.
-
-### Fermetures explicites V1
-
-Les points suivants sont retenus pour la V1 :
-
-- authentification admin uniquement
-- pas d’auth client avancée
-- pas d’OAuth social
-- pas de passwordless
-- pas de machine-to-machine dans `auth`
-- séparation stricte avec `api-clients`
+Le domaine permet des recovery requests structurées et traçables.
 
 ## Rôles/permissions concernés
 
@@ -132,10 +109,8 @@ Les rôles principalement concernés sont :
 - `platform_owner`
 - `platform_engineer`
 - `store_owner`
-- `store_manager`
-- certains rôles administratifs protégés selon la politique retenue
-
-Les rôles publics ou clients n’ont pas vocation à administrer librement le domaine `auth`.
+- `security_operator`
+- tout acteur humain authentifié
 
 ### Permissions
 
@@ -143,76 +118,58 @@ Exemples de permissions concernées :
 
 - `auth.read`
 - `auth.write`
-- `users.read`
-- `roles.read`
-- `permissions.read`
+- `auth.session.revoke`
+- `auth.password.reset`
+- `auth.mfa.manage`
 - `audit.read`
-
-Selon le niveau de détail retenu plus tard, des permissions plus fines sur les sessions, réinitialisations, révocations ou MFA pourront être ajoutées.
 
 ## Événements émis
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine émet les domain events internes suivants :
 
 - `auth.identity.created`
-- `auth.identity.updated`
 - `auth.identity.locked`
 - `auth.identity.unlocked`
 - `auth.login.succeeded`
 - `auth.login.failed`
-- `auth.logout.completed`
 - `auth.session.created`
 - `auth.session.revoked`
-- `auth.session.revoked_all`
-- `auth.credential.updated`
 - `auth.password.changed`
 - `auth.recovery.requested`
 - `auth.recovery.completed`
-- `auth.bootstrap.completed`
 - `auth.mfa.enabled`
 - `auth.mfa.disabled`
+- `auth.bootstrap.completed`
 
 ## Événements consommés
 
-Le domaine peut consommer certains événements internes du type :
+Le domaine consomme les domain events internes suivants :
 
 - `user.created`
 - `user.disabled`
 - `user.deleted`
-- `role.updated` si certaines projections d’accès initial sont recalculées
-- `permission.updated` si certaines projections d’accès initial sont recalculées
-- `approval.approved` si certains flux sensibles d’accès passent par une approbation exceptionnelle
-- certaines actions administratives structurées de création d’accès, révocation ou réinitialisation
-
-Il doit toutefois rester maître de sa propre logique d’authentification.
+- `role.updated`
+- `permission.updated`
+- certaines actions administratives structurées de création, verrouillage ou réinitialisation d’accès
 
 ## Intégrations externes
 
-Le domaine `auth` ne doit pas devenir un domaine d’intégration provider-specific.
+Le domaine `auth` ne dépend pas d’un provider externe comme vérité primaire.
+Si un provider externe existe, il est intégré via `integrations` et traduit dans le langage interne du socle.
 
-Une brique technique comme Auth.js / `next-auth` peut être utilisée comme infrastructure d’authentification avec Next.js, mais :
-
-- la vérité métier de l’authentification interne reste dans `auth`
-- les comptes humains restent dans `users`
-- les rôles restent dans `roles`
-- les permissions restent dans `permissions`
-- les connecteurs providers externes éventuels restent hors du coeur métier, ou dans `integrations` s’ils deviennent un sujet explicite
+Le domaine `auth` reste la source de vérité interne de l’état d’authentification humaine.
 
 ## Données sensibles / sécurité
 
-Le domaine `auth` manipule des secrets et états hautement sensibles.
+Le domaine `auth` manipule des données hautement sensibles.
 
 Points de vigilance :
 
-- jamais de secret exposé côté client
-- contrôle strict des droits de lecture et d’écriture
-- séparation claire entre identité, credential, session et autorisation
-- hashage robuste des mots de passe
-- cookies HttpOnly et sécurisés pour les sessions web
-- limitation des tentatives, verrouillage ou throttling selon la politique retenue
-- révocation des sessions après certaines opérations sensibles comme reset ou changement forcé de credential selon la politique retenue
-- audit des réinitialisations, révocations et changements sensibles
-- protection explicite des recovery codes ou secrets MFA si ces mécanismes sont activés
+- hash strict des mots de passe, tokens et recovery codes
+- contrôle fort des changements de secret
+- rotation et révocation de session traçables
+- limitation des tentatives et verrouillage explicite
+- interdiction de fuite d’informations sensibles dans les logs
 
 ## Observability / audit
 
@@ -220,102 +177,166 @@ Points de vigilance :
 
 Il faut pouvoir comprendre :
 
-- quelle identité a tenté de se connecter
 - pourquoi un login a réussi ou échoué
-- quelle session est active, expirée ou révoquée
-- quelles métadonnées minimales de session sont disponibles, comme appareil, IP, dernier usage et date de création si le modèle retenu le prévoit
-- si un accès est refusé à cause d’un credential invalide, d’un verrouillage, d’une révocation ou d’une politique applicable
-- si une session est partielle ou invalide à cause d’un contexte, d’une expiration ou d’une règle de sécurité
-- pourquoi un second facteur est exigé, refusé ou non configuré si ce mécanisme est activé
+- pourquoi une identité est active, verrouillée, suspendue ou désactivée
+- quelles sessions sont actives ou révoquées
+- pourquoi une demande de recovery a été créée, consommée ou révoquée
+- quel événement a déclenché un changement d’état
 
 ### Audit
 
 Il faut tracer :
 
-- les connexions réussies et échouées sensibles selon la politique retenue
-- les créations ou révocations de sessions
-- les changements de credential
-- les demandes et finalisations de réinitialisation d’accès
-- les verrouillages ou déverrouillages sensibles
-- les changements MFA si le modèle final les active
-- certaines consultations sensibles si le modèle final les retient explicitement
+- la création d’identité
+- les verrouillages et déverrouillages
+- les logins et échecs significatifs
+- les créations et révocations de session
+- les changements de mot de passe
+- les opérations MFA
+- les recoveries
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `AuthIdentity` : identité d’authentification structurée
-- `AuthCredential` : credential ou secret associé à l’identité
-- `AuthSession` : session d’authentification active, expirée ou révoquée
-- `AuthRecoveryRequest` : demande de réinitialisation ou récupération d’accès
-- `AuthMfaEnrollment` : configuration de second facteur si le modèle retenu le prévoit
-- `AuthSecurityPolicy` : règle de verrouillage, expiration ou durcissement
-- `AuthSubjectRef` : référence vers l’utilisateur humain concerné
+- `AuthIdentity`
+- `AuthPasswordCredential`
+- `AuthSession`
+- `AuthRecoveryRequest`
+- `AuthMfaEnrollment`
+- `AuthRecoveryCode`
 
 ## Invariants métier
 
 Les règles suivantes doivent toujours rester vraies :
 
-- une identité d’authentification possède un identifiant stable et un état explicite
-- un credential est rattaché à une identité explicite
-- une session est rattachée à une identité explicite
-- une session valide n’implique jamais à elle seule une autorisation métier
-- `auth` ne se confond pas avec `users`
-- `auth` ne se confond pas avec `roles`
-- `auth` ne se confond pas avec `permissions`
-- `auth` ne se confond pas avec `api-clients`
-- les autres domaines ne doivent pas recréer librement leur propre vérité divergente d’authentification quand le cadre commun `auth` existe
-- une session invalide, expirée ou révoquée ne doit pas être traitée comme authentifiée hors règle explicite
-- le bootstrap du premier accès admin ne doit être possible qu’une seule fois dans le cadre retenu
+- une identité d’auth est rattachée à un utilisateur unique
+- une session active appartient à une identité existante
+- un token ou secret n’est jamais stocké en clair
+- une identité verrouillée ou désactivée n’ouvre pas de nouvelle session
+- une opération sensible d’auth laisse une trace exploitable
+
+## Transactions / cohérence / concurrence
+
+### Ce qui doit être atomique
+
+Les opérations suivantes doivent réussir ou échouer ensemble :
+
+- création d’une identité et de son credential initial
+- changement de mot de passe et invalidation des éléments nécessaires
+- création d’une session après login réussi
+- révocation d’une session
+- révocation de toutes les sessions d’une identité
+- création et consommation d’une demande de recovery
+- activation ou désactivation MFA
+- écriture des events `auth.*` correspondants
+
+### Ce qui peut être eventual consistency
+
+Les traitements suivants ont lieu après commit :
+
+- envoi d’email de recovery
+- notification de changement de mot de passe
+- analytics sécurité
+- webhook sortant
+- synchronisation externe de sécurité
+
+### Stratégie de concurrence
+
+Le domaine protège explicitement ses invariants par :
+
+- une transaction applicative pour chaque mutation sensible
+- une seule identité d’auth par utilisateur
+- un seul credential courant par identité
+- une garde stricte sur le statut de l’identité avant login ou mutation
+- l’invalidation cohérente des sessions lors des opérations qui l’exigent
+
+Les conflits attendus sont :
+
+- deux logins concurrents
+- deux changements de mot de passe concurrents
+- consommation concurrente du même recovery token
+- activation MFA concurrente
+- révocation et login concurrents
+
+### Idempotence
+
+Les commandes métier suivantes sont idempotentes :
+
+- `revoke-session` : clé d’idempotence = `sessionId`
+- `revoke-all-sessions` : clé d’idempotence = `(identityId, revokeIntentId)`
+- `complete-recovery` : clé d’idempotence = `(recoveryRequestId, completionIntentId)`
+
+Un retry ne doit jamais produire deux changements de secret divergents ni des révocations inconsistantes.
+
+### Domain events écrits dans la même transaction
+
+Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
+
+- `auth.identity.created`
+- `auth.identity.locked`
+- `auth.identity.unlocked`
+- `auth.login.succeeded`
+- `auth.login.failed`
+- `auth.session.created`
+- `auth.session.revoked`
+- `auth.password.changed`
+- `auth.recovery.requested`
+- `auth.recovery.completed`
+- `auth.mfa.enabled`
+- `auth.mfa.disabled`
+- `auth.bootstrap.completed`
+
+### Effets secondaires après commit
+
+Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
+
+- email de recovery
+- notification utilisateur
+- webhook sortant
+- intégration sécurité externe
+- analytics sécurité
 
 ## Cas d’usage principaux
 
-1. Authentifier un administrateur de la boutique
-2. Créer une session sécurisée après login réussi
-3. Vérifier l’état d’une session pour accéder à une route protégée
-4. Révoquer une session unique ou toutes les sessions d’un acteur
-5. Réinitialiser un accès admin en cas de perte de credential
-6. Gérer le bootstrap sécurisé du premier accès admin
-7. Préparer ou gérer un second facteur pour les accès sensibles si le modèle retenu l’active
-8. Fournir aux couches protégées une lecture fiable de l’état d’authentification
+1. Créer une identité d’authentification
+2. Ouvrir une session après login réussi
+3. Révoquer une session ou toutes les sessions
+4. Changer un mot de passe
+5. Créer et consommer une demande de recovery
+6. Activer ou désactiver MFA
 
 ## Cas limites / erreurs métier
 
 Quelques cas d’erreur typiques :
 
-- identité d’authentification introuvable
-- credential invalide
-- session expirée ou révoquée
-- verrouillage actif
-- tentative de réinitialisation non autorisée
-- bootstrap déjà réalisé
-- second facteur requis mais non validé si ce mécanisme est activé
-- permission ou scope insuffisant pour une action sensible sur le domaine auth
-- conflit entre plusieurs règles de sécurité ou d’expiration
+- identité introuvable
+- identité verrouillée ou désactivée
+- mot de passe invalide
+- session introuvable ou déjà révoquée
+- token de recovery expiré
+- token de recovery déjà consommé
+- tentative MFA invalide
+- conflit concurrent sur une opération sensible
 
 ## Décisions d’architecture
 
 Les choix structurants du domaine sont :
 
-- `auth` porte l’authentification humaine structurée du socle
-- `auth` est distinct de `users`
-- `auth` est distinct de `roles`
-- `auth` est distinct de `permissions`
-- `auth` est distinct de `api-clients`
-- une brique technique comme Auth.js / `next-auth` peut être utilisée comme implémentation, sans devenir la vérité métier du domaine
-- la V1 reste admin-first et n’introduit pas d’auth client avancée
-- l’impersonation n’est pas retenue par défaut dans le domaine `auth` tant qu’elle n’est pas explicitement gouvernée et auditée dans une décision dédiée
-- les identités, sessions, réinitialisations, MFA éventuel et politiques sensibles doivent être observables et auditables
+- `auth` porte l’authentification humaine du socle
+- les secrets sont stockés sous forme protégée
+- les mutations sensibles sont transactionnelles
+- les événements `auth.*` passent par l’outbox
+- les notifications partent après commit
+- les providers externes éventuels sont confinés à `integrations`
 
 ## Questions explicitement closes
 
 Les points suivants sont considérés comme décidés :
 
-- l’authentification humaine structurée relève de `auth`
-- les comptes humains relèvent de `users`
-- les rôles relèvent de `roles`
-- les permissions fines relèvent de `permissions`
+- l’authentification humaine relève de `auth`
+- les utilisateurs métier relèvent de `users`
+- les rôles et permissions relèvent de leurs domaines dédiés
 - les clients machine-to-machine relèvent de `api-clients`
-- la V1 reste centrée sur l’admin interne
-- Auth.js / `next-auth` peut être utilisé comme implémentation technique sans devenir la vérité métier
-- `auth` ne remplace ni `users`, ni `roles`, ni `permissions`, ni `api-clients`, ni `integrations`
+- les opérations sensibles d’auth sont atomiques et auditables
+- les effets externes partent après commit

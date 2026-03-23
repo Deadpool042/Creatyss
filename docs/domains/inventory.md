@@ -1,72 +1,74 @@
-# Domaine inventory
+# Domaine `inventory`
 
 ## Rôle
 
-Le domaine `inventory` porte la disponibilité quantitative et les politiques de stock du socle.
-
-Il décrit la capacité réelle d’un produit ou d’une variante à être servi en quantité, selon les règles de stock, de rupture, de précommande, de backorder ou d’autres politiques d’approvisionnement compatibles avec le socle.
+Le domaine `inventory` porte la vérité quantitative du stock du socle.
+Il décrit la capacité réelle d’une variante à être servie en quantité, selon une politique explicite de disponibilité.
 
 ## Responsabilités
 
 Le domaine `inventory` prend en charge :
 
 - le stock quantitatif
-- la disponibilité en quantité
-- les politiques de gestion de stock
-- les ruptures
-- les backorders
-- les preorders
-- les règles de décrémentation ou de réservabilité selon le modèle retenu
-- la lecture quantitative utilisée par `cart`, `sales-policy`, `checkout`, `orders` et `fulfillment`
+- la disponibilité quantitative
+- la politique de stock par variante
+- les réservations et libérations de stock
+- les décrémentations liées aux ventes
+- les ajustements de stock
+- la lecture quantitative utilisée par `cart`, `checkout`, `orders` et `fulfillment`
 
 ## Ce que le domaine ne doit pas faire
 
 Le domaine `inventory` ne doit pas :
 
-- décrire le catalogue produit source, qui relève de `products`
-- décider seul si un produit est vendable dans un contexte donné, ce qui relève de `sales-policy`
-- calculer les prix, remises ou taxes, qui relèvent de `pricing`, `discounts` et `taxation`
-- porter la logique panier, commande ou checkout complète
-- devenir un domaine d’ERP ou d’approvisionnement complet par défaut
+- porter le catalogue produit source
+- décider seul de toute la vendabilité contextuelle
+- recalculer le pricing
+- porter la logique panier, checkout ou commande complète
+- devenir un ERP complet
 
-Le domaine `inventory` porte la quantité disponible et la politique de disponibilité quantitative, pas l’ensemble du commerce.
+Le domaine `inventory` porte la vérité quantitative du stock.
+Il ne remplace ni `products`, ni `sales-policy`, ni `cart`, ni `checkout`, ni `orders`.
 
 ## Sous-domaines
 
-- `stock` : lecture et écriture des quantités
-- `availability` : lecture de disponibilité quantitative exploitable par les autres domaines
-- `policies` : règles de stock, rupture, preorder, backorder, etc.
+- `items` : item de stock par variante
+- `availability` : lecture de quantité disponible
+- `reservation` : stock réservé pour commandes en cours
+- `adjustments` : historique d’ajustements
+- `policies` : `TRACK`, `DENY_OUT_OF_STOCK`, `ALLOW_BACKORDERS`, `ALLOW_PREORDERS`, `INFINITE`
 
 ## Entrées
 
 Le domaine reçoit principalement :
 
-- des mises à jour de stock
-- des événements de consommation ou de libération de stock
-- des demandes de lecture de disponibilité quantitative
+- des demandes de lecture de disponibilité
+- des demandes de réservation ou libération
+- des demandes de décrémentation liées à une vente
+- des demandes d’ajustement manuel ou de réception
 - des changements de politique de stock
-- des besoins de validation d’une quantité demandée
 
 ## Sorties
 
 Le domaine expose principalement :
 
-- une lecture de stock courant
-- une lecture de disponibilité quantitative
-- des états de rupture ou de disponibilité limitée
-- des politiques applicables à un item stocké
-- une réponse exploitable par `cart`, `checkout`, `orders` et `fulfillment`
+- un `InventoryItem`
+- une lecture de quantité disponible
+- une lecture de quantité réservée
+- une politique de disponibilité
+- un historique d’ajustements
 
 ## Dépendances vers autres domaines
 
-Le domaine `inventory` peut dépendre de :
+Le domaine `inventory` dépend de :
 
-- `products` pour rattacher les niveaux de stock à des produits ou variantes existants
-- `audit` pour tracer les changements sensibles de stock
-- `observability` pour diagnostiquer des incohérences ou des refus de disponibilité
-- `workflow` ou `approval` si certaines opérations de stock doivent être validées
+- `products` pour le rattachement à une variante
+- `audit` pour tracer les corrections sensibles
+- `observability` pour diagnostiquer les refus ou incohérences
+- `orders` pour les intentions de consommation ou restitution
+- `fulfillment` pour l’exécution logistique
 
-Les domaines suivants peuvent dépendre de `inventory` :
+Les domaines suivants dépendent de `inventory` :
 
 - `sales-policy`
 - `cart`
@@ -74,30 +76,29 @@ Les domaines suivants peuvent dépendre de `inventory` :
 - `orders`
 - `fulfillment`
 - `analytics`
-- `recommendations`
 
 ## Capabilities activables liées
 
-Le domaine `inventory` est directement lié à :
+Le domaine `inventory` est lié à :
 
 - `backorders`
 - `preorders`
 
 ### Effet si `backorders` est activée
 
-Le domaine peut exposer une disponibilité compatible avec commande en rupture sous certaines règles.
+La politique `ALLOW_BACKORDERS` devient exploitable.
 
 ### Effet si `backorders` est désactivée
 
-Une rupture bloque la disponibilité quantitative, sauf autre politique explicitement active.
+Une rupture bloque la disponibilité sous politique non permissive.
 
 ### Effet si `preorders` est activée
 
-Le domaine peut exposer une disponibilité de précommande selon la politique retenue.
+La politique `ALLOW_PREORDERS` devient exploitable.
 
 ### Effet si `preorders` est désactivée
 
-La précommande n’est pas proposée.
+La précommande est rejetée.
 
 ## Rôles/permissions concernés
 
@@ -111,7 +112,7 @@ Les rôles principalement concernés sont :
 - `store_manager`
 - `catalog_manager`
 - `order_manager`
-- éventuellement `customer_support` en lecture selon la politique retenue
+- `customer_support` en lecture
 
 ### Permissions
 
@@ -119,40 +120,39 @@ Exemples de permissions concernées :
 
 - `inventory.read`
 - `inventory.write`
+- `inventory.adjust`
 - `orders.read`
 - `orders.write`
 - `audit.read`
 
 ## Événements émis
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine émet les domain events internes suivants :
 
-- `inventory.stock.updated`
+- `inventory.item.created`
+- `inventory.stock.adjusted`
+- `inventory.stock.reserved`
+- `inventory.stock.released`
+- `inventory.stock.decremented`
 - `inventory.item.out_of_stock`
-- `inventory.item.backorder_enabled`
-- `inventory.item.preorder_enabled`
+- `inventory.policy.changed`
 
 ## Événements consommés
 
-Le domaine peut consommer certains événements internes du type :
+Le domaine consomme les domain events internes suivants :
 
 - `order.created`
 - `order.cancelled`
-- `order.paid` selon la stratégie de réservation/décrémentation retenue
-- événements de fulfillment si la consommation réelle de stock est liée à l’exécution logistique
-
-Le domaine doit toutefois rester maître de ses propres invariants quantitatifs.
+- `order.completed`
+- `fulfillment.shipped`
+- `fulfillment.returned`
 
 ## Intégrations externes
 
-Le domaine `inventory` ne doit pas dépendre directement d’un système externe comme source de vérité métier principale.
+Le domaine `inventory` ne dépend pas directement d’une source externe comme vérité primaire.
+Les synchronisations externes passent par `integrations` et `jobs`.
 
-Si une synchronisation de stock externe existe, elle doit passer par :
-
-- `integrations`
-- et éventuellement `jobs`
-
-Le domaine `inventory` reste la source de vérité interne de la disponibilité quantitative dans le socle.
+Le domaine `inventory` reste la source de vérité interne de la disponibilité quantitative.
 
 ## Données sensibles / sécurité
 
@@ -161,9 +161,10 @@ Le domaine `inventory` porte une donnée métier critique.
 Points de vigilance :
 
 - contrôle strict des droits d’écriture
-- audit des corrections ou ajustements sensibles
-- traçabilité des variations significatives de stock
+- audit des ajustements et corrections
 - protection contre les mises à jour concurrentes incohérentes
+- justification structurée des ajustements
+- lecture cohérente de `quantityOnHand`, `quantityReserved` et `quantityAvailable`
 
 ## Observability / audit
 
@@ -173,74 +174,151 @@ Il faut pouvoir comprendre :
 
 - quelle quantité a été retenue comme disponible
 - quelle politique de stock a été appliquée
-- pourquoi une quantité demandée a été acceptée, réduite ou refusée
-- pourquoi un item est considéré en rupture, en backorder ou en preorder
+- pourquoi une réservation ou un décrément a été accepté ou refusé
+- pourquoi un item est en rupture, en backorder ou en preorder
 
 ### Audit
 
 Il faut tracer :
 
-- les ajustements de stock significatifs
-- les changements de politique de stock
-- les opérations critiques impactant la disponibilité quantitative
+- les ajustements de stock
+- les changements de politique
+- les réservations et libérations significatives
+- les corrections manuelles
+- les opérations liées aux commandes et retours
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `InventoryItem` : lecture de stock associée à un produit ou une variante
-- `InventoryStockLevel` : niveau quantitatif courant
-- `InventoryAvailability` : lecture exploitable de disponibilité
-- `InventoryPolicy` : politique appliquée à l’item (rupture, backorder, preorder, etc.)
+- `InventoryItem` : stock d’une variante
+- `InventoryPolicyKind` : politique de disponibilité
+- `InventoryAdjustment` : variation tracée de stock
+- `QuantityOnHand` : quantité physiquement détenue
+- `QuantityReserved` : quantité déjà engagée
+- `QuantityAvailable` : quantité exposée à la vente
 
 ## Invariants métier
 
 Les règles suivantes doivent toujours rester vraies :
 
-- un enregistrement de stock est rattaché explicitement à un item catalogue valide
-- la disponibilité quantitative ne se confond pas avec la vendabilité contextuelle
-- la quantité disponible doit être lue via `inventory`, pas reconstituée localement dans d’autres domaines
-- les politiques de backorder et preorder sont explicites
-- `inventory` ne remplace ni `products`, ni `sales-policy`, ni `orders`
+- un `InventoryItem` est rattaché à une variante valide
+- `quantityAvailable` est cohérente avec la politique et les quantités sous-jacentes
+- la vérité quantitative ne se reconstitue pas dans les autres domaines
+- toute variation de stock durable laisse une trace explicite
+- une opération métier ne peut pas produire un stock incohérent
+
+## Transactions / cohérence / concurrence
+
+### Ce qui doit être atomique
+
+Les opérations suivantes doivent réussir ou échouer ensemble :
+
+- création d’un `InventoryItem`
+- changement de politique de stock
+- réservation de stock et écriture de l’ajustement associé
+- libération de stock et écriture de l’ajustement associé
+- décrémentation de stock et écriture de l’ajustement associé
+- correction manuelle et écriture de l’ajustement associé
+- écriture des events `inventory.*` correspondants
+
+### Ce qui peut être eventual consistency
+
+Les traitements suivants ont lieu après commit :
+
+- projections admin
+- analytics
+- webhooks sortants
+- synchronisations externes
+- notifications internes non bloquantes
+
+### Stratégie de concurrence
+
+Le domaine protège explicitement ses invariants par :
+
+- une transaction applicative sur chaque mutation quantitative
+- une lecture et écriture cohérentes du même `InventoryItem`
+- un refus complet si la quantité disponible ne couvre pas l’opération
+- une écriture d’ajustement dans la même transaction que la variation
+- une seule vérité quantitative par variante
+
+Les conflits attendus sont :
+
+- deux réservations concurrentes sur la même variante
+- une réservation et une correction manuelle concurrentes
+- un décrément et une annulation concurrents
+- une mise à jour concurrente de politique de stock
+
+### Idempotence
+
+Les commandes métier suivantes sont idempotentes :
+
+- `reserve-stock` : clé d’idempotence = `(inventoryItemId, referenceKind, referenceId)`
+- `release-stock` : clé d’idempotence = `(inventoryItemId, referenceKind, referenceId, releaseIntentId)`
+- `adjust-stock` : clé d’idempotence = `(inventoryItemId, referenceKind, referenceId, adjustmentKind)`
+
+Un retry de la même intention ne doit jamais doubler une réservation, une libération ou un ajustement.
+
+### Domain events écrits dans la même transaction
+
+Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
+
+- `inventory.stock.adjusted`
+- `inventory.stock.reserved`
+- `inventory.stock.released`
+- `inventory.stock.decremented`
+- `inventory.item.out_of_stock`
+- `inventory.policy.changed`
+
+### Effets secondaires après commit
+
+Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
+
+- synchronisation externe de stock
+- webhook sortant
+- analytics
+- notification
+- recalcul de projection secondaire
 
 ## Cas d’usage principaux
 
-1. Lire le niveau de stock d’un item
+1. Lire le niveau de stock d’une variante
 2. Savoir si une quantité demandée est disponible
-3. Signaler une rupture de stock
-4. Activer ou désactiver un mode backorder
-5. Activer ou désactiver un mode preorder
-6. Exposer aux autres domaines une lecture fiable de disponibilité quantitative
-7. Ajuster le stock suite à une opération métier autorisée
+3. Réserver du stock pour une commande
+4. Libérer du stock à l’annulation
+5. Décrémenter ou ajuster le stock
+6. Modifier la politique de disponibilité
 
 ## Cas limites / erreurs métier
 
 Quelques cas d’erreur typiques :
 
 - item de stock introuvable
-- rattachement à un produit ou une variante invalide
+- variante invalide
 - quantité incohérente
-- tentative d’opération non autorisée sur le stock
-- politique incompatible avec les capabilities activées
-- concurrence ou désynchronisation de stock détectée
+- politique incompatible
+- stock insuffisant
+- tentative d’ajustement non autorisée
+- conflit concurrent détecté
 
 ## Décisions d’architecture
 
 Les choix structurants du domaine sont :
 
-- `inventory` porte la disponibilité quantitative du socle
-- `inventory` est distinct de `products`
-- `inventory` est distinct de `sales-policy`
-- les backorders et preorders sont pilotés comme politiques explicites, activées par capability
-- les autres domaines consomment `inventory` au lieu de recalculer localement la quantité disponible
-- les synchronisations externes de stock éventuelles passent par `integrations`
+- `inventory` porte la vérité quantitative du socle
+- la disponibilité repose sur une politique explicite
+- toute variation durable de stock écrit un ajustement
+- la réservation, la libération et la décrémentation sont transactionnelles
+- les events `inventory.*` passent par l’outbox
+- les synchronisations externes sont découplées du commit métier
 
 ## Questions explicitement closes
 
 Les points suivants sont considérés comme décidés :
 
 - le stock relève de `inventory`
+- le catalogue relève de `products`
 - la vendabilité contextuelle ne relève pas uniquement de `inventory`
-- le domaine `products` ne porte pas le stock quantitatif
-- `inventory` ne remplace ni `products`, ni `sales-policy`, ni `orders`
-- les politiques de backorder et preorder sont explicites et pilotées par capability
+- les politiques de backorder et preorder sont explicites
+- les écritures quantitatives critiques sont atomiques
+- les intégrations externes ne sont pas la vérité primaire du stock

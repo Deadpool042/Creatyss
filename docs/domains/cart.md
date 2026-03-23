@@ -1,283 +1,161 @@
-# Domaine cart
+# Domaine `cart`
 
 ## Rôle
 
-Le domaine `cart` porte le panier du socle.
-
-Il représente l’état courant des lignes qu’un visiteur invité ou un client souhaite acheter, avant validation finale par `checkout` et avant figement en `orders`.
-
-Il constitue la source de vérité du panier runtime, distincte des domaines qui gèrent :
-
-- la vendabilité contextuelle
-- la disponibilité quantitative
-- le calcul monétaire global
-- la validation finale avant commande
+Le domaine `cart` porte le panier runtime du socle.
+Il constitue la source de vérité interne des intentions d’achat avant validation finale par `checkout` et avant figement en `orders`.
 
 ## Responsabilités
 
 Le domaine `cart` prend en charge :
 
-- le panier invité
-- le panier client
-- l’ownership du panier (`guest` / `customer`)
-- les lignes du panier
+- la création et la récupération du panier
+- l’ownership du panier invité ou client
+- les lignes de panier
 - les quantités demandées
-- l’identité stable d’une ligne panier
 - la fusion de lignes identiques
 - le merge guest → customer
-- la lecture et l’écriture du panier runtime
-- la restitution d’un état de panier exploitable par `checkout`
-
-## Ce que le domaine ne doit pas faire
-
-Le domaine `cart` ne doit pas :
-
-- décider seul de la vendabilité, qui relève de `sales-policy`
-- porter la disponibilité quantitative, qui relève de `inventory`
-- calculer tout le pricing transverse, qui relève de `pricing`
-- calculer les remises, taxes ou accises, qui relèvent de `discounts` et `taxation`
-- porter toute la logique shipping, qui relève de `shipping`
-- valider la préparation finale à la commande, qui relève de `checkout`
-- figer les montants et snapshots finaux, qui relèvent de `orders`
-
-Le domaine `cart` porte le panier runtime. Il ne doit pas devenir le domaine fourre-tout de tout le commerce.
-
-## Sous-domaines
-
-- `core` : panier central et façade principale
-- `guest` : comportement panier invité
-- `customer` : comportement panier client
-- `merge` : fusion guest → customer
-
-## Entrées
-
-Le domaine reçoit principalement :
-
-- des demandes de création ou récupération de panier
-- des demandes d’ajout de ligne
-- des demandes de modification de quantité
-- des demandes de suppression de ligne
-- des demandes de fusion guest → customer
-- des lectures de contexte venant d’autres domaines au moment où le panier doit être évalué
-
-## Sorties
-
-Le domaine expose principalement :
-
-- un panier runtime
-- des lignes panier
-- un état d’ownership (`guest` / `customer`)
-- une lecture des quantités demandées
-- une représentation exploitable par `checkout`, `pricing`, `shipping`, `discounts` et `taxation`
-
-## Dépendances vers autres domaines
-
-Le domaine `cart` peut dépendre de :
-
-- `products` pour la lecture catalogue minimale utile aux lignes panier
-- `inventory` pour la disponibilité quantitative
-- `sales-policy` pour la vendabilité contextuelle
-- `customers` pour le contexte client lorsqu’il existe
-- `store` pour le contexte boutique et les capabilities
-- `audit` pour tracer certaines opérations critiques si nécessaire
-- `observability` pour expliquer pourquoi une ligne est invalide ou bloquante
-
-Les domaines suivants peuvent dépendre de `cart` :
-
-- `pricing`
-- `shipping`
-- `discounts`
-- `taxation`
-- `checkout`
-- `analytics`
-- `orders`
+- les transitions de statut du panier
+- la détection, la reprise et la traçabilité du panier abandonné
+- la lecture du panier exploitable par `checkout`, `pricing`, `shipping` et `inventory`
 
 ## Capabilities activables liées
 
-Le domaine `cart` est particulièrement lié à :
+Le domaine `cart` est lié à :
 
-- `guestCheckout`
-- `customerCheckout`
-- `backorders`
-- `preorders`
+- `guestCart`
+- `persistentCart`
+- `cartMerge`
+- `abandonedCartDetection`
+- `abandonedCartRecovery`
+- `abandonedCartRelaunch`
 - `giftOptions`
 
-### Effet si `guestCheckout` est activée
+### Effet si `guestCart` est activée
 
-Le panier invité est supporté et peut être fusionné ensuite avec un panier client.
+Le panier invité est supporté et fusionnable avec un panier client.
 
-### Effet si `guestCheckout` est désactivée
+### Effet si `guestCart` est désactivée
 
-Le domaine reste présent, mais les parcours invités sont neutralisés au runtime.
+Les parcours invités sont rejetés côté serveur.
 
-### Effet si `customerCheckout` est activée
+### Effet si `cartMerge` est activée
 
-Le panier client connecté est pleinement supporté.
+Le merge guest → customer est disponible, transactionnel et idempotent.
 
-### Effet si `backorders` ou `preorders` est activée
+### Effet si `abandonedCartDetection` est activée
 
-Le panier peut accepter certaines lignes selon les politiques retournées par `inventory` et `sales-policy`.
+Le domaine détecte et marque explicitement les paniers abandonnés selon une politique d’inactivité déterminée.
 
-### Effet si `giftOptions` est activée
+### Effet si `abandonedCartRecovery` est activée
 
-Certaines options cadeau peuvent enrichir les lignes ou le contexte de panier, sans transformer `cart` en domaine gifting complet.
+Un panier abandonné peut être réactivé via un flux serveur explicite et revalidé.
 
-## Rôles/permissions concernés
+### Effet si `abandonedCartRelaunch` est activée
 
-### Rôles
-
-Les rôles principalement concernés sont :
-
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `order_manager`
-- `customer_support`
-- `customer` pour son propre panier
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `cart.read`
-- `orders.read`
-- `orders.write`
-- `customers.read`
-- `inventory.read`
-- `audit.read`
+Les relances marketing liées à l’abandon sont déclenchées après commit via événements et jobs.
 
 ## Événements émis
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine émet les domain events internes suivants :
 
 - `cart.created`
-- `cart.updated`
 - `cart.line.added`
 - `cart.line.updated`
 - `cart.line.removed`
 - `cart.merged`
-
-## Événements consommés
-
-Le domaine peut consommer certains événements internes du type :
-
-- `product.updated`
-- `product.published`
-- `inventory.stock.updated`
-- `sales_policy.item.sellability.changed`
-- `customer.created`
-- `store.capabilities.updated`
-
-Le domaine doit toutefois rester maître de son propre état runtime.
-
-## Intégrations externes
-
-Le domaine `cart` ne doit pas parler directement à des systèmes externes.
-
-Les usages externes éventuels passent par :
-
-- `integrations`
-- `tracking`
-- `jobs`
-- `analytics`
-
-Le domaine `cart` reste la source de vérité interne du panier runtime.
-
-## Données sensibles / sécurité
-
-Le domaine `cart` ne porte pas des secrets, mais il porte une donnée runtime critique du parcours d’achat.
-
-Points de vigilance :
-
-- validation stricte des entrées
-- aucune confiance dans les prix ou états envoyés par le client
-- contrôle du contexte guest vs customer
-- gestion sûre du merge guest → customer
-- traçabilité des opérations sensibles si nécessaire
-
-## Observability / audit
-
-### Observability
-
-Il faut pouvoir comprendre :
-
-- pourquoi une ligne a été acceptée, fusionnée, refusée ou invalidée
-- quelle règle de vendabilité a bloqué une ligne
-- quelle lecture de stock a été utilisée
-- pourquoi un panier n’est pas prêt pour le checkout
-
-### Audit
-
-Le domaine `cart` n’a pas vocation à auditer chaque changement mineur comme un domaine de gouvernance pure.
-
-En revanche, certaines opérations sensibles peuvent être tracées, notamment :
-
-- un merge guest → customer
-- certaines corrections manuelles ou interventions support
-- certains changements de comportement administrés côté plateforme
+- `cart.abandoned`
+- `cart.reactivated`
+- `cart.converted`
+- `cart.expired`
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `Cart` : panier runtime
-- `CartOwnerKind` : nature du propriétaire (`guest` / `customer`)
-- `CartLine` : ligne panier
-- `CartLineIdentity` : identité stable logique d’une ligne
-- `CartMergeResult` : résultat de fusion de paniers
+- `Cart`
+- `CartLine`
+- `CartOwnerKind`
+- `CartStatus` : `ACTIVE`, `ABANDONED`, `CONVERTED`, `EXPIRED`
+- `CartMergeResult`
+- `CartAbandonmentPolicy`
 
 ## Invariants métier
 
 Les règles suivantes doivent toujours rester vraies :
 
-- un panier a un propriétaire logique explicite
-- une ligne panier a une identité stable
-- la quantité demandée est explicite et contrôlée
-- le panier runtime ne porte pas la vérité finale de pricing ou de commande
-- le merge guest → customer est atomique
-- les autres domaines ne doivent pas recréer leur propre modèle de panier divergent
+- un panier possède un statut explicite
+- un panier `ACTIVE` est le seul état modifiable librement
+- un panier `ABANDONED` reste lisible et traçable
+- un panier `CONVERTED` ne redevient jamais actif
+- un panier `EXPIRED` ne redevient jamais actif
+- un panier abandonné ne peut être réactivé que par un flux serveur explicite
+- la conversion d’un panier abandonné exige une revalidation serveur explicite
 
-## Cas d’usage principaux
+## Transactions / cohérence / concurrence
 
-1. Créer ou récupérer un panier invité
-2. Créer ou récupérer un panier client
-3. Ajouter une ligne au panier
-4. Modifier la quantité d’une ligne
-5. Supprimer une ligne
-6. Fusionner un panier invité dans un panier client
-7. Exposer un panier runtime exploitable par `checkout`
+### Ce qui doit être atomique
 
-## Cas limites / erreurs métier
+Les opérations suivantes doivent réussir ou échouer ensemble :
 
-Quelques cas d’erreur typiques :
+- création d’un panier et de ses métadonnées initiales
+- ajout d’une ligne avec fusion éventuelle
+- mise à jour d’une ligne
+- suppression d’une ligne
+- merge guest → customer
+- transition `ACTIVE -> ABANDONED`
+- transition `ABANDONED -> ACTIVE`
+- transition `ACTIVE -> CONVERTED`
+- transition `ACTIVE -> EXPIRED`
+- écriture des events `cart.*` correspondants
 
-- panier introuvable
-- ligne introuvable
-- quantité invalide
-- produit ou variante non vendable dans le contexte courant
-- quantité non disponible selon `inventory`
-- merge impossible ou conflictuel
-- capability checkout incompatible avec le contexte panier
+### Ce qui peut être eventual consistency
 
-## Décisions d’architecture
+Les traitements suivants ont lieu après commit :
 
-Les choix structurants du domaine sont :
+- analytics
+- relance marketing d’abandon
+- projections secondaires
+- webhooks sortants
+- synchronisations externes
 
-- `cart` porte le panier runtime du socle
-- `cart` est distinct de `pricing`
-- `cart` est distinct de `shipping`
-- `cart` est distinct de `discounts` et `taxation`
-- `cart` consomme `sales-policy` et `inventory` au lieu de redéfinir localement leurs règles
-- les écritures critiques du panier doivent être protégées par des transactions adaptées
-- le merge guest → customer est une responsabilité native du domaine
+### Stratégie de concurrence
 
-## Questions explicitement closes
+Le domaine protège explicitement ses invariants par :
 
-Les points suivants sont considérés comme décidés :
+- unicité d’une variante par panier
+- garde sur le statut avant mutation
+- transaction applicative sur les mutations critiques
+- ordre stable des écritures lors du merge
+- refus de conversion si le panier n’est plus `ACTIVE`
+- refus de reprise si le panier est `CONVERTED` ou `EXPIRED`
 
-- le panier runtime relève de `cart`
-- `cart` ne porte pas tout le pricing transverse
-- `cart` ne porte pas toute la logique shipping
-- `cart` ne décide pas seul de la vendabilité ni du stock
-- `cart` ne remplace ni `checkout`, ni `orders`, ni `pricing`, ni `inventory`, ni `sales-policy`
+### Idempotence
+
+Les commandes métier suivantes sont idempotentes :
+
+- `add-cart-line` : clé `(cartId, variantId, clientIntentId)`
+- `merge-cart` : clé `(sourceCartId, targetCartId)`
+- `abandon-cart` : clé `(cartId, abandonmentIntentId)`
+- `reactivate-cart` : clé `(cartId, reactivationIntentId)`
+- `convert-cart` : clé identité du panier source + référence métier de conversion
+
+### Domain events écrits dans la même transaction
+
+- `cart.created`
+- `cart.line.added`
+- `cart.line.updated`
+- `cart.line.removed`
+- `cart.merged`
+- `cart.abandoned`
+- `cart.reactivated`
+- `cart.converted`
+- `cart.expired`
+
+### Effets secondaires après commit
+
+- notification marketing
+- analytics
+- webhook sortant
+- synchronisation externe
+- tracking
