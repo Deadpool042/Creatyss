@@ -59,6 +59,8 @@ model Checkout {
   couponCode String?
   notes      String?
 
+  completionIdempotencyKey String?
+
   completedAt DateTime?
   expiredAt   DateTime?
   cancelledAt DateTime?
@@ -73,10 +75,12 @@ model Checkout {
   fraudRiskAssessments FraudRiskAssessment[]
   attributionRecords   AttributionRecord[]
   giftingContext       GiftingContext?
+  order                Order?
 
   @@index([storeId])
   @@index([customerId])
   @@index([status])
   @@index([shippingMethodId])
+  @@unique([storeId, completionIdempotencyKey])
   @@map("checkouts")
 }

@@ -21,6 +21,7 @@ model Order {
   id         String  @id @default(cuid())
   storeId    String
   customerId String?
+  checkoutId String? @unique
 
   orderNumber String
   status      OrderStatus @default(PENDING)
@@ -69,12 +70,14 @@ model Order {
 
   store                Store                   @relation(fields: [storeId], references: [id], onDelete: Cascade)
   customer             Customer?               @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  checkout             Checkout?               @relation(fields: [checkoutId], references: [id], onDelete: Restrict)
   lines                OrderLine[]
   payments             Payment[]
   shippingSelection    OrderShippingSelection?
   fulfillments         Fulfillment[]
   returnRequests       ReturnRequest[]
   discounts            OrderDiscount[]
+  couponRedemptions    CouponRedemption[]
   loyaltyTransactions  LoyaltyTransaction[]
   giftCardTransactions GiftCardTransaction[]
   commercialDocuments  CommercialDocument[]
