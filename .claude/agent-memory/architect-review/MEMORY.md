@@ -1,14 +1,19 @@
 # Memory Index
 
 ## User
-- [user_profile.md](./user_profile.md) — Profil utilisateur : rôle, niveau technique, style de collaboration
+
+- Profil utilisateur : rôle, niveau technique, style de collaboration à documenter ici quand une mémoire stable existe.
 
 ## Project
-- [project_v21_status.md](./project_v21_status.md) — État réel de V21 au 2026-03-20 : V21 terminé, tailles réelles, dettes connues
-- [project_v21_state.md](./project_v21_state.md) — Structure détaillée db/repositories/ après V21 : sous-dossiers, imports, écarts doctrine
+
+- Doctrine courante du repo : `README.md`, `AGENTS.md`, `docs/architecture/00` à `11`, `docs/domains/README.md`.
+- Points d'attention d'architecture : séparation des couches, capabilities, criticité, transactions, cohérence inter-docs.
+- Noms canoniques à préserver : `stores`, `availability` ; `inventory` reste une spécialisation satellitaire d'`availability`.
 
 ## Feedback
-- (aucun feedback encore enregistré)
+
+- Enregistrer ici les préférences récurrentes de cadrage, de clarté, de sobriété et de robustesse quand elles deviennent stables.
 
 ## Reference
-- (aucune référence externe encore enregistrée)
+
+- Garder ici les décisions structurantes utiles aux audits et arbitrages futurs.

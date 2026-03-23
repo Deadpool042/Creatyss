@@ -1,6 +1,24 @@
 # Creatyss
 
-Boutique e-commerce custom pour Creatyss.
+Socle e-commerce custom pour Creatyss, conçu pour être **local-first**, maintenable, modulaire et déployable ensuite sur un VPS OVH.
+
+Le dépôt documente désormais le projet à partir d'une doctrine explicite de socle, d'architecture et de domaines.
+La doctrine actuelle est désormais structurée autour de :
+
+- `docs/architecture/` — doctrine du socle, modularité, niveaux, maintenance, garanties, cohérence, coût
+- `docs/domains/` — cartographie des domaines coeur, optionnels, satellites et transverses
+- `AGENTS.md` — règles de travail, discipline de modification et contraintes repo
+
+## Positionnement
+
+Creatyss est une base e-commerce premium, sobre, rapide et claire, pensée pour :
+
+- fonctionner d'abord en local via Docker Compose
+- rester lisible et strictement typée
+- éviter les dépendances inutiles
+- séparer clairement domaine métier, logique serveur, accès aux données et UI
+- permettre une évolution progressive par capabilities et niveaux de sophistication
+- rester réutilisable pour d'autres projets e-commerce au-delà du seul cas Creatyss
 
 ## Stack cible
 
@@ -10,64 +28,53 @@ Boutique e-commerce custom pour Creatyss.
 - Docker Compose en local
 - déploiement futur sur VPS OVH
 
-## Objectif
+## Doctrine documentaire actuelle
 
-Construire une base e-commerce premium, sobre, rapide, claire, dockerisée en local, puis déployable sur un VPS OVH.
+### Source de vérité courante
 
-Le projet doit rester :
+- `AGENTS.md`
+- `docs/architecture/00-socle-overview.md`
+- `docs/architecture/01-architecture-principles.md`
+- `docs/architecture/02-client-needs-capabilities-and-levels.md`
+- `docs/architecture/03-core-domains-and-toggleable-capabilities.md`
+- `docs/architecture/04-solution-profiles-and-project-assembly.md`
+- `docs/architecture/05-maintenance-and-operating-levels.md`
+- `docs/architecture/06-socle-guarantees.md`
+- `docs/architecture/07-transactions-and-consistency.md`
+- `docs/architecture/08-domain-events-jobs-and-async-flows.md`
+- `docs/architecture/09-integrations-providers-and-external-boundaries.md`
+- `docs/architecture/10-data-lifecycle-and-governance.md`
+- `docs/architecture/11-pricing-and-cost-model.md`
+- `docs/domains/README.md`
 
-- maintenable
-- modulaire
-- lisible
-- sans dépendance inutile
+### Lecture recommandée
 
-## Portée fonctionnelle actuelle
+Pour comprendre le socle dans son état courant :
 
-Le projet couvre actuellement les fondations principales de la boutique Creatyss :
+1. lire `AGENTS.md`
+2. lire `docs/architecture/00` à `11`
+3. lire `docs/domains/README.md`
+4. ensuite lire la documentation de test ou la documentation de lot utile au sujet traité
 
-- catalogue produits
-- produits simples et produits avec déclinaisons
-- variantes par couleur
-- changement d’image selon variante
-- catégories
-- blog
-- homepage éditable
-- admin interne
-- uploads locaux
-- SEO de base
-- authentification admin simple et sécurisée
+## Portée actuelle du dépôt
 
-L’évolution du projet est documentée par versions et par lots dans `docs/`. Les phases structurantes récentes sont V8 (design system admin premium), V9 (consolidation du front public) et V10 (admin pilotage & vues de données). `docs/v6/` reste une base documentaire utile pour les fondations métier et structurelles.
+Le dépôt couvre actuellement une base locale exploitable pour Creatyss avec :
 
-## Documentation de référence actuelle
-
-- `AGENTS.md` : règles de travail, structure du repo et discipline de modification.
-
-Phase active :
-
-- `docs/v10/README.md` : admin pilotage & vues de données.
-- `docs/v10/admin-pilotage-and-data-views-doctrine.md` : doctrine et principes.
-- `docs/v10/admin-pilotage-and-data-views-roadmap.md` : inventaire et séquence des lots.
-
-Phases terminées récentes :
-
-- `docs/v8/README.md` : design system admin premium.
-- `docs/v9/README.md` : consolidation du front public.
-
-Bases complémentaires selon le besoin :
-
-- `docs/v6/scope.md` : périmètre fonctionnel et fondations du projet.
-- `docs/v6/data-model.md` : modèle métier.
-- `docs/v6/admin-language-and-ux.md` : langage visible et UX admin métier.
-- `docs/v6/glossary.md` : vocabulaire métier officiel et termes UI autorisés ou à éviter.
-
-Pour un lot donné, les documents explicitement cités dans la demande priment. Sauf mention contraire, les anciennes docs V1 à V6 et les documents historiques restent du contexte utile, pas la source de vérité courante.
+- authentification admin serveur
+- bibliothèque media locale
+- CRUD catégories admin
+- CRUD produits admin avec catégories, images et déclinaisons
+- édition admin de la homepage
+- CRUD blog admin
+- front public catalogue, blog et homepage
+- SEO de base sur produits et articles
+- seed local de développement alimenté depuis la source WooCommerce Creatyss d'origine
 
 ## Démarrage local
 
 Le projet est piloté via `make`.
 
-Commande d’entrée principale :
+Commande d'entrée principale :
 
 ```bash
 make up
@@ -77,15 +84,17 @@ Variables disponibles :
 
 - `.env.example`
 
-`.env.example` est uniquement un fichier de placeholders versionné. Les vraies valeurs locales doivent vivre dans `.env` ou `.env.local`, qui restent non versionnés.
+`.env.example` est uniquement un fichier de placeholders versionné.
+Les vraies valeurs locales doivent vivre dans `.env` ou `.env.local`, qui restent non versionnés.
 
-Le `Makefile` utilise `ENV_FILE=.env.local` par défaut. Pour lancer explicitement le projet avec vos secrets locaux :
+Le `Makefile` utilise `ENV_FILE=.env.local` par défaut.
+Pour lancer explicitement le projet avec vos secrets locaux :
 
 ```bash
 ENV_FILE=.env.local make up
 ```
 
-Le même principe s’applique à `make build`, `make db-reset-dev`, `make test-e2e` et aux autres cibles `make`.
+Le même principe s'applique à `make build`, `make db-reset-dev`, `make test-e2e` et aux autres cibles `make`.
 
 Variables sensibles ou locales notables :
 
@@ -99,7 +108,7 @@ Variables sensibles ou locales notables :
 - `WC_CONSUMER_KEY`
 - `WC_CONSUMER_SECRET`
 
-Commandes disponibles :
+## Commandes principales
 
 ```bash
 make up
@@ -153,15 +162,15 @@ make test-e2e-headed
 make test-select
 ```
 
-- `make test` et `make test-unit` s’exécutent dans le conteneur `app`
-- `make test-e2e` s’exécute sur l’hôte
+- `make test` et `make test-unit` s'exécutent dans le conteneur `app`
+- `make test-e2e` s'exécute sur l'hôte
 - `make test-e2e-ui`, `make test-e2e-headed` et `make test-select` sont aussi disponibles pour Playwright
 
 Prérequis pour `make test-e2e` :
 
-1. l’application et PostgreSQL doivent déjà être démarrés
+1. l'application et PostgreSQL doivent déjà être démarrés
 2. le schéma et le seed doivent déjà être appliqués
-3. les dépendances Node locales doivent déjà être installées sur l’hôte (`pnpm install`)
+3. les dépendances Node locales doivent déjà être installées sur l'hôte (`pnpm install`)
 4. Chromium Playwright doit être installé localement une fois
 5. si les flux Stripe doivent être testés réellement, de vraies clés de test doivent être définies dans `.env` ou `.env.local`
 6. si les emails transactionnels doivent être testés réellement, `BREVO_API_KEY` et `EMAIL_FROM` doivent aussi être définis dans `.env` ou `.env.local`
@@ -188,7 +197,8 @@ make up
 make db-schema
 ```
 
-`make db-schema` régénère le client Prisma puis applique le schéma courant via `prisma db push`. Pour repartir proprement avec schéma + seed :
+`make db-schema` régénère le client Prisma puis applique le schéma courant via `prisma db push`.
+Pour repartir proprement avec schéma + seed :
 
 ```bash
 make db-reset-dev
@@ -202,11 +212,9 @@ docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c 
 pnpm run typecheck
 ```
 
-L’évolution fonctionnelle et structurelle est documentée par version dans `docs/`.
-
 ## Seed dev
 
-Le seed de développement reconstruit un socle local minimal puis hydrate le catalogue depuis le WooCommerce Creatyss d’origine.
+Le seed de développement reconstruit un socle local minimal puis hydrate le catalogue depuis le WooCommerce Creatyss d'origine.
 
 Il est destiné uniquement au développement local.
 
@@ -230,9 +238,9 @@ Le seed de développement couvre :
 - les catégories WooCommerce
 - les produits et déclinaisons WooCommerce
 - les prix catalogue WooCommerce
-- les médias produits WooCommerce si l’import images est activé
+- les médias produits WooCommerce si l'import images est activé
 
-Variables requises pour l’hydratation catalogue :
+Variables requises pour l'hydratation catalogue :
 
 - `WC_BASE_URL`
 - `WC_CONSUMER_KEY`
@@ -258,9 +266,9 @@ Pages publiques disponibles :
 
 ## Auth admin
 
-L’auth admin repose sur `users`, `auth_identities` et `auth_password_credentials`, plus un cookie de session signé `HttpOnly` côté application.
+L'auth admin repose sur `users`, `auth_identities` et `auth_password_credentials`, plus un cookie de session signé `HttpOnly` côté application.
 
-Variables d’environnement requises :
+Variables d'environnement requises :
 
 - `ADMIN_SESSION_SECRET`
 
@@ -295,9 +303,9 @@ Vérification manuelle du login admin :
 1. ouvrez `http://localhost:3000/admin/login`
 2. connectez-vous avec `admin@creatyss.local` / `AdminDev123!`
 3. vérifiez la redirection vers `/admin`
-4. vérifiez qu’un accès direct à `http://localhost:3000/admin` fonctionne après connexion
+4. vérifiez qu'un accès direct à `http://localhost:3000/admin` fonctionne après connexion
 5. cliquez sur la déconnexion puis vérifiez que `/admin` redirige de nouveau vers `/admin/login`
-6. vérifiez aussi qu’un login avec `inactive-admin@creatyss.local` / `AdminDev123!` est refusé
+6. vérifiez aussi qu'un login avec `inactive-admin@creatyss.local` / `AdminDev123!` est refusé
 
 ## Media admin
 
@@ -342,28 +350,30 @@ rm <chemin_retourne>
 
 ## Documentation
 
-Documentation générale :
+### Documentation courante
 
 - `AGENTS.md`
-- `docs/architecture-v1.md`
-- `docs/roadmap-v1.md`
+- `docs/architecture/00-socle-overview.md`
+- `docs/architecture/01-architecture-principles.md`
+- `docs/architecture/02-client-needs-capabilities-and-levels.md`
+- `docs/architecture/03-core-domains-and-toggleable-capabilities.md`
+- `docs/architecture/04-solution-profiles-and-project-assembly.md`
+- `docs/architecture/05-maintenance-and-operating-levels.md`
+- `docs/architecture/06-socle-guarantees.md`
+- `docs/architecture/07-transactions-and-consistency.md`
+- `docs/architecture/08-domain-events-jobs-and-async-flows.md`
+- `docs/architecture/09-integrations-providers-and-external-boundaries.md`
+- `docs/architecture/10-data-lifecycle-and-governance.md`
+- `docs/architecture/11-pricing-and-cost-model.md`
+- `docs/domains/README.md`
 - `docs/testing/strategy.md`
 - `docs/testing/roadmap.md`
-- `docs/v1-qa-checklist.md`
-
-Documentation versionnée :
-
-- `docs/v10/README.md` — admin pilotage & vues de données (phase active)
-- `docs/v8/README.md` — design system admin premium
-- `docs/v9/README.md` — consolidation du front public
-- `docs/v6/scope.md` — périmètre et fondations métier
-- `docs/v6/data-model.md` — modèle métier
-- `docs/v6/admin-language-and-ux.md` — langage et UX admin
-- `docs/v6/glossary.md` — vocabulaire métier
+- `.claude/CLAUDE.md`
+- `.github/copilot-instructions.md`
 
 ## Contraintes importantes
 
-Le projet n’utilise pas :
+Le projet n'utilise pas :
 
 - WordPress
 - WooCommerce
@@ -373,7 +383,9 @@ Le projet n’utilise pas :
 
 ## État actuel du projet
 
-Le dépôt contient une base locale exploitable pour Creatyss avec :
+Le dépôt contient aujourd'hui un socle e-commerce local exploitable pour Creatyss, avec un coeur documentaire désormais structuré par architecture et domaines.
+
+Les capacités effectivement implémentées à ce stade couvrent notamment :
 
 - authentification admin serveur
 - bibliothèque media locale
@@ -384,12 +396,4 @@ Le dépôt contient une base locale exploitable pour Creatyss avec :
 - front public catalogue, blog et homepage
 - SEO de base sur produits et articles
 
-Les phases récentes ont successivement consolidé le projet :
-
-- **V8** — design system admin premium : tokens de marque, dark mode, shell sidebar, migration composants shadcn
-- **V9** — consolidation du front public : namespace CSS public, tokens V8, cohérence structurelle des pages publiques
-- **V10** — admin pilotage & vues de données : dashboard opérationnel, DataTable commandes et produits, Table blog
-
-Le projet évolue par versions et lots documentés dans `docs/`. `docs/v6/` reste la base documentaire métier et structurelle de référence.
-
-La checklist manuelle de recette historique reste centralisée dans `docs/v1-qa-checklist.md`.
+La lecture de référence doit désormais partir de `docs/architecture/` puis `docs/domains/`.

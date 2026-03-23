@@ -1,37 +1,90 @@
 ---
 name: lot-implementation
-description: Implémenter un lot Creatyss documenté dans docs/vX/*.md en respectant strictement le périmètre, la compatibilité demandée et la structure du projet.
+description: Implémenter un lot Creatyss documenté en respectant strictement le périmètre demandé, la doctrine courante du repo, la compatibilité attendue et la structure du projet.
 ---
 
 # Quand utiliser ce skill
 
-Utiliser ce skill quand la tâche demande d’implémenter un lot décrit dans un document de type :
-
-- `docs/v6/*.md`
-- ou plus généralement `docs/vX/*.md`
+Utiliser ce skill quand la tâche demande d’implémenter un lot clairement défini, une évolution ciblée ou une fonctionnalité bornée dans le repo.
 
 Exemples :
 
-- ajout d’un lot produit simple natif
-- évolution d’un flux admin documenté
-- adaptation ciblée du modèle, de la lecture ou de l’écriture selon un lot précis
+- implémentation d’une verticale admin
+- ajout ciblé dans un domaine coeur ou optionnel
+- extraction locale de helpers, types ou queries dans un périmètre cadré
+- adaptation d’un flux serveur, UI ou base de données après cadrage
 
 ## Source de vérité
 
-- Le document de lot explicitement mentionné est la source de vérité.
-- En cas de conflit entre le code existant et le lot demandé, appliquer le lot demandé en préservant la compatibilité explicitement requise.
-- Ne jamais extrapoler à l’étape suivante.
-- Ne jamais élargir le périmètre au-delà de ce que demande le lot.
+Lire par défaut, dans cet ordre :
+
+1. `README.md`
+2. `AGENTS.md`
+3. `docs/architecture/00-socle-overview.md`
+4. `docs/architecture/01-architecture-principles.md`
+5. `docs/architecture/02-client-needs-capabilities-and-levels.md`
+6. `docs/architecture/03-core-domains-and-toggleable-capabilities.md`
+7. `docs/architecture/04-solution-profiles-and-project-assembly.md`
+8. `docs/architecture/05-maintenance-and-operating-levels.md`
+9. `docs/architecture/06-socle-guarantees.md`
+10. `docs/architecture/07-transactions-and-consistency.md`
+11. `docs/architecture/08-domain-events-jobs-and-async-flows.md`
+12. `docs/architecture/09-integrations-providers-and-external-boundaries.md`
+13. `docs/architecture/10-data-lifecycle-and-governance.md`
+14. `docs/architecture/11-pricing-and-cost-model.md`
+15. `docs/domains/README.md`
+
+Ensuite seulement, lire la documentation ciblée par la demande :
+
+- fiche de domaine dans `docs/domains/`
+- documentation de test dans `docs/testing/`
+- documentation de lot explicitement visée
+
+Les anciennes docs `docs/v*` ne sont plus la source de vérité par défaut.
+Elles ne servent que de contexte ciblé si une demande les vise explicitement.
 
 ## Règles d’implémentation
 
-- Commencer par lire le document de lot ciblé en entier.
+- Commencer par lire le périmètre ciblé en entier.
 - Identifier les impacts minimaux nécessaires.
 - Ne modifier que les fichiers strictement nécessaires.
 - Préserver le comportement existant hors périmètre.
 - Ne pas profiter du lot pour refactorer des zones non demandées.
 - Ne pas renommer massivement fichiers, types ou fonctions sans demande explicite.
 - Choisir l’implémentation la plus simple, lisible et robuste compatible avec l’évolution future.
+- Toujours auditer d’abord, éditer ensuite.
+- Toujours vérifier la cohérence avec la doctrine courante avant de modifier le code.
+
+## Doctrine projet à respecter
+
+Le repo est structuré autour de :
+
+- domaines coeur
+- domaines optionnels
+- capabilities toggleables
+- niveaux de sophistication
+- niveaux de maintenance / exploitation
+- garanties de socle
+- cohérence transactionnelle
+- gouvernance de cycle de vie des données
+
+La hiérarchie documentaire des domaines est :
+
+- `core/`
+- `optional/`
+- `satellites/`
+- `cross-cutting/`
+
+Ne jamais confondre :
+
+- rang documentaire
+- criticité architecturale
+
+Points canoniques à préserver :
+
+- `stores` est le nom canonique du domaine de boutique / composition projet
+- `availability` est le domaine canonique de disponibilité
+- `inventory` est une spécialisation satellitaire d’`availability`
 
 ## Contraintes projet à respecter
 
@@ -44,6 +97,7 @@ Exemples :
 - Ne jamais ajouter de dépendance inutile.
 - Ne jamais proposer WordPress, WooCommerce, Shopify, Supabase ou Vercel.
 - Ne jamais sur-architecturer.
+- Ne jamais traiter une capability optionnelle comme si elle appartenait d’office au coeur.
 
 ## Structure de code attendue
 
@@ -51,12 +105,24 @@ Respecter autant que possible la structure existante :
 
 - `app/` : routes, layouts, pages, handlers Next.js
 - `features/` : cas d’usage et verticales fonctionnelles
-- `entities/` ou `domain/` : types et règles métier
+- `entities/` ou `domain/` : types, règles métier, validations métier
 - `db/` : migrations, seeds, repositories, accès PostgreSQL
 - `components/` : composants UI
 - `lib/` : helpers techniques
 - `public/` : assets et uploads locaux
-- `docs/` : documentation projet par version et lot
+- `scripts/` : scripts techniques
+- `docs/architecture/` : doctrine du socle
+- `docs/domains/` : documentation des domaines
+- `docs/testing/` : stratégie et docs de test
+
+## Discipline de modification
+
+- Toujours rester dans le périmètre demandé.
+- Toujours privilégier de petits incréments sûrs.
+- Toujours préserver les contrats publics, chemins d’import publics et signatures runtime sauf demande explicite.
+- Ne pas introduire de redesign public quand une extraction interne locale suffit.
+- Si une opération touche la cohérence métier ou transactionnelle, vérifier `docs/architecture/07-transactions-and-consistency.md`.
+- Si une modification touche la doctrine, vérifier la cohérence entre `README.md`, `AGENTS.md`, `docs/architecture/` et `docs/domains/`.
 
 ## Format de réponse attendu
 

@@ -1,10 +1,63 @@
 Projet Creatyss.
-Stack cible: Next.js App Router, TypeScript strict, PostgreSQL, Docker Compose local, VPS OVH ensuite.
-Ne jamais proposer WordPress, WooCommerce, Shopify, Supabase, Vercel.
-Pas de dépendance inutile.
-Aucun any sauf justification explicite.
-Séparer strictement domaine métier, data access, logique serveur, UI.
-Server Components par défaut.
-Ne pas mélanger logique métier et présentation.
-Valider toutes les entrées côté serveur.
-Privilégier des petits incréments sûrs, production-ready mais simples.
+
+Socle e-commerce custom, local-first, maintenable, modulaire, strictement typé, déployable ensuite sur VPS OVH, et réutilisable pour d'autres projets e-commerce.
+
+Source de vérité courante :
+- README.md
+- AGENTS.md
+- docs/architecture/00 à 11
+- docs/domains/README.md
+
+Les anciennes docs docs/v* ne sont plus la source de vérité par défaut.
+Elles ne servent que de contexte ciblé si une demande les vise explicitement.
+
+Stack cible :
+- Next.js App Router
+- TypeScript strict
+- PostgreSQL
+- Docker Compose local
+- Makefile
+- VPS OVH ensuite
+
+Doctrine du repo :
+- domaines coeur
+- domaines optionnels
+- capabilities toggleables
+- niveaux de sophistication
+- niveaux de maintenance / exploitation
+- garanties de socle
+- cohérence transactionnelle
+- gouvernance de cycle de vie des données
+
+Règles absolues :
+- Ne jamais proposer WordPress, WooCommerce, Shopify, Supabase ou Vercel.
+- Ne jamais ajouter de dépendance inutile.
+- Ne jamais sur-architecturer.
+- Aucun `any` sauf justification explicite et exceptionnelle.
+- Séparer strictement domaine métier, accès aux données, logique serveur et UI.
+- Server Components par défaut.
+- Ne pas mélanger logique métier et présentation.
+- Valider toutes les entrées côté serveur.
+- Ne jamais exposer de secret côté client.
+- Toujours privilégier des petits incréments sûrs, production-ready mais simples.
+- Toujours rester dans le périmètre demandé.
+- Ne jamais faire dériver la doctrine courante à partir d'un ancien document isolé sans validation explicite.
+
+Rappels doctrinaux :
+- `stores` est le nom canonique du domaine de boutique / composition projet.
+- `availability` est le domaine canonique de disponibilité.
+- `inventory` est une spécialisation satellitaire d'`availability`, centrée sur le quantitatif.
+- Ne pas confondre rang documentaire et criticité architecturale.
+
+Quand une demande touche la doctrine ou la documentation, vérifier la cohérence entre :
+- README.md
+- AGENTS.md
+- docs/architecture/
+- docs/domains/
+- .claude/CLAUDE.md
+
+Quand une demande touche le code :
+- préférer la solution la plus simple compatible avec l'évolution future
+- préserver le comportement existant hors périmètre
+- ne modifier que les fichiers nécessaires
+- vérifier typecheck et tests pertinents selon le lot
