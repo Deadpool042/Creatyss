@@ -1,47 +1,108 @@
-import type { CategoryDetail, CategorySummary } from "../category.types";
-import type { AdminCategoryDetail, AdminCategorySummary } from "../admin-category.types";
-import type { CategoryRow } from "../types/rows";
+import type {
+  CategoryChildSummary,
+  CategoryDetail,
+  CategorySeoIndexingState,
+  CategorySeoSnapshot,
+  CategoryStatus,
+  CategorySummary,
+} from "@db-categories/public";
+import type {
+  CategoryDetailRow,
+  CategorySummaryRow,
+  NestedCategoryChildRow,
+} from "@db-categories/types/rows";
 
-export function mapCategorySummary(row: CategoryRow): CategorySummary {
+export function mapCategoryStatusToPrisma(
+  status: CategoryStatus
+): "DRAFT" | "ACTIVE" | "ARCHIVED" {
+  switch (status) {
+    case "draft":
+      return "DRAFT";
+    case "active":
+      return "ACTIVE";
+    case "archived":
+      return "ARCHIVED";
+  }
+}
+
+function mapCategoryStatus(status: "DRAFT" | "ACTIVE" | "ARCHIVED"): CategoryStatus {
+  switch (status) {
+    case "DRAFT":
+      return "draft";
+    case "ACTIVE":
+      return "active";
+    case "ARCHIVED":
+      return "archived";
+  }
+}
+
+function mapSeoIndexingState(state: "INDEX" | "NOINDEX"): CategorySeoIndexingState {
+  return state === "INDEX" ? "index" : "noindex";
+}
+
+function mapCategorySeo(
+  seo:
+    | {
+        metaTitle: string | null;
+        metaDescription: string | null;
+        canonicalUrl: string | null;
+        indexingState: "INDEX" | "NOINDEX";
+      }
+    | null
+): CategorySeoSnapshot | null {
+  if (!seo) {
+    return null;
+  }
+
+  return {
+    metaTitle: seo.metaTitle,
+    metaDescription: seo.metaDescription,
+    canonicalUrl: seo.canonicalUrl,
+    indexingState: mapSeoIndexingState(seo.indexingState),
+  };
+}
+
+function mapCategoryChild(row: NestedCategoryChildRow): CategoryChildSummary {
   return {
     id: row.id,
+    storeId: row.storeId,
+    parentId: row.parentId,
     slug: row.slug,
     name: row.name,
     description: row.description,
-    status: row.status,
+    status: mapCategoryStatus(row.status),
+    sortOrder: row.sortOrder,
     isFeatured: row.isFeatured,
-    displayOrder: row.displayOrder,
-    seoTitle: row.seoTitle,
-    seoDescription: row.seoDescription,
-    representativeMediaId: row.representativeMediaId,
-    representativeMediaStorageKey: row.representativeMedia?.storageKey ?? null,
+  };
+}
+
+export function mapCategorySummary(row: CategorySummaryRow): CategorySummary {
+  return {
+    id: row.id,
+    storeId: row.storeId,
+    parentId: row.parentId,
+    slug: row.slug,
+    name: row.name,
+    description: row.description,
+    status: mapCategoryStatus(row.status),
+    sortOrder: row.sortOrder,
+    isFeatured: row.isFeatured,
+    seo: mapCategorySeo(row.seo),
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   };
 }
 
-export function mapCategoryDetail(row: CategoryRow): CategoryDetail {
-  return mapCategorySummary(row);
-}
-
-export function mapAdminCategorySummary(row: CategoryRow): AdminCategorySummary {
+export function mapCategoryDetail(row: CategoryDetailRow): CategoryDetail {
   return {
-    id: row.id,
-    slug: row.slug,
-    name: row.name,
-    description: row.description,
-    status: row.status,
-    isFeatured: row.isFeatured,
-    displayOrder: row.displayOrder,
-    seoTitle: row.seoTitle,
-    seoDescription: row.seoDescription,
-    representativeMediaId: row.representativeMediaId,
-    representativeMediaStorageKey: row.representativeMedia?.storageKey ?? null,
-    createdAt: row.createdAt,
-    updatedAt: row.updatedAt,
+    ...mapCategorySummary(row),
+    parent: row.parent
+      ? {
+          id: row.parent.id,
+          slug: row.parent.slug,
+          name: row.parent.name,
+        }
+      : null,
+    children: row.children.map(mapCategoryChild),
   };
-}
-
-export function mapAdminCategoryDetail(row: CategoryRow): AdminCategoryDetail {
-  return mapAdminCategorySummary(row);
 }

@@ -1,9 +1,11 @@
-import { createHash, randomUUID } from "node:crypto";
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import sharp from "sharp";
-import { Pool } from "pg";
+import { MediaAssetKind, MediaAssetStatus, type PrismaClient } from "@prisma/client";
+import { createScriptPrismaClient } from "./helpers/prisma-client.ts";
+import { ensureDefaultStore } from "./helpers/store-bootstrap.ts";
 
 type ProductImageEntry = {
   src: string;
@@ -39,12 +41,6 @@ const UPLOADS_DIR = (process.env.UPLOADS_DIR ?? "public/uploads").replace(/\/$/,
 const UPLOADS_ABS = path.join(ROOT, UPLOADS_DIR);
 const WEBP_OPTIONS: sharp.WebpOptions = { quality: 85, effort: 4 };
 
-function readDatabaseUrl(): string {
-  const value = process.env.DATABASE_URL;
-  if (value && value.trim().length > 0) return value.trim();
-  return "postgresql://creatyss:creatyss@db:5432/creatyss";
-}
-
 function toWebpDestRelative(src: string): string {
   const withoutExt = src.replace(/\.[^.]+$/, "");
   return `seed/${withoutExt}.webp`;
@@ -58,11 +54,10 @@ async function convertToWebpIfNeeded(
   byteSize: number;
   width: number | null;
   height: number | null;
-  checksumSha256: string | null;
 }> {
   if (!existsSync(src)) {
     process.stdout.write(`  skip (src missing): ${path.relative(ROOT, src)}\n`);
-    return { ok: false, byteSize: 0, width: null, height: null, checksumSha256: null };
+    return { ok: false, byteSize: 0, width: null, height: null };
   }
 
   if (!FORCE && existsSync(dest)) {
@@ -75,7 +70,6 @@ async function convertToWebpIfNeeded(
       byteSize: buffer.length,
       width: metadata.width ?? null,
       height: metadata.height ?? null,
-      checksumSha256: createHash("sha256").update(buffer).digest("hex"),
     };
   }
 
@@ -86,7 +80,7 @@ async function convertToWebpIfNeeded(
   await writeFile(dest, data, { flag: FORCE ? "w" : "wx" });
 
   process.stdout.write(
-    `  converted → ${path.relative(ROOT, dest)} (${Math.round(data.length / 1024)} kB)\n`
+    `  converted -> ${path.relative(ROOT, dest)} (${Math.round(data.length / 1024)} kB)\n`
   );
 
   return {
@@ -94,150 +88,119 @@ async function convertToWebpIfNeeded(
     byteSize: data.length,
     width: info.width ?? null,
     height: info.height ?? null,
-    checksumSha256: createHash("sha256").update(data).digest("hex"),
   };
 }
 
 async function upsertMediaAsset(
-  pool: Pool,
-  storageKey: string,
-  originalName: string,
+  prisma: PrismaClient,
+  storeId: string,
+  storagePath: string,
+  originalFilename: string,
   altText: string | null,
   byteSize: number,
   width: number | null,
-  height: number | null,
-  checksumSha256: string | null
-): Promise<string> {
-  const result = await pool.query<{ id: string }>(
-    `
-      insert into media_assets (
-        id,
-        storage_key,
-        original_name,
-        mime_type,
-        byte_size,
+  height: number | null
+) {
+  const existing = await prisma.mediaAsset.findFirst({
+    where: {
+      storeId,
+      storagePath,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (existing) {
+    return prisma.mediaAsset.update({
+      where: {
+        id: existing.id,
+      },
+      data: {
+        kind: MediaAssetKind.IMAGE,
+        status: MediaAssetStatus.ACTIVE,
+        originalFilename,
+        storagePath,
+        mimeType: "image/webp",
+        altText,
+        fileSizeBytes: byteSize,
         width,
         height,
-        alt_text,
-        checksum_sha256,
-        created_at,
-        updated_at
-      )
-      values ($1, $2, $3, 'image/webp', $4::bigint, $5, $6, $7, $8, now(), now())
-      on conflict (storage_key) do update
-        set original_name = excluded.original_name,
-            mime_type = excluded.mime_type,
-            byte_size = excluded.byte_size,
-            width = excluded.width,
-            height = excluded.height,
-            alt_text = excluded.alt_text,
-            checksum_sha256 = excluded.checksum_sha256,
-            updated_at = now()
-      returning id::text as id
-    `,
-    [
-      randomUUID(),
-      storageKey,
-      originalName,
-      String(byteSize),
-      width,
-      height,
-      altText,
-      checksumSha256,
-    ]
-  );
-
-  const mediaId = result.rows[0]?.id;
-
-  if (!mediaId) {
-    throw new Error(`Failed to upsert media asset for ${storageKey}`);
+      },
+      select: {
+        id: true,
+      },
+    });
   }
 
-  return mediaId;
+  return prisma.mediaAsset.create({
+    data: {
+      storeId,
+      kind: MediaAssetKind.IMAGE,
+      status: MediaAssetStatus.ACTIVE,
+      originalFilename,
+      storagePath,
+      mimeType: "image/webp",
+      altText,
+      fileSizeBytes: byteSize,
+      width,
+      height,
+    },
+    select: {
+      id: true,
+    },
+  });
 }
 
 async function upsertProductImage(
-  pool: Pool,
+  prisma: PrismaClient,
+  storeId: string,
   productSlug: string,
   mediaAssetId: string,
   sortOrder: number,
   isPrimary: boolean
-): Promise<void> {
-  const productResult = await pool.query<{ id: string }>(
-    `select id::text as id from products where slug = $1 limit 1`,
-    [productSlug]
-  );
+) {
+  const product = await prisma.product.findFirst({
+    where: {
+      storeId,
+      slug: productSlug,
+    },
+    select: {
+      id: true,
+    },
+  });
 
-  const productId = productResult.rows[0]?.id;
-
-  if (!productId) {
+  if (!product) {
     process.stdout.write(`  skip (product missing): ${productSlug}\n`);
     return;
   }
 
-  if (isPrimary) {
-    await pool.query(
-      `update product_images set is_primary = false, updated_at = now() where product_id = $1`,
-      [productId]
-    );
-  }
-
-  const existing = await pool.query<{ id: string }>(
-    `
-      select id::text as id
-      from product_images
-      where product_id = $1 and media_asset_id = $2
-      limit 1
-    `,
-    [productId, mediaAssetId]
-  );
-
-  if (existing.rows.length > 0) {
-    await pool.query(
-      `
-        update product_images
-        set is_primary = $3,
-            sort_order = $4,
-            updated_at = now()
-        where id = $1 and media_asset_id = $2
-      `,
-      [existing.rows[0]?.id, mediaAssetId, isPrimary, sortOrder]
-    );
-    return;
-  }
-
-  await pool.query(
-    `
-      insert into product_images (
-        id,
-        product_id,
-        media_asset_id,
-        is_primary,
-        sort_order,
-        created_at,
-        updated_at
-      )
-      values ($1, $2, $3, $4, $5, now(), now())
-    `,
-    [randomUUID(), productId, mediaAssetId, isPrimary, sortOrder]
-  );
+  await prisma.productMedia.upsert({
+    where: {
+      productId_mediaAssetId: {
+        productId: product.id,
+        mediaAssetId,
+      },
+    },
+    update: {
+      sortOrder,
+      isPrimary,
+    },
+    create: {
+      productId: product.id,
+      mediaAssetId,
+      sortOrder,
+      isPrimary,
+    },
+  });
 }
 
-async function setCategoryRepresentativeImage(
-  pool: Pool,
-  categorySlug: string,
-  mediaAssetId: string
-): Promise<void> {
-  await pool.query(
-    `update categories set representative_media_id = $2, updated_at = now() where slug = $1`,
-    [categorySlug, mediaAssetId]
-  );
-}
-
-async function main() {
-  const pool = new Pool({ connectionString: readDatabaseUrl() });
+export async function runSeedImages(): Promise<void> {
+  const prisma = createScriptPrismaClient();
 
   try {
+    const store = await ensureDefaultStore(prisma);
+
     process.stdout.write("==> Placeholder (creatyss.webp)\n");
 
     const placeholderSrc = path.join(SEED_DIR, "creatyss.webp");
@@ -260,7 +223,7 @@ async function main() {
 
     const manifestPath = path.join(SEED_DIR, "manifest.json");
     if (!existsSync(manifestPath)) {
-      process.stdout.write("==> No manifest.json — skipping image seed.\n");
+      process.stdout.write("==> No manifest.json - skipping image seed.\n");
       return;
     }
 
@@ -269,79 +232,66 @@ async function main() {
     process.stdout.write("==> Product images\n");
 
     for (const product of manifest.products ?? []) {
-      const realImages = (product.images ?? []).filter((img) => img.src.trim() !== "");
-      if (realImages.length === 0) continue;
+      const realImages = (product.images ?? []).filter((image) => image.src.trim().length > 0);
+      if (realImages.length === 0) {
+        continue;
+      }
 
       process.stdout.write(`  product: ${product.slug}\n`);
 
       for (const image of realImages) {
         const src = path.join(SEED_DIR, image.src);
-        const storageKey = toWebpDestRelative(image.src);
-        const dest = path.join(UPLOADS_ABS, storageKey);
-        const originalName = `${path.basename(image.src).replace(/\.[^.]+$/, "")}.webp`;
-
+        const storagePath = toWebpDestRelative(image.src);
+        const dest = path.join(UPLOADS_ABS, storagePath);
+        const originalFilename = `${path.basename(image.src).replace(/\.[^.]+$/, "")}.webp`;
         const converted = await convertToWebpIfNeeded(src, dest);
-        if (!converted.ok) continue;
 
-        const mediaAssetId = await upsertMediaAsset(
-          pool,
-          storageKey,
-          originalName,
+        if (!converted.ok) {
+          continue;
+        }
+
+        const mediaAsset = await upsertMediaAsset(
+          prisma,
+          store.id,
+          storagePath,
+          originalFilename,
           image.altText ?? null,
           converted.byteSize,
           converted.width,
-          converted.height,
-          converted.checksumSha256
+          converted.height
         );
 
         await upsertProductImage(
-          pool,
+          prisma,
+          store.id,
           product.slug,
-          mediaAssetId,
+          mediaAsset.id,
           image.sortOrder,
           image.isPrimary
         );
       }
     }
 
-    process.stdout.write("==> Category images\n");
-
-    for (const category of manifest.categories ?? []) {
-      const image = category.image;
-      if (!image) continue;
-
-      process.stdout.write(`  category: ${category.slug}\n`);
-
-      const src = path.join(SEED_DIR, image.src);
-      const storageKey = toWebpDestRelative(image.src);
-      const dest = path.join(UPLOADS_ABS, storageKey);
-      const originalName = `${path.basename(image.src).replace(/\.[^.]+$/, "")}.webp`;
-
-      const converted = await convertToWebpIfNeeded(src, dest);
-      if (!converted.ok) continue;
-
-      const mediaAssetId = await upsertMediaAsset(
-        pool,
-        storageKey,
-        originalName,
-        image.altText ?? null,
-        converted.byteSize,
-        converted.width,
-        converted.height,
-        converted.checksumSha256
+    if ((manifest.categories ?? []).length > 0) {
+      process.stdout.write(
+        "==> Category images ignored: the current Prisma schema does not expose category media links.\n"
       );
-
-      await setCategoryRepresentativeImage(pool, category.slug, mediaAssetId);
     }
 
     process.stdout.write("==> Done.\n");
   } finally {
-    await pool.end();
+    await prisma.$disconnect();
   }
 }
 
-main().catch((error: unknown) => {
-  const message = error instanceof Error ? error.message : "Unknown seed-images error.";
-  process.stderr.write(`seed-images: ${message}\n`);
-  process.exitCode = 1;
-});
+async function main() {
+  await runSeedImages();
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().catch((error: unknown) => {
+    const message = error instanceof Error ? error.message : "Unknown seed-images error.";
+    process.stderr.write(`seed-images: ${message}\n`);
+    process.exitCode = 1;
+  });
+}

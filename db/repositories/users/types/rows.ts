@@ -1,37 +1,43 @@
 import type { Prisma } from "@prisma/client";
 
-export const userListSelect = {
+const roleAssignmentSelect = {
   id: true,
+  assignedAt: true,
+  role: {
+    select: {
+      id: true,
+      code: true,
+      name: true,
+      scopeType: true,
+    },
+  },
+} as const satisfies Prisma.UserRoleSelect;
+
+export const userAccountSelect = {
+  id: true,
+  storeId: true,
   email: true,
   firstName: true,
   lastName: true,
   displayName: true,
-  role: true,
   status: true,
-  emailVerifiedAt: true,
-  lastLoginAt: true,
+  lastSeenAt: true,
+  invitedAt: true,
+  activatedAt: true,
+  suspendedAt: true,
+  disabledAt: true,
   createdAt: true,
   updatedAt: true,
-} satisfies Prisma.UserSelect;
+  directUserRoles: {
+    orderBy: [{ assignedAt: "desc" }],
+    select: roleAssignmentSelect,
+  },
+} as const satisfies Prisma.UserSelect;
 
-export const userDetailSelect = {
-  id: true,
-  email: true,
-  firstName: true,
-  lastName: true,
-  displayName: true,
-  role: true,
-  status: true,
-  emailVerifiedAt: true,
-  lastLoginAt: true,
-  createdAt: true,
-  updatedAt: true,
-} satisfies Prisma.UserSelect;
-
-export type UserListRow = Prisma.UserGetPayload<{
-  select: typeof userListSelect;
+export type UserAccountRow = Prisma.UserGetPayload<{
+  select: typeof userAccountSelect;
 }>;
 
-export type UserDetailRow = Prisma.UserGetPayload<{
-  select: typeof userDetailSelect;
+export type UserRoleAssignmentRow = Prisma.UserRoleGetPayload<{
+  select: typeof roleAssignmentSelect;
 }>;

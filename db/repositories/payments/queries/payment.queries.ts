@@ -1,17 +1,21 @@
 import { prisma } from "@/db/prisma-client";
-import { paymentSelect } from "../types/rows";
+import { paymentSelect, type PaymentRow } from "@db-payments/types/rows";
 
-export async function findPaymentRowById(id: string) {
-  return prisma.payment.findUnique({
-    where: { id },
+export async function listPaymentRowsByOrderId(orderId: string): Promise<PaymentRow[]> {
+  return prisma.payment.findMany({
+    where: {
+      orderId,
+    },
+    orderBy: [{ createdAt: "desc" }],
     select: paymentSelect,
   });
 }
 
-export async function listPaymentRowsByOrderId(orderId: string) {
-  return prisma.payment.findMany({
-    where: { orderId },
-    orderBy: [{ createdAt: "desc" }],
+export async function findPaymentRowById(id: string): Promise<PaymentRow | null> {
+  return prisma.payment.findUnique({
+    where: {
+      id,
+    },
     select: paymentSelect,
   });
 }

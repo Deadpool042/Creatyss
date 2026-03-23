@@ -26,6 +26,9 @@
     "prisma:db:push": "prisma db push --accept-data-loss",
     "prisma:db:reset": "prisma db push --force-reset --accept-data-loss",
     "prisma:studio": "prisma studio --hostname 0.0.0.0 --port 5555",
+    "seed:admins": "node --experimental-strip-types scripts/seed-dev-admin-users.ts",
+    "seed:images": "node --experimental-strip-types scripts/seed-images.ts",
+    "seed:woocommerce": "node --experimental-strip-types scripts/import-woocommerce.ts",
     "seed:dev": "node --experimental-strip-types scripts/seed-dev.ts"
   },
   "dependencies": {

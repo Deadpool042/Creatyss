@@ -1,38 +1,38 @@
-import { mapCartRowToCart } from "@db-cart/helpers/mappers/cart.mapper";
-import { mapCustomerCart } from "@db-cart/helpers/mappers/customer-cart.mapper";
-import { parseCustomerCartCustomerId } from "@db-cart/helpers/validation/customer-cart.validation";
-import {
-  CustomerCartRepositoryError,
-  type CustomerCart,
+import { prisma } from "@/db/prisma-client";
+import { createCart } from "@db-cart/core";
+import { mapCustomerCart } from "@db-cart/helpers/mappers";
+import { findActiveCustomerCartRowByCustomerId } from "@db-cart/queries/cart.queries";
+import type {
+  CreateCustomerCartInput,
+  CustomerCart,
 } from "@db-cart/customer/types/customer-cart.types";
-import { findCustomerCartRowByCustomerId } from "@db-cart/queries/customer/customer-cart.queries";
 
-export async function findCustomerCartByCustomerId(
-  customerId: string
-): Promise<CustomerCart | null> {
-  const normalizedCustomerId = parseCustomerCartCustomerId(customerId);
-  const row = await findCustomerCartRowByCustomerId(normalizedCustomerId);
+async function ensureCustomerExists(customerId: string): Promise<void> {
+  const customer = await prisma.customer.findUnique({
+    where: {
+      id: customerId,
+    },
+    select: {
+      id: true,
+    },
+  });
 
-  if (row === null) {
-    return null;
+  if (!customer) {
+    throw new Error("Customer not found.");
   }
-
-  if (row.userId === null) {
-    return null;
-  }
-
-  return mapCustomerCart(mapCartRowToCart(row) as CustomerCart);
 }
 
-export async function requireCustomerCartByCustomerId(customerId: string): Promise<CustomerCart> {
-  const cart = await findCustomerCartByCustomerId(customerId);
+export async function findActiveCustomerCartByCustomerId(
+  customerId: string
+): Promise<CustomerCart | null> {
+  const row = await findActiveCustomerCartRowByCustomerId(customerId.trim());
+  return row ? mapCustomerCart(row) : null;
+}
 
-  if (cart === null) {
-    throw new CustomerCartRepositoryError(
-      "customer_cart_not_found",
-      "Le panier client est introuvable."
-    );
-  }
-
-  return cart;
+export async function createCustomerCart(
+  input: CreateCustomerCartInput
+): Promise<CustomerCart> {
+  await ensureCustomerExists(input.customerId);
+  const cart = await createCart(input);
+  return cart as CustomerCart;
 }

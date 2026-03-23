@@ -1,3 +1,3 @@
 {
-  "_comment": "Seed image manifest. Product images are handled by scripts/import-woocommerce.ts. Category images are managed via the admin UI. Only creatyss.webp (placeholder) is seeded here."
+  "_comment": "Seed image manifest. The standard dev seed imports product media from WooCommerce. This manifest remains optional for local placeholder images only. Category images are currently ignored by the Prisma schema."
 }

@@ -6,10 +6,14 @@
   "include": [
     "db/health.ts",
     "db/prisma-client.ts",
+    "db/repositories/categories/**/*.ts",
     "db/repositories/pages/**/*.ts",
     "db/repositories/cart/**/*.ts",
     "db/repositories/email/**/*.ts",
+    "db/repositories/newsletter/**/*.ts",
+    "db/repositories/template-system/**/*.ts",
     "db/repositories/users/**/*.ts",
+    "db/repositories/roles/**/*.ts",
     "db/repositories/payments/**/*.ts"
   ],
   "exclude": ["node_modules", ".next"]

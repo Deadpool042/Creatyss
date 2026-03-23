@@ -1,159 +1,99 @@
-import { prisma } from "@db/prisma-client";
-import { buildCartLineItemKey } from "@db-cart/helpers/identity/line-identity";
-import { parseMergeGuestCartIntoCustomerCartInput } from "@db-cart/helpers/validation/merge.validation";
+import { prisma } from "@/db/prisma-client";
+import { mapCustomerCart } from "@db-cart/helpers/mappers";
 import {
-  CartMergeRepositoryError,
-  type CartMergeResult,
-  type MergeGuestCartIntoCustomerCartInput,
+  findActiveCustomerCartRowByCustomerId,
+  findCartRowById,
+  findGuestCartRowById,
+} from "@db-cart/queries/cart.queries";
+import type { CustomerCart } from "@db-cart/customer";
+import type {
+  CartMergeResult,
+  MergeGuestCartIntoCustomerCartInput,
 } from "@db-cart/merge/types/cart-merge.types";
 
-type MergeCartItemRow = {
-  id: string;
-  productId: string;
-  variantId: string | null;
-  quantity: number;
-};
+async function ensureActiveCustomerCart(
+  customerId: string,
+  guestCart: Awaited<ReturnType<typeof findGuestCartRowById>>
+): Promise<CustomerCart> {
+  const existingRow = await findActiveCustomerCartRowByCustomerId(customerId);
+
+  if (existingRow) {
+    return mapCustomerCart(existingRow);
+  }
+
+  const created = await prisma.cart.create({
+    data: {
+      storeId: guestCart?.storeId as string,
+      customerId,
+      currencyCode: guestCart?.currencyCode as never,
+      email: guestCart?.email ?? null,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  const row = await findCartRowById(created.id);
+
+  if (!row) {
+    throw new Error("Customer cart not found after create.");
+  }
+
+  return mapCustomerCart(row);
+}
 
 export async function mergeGuestCartIntoCustomerCart(
   input: MergeGuestCartIntoCustomerCartInput
-): Promise<CartMergeResult> {
-  const parsedInput = parseMergeGuestCartIntoCustomerCartInput(input);
+): Promise<CartMergeResult | null> {
+  const guestCartId = input.guestCartId.trim();
+  const customerId = input.customerId.trim();
 
-  return prisma.$transaction(async (tx) => {
-    const guestCart = await tx.cart.findFirst({
-      where: {
-        guestToken: parsedInput.guestToken,
-        userId: null,
-      },
-      select: {
-        id: true,
-        items: {
-          orderBy: [{ createdAt: "asc" }],
-          select: {
-            id: true,
-            productId: true,
-            variantId: true,
-            quantity: true,
-          },
-        },
-      },
-    });
+  const guestCart = await findGuestCartRowById(guestCartId);
 
-    if (guestCart === null) {
-      throw new CartMergeRepositoryError(
-        "cart_merge_guest_not_found",
-        "Le panier invité à fusionner est introuvable."
-      );
-    }
+  if (!guestCart) {
+    return null;
+  }
 
-    let customerCart = await tx.cart.findFirst({
-      where: {
-        userId: parsedInput.customerId,
-      },
-      orderBy: [{ updatedAt: "desc" }],
-      select: {
-        id: true,
-        items: {
-          orderBy: [{ createdAt: "asc" }],
-          select: {
-            id: true,
-            productId: true,
-            variantId: true,
-            quantity: true,
-          },
-        },
-      },
-    });
+  const customerCart = await ensureActiveCustomerCart(customerId, guestCart);
 
-    if (customerCart === null) {
-      customerCart = await tx.cart.create({
-        data: {
-          userId: parsedInput.customerId,
-          guestToken: null,
-        },
-        select: {
-          id: true,
-          items: {
-            orderBy: [{ createdAt: "asc" }],
-            select: {
-              id: true,
-              productId: true,
-              variantId: true,
-              quantity: true,
-            },
-          },
-        },
-      });
-    }
-
-    const existingCustomerItemsByKey = new Map<string, MergeCartItemRow>(
-      customerCart.items.map((item) => [
-        buildCartLineItemKey({
-          productId: item.productId,
-          productVariantId: item.variantId,
-        }),
-        item,
-      ])
-    );
-
-    let mergedLineCount = 0;
-
-    for (const guestItem of guestCart.items) {
-      const itemKey = buildCartLineItemKey({
-        productId: guestItem.productId,
-        productVariantId: guestItem.variantId,
-      });
-
-      const existingCustomerItem = existingCustomerItemsByKey.get(itemKey);
-
-      if (existingCustomerItem !== undefined) {
-        const nextQuantity = existingCustomerItem.quantity + guestItem.quantity;
-
-        await tx.cartItem.update({
-          where: {
-            id: existingCustomerItem.id,
-          },
-          data: {
-            quantity: nextQuantity,
-          },
-        });
-
-        existingCustomerItemsByKey.set(itemKey, {
-          ...existingCustomerItem,
-          quantity: nextQuantity,
-        });
-      } else {
-        const createdCustomerItem = await tx.cartItem.create({
-          data: {
+  await prisma.$transaction(async (tx) => {
+    for (const line of guestCart.lines) {
+      await tx.cartLine.upsert({
+        where: {
+          cartId_variantId: {
             cartId: customerCart.id,
-            productId: guestItem.productId,
-            variantId: guestItem.variantId,
-            quantity: guestItem.quantity,
+            variantId: line.variantId,
           },
-          select: {
-            id: true,
-            productId: true,
-            variantId: true,
-            quantity: true,
+        },
+        update: {
+          quantity: {
+            increment: line.quantity,
           },
-        });
-
-        existingCustomerItemsByKey.set(itemKey, createdCustomerItem);
-      }
-
-      mergedLineCount += 1;
+        },
+        create: {
+          cartId: customerCart.id,
+          variantId: line.variantId,
+          quantity: line.quantity,
+        },
+      });
     }
 
     await tx.cart.delete({
       where: {
-        id: guestCart.id,
+        id: guestCartId,
       },
     });
-
-    return {
-      customerCartId: customerCart.id,
-      mergedLineCount,
-      invalidatedGuestCartId: guestCart.id,
-    };
   });
+
+  const mergedCartRow = await findCartRowById(customerCart.id);
+
+  if (!mergedCartRow) {
+    throw new Error("Merged cart not found after transaction.");
+  }
+
+  return {
+    cart: mapCustomerCart(mergedCartRow),
+    mergedLineCount: guestCart.lines.length,
+    deletedGuestCartId: guestCartId,
+  };
 }

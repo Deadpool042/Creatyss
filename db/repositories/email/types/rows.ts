@@ -1,70 +1,34 @@
 import type { Prisma } from "@prisma/client";
 
-export const orderEmailEventSelect = {
+export const emailMessageSelect = {
   id: true,
-  orderId: true,
-  emailTemplateId: true,
-  templateKey: true,
-  recipientEmail: true,
+  storeId: true,
+  category: true,
+  status: true,
+  recipientKind: true,
+  userId: true,
+  customerId: true,
+  toEmail: true,
+  toName: true,
   subject: true,
-  status: true,
-  provider: true,
-  providerMessageId: true,
-  payloadJson: true,
-  lastError: true,
+  htmlBody: true,
+  textBody: true,
+  templateDefinitionId: true,
+  templateVariantId: true,
+  notificationId: true,
+  orderId: true,
+  eventId: true,
+  supportTicketId: true,
+  preparedAt: true,
   sentAt: true,
+  failedAt: true,
+  cancelledAt: true,
+  failureCode: true,
+  failureMessage: true,
   createdAt: true,
   updatedAt: true,
-} satisfies Prisma.OrderEmailEventSelect;
+} as const satisfies Prisma.EmailMessageSelect;
 
-export const emailTemplateListSelect = {
-  id: true,
-  key: true,
-  name: true,
-  type: true,
-  status: true,
-  updatedAt: true,
-} satisfies Prisma.EmailTemplateSelect;
-
-export const emailTemplateDetailSelect = {
-  id: true,
-  key: true,
-  name: true,
-  type: true,
-  subjectTemplate: true,
-  bodyHtml: true,
-  bodyText: true,
-  status: true,
-  createdAt: true,
-  updatedAt: true,
-} satisfies Prisma.EmailTemplateSelect;
-
-export const newsletterSubscriberSelect = {
-  id: true,
-  email: true,
-  firstName: true,
-  lastName: true,
-  status: true,
-  source: true,
-  confirmationToken: true,
-  subscribedAt: true,
-  unsubscribedAt: true,
-  createdAt: true,
-  updatedAt: true,
-} satisfies Prisma.NewsletterSubscriberSelect;
-
-export type OrderEmailEventRow = Prisma.OrderEmailEventGetPayload<{
-  select: typeof orderEmailEventSelect;
-}>;
-
-export type EmailTemplateListRow = Prisma.EmailTemplateGetPayload<{
-  select: typeof emailTemplateListSelect;
-}>;
-
-export type EmailTemplateDetailRow = Prisma.EmailTemplateGetPayload<{
-  select: typeof emailTemplateDetailSelect;
-}>;
-
-export type NewsletterSubscriberRow = Prisma.NewsletterSubscriberGetPayload<{
-  select: typeof newsletterSubscriberSelect;
+export type EmailMessageRow = Prisma.EmailMessageGetPayload<{
+  select: typeof emailMessageSelect;
 }>;

@@ -1,37 +1,56 @@
 import type { Prisma } from "@prisma/client";
 
-export const pageListSelect = {
-  id: true,
-  slug: true,
-  title: true,
-  pageType: true,
-  status: true,
-  summary: true,
-  isIndexed: true,
-  publishedAt: true,
-  updatedAt: true,
-} satisfies Prisma.PageSelect;
+const pageSeoSelect = {
+  metaTitle: true,
+  metaDescription: true,
+  canonicalUrl: true,
+  indexingState: true,
+} as const satisfies Prisma.SeoMetadataSelect;
 
-export const pageDetailSelect = {
+const pageSectionSelect = {
   id: true,
-  slug: true,
+  kind: true,
   title: true,
-  pageType: true,
-  status: true,
-  summary: true,
-  contentJson: true,
-  seoTitle: true,
-  seoDescription: true,
-  isIndexed: true,
-  publishedAt: true,
+  subtitle: true,
+  content: true,
+  imageAssetId: true,
+  sortOrder: true,
+  isEnabled: true,
   createdAt: true,
   updatedAt: true,
-} satisfies Prisma.PageSelect;
+} as const satisfies Prisma.PageSectionSelect;
 
-export type PageListRow = Prisma.PageGetPayload<{
-  select: typeof pageListSelect;
+export const pageSummarySelect = {
+  id: true,
+  storeId: true,
+  slug: true,
+  title: true,
+  description: true,
+  status: true,
+  isHomepage: true,
+  createdAt: true,
+  updatedAt: true,
+  seo: {
+    select: pageSeoSelect,
+  },
+} as const satisfies Prisma.PageSelect;
+
+export const pageDetailSelect = {
+  ...pageSummarySelect,
+  sections: {
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+    select: pageSectionSelect,
+  },
+} as const satisfies Prisma.PageSelect;
+
+export type PageSummaryRow = Prisma.PageGetPayload<{
+  select: typeof pageSummarySelect;
 }>;
 
 export type PageDetailRow = Prisma.PageGetPayload<{
   select: typeof pageDetailSelect;
+}>;
+
+export type PageSectionRow = Prisma.PageSectionGetPayload<{
+  select: typeof pageSectionSelect;
 }>;

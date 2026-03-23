@@ -79,7 +79,7 @@ Variables disponibles :
 
 `.env.example` est uniquement un fichier de placeholders versionné. Les vraies valeurs locales doivent vivre dans `.env` ou `.env.local`, qui restent non versionnés.
 
-Le `Makefile` utilise `ENV_FILE=.env.example` par défaut. Pour lancer le projet avec de vrais secrets locaux :
+Le `Makefile` utilise `ENV_FILE=.env.local` par défaut. Pour lancer explicitement le projet avec vos secrets locaux :
 
 ```bash
 ENV_FILE=.env.local make up
@@ -95,6 +95,9 @@ Variables sensibles ou locales notables :
 - `STRIPE_WEBHOOK_SECRET`
 - `BREVO_API_KEY`
 - `EMAIL_FROM`
+- `WC_BASE_URL`
+- `WC_CONSUMER_KEY`
+- `WC_CONSUMER_SECRET`
 
 Commandes disponibles :
 
@@ -167,7 +170,7 @@ Flux local minimal :
 
 ```bash
 pnpm install
-docker compose --env-file .env.example up -d --build
+docker compose --env-file .env.local up -d --build
 make db-schema
 make db-seed-dev
 pnpm exec playwright install chromium
@@ -176,7 +179,7 @@ make test-e2e
 
 ## Base de données
 
-Le schéma PostgreSQL est défini par les migrations SQL dans `db/migrations/`.
+Le schéma PostgreSQL est défini par les fichiers Prisma dans `prisma/*.prisma`.
 
 Application locale :
 
@@ -185,21 +188,17 @@ make up
 make db-schema
 ```
 
-`make db-schema` applique tous les fichiers `db/migrations/*.sql` dans l’ordre lexical et cible uniquement une base vide. Pour réappliquer le schéma proprement, repartez d’une base neuve :
+`make db-schema` régénère le client Prisma puis applique le schéma courant via `prisma db push`. Pour repartir proprement avec schéma + seed :
 
 ```bash
-docker compose --env-file .env.example down -v
-make up
-make db-schema
+make db-reset-dev
 ```
 
 Vérifications locales exactes :
 
 ```bash
-docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' order by table_name;"
-docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select indexname from pg_indexes where schemaname = 'public' order by tablename, indexname;"
-docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select tgname from pg_trigger where not tgisinternal order by tgname;"
-docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select conname, contype from pg_constraint where connamespace = 'public'::regnamespace order by conname;"
+docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' order by table_name;"
+docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select indexname from pg_indexes where schemaname = 'public' order by tablename, indexname;"
 pnpm run typecheck
 ```
 
@@ -207,9 +206,9 @@ L’évolution fonctionnelle et structurelle est documentée par version dans `d
 
 ## Seed dev
 
-Un seed de développement minimal permet de reconstituer rapidement un jeu de données local après un reset de volume Docker.
+Le seed de développement reconstruit un socle local minimal puis hydrate le catalogue depuis le WooCommerce Creatyss d’origine.
 
-Il est destiné uniquement au développement local sur base neuve.
+Il est destiné uniquement au développement local.
 
 Application locale :
 
@@ -225,14 +224,19 @@ make db-reset-dev
 
 Le seed de développement couvre :
 
-- comptes `admin_users`
-- catégories
-- produits et variantes
-- images produit en base
-- blog
-- homepage
+- une boutique locale `creatyss`
+- une liste de prix par défaut
+- des comptes admin de développement
+- les catégories WooCommerce
+- les produits et déclinaisons WooCommerce
+- les prix catalogue WooCommerce
+- les médias produits WooCommerce si l’import images est activé
 
-Il ne crée pas de fichiers ou de lignes `media_assets`. Les flux admin qui proposent de choisir un media existant nécessitent donc d’importer au moins une image via `/admin/media` avant vérification.
+Variables requises pour l’hydratation catalogue :
+
+- `WC_BASE_URL`
+- `WC_CONSUMER_KEY`
+- `WC_CONSUMER_SECRET`
 
 ## Fonctionnalités disponibles
 
@@ -254,7 +258,7 @@ Pages publiques disponibles :
 
 ## Auth admin
 
-L’auth admin repose sur la table `admin_users`, un cookie de session signé `HttpOnly`, et une vérification serveur sur chaque accès à `/admin`.
+L’auth admin repose sur `users`, `auth_identities` et `auth_password_credentials`, plus un cookie de session signé `HttpOnly` côté application.
 
 Variables d’environnement requises :
 
@@ -270,19 +274,19 @@ Le seed de développement crée automatiquement ces comptes sur base neuve via `
 Pour créer un admin supplémentaire manuellement :
 
 ```bash
-printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.example exec -T app node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
+printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.local exec -T app node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
 ```
 
 Vérification locale exacte :
 
 ```bash
-docker compose --env-file .env.example down -v
-docker compose --env-file .env.example up -d --build
+docker compose --env-file .env.local down -v
+docker compose --env-file .env.local up -d --build
 make db-schema
 make db-seed-dev
-docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select email, display_name, is_active from admin_users order by email;"
-docker compose --env-file .env.example exec app pnpm run typecheck
-docker compose --env-file .env.example exec app pnpm run build
+docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select u.email, u.display_name, u.status, ai.status as identity_status from users u left join auth_identities ai on ai.user_id = u.id order by u.email;"
+docker compose --env-file .env.local exec app pnpm run typecheck
+docker compose --env-file .env.local exec app pnpm run build
 curl -I http://localhost:3000/admin
 ```
 
@@ -308,13 +312,13 @@ Le système media admin accepte actuellement uniquement :
 Vérification locale exacte :
 
 ```bash
-docker compose --env-file .env.example down -v
-docker compose --env-file .env.example up -d --build
+docker compose --env-file .env.local down -v
+docker compose --env-file .env.local up -d --build
 make db-schema
 make db-seed-dev
-docker compose --env-file .env.example exec app pnpm run typecheck
-docker compose --env-file .env.example exec app pnpm run build
-docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' and table_name = 'media_assets';"
+docker compose --env-file .env.local exec app pnpm run typecheck
+docker compose --env-file .env.local exec app pnpm run build
+docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' and table_name = 'media_assets';"
 ```
 
 Puis :
@@ -325,14 +329,14 @@ Puis :
 4. vérifiez la ligne créée en base :
 
 ```bash
-docker compose --env-file .env.example exec -T db psql -U creatyss -d creatyss -c "select id, file_path, original_name, mime_type, byte_size, image_width, image_height from media_assets order by created_at desc;"
-find public/uploads/media -type f | sort
+docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select id, storage_path, original_filename, mime_type, file_size_bytes, width, height from media_assets order by created_at desc;"
+find public/uploads -type f | sort
 ```
 
 Pour vérifier le fallback listing, supprimez un fichier local déjà importé puis rechargez `/admin/media` :
 
 ```bash
-find public/uploads/media -type f | head -n 1
+find public/uploads -type f | head -n 1
 rm <chemin_retourne>
 ```
 

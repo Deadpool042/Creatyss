@@ -20,6 +20,7 @@ APP_BUILD_NODE_OPTIONS ?= --max-old-space-size=2048
 .PHONY: help \
 	up up-proxy down restart build app-build logs ps sh dev stripe-dev certs hosts-setup \
 	prisma-format prisma-validate prisma-generate prisma-db-push prisma-db-reset prisma-studio \
+	db-schema \
 	db-shell db-seed-dev db-seed-images db-import-woocommerce db-import-woocommerce-images \
 	db-reseed-dev db-reset-dev uploads-import seed seed-data-init \
 	typecheck-local typecheck typecheck-watch lint-local lint lint-fix lint-watch \
@@ -53,15 +54,16 @@ help:
 	@echo "  prisma-studio              - Lance Prisma Studio dans le conteneur"
 	@echo ""
 	@echo "Base de donnees:"
+	@echo "  db-schema                  - Applique le schema Prisma courant a la base"
 	@echo "  db-shell                   - Ouvre psql dans le conteneur db"
-	@echo "  db-seed-dev                - Lance le seed dev"
+	@echo "  db-seed-dev                - Cree le socle local puis importe le catalogue WooCommerce Creatyss"
 	@echo "  db-seed-images             - Convertit + aligne les images seed"
-	@echo "  db-import-woocommerce      - Importe les donnees WooCommerce sans images"
-	@echo "  db-import-woocommerce-images - Importe les donnees WooCommerce avec images"
+	@echo "  db-import-woocommerce      - Reimporte le catalogue WooCommerce sans images"
+	@echo "  db-import-woocommerce-images - Reimporte le catalogue WooCommerce avec images"
 	@echo "  db-reseed-dev              - Re-seed de la base de dev"
 	@echo "  db-reset-dev               - Reset complet de la base de dev"
 	@echo "  uploads-import             - Importe les uploads depuis l'hote vers le volume"
-	@echo "  seed                       - Lance le job seeder manuellement"
+	@echo "  seed                       - Lance le seed dev complet dans le service jobs"
 	@echo "  seed-data-init             - Initialise les donnees de seed"
 	@echo ""
 	@echo "Qualite:"
@@ -147,33 +149,31 @@ prisma-db-reset:
 prisma-studio:
 	$(COMPOSE_CORE) exec $(APP_SERVICE) pnpm run prisma:studio
 
+db-schema:
+	@$(MAKE) prisma-generate
+	@$(MAKE) prisma-db-push
+
 db-shell:
 	$(COMPOSE_CORE) exec $(DB_SERVICE) sh -lc 'psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"'
 
 db-seed-dev:
+	@$(MAKE) prisma-generate
 	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run seed:dev
 
 db-seed-images:
 	@echo "Seeding images..."
-	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) node --experimental-strip-types scripts/seed-images.ts
+	@$(MAKE) prisma-generate
+	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run seed:images
 
 db-import-woocommerce:
 	@echo "Importing WooCommerce data (data only, no images)..."
-	@set -a; . $(ENV_FILE); set +a; \
-	$(COMPOSE_CORE) exec \
-		-e WC_BASE_URL="$$WC_BASE_URL" \
-		-e WC_CONSUMER_KEY="$$WC_CONSUMER_KEY" \
-		-e WC_CONSUMER_SECRET="$$WC_CONSUMER_SECRET" \
-		-T $(APP_SERVICE) node --experimental-strip-types scripts/import-woocommerce.ts --skip-images
+	@$(MAKE) prisma-generate
+	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run seed:woocommerce -- --skip-images
 
 db-import-woocommerce-images:
 	@echo "Importing WooCommerce data with images (this may take a while)..."
-	@set -a; . $(ENV_FILE); set +a; \
-	$(COMPOSE_CORE) exec \
-		-e WC_BASE_URL="$$WC_BASE_URL" \
-		-e WC_CONSUMER_KEY="$$WC_CONSUMER_KEY" \
-		-e WC_CONSUMER_SECRET="$$WC_CONSUMER_SECRET" \
-		-T $(APP_SERVICE) node --experimental-strip-types scripts/import-woocommerce.ts
+	@$(MAKE) prisma-generate
+	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run seed:woocommerce
 
 db-reseed-dev:
 	@$(MAKE) prisma-db-reset
@@ -182,7 +182,8 @@ db-reseed-dev:
 db-reset-dev:
 	$(COMPOSE_CORE) down -v
 	$(COMPOSE_CORE) up -d --build
-	$(MAKE) prisma-db-push
+	$(MAKE) prisma-generate
+	$(MAKE) prisma-db-reset
 	$(MAKE) db-seed-dev
 
 uploads-import:

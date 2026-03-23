@@ -1,135 +1,188 @@
 import { z } from "zod";
-import {
-  AdminUserRepositoryError,
-  type CreateAdminUserInput,
-  type UpdateAdminUserInput,
-} from "../admin-user.types";
-import { UserRepositoryError, type UpdateUserProfileInput } from "../user.types";
+import { AdminUserAccountRepositoryError } from "@db-users/admin";
+import { UserAccountRepositoryError } from "@db-users/accounts";
+import type {
+  CreateAdminUserAccountInput,
+  UpdateAdminUserAccountInput,
+} from "@db-users/admin/types/account.types";
 
-const userRoleSchema = z.enum(["admin", "customer"]);
-const userStatusSchema = z.enum(["active", "disabled"]);
-const idSchema = z.string().trim().min(1);
-const emailSchema = z.email().trim();
+const userAccountStatusSchema = z.enum([
+  "invited",
+  "active",
+  "suspended",
+  "disabled",
+  "archived",
+]);
+const userIdSchema = z.string().trim().min(1);
+const normalizedEmailSchema = z
+  .string()
+  .trim()
+  .email()
+  .transform((value) => value.toLowerCase());
+const optionalNullableTrimmedStringSchema = z
+  .string()
+  .trim()
+  .nullish()
+  .transform((value) => {
+    if (value === undefined) {
+      return undefined;
+    }
 
-const createAdminUserInputSchema = z.object({
-  email: emailSchema,
-  passwordHash: z.string().trim().min(1),
-  firstName: z.string().trim().nullable().optional(),
-  lastName: z.string().trim().nullable().optional(),
-  displayName: z.string().trim().nullable().optional(),
-  status: userStatusSchema.optional(),
+    return value || null;
+  });
+const createAdminUserAccountInputSchema = z.object({
+  storeId: optionalNullableTrimmedStringSchema,
+  email: normalizedEmailSchema,
+  firstName: optionalNullableTrimmedStringSchema,
+  lastName: optionalNullableTrimmedStringSchema,
+  displayName: optionalNullableTrimmedStringSchema,
+  status: userAccountStatusSchema.optional(),
 });
-
-const updateAdminUserInputSchema = z.object({
-  id: idSchema,
-  firstName: z.string().trim().nullable().optional(),
-  lastName: z.string().trim().nullable().optional(),
-  displayName: z.string().trim().nullable().optional(),
-  status: userStatusSchema.optional(),
+const updateAdminUserAccountInputSchema = z.object({
+  id: userIdSchema,
+  storeId: optionalNullableTrimmedStringSchema,
+  firstName: optionalNullableTrimmedStringSchema,
+  lastName: optionalNullableTrimmedStringSchema,
+  displayName: optionalNullableTrimmedStringSchema,
 });
+type ParsedCreateAdminUserAccountInput = {
+  storeId?: string | null;
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  displayName?: string | null;
+  status: NonNullable<CreateAdminUserAccountInput["status"]>;
+};
+type ParsedUpdateAdminUserAccountInput = {
+  id: string;
+  storeId?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  displayName?: string | null;
+};
 
-const updateUserProfileInputSchema = z.object({
-  id: idSchema,
-  firstName: z.string().trim().nullable().optional(),
-  lastName: z.string().trim().nullable().optional(),
-  displayName: z.string().trim().nullable().optional(),
-});
-
-export function assertValidUserId(id: string): void {
-  const result = idSchema.safeParse(id);
+export function assertValidUserAccountId(id: string): string {
+  const result = userIdSchema.safeParse(id);
 
   if (!result.success) {
-    throw new UserRepositoryError("user_not_found", "Utilisateur introuvable.");
+    throw new UserAccountRepositoryError("user_id_invalid", "Identifiant utilisateur invalide.");
   }
-}
 
-export function assertValidAdminUserId(id: string): void {
-  const result = idSchema.safeParse(id);
-
-  if (!result.success) {
-    throw new AdminUserRepositoryError("admin_user_not_found", "Utilisateur admin introuvable.");
-  }
+  return result.data;
 }
 
 export function normalizeUserEmail(email: string): string {
-  return email.trim().toLowerCase();
+  const result = normalizedEmailSchema.safeParse(email);
+
+  if (!result.success) {
+    throw new AdminUserAccountRepositoryError("user_email_invalid", "Email utilisateur invalide.");
+  }
+
+  return result.data;
 }
 
-export function parseCreateAdminUserInput(input: CreateAdminUserInput): CreateAdminUserInput {
-  const result = createAdminUserInputSchema.safeParse(input);
+export function parseCreateAdminUserAccountInput(
+  input: CreateAdminUserAccountInput
+): ParsedCreateAdminUserAccountInput {
+  const result = createAdminUserAccountInputSchema.safeParse(input);
 
   if (!result.success) {
     const issue = result.error.issues[0];
 
     switch (issue?.path[0]) {
+      case "storeId":
+        throw new AdminUserAccountRepositoryError(
+          "user_store_invalid",
+          "Boutique utilisateur invalide."
+        );
       case "email":
-        throw new AdminUserRepositoryError("admin_user_email_invalid", "Email admin invalide.");
-      case "passwordHash":
-        throw new AdminUserRepositoryError(
-          "admin_user_password_invalid",
-          "Mot de passe admin invalide."
+        throw new AdminUserAccountRepositoryError(
+          "user_email_invalid",
+          "Email utilisateur invalide."
+        );
+      case "status":
+        throw new AdminUserAccountRepositoryError(
+          "user_status_invalid",
+          "Statut utilisateur invalide."
         );
       default:
-        throw new AdminUserRepositoryError(
-          "admin_user_profile_invalid",
-          "Données admin invalides."
+        throw new AdminUserAccountRepositoryError(
+          "user_email_invalid",
+          "Les données utilisateur sont invalides."
         );
     }
   }
 
-  const data = result.data;
-  const parsed: CreateAdminUserInput = {
-    email: data.email,
-    passwordHash: data.passwordHash,
+  const parsedInput: ParsedCreateAdminUserAccountInput = {
+    email: result.data.email,
+    status: result.data.status ?? "invited",
   };
 
-  if (data.firstName !== undefined) parsed.firstName = data.firstName;
-  if (data.lastName !== undefined) parsed.lastName = data.lastName;
-  if (data.displayName !== undefined) parsed.displayName = data.displayName;
-  if (data.status !== undefined) parsed.status = data.status;
-
-  return parsed;
-}
-
-export function parseUpdateAdminUserInput(input: UpdateAdminUserInput): UpdateAdminUserInput {
-  const result = updateAdminUserInputSchema.safeParse(input);
-
-  if (!result.success) {
-    throw new AdminUserRepositoryError("admin_user_profile_invalid", "Données admin invalides.");
+  if (result.data.storeId !== undefined) {
+    parsedInput.storeId = result.data.storeId;
   }
 
-  const data = result.data;
-  const parsed: UpdateAdminUserInput = {
-    id: data.id,
-  };
-
-  if (data.firstName !== undefined) parsed.firstName = data.firstName;
-  if (data.lastName !== undefined) parsed.lastName = data.lastName;
-  if (data.displayName !== undefined) parsed.displayName = data.displayName;
-  if (data.status !== undefined) parsed.status = data.status;
-
-  return parsed;
-}
-
-export function parseUpdateUserProfileInput(input: UpdateUserProfileInput): UpdateUserProfileInput {
-  const result = updateUserProfileInputSchema.safeParse(input);
-
-  if (!result.success) {
-    throw new UserRepositoryError("user_profile_invalid", "Données utilisateur invalides.");
+  if (result.data.firstName !== undefined) {
+    parsedInput.firstName = result.data.firstName;
   }
 
-  const data = result.data;
-  const parsed: UpdateUserProfileInput = {
-    id: data.id,
-  };
+  if (result.data.lastName !== undefined) {
+    parsedInput.lastName = result.data.lastName;
+  }
 
-  if (data.firstName !== undefined) parsed.firstName = data.firstName;
-  if (data.lastName !== undefined) parsed.lastName = data.lastName;
-  if (data.displayName !== undefined) parsed.displayName = data.displayName;
+  if (result.data.displayName !== undefined) {
+    parsedInput.displayName = result.data.displayName;
+  }
 
-  return parsed;
+  return parsedInput;
 }
 
-export function listAvailableUserRoles() {
-  return userRoleSchema.options;
+export function parseUpdateAdminUserAccountInput(
+  input: UpdateAdminUserAccountInput
+): ParsedUpdateAdminUserAccountInput {
+  const result = updateAdminUserAccountInputSchema.safeParse(input);
+
+  if (!result.success) {
+    const issue = result.error.issues[0];
+
+    switch (issue?.path[0]) {
+      case "id":
+        throw new AdminUserAccountRepositoryError(
+          "user_id_invalid",
+          "Identifiant utilisateur invalide."
+        );
+      case "storeId":
+        throw new AdminUserAccountRepositoryError(
+          "user_store_invalid",
+          "Boutique utilisateur invalide."
+        );
+      default:
+        throw new AdminUserAccountRepositoryError(
+          "user_id_invalid",
+          "Les données utilisateur sont invalides."
+        );
+    }
+  }
+
+  const parsedInput: ParsedUpdateAdminUserAccountInput = {
+    id: result.data.id,
+  };
+
+  if (result.data.storeId !== undefined) {
+    parsedInput.storeId = result.data.storeId;
+  }
+
+  if (result.data.firstName !== undefined) {
+    parsedInput.firstName = result.data.firstName;
+  }
+
+  if (result.data.lastName !== undefined) {
+    parsedInput.lastName = result.data.lastName;
+  }
+
+  if (result.data.displayName !== undefined) {
+    parsedInput.displayName = result.data.displayName;
+  }
+
+  return parsedInput;
 }

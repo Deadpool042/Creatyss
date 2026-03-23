@@ -1,23 +1,23 @@
 import { prisma } from "@/db/prisma-client";
-import { categorySelect } from "../types/rows";
+import { categorySummarySelect, type CategorySummaryRow } from "@db-categories/types/rows";
 
-export async function findAdminCategoryRowById(id: string) {
-  return prisma.category.findUnique({
-    where: { id },
-    select: categorySelect,
-  });
-}
-
-export async function findAdminCategoryRowBySlug(slug: string) {
-  return prisma.category.findFirst({
-    where: { slug },
-    select: categorySelect,
-  });
-}
-
-export async function listAdminCategoryRows() {
+export async function listCategorySummaryRowsByStoreId(
+  storeId: string
+): Promise<CategorySummaryRow[]> {
   return prisma.category.findMany({
-    orderBy: [{ displayOrder: "asc" }, { name: "asc" }],
-    select: categorySelect,
+    where: {
+      storeId,
+    },
+    orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+    select: categorySummarySelect,
+  });
+}
+
+export async function findCategorySummaryRowById(id: string): Promise<CategorySummaryRow | null> {
+  return prisma.category.findUnique({
+    where: {
+      id,
+    },
+    select: categorySummarySelect,
   });
 }

@@ -1,23 +1,21 @@
 import { prisma } from "@/db/prisma-client";
-import { pageDetailSelect, pageListSelect } from "../types/rows";
+import { pageSummarySelect, type PageSummaryRow } from "@db-pages/types/rows";
 
-export async function listAdminPageRows() {
+export async function listPageSummaryRowsByStoreId(storeId: string): Promise<PageSummaryRow[]> {
   return prisma.page.findMany({
-    orderBy: [{ pageType: "asc" }, { updatedAt: "desc" }],
-    select: pageListSelect,
+    where: {
+      storeId,
+    },
+    orderBy: [{ isHomepage: "desc" }, { updatedAt: "desc" }, { title: "asc" }],
+    select: pageSummarySelect,
   });
 }
 
-export async function findAdminPageRowById(id: string) {
+export async function findPageSummaryRowById(id: string): Promise<PageSummaryRow | null> {
   return prisma.page.findUnique({
-    where: { id },
-    select: pageDetailSelect,
-  });
-}
-
-export async function findAdminPageRowBySlug(slug: string) {
-  return prisma.page.findFirst({
-    where: { slug },
-    select: pageDetailSelect,
+    where: {
+      id,
+    },
+    select: pageSummarySelect,
   });
 }

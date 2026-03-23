@@ -38,6 +38,9 @@ services:
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       EMAIL_FROM: ${EMAIL_FROM}
       UPLOADS_DIR: ${UPLOADS_DIR}
+      WC_BASE_URL: ${WC_BASE_URL}
+      WC_CONSUMER_KEY: ${WC_CONSUMER_KEY}
+      WC_CONSUMER_SECRET: ${WC_CONSUMER_SECRET}
       CHOKIDAR_USEPOLLING: "false"
       WATCHPACK_POLLING: "false"
     ports:
@@ -84,11 +87,15 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
       UPLOADS_DIR: ${UPLOADS_DIR}
+      EMAIL_FROM: ${EMAIL_FROM}
+      WC_BASE_URL: ${WC_BASE_URL}
+      WC_CONSUMER_KEY: ${WC_CONSUMER_KEY}
+      WC_CONSUMER_SECRET: ${WC_CONSUMER_SECRET}
     volumes:
       - .:/app
       - app_node_modules:/app/node_modules
       - uploads_data:/app/public/uploads
-    command: node --experimental-strip-types scripts/seed-images.ts
+    command: pnpm run seed:dev
     mem_limit: 512m
     restart: "no"
 
