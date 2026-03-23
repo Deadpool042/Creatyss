@@ -1,55 +1,85 @@
-# Strategie de tests V1
+# Stratégie de tests
 
 ## Objectif
 
-Donner une base de tests simple et utile pour Creatyss V1, sans sur-architecture.
+Définir une stratégie de tests simple, utile et maintenable pour le socle Creatyss.
 
-La strategie vise a :
+La stratégie de tests doit rester cohérente avec :
 
-- securiser les flux critiques deja livres
-- reduire les regressions sur les validations et parcours admin/public
-- completer la verification actuelle basee sur `typecheck`, `build`, seed Docker et checklist manuelle
+- `README.md`
+- `AGENTS.md`
+- `docs/architecture/00` à `11`
+- `docs/domains/README.md`
+- `docs/testing/roadmap.md`
+
+La priorité n'est pas de maximiser artificiellement la couverture.
+La priorité est de sécuriser le socle réellement livré, avec des vérifications automatisées utiles, lisibles et rentables.
 
 ## Principes
 
-- garder une seule approche claire et progressive
-- commencer petit avec les cas les plus rentables
-- tester surtout ce qui porte du risque fonctionnel reel
-- rester aligne sur la structure actuelle du repo
-- ne pas dupliquer inutilement la checklist manuelle existante
+- Garder une seule approche claire et progressive.
+- Commencer par les cas les plus rentables.
+- Tester d'abord ce qui porte un risque métier ou de régression réel.
+- Rester aligné sur la structure actuelle du repo.
+- Ne pas dupliquer inutilement la recette manuelle existante.
+- Préserver des temps d'exécution raisonnables.
+- Toujours privilégier des scénarios sobres et compréhensibles.
 
-## Types de tests retenus
+## Niveaux de tests retenus
 
-### Tests unitaires legers
+### 1. Tests unitaires métier
 
 Premier niveau de couverture sur :
 
-- validations metier pures dans `entities/`
-- helpers critiques et purs quand ils portent une regle importante
+- validations métier pures dans `entities/` ou `domain/`
+- helpers critiques et purs quand ils portent une règle importante
+- normalisation métier
+- transformations métier sobres
 
-Ces tests doivent etre rapides, simples a lire et independants du navigateur.
+Ces tests doivent être :
 
-### Tests E2E
+- rapides
+- simples à lire
+- indépendants du navigateur
+- peu fragiles
 
-Deuxieme niveau de couverture sur les parcours critiques deja presents :
+### 2. Tests d'intégration ciblés
+
+Niveau intermédiaire à utiliser seulement quand il apporte un vrai gain de sécurité sur un flux serveur ou une zone difficile à couvrir uniquement en unitaire.
+
+Exemples possibles :
+
+- validation + repository sur un cas critique borné
+- lecture / écriture sensible après évolution de schéma
+- garde-fou sur un point de cohérence non trivial
+
+Ces tests ne doivent pas devenir une couche massive ou redondante.
+Ils servent à sécuriser des zones précises quand l'unitaire pur ne suffit pas et que l'E2E serait trop lourd.
+
+### 3. Tests E2E smoke
+
+Troisième niveau de couverture sur les parcours critiques déjà présents.
+
+Cibles prioritaires :
 
 - auth admin
 - media admin
-- categories admin
+- catégories admin
 - produits admin
 - homepage admin et reflet public
 - blog admin et public
 - SEO de base sur produit et article
 
-Les E2E doivent verifier les parcours principaux, pas tous les cas limites de l'interface.
+Les E2E doivent vérifier les parcours principaux, pas tous les cas limites de l'interface.
 
-## Structure cible du futur dossier `tests/`
+## Structure cible du dossier `tests/`
 
 ```text
 tests/
   unit/
     entities/
     lib/
+  integration/
   e2e/
     admin/
     public/
@@ -59,42 +89,72 @@ tests/
 Direction retenue :
 
 - `tests/unit/` pour les validations et helpers critiques
-- `tests/e2e/` pour les parcours complets
-- `tests/fixtures/` seulement pour les jeux de donnees ou fichiers strictement utiles
+- `tests/integration/` pour les garde-fous ciblés à forte valeur
+- `tests/e2e/` pour les parcours complets réellement critiques
+- `tests/fixtures/` seulement pour les jeux de données ou fichiers strictement utiles
 
-## Priorites de couverture
+## Priorités de couverture
 
-Ordre de priorite au depart :
+Ordre de priorité au départ :
 
-1. validations metier pures
-2. auth admin et acces protege
+1. validations métier pures à fort risque
+2. auth admin et accès protégé
 3. media admin
-4. CRUD categories
+4. CRUD catégories
 5. CRUD produits avec variantes et images
 6. homepage admin et homepage publique
 7. blog admin et public
 8. fallback SEO sur produit et article
 
-## Hors perimetre au depart
+## Ce qu'on cherche à sécuriser en premier
+
+La stratégie vise d'abord à sécuriser :
+
+- les règles métier déjà livrées
+- les parcours admin/public réellement critiques
+- les flux les plus exposés à la régression
+- les zones où la recette manuelle seule devient insuffisante
+
+## Ce qu'on ne cherche pas à faire au départ
 
 Ne pas couvrir initialement :
 
 - snapshots UI massifs
 - tests visuels
 - performance
-- accessibilite automatisee complete
-- matrice multi-navigateurs etendue
+- accessibilité automatisée complète
+- matrice multi-navigateurs étendue
 - tests de charge
-- tests d'integration base de donnees isoles si les E2E couvrent deja les flux critiques
+- E2E exhaustifs écran par écran
+- couche d'intégration tentaculaire et redondante
 
-## Ancrage dans l'etat actuel du repo
+## Ancrage dans l'état actuel du repo
 
-La future base de tests doit partir de l'existant :
+La base de tests doit partir de l'existant :
 
-- V1 deja exploitable en local
+- socle déjà exploitable en local
 - Docker local et `make db-reset-dev`
 - seed dev existant
-- mediatheque non seedee par defaut
-- verification actuelle via `pnpm run typecheck`, `pnpm run build` et `docs/v1-qa-checklist.md`
+- médiathèque non seedée par défaut
+- vérification actuelle via `pnpm run typecheck`, `pnpm run build` et recette manuelle
 
-La premiere valeur attendue de la future etape tests est donc de fiabiliser les parcours critiques, pas de construire un systeme de test complet.
+La première valeur attendue de la base de tests est donc de fiabiliser les parcours critiques et les validations importantes, pas de construire un système de test exhaustif.
+
+## Règle d'arbitrage permanente
+
+En cas d'arbitrage, toujours prioriser dans cet ordre :
+
+1. validations métier pures à fort risque
+2. parcours critiques déjà livrés
+3. garde-fous ciblés sur les erreurs les plus utiles
+4. extension de couverture seulement si elle reste rentable
+
+## Critère de réussite
+
+La stratégie sera considérée saine si elle permet de :
+
+- réduire la dépendance à la seule recette manuelle sur les zones critiques
+- sécuriser les flux déjà livrés sans sur-automatiser
+- rester compréhensible et maintenable
+- rester cohérente avec la doctrine actuelle du repo
+- tourner localement sans complexité disproportionnée

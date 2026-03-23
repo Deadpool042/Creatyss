@@ -6,7 +6,7 @@ Le dépôt documente désormais le projet à partir d'une doctrine explicite de 
 La doctrine actuelle est désormais structurée autour de :
 
 - `docs/architecture/` — doctrine du socle, modularité, niveaux, maintenance, garanties, cohérence, coût
-- `docs/domains/` — cartographie des domaines coeur, optionnels, satellites et transverses
+- `docs/domains/` — cartographie des domaines coeur, optionnels, satellites et concerns transverses
 - `AGENTS.md` — règles de travail, discipline de modification et contraintes repo
 
 ## Positionnement
@@ -46,15 +46,18 @@ Creatyss est une base e-commerce premium, sobre, rapide et claire, pensée pour 
 - `docs/architecture/10-data-lifecycle-and-governance.md`
 - `docs/architecture/11-pricing-and-cost-model.md`
 - `docs/domains/README.md`
+- `docs/testing/strategy.md`
+- `docs/testing/roadmap.md`
 
 ### Lecture recommandée
 
 Pour comprendre le socle dans son état courant :
 
-1. lire `AGENTS.md`
-2. lire `docs/architecture/00` à `11`
-3. lire `docs/domains/README.md`
-4. ensuite lire la documentation de test ou la documentation de lot utile au sujet traité
+1. lire `README.md`
+2. lire `AGENTS.md`
+3. lire `docs/architecture/00` à `11`
+4. lire `docs/domains/README.md`
+5. ensuite lire la documentation de test, la documentation de lot ou la configuration IA utile au sujet traité
 
 ## Portée actuelle du dépôt
 
@@ -370,6 +373,8 @@ rm <chemin_retourne>
 - `docs/testing/roadmap.md`
 - `.claude/CLAUDE.md`
 - `.github/copilot-instructions.md`
+- `.codex/config.toml`
+- `.codex/skills/`
 
 ## Contraintes importantes
 
