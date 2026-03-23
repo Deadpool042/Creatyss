@@ -1,8 +1,8 @@
 # Domaine discounts
 
 > **Statut documentaire** : satellite de `pricing`.
-> `discounts` documente les capabilities de remises et promotions du domaine coeur `pricing`.
-> Il n'est pas un domaine coeur de premier rang autonome : tant qu'il n'existe pas de moteur promotionnel séparé, il reste une spécialisation subordonnée à `core/pricing.md`.
+> `discounts` documente les capabilities de remises et promotions portées par le domaine coeur [`core/pricing.md`](../core/pricing.md).
+> Tant qu'il n'existe pas de moteur promotionnel séparé et autonome, ce sujet reste subordonné à `pricing`, pas un domaine de premier rang indépendant.
 
 ## Rôle
 

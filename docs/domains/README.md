@@ -8,18 +8,32 @@ Ce dossier contient une fiche par domaine métier ou transverse du socle e-comme
 
 ## Hiérarchie documentaire
 
-Tous les fichiers de `docs/domains/` ne sont pas du même rang.
+Tous les fichiers de `docs/domains/` ne sont pas du même rang **documentaire**.
 La structure distingue quatre catégories explicites :
 
 | Catégorie | Signification | Dossier |
 |---|---|---|
-| **core** | Domaines coeur non toggleables ou à capabilities toggleables — présents dans tous les projets | `core/` |
+| **core** | Domaines coeur — présents dans tous les projets, toggleables uniquement au niveau de leurs capabilities internes | `core/` |
 | **optional** | Domaines optionnels — activés uniquement si un besoin métier réel le justifie | `optional/` |
 | **satellites** | Spécialisations et docs satellites — rattachées à un domaine coeur parent | `satellites/` |
-| **cross-cutting** | Concerns transverses — exploitation, pilotage, diffusion, conformité | `cross-cutting/` |
+| **cross-cutting** | Concerns transverses — s'appliquent horizontalement à plusieurs domaines | `cross-cutting/` |
 
-Un fichier satellite ou cross-cutting **n'est pas au même rang qu'un domaine coeur**.
-Se référer à [`docs/architecture/03-core-domains-and-toggleable-capabilities.md`](../architecture/03-core-domains-and-toggleable-capabilities.md) pour la grille officielle de classification.
+---
+
+## Distinction rang documentaire / criticité architecturale
+
+Cette classification est une **organisation documentaire**, pas un jugement de criticité.
+
+Le rang documentaire indique comment une fiche est rattachée à la structure du socle.
+La criticité architecturale indique si un sujet est non-toggleable ou structurellement indispensable.
+
+Ces deux dimensions sont indépendantes.
+
+**En particulier** : certains fichiers de `cross-cutting/` couvrent des sujets considérés comme **coeur non toggleables** par [`docs/architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md). C'est notamment le cas de `audit`, `observability` et `jobs`.
+
+Ils sont documentés dans `cross-cutting/` parce qu'ils sont de nature **transverse** — ils s'appliquent à tous les domaines, sans appartenir à un domaine métier commercial vertical en particulier. Leur criticité architecturale n'en est pas diminuée.
+
+Se référer à [`docs/architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) pour la grille officielle de classification architecturale.
 
 ---
 
@@ -91,7 +105,7 @@ Référence doctrine : [`docs/architecture/03`](../architecture/03-core-domains-
 
 ## satellites/
 
-Spécialisations et docs satellites rattachées à un domaine coeur parent. Ces fichiers approfondissent un domaine coeur ou une capability précise. Ils ne sont pas des domaines autonomes de premier rang.
+Spécialisations et docs satellites rattachées à un domaine coeur parent. Ces fichiers approfondissent un domaine coeur ou une capability précise. Ils n'ont pas d'autonomie de premier rang : leur périmètre est subordonné à leur domaine parent.
 
 | Fichier satellite | Domaine coeur parent |
 |---|---|
@@ -100,35 +114,46 @@ Spécialisations et docs satellites rattachées à un domaine coeur parent. Ces 
 | [`bundles.md`](satellites/bundles.md) | `products` |
 | [`media.md`](satellites/media.md) | `products` |
 | [`channels.md`](satellites/channels.md) | `products` + `integrations` |
-| [`inventory.md`](satellites/inventory.md) | `availability` ⚠️ satellite, pas domaine coeur |
-| [`discounts.md`](satellites/discounts.md) | `pricing` ⚠️ satellite, pas domaine coeur |
+| [`inventory.md`](satellites/inventory.md) | `availability` — voir note de fichier |
+| [`discounts.md`](satellites/discounts.md) | `pricing` — voir note de fichier |
 | [`sales-policy.md`](satellites/sales-policy.md) | `pricing` + `availability` |
 | [`fulfillment.md`](satellites/fulfillment.md) | `orders` + `shipping` |
 | [`gifting.md`](satellites/gifting.md) | `cart` + `checkout` |
-
-> **Note** : `inventory` et `discounts` sont des satellites de `availability` et `pricing` respectivement.
-> Voir les notes d'alignement en tête de chaque fichier.
 
 ---
 
 ## cross-cutting/
 
-Concerns transverses qui s'appliquent horizontalement à plusieurs domaines.
-Ils ne sont pas des domaines coeur de premier rang commercial : ce sont des préoccupations d'exploitation, de pilotage, de diffusion, de conformité ou d'infrastructure transverse.
+Concerns transverses — ces sujets s'appliquent **horizontalement** à plusieurs domaines. Ils ne sont pas des domaines métier commerciaux verticaux.
+
+**Attention** : cette catégorie documentaire ne dit rien sur la criticité. Certains sujets listés ici sont **non-toggleables architecturalement** (voir tableau ci-dessous). D'autres sont des supports d'exploitation, de conformité ou de diffusion.
+
+| Sujet | Criticité architecturale |
+|---|---|
+| `audit` | Non-toggleable — voir [`architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) |
+| `observability` | Non-toggleable — voir [`architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) |
+| `jobs` | Non-toggleable — voir [`architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) |
+| autres | Variable — toggleable ou activable selon le projet |
 
 Référence doctrine :
+- [`docs/architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md) — classification officielle des domaines
 - [`docs/architecture/08`](../architecture/08-domain-events-jobs-and-async-flows.md) — events, jobs, async
 - [`docs/architecture/09`](../architecture/09-integrations-providers-and-external-boundaries.md) — frontières externes
 - [`docs/architecture/10`](../architecture/10-data-lifecycle-and-governance.md) — gouvernance et cycle de vie
 
-### Exploitation et observabilité
+### Exploitation et observabilité ⚠️ structurants
+
+Ces sujets sont **non-toggleables** per `architecture/03` malgré leur nature transverse.
 
 - [`audit.md`](cross-cutting/audit.md)
 - [`observability.md`](cross-cutting/observability.md)
+- [`jobs.md`](cross-cutting/jobs.md)
+
+### Exploitation étendue
+
 - [`monitoring.md`](cross-cutting/monitoring.md)
 - [`analytics.md`](cross-cutting/analytics.md)
 - [`dashboarding.md`](cross-cutting/dashboarding.md)
-- [`jobs.md`](cross-cutting/jobs.md)
 - [`events.md`](cross-cutting/events.md)
 - [`scheduling.md`](cross-cutting/scheduling.md)
 
@@ -183,8 +208,9 @@ Référence doctrine :
 
 ## Règles d'utilisation
 
-1. **Ne pas promouvoir un satellite en domaine coeur** sans revue de la doctrine architecture.
-2. **Ne pas créer un nouveau fichier flat à la racine** — choisir la catégorie adaptée.
-3. **Un domaine optionnel ne contamine pas le coeur** quand il est absent.
-4. **La source de vérité de classification** reste [`docs/architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md).
-5. **Tout nouveau domaine** doit d'abord être classé avant d'être documenté.
+1. **Rang documentaire ≠ criticité architecturale.** Un sujet en `cross-cutting/` peut être non-toggleable et structurellement indispensable.
+2. **La classification architecturale officielle** est dans [`docs/architecture/03`](../architecture/03-core-domains-and-toggleable-capabilities.md), pas dans ce README.
+3. **Ne pas promouvoir un satellite en domaine coeur** sans revue de la doctrine architecture.
+4. **Ne pas créer un nouveau fichier flat à la racine** — choisir la catégorie adaptée.
+5. **Un domaine optionnel ne contamine pas le coeur** quand il est absent.
+6. **Tout nouveau domaine** doit d'abord être classé avant d'être documenté.
