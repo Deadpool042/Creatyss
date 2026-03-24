@@ -3326,6 +3326,9 @@ CREATE INDEX "excise_rules_storeId_idx" ON "excise_rules"("storeId");
 CREATE INDEX "excise_rules_status_idx" ON "excise_rules"("status");
 
 -- CreateIndex
+CREATE INDEX "excise_rules_storeId_productTypeCode_idx" ON "excise_rules"("storeId", "productTypeCode");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "excise_rules_storeId_code_key" ON "excise_rules"("storeId", "code");
 
 -- CreateIndex
@@ -4848,6 +4851,9 @@ ALTER TABLE "tax_rules" ADD CONSTRAINT "tax_rules_storeId_productTypeCode_fkey" 
 
 -- AddForeignKey
 ALTER TABLE "excise_rules" ADD CONSTRAINT "excise_rules_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "excise_rules" ADD CONSTRAINT "excise_rules_storeId_productTypeCode_fkey" FOREIGN KEY ("storeId", "productTypeCode") REFERENCES "product_types"("storeId", "code") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "carts" ADD CONSTRAINT "carts_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;

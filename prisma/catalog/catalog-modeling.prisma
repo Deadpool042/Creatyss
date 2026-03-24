@@ -46,6 +46,7 @@ model ProductType {
   attributes ProductTypeAttribute[]
   products   Product[]
   taxRules   TaxRule[]
+  exciseRules ExciseRule[]
 
   @@unique([storeId, code])
   @@index([storeId])
