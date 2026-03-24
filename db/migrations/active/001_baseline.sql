@@ -1508,19 +1508,59 @@ CREATE TABLE "locale_definitions" (
 );
 
 -- CreateTable
-CREATE TABLE "localized_values" (
+CREATE TABLE "page_localizations" (
     "id" TEXT NOT NULL,
     "storeId" TEXT NOT NULL,
     "localeId" TEXT NOT NULL,
-    "subjectType" TEXT NOT NULL,
-    "subjectId" TEXT NOT NULL,
-    "fieldName" TEXT NOT NULL,
-    "value" TEXT NOT NULL,
+    "pageId" TEXT NOT NULL,
+    "title" TEXT,
+    "description" TEXT,
     "status" "LocalizationValueStatus" NOT NULL DEFAULT 'DRAFT',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "localized_values_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "page_localizations_at_least_one_value_check" CHECK (
+        "title" IS NOT NULL OR "description" IS NOT NULL
+    ),
+    CONSTRAINT "page_localizations_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "blog_post_localizations" (
+    "id" TEXT NOT NULL,
+    "storeId" TEXT NOT NULL,
+    "localeId" TEXT NOT NULL,
+    "blogPostId" TEXT NOT NULL,
+    "title" TEXT,
+    "excerpt" TEXT,
+    "content" TEXT,
+    "status" "LocalizationValueStatus" NOT NULL DEFAULT 'DRAFT',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "blog_post_localizations_at_least_one_value_check" CHECK (
+        "title" IS NOT NULL OR "excerpt" IS NOT NULL OR "content" IS NOT NULL
+    ),
+    CONSTRAINT "blog_post_localizations_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "product_localizations" (
+    "id" TEXT NOT NULL,
+    "storeId" TEXT NOT NULL,
+    "localeId" TEXT NOT NULL,
+    "productId" TEXT NOT NULL,
+    "name" TEXT,
+    "shortDescription" TEXT,
+    "description" TEXT,
+    "status" "LocalizationValueStatus" NOT NULL DEFAULT 'DRAFT',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "product_localizations_at_least_one_value_check" CHECK (
+        "name" IS NOT NULL OR "shortDescription" IS NOT NULL OR "description" IS NOT NULL
+    ),
+    CONSTRAINT "product_localizations_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -3214,6 +3254,9 @@ CREATE INDEX "products_isFeatured_idx" ON "products"("isFeatured");
 CREATE UNIQUE INDEX "products_storeId_slug_key" ON "products"("storeId", "slug");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "products_storeId_id_key" ON "products"("storeId", "id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "products_storeId_sku_key" ON "products"("storeId", "sku");
 
 -- CreateIndex
@@ -3550,6 +3593,9 @@ CREATE INDEX "blog_posts_publishedAt_idx" ON "blog_posts"("publishedAt");
 CREATE UNIQUE INDEX "blog_posts_storeId_slug_key" ON "blog_posts"("storeId", "slug");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "blog_posts_storeId_id_key" ON "blog_posts"("storeId", "id");
+
+-- CreateIndex
 CREATE INDEX "blog_post_categories_postId_idx" ON "blog_post_categories"("postId");
 
 -- CreateIndex
@@ -3574,22 +3620,43 @@ CREATE INDEX "locale_definitions_isActive_idx" ON "locale_definitions"("isActive
 CREATE UNIQUE INDEX "locale_definitions_storeId_code_key" ON "locale_definitions"("storeId", "code");
 
 -- CreateIndex
-CREATE INDEX "localized_values_storeId_idx" ON "localized_values"("storeId");
+CREATE UNIQUE INDEX "locale_definitions_storeId_id_key" ON "locale_definitions"("storeId", "id");
 
 -- CreateIndex
-CREATE INDEX "localized_values_localeId_idx" ON "localized_values"("localeId");
+CREATE INDEX "page_localizations_storeId_idx" ON "page_localizations"("storeId");
 
 -- CreateIndex
-CREATE INDEX "localized_values_subjectType_subjectId_idx" ON "localized_values"("subjectType", "subjectId");
+CREATE INDEX "page_localizations_localeId_idx" ON "page_localizations"("localeId");
 
 -- CreateIndex
-CREATE INDEX "localized_values_fieldName_idx" ON "localized_values"("fieldName");
+CREATE INDEX "page_localizations_status_idx" ON "page_localizations"("status");
 
 -- CreateIndex
-CREATE INDEX "localized_values_status_idx" ON "localized_values"("status");
+CREATE UNIQUE INDEX "page_localizations_pageId_localeId_key" ON "page_localizations"("pageId", "localeId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "localized_values_localeId_subjectType_subjectId_fieldName_key" ON "localized_values"("localeId", "subjectType", "subjectId", "fieldName");
+CREATE INDEX "blog_post_localizations_storeId_idx" ON "blog_post_localizations"("storeId");
+
+-- CreateIndex
+CREATE INDEX "blog_post_localizations_localeId_idx" ON "blog_post_localizations"("localeId");
+
+-- CreateIndex
+CREATE INDEX "blog_post_localizations_status_idx" ON "blog_post_localizations"("status");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "blog_post_localizations_blogPostId_localeId_key" ON "blog_post_localizations"("blogPostId", "localeId");
+
+-- CreateIndex
+CREATE INDEX "product_localizations_storeId_idx" ON "product_localizations"("storeId");
+
+-- CreateIndex
+CREATE INDEX "product_localizations_localeId_idx" ON "product_localizations"("localeId");
+
+-- CreateIndex
+CREATE INDEX "product_localizations_status_idx" ON "product_localizations"("status");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "product_localizations_productId_localeId_key" ON "product_localizations"("productId", "localeId");
 
 -- CreateIndex
 CREATE INDEX "pages_storeId_idx" ON "pages"("storeId");
@@ -3602,6 +3669,9 @@ CREATE INDEX "pages_isHomepage_idx" ON "pages"("isHomepage");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "pages_storeId_slug_key" ON "pages"("storeId", "slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "pages_storeId_id_key" ON "pages"("storeId", "id");
 
 -- CreateIndex
 CREATE INDEX "page_sections_pageId_idx" ON "page_sections"("pageId");
@@ -4933,10 +5003,31 @@ ALTER TABLE "blog_post_categories" ADD CONSTRAINT "blog_post_categories_category
 ALTER TABLE "locale_definitions" ADD CONSTRAINT "locale_definitions_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "localized_values" ADD CONSTRAINT "localized_values_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "page_localizations" ADD CONSTRAINT "page_localizations_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "localized_values" ADD CONSTRAINT "localized_values_localeId_fkey" FOREIGN KEY ("localeId") REFERENCES "locale_definitions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "page_localizations" ADD CONSTRAINT "page_localizations_storeId_localeId_fkey" FOREIGN KEY ("storeId", "localeId") REFERENCES "locale_definitions"("storeId", "id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "page_localizations" ADD CONSTRAINT "page_localizations_storeId_pageId_fkey" FOREIGN KEY ("storeId", "pageId") REFERENCES "pages"("storeId", "id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "blog_post_localizations" ADD CONSTRAINT "blog_post_localizations_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "blog_post_localizations" ADD CONSTRAINT "blog_post_localizations_storeId_localeId_fkey" FOREIGN KEY ("storeId", "localeId") REFERENCES "locale_definitions"("storeId", "id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "blog_post_localizations" ADD CONSTRAINT "blog_post_localizations_storeId_blogPostId_fkey" FOREIGN KEY ("storeId", "blogPostId") REFERENCES "blog_posts"("storeId", "id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "product_localizations" ADD CONSTRAINT "product_localizations_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "product_localizations" ADD CONSTRAINT "product_localizations_storeId_localeId_fkey" FOREIGN KEY ("storeId", "localeId") REFERENCES "locale_definitions"("storeId", "id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "product_localizations" ADD CONSTRAINT "product_localizations_storeId_productId_fkey" FOREIGN KEY ("storeId", "productId") REFERENCES "products"("storeId", "id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "pages" ADD CONSTRAINT "pages_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -47,9 +47,11 @@ model Product {
   bundleItems         BundleItem[]
   seo                 SeoMetadata?
   channelPublications ChannelProductPublication[]
+  localizations       ProductLocalization[]
 
   @@unique([storeId, slug])
   @@unique([storeId, sku])
+  @@unique([storeId, id])
   @@index([storeId])
   @@index([productTypeId])
   @@index([status])

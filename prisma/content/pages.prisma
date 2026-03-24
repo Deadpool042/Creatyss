@@ -36,11 +36,13 @@ model Page {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store    Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  sections PageSection[]
-  seo      SeoMetadata?
+  store         Store              @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  sections      PageSection[]
+  seo           SeoMetadata?
+  localizations PageLocalization[]
 
   @@unique([storeId, slug])
+  @@unique([storeId, id])
   @@index([storeId])
   @@index([status])
   @@index([isHomepage])

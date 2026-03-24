@@ -57,8 +57,10 @@ model BlogPost {
   coverImage    MediaAsset?        @relation(fields: [coverImageId], references: [id], onDelete: SetNull)
   categoryLinks BlogPostCategory[]
   seo           SeoMetadata?
+  localizations BlogPostLocalization[]
 
   @@unique([storeId, slug])
+  @@unique([storeId, id])
   @@index([storeId])
   @@index([status])
   @@index([isFeatured])

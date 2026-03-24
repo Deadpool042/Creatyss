@@ -154,7 +154,9 @@ model Store {
   blogPosts           BlogPost[]
   seoMetadata         SeoMetadata[]
   localeDefinitions   LocaleDefinition[]
-  localizedValues     LocalizedValue[]
+  pageLocalizations   PageLocalization[]
+  blogPostLocalizations BlogPostLocalization[]
+  productLocalizations ProductLocalization[]
   templateDefinitions TemplateDefinition[]
 
   carts           Cart[]
