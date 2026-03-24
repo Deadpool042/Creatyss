@@ -20,6 +20,13 @@ enum IntegrationProviderKind {
   OTHER
 }
 
+enum IntegrationCredentialStatus {
+  ACTIVE
+  ROTATED
+  REVOKED
+  ARCHIVED
+}
+
 model Integration {
   id      String  @id @default(cuid())
   storeId String?
@@ -51,6 +58,7 @@ model IntegrationCredential {
 
   credentialKey String
   secretHash    String
+  status        IntegrationCredentialStatus @default(ACTIVE)
   expiresAt     DateTime?
   revokedAt     DateTime?
 
@@ -61,6 +69,7 @@ model IntegrationCredential {
 
   @@unique([integrationId, credentialKey])
   @@index([integrationId])
+  @@index([status])
   @@index([expiresAt])
   @@map("integration_credentials")
 }

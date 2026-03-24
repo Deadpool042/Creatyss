@@ -172,6 +172,9 @@ CREATE TYPE "SubscriptionStatus" AS ENUM ('ACTIVE', 'PAUSED', 'CANCELLED', 'EXPI
 CREATE TYPE "SubscriptionBillingCycle" AS ENUM ('DAILY', 'WEEKLY', 'MONTHLY', 'QUARTERLY', 'YEARLY');
 
 -- CreateEnum
+CREATE TYPE "BlogCategoryStatus" AS ENUM ('ACTIVE', 'ARCHIVED');
+
+-- CreateEnum
 CREATE TYPE "BlogPostStatus" AS ENUM ('DRAFT', 'ACTIVE', 'ARCHIVED');
 
 -- CreateEnum
@@ -407,6 +410,9 @@ CREATE TYPE "ImportFormat" AS ENUM ('CSV', 'JSON', 'XLSX');
 
 -- CreateEnum
 CREATE TYPE "IntegrationStatus" AS ENUM ('ACTIVE', 'DISABLED', 'ARCHIVED');
+
+-- CreateEnum
+CREATE TYPE "IntegrationCredentialStatus" AS ENUM ('ACTIVE', 'ROTATED', 'REVOKED', 'ARCHIVED');
 
 -- CreateEnum
 CREATE TYPE "IntegrationProviderKind" AS ENUM ('PAYMENT', 'SHIPPING', 'ERP', 'E_INVOICING', 'EMAIL', 'CMS', 'OTHER');
@@ -1448,6 +1454,7 @@ CREATE TABLE "blog_categories" (
     "slug" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
+    "status" "BlogCategoryStatus" NOT NULL DEFAULT 'ACTIVE',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -2685,6 +2692,7 @@ CREATE TABLE "integration_credentials" (
     "integrationId" TEXT NOT NULL,
     "credentialKey" TEXT NOT NULL,
     "secretHash" TEXT NOT NULL,
+    "status" "IntegrationCredentialStatus" NOT NULL DEFAULT 'ACTIVE',
     "expiresAt" TIMESTAMP(3),
     "revokedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -3510,6 +3518,9 @@ CREATE INDEX "subscriptions_status_idx" ON "subscriptions"("status");
 
 -- CreateIndex
 CREATE INDEX "blog_categories_storeId_idx" ON "blog_categories"("storeId");
+
+-- CreateIndex
+CREATE INDEX "blog_categories_status_idx" ON "blog_categories"("status");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "blog_categories_storeId_slug_key" ON "blog_categories"("storeId", "slug");
@@ -4437,6 +4448,9 @@ CREATE UNIQUE INDEX "integrations_storeId_code_key" ON "integrations"("storeId",
 
 -- CreateIndex
 CREATE INDEX "integration_credentials_integrationId_idx" ON "integration_credentials"("integrationId");
+
+-- CreateIndex
+CREATE INDEX "integration_credentials_status_idx" ON "integration_credentials"("status");
 
 -- CreateIndex
 CREATE INDEX "integration_credentials_expiresAt_idx" ON "integration_credentials"("expiresAt");
