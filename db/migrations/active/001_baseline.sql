@@ -3208,6 +3208,9 @@ CREATE INDEX "products_isFeatured_idx" ON "products"("isFeatured");
 CREATE UNIQUE INDEX "products_storeId_slug_key" ON "products"("storeId", "slug");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "products_storeId_sku_key" ON "products"("storeId", "sku");
+
+-- CreateIndex
 CREATE INDEX "product_attribute_values_productId_idx" ON "product_attribute_values"("productId");
 
 -- CreateIndex

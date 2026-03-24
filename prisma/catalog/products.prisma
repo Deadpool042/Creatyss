@@ -49,6 +49,7 @@ model Product {
   channelPublications ChannelProductPublication[]
 
   @@unique([storeId, slug])
+  @@unique([storeId, sku])
   @@index([storeId])
   @@index([productTypeId])
   @@index([status])
