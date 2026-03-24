@@ -590,6 +590,10 @@ CREATE TABLE "bundle_items" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
+    CONSTRAINT "bundle_items_exactly_one_target_check" CHECK (
+        (CASE WHEN "productId" IS NOT NULL THEN 1 ELSE 0 END) +
+        (CASE WHEN "variantId" IS NOT NULL THEN 1 ELSE 0 END) = 1
+    ),
     CONSTRAINT "bundle_items_pkey" PRIMARY KEY ("id")
 );
 
@@ -1100,6 +1104,10 @@ CREATE TABLE "commercial_documents" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
+    CONSTRAINT "commercial_documents_exactly_one_target_check" CHECK (
+        (CASE WHEN "orderId" IS NOT NULL THEN 1 ELSE 0 END) +
+        (CASE WHEN "returnRequestId" IS NOT NULL THEN 1 ELSE 0 END) = 1
+    ),
     CONSTRAINT "commercial_documents_pkey" PRIMARY KEY ("id")
 );
 
@@ -1185,6 +1193,11 @@ CREATE TABLE "gifting_contexts" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
+    CONSTRAINT "gifting_contexts_exactly_one_target_check" CHECK (
+        (CASE WHEN "cartId" IS NOT NULL THEN 1 ELSE 0 END) +
+        (CASE WHEN "checkoutId" IS NOT NULL THEN 1 ELSE 0 END) +
+        (CASE WHEN "orderId" IS NOT NULL THEN 1 ELSE 0 END) = 1
+    ),
     CONSTRAINT "gifting_contexts_pkey" PRIMARY KEY ("id")
 );
 
