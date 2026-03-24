@@ -2,7 +2,7 @@
 
 ## Rôle
 
-Décrire la finalité métier principale du domaine.
+Décrire la finalité principale du domaine.
 
 Le rôle doit répondre à la question :
 **pourquoi ce domaine existe-t-il dans le système ?**
@@ -18,15 +18,20 @@ Indiquer l’une des catégories suivantes :
 - `core`
 - `optional`
 - `cross-cutting`
+- `satellites`
 
 ### Criticité architecturale
 
-Indiquer explicitement :
+Indiquer explicitement la nature réelle du domaine, par exemple :
 
 - `coeur`
+- `coeur structurel`
 - `optionnelle`
 - `transverse non optionnelle`
-- autre formulation strictement justifiée
+- `transverse optionnelle`
+- `satellite`
+
+Toute autre formulation doit être strictement justifiée.
 
 ### Activable
 
@@ -43,9 +48,9 @@ Préciser les conditions d’activation si applicable.
 
 Indiquer clairement :
 
-- quelle donnée ou décision relève de ce domaine ;
+- quelle donnée, décision ou représentation relève de ce domaine ;
 - où se situe l’autorité principale ;
-- quelles données ne relèvent pas de lui.
+- quelles données ou décisions ne relèvent pas de lui.
 
 S’il existe plusieurs systèmes impliqués, préciser la hiérarchie d’autorité.
 
@@ -60,9 +65,10 @@ Lister explicitement ce que le domaine :
 - valide ;
 - calcule ;
 - orchestre ;
-- expose.
+- expose ;
+- publie.
 
-Cette section doit rester centrée sur la responsabilité métier ou transverse réelle.
+Cette section doit rester centrée sur la responsabilité réelle du domaine.
 
 ---
 
@@ -96,7 +102,8 @@ Distinguer autant que possible :
 
 - dépendance métier ;
 - dépendance technique ;
-- dépendance d’intégration.
+- dépendance d’intégration ;
+- dépendance d’exploitation.
 
 ---
 
@@ -106,7 +113,7 @@ Lister les événements métier ou transverses significatifs :
 
 - publiés ;
 - consommés ;
-- ou pertinents pour le domaine.
+- ou structurants pour le domaine.
 
 Préciser uniquement les événements utiles à la compréhension du domaine.
 
@@ -149,7 +156,9 @@ Décrire les contraintes spécifiques si le domaine interagit avec :
 - des synchronisations ;
 - des jobs ;
 - des traitements asynchrones ;
-- des exigences d’idempotence.
+- des exigences d’idempotence ;
+- des mécanismes de retry ;
+- des échecs partiels.
 
 Si non applicable, l’indiquer explicitement.
 
@@ -163,7 +172,8 @@ Décrire ce qui doit être visible ou traçable pour ce domaine :
 - erreurs significatives ;
 - actions opératoires ;
 - événements importants ;
-- reprises éventuelles.
+- reprises éventuelles ;
+- écarts critiques avec d’autres systèmes.
 
 Si le domaine n’a pas d’exigence particulière, l’indiquer explicitement.
 

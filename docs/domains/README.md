@@ -4,28 +4,22 @@
 
 Ce dossier contient les fiches de référence des domaines du système.
 
-Chaque fiche domaine décrit une responsabilité métier ou transverse identifiable, avec ses frontières, ses invariants, ses dépendances et ses effets structurants.
+Chaque fiche domaine décrit une responsabilité identifiable, avec :
 
-Ce dossier ne définit pas la doctrine d’architecture générale.
+- son rôle ;
+- sa classification ;
+- sa source de vérité ;
+- ses responsabilités ;
+- ses non-responsabilités ;
+- ses invariants ;
+- ses dépendances ;
+- ses événements significatifs ;
+- ses contraintes d’exécution ;
+- son impact d’exploitation ;
+- ses limites.
+
+Ce dossier ne définit pas la doctrine générale du système.
 La doctrine canonique appartient à `docs/architecture/`.
-
----
-
-## Rôle de ce dossier
-
-`docs/domains/` sert à documenter :
-
-- les responsabilités métier réelles ;
-- les sources de vérité ;
-- les invariants ;
-- les dépendances ;
-- les événements significatifs ;
-- les frontières locales ;
-- les impacts d’exploitation et de maintenance.
-
-Un document de domaine doit permettre de répondre à la question :
-
-**de quoi ce bloc est-il responsable, et de quoi n’est-il pas responsable ?**
 
 ---
 
@@ -43,14 +37,15 @@ En conséquence :
 - un document de domaine ne doit pas inventer une frontière incompatible avec `docs/architecture/10-fondations/`.
 
 En cas de conflit :
-`docs/architecture/` fait autorité sur la doctrine ;
-`docs/domains/` fait autorité sur le détail local du domaine, à doctrine constante.
+
+- `docs/architecture/` fait autorité sur la doctrine ;
+- `docs/domains/` fait autorité sur le détail local du domaine, à doctrine constante.
 
 ---
 
-## Organisation du dossier
+## Catégories documentaires
 
-Le dossier est structuré par catégorie architecturale.
+Le dossier `docs/domains/` est structuré selon quatre catégories documentaires :
 
 ### `core/`
 
@@ -58,9 +53,18 @@ Contient les domaines coeur.
 
 Un domaine coeur :
 
-- porte une vérité métier fondamentale ;
-- est indispensable à l’identité fonctionnelle du système ;
-- structure le modèle métier central.
+- porte une vérité métier ou structurelle centrale ;
+- est indispensable à la cohérence du système ;
+- ne relève ni d’une simple option ni d’une simple dépendance externe.
+
+Le coeur peut inclure :
+
+- un coeur métier ;
+- et, si le projet l’assume explicitement, un coeur structurel.
+
+Cette distinction doit être documentée, pas implicite.
+
+---
 
 ### `optional/`
 
@@ -69,59 +73,86 @@ Contient les capacités optionnelles significatives.
 Une capacité optionnelle :
 
 - enrichit le système ;
-- peut être activée ou non ;
+- peut être activée ou absente ;
 - ne doit pas redéfinir silencieusement le coeur.
+
+Une capacité importante commercialement n’est pas coeur par défaut.
+
+---
 
 ### `cross-cutting/`
 
-Contient les préoccupations transverses documentées comme domaines ou blocs de responsabilité.
+Contient les responsabilités transverses.
+
+Une responsabilité transverse :
+
+- traverse plusieurs domaines ou couches ;
+- nécessite une gouvernance explicite ;
+- peut être critique ;
+- n’est pas secondaire par nature.
 
 Important :
 `cross-cutting/` est une catégorie documentaire.
-Elle ne signifie pas “secondaire” ni “facultatif”.
-
-Une préoccupation transverse peut être :
-
-- critique ;
-- non optionnelle ;
-- structurellement indispensable.
+Elle ne signifie ni “facultatif” ni “faible criticité”.
 
 Exemples typiques :
 
 - audit ;
 - observabilité ;
 - jobs ;
-- intégrations structurantes.
+- conformité ;
+- notifications ;
+- certains domaines métier transverses.
+
+---
+
+### `satellites/`
+
+Contient les satellites du système.
+
+Un satellite est un bloc connecté au système sans constituer le coeur de sa vérité métier centrale.
+
+Un satellite peut représenter :
+
+- une projection structurée ;
+- une modélisation périphérique ;
+- un sous-système connexe ;
+- un espace de publication ou de diffusion ;
+- une responsabilité adjacente non coeur.
+
+Important :
+`satellites/` est une catégorie documentaire.
+Elle ne signifie pas automatiquement “externe”, “mineur” ou “négligeable”.
+
+Un satellite peut être important, mais il ne doit pas être confondu avec le coeur.
 
 ---
 
 ## Règles de gouvernance
 
-### Règle 1 — Toute fiche doit avoir une classification explicite
+### Règle 1 — Toute fiche doit déclarer sa classification
 
-Chaque fiche doit indiquer au minimum :
+Chaque fiche doit expliciter :
 
 - sa catégorie documentaire ;
 - sa criticité architecturale ;
 - son caractère activable ou non.
 
-### Règle 2 — Toute fiche doit expliciter sa responsabilité
+### Règle 2 — Toute fiche doit décrire une responsabilité réelle
 
-Une fiche domaine doit définir clairement :
+Une fiche domaine doit répondre clairement à :
 
-- ce qu’elle possède ;
-- ce qu’elle décide ;
-- ce qu’elle publie ;
-- ce qu’elle consomme ;
-- ce qu’elle ne possède pas.
+- de quoi ce bloc est-il responsable ;
+- de quoi ne l’est-il pas ;
+- où s’arrête sa frontière.
 
 ### Règle 3 — Toute fiche doit expliciter sa source de vérité
 
-Une responsabilité sans source de vérité identifiable est incomplète.
+Une responsabilité sans source de vérité identifiable reste incomplète.
 
 ### Règle 4 — Toute fiche doit expliciter ses invariants
 
-Une fiche sans invariants ou sans justification explicite de leur absence reste insuffisante.
+Une fiche sans invariants, ou sans justification explicite de leur absence, est insuffisante.
 
 ### Règle 5 — Toute fiche doit expliciter ses frontières
 
@@ -133,7 +164,7 @@ Une section peut être marquée :
 
 - non applicable ;
 - hors périmètre ;
-- à préciser ultérieurement si cela est réellement transitoire.
+- à confirmer.
 
 Une omission silencieuse n’est pas acceptable.
 
@@ -141,18 +172,19 @@ Une omission silencieuse n’est pas acceptable.
 
 ## Complétude minimale obligatoire
 
-Toute fiche domaine doit contenir au minimum les sections suivantes :
+Toute fiche domaine doit contenir au minimum :
 
 - rôle ;
 - classification ;
 - source de vérité ;
 - responsabilités ;
+- non-responsabilités ;
 - invariants ;
 - dépendances ;
 - événements significatifs ;
 - cycle de vie ou justification de son absence ;
 - impact de maintenance / exploitation ;
-- limites explicites du domaine.
+- limites du domaine.
 
 ---
 
@@ -171,7 +203,7 @@ Le style attendu est :
 - les notes de brainstorming ;
 - les formulations vagues ;
 - les synonymes instables ;
-- les descriptions purement techniques sans portée métier.
+- les descriptions purement techniques sans portée structurelle.
 
 ---
 
@@ -194,3 +226,4 @@ Il peut être allégé uniquement si certaines sections sont explicitement marqu
 - `../architecture/10-fondations/11-modele-de-classification.md`
 - `../architecture/10-fondations/12-frontieres-et-responsabilites.md`
 - `_template.md`
+- `_migration-audit.md`

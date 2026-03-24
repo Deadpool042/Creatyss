@@ -1,134 +1,31 @@
-# Domaine `products`
-
-## Objectif
-
-Ce document décrit le domaine `products` dans la doctrine courante du socle.
-
-Il précise :
-
-- le rôle du domaine ;
-- sa place dans la modularité du socle ;
-- sa source de vérité ;
-- ses capabilities activables ;
-- ses niveaux de sophistication ;
-- ses objets métier ;
-- ses invariants ;
-- son cycle de vie ;
-- ses règles de cohérence ;
-- ses frontières externes ;
-- ses implications de maintenance, d’exploitation et de coût.
-
-Le domaine `products` est structurant pour la réutilisabilité du socle, car il porte la vérité catalogue interne du commerce.
-
-Le domaine `products` ne doit pas être réduit à quelques champs storefront.
-Il doit porter une structure catalogue stable, capable de servir :
-
-- produits simples ;
-- variantes ;
-- bundles si activés ;
-- métadonnées métier ;
-- contenu produit ;
-- articulation claire avec `pricing`, `availability`, `cart` et `orders`.
-
----
-
-## Position dans la doctrine de modularité
-
-Le domaine `products` est classé comme :
-
-- `domaine coeur à capabilities toggleables`
-
-Le domaine existe dans tous les projets e-commerce sérieux.
-En revanche, sa richesse structurelle varie selon le projet.
-
-### Ce qui n’est jamais désactivé
-
-Le domaine conserve toujours :
-
-- une vérité catalogue interne ;
-- une identité produit stable ;
-- une structure claire entre offre et variantes si le projet en a besoin ;
-- une séparation avec pricing, disponibilité et commandes ;
-- un lifecycle explicite des objets catalogue.
-
-### Ce qui est activable / désactivable par capability
-
-Le domaine `products` est lié aux capabilities suivantes :
-
-- `simpleProducts`
-- `variants`
-- `bundles`
-- `productMedia`
-- `productAttributes`
-- `productBadges`
-- `seoMetadata`
-- `productPublishingWorkflow`
-
-### Ce qui relève d’un niveau
-
-Le domaine porte plusieurs niveaux de sophistication catalogue.
-
-### Ce qui relève d’un provider ou d’une intégration externe
-
-Relèvent de `integrations` et non du coeur de `products` :
-
-- PIM externe ;
-- imports catalogue ;
-- synchronisations marketplace ;
-- enrichissements automatiques externes.
-
-Le domaine `products` garde la vérité interne du catalogue exploité par le socle.
-
----
+# Produits
 
 ## Rôle
 
-Le domaine `products` porte la vérité catalogue du socle.
+Le domaine `products` porte le référentiel produit central du système.
 
-Il constitue la source de vérité interne pour :
+Il définit ce qu’est un produit du point de vue métier, comment il est identifié, structuré, qualifié et exposé au reste du système.
 
-- l’identité des produits ;
-- les variantes ;
-- les attributs métier catalogue ;
-- l’état de publication catalogue ;
-- les informations structurantes utilisées par pricing, availability, cart et checkout.
-
-Le domaine est distinct :
-
-- de `pricing`, qui porte la vérité économique ;
-- de `availability`, qui porte la disponibilité ;
-- de `cart`, qui porte l’intention d’achat runtime ;
-- de `orders`, qui porte le figement durable de l’achat ;
-- de `blog` ou du contenu éditorial.
+Le domaine existe pour fournir une représentation produit stable, cohérente et exploitable par les autres domaines coeur et capacités optionnelles.
 
 ---
 
-## Responsabilités
+## Classification
 
-Le domaine `products` prend en charge :
+### Catégorie documentaire
 
-- la création et gestion des produits ;
-- la gestion des variantes si activées ;
-- les attributs catalogue ;
-- les métadonnées structurantes ;
-- les médias si activés ;
-- le statut de publication ;
-- la lisibilité du catalogue pour les autres domaines ;
-- l’identité stable des références produit.
+`core`
 
----
+### Criticité architecturale
 
-## Ce que le domaine ne doit pas faire
+`coeur`
 
-Le domaine `products` ne doit pas :
+### Activable
 
-- porter le prix ;
-- porter la disponibilité ;
-- porter la commande ;
-- porter le paiement ;
-- devenir un CMS générique ;
-- dépendre d’un PIM externe pour exister localement ;
-- laisser les autres domaines recréer l’identité produit différemment.
+`non`
+
+Le domaine `products` est non optionnel.
+Sans lui, le système ne peut pas porter un catalogue exploitable ni soutenir correctement les parcours métier dépendants des produits.
 
 ---
 
@@ -136,448 +33,328 @@ Le domaine `products` ne doit pas :
 
 Le domaine `products` est la source de vérité pour :
 
-- l’identité produit ;
-- l’identité variante ;
-- les attributs produit ;
-- la publication catalogue ;
-- les relations produit / variante structurantes.
+- l’identité produit interne ;
+- la définition métier de base d’un produit ;
+- les attributs structurants du produit ;
+- la structure produit nécessaire aux usages du système ;
+- les relations de rattachement métier explicitement portées par le domaine ;
+- les états métier du référentiel produit lorsque ceux-ci relèvent du produit lui-même.
 
-Le domaine n’est pas la source de vérité pour :
+Le domaine `products` n’est pas la source de vérité pour :
 
-- le prix ;
-- la disponibilité ;
-- la taxation ;
-- le paiement ;
-- la commande figée ;
-- les projections storefront dérivées.
+- les prix calculés ou publiés, qui relèvent de `pricing` ;
+- les stocks physiques ou virtuels, qui relèvent de `availability` et/ou `inventory` selon le modèle retenu ;
+- les médias binaires eux-mêmes, qui relèvent de `media` si ce domaine existe comme satellite distinct ;
+- les règles de taxation, qui relèvent de `taxation` ;
+- les règles promotionnelles ou remises, qui ne relèvent pas du référentiel produit central ;
+- les projections vers des canaux, marketplaces ou systèmes externes.
 
----
-
-## Objets métier principaux
-
-Les principaux objets métier portés par le domaine sont :
-
-- `Product`
-- `ProductVariant`
-- `ProductStatus`
-- `ProductAttribute`
-- `ProductMedia`
-- `ProductBundle`
-- `ProductBadge`
+Si un système externe alimente les données produit, il ne devient pas automatiquement la source de vérité du domaine.
+Le domaine `products` reste responsable de la représentation interne faisant autorité dans le système.
 
 ---
 
-## Capabilities activables liées
+## Responsabilités
 
-Le domaine `products` est lié aux capabilities suivantes :
+Le domaine `products` est responsable de :
 
-- `simpleProducts`
-- `variants`
-- `bundles`
-- `productMedia`
-- `productAttributes`
-- `productBadges`
-- `seoMetadata`
-- `productPublishingWorkflow`
+- définir le concept métier de produit dans le système ;
+- attribuer et maintenir les identifiants internes nécessaires ;
+- porter les attributs métier structurants du produit ;
+- garantir la cohérence minimale d’un produit exploitable ;
+- exposer un référentiel produit stable aux autres domaines ;
+- gérer les états produit qui relèvent du référentiel central ;
+- encadrer les mutations du référentiel produit ;
+- publier les événements significatifs liés à la vie du produit ;
+- fournir une base cohérente aux domaines dépendants comme `cart`, `checkout`, `orders`, `search`, `seo`, `recommendations` ou `marketplace`.
 
-### Effet si `simpleProducts` est activée
+Le domaine peut également être responsable, selon le périmètre exact du projet, de :
 
-Le domaine supporte des produits simples sans structure complexe.
-
-### Effet si `variants` est activée
-
-Le domaine distingue explicitement le niveau produit et le niveau variante.
-
-### Effet si `bundles` est activée
-
-Le domaine peut porter des offres composées.
-
-### Effet si `productMedia` est activée
-
-Le domaine gère une couche média structurée.
-
-### Effet si `productAttributes` est activée
-
-Le domaine porte davantage d’attributs typés ou structurants.
-
-### Effet si `productBadges` est activée
-
-Le domaine peut exposer des signaux catalogue structurés.
-
-### Effet si `seoMetadata` est activée
-
-Le domaine porte des métadonnées SEO structurées côté produit.
-
-### Effet si `productPublishingWorkflow` est activée
-
-Le lifecycle de publication devient plus riche.
+- la relation entre produit parent et variantes ;
+- certains regroupements structurants nécessaires au catalogue ;
+- certaines métadonnées métier centrales ;
+- le statut de publication interne du produit, si ce statut relève bien du référentiel et non d’un canal externe.
 
 ---
 
-## Niveaux de sophistication du domaine
+## Non-responsabilités
 
-### Niveau 1 — essentiel
+Le domaine `products` n’est pas responsable de :
 
-- produits simples ;
-- publication simple ;
-- peu d’attributs ;
-- faible profondeur structurelle.
+- calculer les prix, remises, taxes ou montants finaux ;
+- arbitrer les disponibilités physiques ou logiques ;
+- gérer les paniers ;
+- gérer le tunnel de commande ;
+- gérer les commandes ;
+- gérer les paiements ;
+- gérer l’expédition ;
+- gérer les autorisations d’accès ;
+- définir la logique d’intégration vers un fournisseur externe ;
+- exécuter les synchronisations externes ;
+- stocker ou distribuer les médias techniques en tant que tels ;
+- gouverner les projections SEO, search, analytics ou marketing ;
+- porter la logique métier des bundles, discounts, gifting ou autres capacités optionnelles si elles existent comme domaines distincts.
 
-### Niveau 2 — standard
-
-- variantes ;
-- attributs plus riches ;
-- médias structurés ;
-- meilleure qualité catalogue.
-
-### Niveau 3 — avancé
-
-- bundles ;
-- workflow de publication plus riche ;
-- plus d’attributs et de signaux métier ;
-- meilleures dépendances avec pricing et availability.
-
-### Niveau 4 — expert / multi-contraintes
-
-- catalogue très structuré ;
-- multiples vues ou usages ;
-- intégrations riches ;
-- gouvernance catalogue plus exigeante.
+Le domaine `products` ne doit pas devenir un conteneur générique pour toute donnée “attachée à un produit”.
 
 ---
 
-## Entrées
+## Invariants
 
-Le domaine reçoit principalement :
+Les invariants minimaux du domaine sont les suivants :
 
-- des commandes de création ou mise à jour produit ;
-- des commandes de gestion de variantes ;
-- des changements d’attributs ;
-- des changements de statut de publication ;
-- des imports externes traduits si activés.
+- un produit doit avoir une identité interne stable ;
+- un produit ne doit pas exister dans un état incohérent par rapport à ses attributs structurants ;
+- la structure produit exposée au reste du système doit rester exploitable ;
+- une variante ne doit pas exister sans rattachement valide si le modèle produit/variante est retenu ;
+- les attributs obligatoires à l’exploitation métier doivent être présents avant exposition dans les flux qui les exigent ;
+- un produit ne doit pas être ambigu dans sa qualification métier de base ;
+- les transitions d’état du produit doivent respecter les règles du cycle de vie défini ;
+- une mutation du référentiel produit ne doit pas casser silencieusement les contrats attendus par les domaines consommateurs.
 
----
-
-## Sorties
-
-Le domaine expose principalement :
-
-- un catalogue interne lisible ;
-- des produits et variantes identifiés ;
-- un statut de publication ;
-- des métadonnées structurantes ;
-- un graphe exploitable par les autres domaines.
+Les invariants exacts doivent être ajustés selon le modèle catalogue réel, mais le domaine doit toujours exprimer des règles de cohérence propres.
+Une simple accumulation de champs ne constitue pas un domaine.
 
 ---
 
-## Dépendances vers autres domaines
+## Dépendances
 
-Le domaine `products` dépend de :
+### Dépendances métier
 
-- `stores`
-- `audit`
-- `observability`
-
-Les domaines suivants dépendent de `products` :
+Le domaine `products` interagit fortement avec :
 
 - `pricing`
 - `availability`
 - `cart`
 - `checkout`
 - `orders`
-- `analytics`
-- `search` si activé
+- `search`
+- `seo`
+- `recommendations`
+- `marketplace`
+- `categories`
+- `media`
+
+### Dépendances techniques ou d’intégration
+
+Le domaine peut dépendre de :
+
+- mécanismes d’import ;
+- jobs de synchronisation ;
+- adaptateurs d’intégration ;
+- webhooks ou flux entrants indirects ;
+- projections vers des systèmes externes.
+
+### Règle de frontière
+
+Le domaine `products` consomme ou expose des informations vers ces blocs, mais il ne doit pas absorber leurs responsabilités.
+
+En particulier :
+
+- `products` ne décide pas des prix ;
+- `products` ne décide pas des disponibilités ;
+- `products` ne décide pas des règles de canal ;
+- `products` ne décide pas des statuts d’exécution de synchronisation.
 
 ---
 
-## Dépendances vers providers / intégrations
+## Événements significatifs
 
-Le domaine `products` peut être alimenté via `integrations`, mais garde une vérité locale.
+Le domaine `products` publie ou peut publier des événements significatifs tels que :
 
-Il ne laisse pas un import brut ou un PIM externe redéfinir le coeur sans validation.
+- produit créé ;
+- produit mis à jour ;
+- produit archivé ;
+- produit activé ;
+- produit désactivé ;
+- variante créée ;
+- variante mise à jour ;
+- structure produit modifiée ;
+- statut produit changé.
 
----
+Le domaine peut consommer des signaux liés à :
 
-## Rôles / permissions concernés
+- imports de catalogue ;
+- synchronisations de données ;
+- mises à jour de médias ;
+- rattachements de catégories ;
+- projections vers des canaux.
 
-### Rôles
-
-Les rôles principalement concernés sont :
-
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `catalog_manager`
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `products.read`
-- `products.write`
-- `products.publish`
-- `products.media.manage`
-- `audit.read`
+Les noms exacts des événements doivent rester dans le langage métier du système.
+Ils ne doivent pas refléter directement un vocabulaire de fournisseur externe.
 
 ---
 
-## Événements émis
+## Cycle de vie
 
-Le domaine émet les domain events internes suivants :
+Le domaine `products` possède un cycle de vie métier.
 
-- `product.created`
-- `product.updated`
-- `product.published`
-- `product.unpublished`
-- `product.variant.created`
-- `product.variant.updated`
+Le cycle exact dépend du périmètre retenu, mais il doit au minimum distinguer :
 
----
+- brouillon / incomplet ;
+- prêt à être exploité ;
+- actif / publié ;
+- inactif / suspendu ;
+- archivé.
 
-## Événements consommés
+Les transitions doivent être explicites.
 
-Le domaine consomme les domain events internes suivants :
+Exemples de transitions structurantes :
 
-- `store.capabilities.updated`
-- `integration.product.result.translated`
+- création du produit ;
+- enrichissement progressif ;
+- activation ;
+- désactivation ;
+- archivage ;
+- réactivation éventuelle si le modèle le permet.
 
----
-
-## Données sensibles / sécurité
-
-Le domaine `products` porte une donnée métier structurante mais moins sensible que `payments` ou `auth`.
-
-Points de vigilance :
-
-- cohérence des identités produit ;
-- publication maîtrisée ;
-- imports validés ;
-- séparation claire entre catalogue et autres vérités métier.
+Le domaine doit éviter les statuts flous ou purement techniques lorsqu’un statut métier est attendu.
 
 ---
 
-## Observability / audit
+## Interfaces et échanges
 
-### Observability
+Le domaine `products` expose principalement :
 
-Il faut pouvoir comprendre :
+- des commandes de création ;
+- des commandes de mise à jour ;
+- des lectures du référentiel produit ;
+- des lectures structurées pour les domaines consommateurs ;
+- des événements significatifs liés aux mutations du catalogue.
 
-- pourquoi un produit ou une variante a changé ;
-- pourquoi il est publié ou non ;
-- quelles données catalogue sont actives ;
-- si un import externe a modifié la vérité locale.
+Le domaine reçoit principalement :
 
-### Audit
+- des demandes de mutation internes ;
+- des flux d’import ou de synchronisation si prévus par l’architecture ;
+- des rattachements ou enrichissements provenant d’autres blocs, selon les frontières définies.
 
-Il faut tracer :
+Le domaine ne doit pas exposer directement sa structure interne brute si une forme stabilisée est nécessaire pour les consommateurs.
+
+---
+
+## Contraintes d’intégration
+
+Le domaine `products` est fortement exposé aux contraintes d’intégration.
+
+Ces contraintes incluent typiquement :
+
+- imports massifs ;
+- synchronisations différées ;
+- mises à jour partielles ;
+- conflits de données ;
+- rejouabilité ;
+- idempotence sur les flux entrants ;
+- ordre de réception non garanti ;
+- dépendance éventuelle à des systèmes tiers de catalogue ou de PIM.
+
+Règles minimales :
+
+- les flux entrants doivent être validés ;
+- les mutations rejouables doivent être idempotentes ou neutralisées ;
+- la source de vérité doit rester explicite ;
+- une projection externe ne doit pas rétro-imposer silencieusement sa structure au domaine ;
+- un échec de synchronisation ne doit pas corrompre le référentiel interne.
+
+---
+
+## Observabilité et audit
+
+Le domaine `products` doit rendre visibles au minimum :
 
 - les créations ;
-- les publications / dépublications ;
-- les changements structurants ;
-- les imports ayant un impact durable.
+- les mises à jour significatives ;
+- les changements d’état ;
+- les erreurs de validation ;
+- les échecs de synchronisation critiques ;
+- les reprises ou relectures opératoires si elles existent ;
+- les événements significatifs publiés.
+
+L’audit doit permettre de répondre à des questions comme :
+
+- quel produit a changé ;
+- quand ;
+- selon quel déclencheur ;
+- avec quel impact métier visible ;
+- via quelle origine de mutation si plusieurs canaux existent.
+
+L’observabilité doit distinguer :
+
+- les erreurs métier de cohérence produit ;
+- les erreurs techniques d’intégration ;
+- les retards ou rejets de projection.
 
 ---
 
-## Invariants métier
+## Impact de maintenance / exploitation
 
-Les règles suivantes doivent toujours rester vraies :
+Le domaine `products` a un impact d’exploitation élevé.
 
-- un produit possède une identité stable ;
-- une variante appartient à un produit explicite ;
-- toute offre vendable, y compris un produit simple, s'appuie techniquement sur une variante par défaut (`defaultVariant`) ;
-- `products` reste la vérité catalogue ;
-- le prix, la disponibilité et la commande ne redéfinissent pas le catalogue ;
-- un produit non publié n’est pas assimilé à un produit storefront actif, selon la politique retenue.
+Raisons :
 
----
+- il alimente plusieurs domaines coeur ;
+- il conditionne la qualité des parcours aval ;
+- il est exposé aux imports, synchronisations et enrichissements ;
+- une incohérence produit peut contaminer pricing, cart, checkout, orders, search et marketplace.
 
-## Lifecycle et gouvernance des données
+En exploitation, une attention particulière doit être portée à :
 
-### États principaux
+- la qualité des flux entrants ;
+- la cohérence des mutations ;
+- les erreurs de validation ;
+- les incohérences de structure ;
+- les projections incomplètes ;
+- les effets de bord d’une modification de modèle produit.
 
-Les états principaux incluent typiquement :
-
-- `DRAFT`
-- `ACTIVE`
-- `INACTIVE`
-- `ARCHIVED`
-
-### Transitions autorisées
-
-Exemples :
-
-- `DRAFT -> ACTIVE`
-- `ACTIVE -> INACTIVE`
-- `INACTIVE -> ACTIVE`
-- `ACTIVE -> ARCHIVED`
-
-### Transitions interdites
-
-Exemples :
-
-- un produit archivé ne redevient pas actif sans action explicite ;
-- une variante n’existe pas sans rattachement produit valide.
-
-### Règles de conservation / archivage / suppression
-
-- l’archivage est préférable à la suppression implicite pour des références catalogue structurantes ;
-- les identités utiles au support, aux commandes et aux lectures historiques restent compréhensibles.
+Le domaine doit être considéré comme sensible mais stable.
+Toute évolution de sa structure doit être gouvernée.
 
 ---
 
-## Transactions / cohérence / concurrence
+## Limites du domaine
 
-### Ce qui doit être atomique
+Le domaine `products` s’arrête :
 
-Les opérations suivantes doivent réussir ou échouer ensemble :
+- avant la détermination du prix final ;
+- avant la disponibilité exploitable à la vente ;
+- avant le comportement panier / commande ;
+- avant les politiques de taxation ;
+- avant les projections spécifiques aux canaux externes ;
+- avant la distribution technique des médias ;
+- avant les fonctionnalités purement marketing ou éditoriales.
 
-- création d’un produit ;
-- création d’une variante liée ;
-- publication / dépublication ;
-- mise à jour structurante d’attributs ;
-- écriture des événements `product.*` correspondants.
-
-### Ce qui peut être eventual consistency
-
-Les traitements suivants peuvent partir après commit :
-
-- indexation search ;
-- projections storefront ;
-- analytics ;
-- synchronisations externes.
-
-### Stratégie de concurrence
-
-Le domaine protège explicitement ses invariants par :
-
-- transaction applicative sur les changements structurants ;
-- unicité logique des identités produit ;
-- cohérence produit / variante ;
-- validation avant imports externes appliqués.
-
-Les conflits attendus sont :
-
-- double mise à jour structurante ;
-- import externe concurrent ;
-- publication et archivage concurrents.
-
-### Idempotence
-
-Les commandes métier suivantes doivent être idempotentes :
-
-- `upsert-product` : clé d’intention = `(productRef, changeIntentId)`
-- `upsert-product-variant` : clé d’intention = `(variantRef, changeIntentId)`
-- `apply-external-product-result` : clé d’intention = `(providerName, externalEventId)`
-
-### Domain events écrits dans la même transaction
-
-Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
-
-- `product.created`
-- `product.updated`
-- `product.published`
-- `product.unpublished`
-- `product.variant.created`
-- `product.variant.updated`
-
-### Effets secondaires après commit
-
-Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
-
-- indexation externe ;
-- analytics ;
-- synchronisation PIM / marketplace ;
-- projection storefront.
+Le domaine fournit un référentiel produit cohérent.
+Il ne doit pas devenir le point d’accumulation de toutes les informations périphériques du système.
 
 ---
 
-## Impact maintenance / exploitation
+## Questions ouvertes
 
-### Niveau de maintenance minimal recommandé
+À confirmer explicitement dans le projet :
 
-- `M1` pour catalogue simple ;
-- `M2` pour variantes et médias ;
-- `M3` pour workflows riches ou imports structurants ;
-- `M4` pour catalogue très intégré ou fortement gouverné.
+- le modèle produit/variante exact ;
+- le statut doctrinal de `categories` ;
+- le statut doctrinal de `media` ;
+- la frontière exacte entre `products` et `catalog-modeling` ;
+- la frontière exacte entre `products` et `availability` / `inventory` ;
+- la part du statut de publication portée par `products` vs `channels` ;
+- la nature exacte des flux entrants faisant autorité.
 
-### Pourquoi
-
-Le domaine `products` structure plusieurs autres domaines.
-Un catalogue mal gouverné dégrade pricing, availability, cart et commandes.
-
-### Points d’exploitation à surveiller
-
-- cohérence produit / variante ;
-- publication ;
-- imports ;
-- attributs structurants ;
-- dérives de catalogue.
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
 ---
 
-## Impact coût / complexité
+## Documents liés
 
-Le coût du domaine `products` monte principalement avec :
-
-- `variants`
-- `bundles`
-- `productMedia`
-- `productAttributes`
-- `productPublishingWorkflow`
-- les imports externes.
-
-Lecture relative du coût :
-
-- niveau 1 : `C1`
-- niveau 2 : `C2`
-- niveau 3 : `C3`
-- niveau 4 : `C4`
-
----
-
-## Cas d’usage principaux
-
-1. Créer un produit
-2. Créer une variante
-3. Publier ou dépublier un produit
-4. Exposer un catalogue interne fiable
-5. Alimenter pricing, availability, cart et checkout
-
----
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- produit introuvable ;
-- variante introuvable ;
-- identité dupliquée ;
-- publication invalide ;
-- import externe ambigu ;
-- relation produit / variante incohérente.
-
----
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `products` est un domaine coeur à capabilities toggleables ;
-- le catalogue est distinct de pricing et availability ;
-- les variantes sont une capability, pas une hypothèse imposée à tous les projets ;
-- les imports externes restent des intégrations ;
-- le catalogue reste une vérité interne stable et auditée.
-
----
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- `products` appartient au coeur du socle ;
-- le catalogue n’est pas confondu avec le storefront ;
-- pricing et availability ne portent pas la vérité produit ;
-- les intégrations PIM éventuelles restent à la frontière ;
-- la montée de richesse catalogue se fait par capabilities et niveaux ;
-- le lifecycle du catalogue reste explicite.
+- `../../architecture/10-fondations/10-principes-d-architecture.md`
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../../architecture/20-structure/21-domaines-coeur.md`
+- `../../architecture/20-structure/23-systemes-externes-et-satellites.md`
+- `pricing.md`
+- `availability.md`
+- `cart.md`
+- `checkout.md`
+- `orders.md`
+- `../../domains/satellites/categories.md`
+- `../../domains/satellites/media.md`
+- `../../domains/satellites/catalog-modeling.md`

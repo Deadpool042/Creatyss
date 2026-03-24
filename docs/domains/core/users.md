@@ -1,121 +1,46 @@
-# Domaine `users`
-
-## Objectif
-
-Ce document décrit le domaine `users` dans la doctrine courante du socle.
-
-Il précise :
-
-- le rôle du domaine ;
-- sa place dans la modularité du socle ;
-- sa source de vérité ;
-- ses capabilities activables ;
-- ses niveaux éventuels ;
-- ses objets métier ;
-- ses invariants ;
-- son cycle de vie ;
-- ses règles de cohérence ;
-- ses frontières externes ;
-- ses implications de maintenance, d’exploitation et de coût.
-
-Le domaine `users` est structurant pour le socle, car il porte l’identité applicative des personnes qui utilisent la plateforme ou l’administration d’une boutique.
-
-Le domaine `users` ne doit pas être confondu avec :
-
-- `auth`, qui porte les credentials et les sessions ;
-- `customers`, qui porte le client métier d’une boutique ;
-- `roles` et `permissions`, qui portent l’autorisation ;
-- `api-clients`, qui porte les accès machine-to-machine.
-
-Le domaine `users` porte la **vérité humaine interne de l’acteur applicatif**.
-
----
-
-## Position dans la doctrine de modularité
-
-Le domaine `users` est classé comme :
-
-- `domaine coeur non toggleable`
-
-Le domaine existe dans tous les projets sérieux du socle, car il faut une identité humaine applicative claire pour gouverner l’administration, l’exploitation et certaines interactions métier internes.
-
-### Ce qui n’est jamais désactivé
-
-Le domaine conserve toujours :
-
-- une identité utilisateur stable ;
-- une distinction claire entre user applicatif et client métier ;
-- un rattachement explicite aux rôles d’autorisation ;
-- un cycle de vie lisible ;
-- une articulation claire avec `auth`.
-
-### Ce qui est activable / désactivable par capability
-
-Le domaine `users` n’est pas principalement piloté par des capabilities métier optionnelles.
-Il est structurel.
-
-En revanche, certains enrichissements peuvent dépendre des capabilities de la plateforme, comme :
-
-- multi-boutiques ;
-- délégation d’administration ;
-- profils opérateurs plus riches ;
-- B2B backoffice plus structuré.
-
-### Ce qui relève d’un niveau
-
-Le domaine varie surtout par richesse de profil, gouvernance, rattachements et organisation interne, pas par existence.
-
-### Ce qui relève d’un provider ou d’une intégration externe
-
-Un annuaire externe ou provider d’identité éventuel relève de `integrations`.
-Il ne remplace pas la vérité interne du domaine `users`.
-
----
+# Utilisateurs
 
 ## Rôle
 
-Le domaine `users` porte l’identité applicative des personnes qui utilisent la plateforme ou le backoffice.
+Le domaine `users` porte la représentation interne des utilisateurs du système en tant qu’acteurs applicatifs.
 
-Il constitue la source de vérité interne pour :
+Il définit :
 
-- l’existence d’un utilisateur humain ;
-- son profil applicatif ;
-- son statut ;
-- son rattachement à une ou plusieurs boutiques si le modèle le prévoit ;
-- son articulation avec `auth`, `roles` et `permissions`.
+- qui sont les utilisateurs reconnus par le système ;
+- comment ils sont représentés en interne ;
+- quelles informations structurelles sont portées à leur sujet ;
+- comment ils se distinguent des clients métier et des identités d’authentification ;
+- comment ils sont reliés aux mécanismes d’accès, de rôles et de permissions sans se confondre avec eux.
 
-Le domaine est distinct :
+Le domaine existe pour fournir une entité utilisateur stable, exploitable par le système, distincte :
 
-- de `auth`, qui porte l’accès ;
-- de `customers`, qui porte le client boutique ;
-- de `roles`, qui portent les agrégats d’autorisation ;
-- de `permissions`, qui portent les droits atomiques.
-
----
-
-## Responsabilités
-
-Le domaine `users` prend en charge :
-
-- la création et gestion des utilisateurs applicatifs ;
-- les informations de profil utiles à l’application ;
-- le statut d’un utilisateur ;
-- la relation utilisateur <-> boutique si le modèle le prévoit ;
-- la distinction entre opérateur, propriétaire, manager ou support selon les rôles associés ;
-- la source de vérité du user utilisé par les autres domaines internes.
+- de l’authentification (`auth`) ;
+- du client métier (`customers`) ;
+- des permissions (`permissions`) ;
+- des rôles (`roles`).
 
 ---
 
-## Ce que le domaine ne doit pas faire
+## Classification
 
-Le domaine `users` ne doit pas :
+### Catégorie documentaire
 
-- porter les credentials ou sessions ;
-- porter les permissions atomiques ;
-- porter la logique de client boutique ;
-- devenir un annuaire externe générique ;
-- confondre user interne et contact client ;
-- laisser les autres domaines redéfinir l’identité utilisateur applicative.
+`core`
+
+### Criticité architecturale
+
+`coeur structurel`
+
+### Activable
+
+`non`
+
+Le domaine `users` est non optionnel dès lors que le système possède :
+
+- des comptes internes ;
+- des opérateurs ;
+- des administrateurs ;
+- ou des acteurs applicatifs identifiés distincts des seuls clients métier.
 
 ---
 
@@ -123,400 +48,335 @@ Le domaine `users` ne doit pas :
 
 Le domaine `users` est la source de vérité pour :
 
-- l’identité utilisateur applicative ;
-- son statut ;
-- ses métadonnées applicatives ;
-- son rattachement organisationnel interne.
+- l’identité applicative interne de l’utilisateur ;
+- la représentation structurelle d’un utilisateur dans le système ;
+- le rattachement éventuel à des rôles ou à des espaces d’organisation, selon le modèle retenu ;
+- les informations structurelles nécessaires à l’exploitation de l’utilisateur comme acteur interne ou applicatif ;
+- le statut de l’utilisateur au sens applicatif.
 
-Le domaine n’est pas la source de vérité pour :
+Le domaine `users` n’est pas la source de vérité pour :
 
-- le mot de passe, les recovery requests ou les sessions ;
-- les permissions atomiques ;
-- le client métier d’une boutique ;
-- les connecteurs d’annuaire externes.
+- l’authentification, qui relève de `auth` ;
+- la décision d’autorisation, qui relève de `permissions` ;
+- la structuration des rôles, qui relève de `roles` ;
+- la vérité métier du client, qui relève de `customers` ;
+- les sessions, tokens ou credentials ;
+- les projections externes CRM ou marketing ;
+- les données analytiques ou purement opérationnelles périphériques.
 
----
-
-## Objets métier principaux
-
-Les principaux objets métier portés par le domaine sont :
-
-- `User`
-- `UserStatus`
-- `UserProfile`
-- `UserStoreMembership`
-- `UserType`
+Un utilisateur n’est pas une session.
+Un utilisateur n’est pas un client métier par défaut.
+Un utilisateur n’est pas un ensemble de permissions.
 
 ---
 
-## Capabilities activables liées
+## Responsabilités
 
-Le domaine `users` n’est pas principalement capability-driven, mais il est influencé par le contexte du socle, notamment :
+Le domaine `users` est responsable de :
 
-- `multiStorefront`
-- `b2bCommerce`
-- `adminDelegation`
-- `customerAccounts`
+- définir ce qu’est un utilisateur du point de vue applicatif ;
+- attribuer et maintenir l’identité interne de l’utilisateur ;
+- porter les attributs structurels de l’utilisateur ;
+- exprimer le statut applicatif d’un utilisateur ;
+- exposer une représentation interne exploitable par les autres domaines ;
+- encadrer les mutations de l’utilisateur ;
+- publier les événements significatifs liés à la vie de l’utilisateur ;
+- servir de point de rattachement aux rôles, permissions, organisations ou espaces applicatifs, selon le modèle retenu.
 
-### Effet des capabilities de plateforme
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Ces capabilities enrichissent le contexte d’un utilisateur, sans changer la nature du domaine.
-
----
-
-## Niveaux de sophistication du domaine
-
-### Niveau 1 — essentiel
-
-- identité utilisateur simple ;
-- statut ;
-- profil léger ;
-- rattachement minimal.
-
-### Niveau 2 — standard
-
-- meilleur profil utilisateur ;
-- rattachement plus clair à une ou plusieurs boutiques ;
-- meilleur support administratif.
-
-### Niveau 3 — avancé
-
-- gouvernance plus riche ;
-- délégation ;
-- memberships plus structurés ;
-- exploitation plus fine.
-
-### Niveau 4 — expert / multi-contraintes
-
-- organisation applicative plus dense ;
-- plusieurs scopes internes ;
-- gouvernance et audit plus poussés.
+- l’appartenance à une organisation, un store ou une équipe ;
+- certaines préférences applicatives structurantes ;
+- le statut actif / suspendu / désactivé ;
+- le lien entre un utilisateur et une identité d’authentification ;
+- le lien éventuel entre un utilisateur et un client métier lorsque le système autorise ce rattachement.
 
 ---
 
-## Entrées
+## Non-responsabilités
+
+Le domaine `users` n’est pas responsable de :
+
+- authentifier un utilisateur ;
+- gérer les sessions ;
+- gérer les tokens ;
+- décider des permissions effectives ;
+- définir les rôles ;
+- porter la vérité métier du client ;
+- gérer les commandes ;
+- gérer les paiements ;
+- gérer les intégrations ;
+- gouverner les webhooks ;
+- porter les mécanismes de sécurité globaux ;
+- porter les projections marketing, CRM ou analytics.
+
+Le domaine `users` ne doit pas devenir :
+
+- un alias de `auth` ;
+- un doublon de `customers` ;
+- un conteneur de droits implicites ;
+- un sac de métadonnées sans frontière claire.
+
+---
+
+## Invariants
+
+Les invariants minimaux du domaine sont les suivants :
+
+- un utilisateur doit avoir une identité interne stable ;
+- un utilisateur doit être identifiable sans ambiguïté ;
+- un utilisateur ne doit pas être simultanément actif et supprimé ;
+- une mutation de statut utilisateur doit rester cohérente ;
+- un utilisateur ne doit pas dépendre d’une session active pour exister ;
+- le lien entre utilisateur et identité d’authentification doit être cohérent lorsqu’il existe ;
+- une duplication d’utilisateur ne doit pas être introduite silencieusement ;
+- les rattachements structurels portés par le domaine doivent rester interprétables.
+
+Le domaine `users` doit exprimer une cohérence structurelle, pas seulement stocker des profils techniques.
+
+---
+
+## Dépendances
+
+### Dépendances métier et structurelles
+
+Le domaine `users` interagit fortement avec :
+
+- `auth`
+- `roles`
+- `permissions`
+- `stores`, si l’utilisateur est rattaché à un périmètre applicatif
+- `customers`, si un lien explicite existe entre les deux
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- audit ;
+- observabilité ;
+- jobs, si certaines synchronisations ou réconciliations sont différées ;
+- consent, selon le modèle ;
+- notifications, selon le périmètre.
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- identity providers ;
+- annuaires externes ;
+- outils IAM ;
+- systèmes d’administration ou de gouvernance.
+
+### Règle de frontière
+
+Le domaine `users` porte la représentation applicative de l’utilisateur.
+Il ne doit pas absorber :
+
+- l’authentification ;
+- l’autorisation ;
+- la vérité métier du client ;
+- les mécanismes techniques de session.
+
+---
+
+## Événements significatifs
+
+Le domaine `users` publie ou peut publier des événements significatifs tels que :
+
+- utilisateur créé ;
+- utilisateur mis à jour ;
+- utilisateur activé ;
+- utilisateur suspendu ;
+- utilisateur désactivé ;
+- utilisateur supprimé ;
+- utilisateur rattaché à une organisation, un store ou un périmètre ;
+- lien utilisateur-identité modifié ;
+- rôle utilisateur modifié, si ce fait métier est porté ici comme projection structurée.
+
+Le domaine peut consommer des signaux liés à :
+
+- authentification réussie ;
+- création ou rattachement d’identité ;
+- changements de rôle ;
+- changements de permissions ;
+- synchronisations avec un annuaire externe.
+
+Les noms exacts doivent rester dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `users` possède un cycle de vie structurel.
+
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
+
+- créé ;
+- actif ;
+- suspendu ;
+- désactivé ;
+- supprimé ou archivé.
+
+Des états supplémentaires peuvent exister :
+
+- en attente d’activation ;
+- invité ;
+- verrouillé ;
+- fusionné, si le modèle autorise des réconciliations d’identité.
+
+Les transitions doivent être explicites et traçables.
+
+Le domaine doit éviter :
+
+- les états purement techniques ;
+- les états déduits implicitement d’un token ou d’une session.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `users` expose principalement :
+
+- des commandes de création et de mutation utilisateur ;
+- des lectures du référentiel utilisateur ;
+- des lectures structurées pour `auth`, `roles`, `permissions` et l’exploitation ;
+- des événements significatifs liés au cycle de vie utilisateur.
 
 Le domaine reçoit principalement :
 
-- des commandes de création ou mise à jour d’utilisateur ;
-- des rattachements à des boutiques ;
-- des changements de statut ;
-- des résultats d’intégration traduits si un annuaire externe est branché.
+- des demandes de création ou de mise à jour ;
+- des rattachements structurels ;
+- des signaux issus d’`auth` ou d’annuaires externes ;
+- des mutations liées aux rôles et périmètres si le modèle le prévoit.
+
+Le domaine ne doit pas exposer comme contrat public une structure trop dépendante :
+
+- d’un provider d’identité ;
+- d’un moteur de permissions ;
+- d’une session courante.
 
 ---
 
-## Sorties
+## Contraintes d’intégration
 
-Le domaine expose principalement :
+Le domaine `users` peut être exposé à des contraintes telles que :
 
-- un utilisateur applicatif ;
-- son statut ;
-- son profil ;
-- ses rattachements internes ;
-- des événements liés au cycle de vie utilisateur.
+- synchronisation d’annuaires ;
+- liaison avec des identity providers ;
+- duplication de profils ;
+- fusion d’utilisateurs ;
+- désactivation ou suspension en masse ;
+- ordre de réception non garanti ;
+- divergence entre système interne et source externe ;
+- rejouabilité de certaines mutations.
 
----
+Règles minimales :
 
-## Dépendances vers autres domaines
-
-Le domaine `users` dépend de :
-
-- `stores`
-- `auth`
-- `audit`
-- `observability`
-
-Les domaines suivants dépendent de `users` :
-
-- `roles`
-- `permissions`
-- `admin`
-- `audit`
-- `customer-support`
-- tous les domaines nécessitant un acteur interne identifié
+- toute entrée externe doit être validée ;
+- la hiérarchie d’autorité doit être explicite ;
+- une duplication doit être contrôlée ;
+- une fusion doit être traçable ;
+- un système externe ne doit pas écraser silencieusement la vérité interne ;
+- les mutations rejouables doivent être idempotentes ou neutralisées.
 
 ---
 
-## Dépendances vers providers / intégrations
+## Observabilité et audit
 
-Le domaine `users` peut consommer des résultats externes traduits via `integrations`, mais garde une vérité locale.
+Le domaine `users` doit rendre visibles au minimum :
 
-Un annuaire externe ne remplace pas le domaine `users`.
-Il l’alimente ou le synchronise sous contrôle explicite.
+- la création d’utilisateur ;
+- les changements de statut ;
+- les rattachements structurels significatifs ;
+- les suspensions et désactivations ;
+- les erreurs de validation ;
+- les synchronisations externes ;
+- les événements significatifs publiés.
 
----
+L’audit doit permettre de répondre à des questions comme :
 
-## Rôles / permissions concernés
+- quel utilisateur a changé ;
+- quand ;
+- selon quelle origine ;
+- avec quel impact structurel ;
+- à la suite de quelle action ;
+- avec quel lien vers l’authentification ou l’autorisation lorsque pertinent.
 
-### Rôles
+L’observabilité doit distinguer :
 
-Les rôles concernés sont notamment :
-
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `customer_support`
-- `finance_manager`
-- `security_operator`
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `users.read`
-- `users.write`
-- `users.memberships.manage`
-- `roles.assign`
-- `audit.read`
+- erreur métier ou structurelle ;
+- erreur technique ;
+- conflit de données ;
+- duplication ;
+- divergence annuaire / système interne.
 
 ---
 
-## Événements émis
+## Impact de maintenance / exploitation
 
-Le domaine émet les domain events internes suivants :
+Le domaine `users` a un impact d’exploitation élevé.
 
-- `user.created`
-- `user.updated`
-- `user.disabled`
-- `user.reactivated`
-- `user.membership.updated`
+Raisons :
 
----
+- il structure l’accès applicatif ;
+- il alimente `auth`, `roles` et `permissions` ;
+- il peut dépendre d’annuaires ou providers externes ;
+- ses erreurs produisent rapidement des incidents d’accès ou de gouvernance.
 
-## Événements consommés
+En exploitation, une attention particulière doit être portée à :
 
-Le domaine consomme les domain events internes suivants :
+- la cohérence du statut utilisateur ;
+- les rattachements structurels ;
+- la traçabilité des mutations ;
+- les synchronisations externes ;
+- les opérations sensibles comme suspension, désactivation ou suppression ;
+- la séparation correcte entre problèmes d’utilisateur, d’authentification et d’autorisation.
 
-- `auth.identity.created`
-- `auth.identity.locked`
-- `auth.identity.unlocked`
-- `integration.user.result.translated`
-- `store.created`
-
----
-
-## Données sensibles / sécurité
-
-Le domaine `users` porte une donnée sensible du point de vue organisationnel et d’accès.
-
-Points de vigilance :
-
-- un utilisateur applicatif doit être distinct d’un client boutique ;
-- ses rattachements doivent rester cohérents avec les droits attribués ;
-- les changements de statut doivent être auditables ;
-- les imports externes ne doivent pas créer de doubles vérités.
+Le domaine doit être considéré comme critique pour la gouvernance applicative.
 
 ---
 
-## Observability / audit
+## Limites du domaine
 
-### Observability
+Le domaine `users` s’arrête :
 
-Il faut pouvoir comprendre :
+- avant l’authentification (`auth`) ;
+- avant les permissions effectives (`permissions`) ;
+- avant les rôles comme modèle normatif (`roles`) ;
+- avant la vérité métier du client (`customers`) ;
+- avant les sessions, tokens et credentials ;
+- avant les mécanismes de sécurité transverses ;
+- avant les projections externes non structurelles.
 
-- qui est l’utilisateur ;
-- quel est son statut ;
-- à quelles boutiques il est rattaché ;
-- pourquoi il a été désactivé ou réactivé ;
-- quel lien il entretient avec son identité `auth`.
-
-### Audit
-
-Il faut tracer :
-
-- les créations ;
-- les désactivations ;
-- les réactivations ;
-- les changements de rattachement ;
-- les imports structurants.
+Le domaine `users` porte l’utilisateur comme acteur applicatif structuré.
+Il ne doit pas devenir le conteneur de toute information relative à une personne ou à son accès.
 
 ---
 
-## Invariants métier
+## Questions ouvertes
 
-Les règles suivantes doivent toujours rester vraies :
+À confirmer explicitement dans le projet :
 
-- un utilisateur possède une identité stable ;
-- un utilisateur applicatif est distinct d’un client boutique ;
-- `users` reste distinct de `auth` ;
-- un utilisateur désactivé n’est pas traité comme pleinement actif par les autres domaines ;
-- les autres domaines utilisent l’identité utilisateur, ils ne la redéfinissent pas.
+- la frontière exacte entre `users` et `customers` ;
+- la frontière exacte entre `users` et `auth` ;
+- le lien exact entre utilisateur, rôle et permission ;
+- le rattachement éventuel à un store, une organisation ou une équipe ;
+- la politique de fusion ou de déduplication ;
+- la hiérarchie entre référentiel interne et annuaire externe ;
+- la gestion des comptes invités ou temporaires ;
+- le niveau de couplage autorisé avec les systèmes IAM externes.
 
----
-
-## Lifecycle et gouvernance des données
-
-### États principaux
-
-Les états principaux incluent typiquement :
-
-- `ACTIVE`
-- `DISABLED`
-- `ARCHIVED`
-
-### Transitions autorisées
-
-Exemples :
-
-- `ACTIVE -> DISABLED`
-- `DISABLED -> ACTIVE`
-- `ACTIVE -> ARCHIVED`
-
-### Transitions interdites
-
-Exemples :
-
-- réactivation implicite d’un utilisateur archivé ;
-- suppression silencieuse de l’utilisateur alors qu’il est référencé par audit ou opérations.
-
-### Règles de conservation / archivage / suppression
-
-- les utilisateurs restent traçables ;
-- les références d’audit doivent rester compréhensibles ;
-- l’archivage est préférable à la suppression implicite.
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
 ---
 
-## Transactions / cohérence / concurrence
+## Documents liés
 
-### Ce qui doit être atomique
-
-Les opérations suivantes doivent réussir ou échouer ensemble :
-
-- création d’un utilisateur ;
-- changement de statut ;
-- création ou mise à jour d’un membership ;
-- écriture des événements `user.*` correspondants.
-
-### Ce qui peut être eventual consistency
-
-Les traitements suivants peuvent partir après commit :
-
-- synchronisation externe ;
-- analytics ;
-- notifications opératoires.
-
-### Stratégie de concurrence
-
-Le domaine protège explicitement ses invariants par :
-
-- transaction applicative sur les changements structurants ;
-- unicité logique de l’utilisateur ;
-- validation des memberships.
-
-Les conflits attendus sont :
-
-- double création logique ;
-- changement concurrent de statut ;
-- membership concurrent incohérent.
-
-### Idempotence
-
-Les commandes métier suivantes doivent être idempotentes :
-
-- `upsert-user` : clé d’intention = `(userRef, changeIntentId)`
-- `set-user-status` : clé d’intention = `(userId, targetStatus, changeIntentId)`
-- `upsert-user-membership` : clé d’intention = `(userId, storeId, membershipIntentId)`
-
-### Domain events écrits dans la même transaction
-
-Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
-
-- `user.created`
-- `user.updated`
-- `user.disabled`
-- `user.reactivated`
-- `user.membership.updated`
-
-### Effets secondaires après commit
-
-Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
-
-- sync annuaire externe ;
-- notifications ;
-- analytics.
-
----
-
-## Impact maintenance / exploitation
-
-### Niveau de maintenance minimal recommandé
-
-- `M1` minimum ;
-- `M2` recommandé dès qu’il y a plusieurs rôles, memberships ou gouvernance plus riche ;
-- `M3` pour organisation plus dense ou synchronisations externes fréquentes.
-
-### Pourquoi
-
-Le domaine `users` structure l’identité opérateur et impacte directement sécurité, audit et administration.
-
-### Points d’exploitation à surveiller
-
-- utilisateurs désactivés ;
-- memberships incohérents ;
-- divergence `users` / `auth` ;
-- imports externes.
-
----
-
-## Impact coût / complexité
-
-Le coût du domaine `users` monte principalement avec :
-
-- memberships multi-boutiques ;
-- profils plus riches ;
-- synchronisations externes ;
-- gouvernance interne plus dense.
-
-Lecture relative du coût :
-
-- niveau 1 : `C1`
-- niveau 2 : `C2`
-- niveau 3 : `C3`
-- niveau 4 : `C4`
-
----
-
-## Cas d’usage principaux
-
-1. Créer un utilisateur applicatif
-2. Le rattacher à une boutique
-3. Le désactiver ou le réactiver
-4. Exposer un acteur interne fiable au reste du socle
-
----
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- utilisateur introuvable ;
-- double identité logique ;
-- membership invalide ;
-- utilisateur archivé modifié ;
-- divergence `auth` / `users`.
-
----
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `users` est un domaine coeur non toggleable ;
-- il porte l’identité applicative humaine ;
-- il reste distinct de `auth`, `customers`, `roles` et `permissions` ;
-- il sert de base organisationnelle aux autres domaines internes ;
-- les annuaires externes éventuels restent dans `integrations`.
-
----
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- `users` appartient au noyau du socle ;
-- il ne se confond ni avec `auth`, ni avec `customers` ;
-- il porte l’identité applicative, pas le credential ;
-- les memberships et statuts sont structurants ;
-- la gouvernance utilisateur doit rester auditable.
+- `../../architecture/10-fondations/10-principes-d-architecture.md`
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `auth.md`
+- `roles.md`
+- `permissions.md`
+- `customers.md`
+- `stores.md`
