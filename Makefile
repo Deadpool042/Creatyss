@@ -54,14 +54,14 @@ help:
 	@echo "  prisma-studio              - Lance Prisma Studio dans le conteneur"
 	@echo ""
 	@echo "Base de donnees:"
-	@echo "  db-schema                  - Applique le schema Prisma courant a la base"
+	@echo "  db-schema                  - Regenere le client Prisma puis applique la baseline SQL active sur base vide"
 	@echo "  db-shell                   - Ouvre psql dans le conteneur db"
 	@echo "  db-seed-dev                - Cree le socle local puis importe le catalogue WooCommerce Creatyss"
 	@echo "  db-seed-images             - Convertit + aligne les images seed"
 	@echo "  db-import-woocommerce      - Reimporte le catalogue WooCommerce sans images"
 	@echo "  db-import-woocommerce-images - Reimporte le catalogue WooCommerce avec images"
 	@echo "  db-reseed-dev              - Re-seed de la base de dev"
-	@echo "  db-reset-dev               - Reset complet de la base de dev"
+	@echo "  db-reset-dev               - Reset complet de la base de dev puis baseline active + seed"
 	@echo "  uploads-import             - Importe les uploads depuis l'hote vers le volume"
 	@echo "  seed                       - Lance le seed dev complet dans le service jobs"
 	@echo "  seed-data-init             - Initialise les donnees de seed"
@@ -151,7 +151,7 @@ prisma-studio:
 
 db-schema:
 	@$(MAKE) prisma-generate
-	@$(MAKE) prisma-db-push
+	$(COMPOSE_CORE) exec $(APP_SERVICE) pnpm exec prisma db execute --file db/migrations/active/001_baseline.sql
 
 db-shell:
 	$(COMPOSE_CORE) exec $(DB_SERVICE) sh -lc 'psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"'
@@ -176,14 +176,12 @@ db-import-woocommerce-images:
 	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run seed:woocommerce
 
 db-reseed-dev:
-	@$(MAKE) prisma-db-reset
-	@$(MAKE) db-seed-dev
+	@$(MAKE) db-reset-dev
 
 db-reset-dev:
 	$(COMPOSE_CORE) down -v
 	$(COMPOSE_CORE) up -d --build
-	$(MAKE) prisma-generate
-	$(MAKE) prisma-db-reset
+	$(MAKE) db-schema
 	$(MAKE) db-seed-dev
 
 uploads-import:

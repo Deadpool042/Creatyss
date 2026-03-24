@@ -192,6 +192,7 @@ make test-e2e
 ## Base de données
 
 Le schéma PostgreSQL est défini par les fichiers Prisma répartis sous `prisma/`, organisés en sous-dossiers par domaine.
+L'historique SQL est archivé sous `db/migrations/_archive/` et la baseline active unique vit sous `db/migrations/active/001_baseline.sql`.
 
 Application locale :
 
@@ -200,7 +201,8 @@ make up
 make db-schema
 ```
 
-`make db-schema` régénère le client Prisma puis applique le schéma courant via `prisma db push`.
+`make db-schema` régénère le client Prisma puis applique la baseline SQL active via `prisma db execute` sur une base fraîche.
+Pour une reconstruction locale complète, la commande de référence reste `make db-reset-dev`.
 Pour repartir proprement avec schéma + seed :
 
 ```bash
