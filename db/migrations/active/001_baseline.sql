@@ -885,7 +885,6 @@ CREATE TABLE "products" (
     "storeId" TEXT NOT NULL,
     "productTypeId" TEXT,
     "slug" TEXT NOT NULL,
-    "sku" TEXT,
     "name" TEXT NOT NULL,
     "shortDescription" TEXT,
     "description" TEXT,
@@ -916,8 +915,9 @@ CREATE TABLE "product_attribute_values" (
 -- CreateTable
 CREATE TABLE "product_variants" (
     "id" TEXT NOT NULL,
+    "storeId" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
-    "sku" TEXT,
+    "sku" TEXT NOT NULL,
     "name" TEXT,
     "status" "ProductVariantStatus" NOT NULL DEFAULT 'ACTIVE',
     "sortOrder" INTEGER NOT NULL DEFAULT 0,
@@ -3257,9 +3257,6 @@ CREATE UNIQUE INDEX "products_storeId_slug_key" ON "products"("storeId", "slug")
 CREATE UNIQUE INDEX "products_storeId_id_key" ON "products"("storeId", "id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "products_storeId_sku_key" ON "products"("storeId", "sku");
-
--- CreateIndex
 CREATE INDEX "product_attribute_values_productId_idx" ON "product_attribute_values"("productId");
 
 -- CreateIndex
@@ -3272,10 +3269,16 @@ CREATE UNIQUE INDEX "product_attribute_values_productId_attributeId_key" ON "pro
 CREATE INDEX "product_variants_productId_idx" ON "product_variants"("productId");
 
 -- CreateIndex
+CREATE INDEX "product_variants_storeId_idx" ON "product_variants"("storeId");
+
+-- CreateIndex
 CREATE INDEX "product_variants_status_idx" ON "product_variants"("status");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "product_variants_productId_sku_key" ON "product_variants"("productId", "sku");
+CREATE UNIQUE INDEX "product_variants_storeId_sku_key" ON "product_variants"("storeId", "sku");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "product_variants_productId_id_key" ON "product_variants"("productId", "id");
 
 -- CreateIndex
 CREATE INDEX "product_variant_attribute_values_variantId_idx" ON "product_variant_attribute_values"("variantId");
@@ -4823,7 +4826,7 @@ ALTER TABLE "products" ADD CONSTRAINT "products_storeId_fkey" FOREIGN KEY ("stor
 ALTER TABLE "products" ADD CONSTRAINT "products_productTypeId_fkey" FOREIGN KEY ("productTypeId") REFERENCES "product_types"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "products" ADD CONSTRAINT "products_defaultVariantId_fkey" FOREIGN KEY ("defaultVariantId") REFERENCES "product_variants"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "products" ADD CONSTRAINT "products_defaultVariantId_fkey" FOREIGN KEY ("id", "defaultVariantId") REFERENCES "product_variants"("productId", "id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "product_attribute_values" ADD CONSTRAINT "product_attribute_values_productId_fkey" FOREIGN KEY ("productId") REFERENCES "products"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -4832,7 +4835,7 @@ ALTER TABLE "product_attribute_values" ADD CONSTRAINT "product_attribute_values_
 ALTER TABLE "product_attribute_values" ADD CONSTRAINT "product_attribute_values_attributeId_fkey" FOREIGN KEY ("attributeId") REFERENCES "catalog_attributes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "product_variants" ADD CONSTRAINT "product_variants_productId_fkey" FOREIGN KEY ("productId") REFERENCES "products"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "product_variants" ADD CONSTRAINT "product_variants_storeId_productId_fkey" FOREIGN KEY ("storeId", "productId") REFERENCES "products"("storeId", "id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "product_variant_attribute_values" ADD CONSTRAINT "product_variant_attribute_values_variantId_fkey" FOREIGN KEY ("variantId") REFERENCES "product_variants"("id") ON DELETE CASCADE ON UPDATE CASCADE;

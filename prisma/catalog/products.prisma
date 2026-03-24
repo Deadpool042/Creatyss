@@ -22,7 +22,6 @@ model Product {
   productTypeId String?
 
   slug             String
-  sku              String?
   name             String
   shortDescription String?
   description      String?
@@ -39,7 +38,8 @@ model Product {
   attributeValues     ProductAttributeValue[]
   variants            ProductVariant[]
   mediaLinks          ProductMedia[]
-  defaultVariant      ProductVariant?             @relation("ProductDefaultVariant", fields: [defaultVariantId], references: [id], onDelete: SetNull)
+  // The canonical sellable offer identity lives on ProductVariant, including simple products.
+  defaultVariant      ProductVariant?             @relation("ProductDefaultVariant", fields: [id, defaultVariantId], references: [productId, id], onDelete: Restrict)
   defaultVariantId    String?
   categories          ProductCategory[]
   prices              ProductPrice[]
@@ -50,7 +50,6 @@ model Product {
   localizations       ProductLocalization[]
 
   @@unique([storeId, slug])
-  @@unique([storeId, sku])
   @@unique([storeId, id])
   @@index([storeId])
   @@index([productTypeId])
@@ -83,9 +82,10 @@ model ProductAttributeValue {
 
 model ProductVariant {
   id        String @id @default(cuid())
+  storeId   String
   productId String
 
-  sku    String?
+  sku    String
   name   String?
   status ProductVariantStatus @default(ACTIVE)
 
@@ -94,7 +94,7 @@ model ProductVariant {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  product            Product                        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product            Product                        @relation(fields: [storeId, productId], references: [storeId, id], onDelete: Cascade)
   defaultForProducts Product[]                      @relation("ProductDefaultVariant")
   attributeValues    ProductVariantAttributeValue[]
   mediaLinks         ProductVariantMedia[]
@@ -104,8 +104,10 @@ model ProductVariant {
   bundleItems        BundleItem[]
   inventoryItem      InventoryItem?
 
-  @@unique([productId, sku])
+  @@unique([storeId, sku])
+  @@unique([productId, id])
   @@index([productId])
+  @@index([storeId])
   @@index([status])
   @@map("product_variants")
 }

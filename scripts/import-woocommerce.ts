@@ -81,7 +81,7 @@ type PreparedWooProduct = {
 };
 
 type VariantSeed = {
-  sku: string | null;
+  sku: string;
   name: string | null;
   status: ProductVariantStatus;
   amount: string | null;
@@ -270,6 +270,40 @@ function buildVariationName(productName: string, variation: WooVariation, index:
   return `${productName} - Déclinaison ${index + 1}`;
 }
 
+function buildFallbackVariantSku(input: {
+  product: WooProduct;
+  variation?: WooVariation;
+}): string {
+  if (input.variation) {
+    return `WOO-VARIATION-${input.variation.id}`;
+  }
+
+  return `WOO-PRODUCT-${input.product.id}`;
+}
+
+function resolveRequiredVariantSku(input: {
+  product: WooProduct;
+  variation?: WooVariation;
+}): string {
+  const sourceSku = input.variation ? input.variation.sku : input.product.sku;
+  const normalizedSku = toNullableText(sourceSku);
+
+  if (normalizedSku !== null) {
+    return normalizedSku;
+  }
+
+  const fallbackSku = buildFallbackVariantSku(input);
+  const targetLabel = input.variation
+    ? `variation ${input.variation.id} of product ${input.product.slug}`
+    : `simple product ${input.product.slug}`;
+
+  process.stderr.write(
+    `Missing WooCommerce SKU for ${targetLabel}. Using fallback SKU ${fallbackSku}.\n`
+  );
+
+  return fallbackSku;
+}
+
 function buildVariantSeeds(product: WooProduct, variations: readonly WooVariation[]): VariantSeed[] {
   const productStatus = normalizeProductStatus(product.status);
 
@@ -279,7 +313,7 @@ function buildVariantSeeds(product: WooProduct, variations: readonly WooVariatio
 
     return [
       {
-        sku: toNullableText(product.sku),
+        sku: resolveRequiredVariantSku({ product }),
         name: product.name,
         status:
           productStatus === ProductStatus.ACTIVE
@@ -303,7 +337,7 @@ function buildVariantSeeds(product: WooProduct, variations: readonly WooVariatio
       normalizeMoneyToDecimalString(variation.regular_price);
 
     return {
-      sku: toNullableText(variation.sku),
+      sku: resolveRequiredVariantSku({ product, variation }),
       name: buildVariationName(product.name, variation, index),
       status: normalizeVariantStatus(productStatus, variation.status),
       amount,
@@ -630,6 +664,7 @@ async function importProducts(
     for (const [index, variantSeed] of variantSeeds.entries()) {
       const createdVariant = await prisma.productVariant.create({
         data: {
+          storeId,
           productId: createdProduct.id,
           sku: variantSeed.sku,
           name: variantSeed.name,
