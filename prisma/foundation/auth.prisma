@@ -135,7 +135,7 @@ model AuthMfaEnrollment {
   method     AuthMfaMethod @default(TOTP)
   label      String?
   secretHash String
-  isPrimary  Boolean       @default(true)
+  isPrimary  Boolean       @default(false)
   verifiedAt DateTime?
 
   createdAt DateTime @default(now())

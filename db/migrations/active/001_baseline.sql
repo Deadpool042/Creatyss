@@ -2311,7 +2311,7 @@ CREATE TABLE "auth_mfa_enrollments" (
     "method" "AuthMfaMethod" NOT NULL DEFAULT 'TOTP',
     "label" TEXT,
     "secretHash" TEXT NOT NULL,
-    "isPrimary" BOOLEAN NOT NULL DEFAULT true,
+    "isPrimary" BOOLEAN NOT NULL DEFAULT false,
     "verifiedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -5494,6 +5494,18 @@ CREATE UNIQUE INDEX IF NOT EXISTS shipping_methods_default_per_store_unique
   ON "shipping_methods" ("storeId")
   WHERE "isDefault" = TRUE;
 
+CREATE UNIQUE INDEX IF NOT EXISTS price_lists_default_per_store_unique
+  ON "price_lists" ("storeId")
+  WHERE "isDefault" = TRUE;
+
+CREATE UNIQUE INDEX IF NOT EXISTS ai_providers_default_global_unique
+  ON "ai_providers" ((1))
+  WHERE "storeId" IS NULL AND "isDefault" = TRUE;
+
+CREATE UNIQUE INDEX IF NOT EXISTS ai_providers_default_per_store_unique
+  ON "ai_providers" ("storeId")
+  WHERE "storeId" IS NOT NULL AND "isDefault" = TRUE;
+
 CREATE UNIQUE INDEX IF NOT EXISTS shipping_rates_geographic_scope_per_method_unique
   ON "shipping_rates" (
     "shippingMethodId",
@@ -5523,6 +5535,26 @@ CREATE UNIQUE INDEX IF NOT EXISTS locale_definitions_default_per_store_unique
 CREATE UNIQUE INDEX IF NOT EXISTS newsletter_lists_default_per_store_unique
   ON "newsletter_lists" ("storeId")
   WHERE "isDefault" = TRUE;
+
+CREATE UNIQUE INDEX IF NOT EXISTS dashboards_default_global_per_kind_unique
+  ON "dashboards" ("kind")
+  WHERE "storeId" IS NULL AND "isDefault" = TRUE;
+
+CREATE UNIQUE INDEX IF NOT EXISTS dashboards_default_per_store_kind_unique
+  ON "dashboards" ("storeId", "kind")
+  WHERE "storeId" IS NOT NULL AND "isDefault" = TRUE;
+
+CREATE UNIQUE INDEX IF NOT EXISTS customer_addresses_default_billing_per_customer_unique
+  ON "customer_addresses" ("customerId")
+  WHERE "isDefaultBilling" = TRUE;
+
+CREATE UNIQUE INDEX IF NOT EXISTS customer_addresses_default_shipping_per_customer_unique
+  ON "customer_addresses" ("customerId")
+  WHERE "isDefaultShipping" = TRUE;
+
+CREATE UNIQUE INDEX IF NOT EXISTS auth_mfa_enrollments_primary_per_identity_unique
+  ON "auth_mfa_enrollments" ("identityId")
+  WHERE "isPrimary" = TRUE;
 
 -- ------------------------------------------------------------
 -- Quantity checks
