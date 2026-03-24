@@ -1,496 +1,215 @@
-# Domaine `<domain-name>`
-
-## Objectif
-
-Ce document décrit le domaine `<domain-name>` dans la doctrine courante du socle.
-
-Il précise :
-
-- le rôle du domaine ;
-- sa place dans la modularité du socle ;
-- sa source de vérité ;
-- ses capacités activables ;
-- ses niveaux éventuels ;
-- ses objets métier ;
-- ses invariants ;
-- son cycle de vie ;
-- ses règles de cohérence ;
-- ses frontières externes ;
-- ses implications de maintenance et d’exploitation.
-
-Ce document n’est pas un simple descriptif.
-Il sert de référence d’architecture, de build, d’exploitation et de cadrage.
-
----
-
-## Position dans la doctrine de modularité
-
-Le domaine `<domain-name>` est classé comme :
-
-- `domaine coeur non toggleable`
-- `domaine coeur à capabilities toggleables`
-- `domaine optionnel toggleable`
-
-### Ce qui n’est jamais désactivé
-
-Décrire ici ce qui constitue le noyau incompressible du domaine.
-
-### Ce qui est activable / désactivable par capability
-
-Lister ici les capabilities liées au domaine.
-
-Exemples :
-
-- `...`
-- `...`
-- `...`
-
-### Ce qui relève d’un niveau
-
-Si le domaine porte des niveaux de sophistication, les expliciter ici.
-
-Exemples :
-
-- niveau 1 : ...
-- niveau 2 : ...
-- niveau 3 : ...
-- niveau 4 : ...
-
-### Ce qui relève d’un provider ou d’une intégration externe
-
-Lister ici ce qui ne relève pas du coeur du domaine mais d’un connecteur ou d’une frontière externe.
-
-Exemples :
-
-- `...`
-- `...`
-- `...`
-
----
+# Nom du domaine
 
 ## Rôle
 
-Le domaine `<domain-name>` porte `...`.
+Décrire la finalité métier principale du domaine.
 
-Il constitue la source de vérité interne de `...`, distincte de `...`.
-
----
-
-## Responsabilités
-
-Le domaine `<domain-name>` prend en charge :
-
-- ...
-- ...
-- ...
-- ...
+Le rôle doit répondre à la question :
+**pourquoi ce domaine existe-t-il dans le système ?**
 
 ---
 
-## Ce que le domaine ne doit pas faire
+## Classification
 
-Le domaine `<domain-name>` ne doit pas :
+### Catégorie documentaire
 
-- ...
-- ...
-- ...
-- ...
+Indiquer l’une des catégories suivantes :
+
+- `core`
+- `optional`
+- `cross-cutting`
+
+### Criticité architecturale
+
+Indiquer explicitement :
+
+- `coeur`
+- `optionnelle`
+- `transverse non optionnelle`
+- autre formulation strictement justifiée
+
+### Activable
+
+Indiquer :
+
+- `oui`
+- `non`
+
+Préciser les conditions d’activation si applicable.
 
 ---
 
 ## Source de vérité
 
-Le domaine `<domain-name>` est la source de vérité pour :
+Indiquer clairement :
 
-- ...
-- ...
-- ...
+- quelle donnée ou décision relève de ce domaine ;
+- où se situe l’autorité principale ;
+- quelles données ne relèvent pas de lui.
 
-Le domaine n’est pas la source de vérité pour :
-
-- ...
-- ...
-- ...
+S’il existe plusieurs systèmes impliqués, préciser la hiérarchie d’autorité.
 
 ---
 
-## Objets métier principaux
+## Responsabilités
 
-Les principaux objets métier portés par le domaine sont :
+Lister explicitement ce que le domaine :
 
-- `...`
-- `...`
-- `...`
+- possède ;
+- décide ;
+- valide ;
+- calcule ;
+- orchestre ;
+- expose.
 
----
-
-## Capabilities activables liées
-
-Le domaine `<domain-name>` est lié aux capabilities suivantes :
-
-- `...`
-- `...`
-- `...`
-
-### Effet si la capability est activée
-
-Décrire l’impact sur le comportement du domaine.
-
-### Effet si la capability est désactivée
-
-Décrire la version plus simple ou la restriction métier.
+Cette section doit rester centrée sur la responsabilité métier ou transverse réelle.
 
 ---
 
-## Niveaux de sophistication du domaine
+## Non-responsabilités
 
-Si le domaine porte des niveaux, les décrire ici.
+Lister explicitement ce que le domaine ne possède pas et ne décide pas.
 
-### Niveau 1 — essentiel
-
-...
-
-### Niveau 2 — standard
-
-...
-
-### Niveau 3 — avancé
-
-...
-
-### Niveau 4 — expert / réglementé / multi-contraintes
-
-...
+Cette section est obligatoire.
+Elle sert à protéger les frontières.
 
 ---
 
-## Entrées
+## Invariants
 
-Le domaine reçoit principalement :
+Lister les règles qui doivent rester vraies tant que le domaine est cohérent.
 
-- ...
-- ...
-- ...
-- ...
+S’il n’existe pas d’invariant structurant, l’indiquer explicitement et justifier pourquoi.
 
 ---
 
-## Sorties
+## Dépendances
 
-Le domaine expose principalement :
+Documenter :
 
-- ...
-- ...
-- ...
-- ...
+- les dépendances vers d’autres domaines ;
+- les dépendances vers des systèmes externes ;
+- les dépendances vers des préoccupations transverses ;
+- la nature de chaque dépendance.
 
----
+Distinguer autant que possible :
 
-## Dépendances vers autres domaines
-
-Le domaine `<domain-name>` dépend de :
-
-- `<domain-a>` pour ...
-- `<domain-b>` pour ...
-- `<domain-c>` pour ...
-
-Les domaines suivants dépendent de `<domain-name>` :
-
-- `...`
-- `...`
-- `...`
+- dépendance métier ;
+- dépendance technique ;
+- dépendance d’intégration.
 
 ---
 
-## Dépendances vers providers / intégrations
+## Événements significatifs
 
-Si le domaine dépend d’une frontière externe, préciser ici la règle.
+Lister les événements métier ou transverses significatifs :
 
-Le domaine `<domain-name>` :
+- publiés ;
+- consommés ;
+- ou pertinents pour le domaine.
 
-- ne parle pas directement au provider si cela relève de `integrations`
-- n’utilise jamais un schéma provider brut comme langage métier interne
-- ne laisse pas un callback ou un résultat externe court-circuiter ses invariants métier
-
-Détailler ensuite les cas précis si nécessaire.
+Préciser uniquement les événements utiles à la compréhension du domaine.
 
 ---
 
-## Rôles / permissions concernés
+## Cycle de vie
 
-### Rôles
+Décrire :
 
-Les rôles principalement concernés sont :
+- les états importants ;
+- les transitions structurantes ;
+- ou indiquer explicitement que la notion de cycle de vie n’est pas applicable.
 
-- ...
-- ...
-- ...
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `...`
-- `...`
-- `...`
+Cette section est obligatoire, même si la réponse est “non applicable”.
 
 ---
 
-## Événements émis
+## Interfaces et échanges
 
-Le domaine émet les domain events internes suivants :
+Décrire les principaux points d’entrée et de sortie du domaine :
 
-- `...`
-- `...`
-- `...`
+- commandes ;
+- lectures ;
+- projections ;
+- événements ;
+- synchronisations ;
+- interfaces externes.
 
----
-
-## Événements consommés
-
-Le domaine consomme les domain events internes suivants :
-
-- `...`
-- `...`
-- `...`
+Ne pas transformer cette section en documentation d’API exhaustive.
+Elle doit rester architecturale.
 
 ---
 
-## Données sensibles / sécurité
+## Contraintes d’intégration
 
-Le domaine `<domain-name>` porte une donnée métier de niveau `...`.
+Décrire les contraintes spécifiques si le domaine interagit avec :
 
-Points de vigilance :
+- un fournisseur externe ;
+- des webhooks ;
+- des synchronisations ;
+- des jobs ;
+- des traitements asynchrones ;
+- des exigences d’idempotence.
 
-- ...
-- ...
-- ...
-- ...
-
----
-
-## Observability / audit
-
-### Observability
-
-Il faut pouvoir comprendre :
-
-- ...
-- ...
-- ...
-- ...
-
-### Audit
-
-Il faut tracer :
-
-- ...
-- ...
-- ...
-- ...
+Si non applicable, l’indiquer explicitement.
 
 ---
 
-## Invariants métier
+## Observabilité et audit
 
-Les règles suivantes doivent toujours rester vraies :
+Décrire ce qui doit être visible ou traçable pour ce domaine :
 
-- ...
-- ...
-- ...
-- ...
-- ...
+- changements d’état ;
+- erreurs significatives ;
+- actions opératoires ;
+- événements importants ;
+- reprises éventuelles.
 
----
-
-## Lifecycle et gouvernance des données
-
-### États principaux
-
-Lister les états de cycle de vie du ou des objets principaux du domaine.
-
-Exemples :
-
-- `ACTIVE`
-- `DISABLED`
-- `ARCHIVED`
-- `EXPIRED`
-
-### Transitions autorisées
-
-Lister les transitions autorisées.
-
-Exemples :
-
-- `ACTIVE -> DISABLED`
-- `ACTIVE -> COMPLETED`
-- `PENDING -> FAILED`
-
-### Transitions interdites
-
-Lister les transitions interdites ou non supportées.
-
-### Règles de conservation / archivage / suppression
-
-Préciser :
-
-- ce qui est conservé ;
-- ce qui est archivé ;
-- ce qui peut être purgé ;
-- ce qui ne doit pas être supprimé implicitement.
+Si le domaine n’a pas d’exigence particulière, l’indiquer explicitement.
 
 ---
 
-## Transactions / cohérence / concurrence
+## Impact de maintenance / exploitation
 
-### Ce qui doit être atomique
+Décrire :
 
-Lister les écritures qui doivent réussir ou échouer ensemble.
+- le niveau d’attention opératoire attendu ;
+- les risques majeurs ;
+- les points de supervision ;
+- les besoins de reprise éventuels ;
+- les sensibilités particulières.
 
-- ...
-- ...
-- ...
-- ...
-
-### Ce qui peut être eventual consistency
-
-Lister les traitements pouvant partir après commit.
-
-- ...
-- ...
-- ...
-- ...
-
-### Stratégie de concurrence
-
-Documenter comment le domaine protège ses invariants :
-
-- garde métier ;
-- contrainte unique ;
-- version ;
-- ordre strict ;
-- clé d’idempotence ;
-- autre.
-
-Décrire aussi les conflits attendus :
-
-- ...
-- ...
-- ...
-
-### Idempotence
-
-Lister les commandes métier qui doivent être idempotentes.
-
-Pour chacune, préciser :
-
-- la commande ;
-- la clé d’intention ;
-- le comportement attendu en cas de retry ;
-- le comportement attendu si l’opération est déjà appliquée.
-
-### Domain events écrits dans la même transaction
-
-Lister les events durables écrits avec la mutation source :
-
-- `...`
-- `...`
-- `...`
-
-### Effets secondaires après commit
-
-Lister ce qui ne doit jamais être exécuté dans la transaction principale :
-
-- ...
-- ...
-- ...
-- ...
+Cette section ne doit pas être omise.
 
 ---
 
-## Impact maintenance / exploitation
+## Limites du domaine
 
-### Niveau de maintenance minimal recommandé
+Décrire explicitement où s’arrête le domaine :
 
-Préciser le niveau minimal recommandé :
-
-- `M1`
-- `M2`
-- `M3`
-- `M4`
-
-### Pourquoi
-
-Expliquer le lien entre la criticité du domaine et le niveau de maintenance minimal.
-
-### Points d’exploitation à surveiller
-
-- ...
-- ...
-- ...
-- ...
+- quelles responsabilités restent ailleurs ;
+- quelles ambiguïtés doivent être évitées ;
+- quelles frontières doivent être protégées.
 
 ---
 
-## Impact coût / complexité
+## Questions ouvertes
 
-Décrire ce qui fait monter le coût dans ce domaine :
+Utiliser cette section uniquement pour les points réellement non stabilisés.
 
-- capabilities supplémentaires ;
-- niveaux plus élevés ;
-- providers supplémentaires ;
-- contraintes réglementaires ;
-- exigence d’exploitation.
+Ne pas y déplacer des éléments qui devraient déjà être tranchés.
 
-Qualifier si utile en :
-
-- `C1`
-- `C2`
-- `C3`
-- `C4`
+Si aucune question ouverte n’existe, l’indiquer explicitement.
 
 ---
 
-## Cas d’usage principaux
+## Documents liés
 
-1. ...
-2. ...
-3. ...
-4. ...
-5. ...
+Lister les documents utiles :
 
----
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- ...
-- ...
-- ...
-- ...
-- ...
-
----
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- ...
-- ...
-- ...
-- ...
-- ...
-
----
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- ...
-- ...
-- ...
-- ...
-- ...
+- architecture ;
+- domaines voisins ;
+- testing ;
+- exploitation ;
+- intégrations ;
+- décisions associées.
