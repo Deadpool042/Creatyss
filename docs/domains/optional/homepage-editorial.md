@@ -6,6 +6,8 @@ Ce document décrit le domaine `homepage-editorial` dans la doctrine courante du
 
 Il porte les blocs éditoriaux, sections et ordonnancements propres à la homepage ou à certaines zones éditoriales structurantes de présentation.
 
+*Note d'implémentation : Ce domaine est actuellement documenté à des fins de spécification architecturale et ses objets ne sont pas implémentés dans les schémas Prisma par défaut du socle.*
+
 ---
 
 ## Position dans la doctrine de modularité

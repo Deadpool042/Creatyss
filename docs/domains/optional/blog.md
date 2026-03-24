@@ -150,6 +150,8 @@ Les principaux objets métier portés par le domaine sont :
 - `BlogSeoMetadata`
 - `BlogRelation`
 
+*Note d'implémentation : Le socle par défaut ne persiste que `BlogPost` et `BlogCategory`. Les objets liés aux capabilities avancées nécessitent l'ajout de leurs propres modèles de persistance de façon explicite.*
+
 ---
 
 ## Capabilities activables liées

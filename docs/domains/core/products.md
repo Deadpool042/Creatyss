@@ -385,6 +385,7 @@ Les règles suivantes doivent toujours rester vraies :
 
 - un produit possède une identité stable ;
 - une variante appartient à un produit explicite ;
+- toute offre vendable, y compris un produit simple, s'appuie techniquement sur une variante par défaut (`defaultVariant`) ;
 - `products` reste la vérité catalogue ;
 - le prix, la disponibilité et la commande ne redéfinissent pas le catalogue ;
 - un produit non publié n’est pas assimilé à un produit storefront actif, selon la politique retenue.

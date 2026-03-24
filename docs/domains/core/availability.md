@@ -632,7 +632,8 @@ Les choix structurants du domaine sont :
 - le domaine reste coeur, mais sa sophistication est toggleable ;
 - la vérité interne reste locale, même si des sources externes existent ;
 - les mutations critiques sont transactionnelles, idempotentes et auditables ;
-- la montée en complexité reste additive.
+- la montée en complexité reste additive ;
+- techniquement, le schéma de persistance par défaut regroupe la politique de disponibilité (`policy`) et les compteurs de stock dans le modèle physique unique `InventoryItem`, sans remettre en cause la séparation conceptuelle entre le domaine cœur availability et son satellite quantitatif inventory.
 
 ---
 

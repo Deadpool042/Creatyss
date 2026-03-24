@@ -1445,8 +1445,7 @@ CREATE TABLE "subscription_topics" (
 CREATE TABLE "subscriptions" (
     "id" TEXT NOT NULL,
     "topicId" TEXT NOT NULL,
-    "customerId" TEXT,
-    "userId" TEXT,
+    "customerId" TEXT NOT NULL,
     "status" "SubscriptionStatus" NOT NULL DEFAULT 'ACTIVE',
     "billingCycle" "SubscriptionBillingCycle",
     "startedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1786,7 +1785,15 @@ CREATE TABLE "behavior_profiles" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "behavior_profiles_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "behavior_profiles_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "behavior_profiles_single_target_chk" CHECK (
+        (CASE WHEN "customerId" IS NOT NULL THEN 1 ELSE 0 END
+         + CASE WHEN "visitorKey" IS NOT NULL THEN 1 ELSE 0 END) = 1
+    ),
+    CONSTRAINT "behavior_profiles_actor_target_coherence_chk" CHECK (
+        ("actorKind" = 'CUSTOMER' AND "customerId" IS NOT NULL AND "visitorKey" IS NULL)
+     OR ("actorKind" = 'VISITOR'  AND "visitorKey" IS NOT NULL AND "customerId" IS NULL)
+    )
 );
 
 -- CreateTable
@@ -1851,7 +1858,17 @@ CREATE TABLE "consent_records" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "consent_records_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "consent_records_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "consent_records_single_target_chk" CHECK (
+        (CASE WHEN "customerId" IS NOT NULL THEN 1 ELSE 0 END
+         + CASE WHEN "userId" IS NOT NULL THEN 1 ELSE 0 END
+         + CASE WHEN "visitorKey" IS NOT NULL THEN 1 ELSE 0 END) = 1
+    ),
+    CONSTRAINT "consent_records_actor_target_coherence_chk" CHECK (
+        ("actorKind" = 'CUSTOMER' AND "customerId" IS NOT NULL AND "userId" IS NULL    AND "visitorKey" IS NULL)
+     OR ("actorKind" = 'USER'     AND "userId"     IS NOT NULL AND "customerId" IS NULL AND "visitorKey" IS NULL)
+     OR ("actorKind" = 'VISITOR'  AND "visitorKey" IS NOT NULL AND "customerId" IS NULL AND "userId"     IS NULL)
+    )
 );
 
 -- CreateTable
@@ -2180,7 +2197,12 @@ CREATE TABLE "support_messages" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "support_messages_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "support_messages_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "support_messages_author_target_coherence_chk" CHECK (
+        ("authorKind" = 'USER'     AND "userId"     IS NOT NULL AND "customerId" IS NULL)
+     OR ("authorKind" = 'CUSTOMER' AND "customerId" IS NOT NULL AND "userId"     IS NULL)
+     OR ("authorKind" = 'SYSTEM'   AND "userId"     IS NULL     AND "customerId" IS NULL)
+    )
 );
 
 -- CreateTable
@@ -2205,7 +2227,15 @@ CREATE TABLE "tracking_events" (
     "payload" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "tracking_events_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "tracking_events_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "tracking_events_actor_exclusivity_chk" CHECK (
+        NOT ("customerId" IS NOT NULL AND "userId" IS NOT NULL)
+    ),
+    CONSTRAINT "tracking_events_actor_target_coherence_chk" CHECK (
+        ("actorKind" = 'CUSTOMER' AND "customerId" IS NOT NULL AND "userId" IS NULL)
+     OR ("actorKind" = 'USER'    AND "userId"     IS NOT NULL AND "customerId" IS NULL)
+     OR ("actorKind" = 'VISITOR' AND "customerId" IS NULL     AND "userId"    IS NULL)
+    )
 );
 
 -- CreateTable
@@ -2825,7 +2855,11 @@ CREATE TABLE "legal_acceptances" (
     "ipAddress" TEXT,
     "userAgent" TEXT,
 
-    CONSTRAINT "legal_acceptances_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "legal_acceptances_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "legal_acceptances_single_target_chk" CHECK (
+        (CASE WHEN "customerId" IS NOT NULL THEN 1 ELSE 0 END
+         + CASE WHEN "userId" IS NOT NULL THEN 1 ELSE 0 END) = 1
+    )
 );
 
 -- CreateTable
@@ -3580,9 +3614,6 @@ CREATE INDEX "subscriptions_topicId_idx" ON "subscriptions"("topicId");
 
 -- CreateIndex
 CREATE INDEX "subscriptions_customerId_idx" ON "subscriptions"("customerId");
-
--- CreateIndex
-CREATE INDEX "subscriptions_userId_idx" ON "subscriptions"("userId");
 
 -- CreateIndex
 CREATE INDEX "subscriptions_status_idx" ON "subscriptions"("status");
@@ -5001,10 +5032,7 @@ ALTER TABLE "subscription_topics" ADD CONSTRAINT "subscription_topics_storeId_fk
 ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_topicId_fkey" FOREIGN KEY ("topicId") REFERENCES "subscription_topics"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "customers"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "customers"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "blog_categories" ADD CONSTRAINT "blog_categories_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;

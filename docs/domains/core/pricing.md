@@ -141,6 +141,11 @@ Le domaine `pricing` est la source de vérité pour :
 - les listes de prix si activées ;
 - les composants économiques transmis au checkout.
 
+Pour toute opération engageante, la source de vérité du prix est portée par `ProductVariantPrice`, rattaché à la variante effectivement visée par l’achat. Lorsqu’un produit simple est exposé sans déclinaisons visibles, cette règle s’applique via sa variante par défaut (`defaultVariant`).
+
+`ProductPrice` ne constitue pas la source de vérité transactionnelle. Tant qu’aucun lot ultérieur n’a redéfini son statut, il peut être conservé pour des usages de projection, d’affichage catalogue ou de prix de référence, selon les besoins du projet.
+
+
 Le domaine n’est pas la source de vérité pour :
 
 - les taxes ;

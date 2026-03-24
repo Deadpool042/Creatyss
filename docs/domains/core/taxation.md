@@ -165,6 +165,8 @@ Les principaux objets métier portés par le domaine sont :
 - `ExcisePolicy`
 - `ExciseDecision`
 
+_Les objets `TaxContext`, `TaxDecision`, `TaxBreakdown`, `VatValidationResult` et `ExciseDecision` relèvent du calcul, de la qualification ou de la décision métier. Ils ne donnent pas nécessairement lieu à une entité de persistance dédiée dans le schéma par défaut._
+
 ---
 
 ## Capabilities activables liées
@@ -643,7 +645,9 @@ Les choix structurants du domaine sont :
 - le domaine reste la source de vérité interne des décisions fiscales ;
 - les providers externes restent à la frontière via `integrations` ;
 - les accises sont une capability spécialisée, pas la norme du domaine ;
-- la montée de complexité fiscale doit rester additive et compatible avec le socle.
+- la montée de complexité fiscale doit rester additive et compatible avec le socle ;
+- dans le schéma de persistance de base, les zones et qualifications fiscales peuvent être portées directement par les attributs des règles (`countryCode`, `regionCode`, `productTypeCode`, `kind`) sans modèles dédiés de type `TaxZone` ou `TaxClass` ;
+- les objets plus riches comme `TaxProfile`, `VatValidationResult` ou `ExciseDecision` ne font partie du schéma du socle que lorsque le niveau de sophistication ou les capabilities activées le requièrent.
 
 ---
 

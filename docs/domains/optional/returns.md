@@ -159,6 +159,8 @@ Les principaux objets métier portés par le domaine sont :
 - `ExchangeDecision`
 - `RestockDecision`
 
+_Les objets `RefundDecision`, `ExchangeDecision` et `RestockDecision` sont des objets de décision métier. Ils ne donnent pas nécessairement lieu à une entité de persistance dédiée dans le schéma par défaut, qui peut condenser ces décisions autour du dossier de retour et de ses lignes._
+
 ---
 
 ## Capabilities activables liées
@@ -408,7 +410,7 @@ Les états principaux incluent typiquement :
 - `APPROVED`
 - `REJECTED`
 - `RECEIVED`
-- `REFUND_PENDING`
+- `REFUNDED`
 - `COMPLETED`
 - `CANCELLED`
 
@@ -419,15 +421,15 @@ Exemples :
 - `REQUESTED -> APPROVED`
 - `REQUESTED -> REJECTED`
 - `APPROVED -> RECEIVED`
-- `RECEIVED -> REFUND_PENDING`
-- `REFUND_PENDING -> COMPLETED`
+- `RECEIVED -> REFUNDED`
+- `REFUNDED -> COMPLETED`
 - `REQUESTED -> CANCELLED`
 
 ### Transitions interdites
 
 Exemples :
 
-- `REJECTED -> REFUND_PENDING`
+- `REJECTED -> REFUNDED`
 - `COMPLETED -> REQUESTED`
 - considérer un retour annulé comme jamais existé.
 

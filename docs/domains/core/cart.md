@@ -175,6 +175,8 @@ Les principaux objets métier portés par le domaine sont :
 - `CartAbandonmentPolicy`
 - `CartReactivationIntent`
 
+_Les objets `CartMergeResult`, `CartAbandonmentPolicy` et `CartReactivationIntent` sont des objets de projection ou de résultat applicatifs. Ils ne donnent pas lieu à une entité de persistance dans le schéma par défaut._
+
 ---
 
 ## Capabilities activables liées
@@ -192,7 +194,7 @@ Le domaine `cart` est lié aux capabilities suivantes :
 
 ### Effet si `guestCart` est activée
 
-Le panier invité est supporté nativement.
+Le panier invité est supporté nativement. Il peut porter les informations minimales nécessaires à sa reprise ou à sa conversion, notamment un email de contact selon le niveau de sophistication activé.
 
 ### Effet si `guestCart` est désactivée
 
@@ -543,7 +545,7 @@ Les conflits attendus sont :
 
 Les commandes métier suivantes doivent être idempotentes :
 
-- `add-cart-line` : clé d’intention = `(cartId, productRef, clientIntentId)`
+- `add-cart-line` : clé d’intention = `(cartId, variantRef, clientIntentId)`
 - `merge-cart` : clé d’intention = `(sourceCartId, targetCartId, mergeIntentId)`
 - `abandon-cart` : clé d’intention = `(cartId, abandonmentIntentId)`
 - `reactivate-cart` : clé d’intention = `(cartId, reactivationIntentId)`

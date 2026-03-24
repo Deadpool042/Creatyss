@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
 // Domaine: subscriptions
-// Responsabilité: abonnements récurrents (clients ou utilisateurs internes).
+// Responsabilité: abonnements récurrents rattachés à un client.
 // -----------------------------------------------------------------------------
 // prisma/subscriptions.prisma
 
@@ -41,8 +41,7 @@ model SubscriptionTopic {
 model Subscription {
   id         String  @id @default(cuid())
   topicId    String
-  customerId String?
-  userId     String?
+  customerId String
 
   status       SubscriptionStatus        @default(ACTIVE)
   billingCycle SubscriptionBillingCycle?
@@ -57,12 +56,10 @@ model Subscription {
   updatedAt DateTime @updatedAt
 
   topic    SubscriptionTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
-  customer Customer?         @relation(fields: [customerId], references: [id], onDelete: SetNull)
-  user     User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customer Customer          @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
   @@index([topicId])
   @@index([customerId])
-  @@index([userId])
   @@index([status])
   @@map("subscriptions")
 }

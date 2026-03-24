@@ -443,6 +443,7 @@ Les règles suivantes doivent toujours rester vraies :
 Le domaine `orders` porte un statut métier explicite.
 Selon le modèle retenu, les états principaux incluent généralement :
 
+- `DRAFT`
 - `PENDING`
 - `CONFIRMED`
 - `COMPLETED`

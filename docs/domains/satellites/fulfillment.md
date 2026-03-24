@@ -217,6 +217,8 @@ Les principaux objets métier conceptuels du domaine sont :
 - `FulfillmentPolicy` : règle de regroupement, découpage ou exécution
 - `FulfillmentSubjectRef` : référence vers la commande ou les lignes source concernées
 
+_Les objets `FulfillmentShipment`, `FulfillmentPolicy` et `FulfillmentSubjectRef` relèvent du modèle conceptuel du domaine. Dans le schéma par défaut, ils peuvent être condensés autour de l’agrégat `Fulfillment` et de ses lignes sans donner lieu à une entité de persistance dédiée._
+
 ## Invariants métier
 
 Les règles suivantes doivent toujours rester vraies :

@@ -75,7 +75,7 @@ Il reste distinct de :
 - `PAUSED`
 - `CANCELLED`
 - `EXPIRED`
-- `TRIALING`
+- `TRIALING` *(optionnel ; requiert l’activation explicite de la capability `subscriptionTrials` et n’est pas incarné dans le schéma du socle de base)*
 
 ### Règles principales
 
@@ -138,6 +138,7 @@ Lecture relative :
 ## Décisions d’architecture
 
 - `subscriptions` est un domaine optionnel toggleable ;
+- le modèle de persistance de base aplatit la traçabilité des cycles de vie (pauses, renouvellements) via des champs temporels sur l'abonnement principal ; l'instanciation de modèles de journaux dédiés est réservée aux niveaux de sophistication supérieurs ;
 - il porte une vérité récurrente propre ;
 - il reste distinct d’`orders` et de `payments` ;
 - il implique un niveau de maintenance plus élevé.

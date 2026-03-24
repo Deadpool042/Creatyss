@@ -182,6 +182,8 @@ Les principaux objets métier portés par le domaine sont :
 - `CheckoutPreparation`
 - `CheckoutContextSnapshot`
 
+_Les objets `CheckoutReadiness`, `CheckoutBlockingIssue`, `CheckoutWarning`, `CheckoutPaymentOption`, `CheckoutPreparation` et `CheckoutContextSnapshot` sont des objets de projection ou de préparation applicatifs. Ils ne donnent pas lieu à une entité de persistance dans le schéma par défaut._
+
 ---
 
 ## Capabilities activables liées

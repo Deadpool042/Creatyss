@@ -166,6 +166,8 @@ Les principaux objets métier portés par le domaine sont :
 - `ShippingStatus`
 - `ShippingPreparation`
 
+_Les objets `ShippingSelection`, `ShippingAddressSnapshot`, `PickupPointSelection`, `ShippingStatus` et `ShippingPreparation` sont des objets métier de sélection, de snapshot, de statut ou de préparation. Ils ne donnent pas nécessairement lieu à une entité de persistance dédiée dans le schéma par défaut. Au niveau essentiel, les zones de livraison peuvent en outre être portées directement par les attributs des tarifs, sans modèle `ShippingZone` dédié._
+
 ---
 
 ## Capabilities activables liées

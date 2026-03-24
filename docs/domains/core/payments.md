@@ -758,7 +758,9 @@ Les choix structurants du domaine sont :
 - les niveaux avancés comme installments et BNPL ne sont pas activés par défaut ;
 - la complexité de paiement monte par niveaux et capabilities, pas par refonte du socle ;
 - les opérations sensibles sont transactionnelles, auditables et idempotentes ;
-- le domaine doit rester compréhensible aussi bien pour le build que pour le support et le coût.
+- le domaine doit rester compréhensible aussi bien pour le build que pour le support et le coût ;
+- le schéma de persistance de base condense les opérations simples de paiement (autorisation, capture, annulation) dans des champs temporels portés par `Payment` ; la création de tables de journal d'opérations dédiées est réservée aux niveaux de sophistication supérieurs ;
+- les objets `PaymentPlan` et `Installment` ne font pas partie du schéma par défaut ; ils nécessitent une extension explicite du schéma, subordonnée à l'activation des capabilities `paymentMode.installments` ou `paymentMode.bnpl`.
 
 ---
 

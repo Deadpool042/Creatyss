@@ -208,6 +208,7 @@ Les principaux objets métier conceptuels du domaine sont :
 Les règles suivantes doivent toujours rester vraies :
 
 - un `InventoryItem` est rattaché à une variante valide
+- techniquement, le rattachement d’une variante à un modèle de stock quantitatif (`InventoryItem`) est optionnel ; cette optionalité est cohérente avec le fait que le suivi quantitatif relève de la capability `stockTracking` et que son absence ne constitue pas, à elle seule, une erreur de modélisation
 - `quantityAvailable` est cohérente avec la politique et les quantités sous-jacentes
 - la vérité quantitative ne se reconstitue pas dans les autres domaines
 - toute variation de stock durable laisse une trace explicite

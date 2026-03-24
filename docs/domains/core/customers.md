@@ -567,7 +567,8 @@ Les choix structurants du domaine sont :
 - le client courant est distinct du snapshot de commande ;
 - le domaine peut monter vers B2B sans imposer cette complexité à tous les projets ;
 - les systèmes externes CRM restent à la frontière ;
-- la gouvernance des données client est explicite.
+- la gouvernance des données client est explicite ;
+- les objets de profil B2B (`CustomerType`, `CustomerCompanyProfile`) ne font pas partie du schéma par défaut ; ils nécessitent une extension explicite du schéma de persistance, subordonnée à l'activation de la capability `b2bCommerce`.
 
 ---
 
