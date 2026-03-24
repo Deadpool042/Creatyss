@@ -1625,6 +1625,12 @@ CREATE TABLE "seo_metadata" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
+    CONSTRAINT "seo_metadata_exactly_one_target_check" CHECK (
+        (CASE WHEN "pageId" IS NOT NULL THEN 1 ELSE 0 END) +
+        (CASE WHEN "blogPostId" IS NOT NULL THEN 1 ELSE 0 END) +
+        (CASE WHEN "productId" IS NOT NULL THEN 1 ELSE 0 END) +
+        (CASE WHEN "categoryId" IS NOT NULL THEN 1 ELSE 0 END) = 1
+    ),
     CONSTRAINT "seo_metadata_pkey" PRIMARY KEY ("id")
 );
 
