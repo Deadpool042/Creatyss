@@ -3254,6 +3254,9 @@ CREATE INDEX "tax_rules_status_idx" ON "tax_rules"("status");
 CREATE INDEX "tax_rules_countryCode_idx" ON "tax_rules"("countryCode");
 
 -- CreateIndex
+CREATE INDEX "tax_rules_storeId_productTypeCode_idx" ON "tax_rules"("storeId", "productTypeCode");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "tax_rules_storeId_code_key" ON "tax_rules"("storeId", "code");
 
 -- CreateIndex
@@ -4748,6 +4751,9 @@ ALTER TABLE "sales_policies" ADD CONSTRAINT "sales_policies_storeId_fkey" FOREIG
 ALTER TABLE "tax_rules" ADD CONSTRAINT "tax_rules_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "tax_rules" ADD CONSTRAINT "tax_rules_storeId_productTypeCode_fkey" FOREIGN KEY ("storeId", "productTypeCode") REFERENCES "product_types"("storeId", "code") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "excise_rules" ADD CONSTRAINT "excise_rules_storeId_fkey" FOREIGN KEY ("storeId") REFERENCES "stores"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -5364,6 +5370,20 @@ CREATE UNIQUE INDEX IF NOT EXISTS product_categories_primary_per_product_unique
 CREATE UNIQUE INDEX IF NOT EXISTS shipping_methods_default_per_store_unique
   ON "shipping_methods" ("storeId")
   WHERE "isDefault" = TRUE;
+
+CREATE UNIQUE INDEX IF NOT EXISTS shipping_rates_geographic_scope_per_method_unique
+  ON "shipping_rates" (
+    "shippingMethodId",
+    "countryCode",
+    ("region" IS NULL),
+    COALESCE("region", ''),
+    ("postalCodePattern" IS NULL),
+    COALESCE("postalCodePattern", ''),
+    ("minSubtotalAmount" IS NULL),
+    COALESCE("minSubtotalAmount", 0),
+    ("maxSubtotalAmount" IS NULL),
+    COALESCE("maxSubtotalAmount", 0)
+  );
 
 CREATE UNIQUE INDEX IF NOT EXISTS blog_post_categories_primary_per_post_unique
   ON "blog_post_categories" ("postId")

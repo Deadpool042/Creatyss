@@ -45,12 +45,14 @@ model TaxRule {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  store       Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  productType ProductType? @relation(fields: [storeId, productTypeCode], references: [storeId, code], onDelete: Restrict)
 
   @@unique([storeId, code])
   @@index([storeId])
   @@index([status])
   @@index([countryCode])
+  @@index([storeId, productTypeCode])
   @@map("tax_rules")
 }
 

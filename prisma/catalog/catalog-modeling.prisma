@@ -45,6 +45,7 @@ model ProductType {
   store      Store                  @relation(fields: [storeId], references: [id], onDelete: Cascade)
   attributes ProductTypeAttribute[]
   products   Product[]
+  taxRules   TaxRule[]
 
   @@unique([storeId, code])
   @@index([storeId])
