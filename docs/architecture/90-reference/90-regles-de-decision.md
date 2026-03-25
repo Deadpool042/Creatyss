@@ -1,5 +1,3 @@
-cat > docs/architecture/90-reference/90-regles-de-decision.md <<'EOF'
-
 # Règles de décision
 
 ## Objectif

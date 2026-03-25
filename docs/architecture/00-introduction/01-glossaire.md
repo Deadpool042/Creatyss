@@ -39,6 +39,25 @@ Un domaine coeur :
 
 ---
 
+## Coeur structurel
+
+Un domaine coeur structurel est un sous-ensemble du coeur dont la responsabilité est structurelle plutôt que transactionnelle.
+
+Il conditionne le fonctionnement de tous les autres domaines sans relever d'une logique métier transactionnelle.
+
+Exemples : `auth`, `users`, `roles`, `permissions`.
+
+Un domaine coeur structurel :
+
+- est non optionnel ;
+- est préalable à toute opération métier ;
+- porte l'identité, l'accès, les droits ou l'intégrité structurelle du système ;
+- ne se confond pas avec un domaine coeur transactionnel comme `orders` ou `payments`.
+
+Voir aussi : `docs/architecture/10-fondations/11-modele-de-classification.md`.
+
+---
+
 ## Capacité optionnelle
 
 Une capacité optionnelle est un comportement activable ou modulable qui enrichit le système sans redéfinir son coeur.

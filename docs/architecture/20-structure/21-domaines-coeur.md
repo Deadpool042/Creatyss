@@ -36,6 +36,10 @@ Tout domaine coeur doit :
 
 ## Domaines coeur de Creatyss
 
+La liste complète et à jour des domaines coeur stabilisés est dans `docs/domains/core/`.
+Ce document en présente les éléments les plus structurants à titre illustratif.
+En cas de divergence, `docs/domains/core/` fait autorité.
+
 À l’état actuel de la doctrine, les domaines coeur explicitement structurants sont les suivants.
 
 ### Produits

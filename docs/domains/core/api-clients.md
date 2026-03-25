@@ -29,7 +29,7 @@ Le domaine existe pour fournir une représentation explicite des acteurs techniq
 
 ### Criticité architecturale
 
-`coeur structurant`
+`coeur structurel`
 
 ### Activable
 
@@ -396,7 +396,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `users.md`
 - `permissions.md`
 - `roles.md`
-- `store.md`
+- `stores.md`
 - `integrations.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`

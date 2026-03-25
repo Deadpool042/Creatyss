@@ -29,7 +29,7 @@ Le domaine existe pour fournir une représentation explicite des documents méti
 
 ### Criticité architecturale
 
-`coeur structurant`
+`coeur structurel`
 
 ### Activable
 
@@ -407,7 +407,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `payments.md`
 - `../optional/returns.md`
 - `users.md`
-- `store.md`
+- `stores.md`
 - `../satellites/media.md`
 - `../cross-cutting/email.md`
 - `../cross-cutting/export.md`

@@ -307,8 +307,7 @@ Il ne pilote pas le système.
 
 ## Documents liés
 
-- `../../architecture/40-exploitation/40-observabilite.md`
-- `../../architecture/40-exploitation/41-audit-et-tracabilite.md`
+- `../../architecture/40-exploitation/42-observabilite-et-audit.md`
 - `../../domains/core/domain-events.md`
 - `../../domains/cross-cutting/observability.md`
 - `../../domains/cross-cutting/jobs.md`

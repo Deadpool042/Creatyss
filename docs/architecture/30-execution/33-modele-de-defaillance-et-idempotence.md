@@ -1,5 +1,3 @@
-cat > docs/architecture/30-execution/33-modele-de-defaillance-et-idempotence.md <<'EOF'
-
 # Modèle de défaillance et idempotence
 
 ## Objectif
@@ -174,4 +172,3 @@ Le système doit éviter :
 - `31-jobs-et-traitements-en-arriere-plan.md`
 - `32-integrations-et-adaptateurs-fournisseurs.md`
 - `../40-exploitation/42-observabilite-et-audit.md`
-  EOF
