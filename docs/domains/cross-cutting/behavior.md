@@ -1,175 +1,291 @@
-# Domaine behavior
+# Behavior
 
 ## Rôle
 
-Le domaine `behavior` porte la lecture comportementale structurée du socle.
+Le domaine `behavior` porte la lecture comportementale structurée du système.
 
-Il organise les interprétations métier dérivées des interactions, parcours et signaux utilisateur lorsque l’on veut raisonner en termes de comportements observés, segments comportementaux, intentions probables ou états de parcours, sans absorber le tracking brut, l’attribution marketing, l’analytics consolidée, le CRM relationnel ou les consentements.
+Il définit :
+
+- ce qu’est une lecture comportementale du point de vue du système ;
+- comment sont structurés les signaux dérivés, segments, états de parcours, profils comportementaux et règles de dérivation ;
+- comment ce domaine se distingue du tracking brut, de l’attribution marketing, de l’analytics consolidée, du CRM relationnel et du consentement ;
+- comment le système reste maître de sa vérité interne sur les lectures comportementales.
+
+Le domaine existe pour fournir une représentation explicite du comportement observé, distincte :
+
+- du tracking brut porté par `tracking` ;
+- de l’attribution portée par `attribution` ;
+- de l’analytics consolidée portée par `analytics` ;
+- de la relation client enrichie portée par `crm` ;
+- du consentement porté par `consent` ;
+- des DTO providers externes portés par `integrations`.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse structurant`
+
+### Activable
+
+`oui`
+
+Le domaine `behavior` est activable.
+Lorsqu’il est activé, il devient structurant pour la segmentation comportementale, les états de parcours et certaines lectures d’intention ou de friction.
+
+---
+
+## Source de vérité
+
+Le domaine `behavior` est la source de vérité pour :
+
+- les lectures comportementales dérivées gouvernées par le système ;
+- les segments comportementaux explicites ;
+- les états de parcours observés portés par le système ;
+- les profils comportementaux structurés ;
+- les règles de dérivation ou d’exposition comportementale lorsqu’elles sont portées ici ;
+- ses lectures structurées consommables par les domaines autorisés.
+
+Le domaine `behavior` n’est pas la source de vérité pour :
+
+- les signaux de mesure bruts, qui relèvent de `tracking` ;
+- l’attribution marketing, qui relève de `attribution` ;
+- l’analytics consolidée, qui relève de `analytics` ;
+- la relation client enrichie, qui relève de `crm` ;
+- les consentements, qui relèvent de `consent` ;
+- les campagnes marketing ou dispositifs de conversion eux-mêmes ;
+- les DTO providers externes.
+
+Une lecture comportementale est une interprétation gouvernée de signaux et contextes.
+Elle ne doit pas être confondue avec :
+
+- un signal brut ;
+- un score opaque ;
+- une fiche CRM ;
+- une règle de consentement ;
+- une campagne marketing ;
+- une vue analytique consolidée.
+
+---
 
 ## Responsabilités
 
-Le domaine `behavior` prend en charge :
+Le domaine `behavior` est responsable de :
 
-- les lectures comportementales structurées
-- les segments comportementaux
-- les états de parcours observés
-- les signaux d’intention ou d’intérêt dérivés
-- les lectures de friction ou d’abandon au niveau comportemental
-- les profils comportementaux exploitables par les autres domaines autorisés
-- la base comportementale consommable par `conversion`, `crm`, `marketing`, `recommendations`, `analytics`, `dashboarding` et certaines couches d’administration
+- définir ce qu’est une lecture comportementale dans le système ;
+- porter les signaux comportementaux dérivés ;
+- porter les segments comportementaux ;
+- porter les états de parcours observés ;
+- porter les profils comportementaux structurés ;
+- exposer une lecture gouvernée de segments, profils, états de parcours et signaux d’intention ;
+- publier les événements significatifs liés à la vie d’une lecture comportementale ;
+- protéger le système contre les interprétations implicites, opaques ou contradictoires.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `behavior` ne doit pas :
+- signaux d’intérêt produit ;
+- détection de friction ;
+- détection d’abandon de parcours ;
+- segmentation visiteurs ou clients ;
+- niveaux d’intention probables ;
+- politiques locales de dérivation ;
+- neutralisation de certaines lectures selon consentement ou capability ;
+- profils comportementaux multi-sessions lorsque cela est autorisé.
 
-- porter les signaux bruts de mesure, qui relèvent de `tracking`
-- porter l’attribution marketing, qui relève de `attribution`
-- porter l’analytics consolidée, qui relève de `analytics`
-- porter la relation client enrichie, qui relève de `crm`
-- porter les consentements, qui relèvent de `consent`
-- porter les campagnes marketing ou les dispositifs de conversion eux-mêmes, qui relèvent de `marketing` et `conversion`
-- devenir un fourre-tout mélangeant tracking, scoring opaque, ciblage marketing et profilage sans langage métier clair
+---
 
-Le domaine `behavior` porte l’interprétation comportementale structurée. Il ne remplace ni `tracking`, ni `analytics`, ni `attribution`, ni `crm`, ni `consent`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `behavior` n’est pas responsable de :
 
-- `signals` : signaux comportementaux dérivés
-- `segments` : segments comportementaux explicites
-- `journeys` : états de parcours ou lectures de parcours observés
-- `profiles` : profils comportementaux structurés
-- `policies` : règles de dérivation, d’éligibilité ou d’exposition des lectures comportementales
+- porter les signaux bruts de mesure ;
+- porter l’attribution marketing ;
+- porter l’analytics consolidée ;
+- porter la relation client enrichie ;
+- porter les consentements ;
+- porter les campagnes marketing ou les dispositifs de conversion eux-mêmes ;
+- exécuter les intégrations provider-specific ;
+- devenir un fourre-tout mélangeant tracking, scoring opaque, ciblage marketing et profilage sans langage métier clair.
 
-## Entrées
+Le domaine `behavior` ne doit pas devenir :
 
-Le domaine reçoit principalement :
+- un doublon de `tracking` ;
+- un doublon de `analytics` ;
+- un doublon de `crm` ;
+- un doublon de `consent` ;
+- un conteneur flou de segments ou scores sans gouvernance métier.
 
-- des signaux structurés issus de `tracking`
-- des contextes de session, parcours, boutique, canal ou acteur
-- des événements métier utiles à l’interprétation comportementale comme vues produit, interactions panier, débuts ou abandons de checkout, inscriptions ou retours de visite
-- des demandes de lecture de segment ou de profil comportemental
-- des demandes d’évaluation d’un état de parcours ou d’un niveau d’intérêt comportemental
+---
 
-## Sorties
+## Invariants
 
-Le domaine expose principalement :
+Les invariants minimaux sont les suivants :
 
-- des segments comportementaux
-- des profils comportementaux structurés
-- des états de parcours observés
-- des signaux d’intention ou de friction dérivés
-- des lectures exploitables par `conversion`, `crm`, `marketing`, `recommendations`, `analytics`, `dashboarding` et certaines couches d’administration
+- une lecture comportementale s’appuie sur des sources identifiées et explicites ;
+- `behavior` ne se confond pas avec `tracking` ;
+- `behavior` ne se confond pas avec `analytics` ;
+- `behavior` ne se confond pas avec `crm` ;
+- `behavior` ne se confond pas avec `consent` ;
+- les autres domaines ne doivent pas recréer librement leur propre vérité divergente de lecture comportementale quand le cadre commun `behavior` existe ;
+- une dérivation comportementale peut être neutralisée par les règles de consentement, de capability ou d’exposition sans supprimer la structure du domaine ;
+- une lecture comportementale identique à contexte identique doit rester déterministe selon les règles retenues ;
+- une lecture absente, neutralisée ou non calculée doit pouvoir être expliquée.
 
-## Dépendances vers autres domaines
+Le domaine protège la cohérence de l’interprétation comportementale, pas la vérité primaire des signaux source.
 
-Le domaine `behavior` peut dépendre de :
+---
 
-- `tracking` pour les signaux de mesure structurés
-- `consent` pour vérifier si certaines dérivations comportementales sont autorisées dans le cadre retenu
-- `customers` ou `users` pour rattacher certaines lectures à un acteur lorsque cela est permis
-- `stores` pour le contexte boutique et certaines politiques locales
-- `audit` pour tracer certains changements sensibles de règles comportementales
-- `observability` pour expliquer pourquoi un segment ou un état comportemental a été attribué, neutralisé ou non calculé
+## Dépendances
 
-Les domaines suivants peuvent dépendre de `behavior` :
+### Dépendances métier
 
+Le domaine `behavior` interagit fortement avec :
+
+- `tracking`
+- `customers`
+- `users`
+- `stores`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `consent`, pour vérifier si certaines dérivations comportementales sont autorisées
 - `conversion`
 - `crm`
 - `marketing`
 - `recommendations`
 - `analytics`
 - `dashboarding`
-- certaines couches d’administration plateforme et boutique
+- `audit`
+- `observability`
 
-## Capabilities activables liées
+### Dépendances externes
 
-Le domaine `behavior` est directement ou indirectement lié à :
+Le domaine peut être relié indirectement à :
 
-- `behavioralAnalytics`
-- `tracking`
-- `analytics`
-- `conversionFlows`
-- `marketingCampaigns`
-- `productViewTracking`
-- `clickTracking`
+- plateformes de collecte comportementale ;
+- moteurs de segmentation externes ;
+- CDP ou outils d’activation ;
+- autres systèmes via `integrations`.
 
-### Effet si `behavioralAnalytics` est activée
+### Règle de frontière
 
-Le domaine devient pleinement exploitable pour produire des lectures comportementales structurées.
+Le domaine `behavior` porte l’interprétation comportementale structurée.
+Il ne doit pas absorber :
 
-### Effet si `behavioralAnalytics` est désactivée
+- les signaux bruts ;
+- l’attribution ;
+- l’analytics consolidée ;
+- le CRM ;
+- le consentement ;
+- ni les DTO providers externes.
 
-Le domaine reste structurellement présent, mais aucune lecture comportementale enrichie non indispensable ne doit être exposée côté boutique.
+---
 
-### Effet si `tracking`, `productViewTracking` ou `clickTracking` est activée
+## Événements significatifs
 
-Le domaine peut s’appuyer sur des signaux de mesure plus riches pour dériver des lectures comportementales plus fines.
+Le domaine `behavior` publie ou peut publier des événements significatifs tels que :
 
-### Effet si `conversionFlows` ou `marketingCampaigns` est activée
+- segment comportemental attribué ;
+- profil comportemental mis à jour ;
+- état de parcours modifié ;
+- signal comportemental dérivé ;
+- politique comportementale mise à jour.
 
-Le domaine peut alimenter plus finement les usages aval en segmentation ou priorisation comportementale, sans absorber la responsabilité des domaines consommateurs.
+Le domaine peut consommer des signaux liés à :
 
-## Rôles/permissions concernés
+- événement de tracking créé ;
+- panier mis à jour ;
+- readiness checkout modifiée ;
+- commande créée ;
+- inscription newsletter créée ;
+- inscription événementielle créée ;
+- capability boutique modifiée ;
+- action structurée de recalcul ou de réévaluation comportementale.
 
-### Rôles
+Les noms exacts doivent rester dans le langage interne du système.
 
-Les rôles principalement concernés sont :
+---
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `marketing_manager`
-- `customer_support` en lecture très partielle selon la politique retenue
-- certains rôles analytiques ou d’observation en lecture selon le scope retenu
+## Cycle de vie
 
-### Permissions
+Le domaine `behavior` possède un cycle de vie partiel au niveau des lectures, segments et profils qu’il porte.
 
-Exemples de permissions concernées :
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
 
-- `behavior.read`
-- `behavior.write`
-- `tracking.read`
-- `analytics.read`
-- `crm.read`
-- `marketing.read`
-- `consent.read`
-- `audit.read`
+- calculé ;
+- actif ;
+- neutralisé, si pertinent ;
+- archivé, si pertinent.
 
-## Événements émis
+Des états supplémentaires peuvent exister :
 
-Le domaine peut émettre des domain events internes du type :
+- en attente ;
+- indéterminé ;
+- restreint ;
+- recalculé ;
+- expiré.
 
-- `behavior.segment.assigned`
-- `behavior.profile.updated`
-- `behavior.journey.state.changed`
-- `behavior.signal.derived`
-- `behavior.policy.updated`
+Le domaine doit éviter :
 
-## Événements consommés
+- les profils “fantômes” ;
+- les changements silencieux de segmentation ;
+- les états purement techniques non interprétables métier.
 
-Le domaine peut consommer certains événements internes du type :
+---
 
-- `tracking.event.created`
-- `cart.updated`
-- `checkout.readiness.changed`
-- `order.created`
-- `newsletter.subscribed`
-- `event.registration.created`
-- `store.capabilities.updated`
-- certaines actions structurées de recalcul ou de réévaluation comportementale
+## Interfaces et échanges
 
-Il doit toutefois rester maître de sa propre logique d’interprétation comportementale.
+Le domaine `behavior` expose principalement :
 
-## Intégrations externes
+- des segments comportementaux ;
+- des profils comportementaux structurés ;
+- des états de parcours observés ;
+- des signaux d’intention ou de friction dérivés ;
+- des lectures exploitables par `conversion`, `crm`, `marketing`, `recommendations`, `analytics`, `dashboarding` et certaines couches d’administration.
 
-Le domaine `behavior` ne doit pas devenir un domaine d’intégration provider-specific.
+Le domaine reçoit principalement :
 
-Il peut être consulté par `integrations` ou par des domaines consommateurs pour enrichir certains flux autorisés, mais :
+- des signaux structurés issus de `tracking` ;
+- des contextes de session, parcours, boutique, canal ou acteur ;
+- des événements métier utiles à l’interprétation comportementale comme vues produit, interactions panier, débuts ou abandons de checkout, inscriptions ou retours de visite ;
+- des demandes de lecture de segment ou de profil comportemental ;
+- des demandes d’évaluation d’un état de parcours ou d’un niveau d’intérêt comportemental.
 
-- la vérité comportementale interne reste dans `behavior`
-- les DTO providers externes restent dans `integrations`
-- les signaux bruts restent dans `tracking`
+Le domaine ne doit pas exposer un contrat canonique dicté par un provider externe.
+
+---
+
+## Contraintes d’intégration
+
+Le domaine `behavior` peut être exposé à des contraintes telles que :
+
+- multi-sessions ;
+- signaux partiels ;
+- dépendance au consentement ;
+- capabilities activables ;
+- recalcul différé ;
+- segmentation multi-boutiques ;
+- projection vers systèmes externes ;
+- rétrocompatibilité des segments ou profils.
+
+Règles minimales :
+
+- la hiérarchie d’autorité doit être explicite ;
+- la vérité comportementale interne reste dans `behavior` ;
+- les DTO providers restent dans `integrations` ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- un signal insuffisant ou ambigu ne doit pas produire silencieusement une lecture trompeuse ;
+- les conflits entre signal, contexte, consentement, capability et politique doivent être explicables.
+
+---
 
 ## Données sensibles / sécurité
 
@@ -177,95 +293,131 @@ Le domaine `behavior` manipule des lectures potentiellement sensibles sur les pa
 
 Points de vigilance :
 
-- contrôle strict des droits de lecture et d’écriture
-- respect du cadre de consentement applicable
-- séparation claire entre signal brut, lecture comportementale et usage consommateur
-- limitation de l’exposition selon le rôle, le scope et la sensibilité
-- audit des changements sensibles de règles de segmentation ou de profilage comportemental
+- contrôle strict des droits de lecture et d’écriture ;
+- respect du cadre de consentement applicable ;
+- séparation claire entre signal brut, lecture comportementale et usage consommateur ;
+- limitation de l’exposition selon le rôle, le scope et la sensibilité ;
+- audit des changements sensibles de règles de segmentation ou de profilage comportemental.
 
-## Observability / audit
+---
 
-### Observability
+## Observabilité et audit
 
-Il faut pouvoir comprendre :
+Le domaine `behavior` doit rendre visibles au minimum :
 
-- quel segment ou profil comportemental a été attribué
-- à partir de quels signaux ou contextes
-- pourquoi une lecture comportementale a été calculée, neutralisée ou non disponible
-- si une absence de dérivation vient d’une capability off, d’un consentement absent, d’un signal insuffisant ou d’une règle applicable
+- quel segment ou profil comportemental a été attribué ;
+- à partir de quels signaux ou contextes ;
+- pourquoi une lecture comportementale a été calculée, neutralisée ou non disponible ;
+- si une absence de dérivation vient d’une capability inactive, d’un consentement absent, d’un signal insuffisant ou d’une règle applicable ;
+- quels changements significatifs ont affecté les règles ou profils comportementaux.
 
-### Audit
+L’audit doit permettre de répondre à des questions comme :
 
-Il faut tracer :
+- quel segment, profil ou état de parcours a été créé ou modifié ;
+- quand ;
+- selon quelle origine ;
+- avec quels signaux ou règles utilisés ;
+- avec quelle action manuelle significative ;
+- avec quel impact sur les lectures aval autorisées.
 
-- les changements significatifs de politiques comportementales
-- certaines réaffectations ou recalculs sensibles
-- certaines consultations sensibles si le modèle final les retient explicitement
-- certaines modifications manuelles importantes des règles de segmentation ou de profil comportemental
+L’observabilité doit distinguer :
+
+- erreur de modèle ;
+- erreur technique ;
+- signaux insuffisants ;
+- capability inactive ;
+- consentement absent ;
+- exposition non autorisée ;
+- conflit de règles de dérivation.
+
+---
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `BehaviorSignal` : signal comportemental dérivé
-- `BehaviorSegment` : segment comportemental explicite
-- `BehaviorJourneyState` : état observé d’un parcours
-- `BehaviorProfile` : profil comportemental structuré
-- `BehaviorPolicy` : règle de dérivation ou d’exposition
-- `BehaviorActorRef` : référence vers l’acteur concerné lorsque cela est autorisé
+- `BehaviorSignal` : signal comportemental dérivé ;
+- `BehaviorSegment` : segment comportemental explicite ;
+- `BehaviorJourneyState` : état observé d’un parcours ;
+- `BehaviorProfile` : profil comportemental structuré ;
+- `BehaviorPolicy` : règle de dérivation ou d’exposition ;
+- `BehaviorActorRef` : référence vers l’acteur concerné lorsque cela est autorisé.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Impact de maintenance / exploitation
 
-- une lecture comportementale s’appuie sur des sources identifiées et explicites
-- `behavior` ne se confond pas avec `tracking`
-- `behavior` ne se confond pas avec `analytics`
-- `behavior` ne se confond pas avec `crm`
-- `behavior` ne se confond pas avec `consent`
-- les autres domaines ne doivent pas recréer librement leur propre vérité divergente de lecture comportementale quand le cadre commun `behavior` existe
-- une dérivation comportementale peut être neutralisée par les règles de consentement, de capability ou d’exposition sans supprimer la structure du domaine
+Le domaine `behavior` a un impact d’exploitation moyen à élevé lorsqu’il est activé.
 
-## Cas d’usage principaux
+Raisons :
 
-1. Identifier un intérêt élevé sur une catégorie ou un type de produit
-2. Détecter un état de friction ou d’abandon de parcours
-3. Segmenter des visiteurs ou clients selon des comportements observés
-4. Alimenter `conversion` avec des signaux de relance ou de priorisation
-5. Alimenter `crm` ou `marketing` avec des lectures comportementales autorisées
-6. Exposer à l’admin une lecture claire des segments et profils comportementaux pertinents
+- il influence segmentation, conversion, CRM et priorisation marketing ;
+- ses erreurs dégradent interprétation, ciblage et cohérence des lectures aval ;
+- il se situe à la frontière entre tracking, consentement et usages métier ;
+- il nécessite une forte explicabilité des dérivations ;
+- il peut dépendre de signaux sensibles et de règles strictes d’exposition.
 
-## Cas limites / erreurs métier
+En exploitation, une attention particulière doit être portée à :
 
-Quelques cas d’erreur typiques :
+- la qualité des signaux ;
+- la cohérence des segments ;
+- les neutralisations liées au consentement ;
+- la traçabilité des changements ;
+- la cohérence avec conversion, CRM et marketing ;
+- les effets de bord sur analytics et dashboarding.
 
-- segment comportemental introuvable
-- profil comportemental introuvable
-- signaux insuffisants ou incohérents
-- capability behavioralAnalytics désactivée
-- consentement requis absent selon la règle applicable
-- tentative d’exposition d’une lecture comportementale dans un contexte non autorisé
-- conflit entre plusieurs règles de dérivation comportementale
+Le domaine doit être considéré comme structurant dès qu’une lecture comportementale gouvernée réelle existe.
 
-## Décisions d’architecture
+---
 
-Les choix structurants du domaine sont :
+## Limites du domaine
 
-- `behavior` porte les lectures comportementales structurées du socle
-- `behavior` est distinct de `tracking`
-- `behavior` est distinct de `analytics`
-- `behavior` est distinct de `crm`
-- `behavior` est distinct de `consent`
-- les domaines consommateurs lisent la vérité comportementale via `behavior`, sans la recréer localement
-- les segmentations, profils et règles sensibles doivent être observables et auditables
+Le domaine `behavior` s’arrête :
 
-## Questions explicitement closes
+- avant les signaux de mesure bruts ;
+- avant l’attribution ;
+- avant l’analytics consolidée ;
+- avant le CRM ;
+- avant le consentement ;
+- avant les intégrations externes ;
+- avant les DTO providers externes.
 
-Les points suivants sont considérés comme décidés :
+Le domaine `behavior` porte les lectures comportementales structurées du système.
+Il ne doit pas devenir un moteur opaque de profilage, un doublon du tracking ou un conteneur flou de segments sans gouvernance.
 
-- les lectures comportementales structurées relèvent de `behavior`
-- les signaux de mesure relèvent de `tracking`
-- l’analytics consolidée relève de `analytics`
-- la relation client enrichie relève de `crm`
-- les consentements réglementés relèvent de `consent`
-- `behavior` ne remplace ni `tracking`, ni `analytics`, ni `crm`, ni `consent`, ni `integrations`
+---
+
+## Questions ouvertes
+
+À confirmer explicitement dans le projet :
+
+- la frontière exacte entre `behavior` et `tracking` ;
+- la frontière exacte entre `behavior` et `crm` ;
+- la part exacte des profils persistés réellement supportés ;
+- la gouvernance des recalculs et neutralisations ;
+- la hiérarchie entre vérité interne et outils externes éventuels ;
+- la place exacte des lectures comportementales autorisées en V1.
+
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Documents liés
+
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `tracking.md`
+- `attribution.md`
+- `analytics.md`
+- `crm.md`
+- `consent.md`
+- `conversion.md`
+- `marketing.md`
+- `recommendations.md`
+- `dashboarding.md`
+- `audit.md`
+- `observability.md`
+- `../core/customers.md`
+- `../core/users.md`
+- `../core/stores.md`
+- `../core/integrations.md`

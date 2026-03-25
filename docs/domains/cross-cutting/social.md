@@ -1,172 +1,289 @@
-# Domaine social
+# Social
 
 ## Rôle
 
-Le domaine `social` porte la diffusion sociale du socle.
+Le domaine `social` porte la diffusion sociale du système.
 
-Il structure les publications, diffusions et actions sociales dérivées des contenus ou objets métier de la boutique, sans absorber les campagnes marketing globales, la newsletter, les notifications transactionnelles, le domaine `events` ou les intégrations providers externes.
+Il définit :
+
+- ce qu’est une publication sociale du point de vue du système ;
+- comment une publication est créée, planifiée, publiée, annulée, échouée ou archivée au niveau métier ;
+- comment ce domaine se distingue des campagnes marketing globales, de la newsletter, des notifications transactionnelles, des événements publics et des providers externes ;
+- comment le système reste maître de sa vérité interne sur les publications sociales.
+
+Le domaine existe pour fournir une représentation explicite de la diffusion sociale, distincte :
+
+- des campagnes marketing portées par `marketing` ;
+- de la newsletter portée par `newsletter` ;
+- des notifications transactionnelles portées par `notifications` ;
+- des événements publics portés par `events` ;
+- du scheduling transverse porté par `scheduling` ;
+- des DTO providers externes portés par `integrations`.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse structurant`
+
+### Activable
+
+`oui`
+
+Le domaine `social` est activable.
+Lorsqu’il est activé, il devient structurant pour les publications sociales gouvernées, leur planification métier et leur articulation avec les objets source internes.
+
+---
+
+## Source de vérité
+
+Le domaine `social` est la source de vérité pour :
+
+- la définition interne d’une publication sociale ;
+- son statut métier ;
+- sa planification métier lorsqu’elle est portée ici ;
+- son rattachement à un objet source interne lorsqu’il existe ;
+- ses cibles sociales logiques portées par le système ;
+- ses lectures structurées consommables par les domaines autorisés.
+
+Le domaine `social` n’est pas la source de vérité pour :
+
+- les campagnes marketing globales, qui relèvent de `marketing` ;
+- la newsletter, qui relève de `newsletter` ;
+- les notifications transactionnelles, qui relèvent de `notifications` ;
+- les événements publics eux-mêmes, qui relèvent de `events` ;
+- le scheduling transverse, qui relève de `scheduling` ;
+- les providers sociaux externes, qui relèvent de `integrations` ;
+- les DTO providers externes.
+
+Une publication sociale est un objet de diffusion métier gouverné.
+Elle ne doit pas être confondue avec :
+
+- une campagne marketing complète ;
+- une newsletter ;
+- une notification ;
+- un événement public ;
+- un cron technique ;
+- un post provider externe non remappé.
+
+---
 
 ## Responsabilités
 
-Le domaine `social` prend en charge :
+Le domaine `social` est responsable de :
 
-- les publications sociales
-- les statuts métier de publication sociale
-- les contenus sociaux dérivés d’objets métier internes
-- la planification métier d’une publication sociale si elle relève du périmètre social
-- la lecture des publications sociales émises, planifiées, publiées, échouées ou annulées au niveau métier
-- la base sociale exploitable par l’admin, `marketing`, `events`, `newsletter`, `analytics`, `dashboarding` et d’autres domaines consommateurs
+- définir ce qu’est une publication sociale dans le système ;
+- porter les publications sociales structurées ;
+- porter leurs statuts métier ;
+- porter leur planification métier si elle relève du périmètre social ;
+- porter les contenus sociaux dérivés d’objets métier internes lorsqu’ils sont gouvernés ici ;
+- exposer une lecture gouvernée des publications sociales émises, planifiées, publiées, échouées ou annulées ;
+- publier les événements significatifs liés à la vie d’une publication sociale ;
+- protéger le système contre les publications implicites, opaques ou contradictoires.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `social` ne doit pas :
+- publications produit ;
+- publications blog ;
+- publications événementielles ;
+- auto-posting gouverné ;
+- règles locales par boutique ;
+- fenêtres de planification ;
+- cibles sociales logiques ;
+- politiques d’activation ou de publication.
 
-- porter les campagnes marketing globales, qui relèvent de `marketing`
-- porter la newsletter, qui relève de `newsletter`
-- porter les notifications transactionnelles, qui relèvent de `notifications`
-- porter les événements publics eux-mêmes, qui relèvent de `events`
-- porter le scheduling transverse du socle, qui relève de `scheduling`
-- porter directement les providers sociaux externes, ce qui relève de `integrations`
-- devenir un fourre-tout regroupant toute communication sortante ou tout contenu promotionnel
+---
 
-Le domaine `social` porte la diffusion sociale métier du socle. Il ne remplace ni `marketing`, ni `newsletter`, ni `events`, ni `integrations`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `social` n’est pas responsable de :
 
-- `publications` : publications sociales structurées
-- `planning` : planification métier des publications sociales
-- `sources` : rattachement des publications à des objets métier source
+- porter les campagnes marketing globales ;
+- porter la newsletter ;
+- porter les notifications transactionnelles ;
+- porter les événements publics eux-mêmes ;
+- porter le scheduling transverse du système ;
+- exécuter directement les providers sociaux externes ;
+- devenir un fourre-tout regroupant toute communication sortante ou tout contenu promotionnel.
 
-## Entrées
+Le domaine `social` ne doit pas devenir :
 
-Le domaine reçoit principalement :
+- un doublon de `marketing` ;
+- un doublon de `newsletter` ;
+- un doublon de `events` ;
+- un doublon de `integrations` ;
+- un conteneur flou de contenus promotionnels sans gouvernance métier.
 
-- des demandes explicites de création de publication sociale
-- des objets source issus de `marketing`, `products`, `blog` ou `events`
-- des demandes de planification ou d’annulation de publication
-- des demandes de lecture des publications et de leur état
-- un contexte boutique, temporel et de capability utile à la diffusion sociale
+---
 
-## Sorties
+## Invariants
 
-Le domaine expose principalement :
+Les invariants minimaux sont les suivants :
 
-- des publications sociales structurées
-- des statuts de publication sociale
-- des liaisons explicites vers les objets source
-- une lecture exploitable par l’admin, `marketing`, `newsletter`, `events`, `analytics`, `dashboarding` et d’autres domaines consommateurs
-- des messages préparés pour exécution aval par `integrations` ou `jobs`
+- une publication sociale possède un identifiant stable et un état explicite ;
+- une publication sociale est rattachée explicitement à une source métier lorsqu’elle dérive d’un objet interne ;
+- `social` ne se confond pas avec `marketing`, `newsletter`, `events` ou `integrations` ;
+- l’exécution provider externe reste distincte de la vérité interne de publication sociale ;
+- les autres domaines ne doivent pas recréer leur propre vérité divergente de la diffusion sociale structurée quand le cadre commun `social` existe ;
+- une publication non autorisée, inactive ou incohérente ne doit pas être diffusée hors règle explicite ;
+- une publication automatique sensible doit rester traçable.
 
-## Dépendances vers autres domaines
+Le domaine protège la cohérence de la diffusion sociale métier, pas l’exécution technique externe.
 
-Le domaine `social` peut dépendre de :
+---
 
-- `marketing` pour certaines campagnes ou opérations amont à diffuser socialement
-- `products` pour certaines nouveautés ou mises en avant produit
-- `blog` pour certaines publications éditoriales
-- `events` pour certaines annonces événementielles
-- `stores` pour le contexte boutique et les capabilities actives
-- `template-system` pour certains gabarits réutilisables si le modèle final l’exige
-- `audit` pour tracer les changements sensibles
-- `observability` pour expliquer pourquoi une publication sociale a été créée, planifiée, publiée, annulée ou ignorée
+## Dépendances
 
-Les domaines suivants peuvent dépendre de `social` :
+### Dépendances métier
+
+Le domaine `social` interagit fortement avec :
+
+- `marketing`
+- `products`
+- `blog`
+- `events`
+- `stores`
+- `template-system`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
 
 - `analytics`
 - `dashboarding`
-- `marketing`
-- `events`
 - `newsletter`
+- `audit`
+- `observability`
+- `jobs`, si certaines publications sont exécutées de manière différée
 
-## Capabilities activables liées
+### Dépendances externes
 
-Le domaine `social` est directement lié à :
+Le domaine peut être relié indirectement à :
 
-- `socialPublishing`
-- `automaticSocialPosting`
-- `marketingCampaigns`
-- `publicEvents`
+- réseaux sociaux ;
+- plateformes de publication sociale ;
+- outils social media ;
+- autres systèmes via `integrations`.
 
-### Effet si `socialPublishing` est activée
+### Règle de frontière
 
-Le domaine devient pleinement exploitable pour gérer des publications sociales structurées.
+Le domaine `social` porte la diffusion sociale métier.
+Il ne doit pas absorber :
 
-### Effet si `socialPublishing` est désactivée
+- les campagnes marketing globales ;
+- la newsletter ;
+- les notifications ;
+- les événements eux-mêmes ;
+- le scheduling transverse ;
+- ni les DTO providers externes.
 
-Le domaine reste structurellement présent, mais aucune publication sociale ne doit être pilotée côté boutique.
+---
 
-### Effet si `automaticSocialPosting` est activée
+## Événements significatifs
 
-Le domaine peut consommer certains objets source ou domain events pour déclencher automatiquement des publications sociales, en restant distinct des providers externes.
+Le domaine `social` publie ou peut publier des événements significatifs tels que :
 
-### Effet si `marketingCampaigns` ou `publicEvents` est activée
+- publication sociale créée ;
+- publication sociale planifiée ;
+- publication sociale publiée ;
+- publication sociale échouée ;
+- publication sociale annulée ;
+- statut de publication sociale modifié ;
+- source sociale rattachée.
 
-Le domaine peut consommer des objets marketing ou événementiels utiles à la construction de publications sociales.
+Le domaine peut consommer des signaux liés à :
 
-## Rôles/permissions concernés
+- produit publié ;
+- article de blog publié ;
+- événement publié ;
+- campagne marketing activée ;
+- capability boutique modifiée ;
+- auto-post demandé, si ce signal est modélisé ;
+- action administrative structurée.
 
-### Rôles
+Les noms exacts doivent rester dans le langage interne du système.
 
-Les rôles principalement concernés sont :
+---
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `marketing_manager`
-- `content_editor` en lecture ou contribution partielle selon la politique retenue
+## Cycle de vie
 
-### Permissions
+Le domaine `social` possède un cycle de vie explicite.
 
-Exemples de permissions concernées :
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
 
-- `social.read`
-- `social.write`
-- `marketing.read`
-- `events.read`
-- `blog.read`
-- `catalog.read`
-- `audit.read`
+- brouillon ;
+- planifié ;
+- publié ;
+- échoué ;
+- annulé.
 
-## Événements émis
+Des états supplémentaires peuvent exister :
 
-Le domaine peut émettre des domain events internes du type :
+- en attente ;
+- archivé ;
+- suspendu ;
+- expiré ;
+- restreint.
 
-- `social.publication.created`
-- `social.publication.scheduled`
-- `social.publication.published`
-- `social.publication.failed`
-- `social.publication.cancelled`
+Le domaine doit éviter :
 
-## Événements consommés
+- les publications “fantômes” ;
+- les changements silencieux de statut ;
+- les états purement techniques non interprétables métier.
 
-Le domaine peut consommer certains événements internes du type :
+---
 
-- `product.published`
-- `blog.post.published`
-- `event.published`
-- `marketing.campaign.activated`
-- `store.capabilities.updated`
-- `social.auto_post.requested` si ce signal est modélisé comme un déclencheur intermédiaire
+## Interfaces et échanges
 
-Il doit toutefois rester maître de sa propre vérité de publication sociale.
+Le domaine `social` expose principalement :
 
-## Intégrations externes
+- des publications sociales structurées ;
+- des statuts de publication sociale ;
+- des liaisons explicites vers les objets source ;
+- une lecture exploitable par l’admin, `marketing`, `newsletter`, `events`, `analytics`, `dashboarding` et d’autres domaines consommateurs ;
+- des messages préparés pour exécution aval par `integrations` ou `jobs`.
 
-Le domaine `social` ne doit pas parler directement aux providers sociaux externes.
+Le domaine reçoit principalement :
 
-Les interactions avec :
+- des demandes explicites de création de publication sociale ;
+- des objets source issus de `marketing`, `products`, `blog` ou `events` ;
+- des demandes de planification ou d’annulation de publication ;
+- des demandes de lecture des publications et de leur état ;
+- un contexte boutique, temporel et de capability utile à la diffusion sociale.
 
-- réseaux sociaux
-- plateformes de publication sociale
-- outils social media externes
+Le domaine ne doit pas exposer un contrat canonique dicté par un provider externe.
 
-relèvent de :
+---
 
-- `integrations`
-- éventuellement `jobs`
+## Contraintes d’intégration
 
-Le domaine `social` reste la source de vérité interne des publications sociales du socle au niveau métier.
+Le domaine `social` peut être exposé à des contraintes telles que :
+
+- multi-boutiques ;
+- planification différée ;
+- auto-posting gouverné ;
+- variantes de contenu selon canal ;
+- dépendance à des capabilities activables ;
+- exécution via jobs ;
+- projection vers providers externes ;
+- rétrocompatibilité des statuts ou cibles sociales.
+
+Règles minimales :
+
+- la hiérarchie d’autorité doit être explicite ;
+- la vérité interne des publications sociales reste dans `social` ;
+- les DTO providers restent dans `integrations` ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- une publication incohérente ne doit pas être promue silencieusement ;
+- les conflits entre source, statut, planification, capability et cible doivent être explicables.
+
+---
 
 ## Données sensibles / sécurité
 
@@ -174,92 +291,130 @@ Le domaine `social` manipule des contenus de diffusion publique potentiellement 
 
 Points de vigilance :
 
-- contrôle strict des droits de lecture et d’écriture
-- validation des contenus, états et planifications
-- séparation claire entre publication sociale métier et exécution provider externe
-- audit des publications sensibles ou automatiques
-- protection contre les déclenchements non autorisés
+- contrôle strict des droits de lecture et d’écriture ;
+- validation des contenus, états et planifications ;
+- séparation claire entre publication sociale métier et exécution provider externe ;
+- audit des publications sensibles ou automatiques ;
+- protection contre les déclenchements non autorisés.
 
-## Observability / audit
+---
 
-### Observability
+## Observabilité et audit
 
-Il faut pouvoir comprendre :
+Le domaine `social` doit rendre visibles au minimum :
 
-- pourquoi une publication sociale a été créée, planifiée ou non
-- quel objet source a alimenté la publication
-- pourquoi une publication a été publiée, annulée, ignorée ou a échoué
-- si une absence de publication vient d’une capability off, d’une règle métier, d’un workflow incomplet ou d’un problème d’intégration aval
+- pourquoi une publication sociale a été créée, planifiée ou non ;
+- quel objet source a alimenté la publication ;
+- pourquoi une publication a été publiée, annulée, ignorée ou a échoué ;
+- si une absence de publication vient d’une capability inactive, d’une règle métier, d’un workflow incomplet ou d’un problème d’intégration aval ;
+- quels changements significatifs ont affecté une publication ou une planification.
 
-### Audit
+L’audit doit permettre de répondre à des questions comme :
 
-Il faut tracer :
+- quelle publication sociale a été créée, modifiée, planifiée, publiée ou annulée ;
+- quand ;
+- selon quelle origine ;
+- avec quelle source métier ;
+- avec quelle intervention manuelle significative ;
+- avec quel changement de statut ou de planification.
 
-- la création d’une publication sociale
-- la modification significative d’une publication sociale
-- la planification ou l’annulation d’une publication
-- les publications automatiques sensibles
-- les interventions manuelles importantes
+L’observabilité doit distinguer :
+
+- erreur de modèle ;
+- erreur technique ;
+- source métier introuvable ;
+- capability inactive ;
+- publication non prête ;
+- action non autorisée ;
+- échec provider externe.
+
+---
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `SocialPublication` : publication sociale structurée
-- `SocialPublicationStatus` : état métier de la publication sociale
-- `SocialSourceRef` : référence vers l’objet métier source
-- `SocialPublicationSchedule` : planification métier de publication
-- `SocialChannelTarget` : cible sociale logique au niveau métier
+- `SocialPublication` : publication sociale structurée ;
+- `SocialPublicationStatus` : état métier de la publication sociale ;
+- `SocialSourceRef` : référence vers l’objet métier source ;
+- `SocialPublicationSchedule` : planification métier de publication ;
+- `SocialChannelTarget` : cible sociale logique au niveau métier ;
+- `SocialPolicy` : règle d’activation, de diffusion ou de planification.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Impact de maintenance / exploitation
 
-- une publication sociale possède un identifiant stable et un état explicite
-- une publication sociale est rattachée explicitement à une source métier lorsqu’elle dérive d’un objet interne
-- `social` ne se confond pas avec `marketing`, `newsletter`, `events` ou `integrations`
-- l’exécution provider externe reste distincte de la vérité interne de publication sociale
-- les autres domaines ne doivent pas recréer leur propre vérité divergente de la diffusion sociale structurée
+Le domaine `social` a un impact d’exploitation moyen à élevé lorsqu’il est activé.
 
-## Cas d’usage principaux
+Raisons :
 
-1. Créer une publication sociale à partir d’un produit, d’un article ou d’un événement
-2. Planifier une publication sociale
-3. Annuler une publication sociale planifiée
-4. Publier automatiquement une nouveauté si la capability correspondante est active
-5. Lire les publications sociales et leur état
-6. Exposer à l’admin une lecture claire des contenus sociaux diffusés, planifiés ou échoués
+- il touche directement la diffusion publique et l’image de la boutique ;
+- ses erreurs dégradent visibilité, cohérence et fiabilité des publications ;
+- il se situe à la frontière entre contenu, marketing et exécution externe ;
+- il nécessite une forte explicabilité des déclenchements et statuts ;
+- il peut dépendre de plusieurs domaines source et capabilities.
 
-## Cas limites / erreurs métier
+En exploitation, une attention particulière doit être portée à :
 
-Quelques cas d’erreur typiques :
+- la cohérence des statuts ;
+- la qualité des sources ;
+- la traçabilité des changements ;
+- la cohérence avec marketing, événements et blog ;
+- les effets de bord sur analytics, dashboarding et communication aval ;
+- les publications automatiques sensibles.
 
-- publication sociale introuvable
-- source métier introuvable ou invalide
-- capability socialPublishing désactivée
-- capability automaticSocialPosting désactivée pour un auto-post demandé
-- publication non prête ou incohérente
-- tentative d’action non autorisée
-- échec aval d’intégration provider
+Le domaine doit être considéré comme structurant dès qu’une diffusion sociale gouvernée réelle existe.
 
-## Décisions d’architecture
+---
 
-Les choix structurants du domaine sont :
+## Limites du domaine
 
-- `social` porte les publications sociales structurées du socle
-- `social` est distinct de `marketing`
-- `social` est distinct de `newsletter`
-- `social` est distinct de `events`
-- `social` est distinct de `integrations`
-- les providers externes sont appelés via `integrations`, puis les états utiles sont remappés dans le langage interne du domaine
-- les publications sociales sensibles ou automatiques doivent être auditables et observables
+Le domaine `social` s’arrête :
 
-## Questions explicitement closes
+- avant les campagnes marketing globales ;
+- avant la newsletter ;
+- avant les notifications transactionnelles ;
+- avant les événements publics eux-mêmes ;
+- avant le scheduling transverse ;
+- avant les providers externes ;
+- avant les DTO providers externes.
 
-Les points suivants sont considérés comme décidés :
+Le domaine `social` porte la diffusion sociale du système.
+Il ne doit pas devenir un moteur global de communication sortante, un simple wrapper provider ou un doublon des domaines source.
 
-- la diffusion sociale relève de `social`
-- les campagnes marketing globales relèvent de `marketing`
-- la diffusion newsletter relève de `newsletter`
-- les événements publics relèvent de `events`
-- `social` ne remplace ni `marketing`, ni `newsletter`, ni `events`, ni `integrations`
+---
+
+## Questions ouvertes
+
+À confirmer explicitement dans le projet :
+
+- la frontière exacte entre `social` et `marketing` ;
+- la frontière exacte entre `social` et `events` ;
+- la part exacte de l’auto-posting réellement supportée ;
+- la gouvernance des planifications et annulations ;
+- la hiérarchie entre vérité interne et plateformes sociales externes éventuelles ;
+- la place exacte des templates sociaux dans le modèle courant.
+
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Documents liés
+
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `marketing.md`
+- `newsletter.md`
+- `notifications.md`
+- `events.md`
+- `scheduling.md`
+- `template-system.md`
+- `analytics.md`
+- `dashboarding.md`
+- `audit.md`
+- `observability.md`
+- `../core/stores.md`
+- `../core/products.md`
+- `../optional/blog.md`
+- `../core/integrations.md`

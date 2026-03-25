@@ -1,81 +1,153 @@
-# Domaine localization
+# Localization
 
 ## Rôle
 
-Le domaine `localization` porte l’adaptation localisée du socle.
+Le domaine `localization` porte l’adaptation localisée transverse du système.
 
-Il organise les langues, variantes locales, libellés localisés, contenus localisés, conventions régionales et règles d’exposition selon le contexte géographique ou linguistique, sans absorber les contenus source eux-mêmes, les prix, les devises, les SEO rules, les pages ou les intégrations externes.
+Il définit :
+
+- ce qu’est une locale du point de vue du système ;
+- comment sont portées les langues, variantes locales, valeurs localisées, règles d’applicabilité et fallbacks ;
+- comment ce domaine se distingue des contenus source eux-mêmes, du pricing, du SEO, des pages, des contenus juridiques et des intégrations externes ;
+- comment le système reste maître de sa vérité interne sur les structures localisées.
+
+Le domaine existe pour fournir une représentation explicite de la localisation transverse, distincte :
+
+- des pages éditoriales portées par `pages` ;
+- des articles de blog portés par `blog` ;
+- des produits publiés portés par `products` ;
+- du pricing et des devises portés par `pricing` ou un domaine monétaire dédié ;
+- du SEO porté par `seo` ;
+- des contenus juridiques source portés par `legal` ;
+- des DTO providers externes portés par `integrations`.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse structurant`
+
+### Activable
+
+`oui`
+
+Le domaine `localization` est activable.
+Lorsqu’il est activé, il devient structurant pour les langues, variantes locales, fallbacks et expositions multilingues ou multi-marchés.
+
+---
+
+## Source de vérité
+
+Le domaine `localization` est la source de vérité pour :
+
+- les locales supportées ;
+- les variantes locales ou marchés lorsqu’ils sont portés ici ;
+- les valeurs localisées structurées ;
+- les règles d’applicabilité, de fallback ou d’exposition locale ;
+- les politiques de publication ou d’activation des localisations ;
+- ses lectures structurées consommables par les domaines autorisés.
+
+Le domaine `localization` n’est pas la source de vérité pour :
+
+- les pages éditoriales, qui relèvent de `pages` ;
+- les articles de blog, qui relèvent de `blog` ;
+- les produits publiés, qui relèvent de `products` ;
+- les prix ou devises, qui relèvent de `pricing` ;
+- le SEO transverse lui-même, qui relève de `seo` ;
+- les contenus juridiques source eux-mêmes, qui relèvent de `legal` ;
+- les DTO providers externes.
+
+Une localisation est une adaptation transverse gouvernée.
+Elle ne doit pas être confondue avec :
+
+- le contenu source complet ;
+- une simple traduction libre hors contexte ;
+- une règle de pricing ;
+- une règle SEO ;
+- un dictionnaire technique global sans langage métier.
+
+---
 
 ## Responsabilités
 
-Le domaine `localization` prend en charge :
+Le domaine `localization` est responsable de :
 
-- les langues et variantes locales supportées
-- les contenus localisés au niveau du socle lorsqu’ils doivent être structurés transversalement
-- les libellés, valeurs et champs localisés
-- les règles d’exposition selon langue, locale ou marché si le modèle retenu le prévoit
-- la lecture gouvernée de ce qui est localisé et applicable dans un contexte donné
-- la base de localisation consommable par `pages`, `blog`, `products`, `seo`, `legal`, `template-system`, `search`, `dashboarding` et certaines couches d’administration
+- définir ce qu’est une locale dans le système ;
+- porter les langues et variantes locales supportées ;
+- porter les valeurs ou contenus localisés structurés lorsqu’ils sont gouvernés transversalement ;
+- porter les règles d’applicabilité, de fallback et d’exposition locale ;
+- exposer une lecture gouvernée de ce qui est localisé et applicable dans un contexte donné ;
+- publier les événements significatifs liés à la vie d’une localisation ;
+- protéger le système contre les structures localisées implicites, opaques ou contradictoires.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `localization` ne doit pas :
+- locales par boutique ;
+- marchés locaux ;
+- traductions de champs transverses ;
+- fallbacks de langue ;
+- variantes par marché ;
+- politiques de publication locale ;
+- activation ou désactivation de localisations ;
+- cohérence de l’exposition multilingue.
 
-- porter les pages éditoriales, qui relèvent de `pages`
-- porter les articles de blog, qui relèvent de `blog`
-- porter les produits publiés, qui relèvent de `products`
-- porter les prix ou devises, qui relèvent de `pricing` ou d’un domaine monétaire dédié
-- porter le SEO transverse lui-même, qui relève de `seo`
-- porter les contenus juridiques source eux-mêmes, qui relèvent de `legal`
-- devenir un simple dictionnaire technique global sans langage métier explicite ni rattachement aux objets du socle
+---
 
-Le domaine `localization` porte l’adaptation localisée transverse du socle. Il ne remplace ni `pages`, ni `blog`, ni `products`, ni `pricing`, ni `seo`, ni `legal`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `localization` n’est pas responsable de :
 
-- `locales` : langues, variantes locales et marchés supportés
-- `translations` : valeurs ou contenus localisés structurés
-- `rules` : règles d’applicabilité, fallback ou exposition locale
-- `policies` : règles de gouvernance, d’édition ou de publication des localisations
+- porter les pages éditoriales ;
+- porter les articles de blog ;
+- porter les produits publiés ;
+- porter les prix ou devises ;
+- porter le SEO transverse lui-même ;
+- porter les contenus juridiques source ;
+- exécuter les intégrations provider-specific ;
+- devenir un simple dictionnaire technique global sans rattachement aux objets du système.
 
-## Entrées
+Le domaine `localization` ne doit pas devenir :
 
-Le domaine reçoit principalement :
+- un doublon de `pages` ;
+- un doublon de `blog` ;
+- un doublon de `products` ;
+- un doublon de `pricing` ;
+- un doublon de `seo` ;
+- un conteneur flou de traductions sans gouvernance de contexte.
 
-- des créations ou mises à jour de locales supportées
-- des demandes de traduction ou de mise à jour de valeurs localisées
-- des demandes de lecture d’une valeur localisée applicable dans un contexte donné
-- des changements de règles de fallback, de disponibilité ou d’exposition locale
-- des contextes de boutique, langue, pays, marché, audience, canal ou surface d’exposition
-- des signaux internes utiles à l’activation, la désactivation ou la substitution d’une localisation
+---
 
-## Sorties
+## Invariants
 
-Le domaine expose principalement :
+Les invariants minimaux sont les suivants :
 
-- des locales structurées
-- des valeurs ou contenus localisés structurés
-- des règles de fallback ou d’applicabilité locale
-- des lectures exploitables par `pages`, `blog`, `products`, `seo`, `legal`, `template-system`, `search`, `dashboarding` et certaines couches d’administration
-- des structures localisées prêtes à être consommées par les couches UI ou domaines opérationnels autorisés
+- une valeur localisée est rattachée à un objet source explicite et à une locale explicite ;
+- une règle de fallback ou d’exposition possède une signification explicite ;
+- `localization` ne se confond pas avec `pages` ;
+- `localization` ne se confond pas avec `blog` ;
+- `localization` ne se confond pas avec `products` ;
+- `localization` ne se confond pas avec `pricing` ;
+- `localization` ne se confond pas avec `seo` ;
+- les autres domaines ne doivent pas recréer librement leur propre vérité divergente de localisation transverse quand le cadre commun `localization` existe ;
+- une valeur localisée inapplicable, inactive ou non publiée ne doit pas être exposée hors règle explicite.
 
-## Dépendances vers autres domaines
+Le domaine protège la cohérence de l’adaptation localisée transverse.
 
-Le domaine `localization` peut dépendre de :
+---
 
-- `stores` pour le contexte boutique, marché, langue par défaut ou politiques locales
-- `pages` pour certains usages de contenus éditoriaux localisés sans absorber leur responsabilité
-- `blog` pour certains contenus éditoriaux localisés sans absorber leur responsabilité
-- `products` pour certains champs catalogue localisés sans absorber leur responsabilité
-- `seo` pour certains champs référentiels localisés sans absorber sa responsabilité
-- `legal` pour certaines versions localisées de contenus juridiques sans absorber leur responsabilité
-- `approval` si certaines publications localisées nécessitent validation préalable
-- `workflow` si certaines localisations suivent un processus structuré
-- `audit` pour tracer certains changements sensibles de traduction ou de politique locale
-- `observability` pour expliquer pourquoi une valeur localisée est applicable, absente, fallbackée ou non exposée
+## Dépendances
 
-Les domaines suivants peuvent dépendre de `localization` :
+### Dépendances métier
 
+Le domaine `localization` interagit fortement avec :
+
+- `stores`
 - `pages`
 - `blog`
 - `products`
@@ -83,98 +155,139 @@ Les domaines suivants peuvent dépendre de `localization` :
 - `legal`
 - `template-system`
 - `search`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `approval`, si certaines publications localisées nécessitent validation préalable
+- `workflow`, si certaines localisations suivent un processus structuré
+- `audit`
+- `observability`
 - `dashboarding`
-- le storefront
-- certaines couches d’administration
 
-## Capabilities activables liées
+### Dépendances externes
 
-Le domaine `localization` est directement ou indirectement lié à :
+Le domaine peut être relié indirectement à :
 
-- `multiLanguage`
-- `multiCurrency`
-- `publicEvents`
-- `marketingCampaigns`
+- services de traduction ;
+- CMS de traduction ;
+- référentiels marchés externes ;
+- autres systèmes via `integrations`.
 
-### Effet si `multiLanguage` est activée
+### Règle de frontière
 
-Le domaine devient pleinement exploitable pour gérer des langues, variantes locales et contenus localisés structurés.
+Le domaine `localization` porte l’adaptation localisée transverse.
+Il ne doit pas absorber :
 
-### Effet si `multiLanguage` est désactivée
+- les contenus source ;
+- le pricing ;
+- le SEO lui-même ;
+- les contenus juridiques source ;
+- ni les DTO providers externes.
 
-Le domaine reste structurellement présent, mais aucune exposition multilingue enrichie non indispensable ne doit être proposée côté boutique.
+---
 
-### Effet si `multiCurrency` est activée
+## Événements significatifs
 
-Le domaine peut devoir articuler plus finement certains contextes marché/locale, sans absorber la responsabilité monétaire ou pricing.
+Le domaine `localization` publie ou peut publier des événements significatifs tels que :
 
-### Effet si `publicEvents` ou `marketingCampaigns` est activée
+- locale créée ;
+- locale mise à jour ;
+- valeur localisée mise à jour ;
+- règle de localisation mise à jour ;
+- politique de localisation mise à jour ;
+- statut de localisation modifié.
 
-Le domaine peut être davantage consommé pour l’exposition localisée des contenus ou messages, sans absorber la responsabilité des domaines consommateurs.
+Le domaine peut consommer des signaux liés à :
 
-## Rôles/permissions concernés
+- capability boutique modifiée ;
+- page mise à jour ;
+- article de blog mis à jour ;
+- produit mis à jour ;
+- métadonnée SEO mise à jour ;
+- document juridique mis à jour ;
+- approbation accordée ;
+- workflow terminé ;
+- action administrative structurée de publication ou de correction de localisation.
 
-### Rôles
+Les noms exacts doivent rester dans le langage interne du système.
 
-Les rôles principalement concernés sont :
+---
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `content_editor`
-- `catalog_manager` en contribution partielle selon la politique retenue
-- `marketing_manager` en contribution partielle selon la politique retenue
+## Cycle de vie
 
-### Permissions
+Le domaine `localization` possède un cycle de vie explicite.
 
-Exemples de permissions concernées :
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
 
-- `localization.read`
-- `localization.write`
-- `pages.read`
-- `blog.read`
-- `catalog.read`
-- `seo.read`
-- `legal.read`
-- `audit.read`
+- active ;
+- inactive ;
+- publiée, si pertinent ;
+- archivée, si pertinent.
 
-## Événements émis
+Des états supplémentaires peuvent exister :
 
-Le domaine peut émettre des domain events internes du type :
+- brouillon ;
+- en révision ;
+- fallback ;
+- restreinte ;
+- expirée.
 
-- `localization.locale.created`
-- `localization.locale.updated`
-- `localization.translation.updated`
-- `localization.rule.updated`
-- `localization.policy.updated`
-- `localization.status.changed`
+Le domaine doit éviter :
 
-## Événements consommés
+- les localisations “fantômes” ;
+- les changements silencieux de fallback ;
+- les états purement techniques non interprétables métier.
 
-Le domaine peut consommer certains événements internes du type :
+---
 
-- `store.capabilities.updated`
-- `page.updated`
-- `blog.post.updated`
-- `product.updated`
-- `seo.metadata.updated`
-- `legal.document.updated`
-- `approval.approved`
-- `workflow.completed`
-- certaines actions administratives structurées de publication ou de correction de localisation
+## Interfaces et échanges
 
-Il doit toutefois rester maître de sa propre logique de localisation transverse.
+Le domaine `localization` expose principalement :
 
-## Intégrations externes
+- des locales structurées ;
+- des valeurs ou contenus localisés structurés ;
+- des règles de fallback ou d’applicabilité locale ;
+- des lectures exploitables par `pages`, `blog`, `products`, `seo`, `legal`, `template-system`, `search`, `dashboarding` et certaines couches d’administration ;
+- des structures localisées prêtes à être consommées par les couches UI ou domaines opérationnels autorisés.
 
-Le domaine `localization` ne doit pas devenir un domaine d’intégration provider-specific.
+Le domaine reçoit principalement :
 
-Il peut être appuyé par `integrations` vers certains services externes de traduction ou de gestion de contenu localisé, mais :
+- des créations ou mises à jour de locales supportées ;
+- des demandes de traduction ou de mise à jour de valeurs localisées ;
+- des demandes de lecture d’une valeur localisée applicable dans un contexte donné ;
+- des changements de règles de fallback, de disponibilité ou d’exposition locale ;
+- des contextes de boutique, langue, pays, marché, audience, canal ou surface d’exposition ;
+- des signaux internes utiles à l’activation, la désactivation ou la substitution d’une localisation.
 
-- la vérité des structures localisées internes reste dans `localization`
-- les DTO providers externes restent dans `integrations`
-- les objets source restent dans leurs domaines respectifs
+Le domaine ne doit pas exposer un contrat canonique dicté par un provider externe.
+
+---
+
+## Contraintes d’intégration
+
+Le domaine `localization` peut être exposé à des contraintes telles que :
+
+- multi-langues ;
+- multi-boutiques ;
+- multi-marchés ;
+- fallback de langue ;
+- publication différée ;
+- dépendance à des contextes locaux ;
+- synchronisation avec systèmes externes ;
+- rétrocompatibilité des locales ou politiques.
+
+Règles minimales :
+
+- la hiérarchie d’autorité doit être explicite ;
+- la vérité interne des structures localisées reste dans `localization` ;
+- les DTO providers restent dans `integrations` ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- une localisation incohérente ne doit pas être promue silencieusement ;
+- les conflits entre locale, fallback, statut et exposition doivent être explicables.
+
+---
 
 ## Données sensibles / sécurité
 
@@ -182,101 +295,130 @@ Le domaine `localization` manipule des contenus susceptibles d’impacter fortem
 
 Points de vigilance :
 
-- contrôle strict des droits de lecture et d’écriture
-- séparation claire entre objet source, valeur localisée, règle de fallback et politique d’exposition
-- protection des localisations non publiées, incomplètes ou réservées à certains contextes
-- limitation de l’exposition selon le rôle, le scope, la langue, le marché et le statut
-- audit des changements significatifs de traduction, de fallback ou de politique locale
+- contrôle strict des droits de lecture et d’écriture ;
+- séparation claire entre objet source, valeur localisée, règle de fallback et politique d’exposition ;
+- protection des localisations non publiées, incomplètes ou réservées à certains contextes ;
+- limitation de l’exposition selon le rôle, le scope, la langue, le marché et le statut ;
+- audit des changements significatifs de traduction, de fallback ou de politique locale.
 
-## Observability / audit
+---
 
-### Observability
+## Observabilité et audit
 
-Il faut pouvoir comprendre :
+Le domaine `localization` doit rendre visibles au minimum :
 
-- quelle locale est en vigueur
-- quelle valeur localisée a été retenue
-- quelle règle de fallback ou d’applicabilité a été utilisée
-- pourquoi une valeur localisée est absente, remplacée, fallbackée ou non exposée
-- si une localisation n’est pas disponible à cause d’une capability off, d’un statut inactif, d’un contexte non compatible ou d’une règle applicable
+- quelle locale est en vigueur ;
+- quelle valeur localisée a été retenue ;
+- quelle règle de fallback ou d’applicabilité a été utilisée ;
+- pourquoi une valeur localisée est absente, remplacée, fallbackée ou non exposée ;
+- si une localisation n’est pas disponible à cause d’une capability inactive, d’un statut inactif, d’un contexte non compatible ou d’une règle applicable.
 
-### Audit
+L’audit doit permettre de répondre à des questions comme :
 
-Il faut tracer :
+- quelle locale ou valeur localisée a été créée ou modifiée ;
+- quand ;
+- selon quelle origine ;
+- avec quelle règle de fallback ou politique appliquée ;
+- avec quelle action manuelle significative ;
+- avec quel impact sur l’exposition locale.
 
-- la création ou modification sensible d’une locale supportée
-- la modification significative d’une traduction ou d’une valeur localisée sensible
-- les changements de règles de fallback ou d’exposition locale
-- certaines consultations sensibles si le modèle final les retient explicitement
-- certaines modifications manuelles importantes des politiques de localisation
+L’observabilité doit distinguer :
+
+- erreur de modèle ;
+- erreur technique ;
+- locale non supportée ;
+- valeur localisée absente ;
+- règle de fallback incohérente ;
+- exposition refusée ;
+- contexte non compatible.
+
+---
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `LocaleDefinition` : langue, variante locale ou marché supporté
-- `LocalizedValue` : valeur localisée structurée
-- `LocalizationRule` : règle d’applicabilité, de fallback ou d’exposition locale
-- `LocalizationPolicy` : règle de gouvernance ou de publication des localisations
-- `LocalizationStatus` : état d’une localisation ou d’une locale
-- `LocalizationSubjectRef` : référence vers l’objet source concerné
+- `LocaleDefinition` : langue, variante locale ou marché supporté ;
+- `LocalizedValue` : valeur localisée structurée ;
+- `LocalizationRule` : règle d’applicabilité, de fallback ou d’exposition locale ;
+- `LocalizationPolicy` : règle de gouvernance ou de publication des localisations ;
+- `LocalizationStatus` : état d’une localisation ou d’une locale ;
+- `LocalizationSubjectRef` : référence vers l’objet source concerné.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Impact de maintenance / exploitation
 
-- une valeur localisée est rattachée à un objet source explicite et à une locale explicite
-- une règle de fallback ou d’exposition possède une signification explicite
-- `localization` ne se confond pas avec `pages`
-- `localization` ne se confond pas avec `blog`
-- `localization` ne se confond pas avec `products`
-- `localization` ne se confond pas avec `pricing`
-- `localization` ne se confond pas avec `seo`
-- les autres domaines ne doivent pas recréer librement leur propre vérité divergente de localisation transverse quand le cadre commun `localization` existe
-- une valeur localisée inapplicable, inactive ou non publiée ne doit pas être exposée hors règle explicite
+Le domaine `localization` a un impact d’exploitation moyen à élevé lorsqu’il est activé.
 
-## Cas d’usage principaux
+Raisons :
 
-1. Définir les langues ou locales supportées par la boutique
-2. Gérer des champs localisés pour une page, un article, un produit ou un contenu juridique
-3. Définir un fallback lorsqu’une traduction manque
-4. Fournir à un domaine consommateur la valeur localisée applicable dans un contexte donné
-5. Exposer une boutique multilingue cohérente au niveau storefront et admin
-6. Exposer à l’admin une lecture claire des locales, traductions et règles de fallback disponibles
+- il structure l’exposition multilingue et multi-marchés ;
+- ses erreurs dégradent compréhension, cohérence publique et parfois conformité ;
+- il se situe à la frontière entre plusieurs domaines source ;
+- il nécessite une forte explicabilité des fallbacks et statuts ;
+- il dépend souvent de capacités activables et de contextes multiples.
 
-## Cas limites / erreurs métier
+En exploitation, une attention particulière doit être portée à :
 
-Quelques cas d’erreur typiques :
+- la cohérence des locales ;
+- la validité des valeurs localisées ;
+- les fallbacks incohérents ;
+- la traçabilité des changements ;
+- la cohérence avec les domaines source ;
+- les effets de bord sur storefront, SEO, juridique et template-system.
 
-- locale introuvable ou non supportée
-- valeur localisée absente ou invalide
-- règle de fallback incohérente
-- contexte de localisation non compatible
-- tentative de publication ou de modification non autorisée
-- permission ou scope insuffisant
-- conflit entre plusieurs règles d’applicabilité, de fallback ou d’exposition
+Le domaine doit être considéré comme structurant dès qu’une exposition localisée réelle existe.
 
-## Décisions d’architecture
+---
 
-Les choix structurants du domaine sont :
+## Limites du domaine
 
-- `localization` porte l’adaptation localisée transverse du socle
-- `localization` est distinct de `pages`
-- `localization` est distinct de `blog`
-- `localization` est distinct de `products`
-- `localization` est distinct de `pricing`
-- `localization` est distinct de `seo`
-- les domaines consommateurs lisent la vérité localisée via `localization`, sans la recréer localement
-- les locales, traductions, fallbacks et politiques sensibles doivent être observables et auditables
+Le domaine `localization` s’arrête :
 
-## Questions explicitement closes
+- avant les contenus source ;
+- avant le pricing et les devises ;
+- avant le SEO transverse lui-même ;
+- avant les contenus juridiques source ;
+- avant les intégrations externes ;
+- avant les DTO providers externes.
 
-Les points suivants sont considérés comme décidés :
+Le domaine `localization` porte l’adaptation localisée transverse du système.
+Il ne doit pas devenir un simple dictionnaire technique global ni un doublon des domaines source.
 
-- l’adaptation localisée transverse relève de `localization`
-- les pages éditoriales relèvent de `pages`
-- les articles de blog relèvent de `blog`
-- les produits publiés relèvent de `products`
-- le pricing et les devises relèvent de `pricing` ou d’un domaine monétaire dédié
-- la structuration SEO relève de `seo`
-- `localization` ne remplace ni `pages`, ni `blog`, ni `products`, ni `pricing`, ni `seo`, ni `legal`, ni `integrations`
+---
+
+## Questions ouvertes
+
+À confirmer explicitement dans le projet :
+
+- la frontière exacte entre `localization` et `pages` ;
+- la frontière exacte entre `localization` et `products` ;
+- la frontière exacte entre `localization` et `seo` ;
+- la part exacte des fallbacks réellement supportés ;
+- la gouvernance des marchés vs langues ;
+- la hiérarchie entre vérité interne et services externes de traduction éventuels.
+
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Documents liés
+
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../core/stores.md`
+- `../optional/pages.md`
+- `../optional/blog.md`
+- `../core/products.md`
+- `seo.md`
+- `legal.md`
+- `template-system.md`
+- `search.md`
+- `approval.md`
+- `workflow.md`
+- `audit.md`
+- `observability.md`
+- `dashboarding.md`
+- `pricing.md`
+- `../core/integrations.md`

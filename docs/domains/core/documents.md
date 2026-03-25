@@ -1,129 +1,42 @@
-# Domaine `documents`
-
-## Objectif
-
-Ce document décrit le domaine `documents` dans la doctrine courante du socle.
-
-Il précise :
-
-- le rôle du domaine ;
-- sa place dans la modularité du socle ;
-- sa source de vérité ;
-- ses capabilities activables ;
-- ses niveaux de sophistication ;
-- ses objets métier ;
-- ses invariants ;
-- son cycle de vie ;
-- ses règles de cohérence ;
-- ses frontières externes ;
-- ses implications de maintenance, d’exploitation et de coût.
-
-Le domaine `documents` est structurant pour la réutilisabilité du socle, car il porte les documents commerciaux, opérationnels ou réglementaires dérivés des vérités coeur du système.
-
-Le domaine `documents` ne doit pas être confondu avec :
-
-- `orders`, qui porte la commande durable ;
-- `payments`, qui porte le paiement interne ;
-- `taxation`, qui porte la logique fiscale ;
-- `integrations`, qui parle à des systèmes documentaires externes.
-
-Il porte la **vérité documentaire interne** du socle.
-
----
-
-## Position dans la doctrine de modularité
-
-Le domaine `documents` est classé comme :
-
-- `domaine coeur à capabilities toggleables`
-
-Le domaine existe dès qu’un projet a besoin de produire des documents commerciaux, fiscaux ou opérationnels.
-En revanche, sa richesse varie fortement selon le projet.
-
-### Ce qui n’est jamais désactivé
-
-Le domaine conserve toujours :
-
-- une responsabilité explicite sur les documents internes ;
-- une séparation entre vérité coeur et représentation documentaire ;
-- une traçabilité des documents générés ;
-- une articulation claire avec orders, payments, taxation et shipping.
-
-### Ce qui est activable / désactivable par capability
-
-Le domaine `documents` est lié aux capabilities suivantes :
-
-- `orderDocuments`
-- `invoiceDocuments`
-- `creditNoteDocuments`
-- `shippingDocuments`
-- `electronicInvoicing`
-- `b2bCommerce`
-- `multiCountryTaxation`
-
-### Ce qui relève d’un niveau
-
-Le domaine porte plusieurs niveaux de sophistication documentaire.
-
-### Ce qui relève d’un provider ou d’une intégration externe
-
-Relèvent de `integrations` et non du coeur de `documents` :
-
-- facture électronique externe ;
-- GED externe ;
-- signature ou archivage externe ;
-- export comptable documentaire.
-
-Le domaine `documents` garde la vérité interne de la production documentaire décidée par le socle.
-
----
+# Documents
 
 ## Rôle
 
-Le domaine `documents` porte les documents dérivés des vérités métier du commerce.
+Le domaine `documents` porte les documents métier explicitement modélisés dans le système.
 
-Il constitue la source de vérité interne pour :
+Il définit :
 
-- l’existence d’un document ;
-- son type ;
-- son rattachement à une commande, un paiement, un remboursement ou une livraison ;
-- son statut interne ;
-- certaines métadonnées documentaires ;
-- l’état de génération, disponibilité ou annulation du document.
+- ce qu’est un document du point de vue du système ;
+- comment un document est généré, validé, publié, distribué, archivé ou rendu disponible ;
+- comment ce domaine se distingue des médias bruts, des pages éditoriales, des emails, des exports techniques et des intégrations provider-specific ;
+- comment le système reste maître de sa vérité interne sur les documents métier.
 
-Le domaine est distinct :
+Le domaine existe pour fournir une représentation explicite des documents métier, distincte :
 
-- de `orders`, qui porte les données commerciales figées ;
-- de `payments`, qui porte la vérité financière ;
-- de `taxation`, qui porte la vérité fiscale ;
-- de `shipping`, qui porte la vérité de livraison ;
-- de `integrations`, qui peut exécuter une production externe spécialisée.
+- des actifs média bruts portés par `media` ;
+- des pages éditoriales portées par `pages` ;
+- des emails portés par `email` ;
+- des exports techniques portés par `export` ;
+- des DTO provider-specific portés par `integrations`.
 
 ---
 
-## Responsabilités
+## Classification
 
-Le domaine `documents` prend en charge :
+### Catégorie documentaire
 
-- la modélisation des types documentaires ;
-- la création documentaire à partir des vérités coeur ;
-- la production ou orchestration de génération ;
-- la conservation de la vérité documentaire interne ;
-- la lecture et traçabilité des documents ;
-- la gestion du cycle de vie d’un document ;
-- la cohérence entre document et fait métier source.
+`core`
 
----
+### Criticité architecturale
 
-## Ce que le domaine ne doit pas faire
+`coeur structurant`
 
-Le domaine `documents` ne doit pas :
+### Activable
 
-- devenir la source de vérité de la commande ou du paiement ;
-- recalculer les montants métier à partir de lui-même ;
-- prendre un export externe pour vérité primaire ;
-- mélanger document interne et provider documentaire externe ;
-- remplacer `taxation`, `orders` ou `payments`.
+`oui`
+
+Le domaine `documents` est activable.
+Lorsqu’il est activé, il devient structurant pour les pièces métier générées ou gouvernées par le système, leur cycle de vie, leur traçabilité et leur disponibilité.
 
 ---
 
@@ -131,469 +44,374 @@ Le domaine `documents` ne doit pas :
 
 Le domaine `documents` est la source de vérité pour :
 
-- les documents internes générés ou reconnus par le socle ;
-- leur statut ;
-- leur rattachement métier ;
-- leur identité documentaire interne ;
-- leurs métadonnées de génération et disponibilité.
+- la définition interne d’un document métier ;
+- son identité ;
+- son statut ;
+- son type documentaire ;
+- son rattachement à un objet métier source lorsque cette relation est portée ici ;
+- sa version ou son exemplaire gouverné si le modèle les expose ;
+- ses lectures structurées consommables par les domaines autorisés.
 
-Le domaine n’est pas la source de vérité pour :
+Le domaine `documents` n’est pas la source de vérité pour :
 
-- les montants commerciaux ;
-- les paiements ;
-- la taxation ;
-- les commandes ;
-- les providers documentaires externes.
+- les médias source, qui relèvent de `media` ;
+- les contenus éditoriaux de page, qui relèvent de `pages` ;
+- les emails, qui relèvent de `email` ;
+- les exports techniques, qui relèvent de `export` ;
+- les DTO providers externes, qui relèvent de `integrations`.
 
----
+Un document est un artefact métier gouverné.
+Il ne doit pas être confondu avec :
 
-## Objets métier principaux
-
-Les principaux objets métier portés par le domaine sont :
-
-- `Document`
-- `DocumentType`
-- `DocumentStatus`
-- `DocumentSourceReference`
-- `InvoiceDocument`
-- `CreditNoteDocument`
-- `ShippingDocument`
-- `DocumentGenerationRequest`
+- un simple fichier brut ;
+- une pièce jointe email isolée ;
+- un export technique ;
+- une page web ;
+- un média sans sémantique métier explicite.
 
 ---
 
-## Capabilities activables liées
+## Responsabilités
 
-Le domaine `documents` est lié aux capabilities suivantes :
+Le domaine `documents` est responsable de :
 
-- `orderDocuments`
-- `invoiceDocuments`
-- `creditNoteDocuments`
-- `shippingDocuments`
-- `electronicInvoicing`
-- `b2bCommerce`
-- `multiCountryTaxation`
+- définir ce qu’est un document dans le système ;
+- porter les documents métier structurés ;
+- porter leurs statuts ;
+- porter leurs types documentaires ;
+- exposer une lecture gouvernée des documents actifs, distribuables, archivés ou restreints ;
+- publier les événements significatifs liés à la vie d’un document ;
+- protéger le système contre les documents implicites, opaques ou contradictoires.
 
-### Effet si `orderDocuments` est activée
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine peut générer ou exposer des documents liés à la commande.
-
-### Effet si `invoiceDocuments` est activée
-
-Le domaine peut produire des factures internes ou piloter leur génération.
-
-### Effet si `creditNoteDocuments` est activée
-
-Le domaine peut produire des avoirs ou notes de crédit cohérents avec remboursements ou annulations.
-
-### Effet si `shippingDocuments` est activée
-
-Le domaine peut porter certains documents de livraison ou d’expédition.
-
-### Effet si `electronicInvoicing` est activée
-
-Le domaine peut se coordonner avec une logique documentaire plus réglementée ou électronique.
-
-### Effet si `b2bCommerce` est activée
-
-Le domaine peut produire des documents plus riches pour les parcours entreprise.
-
-### Effet si `multiCountryTaxation` est activée
-
-Le domaine peut porter des snapshots documentaires fiscalement plus riches.
+- factures ;
+- avoirs documentaires ;
+- confirmations documentaires ;
+- pièces contractuelles ;
+- documents clients ;
+- documents opératoires ;
+- versionnement documentaire ;
+- politiques de rétention ou d’archivage ;
+- distribution contrôlée d’un document vers email, download ou intégration.
 
 ---
 
-## Niveaux de sophistication du domaine
+## Non-responsabilités
 
-### Niveau 1 — essentiel
+Le domaine `documents` n’est pas responsable de :
 
-- documents simples ;
-- faible nombre de types ;
-- génération ou exposition limitée.
+- définir les médias bruts ;
+- définir les pages éditoriales ;
+- porter les emails ;
+- porter les exports techniques ;
+- exécuter les intégrations provider-specific ;
+- devenir un DAM universel ou un GED globale sans frontières métier explicites.
 
-### Niveau 2 — standard
+Le domaine `documents` ne doit pas devenir :
 
-- factures et documents de commande plus structurés ;
-- meilleure articulation avec paiement et taxation.
-
-### Niveau 3 — avancé
-
-- avoirs ;
-- documents de livraison ;
-- B2B ;
-- plus grande richesse documentaire et plus forte exigence de traçabilité.
-
-### Niveau 4 — expert / réglementé / multi-contraintes
-
-- facture électronique ;
-- plusieurs types réglementés ;
-- exigences élevées de conservation, traçabilité et intégration.
+- un doublon de `media` ;
+- un doublon de `email` ;
+- un doublon de `export` ;
+- un conteneur flou de fichiers ou PDF sans modèle métier.
 
 ---
 
-## Entrées
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- un document possède une identité stable ;
+- un document possède un type explicite ;
+- un document possède un statut explicite ;
+- un document archivé ou révoqué ne doit pas être traité comme actif sans règle explicite ;
+- une mutation significative de statut, version, rattachement ou disponibilité doit être traçable ;
+- un document ne se confond pas avec son média de rendu éventuel ;
+- les domaines consommateurs ne doivent pas recréer librement leur propre vérité divergente de document quand le cadre commun existe ;
+- un document distribué ou exposé doit rester rattachable à sa vérité métier interne.
+
+Le domaine protège la cohérence des documents métier gouvernés.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `documents` interagit fortement avec :
+
+- `orders`
+- `customers`
+- `payments`
+- `returns`
+- `users`
+- `stores`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `audit`
+- `observability`
+- `legal`
+- `email`, comme canal de distribution lorsqu’applicable
+- `media`, lorsque certains rendus ou fichiers sont stockés comme actifs liés
+- `jobs`, si certaines générations, distributions ou archivages sont différés
+
+### Dépendances externes
+
+Le domaine peut être relié à :
+
+- services de génération PDF ;
+- services de signature ;
+- coffres documentaires ;
+- ERP ;
+- autres systèmes via `integrations`.
+
+### Règle de frontière
+
+Le domaine `documents` porte les documents métier gouvernés.
+Il ne doit pas absorber :
+
+- les médias bruts ;
+- les emails ;
+- les exports techniques ;
+- les providers externes ;
+- ni les DTO providers externes.
+
+---
+
+## Événements significatifs
+
+Le domaine `documents` publie ou peut publier des événements significatifs tels que :
+
+- document créé ;
+- document généré ;
+- document validé ;
+- document distribué ;
+- document archivé ;
+- document révoqué ;
+- version de document créée ;
+- rattachement de document modifié.
+
+Le domaine peut consommer des signaux liés à :
+
+- commande confirmée ;
+- paiement confirmé ;
+- retour validé ;
+- action administrative structurée ;
+- politique légale modifiée ;
+- génération ou stockage technique validé.
+
+Les noms exacts doivent rester dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `documents` possède un cycle de vie explicite.
+
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
+
+- créé ;
+- généré ;
+- actif ;
+- archivé.
+
+Des états supplémentaires peuvent exister :
+
+- en attente ;
+- validé ;
+- distribué ;
+- révoqué ;
+- expiré ;
+- restreint.
+
+Le domaine doit éviter :
+
+- les documents “fantômes” ;
+- les changements silencieux de statut ;
+- les états purement techniques non interprétables métier.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `documents` expose principalement :
+
+- des lectures de documents structurés ;
+- des lectures de statut et type documentaire ;
+- des lectures de disponibilité ou distribution ;
+- des lectures exploitables par `orders`, `customers`, `payments`, `email`, `audit` et certaines couches d’administration ;
+- des structures prêtes à être consommées par les domaines autorisés.
 
 Le domaine reçoit principalement :
 
-- des commandes créées ou modifiées ;
-- des paiements capturés ou remboursés ;
-- des résultats fiscaux figés ;
-- des événements de livraison ;
-- des demandes de génération documentaire ;
-- des résultats externes traduits de systèmes documentaires si activés.
+- des créations ou mises à jour de documents ;
+- des demandes de génération, validation, distribution ou archivage ;
+- des demandes de lecture d’un document ;
+- des contextes de commande, client, paiement, boutique ou usage ;
+- des signaux internes utiles à l’évolution du cycle de vie.
+
+Le domaine ne doit pas exposer un contrat canonique dicté par un provider externe.
 
 ---
 
-## Sorties
+## Contraintes d’intégration
 
-Le domaine expose principalement :
+Le domaine `documents` peut être exposé à des contraintes telles que :
 
-- un document interne ;
-- un statut documentaire ;
-- une référence documentaire exploitable ;
-- des événements liés à la génération ou au changement d’état d’un document.
+- génération différée ;
+- multi-boutiques ;
+- multi-langues ;
+- distribution par email ou download ;
+- archivage légal ;
+- versionnement ;
+- signature ;
+- projection vers systèmes externes ;
+- rétrocompatibilité des formats ou types.
 
----
+Règles minimales :
 
-## Dépendances vers autres domaines
-
-Le domaine `documents` dépend de :
-
-- `orders`
-- `payments`
-- `taxation`
-- `shipping`
-- `stores`
-- `audit`
-- `observability`
-
-Les domaines suivants dépendent de `documents` :
-
-- `integrations`
-- `analytics`
-- `customer-support`
-- `admin`
-
----
-
-## Dépendances vers providers / intégrations
-
-Le domaine `documents` peut utiliser `integrations` pour produire ou transmettre certains documents, mais garde une vérité documentaire interne.
-
-Il ne laisse pas un système externe devenir la vérité documentaire du socle sans traduction ni rattachement explicite.
-
----
-
-## Rôles / permissions concernés
-
-### Rôles
-
-Les rôles principalement concernés sont :
-
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `finance_manager`
-- `order_manager`
-- `customer_support`
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `documents.read`
-- `documents.write`
-- `documents.generate`
-- `documents.invoice.manage`
-- `audit.read`
-
----
-
-## Événements émis
-
-Le domaine émet les domain events internes suivants :
-
-- `document.created`
-- `document.generated`
-- `document.failed`
-- `document.cancelled`
-- `invoice.generated`
-- `credit_note.generated`
-- `shipping_document.generated`
-
----
-
-## Événements consommés
-
-Le domaine consomme les domain events internes suivants :
-
-- `order.created`
-- `order.cancelled`
-- `payment.captured`
-- `payment.refunded`
-- `shipping.status.changed`
-- `integration.document.result.translated`
+- la hiérarchie d’autorité doit être explicite ;
+- la vérité interne des documents reste dans `documents` ;
+- les DTO providers restent dans `integrations` ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- un document incohérent ne doit pas être promu silencieusement ;
+- les conflits entre statut, version, rattachement et distribution doivent être explicables.
 
 ---
 
 ## Données sensibles / sécurité
 
-Le domaine `documents` porte une donnée métier sensible.
+Le domaine `documents` peut manipuler des données personnelles, contractuelles, financières ou opératoires sensibles.
 
 Points de vigilance :
 
-- les documents peuvent exposer des données client, fiscales ou financières ;
-- les documents ne doivent pas diverger de leur source coeur ;
-- les accès doivent être contrôlés ;
-- les exports externes doivent être surveillés ;
-- les documents annulés ou corrigés doivent rester traçables.
+- contrôle strict des droits de lecture et d’écriture ;
+- séparation claire entre génération, validation, distribution et archivage ;
+- protection des documents restreints ou non publics ;
+- limitation de l’exposition selon le rôle, le scope et le besoin métier ;
+- audit des changements significatifs de statut, contenu, version ou disponibilité ;
+- prudence sur la rétention, l’accès et la suppression.
 
 ---
 
-## Observability / audit
+## Observabilité et audit
 
-### Observability
+Le domaine `documents` doit rendre visibles au minimum :
 
-Il faut pouvoir comprendre :
+- quel document existe pour quel objet métier ;
+- quel statut est en vigueur ;
+- quel type documentaire est concerné ;
+- pourquoi un document est disponible, restreint, archivé, révoqué ou absent ;
+- si une évolution est bloquée à cause d’une règle, d’un statut ou d’une incohérence ;
+- si une génération ou distribution a modifié la disponibilité effective.
 
-- pourquoi un document a été généré ;
-- depuis quel fait métier source ;
-- quel type documentaire a été produit ;
-- pourquoi une génération a échoué ;
-- si un document est disponible, annulé ou remplacé.
+L’audit doit permettre de répondre à des questions comme :
 
-### Audit
+- quel document a été créé, généré, distribué ou archivé ;
+- quand ;
+- selon quelle origine ;
+- avec quel changement de statut, version ou rattachement ;
+- avec quelle validation ou action humaine ;
+- avec quel impact sur le parcours métier concerné.
 
-Il faut tracer :
+L’observabilité doit distinguer :
 
-- les demandes de génération ;
-- les annulations ;
-- les régénérations ;
-- les documents de correction ;
-- les flux documentaires sensibles.
-
----
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- un document est rattaché à une source métier explicite ;
-- un document ne redéfinit pas la vérité commerciale ou financière ;
-- un document annulé ou remplacé reste traçable ;
-- le domaine `documents` reste distinct des systèmes documentaires externes ;
-- la génération documentaire part de faits métier déjà validés.
+- erreur de modèle ;
+- erreur technique ;
+- document introuvable ;
+- type invalide ;
+- statut incohérent ;
+- évolution non autorisée ;
+- distribution échouée.
 
 ---
 
-## Lifecycle et gouvernance des données
+## Modèle de données conceptuel
 
-### États principaux
+Les principaux objets métier conceptuels du domaine sont :
 
-Les états principaux incluent typiquement :
-
-- `PENDING`
-- `GENERATED`
-- `AVAILABLE`
-- `FAILED`
-- `CANCELLED`
-- `REPLACED`
-
-### Transitions autorisées
-
-Exemples :
-
-- `PENDING -> GENERATED`
-- `GENERATED -> AVAILABLE`
-- `PENDING -> FAILED`
-- `AVAILABLE -> CANCELLED`
-- `AVAILABLE -> REPLACED`
-
-### Transitions interdites
-
-Exemples :
-
-- considérer un document annulé comme jamais existé ;
-- réécrire silencieusement un document sans trace ;
-- traiter un payload externe comme document interne sans rattachement explicite.
-
-### Règles de conservation / archivage / suppression
-
-- les documents structurants restent traçables ;
-- les documents remplacés ou annulés restent compréhensibles ;
-- la suppression physique n’est pas la stratégie par défaut ;
-- la conservation dépend aussi des exigences commerciales et réglementaires du projet.
+- `Document` : document métier structuré ;
+- `DocumentType` : type documentaire explicite ;
+- `DocumentStatus` : état du document ;
+- `DocumentVersion` : version gouvernée si ce modèle est porté ;
+- `DocumentDistribution` : distribution ou disponibilité contrôlée ;
+- `DocumentPolicy` : règle de gouvernance, de rétention ou de distribution.
 
 ---
 
-## Transactions / cohérence / concurrence
+## Impact de maintenance / exploitation
 
-### Ce qui doit être atomique
+Le domaine `documents` a un impact d’exploitation élevé lorsqu’il est activé.
 
-Les opérations suivantes doivent réussir ou échouer ensemble :
+Raisons :
 
-- création d’un enregistrement documentaire interne ;
-- rattachement à sa source métier ;
-- changement de statut documentaire ;
-- écriture des événements `document.*` correspondants ;
-- création d’un document de correction ou de remplacement si cela fait partie du même invariant métier.
+- il touche des pièces métier sensibles ;
+- ses erreurs peuvent affecter clients, opérations, comptabilité ou conformité ;
+- il nécessite une forte traçabilité ;
+- il dépend souvent de génération, stockage, distribution et archivage ;
+- il interagit avec plusieurs domaines coeur.
 
-### Ce qui peut être eventual consistency
+En exploitation, une attention particulière doit être portée à :
 
-Les traitements suivants peuvent partir après commit :
+- la cohérence des statuts ;
+- la disponibilité des documents attendus ;
+- la traçabilité des générations et distributions ;
+- la cohérence avec commandes, paiements et clients ;
+- les effets de bord sur email, support et conformité ;
+- la rétention et l’archivage.
 
-- génération de PDF ou rendu ;
-- dépôt externe ;
-- signature externe ;
-- envoi email ;
-- export comptable ;
-- analytics ;
-- webhooks sortants.
-
-### Stratégie de concurrence
-
-Le domaine protège explicitement ses invariants par :
-
-- transaction applicative sur les mutations documentaires structurantes ;
-- unicité logique du document par source / type quand la règle métier l’exige ;
-- refus des régénérations concurrentes incohérentes ;
-- traçabilité des remplacements.
-
-Les conflits attendus sont :
-
-- double génération ;
-- génération concurrente après annulation ;
-- document de correction concurrent ;
-- résultat externe doublonné.
-
-### Idempotence
-
-Les commandes métier suivantes doivent être idempotentes :
-
-- `generate-document` : clé d’intention = `(documentSourceRef, documentType, generationIntentId)`
-- `cancel-document` : clé d’intention = `(documentId, cancelIntentId)`
-- `apply-external-document-result` : clé d’intention = `(providerName, externalEventId)`
-
-### Domain events écrits dans la même transaction
-
-Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
-
-- `document.created`
-- `document.generated`
-- `document.failed`
-- `document.cancelled`
-- `invoice.generated`
-- `credit_note.generated`
-- `shipping_document.generated`
-
-### Effets secondaires après commit
-
-Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
-
-- rendu PDF ;
-- signature externe ;
-- archivage externe ;
-- email ;
-- export comptable ;
-- analytics.
+Le domaine doit être considéré comme sensible dès qu’un flux documentaire métier réel existe.
 
 ---
 
-## Impact maintenance / exploitation
+## Limites du domaine
 
-### Niveau de maintenance minimal recommandé
+Le domaine `documents` s’arrête :
 
-- `M1` pour documents simples ;
-- `M2` pour factures et documents standards ;
-- `M3` pour avoirs, documents de livraison et B2B ;
-- `M4` pour facture électronique ou contexte plus réglementé.
+- avant les médias bruts ;
+- avant les emails ;
+- avant les exports techniques ;
+- avant les providers externes ;
+- avant les DTO providers externes.
 
-### Pourquoi
-
-Le domaine `documents` supporte directement support, finance, fiscalité et obligations administratives.
-Plus il monte en richesse, plus il exige :
-
-- observability ;
-- traçabilité ;
-- gouvernance documentaire ;
-- qualité de reprise.
-
-### Points d’exploitation à surveiller
-
-- documents non générés ;
-- documents en échec ;
-- documents incohérents avec la source métier ;
-- régénérations ;
-- écarts entre document interne et système externe.
+Le domaine `documents` porte les documents métier gouvernés.
+Il ne doit pas devenir un DAM universel, un système email ou un conteneur générique de fichiers.
 
 ---
 
-## Impact coût / complexité
+## Questions ouvertes
 
-Le coût du domaine `documents` monte principalement avec :
+À confirmer explicitement dans le projet :
 
-- `invoiceDocuments`
-- `creditNoteDocuments`
-- `shippingDocuments`
-- `electronicInvoicing`
-- `b2bCommerce`
-- `multiCountryTaxation`
+- la frontière exacte entre `documents` et `media` ;
+- la frontière exacte entre `documents` et `email` ;
+- la frontière exacte entre `documents` et `export` ;
+- la part exacte des versions réellement supportées ;
+- la gouvernance de l’archivage légal ;
+- la hiérarchie entre vérité interne et coffre documentaire externe éventuel ;
+- la place exacte des documents générés par paiement, commande ou retour.
 
-Lecture relative du coût :
-
-- niveau 1 : `C1`
-- niveau 2 : `C2`
-- niveau 3 : `C3`
-- niveau 4 : `C4`
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
 ---
 
-## Cas d’usage principaux
+## Documents liés
 
-1. Générer un document de commande
-2. Générer une facture
-3. Générer un avoir
-4. Générer un document de livraison
-5. Suivre le cycle de vie documentaire
-
----
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- source métier introuvable ;
-- type documentaire non activé ;
-- double génération ;
-- résultat externe ambigu ;
-- annulation invalide ;
-- document remplacé incohérent ;
-- génération concurrente.
-
----
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `documents` est un domaine coeur à capabilities toggleables ;
-- les documents dérivent des vérités coeur ;
-- le domaine reste distinct de `orders`, `payments` et `taxation` ;
-- les systèmes externes documentaires restent dans `integrations` ;
-- les documents sont traçables, versionnables ou remplaçables selon besoin ;
-- la génération lourde part après commit.
-
----
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- `documents` appartient au socle ;
-- les documents ne redéfinissent pas la vérité métier ;
-- les factures électroniques ou exports externes restent des intégrations ;
-- les avoirs et documents de correction sont de vraies capacités du domaine ;
-- la richesse documentaire varie par capability et par niveau ;
-- la traçabilité documentaire est non négociable.
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `orders.md`
+- `customers.md`
+- `payments.md`
+- `../optional/returns.md`
+- `users.md`
+- `store.md`
+- `../satellites/media.md`
+- `../cross-cutting/email.md`
+- `../cross-cutting/export.md`
+- `../cross-cutting/audit.md`
+- `../cross-cutting/observability.md`
+- `../cross-cutting/legal.md`
+- `integrations.md`

@@ -1,187 +1,291 @@
-# Domaine analytics
+# Analytics
 
 ## Rôle
 
-Le domaine `analytics` porte l’analyse métier consolidée du socle.
+Le domaine `analytics` porte l’analyse métier consolidée du système.
 
-Il structure les vues, agrégats, indicateurs et lectures analytiques utiles au pilotage commercial, marketing, catalogue, événementiel et opérationnel de la boutique, sans absorber le tracking brut, l’attribution, l’observabilité technique ou le monitoring.
+Il définit :
+
+- ce qu’est une lecture analytique du point de vue du système ;
+- comment sont structurés les indicateurs, agrégats, snapshots, dimensions et vues analytiques ;
+- comment ce domaine se distingue du tracking brut, de l’attribution, de l’observabilité technique, du monitoring et des providers externes ;
+- comment le système reste maître de sa vérité interne sur les lectures analytiques consolidées.
+
+Le domaine existe pour fournir une représentation explicite de l’analytique métier, distincte :
+
+- du tracking brut porté par `tracking` ;
+- de l’attribution portée par `attribution` ;
+- de l’observabilité technique portée par `observability` ;
+- du monitoring technique porté par `monitoring` ;
+- des DTO providers externes portés par `integrations`.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse structurant`
+
+### Activable
+
+`oui`
+
+Le domaine `analytics` est activable.
+Lorsqu’il est activé, il devient structurant pour le pilotage commercial, marketing, catalogue, événementiel et opérationnel.
+
+---
+
+## Source de vérité
+
+Le domaine `analytics` est la source de vérité pour :
+
+- les vues analytiques consolidées du système ;
+- les indicateurs analytiques structurés ;
+- les snapshots analytiques lorsqu’ils sont portés ici ;
+- les dimensions d’analyse explicites ;
+- les périmètres de lecture analytique gouvernés par le système ;
+- ses lectures structurées consommables par les domaines autorisés.
+
+Le domaine `analytics` n’est pas la source de vérité pour :
+
+- les signaux de mesure bruts, qui relèvent de `tracking` ;
+- l’attribution marketing, qui relève de `attribution` ;
+- l’observabilité technique, qui relève de `observability` ;
+- le monitoring, qui relève de `monitoring` ;
+- les providers externes analytics, qui relèvent de `integrations` ;
+- la vérité métier source des domaines coeur.
+
+Une vue analytique est une lecture consolidée gouvernée.
+Elle ne doit pas être confondue avec :
+
+- un event brut ;
+- un log technique ;
+- un calcul d’attribution ;
+- une vérité métier source ;
+- un dashboard UI ;
+- un export provider externe.
+
+---
 
 ## Responsabilités
 
-Le domaine `analytics` prend en charge :
+Le domaine `analytics` est responsable de :
 
-- les indicateurs métier consolidés
-- les agrégats de performance commerciale
-- les vues analytiques catalogue
-- les vues analytiques commandes et revenus
-- les vues analytiques marketing et conversion
-- les vues analytiques événements, newsletter et social lorsque les domaines amont sont actifs
-- la base analytique exploitable par l’admin, le pilotage boutique, `dashboarding` et certains domaines consommateurs
+- définir ce qu’est une lecture analytique dans le système ;
+- porter les indicateurs métier consolidés ;
+- porter les vues analytiques structurées ;
+- porter les dimensions analytiques explicites ;
+- exposer une lecture gouvernée des tendances, performances et comparaisons métier ;
+- publier les événements significatifs liés à la vie d’une vue analytique ;
+- protéger le système contre les consolidations implicites, opaques ou contradictoires.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `analytics` ne doit pas :
+- analytics commerciales ;
+- analytics catalogue ;
+- analytics commandes et revenus ;
+- analytics marketing consolidées ;
+- analytics conversion consolidées ;
+- analytics newsletter, social ou événements lorsque les domaines amont sont actifs ;
+- snapshots périodiques ;
+- vues consolidées par boutique, période, campagne, canal ou produit.
 
-- porter les signaux bruts de mesure, qui relèvent de `tracking`
-- porter l’attribution marketing, qui relève de `attribution`
-- porter l’observabilité technique, qui relève de `observability`
-- porter le monitoring technique, qui relève de `monitoring`
-- porter les providers externes analytics, qui relèvent de `integrations`
-- recalculer les vérités métier sources de manière divergente par rapport aux domaines coeur
-- devenir un entrepôt flou regroupant sans structure logs, événements, tracking et reporting
+---
 
-Le domaine `analytics` porte la lecture analytique consolidée. Il ne remplace ni `tracking`, ni `attribution`, ni `observability`, ni `monitoring`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `analytics` n’est pas responsable de :
 
-- `sales` : analytics commerciales et revenus
-- `catalog` : analytics catalogue et performance produit
-- `marketing` : analytics marketing et conversion consolidées
-- `engagement` : analytics liées à newsletter, social, events ou interactions selon les capabilities actives
+- porter les signaux bruts de mesure ;
+- porter l’attribution marketing ;
+- porter l’observabilité technique ;
+- porter le monitoring technique ;
+- exécuter les providers externes analytics ;
+- recalculer de manière divergente la vérité métier source ;
+- devenir un entrepôt flou regroupant logs, événements, tracking et reporting sans structure.
 
-## Entrées
+Le domaine `analytics` ne doit pas devenir :
+
+- un doublon de `tracking` ;
+- un doublon de `attribution` ;
+- un doublon de `observability` ;
+- un doublon de `monitoring` ;
+- un conteneur flou de chiffres sans gouvernance métier.
+
+---
+
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- une vue analytique s’appuie sur des sources identifiées et explicites ;
+- `analytics` ne se confond pas avec `tracking` ;
+- `analytics` ne se confond pas avec `attribution` ;
+- `analytics` ne se confond pas avec `observability` ou `monitoring` ;
+- les agrégats analytiques ne doivent pas redéfinir de manière divergente la vérité métier source ;
+- les autres domaines ne doivent pas recréer leur propre vérité divergente des vues analytiques consolidées lorsqu’une lecture analytique commune existe ;
+- une vue partielle, dégradée ou incomplète doit pouvoir être explicitée ;
+- une consolidation identique sur un même périmètre doit rester déterministe à contexte identique.
+
+Le domaine protège la cohérence de la lecture analytique, pas la vérité primaire des données sources.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `analytics` interagit fortement avec :
+
+- `tracking`
+- `orders`
+- `payments`
+- `returns`
+- `documents`
+- `products`
+- `marketing`
+- `conversion`
+- `newsletter`
+- `events`
+- `social`
+- `stores`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `audit`, pour certaines corrélations sensibles si nécessaire
+- `observability`, pour certaines analyses croisées sans absorber sa responsabilité
+- `dashboarding`
+- `jobs`, si certaines consolidations ou snapshots sont différés
+
+### Dépendances externes
+
+Le domaine peut être relié indirectement à :
+
+- plateformes analytics externes ;
+- BI externes ;
+- data warehouses externes ;
+- providers publicitaires ou marketing externes ;
+- autres systèmes via `integrations`.
+
+### Règle de frontière
+
+Le domaine `analytics` porte la lecture analytique consolidée.
+Il ne doit pas absorber :
+
+- les signaux bruts ;
+- l’attribution ;
+- l’observabilité technique ;
+- le monitoring ;
+- ni les DTO providers externes.
+
+---
+
+## Événements significatifs
+
+Le domaine `analytics` publie ou peut publier des événements significatifs tels que :
+
+- snapshot analytique généré ;
+- métrique analytique mise à jour ;
+- vue analytique rafraîchie ;
+- configuration analytique modifiée ;
+- périmètre analytique modifié.
+
+Le domaine peut consommer des signaux liés à :
+
+- commande créée ;
+- paiement capturé ;
+- retour clôturé ;
+- produit publié ;
+- campagne marketing activée ;
+- campagne newsletter envoyée ;
+- événement publié ;
+- publication sociale diffusée ;
+- événement de tracking créé ;
+- capability boutique modifiée.
+
+Les noms exacts doivent rester dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `analytics` possède un cycle de vie partiel au niveau des vues et snapshots qu’il porte.
+
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
+
+- généré ;
+- rafraîchi ;
+- partiel, si pertinent ;
+- archivé, si pertinent.
+
+Des états supplémentaires peuvent exister :
+
+- en attente ;
+- obsolète ;
+- recalculé ;
+- restreint.
+
+Le domaine doit éviter :
+
+- les vues analytiques “fantômes” ;
+- les chiffres non contextualisés ;
+- les changements silencieux de périmètre ;
+- les états purement techniques non interprétables métier.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `analytics` expose principalement :
+
+- des indicateurs analytiques consolidés ;
+- des vues agrégées par période, produit, campagne, canal ou autre dimension métier utile ;
+- des métriques exploitables par `dashboarding`, l’admin boutique, le pilotage plateforme et certains domaines consommateurs ;
+- une lecture claire des tendances, performances et comparaisons métier.
 
 Le domaine reçoit principalement :
 
-- des signaux structurés issus de `tracking`
-- des données durables issues de `orders`, `payments`, `returns`, `documents`
-- des données catalogue issues de `products`
-- des objets ou statuts issus de `marketing`, `conversion`, `newsletter`, `events`, `social`
-- des contextes boutique, temporels, canal ou campagne utiles à la consolidation analytique
-- des demandes de lecture analytique par période, scope ou dimension
+- des signaux structurés issus de `tracking` ;
+- des données durables issues de `orders`, `payments`, `returns`, `documents` ;
+- des données catalogue issues de `products` ;
+- des objets ou statuts issus de `marketing`, `conversion`, `newsletter`, `events`, `social` ;
+- des contextes boutique, temporels, canal ou campagne utiles à la consolidation analytique ;
+- des demandes de lecture analytique par période, scope ou dimension.
 
-## Sorties
+Le domaine ne doit pas exposer un contrat canonique dicté par un provider externe.
 
-Le domaine expose principalement :
+---
 
-- des indicateurs analytiques consolidés
-- des vues agrégées par période, produit, campagne, canal ou autre dimension métier utile
-- des métriques exploitables par `dashboarding`, l’admin boutique, le pilotage plateforme et certains domaines consommateurs
-- une lecture claire des tendances, performances et comparaisons métier
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `analytics` peut être exposé à des contraintes telles que :
 
-Le domaine `analytics` peut dépendre de :
+- multi-boutiques ;
+- périodes glissantes ;
+- vues partielles ;
+- dépendance à tracking ou à certains domaines activables ;
+- snapshots différés ;
+- corrections manuelles ;
+- projection vers BI externes ;
+- rétrocompatibilité des métriques ou dimensions.
 
-- `tracking` pour les signaux de mesure structurés
-- `orders` pour les commandes durables
-- `payments` pour certains états ou montants utiles au pilotage
-- `returns` pour certains indicateurs post-commande
-- `products` pour les lectures catalogue
-- `marketing`, `conversion`, `newsletter`, `events`, `social` pour les objets amont utiles à la consolidation analytique
-- `stores` pour le contexte boutique et les capabilities actives
-- `audit` pour certaines corrélations sensibles si nécessaire
-- `observability` pour certaines analyses croisées, sans absorber sa responsabilité
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `analytics` :
+- la hiérarchie d’autorité doit être explicite ;
+- la vérité analytique interne reste dans `analytics` ;
+- les DTO providers restent dans `integrations` ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- une source absente ou dégradée ne doit pas produire silencieusement une lecture trompeuse ;
+- les dimensions, agrégats et scopes doivent être explicitables.
 
-- `dashboarding`
-- `marketing`
-- `conversion`
-- `crm`
-- `stores`
-- certaines couches d’administration plateforme ou boutique
-
-## Capabilities activables liées
-
-Le domaine `analytics` est directement ou indirectement lié à :
-
-- `analytics`
-- `tracking`
-- `behavioralAnalytics`
-- `productViewTracking`
-- `clickTracking`
-- `marketingCampaigns`
-- `conversionFlows`
-- `newsletter`
-- `publicEvents`
-- `socialPublishing`
-
-### Effet si `analytics` est activée
-
-Le domaine devient pleinement exploitable pour produire des vues analytiques métier consolidées.
-
-### Effet si `analytics` est désactivée
-
-Le domaine reste structurellement présent, mais aucune vue analytique métier non indispensable ne doit être exposée côté boutique.
-
-### Effet si `tracking` ou certaines capabilities de comportement sont activées
-
-Le domaine peut consolider des indicateurs plus riches à partir des signaux fournis par `tracking`.
-
-### Effet si `marketingCampaigns`, `conversionFlows`, `newsletter`, `publicEvents` ou `socialPublishing` est activée
-
-Le domaine peut intégrer ces objets et états amont dans ses consolidations analytiques.
-
-## Rôles/permissions concernés
-
-### Rôles
-
-Les rôles principalement concernés sont :
-
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `marketing_manager`
-- `order_manager`
-- certains rôles de support ou pilotage en lecture selon la politique retenue
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `analytics.read`
-- `dashboarding.read`
-- `tracking.read`
-- `attribution.read`
-- `orders.read`
-- `payments.read`
-- `returns.read`
-- `audit.read`
-
-## Événements émis
-
-Le domaine peut émettre des domain events internes du type :
-
-- `analytics.snapshot.generated`
-- `analytics.metric.updated`
-- `analytics.view.refreshed`
-
-## Événements consommés
-
-Le domaine peut consommer certains événements internes du type :
-
-- `order.created`
-- `payment.captured`
-- `return.closed`
-- `product.published`
-- `marketing.campaign.activated`
-- `newsletter.campaign.sent`
-- `event.published`
-- `social.publication.published`
-- `tracking.event.created`
-- `store.capabilities.updated`
-
-Il doit toutefois rester maître de sa propre logique de consolidation analytique.
-
-## Intégrations externes
-
-Le domaine `analytics` ne doit pas parler directement aux providers externes comme source de vérité principale.
-
-Les échanges avec :
-
-- plateformes analytics externes
-- BI externes
-- data warehouses externes
-- providers publicitaires ou marketing externes
-
-relèvent de :
-
-- `integrations`
-- éventuellement `jobs`
-
-Le domaine `analytics` reste la source de vérité interne des lectures analytiques consolidées du socle.
+---
 
 ## Données sensibles / sécurité
 
@@ -189,93 +293,131 @@ Le domaine `analytics` manipule des données agrégées potentiellement sensible
 
 Points de vigilance :
 
-- contrôle strict des droits de lecture
-- limitation des vues selon le rôle et le scope
-- distinction claire entre analytique métier, tracking brut et observabilité technique
-- protection des consolidations sensibles liées au chiffre d’affaires, aux performances ou aux comportements
-- audit des changements significatifs de configuration analytique si le modèle final les expose
+- contrôle strict des droits de lecture ;
+- limitation des vues selon le rôle et le scope ;
+- distinction claire entre analytique métier, tracking brut et observabilité technique ;
+- protection des consolidations sensibles liées au chiffre d’affaires, aux performances ou aux comportements ;
+- audit des changements significatifs de configuration analytique si le modèle final les expose.
 
-## Observability / audit
+---
 
-### Observability
+## Observabilité et audit
 
-Il faut pouvoir comprendre :
+Le domaine `analytics` doit rendre visibles au minimum :
 
-- quelles sources ont alimenté une vue analytique
-- pourquoi un indicateur a évolué
-- si une vue est partielle à cause d’une capability off, d’une source absente ou d’un retard de consolidation
-- quelles dimensions métier ont été utilisées pour agréger les données
+- quelles sources ont alimenté une vue analytique ;
+- pourquoi un indicateur a évolué ;
+- si une vue est partielle à cause d’une capability inactive, d’une source absente ou d’un retard de consolidation ;
+- quelles dimensions métier ont été utilisées pour agréger les données ;
+- si une lecture est restreinte par scope ou par rôle.
 
-### Audit
-
-Le domaine `analytics` n’a pas vocation à auditer chaque recalcul ou chaque agrégat produit.
-
+L’audit n’a pas vocation à tracer chaque agrégat produit individuellement.
 En revanche, certaines modifications sensibles doivent pouvoir être tracées, notamment :
 
-- les changements significatifs de configuration analytique
-- certaines régénérations ou corrections manuelles importantes
-- certaines modifications de périmètre ou d’exposition des vues analytiques
+- les changements significatifs de configuration analytique ;
+- certaines régénérations ou corrections manuelles importantes ;
+- certaines modifications de périmètre ou d’exposition des vues analytiques.
+
+L’observabilité doit distinguer :
+
+- erreur de modèle ;
+- erreur technique ;
+- source absente ou incompatible ;
+- scope non autorisé ;
+- agrégation incohérente ;
+- vue partielle ;
+- capability inactive.
+
+---
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `AnalyticsMetric` : indicateur analytique consolidé
-- `AnalyticsView` : vue analytique structurée
-- `AnalyticsDimension` : dimension d’analyse (temps, produit, campagne, canal, etc.)
-- `AnalyticsSnapshot` : snapshot d’un état analytique à un instant donné
-- `AnalyticsScope` : périmètre de lecture analytique
+- `AnalyticsMetric` : indicateur analytique consolidé ;
+- `AnalyticsView` : vue analytique structurée ;
+- `AnalyticsDimension` : dimension d’analyse (`temps`, `produit`, `campagne`, `canal`, etc.) ;
+- `AnalyticsSnapshot` : snapshot d’un état analytique à un instant donné ;
+- `AnalyticsScope` : périmètre de lecture analytique ;
+- `AnalyticsPolicy` : règle de consolidation, d’exposition ou de restriction.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Impact de maintenance / exploitation
 
-- une vue analytique s’appuie sur des sources identifiées et explicites
-- `analytics` ne se confond pas avec `tracking`
-- `analytics` ne se confond pas avec `attribution`
-- `analytics` ne se confond pas avec `observability` ou `monitoring`
-- les agrégats analytiques ne doivent pas redéfinir de manière divergente la vérité métier source
-- les autres domaines ne doivent pas recréer leur propre vérité divergente des vues analytiques consolidées lorsqu’une lecture analytique commune existe
+Le domaine `analytics` a un impact d’exploitation moyen à élevé lorsqu’il est activé.
 
-## Cas d’usage principaux
+Raisons :
 
-1. Lire le chiffre d’affaires consolidé sur une période
-2. Lire les performances catalogue ou produit
-3. Lire la performance d’une campagne, d’un flux conversion ou d’une newsletter
-4. Lire les performances d’événements publics ou de publications sociales si les domaines amont sont actifs
-5. Alimenter `dashboarding` avec des vues analytiques consolidées
-6. Exposer à l’admin boutique ou plateforme une lecture claire des performances métier
+- il structure le pilotage métier ;
+- ses erreurs dégradent la lecture des performances et les décisions de pilotage ;
+- il se situe à la frontière entre plusieurs domaines source ;
+- il nécessite une forte explicabilité des chiffres consolidés ;
+- il dépend souvent de capacités et sources multiples.
 
-## Cas limites / erreurs métier
+En exploitation, une attention particulière doit être portée à :
 
-Quelques cas d’erreur typiques :
+- la qualité des sources ;
+- la cohérence des agrégats ;
+- les vues partielles ;
+- la traçabilité des corrections sensibles ;
+- la cohérence avec les domaines source ;
+- les effets de bord sur dashboarding, marketing, conversion et pilotage boutique.
 
-- vue analytique introuvable
-- métrique inconnue
-- source amont absente ou incompatible
-- capability analytics désactivée
-- scope de lecture non autorisé
-- agrégation impossible ou incohérente à partir des données disponibles
+Le domaine doit être considéré comme structurant dès qu’un pilotage métier consolidé réel existe.
 
-## Décisions d’architecture
+---
 
-Les choix structurants du domaine sont :
+## Limites du domaine
 
-- `analytics` porte les lectures analytiques consolidées du socle
-- `analytics` est distinct de `tracking`
-- `analytics` est distinct de `attribution`
-- `analytics` est distinct de `observability`
-- `analytics` est distinct de `integrations`
-- les vues analytiques sont construites à partir de sources métier et de mesure identifiées, sans absorber la responsabilité de ces domaines source
-- les expositions analytiques sensibles doivent être contrôlées, auditables et observables
+Le domaine `analytics` s’arrête :
 
-## Questions explicitement closes
+- avant les signaux de mesure bruts ;
+- avant l’attribution ;
+- avant l’observabilité technique ;
+- avant le monitoring ;
+- avant les providers externes ;
+- avant les DTO providers externes.
 
-Les points suivants sont considérés comme décidés :
+Le domaine `analytics` porte les lectures analytiques consolidées.
+Il ne doit pas devenir un entrepôt flou de données, un moteur d’attribution ou un doublon des domaines source.
 
-- les lectures analytiques consolidées relèvent de `analytics`
-- les signaux de mesure relèvent de `tracking`
-- l’attribution relève de `attribution`
-- l’observabilité technique relève de `observability`
-- les providers externes relèvent de `integrations`
-- `analytics` ne remplace ni `tracking`, ni `attribution`, ni `observability`, ni `monitoring`, ni `integrations`
+---
+
+## Questions ouvertes
+
+À confirmer explicitement dans le projet :
+
+- la frontière exacte entre `analytics` et `tracking` ;
+- la frontière exacte entre `analytics` et `attribution` ;
+- la part exacte des corrections ou recalculs manuels autorisés ;
+- la gouvernance des snapshots ;
+- la hiérarchie entre vérité analytique interne et BI externe éventuelle ;
+- la place exacte des analytics comportementales avancées.
+
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Documents liés
+
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `tracking.md`
+- `attribution.md`
+- `observability.md`
+- `monitoring.md`
+- `dashboarding.md`
+- `../core/orders.md`
+- `../core/payments.md`
+- `../optional/returns.md`
+- `../core/documents.md`
+- `../core/products.md`
+- `marketing.md`
+- `conversion.md`
+- `newsletter.md`
+- `events.md`
+- `social.md`
+- `../core/stores.md`
+- `audit.md`
+- `../core/integrations.md`

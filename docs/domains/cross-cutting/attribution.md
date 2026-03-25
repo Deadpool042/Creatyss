@@ -1,171 +1,283 @@
-# Domaine attribution
+# Attribution
 
 ## Rôle
 
-Le domaine `attribution` porte l’attribution marketing et commerciale du socle.
+Le domaine `attribution` porte l’attribution marketing et commerciale du système.
 
-Il structure la lecture de provenance, de contribution et de crédit entre sources, canaux, campagnes ou interactions, afin d’expliquer comment une visite, un lead, une inscription ou une commande peut être relié à des actions marketing ou à des parcours d’acquisition, sans absorber le tracking brut, l’analytics consolidée, les campagnes marketing elles-mêmes ou les providers externes.
+Il définit :
+
+- ce qu’est une lecture d’attribution du point de vue du système ;
+- comment sont structurés les liens entre sources, canaux, campagnes, interactions et événements métier attribuables ;
+- comment ce domaine se distingue du tracking brut, de l’analytics consolidée, des campagnes marketing elles-mêmes et des providers externes ;
+- comment le système reste maître de sa vérité interne sur les lectures d’attribution.
+
+Le domaine existe pour fournir une représentation explicite de l’attribution, distincte :
+
+- du tracking brut porté par `tracking` ;
+- de l’analytics consolidée portée par `analytics` ;
+- des campagnes marketing portées par `marketing` ;
+- des DTO providers externes portés par `integrations`.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse structurant`
+
+### Activable
+
+`oui`
+
+Le domaine `attribution` est activable.
+Lorsqu’il est activé, il devient structurant pour les lectures de provenance, de contribution et de crédit marketing ou commercial.
+
+---
+
+## Source de vérité
+
+Le domaine `attribution` est la source de vérité pour :
+
+- les lectures d’attribution structurées ;
+- les sources et canaux d’acquisition portés par le système ;
+- les modèles d’attribution retenus ;
+- les crédits d’attribution appliqués à des événements métier pertinents ;
+- les périmètres de lecture d’attribution ;
+- ses lectures structurées consommables par les domaines autorisés.
+
+Le domaine `attribution` n’est pas la source de vérité pour :
+
+- les signaux de mesure bruts, qui relèvent de `tracking` ;
+- les vues analytiques consolidées, qui relèvent de `analytics` ;
+- les campagnes marketing elles-mêmes, qui relèvent de `marketing` ;
+- les providers publicitaires ou analytics externes, qui relèvent de `integrations` ;
+- les vérités métier source des domaines coeur ;
+- les DTO providers externes.
+
+Une attribution est une lecture gouvernée de contribution ou de provenance.
+Elle ne doit pas être confondue avec :
+
+- un signal brut ;
+- une vue analytique globale ;
+- une campagne marketing ;
+- un provider externe ;
+- une vérité métier primaire ;
+- un calcul opaque sans langage métier explicite.
+
+---
 
 ## Responsabilités
 
-Le domaine `attribution` prend en charge :
+Le domaine `attribution` est responsable de :
 
-- la lecture d’origine d’un parcours
-- la lecture de canal d’acquisition
-- la lecture de campagne contributrice
-- les règles d’attribution retenues par le socle
-- la consolidation d’un crédit d’attribution sur des événements métier pertinents
-- la base d’attribution exploitable par `analytics`, `marketing`, `conversion`, `dashboarding` et certaines couches d’administration
+- définir ce qu’est une lecture d’attribution dans le système ;
+- porter les sources et canaux d’acquisition gouvernés par le système ;
+- porter les modèles d’attribution retenus ;
+- porter les crédits d’attribution ;
+- exposer une lecture gouvernée des contributions de source, canal ou campagne ;
+- publier les événements significatifs liés à la vie d’une lecture ou d’un modèle d’attribution ;
+- protéger le système contre les attributions implicites, opaques ou contradictoires.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `attribution` ne doit pas :
+- attribution de commande ;
+- attribution d’inscription newsletter ;
+- attribution d’inscription événementielle ;
+- modèles first touch, last touch ou autres modèles gouvernés ;
+- règles de neutralisation ou d’indétermination ;
+- lectures par boutique, période, campagne ou source ;
+- politiques locales d’attribution.
 
-- porter les signaux bruts de mesure, qui relèvent de `tracking`
-- porter les vues analytiques consolidées, qui relèvent de `analytics`
-- porter les campagnes marketing elles-mêmes, qui relèvent de `marketing`
-- porter les providers publicitaires ou analytics externes, qui relèvent de `integrations`
-- devenir un moteur opaque mélangeant heuristiques, reporting et tracking sans langage métier clair
-- redéfinir les vérités métier source des domaines coeur
+---
 
-Le domaine `attribution` porte la lecture d’attribution. Il ne remplace ni `tracking`, ni `analytics`, ni `marketing`, ni `integrations`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `attribution` n’est pas responsable de :
 
-- `sources` : sources et canaux d’acquisition
-- `models` : modèles d’attribution retenus par le socle
-- `credit` : crédit d’attribution appliqué à un événement métier pertinent
+- porter les signaux bruts de mesure ;
+- porter les vues analytiques consolidées ;
+- porter les campagnes marketing elles-mêmes ;
+- porter les providers externes analytics ou publicitaires ;
+- exécuter les intégrations provider-specific ;
+- devenir un moteur opaque mélangeant heuristiques, reporting et tracking sans langage métier clair ;
+- redéfinir les vérités métier source des domaines coeur.
 
-## Entrées
+Le domaine `attribution` ne doit pas devenir :
+
+- un doublon de `tracking` ;
+- un doublon de `analytics` ;
+- un doublon de `marketing` ;
+- un doublon de `integrations` ;
+- un conteneur flou de heuristiques sans gouvernance métier.
+
+---
+
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- une lecture d’attribution s’appuie sur des sources identifiées et explicites ;
+- `attribution` ne se confond pas avec `tracking` ;
+- `attribution` ne se confond pas avec `analytics` ;
+- `attribution` ne se confond pas avec `marketing` ;
+- les crédits d’attribution ne doivent pas redéfinir de manière divergente les vérités métier source ;
+- les autres domaines ne doivent pas recréer leur propre vérité divergente des lectures d’attribution lorsqu’une lecture commune existe ;
+- une attribution identique à contexte identique doit rester déterministe selon le modèle retenu ;
+- une attribution absente, neutralisée ou indéterminée doit pouvoir être explicitée.
+
+Le domaine protège la cohérence de la lecture d’attribution, pas la vérité primaire des signaux source.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `attribution` interagit fortement avec :
+
+- `tracking`
+- `orders`
+- `newsletter`
+- `events`
+- `marketing`
+- `stores`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `analytics`
+- `conversion`
+- `dashboarding`
+- `audit`, pour certaines corrélations sensibles si nécessaire
+- `observability`, pour expliquer pourquoi une attribution a été retenue, neutralisée ou laissée indéterminée
+- `jobs`, si certaines régénérations ou recalculs sont différés
+
+### Dépendances externes
+
+Le domaine peut être relié indirectement à :
+
+- plateformes publicitaires ;
+- outils analytics externes ;
+- outils de marketing automation ;
+- data warehouses externes ;
+- autres systèmes via `integrations`.
+
+### Règle de frontière
+
+Le domaine `attribution` porte la lecture d’attribution.
+Il ne doit pas absorber :
+
+- les signaux bruts ;
+- l’analytics consolidée ;
+- les campagnes marketing ;
+- les providers externes ;
+- ni les DTO providers externes.
+
+---
+
+## Événements significatifs
+
+Le domaine `attribution` publie ou peut publier des événements significatifs tels que :
+
+- modèle d’attribution mis à jour ;
+- crédit d’attribution assigné ;
+- lecture d’attribution rafraîchie ;
+- politique d’attribution modifiée ;
+- périmètre d’attribution modifié.
+
+Le domaine peut consommer des signaux liés à :
+
+- événement de tracking créé ;
+- commande créée ;
+- inscription newsletter créée ;
+- inscription événementielle créée ;
+- campagne marketing activée ;
+- capability boutique modifiée ;
+- action administrative structurée ;
+- recalcul ou correction validée.
+
+Les noms exacts doivent rester dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `attribution` possède un cycle de vie partiel au niveau des lectures, crédits et modèles qu’il porte.
+
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
+
+- calculé ;
+- rafraîchi ;
+- neutralisé, si pertinent ;
+- archivé, si pertinent.
+
+Des états supplémentaires peuvent exister :
+
+- en attente ;
+- indéterminé ;
+- restreint ;
+- recalculé.
+
+Le domaine doit éviter :
+
+- les attributions “fantômes” ;
+- les crédits non expliqués ;
+- les changements silencieux de modèle ;
+- les états purement techniques non interprétables métier.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `attribution` expose principalement :
+
+- des lectures d’attribution structurées ;
+- des sources et canaux attribués ;
+- des crédits d’attribution consolidés ;
+- des vues exploitables par `analytics`, `marketing`, `conversion`, `dashboarding` et certaines couches d’administration ;
+- des structures d’attribution prêtes à être consommées par les domaines autorisés.
 
 Le domaine reçoit principalement :
 
-- des signaux structurés issus de `tracking`
-- des contextes de parcours, session, campagne ou canal
-- des événements métier pertinents comme une commande, une inscription newsletter ou une inscription à un événement
-- des demandes de lecture d’attribution par période, canal, campagne ou objet métier
-- les capabilities actives et le contexte boutique
+- des signaux structurés issus de `tracking` ;
+- des contextes de parcours, session, campagne ou canal ;
+- des événements métier pertinents comme une commande, une inscription newsletter ou une inscription à un événement ;
+- des demandes de lecture d’attribution par période, canal, campagne ou objet métier ;
+- les capabilities actives et le contexte boutique.
 
-## Sorties
+Le domaine ne doit pas exposer un contrat canonique dicté par un provider externe.
 
-Le domaine expose principalement :
+---
 
-- des lectures d’attribution structurées
-- des sources et canaux attribués
-- des crédits d’attribution consolidés
-- des vues exploitables par `analytics`, `marketing`, `conversion`, `dashboarding` et certaines couches d’administration
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `attribution` peut être exposé à des contraintes telles que :
 
-Le domaine `attribution` peut dépendre de :
+- multi-boutiques ;
+- modèles multiples ;
+- dépendance au consentement ;
+- recalcul différé ;
+- sources partielles ;
+- campagnes multi-canaux ;
+- projection vers systèmes externes ;
+- rétrocompatibilité des modèles ou sources.
 
-- `tracking` pour les signaux de mesure structurés
-- `orders` pour certains événements de conversion marchande
-- `newsletter` pour certains événements d’inscription ou de campagne
-- `events` pour certaines inscriptions ou réservations événementielles
-- `marketing` pour relier l’attribution à des campagnes ou opérations amont
-- `stores` pour le contexte boutique et les capabilities actives
-- `audit` pour certaines corrélations sensibles si nécessaire
-- `observability` pour expliquer pourquoi une attribution a été retenue, neutralisée ou laissée indéterminée
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `attribution` :
+- la hiérarchie d’autorité doit être explicite ;
+- la vérité interne d’attribution reste dans `attribution` ;
+- les DTO providers restent dans `integrations` ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- un signal manquant ou ambigu ne doit pas produire silencieusement une attribution trompeuse ;
+- les conflits entre modèle, source, campagne, consentement et événement métier doivent être explicables.
 
-- `analytics`
-- `marketing`
-- `conversion`
-- `dashboarding`
-- certaines couches d’administration plateforme ou boutique
-
-## Capabilities activables liées
-
-Le domaine `attribution` est directement ou indirectement lié à :
-
-- `attribution`
-- `tracking`
-- `analytics`
-- `marketingCampaigns`
-- `conversionFlows`
-- `marketingPixels`
-- `serverSideTracking`
-
-### Effet si `attribution` est activée
-
-Le domaine devient pleinement exploitable pour produire des lectures d’attribution structurées.
-
-### Effet si `attribution` est désactivée
-
-Le domaine reste structurellement présent, mais aucune lecture d’attribution métier non indispensable ne doit être exposée côté boutique.
-
-### Effet si `tracking` est activée
-
-Le domaine peut s’appuyer sur les signaux de mesure structurés nécessaires à ses modèles.
-
-### Effet si `marketingCampaigns`, `conversionFlows`, `marketingPixels` ou `serverSideTracking` est activée
-
-Le domaine peut enrichir la provenance et la contribution des canaux ou campagnes dans ses lectures d’attribution.
-
-## Rôles/permissions concernés
-
-### Rôles
-
-Les rôles principalement concernés sont :
-
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `marketing_manager`
-- certains rôles de pilotage en lecture selon la politique retenue
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `attribution.read`
-- `analytics.read`
-- `tracking.read`
-- `marketing.read`
-- `dashboarding.read`
-- `audit.read`
-
-## Événements émis
-
-Le domaine peut émettre des domain events internes du type :
-
-- `attribution.model.updated`
-- `attribution.credit.assigned`
-- `attribution.view.refreshed`
-
-## Événements consommés
-
-Le domaine peut consommer certains événements internes du type :
-
-- `tracking.event.created`
-- `order.created`
-- `newsletter.subscribed`
-- `event.registration.created`
-- `marketing.campaign.activated`
-- `store.capabilities.updated`
-
-Il doit toutefois rester maître de sa propre logique d’attribution.
-
-## Intégrations externes
-
-Le domaine `attribution` ne doit pas parler directement aux providers externes comme source de vérité principale.
-
-Les échanges avec :
-
-- plateformes publicitaires
-- outils analytics externes
-- outils de marketing automation externes
-- data warehouses externes
-
-relèvent de :
-
-- `integrations`
-- éventuellement `jobs`
-
-Le domaine `attribution` reste la source de vérité interne des lectures d’attribution du socle.
+---
 
 ## Données sensibles / sécurité
 
@@ -173,91 +285,126 @@ Le domaine `attribution` manipule des données potentiellement sensibles de parc
 
 Points de vigilance :
 
-- contrôle strict des droits de lecture
-- respect des capabilities actives et du cadre de consentement applicable
-- séparation claire entre signal brut, modèle d’attribution et projection externe
-- limitation des expositions selon le rôle et le scope
-- audit des changements sensibles de modèles ou de règles d’attribution
+- contrôle strict des droits de lecture ;
+- respect des capabilities actives et du cadre de consentement applicable ;
+- séparation claire entre signal brut, modèle d’attribution et projection externe ;
+- limitation des expositions selon le rôle et le scope ;
+- audit des changements sensibles de modèles ou de règles d’attribution.
 
-## Observability / audit
+---
 
-### Observability
+## Observabilité et audit
 
-Il faut pouvoir comprendre :
+Le domaine `attribution` doit rendre visibles au minimum :
 
-- pourquoi une source, un canal ou une campagne a été attribué
-- quel modèle d’attribution a été utilisé
-- quelles sources amont ont été prises en compte
-- si une attribution est absente à cause d’une capability off, d’un signal manquant, d’une règle métier ou d’un cadre de consentement restrictif
+- pourquoi une source, un canal ou une campagne a été attribué ;
+- quel modèle d’attribution a été utilisé ;
+- quelles sources amont ont été prises en compte ;
+- si une attribution est absente à cause d’une capability inactive, d’un signal manquant, d’une règle métier ou d’un cadre de consentement restrictif ;
+- quels changements significatifs ont affecté un modèle ou une lecture d’attribution.
 
-### Audit
+L’audit doit permettre de répondre à des questions comme :
 
-Il faut tracer :
+- quel modèle d’attribution a changé ;
+- quand ;
+- selon quelle origine ;
+- avec quel crédit attribué ou recalculé ;
+- avec quelle règle appliquée ;
+- avec quel impact sur les lectures aval.
 
-- les changements significatifs de modèles d’attribution
-- les modifications manuelles importantes des règles de crédit
-- certaines régénérations ou corrections sensibles de lectures d’attribution
+L’observabilité doit distinguer :
+
+- erreur de modèle ;
+- erreur technique ;
+- source inconnue ;
+- signal insuffisant ;
+- attribution indéterminée ;
+- consentement restrictif ;
+- scope non autorisé.
+
+---
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `AttributionSource` : source ou canal d’acquisition
-- `AttributionModel` : modèle d’attribution retenu
-- `AttributionCredit` : crédit attribué à une source ou campagne
-- `AttributionView` : lecture consolidée d’attribution
-- `AttributionScope` : périmètre de lecture ou d’application de l’attribution
+- `AttributionSource` : source ou canal d’acquisition ;
+- `AttributionModel` : modèle d’attribution retenu ;
+- `AttributionCredit` : crédit attribué à une source ou campagne ;
+- `AttributionView` : lecture consolidée d’attribution ;
+- `AttributionScope` : périmètre de lecture ou d’application de l’attribution ;
+- `AttributionPolicy` : règle de gouvernance, de calcul ou de neutralisation.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Impact de maintenance / exploitation
 
-- une lecture d’attribution s’appuie sur des sources identifiées et explicites
-- `attribution` ne se confond pas avec `tracking`
-- `attribution` ne se confond pas avec `analytics`
-- `attribution` ne se confond pas avec `marketing`
-- les crédits d’attribution ne doivent pas redéfinir de manière divergente les vérités métier source
-- les autres domaines ne doivent pas recréer leur propre vérité divergente des lectures d’attribution lorsqu’une lecture commune existe
+Le domaine `attribution` a un impact d’exploitation moyen à élevé lorsqu’il est activé.
 
-## Cas d’usage principaux
+Raisons :
 
-1. Attribuer une commande à une source ou campagne d’acquisition
-2. Attribuer une inscription newsletter à un canal ou une campagne
-3. Lire la contribution d’un canal marketing sur une période
-4. Comparer les performances attribuées par campagne ou source
-5. Alimenter `analytics` et `dashboarding` avec des lectures d’attribution consolidées
-6. Exposer à l’admin boutique ou plateforme une lecture claire des sources d’acquisition et de leur contribution
+- il influence directement la lecture des performances marketing ;
+- ses erreurs dégradent pilotage, interprétation et arbitrages de campagne ;
+- il se situe à la frontière entre tracking, marketing, conversion et analytics ;
+- il nécessite une forte explicabilité des modèles et crédits ;
+- il dépend souvent de signaux partiels ou sensibles.
 
-## Cas limites / erreurs métier
+En exploitation, une attention particulière doit être portée à :
 
-Quelques cas d’erreur typiques :
+- la qualité des sources ;
+- la cohérence des modèles ;
+- les attributions indéterminées ;
+- la traçabilité des changements ;
+- la cohérence avec tracking, marketing et conversion ;
+- les effets de bord sur analytics et dashboarding.
 
-- source d’attribution inconnue
-- modèle d’attribution introuvable ou invalide
-- capability attribution désactivée
-- signaux de tracking insuffisants ou incohérents
-- scope de lecture non autorisé
-- attribution impossible ou indéterminée à partir des données disponibles
+Le domaine doit être considéré comme structurant dès qu’une lecture d’attribution réelle existe.
 
-## Décisions d’architecture
+---
 
-Les choix structurants du domaine sont :
+## Limites du domaine
 
-- `attribution` porte les lectures d’attribution du socle
-- `attribution` est distinct de `tracking`
-- `attribution` est distinct de `analytics`
-- `attribution` est distinct de `marketing`
-- `attribution` est distinct de `integrations`
-- les lectures d’attribution sont construites à partir de signaux et de sources identifiés, sans absorber la responsabilité des domaines source
-- les modèles et crédits d’attribution sensibles doivent être contrôlés, auditables et observables
+Le domaine `attribution` s’arrête :
 
-## Questions explicitement closes
+- avant les signaux de mesure bruts ;
+- avant l’analytics consolidée ;
+- avant les campagnes marketing elles-mêmes ;
+- avant les providers externes ;
+- avant les DTO providers externes.
 
-Les points suivants sont considérés comme décidés :
+Le domaine `attribution` porte les lectures d’attribution du système.
+Il ne doit pas devenir un moteur opaque de tracking, un outil de reporting global ou un doublon des domaines source.
 
-- les lectures d’attribution relèvent de `attribution`
-- les signaux de mesure relèvent de `tracking`
-- l’analytics consolidée relève de `analytics`
-- les campagnes relèvent de `marketing`
-- les providers externes relèvent de `integrations`
-- `attribution` ne remplace ni `tracking`, ni `analytics`, ni `marketing`, ni `integrations`
+---
+
+## Questions ouvertes
+
+À confirmer explicitement dans le projet :
+
+- la frontière exacte entre `attribution` et `tracking` ;
+- la frontière exacte entre `attribution` et `analytics` ;
+- la part exacte des modèles réellement supportés ;
+- la gouvernance des recalculs ;
+- la hiérarchie entre vérité interne et plateformes externes éventuelles ;
+- la place exacte du consentement dans le modèle actuel.
+
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Documents liés
+
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `tracking.md`
+- `analytics.md`
+- `marketing.md`
+- `conversion.md`
+- `dashboarding.md`
+- `newsletter.md`
+- `events.md`
+- `../core/orders.md`
+- `../core/stores.md`
+- `audit.md`
+- `observability.md`
+- `../core/integrations.md`

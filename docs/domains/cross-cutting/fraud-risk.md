@@ -1,172 +1,295 @@
-# Domaine fraud-risk
+# Fraud Risk
 
 ## Rôle
 
-Le domaine `fraud-risk` porte l’évaluation structurée du risque de fraude du socle.
+Le domaine `fraud-risk` porte l’évaluation structurée du risque de fraude du système.
 
-Il organise les signaux, évaluations, niveaux de risque, blocages, revues et décisions préventives liés à des comportements, transactions ou opérations potentiellement frauduleux, sans absorber le paiement, la commande, les permissions, l’audit, le tracking brut ou les providers externes spécialisés.
+Il définit :
+
+- ce qu’est un risque fraude du point de vue du système ;
+- comment sont structurés les signaux, évaluations, niveaux de risque, revues et décisions antifraude ;
+- comment ce domaine se distingue du paiement, de la commande, des permissions, de l’audit, du tracking brut et des providers externes spécialisés ;
+- comment le système reste maître de sa vérité interne sur les décisions et lectures antifraude.
+
+Le domaine existe pour fournir une représentation explicite du risque fraude, distincte :
+
+- des paiements portés par `payments` ;
+- des commandes portées par `orders` ;
+- des permissions portées par `permissions` ;
+- de l’audit porté par `audit` ;
+- du tracking brut porté par `tracking` ;
+- des DTO providers externes portés par `integrations`.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse structurant`
+
+### Activable
+
+`non`
+
+Le domaine `fraud-risk` est structurel dès lors qu’un flux transactionnel, financier ou sensible existe dans le système.
+
+---
+
+## Source de vérité
+
+Le domaine `fraud-risk` est la source de vérité pour :
+
+- les signaux internes de risque fraude portés par le système ;
+- les évaluations structurées de risque ;
+- les niveaux de risque métier ;
+- les décisions de blocage, revue, escalade ou autorisation conditionnelle ;
+- les dossiers ou cas de revue antifraude lorsqu’ils sont modélisés ici ;
+- ses lectures structurées consommables par les domaines autorisés.
+
+Le domaine `fraud-risk` n’est pas la source de vérité pour :
+
+- les paiements, qui relèvent de `payments` ;
+- les commandes, qui relèvent de `orders` ;
+- les permissions ou droits d’accès, qui relèvent de `permissions` ;
+- l’audit sensible, qui relève de `audit` ;
+- les signaux bruts de mesure, qui relèvent de `tracking` ;
+- les providers antifraude externes, qui relèvent de `integrations` ;
+- les DTO providers externes.
+
+Un risque fraude est une lecture métier gouvernée de suspicion ou de danger transactionnel.
+Il ne doit pas être confondu avec :
+
+- un paiement ;
+- une commande ;
+- un droit d’accès ;
+- un score brut provider ;
+- un event de tracking ;
+- un log d’audit.
+
+---
 
 ## Responsabilités
 
-Le domaine `fraud-risk` prend en charge :
+Le domaine `fraud-risk` est responsable de :
 
-- les signaux internes de risque de fraude
-- les évaluations structurées de risque
-- les niveaux ou scores de risque au niveau métier
-- les décisions de blocage, de mise en revue ou d’autorisation conditionnelle
-- les cas ou dossiers de revue fraude si le modèle retenu le prévoit
-- la lecture gouvernée du risque applicable à une opération ou un acteur
-- la base fraude consommable par `orders`, `payments`, `customers`, `checkout`, `dashboarding`, `observability` et certaines couches d’administration
+- définir ce qu’est une évaluation de risque fraude dans le système ;
+- porter les signaux internes de risque ;
+- porter les évaluations structurées de risque ;
+- porter les niveaux de risque métier ;
+- porter les décisions de blocage, revue ou autorisation conditionnelle ;
+- exposer une lecture gouvernée du risque applicable à une opération, une commande, un paiement ou un acteur ;
+- publier les événements significatifs liés à la vie d’une évaluation ou d’une revue antifraude ;
+- protéger le système contre les décisions antifraude implicites, opaques ou contradictoires.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `fraud-risk` ne doit pas :
+- revues manuelles antifraude ;
+- escalades antifraude ;
+- autorisations conditionnelles ;
+- politiques locales par boutique ;
+- règles de seuil ;
+- neutralisation ou levée de risque ;
+- signaux issus de parcours transactionnels ;
+- coordination avec approbation sur certaines décisions sensibles.
 
-- porter les paiements, qui relèvent de `payments`
-- porter la commande durable, qui relève de `orders`
-- porter les permissions ou droits d’accès, qui relèvent de `permissions`
-- porter l’audit sensible, qui relève de `audit`
-- porter les signaux bruts de mesure, qui relèvent de `tracking`
-- porter les providers antifraude spécialisés, qui relèvent de `integrations`
-- devenir un moteur opaque sans langage métier explicite ni capacité d’explication interne
+---
 
-Le domaine `fraud-risk` porte l’évaluation structurée du risque de fraude. Il ne remplace ni `payments`, ni `orders`, ni `permissions`, ni `audit`, ni `tracking`, ni `integrations`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `fraud-risk` n’est pas responsable de :
 
-- `signals` : signaux internes de risque
-- `assessments` : évaluations structurées de risque fraude
-- `reviews` : cas de revue ou d’investigation antifraude
-- `decisions` : décisions métier de blocage, d’escalade ou d’autorisation conditionnelle
-- `policies` : règles d’évaluation, de seuil, d’exposition ou de traitement du risque
+- porter les paiements ;
+- porter les commandes ;
+- porter les permissions ou droits d’accès ;
+- porter l’audit sensible ;
+- porter les signaux bruts de mesure ;
+- exécuter les providers antifraude spécialisés ;
+- devenir un moteur opaque sans langage métier explicite ni capacité d’explication interne.
 
-## Entrées
+Le domaine `fraud-risk` ne doit pas devenir :
 
-Le domaine reçoit principalement :
+- un doublon de `payments` ;
+- un doublon de `orders` ;
+- un doublon de `tracking` ;
+- un doublon de `integrations` ;
+- un conteneur flou de scores ou signaux sans gouvernance métier.
 
-- des signaux issus de `checkout`, `orders`, `payments`, `customers`, `tracking` ou d’autres domaines autorisés
-- des demandes d’évaluation de risque sur une opération, une commande, un paiement ou un acteur
-- des demandes de lecture d’un état de risque ou d’un dossier de revue fraude
-- des changements de politique, de seuil ou de décision antifraude
-- des contextes de boutique, acteur, session, transaction, commande, canal ou surface d’exposition
-- des signaux internes utiles à l’escalade, au blocage ou à la levée d’un risque
+---
 
-## Sorties
+## Invariants
 
-Le domaine expose principalement :
+Les invariants minimaux sont les suivants :
 
-- des évaluations structurées de risque fraude
-- des signaux et niveaux de risque consolidés
-- des décisions de blocage, revue ou autorisation conditionnelle
-- des lectures exploitables par `orders`, `payments`, `customers`, `checkout`, `dashboarding`, `observability` et certaines couches d’administration
-- des structures de risque prêtes à être consommées par les domaines opérationnels autorisés
+- une évaluation de risque est rattachée à un sujet explicite ;
+- un niveau de risque possède une signification métier explicite ;
+- une décision de risque est distincte du paiement, de la commande et des permissions ;
+- `fraud-risk` ne se confond pas avec `payments` ;
+- `fraud-risk` ne se confond pas avec `orders` ;
+- `fraud-risk` ne se confond pas avec `tracking` ;
+- `fraud-risk` ne se confond pas avec `integrations` ;
+- les autres domaines ne doivent pas recréer librement leur propre vérité divergente d’évaluation antifraude quand le cadre commun `fraud-risk` existe ;
+- une décision provider externe ou un score brut ne doit pas devenir directement la vérité métier interne sans traduction explicite ;
+- une opération bloquée, escaladée ou mise en revue doit pouvoir être expliquée.
 
-## Dépendances vers autres domaines
+Le domaine protège la cohérence des décisions antifraude, pas la vérité primaire des flux transactionnels.
 
-Le domaine `fraud-risk` peut dépendre de :
+---
 
-- `orders` pour certains contextes de commande à risque
-- `payments` pour certains contextes de paiement à risque
-- `customers` pour certains contextes de compte ou d’historique client
-- `checkout` pour certains signaux amont de parcours transactionnel
-- `tracking` pour certains signaux de comportement ou d’environnement lorsque cela est autorisé
-- `consent` si certains enrichissements de signal dépendent d’un cadre de traitement autorisé
-- `approval` si certaines décisions sensibles nécessitent validation humaine ou escalade
-- `audit` pour tracer certaines décisions ou interventions sensibles
-- `observability` pour expliquer pourquoi un niveau de risque, un blocage ou une revue a été appliqué
-- `stores` pour le contexte boutique et certaines politiques locales antifraude
+## Dépendances
 
-Les domaines suivants peuvent dépendre de `fraud-risk` :
+### Dépendances métier
+
+Le domaine `fraud-risk` interagit fortement avec :
 
 - `orders`
 - `payments`
+- `customers`
 - `checkout`
-- `dashboarding`
+- `stores`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `tracking`, pour certains signaux de comportement ou d’environnement lorsque cela est autorisé
+- `consent`, si certains enrichissements dépendent d’un cadre de traitement autorisé
+- `approval`, si certaines décisions sensibles nécessitent validation humaine ou escalade
+- `audit`
 - `observability`
+- `dashboarding`
 - `support`
-- certaines couches d’administration plateforme et boutique
 
-## Capabilities activables liées
+### Dépendances externes
 
-Le domaine `fraud-risk` n’est pas une capability métier optionnelle au sens strict du noyau, mais il devient particulièrement important dès qu’un flux transactionnel ou financier existe.
+Le domaine peut être relié indirectement à :
 
-Exemples de capabilities liées :
+- outils antifraude externes ;
+- moteurs de scoring ;
+- PSP ou plateformes de paiement ;
+- autres systèmes via `integrations`.
 
-- `tracking`
-- `behavioralAnalytics`
-- `advancedPermissions`
-- `auditTrail`
+### Règle de frontière
 
-### Règle
+Le domaine `fraud-risk` porte l’évaluation structurée du risque de fraude.
+Il ne doit pas absorber :
 
-Le domaine `fraud-risk` reste structurellement présent même si les politiques antifraude restent sobres en V1.
+- les paiements ;
+- les commandes ;
+- les permissions ;
+- l’audit ;
+- les signaux bruts ;
+- ni les DTO providers externes.
 
-Il constitue le cadre commun d’évaluation et de gouvernance du risque fraude, distinct des paiements, commandes et providers spécialisés.
+---
 
-## Rôles/permissions concernés
+## Événements significatifs
 
-### Rôles
+Le domaine `fraud-risk` publie ou peut publier des événements significatifs tels que :
 
-Les rôles principalement concernés sont :
+- signal de risque détecté ;
+- risque évalué ;
+- revue fraude créée ;
+- revue fraude mise à jour ;
+- décision de risque modifiée ;
+- blocage antifraude appliqué ;
+- risque levé.
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `order_manager` en lecture ou action partielle selon la politique retenue
-- `customer_support` en lecture très encadrée selon la politique retenue
-- certains rôles fraude, revue ou conformité selon l’organisation retenue
+Le domaine peut consommer des signaux liés à :
 
-### Permissions
+- readiness checkout modifiée ;
+- commande créée ;
+- paiement autorisé ;
+- paiement échoué ;
+- client créé ;
+- événement de tracking créé ;
+- approbation accordée ;
+- capability boutique modifiée ;
+- action administrative structurée de revue, blocage ou levée de risque.
 
-Exemples de permissions concernées :
+Les noms exacts doivent rester dans le langage interne du système.
 
-- `fraud_risk.read`
-- `fraud_risk.write`
-- `orders.read`
-- `payments.read`
-- `customers.read`
-- `tracking.read`
-- `audit.read`
-- `approval.read`
+---
 
-## Événements émis
+## Cycle de vie
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine `fraud-risk` possède un cycle de vie explicite.
 
-- `fraud_risk.signal.detected`
-- `fraud_risk.assessed`
-- `fraud_risk.review.created`
-- `fraud_risk.review.updated`
-- `fraud_risk.decision.changed`
-- `fraud_risk.blocked`
-- `fraud_risk.cleared`
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
 
-## Événements consommés
+- détecté ;
+- évalué ;
+- en revue ;
+- bloqué ;
+- autorisé conditionnellement ;
+- levé, si pertinent ;
+- archivé, si pertinent.
 
-Le domaine peut consommer certains événements internes du type :
+Des états supplémentaires peuvent exister :
 
-- `checkout.readiness.changed`
-- `order.created`
-- `payment.authorized`
-- `payment.failed`
-- `customer.created`
-- `tracking.event.created`
-- `approval.approved`
-- `store.capabilities.updated`
-- certaines actions administratives structurées de revue, blocage ou levée de risque
+- indéterminé ;
+- suspendu ;
+- escaladé ;
+- expiré.
 
-Il doit toutefois rester maître de sa propre logique d’évaluation antifraude.
+Le domaine doit éviter :
 
-## Intégrations externes
+- les évaluations “fantômes” ;
+- les décisions silencieuses ;
+- les états purement techniques non interprétables métier.
 
-Le domaine `fraud-risk` ne doit pas devenir un domaine d’intégration provider-specific.
+---
 
-Il peut être enrichi par `integrations` vers des outils antifraude externes, mais :
+## Interfaces et échanges
 
-- la vérité du risque fraude interne reste dans `fraud-risk`
-- les DTO providers externes restent dans `integrations`
-- les décisions métier internes restent exprimées dans le langage du socle
+Le domaine `fraud-risk` expose principalement :
+
+- des évaluations structurées de risque fraude ;
+- des signaux et niveaux de risque consolidés ;
+- des décisions de blocage, revue ou autorisation conditionnelle ;
+- des lectures exploitables par `orders`, `payments`, `customers`, `checkout`, `dashboarding`, `observability` et certaines couches d’administration ;
+- des structures de risque prêtes à être consommées par les domaines opérationnels autorisés.
+
+Le domaine reçoit principalement :
+
+- des signaux issus de `checkout`, `orders`, `payments`, `customers`, `tracking` ou d’autres domaines autorisés ;
+- des demandes d’évaluation de risque sur une opération, une commande, un paiement ou un acteur ;
+- des demandes de lecture d’un état de risque ou d’un dossier de revue fraude ;
+- des changements de politique, de seuil ou de décision antifraude ;
+- des contextes de boutique, acteur, session, transaction, commande, canal ou surface d’exposition ;
+- des signaux internes utiles à l’escalade, au blocage ou à la levée d’un risque.
+
+Le domaine ne doit pas exposer un contrat canonique dicté par un provider externe.
+
+---
+
+## Contraintes d’intégration
+
+Le domaine `fraud-risk` peut être exposé à des contraintes telles que :
+
+- signaux multiples ;
+- scoring différé ;
+- enrichissements conditionnés au consentement ;
+- revues manuelles ;
+- politiques locales par boutique ;
+- décisions à forte criticité ;
+- projection vers outils externes ;
+- rétrocompatibilité des niveaux ou décisions.
+
+Règles minimales :
+
+- la hiérarchie d’autorité doit être explicite ;
+- la vérité interne du risque fraude reste dans `fraud-risk` ;
+- les DTO providers restent dans `integrations` ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- un signal ambigu ou incomplet ne doit pas produire silencieusement une décision trompeuse ;
+- les conflits entre signal, score, consentement, seuil et décision doivent être explicables.
+
+---
 
 ## Données sensibles / sécurité
 
@@ -174,100 +297,131 @@ Le domaine `fraud-risk` manipule des signaux hautement sensibles liés à la sé
 
 Points de vigilance :
 
-- contrôle strict des droits de lecture et d’écriture
-- séparation claire entre signal brut, évaluation de risque, décision et revue humaine
-- protection des signaux sensibles, motifs de suspicion et décisions de blocage
-- limitation de l’exposition selon le rôle, le scope et le besoin métier
-- audit des évaluations, décisions et consultations sensibles
+- contrôle strict des droits de lecture et d’écriture ;
+- séparation claire entre signal brut, évaluation de risque, décision et revue humaine ;
+- protection des signaux sensibles, motifs de suspicion et décisions de blocage ;
+- limitation de l’exposition selon le rôle, le scope et le besoin métier ;
+- audit des évaluations, décisions et consultations sensibles.
 
-## Observability / audit
+---
 
-### Observability
+## Observabilité et audit
 
-Il faut pouvoir comprendre :
+Le domaine `fraud-risk` doit rendre visibles au minimum :
 
-- quel risque fraude a été évalué
-- quels signaux ou contextes ont contribué à l’évaluation
-- quel niveau, quelle décision ou quelle revue est en vigueur
-- pourquoi une opération est bloquée, mise en revue ou autorisée conditionnellement
-- si une évaluation est absente à cause d’une capability off, d’un signal manquant, d’une policy restrictive ou d’une règle applicable
+- quel risque fraude a été évalué ;
+- quels signaux ou contextes ont contribué à l’évaluation ;
+- quel niveau, quelle décision ou quelle revue est en vigueur ;
+- pourquoi une opération est bloquée, mise en revue ou autorisée conditionnellement ;
+- si une évaluation est absente à cause d’une capability inactive, d’un signal manquant, d’une policy restrictive ou d’une règle applicable.
 
-### Audit
+L’audit doit permettre de répondre à des questions comme :
 
-Il faut tracer :
+- quelle évaluation de risque a été créée ou modifiée ;
+- quand ;
+- selon quelle origine ;
+- avec quels signaux ou seuils ;
+- avec quelle décision prise ou revue créée ;
+- avec quelle action manuelle significative.
 
-- la création d’une évaluation sensible de risque
-- la création ou mise à jour d’une revue fraude
-- les décisions de blocage, de levée ou d’escalade sensibles
-- certaines consultations sensibles si le modèle final les retient explicitement
-- certaines modifications manuelles importantes des politiques ou seuils antifraude
+L’observabilité doit distinguer :
+
+- erreur de modèle ;
+- erreur technique ;
+- signal invalide ;
+- évaluation incomplète ;
+- politique incohérente ;
+- décision non autorisée ;
+- scope insuffisant.
+
+---
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `FraudRiskSignal` : signal de risque fraude structuré
-- `FraudRiskAssessment` : évaluation consolidée de risque
-- `FraudRiskLevel` : niveau de risque applicable
-- `FraudRiskDecision` : décision métier associée au risque
-- `FraudRiskReview` : revue ou cas d’investigation antifraude
-- `FraudRiskPolicy` : règle d’évaluation, de seuil ou de traitement
-- `FraudRiskSubjectRef` : référence vers l’opération, la commande, le paiement ou l’acteur concerné
+- `FraudRiskSignal` : signal de risque fraude structuré ;
+- `FraudRiskAssessment` : évaluation consolidée de risque ;
+- `FraudRiskLevel` : niveau de risque applicable ;
+- `FraudRiskDecision` : décision métier associée au risque ;
+- `FraudRiskReview` : revue ou cas d’investigation antifraude ;
+- `FraudRiskPolicy` : règle d’évaluation, de seuil ou de traitement ;
+- `FraudRiskSubjectRef` : référence vers l’opération, la commande, le paiement ou l’acteur concerné.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Impact de maintenance / exploitation
 
-- une évaluation de risque est rattachée à un sujet explicite
-- un niveau de risque possède une signification métier explicite
-- une décision de risque est distincte du paiement, de la commande et des permissions
-- `fraud-risk` ne se confond pas avec `payments`
-- `fraud-risk` ne se confond pas avec `orders`
-- `fraud-risk` ne se confond pas avec `tracking`
-- `fraud-risk` ne se confond pas avec `integrations`
-- les autres domaines ne doivent pas recréer librement leur propre vérité divergente d’évaluation antifraude quand le cadre commun `fraud-risk` existe
-- une décision provider externe ou un score brut ne doit pas devenir directement la vérité métier interne sans traduction explicite
+Le domaine `fraud-risk` a un impact d’exploitation élevé.
 
-## Cas d’usage principaux
+Raisons :
 
-1. Évaluer le risque fraude d’une commande ou d’un paiement
-2. Déclencher une revue manuelle sur une opération sensible
-3. Bloquer ou autoriser conditionnellement un flux transactionnel
-4. Alimenter `orders` ou `payments` avec une décision de risque exploitable
-5. Exposer à l’admin une lecture claire des signaux, évaluations et revues fraude
-6. Encadrer la traçabilité et l’explicabilité des décisions antifraude sensibles
+- il touche directement la sécurité économique et transactionnelle ;
+- ses erreurs peuvent bloquer indûment ou laisser passer des opérations à risque ;
+- il se situe à la frontière entre checkout, paiement, commande et sécurité ;
+- il nécessite une forte explicabilité des décisions ;
+- il peut dépendre de signaux sensibles et de politiques complexes.
 
-## Cas limites / erreurs métier
+En exploitation, une attention particulière doit être portée à :
 
-Quelques cas d’erreur typiques :
+- la qualité des signaux ;
+- la cohérence des évaluations ;
+- la traçabilité des décisions ;
+- la cohérence avec orders, payments et checkout ;
+- les effets de bord sur support, pilotage et expérience client ;
+- la traduction correcte des enrichissements externes.
 
-- sujet de risque introuvable
-- signal antifraude invalide ou incohérent
-- évaluation de risque impossible ou incomplète
-- politique ou seuil antifraude invalide
-- tentative de décision non autorisée
-- permission ou scope insuffisant
-- conflit entre plusieurs règles d’évaluation, d’escalade ou de blocage
+Le domaine doit être considéré comme structurant dès qu’un flux transactionnel réel existe.
 
-## Décisions d’architecture
+---
 
-Les choix structurants du domaine sont :
+## Limites du domaine
 
-- `fraud-risk` porte l’évaluation structurée du risque de fraude du socle
-- `fraud-risk` est distinct de `payments`
-- `fraud-risk` est distinct de `orders`
-- `fraud-risk` est distinct de `tracking`
-- `fraud-risk` est distinct de `integrations`
-- les domaines consommateurs lisent la vérité antifraude via `fraud-risk`, sans la recréer localement
-- les signaux, évaluations, décisions et revues sensibles doivent être observables et auditables
+Le domaine `fraud-risk` s’arrête :
 
-## Questions explicitement closes
+- avant les paiements ;
+- avant les commandes ;
+- avant les permissions ;
+- avant l’audit ;
+- avant les signaux de mesure bruts ;
+- avant les providers externes ;
+- avant les DTO providers externes.
 
-Les points suivants sont considérés comme décidés :
+Le domaine `fraud-risk` porte l’évaluation structurée du risque de fraude du système.
+Il ne doit pas devenir un simple moteur de scoring opaque, un doublon des paiements ou un conteneur de signaux bruts sans gouvernance.
 
-- l’évaluation structurée du risque fraude relève de `fraud-risk`
-- les paiements relèvent de `payments`
-- les commandes relèvent de `orders`
-- les signaux bruts de mesure relèvent de `tracking`
-- les providers antifraude externes relèvent de `integrations`
-- `fraud-risk` ne remplace ni `payments`, ni `orders`, ni `tracking`, ni `integrations`, ni `audit`, ni `permissions`
+---
+
+## Questions ouvertes
+
+À confirmer explicitement dans le projet :
+
+- la frontière exacte entre `fraud-risk` et `payments` ;
+- la frontière exacte entre `fraud-risk` et `tracking` ;
+- la part exacte des revues humaines réellement supportées ;
+- la gouvernance des seuils et levées de risque ;
+- la hiérarchie entre vérité interne et outils antifraude externes éventuels ;
+- la place exacte du consentement dans les enrichissements antifraude.
+
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Documents liés
+
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../core/payments.md`
+- `../core/orders.md`
+- `permissions.md`
+- `audit.md`
+- `tracking.md`
+- `../core/customers.md`
+- `checkout.md`
+- `consent.md`
+- `approval.md`
+- `observability.md`
+- `dashboarding.md`
+- `support.md`
+- `../core/stores.md`
+- `../core/integrations.md`

@@ -1,115 +1,42 @@
-# Domaine `api-clients`
-
-## Objectif
-
-Ce document décrit le domaine `api-clients` dans la doctrine courante du socle.
-
-Il précise :
-
-- le rôle du domaine ;
-- sa place dans la modularité du socle ;
-- sa source de vérité ;
-- ses capabilities activables ;
-- ses objets métier ;
-- ses invariants ;
-- son cycle de vie ;
-- ses règles de cohérence ;
-- ses implications de maintenance, d’exploitation et de coût.
-
-Le domaine `api-clients` porte les accès machine-to-machine du socle.
-
-Il ne doit pas être confondu avec :
-
-- `auth`, qui porte l’authentification humaine ;
-- `users`, qui porte les acteurs humains ;
-- `integrations`, qui porte les connecteurs provider-specific ;
-- `permissions`, qui porte le référentiel de droits atomiques.
-
-Le domaine `api-clients` porte la **vérité des sujets techniques internes ou partenaires autorisés à consommer certaines APIs du socle**.
-
----
-
-## Position dans la doctrine de modularité
-
-Le domaine `api-clients` est classé comme :
-
-- `domaine coeur à capabilities toggleables`
-
-Le domaine n’est pas nécessairement exposé dans tous les projets au démarrage, mais il doit exister comme brique claire dès qu’il y a des accès machine-to-machine structurés.
-
-### Ce qui n’est jamais désactivé
-
-Quand le domaine est activé, il conserve toujours :
-
-- une identité client technique ;
-- des credentials séparés ;
-- un cycle de vie lisible ;
-- un scope d’accès explicite ;
-- une séparation nette avec les users humains et les integrations provider-specific.
-
-### Ce qui est activable / désactivable par capability
-
-Le domaine `api-clients` est lié aux capabilities suivantes :
-
-- `apiClients`
-- `scopedApiAccess`
-- `apiClientRotation`
-- `partnerApiAccess`
-
-### Ce qui relève d’un niveau
-
-Le domaine varie par richesse de gouvernance, rotation, scopes et audit.
-
-### Ce qui relève d’un provider ou d’une intégration externe
-
-Le domaine `api-clients` n’est pas un connecteur externe.
-Il porte les consommateurs techniques autorisés du socle.
-
----
+# Clients API
 
 ## Rôle
 
-Le domaine `api-clients` porte les clients techniques autorisés à accéder à certaines APIs ou flux du socle.
+Le domaine `api-clients` porte les clients API explicitement modélisés dans le système.
 
-Il constitue la source de vérité interne pour :
+Il définit :
 
-- l’existence d’un client technique ;
-- son statut ;
-- ses scopes ou permissions techniques ;
-- ses secrets ou credentials techniques associés ;
-- son cycle de rotation ou révocation.
+- ce qu’est un client API du point de vue du système ;
+- comment un client API est créé, identifié, activé, suspendu, révoqué ou archivé ;
+- comment ce domaine se distingue des utilisateurs humains, des permissions métier globales, des intégrations provider-specific et des secrets techniques externes ;
+- comment le système reste maître de sa vérité interne sur les identités machine, leurs statuts et leurs autorisations.
 
-Le domaine est distinct :
+Le domaine existe pour fournir une représentation explicite des acteurs techniques non humains, distincte :
 
-- de `auth`, qui porte l’accès humain ;
-- de `users`, qui porte les personnes ;
-- de `integrations`, qui porte les connecteurs sortants vers des providers ;
-- de `permissions`, qui porte le référentiel atomique de droits.
-
----
-
-## Responsabilités
-
-Le domaine `api-clients` prend en charge :
-
-- la création de clients API ;
-- la gestion de leurs credentials techniques ;
-- la gestion de leur statut ;
-- la gestion de leur scope ;
-- la rotation et la révocation des credentials ;
-- la traçabilité des opérations sensibles sur ces clients techniques.
+- des utilisateurs humains portés par `users` ;
+- des permissions globales portées par `permissions` ;
+- des rôles portés par `roles` ;
+- des intégrations provider-specific portées par `integrations` ;
+- des secrets ou infrastructures externes non gouvernés par le système.
 
 ---
 
-## Ce que le domaine ne doit pas faire
+## Classification
 
-Le domaine `api-clients` ne doit pas :
+### Catégorie documentaire
 
-- porter les users humains ;
-- porter les rôles humains ;
-- se confondre avec `integrations` ;
-- stocker des secrets comme des données ordinaires ;
-- laisser un client technique exister sans scope explicite.
+`core`
+
+### Criticité architecturale
+
+`coeur structurant`
+
+### Activable
+
+`oui`
+
+Le domaine `api-clients` est activable.
+Lorsqu’il est activé, il devient structurant pour l’exposition sécurisée d’API, les accès machine-to-machine, certaines automatisations et certaines intégrations gouvernées.
 
 ---
 
@@ -117,422 +44,361 @@ Le domaine `api-clients` ne doit pas :
 
 Le domaine `api-clients` est la source de vérité pour :
 
-- les clients techniques ;
-- leur statut ;
-- leurs scopes ;
-- leurs credentials techniques ;
-- leur rotation ou révocation.
+- la définition interne d’un client API ;
+- son identité machine ;
+- son statut ;
+- ses clés, secrets ou références d’authentification lorsque leur gouvernance est portée ici ;
+- ses autorisations explicites lorsqu’elles sont portées au niveau client ;
+- ses lectures structurées consommables par les domaines autorisés.
 
-Le domaine n’est pas la source de vérité pour :
+Le domaine `api-clients` n’est pas la source de vérité pour :
 
-- les users humains ;
-- les connecteurs providers ;
-- les sessions humaines ;
-- le référentiel global de permissions.
+- les utilisateurs humains, qui relèvent de `users` ;
+- la politique globale de rôles, qui relève de `roles` ;
+- la politique globale de permissions, qui relève de `permissions` ;
+- les DTO providers externes, qui relèvent de `integrations` ;
+- les secrets d’infrastructure non gérés par le système.
 
----
+Un client API est une identité machine gouvernée.
+Il ne doit pas être confondu avec :
 
-## Objets métier principaux
-
-Les principaux objets métier portés par le domaine sont :
-
-- `ApiClient`
-- `ApiClientStatus`
-- `ApiClientCredential`
-- `ApiClientScope`
-- `ApiCredentialRotation`
-
----
-
-## Capabilities activables liées
-
-Le domaine `api-clients` est lié aux capabilities suivantes :
-
-- `apiClients`
-- `scopedApiAccess`
-- `apiClientRotation`
-- `partnerApiAccess`
-
-### Effet si `apiClients` est activée
-
-Le socle supporte des clients techniques explicites.
-
-### Effet si `scopedApiAccess` est activée
-
-Le domaine porte des scopes ou permissions techniques plus précis.
-
-### Effet si `apiClientRotation` est activée
-
-Le domaine supporte des workflows de rotation et révocation plus riches.
-
-### Effet si `partnerApiAccess` est activée
-
-Le domaine peut porter certains clients techniques externes partenaires autorisés.
+- un utilisateur humain ;
+- une intégration provider ;
+- un simple token isolé sans rattachement métier ;
+- une permission globale ;
+- une clé d’infrastructure hors périmètre métier.
 
 ---
 
-## Niveaux de sophistication du domaine
+## Responsabilités
 
-### Niveau 1 — essentiel
+Le domaine `api-clients` est responsable de :
 
-- client technique simple ;
-- credential ;
-- statut ;
-- scope limité.
+- définir ce qu’est un client API dans le système ;
+- porter son identité machine ;
+- porter ses statuts d’activation, suspension, révocation ou archivage ;
+- porter ses secrets ou références d’authentification si le modèle les expose ici ;
+- exposer une lecture gouvernée des clients API actifs, suspendus, révoqués ou archivés ;
+- publier les événements significatifs liés à la vie d’un client API ;
+- protéger le système contre les identités machine implicites, opaques ou contradictoires.
 
-### Niveau 2 — standard
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-- scopes plus précis ;
-- meilleure rotation ;
-- meilleure lisibilité de gouvernance.
-
-### Niveau 3 — avancé
-
-- partenaires externes ;
-- rotation structurée ;
-- meilleure observability de sécurité ;
-- meilleure gouvernance des accès techniques.
-
-### Niveau 4 — expert / multi-contraintes
-
-- exigences plus fortes d’audit, révocation, rotation et isolation.
+- rotation de secret ;
+- expiration de clé ;
+- scopes ou permissions attachés au client ;
+- restrictions par boutique, environnement ou usage ;
+- métadonnées opératoires du client ;
+- journalisation métier des usages significatifs ;
+- délégation contrôlée de création ou révocation.
 
 ---
 
-## Entrées
+## Non-responsabilités
+
+Le domaine `api-clients` n’est pas responsable de :
+
+- définir les utilisateurs humains ;
+- définir l’intégralité des permissions globales ;
+- définir l’intégralité des rôles globaux ;
+- exécuter les intégrations provider-specific ;
+- gouverner les secrets d’infrastructure externes hors périmètre ;
+- devenir un IAM universel pour tout le système.
+
+Le domaine `api-clients` ne doit pas devenir :
+
+- un doublon de `users` ;
+- un doublon de `permissions` ;
+- un doublon de `roles` ;
+- un conteneur flou de tokens ou clés sans gouvernance métier.
+
+---
+
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- un client API possède une identité stable ;
+- un client API possède un statut explicite ;
+- un client révoqué ou suspendu ne doit pas être traité comme actif sans règle explicite ;
+- une rotation de secret ou de clé doit être traçable ;
+- une autorisation attachée à un client doit être interprétable sans ambiguïté ;
+- les domaines consommateurs ne doivent pas recréer librement leur propre vérité divergente de client API quand le cadre commun existe ;
+- une identité machine doit rester distincte d’une identité humaine.
+
+Le domaine protège la cohérence des identités machine gouvernées du système.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `api-clients` interagit fortement avec :
+
+- `users`
+- `permissions`
+- `roles`
+- `stores`
+- `integrations`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `audit`
+- `observability`
+- `legal`, si certaines exigences de traçabilité ou de conservation s’appliquent
+- `monitoring`, si certains usages techniques ou alertes sont structurés
+- `jobs`, si certaines révocations, expirations ou rotations sont différées
+
+### Dépendances externes
+
+Le domaine peut être relié à :
+
+- gateways API ;
+- systèmes IAM externes ;
+- coffres de secrets ;
+- infrastructures d’authentification ;
+- autres systèmes via `integrations`.
+
+### Règle de frontière
+
+Le domaine `api-clients` porte les identités machine gouvernées.
+Il ne doit pas absorber :
+
+- les utilisateurs humains ;
+- l’intégralité de la politique globale IAM ;
+- les providers externes ;
+- ni les secrets d’infrastructure hors périmètre métier.
+
+---
+
+## Événements significatifs
+
+Le domaine `api-clients` publie ou peut publier des événements significatifs tels que :
+
+- client API créé ;
+- client API activé ;
+- client API suspendu ;
+- client API révoqué ;
+- client API archivé ;
+- secret client API roté ;
+- permissions client API modifiées ;
+- expiration client API modifiée.
+
+Le domaine peut consommer des signaux liés à :
+
+- permission modifiée ;
+- rôle modifié ;
+- capability boutique modifiée ;
+- action administrative structurée ;
+- politique de sécurité modifiée ;
+- rotation ou événement technique validé.
+
+Les noms exacts doivent rester dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `api-clients` possède un cycle de vie explicite.
+
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
+
+- créé ;
+- actif ;
+- suspendu ;
+- révoqué ;
+- archivé.
+
+Des états supplémentaires peuvent exister :
+
+- en attente d’activation ;
+- expiré ;
+- restreint ;
+- en rotation.
+
+Le domaine doit éviter :
+
+- les clients API “fantômes” ;
+- les changements silencieux de statut ;
+- les états purement techniques non interprétables métier.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `api-clients` expose principalement :
+
+- des lectures de clients API structurés ;
+- des lectures de statut ;
+- des lectures de permissions ou scopes attachés si ce modèle est porté ici ;
+- des lectures exploitables par les couches API, `permissions`, `observability`, `audit` et certaines couches d’administration ;
+- des structures prêtes à être consommées par les domaines autorisés.
 
 Le domaine reçoit principalement :
 
-- des commandes de création de client API ;
-- des demandes de rotation ;
-- des demandes de révocation ;
-- des changements de scope ;
-- des signaux de sécurité ou d’administration.
+- des créations ou mises à jour de clients API ;
+- des activations, suspensions, révocations ou archivages ;
+- des demandes de lecture d’un client API ;
+- des changements d’autorisations ou de contexte d’usage ;
+- des contextes de boutique, environnement, scope ou usage technique ;
+- des signaux internes utiles à l’évolution du cycle de vie.
+
+Le domaine ne doit pas exposer un contrat canonique dicté par un provider externe.
 
 ---
 
-## Sorties
+## Contraintes d’intégration
 
-Le domaine expose principalement :
+Le domaine `api-clients` peut être exposé à des contraintes telles que :
 
-- un client technique ;
-- un statut ;
-- un scope ;
-- un credential technique ;
-- des événements liés à la gouvernance des accès techniques.
+- multi-environnements ;
+- multi-boutiques ;
+- scopes fins ;
+- rotation de secrets ;
+- expiration automatique ;
+- projection vers gateway ou IAM externe ;
+- audit renforcé ;
+- rétrocompatibilité de clés ou identifiants.
 
----
+Règles minimales :
 
-## Dépendances vers autres domaines
-
-Le domaine `api-clients` dépend de :
-
-- `permissions`
-- `audit`
-- `observability`
-
-Les domaines suivants dépendent de `api-clients` :
-
-- `authz`
-- `admin`
-- certaines APIs internes protégées
-
----
-
-## Dépendances vers providers / intégrations
-
-Le domaine `api-clients` ne porte pas les connecteurs sortants.
-Il porte les consommateurs techniques autorisés à entrer dans le socle.
-
-Il reste distinct de `integrations`.
-
----
-
-## Rôles / permissions concernés
-
-### Rôles
-
-Les rôles concernés sont notamment :
-
-- `platform_owner`
-- `platform_engineer`
-- `security_operator`
-- `integration_operator`
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `api_clients.read`
-- `api_clients.write`
-- `api_clients.rotate`
-- `api_clients.revoke`
-- `permissions.read`
-- `audit.read`
-
----
-
-## Événements émis
-
-Le domaine émet les domain events internes suivants :
-
-- `api_client.created`
-- `api_client.updated`
-- `api_client.disabled`
-- `api_client.credential.rotated`
-- `api_client.credential.revoked`
-
----
-
-## Événements consommés
-
-Le domaine consomme principalement des événements administratifs ou de sécurité structurants si le socle en prévoit.
+- la hiérarchie d’autorité doit être explicite ;
+- la vérité interne des clients API reste dans `api-clients` ;
+- les DTO providers restent dans `integrations` ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- une identité incohérente ne doit pas être promue silencieusement ;
+- les conflits entre statut, secret, scope et usage doivent être explicables.
 
 ---
 
 ## Données sensibles / sécurité
 
-Le domaine `api-clients` manipule une donnée hautement sensible.
+Le domaine `api-clients` manipule des données de sécurité sensibles.
 
 Points de vigilance :
 
-- les secrets techniques doivent être protégés ;
-- la rotation doit être explicite ;
-- les scopes doivent rester minimaux et audités ;
-- la révocation doit être claire et exploitable ;
-- un client technique compromis ne doit pas être traité comme un user humain.
+- contrôle strict des droits de lecture et d’écriture ;
+- protection des secrets, clés ou références sensibles ;
+- séparation claire entre création, lecture limitée, rotation, suspension et révocation ;
+- limitation de l’exposition selon le rôle, le scope et le besoin métier ;
+- audit des changements significatifs de secret, statut ou autorisation ;
+- prudence sur les usages frauduleux, les expositions accidentelles et les escalades de privilèges.
 
 ---
 
-## Observability / audit
+## Observabilité et audit
 
-### Observability
+Le domaine `api-clients` doit rendre visibles au minimum :
 
-Il faut pouvoir comprendre :
+- quel client API est actif ;
+- quel statut est en vigueur ;
+- quelles autorisations sont attachées ;
+- pourquoi un client API est activé, suspendu, révoqué ou archivé ;
+- si une évolution est bloquée à cause d’une règle, d’un statut ou d’une incohérence ;
+- si une rotation ou expiration a modifié l’accès effectif.
 
-- quels clients API existent ;
-- quels scopes ils portent ;
-- lesquels sont actifs ou révoqués ;
-- quand un credential a été tourné ou révoqué.
+L’audit doit permettre de répondre à des questions comme :
 
-### Audit
+- quel client API a été créé ou modifié ;
+- quand ;
+- selon quelle origine ;
+- avec quel changement de statut, de secret ou d’autorisation ;
+- avec quelle validation ou action humaine ;
+- avec quel impact sur les accès techniques.
 
-Il faut tracer :
+L’observabilité doit distinguer :
 
-- création ;
-- changement de scope ;
-- rotation ;
-- révocation ;
-- désactivation ;
-- réactivation.
-
----
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- un client API possède une identité stable ;
-- un client API possède un scope explicite ;
-- un credential technique révoqué n’est plus utilisable ;
-- `api-clients` reste distinct de `users` et `integrations` ;
-- les secrets techniques ne sont pas traités comme des données ordinaires.
+- erreur de modèle ;
+- erreur technique ;
+- client inexistant ;
+- secret invalide ;
+- statut incohérent ;
+- évolution non autorisée ;
+- suspicion d’abus ou d’accès anormal.
 
 ---
 
-## Lifecycle et gouvernance des données
+## Modèle de données conceptuel
 
-### États principaux
+Les principaux objets métier conceptuels du domaine sont :
 
-Les états principaux incluent typiquement :
-
-- `ACTIVE`
-- `DISABLED`
-- `REVOKED`
-- `ARCHIVED`
-
-Les credentials peuvent être :
-
-- actifs ;
-- rotated ;
-- revoked.
-
-### Transitions autorisées
-
-Exemples :
-
-- `ACTIVE -> DISABLED`
-- `DISABLED -> ACTIVE`
-- `ACTIVE -> REVOKED`
-- credential actif -> rotated
-- credential actif -> revoked
-
-### Transitions interdites
-
-Exemples :
-
-- un client révoqué redevient actif sans flux explicite ;
-- un credential révoqué redevient utilisable ;
-- un scope disparaît silencieusement sans traçabilité.
-
-### Règles de conservation / archivage / suppression
-
-- les clients techniques et leurs changements sensibles restent auditables ;
-- les credentials suivent une politique stricte ;
-- l’archivage est préférable à la suppression implicite des sujets techniques structurants.
+- `ApiClient` : client API structuré ;
+- `ApiClientStatus` : état du client API ;
+- `ApiClientSecret` : secret ou référence de secret si ce modèle est porté ici ;
+- `ApiClientScope` : scope ou autorisation attachée ;
+- `ApiClientPolicy` : règle de gouvernance, d’expiration ou de sécurité ;
+- `ApiClientAuditRecord` : trace structurée d’évolution critique si ce modèle est exposé.
 
 ---
 
-## Transactions / cohérence / concurrence
+## Impact de maintenance / exploitation
 
-### Ce qui doit être atomique
+Le domaine `api-clients` a un impact d’exploitation élevé lorsqu’il est activé.
 
-Les opérations suivantes doivent réussir ou échouer ensemble :
+Raisons :
 
-- création d’un client API ;
-- changement de scope ;
-- rotation d’un credential ;
-- révocation d’un credential ;
-- changement de statut ;
-- écriture des événements `api_client.*` correspondants.
+- il touche directement la sécurité des accès machine ;
+- ses erreurs peuvent provoquer fuites, blocages ou accès indus ;
+- il interagit avec permissions, rôles, audit et observabilité ;
+- il nécessite une forte traçabilité ;
+- il dépend souvent de politiques de sécurité strictes et parfois de systèmes externes.
 
-### Ce qui peut être eventual consistency
+En exploitation, une attention particulière doit être portée à :
 
-Les traitements suivants peuvent partir après commit :
+- la cohérence des statuts ;
+- la rotation et l’expiration des secrets ;
+- la traçabilité des changements ;
+- la cohérence avec permissions et rôles ;
+- les effets de bord sur API, intégrations et support opératoire ;
+- la détection d’usages anormaux.
 
-- notifications sécurité ;
-- projections admin ;
-- analytics sécurité ;
-- synchronisation secondaire éventuelle.
-
-### Stratégie de concurrence
-
-Le domaine protège explicitement ses invariants par :
-
-- transaction applicative sur les opérations sensibles ;
-- unicité logique du client ;
-- non-réutilisation d’un credential révoqué ;
-- cohérence du scope actif.
-
-Les conflits attendus sont :
-
-- double rotation concurrente ;
-- révocation et réactivation concurrentes ;
-- changement de scope concurrent.
-
-### Idempotence
-
-Les commandes métier suivantes doivent être idempotentes :
-
-- `upsert-api-client` : clé d’intention = `(apiClientRef, changeIntentId)`
-- `rotate-api-client-credential` : clé d’intention = `(apiClientId, rotationIntentId)`
-- `revoke-api-client` : clé d’intention = `(apiClientId, revokeIntentId)`
-- `set-api-client-scope` : clé d’intention = `(apiClientId, scopeVersion, changeIntentId)`
-
-### Domain events écrits dans la même transaction
-
-Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
-
-- `api_client.created`
-- `api_client.updated`
-- `api_client.disabled`
-- `api_client.credential.rotated`
-- `api_client.credential.revoked`
-
-### Effets secondaires après commit
-
-Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
-
-- notification sécurité ;
-- analytics ;
-- sync secondaire ;
-- monitoring externe.
+Le domaine doit être considéré comme sensible dès qu’un accès API machine-to-machine réel existe.
 
 ---
 
-## Impact maintenance / exploitation
+## Limites du domaine
 
-### Niveau de maintenance minimal recommandé
+Le domaine `api-clients` s’arrête :
 
-- `M2` dès que le domaine est activé ;
-- `M3` pour scopes riches ou partenaires externes ;
-- `M4` pour exigences très fortes de rotation et audit.
+- avant les utilisateurs humains ;
+- avant l’intégralité de la politique IAM globale ;
+- avant les providers externes ;
+- avant les secrets d’infrastructure hors périmètre ;
+- avant les DTO providers externes.
 
-### Pourquoi
-
-Les accès machine-to-machine sont sensibles.
-Ils exigent une gouvernance plus stricte qu’un simple paramètre technique.
-
-### Points d’exploitation à surveiller
-
-- clients API actifs ;
-- rotations ;
-- credentials révoqués ;
-- scopes trop larges ;
-- clients dormants ou incohérents.
+Le domaine `api-clients` porte les identités machine gouvernées.
+Il ne doit pas devenir un IAM universel ni un doublon des autres domaines de sécurité.
 
 ---
 
-## Impact coût / complexité
+## Questions ouvertes
 
-Le coût du domaine `api-clients` monte principalement avec :
+À confirmer explicitement dans le projet :
 
-- `scopedApiAccess`
-- `apiClientRotation`
-- `partnerApiAccess`
-- les exigences de sécurité et d’audit.
+- la frontière exacte entre `api-clients` et `permissions` ;
+- la frontière exacte entre `api-clients` et `roles` ;
+- la part exacte des secrets réellement persistés ici ;
+- la gouvernance des expirations et rotations ;
+- la hiérarchie entre vérité interne et IAM externe éventuel ;
+- la place exacte des restrictions par boutique, environnement ou scope.
 
-Lecture relative du coût :
-
-- niveau 1 : `C1`
-- niveau 2 : `C2`
-- niveau 3 : `C3`
-- niveau 4 : `C4`
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
 ---
 
-## Cas d’usage principaux
+## Documents liés
 
-1. Créer un client API
-2. Lui attribuer un scope
-3. Tourner un credential
-4. Révoquer un accès technique
-5. Superviser des accès machine-to-machine
-
----
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- client API introuvable ;
-- double création logique ;
-- rotation concurrente ;
-- scope incohérent ;
-- credential révoqué réutilisé ;
-- confusion entre client API et connecteur d’intégration.
-
----
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `api-clients` est un domaine coeur à capabilities toggleables ;
-- il porte les sujets techniques entrants du socle ;
-- il reste distinct de `users`, `auth`, `permissions` et `integrations` ;
-- les credentials techniques sont sensibles et gouvernés ;
-- les scopes sont explicites ;
-- la rotation et la révocation sont des opérations de premier rang.
-
----
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- `api-clients` ne se confond pas avec `integrations` ;
-- un client API n’est pas un user humain ;
-- les credentials techniques doivent être gouvernés comme des secrets ;
-- le domaine devient indispensable dès qu’un accès machine-to-machine existe ;
-- la gouvernance de ces accès doit être auditée.
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `users.md`
+- `permissions.md`
+- `roles.md`
+- `store.md`
+- `integrations.md`
+- `../cross-cutting/audit.md`
+- `../cross-cutting/observability.md`
+- `../cross-cutting/monitoring.md`
+- `../cross-cutting/legal.md`

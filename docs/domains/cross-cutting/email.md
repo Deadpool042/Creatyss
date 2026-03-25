@@ -1,169 +1,287 @@
-# Domaine email
+# Email
 
 ## Rôle
 
-Le domaine `email` porte la communication email structurée du socle au niveau message et canal interne.
+Le domaine `email` porte la communication email structurée du système au niveau message et canal interne.
 
-Il organise les emails émis par la plateforme ou la boutique, leur typologie, leur état, leur contexte métier et leur préparation interne, sans absorber les notifications transactionnelles, la newsletter, les templates réutilisables, ni les providers emailing externes.
+Il définit :
+
+- ce qu’est un email du point de vue du système ;
+- comment un email est préparé, catégorisé, différé, annulé, émis ou marqué en échec au niveau interne ;
+- comment ce domaine se distingue des notifications transactionnelles, de la newsletter, des templates réutilisables et des providers emailing externes ;
+- comment le système reste maître de sa vérité interne sur les messages email structurés.
+
+Le domaine existe pour fournir une représentation explicite des emails métier, distincte :
+
+- des notifications portées par `notifications` ;
+- de la newsletter portée par `newsletter` ;
+- des templates réutilisables portés par `template-system` ;
+- des providers emailing externes portés par `integrations` ;
+- des DTO providers externes.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse structurant`
+
+### Activable
+
+`non`
+
+Le domaine `email` est structurel dès lors qu’une communication email interne structurée existe dans le système.
+
+---
+
+## Source de vérité
+
+Le domaine `email` est la source de vérité pour :
+
+- la définition interne d’un message email structuré ;
+- sa catégorie métier ;
+- son statut interne ;
+- ses destinataires logiques ;
+- son contexte métier source lorsqu’il est rattaché ici ;
+- ses lectures structurées consommables par les domaines autorisés.
+
+Le domaine `email` n’est pas la source de vérité pour :
+
+- les notifications transactionnelles au sens global, qui relèvent de `notifications` ;
+- les campagnes newsletter, qui relèvent de `newsletter` ;
+- les templates réutilisables, qui relèvent de `template-system` ;
+- les providers emailing externes, qui relèvent de `integrations` ;
+- les DTO providers externes.
+
+Un email est un message interne structuré.
+Il ne doit pas être confondu avec :
+
+- une notification globale ;
+- une campagne newsletter ;
+- un template réutilisable ;
+- un log SMTP brut ;
+- une réponse provider externe ;
+- un simple contenu textuel sans contexte métier.
+
+---
 
 ## Responsabilités
 
-Le domaine `email` prend en charge :
+Le domaine `email` est responsable de :
 
-- les messages email structurés du socle
-- les catégories d’emails au niveau métier
-- les états d’un email préparé, émis, différé, échoué ou annulé au niveau interne
-- les destinataires logiques d’un email
-- le contexte métier d’émission d’un email
-- la lecture gouvernée des emails émis ou en attente au niveau interne
-- la base email consommable par `notifications`, `newsletter`, `support`, `orders`, `documents`, `dashboarding`, `observability` et certaines couches d’administration
+- définir ce qu’est un email dans le système ;
+- porter les messages email structurés ;
+- porter leurs catégories métier ;
+- porter leurs statuts internes ;
+- porter leurs destinataires logiques ;
+- exposer une lecture gouvernée des emails émis, en attente, différés, annulés ou échoués ;
+- publier les événements significatifs liés à la vie d’un email ;
+- protéger le système contre les messages email implicites, opaques ou contradictoires.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `email` ne doit pas :
+- emails commande ;
+- emails documentaires ;
+- emails support ;
+- emails événementiels ;
+- catégorisation email ;
+- règles locales d’émission ;
+- remappage métier de certains retours d’exécution ;
+- lecture admin ou support des emails liés à un contexte métier.
 
-- porter les notifications transactionnelles comme responsabilité globale, qui relèvent de `notifications`
-- porter les campagnes newsletter, qui relèvent de `newsletter`
-- porter les templates réutilisables, qui relèvent de `template-system`
-- porter les providers emailing externes, qui relèvent de `integrations`
-- devenir un simple journal SMTP technique sans langage métier explicite
-- absorber toute communication sortante du socle sans distinction de finalité
+---
 
-Le domaine `email` porte le message email structuré au niveau interne. Il ne remplace ni `notifications`, ni `newsletter`, ni `template-system`, ni `integrations`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `email` n’est pas responsable de :
 
-- `messages` : messages email structurés
-- `recipients` : destinataires logiques d’un email
-- `status` : états de préparation, émission ou échec au niveau interne
-- `policies` : règles d’émission, de catégorisation ou d’exposition des emails
+- porter la responsabilité globale des notifications transactionnelles ;
+- porter les campagnes newsletter ;
+- porter les templates réutilisables ;
+- porter les providers emailing externes ;
+- devenir un simple journal SMTP technique sans langage métier explicite ;
+- absorber toute communication sortante du système sans distinction de finalité.
 
-## Entrées
+Le domaine `email` ne doit pas devenir :
+
+- un doublon de `notifications` ;
+- un doublon de `newsletter` ;
+- un doublon de `template-system` ;
+- un doublon de `integrations` ;
+- un conteneur flou de messages sans modèle métier.
+
+---
+
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- un email possède un identifiant stable, une catégorie explicite et un statut explicite ;
+- un destinataire logique est rattaché à un email explicite ;
+- `email` ne se confond pas avec `notifications` ;
+- `email` ne se confond pas avec `newsletter` ;
+- `email` ne se confond pas avec `template-system` ;
+- `email` ne se confond pas avec `integrations` ;
+- les autres domaines ne doivent pas recréer librement leur propre vérité divergente de message email interne quand le cadre commun `email` existe ;
+- un statut provider externe ne doit pas devenir directement la vérité métier interne sans traduction explicite ;
+- un email annulé, incomplet ou non émissible ne doit pas être traité comme prêt à partir sans règle explicite.
+
+Le domaine protège la cohérence des messages email structurés, pas l’infrastructure emailing externe.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `email` interagit fortement avec :
+
+- `notifications`
+- `newsletter`
+- `customers`
+- `users`
+- `stores`
+- `orders`
+- `documents`
+- `support`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `template-system`, si certains gabarits réutilisables sont utilisés
+- `audit`
+- `observability`
+- `dashboarding`
+- `jobs`, si certaines émissions ou reprises sont différées
+
+### Dépendances externes
+
+Le domaine peut être relié indirectement à :
+
+- providers emailing ;
+- infrastructures SMTP ;
+- systèmes de délivrabilité ;
+- autres systèmes via `integrations`.
+
+### Règle de frontière
+
+Le domaine `email` porte les messages email structurés.
+Il ne doit pas absorber :
+
+- la responsabilité globale des notifications ;
+- la newsletter ;
+- les templates réutilisables ;
+- les providers externes ;
+- ni les DTO providers externes.
+
+---
+
+## Événements significatifs
+
+Le domaine `email` publie ou peut publier des événements significatifs tels que :
+
+- email créé ;
+- email préparé ;
+- email émis ;
+- email échoué ;
+- email annulé ;
+- statut email modifié ;
+- destinataire email modifié.
+
+Le domaine peut consommer des signaux liés à :
+
+- notification créée ;
+- campagne newsletter créée ;
+- commande créée ;
+- document généré ;
+- message support créé ;
+- capability boutique modifiée ;
+- action administrative structurée de préparation, annulation ou reprise.
+
+Les noms exacts doivent rester dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `email` possède un cycle de vie explicite.
+
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
+
+- créé ;
+- préparé ;
+- émis ;
+- échoué ;
+- annulé.
+
+Des états supplémentaires peuvent exister :
+
+- différé ;
+- en attente ;
+- archivé ;
+- réémis ;
+- restreint.
+
+Le domaine doit éviter :
+
+- les emails “fantômes” ;
+- les changements silencieux de statut ;
+- les états purement techniques non interprétables métier.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `email` expose principalement :
+
+- des emails structurés ;
+- des destinataires logiques d’emails ;
+- des états internes d’émission email ;
+- des lectures exploitables par `notifications`, `newsletter`, `support`, `orders`, `documents`, `dashboarding`, `observability` et certaines couches d’administration ;
+- des structures email prêtes à être rendues ou transmises aux couches d’exécution autorisées.
 
 Le domaine reçoit principalement :
 
-- des demandes de préparation ou d’émission d’un email issues de domaines consommateurs autorisés
-- des contextes métier issus de `orders`, `documents`, `support`, `events`, `notifications` ou d’autres domaines autorisés
-- des demandes de lecture d’un email ou d’un historique email interne
-- des changements d’état d’émission ou de préparation
-- des contextes de boutique, langue, canal, audience ou acteur destinataire
-- des signaux internes utiles à la catégorisation ou à la mise à jour de statut d’un email
+- des demandes de préparation ou d’émission d’un email issues de domaines consommateurs autorisés ;
+- des contextes métier issus de `orders`, `documents`, `support`, `events`, `notifications` ou d’autres domaines autorisés ;
+- des demandes de lecture d’un email ou d’un historique email interne ;
+- des changements d’état d’émission ou de préparation ;
+- des contextes de boutique, langue, canal, audience ou acteur destinataire ;
+- des signaux internes utiles à la catégorisation ou à la mise à jour de statut d’un email.
 
-## Sorties
+Le domaine ne doit pas exposer un contrat canonique dicté par un provider externe.
 
-Le domaine expose principalement :
+---
 
-- des emails structurés
-- des destinataires logiques d’emails
-- des états internes d’émission email
-- des lectures exploitables par `notifications`, `newsletter`, `support`, `orders`, `documents`, `dashboarding`, `observability` et certaines couches d’administration
-- des structures email prêtes à être rendues ou transmises aux couches d’exécution autorisées
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `email` peut être exposé à des contraintes telles que :
 
-Le domaine `email` peut dépendre de :
+- multi-boutiques ;
+- multi-langues ;
+- branding local ;
+- émissions différées ;
+- coexistence avec notifications et newsletter ;
+- providers multiples ;
+- échecs d’émission externes ;
+- rétrocompatibilité des catégories ou statuts email.
 
-- `template-system` pour certains gabarits réutilisables si le modèle retenu le prévoit
-- `notifications` pour certains usages transactionnels sans absorber sa responsabilité
-- `newsletter` pour certaines coordinations d’usage sans absorber sa responsabilité
-- `customers` ou `users` pour certains destinataires logiques
-- `stores` pour le contexte boutique, langue, branding ou politiques locales
-- `audit` pour tracer certains changements sensibles d’émission ou de consultation
-- `observability` pour expliquer pourquoi un email a été préparé, différé, annulé ou marqué en échec
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `email` :
+- la hiérarchie d’autorité doit être explicite ;
+- la vérité interne des emails reste dans `email` ;
+- les DTO providers restent dans `integrations` ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- un échec provider ne doit pas corrompre silencieusement la vérité interne ;
+- les conflits entre statut, catégorie, destinataire et règle d’émission doivent être explicables.
 
-- `notifications`
-- `newsletter`
-- `support`
-- `orders`
-- `documents`
-- `dashboarding`
-- certaines couches d’administration
-
-## Capabilities activables liées
-
-Le domaine `email` est directement ou indirectement lié à :
-
-- `notifications`
-- `newsletter`
-- `marketingCampaigns`
-
-Le domaine `email` lui-même peut être considéré comme structurellement présent dès qu’une communication email interne structurée existe dans le socle.
-
-### Effet si `notifications` est activée
-
-Le domaine peut être davantage utilisé pour les messages email transactionnels préparés côté socle.
-
-### Effet si `newsletter` est activée
-
-Le domaine peut coexister avec la diffusion newsletter sans absorber sa responsabilité métier.
-
-### Effet si `marketingCampaigns` est activée
-
-Le domaine peut être davantage sollicité pour certains contextes email dérivés, sans remplacer `newsletter` ou `marketing`.
-
-## Rôles/permissions concernés
-
-### Rôles
-
-Les rôles principalement concernés sont :
-
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `marketing_manager` en lecture partielle selon la politique retenue
-- `customer_support` en lecture partielle selon la politique retenue
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `email.read`
-- `email.write`
-- `notifications.read`
-- `newsletter.read`
-- `customers.read`
-- `orders.read`
-- `documents.read`
-- `audit.read`
-
-## Événements émis
-
-Le domaine peut émettre des domain events internes du type :
-
-- `email.created`
-- `email.prepared`
-- `email.sent`
-- `email.failed`
-- `email.cancelled`
-- `email.status.changed`
-
-## Événements consommés
-
-Le domaine peut consommer certains événements internes du type :
-
-- `notification.created`
-- `newsletter.campaign.created`
-- `order.created`
-- `invoice.generated`
-- `support.message.created`
-- `store.capabilities.updated`
-- certaines actions administratives structurées de préparation ou d’annulation d’email
-
-Il doit toutefois rester maître de sa propre logique de message email structuré.
-
-## Intégrations externes
-
-Le domaine `email` ne doit pas devenir un domaine d’intégration provider-specific.
-
-Il peut être consommé par `integrations` ou par des couches d’exécution qui parlent à des providers emailing, mais :
-
-- la vérité des messages email internes reste dans `email`
-- les DTO providers externes restent dans `integrations`
-- la responsabilité des campagnes newsletter reste dans `newsletter`
-- la responsabilité des notifications transactionnelles reste dans `notifications`
+---
 
 ## Données sensibles / sécurité
 
@@ -171,98 +289,129 @@ Le domaine `email` manipule des contenus de communication et des destinataires p
 
 Points de vigilance :
 
-- contrôle strict des droits de lecture et d’écriture
-- séparation claire entre message email interne, template, diffusion transactionnelle et provider externe
-- protection des contenus non encore envoyés ou sensibles
-- limitation de l’exposition selon le rôle, le scope et la finalité
-- audit des changements significatifs d’état, de destinataire ou de consultation sensible
+- contrôle strict des droits de lecture et d’écriture ;
+- séparation claire entre message email interne, template, diffusion transactionnelle et provider externe ;
+- protection des contenus non encore envoyés ou sensibles ;
+- limitation de l’exposition selon le rôle, le scope et la finalité ;
+- audit des changements significatifs d’état, de destinataire ou de consultation sensible.
 
-## Observability / audit
+---
 
-### Observability
+## Observabilité et audit
 
-Il faut pouvoir comprendre :
+Le domaine `email` doit rendre visibles au minimum :
 
-- quel email a été préparé ou émis
-- quel contexte métier a déclenché sa création
-- quel statut interne est en vigueur
-- pourquoi un email a été différé, annulé ou marqué en échec
-- si une absence d’émission vient d’une capability off, d’un blocage de policy, d’un destinataire invalide ou d’une règle applicable
+- quel email a été préparé ou émis ;
+- quel contexte métier a déclenché sa création ;
+- quel statut interne est en vigueur ;
+- pourquoi un email a été différé, annulé ou marqué en échec ;
+- si une absence d’émission vient d’une capability inactive, d’un blocage de policy, d’un destinataire invalide ou d’une règle applicable ;
+- quels changements significatifs ont affecté un email ou son destinataire logique.
 
-### Audit
+L’audit doit permettre de répondre à des questions comme :
 
-Il faut tracer :
+- quel email a été créé, préparé, émis, échoué ou annulé ;
+- quand ;
+- selon quelle origine ;
+- avec quel destinataire ;
+- avec quel changement de statut ;
+- avec quelle intervention manuelle éventuelle.
 
-- la création d’un email sensible
-- les changements significatifs de statut d’émission
-- certaines annulations ou réémissions importantes
-- certaines consultations sensibles si le modèle final les retient explicitement
-- certaines modifications manuelles importantes du message ou du destinataire logique
+L’observabilité doit distinguer :
+
+- erreur de modèle ;
+- erreur technique ;
+- destinataire invalide ;
+- transition de statut invalide ;
+- email incomplet ;
+- évolution non autorisée ;
+- échec provider externe.
+
+---
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `EmailMessage` : message email structuré
-- `EmailRecipient` : destinataire logique de l’email
-- `EmailStatus` : état interne de l’email
-- `EmailPolicy` : règle d’émission, de catégorisation ou d’exposition
-- `EmailCategory` : catégorie métier d’email
-- `EmailSubjectRef` : référence vers le contexte métier source de l’email
+- `EmailMessage` : message email structuré ;
+- `EmailRecipient` : destinataire logique de l’email ;
+- `EmailStatus` : état interne de l’email ;
+- `EmailPolicy` : règle d’émission, de catégorisation ou d’exposition ;
+- `EmailCategory` : catégorie métier d’email ;
+- `EmailSubjectRef` : référence vers le contexte métier source de l’email.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Impact de maintenance / exploitation
 
-- un email possède un identifiant stable, une catégorie explicite et un statut explicite
-- un destinataire logique est rattaché à un email explicite
-- `email` ne se confond pas avec `notifications`
-- `email` ne se confond pas avec `newsletter`
-- `email` ne se confond pas avec `template-system`
-- `email` ne se confond pas avec `integrations`
-- les autres domaines ne doivent pas recréer librement leur propre vérité divergente de message email interne quand le cadre commun `email` existe
-- un statut provider externe ne doit pas devenir directement la vérité métier interne sans traduction explicite
+Le domaine `email` a un impact d’exploitation moyen à élevé.
 
-## Cas d’usage principaux
+Raisons :
 
-1. Préparer un email lié à une commande ou à un document
-2. Structurer un email transactionnel avant diffusion effective
-3. Gérer l’état interne d’un email émis, échoué ou annulé
-4. Fournir à `notifications` ou `support` une lecture fiable de l’email lié à un contexte métier
-5. Exposer à l’admin une lecture claire des emails internes et de leur état
-6. Coordonner l’usage email sans absorber la newsletter ni le provider externe
+- il touche des communications potentiellement sensibles ;
+- ses erreurs dégradent support, expérience client et lisibilité des parcours ;
+- il se situe à la frontière entre métier et exécution externe ;
+- il nécessite une forte explicabilité des statuts ;
+- il interagit avec notifications, newsletter, documents et support.
 
-## Cas limites / erreurs métier
+En exploitation, une attention particulière doit être portée à :
 
-Quelques cas d’erreur typiques :
+- la cohérence des statuts ;
+- la validité des destinataires ;
+- la traçabilité des changements ;
+- la cohérence avec notifications, newsletter et documents ;
+- les effets de bord sur support et pilotage opératoire ;
+- la traduction correcte des retours provider.
 
-- email introuvable
-- destinataire logique introuvable ou invalide
-- transition de statut invalide pour l’état courant
-- email annulé, non émissible ou incomplet
-- tentative de lecture ou d’exposition non autorisée
-- permission ou scope insuffisant
-- conflit entre plusieurs règles d’émission ou de catégorisation
+Le domaine doit être considéré comme structurant dès qu’une communication email interne gouvernée existe réellement.
 
-## Décisions d’architecture
+---
 
-Les choix structurants du domaine sont :
+## Limites du domaine
 
-- `email` porte les messages email structurés du socle
-- `email` est distinct de `notifications`
-- `email` est distinct de `newsletter`
-- `email` est distinct de `template-system`
-- `email` est distinct de `integrations`
-- les domaines consommateurs lisent la vérité email via `email`, sans la recréer localement
-- les contenus, statuts et consultations sensibles doivent être observables et auditables
+Le domaine `email` s’arrête :
 
-## Questions explicitement closes
+- avant la responsabilité globale des notifications ;
+- avant la newsletter ;
+- avant les templates réutilisables ;
+- avant les providers emailing externes ;
+- avant les DTO providers externes.
 
-Les points suivants sont considérés comme décidés :
+Le domaine `email` porte les messages email structurés du système.
+Il ne doit pas devenir un moteur de campagne, un simple journal SMTP ou un doublon des autres domaines de communication.
 
-- les messages email structurés relèvent de `email`
-- les notifications transactionnelles relèvent de `notifications`
-- la diffusion newsletter relève de `newsletter`
-- les gabarits réutilisables relèvent de `template-system`
-- les providers emailing externes relèvent de `integrations`
-- `email` ne remplace ni `notifications`, ni `newsletter`, ni `template-system`, ni `integrations`
+---
+
+## Questions ouvertes
+
+À confirmer explicitement dans le projet :
+
+- la frontière exacte entre `email` et `notifications` ;
+- la frontière exacte entre `email` et `newsletter` ;
+- la frontière exacte entre `email` et `template-system` ;
+- la part exacte des emails réellement persistés ici ;
+- la gouvernance des réémissions et annulations ;
+- la hiérarchie entre vérité interne et providers externes éventuels.
+
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Documents liés
+
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `notifications.md`
+- `newsletter.md`
+- `template-system.md`
+- `../core/customers.md`
+- `../core/users.md`
+- `../core/stores.md`
+- `../core/orders.md`
+- `../core/documents.md`
+- `support.md`
+- `events.md`
+- `audit.md`
+- `observability.md`
+- `dashboarding.md`
+- `../core/integrations.md`

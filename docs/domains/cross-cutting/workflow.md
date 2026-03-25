@@ -1,168 +1,283 @@
-# Domaine workflow
+# Workflow
 
 ## Rôle
 
-Le domaine `workflow` porte l’orchestration structurée des processus métier du socle.
+Le domaine `workflow` porte l’orchestration structurée des processus métier du système.
 
-Il organise les enchaînements d’étapes, transitions, blocages, préconditions, déclenchements et états de progression lorsque plusieurs actions métier doivent être coordonnées dans un ordre explicite, sans absorber la vérité métier des domaines source, ni se confondre avec les approbations, les jobs asynchrones ou les domain events.
+Il définit :
+
+- ce qu’est un workflow du point de vue du système ;
+- comment des étapes, transitions, blocages, préconditions et états de progression sont modélisés ;
+- comment plusieurs actions métier sont coordonnées dans un ordre explicite ;
+- comment ce domaine se distingue des approbations, des jobs asynchrones, des domain events internes et de la vérité métier des domaines source ;
+- comment le système reste maître de sa vérité interne d’orchestration.
+
+Le domaine existe pour fournir une représentation explicite des processus multi-étapes, distincte :
+
+- des approbations portées par `approval` ;
+- des jobs asynchrones portés par `jobs` ;
+- des domain events internes ;
+- de la vérité métier des domaines source ;
+- des intégrations provider-specific portées par `integrations`.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse structurant`
+
+### Activable
+
+`non`
+
+Le domaine `workflow` est structurel dès lors que plusieurs processus métier nécessitent une coordination explicite entre étapes, validations, blocages et transitions.
+
+---
+
+## Source de vérité
+
+Le domaine `workflow` est la source de vérité pour :
+
+- la définition interne d’un workflow ;
+- ses étapes ;
+- ses transitions ;
+- ses gardes, préconditions et blocages ;
+- ses instances d’exécution ;
+- ses statuts de progression ;
+- ses lectures structurées consommables par les domaines autorisés.
+
+Le domaine `workflow` n’est pas la source de vérité pour :
+
+- les décisions d’approbation, qui relèvent de `approval` ;
+- l’exécution asynchrone rejouable, qui relève de `jobs` ;
+- les faits métier internes, qui relèvent de `domain-events` ;
+- la vérité métier de l’objet orchestré, qui reste dans le domaine source ;
+- les DTO providers externes, qui relèvent de `integrations`.
+
+Un workflow est une orchestration structurée.
+Il ne doit pas être confondu avec :
+
+- une approbation ;
+- un job technique ;
+- un domain event ;
+- une simple checklist UI ;
+- la vérité métier complète du domaine source.
+
+---
 
 ## Responsabilités
 
-Le domaine `workflow` prend en charge :
+Le domaine `workflow` est responsable de :
 
-- les workflows métier structurés
-- les étapes d’un processus
-- les transitions entre étapes
-- les états de progression d’un workflow
-- les préconditions et blocages d’avancement
-- les déclenchements d’actions ou d’étapes suivantes
-- la lecture gouvernée d’un processus en cours
-- la base d’orchestration exploitable par `approval`, `orders`, `documents`, `integrations`, `dashboarding`, `observability` et certaines couches d’administration
+- définir ce qu’est un workflow dans le système ;
+- porter les définitions de workflow ;
+- porter les instances concrètes d’exécution ;
+- porter les étapes, transitions et blocages explicites ;
+- exposer une lecture gouvernée des workflows en cours, bloqués, terminés ou annulés ;
+- publier les événements significatifs liés à la vie d’un workflow ;
+- protéger le système contre les orchestrations implicites, opaques ou contradictoires.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `workflow` ne doit pas :
+- workflows de publication ;
+- workflows documentaires ;
+- workflows marketing ;
+- workflows de validation croisée ;
+- reprises manuelles ;
+- transitions conditionnelles ;
+- règles locales par boutique ou contexte ;
+- orchestration de processus sensibles à plusieurs acteurs.
 
-- porter la vérité métier du domaine source orchestré
-- porter les décisions d’approbation, qui relèvent de `approval`
-- porter le moteur asynchrone et rejouable, qui relève de `jobs`
-- porter les faits métier internes, qui relèvent de `domain-events`
-- devenir un moteur générique opaque où toute logique applicative est déplacée sans langage métier clair
-- se substituer aux invariants métiers des domaines source
+---
 
-Le domaine `workflow` porte l’enchaînement et la coordination des processus. Il ne remplace ni `approval`, ni `jobs`, ni `domain-events`, ni les domaines source.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `workflow` n’est pas responsable de :
 
-- `definitions` : définitions de workflows et de leurs étapes
-- `instances` : instances concrètes d’exécution d’un workflow
-- `transitions` : transitions et règles de passage d’une étape à l’autre
-- `guards` : préconditions, blocages et contrôles d’avancement
+- porter les décisions d’approbation ;
+- porter l’exécution asynchrone ou la file technique ;
+- porter les domain events internes ;
+- porter la vérité métier complète du domaine source ;
+- exécuter les intégrations provider-specific ;
+- devenir un moteur générique opaque où toute logique applicative est déplacée sans langage métier clair.
 
-## Entrées
+Le domaine `workflow` ne doit pas devenir :
 
-Le domaine reçoit principalement :
+- un doublon de `approval` ;
+- un doublon de `jobs` ;
+- un doublon de `domain-events` ;
+- un conteneur flou de transitions sans sémantique métier.
 
-- des demandes de démarrage de workflow
-- des événements internes ou actions source déclenchant une transition
-- des décisions d’approbation consommables depuis `approval`
-- des demandes de lecture de l’état d’un workflow ou d’une instance
-- des contextes acteur, ressource, boutique, scope et instant d’exécution
-- des demandes de reprise ou d’avancement manuel si la politique retenue l’autorise
+---
 
-## Sorties
+## Invariants
 
-Le domaine expose principalement :
+Les invariants minimaux sont les suivants :
 
-- des définitions de workflow
-- des instances de workflow et leurs états
-- des étapes, transitions et blocages explicites
-- des lectures exploitables par `approval`, `audit`, `observability`, `dashboarding` et les domaines source consommateurs
-- des déclenchements d’actions ou d’étapes suivantes consommables par les autres couches du socle
+- une instance de workflow possède un identifiant stable et un statut explicite ;
+- une transition de workflow est rattachée à une instance et à des étapes explicites ;
+- une étape ne peut progresser que si ses préconditions et règles applicables sont satisfaites ;
+- `workflow` ne se confond pas avec `approval` ;
+- `workflow` ne se confond pas avec `jobs` ;
+- `workflow` ne se confond pas avec `domain-events` ;
+- les autres domaines ne doivent pas recréer librement leur propre vérité divergente de coordination multi-étapes quand le cadre commun `workflow` existe ;
+- un workflow bloqué ou terminé ne doit pas être traité comme librement progressable sans règle explicite.
 
-## Dépendances vers autres domaines
+Le domaine protège la cohérence de l’orchestration, pas la vérité métier des objets orchestrés.
 
-Le domaine `workflow` peut dépendre de :
+---
 
-- `approval` pour certaines validations préalables
-- `domain-events` pour certains déclencheurs internes
-- `audit` pour tracer certaines transitions sensibles ou avancements manuels
-- `observability` pour expliquer pourquoi un workflow progresse, bloque ou échoue à avancer
-- `stores` pour certains contextes boutique ou politiques locales
+## Dépendances
 
-Les domaines suivants peuvent dépendre de `workflow` :
+### Dépendances métier
 
+Le domaine `workflow` interagit fortement avec :
+
+- `approval`
+- `stores`
 - `products`
 - `marketing`
 - `events`
 - `documents`
 - `integrations`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `domain-events`
+- `audit`
+- `observability`
+- `jobs`, comme exécution technique aval quand nécessaire
 - `dashboarding`
-- certaines couches d’administration plateforme et boutique
 
-## Capabilities activables liées
+### Dépendances externes
 
-Le domaine `workflow` n’est pas une capability métier optionnelle au sens strict du noyau, mais il devient particulièrement utile lorsque certaines fonctions multi-étapes ou sensibles sont actives.
+Le domaine peut être relié indirectement à :
 
-Exemples de capabilities liées :
+- moteurs de workflow externes ;
+- orchestrateurs techniques ;
+- systèmes de validation ;
+- autres systèmes via `integrations`.
 
-- `marketingCampaigns`
-- `publicEvents`
-- `electronicInvoicing`
-- `erpIntegration`
-- `socialPublishing`
-- `auditTrail`
-- `advancedPermissions`
+### Règle de frontière
 
-### Règle
+Le domaine `workflow` porte l’orchestration structurée.
+Il ne doit pas absorber :
 
-Le domaine `workflow` reste structurellement présent même si peu de processus orchestrés sont activés.
+- les décisions d’approbation ;
+- l’exécution asynchrone ;
+- les domain events internes ;
+- la vérité métier des domaines source ;
+- ni les DTO providers externes.
 
-Il constitue le cadre commun des enchaînements multi-étapes lorsqu’un domaine source ne doit pas porter seul toute la coordination du processus.
+---
 
-## Rôles/permissions concernés
+## Événements significatifs
 
-### Rôles
+Le domaine `workflow` publie ou peut publier des événements significatifs tels que :
 
-Les rôles principalement concernés sont :
+- workflow démarré ;
+- étape de workflow entrée ;
+- transition de workflow complétée ;
+- workflow bloqué ;
+- workflow terminé ;
+- workflow échoué ;
+- statut de workflow modifié.
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `marketing_manager`
-- `content_editor` selon le type de workflow
-- certains opérateurs ou approbateurs dédiés selon la politique retenue
+Le domaine peut consommer des signaux liés à :
 
-### Permissions
+- approbation accordée ;
+- approbation rejetée ;
+- événement métier source déclencheur ;
+- capability boutique modifiée ;
+- action administrative structurée ;
+- reprise manuelle autorisée.
 
-Exemples de permissions concernées :
+Les noms exacts doivent rester dans le langage interne du système.
 
-- `workflow.read`
-- `workflow.write`
-- `approval.read`
-- `audit.read`
-- `marketing.write`
-- `events.publish`
-- `catalog.publish`
-- `documents.write`
+---
 
-## Événements émis
+## Cycle de vie
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine `workflow` possède un cycle de vie explicite.
 
-- `workflow.started`
-- `workflow.step.entered`
-- `workflow.transition.completed`
-- `workflow.blocked`
-- `workflow.completed`
-- `workflow.failed`
-- `workflow.status.changed`
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
 
-## Événements consommés
+- démarré ;
+- en cours ;
+- bloqué ;
+- terminé ;
+- échoué ;
+- annulé, si pertinent.
 
-Le domaine peut consommer certains événements internes du type :
+Des états supplémentaires peuvent exister :
 
-- `approval.approved`
-- `approval.rejected`
-- `product.updated`
-- `marketing.campaign.created`
-- `event.updated`
-- `document.export.generated`
-- `store.capabilities.updated`
-- certaines actions administratives structurées d’avancement ou de reprise
+- en attente ;
+- suspendu ;
+- en reprise ;
+- archivé.
 
-Il doit toutefois rester maître de sa propre logique d’orchestration.
+Le domaine doit éviter :
 
-## Intégrations externes
+- les workflows “fantômes” ;
+- les transitions silencieuses ;
+- les états purement techniques non interprétables métier.
 
-Le domaine `workflow` ne doit pas devenir un domaine d’intégration provider-specific.
+---
 
-Il peut coordonner des étapes qui conduisent ensuite à des échanges externes via `integrations`, mais :
+## Interfaces et échanges
 
-- la vérité du workflow reste dans `workflow`
-- les échanges provider-specific restent dans `integrations`
-- les exécutions asynchrones restent dans `jobs`
+Le domaine `workflow` expose principalement :
+
+- des définitions de workflow ;
+- des instances de workflow et leurs états ;
+- des étapes, transitions et blocages explicites ;
+- des lectures exploitables par `approval`, `audit`, `observability`, `dashboarding` et les domaines source consommateurs ;
+- des déclenchements d’actions ou d’étapes suivantes consommables par les autres couches du système.
+
+Le domaine reçoit principalement :
+
+- des demandes de démarrage de workflow ;
+- des événements internes ou actions source déclenchant une transition ;
+- des décisions d’approbation consommables depuis `approval` ;
+- des demandes de lecture de l’état d’un workflow ou d’une instance ;
+- des contextes acteur, ressource, boutique, scope et instant d’exécution ;
+- des demandes de reprise ou d’avancement manuel si la politique retenue l’autorise.
+
+Le domaine ne doit pas exposer un contrat canonique dicté par un provider externe.
+
+---
+
+## Contraintes d’intégration
+
+Le domaine `workflow` peut être exposé à des contraintes telles que :
+
+- processus multi-étapes ;
+- transitions conditionnelles ;
+- dépendance à approbation ;
+- exécution différée de certaines actions ;
+- orchestration multi-acteurs ;
+- règles locales par boutique ;
+- reprise manuelle ;
+- rétrocompatibilité des définitions de workflow.
+
+Règles minimales :
+
+- la hiérarchie d’autorité doit être explicite ;
+- la vérité interne des workflows reste dans `workflow` ;
+- les DTO providers restent dans `integrations` ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- une transition incohérente ne doit pas être promue silencieusement ;
+- les conflits entre état, garde, approbation et action source doivent être explicables.
+
+---
 
 ## Données sensibles / sécurité
 
@@ -170,98 +285,126 @@ Le domaine `workflow` manipule des états de processus et parfois des décisions
 
 Points de vigilance :
 
-- contrôle strict des droits de lecture et d’écriture
-- séparation claire entre définition, instance, transition et action source
-- protection des avancements manuels, forçages ou reprises sensibles
-- traçabilité des transitions critiques
-- limitation de l’exposition selon le rôle, le scope et la nature du processus
+- contrôle strict des droits de lecture et d’écriture ;
+- séparation claire entre définition, instance, transition et action source ;
+- protection des avancements manuels, forçages ou reprises sensibles ;
+- traçabilité des transitions critiques ;
+- limitation de l’exposition selon le rôle, le scope et la nature du processus.
 
-## Observability / audit
+---
 
-### Observability
+## Observabilité et audit
 
-Il faut pouvoir comprendre :
+Le domaine `workflow` doit rendre visibles au minimum :
 
-- quel workflow est en cours
-- quelle étape est active
-- pourquoi une transition a été autorisée, refusée ou bloquée
-- quel événement, quelle approbation ou quelle action a déclenché l’avancement
-- si un workflow reste bloqué à cause d’une précondition non satisfaite, d’un refus d’approbation ou d’une règle applicable
+- quel workflow est en cours ;
+- quelle étape est active ;
+- pourquoi une transition a été autorisée, refusée ou bloquée ;
+- quel événement, quelle approbation ou quelle action a déclenché l’avancement ;
+- si un workflow reste bloqué à cause d’une précondition non satisfaite, d’un refus d’approbation ou d’une règle applicable.
 
-### Audit
+L’audit doit permettre de répondre à des questions comme :
 
-Il faut tracer :
+- quel workflow a été démarré, bloqué, repris ou terminé ;
+- quand ;
+- selon quelle origine ;
+- avec quelle transition significative ;
+- avec quelle action manuelle éventuelle ;
+- avec quel impact sur le processus source.
 
-- le démarrage d’un workflow sensible
-- les transitions significatives
-- les blocages majeurs
-- les avancements ou reprises manuelles sensibles
-- les changements significatifs de définition ou de politique de workflow si le modèle final les expose explicitement
+L’observabilité doit distinguer :
+
+- erreur de modèle ;
+- erreur technique ;
+- transition invalide ;
+- précondition non satisfaite ;
+- approbation manquante ou refusée ;
+- évolution non autorisée.
+
+---
 
 ## Modèle de données conceptuel
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `WorkflowDefinition` : définition structurée d’un workflow
-- `WorkflowInstance` : instance concrète d’exécution
-- `WorkflowStep` : étape du processus
-- `WorkflowTransition` : passage autorisé entre deux étapes
-- `WorkflowStatus` : état courant du workflow
-- `WorkflowGuard` : précondition ou règle bloquante
-- `WorkflowSubjectRef` : référence vers l’objet ou l’action orchestré
+- `WorkflowDefinition` : définition structurée d’un workflow ;
+- `WorkflowInstance` : instance concrète d’exécution ;
+- `WorkflowStep` : étape du processus ;
+- `WorkflowTransition` : passage autorisé entre deux étapes ;
+- `WorkflowStatus` : état courant du workflow ;
+- `WorkflowGuard` : précondition ou règle bloquante ;
+- `WorkflowSubjectRef` : référence vers l’objet ou l’action orchestré.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Impact de maintenance / exploitation
 
-- une instance de workflow possède un identifiant stable et un statut explicite
-- une transition de workflow est rattachée à une instance et à des étapes explicites
-- `workflow` ne se confond pas avec `approval`
-- `workflow` ne se confond pas avec `jobs`
-- `workflow` ne se confond pas avec `domain-events`
-- les autres domaines ne doivent pas recréer librement leur propre vérité divergente de coordination multi-étapes quand le cadre commun `workflow` existe
-- une étape ne peut progresser que si ses préconditions et règles applicables sont satisfaites
+Le domaine `workflow` a un impact d’exploitation moyen à élevé.
 
-## Cas d’usage principaux
+Raisons :
 
-1. Orchestrer la publication multi-étapes d’un produit
-2. Orchestrer une campagne marketing avec validation préalable et activation finale
-3. Orchestrer la publication d’un événement public avec contrôle d’étapes
-4. Orchestrer un flux documentaire nécessitant plusieurs validations ou passages
-5. Fournir à un domaine source une lecture fiable de l’état de progression d’un processus
-6. Exposer à l’admin une lecture claire des workflows en cours, bloqués ou terminés
+- il structure les processus multi-étapes sensibles ;
+- ses erreurs créent blocages, incohérences d’avancement ou perte de lisibilité opératoire ;
+- il se situe à la frontière entre plusieurs domaines ;
+- il nécessite une forte explicabilité des transitions ;
+- il interagit souvent avec approbation, audit, observabilité et parfois jobs.
 
-## Cas limites / erreurs métier
+En exploitation, une attention particulière doit être portée à :
 
-Quelques cas d’erreur typiques :
+- la cohérence des transitions ;
+- les workflows bloqués ;
+- les reprises manuelles ;
+- la traçabilité des changements ;
+- la cohérence avec les domaines source ;
+- les effets de bord sur approbation, intégrations et pilotage opératoire.
 
-- définition de workflow introuvable
-- instance de workflow introuvable
-- transition invalide pour l’état courant
-- précondition non satisfaite
-- approbation requise absente ou refusée
-- tentative d’avancement non autorisée
-- permission ou scope insuffisant
-- tentative d’exposition d’un détail sensible dans un contexte non autorisé
+Le domaine doit être considéré comme structurant dès qu’une orchestration explicite de processus existe réellement.
 
-## Décisions d’architecture
+---
 
-Les choix structurants du domaine sont :
+## Limites du domaine
 
-- `workflow` porte l’orchestration structurée des processus du socle
-- `workflow` est distinct de `approval`
-- `workflow` est distinct de `jobs`
-- `workflow` est distinct de `domain-events`
-- les domaines source délèguent la coordination multi-étapes à `workflow` sans lui déléguer leur vérité métier complète
-- les transitions, blocages et reprises sensibles doivent être observables et auditables
-- l’exécution asynchrone ou provider-specific reste hors du domaine `workflow`
+Le domaine `workflow` s’arrête :
 
-## Questions explicitement closes
+- avant les décisions d’approbation ;
+- avant l’exécution asynchrone ;
+- avant les domain events internes ;
+- avant la vérité métier des domaines source ;
+- avant les intégrations externes ;
+- avant les DTO providers externes.
 
-Les points suivants sont considérés comme décidés :
+Le domaine `workflow` porte l’orchestration structurée des processus.
+Il ne doit pas devenir un moteur applicatif opaque ni un doublon des domaines source.
 
-- l’orchestration structurée des processus relève de `workflow`
-- les validations préalables relèvent de `approval`
-- l’exécution asynchrone structurée relève de `jobs`
-- les faits métier internes relèvent de `domain-events`
-- `workflow` ne remplace ni `approval`, ni `jobs`, ni `domain-events`, ni les domaines métier source
+---
+
+## Questions ouvertes
+
+À confirmer explicitement dans le projet :
+
+- la frontière exacte entre `workflow` et `approval` ;
+- la frontière exacte entre `workflow` et `jobs` ;
+- la frontière exacte entre `workflow` et `domain-events` ;
+- la part exacte des reprises manuelles autorisées ;
+- la gouvernance des définitions de workflow ;
+- la hiérarchie entre vérité interne et orchestrateur externe éventuel.
+
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Documents liés
+
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `approval.md`
+- `domain-events.md`
+- `jobs.md`
+- `audit.md`
+- `observability.md`
+- `dashboarding.md`
+- `../core/stores.md`
+- `../optional/events.md`
+- `../core/documents.md`
+- `../core/products.md`
+- `../core/integrations.md`
