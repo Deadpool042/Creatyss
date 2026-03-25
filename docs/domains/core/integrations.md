@@ -1,130 +1,41 @@
-# Domaine `integrations`
-
-## Objectif
-
-Ce document décrit le domaine `integrations` dans la doctrine courante du socle.
-
-Il précise :
-
-- le rôle du domaine ;
-- sa place dans la modularité du socle ;
-- sa source de vérité ;
-- ses capabilities activables ;
-- ses niveaux de sophistication ;
-- ses objets métier ;
-- ses invariants ;
-- son cycle de vie ;
-- ses règles de cohérence ;
-- ses frontières externes ;
-- ses implications de maintenance, d’exploitation et de coût.
-
-Le domaine `integrations` est structurant pour la réutilisabilité du socle, car il porte les connecteurs provider-specific sans laisser ces providers polluer le coeur métier.
-
-Le domaine `integrations` ne doit pas être pensé comme un fourre-tout technique.
-Il porte la **frontière externe spécialisée** du système.
-
----
-
-## Position dans la doctrine de modularité
-
-Le domaine `integrations` est classé comme :
-
-- `domaine coeur à capabilities toggleables`
-
-Le domaine existe dans tous les projets sérieux du socle comme couche d’adaptation externe, même si peu de connecteurs sont activés au départ.
-
-### Ce qui n’est jamais désactivé
-
-Le domaine conserve toujours :
-
-- le principe de frontière externe explicite ;
-- la séparation entre coeur métier et providers ;
-- la gestion structurée des connecteurs ;
-- la gestion des credentials d’intégration ;
-- la traduction des résultats externes vers le langage interne ;
-- la traçabilité minimale des interactions externes importantes.
-
-### Ce qui est activable / désactivable par capability
-
-Le domaine `integrations` est lié aux capabilities suivantes :
-
-- `integration.stripe`
-- `integration.paypal`
-- `integration.alma`
-- `integration.klarna`
-- `integration.erp`
-- `integration.accounting`
-- `integration.emailProvider`
-- `integration.shippingCarrier`
-- `integration.analyticsServer`
-- `integration.invoiceProvider`
-- `integration.aiProvider`
-
-### Ce qui relève d’un niveau
-
-Le domaine porte plusieurs niveaux de sophistication liés à :
-
-- la variété des connecteurs ;
-- la complexité des mappings ;
-- la richesse des synchronisations ;
-- le niveau de supervision requis.
-
-### Ce qui relève d’un provider ou d’une intégration externe
-
-Les providers eux-mêmes sont précisément l’objet de ce domaine.
-Mais ils ne doivent jamais définir le langage coeur des autres domaines.
-
----
+# Intégrations
 
 ## Rôle
 
-Le domaine `integrations` porte les connecteurs spécialisés du socle vers les systèmes externes identifiés.
+Le domaine `integrations` porte la politique d’intégration du système avec les systèmes externes.
 
-Il constitue la source de vérité interne pour :
+Il définit :
 
-- l’existence d’un connecteur ;
-- son statut ;
-- sa configuration ;
-- ses credentials techniques ;
-- ses mappings ;
-- certains résultats provider traduits ;
-- certaines opérations de synchronisation.
+- comment le système échange avec des fournisseurs, plateformes ou satellites ;
+- comment les flux entrants et sortants sont structurés ;
+- comment les dépendances externes sont isolées ;
+- comment les signaux externes sont traduits dans le langage interne ;
+- comment la robustesse, l’idempotence et la traçabilité des échanges sont garanties.
 
-Le domaine est distinct :
+Le domaine existe pour fournir une couche structurée d’intégration, distincte :
 
-- de `payments`, `orders`, `taxation`, `auth`, etc., qui portent les vérités métier ;
-- de `webhooks`, qui porte la notification sortante générique ;
-- de `domain-events`, qui porte l’outbox interne ;
-- de `jobs`, qui porte l’exécution asynchrone.
+- des domaines coeur métier ;
+- des fournisseurs externes eux-mêmes ;
+- des webhooks comme mécanisme technique spécifique ;
+- des clients API bas niveau.
 
 ---
 
-## Responsabilités
+## Classification
 
-Le domaine `integrations` prend en charge :
+### Catégorie documentaire
 
-- la modélisation logique des connecteurs externes ;
-- leur activation / désactivation ;
-- leurs credentials ;
-- leurs mappings et traductions ;
-- les DTO provider-specific ;
-- les résultats externes traduits ;
-- certaines synchronisations entrantes ou sortantes ;
-- la journalisation utile des erreurs d’intégration ;
-- la séparation stricte entre monde externe et langage interne du socle.
+`core`
 
----
+### Criticité architecturale
 
-## Ce que le domaine ne doit pas faire
+`coeur structurel`
 
-Le domaine `integrations` ne doit pas :
+### Activable
 
-- devenir la source de vérité primaire d’un métier ;
-- absorber la logique coeur de paiement, de commande ou d’auth ;
-- transformer un payload brut provider en vérité interne sans validation ;
-- devenir un substitut à l’outbox ou à l’audit ;
-- mélanger connecteurs spécialisés et webhooks sortants génériques ;
-- imposer un provider comme structure native du socle.
+`non`
+
+Le domaine `integrations` est non optionnel dès lors que le système échange avec des dépendances externes structurantes.
 
 ---
 
@@ -132,476 +43,332 @@ Le domaine `integrations` ne doit pas :
 
 Le domaine `integrations` est la source de vérité pour :
 
-- l’identité d’un connecteur ;
-- son statut ;
-- ses credentials d’intégration ;
-- ses mappings techniques ;
-- la configuration interne d’une intégration ;
-- certains résultats provider traduits ou persistés à des fins de rapprochement.
+- la politique d’intégration interne ;
+- la représentation des flux d’intégration au niveau du système ;
+- les règles de traduction entre langage externe et langage interne ;
+- les conventions de robustesse applicables aux échanges ;
+- les statuts ou états d’intégration si le modèle en porte.
 
-Le domaine n’est pas la source de vérité pour :
+Le domaine `integrations` n’est pas la source de vérité pour :
 
-- la commande ;
-- le paiement interne ;
-- le checkout ;
-- la logique fiscale ;
-- la sécurité d’auth ;
-- les domain events ;
-- les webhooks sortants génériques.
+- la vérité métier des domaines coeur ;
+- les détails fonctionnels d’un PSP, ERP, transporteur ou CRM ;
+- les objets métier internes comme `orders`, `payments` ou `products` ;
+- les webhooks comme mécanisme spécialisé lorsqu’ils sont traités séparément ;
+- les appels réseau de bas niveau d’un client API isolé.
 
----
-
-## Objets métier principaux
-
-Les principaux objets métier portés par le domaine sont :
-
-- `Integration`
-- `IntegrationStatus`
-- `IntegrationProviderKind`
-- `IntegrationCredential`
-- `ProviderTranslationResult`
-- `IntegrationSync`
-- `IntegrationOperationRecord`
-- `IntegrationMapping`
+Le domaine `integrations` gouverne la relation structurée avec l’extérieur.
+Il ne devient pas le coeur métier.
 
 ---
 
-## Capabilities activables liées
+## Responsabilités
 
-Le domaine `integrations` est lié aux capabilities suivantes :
+Le domaine `integrations` est responsable de :
 
-- `integration.stripe`
-- `integration.paypal`
-- `integration.alma`
-- `integration.klarna`
-- `integration.erp`
-- `integration.accounting`
-- `integration.emailProvider`
-- `integration.shippingCarrier`
-- `integration.analyticsServer`
-- `integration.invoiceProvider`
-- `integration.aiProvider`
+- définir la manière correcte d’intégrer des systèmes externes ;
+- structurer les flux entrants et sortants ;
+- isoler les dépendances externes derrière des adaptateurs ou contrats explicites ;
+- normaliser les entrées externes dans le langage interne ;
+- normaliser les sorties internes vers les formats attendus ;
+- encadrer la robustesse des échanges ;
+- publier les événements significatifs liés à l’intégration ;
+- protéger le coeur métier contre la contamination du modèle externe ;
+- fournir un cadre commun aux intégrations transverses du système.
 
-### Effet si une capability d’intégration est activée
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le connecteur correspondant peut être configuré, utilisé et supervisé dans les règles du socle.
-
-### Effet si une capability d’intégration est désactivée
-
-Le connecteur n’est pas disponible, même si le domaine `integrations` existe toujours.
-
----
-
-## Niveaux de sophistication du domaine
-
-### Niveau 1 — essentiel
-
-- peu de connecteurs ;
-- configuration simple ;
-- faible densité de mappings ;
-- peu de synchronisations.
-
-### Niveau 2 — standard
-
-- plusieurs connecteurs utiles ;
-- meilleurs mappings ;
-- meilleure visibilité des erreurs ;
-- plus d’usages sortants ou entrants.
-
-### Niveau 3 — avancé
-
-- plusieurs connecteurs critiques ;
-- plus de synchronisations ;
-- meilleure supervision ;
-- meilleure maîtrise des callbacks et retries.
-
-### Niveau 4 — expert / multi-contraintes
-
-- connecteurs nombreux ou sensibles ;
-- forte dépendance métier ;
-- gouvernance et audit plus exigeants ;
-- mappings complexes ;
-- maintenance plus coûteuse.
+- synchronisations ;
+- projections externes ;
+- politiques de retry ;
+- stratégies de compensation ;
+- contrats d’échange ;
+- gouvernance d’anti-corruption layer ;
+- supervision des échanges structurants.
 
 ---
 
-## Entrées
+## Non-responsabilités
+
+Le domaine `integrations` n’est pas responsable de :
+
+- définir la vérité métier d’un domaine coeur ;
+- porter la logique métier de `orders`, `payments`, `products`, `customers`, etc. ;
+- remplacer les domaines métier par des contrats externes ;
+- gérer l’authentification des utilisateurs ;
+- porter les rôles et permissions ;
+- exécuter tous les détails techniques d’un webhook spécialisé ;
+- devenir un fourre-tout de “tout ce qui parle à l’extérieur”.
+
+Le domaine `integrations` ne doit pas devenir :
+
+- un alias de “providers” ;
+- un simple dossier d’SDK ;
+- un proxy direct des systèmes externes vers le coeur.
+
+---
+
+## Invariants
+
+Les invariants minimaux du domaine sont les suivants :
+
+- tout échange structurant avec l’extérieur doit être traçable ;
+- une entrée externe doit être interprétable dans le langage interne ;
+- une sortie externe doit être produite par un contrat explicite ;
+- un système externe ne doit pas imposer directement sa structure conceptuelle au coeur ;
+- une intégration critique doit avoir une stratégie de robustesse définie ;
+- un flux rejouable doit être idempotent ou neutralisé ;
+- une erreur d’intégration ne doit pas corrompre silencieusement la vérité métier interne ;
+- la hiérarchie d’autorité entre interne et externe doit être explicite.
+
+Le domaine protège l’intégrité du système face aux dépendances externes.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `integrations` interagit fortement avec :
+
+- `products`
+- `pricing`
+- `orders`
+- `payments`
+- `customers`
+- `shipping`
+- `availability`
+- `inventory`
+- `fulfillment`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- audit ;
+- observabilité ;
+- jobs ;
+- webhooks ;
+- sécurité ;
+- idempotence / retry ;
+- import / export.
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- PSP ;
+- ERP ;
+- OMS ;
+- WMS ;
+- CRM ;
+- CMS ;
+- transporteurs ;
+- places de marché ;
+- identity providers ;
+- services analytiques ou juridiques.
+
+### Règle de frontière
+
+Le domaine `integrations` gouverne l’échange avec l’extérieur.
+Il ne doit pas absorber la responsabilité métier locale des domaines consommateurs.
+
+---
+
+## Événements significatifs
+
+Le domaine `integrations` publie ou peut publier des événements significatifs tels que :
+
+- synchronisation démarrée ;
+- synchronisation réussie ;
+- synchronisation échouée ;
+- projection externe envoyée ;
+- projection externe rejetée ;
+- flux entrant normalisé ;
+- flux entrant rejeté ;
+- contrat d’intégration modifié ;
+- divergence externe détectée ;
+- réconciliation d’intégration effectuée.
+
+Le domaine peut consommer des signaux liés à :
+
+- événements métier internes ;
+- webhooks ;
+- jobs ;
+- changements de configuration ;
+- demandes opératoires ;
+- mises à jour externes.
+
+Les noms exacts doivent rester compréhensibles dans le langage du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `integrations` ne porte pas nécessairement un cycle de vie unique comparable à `orders` ou `payments`.
+
+Cette section reste applicable via les états d’un flux ou d’une intégration, par exemple :
+
+- configurée ;
+- active ;
+- suspendue ;
+- dégradée ;
+- en erreur ;
+- en réconciliation ;
+- archivée.
+
+Si le modèle retenu ne porte pas un cycle de vie unifié, cela doit être assumé explicitement.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `integrations` expose principalement :
+
+- des contrats d’entrée ;
+- des contrats de sortie ;
+- des points de traduction ;
+- des événements significatifs d’intégration ;
+- des lectures d’état ou de santé d’intégration si le modèle les porte.
 
 Le domaine reçoit principalement :
 
-- des événements durables à projeter vers l’extérieur ;
-- des résultats providers entrants ;
-- des commandes de synchronisation ;
-- des configurations et credentials d’intégration ;
-- des demandes de test, rotation ou désactivation.
+- des événements métier internes ;
+- des flux externes entrants ;
+- des demandes de projection ;
+- des synchronisations ;
+- des actions opératoires de reprise ou de réconciliation.
+
+Le domaine ne doit pas exposer un contrat interne dépendant directement d’un fournisseur spécifique sans couche d’isolation claire.
 
 ---
 
-## Sorties
+## Contraintes d’intégration
 
-Le domaine expose principalement :
+Le domaine `integrations` est, par nature, exposé à des contraintes fortes :
 
-- des résultats providers traduits ;
-- des ordres techniques vers les providers ;
-- des statuts d’intégration ;
-- des événements métier techniques liés aux intégrations ;
-- des erreurs et états exploitables.
+- indisponibilité externe ;
+- timeouts ;
+- erreurs partielles ;
+- ordre de réception non garanti ;
+- duplication ;
+- retrys ;
+- réponses contradictoires ;
+- divergence temporaire ;
+- nécessité de compensation ;
+- dépendance à des contrats externes évolutifs.
 
----
+Règles minimales :
 
-## Dépendances vers autres domaines
-
-Le domaine `integrations` dépend de :
-
-- `domain-events`
-- `jobs`
-- `audit`
-- `observability`
-- les domaines coeur concernés par chaque intégration
-- `webhooks` pour la distinction de responsabilité
-
-Les domaines suivants dépendent de `integrations` :
-
-- `payments`
-- `documents`
-- `shipping`
-- `analytics`
-- `erp`
-- `auth` si un provider externe d’identité est utilisé comme connecteur technique
+- toute entrée doit être validée ;
+- toute sortie doit être produite par un contrat explicite ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- les erreurs doivent être visibles ;
+- les stratégies de retry et de compensation doivent être explicites ;
+- un fournisseur externe ne doit pas imposer silencieusement l’état du coeur ;
+- les points de traduction doivent être identifiables.
 
 ---
 
-## Dépendances vers providers / intégrations
+## Observabilité et audit
 
-Le domaine `integrations` parle directement aux providers et systèmes externes, mais selon des règles strictes :
+Le domaine `integrations` doit rendre visibles au minimum :
 
-- les DTO externes restent confinés ;
-- les callbacks sont validés et dédupliqués ;
-- les résultats externes sont traduits avant de toucher le coeur ;
-- les credentials sont séparés et protégés ;
-- le provider n’impose pas sa machine d’état au coeur.
+- les flux entrants structurants ;
+- les flux sortants structurants ;
+- les rejets ;
+- les retries ;
+- les divergences ;
+- les réconciliations ;
+- les erreurs terminales ;
+- les événements significatifs publiés.
 
----
+L’audit doit permettre de répondre à des questions comme :
 
-## Rôles / permissions concernés
+- quel flux a été reçu ou émis ;
+- quand ;
+- avec quelle origine ou destination ;
+- avec quel résultat ;
+- avec quel impact métier visible ;
+- avec quelle action opératoire éventuelle.
 
-### Rôles
+L’observabilité doit distinguer :
 
-Les rôles principalement concernés sont :
-
-- `platform_owner`
-- `platform_engineer`
-- `integration_operator`
-- `observability_operator`
-- `security_operator`
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `integrations.read`
-- `integrations.write`
-- `integrations.sync`
-- `integrations.credentials.manage`
-- `observability.read`
-- `audit.read`
+- erreur technique ;
+- erreur de contrat ;
+- divergence de données ;
+- rejet de validation ;
+- reprise opératoire ;
+- indisponibilité externe.
 
 ---
 
-## Événements émis
+## Impact de maintenance / exploitation
 
-Le domaine émet les domain events internes suivants :
+Le domaine `integrations` a un impact d’exploitation très élevé.
 
-- `integration.config.updated`
-- `integration.sync.started`
-- `integration.sync.succeeded`
-- `integration.sync.failed`
-- `integration.provider.result.translated`
-- `integration.credential.rotated`
-- `integration.credential.revoked`
+Raisons :
 
----
+- il relie le système à ses dépendances structurantes ;
+- il est exposé à des pannes externes ;
+- il peut contaminer plusieurs domaines à la fois ;
+- ses erreurs sont souvent différées, partielles ou ambiguës ;
+- il nécessite une forte discipline de reprise et de traçabilité.
 
-## Événements consommés
+En exploitation, une attention particulière doit être portée à :
 
-Le domaine consomme les domain events internes suivants :
+- la santé des flux ;
+- les files en échec ;
+- les divergences ;
+- les répétitions ;
+- les compensations ;
+- les contrats externes ;
+- les points de traduction ;
+- les actions manuelles de reprise.
 
-- `order.created`
-- `order.status.changed`
-- `payment.captured`
-- `payment.refunded`
-- `inventory.stock.adjusted`
-- `document.generated`
-- `auth.password.changed` si une intégration de sécurité le requiert
-
----
-
-## Données sensibles / sécurité
-
-Le domaine `integrations` manipule une donnée hautement sensible.
-
-Points de vigilance :
-
-- credentials providers protégés ;
-- rotation et révocation explicites ;
-- validation stricte des payloads externes ;
-- réduction de la fuite de secrets ou de payloads bruts dans les logs ;
-- contrôle rigoureux des opérations sortantes et entrantes.
+Le domaine doit être considéré comme critique pour la robustesse systémique.
 
 ---
 
-## Observability / audit
+## Limites du domaine
 
-### Observability
+Le domaine `integrations` s’arrête :
 
-Il faut pouvoir comprendre :
+- avant la vérité métier propre à chaque domaine coeur ;
+- avant les clients API de bas niveau si ceux-ci sont documentés séparément ;
+- avant le mécanisme webhook spécialisé si une doc séparée le porte ;
+- avant la logique UI ou backoffice ;
+- avant les politiques de sécurité globales non spécifiques à l’intégration.
 
-- quel connecteur a été utilisé ;
-- quelle opération a été tentée ;
-- quel résultat provider a été reçu ;
-- quelle traduction a été produite ;
-- pourquoi une synchronisation a échoué ;
-- quelle reprise est possible.
-
-### Audit
-
-Il faut tracer :
-
-- création ou modification d’un connecteur ;
-- activation / désactivation ;
-- rotation / révocation de credentials ;
-- synchronisations forcées ;
-- replays ou reprises opératoires sensibles.
+Le domaine `integrations` gouverne l’échange structuré avec l’extérieur.
+Il ne doit pas absorber tout ce qui est “technique” par facilité.
 
 ---
 
-## Invariants métier
+## Questions ouvertes
 
-Les règles suivantes doivent toujours rester vraies :
+À confirmer explicitement dans le projet :
 
-- un connecteur possède une identité et un statut explicites ;
-- un provider ne devient jamais la vérité métier primaire du socle ;
-- les DTO externes restent confinés à `integrations` ;
-- une mutation interne déclenchée par un provider n’est appliquée qu’après traduction et validation ;
-- les credentials d’intégration restent distincts des credentials utilisateurs ;
-- un connecteur désactivé ne doit plus être considéré comme utilisable.
+- la frontière exacte entre `integrations` et `webhooks` ;
+- la frontière exacte entre `integrations` et `api-clients` ;
+- la hiérarchie entre contrats internes, adaptateurs et fournisseurs ;
+- la localisation canonique des stratégies de retry et compensation ;
+- la gouvernance des réconciliations ;
+- la stratégie de versionnement des contrats d’intégration ;
+- la liste des intégrations réellement structurantes du projet.
 
----
-
-## Lifecycle et gouvernance des données
-
-### États principaux
-
-Les états principaux d’une intégration sont typiquement :
-
-- `ACTIVE`
-- `DISABLED`
-- `ARCHIVED`
-
-Les credentials peuvent eux-mêmes être :
-
-- actifs ;
-- rotated ;
-- revoked ;
-- archived.
-
-### Transitions autorisées
-
-Exemples :
-
-- `ACTIVE -> DISABLED`
-- `DISABLED -> ACTIVE`
-- `ACTIVE -> ARCHIVED`
-- credential actif -> rotated
-- credential actif -> revoked
-
-### Transitions interdites
-
-Exemples :
-
-- un connecteur archivé ne redevient pas implicitement actif ;
-- un credential révoqué n’est plus utilisable ;
-- un résultat provider brut ne devient pas une vérité coeur par simple stockage.
-
-### Règles de conservation / archivage / suppression
-
-- les connecteurs et résultats utiles restent traçables ;
-- les credentials sont gérés avec prudence selon leur nature ;
-- les éléments utiles à l’audit, au support et au rapprochement ne sont pas supprimés implicitement ;
-- les purges éventuelles sont contrôlées.
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
 ---
 
-## Transactions / cohérence / concurrence
+## Documents liés
 
-### Ce qui doit être atomique
-
-Les opérations suivantes doivent réussir ou échouer ensemble :
-
-- création ou mise à jour d’un connecteur ;
-- création, rotation ou révocation d’un credential ;
-- persistance d’un résultat provider traduit ;
-- écriture des events `integration.*` correspondants ;
-- mutation interne locale déclenchée par un résultat externe validé, avec son outbox associé si nécessaire.
-
-### Ce qui peut être eventual consistency
-
-Les traitements suivants peuvent partir après commit :
-
-- appel provider sortant ;
-- polling ;
-- synchronisation ;
-- notification opérateur ;
-- monitoring externe ;
-- projection secondaire.
-
-### Stratégie de concurrence
-
-Le domaine protège explicitement ses invariants par :
-
-- transaction applicative sur les mutations locales sensibles ;
-- déduplication des callbacks par identité externe stable ;
-- séparation claire entre réception externe et application métier ;
-- une seule traduction interne validée par événement logique.
-
-Les conflits attendus sont :
-
-- callbacks dupliqués ;
-- polling et callback concurrents ;
-- rotation de credential pendant une synchronisation ;
-- double déclenchement d’un sync.
-
-### Idempotence
-
-Les commandes métier suivantes doivent être idempotentes :
-
-- `apply-provider-result` : clé d’intention = `(providerName, externalEventId)`
-- `run-integration-sync` : clé d’intention = `(integrationId, syncIntentId)`
-- `rotate-integration-credential` : clé d’intention = `(integrationId, credentialKey, rotationIntentId)`
-
-Un retry ne doit jamais produire deux mutations internes divergentes.
-
-### Domain events écrits dans la même transaction
-
-Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
-
-- `integration.config.updated`
-- `integration.sync.started`
-- `integration.sync.succeeded`
-- `integration.sync.failed`
-- `integration.provider.result.translated`
-- `integration.credential.rotated`
-- `integration.credential.revoked`
-
-### Effets secondaires après commit
-
-Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
-
-- appel provider externe ;
-- webhook sortant ;
-- monitoring externe ;
-- notification opérateur ;
-- analytics externe.
-
----
-
-## Impact maintenance / exploitation
-
-### Niveau de maintenance minimal recommandé
-
-- `M1` si peu de connecteurs et faible dépendance ;
-- `M2` dès qu’un provider critique est activé ;
-- `M3` avec plusieurs connecteurs sensibles ;
-- `M4` pour des contextes très intégrés ou réglementés.
-
-### Pourquoi
-
-Le domaine `integrations` concentre une part forte du risque opérationnel externe.
-Plus les connecteurs sont nombreux ou critiques, plus il exige :
-
-- observability ;
-- idempotence ;
-- reprise propre ;
-- traçabilité des credentials ;
-- supervision des erreurs externes.
-
-### Points d’exploitation à surveiller
-
-- statut des connecteurs ;
-- échecs externes ;
-- callbacks dupliqués ;
-- retries ;
-- rotation de credentials ;
-- désynchronisations entre coeur et providers.
-
----
-
-## Impact coût / complexité
-
-Le coût du domaine `integrations` monte principalement avec :
-
-- le nombre de connecteurs activés ;
-- la criticité métier des connecteurs ;
-- la complexité des mappings ;
-- la densité des synchronisations ;
-- la richesse de l’observability attendue ;
-- les exigences de sécurité et de rotation de credentials.
-
-Lecture relative du coût :
-
-- niveau 1 : `C1`
-- niveau 2 : `C2`
-- niveau 3 : `C3`
-- niveau 4 : `C4`
-
----
-
-## Cas d’usage principaux
-
-1. Configurer un connecteur externe
-2. Stocker et gérer ses credentials
-3. Traduire un résultat provider en langage interne
-4. Lancer ou superviser une synchronisation
-5. Séparer proprement coeur et frontière externe
-
----
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- connecteur introuvable ;
-- connecteur désactivé ;
-- credential expiré ou révoqué ;
-- callback invalide ;
-- callback dupliqué ;
-- résultat externe ambigu ;
-- synchronisation échouée ;
-- rotation concurrente de credentials.
-
----
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `integrations` est un domaine coeur à capabilities toggleables ;
-- les providers restent à la frontière externe ;
-- les DTO providers restent confinés ;
-- les résultats externes sont traduits avant toute mutation coeur ;
-- les credentials sont séparés et protégés ;
-- la multiplication des providers fait monter coût, maintenance et risque ;
-- le domaine structure la relation au monde externe sans polluer les domaines coeur.
-
----
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- `integrations` appartient à la colonne vertébrale du socle ;
-- les providers sont toggleables ;
-- les providers ne remplacent jamais les domaines coeur ;
-- les callbacks providers sont validés, dédupliqués et traduits ;
-- la sécurité des credentials est une responsabilité structurante du domaine ;
-- les intégrations font monter le coût et la maintenance de façon explicite.
+- `../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md`
+- `../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
+- `webhooks.md`
+- `api-clients.md`
+- `payments.md`
+- `orders.md`
+- `products.md`
+- `customers.md`
+- `../../domains/cross-cutting/jobs.md`

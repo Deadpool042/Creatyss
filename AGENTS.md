@@ -1,50 +1,28 @@
+cat > AGENTS.md <<'EOF'
+
 # Creatyss
 
 ## Mission
 
-Construire et faire évoluer le socle e-commerce custom Creatyss.
+Construire et faire évoluer Creatyss comme une plateforme e-commerce custom :
 
-Le projet est conçu pour être :
+- local-first via Docker ;
+- maintenable ;
+- lisible ;
+- strictement typée ;
+- documentée ;
+- déployable ensuite sur un VPS OVH.
 
-- **local-first** via Docker Compose
-- maintenable, lisible et modulaire
-- strictement typé
-- déployable ensuite sur un VPS OVH
-- réutilisable pour d'autres projets e-commerce au-delà du seul cas Creatyss
+Le projet doit rester cohérent à la fois :
 
-## Source de vérité documentaire
+- sur le plan métier ;
+- sur le plan architectural ;
+- sur le plan documentaire ;
+- sur le plan opérationnel.
 
-La source de vérité courante du repo est désormais organisée autour de :
+---
 
-1. `README.md`
-2. `docs/architecture/00-socle-overview.md`
-3. `docs/architecture/01-architecture-principles.md`
-4. `docs/architecture/02-client-needs-capabilities-and-levels.md`
-5. `docs/architecture/03-core-domains-and-toggleable-capabilities.md`
-6. `docs/architecture/04-solution-profiles-and-project-assembly.md`
-7. `docs/architecture/05-maintenance-and-operating-levels.md`
-8. `docs/architecture/06-socle-guarantees.md`
-9. `docs/architecture/07-transactions-and-consistency.md`
-10. `docs/architecture/08-domain-events-jobs-and-async-flows.md`
-11. `docs/architecture/09-integrations-providers-and-external-boundaries.md`
-12. `docs/architecture/10-data-lifecycle-and-governance.md`
-13. `docs/architecture/11-pricing-and-cost-model.md`
-14. `docs/domains/README.md`
-
-Quand une demande vise explicitement une doc de lot, une doc de test ou une fiche de domaine précise, il faut bien sûr la lire et l'appliquer.
-Mais par défaut, la doctrine courante du repo part d'abord de `docs/architecture/` puis de `docs/domains/`.
-
-## Lecture recommandée avant d'agir
-
-Pour toute tâche non triviale :
-
-1. lire `README.md`
-2. lire `AGENTS.md`
-3. lire `docs/architecture/00` à `11`
-4. lire `docs/domains/README.md`
-5. lire ensuite seulement la documentation ciblée par la demande : lot, tests, domaine précis, etc.
-
-## Stack
+## Stack de référence
 
 - Next.js App Router
 - TypeScript strict
@@ -52,193 +30,327 @@ Pour toute tâche non triviale :
 - Docker Compose
 - Makefile
 
-## Positionnement du socle
+---
 
-Le repo n'est pas un simple projet applicatif figé.
-Il sert de base e-commerce custom structurée par :
+## Source de vérité documentaire
 
-- domaines coeur
-- domaines optionnels
-- capabilities toggleables
-- niveaux de sophistication
-- niveaux de maintenance / exploitation
-- garanties de socle
-- cohérence transactionnelle
-- gouvernance de cycle de vie des données
+Le référentiel canonique du projet est organisé dans `docs/` :
 
-La logique documentaire doit rester cohérente avec cette doctrine.
+- `docs/architecture/` : doctrine d’architecture canonique
+- `docs/domains/` : fiches détaillées par domaine
+- `docs/testing/` : stratégie, niveaux et roadmap de validation
+
+### Règle absolue
+
+Pour toute demande de conception, d’implémentation, de refonte, de classification ou de documentation :
+
+1. lire d’abord `docs/architecture/`
+2. puis lire `docs/domains/` si la demande touche un domaine précis
+3. puis lire `docs/testing/` si la demande touche validation, vérification ou robustesse
+
+### Priorité documentaire
+
+En cas de conflit :
+
+1. `docs/architecture/` fait autorité sur la doctrine
+2. `docs/domains/` fait autorité sur le détail local d’un domaine, à doctrine constante
+3. `docs/testing/` fait autorité sur la stratégie de validation
+
+Aucun changement ne doit contredire `docs/architecture/`.
+
+---
+
+## Ordre de lecture minimal
+
+Avant toute modification non triviale, lire au minimum :
+
+1. `docs/architecture/README.md`
+2. `docs/architecture/00-introduction/00-vue-d-ensemble-du-systeme.md`
+3. `docs/architecture/00-introduction/01-glossaire.md`
+4. `docs/architecture/10-fondations/10-principes-d-architecture.md`
+5. `docs/architecture/10-fondations/11-modele-de-classification.md`
+6. `docs/architecture/10-fondations/12-frontieres-et-responsabilites.md`
+
+Si la demande touche un domaine : 7. lire la fiche correspondante dans `docs/domains/`
+
+Si la demande touche les tests : 8. lire les documents pertinents dans `docs/testing/`
+
+---
 
 ## Principes de travail
 
-- Toujours choisir la solution la plus simple compatible avec l'évolution future.
+- Toujours choisir la solution la plus simple compatible avec l’évolution future.
 - Toujours privilégier la lisibilité, la maintenabilité et la clarté du domaine métier.
 - Toujours travailler par petits incréments sûrs.
-- Toujours rester dans le périmètre demandé, sans ajouter de fonctionnalités non demandées.
-- Préserver le comportement existant hors périmètre.
-- Donner une seule solution principale, concrète et orientée implémentation.
-- Toujours raisonner d'abord en séparation claire entre doctrine, domaine, données, logique serveur et UI.
+- Toujours rester dans le périmètre demandé.
+- Toujours préserver le comportement existant hors périmètre.
+- Toujours proposer une solution principale, concrète, directement implémentable.
+- Toujours aligner le code, la structure et les noms sur la doctrine documentaire en vigueur.
+- Toujours protéger les frontières entre domaines.
+- Toujours expliciter la source de vérité d’une donnée ou d’une décision importante.
 
-## Interdits
+---
 
-- Ne jamais proposer WordPress, WooCommerce, Shopify, Supabase ou Vercel.
-- Ne jamais ajouter de dépendance inutile.
-- Ne jamais introduire Redis, queue, microservices, websocket, IA ou analytics avancés sans demande explicite.
-- Ne jamais sur-architecturer.
-- Ne jamais utiliser `any` sauf justification explicite et exceptionnelle.
-- Ne jamais mélanger logique métier et composants de présentation.
-- Ne jamais traiter une capability optionnelle comme si elle appartenait d'office au coeur.
-- Ne jamais faire dériver la doctrine du repo à partir d'un ancien document isolé sans validation explicite.
+## Principes d’architecture à respecter
 
-## Structure attendue
+- Le métier passe avant la technique.
+- Le coeur du système doit rester identifiable.
+- Les capacités optionnelles doivent rester bornées.
+- Les dépendances externes doivent être encapsulées.
+- La source de vérité doit être explicite.
+- Les événements doivent exprimer des faits, pas masquer une mauvaise modélisation.
+- Les préoccupations transverses doivent être traitées explicitement.
+- Les frontières doivent être compréhensibles.
+- Le système doit rester testable par responsabilité.
+- La documentation doit refléter la structure réelle.
+
+---
+
+## Taxonomie du système
+
+Le système suit la taxonomie définie dans `docs/architecture/` et appliquée dans `docs/domains/`.
+
+### Catégories documentaires reconnues
+
+- `core`
+- `optional`
+- `cross-cutting`
+- `satellites`
+
+### Règles
+
+- `core` : domaines coeur, métier ou structurels, indispensables
+- `optional` : capacités optionnelles activables
+- `cross-cutting` : responsabilités transverses, potentiellement critiques
+- `satellites` : blocs satellites, projections, modélisations périphériques ou sous-systèmes connexes
+
+Ne jamais reclassifier un domaine “par intuition”.
+Toute reclassification doit rester cohérente avec `docs/architecture/10-fondations/11-modele-de-classification.md`.
+
+---
+
+## Structure attendue du code
+
+La structure exacte peut évoluer, mais les responsabilités doivent rester lisibles.
+
+Repères usuels :
 
 - `app/` : routes, layouts, pages, handlers Next.js
-- `features/` : cas d'usage et verticales fonctionnelles
-- `entities/` ou `domain/` : types, règles métier, validations métier
-- `db/` : migrations, seeds, repositories, accès PostgreSQL
 - `components/` : composants UI réutilisables
-- `lib/` : helpers techniques transverses
-- `public/` : assets publics et uploads locaux
+- `lib/` : utilitaires techniques transverses
+- `db/` : migrations, seeds, accès base, repositories
 - `scripts/` : scripts techniques
-- `docs/architecture/` : doctrine du socle
-- `docs/domains/` : cartographie et fiches de domaines
-- `docs/testing/` : stratégie et docs de test
+- `docs/` : doctrine, domaines, tests et documents projet
+
+Règle absolue :
+
+- ne pas mélanger logique métier et composants de présentation ;
+- ne pas dissoudre les frontières de domaine dans des helpers techniques vagues.
+
+---
 
 ## Règles Next.js
 
-- Server Components par défaut.
-- Client Components seulement si nécessaire.
-- Server Actions seulement quand elles simplifient vraiment le flux.
-- Pas de logique métier directement dans les composants UI.
-- Préférer des routes simples.
-- Ne pas introduire de parallel routes sans besoin concret.
+- Server Components par défaut
+- Client Components seulement si nécessaire
+- Server Actions seulement quand elles simplifient réellement le flux
+- Pas de logique métier directement dans les composants UI
+- Pas de structure de routes sophistiquée sans besoin réel
+- Pas d’abstraction Next.js prématurée
+
+---
 
 ## Séparation des responsabilités
 
-- UI : affichage et composition d'interface uniquement.
-- Validation : validation explicite des entrées côté serveur.
-- Métier : règles métier pures et explicites.
-- Données : accès base isolé dans une couche dédiée.
+### UI
+
+Affichage, composition d’interface, expérience utilisateur.
+
+### Validation
+
+Validation explicite des entrées côté serveur.
+
+### Métier
+
+Règles métier pures, explicites, traçables.
+
+### Données
+
+Accès base et persistance dans une couche dédiée.
+
+### Intégration
+
+Échanges externes isolés derrière des interfaces, adaptateurs ou couches dédiées.
+
+Aucune couche ne doit absorber silencieusement la responsabilité d’une autre.
+
+---
 
 ## Base de données
 
-- Clés primaires explicites.
-- Timestamps systématiques.
-- Slugs uniques quand nécessaire.
-- Relations propres.
-- Index utiles sans excès.
-- Noms de tables et colonnes cohérents et stables.
-- Toute modification de schéma doit passer par une migration SQL explicite.
-- Ne jamais modifier silencieusement le schéma existant sans migration.
-- Ne jamais supprimer table, colonne, contrainte ou index sans demande explicite.
-- Préserver la compatibilité avec l'existant tant qu'une refonte complète n'est pas demandée.
+- Clés primaires explicites
+- Timestamps systématiques quand pertinents
+- Slugs uniques quand nécessaires
+- Relations propres et stables
+- Index utiles sans excès
+- Nommage cohérent et durable
+- Toute modification de schéma doit passer par une migration SQL explicite
+- Ne jamais modifier silencieusement le schéma existant
+- Ne jamais supprimer table, colonne, contrainte ou index sans demande explicite
+- Préserver la compatibilité tant qu’une refonte explicite n’est pas demandée
+
+---
 
 ## Dépendances
 
-- Préférer les solutions natives Next.js, TypeScript, Node.js et PostgreSQL quand elles suffisent.
-- Avant d'ajouter une librairie, vérifier qu'une solution simple native ou déjà présente dans le projet ne suffit pas.
-- Toute nouvelle dépendance doit être justifiée explicitement.
+- Préférer les solutions natives Next.js, TypeScript, Node.js et PostgreSQL quand elles suffisent
+- Vérifier d’abord si une solution simple déjà présente dans le projet existe
+- Toute nouvelle dépendance doit être justifiée explicitement
+- Ne jamais ajouter une dépendance pour masquer une faiblesse de modélisation
+- Ne jamais sur-architecturer
 
-## Local first
+---
 
-- Le projet doit fonctionner localement via Docker.
-- La commande d'entrée principale est `make up`.
-- Le setup local minimal inclut `app` et `db`.
-- Tout ce qui est nécessaire au lancement local doit être dockerisé.
+## Interdits
 
-## Doctrine domaines / capabilities
+- Ne jamais proposer WordPress, WooCommerce, Shopify, Supabase ou Vercel
+- Ne jamais ajouter de dépendance inutile
+- Ne jamais introduire Redis, queue, microservices, websocket, IA ou analytics avancés sans demande explicite
+- Ne jamais utiliser `any` sauf justification explicite et exceptionnelle
+- Ne jamais mélanger logique métier et présentation
+- Ne jamais refactorer massivement hors périmètre
+- Ne jamais implémenter une étape suivante non demandée
+- Ne jamais contourner la doctrine d’architecture au nom de la vitesse
 
-- Toujours distinguer domaine coeur, domaine optionnel, satellite documentaire et concern transverse.
-- Toujours vérifier le rang documentaire dans `docs/domains/README.md` avant de créer ou déplacer une doc de domaine.
-- Toujours vérifier la criticité architecturale dans `docs/architecture/03-core-domains-and-toggleable-capabilities.md`.
-- Ne pas confondre rang documentaire et criticité architecturale.
-- `availability` est le domaine canonique de disponibilité ; `inventory` est une spécialisation satellitaire centrée sur le quantitatif.
-- `stores` est le nom canonique du domaine de boutique / composition projet.
+---
+
+## Local-first
+
+- Le projet doit fonctionner localement via Docker
+- La commande d’entrée principale est `make up`
+- Le setup local minimal inclut au minimum `app` et `db`
+- Tout ce qui est nécessaire au lancement local doit être dockerisé
+
+---
+
+## Documentation des domaines
+
+Toute modification métier ou structurelle importante doit être cohérente avec `docs/domains/`.
+
+### Règles
+
+- Une fiche domaine décrit une responsabilité réelle
+- Une fiche domaine doit expliciter :
+  - rôle
+  - classification
+  - source de vérité
+  - responsabilités
+  - non-responsabilités
+  - invariants
+  - dépendances
+  - événements significatifs
+  - cycle de vie
+  - contraintes d’intégration
+  - observabilité et audit
+  - impact d’exploitation
+  - limites
+- Toute nouvelle fiche doit suivre `docs/domains/_template.md`
+- Toute migration ou contradiction doit être pilotée via `docs/domains/_migration-audit.md`
+
+---
 
 ## Sécurité et robustesse
 
-- Ne jamais faire confiance aux entrées utilisateur.
-- Toujours valider côté serveur.
-- Ne jamais exposer de secrets côté client.
-- Gérer explicitement les erreurs métier, base de données, authentification et upload.
-- Afficher des messages d'erreur utiles côté admin.
-- Ne jamais masquer silencieusement une erreur importante.
-- Quand une opération a une portée transactionnelle ou de cohérence, vérifier la doctrine dans `docs/architecture/07-transactions-and-consistency.md`.
+- Ne jamais faire confiance aux entrées utilisateur
+- Toujours valider côté serveur
+- Ne jamais exposer de secrets côté client
+- Gérer explicitement les erreurs métier, base de données, authentification, intégration et upload
+- Ne jamais masquer silencieusement une erreur importante
+- Toute entrée externe doit être considérée comme potentiellement dupliquée, retardée, désordonnée ou invalide
+- Toute logique rejouable doit être idempotente ou neutralisée
+- Toute divergence avec un système externe important doit être visible
+
+---
 
 ## Discipline de modification
 
-- Ne modifier que les fichiers nécessaires au lot demandé.
-- Ne pas profiter d'un lot pour refactorer des zones non demandées.
-- Ne pas renommer massivement des fichiers, types ou fonctions sans demande explicite.
-- Préserver le comportement existant hors périmètre.
-- Commencer par l'implémentation la plus simple et robuste pour le lot demandé.
-- Si un document de lot impose un plan d'implémentation, le suivre strictement.
-- Si un travail touche la doctrine, vérifier la cohérence entre `README.md`, `docs/architecture/` et `docs/domains/`.
+- Ne modifier que les fichiers nécessaires au périmètre demandé
+- Ne pas profiter d’un lot pour réorganiser des zones non demandées
+- Ne pas renommer massivement sans demande explicite
+- Préserver le comportement existant hors périmètre
+- Commencer par l’implémentation la plus simple et robuste
+- Si un document impose un plan, le suivre strictement
+- Si une doc et le code divergent, traiter l’écart explicitement ; ne pas improviser
+
+---
+
+## Planification
+
+Pour tout lot non trivial :
+
+1. objectif
+2. périmètre
+3. hors périmètre
+4. fichiers à créer ou modifier
+5. ordre d’exécution
+6. impacts de compatibilité
+7. vérifications
+
+Tant que le plan n’est pas validé, ne pas modifier le code.
+
+Si la demande touche un sous-ensemble documentaire précis, lire ce sous-ensemble en entier avant de proposer le plan.
+
+---
+
+## Vérifications
+
+Pour chaque lot :
+
+- inclure au minimum un `typecheck`
+- ajouter des tests unitaires ciblés si le lot le justifie
+- ajouter des tests e2e ciblés si le lot touche un parcours critique
+- privilégier une vérification automatisée avant une vérification manuelle
+- ne proposer une vérification manuelle navigateur que lorsqu’aucune vérification automatisée utile n’existe
+
+Toujours indiquer :
+
+- les commandes lancées
+- les vérifications passées
+- les limites restantes
+
+---
 
 ## Format de réponse attendu
 
 Quand tu proposes une modification :
 
-1. résumer brièvement ce que tu vas modifier
+1. résumer brièvement ce qui va être modifié
 2. lister les fichiers créés ou modifiés
 3. fournir le code complet ou les patchs nécessaires
-4. indiquer les variables d'environnement nécessaires
+4. indiquer les variables d’environnement nécessaires
 5. indiquer la commande de test
-6. indiquer la vérification manuelle attendue
+6. indiquer la vérification manuelle attendue si nécessaire
 7. préciser ce qui reste volontairement hors périmètre
 
-## Lisibilité métier et UX admin
+---
 
-- Le modèle visible dans l'admin doit rester simple, métier et compréhensible par une utilisatrice non technique.
-- Pour tout lot de vocabulaire, wording UI, terminologie ou documentation métier, utiliser les termes officiels en vigueur dans la doctrine courante du repo et les docs métier ciblées par la demande.
-- L'admin doit parler en termes de :
-  - produit simple
-  - produit avec déclinaisons
-  - informations de vente
-  - déclinaisons
-  - prix
-  - prix barré
-  - stock
-  - référence
-  - publication
-- Ne jamais exposer comme chemin principal dans l'UI des notions internes telles que :
-  - produit parent
-  - produit vendable
-  - variante technique
-  - compatibilité legacy
-  - fallback
-  - `compareAtPrice`
-  - `simpleOffer`
-- Le code doit privilégier des noms orientés métier, des responsabilités claires et des fichiers lisibles.
-- Toute compatibilité transitoire ou legacy doit rester isolée et ne pas structurer l'expérience admin principale.
+## Lisibilité métier
 
-## Style de livraison
+- Le code doit privilégier des noms orientés métier
+- Les responsabilités doivent être claires
+- Les fichiers doivent rester lisibles
+- Toute compatibilité legacy doit rester isolée
+- Le modèle visible dans l’admin doit rester simple et compréhensible
+- Les abstractions ne doivent jamais masquer le domaine
 
-- Code complet quand nécessaire.
-- TypeScript strict.
-- Petits fichiers lisibles.
-- Noms explicites.
-- Pas d'abstraction prématurée.
-- Pas de fonctionnalité hors périmètre demandé.
-- Privilégier des noms et structures compréhensibles par intention métier avant toute sophistication technique.
+---
 
-## Planification
+## Règle finale
 
-- Pour tout lot non trivial, commencer par proposer un plan avant toute modification de code.
-- Si la demande vise un document de lot, le lire en entier puis produire un plan d'implémentation strict.
-- Tant que le plan n'est pas validé, ne modifier aucun fichier.
-- Le plan doit être structuré dans cet ordre :
-  1. objectif
-  2. périmètre
-  3. hors périmètre
-  4. fichiers à créer ou modifier
-  5. ordre d'exécution
-  6. impacts de compatibilité
-  7. vérifications
+En cas de doute :
 
-## Vérifications
-
-- Pour chaque lot, exécuter les vérifications les plus pertinentes pour le périmètre modifié.
-- Inclure au minimum `typecheck`, puis des tests unitaires et e2e ciblés si le lot le justifie.
-- Si un lot touche l'UI, privilégier une vérification automatisée des écrans ou parcours impactés avant de laisser une vérification manuelle.
-- Ne proposer une vérification manuelle navigateur que lorsqu'aucune vérification automatisée utile n'existe.
-- Toujours indiquer clairement les commandes lancées, les vérifications passées et les limites restantes.
+- revenir à `docs/architecture/`
+- clarifier la source de vérité
+- clarifier la frontière du domaine
+- choisir la solution la plus lisible, la plus robuste et la moins surprenante
+  EOF

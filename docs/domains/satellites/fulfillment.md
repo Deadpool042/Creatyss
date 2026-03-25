@@ -1,277 +1,322 @@
-# Domaine fulfillment
+# Fulfillment
 
 ## Rôle
 
-Le domaine `fulfillment` porte l’exécution logistique métier post-commande du socle.
+Le domaine `fulfillment` porte l’exécution logistique de la commande.
 
-Il organise la préparation, l’allocation, le picking, le packing, l’expédition, la remise ou la mise à disposition d’une commande ou de ses lignes, sans absorber la commande durable, le choix des méthodes de livraison, le paiement, les retours ou les intégrations transporteurs providers externes.
+Il définit :
+
+- comment une commande ou une partie de commande est préparée ;
+- comment les unités sont prélevées, emballées, regroupées ou remises à l’expédition ;
+- comment le système représente l’avancement de l’exécution logistique ;
+- comment les opérations d’exécution sont suivies.
+
+Le domaine existe pour fournir une vérité d’exécution logistique, distincte :
+
+- de la commande ;
+- de l’expédition ;
+- de l’inventaire ;
+- de la disponibilité vendable.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`satellites`
+
+### Criticité architecturale
+
+`satellite`
+
+### Activable
+
+`non`
+
+Le domaine `fulfillment` n’est pas un simple add-on, mais il n’appartient pas nécessairement au coeur métier central si le système ne fait qu’en orchestrer ou consommer les sorties.
+
+---
+
+## Source de vérité
+
+Le domaine `fulfillment` est la source de vérité pour :
+
+- les opérations de préparation logistique ;
+- l’état d’exécution d’un lot, d’une préparation ou d’un traitement logistique ;
+- les unités préparées, prélevées ou remises à l’expédition selon le modèle retenu ;
+- les événements significatifs d’exécution logistique.
+
+Le domaine `fulfillment` n’est pas la source de vérité pour :
+
+- la commande, qui relève de `orders` ;
+- le stock global, qui relève de `inventory` ;
+- la disponibilité vendable, qui relève de `availability` ;
+- l’expédition au sens suivi de livraison, qui relève de `shipping`.
+
+Le fulfillment exécute.
+Il ne décide pas seul de ce qui est vendable ni de ce qui est livré au sens client.
+
+---
 
 ## Responsabilités
 
-Le domaine `fulfillment` prend en charge :
+Le domaine `fulfillment` est responsable de :
 
-- la préparation logistique d’une commande
-- l’allocation des lignes à exécuter
-- le picking et le packing au niveau métier
-- les états d’exécution logistique
-- les expéditions ou remises au niveau métier
-- la mise à disposition pour retrait si le modèle retenu le prévoit
-- la lecture gouvernée de l’état de fulfillment d’une commande ou de ses lignes
-- la base logistique consommable par `orders`, `returns`, `documents`, `notifications`, `dashboarding`, `observability` et certaines couches d’administration
+- représenter les opérations logistiques d’exécution ;
+- suivre la préparation d’une commande ou d’une partie de commande ;
+- exposer un état d’avancement logistique ;
+- publier les événements significatifs liés à l’exécution ;
+- garantir la cohérence interne des opérations qu’il porte ;
+- servir de point d’ancrage pour la préparation avant expédition.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `fulfillment` ne doit pas :
+- picking ;
+- packing ;
+- regroupement de lots ;
+- split de commande ;
+- exécution partielle ;
+- remise au transporteur ;
+- statut de préparation par unité ou ligne.
 
-- porter la commande durable, qui relève de `orders`
-- porter le choix des méthodes, tarifs ou zones de livraison, qui relève de `shipping`
-- porter le paiement, qui relève de `payments`
-- porter les retours, qui relèvent de `returns`
-- porter les intégrations transporteurs ou points relais providers externes, qui relèvent de `integrations`
-- devenir un simple reflet technique des statuts transporteurs externes sans langage métier interne clair
-- absorber la gestion globale d’inventaire si celle-ci relève de `inventory`
+---
 
-Le domaine `fulfillment` porte l’exécution logistique métier. Il ne remplace ni `orders`, ni `shipping`, ni `payments`, ni `returns`, ni `integrations`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `fulfillment` n’est pas responsable de :
 
-- `preparation` : préparation des commandes ou lignes à exécuter
-- `allocation` : allocation des lignes ou quantités à un flux d’exécution
-- `shipment` : expédition, remise ou mise à disposition au niveau métier
-- `status` : états de fulfillment et transitions d’exécution logistique
-- `policies` : règles de regroupement, de découpage, d’exécution ou de remise
+- définir la commande ;
+- décider de la disponibilité vendable ;
+- maintenir la vérité globale de stock ;
+- suivre la livraison au client final ;
+- gérer le paiement ;
+- calculer le prix ;
+- gouverner les intégrations transporteurs de haut niveau.
 
-## Entrées
+Le domaine `fulfillment` ne doit pas devenir :
+
+- un alias de `shipping` ;
+- ni un alias de `inventory`.
+
+---
+
+## Invariants
+
+Les invariants minimaux du domaine sont les suivants :
+
+- une opération de fulfillment doit être rattachée à un contexte interprétable ;
+- un état d’exécution doit être cohérent ;
+- une exécution terminée ne doit pas redevenir “en préparation” sans règle explicite ;
+- une exécution partielle doit être visible comme telle ;
+- les événements publiés doivent refléter une réalité opérationnelle réellement établie.
+
+Le domaine protège la vérité d’exécution, pas la vérité commerciale ni la vérité de stock globale.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `fulfillment` interagit fortement avec :
+
+- `orders`
+- `inventory`
+- `shipping`
+- `customers`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- audit ;
+- observabilité ;
+- jobs ;
+- intégrations.
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- WMS ;
+- OMS ;
+- entrepôts ;
+- systèmes logistiques ;
+- transporteurs, via les couches adéquates.
+
+### Règle de frontière
+
+Le domaine `fulfillment` porte l’exécution logistique.
+Il ne doit pas absorber :
+
+- la vérité de commande ;
+- la vérité d’expédition ;
+- la vérité de stock ;
+- la disponibilité vendable.
+
+---
+
+## Événements significatifs
+
+Le domaine `fulfillment` publie ou peut publier des événements significatifs tels que :
+
+- préparation créée ;
+- préparation commencée ;
+- picking terminé ;
+- packing terminé ;
+- exécution partielle détectée ;
+- lot prêt pour expédition ;
+- fulfillment complété ;
+- fulfillment échoué ;
+- fulfillment annulé.
+
+Le domaine peut consommer des signaux liés à :
+
+- commande confirmée ;
+- annulation de commande ;
+- changement de stock ;
+- changement d’expédition ;
+- synchronisation WMS/OMS.
+
+---
+
+## Cycle de vie
+
+Le domaine `fulfillment` possède un cycle de vie métier/ops structurant.
+
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
+
+- créé ;
+- en préparation ;
+- partiellement exécuté ;
+- prêt pour expédition ;
+- complété ;
+- échoué ;
+- annulé.
+
+Le domaine doit éviter les états flous ou purement techniques lorsqu’un état opérationnel clair est attendu.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `fulfillment` expose principalement :
+
+- des lectures d’état d’exécution ;
+- des opérations de préparation ;
+- des événements significatifs d’exécution.
 
 Le domaine reçoit principalement :
 
-- des commandes durables issues de `orders`
-- des lignes de commande à exécuter
-- des informations de livraison retenues issues de `shipping` ou du snapshot de commande
-- des demandes de préparation, d’expédition, de remise ou de mise à disposition
-- des demandes de lecture de l’état de fulfillment d’une commande, d’un lot ou d’une ligne
-- des événements ou signaux internes utiles à la progression logistique
+- des signaux de commande ;
+- des signaux de stock ;
+- des mutations de préparation ;
+- des synchronisations externes.
 
-## Sorties
+Le domaine ne doit pas exposer un contrat instable dépendant d’un WMS spécifique.
 
-Le domaine expose principalement :
+---
 
-- des objets de fulfillment structurés
-- des états de préparation et d’expédition au niveau métier
-- des regroupements ou découpages d’exécution logistique
-- des lectures exploitables par `orders`, `returns`, `documents`, `notifications`, `dashboarding`, `observability` et certaines couches d’administration
-- des signaux logiques indiquant qu’une commande ou certaines lignes sont prêtes, expédiées, remises, partielles ou bloquées
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `fulfillment` peut être exposé à des contraintes telles que :
 
-Le domaine `fulfillment` peut dépendre de :
+- exécution partielle ;
+- ordre de réception non garanti ;
+- synchronisation avec WMS/OMS ;
+- doublons ;
+- retards de remontée ;
+- divergence entre opération physique et état système ;
+- corrections manuelles.
 
-- `orders` pour la commande durable et les lignes à exécuter
-- `shipping` pour les modalités logistiques retenues au moment de la commande
-- `inventory` pour certaines disponibilités ou allocations si ce domaine existe séparément
-- `documents` pour certains documents logistiques ou états documentaires utiles sans absorber leur responsabilité
-- `notifications` pour informer des changements d’état, sans absorber sa responsabilité
-- `audit` pour tracer certaines interventions logistiques sensibles
-- `observability` pour expliquer pourquoi une exécution logistique progresse, bloque ou reste partielle
-- `stores` pour le contexte boutique et certaines politiques locales d’exécution
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `fulfillment` :
+- les entrées doivent être validées ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- les écarts doivent être visibles ;
+- la hiérarchie d’autorité doit être explicite ;
+- les transitions critiques doivent être traçables.
 
-- `orders`
-- `returns`
-- `documents`
-- `notifications`
-- `dashboarding`
-- `analytics`
-- certaines couches d’administration boutique et plateforme
+---
 
-## Capabilities activables liées
+## Observabilité et audit
 
-Le domaine `fulfillment` est directement ou indirectement lié à :
+Le domaine `fulfillment` doit rendre visibles au minimum :
 
-- `pickupPointDelivery`
-- `multiCarrier`
-- `returns`
-- `notifications`
+- les changements d’état ;
+- les exécutions partielles ;
+- les échecs ;
+- les corrections ;
+- les événements significatifs publiés ;
+- les désalignements avec `inventory` ou `shipping`.
 
-Le domaine `fulfillment` lui-même est structurellement présent dès qu’une commande doit être exécutée physiquement ou remise via un mode logistique.
+L’audit doit permettre de répondre à des questions comme :
 
-### Effet si `pickupPointDelivery` est activée
+- quelle préparation a changé ;
+- quand ;
+- pour quelle cause ;
+- avec quel impact sur la commande ou l’expédition.
 
-Le domaine peut gérer la mise à disposition ou certains états de retrait liés aux commandes concernées.
+---
 
-### Effet si `multiCarrier` est activée
+## Impact de maintenance / exploitation
 
-Le domaine peut devoir gérer plus de cas d’exécution ou de découpage logistique, sans absorber les connecteurs providers eux-mêmes.
+Le domaine `fulfillment` a un impact d’exploitation très élevé.
 
-### Effet si `returns` est activée
+Raisons :
 
-Le domaine peut être plus fortement corrélé aux états amont ou aval de retour, sans absorber leur responsabilité.
+- il conditionne l’exécution concrète de la commande ;
+- il dépend souvent de systèmes externes ;
+- il subit les écarts entre théorie et réalité opérationnelle ;
+- ses erreurs contaminent l’expédition et l’expérience client.
 
-## Rôles/permissions concernés
+En exploitation, une attention particulière doit être portée à :
 
-### Rôles
+- la cohérence des statuts ;
+- les exécutions partielles ;
+- les écarts avec le stock ;
+- les retards ;
+- les corrections manuelles ;
+- les synchronisations externes.
 
-Les rôles principalement concernés sont :
+---
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `order_manager`
-- `customer_support` en lecture partielle selon la politique retenue
-- certains opérateurs logistiques dédiés selon la politique retenue
+## Limites du domaine
 
-### Permissions
+Le domaine `fulfillment` s’arrête :
 
-Exemples de permissions concernées :
+- avant la commande comme objet métier ;
+- avant la vérité globale de stock ;
+- avant la disponibilité vendable ;
+- avant le suivi de livraison final (`shipping`) ;
+- avant les mécanismes techniques transverses.
 
-- `fulfillment.read`
-- `fulfillment.write`
-- `orders.read`
-- `shipping.read`
-- `returns.read`
-- `documents.read`
-- `notifications.read`
-- `audit.read`
+Le domaine porte l’exécution logistique.
+Il ne doit pas absorber toute la chaîne commerciale et logistique.
 
-## Événements émis
+---
 
-Le domaine peut émettre des domain events internes du type :
+## Questions ouvertes
 
-- `fulfillment.created`
-- `fulfillment.preparation.started`
-- `fulfillment.prepared`
-- `fulfillment.shipped`
-- `fulfillment.delivered`
-- `fulfillment.ready_for_pickup`
-- `fulfillment.status.changed`
-- `fulfillment.blocked`
+À confirmer explicitement dans le projet :
 
-## Événements consommés
+- la frontière exacte entre `fulfillment` et `shipping` ;
+- la frontière exacte entre `fulfillment` et `inventory` ;
+- le niveau de détail attendu (ligne, unité, colis, lot) ;
+- la hiérarchie entre système interne et WMS/OMS ;
+- la gestion des exécutions partielles ;
+- la stratégie de correction manuelle ;
+- la gestion des retours vers l’inventaire.
 
-Le domaine peut consommer certains événements internes du type :
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
-- `order.created`
-- `order.cancelled`
-- `payment.captured` si certaines exécutions dépendent d’un état de paiement
-- `shipping.selection.confirmed` si ce langage interne est stabilisé
-- `inventory.allocation.changed` si ce langage interne est stabilisé
-- `store.capabilities.updated`
-- certaines actions administratives structurées de préparation, remise ou expédition
+---
 
-Il doit toutefois rester maître de sa propre logique d’exécution logistique métier.
+## Documents liés
 
-## Intégrations externes
-
-Le domaine `fulfillment` ne doit pas devenir un domaine d’intégration provider-specific.
-
-Il peut être corrélé à des transporteurs, points relais ou systèmes logistiques externes via `integrations`, mais :
-
-- la vérité du fulfillment métier interne reste dans `fulfillment`
-- les DTO transporteurs ou providers restent dans `integrations`
-- les méthodes et options de livraison restent dans `shipping`
-
-## Données sensibles / sécurité
-
-Le domaine `fulfillment` manipule des informations logistiques et opérationnelles sensibles.
-
-Points de vigilance :
-
-- contrôle strict des droits de lecture et d’écriture
-- séparation claire entre état logistique métier interne et statut provider externe
-- protection des changements sensibles de statut, d’allocation ou de remise
-- limitation de l’exposition selon le rôle, le scope et le besoin métier
-- audit des interventions logistiques manuelles importantes
-
-## Observability / audit
-
-### Observability
-
-Il faut pouvoir comprendre :
-
-- quel état de fulfillment est en vigueur
-- quelles lignes ou quantités sont concernées
-- pourquoi une commande est prête, partielle, bloquée, expédiée ou remise
-- quel événement ou quelle précondition a déclenché une transition logistique
-- si une exécution n’avance pas à cause d’un blocage de stock, de paiement, de configuration ou d’une règle applicable
-
-### Audit
-
-Il faut tracer :
-
-- la création d’un lot ou objet de fulfillment sensible
-- les changements significatifs de statut logistique
-- les remises, expéditions ou validations manuelles importantes
-- les blocages et déblocages sensibles
-- certaines consultations sensibles si le modèle final les retient explicitement
-
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `FulfillmentOrder` : exécution logistique structurée liée à une commande ou à une partie de commande
-- `FulfillmentLine` : ligne ou quantité exécutée dans le cadre du fulfillment
-- `FulfillmentStatus` : état logistique métier
-- `FulfillmentShipment` : expédition, remise ou mise à disposition au niveau métier
-- `FulfillmentPolicy` : règle de regroupement, découpage ou exécution
-- `FulfillmentSubjectRef` : référence vers la commande ou les lignes source concernées
-
-_Les objets `FulfillmentShipment`, `FulfillmentPolicy` et `FulfillmentSubjectRef` relèvent du modèle conceptuel du domaine. Dans le schéma par défaut, ils peuvent être condensés autour de l’agrégat `Fulfillment` et de ses lignes sans donner lieu à une entité de persistance dédiée._
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- un objet de fulfillment est rattaché à une commande ou à des lignes explicites
-- un état de fulfillment possède une signification métier explicite
-- `fulfillment` ne se confond pas avec `orders`
-- `fulfillment` ne se confond pas avec `shipping`
-- `fulfillment` ne se confond pas avec `returns`
-- `fulfillment` ne se confond pas avec `integrations`
-- les autres domaines ne doivent pas recréer librement leur propre vérité divergente d’exécution logistique quand le cadre commun `fulfillment` existe
-- un statut provider externe ne doit pas devenir directement la vérité métier interne sans traduction explicite
-
-## Cas d’usage principaux
-
-1. Préparer une commande pour exécution logistique
-2. Découper une commande en exécutions partielles si nécessaire
-3. Marquer une commande ou certaines lignes comme expédiées
-4. Marquer une commande comme prête au retrait si le modèle le prévoit
-5. Fournir à `orders`, `notifications` ou `returns` une lecture fiable de l’état logistique
-6. Exposer à l’admin une lecture claire des commandes à préparer, expédier, remettre ou débloquer
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- objet de fulfillment introuvable
-- ligne source introuvable ou incohérente
-- transition logistique invalide pour l’état courant
-- exécution impossible à cause d’un prérequis non satisfait
-- tentative de remise ou d’expédition non autorisée
-- permission ou scope insuffisant
-- tentative d’exposition d’un détail logistique sensible dans un contexte non autorisé
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `fulfillment` porte l’exécution logistique métier du socle
-- `fulfillment` est distinct de `orders`
-- `fulfillment` est distinct de `shipping`
-- `fulfillment` est distinct de `returns`
-- `fulfillment` est distinct de `integrations`
-- les domaines consommateurs lisent la vérité logistique via `fulfillment`, sans la recréer localement
-- les statuts, préparations, remises et blocages sensibles doivent être observables et auditables
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- l’exécution logistique métier relève de `fulfillment`
-- la commande durable relève de `orders`
-- les méthodes et options de livraison relèvent de `shipping`
-- les retours relèvent de `returns`
-- les connecteurs transporteurs ou points relais relèvent de `integrations`
-- `fulfillment` ne remplace ni `orders`, ni `shipping`, ni `returns`, ni `integrations`, ni `payments`
+- `../core/orders.md`
+- `../core/shipping.md`
+- `inventory.md`
+- `../core/availability.md`
+- `../../architecture/20-structure/23-systemes-externes-et-satellites.md`
