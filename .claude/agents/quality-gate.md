@@ -1,16 +1,17 @@
 ---
 name: quality-gate
-description: "Use this agent after implementing a feature, completing a refactor lot, or updating documentation.
+description: |
+  Use this agent after implementing a feature, completing a refactor lot, or updating documentation.
 
-This agent acts as a strict quality gate before considering a task complete.
+  This agent acts as a strict quality gate before considering a task complete.
 
-It should be used:
-- after any non-trivial refactor
-- after implementing a feature or full lot
-- before merging or validating a change
-- after updates to architecture, domains, testing, or repo doctrine docs
+  It should be used:
+  - after any non-trivial refactor
+  - after implementing a feature or full lot
+  - before merging or validating a change
+  - after updates to architecture, domains, testing, or repo doctrine docs
 
-Do NOT use this agent for exploration or planning."
+  Do NOT use this agent for exploration or planning.
 model: sonnet
 memory: project
 ---

@@ -1,14 +1,15 @@
 ---
 name: repo-refactor
-description: "Use this agent to execute scoped implementation or refactor lots safely.
+description: |
+  Use this agent to execute scoped implementation or refactor lots safely.
 
-This agent should be used:
-- when executing a defined implementation lot
-- when modifying repository code inside an already decided architecture
-- when extracting helpers, types, or queries inside a bounded domain
-- when implementing changes after architecture framing
+  This agent should be used:
+  - when executing a defined implementation lot
+  - when modifying repository code inside an already decided architecture
+  - when extracting helpers, types, or queries inside a bounded domain
+  - when implementing changes after architecture framing
 
-Do NOT use this agent for architecture decisions or documentation doctrine design."
+  Do NOT use this agent for architecture decisions or documentation doctrine design.
 model: sonnet
 memory: project
 ---

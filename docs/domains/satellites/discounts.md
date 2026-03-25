@@ -1,280 +1,392 @@
-# Domaine discounts
-
-> **Statut documentaire** : satellite de `pricing`.
-> `discounts` documente les capabilities de remises et promotions portées par le domaine coeur [`core/pricing.md`](../core/pricing.md).
-> Tant qu'il n'existe pas de moteur promotionnel séparé et autonome, ce sujet reste subordonné à `pricing`, pas un domaine de premier rang indépendant.
+# Remises
 
 ## Rôle
 
-Le domaine `discounts` porte les remises, promotions et mécanismes de réduction commerciale du socle.
+Le domaine `discounts` porte les mécanismes de réduction appliqués au catalogue, au panier, à la commande ou à certains contextes de vente.
 
-Il décide quelles réductions sont applicables dans un contexte donné, selon des règles explicites de priorité, de cumul, de ciblage client, de volume, de période ou de coupon.
+Il définit :
+
+- quels types de remises existent ;
+- sur quels périmètres elles s’appliquent ;
+- comment elles sont évaluées ;
+- comment elles se distinguent du pricing de base, de la taxation et des règles de vente ;
+- comment elles restent traçables, explicables et cohérentes.
+
+Le domaine existe pour fournir un cadre explicite de réduction commerciale, distinct :
+
+- du prix de référence porté par `pricing` ;
+- de la fiscalité portée par `taxation` ;
+- des règles de disponibilité ou de stock ;
+- des politiques de vente générales ;
+- des programmes de fidélité ou cartes cadeaux lorsqu’ils existent comme domaines séparés.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`satellites`
+
+### Criticité architecturale
+
+`satellite structurant`
+
+### Activable
+
+`oui`
+
+Le domaine `discounts` est activable.
+Lorsqu’il est activé, il devient fortement structurant pour :
+
+- le panier ;
+- le checkout ;
+- la commande ;
+- l’explicabilité commerciale ;
+- la cohérence des montants.
+
+---
+
+## Source de vérité
+
+Le domaine `discounts` est la source de vérité pour :
+
+- la définition interne des remises ;
+- leurs règles d’éligibilité ;
+- leur mode de calcul ou d’évaluation ;
+- leur statut actif, inactif, expiré ou archivé ;
+- les conditions d’application portées par le système ;
+- la traçabilité minimale de leur utilisation quand cette responsabilité est portée ici.
+
+Le domaine `discounts` n’est pas la source de vérité pour :
+
+- le prix catalogue de base, qui relève de `pricing` ;
+- la taxe, qui relève de `taxation` ;
+- les règles générales de vente, qui peuvent relever de `sales-policy` ;
+- la commande elle-même, qui relève de `orders` ;
+- le paiement, qui relève de `payments` ;
+- la fidélité ou les cartes cadeaux, si ces concepts sont modélisés séparément.
+
+Une remise modifie un montant selon une règle commerciale.
+Elle ne doit pas être confondue avec :
+
+- un prix de référence ;
+- une taxe ;
+- un avoir ;
+- un moyen de paiement ;
+- un programme de fidélité.
+
+---
 
 ## Responsabilités
 
-Le domaine `discounts` prend en charge :
+Le domaine `discounts` est responsable de :
 
-- les remises automatiques
-- les promotions datées
-- les coupons
-- les remises client spécifiques
-- les remises par groupe client
-- les remises volume ou quantité
-- la logique de cumul ou d’exclusion entre remises
-- les priorités entre règles de réduction
-- la production d’un résultat de discount exploitable par `pricing`, `checkout`, `orders` et `documents`
+- définir ce qu’est une remise dans le système ;
+- porter les règles d’éligibilité et de validité ;
+- encadrer l’évaluation des remises ;
+- structurer les différents types de remises explicitement supportés ;
+- exposer une représentation exploitable des remises applicables ;
+- publier les événements significatifs liés à la vie des remises ;
+- protéger le système contre les réductions implicites, opaques ou contradictoires.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `discounts` ne doit pas :
+- remises en pourcentage ;
+- remises fixes ;
+- remises produit ;
+- remises panier ;
+- remises conditionnelles ;
+- coupons, si ce sous-modèle est porté ici ;
+- remises ciblées par boutique, canal, segment, pays ou période ;
+- plafonds, minimums, exclusivités ou cumulabilité.
 
-- porter le panier, qui relève de `cart`
-- porter le catalogue source, qui relève de `products`
-- porter la vendabilité contextuelle, qui relève de `sales-policy`
-- porter la fiscalité, qui relève de `taxation`
-- porter l’orchestration monétaire finale, qui relève de `pricing`
-- devenir un fourre-tout marketing qui absorberait `marketing`, `conversion` ou `crm`
-- porter l’intégration technique de coupons externes, qui relèverait de `integrations`
+---
 
-Le domaine `discounts` décide les réductions applicables. Il ne remplace ni `pricing`, ni `marketing`, ni `cart`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `discounts` n’est pas responsable de :
 
-- `rules` : règles de remises et promotions
-- `coupons` : coupons et leur validité
-- `evaluation` : moteur d’évaluation des remises applicables
+- définir le prix catalogue de base ;
+- définir la taxe ;
+- garantir la disponibilité vendable ;
+- porter la commande entière ;
+- exécuter le paiement ;
+- gouverner la fidélité, les récompenses ou les cartes cadeaux si ces domaines existent ;
+- porter toute la politique de vente générale ;
+- devenir un moteur générique de règles pour tout le système.
 
-## Entrées
+Le domaine `discounts` ne doit pas devenir :
+
+- un doublon de `pricing` ;
+- un mélange entre prix, promotion, coupon et avantage fidélité ;
+- un fourre-tout de cas commerciaux spéciaux sans gouvernance.
+
+---
+
+## Invariants
+
+Les invariants minimaux du domaine sont les suivants :
+
+- une remise doit avoir une identité interne stable ;
+- une remise doit avoir un périmètre d’application explicite ;
+- une remise ne doit pas être ambiguë sur son mode de calcul ;
+- une remise inactive ou expirée ne doit pas être appliquée comme active sans règle explicite ;
+- deux remises incompatibles ne doivent pas être cumulées silencieusement ;
+- l’application d’une remise doit être explicable ;
+- une remise ne doit pas produire un résultat monétaire incohérent ;
+- une mutation structurante de remise doit être traçable.
+
+Le domaine protège la cohérence commerciale du mécanisme de réduction.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `discounts` interagit fortement avec :
+
+- `pricing`
+- `cart`
+- `checkout`
+- `orders`
+- `taxation`
+- `stores`
+- `products`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `audit`
+- `observability`
+- `jobs`, si certaines activations ou expirations sont différées
+- `feature-flags`, si certains rollouts promotionnels sont gouvernés ainsi
+- `integrations`, si certaines remises viennent d’un système externe
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- ERP ;
+- moteur promotionnel externe ;
+- PIM ;
+- backoffice commercial ;
+- marketplace ou canal externe.
+
+### Règle de frontière
+
+Le domaine `discounts` porte les réductions commerciales.
+Il ne doit pas absorber :
+
+- le prix de base ;
+- la fiscalité ;
+- la logique de commande ;
+- ni la politique complète de vente.
+
+---
+
+## Événements significatifs
+
+Le domaine `discounts` publie ou peut publier des événements significatifs tels que :
+
+- remise créée ;
+- remise mise à jour ;
+- remise activée ;
+- remise désactivée ;
+- remise expirée ;
+- règle d’éligibilité modifiée ;
+- coupon généré ou invalidé, si ce concept est porté ici ;
+- remise appliquée ;
+- remise rejetée.
+
+Le domaine peut consommer des signaux liés à :
+
+- mise à jour de prix ;
+- mise à jour de produit ;
+- changement de boutique ou canal ;
+- évolution de stock ou de disponibilité si cela affecte l’éligibilité ;
+- synchronisation commerciale externe ;
+- changement de période promotionnelle.
+
+Les noms exacts doivent rester dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `discounts` possède un cycle de vie explicite.
+
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
+
+- créée ;
+- active ;
+- inactive ;
+- expirée ;
+- archivée.
+
+Des états supplémentaires peuvent exister :
+
+- brouillon ;
+- planifiée ;
+- suspendue ;
+- consommée, pour certains coupons ou avantages unitaires.
+
+Les transitions doivent être explicites et traçables.
+
+Le domaine doit éviter :
+
+- les remises “fantômes” ;
+- les activations implicites ;
+- les changements silencieux de règles ;
+- les cumuls opaques.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `discounts` expose principalement :
+
+- des commandes de création et de mutation de remises ;
+- des lectures de remises actives ou applicables ;
+- des évaluations de remises sur un contexte donné ;
+- des événements significatifs liés à leur cycle de vie.
 
 Le domaine reçoit principalement :
 
-- un contexte panier
-- un contexte client
-- un contexte boutique
-- un contexte temporel
-- les capabilities actives de la boutique
-- éventuellement un ou plusieurs coupons saisis
-- des règles de réduction configurées
+- des demandes de création ou de mise à jour ;
+- des contextes d’éligibilité ou d’évaluation ;
+- des synchronisations externes ;
+- des actions opératoires de suspension ou d’activation.
 
-## Sorties
+Le domaine ne doit pas exposer un contrat canonique dépendant d’un outil promotionnel externe sans modèle interne clair.
 
-Le domaine expose principalement :
+---
 
-- une liste de remises applicables
-- une liste de remises refusées avec raisons explicites si nécessaire
-- un total ou des montants de réduction monétaires exploitables par `pricing`
-- une lecture structurée du résultat d’évaluation des discounts
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `discounts` peut être exposé à des contraintes telles que :
 
-Le domaine `discounts` peut dépendre de :
+- promotions planifiées ;
+- multi-boutiques ;
+- multi-devises ;
+- règles de cumul ;
+- coupons à usage unique ;
+- dépendance à un système commercial externe ;
+- ordre d’évaluation sensible ;
+- interaction avec taxation et panier ;
+- recalcul en temps réel.
 
-- `cart` pour le contexte panier runtime
-- `customers` pour le type, le groupe ou le profil commercial du client
-- `products` pour certaines règles ciblant des produits, variantes ou catégories
-- `stores` pour le contexte boutique et les capabilities actives
-- `pricing` pour certains helpers monétaires communs, sans lui déléguer la décision métier de remise
-- `audit` pour tracer les changements sensibles de règles
-- `observability` pour expliquer pourquoi une remise a été appliquée ou refusée
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `discounts` :
+- la hiérarchie d’autorité doit être explicite ;
+- le calcul doit rester déterministe à contexte identique ;
+- une remise expirée ne doit pas continuer à être appliquée silencieusement ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- les incompatibilités doivent être visibles ;
+- un système externe ne doit pas redéfinir silencieusement la vérité interne.
 
-- `pricing`
-- `checkout`
-- `orders`
-- `documents`
-- `analytics`
-- `dashboarding`
+---
 
-## Capabilities activables liées
+## Observabilité et audit
 
-Le domaine `discounts` est directement lié à :
+Le domaine `discounts` doit rendre visibles au minimum :
 
-- `discounts`
-- `couponCodes`
-- `customerSpecificPricing`
-- `customerGroupPricing`
-- `volumePricing`
+- les créations et activations de remises ;
+- les expirations ;
+- les rejets d’éligibilité significatifs ;
+- les erreurs de calcul ;
+- les divergences avec des systèmes externes ;
+- les événements significatifs publiés.
 
-### Effet si `discounts` est activée
+L’audit doit permettre de répondre à des questions comme :
 
-Le moteur de remises devient exploitable et peut évaluer des réductions applicables.
+- quelle remise a été activée ou modifiée ;
+- quand ;
+- selon quelle origine ;
+- sur quel périmètre ;
+- avec quel impact commercial attendu ;
+- avec quelle application réelle dans un panier ou une commande.
 
-### Effet si `discounts` est désactivée
+L’observabilité doit distinguer :
 
-Le domaine reste structurellement présent, mais aucune réduction n’est effectivement appliquée.
+- erreur de modèle ;
+- erreur technique ;
+- conflit de règles ;
+- divergence externe ;
+- remise expirée encore visible ;
+- calcul incohérent.
 
-### Effet si `couponCodes` est activée
+---
 
-Les coupons peuvent être saisis, validés et pris en compte.
+## Impact de maintenance / exploitation
 
-### Effet si `couponCodes` est désactivée
+Le domaine `discounts` a un impact d’exploitation élevé lorsqu’il est activé.
 
-Aucun coupon ne doit être accepté.
+Raisons :
 
-### Effet si `customerSpecificPricing` est activée
+- il modifie directement les montants affichés et commandés ;
+- il influence l’expérience commerciale ;
+- ses erreurs affectent panier, checkout et commande ;
+- il peut être lié à des campagnes ou systèmes externes ;
+- il augmente fortement la complexité d’explicabilité.
 
-Certaines remises ou prix spécifiques à un client peuvent être évalués.
+En exploitation, une attention particulière doit être portée à :
 
-### Effet si `customerGroupPricing` est activée
+- la clarté des règles ;
+- la cohérence entre prix et remises ;
+- les conflits de cumul ;
+- les remises expirées ;
+- les coupons invalides ;
+- les divergences avec les systèmes externes ;
+- les effets de bord sur taxation et totalisation.
 
-Le rattachement d’un client à un groupe peut influencer les remises applicables.
+Le domaine doit être considéré comme sensible pour l’intégrité commerciale.
 
-### Effet si `volumePricing` est activée
+---
 
-Des réductions liées à la quantité ou au volume peuvent être évaluées.
+## Limites du domaine
 
-## Rôles/permissions concernés
+Le domaine `discounts` s’arrête :
 
-### Rôles
+- avant le prix catalogue de base ;
+- avant la fiscalité ;
+- avant la commande comme agrégat complet ;
+- avant le paiement ;
+- avant les programmes de fidélité ou cartes cadeaux si séparés ;
+- avant la politique générale de vente ;
+- avant la disponibilité et le stock.
 
-Les rôles principalement concernés sont :
+Le domaine porte la réduction commerciale.
+Il ne doit pas devenir un moteur global de prix ou un conteneur de tous les cas spéciaux.
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `marketing_manager`
-- éventuellement `catalog_manager` en lecture ou contribution partielle selon la politique retenue
+---
 
-### Permissions
+## Questions ouvertes
 
-Exemples de permissions concernées :
+À confirmer explicitement dans le projet :
 
-- `discounts.read`
-- `discounts.write`
-- `pricing.read`
-- `customers.read`
-- `catalog.read`
-- `audit.read`
+- la frontière exacte entre `discounts` et `pricing` ;
+- la frontière exacte entre `discounts` et `sales-policy` ;
+- la place exacte des coupons ;
+- les règles de cumul et d’exclusivité ;
+- l’ordre canonique d’évaluation par rapport à taxation ;
+- la hiérarchie entre moteur interne et système commercial externe ;
+- la gestion multi-boutiques, multi-devises et multi-canaux.
 
-## Événements émis
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
-Le domaine peut émettre des domain events internes du type :
+---
 
-- `discount.rule.created`
-- `discount.rule.updated`
-- `discount.coupon.created`
-- `discount.coupon.updated`
-- `discount.evaluation.changed`
+## Documents liés
 
-## Événements consommés
-
-Le domaine peut consommer certains événements internes du type :
-
-- `cart.updated`
-- `customer.group.changed`
-- `customer.kind.changed`
-- `product.updated`
-- `store.capabilities.updated`
-- événements de scheduling ou workflow si des promotions datées ou approuvées sont mises en place
-
-Il doit toutefois rester maître de sa propre évaluation de remise.
-
-## Intégrations externes
-
-Le domaine `discounts` ne doit pas parler directement aux systèmes externes.
-
-Si certaines promotions, coupons ou synchronisations viennent d’un système externe, cela doit passer par :
-
-- `integrations`
-- éventuellement `jobs`
-
-Le domaine `discounts` reste la source de vérité interne de la décision de réduction applicable.
-
-## Données sensibles / sécurité
-
-Le domaine `discounts` porte une logique métier sensible car elle impacte directement les montants facturés.
-
-Points de vigilance :
-
-- contrôle strict des droits d’écriture
-- protection des règles et coupons sensibles
-- prévention des cumuls non autorisés
-- aucune confiance dans des montants de réduction envoyés par le client
-- cohérence entre capabilities actives et règles configurées
-
-## Observability / audit
-
-### Observability
-
-Il faut pouvoir comprendre :
-
-- pourquoi une remise a été appliquée ou refusée
-- quelle règle a gagné en cas de conflit
-- si un coupon a été accepté ou refusé
-- quel contexte client, produit ou quantité a influencé la décision
-- quelle capability a neutralisé ou autorisé une remise
-
-### Audit
-
-Il faut tracer :
-
-- la création d’une règle de remise
-- la modification d’une règle de remise
-- la création ou modification d’un coupon
-- les changements sensibles de priorité, de cumul ou de fenêtre temporelle
-
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `DiscountRule` : règle de réduction
-- `DiscountCoupon` : coupon exploitable par le moteur de remises
-- `DiscountEvaluation` : résultat d’évaluation des remises applicables
-- `DiscountApplication` : remise effectivement retenue
-- `DiscountRejectionReason` : raison explicite de refus ou de non-applicabilité
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- une remise applicable est toujours explicite
-- un coupon n’est accepté que s’il est valide dans le contexte courant
-- les cumuls et priorités sont définis explicitement
-- `discounts` ne se confond pas avec `pricing`
-- les autres domaines ne doivent pas recalculer localement leurs propres remises divergentes
-- une capability désactivée neutralise les mécanismes associés sans supprimer la structure du domaine
-
-## Cas d’usage principaux
-
-1. Évaluer les remises automatiques applicables à un panier
-2. Valider un coupon et l’appliquer si autorisé
-3. Appliquer une remise client spécifique
-4. Appliquer une remise par groupe client
-5. Appliquer une remise volume si les conditions sont atteintes
-6. Exposer à `pricing` un résultat de réduction structuré et cohérent
-7. Exposer à l’admin une lecture claire des règles, priorités et conflits de remises
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- règle de remise introuvable
-- coupon inconnu ou expiré
-- capability discounts ou couponCodes désactivée
-- conflit de remises incompatibles
-- contexte client insuffisant pour une remise ciblée
-- panier non éligible à la réduction demandée
-- réduction incohérente avec la devise ou la politique monétaire du socle
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `discounts` porte la décision de réduction commerciale
-- `discounts` est distinct de `pricing`
-- `discounts` est distinct de `marketing`
-- `discounts` consomme le contexte panier, client et catalogue sans absorber les autres domaines
-- `discounts` expose un résultat structuré que `pricing` orchestre ensuite dans le calcul global
-- les règles de cumul, de priorité et de coupon sont explicites et observables
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- les remises, promotions et coupons relèvent de `discounts`
-- l’orchestration monétaire finale relève de `pricing`
-- `discounts` ne remplace ni `cart`, ni `pricing`, ni `marketing`, ni `crm`
-- les coupons relèvent de `discounts` au niveau métier
-- les mécanismes de réduction sont pilotés par des capabilities explicites et doivent rester traçables et explicables
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../core/pricing.md`
+- `../core/cart.md`
+- `../core/checkout.md`
+- `../core/orders.md`
+- `../core/taxation.md`
+- `sales-policy.md`
+- `../core/stores.md`

@@ -1,208 +1,366 @@
-# Domaine categories
+# Catégories
 
 ## Rôle
 
-Le domaine `categories` porte la taxonomie de navigation et de classement du catalogue.
+Le domaine `categories` porte la structuration taxonomique du catalogue.
 
-Il définit la structure arborescente dans laquelle les produits sont classés, exposés et navigables côté storefront et côté administration boutique.
+Il définit :
+
+- comment les produits ou offres sont classés ;
+- quelles catégories existent ;
+- comment elles sont organisées ;
+- comment elles servent à la navigation, au merchandising et à certaines règles de présentation ;
+- comment elles se distinguent du modèle produit, du search, du pricing et de la boutique.
+
+Le domaine existe pour fournir une structure de classement exploitable du catalogue, distincte :
+
+- de la définition intrinsèque du produit ;
+- de la recherche ;
+- du pricing ;
+- des promotions ;
+- du contenu éditorial libre.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`satellites`
+
+### Criticité architecturale
+
+`satellite structurant`
+
+### Activable
+
+`non`
+
+Le domaine `categories` est structurel dès lors que le catalogue n’est pas strictement plat ou que la navigation commerciale dépend d’une taxonomie explicite.
+
+---
+
+## Source de vérité
+
+Le domaine `categories` est la source de vérité pour :
+
+- l’identité interne des catégories ;
+- leur hiérarchie ou organisation taxonomique ;
+- leurs attributs structurants de classement ;
+- leur statut actif, inactif ou archivé si le modèle le porte ;
+- le rattachement taxonomique principal porté par le système.
+
+Le domaine `categories` n’est pas la source de vérité pour :
+
+- la définition métier complète du produit, qui relève de `products` ;
+- le modèle de catalogue avancé, qui peut relever de `catalog-modeling` ;
+- la recherche et le ranking, qui relèvent de `search` ;
+- la disponibilité vendable, qui relève de `availability` ;
+- les prix et promotions, qui relèvent de `pricing` et `discounts` ;
+- les règles de vente, qui peuvent relever de `sales-policy` ;
+- la navigation UI elle-même.
+
+Une catégorie est un objet de classement.
+Elle ne doit pas être confondue avec :
+
+- une famille de données produit ;
+- un tag libre ;
+- une landing page éditoriale ;
+- un simple filtre de recherche.
+
+---
 
 ## Responsabilités
 
-Le domaine `categories` prend en charge :
+Le domaine `categories` est responsable de :
 
-- les catégories de classification du catalogue
-- la hiérarchie et l'arborescence des catégories
-- les slugs et identifiants stables de catégories
-- les statuts de visibilité des catégories
-- les images représentatives des catégories
-- la lecture catalogue des catégories côté storefront
-- la gestion des catégories côté administration boutique
+- définir ce qu’est une catégorie dans le système ;
+- attribuer et maintenir l’identité interne d’une catégorie ;
+- porter les attributs structurants utiles au classement ;
+- gérer l’organisation hiérarchique ou relationnelle des catégories ;
+- servir de référentiel taxonomique pour les domaines consommateurs ;
+- exposer une représentation exploitable de la taxonomie ;
+- encadrer les mutations significatives de catégories ;
+- publier les événements significatifs liés à la vie des catégories.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `categories` ne doit pas :
+- slug canonique de catégorie ;
+- ordre d’affichage ;
+- rattachement à une boutique ou un canal si cela est explicitement porté ici ;
+- certains attributs SEO de base liés à la catégorie ;
+- état de publication de catégorie ;
+- relation produit ↔ catégorie quand cette responsabilité n’est pas ailleurs.
 
-- porter les produits eux-mêmes, ce qui relève de `products`
-- décider de la vendabilité des produits dans une catégorie, ce qui relève de `sales-policy`
-- porter la logique de recherche transverse, ce qui relève de `search`
-- devenir un moteur CMS générique
+---
 
-Le domaine `categories` décrit la taxonomie de navigation. Il ne remplace ni `products`, ni `search`, ni `sales-policy`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `categories` n’est pas responsable de :
 
-Néant à ce stade. Le domaine `categories` est traité comme un domaine plat avec :
+- définir le produit ;
+- porter les attributs techniques détaillés du catalogue ;
+- calculer les prix ;
+- décider de la disponibilité ;
+- exécuter la recherche ;
+- définir les promotions ;
+- gouverner l’arbre éditorial libre ;
+- porter toute la navigation storefront.
 
-- une façade de lecture storefront (`category.repository.ts`)
-- une façade d'administration boutique (`admin-category.repository.ts`)
+Le domaine `categories` ne doit pas devenir :
 
-## Entrées
+- un substitut de `catalog-modeling` ;
+- un mélange entre taxonomie, merchandising et contenu ;
+- un sac de filtres UI sans sémantique métier claire.
+
+---
+
+## Invariants
+
+Les invariants minimaux du domaine sont les suivants :
+
+- une catégorie doit avoir une identité interne stable ;
+- une catégorie doit être interprétable sans ambiguïté ;
+- une hiérarchie de catégories ne doit pas être incohérente ;
+- une catégorie ne doit pas être son propre ancêtre ;
+- une mutation structurante de taxonomie doit être traçable ;
+- une catégorie inactive ne doit pas être traitée comme active sans règle explicite ;
+- deux catégories distinctes ne doivent pas être indiscernables sans justification explicite ;
+- un rattachement produit ↔ catégorie ne doit pas rendre la taxonomie contradictoire sans visibilité.
+
+Le domaine protège la cohérence du classement, pas uniquement une liste de labels.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `categories` interagit fortement avec :
+
+- `products`
+- `catalog-modeling`
+- `stores`
+- `search`
+- `seo`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `audit`
+- `observability`
+- `jobs`, si certaines reconstructions ou projections sont différées
+- `integrations`, si la taxonomie est synchronisée avec un référentiel externe
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- ERP ;
+- PIM ;
+- CMS ;
+- marketplaces ;
+- sources catalogues externes.
+
+### Règle de frontière
+
+Le domaine `categories` porte la vérité taxonomique de classement.
+Il ne doit pas absorber :
+
+- le modèle produit complet ;
+- la logique de recherche ;
+- la logique de pricing ;
+- ni la navigation UI comme telle.
+
+---
+
+## Événements significatifs
+
+Le domaine `categories` publie ou peut publier des événements significatifs tels que :
+
+- catégorie créée ;
+- catégorie mise à jour ;
+- catégorie activée ;
+- catégorie désactivée ;
+- catégorie archivée ;
+- hiérarchie de catégories modifiée ;
+- rattachement de catégorie modifié ;
+- slug de catégorie modifié.
+
+Le domaine peut consommer des signaux liés à :
+
+- import catalogue ;
+- synchronisation externe ;
+- mise à jour de boutique ;
+- reconstruction d’index de recherche ;
+- mise à jour SEO ou storefront dérivée.
+
+Les noms exacts doivent rester dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `categories` possède un cycle de vie structurel.
+
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
+
+- créée ;
+- active ;
+- inactive ;
+- archivée.
+
+Des états supplémentaires peuvent exister :
+
+- brouillon ;
+- publiée ;
+- masquée ;
+- en attente de synchronisation.
+
+Les transitions doivent être explicites et traçables.
+
+Le domaine doit éviter :
+
+- les catégories “fantômes” ;
+- les changements silencieux de hiérarchie ;
+- les statuts purement techniques sans sens métier.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `categories` expose principalement :
+
+- des commandes de création et de mutation de catégorie ;
+- des lectures du référentiel de catégories ;
+- des lectures de hiérarchie ou d’arbre taxonomique ;
+- des événements significatifs liés à la vie des catégories.
 
 Le domaine reçoit principalement :
 
-- des créations de catégories
-- des mises à jour de catégories
-- des rattachements ou détachements d'images représentatives
-- des changements de hiérarchie
-- des changements de statut de visibilité
-- des demandes de lecture de la taxonomie côté storefront et côté admin
+- des demandes de création ou mise à jour ;
+- des mutations de hiérarchie ;
+- des synchronisations externes ;
+- des rattachements ou détachements de produits si cette responsabilité est portée ici.
 
-## Sorties
+Le domaine ne doit pas exposer un contrat canonique trop dépendant d’un outil externe ou d’une UI particulière.
 
-Le domaine expose principalement :
+---
 
-- des catégories avec identifiant stable et slug
-- une arborescence de catégories navigable
-- des images représentatives
-- des statuts de visibilité catalogue
-- des listes de catégories exploitables par `products`, `search`, `seo` et le storefront
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `categories` peut être exposé à des contraintes telles que :
 
-Le domaine `categories` peut dépendre de :
+- synchronisation avec un référentiel externe ;
+- taxonomie multi-boutiques ;
+- taxonomie multi-langues ;
+- hiérarchies profondes ;
+- slugs hérités ;
+- import massif ;
+- renommage de catégories ;
+- projection vers recherche ou storefront.
 
-- `media` pour les images représentatives si les assets sont gérés centralement
-- `audit` pour tracer les modifications significatives de la taxonomie
-- `observability` pour diagnostiquer certaines incohérences de classement
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `categories` :
+- toute entrée externe doit être validée ;
+- la hiérarchie d’autorité doit être explicite ;
+- une mutation rejouable doit être idempotente ou neutralisée ;
+- un système externe ne doit pas redéfinir silencieusement la vérité interne ;
+- une mutation de hiérarchie doit être traçable.
 
-- `products` pour le classement catalogue
-- `search` pour la navigation par catégorie
-- `seo` pour les métadonnées des pages de catégorie
-- `recommendations` pour la logique de produits liés par catégorie
-- `analytics` pour les analyses de performance par catégorie
+---
 
-## Capabilities activables liées
+## Observabilité et audit
 
-- `advancedSeo` : permet d'enrichir les métadonnées des pages de catégorie
-- `localization` : permet de traduire les libellés et contenus de catégorie
+Le domaine `categories` doit rendre visibles au minimum :
 
-## Rôles/permissions concernés
+- les créations de catégories ;
+- les changements de statut ;
+- les changements de hiérarchie ;
+- les synchronisations externes significatives ;
+- les erreurs de validation ;
+- les événements significatifs publiés.
 
-### Rôles
+L’audit doit permettre de répondre à des questions comme :
 
-Les rôles principalement concernés sont :
+- quelle catégorie a changé ;
+- quand ;
+- selon quelle origine ;
+- avec quel impact sur le classement ;
+- sur quel périmètre boutique ou catalogue.
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `catalog_manager`
+L’observabilité doit distinguer :
 
-### Permissions
+- erreur de modèle ;
+- erreur technique ;
+- conflit de hiérarchie ;
+- divergence externe ;
+- mutation taxonomique critique.
 
-Exemples de permissions concernées :
+---
 
-- `categories.read`
-- `categories.write`
-- `catalog.read`
-- `catalog.write`
+## Impact de maintenance / exploitation
 
-## Événements émis
+Le domaine `categories` a un impact d’exploitation moyen à élevé.
 
-Le domaine peut émettre des domain events internes du type :
+Raisons :
 
-- `category.created`
-- `category.updated`
-- `category.published`
-- `category.archived`
+- il structure la navigation du catalogue ;
+- ses erreurs affectent merchandising, search et storefront ;
+- il peut dépendre de synchronisations externes ;
+- une taxonomie incohérente dégrade fortement la lisibilité produit.
 
-## Événements consommés
+En exploitation, une attention particulière doit être portée à :
 
-Le domaine `categories` ne consomme pas d'événements d'autres domaines dans l'état actuel.
+- la cohérence hiérarchique ;
+- la stabilité des slugs ;
+- les divergences avec des référentiels externes ;
+- les impacts sur search et storefront ;
+- la traçabilité des mutations.
 
-## Intégrations externes
+Le domaine doit être considéré comme structurant pour l’expérience catalogue.
 
-Le domaine `categories` ne parle pas directement aux systèmes externes.
+---
 
-Les diffusions éventuelles de la taxonomie vers des canaux externes relèvent de `channels` et `integrations`.
+## Limites du domaine
 
-## Données sensibles / sécurité
+Le domaine `categories` s’arrête :
 
-Le domaine `categories` ne porte pas de données sensibles au sens sécurité strict.
+- avant le produit lui-même ;
+- avant les prix ;
+- avant la disponibilité ;
+- avant la recherche ;
+- avant la logique de promotion ;
+- avant le contenu éditorial libre ;
+- avant la navigation UI.
 
-Points de vigilance :
+Le domaine porte la taxonomie de classement.
+Il ne doit pas devenir un conteneur global de merchandising ou de structure produit.
 
-- contrôle des permissions d'écriture sur la taxonomie
-- audit des modifications structurantes de la taxonomie
+---
 
-## Observability / audit
+## Questions ouvertes
 
-### Observability
+À confirmer explicitement dans le projet :
 
-Il faut pouvoir comprendre :
+- la frontière exacte entre `categories` et `catalog-modeling` ;
+- la frontière exacte entre `categories` et `search` ;
+- la responsabilité exacte du rattachement produit ↔ catégorie ;
+- la hiérarchie entre taxonomie interne et référentiel externe ;
+- la gestion multi-boutiques ou multi-langues ;
+- la part SEO réellement portée par `categories`.
 
-- quelle catégorie est visible ou masquée à un instant donné
-- pourquoi un produit n'apparaît pas dans une catégorie attendue
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
-### Audit
+---
 
-Il faut tracer :
+## Documents liés
 
-- la création et la modification des catégories
-- les changements de hiérarchie significatifs
-- la modification du statut de visibilité
-
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `Category` : catégorie catalogue avec identifiant stable, slug, statut et hiérarchie
-- `CategoryRepresentativeImage` : image représentative d'une catégorie
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- une catégorie possède un identifiant stable
-- un slug de catégorie doit être unique lorsqu'il est exposé publiquement
-- le domaine `categories` reste la source de vérité de la taxonomie interne
-- les autres domaines ne recréent pas leur propre taxonomie divergente
-
-## Cas d'usage principaux
-
-1. Créer une catégorie catalogue
-2. Modifier une catégorie catalogue
-3. Définir une image représentative pour une catégorie
-4. Organiser la hiérarchie des catégories
-5. Publier ou masquer une catégorie côté storefront
-6. Lire la taxonomie côté storefront et côté admin
-
-## Cas limites / erreurs métier
-
-Quelques cas d'erreur typiques :
-
-- catégorie introuvable
-- slug déjà utilisé
-- incohérence hiérarchique
-- tentative de suppression d'une catégorie contenant des produits rattachés
-
-## Décisions d'architecture
-
-Les choix structurants du domaine sont :
-
-- `categories` est un domaine de premier niveau distinct de `products`
-- `categories` dispose de ses propres repositories dans `db/repositories/categories/`
-- la taxonomie de navigation relève de `categories`, pas de `products`
-- `categories` ne porte pas les produits eux-mêmes
-
-## État actuel dans `db/repositories/`
-
-Le domaine `categories` est implémenté dans `db/repositories/categories/` avec :
-
-- `category.repository.ts` : façade publique de lecture storefront
-- `category.types.ts` : types publics
-- `admin-category.repository.ts` : façade d'administration boutique
-- `admin-category.types.ts` : types publics admin
-- `queries/` : lectures Prisma internes (`category.queries.ts`, `admin-category.queries.ts`)
-- `helpers/` : helpers internes (`mappers.ts`, `validation.ts`)
-- `types/` : types internes (`internal.ts`, `rows.ts`)
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- la taxonomie de navigation relève de `categories`
-- les produits relèvent de `products`
-- `categories` n'est pas un sous-domaine de `products` dans l'implémentation actuelle
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../core/products.md`
+- `catalog-modeling.md`
+- `../cross-cutting/search.md`
+- `../cross-cutting/seo.md`
+- `../core/stores.md`

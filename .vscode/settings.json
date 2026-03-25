@@ -56,10 +56,10 @@
     "**/.output": true,
     "**/out": true
   },
-  "typescript.tsserver.maxTsServerMemory": 2048,
-  "typescript.disableAutomaticTypeAcquisition": true,
-  "javascript.disableAutomaticTypeAcquisition": true,
-  "typescript.tsserver.watchOptions": {
+  // Remplacement des anciens paramètres TypeScript par les nouveaux
+  "js/ts.tsserver.maxMemory": 2048,
+  "js/ts.tsserver.automaticTypeAcquisition.enabled": false,
+  "js/ts.tsserver.watchOptions": {
     "watchFile": "useFsEventsOnParentDirectory",
     "watchDirectory": "useFsEvents",
     "fallbackPolling": "dynamicPriority"

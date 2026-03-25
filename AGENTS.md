@@ -1,5 +1,3 @@
-cat > AGENTS.md <<'EOF'
-
 # Creatyss
 
 ## Mission

@@ -1,15 +1,16 @@
 ---
 name: docs-keeper
-description: "Use this agent when writing, updating, or reviewing project documentation.
+description: |
+  Use this agent when writing, updating, or reviewing project documentation.
 
-This agent should be used:
-- when maintaining `docs/architecture/**`
-- when maintaining `docs/domains/**`
-- when maintaining `docs/testing/**`
-- when updating `README.md`, `AGENTS.md`, or repo instruction files
-- when checking that documentation matches the real code and doctrine
+  This agent should be used:
+  - when maintaining `docs/architecture/**`
+  - when maintaining `docs/domains/**`
+  - when maintaining `docs/testing/**`
+  - when updating `README.md`, `AGENTS.md`, or repo instruction files
+  - when checking that documentation matches the real code and doctrine
 
-Do NOT use this agent for code changes."
+  Do NOT use this agent for code changes.
 model: sonnet
 memory: project
 ---
