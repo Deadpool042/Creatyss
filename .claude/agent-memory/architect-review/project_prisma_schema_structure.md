@@ -11,6 +11,7 @@ Le schéma Prisma est éclaté en ~68 fichiers `.prisma` par domaine dans `prism
 **How to apply:** Lors d'un audit ou d'une modification, toujours lire le fichier domaine concerné, pas uniquement schema.prisma. Le Store est le tenant root — toutes les relations partent de `Store`.
 
 Problèmes structurels connus (audit 2026-03-23) :
+
 - Fichier `store.prisma` (singulier) vs nom canonique `stores` — nom de fichier non canonique
 - `inventory.prisma` modélise un domaine nommé `inventory` alors que la doctrine dit `availability` est le domaine canonique
 - `InventoryItem` manque de `version` pour optimistic locking

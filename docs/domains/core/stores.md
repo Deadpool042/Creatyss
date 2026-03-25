@@ -1,114 +1,42 @@
-# Domaine `stores`
-
-## Objectif
-
-Ce document décrit le domaine `stores` dans la doctrine courante du socle.
-
-Il précise :
-
-- le rôle du domaine ;
-- sa place dans la modularité du socle ;
-- sa source de vérité ;
-- ses capabilities activables ;
-- ses niveaux éventuels ;
-- ses objets métier ;
-- ses invariants ;
-- son cycle de vie ;
-- ses règles de cohérence ;
-- ses implications de maintenance, d’exploitation et de coût.
-
-Le domaine `stores` est structurant pour la réutilisabilité du socle, car il porte le contexte de boutique à partir duquel sont activés :
-
-- les capabilities ;
-- les niveaux de sophistication ;
-- les profils de comportement ;
-- certaines politiques fonctionnelles.
-
-Le domaine `stores` ne doit pas être pensé comme un simple “tenant label”.
-Il porte le **contexte de composition du projet** au niveau métier/runtime.
-
----
-
-## Position dans la doctrine de modularité
-
-Le domaine `stores` est classé comme :
-
-- `domaine coeur non toggleable`
-
-Le domaine existe dans tous les projets du socle.
-
-### Ce qui n’est jamais désactivé
-
-Le domaine conserve toujours :
-
-- une identité de boutique ;
-- un contexte de capabilities activées ;
-- un profil d’exploitation et de configuration ;
-- une gouvernance minimale des paramètres structurants.
-
-### Ce qui est activable / désactivable par capability
-
-Le domaine `stores` n’est pas lui-même une capability métier optionnelle.
-Il porte le contexte des capabilities des autres domaines.
-
-### Ce qui relève d’un niveau
-
-Le domaine peut porter ou référencer :
-
-- le profil solution ;
-- les niveaux fonctionnels activés ;
-- le niveau de maintenance cible ;
-- les capabilities activées par boutique.
-
-### Ce qui relève d’un provider ou d’une intégration externe
-
-Les providers restent dans `integrations`.
-Le domaine `stores` ne les exécute pas.
-Il porte le contexte qui autorise ou non leur activation.
-
----
+# Boutiques
 
 ## Rôle
 
-Le domaine `stores` porte le contexte de boutique du socle.
+Le domaine `stores` porte la représentation des boutiques ou espaces de vente du système.
 
-Il constitue la source de vérité interne pour :
+Il définit :
 
-- l’identité de la boutique ;
-- son statut ;
-- son profil fonctionnel ;
-- ses capabilities activées ;
-- certaines politiques globales de projet.
+- ce qu’est une boutique du point de vue du système ;
+- comment une boutique est identifiée ;
+- quel périmètre commercial, organisationnel ou opérationnel elle structure ;
+- comment une boutique sert de contexte aux autres domaines ;
+- quelles informations structurantes sont associées à une boutique.
 
-Le domaine est distinct :
+Le domaine existe pour fournir un cadre stable de composition commerciale et opérationnelle, distinct :
 
-- de `products`, `pricing`, `availability`, `cart`, etc. ;
-- de `integrations`, qui porte les connecteurs ;
-- de `auth`, qui porte l’accès ;
-- de `customers`, qui porte les clients.
-
----
-
-## Responsabilités
-
-Le domaine `stores` prend en charge :
-
-- la création et gestion de la boutique ;
-- l’activation ou désactivation de capabilities ;
-- le rattachement du projet à un profil de solution ;
-- le contexte métier global utilisé par les autres domaines ;
-- certaines politiques transverses de comportement.
+- du produit ;
+- du canal ;
+- du client ;
+- de la tarification ;
+- des intégrations externes.
 
 ---
 
-## Ce que le domaine ne doit pas faire
+## Classification
 
-Le domaine `stores` ne doit pas :
+### Catégorie documentaire
 
-- absorber les métiers des autres domaines ;
-- devenir le lieu où toute logique est recodée ;
-- remplacer `integrations` pour les providers ;
-- devenir un simple fichier de config sans logique métier explicite.
+`core`
+
+### Criticité architecturale
+
+`coeur`
+
+### Activable
+
+`non`
+
+Le domaine `stores` est non optionnel dès lors que le système distingue plusieurs espaces de vente, plusieurs contextes commerciaux ou plusieurs compositions projet exploitables.
 
 ---
 
@@ -116,384 +44,327 @@ Le domaine `stores` ne doit pas :
 
 Le domaine `stores` est la source de vérité pour :
 
-- l’identité de la boutique ;
-- son statut global ;
-- ses capabilities activées ;
-- son profil de solution ;
-- certaines politiques transverses.
+- l’identité interne d’une boutique ;
+- la représentation structurelle d’une boutique ;
+- les attributs structurants d’une boutique ;
+- l’état actif, inactif ou archivé d’une boutique ;
+- le rattachement de certains périmètres métier à une boutique lorsque cette responsabilité est portée ici.
 
-Le domaine n’est pas la source de vérité pour :
+Le domaine `stores` n’est pas la source de vérité pour :
 
-- les produits ;
-- les prix ;
-- les commandes ;
-- les paiements ;
-- les connecteurs externes ;
-- l’authentification.
+- les produits, qui relèvent de `products` ;
+- les prix, qui relèvent de `pricing` ;
+- la disponibilité vendable, qui relève de `availability` ;
+- les commandes, qui relèvent de `orders` ;
+- les canaux externes de diffusion, qui peuvent relever de `channels` ;
+- les intégrations elles-mêmes ;
+- les rôles, permissions ou authentification ;
+- les projections éditoriales ou marketing.
 
----
-
-## Objets métier principaux
-
-Les principaux objets métier portés par le domaine sont :
-
-- `Store`
-- `StoreStatus`
-- `StoreCapability`
-- `StoreProfile`
-- `StorePolicy`
-- `StoreMaintenanceTarget`
+Une boutique est un contexte structurant.
+Elle ne doit pas être confondue avec un canal externe, un thème UI ou une simple configuration technique.
 
 ---
 
-## Capabilities activables liées
+## Responsabilités
 
-Le domaine `stores` porte le contexte d’activation des capabilities des autres domaines.
+Le domaine `stores` est responsable de :
 
-Exemples :
+- définir ce qu’est une boutique dans le système ;
+- attribuer et maintenir l’identité interne d’une boutique ;
+- porter les attributs structurants d’une boutique ;
+- exprimer le statut de vie d’une boutique ;
+- servir de contexte de composition pour d’autres domaines ;
+- exposer une représentation stable et exploitable de la boutique ;
+- encadrer les mutations significatives d’une boutique ;
+- publier les événements significatifs liés à la vie de la boutique.
 
-- `guestCheckout`
-- `paymentProvider.paypal`
-- `paymentMode.installments`
-- `multiCountryTaxation`
-- `exciseTax`
-- `blog`
-- `reviews`
-- `returns`
-- `b2bCommerce`
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-### Effet si une capability est activée
-
-Le domaine concerné peut l’exploiter.
-
-### Effet si une capability est désactivée
-
-Le domaine concerné doit se comporter en mode plus simple ou refuser les parcours dépendants.
+- la devise par défaut ;
+- certains paramètres de contexte commercial ;
+- le rattachement à une organisation ou un tenant, si le modèle le prévoit ;
+- certains paramètres de langue ou zone par défaut ;
+- certaines capacités activées au niveau boutique si cette gouvernance est réellement portée ici.
 
 ---
 
-## Niveaux de sophistication du domaine
+## Non-responsabilités
 
-Le domaine `stores` ne porte pas principalement une sophistication métier propre.
-Il porte la matrice des niveaux des autres domaines.
+Le domaine `stores` n’est pas responsable de :
 
----
+- définir les produits ;
+- calculer les prix ;
+- décider de la disponibilité vendable ;
+- gérer les commandes ;
+- gérer les paiements ;
+- gouverner les rôles et permissions ;
+- exécuter les intégrations externes ;
+- gérer les webhooks ;
+- définir la logique d’un canal externe ;
+- porter la UI ou le thème applicatif à lui seul ;
+- devenir un fourre-tout de configuration globale.
 
-## Entrées
+Le domaine `stores` ne doit pas devenir :
 
-Le domaine reçoit principalement :
-
-- des commandes de création ou mise à jour de boutique ;
-- des commandes d’activation / désactivation de capabilities ;
-- des choix de profil solution ;
-- des politiques globales.
-
----
-
-## Sorties
-
-Le domaine expose principalement :
-
-- un contexte de boutique ;
-- un set de capabilities activées ;
-- un profil de solution ;
-- des signaux de changement structurants pour les autres domaines.
+- un alias de `channels` ;
+- un sac de paramètres hétérogènes ;
+- un substitut de multi-tenant non assumé.
 
 ---
 
-## Dépendances vers autres domaines
+## Invariants
 
-Le domaine `stores` dépend de :
+Les invariants minimaux du domaine sont les suivants :
 
-- `audit`
-- `observability`
+- une boutique doit avoir une identité interne stable ;
+- une boutique doit être interprétable sans ambiguïté ;
+- une boutique inactive ne doit pas être traitée comme active sans règle explicite ;
+- une mutation structurante de boutique doit être traçable ;
+- les contextes exposés par une boutique doivent rester cohérents ;
+- deux boutiques distinctes ne doivent pas être indiscernables sans justification explicite ;
+- une boutique archivée ne doit pas continuer à servir silencieusement de contexte opérationnel.
 
-Les domaines suivants dépendent de `stores` :
+Le domaine doit protéger la cohérence du contexte boutique, pas seulement stocker quelques paramètres.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `stores` interagit fortement avec :
 
 - `products`
 - `pricing`
 - `availability`
-- `cart`
-- `checkout`
+- `customers`
 - `orders`
-- `payments`
-- `taxation`
-- `integrations`
-- `documents`
-- `blog`
-- tous les domaines à capabilities toggleables
+- `users`
+- `roles`
+- `permissions`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- audit ;
+- observabilité ;
+- jobs ;
+- intégrations ;
+- feature flags, si le projet les utilise pour de la gouvernance de boutique ;
+- localization, si le contexte boutique porte des paramètres de langue ou zone.
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- ERP ;
+- CMS ;
+- canaux de diffusion ;
+- systèmes de configuration ;
+- systèmes multi-tenant ou backoffice externes.
+
+### Règle de frontière
+
+Le domaine `stores` porte la vérité de la boutique comme contexte structurant.
+Il ne doit pas absorber :
+
+- la logique des autres domaines ;
+- la vérité d’un canal externe ;
+- ni la totalité de la configuration système.
 
 ---
 
-## Dépendances vers providers / intégrations
-
-Le domaine `stores` ne dépend pas directement d’un provider.
-Il ne fait qu’autoriser ou non l’usage de certains connecteurs via capabilities.
-
----
-
-## Rôles / permissions concernés
-
-### Rôles
-
-Les rôles principalement concernés sont :
-
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `stores.read`
-- `stores.write`
-- `stores.capabilities.manage`
-- `stores.profile.manage`
-- `audit.read`
-
----
-
-## Événements émis
-
-Le domaine émet les domain events internes suivants :
-
-- `store.created`
-- `store.updated`
-- `store.capabilities.updated`
-- `store.profile.changed`
-- `store.status.changed`
-
----
-
-## Événements consommés
-
-Le domaine consomme les domain events internes suivants :
-
-- certains événements administratifs structurants de plateforme si le socle en prévoit.
-
----
-
-## Données sensibles / sécurité
-
-Le domaine `stores` porte une donnée structurante et sensible du point de vue de la gouvernance.
-
-Points de vigilance :
-
-- les capabilities activées ont un impact direct sur le comportement métier ;
-- une mauvaise configuration de store peut dégrader plusieurs domaines à la fois ;
-- les changements de capabilities doivent être contrôlés et auditables.
-
----
-
-## Observability / audit
-
-### Observability
-
-Il faut pouvoir comprendre :
-
-- quelles capabilities sont actives ;
-- quel profil solution est retenu ;
-- quel changement de contexte explique un comportement métier ;
-- quelle boutique est concernée.
-
-### Audit
-
-Il faut tracer :
-
-- création de boutique ;
-- changements de statut ;
-- changements de capabilities ;
-- changement de profil solution ;
-- changements de politiques globales.
-
----
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- une boutique possède une identité stable ;
-- une boutique possède un contexte de capabilities explicite ;
-- les autres domaines lisent le contexte store, ils ne le redéfinissent pas ;
-- une capability désactivée ne doit pas être supposée active par un domaine dépendant ;
-- le domaine `stores` reste la source de vérité du contexte projet/boutique.
-
----
-
-## Lifecycle et gouvernance des données
-
-### États principaux
-
-Les états principaux incluent typiquement :
-
-- `ACTIVE`
-- `DISABLED`
-- `ARCHIVED`
-
-### Transitions autorisées
-
-Exemples :
-
-- `ACTIVE -> DISABLED`
-- `DISABLED -> ACTIVE`
-- `ACTIVE -> ARCHIVED`
-
-### Transitions interdites
-
-Exemples :
-
-- réactivation implicite d’une boutique archivée ;
-- changement silencieux de capabilities sans traçabilité.
-
-### Règles de conservation / archivage / suppression
-
-- les boutiques et leurs historiques structurants restent auditables ;
-- les changements de capability doivent rester compréhensibles ;
-- la suppression physique n’est pas le comportement par défaut.
-
----
-
-## Transactions / cohérence / concurrence
-
-### Ce qui doit être atomique
-
-Les opérations suivantes doivent réussir ou échouer ensemble :
-
-- création d’une boutique ;
-- changement de statut ;
-- activation / désactivation d’une capability ;
-- changement de profil ;
-- écriture des événements `store.*` correspondants.
-
-### Ce qui peut être eventual consistency
-
-Les traitements suivants peuvent partir après commit :
-
-- projections admin ;
-- synchronisations externes ;
-- analytics ;
-- notifications opératoires.
-
-### Stratégie de concurrence
-
-Le domaine protège explicitement ses invariants par :
-
-- transaction applicative sur les changements structurants ;
-- une seule vérité de configuration par boutique ;
-- version logique du set de capabilities si nécessaire.
-
-Les conflits attendus sont :
-
-- double changement de capabilities ;
-- changement concurrent de profil ;
-- désactivation concurrente de fonctionnalités utilisées.
-
-### Idempotence
-
-Les commandes métier suivantes doivent être idempotentes :
-
-- `upsert-store` : clé d’intention = `(storeRef, changeIntentId)`
-- `set-store-capabilities` : clé d’intention = `(storeId, capabilitySetVersion, changeIntentId)`
-- `change-store-profile` : clé d’intention = `(storeId, targetProfile, changeIntentId)`
-
-### Domain events écrits dans la même transaction
-
-Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
-
-- `store.created`
-- `store.updated`
-- `store.capabilities.updated`
-- `store.profile.changed`
-- `store.status.changed`
-
-### Effets secondaires après commit
-
-Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
-
+## Événements significatifs
+
+Le domaine `stores` publie ou peut publier des événements significatifs tels que :
+
+- boutique créée ;
+- boutique mise à jour ;
+- boutique activée ;
+- boutique désactivée ;
+- boutique archivée ;
+- contexte de boutique modifié ;
+- rattachement de boutique modifié ;
+- configuration structurante de boutique modifiée.
+
+Le domaine peut consommer des signaux liés à :
+
+- création d’organisation, si ce concept existe ;
+- activation de capacités ;
 - synchronisation externe ;
-- analytics ;
-- notifications.
+- changement de canal ou de configuration connexe.
+
+Les noms exacts doivent rester dans le langage interne du système.
 
 ---
 
-## Impact maintenance / exploitation
+## Cycle de vie
 
-### Niveau de maintenance minimal recommandé
+Le domaine `stores` possède un cycle de vie structurel.
 
-- `M1` minimum ;
-- `M2` recommandé dès que plusieurs capabilities sensibles sont pilotées.
+Le cycle exact dépend du projet, mais il doit au minimum distinguer :
 
-### Pourquoi
+- créée ;
+- active ;
+- inactive ;
+- archivée.
 
-Le domaine `stores` pilote le comportement de nombreux autres domaines.
-Une erreur ici a un impact transverse.
+Des états supplémentaires peuvent exister :
 
-### Points d’exploitation à surveiller
+- brouillon ;
+- en préparation ;
+- suspendue ;
+- en migration.
 
-- changements de capabilities ;
-- profils activés ;
-- dérive entre configuration et comportement réel ;
-- cohérence entre capacité active et usage effectif.
+Les transitions doivent être explicites et traçables.
 
----
+Le domaine doit éviter :
 
-## Impact coût / complexité
-
-Le coût du domaine `stores` monte principalement avec :
-
-- la richesse des capabilities pilotées ;
-- le nombre de profils ;
-- la complexité de gouvernance du contexte boutique.
-
-Lecture relative du coût :
-
-- niveau courant : `C1` à `C2`
+- les états implicites ;
+- les statuts purement techniques ;
+- les changements silencieux de contexte.
 
 ---
 
-## Cas d’usage principaux
+## Interfaces et échanges
 
-1. Créer une boutique
-2. Définir son profil solution
-3. Activer / désactiver des capabilities
-4. Exposer un contexte de configuration stable au reste du socle
+Le domaine `stores` expose principalement :
 
----
+- des commandes de création et de mutation de boutique ;
+- des lectures du référentiel de boutiques ;
+- des lectures de contexte boutique pour les domaines consommateurs ;
+- des événements significatifs liés au cycle de vie des boutiques.
 
-## Cas limites / erreurs métier
+Le domaine reçoit principalement :
 
-Quelques cas d’erreur typiques :
+- des demandes de création ou de mise à jour ;
+- des rattachements ou mutations structurelles ;
+- des synchronisations externes ;
+- des mutations de contexte organisationnel.
 
-- boutique introuvable ;
-- capability incohérente ;
-- profil incompatible ;
-- changement concurrent de configuration ;
-- divergence entre expected config et comportement effectif.
-
----
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `stores` est un domaine coeur non toggleable ;
-- il porte le contexte de composition du projet ;
-- les capabilities sont activées au niveau de la boutique ;
-- les autres domaines consomment ce contexte ;
-- les providers restent hors de ce domaine ;
-- les changements de capabilities sont structurants et auditables.
+Le domaine ne doit pas exposer un contrat instable dépendant directement d’un système externe.
 
 ---
 
-## Questions explicitement closes
+## Contraintes d’intégration
 
-Les points suivants sont considérés comme décidés :
+Le domaine `stores` peut être exposé à des contraintes telles que :
 
-- `stores` appartient au coeur du socle ;
-- le domaine ne se réduit pas à un simple tenant name ;
-- les capabilities sont pilotées par le contexte boutique ;
-- le domaine structure la composabilité du projet ;
-- les autres domaines ne redéfinissent pas localement ce contexte ;
-- les changements de store sont des changements structurants.
+- synchronisation avec un référentiel externe ;
+- migration de contexte boutique ;
+- configuration partiellement externalisée ;
+- multi-store ;
+- multi-zone ;
+- divergence entre configuration interne et externe ;
+- rejouabilité de certaines mutations.
+
+Règles minimales :
+
+- les entrées externes doivent être validées ;
+- la hiérarchie d’autorité doit être explicite ;
+- une mutation rejouable doit être idempotente ou neutralisée ;
+- un système externe ne doit pas redéfinir silencieusement la vérité interne de la boutique ;
+- une mutation structurante doit être traçable.
+
+---
+
+## Observabilité et audit
+
+Le domaine `stores` doit rendre visibles au minimum :
+
+- la création de boutique ;
+- les changements de statut ;
+- les mutations structurantes ;
+- les synchronisations externes significatives ;
+- les erreurs de validation ;
+- les événements significatifs publiés.
+
+L’audit doit permettre de répondre à des questions comme :
+
+- quelle boutique a changé ;
+- quand ;
+- selon quelle origine ;
+- avec quel impact structurel ;
+- sur quel périmètre métier.
+
+L’observabilité doit distinguer :
+
+- erreur de modèle ;
+- erreur technique ;
+- conflit de synchronisation ;
+- dérive de configuration ;
+- mutation structurelle critique.
+
+---
+
+## Impact de maintenance / exploitation
+
+Le domaine `stores` a un impact d’exploitation élevé.
+
+Raisons :
+
+- il structure le contexte de plusieurs domaines ;
+- ses erreurs contaminent potentiellement produits, prix, disponibilité et accès ;
+- il peut être exposé à des synchronisations externes ;
+- il peut porter une partie de la composition projet.
+
+En exploitation, une attention particulière doit être portée à :
+
+- la cohérence du statut des boutiques ;
+- la traçabilité des mutations ;
+- la dérive de configuration ;
+- les divergences avec des systèmes externes ;
+- les changements de périmètre ou rattachement.
+
+Le domaine doit être considéré comme structurant pour la composition du système.
+
+---
+
+## Limites du domaine
+
+Le domaine `stores` s’arrête :
+
+- avant les produits ;
+- avant les prix ;
+- avant la disponibilité ;
+- avant les commandes ;
+- avant les canaux externes ;
+- avant les intégrations techniques ;
+- avant les rôles et permissions comme modèle autonome ;
+- avant la UI et le thème.
+
+Le domaine porte la boutique comme contexte structurant.
+Il ne doit pas devenir un conteneur global de configuration non gouvernée.
+
+---
+
+## Questions ouvertes
+
+À confirmer explicitement dans le projet :
+
+- la frontière exacte entre `stores` et `channels` ;
+- la frontière exacte entre `stores` et une éventuelle organisation / tenant ;
+- la part de configuration réellement portée par `stores` ;
+- la gouvernance des capacités activées par boutique ;
+- la hiérarchie entre référentiel interne et configuration externe ;
+- la relation entre `stores` et les contextes de prix, disponibilité et accès.
+
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Documents liés
+
+- `../../architecture/10-fondations/10-principes-d-architecture.md`
+- `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `products.md`
+- `pricing.md`
+- `availability.md`
+- `customers.md`
+- `users.md`
+- `roles.md`
+- `permissions.md`
+- `../../domains/satellites/channels.md`

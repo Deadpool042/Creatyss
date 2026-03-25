@@ -1,268 +1,295 @@
-# Domaine observability
+# Observabilité
 
 ## Rôle
 
-Le domaine `observability` porte l’explicabilité et la compréhension opérationnelle du socle.
+Le domaine `observability` porte la capacité du système à être compris, diagnostiqué et surveillé en fonctionnement.
 
-Il structure les lectures permettant de comprendre ce qui s’est passé, pourquoi cela s’est produit, quelles corrélations existent entre flux métier et techniques, et où se situent les anomalies ou points de friction, sans absorber le monitoring, l’analytics métier, les domain events ou les logs bruts non structurés.
+Il définit :
+
+- comment le système expose son comportement interne ;
+- comment détecter des anomalies ;
+- comment diagnostiquer des incidents ;
+- comment comprendre les performances ;
+- comment corréler les signaux techniques et métier.
+
+Le domaine existe pour fournir une visibilité opérationnelle du système, distincte :
+
+- de l’audit métier ;
+- des événements de domaine ;
+- des données métier ;
+- des décisions métier.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse critique`
+
+### Activable
+
+`non`
+
+Le domaine `observability` est structurel dès lors que le système :
+
+- exécute des traitements non triviaux ;
+- interagit avec des systèmes externes ;
+- doit être exploité en production.
+
+---
+
+## Source de vérité
+
+Le domaine `observability` est la source de vérité pour :
+
+- les logs techniques ;
+- les métriques ;
+- les traces d’exécution ;
+- les signaux de santé du système.
+
+Le domaine `observability` n’est pas la source de vérité pour :
+
+- les actions métier (audit) ;
+- les faits métier (domain-events) ;
+- les états métier ;
+- les décisions métier.
+
+L’observabilité décrit comment le système fonctionne.
+Elle ne décrit pas la vérité métier.
+
+---
 
 ## Responsabilités
 
-Le domaine `observability` prend en charge :
+Le domaine `observability` est responsable de :
 
-- les vues explicatives sur les flux métier
-- les corrélations entre événements, jobs, intégrations et états métiers
-- les diagnostics de parcours ou de workflow
-- les traces de compréhension exploitables par les équipes plateforme
-- certaines synthèses transverses utiles au support avancé et à l’exploitation
-- la base d’explication exploitable par `dashboarding`, `audit`, `monitoring`, `jobs`, `integrations` et certaines couches d’administration
+- capturer les logs techniques ;
+- exposer les métriques clés ;
+- tracer les flux d’exécution ;
+- permettre la corrélation entre composants ;
+- détecter les anomalies ;
+- exposer des signaux exploitables en production ;
+- permettre le diagnostic rapide d’un incident ;
+- différencier les niveaux de gravité ;
+- structurer les logs pour qu’ils soient exploitables.
 
-## Ce que le domaine ne doit pas faire
+Selon le projet, il peut aussi porter :
 
-Le domaine `observability` ne doit pas :
+- alerting ;
+- dashboards ;
+- health checks ;
+- corrélation avec événements métier ;
+- agrégation multi-services.
 
-- porter le monitoring technique, qui relève de `monitoring`
-- porter l’analytics métier consolidée, qui relève de `analytics`
-- porter les domain events eux-mêmes, qui relèvent de `domain-events`
-- porter les logs bruts comme unique modèle, sans structuration explicative
-- porter les alertes de santé technique comme domaine principal, ce qui relève de `monitoring`
-- devenir un fourre-tout mélangeant logs, reporting, analytics et audit sans responsabilité claire
+---
 
-Le domaine `observability` porte l’explication et la corrélation opérationnelle. Il ne remplace ni `monitoring`, ni `analytics`, ni `domain-events`, ni `audit`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `observability` n’est pas responsable de :
 
-- `flow-traces` : traces explicatives de flux métier ou transverses
-- `correlations` : corrélations entre objets, événements, jobs et intégrations
-- `diagnostics` : diagnostics lisibles des anomalies, blocages ou comportements inattendus
-- `explanations` : vues explicatives orientées compréhension
+- stocker l’historique métier (audit) ;
+- exprimer les faits métier (domain-events) ;
+- implémenter la logique métier ;
+- piloter les workflows métier ;
+- remplacer le monitoring humain.
 
-## Entrées
+Le domaine ne doit pas devenir :
 
-Le domaine reçoit principalement :
+- un dump massif de logs inutilisables ;
+- un système opaque ;
+- un substitut de debug manuel mal structuré.
 
-- des événements structurés issus de `domain-events`
-- des états et statuts issus de `jobs`, `integrations`, `orders`, `payments`, `returns`, `documents` ou d’autres domaines source
-- des signaux de tracking ou de supervision utiles à la compréhension d’un flux
-- des demandes de lecture explicative sur un objet, un parcours, un job, une intégration ou un incident
-- des contextes boutique, scope, corrélation ou intervalle temporel
+---
 
-## Sorties
+## Invariants
 
-Le domaine expose principalement :
+Les invariants minimaux sont :
 
-- des vues explicatives structurées
-- des corrélations entre événements, actions et résultats
-- des diagnostics exploitables par les équipes plateforme ou support avancé
-- des lectures consommables par `dashboarding`, `monitoring`, `audit`, `jobs`, `integrations` et certaines couches d’administration
+- un log doit être compréhensible ;
+- un log doit être contextualisé ;
+- un log ne doit pas être ambigu ;
+- une erreur doit être visible ;
+- une erreur critique ne doit pas passer silencieusement ;
+- une métrique doit être stable et interprétable ;
+- une trace doit permettre de suivre un flux ;
+- les signaux doivent être corrélables entre eux.
 
-## Dépendances vers autres domaines
+---
 
-Le domaine `observability` peut dépendre de :
+## Dépendances
 
-- `domain-events` pour les faits métier internes structurés
-- `jobs` pour les états d’exécution et reprises
-- `integrations` pour les statuts de synchronisation et erreurs provider traduites
-- `orders`, `payments`, `returns`, `documents`, `events` et autres domaines métier pour les états source corrélés
-- `tracking` pour certains signaux utiles à la compréhension de parcours
-- `monitoring` pour certaines informations de santé technique corrélées, sans absorber sa responsabilité
-- `audit` pour certaines corrélations sensibles si nécessaire
-- `stores` pour le contexte boutique
+### Dépendances métier
 
-Les domaines suivants peuvent dépendre de `observability` :
+Indirectes sur tous les domaines.
 
-- `dashboarding`
-- `monitoring`
-- `audit`
-- `support`
-- les couches d’administration plateforme
+### Dépendances transverses
 
-## Capabilities activables liées
+Fortement lié à :
 
-Le domaine `observability` est directement ou indirectement lié à :
+- audit ;
+- domain-events ;
+- jobs ;
+- intégrations ;
+- sécurité.
 
-- `businessObservability`
-- `technicalMonitoring`
-- `tracking`
-- `erpIntegration`
-- `electronicInvoicing`
-- `newsletter`
-- `socialPublishing`
-- `publicEvents`
+### Dépendances externes
 
-### Effet si `businessObservability` est activée
+Souvent dépend de :
 
-Le domaine devient pleinement exploitable pour exposer des vues explicatives riches sur les flux métier.
+- systèmes de logs ;
+- systèmes de métriques ;
+- systèmes de tracing ;
+- plateformes de monitoring.
 
-### Effet si `businessObservability` est désactivée
+### Règle de frontière
 
-Le domaine reste structurellement présent, mais aucune vue d’explication avancée non indispensable ne doit être exposée côté boutique.
+Observability = compréhension du système.
 
-### Effet si `technicalMonitoring` est activée
+Elle ne doit pas :
 
-Le domaine peut croiser plus finement certaines informations de santé technique, sans absorber `monitoring`.
+- définir le métier ;
+- remplacer audit ;
+- remplacer events ;
+- absorber la logique applicative.
 
-### Effet si certaines capabilities métier ou d’intégration sont activées
+---
 
-Le domaine peut exposer des corrélations et diagnostics dédiés aux flux correspondants, sans absorber la logique source de ces domaines.
+## Événements significatifs
 
-## Rôles/permissions concernés
+Le domaine ne publie pas d’événements métier.
 
-### Rôles
+Il produit des signaux tels que :
 
-Les rôles principalement concernés sont :
+- logs d’erreur ;
+- logs d’information ;
+- métriques (latence, throughput, erreurs) ;
+- traces d’exécution ;
+- health checks.
 
-- `platform_owner`
-- `platform_engineer`
-- certains rôles support avancé ou observateur technique en lecture selon la politique retenue
+---
 
-Les rôles boutique ne doivent pas voir librement toute l’observabilité transverse et technique du socle.
+## Cycle de vie
 
-### Permissions
+Les données d’observabilité suivent un cycle :
 
-Exemples de permissions concernées :
+- produites ;
+- agrégées ;
+- consultées ;
+- archivées / supprimées.
 
-- `observability.read`
-- `monitoring.read`
-- `audit.read`
-- `tracking.read`
-- `integrations.read`
-- `jobs.read`
+Le domaine doit éviter :
 
-## Événements émis
+- accumulation non contrôlée ;
+- perte silencieuse ;
+- signaux inutilisables.
 
-Le domaine peut émettre des domain events internes du type :
+---
 
-- `observability.trace.generated`
-- `observability.diagnostic.updated`
-- `observability.correlation.detected`
+## Interfaces et échanges
 
-## Événements consommés
+Le domaine expose :
 
-Le domaine peut consommer certains événements internes du type :
+- logs ;
+- métriques ;
+- traces ;
+- endpoints de santé.
 
-- `order.created`
-- `payment.failed`
-- `return.requested`
-- `invoice.generated`
-- `event.published`
-- `tracking.event.created`
-- `job.status.changed`
-- `integration.sync.status.changed`
-- `store.capabilities.updated`
+Il reçoit :
 
-Il doit toutefois rester maître de sa propre logique de corrélation et d’explication.
+- signaux techniques internes ;
+- erreurs ;
+- événements système.
 
-## Intégrations externes
+---
 
-Le domaine `observability` ne doit pas parler directement aux providers externes comme source de vérité principale.
+## Contraintes d’intégration
 
-Les éventuelles projections vers :
+Contraintes typiques :
 
-- plateformes d’observabilité externes
-- outils de tracing externes
-- cockpits techniques externes
+- volume élevé ;
+- performance ;
+- latence faible ;
+- coût de stockage ;
+- structuration des logs ;
+- corrélation multi-sources.
 
-relèvent de :
+Règles minimales :
 
-- `integrations`
-- éventuellement `jobs`
+- les logs doivent être structurés ;
+- les erreurs doivent être traçables ;
+- les métriques doivent être cohérentes ;
+- les traces doivent être corrélables ;
+- le bruit doit être contrôlé.
 
-Le domaine `observability` reste la source de vérité interne des lectures explicatives et corrélées du socle.
+---
 
-## Données sensibles / sécurité
+## Observabilité et audit
 
-Le domaine `observability` peut exposer des informations sensibles sur les flux internes, erreurs, états et corrélations système.
+Différence fondamentale :
 
-Points de vigilance :
+- audit = "qui a fait quoi"
+- observability = "que fait le système"
 
-- contrôle strict des droits de lecture
-- séparation nette entre observabilité plateforme et exposition boutique
-- limitation des données exposées selon le rôle, le scope et la sensibilité
-- protection contre la fuite de détails techniques ou provider inutiles dans les espaces non techniques
-- audit des changements significatifs de configuration d’exposition ou de corrélation
+Les deux ne doivent jamais être confondus.
 
-## Observability / audit
+---
 
-### Observability
+## Impact de maintenance / exploitation
 
-Le domaine doit lui-même permettre de comprendre :
+Impact critique :
 
-- quelles sources ont alimenté une vue explicative
-- pourquoi un diagnostic a été produit
-- quels événements, états ou erreurs ont été corrélés
-- si une vue est partielle à cause d’une capability off, d’une source absente ou d’un retard de propagation
+- debugging ;
+- support ;
+- performance ;
+- incident response ;
+- SLA.
 
-### Audit
+Risques :
 
-Le domaine `observability` n’a pas vocation à devenir un journal de conformité universel.
+- absence de logs ;
+- logs inutiles ;
+- bruit ;
+- absence de corrélation ;
+- incapacité à diagnostiquer.
 
-En revanche, certaines modifications sensibles doivent pouvoir être tracées, notamment :
+---
 
-- les changements significatifs de règles d’exposition
-- certaines corrections manuelles importantes d’une vue explicative
-- certains changements de périmètre ou de visibilité des diagnostics
+## Limites du domaine
 
-## Modèle de données conceptuel
+Le domaine s’arrête :
 
-Les principaux objets métier conceptuels du domaine sont :
+- avant le métier ;
+- avant l’audit ;
+- avant les événements ;
+- avant les décisions.
 
-- `ObservabilityTrace` : trace explicative structurée
-- `ObservabilityCorrelation` : corrélation entre objets, événements ou états
-- `ObservabilityDiagnostic` : diagnostic lisible d’un comportement ou incident
-- `ObservabilityScope` : périmètre d’observation ou de lecture
-- `ObservabilityExplanation` : vue explicative contextualisée
+Il décrit le système.
+Il ne le gouverne pas.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Questions ouvertes
 
-- une vue d’observabilité s’appuie sur des sources identifiées et explicites
-- `observability` ne se confond pas avec `monitoring`
-- `observability` ne se confond pas avec `analytics`
-- `observability` ne se confond pas avec `audit`
-- les vues explicatives ne doivent pas redéfinir de manière divergente la vérité des domaines source
-- les autres couches ne doivent pas recréer librement des vues explicatives divergentes quand une lecture commune d’observabilité existe
+À cadrer :
 
-## Cas d’usage principaux
+- stratégie de logging ;
+- niveau de verbosité ;
+- corrélation avec domain-events ;
+- stratégie de retention ;
+- outils utilisés ;
+- alerting.
 
-1. Expliquer pourquoi une commande a échoué à progresser dans un flux donné
-2. Corréler un événement métier, un job et un statut d’intégration
-3. Expliquer pourquoi une notification, une newsletter ou une publication sociale n’a pas été exécutée
-4. Exposer une vue de diagnostic sur un flux documentaire ou ERP
-5. Alimenter `dashboarding` avec des synthèses explicatives
-6. Fournir aux équipes plateforme une lecture claire et actionnable des corrélations métier/technique
+---
 
-## Cas limites / erreurs métier
+## Documents liés
 
-Quelques cas d’erreur typiques :
-
-- trace introuvable
-- corrélation impossible ou incomplète
-- source amont absente ou non disponible
-- capability nécessaire désactivée
-- permission ou scope insuffisant
-- tentative d’exposition de détails trop sensibles dans un contexte non autorisé
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `observability` porte les vues explicatives et corrélées du socle
-- `observability` est distinct de `monitoring`
-- `observability` est distinct de `analytics`
-- `observability` est distinct de `audit`
-- `observability` consomme les domaines source au lieu de redéfinir leurs vérités métier ou techniques
-- les expositions plateforme et boutique restent distinctes
-- les vues explicatives sensibles doivent être contrôlées, auditables et observables
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- les vues explicatives et corrélées relèvent de `observability`
-- le monitoring relève de `monitoring`
-- l’analytics consolidée relève de `analytics`
-- l’audit relève de `audit`
-- les providers externes relèvent de `integrations`
-- `observability` ne remplace ni `monitoring`, ni `analytics`, ni `audit`, ni `integrations`
+- `../../architecture/40-exploitation/40-observabilite.md`
+- `../../architecture/40-exploitation/41-audit-et-tracabilite.md`
+- `../../domains/core/domain-events.md`
+- `../../domains/cross-cutting/audit.md`
+- `../../domains/cross-cutting/jobs.md`

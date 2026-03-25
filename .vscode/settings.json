@@ -6,12 +6,6 @@
   "js/ts.tsdk.path": "node_modules/typescript/lib",
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,
   "prisma.schemaPath": "prisma.config.ts",
-  "files.watcherExclude": {
-    "**/node_modules/**": true
-  },
-  "files.exclude": {
-    "**/node_modules": true
-  },
   "markdownlint.config": {
     "default": true,
     "MD013": false,
@@ -19,5 +13,62 @@
     "MD041": false,
     "MD024": false,
     "MD025": false
-  }
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.turbo/**": true,
+    "**/.pnpm-store/**": true,
+    "**/coverage/**": true,
+    "**/.cache/**": true,
+    "**/.vercel/**": true,
+    "**/.output/**": true,
+    "**/out/**": true,
+    "**/tmp/**": true,
+    "**/logs/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.turbo": true,
+    "**/coverage": true,
+    "**/.cache": true,
+    "**/.vercel": true,
+    "**/.output": true,
+    "**/out": true,
+    "**/tmp": true,
+    "**/logs": true
+  },
+  "files.exclude": {
+    "**/.next": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.turbo": true,
+    "**/coverage": true,
+    "**/.cache": true,
+    "**/.vercel": true,
+    "**/.output": true,
+    "**/out": true
+  },
+  "typescript.tsserver.maxTsServerMemory": 2048,
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "javascript.disableAutomaticTypeAcquisition": true,
+  "typescript.tsserver.watchOptions": {
+    "watchFile": "useFsEventsOnParentDirectory",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "dynamicPriority"
+  },
+  "editor.codeLens": false,
+  "breadcrumbs.enabled": false,
+  "editor.minimap.enabled": false,
+  "extensions.autoUpdate": false,
+  "git.autofetch": false,
+  "npm.autoDetect": "off",
+  "typescript.surveys.enabled": false
 }

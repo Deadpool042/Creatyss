@@ -1,664 +1,384 @@
-# Domaine `orders`
-
-## Objectif
-
-Ce document décrit le domaine `orders` dans la doctrine courante du socle.
-
-Il précise :
-
-- le rôle du domaine ;
-- sa place dans la modularité du socle ;
-- sa source de vérité ;
-- ses capabilities activables ;
-- ses niveaux éventuels ;
-- ses objets métier ;
-- ses invariants ;
-- son cycle de vie ;
-- ses règles de cohérence ;
-- ses frontières externes ;
-- ses implications de maintenance, d’exploitation et de coût.
-
-Le domaine `orders` est structurant pour la réutilisabilité du socle, car il porte la commande durable.
-Il doit permettre de couvrir :
-
-- un commerce simple ;
-- plusieurs modes de paiement ;
-- plusieurs pays ;
-- plusieurs documents ;
-- des transitions de cycle de vie plus ou moins riches ;
-- sans perdre la cohérence entre panier, checkout, paiement, stock et intégrations.
-
-Le domaine `orders` ne doit jamais être pensé comme un simple enregistrement final.
-Il porte la **vérité durable de l’achat validé**.
-
----
-
-## Position dans la doctrine de modularité
-
-Le domaine `orders` est classé comme :
-
-- `domaine coeur non toggleable`
-
-Le domaine est structurellement indispensable à tout commerce sérieux.
-
-### Ce qui n’est jamais désactivé
-
-Le domaine conserve toujours :
-
-- la vérité durable de la commande ;
-- une relation claire à son contexte de création ;
-- des lignes figées ;
-- des montants figés ;
-- un lifecycle explicite ;
-- une source de vérité pour les domaines aval ;
-- une traçabilité des transitions majeures.
-
-### Ce qui est activable / désactivable par capability
-
-Le domaine `orders` est influencé par certaines capabilities transverses du socle, sans cesser d’exister :
-
-- `guestCheckout`
-- `customerCheckout`
-- `discounts`
-- `multiCountryTaxation`
-- `electronicInvoicing`
-- `returns`
-- `partialRefund`
-- `b2bCommerce`
-
-### Ce qui relève d’un niveau
-
-Le domaine ne varie pas principalement par “existence ou non”.
-Il varie par richesse du workflow, des snapshots et des flux avals.
-
-### Ce qui relève d’un provider ou d’une intégration externe
-
-Relèvent de `integrations`, `webhooks`, `jobs` ou `documents`, et non du coeur de `orders` :
-
-- ERP ;
-- comptabilité externe ;
-- emails ;
-- transporteurs ;
-- analytics externes ;
-- webhooks sortants.
-
-Le domaine `orders` garde la vérité interne de la commande durable.
-
----
+# Événements de domaine
 
 ## Rôle
 
-Le domaine `orders` porte la commande durable du socle.
+Le domaine `domain-events` porte l’expression, la publication et la consommation des faits métier significatifs à l’intérieur du système.
 
-Il constitue la source de vérité interne pour :
+Il définit :
 
-- l’existence d’une commande validée ;
-- l’identité métier de la commande ;
-- ses lignes figées ;
-- ses montants figés ;
-- ses snapshots utiles ;
-- son statut métier ;
-- les transitions principales de son cycle de vie.
+- ce qu’est un événement de domaine du point de vue du système ;
+- comment un fait métier est exprimé dans le langage interne ;
+- comment ces faits sont publiés, propagés et consommés ;
+- comment le système distingue un événement métier d’un signal technique ;
+- comment les traitements asynchrones restent cohérents avec la vérité métier.
 
-Le domaine est distinct :
+Le domaine existe pour fournir un backbone événementiel interne structuré, distinct :
 
-- de `cart`, qui porte le panier runtime ;
-- de `checkout`, qui porte la validation finale avant commande ;
-- de `payments`, qui porte la vérité interne du paiement ;
-- de `availability`, qui porte la disponibilité ;
-- de `documents`, qui porte la production documentaire ;
-- de `integrations`, qui diffuse ou synchronise vers l’extérieur.
+- des événements métier publics portés par un domaine fonctionnel comme `events` ;
+- des webhooks ;
+- des intégrations externes ;
+- des jobs ;
+- des messages techniques sans sémantique métier.
 
 ---
 
-## Responsabilités
+## Classification
 
-Le domaine `orders` prend en charge :
+### Catégorie documentaire
 
-- la création de la commande durable à partir d’un checkout valide ;
-- le figement des lignes ;
-- le figement des montants retenus ;
-- le figement des snapshots nécessaires ;
-- l’identité durable de la commande ;
-- le cycle de vie métier de la commande ;
-- la lecture durable de la commande ;
-- l’alimentation des domaines avals ;
-- la traçabilité des transitions principales.
+`core`
 
----
+### Criticité architecturale
 
-## Ce que le domaine ne doit pas faire
+`coeur structurel`
 
-Le domaine `orders` ne doit pas :
+### Activable
 
-- porter le panier runtime ;
-- recalculer librement le pricing, la fiscalité ou la disponibilité après coup ;
-- devenir le domaine provider-specific du paiement ;
-- porter les webhooks ou intégrations externes ;
-- faire d’appel externe dans sa transaction principale ;
-- devenir un fourre-tout mélangeant commande, paiement, logistique, comptabilité et documents.
+`non`
+
+Le domaine `domain-events` est non optionnel dès lors que le système s’appuie sur des faits métier publiés pour découpler des réactions internes, orchestrer des traitements différés ou propager des changements significatifs.
 
 ---
 
 ## Source de vérité
 
-Le domaine `orders` est la source de vérité pour :
+Le domaine `domain-events` est la source de vérité pour :
 
-- la commande durable ;
-- son statut métier principal ;
-- ses lignes figées ;
-- ses montants et snapshots figés ;
-- son rattachement durable aux autres flux du commerce.
+- le modèle d’événements de domaine internes ;
+- la sémantique des faits métier publiés dans le système ;
+- les conventions de publication et de consommation des événements internes ;
+- la représentation des événements métier comme faits établis ;
+- les règles de robustesse et de propagation propres à ces événements.
 
-Le domaine n’est pas la source de vérité pour :
+Le domaine `domain-events` n’est pas la source de vérité pour :
 
-- le panier actif ;
-- le readiness du checkout ;
-- le paiement interne ;
-- la disponibilité quantitative ;
-- les appels providers ;
-- les documents externes ;
-- les projections analytics.
+- la vérité métier des domaines producteurs eux-mêmes ;
+- les webhooks et flux externes ;
+- la politique générale d’intégration, qui relève de `integrations` ;
+- les jobs comme unités de travail ;
+- les événements métier publics d’un domaine fonctionnel nommé `events` ;
+- les signaux purement techniques ou d’observabilité.
 
----
-
-## Objets métier principaux
-
-Les principaux objets métier portés par le domaine sont :
-
-- `Order`
-- `OrderLine`
-- `OrderStatus`
-- `OrderTotalsSnapshot`
-- `OrderCustomerSnapshot`
-- `OrderShippingSnapshot`
-- `OrderOriginReference`
+Un événement de domaine n’est pas une commande.
+Un événement de domaine n’est pas un webhook.
+Un événement de domaine n’est pas un simple log.
 
 ---
 
-## Capabilities activables liées
+## Responsabilités
 
-Le domaine `orders` est influencé par les capabilities suivantes :
+Le domaine `domain-events` est responsable de :
 
-- `guestCheckout`
-- `customerCheckout`
-- `discounts`
-- `multiCountryTaxation`
-- `electronicInvoicing`
-- `returns`
-- `partialRefund`
-- `b2bCommerce`
+- définir ce qu’est un événement de domaine interne ;
+- encadrer le vocabulaire des événements métier ;
+- exprimer les faits métier significatifs dans le langage du système ;
+- porter les conventions de publication et de consommation ;
+- protéger le système contre la dérive vers des événements techniques sans sémantique claire ;
+- structurer la propagation asynchrone des faits métier ;
+- publier les événements significatifs issus des domaines producteurs ;
+- garantir la traçabilité et la cohérence du backbone événementiel interne ;
+- fournir un cadre lisible aux domaines consommateurs et aux traitements secondaires.
 
-### Effet si `guestCheckout` est activée
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine accepte des commandes issues de parcours invités.
-
-### Effet si `customerCheckout` est activée
-
-Le domaine peut figer un contexte client plus riche.
-
-### Effet si `discounts` est activée
-
-Le domaine fige des montants remisés validés en amont.
-
-### Effet si `multiCountryTaxation` est activée
-
-Le domaine fige des snapshots fiscaux plus riches.
-
-### Effet si `electronicInvoicing` est activée
-
-Le domaine doit exposer un état exploitable par la chaîne documentaire après commit.
-
-### Effet si `returns` est activée
-
-Le lifecycle aval de la commande peut être plus riche.
-
-### Effet si `partialRefund` est activée
-
-Le domaine reste cohérent avec des remboursements partiels pilotés via `payments`.
-
-### Effet si `b2bCommerce` est activée
-
-Le domaine peut figer un contexte entreprise ou facturation plus structuré.
+- l’enveloppe canonique d’un événement interne ;
+- les métadonnées minimales d’un événement ;
+- la persistance transactionnelle d’événements en attente de publication ;
+- la politique de dispatch interne ;
+- la gouvernance des consommateurs ;
+- les règles de rejeu et d’idempotence au niveau événementiel.
 
 ---
 
-## Niveaux de sophistication du domaine
+## Non-responsabilités
 
-### Niveau 1 — essentiel
+Le domaine `domain-events` n’est pas responsable de :
 
-Le domaine couvre :
+- définir la vérité métier locale de `orders`, `payments`, `products`, etc. ;
+- remplacer les domaines producteurs ;
+- gouverner les webhooks ou autres flux externes ;
+- gouverner les clients API ;
+- définir la politique générale d’intégration externe ;
+- remplacer les jobs comme unités de travail ;
+- porter les logs, métriques ou traces d’observabilité ;
+- représenter les événements publics d’un domaine fonctionnel métier.
 
-- création de commande ;
-- lignes figées ;
-- montants figés ;
-- statut principal ;
-- lecture durable simple.
+Le domaine `domain-events` ne doit pas devenir :
 
-### Niveau 2 — standard
-
-Le domaine couvre en plus :
-
-- snapshots plus riches ;
-- meilleure articulation avec paiements et documents ;
-- plus de cas de lecture et d’exploitation.
-
-### Niveau 3 — avancé
-
-Le domaine couvre en plus :
-
-- transitions plus riches ;
-- flux avals plus nombreux ;
-- meilleure intégration avec documents, retours, B2B, comptabilité ou multi-pays.
-
-### Niveau 4 — expert / réglementé / multi-contraintes
-
-Le domaine couvre en plus :
-
-- obligations documentaires et fiscales plus fortes ;
-- exploitation plus lourde ;
-- interactions plus nombreuses avec les domaines avals et les intégrations.
-
-Le domaine reste le même, mais son environnement se densifie.
+- un bus fourre-tout ;
+- un système de message purement technique ;
+- un substitut à une mauvaise modélisation de frontière.
 
 ---
 
-## Entrées
+## Invariants
+
+Les invariants minimaux du domaine sont les suivants :
+
+- un événement de domaine doit exprimer un fait métier établi ;
+- un événement de domaine doit être nommé dans le langage du système ;
+- un événement de domaine ne doit pas être ambigu sur ce qui s’est produit ;
+- un événement publié ne doit pas contredire la vérité métier du domaine producteur ;
+- un événement consommable doit rester interprétable sans dépendre d’un détail de fournisseur externe ;
+- un rejeu ou un retraitement ne doit pas produire un état incohérent sans garde-fous explicites ;
+- la distinction entre événement métier et signal technique doit rester claire ;
+- la publication d’un événement ne doit pas masquer une transaction métier incomplète.
+
+Le domaine protège la sémantique du fait métier publié.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `domain-events` interagit fortement avec les domaines producteurs et consommateurs, notamment :
+
+- `products`
+- `pricing`
+- `cart`
+- `checkout`
+- `orders`
+- `payments`
+- `customers`
+- `availability`
+- `shipping`
+- `stores`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- jobs ;
+- observabilité ;
+- audit ;
+- intégrations ;
+- webhooks, lorsque des faits externes doivent être traduits puis éventuellement republiés en faits internes ;
+- mécanismes d’idempotence et de retry.
+
+### Dépendances externes
+
+Le domaine n’est pas directement centré sur l’externe, mais il peut être alimenté indirectement par :
+
+- signaux normalisés provenant d’intégrations ;
+- traitements de réconciliation ;
+- entrées externes traduites dans le langage interne.
+
+### Règle de frontière
+
+Le domaine `domain-events` porte le modèle des faits internes publiés.
+Il ne doit pas absorber :
+
+- la vérité métier locale des domaines producteurs ;
+- la politique d’intégration externe ;
+- la mécanique des jobs ;
+- ni la logique purement technique de transport.
+
+---
+
+## Événements significatifs
+
+Le domaine `domain-events` porte ou peut porter des événements significatifs tels que :
+
+- produit créé ;
+- produit mis à jour ;
+- prix modifié ;
+- panier validé ;
+- checkout confirmé ;
+- commande créée ;
+- commande annulée ;
+- paiement autorisé ;
+- paiement capturé ;
+- client créé ;
+- disponibilité modifiée ;
+- boutique activée ;
+- expédition créée ;
+- fulfillment complété.
+
+Le domaine peut consommer des signaux liés à :
+
+- publication d’événements producteurs ;
+- reprise de dispatch ;
+- retry ;
+- rejet de consommation ;
+- réconciliation suite à incident.
+
+Les noms exacts doivent rester dans le langage métier du système.
+Ils ne doivent pas refléter une topologie technique ou un fournisseur externe.
+
+---
+
+## Cycle de vie
+
+Le domaine `domain-events` ne porte pas nécessairement un cycle de vie métier unique comparable à `orders` ou `payments`.
+
+Cette section reste applicable via les états d’un événement ou de sa publication, par exemple :
+
+- enregistré ;
+- prêt à publier ;
+- publié ;
+- consommé ;
+- en échec ;
+- rejoué ;
+- archivé.
+
+Si le modèle retenu ne porte pas un cycle de vie unifié, cela doit être assumé explicitement.
+
+Le domaine doit éviter :
+
+- les événements “fantômes” sans statut lisible ;
+- les publications silencieusement perdues ;
+- les traitements secondaires sans traçabilité.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `domain-events` expose principalement :
+
+- des conventions de publication ;
+- des événements internes structurés ;
+- des points de consommation ou de souscription selon le modèle retenu ;
+- des états de publication ou de dispatch si le modèle les porte.
 
 Le domaine reçoit principalement :
 
-- un checkout prêt à être converti ;
-- un panier convertible ;
-- des montants consolidés et validés ;
-- un contexte client / livraison / facturation validé ;
-- des commandes internes de lecture ou transition ;
-- des événements internes provenant de paiements, fulfillment ou documents.
+- des faits issus des domaines producteurs ;
+- des demandes de publication ;
+- des rejets ou signaux de retry ;
+- des actions opératoires de reprise.
+
+Le domaine ne doit pas exposer comme contrat canonique un format trop dépendant d’une infrastructure particulière.
 
 ---
 
-## Sorties
+## Contraintes d’intégration
 
-Le domaine expose principalement :
+Le domaine `domain-events` peut être exposé à des contraintes telles que :
 
-- une commande durable ;
-- des lignes figées ;
-- un statut métier de commande ;
-- un contexte figé exploitable par les domaines avals ;
-- des événements métier liés à la commande.
+- publication différée ;
+- retry ;
+- duplication ;
+- ordre de traitement non garanti ;
+- consommateurs multiples ;
+- consommation partielle ;
+- divergence entre événement publié et traitement aval ;
+- nécessité d’idempotence ;
+- rejouabilité après incident.
 
----
+Règles minimales :
 
-## Dépendances vers autres domaines
-
-Le domaine `orders` dépend de :
-
-- `checkout`
-- `cart`
-- `pricing`
-- `taxation`
-- `payments`
-- `availability`
-- `audit`
-- `observability`
-
-Les domaines suivants dépendent de `orders` :
-
-- `payments`
-- `documents`
-- `returns`
-- `integrations`
-- `webhooks`
-- `analytics`
-- `customer-support`
+- un événement doit être publié comme fait métier, pas comme intention floue ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- les erreurs de dispatch doivent être visibles ;
+- un événement ne doit pas être utilisé pour compenser une mauvaise frontière de domaine ;
+- la relation entre transaction métier et publication d’événement doit être explicite ;
+- un rejet de consommation ne doit pas corrompre silencieusement la vérité du système.
 
 ---
 
-## Dépendances vers providers / intégrations
+## Observabilité et audit
 
-Le domaine `orders` ne parle pas directement aux systèmes externes.
+Le domaine `domain-events` doit rendre visibles au minimum :
 
-Les usages externes partent via :
+- les événements publiés ;
+- les événements rejetés ;
+- les échecs de dispatch ;
+- les retries ;
+- les événements rejoués ;
+- les consommateurs en erreur ;
+- les divergences critiques entre publication et traitement aval ;
+- les actions opératoires de reprise.
 
-- `domain-events`
-- `jobs`
-- `integrations`
-- `webhooks`
+L’audit doit permettre de répondre à des questions comme :
 
-Le domaine `orders` reste la vérité interne de la commande.
-Les systèmes externes la consomment ou s’y synchronisent après commit.
+- quel fait métier a été publié ;
+- quand ;
+- par quel domaine producteur ;
+- avec quel identifiant corrélable ;
+- avec quel résultat de publication ;
+- avec quels consommateurs affectés ;
+- avec quelle reprise éventuelle.
 
----
+L’observabilité doit distinguer :
 
-## Rôles / permissions concernés
-
-### Rôles
-
-Les rôles principalement concernés sont :
-
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `order_manager`
-- `customer_support`
-- `finance_manager`
-
-### Permissions
-
-Exemples de permissions concernées :
-
-- `orders.read`
-- `orders.write`
-- `orders.status.write`
-- `payments.read`
-- `documents.read`
-- `audit.read`
+- erreur de publication ;
+- erreur de consommation ;
+- duplication ;
+- désordre de traitement ;
+- divergence métier ;
+- reprise opératoire.
 
 ---
 
-## Événements émis
+## Impact de maintenance / exploitation
 
-Le domaine émet les domain events internes suivants :
+Le domaine `domain-events` a un impact d’exploitation très élevé.
 
-- `order.created`
-- `order.status.changed`
-- `order.cancelled`
-- `order.completed`
+Raisons :
 
----
+- il relie plusieurs domaines entre eux ;
+- il influence les flux asynchrones internes ;
+- ses erreurs peuvent contaminer plusieurs zones du système ;
+- il nécessite une discipline forte de robustesse, idempotence et traçabilité ;
+- il peut rendre la dérive architecturelle invisible s’il est mal gouverné.
 
-## Événements consommés
+En exploitation, une attention particulière doit être portée à :
 
-Le domaine consomme les domain events internes suivants :
+- la visibilité des publications ;
+- les consommateurs en échec ;
+- les rejeux ;
+- les duplications ;
+- les divergences entre fait publié et état aval ;
+- la clarté des conventions de nommage et de corrélation ;
+- les actions manuelles de reprise.
 
-- `checkout.completed`
-- `payment.authorized`
-- `payment.captured`
-- `payment.failed`
-- `payment.refunded`
-- `fulfillment.shipped`
-- `fulfillment.delivered`
-- `return.completed`
-
----
-
-## Données sensibles / sécurité
-
-Le domaine `orders` porte une donnée métier critique.
-
-Points de vigilance :
-
-- une commande ne doit être créée qu’à partir d’un contexte validé ;
-- les montants figés ne doivent pas être librement recalculés après coup ;
-- les transitions de statut doivent être gardées ;
-- les actions sensibles doivent être auditables ;
-- les snapshots doivent rester cohérents avec le contexte validé au moment de la création.
+Le domaine doit être considéré comme critique pour la cohérence systémique interne.
 
 ---
 
-## Observability / audit
+## Limites du domaine
 
-### Observability
+Le domaine `domain-events` s’arrête :
 
-Il faut pouvoir comprendre :
+- avant la vérité métier locale de chaque domaine producteur ;
+- avant les jobs comme unités de travail ;
+- avant les webhooks ;
+- avant les intégrations externes ;
+- avant l’observabilité au sens large ;
+- avant les événements métier publics portés par un autre domaine comme `events`.
 
-- pourquoi une commande a été créée ;
-- de quel checkout et de quel panier elle provient ;
-- quels montants ont été figés ;
-- quels snapshots ont été retenus ;
-- pourquoi une transition de statut a été acceptée ou refusée ;
-- si un incident vient du checkout, du paiement, du stock ou d’un flux aval.
-
-### Audit
-
-Il faut tracer :
-
-- la création de commande ;
-- les changements de statut sensibles ;
-- les annulations ;
-- les corrections manuelles ;
-- les reprises opérateur ;
-- les interactions structurantes avec les flux financiers ou documentaires.
+Le domaine `domain-events` porte le backbone de faits métier internes.
+Il ne doit pas absorber toute la mécanique asynchrone ou toute la messagerie du système.
 
 ---
 
-## Invariants métier
+## Questions ouvertes
 
-Les règles suivantes doivent toujours rester vraies :
+À confirmer explicitement dans le projet :
 
-- une commande est créée à partir d’un checkout valide ;
-- une commande possède une identité durable ;
-- les lignes de commande sont figées à la création ;
-- les montants retenus sont figés à la création ;
-- la commande est la vérité durable de l’achat validé ;
-- les domaines avals ne recréent pas une vérité concurrente ;
-- le domaine `orders` ne dépend pas d’un provider externe pour valider son existence.
+- la frontière exacte entre `domain-events` et `jobs` ;
+- la frontière exacte entre `domain-events` et `integrations` ;
+- la frontière exacte entre `domain-events` et `webhooks` ;
+- la politique canonique de publication transactionnelle ;
+- la stratégie de rejeu ;
+- la localisation de l’idempotence ;
+- la structure minimale canonique d’un événement ;
+- la liste des événements réellement structurants du système.
 
----
-
-## Lifecycle et gouvernance des données
-
-### États principaux
-
-Le domaine `orders` porte un statut métier explicite.
-Selon le modèle retenu, les états principaux incluent généralement :
-
-- `PENDING`
-- `CONFIRMED`
-- `COMPLETED`
-- `CANCELLED`
-
-Le détail exact peut être enrichi par le projet, mais doit rester gardé et lisible.
-
-### Transitions autorisées
-
-Exemples :
-
-- `PENDING -> CONFIRMED`
-- `PENDING -> CANCELLED`
-- `CONFIRMED -> COMPLETED`
-- `CONFIRMED -> CANCELLED` si les règles métier le permettent
-
-### Transitions interdites
-
-Exemples :
-
-- `COMPLETED -> PENDING`
-- `CANCELLED -> CONFIRMED` sans flux compensatoire explicite
-- retour implicite à un état précédent sans raison métier formalisée
-
-### Règles de conservation / archivage / suppression
-
-- une commande n’est pas supprimée implicitement ;
-- les lignes, montants et snapshots utiles restent lisibles ;
-- l’archivage est préférable à la suppression physique ;
-- la commande reste compréhensible pour support, audit et exploitation.
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
 ---
 
-## Transactions / cohérence / concurrence
+## Documents liés
 
-### Ce qui doit être atomique
-
-Les opérations suivantes doivent réussir ou échouer ensemble :
-
-- validation finale du checkout utilisé pour la création ;
-- création de `Order` ;
-- création des `OrderLine` ;
-- figement des snapshots client, facturation et livraison ;
-- figement des montants consolidés ;
-- création du paiement interne initial lorsque la règle métier l’exige ;
-- réservation ou décrémentation de stock liée à la création ;
-- transition du panier source en `CONVERTED` ;
-- écriture de `order.created` dans l’outbox.
-
-Les transitions de statut sensibles doivent également être atomiques avec l’écriture de leurs événements correspondants.
-
-### Ce qui peut être eventual consistency
-
-Les traitements suivants peuvent partir après commit :
-
-- emails transactionnels ;
-- génération documentaire ;
-- synchronisation ERP ou comptable ;
-- webhooks sortants ;
-- analytics ;
-- déclenchements logistiques ;
-- projections secondaires.
-
-### Stratégie de concurrence
-
-Le domaine protège explicitement ses invariants par :
-
-- une seule conversion réussie pour un même contexte source ;
-- transaction applicative unique sur la création de commande ;
-- garde sur le statut de commande avant transition ;
-- refus de créer une commande si le panier ou le checkout ne sont plus convertibles ;
-- refus complet en cas de conflit stock ou de source incohérente.
-
-Les conflits attendus sont :
-
-- double soumission de checkout ;
-- double conversion du même panier ;
-- transition concurrente de statut ;
-- conflit entre paiement, annulation et progression de commande ;
-- création concurrente sur le même contexte source.
-
-### Idempotence
-
-Les commandes métier suivantes doivent être idempotentes :
-
-- `create-order-from-checkout` : clé d’intention = `(checkoutId, orderCreationIntentId)`
-- `change-order-status` : clé d’intention = `(orderId, targetStatus, statusChangeIntentId)`
-- `cancel-order` : clé d’intention = `(orderId, cancelIntentId)`
-
-Un retry sur la même intention ne doit jamais produire :
-
-- deux commandes durables pour le même achat ;
-- deux transitions de statut divergentes ;
-- deux annulations incompatibles.
-
-### Domain events écrits dans la même transaction
-
-Les événements suivants sont persistés dans l’outbox dans la même transaction que la mutation source :
-
-- `order.created`
-- `order.status.changed`
-- `order.cancelled`
-- `order.completed`
-
-### Effets secondaires après commit
-
-Les traitements suivants ne doivent jamais être exécutés dans la transaction principale :
-
-- appel PSP externe ;
-- email transactionnel ;
-- webhook sortant ;
-- synchronisation ERP / comptabilité ;
-- génération documentaire externe ;
-- déclenchement logistique externe ;
-- analytics externes.
-
----
-
-## Impact maintenance / exploitation
-
-### Niveau de maintenance minimal recommandé
-
-- `M1` pour un commerce simple ;
-- `M2` dès que le volume, les paiements et les documents prennent de l’importance ;
-- `M3` pour les contextes multi-pays, B2B, documentaires ou plus intégrés ;
-- `M4` pour les contextes réglementés ou fortement contraints.
-
-### Pourquoi
-
-Le domaine `orders` est au centre de la vérité commerciale durable.
-Plus il monte en richesse, plus il exige :
-
-- observability ;
-- audit ;
-- compréhension des transitions ;
-- rapprochement avec paiement et documents ;
-- qualité de reprise et de support.
-
-### Points d’exploitation à surveiller
-
-- création de commandes ;
-- échecs de conversion ;
-- transitions de statut ;
-- cohérence avec paiements ;
-- cohérence avec stock ;
-- cohérence avec documents et intégrations.
-
----
-
-## Impact coût / complexité
-
-Le coût du domaine `orders` monte principalement avec :
-
-- la richesse des snapshots figés ;
-- les interactions avec taxation, paiements et documents ;
-- les workflows d’état plus riches ;
-- les besoins B2B ;
-- les contraintes documentaires ;
-- les exigences de support et d’audit.
-
-Lecture relative du coût :
-
-- niveau 1 : `C2`
-- niveau 2 : `C2` à `C3`
-- niveau 3 : `C3`
-- niveau 4 : `C4`
-
----
-
-## Cas d’usage principaux
-
-1. Créer une commande durable depuis un checkout valide
-2. Figer lignes, montants et snapshots
-3. Lire une commande et son contexte figé
-4. Faire évoluer le statut métier de la commande
-5. Alimenter les domaines avals via événements et lectures durables
-
----
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- checkout introuvable ;
-- panier introuvable ou déjà converti ;
-- incohérence entre checkout et panier ;
-- conflit de stock ;
-- tentative de double création ;
-- transition de statut invalide ;
-- désynchronisation avec paiements ;
-- tentative de mutation d’une commande déjà finalisée ou annulée.
-
----
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `orders` est un domaine coeur non toggleable ;
-- la commande durable est créée à partir d’un checkout valide ;
-- les lignes et montants sont figés ;
-- le panier source est conservé comme `CONVERTED`, pas supprimé implicitement ;
-- la création de commande est transactionnelle et idempotente ;
-- les événements durables de commande sont écrits dans l’outbox ;
-- les effets externes partent après commit ;
-- la montée de richesse du domaine se fait sans changer sa nature.
-
----
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- `orders` porte la vérité durable de la commande ;
-- la commande n’est ni le panier ni le checkout ;
-- la création de commande exige un contexte validé ;
-- la commande est figée, traçable et durable ;
-- les intégrations externes consomment la commande après commit ;
-- la suppression implicite de la commande ou de ses sources critiques n’est pas admise.
+- `../../architecture/30-execution/30-evenements-de-domaine-et-flux-asynchrones.md`
+- `../../architecture/30-execution/31-jobs-et-traitements-en-arriere-plan.md`
+- `../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
+- `integrations.md`
+- `webhooks.md`
+- `payments.md`
+- `orders.md`
+- `products.md`
+- `../../domains/cross-cutting/jobs.md`
+- `../../domains/cross-cutting/events.md`

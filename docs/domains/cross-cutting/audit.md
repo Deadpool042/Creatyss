@@ -1,273 +1,314 @@
-# Domaine audit
+# Audit
 
 ## Rôle
 
-Le domaine `audit` porte la traçabilité sensible et gouvernée du socle.
+Le domaine `audit` porte la traçabilité des actions significatives dans le système.
 
-Il structure les traces d’actions, changements et décisions qui doivent pouvoir être expliqués, revus ou justifiés a posteriori pour des raisons de gouvernance, de sécurité, d’administration, de conformité interne ou d’investigation, sans absorber l’observabilité, le monitoring, les domain events ou les logs techniques bruts.
+Il définit :
+
+- quelles actions doivent être tracées ;
+- sous quelle forme elles sont enregistrées ;
+- comment elles peuvent être consultées ;
+- comment elles permettent d’expliquer un état du système ;
+- comment elles permettent de répondre à des besoins métier, légaux ou opérationnels.
+
+Le domaine existe pour fournir une mémoire fiable et exploitable des actions, distincte :
+
+- des logs techniques ;
+- des métriques ;
+- des traces d’exécution ;
+- des événements de domaine.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse critique`
+
+### Activable
+
+`non`
+
+Le domaine `audit` est structurellement nécessaire dès lors que :
+
+- le système manipule des données métier importantes ;
+- des actions utilisateurs ou systèmes doivent être explicables ;
+- des obligations de traçabilité existent.
+
+---
+
+## Source de vérité
+
+Le domaine `audit` est la source de vérité pour :
+
+- l’historique des actions tracées ;
+- la représentation des entrées d’audit ;
+- la relation entre action, acteur, cible et contexte ;
+- les règles de traçabilité interne.
+
+Le domaine `audit` n’est pas la source de vérité pour :
+
+- l’état métier courant ;
+- les logs techniques ;
+- les métriques ;
+- les événements de domaine ;
+- les décisions métier elles-mêmes.
+
+L’audit décrit ce qui s’est passé.
+Il ne définit pas ce qui est vrai.
+
+---
 
 ## Responsabilités
 
-Le domaine `audit` prend en charge :
+Le domaine `audit` est responsable de :
 
-- les entrées d’audit sensibles
-- la traçabilité des actions administratives critiques
-- la traçabilité des changements de configuration sensibles
-- la traçabilité des changements de droits, rôles et permissions
-- la traçabilité de certaines transitions métier importantes
-- la lecture gouvernée des traces d’audit
-- la base de preuve interne exploitable par les équipes plateforme et, selon le scope, par certains rôles autorisés
+- définir ce qu’est une entrée d’audit ;
+- tracer les actions significatives ;
+- associer chaque action à :
+  - un acteur ;
+  - une cible ;
+  - un contexte ;
+- garantir la lisibilité des entrées d’audit ;
+- garantir la cohérence temporelle ;
+- permettre l’exploration et la consultation ;
+- supporter les besoins d’explication et d’investigation ;
+- rendre possible la corrélation avec d’autres signaux.
 
-## Ce que le domaine ne doit pas faire
+Selon le projet, le domaine peut également être responsable de :
 
-Le domaine `audit` ne doit pas :
+- la rétention des données d’audit ;
+- la structuration par type d’action ;
+- la classification des niveaux de criticité ;
+- l’export d’audit ;
+- certaines contraintes légales.
 
-- porter l’observabilité explicative, qui relève de `observability`
-- porter le monitoring technique, qui relève de `monitoring`
-- porter les domain events, qui relèvent de `domain-events`
-- porter les logs applicatifs ou techniques bruts comme unique modèle
-- devenir un journal universel de tout le runtime sans hiérarchie ni gouvernance
-- redéfinir les vérités métier des domaines source
+---
 
-Le domaine `audit` porte la traçabilité sensible et gouvernée. Il ne remplace ni `observability`, ni `monitoring`, ni `domain-events`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `audit` n’est pas responsable de :
 
-- `entries` : entrées d’audit structurées
-- `policies` : règles de ce qui doit être audité ou non
-- `review` : lecture, revue et consultation gouvernée des traces d’audit
+- stocker des logs techniques détaillés ;
+- remplacer les événements de domaine ;
+- orchestrer les traitements ;
+- implémenter des règles métier ;
+- stocker des métriques ou traces ;
+- corriger ou compenser des erreurs métier.
 
-## Entrées
+Le domaine `audit` ne doit pas devenir :
 
-Le domaine reçoit principalement :
+- un dump de logs ;
+- une base technique illisible ;
+- un substitut de debugging.
 
-- des actions sensibles issues des domaines source
-- des changements de configuration, de permissions, de rôles ou de capabilities
-- certaines transitions métier critiques
-- des demandes de consultation d’historique d’audit
-- des contextes acteur, boutique, scope, ressource et intervalle temporel
+---
 
-## Sorties
+## Invariants
 
-Le domaine expose principalement :
+Les invariants minimaux sont les suivants :
 
-- des entrées d’audit structurées
-- des lectures filtrées et gouvernées des traces d’audit
-- une base de preuve exploitable par les équipes plateforme, la gouvernance d’accès et certaines fonctions d’administration autorisées
-- des corrélations exploitables par `observability`, `dashboarding` et certaines couches d’administration
+- une entrée d’audit doit correspondre à une action significative ;
+- une entrée d’audit doit être compréhensible sans contexte implicite ;
+- une entrée d’audit doit être horodatée ;
+- une entrée d’audit doit pouvoir être reliée à un acteur (ou explicitement système) ;
+- une entrée d’audit doit pouvoir être reliée à une cible ;
+- une entrée d’audit ne doit pas être modifiée après écriture (immutabilité logique) ;
+- une entrée d’audit ne doit pas être ambiguë ;
+- une action critique ne doit pas rester sans trace.
 
-## Dépendances vers autres domaines
+---
 
-Le domaine `audit` peut dépendre de :
+## Dépendances
 
-- `users` pour l’identité technique de l’acteur
-- `roles` et `permissions` pour certaines traces de gouvernance d’accès
-- `stores` pour le contexte boutique
-- `observability` pour certaines corrélations explicatives, sans absorber sa responsabilité
+### Dépendances métier
 
-Les domaines suivants peuvent dépendre de `audit` :
+Le domaine `audit` peut concerner tous les domaines :
 
-- `roles`
-- `permissions`
 - `users`
-- `stores`
-- `observability`
-- `dashboarding`
-- les couches d’administration plateforme
-
-Et les domaines émetteurs typiques incluent notamment :
-
-- `roles`
-- `permissions`
-- `users`
-- `stores`
-- `feature-flags`
-- `integrations`
-- `webhooks`
 - `orders`
 - `payments`
-- `returns`
-- `documents`
+- `products`
+- `stores`
+- etc.
 
-## Capabilities activables liées
+### Dépendances transverses
 
-Le domaine `audit` est directement ou indirectement lié à :
+Il dépend fortement de :
 
-- `auditTrail`
-- `advancedPermissions`
-- `businessObservability`
-- `technicalMonitoring`
+- observabilité ;
+- domain-events ;
+- jobs ;
+- sécurité / permissions.
 
-### Effet si `auditTrail` est activée
+### Dépendances externes
 
-Le domaine devient pleinement exploitable pour tracer les actions sensibles du socle.
+Selon le projet :
 
-### Effet si `auditTrail` est désactivée
+- stockage externe ;
+- SI légal ;
+- outils de reporting ;
+- export vers SI tiers.
 
-Le domaine reste structurellement présent, mais aucune exposition avancée de traçabilité ne doit être pilotée hors besoins internes strictement cadrés.
+### Règle de frontière
 
-### Effet si `advancedPermissions` est activée
+Le domaine `audit` capture les actions.
 
-Le domaine doit tracer plus finement les changements de rôles, permissions et gouvernance d’accès.
+Il ne doit pas :
 
-## Rôles/permissions concernés
+- définir la logique métier ;
+- remplacer les événements ;
+- se substituer à l’observabilité.
 
-### Rôles
+---
 
-Les rôles principalement concernés sont :
+## Événements significatifs
 
-- `platform_owner`
-- `platform_engineer`
+Le domaine `audit` ne publie pas forcément des événements métier.
 
-Éventuellement, certains rôles de revue ou d’observation peuvent disposer d’un accès très limité selon le scope retenu.
+Il enregistre des actions telles que :
 
-Les rôles boutique ne doivent pas accéder librement à la traçabilité sensible transverse du socle.
+- utilisateur créé ;
+- commande modifiée ;
+- paiement validé ;
+- boutique désactivée ;
+- rôle attribué ;
+- import déclenché ;
+- synchronisation externe exécutée.
 
-### Permissions
+Il peut consommer :
 
-Exemples de permissions concernées :
+- des événements de domaine ;
+- des actions utilisateur ;
+- des actions système.
 
-- `audit.read`
-- `roles.read`
-- `permissions.read`
-- `store.settings.read`
-- `capabilities.read`
-- `integrations.read`
-- `webhooks.read`
+---
 
-Selon le niveau de détail retenu plus tard, des permissions plus spécifiques d’investigation ou de revue d’audit pourront être ajoutées.
+## Cycle de vie
 
-## Événements émis
+Une entrée d’audit suit généralement un cycle simple :
 
-Le domaine peut émettre des domain events internes du type :
+- créée ;
+- consultable ;
+- éventuellement archivée ou purgée selon politique.
 
-- `audit.entry.created`
-- `audit.policy.updated`
+Le domaine doit éviter :
 
-## Événements consommés
+- les suppressions silencieuses ;
+- les modifications rétroactives ;
+- les trous dans l’historique.
 
-Le domaine peut consommer certains événements internes ou actions source du type :
+---
 
-- `user.roles.changed`
-- `role.updated`
-- `permission.updated`
-- `store.capabilities.updated`
-- `feature_flag.enabled`
-- `feature_flag.disabled`
-- `integration.sync.status.changed` pour certains cas critiques si le modèle le prévoit
-- certaines actions administratives manuelles structurées
+## Interfaces et échanges
 
-Il doit toutefois rester maître de sa propre logique de traçabilité gouvernée.
+Le domaine `audit` expose :
 
-## Intégrations externes
+- un mécanisme d’écriture d’entrées ;
+- des capacités de lecture ;
+- éventuellement des filtres (acteur, type, date, cible).
 
-Le domaine `audit` ne doit pas parler directement aux systèmes externes comme source de vérité principale.
+Il reçoit :
 
-Les exportations éventuelles vers :
+- des actions des domaines métier ;
+- des actions système ;
+- des événements transformés en audit.
 
-- systèmes d’archivage externes
-- coffres de preuves externes
-- outils de conformité externes
+---
 
-relèvent de :
+## Contraintes d’intégration
 
-- `integrations`
-- éventuellement `jobs`
+Le domaine peut être soumis à :
 
-Le domaine `audit` reste la source de vérité interne des traces d’audit structurées du socle.
+- volume élevé d’écritures ;
+- contraintes de rétention ;
+- contraintes légales ;
+- anonymisation ;
+- export ;
+- performance en lecture.
 
-## Données sensibles / sécurité
+Règles minimales :
 
-Le domaine `audit` manipule des données hautement sensibles.
+- une entrée doit être fiable ;
+- une entrée ne doit pas être perdue sans visibilité ;
+- les accès doivent être contrôlés ;
+- les données sensibles doivent être gérées correctement.
 
-Points de vigilance :
+---
 
-- contrôle strict des droits de lecture
-- immutabilité logique ou garanties fortes contre l’altération non autorisée
-- séparation nette entre audit, observabilité et logs techniques
-- limitation des détails exposés selon le rôle, le scope et la sensibilité
-- protection renforcée des actions et objets audités
+## Observabilité et audit
 
-## Observability / audit
+Le domaine `audit` doit être lui-même observable :
 
-### Observability
+- erreurs d’écriture ;
+- pertes d’événements ;
+- retards ;
+- incohérences.
 
-Le domaine doit permettre de comprendre :
+Il doit pouvoir être corrélé avec :
 
-- quelle action ou changement a été tracé
-- quel acteur a été retenu
-- sur quelle ressource ou quel périmètre la trace s’applique
-- à quel moment la trace a été enregistrée
-- si une information manque à cause d’une politique de rétention, d’un scope ou d’une exposition limitée
+- logs ;
+- événements de domaine ;
+- traces techniques.
 
-### Audit
+---
 
-Le domaine `audit` est précisément responsable de la lecture gouvernée des traces sensibles.
+## Impact de maintenance / exploitation
 
-Il doit permettre de conserver et consulter, selon les règles retenues, les éléments nécessaires à l’investigation ou à la justification d’actions sensibles.
+Impact élevé car :
 
-## Modèle de données conceptuel
+- utilisé en support ;
+- utilisé en debug ;
+- utilisé en audit métier ;
+- utilisé potentiellement en contexte légal.
 
-Les principaux objets métier conceptuels du domaine sont :
+Risques :
 
-- `AuditEntry` : entrée d’audit structurée
-- `AuditActorRef` : référence vers l’acteur à l’origine de l’action
-- `AuditResourceRef` : référence vers la ressource ou le périmètre concerné
-- `AuditActionType` : type d’action auditée
-- `AuditScope` : périmètre d’application ou de lecture de la trace
-- `AuditPolicy` : règle de traçabilité applicable
+- audit incomplet ;
+- audit illisible ;
+- surcharge inutile ;
+- fuite de données sensibles.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Limites du domaine
 
-- une entrée d’audit possède un type d’action explicite
-- une entrée d’audit est rattachée à un acteur explicite lorsque cela est possible
-- `audit` ne se confond pas avec `observability`
-- `audit` ne se confond pas avec `monitoring`
-- `audit` ne se confond pas avec les logs techniques bruts
-- les traces d’audit ne doivent pas redéfinir de manière divergente la vérité des domaines source
-- les autres couches ne doivent pas recréer librement des journaux d’audit divergents quand une lecture commune d’audit existe
+Le domaine `audit` s’arrête :
 
-## Cas d’usage principaux
+- avant les logs techniques ;
+- avant les métriques ;
+- avant les traces ;
+- avant la logique métier ;
+- avant la prise de décision.
 
-1. Tracer un changement de rôle ou de permission
-2. Tracer un changement de capability ou de configuration sensible
-3. Tracer une activation ou désactivation d’un feature flag sensible
-4. Tracer certaines transitions métier critiques comme une annulation de commande ou un remboursement manuel
-5. Consulter l’historique d’actions sensibles sur une ressource ou une boutique
-6. Fournir aux équipes plateforme une base de preuve interne gouvernée
+Il décrit les actions.
+Il ne pilote pas le système.
 
-## Cas limites / erreurs métier
+---
 
-Quelques cas d’erreur typiques :
+## Questions ouvertes
 
-- entrée d’audit introuvable
-- type d’action auditée inconnu ou invalide
-- ressource ou acteur non résolu dans le contexte courant
-- capability auditTrail désactivée
-- permission ou scope insuffisant
-- tentative d’exposition d’une trace trop sensible dans un contexte non autorisé
+À cadrer explicitement :
 
-## Décisions d’architecture
+- niveau de granularité ;
+- stratégie de rétention ;
+- anonymisation ;
+- exposition aux utilisateurs ;
+- liens avec observabilité ;
+- liens avec sécurité.
 
-Les choix structurants du domaine sont :
+---
 
-- `audit` porte la traçabilité sensible et gouvernée du socle
-- `audit` est distinct de `observability`
-- `audit` est distinct de `monitoring`
-- `audit` est distinct de `domain-events`
-- `audit` consomme les actions et changements sensibles des domaines source au lieu de redéfinir leurs vérités métier ou techniques
-- les expositions plateforme et boutique restent strictement distinctes
-- les traces d’audit sensibles doivent être contrôlées, durables, auditables et observables
+## Documents liés
 
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- la traçabilité sensible relève de `audit`
-- l’explicabilité et la corrélation relèvent de `observability`
-- la supervision technique relève de `monitoring`
-- les événements internes relèvent de `domain-events`
-- les providers externes relèvent de `integrations`
-- `audit` ne remplace ni `observability`, ni `monitoring`, ni `domain-events`, ni `integrations`
+- `../../architecture/40-exploitation/40-observabilite.md`
+- `../../architecture/40-exploitation/41-audit-et-tracabilite.md`
+- `../../domains/core/domain-events.md`
+- `../../domains/cross-cutting/observability.md`
+- `../../domains/cross-cutting/jobs.md`

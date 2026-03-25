@@ -1,263 +1,273 @@
-# Domaine search
+# Recherche
 
 ## Rôle
 
-Le domaine `search` porte la recherche structurée du socle.
+Le domaine `search` porte les capacités de recherche et d’exploration du contenu dans le système.
 
-Il organise les capacités de recherche, de filtrage, de facettisation, d’autocomplétion et de restitution de résultats sur les objets exposables de la boutique ou de l’administration, sans absorber les domaines source eux-mêmes, le catalogue, le blog, les pages, les événements, le SEO ou l’analytics.
+Il définit :
+
+- comment les utilisateurs ou systèmes interrogent les données ;
+- quels objets sont indexés et recherchables ;
+- comment les résultats sont structurés et retournés ;
+- comment la recherche se distingue de la lecture métier classique ;
+- comment elle s’articule avec les systèmes d’indexation et de ranking.
+
+Le domaine existe pour fournir une capacité de recherche performante et exploitable, distincte :
+
+- des lectures métier directes ;
+- des repositories ;
+- des projections UI ;
+- des outils techniques sous-jacents (Elasticsearch, Meilisearch, etc.).
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse optionnelle`
+
+### Activable
+
+`oui`
+
+Le domaine `search` est optionnel, mais devient structurant dès lors que :
+
+- le catalogue est non trivial ;
+- la navigation repose sur la recherche ;
+- ou des cas d’usage avancés (filtres, scoring, suggestions) sont présents.
+
+---
+
+## Source de vérité
+
+Le domaine `search` n’est PAS une source de vérité métier.
+
+Il est une projection dérivée.
+
+Il est responsable de :
+
+- la représentation indexée des données ;
+- les structures de recherche optimisées ;
+- les index ;
+- les documents de recherche.
+
+Le domaine `search` ne doit jamais être considéré comme la vérité métier.
+
+La vérité reste dans :
+
+- `products`
+- `pricing`
+- `availability`
+- etc.
+
+---
 
 ## Responsabilités
 
-Le domaine `search` prend en charge :
+Le domaine `search` est responsable de :
 
-- les requêtes de recherche structurées
-- les index ou vues de recherche au niveau métier
-- les filtres et facettes de recherche
-- l’autocomplétion ou les suggestions de recherche si le modèle retenu le prévoit
-- les résultats de recherche classés selon des règles explicites
-- la lecture gouvernée de ce qui est searchable dans un contexte donné
-- la base de recherche consommable par le storefront, `products`, `pages`, `blog`, `events`, `dashboarding` et certaines couches d’administration
+- définir ce qui est indexé ;
+- structurer les documents de recherche ;
+- gérer les index ;
+- permettre la recherche (full-text, filtres, facettes) ;
+- structurer les résultats ;
+- gérer la pertinence (ranking, scoring) ;
+- exposer des interfaces de recherche ;
+- maintenir la cohérence entre données source et index.
 
-## Ce que le domaine ne doit pas faire
+Selon le projet, il peut aussi gérer :
 
-Le domaine `search` ne doit pas :
+- suggestions ;
+- auto-complétion ;
+- synonymes ;
+- boosting ;
+- recherche multi-index ;
+- recherche multi-langue.
 
-- porter les produits publiés, qui relèvent de `products`
-- porter les pages éditoriales, qui relèvent de `pages`
-- porter les articles de blog, qui relèvent de `blog`
-- porter les événements publics, qui relèvent de `events`
-- porter le SEO transverse, qui relève de `seo`
-- porter l’analytics de performance de recherche, qui relève de `analytics` ou `tracking`
-- devenir un simple moteur technique opaque déconnecté du langage métier du socle
+---
 
-Le domaine `search` porte la recherche structurée du socle. Il ne remplace ni `products`, ni `pages`, ni `blog`, ni `events`, ni `seo`, ni `analytics`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `search` n’est pas responsable de :
 
-- `queries` : requêtes de recherche structurées
-- `results` : résultats de recherche restitués
-- `facets` : filtres, facettes et contraintes de recherche
-- `suggestions` : suggestions ou autocomplétion si le modèle final l’expose
-- `policies` : règles d’indexation, de ranking, de visibilité ou d’exposition des résultats
+- la vérité métier ;
+- la validation métier ;
+- les règles de pricing ;
+- les règles de disponibilité ;
+- la gestion du catalogue ;
+- l’authentification ou permissions ;
+- la logique UI.
 
-## Entrées
+Le domaine ne doit pas devenir :
 
-Le domaine reçoit principalement :
+- une source de vérité ;
+- un hack pour contourner des modèles métier ;
+- une couche métier cachée.
 
-- des objets source exposables issus de `products`, `pages`, `blog`, `events` ou d’autres domaines searchable
-- des demandes de recherche structurée
-- des paramètres de filtre, tri, facettisation, pagination ou contexte de recherche
-- des demandes d’autocomplétion ou de suggestion
-- des contextes de boutique, langue, audience, canal ou surface d’exposition
-- des signaux internes utiles à l’indexabilité ou à la visibilité d’un objet dans la recherche
+---
 
-## Sorties
+## Invariants
 
-Le domaine expose principalement :
+Les invariants sont :
 
-- des requêtes de recherche structurées
-- des résultats de recherche classés
-- des facettes, suggestions ou filtres applicables
-- des lectures exploitables par le storefront, `products`, `pages`, `blog`, `events`, `dashboarding` et certaines couches d’administration
-- des structures de recherche prêtes à être rendues par les couches UI autorisées
+- l’index est dérivé de la vérité métier ;
+- un document indexé doit être reconstruisible ;
+- un résultat de recherche ne doit pas être traité comme vérité sans validation ;
+- la désynchronisation doit être tolérée mais visible ;
+- la structure d’index doit rester cohérente ;
+- un index corrompu doit être reconstruisible.
 
-## Dépendances vers autres domaines
+---
 
-Le domaine `search` peut dépendre de :
+## Dépendances
 
-- `products` pour certains objets catalogue exposables à la recherche
-- `pages` pour certaines pages éditoriales exposables
-- `blog` pour certains articles exposables
-- `events` pour certains événements publics exposables
-- `seo` pour certaines métadonnées ou règles de visibilité référentielle sans absorber sa responsabilité
-- `stores` pour le contexte boutique, langue, audience ou politiques locales de recherche
-- `audit` pour tracer certains changements sensibles de politique de recherche
-- `observability` pour expliquer pourquoi un objet est searchable, filtré, masqué ou absent d’un résultat
+### Dépendances métier
 
-Les domaines suivants peuvent dépendre de `search` :
+Fortes dépendances sur :
 
-- le storefront
-- `dashboarding`
-- certaines couches d’administration
-- certains domaines catalogue ou éditoriaux ayant besoin d’une lecture transverse des résultats
+- `products`
+- `categories`
+- `inventory`
+- `pricing`
+- `availability`
 
-## Capabilities activables liées
+### Dépendances transverses
 
-Le domaine `search` n’est pas une capability métier optionnelle au sens strict du noyau, mais il devient particulièrement important dès qu’une surface de recherche transverse est exposée.
+- `jobs` (indexation async)
+- `domain-events` (déclencheurs)
+- `observability`
+- `audit` (optionnel)
 
-Exemples de capabilities liées :
+### Dépendances externes
 
-- `multiLanguage`
-- `publicEvents`
-- `bundles`
+- moteurs de recherche (Meilisearch, Elasticsearch…)
+- indexeurs
 
-### Règle
+---
 
-Le domaine `search` reste structurellement présent même si la recherche exposée reste simple dans la V1.
+## Événements significatifs
 
-Il constitue le cadre commun de recherche transverse sur les objets exposables du socle.
+Le domaine publie ou consomme :
 
-## Rôles/permissions concernés
+- document indexé ;
+- index mis à jour ;
+- index reconstruit ;
+- index désynchronisé ;
+- indexation échouée ;
+- recherche exécutée (optionnel).
 
-### Rôles
+---
 
-Les rôles principalement concernés sont :
+## Cycle de vie
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `content_editor` en lecture partielle selon la politique retenue
-- `catalog_manager` en lecture partielle selon la politique retenue
-- `customer` ou visiteur public côté storefront selon le scope public retenu
+Les entités de search ont un cycle :
 
-### Permissions
+- non indexé ;
+- indexé ;
+- mis à jour ;
+- désynchronisé ;
+- reconstruit.
 
-Exemples de permissions concernées :
+---
 
-- `search.read`
-- `catalog.read`
-- `pages.read`
-- `blog.read`
-- `events.read`
-- `seo.read`
-- `audit.read`
+## Interfaces et échanges
 
-## Événements émis
+Expose :
 
-Le domaine peut émettre des domain events internes du type :
+- endpoints de recherche ;
+- filtres ;
+- facettes ;
+- suggestions.
 
-- `search.query.executed`
-- `search.result.generated`
-- `search.indexability.changed`
-- `search.policy.updated`
-- `search.suggestion.generated`
+Consomme :
 
-## Événements consommés
+- événements métier ;
+- jobs d’indexation.
 
-Le domaine peut consommer certains événements internes du type :
+---
 
-- `product.published`
-- `page.published`
-- `blog.post.published`
-- `event.published`
-- `seo.metadata.updated`
-- `store.capabilities.updated`
-- certaines actions administratives structurées de mise à jour de visibilité ou de politique de recherche
+## Contraintes d’intégration
 
-Il doit toutefois rester maître de sa propre logique de recherche structurée.
+Contraintes majeures :
 
-## Intégrations externes
+- latence faible ;
+- volume élevé ;
+- indexation async ;
+- cohérence éventuelle (eventual consistency) ;
+- dépendance à moteur externe.
 
-Le domaine `search` ne doit pas devenir un domaine d’intégration provider-specific.
+Règles :
 
-Il peut être appuyé techniquement par `integrations` ou par une infrastructure de recherche externe, mais :
+- index = projection, jamais vérité ;
+- indexation idempotente ;
+- reconstruction possible ;
+- désynchronisation acceptable mais contrôlée.
 
-- la vérité de la recherche métier interne reste dans `search`
-- les DTO providers externes restent dans `integrations`
-- les objets source restent dans leurs domaines respectifs
+---
 
-## Données sensibles / sécurité
+## Observabilité et audit
 
-Le domaine `search` manipule des règles de visibilité et de restitution qui peuvent exposer ou masquer des objets sensibles selon le contexte.
+Doit exposer :
 
-Points de vigilance :
+- latence recherche ;
+- taux d’erreur ;
+- indexation en échec ;
+- backlog d’indexation ;
+- divergence index / source.
 
-- contrôle strict des droits de lecture selon le contexte public ou admin
-- séparation claire entre objet source, indexabilité, visibilité et restitution de résultat
-- protection des objets non publiés, non exposables ou non autorisés
-- limitation de l’exposition selon le rôle, le scope, la langue et le canal
-- audit des changements significatifs de politique de recherche ou de visibilité
+---
 
-## Observability / audit
+## Impact de maintenance / exploitation
 
-### Observability
+Impact élevé :
 
-Il faut pouvoir comprendre :
+- UX critique ;
+- performance critique ;
+- dépendance externe forte ;
+- complexité de debug.
 
-- quelle requête a été exécutée
-- quels filtres ou facettes ont été appliqués
-- pourquoi un objet apparaît, est masqué ou est absent d’un résultat
-- quelle politique de recherche ou de visibilité est en vigueur
-- si un objet n’est pas searchable à cause d’un statut non publié, d’une capability off, d’un contexte non compatible ou d’une règle applicable
+Risques :
 
-### Audit
+- index corrompu ;
+- désynchronisation ;
+- résultats incohérents ;
+- latence.
 
-Il faut tracer :
+---
 
-- les changements significatifs de politique de recherche
-- les modifications sensibles de visibilité ou d’indexabilité
-- certaines consultations sensibles si le modèle final les retient explicitement
-- certaines modifications manuelles importantes de règles de filtre, facette ou ranking
+## Limites du domaine
 
-## Modèle de données conceptuel
+Le domaine `search` s’arrête :
 
-Les principaux objets métier conceptuels du domaine sont :
+- avant le métier ;
+- avant la vérité ;
+- avant la logique UI.
 
-- `SearchQuery` : requête de recherche structurée
-- `SearchResultItem` : résultat individuel restitué
-- `SearchResultSet` : ensemble ordonné de résultats
-- `SearchFacet` : facette ou filtre applicable
-- `SearchSuggestion` : suggestion ou autocomplétion
-- `SearchPolicy` : règle d’indexation, de ranking ou d’exposition
-- `SearchSubjectRef` : référence vers l’objet source searchable
+Il sert à trouver, pas à décider.
 
-## Invariants métier
+---
 
-Les règles suivantes doivent toujours rester vraies :
+## Questions ouvertes
 
-- un résultat de recherche est rattaché à un objet source explicite
-- une politique de recherche possède une signification explicite
-- `search` ne se confond pas avec `products`
-- `search` ne se confond pas avec `pages`
-- `search` ne se confond pas avec `blog`
-- `search` ne se confond pas avec `events`
-- `search` ne se confond pas avec `seo`
-- les autres domaines ne doivent pas recréer librement leur propre vérité divergente de recherche transverse quand le cadre commun `search` existe
-- un objet non exposable ou non autorisé ne doit pas être restitué hors règle explicite
+- moteur choisi ?
+- stratégie d’indexation ?
+- rebuild full vs incremental ?
+- tolérance à la désynchronisation ?
+- multi-langue ?
+- multi-canal ?
 
-## Cas d’usage principaux
+---
 
-1. Rechercher un produit, une page, un article ou un événement public
-2. Filtrer les résultats par facette ou catégorie
-3. Proposer une autocomplétion ou une suggestion de recherche
-4. Exposer des résultats classés dans le storefront
-5. Fournir à l’admin une lecture transverse des objets trouvables dans un contexte donné
-6. Maintenir une cohérence de visibilité et de restitution des objets exposables
+## Documents liés
 
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- requête de recherche invalide
-- filtre ou facette incompatible
-- contexte de recherche non autorisé
-- objet source introuvable ou non searchable
-- tentative d’exposition d’un résultat non autorisé
-- permission ou scope insuffisant
-- conflit entre plusieurs règles de visibilité, de ranking ou de facettisation
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `search` porte la recherche transverse structurée du socle
-- `search` est distinct de `products`
-- `search` est distinct de `pages`
-- `search` est distinct de `blog`
-- `search` est distinct de `events`
-- `search` est distinct de `seo`
-- les couches UI et domaines consommateurs lisent la vérité de recherche via `search`, sans la recréer localement
-- les règles de visibilité, de facettisation et de ranking sensibles doivent être observables et auditables
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- la recherche transverse structurée relève de `search`
-- les produits publiés relèvent de `products`
-- les pages éditoriales relèvent de `pages`
-- les articles de blog relèvent de `blog`
-- les événements publics relèvent de `events`
-- la structuration SEO relève de `seo`
-- `search` ne remplace ni `products`, ni `pages`, ni `blog`, ni `events`, ni `seo`, ni `integrations`, ni `analytics`
+- `../../domains/core/products.md`
+- `../../domains/satellites/categories.md`
+- `../../domains/satellites/inventory.md`
+- `jobs.md`
+- `domain-events.md`
+- `observability.md`

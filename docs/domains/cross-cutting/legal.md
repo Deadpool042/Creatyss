@@ -1,260 +1,360 @@
-# Domaine legal
+# Juridique
 
 ## Rôle
 
-Le domaine `legal` porte les éléments juridiques structurés du socle.
+Le domaine `legal` porte les contraintes, obligations et cadres juridiques explicitement reconnus par le système.
 
-Il organise les contenus, versions, acceptations, obligations et statuts juridiques nécessaires au fonctionnement de la boutique et de la plateforme, sans absorber les consentements réglementés, l’audit, les documents métier durables, les paiements, les notifications ou les intégrations providers externes.
+Il définit :
+
+- quelles obligations juridiques doivent être respectées ;
+- quels objets, parcours ou usages sont soumis à ces obligations ;
+- quelles règles doivent être rendues opposables, traçables ou vérifiables ;
+- comment le système distingue une contrainte juridique d’une simple règle métier ou d’une préférence produit ;
+- comment les exigences juridiques s’articulent avec les autres domaines.
+
+Le domaine existe pour fournir un cadre juridique explicite et exploitable, distinct :
+
+- du consentement ;
+- de l’audit ;
+- de l’authentification ;
+- des campagnes marketing ;
+- des intégrations externes.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse critique`
+
+### Activable
+
+`non`
+
+Le domaine `legal` est structurel dès lors que le système :
+
+- collecte ou traite des données personnelles ;
+- exécute des parcours contractuels ou transactionnels ;
+- doit respecter des obligations réglementaires, contractuelles ou d’information.
+
+---
+
+## Source de vérité
+
+Le domaine `legal` est la source de vérité pour :
+
+- la représentation interne des exigences juridiques explicitement portées par le système ;
+- la structuration des obligations opposables ou vérifiables dans le produit ;
+- la relation entre une obligation, son périmètre et ses effets sur le comportement du système ;
+- la version interne des artefacts juridiques lorsque cette responsabilité est portée ici.
+
+Le domaine `legal` n’est pas la source de vérité pour :
+
+- l’identité du client, qui relève de `customers` ;
+- l’authentification, qui relève de `auth` ;
+- le consentement comme expression de volonté, qui relève de `consent` ;
+- l’audit global du système ;
+- la logique métier commerciale ;
+- le contenu exhaustif d’un outil juridique externe, sauf s’il est explicitement intégré comme source d’autorité.
+
+Le domaine `legal` porte le cadre juridique applicable dans le système.
+Il ne remplace ni le métier, ni l’audit, ni le consentement.
+
+---
 
 ## Responsabilités
 
-Le domaine `legal` prend en charge :
+Le domaine `legal` est responsable de :
 
-- les contenus juridiques structurés
-- les versions de documents juridiques applicables
-- les statuts d’activation ou d’applicabilité de contenus juridiques
-- les acceptations juridiques lorsqu’elles relèvent d’un cadre contractuel ou d’usage du socle
-- la lecture gouvernée des obligations ou références juridiques applicables
-- la base juridique consommable par `stores`, `customers`, `checkout`, `consent`, `audit`, `dashboarding` et certaines couches d’administration
+- définir les exigences juridiques explicitement portées par le système ;
+- structurer les obligations applicables aux parcours critiques ;
+- exprimer les dépendances juridiques entre certains usages et certaines conditions ;
+- exposer un cadre exploitable aux domaines consommateurs ;
+- encadrer la version et l’opposabilité des artefacts juridiques si cette responsabilité est portée ici ;
+- publier les événements significatifs liés aux changements juridiques structurants ;
+- protéger le système contre l’application implicite ou floue d’obligations juridiques.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `legal` ne doit pas :
+- version de CGV / CGU ;
+- version de politique de confidentialité ;
+- règles d’information précontractuelle ;
+- cadres de conservation ou suppression ;
+- obligations d’information sur cookies ou tracking ;
+- dépendances juridiques conditionnant certains parcours.
 
-- porter les consentements réglementés, qui relèvent de `consent`
-- porter l’audit sensible, qui relève de `audit`
-- porter les documents métier durables comme facture ou avoir, qui relèvent de `documents`
-- porter les paiements, qui relèvent de `payments`
-- porter les notifications, qui relèvent de `notifications`
-- porter les providers de signature, coffre ou conformité externes, qui relèvent de `integrations`
-- devenir un simple dossier de fichiers statiques sans langage métier explicite
+---
 
-Le domaine `legal` porte les éléments juridiques structurés du socle. Il ne remplace ni `consent`, ni `audit`, ni `documents`, ni `payments`, ni `integrations`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `legal` n’est pas responsable de :
 
-- `documents` : contenus juridiques structurés
-- `versions` : versions applicables des contenus juridiques
-- `acceptance` : acceptations juridiques ou contractuelles lorsque le socle doit les tracer au niveau métier
-- `policies` : règles d’applicabilité, de publication, de rétention ou d’exposition des contenus juridiques
+- recueillir le consentement lui-même ;
+- authentifier un utilisateur ;
+- gérer les rôles et permissions ;
+- implémenter seul l’audit ;
+- porter le contenu marketing ;
+- exécuter les campagnes ou traitements aval ;
+- gouverner les intégrations externes ;
+- remplacer une expertise juridique humaine ;
+- devenir un dépôt passif de documents PDF non reliés au comportement système.
 
-## Entrées
+Le domaine `legal` ne doit pas devenir :
+
+- un simple dossier documentaire sans impact opérationnel ;
+- un substitut à `consent` ;
+- un prétexte pour disperser des règles légales dans tous les domaines sans gouvernance.
+
+---
+
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- une obligation juridique portée par le système doit avoir un périmètre explicite ;
+- une contrainte juridique ne doit pas être ambiguë sur ce qu’elle conditionne ;
+- une version juridique opposable doit être identifiable ;
+- un changement juridique structurant doit être traçable ;
+- une exigence légale portée par le système ne doit pas rester implicite si elle conditionne un parcours ;
+- un domaine consommateur ne doit pas appliquer silencieusement une règle juridique non gouvernée ;
+- une obligation expirée, remplacée ou obsolète ne doit pas être utilisée comme si elle était toujours en vigueur sans règle explicite.
+
+Le domaine protège la lisibilité et l’opposabilité du cadre juridique porté par le système.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `legal` interagit fortement avec :
+
+- `customers`
+- `checkout`
+- `orders`
+- `payments`
+- `consent`
+- `newsletter`
+- `tracking`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `audit`
+- `observability`
+- `jobs`, si certaines mises à jour ou propagations sont différées
+- `integrations`, si certaines obligations doivent être synchronisées vers l’extérieur
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- outils de gestion juridique ;
+- CMS ou référentiels documentaires ;
+- plateformes de consentement ;
+- CRM ;
+- systèmes d’archivage ou de conservation.
+
+### Règle de frontière
+
+Le domaine `legal` porte les contraintes juridiques reconnues par le système.
+Il ne doit pas absorber :
+
+- l’expression du consentement ;
+- la logique métier complète ;
+- l’audit global ;
+- ni la gouvernance complète des outils externes.
+
+---
+
+## Événements significatifs
+
+Le domaine `legal` publie ou peut publier des événements significatifs tels que :
+
+- version juridique publiée ;
+- version juridique remplacée ;
+- obligation juridique activée ;
+- obligation juridique retirée ;
+- politique mise à jour ;
+- cadre contractuel modifié ;
+- exigence d’acceptation modifiée ;
+- exigence de conservation modifiée.
+
+Le domaine peut consommer des signaux liés à :
+
+- publication de nouveaux textes ;
+- changement réglementaire intégré au système ;
+- changement de périmètre produit ;
+- évolution du consentement ;
+- synchronisation documentaire externe.
+
+Les noms exacts doivent rester compréhensibles dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `legal` possède un cycle de vie partiel au niveau des artefacts ou règles juridiques qu’il porte.
+
+Le cycle exact dépend du modèle retenu, mais il doit au minimum distinguer :
+
+- brouillon, si pertinent ;
+- publié ;
+- actif ;
+- remplacé ;
+- archivé.
+
+Le domaine doit éviter :
+
+- les versions “fantômes” ;
+- les remplacements silencieux ;
+- l’absence de repère temporel sur ce qui était applicable à un moment donné.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `legal` expose principalement :
+
+- des lectures de cadre juridique applicable ;
+- des lectures de versions opposables ;
+- des signaux structurants liés aux changements juridiques ;
+- des informations exploitables par `checkout`, `orders`, `consent` ou d’autres domaines consommateurs.
 
 Le domaine reçoit principalement :
 
-- des créations ou mises à jour de contenus juridiques
-- des changements de version ou de statut d’applicabilité
-- des demandes de lecture d’un contenu juridique applicable
-- des acceptations juridiques ou contractuelles émises par un acteur dans un contexte donné
-- des contextes de boutique, acteur, pays, langue, canal, version ou surface d’exposition
-- des signaux internes utiles à l’activation, à l’expiration ou à la substitution d’un contenu juridique
+- des mises à jour de textes ou de versions ;
+- des décisions de publication ;
+- des synchronisations externes ;
+- des changements de périmètre produit impliquant une requalification juridique.
 
-## Sorties
+Le domaine ne doit pas exposer un contrat flou où “juridique”, “consentement”, “préférences” et “audit” sont confondus.
 
-Le domaine expose principalement :
+---
 
-- des contenus juridiques structurés
-- des versions juridiques applicables
-- des acceptations juridiques lorsqu’elles sont portées par le socle
-- des lectures exploitables par `stores`, `customers`, `checkout`, `consent`, `audit`, `dashboarding` et certaines couches d’administration
-- des structures juridiques prêtes à être consommées par les couches UI ou domaines opérationnels autorisés
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `legal` peut être exposé à des contraintes telles que :
 
-Le domaine `legal` peut dépendre de :
+- versionnement ;
+- opposabilité temporelle ;
+- synchronisation avec outils externes ;
+- divergence entre référentiels ;
+- propagation différée ;
+- conservation ;
+- besoin d’historique ;
+- rattachement tardif d’un acteur à une version applicable.
 
-- `stores` pour le contexte boutique, pays, langue ou politiques locales
-- `customers` ou `users` pour certains contextes d’acceptation ou de lecture applicables à un acteur
-- `consent` pour articuler certaines obligations d’information sans absorber sa responsabilité
-- `approval` si certaines publications juridiques nécessitent validation préalable
-- `workflow` si le cycle de vie d’un contenu juridique suit un processus structuré
-- `audit` pour tracer certaines publications, substitutions ou acceptations sensibles
-- `observability` pour expliquer pourquoi une version juridique est applicable, remplacée, expirée ou non exposée
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `legal` :
+- toute mutation structurante doit être traçable ;
+- la hiérarchie d’autorité doit être explicite ;
+- un système externe ne doit pas écraser silencieusement la vérité interne ;
+- une version applicable doit être identifiable ;
+- un changement juridique critique ne doit pas rester invisible pour les domaines consommateurs ;
+- les traitements rejouables doivent être idempotents ou neutralisés.
 
-- `stores`
-- `customers`
-- `checkout`
-- `consent`
-- `audit`
-- `dashboarding`
-- certaines couches storefront et d’administration
+---
 
-## Capabilities activables liées
+## Observabilité et audit
 
-Le domaine `legal` n’est pas une capability métier optionnelle au sens strict du noyau, mais il devient particulièrement important dès qu’une boutique expose des obligations contractuelles, informatives ou réglementaires structurées.
+Le domaine `legal` doit rendre visibles au minimum :
 
-Exemples de capabilities liées :
+- les publications de versions ;
+- les remplacements ;
+- les erreurs de synchronisation ;
+- les divergences externes ;
+- les événements significatifs publiés ;
+- les échecs de propagation vers les domaines consommateurs.
 
-- `multiLanguage`
-- `electronicInvoicing`
-- `publicEvents`
-- `newsletter`
+L’audit doit permettre de répondre à des questions comme :
 
-### Règle
+- quelle version était applicable ;
+- quand elle a été publiée ou remplacée ;
+- sur quel périmètre ;
+- avec quel impact sur les parcours ;
+- avec quelle origine ;
+- avec quel lien vers les consentements ou acceptations concernés lorsque pertinent.
 
-Le domaine `legal` reste structurellement présent même si la V1 garde un périmètre juridique sobre.
+L’observabilité doit distinguer :
 
-Il constitue le cadre commun des contenus et versions juridiques applicables du socle.
+- erreur de modèle juridique ;
+- erreur technique ;
+- divergence de version ;
+- absence de propagation ;
+- incohérence entre cadre juridique et comportement système.
 
-## Rôles/permissions concernés
+---
 
-### Rôles
+## Impact de maintenance / exploitation
 
-Les rôles principalement concernés sont :
+Le domaine `legal` a un impact d’exploitation élevé.
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `content_editor` en contribution encadrée selon la politique retenue
-- `customer` pour ses propres acceptations ou lectures applicables selon le scope retenu
+Raisons :
 
-### Permissions
+- il influence directement des parcours critiques ;
+- il peut avoir des implications contractuelles et réglementaires fortes ;
+- il doit souvent s’articuler avec plusieurs outils ou domaines ;
+- ses erreurs peuvent rester discrètes mais produire des risques importants.
 
-Exemples de permissions concernées :
+En exploitation, une attention particulière doit être portée à :
 
-- `legal.read`
-- `legal.write`
-- `customers.read`
-- `consent.read`
-- `store.settings.read`
-- `audit.read`
+- la cohérence des versions ;
+- la traçabilité des publications ;
+- les divergences avec des référentiels externes ;
+- les impacts sur les parcours de consentement, checkout et commande ;
+- la lisibilité de ce qui est applicable à un instant donné.
 
-## Événements émis
+Le domaine doit être considéré comme critique pour la conformité opérationnelle et contractuelle.
 
-Le domaine peut émettre des domain events internes du type :
+---
 
-- `legal.document.created`
-- `legal.document.updated`
-- `legal.version.published`
-- `legal.version.archived`
-- `legal.acceptance.recorded`
-- `legal.policy.updated`
-- `legal.status.changed`
+## Limites du domaine
 
-## Événements consommés
+Le domaine `legal` s’arrête :
 
-Le domaine peut consommer certains événements internes du type :
+- avant l’expression du consentement ;
+- avant l’audit global ;
+- avant l’authentification ;
+- avant la logique métier commerciale ;
+- avant l’exécution des campagnes marketing ;
+- avant les intégrations techniques non spécifiques.
 
-- `store.capabilities.updated`
-- `customer.created`
-- `checkout.readiness.changed`
-- `approval.approved`
-- `workflow.completed`
-- certaines actions administratives structurées de publication, remplacement ou retrait d’un contenu juridique
+Le domaine `legal` porte le cadre juridique applicable dans le système.
+Il ne doit pas absorber toute la conformité, toute la documentation ni toute la gouvernance du produit.
 
-Il doit toutefois rester maître de sa propre logique juridique structurée.
+---
 
-## Intégrations externes
+## Questions ouvertes
 
-Le domaine `legal` ne doit pas devenir un domaine d’intégration provider-specific.
+À confirmer explicitement dans le projet :
 
-Il peut être appuyé par `integrations` vers certains outils externes de conformité, signature ou archivage, mais :
+- la frontière exacte entre `legal` et `consent` ;
+- la frontière exacte entre `legal` et `audit` ;
+- la liste canonique des artefacts juridiques réellement portés par le système ;
+- la stratégie de versionnement ;
+- la hiérarchie entre référentiel interne et outil externe ;
+- la politique de conservation ;
+- la relation exacte entre version juridique, consentement et acceptation contractuelle.
 
-- la vérité des contenus juridiques internes reste dans `legal`
-- les DTO providers externes restent dans `integrations`
-- les acceptations métier internes restent exprimées dans le langage du socle
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
-## Données sensibles / sécurité
+---
 
-Le domaine `legal` manipule des contenus et traces sensibles à portée contractuelle ou réglementaire.
+## Documents liés
 
-Points de vigilance :
-
-- contrôle strict des droits de lecture et d’écriture
-- séparation claire entre contenu juridique, version applicable, acceptation et preuve associée
-- protection des acceptations sensibles et des historiques applicables
-- limitation de l’exposition selon le rôle, le scope, le pays, la langue et la version
-- audit des publications, substitutions, acceptations et consultations sensibles
-
-## Observability / audit
-
-### Observability
-
-Il faut pouvoir comprendre :
-
-- quel contenu juridique est applicable
-- quelle version est en vigueur
-- pourquoi une version a été publiée, remplacée, archivée ou rendue non applicable
-- quel acteur a accepté quel contenu lorsque cette acceptation est portée par le socle
-- si une absence d’exposition vient d’un statut inactif, d’une capability off, d’un contexte non compatible ou d’une règle applicable
-
-### Audit
-
-Il faut tracer :
-
-- la création ou la publication d’un contenu juridique sensible
-- les changements de version applicables
-- les acceptations juridiques sensibles lorsque le modèle final les retient
-- certaines consultations sensibles si le modèle final les retient explicitement
-- certaines modifications manuelles importantes des politiques d’applicabilité ou d’exposition
-
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `LegalDocument` : contenu juridique structuré
-- `LegalDocumentVersion` : version applicable d’un contenu juridique
-- `LegalAcceptance` : acceptation juridique ou contractuelle enregistrée
-- `LegalStatus` : état d’applicabilité ou de publication
-- `LegalPolicy` : règle d’exposition, de rétention ou d’applicabilité
-- `LegalSubjectRef` : référence vers la boutique, l’acteur, le checkout ou l’objet concerné
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- un contenu juridique possède un identifiant stable et une version explicite
-- une acceptation juridique est rattachée à un contenu, une version et un contexte explicites
-- `legal` ne se confond pas avec `consent`
-- `legal` ne se confond pas avec `audit`
-- `legal` ne se confond pas avec `documents`
-- `legal` ne se confond pas avec `payments`
-- les autres domaines ne doivent pas recréer librement leur propre vérité divergente de contenu juridique applicable quand le cadre commun `legal` existe
-- une version non applicable, archivée ou remplacée ne doit pas être exposée comme version en vigueur hors règle explicite
-
-## Cas d’usage principaux
-
-1. Publier une nouvelle version des CGV ou d’une politique juridique
-2. Exposer le contenu juridique applicable à un checkout ou à un compte client
-3. Enregistrer une acceptation juridique lorsqu’elle doit être portée par le socle
-4. Maintenir plusieurs versions selon le contexte, la langue ou le pays si le modèle le prévoit
-5. Fournir à `checkout`, `stores` ou `customers` une lecture fiable du cadre juridique applicable
-6. Exposer à l’admin une lecture claire des contenus, versions et acceptations juridiques
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- contenu juridique introuvable
-- version juridique invalide ou incompatible
-- acceptation juridique incomplète ou non recevable
-- contexte d’applicabilité invalide
-- tentative de publication ou de remplacement non autorisée
-- permission ou scope insuffisant
-- conflit entre plusieurs règles d’applicabilité, de version ou d’exposition
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `legal` porte les éléments juridiques structurés du socle
-- `legal` est distinct de `consent`
-- `legal` est distinct de `audit`
-- `legal` est distinct de `documents`
-- `legal` est distinct de `payments`
-- les domaines consommateurs lisent la vérité juridique via `legal`, sans la recréer localement
-- les contenus, versions, acceptations et politiques sensibles doivent être observables et auditables
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- les contenus et versions juridiques structurés relèvent de `legal`
-- les consentements réglementés relèvent de `consent`
-- la traçabilité sensible relève de `audit`
-- les documents métier durables relèvent de `documents`
-- les paiements relèvent de `payments`
-- `legal` ne remplace ni `consent`, ni `audit`, ni `documents`, ni `payments`, ni `integrations`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `consent.md`
+- `audit.md`
+- `observability.md`
+- `../../domains/core/checkout.md`
+- `../../domains/core/orders.md`
+- `../../domains/core/customers.md`
+- `newsletter.md`
+- `tracking.md`

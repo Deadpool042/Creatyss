@@ -1,255 +1,352 @@
-# Domaine monitoring
+# Monitoring
 
 ## Rôle
 
-Le domaine `monitoring` porte la supervision technique et l’état de santé opérationnelle du socle.
+Le domaine `monitoring` porte la surveillance active du système en exploitation.
 
-Il structure les vues, statuts, alertes et signaux de santé technique permettant de savoir si les composants critiques du système fonctionnent correctement, sans absorber l’observabilité explicative, l’analytics métier, les dashboards métier ou les domaines source eux-mêmes.
+Il définit :
+
+- quels signaux doivent être surveillés ;
+- quels seuils ou conditions constituent une anomalie ;
+- quelles alertes doivent être déclenchées ;
+- comment l’état de santé du système est évalué ;
+- comment l’exploitation détecte rapidement une dégradation, un incident ou une dérive.
+
+Le domaine existe pour fournir une capacité de supervision active, distincte :
+
+- de l’observabilité au sens large ;
+- de l’audit ;
+- des événements de domaine ;
+- des données métier ;
+- des décisions métier.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse critique`
+
+### Activable
+
+`non`
+
+Le domaine `monitoring` est structurel dès lors que le système doit être exploité sérieusement en production.
+
+---
+
+## Source de vérité
+
+Le domaine `monitoring` est la source de vérité pour :
+
+- les règles de surveillance active ;
+- les états de santé exposés pour l’exploitation ;
+- les alertes et conditions d’alerte ;
+- les signaux synthétiques de supervision ;
+- les politiques de détection d’anomalies au niveau exploitation.
+
+Le domaine `monitoring` n’est pas la source de vérité pour :
+
+- les logs techniques complets, qui relèvent d’`observability` ;
+- l’historique métier, qui relève d’`audit` ;
+- les événements métier, qui relèvent de `domain-events` ;
+- la vérité métier des domaines coeur ;
+- les décisions d’intervention humaine.
+
+Le monitoring surveille le système.
+Il ne définit pas ce qui est vrai d’un point de vue métier.
+
+---
 
 ## Responsabilités
 
-Le domaine `monitoring` prend en charge :
+Le domaine `monitoring` est responsable de :
 
-- l’état de santé technique des composants critiques
-- les alertes techniques
-- les statuts de disponibilité ou de dégradation
-- la supervision des jobs, intégrations et composants transverses au niveau santé
-- les signaux techniques exploitables par les équipes plateforme
-- la base de supervision consommable par `dashboarding`, `observability`, `jobs`, `integrations` et les espaces d’administration plateforme
+- définir les signaux critiques à surveiller ;
+- exprimer les états de santé pertinents ;
+- détecter les dégradations et incidents ;
+- déclencher ou exposer des alertes ;
+- structurer les règles de supervision ;
+- rendre visible l’état global ou partiel du système pour l’exploitation ;
+- distinguer les situations normales, dégradées et critiques ;
+- fournir une base claire à l’intervention opératoire.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `monitoring` ne doit pas :
+- health checks ;
+- readiness / liveness ;
+- alerting ;
+- dashboards de supervision ;
+- seuils de saturation ;
+- supervision de jobs, intégrations, webhooks, paiements, files ou workers ;
+- supervision métier minimale si elle est explicitement assumée.
 
-- porter l’explicabilité des flux, qui relève de `observability`
-- porter l’analytics métier, qui relève de `analytics`
-- porter les dashboards de pilotage métier, qui relèvent de `dashboarding`
-- porter les domaines source comme `jobs`, `integrations`, `orders` ou `payments`
-- devenir un simple agrégat de logs bruts sans modèle de santé explicite
-- absorber les workflows de reprise ou de correction, qui relèvent des domaines concernés
+---
 
-Le domaine `monitoring` porte la santé technique et la supervision. Il ne remplace ni `observability`, ni `dashboarding`, ni les domaines source.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `monitoring` n’est pas responsable de :
 
-- `health` : états de santé des composants et services
-- `alerts` : alertes techniques et états d’alerte
-- `status` : statuts synthétiques de disponibilité, dégradation ou incident
-- `checks` : contrôles et vérifications de supervision structurés
+- stocker l’ensemble des logs ;
+- remplacer l’observabilité ;
+- remplacer l’audit ;
+- exprimer les faits métier ;
+- corriger les incidents ;
+- implémenter la logique métier ;
+- porter les décisions d’exploitation ;
+- gouverner les webhooks, jobs ou intégrations eux-mêmes.
 
-## Entrées
+Le domaine `monitoring` ne doit pas devenir :
+
+- un simple tableau de bord décoratif ;
+- une copie d’`observability` ;
+- un conteneur de métriques sans action claire.
+
+---
+
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- un signal surveillé doit avoir une raison d’être explicite ;
+- une alerte doit correspondre à une condition interprétable ;
+- un état de santé doit être lisible et non ambigu ;
+- une situation critique ne doit pas rester silencieuse sans justification explicite ;
+- un monitoring actif ne doit pas produire un bruit ingérable sans hiérarchisation ;
+- un signal surveillé doit pouvoir être rattaché à un périmètre clair ;
+- une dégradation visible doit être corrélable avec des données d’observabilité quand nécessaire.
+
+Le domaine doit protéger la capacité de détection, pas accumuler des signaux sans gouvernance.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Indirectes sur les domaines critiques surveillés, notamment :
+
+- `orders`
+- `payments`
+- `availability`
+- `shipping`
+- `stores`
+
+### Dépendances transverses
+
+Le domaine dépend fortement de :
+
+- `observability`
+- `jobs`
+- `integrations`
+- `webhooks`
+- `audit`, pour certaines corrélations opératoires
+- sécurité, si certains signaux critiques la concernent
+
+### Dépendances externes
+
+Le domaine peut dépendre de :
+
+- systèmes d’alerting ;
+- dashboards ;
+- outils APM ;
+- systèmes de santé infra ;
+- services de notification d’incident.
+
+### Règle de frontière
+
+Le domaine `monitoring` surveille.
+Il ne doit pas absorber :
+
+- la collecte brute d’observabilité ;
+- la logique métier ;
+- la traçabilité d’audit ;
+- ni l’orchestration des traitements.
+
+---
+
+## Événements significatifs
+
+Le domaine `monitoring` publie ou peut publier des signaux significatifs tels que :
+
+- service dégradé ;
+- service indisponible ;
+- file saturée ;
+- job en échec critique ;
+- latence anormale détectée ;
+- taux d’erreur critique détecté ;
+- intégration dégradée ;
+- webhook en anomalie ;
+- état de santé rétabli ;
+- alerte déclenchée ;
+- alerte résolue.
+
+Le domaine peut consommer des signaux issus de :
+
+- logs structurés ;
+- métriques ;
+- traces ;
+- états de jobs ;
+- états d’intégration ;
+- health checks ;
+- événements opératoires.
+
+Les noms exacts doivent rester lisibles pour l’exploitation.
+
+---
+
+## Cycle de vie
+
+Le domaine `monitoring` possède un cycle de vie partiel au niveau des alertes ou états surveillés.
+
+Le cycle exact dépend du modèle retenu, mais il doit au minimum distinguer :
+
+- normal ;
+- dégradé ;
+- critique ;
+- résolu ;
+- éventuellement supprimé ou archivé pour une alerte historique.
+
+Le domaine doit éviter :
+
+- les alertes éternellement ouvertes sans statut ;
+- les changements silencieux d’état ;
+- les signaux sans résolution lisible.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `monitoring` expose principalement :
+
+- des états de santé ;
+- des alertes ;
+- des règles de supervision ;
+- des vues synthétiques pour l’exploitation ;
+- éventuellement des endpoints de santé ou statuts de dépendances.
 
 Le domaine reçoit principalement :
 
-- des statuts techniques issus de `jobs`, `integrations`, `webhooks`, `api-clients` ou d’autres briques transverses
-- des résultats de checks structurés
-- des demandes de lecture d’état de santé ou d’alerte
-- des contextes plateforme, boutique ou périmètre de supervision
-- des signaux techniques nécessaires à l’évaluation de l’état de santé global ou partiel
+- des métriques ;
+- des logs structurés ;
+- des traces agrégées ;
+- des états de jobs ;
+- des états d’intégration ;
+- des signaux d’infrastructure ou de runtime.
 
-## Sorties
+Le domaine ne doit pas exposer comme vérité unique une simple collection d’outils externes sans modèle interne lisible.
 
-Le domaine expose principalement :
+---
 
-- des états de santé structurés
-- des alertes techniques
-- des statuts synthétiques de supervision
-- des vues consommables par `dashboarding`, `observability`, les espaces d’administration plateforme et certains domaines techniques consommateurs
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `monitoring` peut être exposé à des contraintes telles que :
 
-Le domaine `monitoring` peut dépendre de :
+- bruit excessif ;
+- faux positifs ;
+- faux négatifs ;
+- dérive des seuils ;
+- surcharge des dashboards ;
+- latence de détection ;
+- dépendance à des outils externes ;
+- indisponibilité partielle des données de supervision.
 
-- `jobs` pour les états d’exécution et files critiques
-- `integrations` pour les statuts de synchronisation et incidents externes
-- `webhooks` pour certains états de livraison critiques
-- `observability` pour certaines corrélations explicatives, sans absorber sa responsabilité
-- `audit` pour certaines corrélations sensibles si nécessaire
-- `stores` pour certains contextes de supervision multi-boutiques
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `monitoring` :
+- toute alerte doit être justifiable ;
+- les seuils doivent être gouvernés ;
+- les alertes doivent être hiérarchisées ;
+- la détection critique doit rester fiable ;
+- une indisponibilité de monitoring doit être elle-même visible si possible ;
+- la supervision ne doit pas masquer les causes profondes derrière des signaux vagues.
 
-- `dashboarding`
-- `observability`
-- les couches d’administration plateforme
+---
 
-## Capabilities activables liées
+## Observabilité et audit
 
-Le domaine `monitoring` est directement ou indirectement lié à :
+Relation avec `observability` :
 
-- `technicalMonitoring`
-- `businessObservability`
-- `erpIntegration`
-- `electronicInvoicing`
-- `newsletter`
-- `socialPublishing`
-- `tracking`
+- `observability` fournit la matière première de compréhension ;
+- `monitoring` en dérive une surveillance active.
 
-### Effet si `technicalMonitoring` est activée
+Relation avec `audit` :
 
-Le domaine devient pleinement exploitable pour exposer des vues et alertes de supervision technique.
+- `audit` répond à “qui a fait quoi” ;
+- `monitoring` répond à “est-ce que le système va bien ou dérive”.
 
-### Effet si `technicalMonitoring` est désactivée
+Les trois domaines ne doivent pas être confondus.
 
-Le domaine reste structurellement présent, mais aucune vue de supervision avancée non indispensable ne doit être exposée côté plateforme hors besoins internes strictement cadrés.
+---
 
-### Effet si certaines capabilities métier ou d’intégration sont activées
+## Impact de maintenance / exploitation
 
-Le domaine peut superviser plus finement les flux ou composants correspondants au niveau santé technique, sans absorber leur logique fonctionnelle.
+Le domaine `monitoring` a un impact d’exploitation critique.
 
-## Rôles/permissions concernés
+Raisons :
 
-### Rôles
+- il conditionne la rapidité de détection des incidents ;
+- il structure la surveillance des flux critiques ;
+- il réduit ou augmente fortement le temps de diagnostic selon sa qualité ;
+- ses erreurs peuvent laisser un incident invisible ou créer une fatigue d’alerte.
 
-Les rôles principalement concernés sont :
+En exploitation, une attention particulière doit être portée à :
 
-- `platform_owner`
-- `platform_engineer`
-- certains rôles observateurs techniques en lecture selon la politique retenue
+- la qualité des alertes ;
+- la hiérarchisation ;
+- le bruit ;
+- la couverture réelle des flux critiques ;
+- la lisibilité des dashboards ;
+- les dépendances externes de supervision ;
+- les angles morts.
 
-Les rôles boutique ne doivent pas accéder librement à la supervision technique transverse du socle.
+Le domaine doit être considéré comme critique pour la supervision active du système.
 
-### Permissions
+---
 
-Exemples de permissions concernées :
+## Limites du domaine
 
-- `monitoring.read`
-- `observability.read`
-- `integrations.read`
-- `jobs.read`
-- `audit.read`
+Le domaine `monitoring` s’arrête :
 
-## Événements émis
+- avant la collecte brute complète d’observabilité ;
+- avant l’audit ;
+- avant les faits métier ;
+- avant la logique métier ;
+- avant la correction automatique généralisée ;
+- avant la décision humaine d’exploitation.
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine `monitoring` surveille activement le système.
+Il ne doit pas absorber toute la compréhension technique ni toute la gouvernance opérationnelle.
 
-- `monitoring.health.updated`
-- `monitoring.alert.created`
-- `monitoring.alert.resolved`
-- `monitoring.status.changed`
+---
 
-## Événements consommés
+## Questions ouvertes
 
-Le domaine peut consommer certains événements internes du type :
+À confirmer explicitement dans le projet :
 
-- `job.status.changed`
-- `integration.sync.status.changed`
-- `webhook.delivery.failed`
-- `tracking.event.projected`
-- `store.capabilities.updated`
-
-Il doit toutefois rester maître de sa propre logique de supervision et de synthèse d’état.
-
-## Intégrations externes
-
-Le domaine `monitoring` ne doit pas parler directement aux providers externes comme source de vérité principale.
-
-Les projections éventuelles vers :
-
-- outils de monitoring externes
-- plateformes de supervision externes
-- systèmes d’alerte externes
-
-relèvent de :
-
-- `integrations`
-- éventuellement `jobs`
-
-Le domaine `monitoring` reste la source de vérité interne des états de santé et alertes structurés du socle.
-
-## Données sensibles / sécurité
-
-Le domaine `monitoring` peut exposer des informations sensibles sur la santé du système, les dégradations, les incidents et certaines dépendances critiques.
-
-Points de vigilance :
-
-- contrôle strict des droits de lecture
-- séparation nette entre supervision plateforme et exposition boutique
-- limitation des détails techniques selon le rôle, le scope et la sensibilité
-- protection contre la fuite d’informations sur l’architecture ou les incidents
-- audit des changements significatifs de configuration de supervision ou d’exposition d’alertes
-
-## Observability / audit
-
-### Observability
-
-Le domaine doit permettre de comprendre :
-
-- quel composant ou périmètre est considéré sain, dégradé ou incidenté
-- pourquoi une alerte est active ou résolue
-- quelles sources ont alimenté l’état de supervision
-- si une vue est partielle à cause d’une capability off, d’une source absente ou d’un retard de remontée
-
-### Audit
-
-Le domaine `monitoring` n’a pas vocation à auditer chaque variation technique mineure.
-
-En revanche, certaines modifications sensibles doivent pouvoir être tracées, notamment :
-
-- les changements significatifs de règles ou de périmètre de supervision
-- certaines interventions manuelles importantes sur les alertes ou statuts exposés
-- certains changements de visibilité des informations de monitoring
-
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `MonitoringHealthState` : état de santé d’un composant ou périmètre
-- `MonitoringAlert` : alerte technique structurée
-- `MonitoringStatus` : statut synthétique de supervision
-- `MonitoringCheckResult` : résultat d’un check structuré
-- `MonitoringScope` : périmètre de supervision ou de lecture
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- une vue de monitoring s’appuie sur des sources identifiées et explicites
-- `monitoring` ne se confond pas avec `observability`
-- `monitoring` ne se confond pas avec `analytics`
-- `monitoring` ne se confond pas avec `dashboarding`
-- les vues de supervision ne doivent pas redéfinir de manière divergente la vérité des domaines source
-- les autres couches ne doivent pas recréer librement des vues de monitoring divergentes quand une lecture commune de supervision existe
-
-## Cas d’usage principaux
-
-1. Exposer l’état de santé global des intégrations critiques
-2. Exposer l’état de santé des jobs ou files critiques
-3. Signaler une dégradation ou un incident technique
-4. Exposer une alerte de livraison webhook en échec répété
-5. Alimenter `dashboarding` avec des synthèses de supervision technique
-6. Fournir aux équipes plateforme une lecture claire et actionnable de la santé du système
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- alerte introuvable
-- périmètre de supervision inconnu
-- source amont absente ou non disponible
-- capability nécessaire désactivée
-- permission ou scope insuffisant
-- tentative d’exposition de détails trop sensibles dans un contexte non autorisé
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `monitoring` porte la supervision technique et la santé opérationnelle du socle
-- `monitoring` est distinct de `observability`
-- `monitoring` est distinct de `analytics`
-- `monitoring` est distinct de `dashboarding`
-- `monitoring` consomme les domaines source au lieu de redéfinir leurs vérités techniques ou métier
-- les expositions plateforme et boutique restent strictement distinctes
-- les alertes et états de santé sensibles doivent être contrôlés, auditables et observables
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- la supervision technique relève de `monitoring`
-- l’explicabilité et la corrélation relèvent de `observability`
-- l’analytics consolidée relève de `analytics`
-- les vues de pilotage relèvent de `dashboarding`
-- les providers externes relèvent de `integrations`
-- `monitoring` ne remplace ni `observability`, ni `analytics`, ni `dashboarding`, ni `integrations`
+- la frontière exacte entre `monitoring` et `observability` ;
+- les signaux réellement critiques à superviser ;
+- la stratégie d’alerting ;
+- les seuils et leur gouvernance ;
+- la place des dashboards ;
+- la supervision des jobs, intégrations et webhooks ;
+- la stratégie anti-bruit ;
+- la gestion des incidents récurrents.
+
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Documents liés
+
+- `../../architecture/40-exploitation/41-modele-d-exploitation.md`
+- `../../architecture/40-exploitation/42-observabilite-et-audit.md`
+- `observability.md`
+- `audit.md`
+- `jobs.md`
+- `../../domains/core/integrations.md`
+- `../../domains/core/webhooks.md`

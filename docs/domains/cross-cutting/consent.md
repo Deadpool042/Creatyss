@@ -1,262 +1,370 @@
-# Domaine consent
+# Consentement
 
 ## Rôle
 
-Le domaine `consent` porte les consentements et préférences réglementées du socle.
+Le domaine `consent` porte la gestion des consentements et refus explicites dans le système.
 
-Il structure l’expression, la preuve, l’état et le périmètre des consentements qu’un acteur donne, retire ou refuse pour certains usages sensibles, notamment liés à la mesure, au marketing ou à certaines communications, sans absorber les abonnements fonctionnels, la newsletter, les notifications transactionnelles ou le tracking lui-même.
+Il définit :
+
+- quels consentements existent ;
+- à quoi ils s’appliquent ;
+- comment ils sont recueillis ;
+- comment ils sont retirés ;
+- comment leur état est représenté ;
+- comment ils sont consultés et opposables dans le système.
+
+Le domaine existe pour fournir une vérité exploitable sur l’expression de volonté d’un acteur concernant certains usages, distincte :
+
+- des préférences UI ;
+- de l’authentification ;
+- des rôles et permissions ;
+- des actions marketing elles-mêmes ;
+- des projections CRM ou analytics.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse critique`
+
+### Activable
+
+`non`
+
+Le domaine `consent` est structurel dès lors que le système :
+
+- collecte des données personnelles ;
+- exécute des actions soumises à consentement ;
+- ou doit démontrer la légitimité d’un usage.
+
+---
+
+## Source de vérité
+
+Le domaine `consent` est la source de vérité pour :
+
+- l’état d’un consentement donné, refusé, retiré ou expiré selon le modèle retenu ;
+- la représentation interne d’un consentement ;
+- le lien entre un consentement, un acteur, un périmètre et un horodatage ;
+- les règles de traçabilité applicables aux consentements ;
+- l’opposabilité interne de cet état.
+
+Le domaine `consent` n’est pas la source de vérité pour :
+
+- l’identité métier du client, qui relève de `customers` ;
+- l’authentification, qui relève de `auth` ;
+- les campagnes marketing ;
+- les projections CRM ;
+- l’audit global du système, même s’il doit s’y articuler ;
+- les obligations légales générales, qui relèvent plus largement de `legal`.
+
+Le consentement décrit une volonté exprimée sur un périmètre donné.
+Il ne doit pas être réduit à un simple booléen sans contexte.
+
+---
 
 ## Responsabilités
 
-Le domaine `consent` prend en charge :
+Le domaine `consent` est responsable de :
 
-- les consentements explicites
-- les refus explicites
-- les retraits de consentement
-- les preuves de consentement
-- les catégories de consentement
-- les états de consentement par acteur, contexte et finalité
-- la lecture exploitable des consentements applicables
-- la base réglementée consommable par `tracking`, `attribution`, `newsletter`, `marketing`, `integrations` et certaines couches d’administration
+- définir les types de consentement reconnus par le système ;
+- représenter l’état d’un consentement ;
+- enregistrer l’expression, le retrait ou la mise à jour d’un consentement ;
+- associer un consentement à un acteur ou à un contexte identifiable ;
+- garantir la traçabilité minimale de cet état ;
+- exposer un état de consentement exploitable aux domaines consommateurs ;
+- publier les événements significatifs liés au consentement ;
+- protéger le système contre l’usage d’un consentement ambigu, absent ou obsolète.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `consent` ne doit pas :
+- consentement marketing ;
+- consentement cookies ou tracking ;
+- consentement contact ;
+- consentement communication transactionnelle ou non transactionnelle ;
+- preuve de version du texte consenti ;
+- expiration ou requalification de consentement.
 
-- porter les abonnements fonctionnels, qui relèvent de `subscriptions`
-- porter la newsletter elle-même, qui relève de `newsletter`
-- porter les notifications transactionnelles, qui relèvent de `notifications`
-- porter les signaux de tracking, qui relèvent de `tracking`
-- porter les campagnes marketing, qui relèvent de `marketing`
-- devenir un fourre-tout de toutes les préférences utilisateur, même lorsqu’elles ne sont pas de nature réglementée ou sensible
+---
 
-Le domaine `consent` porte les consentements réglementés ou sensibles. Il ne remplace ni `subscriptions`, ni `newsletter`, ni `notifications`, ni `tracking`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `consent` n’est pas responsable de :
 
-- `categories` : catégories ou finalités de consentement
-- `records` : enregistrements de consentement, refus ou retrait
-- `proofs` : preuves et métadonnées de recueil
-- `policies` : règles d’application et de lecture du consentement
+- définir l’identité de l’acteur ;
+- authentifier un utilisateur ;
+- exécuter les campagnes marketing ;
+- piloter les outils CRM ;
+- porter la politique légale complète ;
+- gérer les rôles et permissions ;
+- porter l’observabilité globale ;
+- remplacer l’audit ;
+- devenir une zone générique de préférences utilisateur.
 
-## Entrées
+Le domaine `consent` ne doit pas devenir :
+
+- un simple champ “opt-in” éparpillé dans plusieurs tables ;
+- un dump de préférences diverses ;
+- un alibi documentaire sans opposabilité réelle.
+
+---
+
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- un consentement doit être rattaché à un périmètre explicite ;
+- un consentement doit être rattaché à un acteur ou contexte identifiable ;
+- un consentement doit être horodaté ;
+- un consentement ne doit pas être ambigu sur ce qu’il autorise ou refuse ;
+- un retrait de consentement doit être visible comme tel ;
+- un consentement obsolète ne doit pas être utilisé comme s’il était encore valide sans règle explicite ;
+- un consentement ne doit pas être modifié rétroactivement sans traçabilité ;
+- un usage soumis à consentement ne doit pas ignorer silencieusement l’absence ou le retrait de ce consentement.
+
+Le domaine protège l’opposabilité du consentement.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `consent` interagit fortement avec :
+
+- `customers`
+- `users`, si certains acteurs internes ou hybrides sont concernés
+- `marketing`
+- `newsletter`
+- `tracking`
+- `analytics`
+- `crm`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `audit`
+- `observability`
+- `legal`
+- `jobs`, si certaines mises à jour ou propagations sont différées
+- `integrations`, si le consentement doit être synchronisé avec des systèmes externes
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- CMP ;
+- CRM ;
+- plateformes emailing ;
+- outils analytics ;
+- outils de gestion de préférences.
+
+### Règle de frontière
+
+Le domaine `consent` porte la vérité du consentement.
+Il ne doit pas absorber :
+
+- la logique métier des outils consommateurs ;
+- la politique légale complète ;
+- ni la relation client dans son ensemble.
+
+---
+
+## Événements significatifs
+
+Le domaine `consent` publie ou peut publier des événements significatifs tels que :
+
+- consentement donné ;
+- consentement refusé ;
+- consentement retiré ;
+- consentement mis à jour ;
+- consentement expiré ;
+- version de consentement changée ;
+- préférence soumise à consentement révoquée.
+
+Le domaine peut consommer des signaux liés à :
+
+- création de client ;
+- mise à jour d’identité ;
+- changement de texte légal ou version de politique ;
+- synchronisation CRM ;
+- action utilisateur sur une bannière ou un centre de préférences.
+
+Les noms exacts doivent rester compréhensibles dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `consent` possède un cycle de vie explicite.
+
+Le cycle exact dépend du modèle retenu, mais il doit au minimum distinguer :
+
+- donné ;
+- refusé ;
+- retiré ;
+- expiré, si pertinent ;
+- archivé, si pertinent.
+
+Des états supplémentaires peuvent exister :
+
+- en attente ;
+- à renouveler ;
+- invalide ;
+- remplacé par une version ultérieure.
+
+Le domaine doit éviter :
+
+- les statuts implicites ;
+- les consentements “par défaut” non justifiés ;
+- les changements silencieux de sens.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `consent` expose principalement :
+
+- des commandes d’enregistrement et de retrait ;
+- des lectures d’état de consentement ;
+- des lectures de preuve ou d’opposabilité, si le modèle les porte ;
+- des événements significatifs liés au consentement.
 
 Le domaine reçoit principalement :
 
-- des demandes de recueil de consentement
-- des refus explicites
-- des retraits de consentement
-- des demandes de lecture du consentement applicable à une finalité donnée
-- un contexte acteur, boutique, canal, finalité et instant de référence
-- des demandes de consultation de preuve ou d’historique de consentement
+- des actions utilisateur ;
+- des mises à jour de politique ou version ;
+- des synchronisations externes ;
+- des actions opératoires encadrées.
 
-## Sorties
+Le domaine ne doit pas exposer un contrat flou où “consentement”, “préférence” et “abonnement” sont confondus.
 
-Le domaine expose principalement :
+---
 
-- des états de consentement structurés
-- des catégories de consentement
-- des preuves de consentement ou de retrait
-- une lecture exploitable par `tracking`, `attribution`, `newsletter`, `marketing`, `integrations`, `audit` et certaines couches d’administration
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `consent` peut être exposé à des contraintes telles que :
 
-Le domaine `consent` peut dépendre de :
+- synchronisation CRM ;
+- propagation à plusieurs outils externes ;
+- désalignement entre systèmes ;
+- versionnement des textes ;
+- retrait tardif ;
+- duplication de signaux ;
+- ordre de réception non garanti ;
+- nécessité de preuve.
 
-- `users` pour certains acteurs authentifiés
-- `customers` pour certains acteurs métier non strictement assimilés à un compte utilisateur
-- `stores` pour le contexte boutique et certaines politiques locales
-- `audit` pour tracer les changements sensibles ou consultations critiques
-- `observability` pour expliquer pourquoi un traitement sensible a été autorisé, bloqué ou neutralisé
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `consent` :
+- toute mutation doit être traçable ;
+- la hiérarchie d’autorité doit être explicite ;
+- une synchronisation externe ne doit pas écraser silencieusement la vérité interne ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- une absence de consentement exploitable doit être traitée explicitement.
 
-- `tracking`
-- `attribution`
-- `newsletter`
-- `marketing`
-- `integrations`
-- `dashboarding`
-- certaines couches d’administration
+---
 
-## Capabilities activables liées
+## Observabilité et audit
 
-Le domaine `consent` n’est pas une capability métier optionnelle au sens classique.
+Le domaine `consent` doit rendre visibles au minimum :
 
-Il fait partie de l’architecture transverse de gouvernance des traitements sensibles.
+- les créations et mises à jour significatives ;
+- les retraits ;
+- les expirations ;
+- les échecs de synchronisation ;
+- les divergences externes ;
+- les événements significatifs publiés.
 
-En revanche, ses usages deviennent particulièrement importants lorsque certaines capabilities sont actives, par exemple :
+L’audit doit permettre de répondre à des questions comme :
 
-- `tracking`
-- `analytics`
-- `attribution`
-- `marketingPixels`
-- `serverSideTracking`
-- `newsletter`
-- `marketingCampaigns`
-- `behavioralAnalytics`
-- `clickTracking`
-- `productViewTracking`
+- quel consentement a été donné, refusé ou retiré ;
+- quand ;
+- par quel acteur ;
+- sur quel périmètre ;
+- selon quelle version ;
+- avec quel impact sur les usages aval.
 
-### Règle
+L’observabilité doit distinguer :
 
-Le domaine `consent` reste présent même si certains traitements sensibles sont désactivés.
+- erreur de modèle ;
+- erreur technique ;
+- divergence externe ;
+- absence de preuve exploitable ;
+- rejet ou échec de propagation.
 
-Il constitue la base commune de gouvernance des finalités soumises à consentement ou à refus explicite.
+---
 
-## Rôles/permissions concernés
+## Impact de maintenance / exploitation
 
-### Rôles
+Le domaine `consent` a un impact d’exploitation élevé.
 
-Les rôles principalement concernés sont :
+Raisons :
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `marketing_manager` en lecture partielle selon la politique retenue
-- `customer_support` en lecture très encadrée selon la politique retenue
-- `customer` pour ses propres consentements selon le scope retenu
+- il influence directement la légitimité de certains usages ;
+- il peut avoir des implications légales et réputationnelles fortes ;
+- il peut être synchronisé avec plusieurs outils externes ;
+- ses erreurs sont parfois silencieuses mais coûteuses.
 
-### Permissions
+En exploitation, une attention particulière doit être portée à :
 
-Exemples de permissions concernées :
+- la cohérence des états ;
+- la traçabilité ;
+- les divergences avec les outils externes ;
+- les retraits non propagés ;
+- la lisibilité de la version applicable ;
+- l’opposabilité réelle du consentement.
 
-- `consent.read`
-- `consent.write`
-- `customers.read`
-- `newsletter.read`
-- `tracking.read`
-- `marketing.read`
-- `audit.read`
+Le domaine doit être considéré comme critique pour la conformité opérationnelle.
 
-## Événements émis
+---
 
-Le domaine peut émettre des domain events internes du type :
+## Limites du domaine
 
-- `consent.given`
-- `consent.refused`
-- `consent.withdrawn`
-- `consent.record.updated`
-- `consent.policy.updated`
+Le domaine `consent` s’arrête :
 
-## Événements consommés
+- avant la politique légale générale ;
+- avant la relation client complète ;
+- avant les actions marketing elles-mêmes ;
+- avant l’authentification ;
+- avant les préférences purement UI ;
+- avant les intégrations techniques non spécifiques.
 
-Le domaine peut consommer certains événements internes du type :
+Le domaine `consent` porte l’expression opposable d’un consentement.
+Il ne doit pas absorber toute la conformité ni toute la relation utilisateur.
 
-- `customer.created`
-- `user.created`
-- `store.capabilities.updated`
-- certaines actions structurées de recueil ou de retrait issues des couches applicatives
+---
 
-Il doit toutefois rester maître de sa propre vérité de consentement.
+## Questions ouvertes
 
-## Intégrations externes
+À confirmer explicitement dans le projet :
 
-Le domaine `consent` ne doit pas devenir un domaine d’intégration provider-specific.
+- la frontière exacte entre `consent` et `legal` ;
+- la frontière exacte entre `consent` et `newsletter` ;
+- la frontière exacte entre `consent` et `tracking` ;
+- la liste canonique des consentements réellement supportés ;
+- la stratégie de versionnement des textes ;
+- la hiérarchie entre système interne et outils externes ;
+- la politique de preuve et de rétention ;
+- la gestion des consentements anonymes puis rattachés.
 
-Il peut être consulté par `integrations` pour savoir si un traitement externe sensible est autorisé, mais :
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
-- la vérité du consentement reste dans `consent`
-- les DTO providers externes restent dans `integrations`
-- les abonnements fonctionnels restent dans `subscriptions`
+---
 
-## Données sensibles / sécurité
+## Documents liés
 
-Le domaine `consent` manipule des données hautement sensibles de gouvernance réglementée.
-
-Points de vigilance :
-
-- contrôle strict des droits de lecture et d’écriture
-- conservation d’une preuve suffisante du recueil, refus ou retrait
-- séparation claire entre consentement réglementé, abonnement fonctionnel et préférence non sensible
-- limitation de l’exposition des détails selon le rôle, le scope et la finalité
-- audit des consultations ou modifications sensibles si la politique retenue l’exige
-
-## Observability / audit
-
-### Observability
-
-Il faut pouvoir comprendre :
-
-- quel consentement a été donné, refusé ou retiré
-- pour quelle finalité et dans quel contexte
-- quelle preuve ou quel mode de recueil a été retenu
-- pourquoi un traitement sensible a été autorisé, bloqué ou neutralisé
-- si une absence de traitement vient d’un refus, d’un retrait, d’une absence de recueil ou d’une règle de politique applicable
-
-### Audit
-
-Il faut tracer :
-
-- le recueil d’un consentement
-- le refus d’un consentement
-- le retrait d’un consentement
-- les changements sensibles de politique de consentement
-- certaines consultations sensibles si le modèle final les retient explicitement
-
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `ConsentCategory` : catégorie ou finalité de consentement
-- `ConsentRecord` : enregistrement de consentement, refus ou retrait
-- `ConsentStatus` : état du consentement pour une finalité donnée
-- `ConsentProof` : preuve ou métadonnée de recueil
-- `ConsentScope` : périmètre d’application du consentement
-- `ConsentActorRef` : référence vers l’acteur concerné
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- un consentement est rattaché à une finalité explicite
-- un consentement est rattaché à un acteur explicite lorsque cela est possible
-- un consentement possède un état explicite
-- `consent` ne se confond pas avec `subscriptions`
-- `consent` ne se confond pas avec `newsletter`, `notifications` ou `tracking`
-- les autres domaines ne doivent pas recréer librement leur propre vérité divergente du consentement quand le cadre commun `consent` existe
-- une absence de consentement applicable peut neutraliser un traitement sensible sans supprimer la structure du domaine consommateur
-
-## Cas d’usage principaux
-
-1. Recueillir un consentement pour une finalité de tracking
-2. Enregistrer un refus de consentement marketing
-3. Retirer un consentement précédemment donné
-4. Vérifier si une finalité donnée est autorisée pour un acteur donné
-5. Fournir à `tracking`, `attribution` ou `newsletter` une lecture fiable du consentement applicable
-6. Exposer à l’admin une lecture claire et gouvernée des états de consentement
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- catégorie de consentement introuvable
-- acteur introuvable
-- preuve absente ou invalide selon la politique retenue
-- tentative de traitement sensible sans consentement applicable
-- conflit entre état de consentement et autre règle réglementée plus forte
-- tentative d’exposition d’un détail sensible dans un contexte non autorisé
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `consent` porte les consentements réglementés ou sensibles du socle
-- `consent` est distinct de `subscriptions`
-- `consent` est distinct de `newsletter`
-- `consent` est distinct de `notifications`
-- `consent` est distinct de `tracking`
-- les domaines consommateurs lisent la vérité du consentement via `consent`, sans la recréer localement
-- les preuves, états et consultations sensibles doivent être observables et auditables
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- les consentements réglementés ou sensibles relèvent de `consent`
-- les abonnements fonctionnels relèvent de `subscriptions`
-- la newsletter relève de `newsletter`
-- les notifications transactionnelles relèvent de `notifications`
-- les signaux de mesure relèvent de `tracking`
-- `consent` ne remplace ni `subscriptions`, ni `newsletter`, ni `notifications`, ni `tracking`, ni `integrations`
+- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `audit.md`
+- `observability.md`
+- `legal.md`
+- `../../domains/core/customers.md`
+- `crm.md`
+- `newsletter.md`
+- `tracking.md`

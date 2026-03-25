@@ -9,6 +9,7 @@ L'utilisateur est architecte / CTO sur Creatyss, un projet e-commerce custom sur
 Il commande des audits complets et structurés — niveau staff engineer / CTO. Il attend des réponses directes, sans validation fluff, avec identification précise des problèmes et priorités claires.
 
 Il distingue clairement :
+
 - domaine coeur non-toggleable
 - domaine coeur à capabilities toggleables
 - domaine optionnel

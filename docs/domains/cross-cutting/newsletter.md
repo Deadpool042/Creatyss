@@ -1,270 +1,353 @@
-# Domaine newsletter
+# Newsletter
 
 ## Rôle
 
-Le domaine `newsletter` porte la diffusion newsletter du socle.
+Le domaine `newsletter` porte la gestion des abonnements et désabonnements à la newsletter du système.
 
-Il structure les abonnés, les campagnes newsletter, la préparation des envois et leur suivi métier, sans absorber les notifications transactionnelles, les campagnes marketing globales, les abonnements fonctionnels génériques ou les intégrations providers externes.
+Il définit :
+
+- ce qu’est un abonnement newsletter ;
+- comment il est créé, confirmé, retiré ou réactivé ;
+- comment il se distingue d’un consentement général ;
+- comment il est exposé aux autres domaines et aux outils externes ;
+- comment il reste opposable, traçable et exploitable.
+
+Le domaine existe pour fournir une vérité interne sur l’abonnement newsletter, distincte :
+
+- du consentement au sens large ;
+- du CRM ;
+- des campagnes marketing ;
+- des outils d’emailing ;
+- des préférences UI.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse optionnelle`
+
+### Activable
+
+`oui`
+
+Le domaine `newsletter` est optionnel du point de vue produit, mais il devient structurant dès lors qu’il est activé et connecté à des parcours d’inscription, de désinscription ou de synchronisation externe.
+
+---
+
+## Source de vérité
+
+Le domaine `newsletter` est la source de vérité pour :
+
+- l’état d’abonnement newsletter dans le système ;
+- la représentation interne d’un abonnement ;
+- la relation entre un abonnement, un acteur ou un point de contact ;
+- les statuts d’abonnement, désabonnement, confirmation ou réactivation si le modèle les porte ;
+- les événements significatifs liés à la vie de l’abonnement.
+
+Le domaine `newsletter` n’est pas la source de vérité pour :
+
+- le consentement général, qui relève de `consent` ;
+- l’identité complète du client, qui relève de `customers` ;
+- l’outil d’emailing externe ;
+- les campagnes marketing ;
+- les préférences de tracking ou analytics ;
+- la politique juridique générale, qui relève de `legal`.
+
+Un abonnement newsletter n’est pas un consentement générique.
+C’est un objet produit et opérationnel plus spécifique.
+
+---
 
 ## Responsabilités
 
-Le domaine `newsletter` prend en charge :
+Le domaine `newsletter` est responsable de :
 
-- les abonnés newsletter
-- les campagnes newsletter
-- la préparation métier des envois newsletter
-- la lecture des statuts d’envoi newsletter au niveau métier
-- la sélection logique des destinataires selon les règles et abonnements disponibles
-- la base newsletter exploitable par l’admin, `marketing`, `crm`, `analytics`, `dashboarding` et d’autres domaines consommateurs
+- définir ce qu’est un abonnement newsletter dans le système ;
+- représenter son état ;
+- enregistrer les inscriptions, confirmations, désinscriptions et réactivations ;
+- exposer un état exploitable aux autres domaines consommateurs ;
+- publier les événements significatifs liés à la vie de l’abonnement ;
+- protéger le système contre les ambiguïtés entre abonnement, refus et retrait ;
+- servir de point d’ancrage pour les synchronisations avec des outils externes d’emailing lorsque cette responsabilité est activée.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `newsletter` ne doit pas :
+- double opt-in ;
+- origine de souscription ;
+- segmentation minimale liée à l’abonnement ;
+- rattachement à un client connu ou à un contact isolé ;
+- statut de confirmation ;
+- statut de synchronisation.
 
-- porter les notifications transactionnelles, qui relèvent de `notifications`
-- porter les campagnes marketing globales, qui relèvent de `marketing`
-- porter les abonnements fonctionnels génériques, qui relèvent de `subscriptions`
-- porter le template system global, qui relève de `template-system`
-- porter directement les providers email externes, ce qui relève de `integrations`
-- porter le tracking ou l’analytics eux-mêmes, qui relèvent de `tracking`, `behavior`, `analytics` et `attribution`
-- devenir un fourre-tout regroupant toute communication sortante par email
+---
 
-Le domaine `newsletter` porte la diffusion newsletter. Il ne remplace ni `notifications`, ni `marketing`, ni `subscriptions`, ni `integrations`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `newsletter` n’est pas responsable de :
 
-- `subscribers` : abonnés newsletter
-- `campaigns` : campagnes newsletter
-- `delivery` : suivi métier des envois et de leur état
+- définir la politique juridique globale ;
+- gouverner le consentement général ;
+- exécuter les campagnes emailing ;
+- définir la logique CRM complète ;
+- gérer l’authentification ;
+- gérer les rôles et permissions ;
+- porter l’observabilité globale ;
+- remplacer `marketing` ou `crm`.
 
-## Entrées
+Le domaine `newsletter` ne doit pas devenir :
+
+- un simple champ booléen dispersé ;
+- un alias de `consent` ;
+- un miroir brut d’un fournisseur externe.
+
+---
+
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- un abonnement newsletter doit être rattaché à un contact ou acteur identifiable selon le modèle retenu ;
+- un état d’abonnement doit être interprétable sans ambiguïté ;
+- une désinscription doit être visible comme telle ;
+- une confirmation, si elle existe, doit être distinguée d’une simple intention ;
+- un abonnement ne doit pas être simultanément confirmé et retiré ;
+- une mutation d’état doit être traçable ;
+- une synchronisation externe ne doit pas rendre l’état interne incohérent sans visibilité.
+
+Le domaine protège la cohérence de l’abonnement newsletter, pas seulement une préférence approximative.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `newsletter` interagit fortement avec :
+
+- `customers`
+- `consent`
+- `legal`
+- `crm`
+- `marketing`
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `audit`
+- `observability`
+- `jobs`
+- `integrations`
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- plateformes emailing ;
+- CRM ;
+- CMP ;
+- outils marketing automation.
+
+### Règle de frontière
+
+Le domaine `newsletter` porte la vérité de l’abonnement newsletter.
+Il ne doit pas absorber :
+
+- le consentement générique ;
+- la logique des campagnes ;
+- la relation client complète ;
+- la politique juridique générale.
+
+---
+
+## Événements significatifs
+
+Le domaine `newsletter` publie ou peut publier des événements significatifs tels que :
+
+- abonnement newsletter demandé ;
+- abonnement newsletter confirmé ;
+- abonnement newsletter activé ;
+- abonnement newsletter retiré ;
+- abonnement newsletter réactivé ;
+- synchronisation newsletter échouée ;
+- synchronisation newsletter réussie.
+
+Le domaine peut consommer des signaux liés à :
+
+- création de client ;
+- retrait de consentement ;
+- mise à jour CRM ;
+- action utilisateur sur formulaire ou centre de préférences ;
+- changement de version juridique applicable, si pertinent.
+
+Les noms exacts doivent rester compréhensibles dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `newsletter` possède un cycle de vie explicite.
+
+Le cycle exact dépend du modèle retenu, mais il doit au minimum distinguer :
+
+- demandé ;
+- confirmé, si double opt-in ;
+- actif ;
+- retiré ;
+- réactivé, si le modèle le permet ;
+- archivé, si pertinent.
+
+Le domaine doit éviter :
+
+- les statuts flous ;
+- les abonnements implicites ;
+- les changements silencieux de signification.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `newsletter` expose principalement :
+
+- des commandes d’inscription, confirmation, retrait et réactivation ;
+- des lectures d’état d’abonnement ;
+- des événements significatifs liés à l’abonnement ;
+- éventuellement des lectures d’état de synchronisation si le modèle les porte.
 
 Le domaine reçoit principalement :
 
-- des abonnements newsletter issus d’actions explicites ou de domaines consommateurs autorisés
-- des demandes de création ou mise à jour de campagnes newsletter
-- des préférences ou états d’abonnement exploitables via `subscriptions` ou des structures propres au domaine
-- des objets marketing, contenus, nouveautés produit, nouveautés blog ou événements à relayer
-- des demandes de lecture des campagnes, abonnés et états d’envoi
+- des actions utilisateur ;
+- des mises à jour client ;
+- des signaux de consentement ;
+- des synchronisations externes ;
+- des actions opératoires encadrées.
 
-## Sorties
+Le domaine ne doit pas exposer un contrat confondant consentement, abonnement et campagne.
 
-Le domaine expose principalement :
+---
 
-- des abonnés newsletter
-- des campagnes newsletter
-- des destinataires logiques de campagne
-- des statuts métier d’envoi newsletter
-- une lecture exploitable par `marketing`, `crm`, `analytics`, `dashboarding`, `social` et l’admin
-- des messages préparés pour exécution aval par `integrations` ou `jobs`
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `newsletter` peut être exposé à des contraintes telles que :
 
-Le domaine `newsletter` peut dépendre de :
+- double opt-in ;
+- désinscription externe ;
+- resynchronisation ;
+- duplication de contacts ;
+- divergence entre système interne et outil emailing ;
+- ordre de réception non garanti ;
+- propagation différée ;
+- nécessité de preuve minimale.
 
-- `subscriptions` pour certains sujets ou préférences d’abonnement
-- `customers` pour certains destinataires métier
-- `crm` pour segmenter ou cibler les destinataires
-- `marketing` pour certaines campagnes ou opérations amont
-- `products`, `blog` et `events` pour certains contenus ou nouveautés à diffuser
-- `stores` pour le contexte boutique et les capabilities actives
-- `template-system` pour les gabarits réutilisables si le modèle final l’exige
-- `audit` pour tracer les changements sensibles
-- `observability` pour expliquer pourquoi une campagne a été préparée, envoyée, ignorée ou bloquée
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `newsletter` :
+- toute mutation doit être traçable ;
+- la hiérarchie d’autorité doit être explicite ;
+- un fournisseur externe ne doit pas écraser silencieusement la vérité interne ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- un état ambigu doit être rendu visible.
 
-- `analytics`
-- `dashboarding`
-- `marketing`
-- `crm`
-- `social`
-- `notifications` dans certains cas de coordination d’information interne
+---
 
-## Capabilities activables liées
+## Observabilité et audit
 
-Le domaine `newsletter` est directement lié à :
+Le domaine `newsletter` doit rendre visibles au minimum :
 
-- `newsletter`
-- `marketingCampaigns`
-- `conversionFlows`
-- `publicEvents`
+- les inscriptions ;
+- les confirmations ;
+- les désinscriptions ;
+- les réactivations ;
+- les erreurs de synchronisation ;
+- les divergences externes ;
+- les événements significatifs publiés.
 
-### Effet si `newsletter` est activée
+L’audit doit permettre de répondre à des questions comme :
 
-Le domaine devient pleinement exploitable pour gérer des abonnés, campagnes et envois newsletter.
+- qui s’est abonné ou désabonné ;
+- quand ;
+- par quel point d’entrée ;
+- avec quel statut ;
+- avec quelle origine de mutation ;
+- avec quel impact sur les outils aval.
 
-### Effet si `newsletter` est désactivée
+L’observabilité doit distinguer :
 
-Le domaine reste structurellement présent, mais aucun envoi newsletter ne doit être piloté côté boutique.
+- erreur de modèle ;
+- erreur technique ;
+- divergence externe ;
+- duplication ;
+- propagation échouée.
 
-### Effet si `marketingCampaigns`, `conversionFlows` ou `publicEvents` est activée
+---
 
-Le domaine peut consommer des objets amont utiles à la construction de campagnes newsletter, sans absorber leur responsabilité métier.
+## Impact de maintenance / exploitation
 
-## Rôles/permissions concernés
+Le domaine `newsletter` a un impact d’exploitation moyen à élevé lorsqu’il est activé.
 
-### Rôles
+Raisons :
 
-Les rôles principalement concernés sont :
+- il touche à la conformité opérationnelle ;
+- il influence la relation marketing ;
+- il est souvent synchronisé avec des outils externes ;
+- ses erreurs peuvent être discrètes mais coûteuses.
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `marketing_manager`
-- `customer_support` en lecture partielle selon la politique retenue
-- `customer` pour certaines préférences ou abonnements selon le scope retenu
+En exploitation, une attention particulière doit être portée à :
 
-### Permissions
+- la cohérence des statuts ;
+- les désinscriptions non propagées ;
+- les divergences avec le fournisseur emailing ;
+- la lisibilité des points d’entrée ;
+- la corrélation avec `consent` et `legal`.
 
-Exemples de permissions concernées :
+Le domaine doit être considéré comme sensible dès lors qu’il est activé.
 
-- `newsletter.read`
-- `newsletter.write`
-- `subscriptions.read`
-- `marketing.read`
-- `crm.read`
-- `audit.read`
+---
 
-## Événements émis
+## Limites du domaine
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine `newsletter` s’arrête :
 
-- `newsletter.subscribed`
-- `newsletter.unsubscribed`
-- `newsletter.campaign.created`
-- `newsletter.campaign.updated`
-- `newsletter.campaign.scheduled`
-- `newsletter.campaign.sent`
-- `newsletter.delivery.failed`
+- avant le consentement générique ;
+- avant la politique juridique générale ;
+- avant la gestion de campagne ;
+- avant le CRM complet ;
+- avant les intégrations techniques non spécifiques ;
+- avant la relation client dans son ensemble.
 
-## Événements consommés
+Le domaine `newsletter` porte l’abonnement à la newsletter.
+Il ne doit pas absorber toute la logique marketing ni toute la conformité.
 
-Le domaine peut consommer certains événements internes du type :
+---
 
-- `product.published`
-- `blog.post.published`
-- `event.published`
-- `marketing.campaign.activated`
-- `conversion.recovery.triggered`
-- `subscription.created`
-- `subscription.cancelled`
-- `store.capabilities.updated`
+## Questions ouvertes
 
-Il doit toutefois rester maître de sa propre vérité de campagne et de diffusion newsletter.
+À confirmer explicitement dans le projet :
 
-## Intégrations externes
+- la frontière exacte entre `newsletter` et `consent` ;
+- la frontière exacte entre `newsletter` et `crm` ;
+- l’existence d’un double opt-in obligatoire ;
+- la hiérarchie entre système interne et fournisseur emailing ;
+- la gestion des contacts anonymes puis rattachés ;
+- la politique de réactivation ;
+- la stratégie de preuve minimale.
 
-Le domaine `newsletter` ne doit pas parler directement aux providers email externes.
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
-Les interactions avec :
+---
 
-- providers email
-- plateformes emailing
-- outils marketing automation externes
+## Documents liés
 
-relèvent de :
-
-- `integrations`
-- éventuellement `jobs`
-
-Le domaine `newsletter` reste la source de vérité interne des campagnes et envois newsletter au niveau métier.
-
-## Données sensibles / sécurité
-
-Le domaine `newsletter` manipule des données de communication et de diffusion potentiellement sensibles.
-
-Points de vigilance :
-
-- contrôle strict des droits de lecture et d’écriture
-- respect des états d’abonnement et de désabonnement
-- séparation claire entre newsletter et notification transactionnelle
-- protection des segmentations, listes de destinataires et campagnes
-- audit des interventions manuelles importantes
-
-## Observability / audit
-
-### Observability
-
-Il faut pouvoir comprendre :
-
-- pourquoi un destinataire est inclus ou exclu d’une campagne
-- pourquoi une campagne est active, planifiée, envoyée ou bloquée
-- quel objet amont a alimenté la campagne
-- si un envoi n’a pas été exécuté à cause d’une capability off, d’un état d’abonnement, d’un problème d’intégration ou d’une règle métier
-
-### Audit
-
-Il faut tracer :
-
-- la création d’une campagne newsletter
-- la modification d’une campagne newsletter
-- la planification ou l’envoi d’une campagne
-- les changements significatifs d’état d’abonnement newsletter
-- les interventions manuelles importantes sur les listes ou campagnes
-
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `NewsletterSubscriber` : abonné newsletter
-- `NewsletterCampaign` : campagne newsletter
-- `NewsletterDelivery` : état métier d’envoi d’une campagne ou d’un lot d’envoi
-- `NewsletterAudience` : audience logique d’une campagne
-- `NewsletterSubscriptionStatus` : état d’abonnement newsletter
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- un abonné newsletter possède un état d’abonnement explicite
-- une campagne newsletter possède un identifiant stable et un état explicite
-- `newsletter` ne se confond pas avec `notifications`, `marketing` ou `subscriptions`
-- l’envoi provider externe reste distinct de la vérité interne de campagne et de diffusion newsletter
-- les autres domaines ne doivent pas recréer leur propre vérité divergente de la diffusion newsletter structurée
-
-## Cas d’usage principaux
-
-1. Abonner un acteur à la newsletter
-2. Désabonner un acteur de la newsletter
-3. Créer une campagne newsletter
-4. Segmenter l’audience logique d’une campagne
-5. Planifier ou déclencher une campagne newsletter
-6. Diffuser une nouveauté produit, blog ou événement via newsletter
-7. Exposer à l’admin une lecture claire des abonnés, campagnes et états d’envoi
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- abonné introuvable
-- campagne introuvable
-- campagne invalide
-- abonnement déjà actif ou déjà inactif
-- capability newsletter désactivée
-- audience vide ou incohérente
-- tentative d’envoi d’une campagne non prête
-- échec aval d’intégration provider
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `newsletter` porte les campagnes et abonnements newsletter au niveau métier
-- `newsletter` est distinct de `notifications`
-- `newsletter` est distinct de `marketing`
-- `newsletter` est distinct de `subscriptions`
-- `newsletter` est distinct de `integrations`
-- les providers externes sont appelés via `integrations`, puis les états utiles sont remappés dans le langage interne du domaine
-- les campagnes et états d’abonnement sensibles doivent être auditables et observables
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- la diffusion newsletter relève de `newsletter`
-- les notifications transactionnelles relèvent de `notifications`
-- les campagnes marketing globales relèvent de `marketing`
-- les abonnements fonctionnels génériques relèvent de `subscriptions`
-- `newsletter` ne remplace ni `notifications`, ni `marketing`, ni `subscriptions`, ni `integrations`
+- `consent.md`
+- `legal.md`
+- `crm.md`
+- `marketing.md`
+- `audit.md`
+- `observability.md`
+- `../../domains/core/customers.md`
+- `../../domains/core/integrations.md`

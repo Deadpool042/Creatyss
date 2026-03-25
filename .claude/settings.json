@@ -8,6 +8,7 @@
       "WebFetch(domain:tailwindcss.com)",
       "WebFetch(domain:www.prisma.io)",
       "Bash(pnpm run typecheck)",
+      "Bash(pnpm run lint)",
       "Bash(pnpm run build)",
       "Bash(pnpm exec vitest run *)",
       "Bash(pnpm exec playwright test *)",
@@ -16,7 +17,11 @@
       "Bash(git log *)",
       "Bash(git show *)",
       "Bash(git ls-files *)",
-      "Bash(rg *)"
+      "Bash(rg *)",
+      "Bash(find *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(sed *)"
     ],
     "deny": [
       "Read(./.env)",

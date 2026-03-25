@@ -5,7 +5,9 @@ personality = "pragmatic"
 [mcp_servers.playwright]
 args = ["@playwright/mcp@latest"]
 command = "npx"
+enabled = false
 
 [mcp_servers.shadcn]
 command = "npx"
 args = ["shadcn@latest", "mcp"]
+enabled = false

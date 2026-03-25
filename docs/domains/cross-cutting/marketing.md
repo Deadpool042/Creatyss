@@ -1,265 +1,388 @@
-# Domaine marketing
+# Marketing
 
 ## Rôle
 
-Le domaine `marketing` porte l’animation commerciale et les campagnes du socle.
+Le domaine `marketing` porte les mécanismes, objets et règles liés à l’activation marketing du système.
 
-Il structure les opérations marketing pilotées par la boutique ou la plateforme, comme les campagnes, offres, mises en avant et dispositifs de communication commerciale, sans absorber les moteurs de remises, de conversion, de tracking, de newsletter ou de publication sociale.
+Il définit :
+
+- comment le système structure certaines actions marketing ;
+- quels objets ou périmètres relèvent du marketing ;
+- comment le marketing consomme des signaux issus d’autres domaines ;
+- comment il se distingue du CRM, du consentement, du tracking et de la newsletter ;
+- comment les activations marketing restent gouvernées et compréhensibles.
+
+Le domaine existe pour fournir une couche marketing explicite et structurée, distincte :
+
+- de la relation client portée par `crm` ;
+- du consentement porté par `consent` ;
+- des signaux de tracking ;
+- des campagnes emailing elles-mêmes si elles sont externalisées ;
+- des outils externes de marketing automation.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse optionnelle`
+
+### Activable
+
+`oui`
+
+Le domaine `marketing` est optionnel du point de vue produit, mais il devient structurant dès lors que le système porte réellement :
+
+- des activations marketing ;
+- des segments exploitables ;
+- des logiques de diffusion ou d’orchestration marketing ;
+- des interactions avec des outils externes de marketing.
+
+---
+
+## Source de vérité
+
+Le domaine `marketing` est la source de vérité pour :
+
+- les objets marketing explicitement reconnus par le système ;
+- les règles marketing internes portées dans le produit ;
+- la représentation des activations marketing lorsqu’elles sont gouvernées en interne ;
+- les statuts ou états d’objets marketing si le modèle les porte ;
+- les événements significatifs liés aux mécanismes marketing internes.
+
+Le domaine `marketing` n’est pas la source de vérité pour :
+
+- le client métier, qui relève de `customers` ;
+- la relation client structurée, qui relève de `crm` ;
+- le consentement, qui relève de `consent` ;
+- la politique juridique, qui relève de `legal` ;
+- les signaux de tracking, qui relèvent de `tracking` ;
+- les campagnes ou outils externes de marketing automation en tant que tels ;
+- les commandes, paiements, produits et autres vérités coeur.
+
+Le domaine `marketing` porte la couche marketing interne reconnue par le système.
+Il ne doit pas devenir une étiquette vague pour toute action de communication ou d’acquisition.
+
+---
 
 ## Responsabilités
 
-Le domaine `marketing` prend en charge :
+Le domaine `marketing` est responsable de :
 
-- les campagnes marketing
-- les offres marketing au sens métier
-- les bannières et mises en avant commerciales
-- les périodes de campagne
-- le ciblage marketing de haut niveau
-- la cohérence des opérations commerciales visibles côté boutique
-- la lecture d’objets marketing exploitables par l’admin, le storefront, l’analytics et certains domaines consommateurs
+- définir ce qui relève du marketing dans le système ;
+- structurer les objets marketing explicitement portés ;
+- exposer une vue marketing exploitable aux domaines consommateurs autorisés ;
+- encadrer les mutations marketing internes ;
+- publier les événements significatifs liés aux actions ou objets marketing ;
+- protéger le système contre la dispersion des règles marketing dans plusieurs zones sans gouvernance claire.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `marketing` ne doit pas :
+- segments marketing ;
+- audiences ;
+- activations marketing internes ;
+- campagnes internes si le système les porte réellement ;
+- règles d’éligibilité marketing ;
+- rattachement entre signaux de tracking, CRM et objets marketing ;
+- statuts d’activation ou d’exécution marketing ;
+- cohérence entre activation marketing et consentement applicable.
 
-- porter les remises et coupons, qui relèvent de `discounts`
-- porter les mécaniques de conversion fines, qui relèvent de `conversion`
-- porter le CRM enrichi, qui relève de `crm`
-- porter la newsletter, qui relève de `newsletter`
-- porter la publication sociale, qui relève de `social`
-- porter le tracking, l’attribution ou l’analytics, qui relèvent de `tracking`, `attribution` et `analytics`
-- devenir un fourre-tout mélangeant contenu, promotions, pixels et diffusion externe
+---
 
-Le domaine `marketing` porte la campagne et l’animation commerciale. Il ne remplace ni `discounts`, ni `conversion`, ni `newsletter`, ni `social`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `marketing` n’est pas responsable de :
 
-- `campaigns` : campagnes marketing
-- `offers` : offres commerciales ou opérations mises en avant
-- `banners` : bannières et éléments d’exposition commerciale
+- définir l’identité client ;
+- structurer le CRM complet ;
+- recueillir le consentement ;
+- porter la politique juridique ;
+- produire les signaux de tracking ;
+- gérer la newsletter comme objet autonome ;
+- gouverner les intégrations dans leur ensemble ;
+- définir la logique métier coeur ;
+- devenir un simple miroir d’un outil externe de marketing automation.
 
-## Entrées
+Le domaine `marketing` ne doit pas devenir :
+
+- un fourre-tout pour tout ce qui touche à l’acquisition, à la communication ou à la personnalisation ;
+- un doublon de `crm` ;
+- un doublon de `tracking` ;
+- un alias de campagnes externes sans modèle interne.
+
+---
+
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- un objet marketing interne doit avoir un sens explicite ;
+- un segment ou une audience doit être interprétable sans ambiguïté ;
+- une activation marketing doit rester traçable ;
+- une règle marketing ne doit pas contredire silencieusement le consentement applicable ;
+- une mutation marketing ne doit pas rendre le modèle interne incohérent ;
+- une synchronisation externe ne doit pas écraser silencieusement la vérité interne sans visibilité ;
+- les objets marketing internes ne doivent pas mélanger plusieurs responsabilités contradictoires.
+
+Le domaine protège la cohérence de la couche marketing interne.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `marketing` interagit fortement avec :
+
+- `customers`
+- `crm`
+- `newsletter`
+- `tracking`
+- `consent`
+- `legal`
+- `products`
+- `orders`, si certaines activations dépendent d’états transactionnels
+
+### Dépendances transverses
+
+Le domaine dépend également de :
+
+- `audit`
+- `observability`
+- `jobs`
+- `integrations`
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- outils de marketing automation ;
+- CDP ;
+- CRM ;
+- outils d’acquisition ;
+- outils emailing ;
+- plateformes publicitaires ;
+- CMS ou systèmes éditoriaux.
+
+### Règle de frontière
+
+Le domaine `marketing` porte la couche marketing interne.
+Il ne doit pas absorber :
+
+- la relation client complète ;
+- le consentement ;
+- la conformité juridique ;
+- les outils externes ;
+- la vérité métier coeur.
+
+---
+
+## Événements significatifs
+
+Le domaine `marketing` publie ou peut publier des événements significatifs tels que :
+
+- segment marketing créé ;
+- segment marketing modifié ;
+- audience marketing calculée ;
+- activation marketing créée ;
+- activation marketing déclenchée ;
+- activation marketing suspendue ;
+- activation marketing terminée ;
+- synchronisation marketing réussie ;
+- synchronisation marketing échouée.
+
+Le domaine peut consommer des signaux liés à :
+
+- mise à jour client ;
+- changement de statut CRM ;
+- inscription ou désinscription newsletter ;
+- changement de consentement ;
+- événements de tracking autorisés ;
+- événements transactionnels utilisés comme déclencheurs ;
+- synchronisations externes.
+
+Les noms exacts doivent rester compréhensibles dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `marketing` possède un cycle de vie partiel.
+
+Le cycle exact dépend des objets réellement portés par le système, mais il peut au minimum distinguer :
+
+- créé ;
+- actif ;
+- suspendu ;
+- terminé ;
+- archivé.
+
+Des états supplémentaires peuvent exister :
+
+- brouillon ;
+- planifié ;
+- en cours de calcul ;
+- en attente de synchronisation ;
+- échoué.
+
+Le domaine doit éviter :
+
+- les objets marketing “fantômes” ;
+- les activations sans état lisible ;
+- les changements silencieux de signification.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `marketing` expose principalement :
+
+- des lectures d’objets marketing internes ;
+- des commandes de création ou de mutation lorsque cette responsabilité est portée en interne ;
+- des lectures de segments ou audiences ;
+- des événements significatifs liés aux mutations marketing ;
+- des états de synchronisation ou d’exécution si le modèle les porte.
 
 Le domaine reçoit principalement :
 
-- des créations ou mises à jour de campagnes
-- des créations ou mises à jour d’offres marketing
-- des demandes de planification ou d’activation d’opérations commerciales
-- des demandes de lecture des campagnes actives
-- des contextes boutique, temporels ou d’audience utiles au ciblage marketing
+- des mises à jour client ou CRM ;
+- des signaux de consentement ;
+- des signaux de newsletter ;
+- des signaux de tracking ;
+- des événements transactionnels pertinents ;
+- des synchronisations externes ;
+- des actions opératoires encadrées.
 
-## Sorties
+Le domaine ne doit pas exposer comme contrat canonique le schéma natif d’un outil externe.
 
-Le domaine expose principalement :
+---
 
-- des campagnes marketing
-- des offres commerciales structurées
-- des bannières ou dispositifs de mise en avant
-- des fenêtres temporelles d’activation
-- une lecture exploitable par `conversion`, `newsletter`, `social`, `analytics`, `pages`, `dashboarding` et l’admin
+## Contraintes d’intégration
 
-## Dépendances vers autres domaines
+Le domaine `marketing` peut être exposé à des contraintes telles que :
 
-Le domaine `marketing` peut dépendre de :
+- synchronisation avec plusieurs outils externes ;
+- divergence entre modèle interne et plateforme externe ;
+- recalcul d’audiences ;
+- propagation différée ;
+- duplication ;
+- ordre de réception non garanti ;
+- dépendance à l’état du consentement ;
+- dépendance à des signaux de tracking ou CRM partiellement disponibles.
 
-- `stores` pour le contexte boutique et les capabilities actives
-- `products` pour certaines offres ou mises en avant liées au catalogue
-- `pages` ou `media` pour certains supports visuels ou emplacements éditoriaux
-- `workflow` ou `approval` si certaines campagnes doivent être validées avant activation
-- `scheduling` pour certaines activations planifiées
-- `audit` pour tracer les changements sensibles
-- `observability` pour expliquer pourquoi une campagne est active, inactive ou non exposée
+Règles minimales :
 
-Les domaines suivants peuvent dépendre de `marketing` :
+- la hiérarchie d’autorité doit être explicite ;
+- les traitements rejouables doivent être idempotents ou neutralisés ;
+- un outil externe ne doit pas redéfinir silencieusement le modèle interne ;
+- les divergences doivent être visibles ;
+- une activation marketing soumise à consentement doit rester bornée par une règle explicite ;
+- le domaine ne doit pas devenir une tuyauterie opaque entre providers.
 
-- `conversion`
-- `newsletter`
-- `social`
-- `analytics`
-- `dashboarding`
-- `pages`
-- `seo` dans certains cas de contenus promotionnels indexables
+---
 
-## Capabilities activables liées
+## Observabilité et audit
 
-Le domaine `marketing` est directement lié à :
+Le domaine `marketing` doit rendre visibles au minimum :
 
-- `marketingCampaigns`
-- `notifications`
-- `newsletter`
-- `socialPublishing`
+- les créations et mises à jour significatives ;
+- les calculs d’audiences ;
+- les déclenchements d’activations ;
+- les échecs d’exécution ou de synchronisation ;
+- les divergences externes ;
+- les événements significatifs publiés.
 
-### Effet si `marketingCampaigns` est activée
+L’audit doit permettre de répondre à des questions comme :
 
-Le domaine devient pleinement exploitable pour gérer des campagnes marketing structurées.
+- quel objet marketing a changé ;
+- quand ;
+- selon quelle origine ;
+- sur quel périmètre ;
+- avec quel impact visible ;
+- avec quel statut de synchronisation ou d’exécution.
 
-### Effet si `marketingCampaigns` est désactivée
+L’observabilité doit distinguer :
 
-Le domaine reste structurellement présent, mais aucune campagne marketing active ne doit être pilotée côté boutique.
+- erreur de modèle ;
+- erreur technique ;
+- divergence externe ;
+- échec de calcul ;
+- propagation échouée ;
+- activation bloquée par une contrainte de consentement ou de configuration.
 
-### Effet si `newsletter` est activée
+---
 
-Certaines campagnes peuvent alimenter des usages aval côté `newsletter`, sans que `marketing` devienne le domaine newsletter lui-même.
+## Impact de maintenance / exploitation
 
-### Effet si `socialPublishing` est activée
+Le domaine `marketing` a un impact d’exploitation moyen à élevé lorsqu’il est activé.
 
-Certaines campagnes peuvent alimenter des usages aval côté `social`, sans que `marketing` exécute lui-même la publication.
+Raisons :
 
-## Rôles/permissions concernés
+- il agrège plusieurs signaux venant de domaines voisins ;
+- il dépend souvent d’outils externes ;
+- ses erreurs peuvent être diffuses mais coûteuses ;
+- il est exposé aux ambiguïtés de frontière avec CRM, tracking, consentement et newsletter.
 
-### Rôles
+En exploitation, une attention particulière doit être portée à :
 
-Les rôles principalement concernés sont :
+- la cohérence des objets marketing ;
+- la lisibilité des segments et audiences ;
+- les divergences avec les outils externes ;
+- la traçabilité des activations ;
+- la corrélation avec consentement, CRM et tracking ;
+- la détection des angles morts ou doublons fonctionnels.
 
-- `platform_owner`
-- `platform_engineer`
-- `store_owner`
-- `store_manager`
-- `marketing_manager`
-- `content_editor` en lecture ou contribution partielle selon la politique retenue
+Le domaine doit être considéré comme sensible dès lors qu’il est activé.
 
-### Permissions
+---
 
-Exemples de permissions concernées :
+## Limites du domaine
 
-- `marketing.read`
-- `marketing.write`
-- `catalog.read`
-- `pages.read`
-- `newsletter.read`
-- `social.read`
-- `audit.read`
+Le domaine `marketing` s’arrête :
 
-## Événements émis
+- avant l’identité client coeur ;
+- avant le consentement ;
+- avant la politique juridique ;
+- avant la newsletter comme objet autonome ;
+- avant la production de tracking ;
+- avant les intégrations techniques non spécifiques ;
+- avant la vérité des domaines transactionnels coeur.
 
-Le domaine peut émettre des domain events internes du type :
+Le domaine `marketing` porte la couche marketing interne.
+Il ne doit pas absorber toute la relation client, toute la conformité ni toute la logique provider.
 
-- `marketing.campaign.created`
-- `marketing.campaign.updated`
-- `marketing.campaign.activated`
-- `marketing.campaign.deactivated`
-- `marketing.offer.updated`
+---
 
-## Événements consommés
+## Questions ouvertes
 
-Le domaine peut consommer certains événements internes du type :
+À confirmer explicitement dans le projet :
 
-- `product.published`
-- `store.capabilities.updated`
-- événements de workflow, approval ou scheduling liés à l’activation d’une campagne
+- la frontière exacte entre `marketing` et `crm` ;
+- la frontière exacte entre `marketing` et `tracking` ;
+- la frontière exacte entre `marketing` et `newsletter` ;
+- la liste canonique des objets marketing réellement portés par le système ;
+- la hiérarchie entre modèle interne et plateformes externes ;
+- la stratégie de calcul de segments et audiences ;
+- la gouvernance des activations marketing soumises à consentement ;
+- la part d’orchestration réellement assumée en interne.
 
-Il doit toutefois rester maître de sa propre lecture des campagnes et offres marketing.
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
-## Intégrations externes
+---
 
-Le domaine `marketing` ne doit pas parler directement aux systèmes externes.
+## Documents liés
 
-Les interactions avec :
-
-- plateformes emailing
-- plateformes sociales
-- providers publicitaires
-- outils marketing externes
-
-relèvent de :
-
-- `newsletter`
-- `social`
-- `integrations`
-- éventuellement `jobs`
-
-Le domaine `marketing` reste la source de vérité interne des campagnes et opérations marketing structurées.
-
-## Données sensibles / sécurité
-
-Le domaine `marketing` ne porte pas de secrets techniques par lui-même, mais il porte une logique métier sensible car elle impacte directement la communication commerciale de la boutique.
-
-Points de vigilance :
-
-- contrôle strict des droits d’écriture
-- validation des périodes et états de campagne
-- cohérence entre capabilities actives et exposition marketing
-- audit des activations ou modifications significatives
-
-## Observability / audit
-
-### Observability
-
-Il faut pouvoir comprendre :
-
-- pourquoi une campagne est active ou inactive
-- pourquoi une offre est exposée ou non
-- quelle fenêtre temporelle ou quel contexte a influencé l’exposition
-- si une campagne n’est pas propagée à un domaine aval pour cause de capability off, de workflow incomplet ou de règle métier
-
-### Audit
-
-Il faut tracer :
-
-- la création d’une campagne
-- la modification d’une campagne
-- l’activation ou la désactivation d’une campagne
-- les changements significatifs d’offre ou de mise en avant
-- les interventions manuelles importantes
-
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `MarketingCampaign` : campagne marketing structurée
-- `MarketingOffer` : offre ou opération commerciale
-- `MarketingBanner` : bannière ou mise en avant visuelle
-- `MarketingCampaignStatus` : état métier d’une campagne
-- `MarketingExposureWindow` : fenêtre temporelle d’exposition
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- une campagne possède un identifiant stable et un état explicite
-- une campagne ne se confond pas avec une remise ou un coupon
-- une campagne marketing ne vaut pas exécution automatique dans newsletter ou social sans passage par les domaines concernés
-- `marketing` ne se confond pas avec `conversion`, `discounts`, `newsletter` ou `social`
-- les autres domaines ne doivent pas recréer leur propre vérité divergente de la campagne marketing structurée
-
-## Cas d’usage principaux
-
-1. Créer une campagne marketing
-2. Modifier une campagne marketing
-3. Activer ou désactiver une campagne
-4. Définir une offre commerciale mise en avant
-5. Exposer une bannière ou une mise en avant liée à une campagne
-6. Fournir à d’autres domaines une lecture claire des campagnes actives
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- campagne introuvable
-- campagne invalide
-- période de campagne incohérente
-- capability marketingCampaigns désactivée
-- tentative d’activation non autorisée
-- conflit entre plusieurs campagnes incompatibles selon la politique retenue
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `marketing` porte les campagnes et opérations marketing structurées
-- `marketing` est distinct de `discounts`
-- `marketing` est distinct de `conversion`
-- `marketing` est distinct de `newsletter`
-- `marketing` est distinct de `social`
-- les domaines aval consomment les objets marketing, sans que `marketing` exécute lui-même toute la diffusion externe
-- les activations significatives de campagne doivent être auditables et observables
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- les campagnes relèvent de `marketing`
-- les remises et coupons relèvent de `discounts`
-- la diffusion newsletter relève de `newsletter`
-- la diffusion sociale relève de `social`
-- `marketing` ne remplace ni `discounts`, ni `conversion`, ni `newsletter`, ni `social`, ni `integrations`
+- `../../domains/core/customers.md`
+- `crm.md`
+- `newsletter.md`
+- `tracking.md`
+- `consent.md`
+- `legal.md`
+- `audit.md`
+- `observability.md`
+- `../../domains/core/integrations.md`

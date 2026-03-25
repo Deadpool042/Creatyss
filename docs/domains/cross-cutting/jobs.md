@@ -1,286 +1,391 @@
-# Domaine jobs
+# Jobs
 
 ## Rôle
 
-Le domaine `jobs` porte l’exécution asynchrone, différée et rejouable du socle.
+Le domaine `jobs` porte les traitements différés, planifiés, rejouables ou exécutés en arrière-plan dans le système.
 
-Il structure les traitements qui ne doivent pas être exécutés dans le flux synchrone principal ou qui nécessitent une reprise, des retries, une planification ou une exécution résiliente, sans absorber la logique métier coeur des domaines qui déclenchent ces traitements.
+Il définit :
+
+- ce qu’est un job du point de vue du système ;
+- comment un travail différé est représenté ;
+- comment il est déclenché, exécuté, repris ou abandonné ;
+- comment il se distingue d’un événement de domaine, d’un webhook ou d’une intégration ;
+- comment la robustesse d’exécution est garantie.
+
+Le domaine existe pour fournir une représentation structurée des unités de travail asynchrones ou différées, distincte :
+
+- des faits métier (`domain-events`) ;
+- des webhooks ;
+- des intégrations ;
+- de la logique métier coeur ;
+- des logs et métriques d’observabilité.
+
+---
+
+## Classification
+
+### Catégorie documentaire
+
+`cross-cutting`
+
+### Criticité architecturale
+
+`transverse critique`
+
+### Activable
+
+`non`
+
+Le domaine `jobs` est structurel dès lors que le système exécute des traitements :
+
+- différés ;
+- planifiés ;
+- rejouables ;
+- non bloquants ;
+- ou dépendants de mécanismes asynchrones.
+
+---
+
+## Source de vérité
+
+Le domaine `jobs` est la source de vérité pour :
+
+- la représentation des unités de travail différées ;
+- leur état d’exécution ;
+- leur statut de reprise ;
+- leur statut d’échec ;
+- leur planification, si elle est portée ici ;
+- la traçabilité opérationnelle minimale du traitement différé.
+
+Le domaine `jobs` n’est pas la source de vérité pour :
+
+- la vérité métier d’un domaine coeur ;
+- les faits métier eux-mêmes, qui relèvent de `domain-events` ;
+- les flux externes entrants, qui peuvent relever de `webhooks` ;
+- la politique générale d’intégration, qui relève de `integrations` ;
+- les logs, métriques et traces au sens large, qui relèvent d’`observability`.
+
+Un job est une unité de travail.
+Il n’est pas, par nature, un fait métier.
+
+---
 
 ## Responsabilités
 
-Le domaine `jobs` prend en charge :
+Le domaine `jobs` est responsable de :
 
-- les jobs asynchrones
-- les files logiques d’exécution
-- les retries
-- les reprises
-- les statuts d’exécution
-- les tentatives et erreurs d’exécution
-- la planification différée d’un traitement
-- la lecture exploitée des jobs en attente, en cours, échoués, réussis ou abandonnés
-- la base d’exécution consommable par `integrations`, `webhooks`, `notifications`, `newsletter`, `social`, `dashboarding`, `monitoring` et `observability`
+- définir ce qu’est un job dans le système ;
+- représenter les jobs et leurs états ;
+- structurer les traitements différés ;
+- encadrer les politiques de reprise ;
+- encadrer les politiques de retry ;
+- garantir la traçabilité minimale des exécutions ;
+- publier les événements significatifs liés à la vie des jobs ;
+- protéger le système contre les traitements différés opaques ou incontrôlés ;
+- servir de support d’exécution pour des traitements non bloquants.
 
-## Ce que le domaine ne doit pas faire
+Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
-Le domaine `jobs` ne doit pas :
+- jobs planifiés ;
+- jobs déclenchés par événements ;
+- jobs de synchronisation ;
+- jobs de projection ;
+- jobs de réparation ;
+- jobs de recalcul ;
+- jobs opératoires de reprise ;
+- files d’attente ou statuts de worker, si le modèle les porte explicitement.
 
-- porter la logique métier coeur du traitement, qui relève du domaine source
-- remplacer les `domain-events`, qui portent les faits métier internes
-- porter les adaptateurs providers externes, qui relèvent de `integrations`
-- porter les webhooks sortants eux-mêmes, qui relèvent de `webhooks`
-- devenir un fourre-tout où toute logique applicative est déplacée sans frontière claire
-- devenir un simple scheduler technique déconnecté du langage métier du socle
+---
 
-Le domaine `jobs` porte l’exécution asynchrone et résiliente. Il ne remplace ni les domaines coeur, ni `domain-events`, ni `integrations`, ni `webhooks`.
+## Non-responsabilités
 
-## Sous-domaines
+Le domaine `jobs` n’est pas responsable de :
 
-- `queue` : files logiques d’exécution
-- `execution` : exécution et tentative des jobs
-- `retries` : politique de retry et reprise
-- `scheduling` : planification différée des jobs
+- définir la vérité métier d’un domaine coeur ;
+- exprimer un fait métier ;
+- remplacer `domain-events` ;
+- remplacer les intégrations ;
+- remplacer les webhooks ;
+- porter l’observabilité globale ;
+- porter les décisions métier locales ;
+- devenir un fourre-tout de traitements techniques sans propriétaire clair.
 
-## Entrées
+Le domaine `jobs` ne doit pas devenir :
+
+- une zone de code où l’on “met ce qui ne sait pas où aller” ;
+- un substitut à une transaction métier mal modélisée ;
+- un bus implicite sans gouvernance.
+
+---
+
+## Invariants
+
+Les invariants minimaux sont les suivants :
+
+- un job doit avoir une identité traçable ;
+- un job doit avoir une finalité explicite ;
+- un job doit avoir un état d’exécution interprétable ;
+- un job ne doit pas être simultanément dans des états incompatibles ;
+- un job rejouable doit être idempotent ou neutralisé ;
+- un échec de job doit être visible ;
+- une reprise de job doit être traçable ;
+- un job critique ne doit pas rester sans stratégie de retry, d’abandon ou de compensation ;
+- un job ne doit pas masquer une responsabilité métier mal placée.
+
+Le domaine protège la robustesse du travail différé.
+
+---
+
+## Dépendances
+
+### Dépendances métier
+
+Le domaine `jobs` peut être consommé par la plupart des domaines, notamment :
+
+- `products`
+- `pricing`
+- `orders`
+- `payments`
+- `customers`
+- `availability`
+- `shipping`
+- `stores`
+
+### Dépendances transverses
+
+Le domaine dépend fortement de :
+
+- `domain-events`
+- `integrations`
+- `webhooks`
+- `observability`
+- `audit`
+
+### Dépendances externes
+
+Le domaine peut interagir avec :
+
+- files externes ;
+- workers ;
+- schedulers ;
+- systèmes de traitement différé ;
+- services d’intégration externes.
+
+### Règle de frontière
+
+Le domaine `jobs` exécute du travail différé.
+Il ne doit pas absorber :
+
+- la sémantique métier d’un événement ;
+- la vérité d’un domaine coeur ;
+- la politique d’intégration complète ;
+- la logique de transport externe brute.
+
+---
+
+## Événements significatifs
+
+Le domaine `jobs` publie ou peut publier des événements significatifs tels que :
+
+- job créé ;
+- job planifié ;
+- job démarré ;
+- job terminé ;
+- job échoué ;
+- job abandonné ;
+- job rejoué ;
+- job retardé ;
+- job compensé ;
+- file de jobs dégradée.
+
+Le domaine peut consommer des signaux liés à :
+
+- événements de domaine ;
+- webhooks normalisés ;
+- intégrations ;
+- demandes opératoires ;
+- planifications ;
+- besoins de recalcul ou réparation.
+
+Les noms exacts doivent rester dans le langage interne du système.
+
+---
+
+## Cycle de vie
+
+Le domaine `jobs` possède un cycle de vie structurel explicite.
+
+Le cycle exact dépend du modèle retenu, mais il doit au minimum distinguer :
+
+- créé ;
+- planifié, si pertinent ;
+- prêt à exécuter ;
+- en cours ;
+- réussi ;
+- échoué ;
+- abandonné ;
+- rejoué, si pertinent ;
+- archivé, si pertinent.
+
+Le domaine doit éviter :
+
+- les jobs sans état lisible ;
+- les échecs silencieux ;
+- les retries implicites non traçables.
+
+---
+
+## Interfaces et échanges
+
+Le domaine `jobs` expose principalement :
+
+- des commandes de création ou de planification de job ;
+- des lectures d’état de job ;
+- des événements significatifs liés à l’exécution ;
+- des points de reprise ou de relance si le modèle les porte.
 
 Le domaine reçoit principalement :
 
-- des demandes de planification ou d’exécution asynchrone issues de domaines métier ou transverses
-- des événements internes exploitables comme déclencheurs
-- des paramètres d’exécution nécessaires au job
-- des demandes de reprise ou de relance d’un job échoué
-- des demandes de lecture d’état ou d’historique d’exécution
+- des événements de domaine ;
+- des demandes de traitement différé ;
+- des actions opératoires ;
+- des signaux de retry ;
+- des horloges ou planifications.
 
-## Sorties
+Le domaine ne doit pas exposer un contrat couplé à une technologie de queue ou de worker spécifique si ce n’est pas explicitement assumé.
 
-Le domaine expose principalement :
+---
+
+## Contraintes d’intégration
 
-- des jobs structurés
-- des statuts d’exécution
-- des tentatives de job
-- des erreurs d’exécution structurées
-- des lectures exploitables par `integrations`, `webhooks`, `newsletter`, `social`, `dashboarding`, `monitoring` et `observability`
+Le domaine `jobs` peut être exposé à des contraintes telles que :
+
+- duplication ;
+- retry ;
+- ordre de traitement non garanti ;
+- saturation ;
+- jobs bloqués ;
+- retard d’exécution ;
+- traitement partiel ;
+- échecs intermittents ;
+- dépendances externes indisponibles ;
+- besoin de compensation.
 
-## Dépendances vers autres domaines
+Règles minimales :
 
-Le domaine `jobs` peut dépendre de :
+- tout job critique doit avoir une stratégie d’erreur explicite ;
+- tout traitement rejouable doit être idempotent ou neutralisé ;
+- tout échec doit être visible ;
+- la politique de retry doit être bornée ;
+- la reprise doit être traçable ;
+- un job ne doit pas corrompre la vérité métier par répétition non maîtrisée ;
+- la distinction entre job, événement et intégration doit rester claire.
 
-- `domain-events` pour certains déclencheurs internes
-- `audit` pour tracer certaines reprises ou actions sensibles
-- `observability` pour corréler et expliquer les échecs ou retards
-- `monitoring` pour l’exposition de l’état de santé des files et exécutions
-- `stores` pour certains contextes boutique ou multi-boutiques
+---
 
-Les domaines suivants peuvent dépendre de `jobs` :
+## Observabilité et audit
 
-- `integrations`
-- `webhooks`
-- `notifications`
-- `newsletter`
-- `social`
-- `documents`
-- `dashboarding`
-- `monitoring`
-- `observability`
+Le domaine `jobs` doit rendre visibles au minimum :
 
-Et les domaines déclencheurs typiques incluent notamment :
+- les jobs créés ;
+- les jobs en attente ;
+- les jobs en retard ;
+- les jobs en erreur ;
+- les retries ;
+- les abandons ;
+- les reprises opératoires ;
+- les événements significatifs publiés ;
+- les files ou workers dégradés si le modèle les porte.
 
-- `products`
-- `orders`
-- `payments`
-- `returns`
-- `documents`
-- `events`
-- `marketing`
-- `conversion`
+L’audit doit permettre de répondre à des questions comme :
 
-## Capabilities activables liées
+- quel job a été lancé ;
+- quand ;
+- à la suite de quel déclencheur ;
+- avec quel résultat ;
+- avec quel retry ;
+- avec quelle action opératoire ;
+- avec quel impact visible sur un flux métier.
 
-Le domaine `jobs` n’est pas une capability métier optionnelle au sens classique.
+L’observabilité doit distinguer :
 
-Il fait partie de l’architecture structurante du socle.
+- erreur de logique de job ;
+- erreur technique d’exécution ;
+- saturation ;
+- duplication ;
+- retry ;
+- compensation ;
+- abandon.
 
-En revanche, de nombreux jobs ne sont utiles que si certains domaines ou capabilities consommateurs sont actifs, par exemple :
+---
 
-- `newsletter`
-- `socialPublishing`
-- `automaticSocialPosting`
-- `erpIntegration`
-- `electronicInvoicing`
-- `notifications`
-- `serverSideTracking`
+## Impact de maintenance / exploitation
 
-### Règle
+Le domaine `jobs` a un impact d’exploitation très élevé.
 
-Le domaine `jobs` reste présent même si certains traitements spécialisés sont désactivés.
+Raisons :
 
-Exemple :
+- il porte une part importante de la robustesse asynchrone ;
+- il relie potentiellement plusieurs domaines ;
+- il est exposé aux échecs partiels et répétitions ;
+- ses erreurs peuvent rester invisibles si mal instrumenté ;
+- il conditionne la fiabilité des traitements différés.
 
-- le moteur de jobs existe
-- mais aucun job social ne doit être planifié si `socialPublishing = false`
-- aucun job newsletter ne doit être planifié si `newsletter = false`
+En exploitation, une attention particulière doit être portée à :
 
-## Rôles/permissions concernés
+- la lisibilité des états ;
+- les jobs bloqués ;
+- les retries excessifs ;
+- les files dégradées ;
+- les abandons ;
+- les reprises manuelles ;
+- les compensations ;
+- les écarts entre job exécuté et impact métier attendu.
 
-### Rôles
+Le domaine doit être considéré comme critique pour la robustesse opérationnelle du système.
 
-Le domaine `jobs` est principalement gouverné et observé par :
+---
 
-- `platform_owner`
-- `platform_engineer`
+## Limites du domaine
 
-Éventuellement, certains rôles support avancé ou observateurs techniques peuvent avoir une lecture partielle selon la politique retenue.
+Le domaine `jobs` s’arrête :
 
-Les rôles boutique ne doivent pas administrer librement les files et politiques d’exécution transverses du socle.
+- avant la vérité métier d’un domaine coeur ;
+- avant le fait métier publié (`domain-events`) ;
+- avant la politique d’intégration globale ;
+- avant les webhooks comme mécanisme d’entrée ;
+- avant l’observabilité générale du système ;
+- avant la logique métier locale d’un domaine consommateur.
 
-### Permissions
+Le domaine `jobs` porte le travail différé.
+Il ne doit pas absorber toute l’asynchronie ni toute la complexité du système.
 
-Exemples de permissions concernées :
+---
 
-- `monitoring.read`
-- `observability.read`
-- `integrations.read`
-- `integrations.write`
-- `audit.read`
+## Questions ouvertes
 
-Selon le niveau de détail retenu plus tard, des permissions plus spécifiques au pilotage ou à la reprise manuelle des jobs pourront être ajoutées.
+À confirmer explicitement dans le projet :
 
-## Événements émis
+- la frontière exacte entre `jobs` et `domain-events` ;
+- la frontière exacte entre `jobs` et `integrations` ;
+- la frontière exacte entre `jobs` et `webhooks` ;
+- la politique canonique de retry ;
+- la politique d’abandon ;
+- la stratégie de compensation ;
+- la hiérarchie entre jobs internes et infrastructures externes ;
+- la liste des jobs réellement structurants du système.
 
-Le domaine peut émettre des domain events internes du type :
+Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
-- `job.created`
-- `job.started`
-- `job.succeeded`
-- `job.failed`
-- `job.retry.scheduled`
-- `job.cancelled`
-- `job.status.changed`
+---
 
-## Événements consommés
+## Documents liés
 
-Le domaine peut consommer certains événements internes du type :
-
-- `product.published`
-- `order.created`
-- `invoice.generated`
-- `event.published`
-- `newsletter.campaign.scheduled`
-- `social.publication.scheduled`
-- `store.capabilities.updated`
-
-Il peut également consommer des demandes directes d’orchestration asynchrone provenant de domaines source, sans que ces demandes deviennent elles-mêmes la vérité métier du domaine.
-
-## Intégrations externes
-
-Le domaine `jobs` ne doit pas parler directement aux providers externes comme source de vérité principale.
-
-Les jobs peuvent exécuter des traitements qui s’appuient sur :
-
-- `integrations`
-- `webhooks`
-- d’autres domaines consommateurs
-
-Mais `jobs` reste responsable du cadre d’exécution asynchrone, pas du protocole provider lui-même.
-
-## Données sensibles / sécurité
-
-Le domaine `jobs` peut porter des paramètres techniques et métier sensibles.
-
-Points de vigilance :
-
-- contrôle strict des droits de lecture et d’action sur les jobs
-- protection des reprises manuelles, annulations ou relances sensibles
-- séparation claire entre statut du job, erreur technique et erreur métier source
-- limitation de l’exposition des payloads ou paramètres sensibles selon le rôle et le scope
-- audit des interventions manuelles importantes
-
-## Observability / audit
-
-### Observability
-
-Il faut pouvoir comprendre :
-
-- quel job a été créé
-- pourquoi il a été planifié
-- quel domaine ou événement l’a déclenché
-- combien de tentatives ont eu lieu
-- pourquoi une tentative a échoué
-- quand une reprise ou un retry est prévu
-- si un job n’est pas planifié à cause d’une capability off ou d’une règle métier
-
-### Audit
-
-Le domaine `jobs` n’a pas vocation à auditer chaque tentative technique de faible importance comme une trace de conformité autonome.
-
-En revanche, certaines actions sensibles doivent pouvoir être tracées, notamment :
-
-- les reprises manuelles
-- les annulations manuelles
-- les changements significatifs de politique de retry ou de planification
-- certaines interventions administratives importantes
-
-## Modèle de données conceptuel
-
-Les principaux objets métier conceptuels du domaine sont :
-
-- `Job` : traitement asynchrone structuré
-- `JobQueue` : file logique d’exécution
-- `JobStatus` : état du job
-- `JobAttempt` : tentative d’exécution
-- `JobError` : erreur structurée d’exécution
-- `JobSchedule` : planification ou prochain passage prévu
-- `JobTriggerRef` : référence vers le déclencheur logique du job
-
-## Invariants métier
-
-Les règles suivantes doivent toujours rester vraies :
-
-- un job possède un type explicite et un statut explicite
-- `jobs` ne se confond pas avec `domain-events`
-- `jobs` ne se confond pas avec `integrations`
-- l’exécution d’un job reste distincte du fait métier qui l’a déclenché
-- les autres domaines ne doivent pas recréer librement leur propre moteur d’exécution asynchrone divergent quand le cadre commun `jobs` existe
-- une capability désactivée peut empêcher la planification d’un type de job sans supprimer la structure du domaine
-
-## Cas d’usage principaux
-
-1. Planifier une synchronisation ERP différée
-2. Retenter une publication sociale échouée
-3. Exécuter l’envoi d’une campagne newsletter en différé
-4. Gérer un envoi webhook avec retry
-5. Générer un document lourd hors flux synchrone principal
-6. Exposer à l’admin technique une lecture claire des jobs en attente, en cours ou échoués
-
-## Cas limites / erreurs métier
-
-Quelques cas d’erreur typiques :
-
-- job introuvable
-- type de job inconnu ou invalide
-- file logique inconnue
-- tentative de reprise non autorisée
-- policy de retry invalide
-- capability nécessaire désactivée
-- erreur répétée sans possibilité de reprise automatique
-
-## Décisions d’architecture
-
-Les choix structurants du domaine sont :
-
-- `jobs` porte le cadre d’exécution asynchrone, différé et rejouable du socle
-- `jobs` est distinct de `domain-events`
-- `jobs` est distinct de `integrations`
-- `jobs` est distinct de `webhooks`
-- les domaines source déclenchent des jobs sans déléguer leur vérité métier au domaine `jobs`
-- les jobs exécutent des traitements consommateurs ou transverses dans un cadre résilient commun
-- les reprises et exécutions sensibles doivent être observables et auditables
-
-## Questions explicitement closes
-
-Les points suivants sont considérés comme décidés :
-
-- l’exécution asynchrone structurée relève de `jobs`
-- les faits métier internes relèvent de `domain-events`
-- les providers externes relèvent de `integrations`
-- les webhooks sortants relèvent de `webhooks`
-- `jobs` ne remplace ni `domain-events`, ni `integrations`, ni `webhooks`, ni les domaines métier source
+- `../../architecture/30-execution/30-evenements-de-domaine-et-flux-asynchrones.md`
+- `../../architecture/30-execution/31-jobs-et-traitements-en-arriere-plan.md`
+- `../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
+- `../../domains/core/domain-events.md`
+- `../../domains/core/integrations.md`
+- `../../domains/core/webhooks.md`
+- `observability.md`
+- `audit.md`
