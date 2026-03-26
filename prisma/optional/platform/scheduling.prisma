@@ -1,3 +1,8 @@
+/// Feature: platform.scheduling
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, cross-cutting.jobs
+
 enum SchedulePlanStatus {
   DRAFT
   ACTIVE

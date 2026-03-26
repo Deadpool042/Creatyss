@@ -1,3 +1,8 @@
+/// Feature: commerce.discounts
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, catalog.products, catalog.pricing, commerce.orders
+
 enum DiscountStatus {
   DRAFT
   ACTIVE

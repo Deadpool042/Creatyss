@@ -1,3 +1,8 @@
+/// Feature: catalog.media
+/// Category: core
+/// Level: core
+/// DependsOn: foundation.store
+
 enum MediaAssetStatus {
   DRAFT
   ACTIVE

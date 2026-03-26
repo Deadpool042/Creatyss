@@ -1,3 +1,8 @@
+/// Feature: catalog.pricing
+/// Category: core
+/// Level: core
+/// DependsOn: foundation.store, catalog.products
+
 enum PriceListStatus {
   DRAFT
   ACTIVE

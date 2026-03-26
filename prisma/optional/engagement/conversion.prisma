@@ -1,3 +1,8 @@
+/// Feature: engagement.conversion
+/// Category: optional
+/// Level: L1
+/// DependsOn: foundation.store, engagement.analytics, cross-cutting.domain-events
+
 enum ConversionFlowStatus {
   DRAFT
   ACTIVE

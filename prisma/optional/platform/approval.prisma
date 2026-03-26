@@ -1,3 +1,8 @@
+/// Feature: platform.approval
+/// Category: optional
+/// Level: L3
+/// DependsOn: foundation.identity, cross-cutting.audit
+
 enum ApprovalRequestStatus {
   PENDING
   APPROVED

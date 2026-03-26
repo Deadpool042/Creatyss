@@ -1,3 +1,7 @@
+/// Feature: satellite.search
+/// Category: satellite
+/// Level: L1
+/// DependsOn: foundation.store, catalog.products, content.blog, content.pages
 enum SearchDocumentStatus {
   ACTIVE
   INACTIVE

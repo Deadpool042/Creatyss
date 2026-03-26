@@ -1,3 +1,8 @@
+/// Feature: commerce.checkout
+/// Category: core
+/// Level: core
+/// DependsOn: foundation.store, commerce.cart, commerce.customers
+
 enum CheckoutStatus {
   OPEN
   READY

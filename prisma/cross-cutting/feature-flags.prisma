@@ -1,3 +1,8 @@
+/// Feature: cross-cutting.feature-flags
+/// Category: cross-cutting
+/// Level: L1
+/// DependsOn: foundation.store
+
 enum FeatureFlagStatus {
   DRAFT
   ACTIVE

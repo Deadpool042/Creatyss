@@ -1,3 +1,8 @@
+/// Feature: platform.import
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, cross-cutting.jobs
+
 enum ImportRequestStatus {
   REQUESTED
   VALIDATED

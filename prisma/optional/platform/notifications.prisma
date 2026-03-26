@@ -1,3 +1,8 @@
+/// Feature: platform.notifications
+/// Category: optional
+/// Level: L1
+/// DependsOn: foundation.store, platform.email
+
 enum NotificationStatus {
   PENDING
   SENT

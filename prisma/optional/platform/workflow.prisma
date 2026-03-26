@@ -1,3 +1,8 @@
+/// Feature: platform.workflow
+/// Category: optional
+/// Level: L3
+/// DependsOn: foundation.store, platform.scheduling, cross-cutting.jobs
+
 enum WorkflowDefinitionStatus {
   DRAFT
   ACTIVE

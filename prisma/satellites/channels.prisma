@@ -1,3 +1,8 @@
+/// Feature: satellite.channels
+/// Category: satellite
+/// Level: L1
+/// DependsOn: foundation.store, catalog.products, content.pages
+
 enum ChannelStatus {
   DRAFT
   ACTIVE

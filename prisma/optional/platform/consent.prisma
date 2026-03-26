@@ -1,3 +1,8 @@
+/// Feature: platform.consent
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, commerce.customers
+
 enum ConsentStatus {
   GRANTED
   DENIED

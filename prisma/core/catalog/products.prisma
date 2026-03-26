@@ -1,3 +1,8 @@
+/// Feature: catalog.products
+/// Category: core
+/// Level: core
+/// DependsOn: foundation.store, catalog.categories, catalog.media
+
 enum ProductStatus {
   DRAFT
   ACTIVE

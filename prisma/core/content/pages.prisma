@@ -1,3 +1,8 @@
+/// Feature: content.pages
+/// Category: core
+/// Level: core
+/// DependsOn: foundation.store, content.seo
+
 enum PageStatus {
   DRAFT
   ACTIVE

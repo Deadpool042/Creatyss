@@ -1,3 +1,8 @@
+/// Feature: content.seo
+/// Category: core
+/// Level: core
+/// DependsOn: foundation.store
+
 enum SeoStatus {
   DRAFT
   ACTIVE

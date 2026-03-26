@@ -1,3 +1,8 @@
+/// Feature: platform.webhooks
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, cross-cutting.jobs
+
 enum WebhookEndpointStatus {
   DRAFT
   ACTIVE

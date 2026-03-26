@@ -1,3 +1,8 @@
+/// Feature: commerce.loyalty
+/// Category: optional
+/// Level: L3
+/// DependsOn: foundation.store, commerce.customers, commerce.orders
+
 enum LoyaltyAccountStatus {
   ACTIVE
   INACTIVE

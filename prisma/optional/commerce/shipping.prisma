@@ -1,3 +1,8 @@
+/// Feature: commerce.shipping
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, commerce.orders, commerce.fulfillment
+
 enum ShippingMethodStatus {
   DRAFT
   ACTIVE

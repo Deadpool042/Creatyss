@@ -1,3 +1,8 @@
+/// Feature: platform.localization
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, content.pages, content.blog
+
 enum LocalizationLocaleStatus {
   ACTIVE
   INACTIVE

@@ -1,3 +1,8 @@
+/// Feature: commerce.fulfillment
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, commerce.orders
+
 enum FulfillmentStatus {
   PENDING
   READY

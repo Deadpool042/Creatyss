@@ -1,3 +1,8 @@
+/// Feature: engagement.support
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, commerce.customers, commerce.orders
+
 enum SupportTicketStatus {
   OPEN
   IN_PROGRESS

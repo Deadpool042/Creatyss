@@ -1,3 +1,8 @@
+/// Feature: commerce.payments
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, commerce.orders, commerce.customers
+
 enum PaymentStatus {
   PENDING
   AUTHORIZED

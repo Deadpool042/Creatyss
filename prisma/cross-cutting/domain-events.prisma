@@ -1,3 +1,8 @@
+/// Feature: cross-cutting.domain-events
+/// Category: cross-cutting
+/// Level: L1
+/// DependsOn: foundation.store
+
 enum DomainEventStatus {
   PENDING
   PUBLISHED

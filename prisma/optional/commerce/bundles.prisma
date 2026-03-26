@@ -1,3 +1,8 @@
+/// Feature: commerce.bundles
+/// Category: optional
+/// Level: L3
+/// DependsOn: foundation.store, catalog.products, catalog.pricing
+
 enum BundleStatus {
   DRAFT
   ACTIVE

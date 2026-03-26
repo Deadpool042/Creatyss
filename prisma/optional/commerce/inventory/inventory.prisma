@@ -1,0 +1,111 @@
+enum InventoryItemStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+enum InventoryReservationStatus {
+  ACTIVE
+  RELEASED
+  CONSUMED
+  EXPIRED
+  CANCELLED
+}
+
+enum InventoryMovementType {
+  MANUAL_ADJUSTMENT
+  RECEIPT
+  RESERVATION
+  RELEASE
+  CONSUMPTION
+  RETURN
+  CORRECTION
+}
+
+model InventoryItem {
+  id        String  @id @default(cuid())
+  storeId   String?
+  variantId String
+
+  sku    String?
+  status InventoryItemStatus @default(ACTIVE)
+  notes  String?
+
+  onHandQuantity   Int @default(0)
+  reservedQuantity Int @default(0)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  store   Store?         @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+
+  reservations InventoryReservation[]
+  movements    InventoryMovement[]
+
+  @@unique([storeId, variantId])
+  @@index([storeId, status])
+  @@index([variantId])
+  @@map("inventory_items")
+}
+
+model InventoryReservation {
+  id              String @id @default(cuid())
+  inventoryItemId String
+
+  cartId     String?
+  checkoutId String?
+  orderId    String?
+
+  quantity Int
+  status   InventoryReservationStatus @default(ACTIVE)
+  reason   String?
+  notes    String?
+
+  expiresAt   DateTime?
+  releasedAt  DateTime?
+  consumedAt  DateTime?
+  cancelledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  inventoryItem InventoryItem @relation(fields: [inventoryItemId], references: [id], onDelete: Cascade)
+  cart          Cart?         @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  checkout      Checkout?     @relation(fields: [checkoutId], references: [id], onDelete: Cascade)
+  order         Order?        @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  cartLine      CartLine?     @relation(fields: [cartLineId], references: [id])
+  cartLineId    String?
+
+  @@index([inventoryItemId, status])
+  @@index([inventoryItemId, createdAt])
+  @@index([cartId])
+  @@index([checkoutId])
+  @@index([orderId])
+  @@index([status, expiresAt])
+  @@map("inventory_reservations")
+}
+
+model InventoryMovement {
+  id              String @id @default(cuid())
+  inventoryItemId String
+
+  type          InventoryMovementType
+  quantityDelta Int
+
+  referenceType String?
+  referenceId   String?
+
+  reason String?
+  notes  String?
+
+  createdAt DateTime @default(now())
+
+  inventoryItem InventoryItem @relation(fields: [inventoryItemId], references: [id], onDelete: Cascade)
+
+  @@index([inventoryItemId, type])
+  @@index([inventoryItemId, createdAt])
+  @@index([referenceType, referenceId])
+  @@map("inventory_movements")
+}

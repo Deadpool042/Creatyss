@@ -1,3 +1,8 @@
+/// Feature: commerce.orders
+/// Category: core
+/// Level: core
+/// DependsOn: foundation.store, commerce.customers, commerce.checkout, catalog.products, catalog.pricing
+
 enum OrderStatus {
   PENDING
   CONFIRMED

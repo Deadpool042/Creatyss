@@ -1,3 +1,8 @@
+/// Feature: engagement.newsletter
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, commerce.customers, platform.email
+
 enum NewsletterSubscriberStatus {
   PENDING
   SUBSCRIBED

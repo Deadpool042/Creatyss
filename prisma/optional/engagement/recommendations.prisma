@@ -1,3 +1,8 @@
+/// Feature: engagement.recommendations
+/// Category: optional
+/// Level: L3
+/// DependsOn: foundation.store, catalog.products, engagement.behavior, engagement.conversion
+
 enum RecommendationRuleStatus {
   DRAFT
   ACTIVE

@@ -1,3 +1,8 @@
+/// Feature: engagement.analytics
+/// Category: optional
+/// Level: L1
+/// DependsOn: foundation.store, cross-cutting.domain-events
+
 enum AnalyticsMetricStatus {
   ACTIVE
   INACTIVE

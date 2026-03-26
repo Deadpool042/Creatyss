@@ -1,3 +1,8 @@
+/// Feature: satellite.documents
+/// Category: satellite
+/// Level: L2
+/// DependsOn: foundation.store, commerce.orders
+
 enum DocumentStatus {
   DRAFT
   GENERATED

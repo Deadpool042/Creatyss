@@ -1,3 +1,8 @@
+/// Feature: platform.fraud-risk
+/// Category: optional
+/// Level: L3
+/// DependsOn: foundation.store, commerce.orders, commerce.payments
+
 enum FraudRiskLevel {
   LOW
   MEDIUM

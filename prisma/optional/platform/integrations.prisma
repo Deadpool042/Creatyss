@@ -1,3 +1,8 @@
+/// Feature: platform.integrations
+/// Category: optional
+/// Level: L2
+/// DependsOn: foundation.store, platform.webhooks
+
 enum IntegrationStatus {
   DRAFT
   ACTIVE
