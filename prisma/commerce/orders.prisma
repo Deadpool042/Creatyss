@@ -1,133 +1,175 @@
-// -----------------------------------------------------------------------------
-// Domaine: orders
-// Responsabilité: commande durable, lignes, snapshots, cycle métier commande.
-// -----------------------------------------------------------------------------
-// prisma/orders.prisma
-
 enum OrderStatus {
-  DRAFT
   PENDING
   CONFIRMED
-  CANCELLED
+  PROCESSING
   COMPLETED
+  CANCELLED
+  ARCHIVED
 }
 
-enum OrderLineType {
-  PRODUCT
-  GIFT_CARD
+enum OrderAddressType {
+  BILLING
+  SHIPPING
 }
 
 model Order {
   id         String  @id @default(cuid())
   storeId    String
   customerId String?
-  checkoutId String? @unique
+  checkoutId String?
+  cartId     String?
 
   orderNumber String
   status      OrderStatus @default(PENDING)
 
-  currencyCode   CurrencyCode
-  subtotalAmount Decimal      @db.Decimal(12, 2)
-  discountAmount Decimal      @default(0) @db.Decimal(12, 2)
-  shippingAmount Decimal      @default(0) @db.Decimal(12, 2)
-  taxAmount      Decimal      @default(0) @db.Decimal(12, 2)
-  totalAmount    Decimal      @db.Decimal(12, 2)
+  currencyCode CurrencyCode
 
-  customerEmail     String
+  subtotalAmount Decimal @db.Decimal(12, 2)
+  shippingAmount Decimal @db.Decimal(12, 2)
+  discountAmount Decimal @db.Decimal(12, 2)
+  taxAmount      Decimal @db.Decimal(12, 2)
+  totalAmount    Decimal @db.Decimal(12, 2)
+
+  customerEmail     String?
   customerFirstName String?
   customerLastName  String?
-  customerPhone     String?
 
-  billingFirstName   String?
-  billingLastName    String?
-  billingCompany     String?
-  billingLine1       String?
-  billingLine2       String?
-  billingPostalCode  String?
-  billingCity        String?
-  billingRegion      String?
-  billingCountryCode String?
-  billingPhone       String?
+  notes String?
 
-  shippingFirstName   String?
-  shippingLastName    String?
-  shippingCompany     String?
-  shippingLine1       String?
-  shippingLine2       String?
-  shippingPostalCode  String?
-  shippingCity        String?
-  shippingRegion      String?
-  shippingCountryCode String?
-  shippingPhone       String?
-
-  notes       String?
   placedAt    DateTime?
   cancelledAt DateTime?
-  completedAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store                Store                   @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  customer             Customer?               @relation(fields: [customerId], references: [id], onDelete: SetNull)
-  checkout             Checkout?               @relation(fields: [checkoutId], references: [id], onDelete: Restrict)
-  lines                OrderLine[]
-  payments             Payment[]
-  shippingSelection    OrderShippingSelection?
-  fulfillments         Fulfillment[]
-  returnRequests       ReturnRequest[]
-  discounts            OrderDiscount[]
-  couponRedemptions    CouponRedemption[]
-  loyaltyTransactions  LoyaltyTransaction[]
-  giftCardTransactions GiftCardTransaction[]
-  commercialDocuments  CommercialDocument[]
-  fraudRiskAssessments FraudRiskAssessment[]
-  attributionRecords   AttributionRecord[]
-  emailMessages        EmailMessage[]
-  giftingContext       GiftingContext?
-  notifications        Notification[]
-  supportTickets       SupportTicket[]
+  store    Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  checkout Checkout? @relation(fields: [checkoutId], references: [id], onDelete: SetNull)
+  cart     Cart?     @relation(fields: [cartId], references: [id], onDelete: SetNull)
+
+  purchasedGiftCards    GiftCard[]              @relation("GiftCardPurchasedOrder")
+  giftCardTransactions  GiftCardTransaction[]   @relation("GiftCardTransactionOrder")
+  lines                 OrderLine[]
+  addresses             OrderAddress[]
+  shippingSelection     OrderShippingSelection?
+  statusHistory         OrderStatusHistory[]
+  shipments             Shipment[]
+  payments              Payment[]
+  documents             Document[]
+  returnRequests        ReturnRequest[]
+  discountRedemptions   DiscountRedemption[]
+  supportTickets        SupportTicket[]
+  giftRequests          GiftRequest[]
+  loyaltyTransactions   LoyaltyTransaction[]
+  fulfillments          Fulfillment[]
+  inventoryReservations InventoryReservation[]
 
   @@unique([storeId, orderNumber])
-  @@index([storeId])
-  @@index([customerId])
-  @@index([status])
+  @@index([storeId, status])
+  @@index([customerId, status])
+  @@index([checkoutId])
+  @@index([cartId])
   @@index([placedAt])
   @@map("orders")
 }
 
 model OrderLine {
-  id      String @id @default(cuid())
-  orderId String
-
-  type OrderLineType @default(PRODUCT)
-
+  id        String  @id @default(cuid())
+  orderId   String
   productId String?
   variantId String?
 
-  productSlugSnapshot String?
-  productNameSnapshot String
-  variantNameSnapshot String?
-  skuSnapshot         String?
-
   quantity           Int
-  unitPriceAmount    Decimal @db.Decimal(12, 2)
-  lineSubtotalAmount Decimal @db.Decimal(12, 2)
-  lineDiscountAmount Decimal @default(0) @db.Decimal(12, 2)
-  lineTaxAmount      Decimal @default(0) @db.Decimal(12, 2)
-  lineTotalAmount    Decimal @db.Decimal(12, 2)
+  unitPriceAmount    Decimal  @db.Decimal(12, 2)
+  compareAtAmount    Decimal? @db.Decimal(12, 2)
+  lineSubtotalAmount Decimal  @db.Decimal(12, 2)
+  lineDiscountAmount Decimal  @db.Decimal(12, 2)
+  lineTaxAmount      Decimal  @db.Decimal(12, 2)
+  lineTotalAmount    Decimal  @db.Decimal(12, 2)
+
+  productName String
+  variantName String?
+  sku         String?
+  productSlug String?
+  variantSlug String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  order            Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product          Product?          @relation(fields: [productId], references: [id], onDelete: SetNull)
-  variant          ProductVariant?   @relation(fields: [variantId], references: [id], onDelete: SetNull)
-  fulfillmentLines FulfillmentLine[]
-  returnLines      ReturnLine[]
+  order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  fulfillmentItems FulfillmentItem[]
+  returnItems      ReturnItem[]
 
   @@index([orderId])
   @@index([productId])
   @@index([variantId])
   @@map("order_lines")
+}
+
+model OrderAddress {
+  id      String           @id @default(cuid())
+  orderId String
+  type    OrderAddressType
+
+  firstName String?
+  lastName  String?
+  company   String?
+
+  line1       String
+  line2       String?
+  postalCode  String
+  city        String
+  region      String?
+  countryCode String
+
+  phone String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@unique([orderId, type])
+  @@index([orderId])
+  @@map("order_addresses")
+}
+
+model OrderShippingSelection {
+  id               String  @id @default(cuid())
+  orderId          String  @unique
+  shippingMethodId String?
+
+  methodCode   String
+  methodName   String
+  amount       Decimal      @db.Decimal(12, 2)
+  currencyCode CurrencyCode
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order          Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  shippingMethod ShippingMethod? @relation(fields: [shippingMethodId], references: [id], onDelete: SetNull)
+
+  @@index([shippingMethodId])
+  @@map("order_shipping_selections")
+}
+
+model OrderStatusHistory {
+  id         String      @id @default(cuid())
+  orderId    String
+  status     OrderStatus
+  reasonCode String?
+  notes      String?
+
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+  @@index([status, createdAt])
+  @@map("order_status_history")
 }

@@ -1,0 +1,137 @@
+enum HomepageStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+enum HomepageSectionType {
+  HERO
+  RICH_TEXT
+  FEATURED_PRODUCTS
+  FEATURED_CATEGORIES
+  EDITORIAL
+  BLOG_POSTS
+  CTA
+}
+
+model Homepage {
+  id      String @id @default(cuid())
+  storeId String
+
+  code   String
+  title  String?
+  status HomepageStatus @default(DRAFT)
+
+  isDefault Boolean @default(true)
+
+  publishedAt DateTime?
+  archivedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  sections HomepageSection[]
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
+  @@index([storeId, isDefault])
+  @@map("homepages")
+}
+
+model HomepageSection {
+  id         String @id @default(cuid())
+  homepageId String
+
+  code String
+  type HomepageSectionType
+
+  title    String?
+  subtitle String?
+  body     String?
+
+  primaryImageId   String?
+  secondaryImageId String?
+
+  ctaLabel String?
+  ctaHref  String?
+
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  homepage       Homepage    @relation(fields: [homepageId], references: [id], onDelete: Cascade)
+  primaryImage   MediaAsset? @relation("HomepageSectionPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
+  secondaryImage MediaAsset? @relation("HomepageSectionSecondaryImage", fields: [secondaryImageId], references: [id], onDelete: SetNull)
+
+  featuredProducts   HomepageFeaturedProduct[]
+  featuredCategories HomepageFeaturedCategory[]
+  featuredPosts      HomepageFeaturedBlogPost[]
+
+  @@unique([homepageId, code])
+  @@index([homepageId, isActive])
+  @@index([homepageId, sortOrder])
+  @@index([type])
+  @@index([primaryImageId])
+  @@index([secondaryImageId])
+  @@map("homepage_sections")
+}
+
+model HomepageFeaturedProduct {
+  id                String @id @default(cuid())
+  homepageSectionId String
+  productId         String
+
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  homepageSection HomepageSection @relation(fields: [homepageSectionId], references: [id], onDelete: Cascade)
+  product         Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([homepageSectionId, productId])
+  @@index([homepageSectionId, sortOrder])
+  @@index([productId])
+  @@map("homepage_featured_products")
+}
+
+model HomepageFeaturedCategory {
+  id                String @id @default(cuid())
+  homepageSectionId String
+  categoryId        String
+
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  homepageSection HomepageSection @relation(fields: [homepageSectionId], references: [id], onDelete: Cascade)
+  category        Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([homepageSectionId, categoryId])
+  @@index([homepageSectionId, sortOrder])
+  @@index([categoryId])
+  @@map("homepage_featured_categories")
+}
+
+model HomepageFeaturedBlogPost {
+  id                String @id @default(cuid())
+  homepageSectionId String
+  blogPostId        String
+
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  homepageSection HomepageSection @relation(fields: [homepageSectionId], references: [id], onDelete: Cascade)
+  blogPost        BlogPost        @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+
+  @@unique([homepageSectionId, blogPostId])
+  @@index([homepageSectionId, sortOrder])
+  @@index([blogPostId])
+  @@map("homepage_featured_blog_posts")
+}

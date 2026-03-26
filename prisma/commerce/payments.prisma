@@ -1,98 +1,119 @@
-// -----------------------------------------------------------------------------
-// Domaine: payments
-// Responsabilité: paiements, opérations, statuts, références PSP traduites.
-// -----------------------------------------------------------------------------
-// prisma/payments.prisma
-
 enum PaymentStatus {
   PENDING
   AUTHORIZED
   CAPTURED
+  PARTIALLY_REFUNDED
+  REFUNDED
   FAILED
   CANCELLED
-  REFUNDED
-  PARTIALLY_REFUNDED
+  EXPIRED
 }
 
-enum PaymentMethodKind {
-  CARD
-  BANK_TRANSFER
-  GIFT_CARD
-  OTHER
-}
-
-enum PaymentRefundStatus {
+enum PaymentAttemptStatus {
   PENDING
   SUCCEEDED
   FAILED
   CANCELLED
+  EXPIRED
+}
+
+enum PaymentMethodType {
+  CARD
+  BANK_TRANSFER
+  WALLET
+  CASH_ON_DELIVERY
+  OTHER
 }
 
 model Payment {
   id      String @id @default(cuid())
+  storeId String
   orderId String
 
   status     PaymentStatus     @default(PENDING)
-  methodKind PaymentMethodKind
+  methodType PaymentMethodType
 
-  amount       Decimal      @db.Decimal(12, 2)
-  currencyCode CurrencyCode
+  currencyCode     CurrencyCode
+  amountAuthorized Decimal?     @db.Decimal(12, 2)
+  amountCaptured   Decimal?     @db.Decimal(12, 2)
+  amountRefunded   Decimal      @default(0) @db.Decimal(12, 2)
 
-  providerName             String?
-  providerReference        String?
-  providerPaymentIntentRef String?
+  provider          String?
+  providerReference String?
+  providerPaymentId String?
 
   authorizedAt DateTime?
   capturedAt   DateTime?
   failedAt     DateTime?
   cancelledAt  DateTime?
-  refundedAt   DateTime?
-
-  failureCode    String?
-  failureMessage String?
+  expiredAt    DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  order                Order                 @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  refunds              PaymentRefund[]
-  notifications        Notification[]
-  supportTickets       SupportTicket[]
-  fraudRiskAssessments FraudRiskAssessment[]
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  order Order @relation(fields: [orderId], references: [id], onDelete: Restrict)
 
+  attempts PaymentAttempt[]
+  refunds  PaymentRefund[]
+
+  @@index([storeId, status])
   @@index([orderId])
-  @@index([status])
-  @@index([methodKind])
-  @@index([providerReference])
+  @@index([provider, providerReference])
+  @@index([providerPaymentId])
   @@map("payments")
+}
+
+model PaymentAttempt {
+  id        String @id @default(cuid())
+  paymentId String
+
+  status PaymentAttemptStatus @default(PENDING)
+
+  provider          String?
+  providerReference String?
+  idempotencyKey    String?
+
+  requestedAmount Decimal @db.Decimal(12, 2)
+  responseCode    String?
+  responseMessage String?
+
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+  failedAt    DateTime?
+  cancelledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId, status])
+  @@index([provider, providerReference])
+  @@index([idempotencyKey])
+  @@map("payment_attempts")
 }
 
 model PaymentRefund {
   id        String @id @default(cuid())
   paymentId String
 
-  amount       Decimal             @db.Decimal(12, 2)
+  amount       Decimal      @db.Decimal(12, 2)
   currencyCode CurrencyCode
-  status       PaymentRefundStatus @default(PENDING)
 
-  reason                  String?
-  idempotencyKey          String
-  providerRefundReference String?
+  provider          String?
+  providerReference String?
 
-  succeededAt DateTime?
-  failedAt    DateTime?
-  cancelledAt DateTime?
+  reasonCode String?
+  notes      String?
 
-  failureCode    String?
-  failureMessage String?
+  refundedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
 
-  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Restrict)
-
-  @@unique([paymentId, idempotencyKey])
   @@index([paymentId])
-  @@index([status])
+  @@index([provider, providerReference])
   @@map("payment_refunds")
 }

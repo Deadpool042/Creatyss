@@ -1,91 +1,69 @@
-// -----------------------------------------------------------------------------
-// Domaine: social
-// Responsabilité: comptes sociaux connectés, posts sociaux, publication.
-// Note sécurité : jamais de token brut en clair — accessTokenHash est un hash,
-// et toute clé sensible doit passer par un vault externe.
-// -----------------------------------------------------------------------------
-// prisma/social.prisma
-
-enum SocialPlatform {
-  INSTAGRAM
-  FACEBOOK
-  TWITTER_X
-  LINKEDIN
-  TIKTOK
-  PINTEREST
-}
-
-enum SocialAccountStatus {
-  ACTIVE
-  EXPIRED
-  REVOKED
-  ARCHIVED
-}
-
-enum SocialPostStatus {
+enum SocialPublicationStatus {
   DRAFT
   SCHEDULED
   PUBLISHED
   FAILED
   CANCELLED
+  ARCHIVED
 }
 
-model SocialAccount {
-  id      String @id @default(cuid())
-  storeId String
+model SocialPublication {
+  id      String  @id @default(cuid())
+  storeId String?
 
-  platform          SocialPlatform
-  externalAccountId String
-  displayName       String?
+  subjectType String?
+  subjectId   String?
 
-  // Jamais de token brut — référence vers un vault externe
-  credentialRef String?
+  channelCode String
+  status      SocialPublicationStatus @default(DRAFT)
 
-  status SocialAccountStatus @default(ACTIVE)
-
-  tokenExpiresAt DateTime?
-  connectedAt    DateTime  @default(now())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  store Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  posts SocialPost[]
-
-  @@unique([storeId, platform, externalAccountId])
-  @@index([storeId])
-  @@index([platform])
-  @@index([status])
-  @@map("social_accounts")
-}
-
-model SocialPost {
-  id              String @id @default(cuid())
-  socialAccountId String
-  storeId         String
-
-  content   String
-  mediaUrls String[]
-
-  status SocialPostStatus @default(DRAFT)
+  title String?
+  body  String?
 
   scheduledAt DateTime?
   publishedAt DateTime?
   failedAt    DateTime?
   cancelledAt DateTime?
+  archivedAt  DateTime?
 
-  externalPostId String?
-  failureReason  String?
+  provider          String?
+  providerReference String?
+  errorCode         String?
+  errorMessage      String?
+
+  createdByUserId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  socialAccount SocialAccount @relation(fields: [socialAccountId], references: [id], onDelete: Cascade)
-  store         Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  store     Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  createdBy User?  @relation("SocialPublicationCreatedByUser", fields: [createdByUserId], references: [id], onDelete: SetNull)
 
-  @@index([socialAccountId])
-  @@index([storeId])
-  @@index([status])
-  @@index([scheduledAt])
-  @@map("social_posts")
+  assets SocialPublicationAsset[]
+
+  @@index([storeId, status])
+  @@index([subjectType, subjectId])
+  @@index([channelCode, status])
+  @@index([scheduledAt, status])
+  @@index([createdByUserId])
+  @@index([provider, providerReference])
+  @@map("social_publications")
+}
+
+model SocialPublicationAsset {
+  id                  String @id @default(cuid())
+  socialPublicationId String
+  mediaAssetId        String
+
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  socialPublication SocialPublication @relation(fields: [socialPublicationId], references: [id], onDelete: Cascade)
+  mediaAsset        MediaAsset        @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+
+  @@unique([socialPublicationId, mediaAssetId])
+  @@index([socialPublicationId, sortOrder])
+  @@index([mediaAssetId])
+  @@map("social_publication_assets")
 }

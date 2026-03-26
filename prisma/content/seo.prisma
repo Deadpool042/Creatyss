@@ -1,52 +1,70 @@
-// -----------------------------------------------------------------------------
-// Domaine: seo
-// Responsabilité: metadata SEO, canonical, règles d'indexation.
-// -----------------------------------------------------------------------------
-// prisma/seo.prisma
-
-enum SeoSubjectKind {
-  PAGE
-  BLOG_POST
-  PRODUCT
-  CATEGORY
+enum SeoStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  ARCHIVED
 }
 
-enum SeoIndexingState {
-  INDEX
-  NOINDEX
+enum SeoSubjectType {
+  PAGE
+  BLOG_POST
+  BLOG_CATEGORY
+  PRODUCT
+  PRODUCT_VARIANT
+  CATEGORY
+  HOMEPAGE
+  PUBLIC_EVENT
+}
+
+enum SeoIndexingMode {
+  INDEX_FOLLOW
+  INDEX_NOFOLLOW
+  NOINDEX_FOLLOW
+  NOINDEX_NOFOLLOW
 }
 
 model SeoMetadata {
   id      String @id @default(cuid())
   storeId String
 
+  subjectType SeoSubjectType
+  subjectId   String
+
+  status SeoStatus @default(DRAFT)
+
   metaTitle       String?
   metaDescription String?
-  canonicalUrl    String?
+  metaKeywords    String?
 
-  indexingState SeoIndexingState @default(INDEX)
+  canonicalUrl  String?
+  canonicalPath String?
+
+  indexingMode    SeoIndexingMode @default(INDEX_FOLLOW)
+  sitemapIncluded Boolean         @default(true)
 
   openGraphTitle       String?
   openGraphDescription String?
   openGraphImageId     String?
 
-  pageId     String? @unique
-  blogPostId String? @unique
-  productId  String? @unique
-  categoryId String? @unique
+  twitterTitle       String?
+  twitterDescription String?
+  twitterImageId     String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  structuredDataJson String?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
   store          Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  openGraphImage MediaAsset? @relation(fields: [openGraphImageId], references: [id], onDelete: SetNull)
+  openGraphImage MediaAsset? @relation("SeoOpenGraphImage", fields: [openGraphImageId], references: [id], onDelete: SetNull)
+  twitterImage   MediaAsset? @relation("SeoTwitterImage", fields: [twitterImageId], references: [id], onDelete: SetNull)
 
-  page     Page?     @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  blogPost BlogPost? @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
-  product  Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  category Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  @@index([storeId])
-  @@index([indexingState])
+  @@unique([storeId, subjectType, subjectId])
+  @@index([storeId, status])
+  @@index([subjectType, subjectId])
+  @@index([indexingMode])
+  @@index([openGraphImageId])
+  @@index([twitterImageId])
   @@map("seo_metadata")
 }

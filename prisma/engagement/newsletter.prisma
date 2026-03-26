@@ -1,15 +1,9 @@
-// -----------------------------------------------------------------------------
-// Domaine: newsletter
-// Responsabilité: listes, abonnements, campagnes newsletter.
-// -----------------------------------------------------------------------------
-// prisma/newsletter.prisma
-
-enum NewsletterSubscriptionStatus {
+enum NewsletterSubscriberStatus {
   PENDING
-  ACTIVE
+  SUBSCRIBED
   UNSUBSCRIBED
   BOUNCED
-  COMPLAINED
+  ARCHIVED
 }
 
 enum NewsletterCampaignStatus {
@@ -17,82 +11,109 @@ enum NewsletterCampaignStatus {
   SCHEDULED
   SENDING
   SENT
+  FAILED
   CANCELLED
+  ARCHIVED
 }
 
-model NewsletterList {
-  id      String @id @default(cuid())
-  storeId String
-
-  name        String
-  description String?
-  isDefault   Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  store         Store                    @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  subscriptions NewsletterSubscription[]
-  campaigns     NewsletterCampaign[]
-
-  @@unique([storeId, name])
-  @@index([storeId])
-  @@map("newsletter_lists")
-}
-
-model NewsletterSubscription {
-  id         String  @id @default(cuid())
-  listId     String
-  customerId String?
+model NewsletterSubscriber {
+  id      String  @id @default(cuid())
+  storeId String?
 
   email     String
   firstName String?
   lastName  String?
 
-  status NewsletterSubscriptionStatus @default(PENDING)
+  customerId String?
+  status     NewsletterSubscriberStatus @default(PENDING)
 
-  confirmedAt    DateTime?
+  source         String?
+  subscribedAt   DateTime?
   unsubscribedAt DateTime?
   bouncedAt      DateTime?
+  archivedAt     DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  list     NewsletterList @relation(fields: [listId], references: [id], onDelete: Cascade)
-  customer Customer?      @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  store    Store?    @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
 
-  @@unique([listId, email])
-  @@index([listId])
-  @@index([customerId])
-  @@index([status])
-  @@map("newsletter_subscriptions")
+  campaignRecipients NewsletterCampaignRecipient[]
+
+  @@unique([storeId, email])
+  @@index([storeId, status])
+  @@index([customerId, status])
+  @@index([subscribedAt])
+  @@map("newsletter_subscribers")
 }
 
 model NewsletterCampaign {
-  id     String @id @default(cuid())
-  listId String
+  id      String  @id @default(cuid())
+  storeId String?
 
+  code        String
   name        String
-  subject     String
+  subjectLine String
   previewText String?
+
+  bodyText String?
+  bodyHtml String?
 
   status NewsletterCampaignStatus @default(DRAFT)
 
-  scheduledAt DateTime?
-  sentAt      DateTime?
-  cancelledAt DateTime?
+  scheduledAt      DateTime?
+  sendingStartedAt DateTime?
+  sentAt           DateTime?
+  failedAt         DateTime?
+  cancelledAt      DateTime?
+  archivedAt       DateTime?
 
-  recipientsCount Int @default(0)
-  opensCount      Int @default(0)
-  clicksCount     Int @default(0)
+  provider          String?
+  providerReference String?
+  errorCode         String?
+  errorMessage      String?
+
+  createdByUserId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  list NewsletterList @relation(fields: [listId], references: [id], onDelete: Cascade)
+  store     Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  createdBy User?  @relation("NewsletterCampaignCreatedByUser", fields: [createdByUserId], references: [id], onDelete: SetNull)
 
-  @@index([listId])
-  @@index([status])
-  @@index([scheduledAt])
+  recipients NewsletterCampaignRecipient[]
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
+  @@index([createdByUserId])
+  @@index([scheduledAt, status])
+  @@index([provider, providerReference])
   @@map("newsletter_campaigns")
+}
+
+model NewsletterCampaignRecipient {
+  id                     String @id @default(cuid())
+  newsletterCampaignId   String
+  newsletterSubscriberId String
+
+  email     String
+  sentAt    DateTime?
+  openedAt  DateTime?
+  clickedAt DateTime?
+  failedAt  DateTime?
+
+  errorCode    String?
+  errorMessage String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  newsletterCampaign   NewsletterCampaign   @relation(fields: [newsletterCampaignId], references: [id], onDelete: Cascade)
+  newsletterSubscriber NewsletterSubscriber @relation(fields: [newsletterSubscriberId], references: [id], onDelete: Cascade)
+
+  @@unique([newsletterCampaignId, newsletterSubscriberId])
+  @@index([newsletterSubscriberId])
+  @@index([sentAt])
+  @@map("newsletter_campaign_recipients")
 }

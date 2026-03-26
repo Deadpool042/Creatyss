@@ -1,9 +1,3 @@
-// -----------------------------------------------------------------------------
-// Domaine: support
-// Responsabilité: tickets, conversations, assignation, résolution.
-// -----------------------------------------------------------------------------
-// prisma/support.prisma
-
 enum SupportTicketStatus {
   OPEN
   IN_PROGRESS
@@ -11,25 +5,10 @@ enum SupportTicketStatus {
   RESOLVED
   CLOSED
   CANCELLED
+  ARCHIVED
 }
 
-enum SupportTicketPriority {
-  LOW
-  MEDIUM
-  HIGH
-  URGENT
-}
-
-enum SupportTicketSubjectKind {
-  ORDER
-  RETURN_REQUEST
-  PAYMENT
-  DOCUMENT
-  EVENT
-  OTHER
-}
-
-enum SupportMessageAuthorKind {
+enum SupportMessageAuthorType {
   USER
   CUSTOMER
   SYSTEM
@@ -37,61 +16,50 @@ enum SupportMessageAuthorKind {
 
 model SupportTicket {
   id         String  @id @default(cuid())
-  storeId    String
+  storeId    String?
   customerId String?
+  orderId    String?
 
   ticketNumber String
   subject      String
-  description  String?
+  status       SupportTicketStatus @default(OPEN)
 
-  status      SupportTicketStatus      @default(OPEN)
-  priority    SupportTicketPriority    @default(MEDIUM)
-  subjectKind SupportTicketSubjectKind @default(OTHER)
-
-  orderId         String?
-  returnRequestId String?
-  paymentId       String?
-  eventId         String?
+  reasonCode String?
+  notes      String?
 
   assignedToUserId String?
-  openedAt         DateTime  @default(now())
-  resolvedAt       DateTime?
-  closedAt         DateTime?
-  cancelledAt      DateTime?
+
+  openedAt    DateTime?
+  resolvedAt  DateTime?
+  closedAt    DateTime?
+  cancelledAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store          Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  customer       Customer?        @relation(fields: [customerId], references: [id], onDelete: SetNull)
-  order          Order?           @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  returnRequest  ReturnRequest?   @relation(fields: [returnRequestId], references: [id], onDelete: SetNull)
-  payment        Payment?         @relation(fields: [paymentId], references: [id], onDelete: SetNull)
-  event          Event?           @relation(fields: [eventId], references: [id], onDelete: SetNull)
-  assignedToUser User?            @relation(fields: [assignedToUserId], references: [id], onDelete: SetNull)
-  messages       SupportMessage[]
-  emails         EmailMessage[]
+  store      Store?    @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  order      Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  assignedTo User?     @relation("SupportTicketAssignedToUser", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+
+  messages SupportMessage[]
 
   @@unique([storeId, ticketNumber])
-  @@index([storeId])
-  @@index([customerId])
-  @@index([status])
-  @@index([priority])
-  @@index([assignedToUserId])
+  @@index([storeId, status])
+  @@index([customerId, status])
   @@index([orderId])
-  @@index([returnRequestId])
-  @@index([paymentId])
-  @@index([eventId])
+  @@index([assignedToUserId, status])
   @@map("support_tickets")
 }
 
 model SupportMessage {
-  id       String @id @default(cuid())
-  ticketId String
+  id              String @id @default(cuid())
+  supportTicketId String
 
-  authorKind SupportMessageAuthorKind
-  userId     String?
-  customerId String?
+  authorType       SupportMessageAuthorType
+  authorUserId     String?
+  authorCustomerId String?
 
   body       String
   isInternal Boolean @default(false)
@@ -99,13 +67,12 @@ model SupportMessage {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ticket   SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  user     User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
-  customer Customer?     @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  supportTicket  SupportTicket @relation(fields: [supportTicketId], references: [id], onDelete: Cascade)
+  authorUser     User?         @relation("SupportMessageAuthorUser", fields: [authorUserId], references: [id], onDelete: SetNull)
+  authorCustomer Customer?     @relation("SupportMessageAuthorCustomer", fields: [authorCustomerId], references: [id], onDelete: SetNull)
 
-  @@index([ticketId])
-  @@index([userId])
-  @@index([customerId])
-  @@index([authorKind])
+  @@index([supportTicketId, createdAt])
+  @@index([authorUserId])
+  @@index([authorCustomerId])
   @@map("support_messages")
 }

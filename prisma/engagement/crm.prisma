@@ -1,65 +1,80 @@
-// -----------------------------------------------------------------------------
-// Domaine: crm
-// Responsabilité: tags clients, notes CRM, segmentation manuelle.
-// -----------------------------------------------------------------------------
-// prisma/crm.prisma
+enum CrmContactStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+  ARCHIVED
+}
 
 enum CrmTagStatus {
   ACTIVE
+  INACTIVE
   ARCHIVED
+}
+
+model CrmContact {
+  id         String  @id @default(cuid())
+  storeId    String
+  customerId String? @unique
+
+  status CrmContactStatus @default(ACTIVE)
+
+  source         String?
+  lifecycleStage String?
+  notes          String?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  store    Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  tagLinks CrmContactTag[]
+
+  @@unique([storeId, customerId])
+  @@index([storeId, status])
+  @@index([customerId])
+  @@index([lifecycleStage])
+  @@map("crm_contacts")
 }
 
 model CrmTag {
   id      String @id @default(cuid())
   storeId String
 
-  name   String
-  color  String?
+  code        String
+  name        String
+  description String?
+
   status CrmTagStatus @default(ACTIVE)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  colorToken String?
 
-  store     Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  customers CrmCustomerTag[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  @@unique([storeId, name])
-  @@index([storeId])
-  @@index([status])
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  contactLinks CrmContactTag[]
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
   @@map("crm_tags")
 }
 
-model CrmCustomerTag {
-  id         String @id @default(cuid())
-  customerId String
-  tagId      String
-
-  createdAt DateTime @default(now())
-
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  tag      CrmTag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-  @@unique([customerId, tagId])
-  @@index([customerId])
-  @@index([tagId])
-  @@map("crm_customer_tags")
-}
-
-model CrmNote {
-  id         String  @id @default(cuid())
-  customerId String
-  userId     String?
-
-  content  String
-  isPinned Boolean @default(false)
+model CrmContactTag {
+  id           String @id @default(cuid())
+  crmContactId String
+  crmTagId     String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  user     User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  crmContact CrmContact @relation(fields: [crmContactId], references: [id], onDelete: Cascade)
+  crmTag     CrmTag     @relation(fields: [crmTagId], references: [id], onDelete: Cascade)
 
-  @@index([customerId])
-  @@index([userId])
-  @@map("crm_notes")
+  @@unique([crmContactId, crmTagId])
+  @@index([crmTagId])
+  @@map("crm_contact_tags")
 }

@@ -1,135 +1,242 @@
-// -----------------------------------------------------------------------------
-// Domaine: products
-// Responsabilité: produits publiés, variantes, relations catalogue directes.
-// -----------------------------------------------------------------------------
-// prisma/products.prisma
-
 enum ProductStatus {
   DRAFT
   ACTIVE
+  INACTIVE
   ARCHIVED
 }
 
 enum ProductVariantStatus {
+  DRAFT
   ACTIVE
-  DISABLED
+  INACTIVE
   ARCHIVED
 }
 
-model Product {
-  id            String  @id @default(cuid())
-  storeId       String
-  productTypeId String?
+enum RelatedProductType {
+  RELATED
+  CROSS_SELL
+  UP_SELL
+  ACCESSORY
+  SIMILAR
+}
 
+model ProductType {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  code        String
+  name        String
+  slug        String
+  description String?
+
+  isActive Boolean @default(true)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  products Product[]
+  options  ProductOption[]
+
+  @@unique([storeId, code])
+  @@unique([storeId, slug])
+  @@index([storeId, isActive])
+  @@map("product_types")
+}
+
+model Product {
+  id             String  @id @default(cuid())
+  storeId        String?
+  productTypeId  String?
+  primaryImageId String?
+
+  skuRoot          String?
   slug             String
   name             String
   shortDescription String?
   description      String?
 
-  status     ProductStatus @default(DRAFT)
-  isFeatured Boolean       @default(false)
+  prices        ProductPrice[]
+  cartLines     CartLine[]
+  checkoutLines CheckoutLine[]
+  orderLines    OrderLine[]
+
+  status ProductStatus @default(DRAFT)
+
+  isFeatured   Boolean @default(false)
+  isStandalone Boolean @default(true)
+
+  publishedAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store       Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  productType ProductType? @relation(fields: [productTypeId], references: [id], onDelete: SetNull)
+  store        Store?       @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  productType  ProductType? @relation(fields: [productTypeId], references: [id], onDelete: SetNull)
+  primaryImage MediaAsset?  @relation("ProductPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
 
-  attributeValues     ProductAttributeValue[]
-  variants            ProductVariant[]
-  mediaLinks          ProductMedia[]
-  // The canonical sellable offer identity lives on ProductVariant, including simple products.
-  defaultVariant      ProductVariant?             @relation("ProductDefaultVariant", fields: [id, defaultVariantId], references: [productId, id], onDelete: Restrict)
-  defaultVariantId    String?
-  categories          ProductCategory[]
-  prices              ProductPrice[]
-  orderLines          OrderLine[]
-  bundleItems         BundleItem[]
-  seo                 SeoMetadata?
-  channelPublications ChannelProductPublication[]
-  localizations       ProductLocalization[]
+  variants                  ProductVariant[]
+  relatedFrom               RelatedProduct[]           @relation("RelatedProductFrom")
+  relatedTo                 RelatedProduct[]           @relation("RelatedProductTo")
+  homepageFeaturedIn        HomepageFeaturedProduct[]
+  productCategories         ProductCategory[]
+  conversionFlowLinks       ConversionFlowProduct[]
+  channelStatuses           ChannelProductStatus[]
+  giftRequestItems          GiftRequestItem[]
+  bundleItems               BundleItem[]
+  subscriptionItems         SubscriptionItem[]
+  discountProductTargets    DiscountProductTarget[]
+  taxRuleProductTargets     TaxRuleProductTarget[]
+  salesPolicyProductTargets SalesPolicyProductTarget[]
 
   @@unique([storeId, slug])
-  @@unique([storeId, id])
   @@index([storeId])
   @@index([productTypeId])
+  @@index([primaryImageId])
   @@index([status])
   @@index([isFeatured])
   @@map("products")
 }
 
-model ProductAttributeValue {
-  id          String @id @default(cuid())
-  productId   String
-  attributeId String
-
-  valueText    String?
-  valueBoolean Boolean?
-  valueInt     Int?
-  valueDecimal Decimal? @db.Decimal(12, 2)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  product   Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
-  attribute CatalogAttribute @relation(fields: [attributeId], references: [id], onDelete: Restrict)
-
-  @@unique([productId, attributeId])
-  @@index([productId])
-  @@index([attributeId])
-  @@map("product_attribute_values")
-}
-
 model ProductVariant {
-  id        String @id @default(cuid())
-  storeId   String
-  productId String
+  id             String  @id @default(cuid())
+  productId      String
+  primaryImageId String?
 
-  sku    String
-  name   String?
-  status ProductVariantStatus @default(ACTIVE)
+  sku  String
+  slug String?
+  name String?
 
-  sortOrder Int @default(0)
+  prices              ProductVariantPrice[]
+  cartLines           CartLine[]
+  checkoutLines       CheckoutLine[]
+  orderLines          OrderLine[]
+  inventoryItems      InventoryItem[]
+  availabilityRecords AvailabilityRecord[]
+
+  status ProductVariantStatus @default(DRAFT)
+
+  isDefault Boolean @default(false)
+  sortOrder Int     @default(0)
+
+  barcode           String?
+  externalReference String?
+
+  weightGrams Int?
+  widthMm     Int?
+  heightMm    Int?
+  depthMm     Int?
+
+  publishedAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  product            Product                        @relation(fields: [storeId, productId], references: [storeId, id], onDelete: Cascade)
-  defaultForProducts Product[]                      @relation("ProductDefaultVariant")
-  attributeValues    ProductVariantAttributeValue[]
-  mediaLinks         ProductVariantMedia[]
-  cartLines          CartLine[]
-  orderLines         OrderLine[]
-  prices             ProductVariantPrice[]
-  bundleItems        BundleItem[]
-  inventoryItem      InventoryItem?
+  product                   Product                     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  primaryImage              MediaAsset?                 @relation("ProductVariantPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
+  optionValues              ProductVariantOptionValue[]
+  channelStatuses           ChannelVariantStatus[]
+  bundleItems               BundleItem[]
+  giftRequestItems          GiftRequestItem[]
+  subscriptionItems         SubscriptionItem[]
+  discountVariantTargets    DiscountVariantTarget[]
+  taxRuleVariantTargets     TaxRuleVariantTarget[]
+  salesPolicyVariantTargets SalesPolicyVariantTarget[]
 
-  @@unique([storeId, sku])
-  @@unique([productId, id])
-  @@index([productId])
-  @@index([storeId])
-  @@index([status])
+  @@unique([productId, sku])
+  @@unique([productId, slug])
+  @@index([productId, status])
+  @@index([productId, isDefault])
+  @@index([primaryImageId])
+  @@index([sortOrder])
   @@map("product_variants")
 }
 
-model ProductVariantAttributeValue {
-  id          String @id @default(cuid())
-  variantId   String
-  attributeId String
+model ProductOption {
+  id            String  @id @default(cuid())
+  productTypeId String?
 
-  valueText    String?
-  valueBoolean Boolean?
-  valueInt     Int?
-  valueDecimal Decimal? @db.Decimal(12, 2)
+  code        String
+  name        String
+  description String?
+
+  sortOrder     Int     @default(0)
+  isRequired    Boolean @default(false)
+  isVariantAxis Boolean @default(true)
+  isActive      Boolean @default(true)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  productType ProductType? @relation(fields: [productTypeId], references: [id], onDelete: SetNull)
+
+  values ProductOptionValue[]
+
+  @@unique([productTypeId, code])
+  @@index([productTypeId, isActive])
+  @@index([sortOrder])
+  @@map("product_options")
+}
+
+model ProductOptionValue {
+  id       String @id @default(cuid())
+  optionId String
+
+  code      String
+  value     String
+  label     String?
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  option       ProductOption               @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  variantLinks ProductVariantOptionValue[]
+
+  @@unique([optionId, code])
+  @@index([optionId, isActive])
+  @@index([sortOrder])
+  @@map("product_option_values")
+}
+
+model ProductVariantOptionValue {
+  id            String @id @default(cuid())
+  variantId     String
+  optionValueId String
+
+  createdAt DateTime @default(now())
+
+  variant     ProductVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  optionValue ProductOptionValue @relation(fields: [optionValueId], references: [id], onDelete: Cascade)
+
+  @@unique([variantId, optionValueId])
+  @@index([optionValueId])
+  @@map("product_variant_option_values")
+}
+
+model RelatedProduct {
+  id              String @id @default(cuid())
+  sourceProductId String
+  targetProductId String
+
+  type      RelatedProductType @default(RELATED)
+  sortOrder Int                @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  variant   ProductVariant   @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  attribute CatalogAttribute @relation(fields: [attributeId], references: [id], onDelete: Restrict)
+  sourceProduct Product @relation("RelatedProductFrom", fields: [sourceProductId], references: [id], onDelete: Cascade)
+  targetProduct Product @relation("RelatedProductTo", fields: [targetProductId], references: [id], onDelete: Cascade)
 
-  @@unique([variantId, attributeId])
-  @@index([variantId])
-  @@index([attributeId])
-  @@map("product_variant_attribute_values")
+  @@unique([sourceProductId, targetProductId, type])
+  @@index([targetProductId, type])
+  @@index([sourceProductId, sortOrder])
+  @@map("related_products")
 }

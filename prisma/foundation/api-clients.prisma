@@ -1,87 +1,93 @@
-// -----------------------------------------------------------------------------
-// Domaine: api-clients
-// Responsabilité: clients machine-to-machine, credentials techniques, scopes.
-// -----------------------------------------------------------------------------
-// prisma/api-clients.prisma
-
 enum ApiClientStatus {
+  DRAFT
   ACTIVE
+  INACTIVE
   REVOKED
-  DISABLED
   ARCHIVED
 }
 
-enum ApiClientScopeType {
-  PLATFORM
-  STORE
+enum ApiClientSecretStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
 }
 
 model ApiClient {
   id      String  @id @default(cuid())
   storeId String?
 
-  code        String  @unique
+  code        String
   name        String
   description String?
 
-  scopeType ApiClientScopeType
-  status    ApiClientStatus    @default(ACTIVE)
+  status ApiClientStatus @default(DRAFT)
 
+  clientId  String  @unique
+  publicKey String?
+
+  lastUsedAt  DateTime?
+  activatedAt DateTime?
+  revokedAt   DateTime?
+  archivedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  secrets          ApiClientSecret[]
+  permissions      ApiClientPermission[]
+  auditLogsAsActor AuditLog[]            @relation("AuditLogActorApiClient")
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
+  @@index([status, lastUsedAt])
+  @@map("api_clients")
+}
+
+model ApiClientSecret {
+  id          String @id @default(cuid())
+  apiClientId String
+
+  secretHash   String
+  secretPrefix String?
+
+  status ApiClientSecretStatus @default(ACTIVE)
+
+  expiresAt  DateTime?
   lastUsedAt DateTime?
   revokedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store                Store?                @relation(fields: [storeId], references: [id], onDelete: SetNull)
-  credentials          ApiClientCredential[]
-  permissions          ApiClientPermission[]
-  auditLogs            AuditLog[]
-  observabilityRecords ObservabilityRecord[]
+  apiClient ApiClient @relation(fields: [apiClientId], references: [id], onDelete: Cascade)
 
-  @@index([storeId])
-  @@index([scopeType])
-  @@index([status])
-  @@map("api_clients")
+  @@index([apiClientId, status])
+  @@index([expiresAt])
+  @@map("api_client_secrets")
 }
 
-model ApiClientCredential {
+model ApiClientPermission {
   id          String @id @default(cuid())
   apiClientId String
 
-  credentialKey String
-  secretHash    String
-  label         String?
-  expiresAt     DateTime?
-  revokedAt     DateTime?
-  lastUsedAt    DateTime?
+  code        String
+  resource    String
+  action      String
+  description String?
+
+  grantedByUserId String?
+  revokedAt       DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   apiClient ApiClient @relation(fields: [apiClientId], references: [id], onDelete: Cascade)
+  grantedBy User?     @relation("ApiClientPermissionGrantedBy", fields: [grantedByUserId], references: [id], onDelete: SetNull)
 
-  @@unique([apiClientId, credentialKey])
-  @@index([apiClientId])
-  @@index([expiresAt])
-  @@map("api_client_credentials")
-}
-
-model ApiClientPermission {
-  id           String  @id @default(cuid())
-  apiClientId  String
-  permissionId String
-  grantedById  String?
-
-  grantedAt DateTime @default(now())
-
-  apiClient  ApiClient  @relation(fields: [apiClientId], references: [id], onDelete: Cascade)
-  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
-  grantedBy  User?      @relation(fields: [grantedById], references: [id], onDelete: SetNull)
-
-  @@unique([apiClientId, permissionId])
-  @@index([apiClientId])
-  @@index([permissionId])
-  @@index([grantedById])
+  @@unique([apiClientId, code])
+  @@index([resource, action])
+  @@index([grantedByUserId])
   @@map("api_client_permissions")
 }

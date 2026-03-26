@@ -1,14 +1,17 @@
-// -----------------------------------------------------------------------------
-// Domaine: approval
-// Responsabilité: demandes d'approbation, décisions, politiques.
-// -----------------------------------------------------------------------------
-// prisma/approval.prisma
-
 enum ApprovalRequestStatus {
   PENDING
   APPROVED
   REJECTED
+  RETURNED_FOR_REVISION
   CANCELLED
+  EXPIRED
+  ARCHIVED
+}
+
+enum ApprovalDecisionType {
+  APPROVE
+  REJECT
+  RETURN_FOR_REVISION
 }
 
 model ApprovalRequest {
@@ -19,27 +22,53 @@ model ApprovalRequest {
   subjectId   String
 
   requestedByUserId String?
-  reviewedByUserId  String?
+  status            ApprovalRequestStatus @default(PENDING)
 
-  status     ApprovalRequestStatus @default(PENDING)
-  reason     String?
-  reviewNote String?
+  policyCode  String?
+  title       String?
+  description String?
+  reasonCode  String?
+  notes       String?
 
-  requestedAt DateTime  @default(now())
-  reviewedAt  DateTime?
+  submittedAt DateTime?
+  approvedAt  DateTime?
+  rejectedAt  DateTime?
   cancelledAt DateTime?
+  expiresAt   DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store           Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
-  requestedByUser User?  @relation("ApprovalRequestedBy", fields: [requestedByUserId], references: [id], onDelete: SetNull)
-  reviewedByUser  User?  @relation("ApprovalReviewedBy", fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+  store       Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  requestedBy User?  @relation("ApprovalRequestedByUser", fields: [requestedByUserId], references: [id], onDelete: SetNull)
 
-  @@index([storeId])
+  decisions ApprovalDecision[]
+
+  @@index([storeId, status])
   @@index([subjectType, subjectId])
-  @@index([requestedByUserId])
-  @@index([reviewedByUserId])
-  @@index([status])
+  @@index([requestedByUserId, status])
+  @@index([policyCode])
+  @@index([expiresAt])
   @@map("approval_requests")
+}
+
+model ApprovalDecision {
+  id                String  @id @default(cuid())
+  approvalRequestId String
+  decidedByUserId   String?
+
+  type       ApprovalDecisionType
+  reasonCode String?
+  notes      String?
+
+  createdAt DateTime @default(now())
+
+  approvalRequest ApprovalRequest @relation(fields: [approvalRequestId], references: [id], onDelete: Cascade)
+  decidedBy       User?           @relation("ApprovalDecidedByUser", fields: [decidedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([approvalRequestId, createdAt])
+  @@index([decidedByUserId])
+  @@index([type, createdAt])
+  @@map("approval_decisions")
 }

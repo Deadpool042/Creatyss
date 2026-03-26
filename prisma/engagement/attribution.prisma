@@ -1,67 +1,57 @@
-// -----------------------------------------------------------------------------
-// Domaine: attribution
-// Responsabilité: attribution marketing et canaux d'origine.
-// -----------------------------------------------------------------------------
-// prisma/attribution.prisma
-
-enum AttributionStatus {
+enum AttributionModelStatus {
   ACTIVE
+  INACTIVE
   ARCHIVED
 }
 
-enum AttributionModelKind {
-  FIRST_TOUCH
-  LAST_TOUCH
-  ASSISTED
+model AttributionModel {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  code        String
+  name        String
+  description String?
+
+  status AttributionModelStatus @default(ACTIVE)
+
+  modelType String
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  credits AttributionCredit[]
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
+  @@index([modelType, status])
+  @@map("attribution_models")
 }
 
-enum AttributionSubjectKind {
-  ORDER
-  CUSTOMER
-  CHECKOUT
-}
+model AttributionCredit {
+  id                 String @id @default(cuid())
+  attributionModelId String
 
-model AttributionRecord {
-  id      String @id @default(cuid())
-  storeId String
-
-  subjectKind AttributionSubjectKind
+  subjectType String
   subjectId   String
 
-  modelKind AttributionModelKind
-  status    AttributionStatus    @default(ACTIVE)
+  sourceCode   String
+  channelCode  String?
+  campaignCode String?
 
-  source   String?
-  medium   String?
-  campaign String?
-  content  String?
-  term     String?
+  creditValue Decimal @db.Decimal(8, 4)
 
-  visitorKey String?
-  sessionKey String?
+  attributedAt DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
-  customerId String?
-  orderId    String?
-  checkoutId String?
+  attributionModel AttributionModel @relation(fields: [attributionModelId], references: [id], onDelete: Cascade)
 
-  attributedAt DateTime @default(now())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  store    Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
-  order    Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  checkout Checkout? @relation(fields: [checkoutId], references: [id], onDelete: SetNull)
-
-  @@index([storeId])
-  @@index([subjectKind, subjectId])
-  @@index([modelKind])
-  @@index([source, medium, campaign])
-  @@index([visitorKey])
-  @@index([sessionKey])
-  @@index([customerId])
-  @@index([orderId])
-  @@index([checkoutId])
+  @@index([attributionModelId])
+  @@index([subjectType, subjectId])
+  @@index([sourceCode, channelCode, campaignCode])
   @@index([attributedAt])
-  @@map("attribution_records")
+  @@map("attribution_credits")
 }

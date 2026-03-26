@@ -1,13 +1,14 @@
-// -----------------------------------------------------------------------------
-// Domaine: feature-flags
-// Responsabilité: flags fonctionnels et techniques activables.
-// -----------------------------------------------------------------------------
-// prisma/feature-flags.prisma
-
 enum FeatureFlagStatus {
+  DRAFT
   ACTIVE
-  DISABLED
+  INACTIVE
   ARCHIVED
+}
+
+enum FeatureFlagScopeType {
+  GLOBAL
+  STORE
+  USER
 }
 
 model FeatureFlag {
@@ -18,17 +19,52 @@ model FeatureFlag {
   name        String
   description String?
 
-  status    FeatureFlagStatus @default(ACTIVE)
-  isEnabled Boolean           @default(false)
+  status    FeatureFlagStatus    @default(DRAFT)
+  scopeType FeatureFlagScopeType @default(GLOBAL)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isEnabledByDefault Boolean @default(false)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
   store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
 
+  overrides FeatureFlagOverride[]
+
   @@unique([storeId, code])
-  @@index([storeId])
-  @@index([status])
-  @@index([isEnabled])
+  @@index([storeId, status])
+  @@index([scopeType, status])
   @@map("feature_flags")
+}
+
+model FeatureFlagOverride {
+  id            String @id @default(cuid())
+  featureFlagId String
+
+  scopeType FeatureFlagScopeType
+  scopeId   String
+
+  isEnabled Boolean
+
+  startsAt DateTime?
+  endsAt   DateTime?
+
+  reasonCode String?
+  notes      String?
+
+  createdByUserId String?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  featureFlag FeatureFlag @relation(fields: [featureFlagId], references: [id], onDelete: Cascade)
+  createdBy   User?       @relation("FeatureFlagOverrideCreatedByUser", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([featureFlagId, scopeType, scopeId])
+  @@index([scopeType, scopeId])
+  @@index([startsAt, endsAt])
+  @@index([createdByUserId])
+  @@map("feature_flag_overrides")
 }

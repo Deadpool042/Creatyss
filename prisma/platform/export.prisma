@@ -1,22 +1,11 @@
-// -----------------------------------------------------------------------------
-// Domaine: export
-// Responsabilité: exports structurés, artefacts, statuts.
-// -----------------------------------------------------------------------------
-// prisma/export.prisma
-
-enum ExportStatus {
-  PENDING
+enum ExportRequestStatus {
+  REQUESTED
   RUNNING
-  SUCCEEDED
+  GENERATED
   FAILED
-  EXPIRED
   CANCELLED
-}
-
-enum ExportFormat {
-  CSV
-  JSON
-  XLSX
+  EXPIRED
+  ARCHIVED
 }
 
 model ExportDefinition {
@@ -27,21 +16,22 @@ model ExportDefinition {
   name        String
   description String?
 
-  subjectType String
-  format      ExportFormat
+  sourceType String
+  formatCode String
 
   isActive Boolean @default(true)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  store    Store?          @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
   requests ExportRequest[]
 
   @@unique([storeId, code])
-  @@index([storeId])
-  @@index([subjectType])
-  @@index([isActive])
+  @@index([storeId, isActive])
+  @@index([sourceType, formatCode])
   @@map("export_definitions")
 }
 
@@ -51,33 +41,63 @@ model ExportRequest {
   exportDefinitionId String
 
   requestedByUserId String?
-  status            ExportStatus @default(PENDING)
-  format            ExportFormat
 
-  filters          Json?
-  artifactPath     String?
-  artifactFilename String?
+  status ExportRequestStatus @default(REQUESTED)
 
+  scopeType String?
+  scopeId   String?
+
+  filterJson String?
+  resultJson String?
+
+  errorCode    String?
+  errorMessage String?
+
+  requestedAt DateTime?
   startedAt   DateTime?
   finishedAt  DateTime?
-  failedAt    DateTime?
-  expiredAt   DateTime?
   cancelledAt DateTime?
-
-  failureCode    String?
-  failureMessage String?
+  expiresAt   DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   store            Store?           @relation(fields: [storeId], references: [id], onDelete: SetNull)
-  exportDefinition ExportDefinition @relation(fields: [exportDefinitionId], references: [id], onDelete: Cascade)
-  requestedByUser  User?            @relation(fields: [requestedByUserId], references: [id], onDelete: SetNull)
+  exportDefinition ExportDefinition @relation(fields: [exportDefinitionId], references: [id], onDelete: Restrict)
+  requestedBy      User?            @relation("ExportRequestRequestedByUser", fields: [requestedByUserId], references: [id], onDelete: SetNull)
 
-  @@index([storeId])
-  @@index([exportDefinitionId])
+  artifacts ExportArtifact[]
+
+  @@index([storeId, status])
+  @@index([exportDefinitionId, status])
   @@index([requestedByUserId])
-  @@index([status])
-  @@index([createdAt])
+  @@index([scopeType, scopeId])
+  @@index([expiresAt])
   @@map("export_requests")
+}
+
+model ExportArtifact {
+  id              String @id @default(cuid())
+  exportRequestId String
+
+  code String
+  kind String
+
+  fileName   String?
+  mimeType   String?
+  storageKey String?
+  publicUrl  String?
+  sizeBytes  Int?
+
+  payloadJson String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  exportRequest ExportRequest @relation(fields: [exportRequestId], references: [id], onDelete: Cascade)
+
+  @@unique([exportRequestId, code])
+  @@index([exportRequestId, kind])
+  @@map("export_artifacts")
 }

@@ -1,16 +1,26 @@
-// -----------------------------------------------------------------------------
-// Domaine: shipping
-// Responsabilité: méthodes, zones, options de livraison.
-// -----------------------------------------------------------------------------
-// prisma/shipping.prisma
-
 enum ShippingMethodStatus {
+  DRAFT
   ACTIVE
-  DISABLED
+  INACTIVE
   ARCHIVED
 }
 
-model ShippingMethod {
+enum ShippingZoneStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+enum ShipmentStatus {
+  PENDING
+  READY
+  SHIPPED
+  DELIVERED
+  RETURNED
+  CANCELLED
+}
+
+model ShippingZone {
   id      String @id @default(cuid())
   storeId String
 
@@ -18,66 +28,88 @@ model ShippingMethod {
   name        String
   description String?
 
-  status    ShippingMethodStatus @default(ACTIVE)
-  sortOrder Int                  @default(0)
-  isDefault Boolean              @default(false)
+  status    ShippingZoneStatus @default(ACTIVE)
+  sortOrder Int                @default(0)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  store           Store                    @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  rates           ShippingRate[]
-  orderSelections OrderShippingSelection[]
-  checkouts       Checkout[]
+  store   Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  methods ShippingMethod[]
 
   @@unique([storeId, code])
-  @@index([storeId])
-  @@index([status])
-  @@index([isDefault])
-  @@map("shipping_methods")
+  @@index([storeId, status])
+  @@index([sortOrder])
+  @@map("shipping_zones")
 }
 
-model ShippingRate {
-  id               String @id @default(cuid())
-  shippingMethodId String
+model ShippingMethod {
+  id             String  @id @default(cuid())
+  storeId        String
+  shippingZoneId String?
 
-  countryCode       String
-  region            String?
-  postalCodePattern String?
+  code        String
+  name        String
+  description String?
+
+  status ShippingMethodStatus @default(DRAFT)
+
+  currencyCode CurrencyCode
+  amount       Decimal      @db.Decimal(12, 2)
 
   minSubtotalAmount Decimal? @db.Decimal(12, 2)
   maxSubtotalAmount Decimal? @db.Decimal(12, 2)
 
-  priceAmount  Decimal      @db.Decimal(12, 2)
-  currencyCode CurrencyCode
+  isDefault Boolean @default(false)
+  sortOrder Int     @default(0)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  shippingMethod ShippingMethod @relation(fields: [shippingMethodId], references: [id], onDelete: Cascade)
+  store        Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  shippingZone ShippingZone? @relation(fields: [shippingZoneId], references: [id], onDelete: SetNull)
 
-  @@index([shippingMethodId])
-  @@index([countryCode])
-  @@map("shipping_rates")
+  checkoutSelections CheckoutShippingSelection[]
+  orderSelections    OrderShippingSelection[]
+  shipments          Shipment[]
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
+  @@index([shippingZoneId])
+  @@index([isDefault])
+  @@index([sortOrder])
+  @@map("shipping_methods")
 }
 
-model OrderShippingSelection {
-  id               String @id @default(cuid())
-  orderId          String @unique
-  shippingMethodId String
+model Shipment {
+  id               String  @id @default(cuid())
+  storeId          String
+  orderId          String
+  shippingMethodId String?
 
-  methodCodeSnapshot String
-  methodNameSnapshot String
+  status ShipmentStatus @default(PENDING)
 
-  priceAmount  Decimal      @db.Decimal(12, 2)
-  currencyCode CurrencyCode
+  carrier        String?
+  trackingNumber String?
+  trackingUrl    String?
+
+  shippedAt   DateTime?
+  deliveredAt DateTime?
+  cancelledAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  order          Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  shippingMethod ShippingMethod @relation(fields: [shippingMethodId], references: [id], onDelete: Restrict)
+  store          Store           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  order          Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  shippingMethod ShippingMethod? @relation(fields: [shippingMethodId], references: [id], onDelete: SetNull)
+  fulfillments   Fulfillment[]
 
+  @@index([storeId, status])
+  @@index([orderId])
   @@index([shippingMethodId])
-  @@map("order_shipping_selections")
+  @@index([trackingNumber])
+  @@map("shipments")
 }

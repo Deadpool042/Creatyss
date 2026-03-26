@@ -1,49 +1,71 @@
-// -----------------------------------------------------------------------------
-// Domaine: analytics
-// Responsabilité: vues analytiques consolidées.
-// -----------------------------------------------------------------------------
-// prisma/analytics.prisma
-
 enum AnalyticsMetricStatus {
   ACTIVE
+  INACTIVE
   ARCHIVED
 }
 
-enum AnalyticsPeriodKind {
-  DAY
-  WEEK
-  MONTH
+enum AnalyticsSnapshotStatus {
+  PENDING
+  READY
+  FAILED
+  ARCHIVED
 }
 
 model AnalyticsMetric {
-  id      String @id @default(cuid())
-  storeId String
+  id      String  @id @default(cuid())
+  storeId String?
 
   code        String
   name        String
   description String?
 
-  periodKind  AnalyticsPeriodKind
-  periodStart DateTime
-  periodEnd   DateTime
-
-  valueDecimal   Decimal? @db.Decimal(18, 4)
-  valueInt       Int?
-  dimensionKey   String?
-  dimensionValue String?
+  metricType String
+  unitCode   String?
 
   status AnalyticsMetricStatus @default(ACTIVE)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
 
-  @@index([storeId])
-  @@index([code])
-  @@index([periodKind])
-  @@index([periodStart, periodEnd])
-  @@index([dimensionKey, dimensionValue])
-  @@index([status])
+  snapshots AnalyticsSnapshot[]
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
+  @@index([metricType, status])
   @@map("analytics_metrics")
+}
+
+model AnalyticsSnapshot {
+  id                String @id @default(cuid())
+  analyticsMetricId String
+
+  dimensionType String?
+  dimensionKey  String?
+
+  periodStart DateTime
+  periodEnd   DateTime
+
+  valueDecimal Decimal? @db.Decimal(18, 4)
+  valueInteger Int?
+  valueText    String?
+
+  status AnalyticsSnapshotStatus @default(READY)
+
+  sourceRef  String?
+  computedAt DateTime?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  analyticsMetric AnalyticsMetric @relation(fields: [analyticsMetricId], references: [id], onDelete: Cascade)
+
+  @@unique([analyticsMetricId, dimensionType, dimensionKey, periodStart, periodEnd])
+  @@index([analyticsMetricId, status])
+  @@index([dimensionType, dimensionKey])
+  @@index([periodStart, periodEnd])
+  @@map("analytics_snapshots")
 }

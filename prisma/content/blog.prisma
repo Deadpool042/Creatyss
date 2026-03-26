@@ -1,17 +1,14 @@
-// -----------------------------------------------------------------------------
-// Domaine: blog
-// Responsabilité: articles de blog, catégories, publication.
-// -----------------------------------------------------------------------------
-// prisma/blog.prisma
-
 enum BlogPostStatus {
   DRAFT
   ACTIVE
+  INACTIVE
   ARCHIVED
 }
 
 enum BlogCategoryStatus {
+  DRAFT
   ACTIVE
+  INACTIVE
   ARCHIVED
 }
 
@@ -19,20 +16,38 @@ model BlogCategory {
   id      String @id @default(cuid())
   storeId String
 
-  slug        String
-  name        String
-  description String?
-  status      BlogCategoryStatus @default(ACTIVE)
+  code             String
+  slug             String
+  name             String
+  shortDescription String?
+  description      String?
+
+  status     BlogCategoryStatus @default(DRAFT)
+  sortOrder  Int                @default(0)
+  isFeatured Boolean            @default(false)
+
+  primaryImageId String?
+  coverImageId   String?
+
+  publishedAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store     Store              @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  store        Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  primaryImage MediaAsset? @relation("BlogCategoryPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
+  coverImage   MediaAsset? @relation("BlogCategoryCoverImage", fields: [coverImageId], references: [id], onDelete: SetNull)
+
   postLinks BlogPostCategory[]
 
+  @@unique([storeId, code])
   @@unique([storeId, slug])
-  @@index([storeId])
-  @@index([status])
+  @@index([storeId, status])
+  @@index([storeId, isFeatured])
+  @@index([sortOrder])
+  @@index([primaryImageId])
+  @@index([coverImageId])
   @@map("blog_categories")
 }
 
@@ -43,47 +58,56 @@ model BlogPost {
   slug    String
   title   String
   excerpt String?
-  content String?
+  body    String?
 
-  coverImageId String?
-  status       BlogPostStatus @default(DRAFT)
-  isFeatured   Boolean        @default(false)
-  publishedAt  DateTime?
+  status     BlogPostStatus @default(DRAFT)
+  isFeatured Boolean        @default(false)
+
+  authorName         String?
+  readingTimeMinutes Int?
+
+  primaryImageId String?
+  coverImageId   String?
+
+  publishedAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store         Store              @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  coverImage    MediaAsset?        @relation(fields: [coverImageId], references: [id], onDelete: SetNull)
-  categoryLinks BlogPostCategory[]
-  seo           SeoMetadata?
-  localizations BlogPostLocalization[]
+  store        Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  primaryImage MediaAsset? @relation("BlogPostPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
+  coverImage   MediaAsset? @relation("BlogPostCoverImage", fields: [coverImageId], references: [id], onDelete: SetNull)
+
+  categoryLinks      BlogPostCategory[]
+  homepageFeaturedIn HomepageFeaturedBlogPost[]
 
   @@unique([storeId, slug])
-  @@unique([storeId, id])
-  @@index([storeId])
-  @@index([status])
-  @@index([isFeatured])
+  @@index([storeId, status])
+  @@index([storeId, isFeatured])
   @@index([publishedAt])
+  @@index([primaryImageId])
+  @@index([coverImageId])
   @@map("blog_posts")
 }
 
 model BlogPostCategory {
-  id         String @id @default(cuid())
-  postId     String
-  categoryId String
+  id             String @id @default(cuid())
+  blogPostId     String
+  blogCategoryId String
 
-  sortOrder Int     @default(0)
   isPrimary Boolean @default(false)
+  sortOrder Int     @default(0)
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  post     BlogPost     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  category BlogCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  blogPost     BlogPost     @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  blogCategory BlogCategory @relation(fields: [blogCategoryId], references: [id], onDelete: Cascade)
 
-  @@unique([postId, categoryId])
-  @@index([postId])
-  @@index([categoryId])
-  @@index([isPrimary])
+  @@unique([blogPostId, blogCategoryId])
+  @@index([blogCategoryId, isPrimary])
+  @@index([blogCategoryId, sortOrder])
+  @@index([blogPostId, isPrimary])
   @@map("blog_post_categories")
 }

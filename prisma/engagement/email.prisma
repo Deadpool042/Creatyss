@@ -1,15 +1,16 @@
-// -----------------------------------------------------------------------------
-// Domaine: email
-// Responsabilité: messages email structurés au niveau interne.
-// -----------------------------------------------------------------------------
-// prisma/email.prisma
-
-enum EmailStatus {
-  PENDING
+enum EmailMessageStatus {
+  DRAFT
   PREPARED
   SENT
   FAILED
   CANCELLED
+  ARCHIVED
+}
+
+enum EmailRecipientType {
+  TO
+  CC
+  BCC
 }
 
 enum EmailCategory {
@@ -17,70 +18,64 @@ enum EmailCategory {
   SUPPORT
   NEWSLETTER
   MARKETING
-  GENERIC
-}
-
-enum EmailRecipientKind {
-  USER
-  CUSTOMER
-  EXTERNAL
+  SYSTEM
+  OTHER
 }
 
 model EmailMessage {
-  id      String @id @default(cuid())
-  storeId String
+  id      String  @id @default(cuid())
+  storeId String?
 
-  category EmailCategory
-  status   EmailStatus   @default(PENDING)
+  subjectType String?
+  subjectId   String?
 
-  recipientKind EmailRecipientKind
-  userId        String?
-  customerId    String?
+  category EmailCategory      @default(TRANSACTIONAL)
+  status   EmailMessageStatus @default(DRAFT)
 
-  toEmail String
-  toName  String?
+  subjectLine String
+  bodyText    String?
+  bodyHtml    String?
 
-  subject  String
-  htmlBody String?
-  textBody String?
-
-  templateDefinitionId String?
-  templateVariantId    String?
-
-  notificationId  String?
-  orderId         String?
-  eventId         String?
-  supportTicketId String?
+  provider          String?
+  providerReference String?
 
   preparedAt  DateTime?
   sentAt      DateTime?
   failedAt    DateTime?
   cancelledAt DateTime?
+  archivedAt  DateTime?
 
-  failureCode    String?
-  failureMessage String?
+  errorCode    String?
+  errorMessage String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store              Store               @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  user               User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
-  customer           Customer?           @relation(fields: [customerId], references: [id], onDelete: SetNull)
-  order              Order?              @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  event              Event?              @relation(fields: [eventId], references: [id], onDelete: SetNull)
-  notification       Notification?       @relation(fields: [notificationId], references: [id], onDelete: SetNull)
-  supportTicket      SupportTicket?      @relation(fields: [supportTicketId], references: [id], onDelete: SetNull)
-  templateDefinition TemplateDefinition? @relation(fields: [templateDefinitionId], references: [id], onDelete: SetNull)
-  templateVariant    TemplateVariant?    @relation(fields: [templateVariantId], references: [id], onDelete: SetNull)
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
 
-  @@index([storeId])
-  @@index([category])
-  @@index([status])
-  @@index([userId])
-  @@index([customerId])
-  @@index([notificationId])
-  @@index([orderId])
-  @@index([eventId])
-  @@index([supportTicketId])
+  recipients EmailRecipient[]
+
+  @@index([storeId, status])
+  @@index([category, status])
+  @@index([subjectType, subjectId])
+  @@index([provider, providerReference])
   @@map("email_messages")
+}
+
+model EmailRecipient {
+  id             String @id @default(cuid())
+  emailMessageId String
+
+  type        EmailRecipientType
+  email       String
+  displayName String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  emailMessage EmailMessage @relation(fields: [emailMessageId], references: [id], onDelete: Cascade)
+
+  @@index([emailMessageId, type])
+  @@index([email])
+  @@map("email_recipients")
 }

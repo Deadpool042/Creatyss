@@ -1,41 +1,100 @@
-// -----------------------------------------------------------------------------
-// Domaine: scheduling
-// Responsabilité: planification métier temporelle.
-// -----------------------------------------------------------------------------
-// prisma/scheduling.prisma
-
-enum SchedulingEntryStatus {
+enum SchedulePlanStatus {
+  DRAFT
   ACTIVE
-  COMPLETED
+  INACTIVE
   CANCELLED
-  FAILED
+  EXPIRED
+  ARCHIVED
 }
 
-model SchedulingEntry {
+enum ScheduleSubjectType {
+  MARKETING_CAMPAIGN
+  NEWSLETTER_CAMPAIGN
+  SOCIAL_PUBLICATION
+  PUBLIC_EVENT
+  PAGE
+  BLOG_POST
+  HOMEPAGE
+  OTHER
+}
+
+model SchedulePlan {
   id      String  @id @default(cuid())
   storeId String?
 
-  subjectType String
+  subjectType ScheduleSubjectType
   subjectId   String
-  actionCode  String
 
-  status       SchedulingEntryStatus @default(ACTIVE)
+  code        String?
+  name        String?
+  description String?
+
+  status SchedulePlanStatus @default(DRAFT)
+
+  timezone String    @default("Europe/Paris")
+  startsAt DateTime?
+  endsAt   DateTime?
+
+  createdByUserId String?
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  cancelledAt DateTime?
+  archivedAt  DateTime?
+
+  store     Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  createdBy User?  @relation("SchedulePlanCreatedByUser", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  windows     ScheduleWindow[]
+  occurrences ScheduleOccurrence[]
+
+  @@index([storeId, status])
+  @@index([subjectType, subjectId])
+  @@index([createdByUserId])
+  @@index([startsAt, endsAt])
+  @@map("schedule_plans")
+}
+
+model ScheduleWindow {
+  id             String @id @default(cuid())
+  schedulePlanId String
+
+  code String?
+  name String?
+
+  startsAt DateTime
+  endsAt   DateTime
+
+  isActive Boolean @default(true)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  schedulePlan SchedulePlan @relation(fields: [schedulePlanId], references: [id], onDelete: Cascade)
+
+  @@index([schedulePlanId, isActive])
+  @@index([startsAt, endsAt])
+  @@map("schedule_windows")
+}
+
+model ScheduleOccurrence {
+  id             String @id @default(cuid())
+  schedulePlanId String
+
   scheduledFor DateTime
   executedAt   DateTime?
   cancelledAt  DateTime?
-  failedAt     DateTime?
 
-  payload Json?
+  isActive Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  schedulePlan SchedulePlan @relation(fields: [schedulePlanId], references: [id], onDelete: Cascade)
 
-  @@index([storeId])
-  @@index([subjectType, subjectId])
-  @@index([actionCode])
-  @@index([status])
+  @@index([schedulePlanId, isActive])
   @@index([scheduledFor])
-  @@map("scheduling_entries")
+  @@index([executedAt])
+  @@map("schedule_occurrences")
 }

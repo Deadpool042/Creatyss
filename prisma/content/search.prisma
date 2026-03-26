@@ -1,52 +1,32 @@
-// -----------------------------------------------------------------------------
-// Domaine: search
-// Responsabilité: recherche transverse, facettes, suggestions.
-// -----------------------------------------------------------------------------
-// prisma/search.prisma
-
-enum SearchIndexStatus {
+enum SearchDocumentStatus {
   ACTIVE
-  DISABLED
+  INACTIVE
   ARCHIVED
-}
-
-enum SearchDocumentKind {
-  PRODUCT
-  CATEGORY
-  PAGE
-  BLOG_POST
-  EVENT
 }
 
 model SearchDocument {
   id      String @id @default(cuid())
   storeId String
 
-  kind      SearchDocumentKind
-  subjectId String
+  subjectType String
+  subjectId   String
 
-  title   String
-  excerpt String?
-  slug    String?
-  locale  String?
+  localeCode String?
+  status     SearchDocumentStatus @default(ACTIVE)
 
-  isPublished Boolean           @default(true)
-  status      SearchIndexStatus @default(ACTIVE)
+  indexedText String
 
-  searchableText String
-  keywords       String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  archivedAt  DateTime?
 
   store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
-  @@unique([storeId, kind, subjectId, locale])
-  @@index([storeId])
-  @@index([kind])
-  @@index([subjectId])
-  @@index([locale])
-  @@index([status])
-  @@index([isPublished])
+  @@unique([storeId, subjectType, subjectId, localeCode])
+  @@index([storeId, status])
+  @@index([subjectType, subjectId])
+  @@index([localeCode])
+  @@index([publishedAt])
   @@map("search_documents")
 }

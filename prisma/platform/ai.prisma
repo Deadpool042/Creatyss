@@ -1,0 +1,97 @@
+enum AiProviderStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+enum AiTaskStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  EXPIRED
+  ARCHIVED
+}
+
+enum AiTaskType {
+  TEXT_GENERATION
+  TEXT_SUMMARIZATION
+  SEO_SUGGESTION
+  PRODUCT_ENRICHMENT
+  CONTENT_ASSIST
+  CLASSIFICATION
+  OTHER
+}
+
+model AiProvider {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  code        String
+  name        String
+  description String?
+
+  provider  String
+  modelCode String?
+
+  status    AiProviderStatus @default(DRAFT)
+  isEnabled Boolean          @default(false)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  tasks AiTask[]
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
+  @@index([provider, status])
+  @@index([isEnabled])
+  @@map("ai_providers")
+}
+
+model AiTask {
+  id           String  @id @default(cuid())
+  storeId      String?
+  aiProviderId String?
+
+  type   AiTaskType
+  status AiTaskStatus @default(PENDING)
+
+  subjectType String?
+  subjectId   String?
+
+  inputText  String?
+  inputJson  String?
+  outputText String?
+  outputJson String?
+
+  errorCode    String?
+  errorMessage String?
+
+  requestedByUserId String?
+
+  startedAt  DateTime?
+  finishedAt DateTime?
+  expiresAt  DateTime?
+  archivedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store       Store?      @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  aiProvider  AiProvider? @relation(fields: [aiProviderId], references: [id], onDelete: SetNull)
+  requestedBy User?       @relation("AiTaskRequestedByUser", fields: [requestedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([storeId, status])
+  @@index([aiProviderId, status])
+  @@index([type, status])
+  @@index([subjectType, subjectId])
+  @@index([requestedByUserId])
+  @@index([startedAt, finishedAt])
+  @@map("ai_tasks")
+}

@@ -1,58 +1,70 @@
-// -----------------------------------------------------------------------------
-// Domaine: observability
-// Responsabilité: explicabilité, corrélation, diagnostics métier/techniques.
-// -----------------------------------------------------------------------------
-// prisma/observability.prisma
-
-enum ObservabilityLevel {
+enum ObservabilitySignalLevel {
   INFO
   WARNING
   ERROR
   CRITICAL
 }
 
-enum ObservabilityRecordKind {
-  ACCESS_DECISION
-  WORKFLOW_STATE
-  APPROVAL_DECISION
-  INTEGRATION_EVENT
-  DOMAIN_DIAGNOSTIC
-  OTHER
+enum ObservabilitySignalStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+  ARCHIVED
 }
 
-model ObservabilityRecord {
+model ObservabilitySignal {
   id      String  @id @default(cuid())
   storeId String?
 
-  kind  ObservabilityRecordKind
-  level ObservabilityLevel      @default(INFO)
+  code        String?
+  title       String
+  description String?
 
-  code    String
-  title   String
-  summary String?
+  subjectType String?
+  subjectId   String?
 
-  entityType String?
-  entityId   String?
+  level  ObservabilitySignalLevel  @default(INFO)
+  status ObservabilitySignalStatus @default(OPEN)
 
-  correlationKey String?
-  contextData    Json?
+  reasonCode String?
+  sourceType String?
+  sourceRef  String?
 
-  userId      String?
-  apiClientId String?
+  detectedAt     DateTime?
+  acknowledgedAt DateTime?
+  resolvedAt     DateTime?
+  archivedAt     DateTime?
 
-  recordedAt DateTime @default(now())
-  createdAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  store     Store?     @relation(fields: [storeId], references: [id], onDelete: SetNull)
-  user      User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
-  apiClient ApiClient? @relation(fields: [apiClientId], references: [id], onDelete: SetNull)
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
 
-  @@index([storeId])
-  @@index([kind])
-  @@index([level])
-  @@index([code])
-  @@index([entityType, entityId])
-  @@index([correlationKey])
-  @@index([recordedAt])
-  @@map("observability_records")
+  events ObservabilitySignalEvent[]
+
+  @@index([storeId, status])
+  @@index([level, status])
+  @@index([subjectType, subjectId])
+  @@index([detectedAt])
+  @@map("observability_signals")
+}
+
+model ObservabilitySignalEvent {
+  id                    String  @id @default(cuid())
+  observabilitySignalId String
+  actorUserId           String?
+
+  eventType   String
+  message     String?
+  payloadJson String?
+
+  createdAt DateTime @default(now())
+
+  observabilitySignal ObservabilitySignal @relation(fields: [observabilitySignalId], references: [id], onDelete: Cascade)
+  actorUser           User?               @relation("ObservabilitySignalEventActorUser", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([observabilitySignalId, createdAt])
+  @@index([actorUserId])
+  @@index([eventType, createdAt])
+  @@map("observability_signal_events")
 }

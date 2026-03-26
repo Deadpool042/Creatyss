@@ -1,57 +1,78 @@
-// -----------------------------------------------------------------------------
-// Domaine: documents
-// Responsabilité: documents commerciaux (factures, avoirs), cycle vie documentaire.
-// -----------------------------------------------------------------------------
-// prisma/documents.prisma
-
-enum DocumentKind {
-  INVOICE
-  CREDIT_NOTE
-}
-
 enum DocumentStatus {
   DRAFT
+  GENERATED
   ISSUED
   SENT
   CANCELLED
   ARCHIVED
 }
 
-model CommercialDocument {
-  id      String @id @default(cuid())
+enum DocumentTypeCode {
+  ORDER_CONFIRMATION
+  INVOICE
+  CREDIT_NOTE
+  DELIVERY_NOTE
+  RECEIPT
+  OTHER
+}
+
+model Document {
+  id      String  @id @default(cuid())
   storeId String
+  orderId String?
 
-  kind   DocumentKind
-  status DocumentStatus @default(DRAFT)
+  typeCode DocumentTypeCode
+  status   DocumentStatus   @default(DRAFT)
 
-  documentNumber  String
-  orderId         String?
-  returnRequestId String?
+  documentNumber String?
+  title          String?
 
-  currencyCode CurrencyCode
-
-  subtotalAmount Decimal @db.Decimal(12, 2)
-  taxAmount      Decimal @default(0) @db.Decimal(12, 2)
-  totalAmount    Decimal @db.Decimal(12, 2)
+  currencyCode CurrencyCode?
 
   issuedAt    DateTime?
   sentAt      DateTime?
   cancelledAt DateTime?
+  archivedAt  DateTime?
 
-  storagePath String?
+  fileName   String?
+  mimeType   String?
+  storageKey String?
+  publicUrl  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store         Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  order         Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  returnRequest ReturnRequest? @relation(fields: [returnRequestId], references: [id], onDelete: SetNull)
+  store Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  order Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  versions DocumentVersion[]
 
   @@unique([storeId, documentNumber])
-  @@index([storeId])
+  @@index([storeId, typeCode, status])
   @@index([orderId])
-  @@index([returnRequestId])
-  @@index([kind])
-  @@index([status])
-  @@map("commercial_documents")
+  @@index([issuedAt])
+  @@map("documents")
+}
+
+model DocumentVersion {
+  id         String @id @default(cuid())
+  documentId String
+
+  versionNumber Int
+  status        DocumentStatus @default(DRAFT)
+
+  fileName   String?
+  mimeType   String?
+  storageKey String?
+  publicUrl  String?
+
+  generatedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, versionNumber])
+  @@index([documentId, status])
+  @@map("document_versions")
 }

@@ -1,0 +1,115 @@
+enum PublicEventStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  CANCELLED
+  COMPLETED
+  ARCHIVED
+}
+
+enum EventAudienceStatus {
+  OPEN
+  CLOSED
+  WAITLIST
+}
+
+model PublicEvent {
+  id      String @id @default(cuid())
+  storeId String
+
+  code             String
+  slug             String
+  title            String
+  shortDescription String?
+  description      String?
+
+  status PublicEventStatus @default(DRAFT)
+
+  startsAt        DateTime
+  endsAt          DateTime?
+  locationName    String?
+  locationAddress String?
+
+  audienceStatus EventAudienceStatus @default(OPEN)
+
+  primaryImageId String?
+  coverImageId   String?
+
+  publishedAt DateTime?
+  cancelledAt DateTime?
+  archivedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store        Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  primaryImage MediaAsset? @relation("PublicEventPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
+  coverImage   MediaAsset? @relation("PublicEventCoverImage", fields: [coverImageId], references: [id], onDelete: SetNull)
+
+  registrations EventRegistration[]
+  reservations  EventReservation[]
+
+  @@unique([storeId, code])
+  @@unique([storeId, slug])
+  @@index([storeId, status])
+  @@index([startsAt, endsAt])
+  @@index([audienceStatus])
+  @@index([primaryImageId])
+  @@index([coverImageId])
+  @@map("public_events")
+}
+
+model EventRegistration {
+  id            String  @id @default(cuid())
+  publicEventId String
+  customerId    String?
+
+  email     String?
+  firstName String?
+  lastName  String?
+
+  status EventAudienceStatus @default(OPEN)
+  notes  String?
+
+  registeredAt DateTime?
+  cancelledAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  publicEvent PublicEvent @relation(fields: [publicEventId], references: [id], onDelete: Cascade)
+  customer    Customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([publicEventId, status])
+  @@index([customerId])
+  @@index([registeredAt])
+  @@map("event_registrations")
+}
+
+model EventReservation {
+  id            String  @id @default(cuid())
+  publicEventId String
+  customerId    String?
+
+  email     String?
+  firstName String?
+  lastName  String?
+
+  status   EventAudienceStatus @default(OPEN)
+  quantity Int                 @default(1)
+  notes    String?
+
+  reservedAt  DateTime?
+  cancelledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  publicEvent PublicEvent @relation(fields: [publicEventId], references: [id], onDelete: Cascade)
+  customer    Customer?   @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([publicEventId, status])
+  @@index([customerId])
+  @@index([reservedAt])
+  @@map("event_reservations")
+}

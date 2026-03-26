@@ -1,58 +1,67 @@
-// -----------------------------------------------------------------------------
-// Domaine: conversion
-// Responsabilité: flows de conversion, étapes, triggers comportementaux.
-// -----------------------------------------------------------------------------
-// prisma/conversion.prisma
-
 enum ConversionFlowStatus {
   DRAFT
   ACTIVE
-  PAUSED
+  INACTIVE
   ARCHIVED
 }
 
-enum ConversionTriggerKind {
-  PAGE_VIEW
-  PRODUCT_VIEW
-  ADD_TO_CART
-  CHECKOUT_START
-  PURCHASE
-  CUSTOM
+enum ConversionFlowType {
+  CART_RECOVERY
+  UPSELL
+  CROSS_SELL
+  THRESHOLD
 }
 
 model ConversionFlow {
   id      String @id @default(cuid())
   storeId String
 
+  code        String
   name        String
   description String?
-  status      ConversionFlowStatus @default(DRAFT)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  type   ConversionFlowType
+  status ConversionFlowStatus @default(DRAFT)
 
-  store Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  steps ConversionStep[]
+  isActive Boolean @default(true)
+  priority Int     @default(0)
 
-  @@index([storeId])
-  @@index([status])
+  thresholdAmount Decimal?      @db.Decimal(12, 2)
+  currencyCode    CurrencyCode?
+
+  startsAt DateTime?
+  endsAt   DateTime?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  productLinks ConversionFlowProduct[]
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
+  @@index([type, status])
+  @@index([isActive, priority])
+  @@index([startsAt, endsAt])
   @@map("conversion_flows")
 }
 
-model ConversionStep {
+model ConversionFlowProduct {
   id               String @id @default(cuid())
   conversionFlowId String
+  productId        String
 
-  name        String
-  sortOrder   Int                   @default(0)
-  triggerKind ConversionTriggerKind
-  config      Json?
-
+  sortOrder Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   conversionFlow ConversionFlow @relation(fields: [conversionFlowId], references: [id], onDelete: Cascade)
+  product        Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  @@index([conversionFlowId])
-  @@map("conversion_steps")
+  @@unique([conversionFlowId, productId])
+  @@index([conversionFlowId, sortOrder])
+  @@index([productId])
+  @@map("conversion_flow_products")
 }

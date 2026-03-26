@@ -1,38 +1,54 @@
-// prisma/categories.prisma
-
 enum CategoryStatus {
   DRAFT
   ACTIVE
+  INACTIVE
   ARCHIVED
 }
 
 model Category {
   id       String  @id @default(cuid())
-  storeId  String
+  storeId  String?
   parentId String?
 
-  slug        String
-  name        String
-  description String?
+  code             String
+  slug             String
+  name             String
+  shortDescription String?
+  description      String?
 
-  status     CategoryStatus @default(DRAFT)
-  sortOrder  Int            @default(0)
-  isFeatured Boolean        @default(false)
+  primaryImageId String?
+  coverImageId   String?
+
+  status CategoryStatus @default(DRAFT)
+
+  isFeatured Boolean @default(false)
+  sortOrder  Int     @default(0)
+
+  publishedAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store        Store             @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  parent       Category?         @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
-  children     Category[]        @relation("CategoryTree")
-  productLinks ProductCategory[]
-  seo          SeoMetadata?
+  store    Store?     @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryHierarchy")
 
+  primaryImage               MediaAsset?                 @relation("CategoryPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
+  coverImage                 MediaAsset?                 @relation("CategoryCoverImage", fields: [coverImageId], references: [id], onDelete: SetNull)
+  homepageFeaturedIn         HomepageFeaturedCategory[]
+  productLinks               ProductCategory[]
+  discountCategoryTargets    DiscountCategoryTarget[]
+  taxRuleCategoryTargets     TaxRuleCategoryTarget[]
+  salesPolicyCategoryTargets SalesPolicyCategoryTarget[]
+
+  @@unique([storeId, code])
   @@unique([storeId, slug])
-  @@index([storeId])
-  @@index([parentId])
-  @@index([status])
+  @@index([storeId, status])
+  @@index([parentId, sortOrder])
   @@index([isFeatured])
+  @@index([primaryImageId])
+  @@index([coverImageId])
   @@map("categories")
 }
 
@@ -41,17 +57,18 @@ model ProductCategory {
   productId  String
   categoryId String
 
-  sortOrder Int     @default(0)
   isPrimary Boolean @default(false)
+  sortOrder Int     @default(0)
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@unique([productId, categoryId])
-  @@index([productId])
-  @@index([categoryId])
-  @@index([isPrimary])
+  @@index([categoryId, isPrimary])
+  @@index([categoryId, sortOrder])
+  @@index([productId, isPrimary])
   @@map("product_categories")
 }

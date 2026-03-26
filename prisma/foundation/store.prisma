@@ -1,14 +1,53 @@
-// -----------------------------------------------------------------------------
-// Domaine: store
-// Responsabilité: boutique, configuration, capabilities, identité de boutique.
-// -----------------------------------------------------------------------------
-// prisma/store.prisma
-
 enum StoreStatus {
   DRAFT
   ACTIVE
   SUSPENDED
   ARCHIVED
+}
+
+enum StoreDomainType {
+  PRIMARY
+  SECONDARY
+  PREVIEW
+  INTERNAL
+}
+
+enum StoreCapabilityKey {
+  BLOG
+  PAGES
+  HOMEPAGE_EDITORIAL
+  SEO
+  LOCALIZATION
+  MEDIA_LIBRARY
+  DISCOUNTS
+  CHANNELS
+  SALES_POLICY
+  INVENTORY
+  AVAILABILITY
+  RETURNS
+  GIFT_CARDS
+  LOYALTY
+  GIFTING
+  SUBSCRIPTIONS
+  NOTIFICATIONS
+  EMAIL
+  NEWSLETTER
+  SOCIAL
+  PUBLIC_EVENTS
+  SUPPORT
+  CRM
+  CONVERSION
+  ANALYTICS
+  ATTRIBUTION
+  BEHAVIOR
+  WORKFLOW
+  APPROVAL
+  SCHEDULING
+  FRAUD_RISK
+  FEATURE_FLAGS
+  IMPORT
+  EXPORT
+  AI
 }
 
 enum CurrencyCode {
@@ -17,102 +56,6 @@ enum CurrencyCode {
   GBP
   CHF
   CAD
-  AUD
-  JPY
-  DKK
-  NOK
-  SEK
-  PLN
-  CZK
-  HUF
-  RON
-}
-
-enum StoreCapabilityKey {
-  // A. Checkout / clients / vente
-  GUEST_CHECKOUT
-  CUSTOMER_CHECKOUT
-  PROFESSIONAL_CUSTOMERS
-
-  // B. Livraison / transport
-  MULTI_CURRENCY
-  MULTI_CARRIER
-  PICKUP_POINT_DELIVERY
-
-  // C. Pricing / devises / remises
-  DISCOUNTS
-  COUPON_CODES
-  CUSTOMER_SPECIFIC_PRICING
-  CUSTOMER_GROUP_PRICING
-  VOLUME_PRICING
-
-  // D. Fiscalité
-  TAXATION
-  EXCISE_TAX
-
-  // E. Disponibilité produit
-  BACKORDERS
-  PREORDERS
-  GIFT_OPTIONS
-
-  // F. Canaux catalogue
-  PRODUCT_CHANNELS
-  GOOGLE_SHOPPING
-  META_CATALOG
-
-  // G. Marketing / conversion / CRM
-  MARKETING_CAMPAIGNS
-  CONVERSION_FLOWS
-  CRM
-
-  // H. Tracking / mesure / consentement
-  TRACKING
-  COOKIE_CONSENT
-  ANALYTICS
-  ATTRIBUTION
-  MARKETING_PIXELS
-  SERVER_SIDE_TRACKING
-
-  // I. Notifications / newsletter / temps réel
-  NOTIFICATIONS
-  NEWSLETTER
-  REALTIME_NOTIFICATIONS
-
-  // J. Événements publics / social
-  PUBLIC_EVENTS
-  EVENT_REGISTRATIONS
-  EVENT_RESERVATIONS
-  SOCIAL_PUBLISHING
-  AUTOMATIC_SOCIAL_POSTING
-
-  // K. Analyse comportementale
-  BEHAVIORAL_ANALYTICS
-  PRODUCT_VIEW_TRACKING
-  CLICK_TRACKING
-
-  // L. Expérience / contenu / international
-  SEARCH
-  RECOMMENDATIONS
-  ADVANCED_SEO
-  LOCALIZATION
-
-  // M. Pilotage / sécurité / supervision
-  AUDIT_TRAIL
-  BUSINESS_OBSERVABILITY
-  TECHNICAL_MONITORING
-  ADVANCED_PERMISSIONS
-
-  // N. Intégrations externes
-  ERP_INTEGRATION
-  EBP_INTEGRATION
-  ELECTRONIC_INVOICING
-  CHORUS_PRO_INTEGRATION
-
-  // O. Intelligence artificielle (optionable par boutique)
-  AI_CONTENT_GENERATION
-  AI_PUBLIC_ASSISTANT
-  AI_SEO_GENERATION
-  AI_SOCIAL_GENERATION
 }
 
 model Store {
@@ -122,113 +65,123 @@ model Store {
   slug   String      @unique
   status StoreStatus @default(DRAFT)
 
-  defaultLocale      String @default("fr-FR")
-  defaultCurrency    String @default("EUR")
-  defaultCountryCode String @default("FR")
-  timezone           String @default("Europe/Paris")
-
-  supportEmail String?
-  contactEmail String?
   legalName    String?
-  brandName    String?
+  supportEmail String?
+  supportPhone String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  defaultLocaleCode String
+  defaultCurrency   CurrencyCode @default(EUR)
+  timezone          String       @default("Europe/Paris")
 
-  capabilities StoreCapability[]
-  users        User[]
-  roles        Role[]
-  apiClients   ApiClient[]
+  isProduction Boolean @default(false)
 
-  customers Customer[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  activatedAt DateTime?
+  archivedAt  DateTime?
 
-  productTypes      ProductType[]
-  catalogAttributes CatalogAttribute[]
-  products          Product[]
-  categories        Category[]
-  priceLists        PriceList[]
-  mediaAssets       MediaAsset[]
-
-  pages               Page[]
-  blogCategories      BlogCategory[]
-  blogPosts           BlogPost[]
-  seoMetadata         SeoMetadata[]
-  localeDefinitions   LocaleDefinition[]
-  pageLocalizations   PageLocalization[]
-  blogPostLocalizations BlogPostLocalization[]
-  productLocalizations ProductLocalization[]
-  templateDefinitions TemplateDefinition[]
-
-  carts           Cart[]
-  checkouts       Checkout[]
-  orders          Order[]
-  shippingMethods ShippingMethod[]
-  discounts       Discount[]
-
-  giftCards       GiftCard[]
-  loyaltyAccounts LoyaltyAccount[]
-  events          Event[]
-
-  notifications  Notification[]
-  emailMessages  EmailMessage[]
-  supportTickets SupportTicket[]
-
-  legalDocuments    LegalDocument[]
-  consentCategories ConsentCategory[]
-  consentRecords    ConsentRecord[]
-
-  auditLogs            AuditLog[]
-  observabilityRecords ObservabilityRecord[]
-  monitoringChecks     MonitoringCheck[]
-
-  jobs             Job[]
-  webhookEndpoints WebhookEndpoint[]
-  integrations     Integration[]
-
-  exportDefinitions ExportDefinition[]
-  exportRequests    ExportRequest[]
-  importDefinitions ImportDefinition[]
-  importRequests    ImportRequest[]
-
-  marketingCampaigns   MarketingCampaign[]
-  trackingEvents       TrackingEvent[]
-  analyticsMetrics     AnalyticsMetric[]
-  attributionRecords   AttributionRecord[]
-  behaviorProfiles     BehaviorProfile[]
-  behaviorSegments     BehaviorSegment[]
-  searchDocuments      SearchDocument[]
-  recommendationLists  RecommendationList[]
-  fraudRiskAssessments FraudRiskAssessment[]
-
-  // Nouveaux domaines
-  inventoryItems       InventoryItem[]
-  taxRules             TaxRule[]
-  exciseRules          ExciseRule[]
-  commercialDocuments  CommercialDocument[]
-  domainEvents         DomainEvent[]
-  channels             Channel[]
-  conversionFlows      ConversionFlow[]
-  crmTags              CrmTag[]
-  newsletterLists      NewsletterList[]
-  subscriptionTopics   SubscriptionTopic[]
-  socialAccounts       SocialAccount[]
-  dashboards           Dashboard[]
-  aiProviders          AiProvider[]
-  aiDepthPolicies      AiDepthPolicy[]
-  aiUsageSummaries     AiUsageSummary[]
-  featureFlags         FeatureFlag[]
-  workflowRuns         WorkflowRun[]
-  aiContentGenerations AiContentGeneration[]
-  aiConversations      AiConversation[]
-  approvalRequests     ApprovalRequest[]
-  bundles              Bundle[]
-  salesPolicies        SalesPolicy[]
-  schedulingEntries    SchedulingEntry[]
-  socialPosts          SocialPost[]
+  domains                 StoreDomain[]
+  capabilities            StoreCapability[]
+  users                   User[]
+  customers               Customer[]
+  productTypes            ProductType[]
+  products                Product[]
+  categories              Category[]
+  mediaAssets             MediaAsset[]
+  priceLists              PriceList[]
+  inventoryItems          InventoryItem[]
+  availabilityRecords     AvailabilityRecord[]
+  carts                   Cart[]
+  checkouts               Checkout[]
+  orders                  Order[]
+  shippingZones           ShippingZone[]
+  shippingMethods         ShippingMethod[]
+  shipments               Shipment[]
+  payments                Payment[]
+  documents               Document[]
+  returnRequests          ReturnRequest[]
+  discounts               Discount[]
+  pages                   Page[]
+  blogCategories          BlogCategory[]
+  blogPosts               BlogPost[]
+  homepages               Homepage[]
+  seoMetadata             SeoMetadata[]
+  apiClients              ApiClient[]
+  auditLogs               AuditLog[]
+  jobs                    Job[]
+  integrations            Integration[]
+  webhookEndpoints        WebhookEndpoint[]
+  approvalRequests        ApprovalRequest[]
+  schedulePlans           SchedulePlan[]
+  workflowDefinitions     WorkflowDefinition[]
+  workflowInstances       WorkflowInstance[]
+  consentPurposes         ConsentPurpose[]
+  consentRecords          ConsentRecord[]
+  importDefinitions       ImportDefinition[]
+  importRequests          ImportRequest[]
+  exportDefinitions       ExportDefinition[]
+  exportRequests          ExportRequest[]
+  featureFlags            FeatureFlag[]
+  emailMessages           EmailMessage[]
+  notifications           Notification[]
+  notificationPreferences NotificationPreference[]
+  fraudRiskAssessments    FraudRiskAssessment[]
+  newsletterSubscribers   NewsletterSubscriber[]
+  newsletterCampaigns     NewsletterCampaign[]
+  publicEvents            PublicEvent[]
+  supportTickets          SupportTicket[]
+  crmContacts             CrmContact[]
+  crmTags                 CrmTag[]
+  conversionFlows         ConversionFlow[]
+  socialPublications      SocialPublication[]
+  analyticsMetrics        AnalyticsMetric[]
+  attributionModels       AttributionModel[]
+  behaviorSegments        BehaviorSegment[]
+  behaviorProfiles        BehaviorProfile[]
+  localizationLocales     LocalizationLocale[]
+  localizedValues         LocalizedValue[]
+  recommendationRules     RecommendationRule[]
+  searchDocuments         SearchDocument[]
+  monitoringChecks        MonitoringCheck[]
+  observabilitySignals    ObservabilitySignal[]
+  domainEvents            DomainEvent[]
+  taxRules                TaxRule[]
+  channels                Channel[]
+  salesPolicies           SalesPolicy[]
+  sellabilityDecisions    SellabilityDecision[]
+  bundles                 Bundle[]
+  giftCards               GiftCard[]
+  giftRequests            GiftRequest[]
+  loyaltyAccounts         LoyaltyAccount[]
+  subscriptions           Subscription[]
+  aiProviders             AiProvider[]
+  aiTasks                 AiTask[]
+  fulfillments            Fulfillment[]
 
   @@index([status])
   @@index([slug])
   @@map("stores")
+}
+
+model StoreDomain {
+  id      String          @id @default(cuid())
+  storeId String
+  host    String
+  type    StoreDomainType @default(SECONDARY)
+
+  isEnabled   Boolean @default(true)
+  isCanonical Boolean @default(false)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  disabledAt DateTime?
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, host])
+  @@index([storeId, type])
+  @@index([host])
+  @@map("store_domains")
 }
 
 model StoreCapability {
@@ -237,13 +190,15 @@ model StoreCapability {
   key       StoreCapabilityKey
   isEnabled Boolean            @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  enabledAt  DateTime?
+  disabledAt DateTime?
 
   store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
   @@unique([storeId, key])
-  @@index([storeId])
-  @@index([key])
+  @@index([storeId, isEnabled])
+  @@index([key, isEnabled])
   @@map("store_capabilities")
 }

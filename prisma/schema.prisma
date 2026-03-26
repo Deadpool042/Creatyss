@@ -1,18 +1,8 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
-
-// -----------------------------------------------------------------------------
-// Fichier principal Prisma
-// -----------------------------------------------------------------------------
-// Ce fichier ne doit contenir que :
-// - generator
-// - datasource
-// - éventuellement quelques enums vraiment transverses
-//
-// Les modèles sont répartis par domaine dans les autres fichiers `.prisma`.
-// -----------------------------------------------------------------------------

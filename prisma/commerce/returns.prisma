@@ -1,68 +1,109 @@
-// -----------------------------------------------------------------------------
-// Domaine: returns
-// Responsabilité: demandes et traitements de retour.
-// -----------------------------------------------------------------------------
-// prisma/returns.prisma
-
-enum ReturnStatus {
+enum ReturnRequestStatus {
   REQUESTED
+  UNDER_REVIEW
   APPROVED
   REJECTED
   RECEIVED
   REFUNDED
-  COMPLETED
+  CLOSED
   CANCELLED
+  ARCHIVED
+}
+
+enum ReturnItemCondition {
+  NEW
+  OPENED
+  USED
+  DAMAGED
+  UNKNOWN
+}
+
+enum ReturnDecisionType {
+  APPROVE
+  REJECT
+  PARTIAL_APPROVE
 }
 
 model ReturnRequest {
   id         String  @id @default(cuid())
+  storeId    String
   orderId    String
   customerId String?
 
-  status ReturnStatus @default(REQUESTED)
-  reason String?
-  notes  String?
+  returnNumber String
+  status       ReturnRequestStatus @default(REQUESTED)
 
-  requestedAt DateTime  @default(now())
+  reasonCode String?
+  notes      String?
+
+  requestedAt DateTime?
   approvedAt  DateTime?
   rejectedAt  DateTime?
   receivedAt  DateTime?
   refundedAt  DateTime?
-  completedAt DateTime?
+  closedAt    DateTime?
   cancelledAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  order               Order                @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  customer            Customer?            @relation(fields: [customerId], references: [id], onDelete: SetNull)
-  lines               ReturnLine[]
-  notifications       Notification[]
-  supportTickets      SupportTicket[]
-  commercialDocuments CommercialDocument[]
+  store    Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  order    Order     @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
 
+  items     ReturnItem[]
+  decisions ReturnDecision[]
+
+  @@unique([storeId, returnNumber])
+  @@index([storeId, status])
   @@index([orderId])
-  @@index([customerId])
-  @@index([status])
+  @@index([customerId, status])
+  @@index([requestedAt])
   @@map("return_requests")
 }
 
-model ReturnLine {
-  id              String @id @default(cuid())
+model ReturnItem {
+  id              String  @id @default(cuid())
   returnRequestId String
-  orderLineId     String
+  orderLineId     String?
 
-  quantity Int
-  reason   String?
+  quantity  Int
+  condition ReturnItemCondition @default(UNKNOWN)
+
+  reasonCode String?
+  notes      String?
+
+  productName String
+  variantName String?
+  sku         String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   returnRequest ReturnRequest @relation(fields: [returnRequestId], references: [id], onDelete: Cascade)
-  orderLine     OrderLine     @relation(fields: [orderLineId], references: [id], onDelete: Cascade)
+  orderLine     OrderLine?    @relation(fields: [orderLineId], references: [id], onDelete: SetNull)
 
-  @@unique([returnRequestId, orderLineId])
   @@index([returnRequestId])
   @@index([orderLineId])
-  @@map("return_lines")
+  @@map("return_items")
+}
+
+model ReturnDecision {
+  id              String  @id @default(cuid())
+  returnRequestId String
+  decidedByUserId String?
+
+  type       ReturnDecisionType
+  reasonCode String?
+  notes      String?
+
+  createdAt DateTime @default(now())
+
+  returnRequest ReturnRequest @relation(fields: [returnRequestId], references: [id], onDelete: Cascade)
+  decidedBy     User?         @relation(fields: [decidedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([returnRequestId, createdAt])
+  @@index([decidedByUserId])
+  @@map("return_decisions")
 }

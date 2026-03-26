@@ -1,78 +1,101 @@
-// -----------------------------------------------------------------------------
-// Domaine: webhooks
-// Responsabilité: abonnements, deliveries, retries, sécurité webhook.
-// -----------------------------------------------------------------------------
-// prisma/webhooks.prisma
-
-enum WebhookStatus {
+enum WebhookEndpointStatus {
+  DRAFT
   ACTIVE
-  DISABLED
+  INACTIVE
+  FAILED
   ARCHIVED
 }
 
-enum WebhookEventStatus {
+enum WebhookDeliveryStatus {
   PENDING
-  DELIVERED
+  RUNNING
+  SUCCEEDED
   FAILED
   CANCELLED
+  EXPIRED
 }
 
 model WebhookEndpoint {
-  id      String  @id @default(cuid())
-  storeId String?
+  id            String  @id @default(cuid())
+  storeId       String?
+  integrationId String?
 
   code        String
   name        String
   description String?
 
-  url        String
-  secretHash String
+  status WebhookEndpointStatus @default(DRAFT)
 
-  status           WebhookStatus @default(ACTIVE)
-  subscribedEvents Json
+  targetUrl    String
+  secretHash   String?
+  secretPrefix String?
 
-  lastDeliveredAt DateTime?
+  isEnabled Boolean @default(false)
+
+  eventType String
+  version   String?
+
+  timeoutMs   Int?
+  maxAttempts Int  @default(3)
+
+  lastTriggeredAt DateTime?
+  lastSucceededAt DateTime?
   lastFailedAt    DateTime?
+  archivedAt      DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store      Store?            @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  store       Store?       @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  integration Integration? @relation(fields: [integrationId], references: [id], onDelete: SetNull)
+
   deliveries WebhookDelivery[]
 
   @@unique([storeId, code])
-  @@index([storeId])
-  @@index([status])
+  @@index([integrationId])
+  @@index([storeId, status])
+  @@index([eventType, status])
+  @@index([isEnabled])
   @@map("webhook_endpoints")
 }
 
 model WebhookDelivery {
-  id         String @id @default(cuid())
-  endpointId String
+  id                String @id @default(cuid())
+  webhookEndpointId String
 
-  eventName String
-  eventKey  String?
-  status    WebhookEventStatus @default(PENDING)
+  status WebhookDeliveryStatus @default(PENDING)
 
-  payload            Json?
-  responseStatusCode Int?
-  responseBody       String?
+  eventType      String
+  eventId        String?
+  idempotencyKey String?
+
+  requestUrl         String
+  requestMethod      String  @default("POST")
+  requestHeadersJson String?
+  requestBodyJson    String?
+
+  responseStatusCode  Int?
+  responseHeadersJson String?
+  responseBodyText    String?
 
   attemptCount Int       @default(0)
-  nextRetryAt  DateTime?
+  scheduledAt  DateTime?
+  startedAt    DateTime?
+  finishedAt   DateTime?
+  expiresAt    DateTime?
 
-  deliveredAt DateTime?
-  failedAt    DateTime?
-  cancelledAt DateTime?
+  errorCode    String?
+  errorMessage String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  endpoint WebhookEndpoint @relation(fields: [endpointId], references: [id], onDelete: Cascade)
+  webhookEndpoint WebhookEndpoint @relation(fields: [webhookEndpointId], references: [id], onDelete: Cascade)
 
-  @@index([endpointId])
-  @@index([eventName])
-  @@index([status])
-  @@index([nextRetryAt])
+  @@index([webhookEndpointId, status])
+  @@index([eventType, eventId])
+  @@index([idempotencyKey])
+  @@index([scheduledAt, status])
+  @@index([finishedAt])
   @@map("webhook_deliveries")
 }

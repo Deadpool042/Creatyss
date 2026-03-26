@@ -1,66 +1,72 @@
-// -----------------------------------------------------------------------------
-// Domaine: channels
-// Responsabilité: canaux de diffusion catalogue (Google Shopping, Meta, custom).
-// -----------------------------------------------------------------------------
-// prisma/channels.prisma
-
-enum ChannelKind {
-  GOOGLE_SHOPPING
-  META_CATALOG
-  CUSTOM
-}
-
 enum ChannelStatus {
+  DRAFT
   ACTIVE
-  DISABLED
+  INACTIVE
   ARCHIVED
 }
 
+enum ChannelType {
+  GOOGLE_SHOPPING
+  META_CATALOG
+  MARKETPLACE
+  INTERNAL_FEED
+  OTHER
+}
+
 enum ChannelPublicationStatus {
-  NOT_SUBMITTED
   PENDING
-  APPROVED
+  ELIGIBLE
+  INELIGIBLE
+  PUBLISHED
   REJECTED
-  REMOVED
+  EXCLUDED
+  SUSPENDED
+  ARCHIVED
 }
 
 model Channel {
   id      String @id @default(cuid())
   storeId String
 
-  kind   ChannelKind
-  name   String
-  status ChannelStatus @default(ACTIVE)
+  code        String
+  name        String
+  description String?
 
-  externalId String?
-  config     Json?
+  type   ChannelType
+  status ChannelStatus @default(DRAFT)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isEnabled Boolean @default(false)
 
-  store        Store                       @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  publications ChannelProductPublication[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  @@unique([storeId, kind, name])
-  @@index([storeId])
-  @@index([kind])
-  @@index([status])
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  productStatuses ChannelProductStatus[]
+  variantStatuses ChannelVariantStatus[]
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
+  @@index([type, status])
+  @@index([isEnabled])
   @@map("channels")
 }
 
-model ChannelProductPublication {
+model ChannelProductStatus {
   id        String @id @default(cuid())
   channelId String
   productId String
 
-  status ChannelPublicationStatus @default(NOT_SUBMITTED)
+  publicationStatus ChannelPublicationStatus @default(PENDING)
+  isEligible        Boolean                  @default(false)
 
-  submittedAt DateTime?
-  approvedAt  DateTime?
+  reasonCode String?
+  notes      String?
+
+  publishedAt DateTime?
   rejectedAt  DateTime?
-  removedAt   DateTime?
-
-  rejectionReason String?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -69,8 +75,34 @@ model ChannelProductPublication {
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([channelId, productId])
-  @@index([channelId])
-  @@index([productId])
-  @@index([status])
-  @@map("channel_product_publications")
+  @@index([productId, publicationStatus])
+  @@index([channelId, publicationStatus])
+  @@map("channel_product_statuses")
+}
+
+model ChannelVariantStatus {
+  id        String @id @default(cuid())
+  channelId String
+  variantId String
+
+  publicationStatus ChannelPublicationStatus @default(PENDING)
+  isEligible        Boolean                  @default(false)
+
+  reasonCode String?
+  notes      String?
+
+  publishedAt DateTime?
+  rejectedAt  DateTime?
+  archivedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  channel Channel        @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@unique([channelId, variantId])
+  @@index([variantId, publicationStatus])
+  @@index([channelId, publicationStatus])
+  @@map("channel_variant_statuses")
 }

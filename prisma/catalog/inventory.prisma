@@ -1,69 +1,111 @@
-// -----------------------------------------------------------------------------
-// Domaine: inventory
-// Responsabilité: stocks, ajustements, politique de disponibilité par variante.
-// -----------------------------------------------------------------------------
-// prisma/inventory.prisma
-
-enum InventoryPolicyKind {
-  TRACK
-  DENY_OUT_OF_STOCK
-  ALLOW_BACKORDERS
-  ALLOW_PREORDERS
-  INFINITE
+enum InventoryItemStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
 }
 
-enum InventoryAdjustmentKind {
-  SALE
+enum InventoryReservationStatus {
+  ACTIVE
+  RELEASED
+  CONSUMED
+  EXPIRED
+  CANCELLED
+}
+
+enum InventoryMovementType {
+  MANUAL_ADJUSTMENT
+  RECEIPT
+  RESERVATION
+  RELEASE
+  CONSUMPTION
   RETURN
-  MANUAL_CORRECTION
-  RECEPTION
-  TRANSFER
-  WRITE_OFF
+  CORRECTION
 }
 
 model InventoryItem {
-  id        String @id @default(cuid())
-  storeId   String
-  variantId String @unique
+  id        String  @id @default(cuid())
+  storeId   String?
+  variantId String
 
-  policy            InventoryPolicyKind @default(TRACK)
-  quantityOnHand    Int                 @default(0)
-  quantityReserved  Int                 @default(0)
-  quantityAvailable Int                 @default(0)
+  sku    String?
+  status InventoryItemStatus @default(ACTIVE)
+  notes  String?
 
-  lowStockThreshold Int?
+  onHandQuantity   Int @default(0)
+  reservedQuantity Int @default(0)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  store   Store?         @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+
+  reservations InventoryReservation[]
+  movements    InventoryMovement[]
+
+  @@unique([storeId, variantId])
+  @@index([storeId, status])
+  @@index([variantId])
+  @@map("inventory_items")
+}
+
+model InventoryReservation {
+  id              String @id @default(cuid())
+  inventoryItemId String
+
+  cartId     String?
+  checkoutId String?
+  orderId    String?
+
+  quantity Int
+  status   InventoryReservationStatus @default(ACTIVE)
+  reason   String?
+  notes    String?
+
+  expiresAt   DateTime?
+  releasedAt  DateTime?
+  consumedAt  DateTime?
+  cancelledAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store       Store                 @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  variant     ProductVariant        @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  adjustments InventoryAdjustment[]
+  inventoryItem InventoryItem @relation(fields: [inventoryItemId], references: [id], onDelete: Cascade)
+  cart          Cart?         @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  checkout      Checkout?     @relation(fields: [checkoutId], references: [id], onDelete: Cascade)
+  order         Order?        @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  cartLine      CartLine?     @relation(fields: [cartLineId], references: [id])
+  cartLineId    String?
 
-  @@index([storeId])
-  @@index([policy])
-  @@map("inventory_items")
+  @@index([inventoryItemId, status])
+  @@index([inventoryItemId, createdAt])
+  @@index([cartId])
+  @@index([checkoutId])
+  @@index([orderId])
+  @@index([status, expiresAt])
+  @@map("inventory_reservations")
 }
 
-model InventoryAdjustment {
+model InventoryMovement {
   id              String @id @default(cuid())
   inventoryItemId String
 
-  kind          InventoryAdjustmentKind
-  delta         Int
-  quantityAfter Int
+  type          InventoryMovementType
+  quantityDelta Int
 
-  reason        String?
+  referenceType String?
   referenceId   String?
-  referenceKind String?
 
-  occurredAt DateTime @default(now())
-  createdAt  DateTime @default(now())
+  reason String?
+  notes  String?
+
+  createdAt DateTime @default(now())
 
   inventoryItem InventoryItem @relation(fields: [inventoryItemId], references: [id], onDelete: Cascade)
 
-  @@index([inventoryItemId])
-  @@index([kind])
-  @@index([occurredAt])
-  @@map("inventory_adjustments")
+  @@index([inventoryItemId, type])
+  @@index([inventoryItemId, createdAt])
+  @@index([referenceType, referenceId])
+  @@map("inventory_movements")
 }

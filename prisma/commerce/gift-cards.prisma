@@ -1,24 +1,19 @@
-// -----------------------------------------------------------------------------
-// Domaine: gift-cards
-// Responsabilité: cartes cadeaux, émission, solde, consommation.
-// -----------------------------------------------------------------------------
-// prisma/gift-cards.prisma
-
 enum GiftCardStatus {
   DRAFT
   ACTIVE
-  DISABLED
-  EXPIRED
   REDEEMED
+  EXPIRED
+  CANCELLED
   ARCHIVED
 }
 
 enum GiftCardTransactionType {
   ISSUE
   REDEEM
-  ADJUST
-  EXPIRE
-  INVALIDATE
+  REFUND
+  ADJUSTMENT
+  EXPIRATION
+  CANCELLATION
 }
 
 model GiftCard {
@@ -26,29 +21,33 @@ model GiftCard {
   storeId    String
   customerId String?
 
-  code          String
+  code   String
+  status GiftCardStatus @default(DRAFT)
+
   initialAmount Decimal      @db.Decimal(12, 2)
   balanceAmount Decimal      @db.Decimal(12, 2)
   currencyCode  CurrencyCode
 
-  status GiftCardStatus @default(DRAFT)
-
-  expiresAt   DateTime?
-  activatedAt DateTime?
-  disabledAt  DateTime?
-  expiredAt   DateTime?
+  purchasedOrderId String?
+  expiresAt        DateTime?
+  activatedAt      DateTime?
+  redeemedAt       DateTime?
+  cancelledAt      DateTime?
+  archivedAt       DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store        Store                 @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  customer     Customer?             @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  store          Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer       Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  purchasedOrder Order?    @relation("GiftCardPurchasedOrder", fields: [purchasedOrderId], references: [id], onDelete: SetNull)
+
   transactions GiftCardTransaction[]
 
   @@unique([storeId, code])
-  @@index([storeId])
+  @@index([storeId, status])
   @@index([customerId])
-  @@index([status])
+  @@index([purchasedOrderId])
   @@index([expiresAt])
   @@map("gift_cards")
 }
@@ -58,18 +57,19 @@ model GiftCardTransaction {
   giftCardId String
   orderId    String?
 
-  type               GiftCardTransactionType
-  amount             Decimal                 @db.Decimal(12, 2)
-  balanceAfterAmount Decimal                 @db.Decimal(12, 2)
+  amount       Decimal      @db.Decimal(12, 2)
+  currencyCode CurrencyCode
 
-  reason    String?
+  transactionType GiftCardTransactionType
+  reasonCode      String?
+  notes           String?
+
   createdAt DateTime @default(now())
 
   giftCard GiftCard @relation(fields: [giftCardId], references: [id], onDelete: Cascade)
-  order    Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  order    Order?   @relation("GiftCardTransactionOrder", fields: [orderId], references: [id], onDelete: SetNull)
 
-  @@index([giftCardId])
+  @@index([giftCardId, createdAt])
   @@index([orderId])
-  @@index([type])
   @@map("gift_card_transactions")
 }

@@ -1,88 +1,160 @@
-// -----------------------------------------------------------------------------
-// Domaine: media
-// Responsabilité: assets, variants, metadata, références média.
-// -----------------------------------------------------------------------------
-// prisma/media.prisma
-
-enum MediaAssetKind {
-  IMAGE
-  FILE
-}
-
 enum MediaAssetStatus {
+  DRAFT
   ACTIVE
+  INACTIVE
   ARCHIVED
 }
 
+enum MediaAssetKind {
+  IMAGE
+  VIDEO
+  DOCUMENT
+  OTHER
+}
+
+enum MediaReferenceSubjectType {
+  PRODUCT
+  PRODUCT_VARIANT
+  CATEGORY
+  PAGE
+  BLOG_POST
+  HOMEPAGE
+  HOMEPAGE_SECTION
+  PUBLIC_EVENT
+  EMAIL_TEMPLATE
+  OTHER
+}
+
+enum MediaReferenceRole {
+  PRIMARY
+  COVER
+  GALLERY
+  THUMBNAIL
+  HERO
+  INLINE
+  ATTACHMENT
+  OTHER
+}
+
 model MediaAsset {
-  id      String @id @default(cuid())
-  storeId String
+  id      String  @id @default(cuid())
+  storeId String?
 
   kind   MediaAssetKind   @default(IMAGE)
-  status MediaAssetStatus @default(ACTIVE)
+  status MediaAssetStatus @default(DRAFT)
+
+  slug        String?
+  title       String?
+  altText     String?
+  caption     String?
+  description String?
 
   originalFilename String
-  storagePath      String
   mimeType         String
-  altText          String?
+  extension        String?
 
-  width         Int?
-  height        Int?
-  fileSizeBytes Int?
+  storageKey String
+  publicUrl  String?
+
+  widthPx   Int?
+  heightPx  Int?
+  sizeBytes Int?
+
+  checksumSha256 String?
+
+  isPublic    Boolean   @default(false)
+  publishedAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store              Store                 @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  productLinks       ProductMedia[]
-  variantLinks       ProductVariantMedia[]
-  blogPostCovers     BlogPost[]
-  seoOpenGraphImages SeoMetadata[]
-  events             Event[]
-  pageSections       PageSection[]
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
 
-  @@index([storeId])
-  @@index([kind])
-  @@index([status])
+  variants                MediaVariant[]
+  references              MediaReference[]
+  socialPublicationAssets SocialPublicationAsset[]
+
+  categoriesAsPrimaryImage         Category[]        @relation("CategoryPrimaryImage")
+  categoriesAsCoverImage           Category[]        @relation("CategoryCoverImage")
+  productsAsPrimaryImage           Product[]         @relation("ProductPrimaryImage")
+  productVariantsAsPrimaryImage    ProductVariant[]  @relation("ProductVariantPrimaryImage")
+  pagesAsPrimaryImage              Page[]            @relation("PagePrimaryImage")
+  pagesAsCoverImage                Page[]            @relation("PageCoverImage")
+  pageSectionsAsPrimaryImage       PageSection[]     @relation("PageSectionPrimaryImage")
+  pageSectionsAsCoverImage         PageSection[]     @relation("PageSectionCoverImage")
+  pageBlocksAsPrimaryImage         PageBlock[]       @relation("PageBlockPrimaryImage")
+  pageBlocksAsSecondaryImage       PageBlock[]       @relation("PageBlockSecondaryImage")
+  blogCategoriesAsPrimaryImage     BlogCategory[]    @relation("BlogCategoryPrimaryImage")
+  blogCategoriesAsCoverImage       BlogCategory[]    @relation("BlogCategoryCoverImage")
+  blogPostsAsPrimaryImage          BlogPost[]        @relation("BlogPostPrimaryImage")
+  blogPostsAsCoverImage            BlogPost[]        @relation("BlogPostCoverImage")
+  homepageSectionsAsPrimaryImage   HomepageSection[] @relation("HomepageSectionPrimaryImage")
+  homepageSectionsAsSecondaryImage HomepageSection[] @relation("HomepageSectionSecondaryImage")
+  seoOpenGraphFor                  SeoMetadata[]     @relation("SeoOpenGraphImage")
+  seoTwitterFor                    SeoMetadata[]     @relation("SeoTwitterImage")
+  publicEventsAsPrimaryImage       PublicEvent[]     @relation("PublicEventPrimaryImage")
+  publicEventsAsCoverImage         PublicEvent[]     @relation("PublicEventCoverImage")
+  bundlesAsPrimaryImage            Bundle[]          @relation("BundlePrimaryImage")
+
+  @@unique([storeId, storageKey])
+  @@unique([storeId, slug])
+  @@index([storeId, status])
+  @@index([kind, status])
+  @@index([mimeType])
+  @@index([checksumSha256])
   @@map("media_assets")
 }
 
-model ProductMedia {
-  id           String @id @default(cuid())
-  productId    String
-  mediaAssetId String
+model MediaVariant {
+  id      String @id @default(cuid())
+  assetId String
 
-  sortOrder Int     @default(0)
-  isPrimary Boolean @default(false)
+  key   String
+  label String?
+
+  storageKey String
+  publicUrl  String?
+
+  mimeType  String
+  extension String?
+
+  widthPx   Int?
+  heightPx  Int?
+  sizeBytes Int?
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
-  mediaAsset MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  asset MediaAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
 
-  @@unique([productId, mediaAssetId])
-  @@index([productId])
-  @@index([mediaAssetId])
-  @@index([isPrimary])
-  @@map("product_media")
+  @@unique([assetId, key])
+  @@index([assetId])
+  @@map("media_variants")
 }
 
-model ProductVariantMedia {
-  id           String @id @default(cuid())
-  variantId    String
-  mediaAssetId String
+model MediaReference {
+  id      String @id @default(cuid())
+  assetId String
 
-  sortOrder Int     @default(0)
+  subjectType MediaReferenceSubjectType
+  subjectId   String
+
+  role      MediaReferenceRole @default(OTHER)
+  sortOrder Int                @default(0)
+
   isPrimary Boolean @default(false)
+  isActive  Boolean @default(true)
 
-  createdAt DateTime @default(now())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  mediaAsset MediaAsset     @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  asset MediaAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
 
-  @@unique([variantId, mediaAssetId])
-  @@index([variantId])
-  @@index([mediaAssetId])
-  @@index([isPrimary])
-  @@map("product_variant_media")
+  @@unique([assetId, subjectType, subjectId, role])
+  @@index([subjectType, subjectId, isActive])
+  @@index([subjectType, subjectId, role, sortOrder])
+  @@index([assetId, isPrimary])
+  @@map("media_references")
 }

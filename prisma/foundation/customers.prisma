@@ -1,61 +1,77 @@
-// -----------------------------------------------------------------------------
-// Domaine: customers
-// Responsabilité: clients métier de la boutique.
-// -----------------------------------------------------------------------------
-// prisma/customers.prisma
-
 enum CustomerStatus {
+  LEAD
   ACTIVE
-  DISABLED
+  INACTIVE
+  BLOCKED
   ARCHIVED
 }
 
+enum CustomerAddressType {
+  BILLING
+  SHIPPING
+  BOTH
+}
+
+enum ContactChannel {
+  EMAIL
+  SMS
+  PHONE
+}
+
 model Customer {
-  id      String @id @default(cuid())
-  storeId String
+  id      String  @id @default(cuid())
+  storeId String?
 
   email       String
   firstName   String?
   lastName    String?
   displayName String?
+  phone       String?
 
-  phone String?
-  notes String?
+  status CustomerStatus @default(LEAD)
 
-  status                CustomerStatus @default(ACTIVE)
-  acceptsEmailMarketing Boolean        @default(false)
+  carts     Cart[]
+  checkouts Checkout[]
+  orders    Order[]
+
+  isGuest      Boolean @default(false)
+  acceptsEmail Boolean @default(false)
+  acceptsSms   Boolean @default(false)
+  notes        String?
+
+  firstSeenAt DateTime?
+  lastSeenAt  DateTime?
+  activatedAt DateTime?
+  blockedAt   DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store                   Store                    @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  addresses               CustomerAddress[]
-  orders                  Order[]
-  carts                   Cart[]
-  checkouts               Checkout[]
-  returnRequests          ReturnRequest[]
-  loyaltyAccounts         LoyaltyAccount[]
-  giftCards               GiftCard[]
-  fraudRiskAssessments    FraudRiskAssessment[]
-  newsletterSubscriptions NewsletterSubscription[]
-  subscriptions           Subscription[]
-  aiConversations         AiConversation[]
-  crmTags                 CrmCustomerTag[]
-  crmNotes                CrmNote[]
-  attributionRecords      AttributionRecord[]
-  behaviorProfiles        BehaviorProfile[]
-  consentRecords          ConsentRecord[]
-  emailMessages           EmailMessage[]
-  eventRegistrations      EventRegistration[]
-  legalAcceptances        LegalAcceptance[]
-  notifications           Notification[]
-  supportTickets          SupportTicket[]
-  supportMessages         SupportMessage[]
-  trackingEvents          TrackingEvent[]
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  addresses                CustomerAddress[]
+  contactPreferences       CustomerContactPreference[]
+  returnRequests           ReturnRequest[]
+  discountRedemptions      DiscountRedemption[]
+  eventRegistrations       EventRegistration[]
+  eventReservations        EventReservation[]
+  notificationsAsRecipient Notification[]              @relation("NotificationRecipientCustomer")
+  notificationPreferences  NotificationPreference[]    @relation("NotificationPreferenceCustomer")
+  newsletterSubscriptions  NewsletterSubscriber[]
+  supportTickets           SupportTicket[]
+  supportMessagesAsAuthor  SupportMessage[]            @relation("SupportMessageAuthorCustomer")
+  crmContact               CrmContact?
+  giftCards                GiftCard[]
+  giftRequests             GiftRequest[]
+  loyaltyAccount           LoyaltyAccount?
+  subscriptions            Subscription[]
 
   @@unique([storeId, email])
   @@index([storeId])
   @@index([status])
+  @@index([isGuest])
+  @@index([email])
   @@map("customers")
 }
 
@@ -63,7 +79,9 @@ model CustomerAddress {
   id         String @id @default(cuid())
   customerId String
 
-  label     String?
+  type  CustomerAddressType @default(SHIPPING)
+  label String?
+
   firstName String?
   lastName  String?
   company   String?
@@ -77,14 +95,39 @@ model CustomerAddress {
 
   phone String?
 
-  isDefaultBilling  Boolean @default(false)
-  isDefaultShipping Boolean @default(false)
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
-  @@index([customerId])
+  @@index([customerId, type])
+  @@index([customerId, isDefault])
+  @@index([countryCode, postalCode])
   @@map("customer_addresses")
+}
+
+model CustomerContactPreference {
+  id         String @id @default(cuid())
+  customerId String
+
+  channel ContactChannel
+  topic   String
+
+  isEnabled Boolean @default(false)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  enabledAt  DateTime?
+  disabledAt DateTime?
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@unique([customerId, channel, topic])
+  @@index([customerId, isEnabled])
+  @@index([channel, topic, isEnabled])
+  @@map("customer_contact_preferences")
 }

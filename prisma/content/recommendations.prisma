@@ -1,78 +1,64 @@
-// -----------------------------------------------------------------------------
-// Domaine: recommendations
-// Responsabilité: recommandations produits / contenus / contextes.
-// -----------------------------------------------------------------------------
-// prisma/recommendations.prisma
-
-enum RecommendationListStatus {
+enum RecommendationRuleStatus {
+  DRAFT
   ACTIVE
-  DISABLED
+  INACTIVE
   ARCHIVED
 }
 
-enum RecommendationContextKind {
+enum RecommendationTargetType {
   PRODUCT
+  PRODUCT_VARIANT
   CATEGORY
-  CART
-  BLOG_POST
-  EVENT
-  MANUAL
 }
 
-enum RecommendationTargetKind {
-  PRODUCT
-  CATEGORY
-  BLOG_POST
-  EVENT
-}
-
-model RecommendationList {
+model RecommendationRule {
   id      String @id @default(cuid())
   storeId String
 
-  code        String?
+  code        String
   name        String
   description String?
 
-  contextKind      RecommendationContextKind
-  contextSubjectId String?
+  targetType RecommendationTargetType @default(PRODUCT)
+  status     RecommendationRuleStatus @default(DRAFT)
 
-  status   RecommendationListStatus @default(ACTIVE)
-  isManual Boolean                  @default(true)
+  isActive Boolean @default(true)
+  priority Int     @default(0)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  store Store                @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  items RecommendationItem[]
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  links RecommendationLink[]
 
   @@unique([storeId, code])
-  @@index([storeId])
-  @@index([contextKind])
-  @@index([contextSubjectId])
-  @@index([status])
-  @@map("recommendation_lists")
+  @@index([storeId, status])
+  @@index([isActive, priority])
+  @@map("recommendation_rules")
 }
 
-model RecommendationItem {
+model RecommendationLink {
   id                   String @id @default(cuid())
-  recommendationListId String
+  recommendationRuleId String
 
-  targetKind      RecommendationTargetKind
-  targetSubjectId String
+  sourceType RecommendationTargetType
+  sourceId   String
 
-  sortOrder   Int     @default(0)
-  reasonLabel String?
-  isActive    Boolean @default(true)
+  targetType RecommendationTargetType
+  targetId   String
+
+  score     Decimal? @db.Decimal(8, 4)
+  sortOrder Int      @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  recommendationList RecommendationList @relation(fields: [recommendationListId], references: [id], onDelete: Cascade)
+  recommendationRule RecommendationRule @relation(fields: [recommendationRuleId], references: [id], onDelete: Cascade)
 
-  @@unique([recommendationListId, targetKind, targetSubjectId])
-  @@index([recommendationListId])
-  @@index([targetKind, targetSubjectId])
-  @@index([isActive])
-  @@map("recommendation_items")
+  @@unique([recommendationRuleId, sourceType, sourceId, targetType, targetId])
+  @@index([sourceType, sourceId, sortOrder])
+  @@index([targetType, targetId])
+  @@map("recommendation_links")
 }

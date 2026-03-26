@@ -1,43 +1,142 @@
-// -----------------------------------------------------------------------------
-// Domaine: workflow
-// Responsabilité: orchestration multi-étapes des processus métier.
-// -----------------------------------------------------------------------------
-// prisma/workflow.prisma
+enum WorkflowDefinitionStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
 
-enum WorkflowRunStatus {
+enum WorkflowInstanceStatus {
   PENDING
   RUNNING
-  SUCCEEDED
+  BLOCKED
+  COMPLETED
   FAILED
+  CANCELLED
+  ARCHIVED
+}
+
+enum WorkflowStepStatus {
+  PENDING
+  READY
+  RUNNING
+  BLOCKED
+  COMPLETED
+  FAILED
+  SKIPPED
   CANCELLED
 }
 
-model WorkflowRun {
+model WorkflowDefinition {
   id      String  @id @default(cuid())
   storeId String?
 
-  workflowCode String
-  subjectType  String
-  subjectId    String
+  code        String
+  name        String
+  description String?
 
-  status      WorkflowRunStatus @default(PENDING)
-  currentStep String?
-  payload     Json?
-  result      Json?
+  subjectType String
+  status      WorkflowDefinitionStatus @default(DRAFT)
 
-  startedAt   DateTime?
-  finishedAt  DateTime?
-  failedAt    DateTime?
-  cancelledAt DateTime?
+  version   Int     @default(1)
+  isDefault Boolean @default(false)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  instances WorkflowInstance[]
+  steps     WorkflowDefinitionStep[]
+
+  @@unique([storeId, code, version])
+  @@index([storeId, status])
+  @@index([subjectType, status])
+  @@index([isDefault])
+  @@map("workflow_definitions")
+}
+
+model WorkflowDefinitionStep {
+  id                   String @id @default(cuid())
+  workflowDefinitionId String
+
+  code        String
+  name        String
+  description String?
+
+  sortOrder  Int     @default(0)
+  isRequired Boolean @default(true)
+  isTerminal Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  workflowDefinition WorkflowDefinition @relation(fields: [workflowDefinitionId], references: [id], onDelete: Cascade)
 
-  @@index([storeId])
-  @@index([workflowCode])
+  stepInstances WorkflowStepInstance[]
+
+  @@unique([workflowDefinitionId, code])
+  @@index([workflowDefinitionId, sortOrder])
+  @@map("workflow_definition_steps")
+}
+
+model WorkflowInstance {
+  id                   String  @id @default(cuid())
+  storeId              String?
+  workflowDefinitionId String
+
+  subjectType String
+  subjectId   String
+
+  status WorkflowInstanceStatus @default(PENDING)
+
+  startedAt   DateTime?
+  completedAt DateTime?
+  failedAt    DateTime?
+  cancelledAt DateTime?
+  archivedAt  DateTime?
+
+  createdByUserId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store              Store?             @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  workflowDefinition WorkflowDefinition @relation(fields: [workflowDefinitionId], references: [id], onDelete: Restrict)
+  createdBy          User?              @relation("WorkflowInstanceCreatedByUser", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  stepInstances WorkflowStepInstance[]
+
+  @@index([storeId, status])
+  @@index([workflowDefinitionId, status])
   @@index([subjectType, subjectId])
-  @@index([status])
-  @@map("workflow_runs")
+  @@index([createdByUserId])
+  @@map("workflow_instances")
+}
+
+model WorkflowStepInstance {
+  id                       String @id @default(cuid())
+  workflowInstanceId       String
+  workflowDefinitionStepId String
+
+  status WorkflowStepStatus @default(PENDING)
+
+  startedAt   DateTime?
+  completedAt DateTime?
+  failedAt    DateTime?
+  cancelledAt DateTime?
+
+  reasonCode String?
+  notes      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workflowInstance       WorkflowInstance       @relation(fields: [workflowInstanceId], references: [id], onDelete: Cascade)
+  workflowDefinitionStep WorkflowDefinitionStep @relation(fields: [workflowDefinitionStepId], references: [id], onDelete: Restrict)
+
+  @@unique([workflowInstanceId, workflowDefinitionStepId])
+  @@index([workflowInstanceId, status])
+  @@index([workflowDefinitionStepId, status])
+  @@map("workflow_step_instances")
 }

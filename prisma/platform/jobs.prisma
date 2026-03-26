@@ -1,48 +1,88 @@
-// -----------------------------------------------------------------------------
-// Domaine: jobs
-// Responsabilité: exécution asynchrone, retries, scheduling technique.
-// -----------------------------------------------------------------------------
-// prisma/jobs.prisma
-
 enum JobStatus {
   PENDING
   RUNNING
   SUCCEEDED
   FAILED
   CANCELLED
+  EXPIRED
+  ARCHIVED
+}
+
+enum JobPriority {
+  LOW
+  NORMAL
+  HIGH
+  CRITICAL
 }
 
 model Job {
   id      String  @id @default(cuid())
   storeId String?
 
-  type   String
-  status JobStatus @default(PENDING)
+  typeCode String
+  status   JobStatus   @default(PENDING)
+  priority JobPriority @default(NORMAL)
 
-  payload Json?
-  result  Json?
+  subjectType String?
+  subjectId   String?
 
-  attemptCount Int @default(0)
-  maxAttempts  Int @default(3)
+  idempotencyKey   String?
+  deduplicationKey String?
+
+  payloadJson  String?
+  resultJson   String?
+  errorCode    String?
+  errorMessage String?
 
   scheduledAt DateTime?
   startedAt   DateTime?
   finishedAt  DateTime?
-  failedAt    DateTime?
-  cancelledAt DateTime?
+  expiresAt   DateTime?
 
-  failureCode    String?
-  failureMessage String?
+  maxAttempts  Int @default(1)
+  attemptCount Int @default(0)
+
+  createdByUserId String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  archivedAt      DateTime?
+
+  store     Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  createdBy User?  @relation("JobCreatedByUser", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  attempts JobAttempt[]
+
+  @@unique([idempotencyKey])
+  @@index([storeId, status])
+  @@index([typeCode, status])
+  @@index([priority, status])
+  @@index([scheduledAt, status])
+  @@index([subjectType, subjectId])
+  @@index([createdByUserId])
+  @@map("jobs")
+}
+
+model JobAttempt {
+  id    String @id @default(cuid())
+  jobId String
+
+  attemptNumber Int
+  status        JobStatus @default(PENDING)
+
+  startedAt  DateTime?
+  finishedAt DateTime?
+
+  errorCode    String?
+  errorMessage String?
+  workerRef    String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
-  @@index([storeId])
-  @@index([type])
-  @@index([status])
-  @@index([scheduledAt])
-  @@index([startedAt])
-  @@map("jobs")
+  @@unique([jobId, attemptNumber])
+  @@index([jobId, status])
+  @@index([startedAt, finishedAt])
+  @@map("job_attempts")
 }

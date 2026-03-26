@@ -1,54 +1,49 @@
-// -----------------------------------------------------------------------------
-// Domaine: audit
-// Responsabilité: traçabilité sensible et gouvernée.
-// -----------------------------------------------------------------------------
-// prisma/audit.prisma
-
-enum AuditSeverity {
-  INFO
-  WARNING
-  CRITICAL
-}
-
-enum AuditActorKind {
+enum AuditActorType {
   USER
   API_CLIENT
   SYSTEM
+}
+
+enum AuditLevel {
+  INFO
+  WARNING
+  CRITICAL
 }
 
 model AuditLog {
   id      String  @id @default(cuid())
   storeId String?
 
-  actorKind   AuditActorKind
-  userId      String?
-  apiClientId String?
+  actorType        AuditActorType
+  actorUserId      String?
+  actorApiClientId String?
 
-  action     String
+  actionCode String
   entityType String
   entityId   String?
-  summary    String?
 
-  severity AuditSeverity @default(INFO)
+  level      AuditLevel @default(INFO)
+  message    String?
+  reasonCode String?
 
   ipAddress String?
   userAgent String?
 
-  occurredAt DateTime @default(now())
-  createdAt  DateTime @default(now())
+  createdAt DateTime @default(now())
 
-  store     Store?           @relation(fields: [storeId], references: [id], onDelete: SetNull)
-  user      User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
-  apiClient ApiClient?       @relation(fields: [apiClientId], references: [id], onDelete: SetNull)
-  changes   AuditLogChange[]
+  store          Store?     @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  actorUser      User?      @relation("AuditLogActorUser", fields: [actorUserId], references: [id], onDelete: SetNull)
+  actorApiClient ApiClient? @relation("AuditLogActorApiClient", fields: [actorApiClientId], references: [id], onDelete: SetNull)
 
-  @@index([storeId])
-  @@index([userId])
-  @@index([apiClientId])
-  @@index([action])
-  @@index([entityType, entityId])
-  @@index([severity])
-  @@index([occurredAt])
+  changes AuditLogChange[]
+
+  @@index([storeId, createdAt])
+  @@index([actorType, createdAt])
+  @@index([actorUserId, createdAt])
+  @@index([actorApiClientId, createdAt])
+  @@index([entityType, entityId, createdAt])
+  @@index([actionCode, createdAt])
+  @@index([level, createdAt])
   @@map("audit_logs")
 }
 

@@ -1,51 +1,53 @@
-// -----------------------------------------------------------------------------
-// Domaine: pages
-// Responsabilité: pages éditoriales structurées.
-// -----------------------------------------------------------------------------
-// prisma/pages.prisma
-
 enum PageStatus {
   DRAFT
   ACTIVE
+  INACTIVE
   ARCHIVED
 }
 
-enum PageSectionKind {
-  HERO
+enum PageBlockType {
   RICH_TEXT
   IMAGE
-  IMAGE_TEXT
+  IMAGE_TEXT_SPLIT
   FEATURED_PRODUCTS
   FEATURED_CATEGORIES
-  FEATURED_POSTS
-  EDITORIAL
-  CUSTOM
+  CTA
+  HTML
 }
 
 model Page {
   id      String @id @default(cuid())
   storeId String
 
-  slug        String
-  title       String
-  description String?
+  code             String
+  slug             String
+  title            String
+  shortDescription String?
+  body             String?
 
-  status     PageStatus @default(DRAFT)
-  isHomepage Boolean    @default(false)
+  status       PageStatus @default(DRAFT)
+  isSystemPage Boolean    @default(false)
+
+  primaryImageId String?
+  coverImageId   String?
+
+  publishedAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store         Store              @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  sections      PageSection[]
-  seo           SeoMetadata?
-  localizations PageLocalization[]
+  store        Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  primaryImage MediaAsset? @relation("PagePrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
+  coverImage   MediaAsset? @relation("PageCoverImage", fields: [coverImageId], references: [id], onDelete: SetNull)
 
+  sections PageSection[]
+
+  @@unique([storeId, code])
   @@unique([storeId, slug])
-  @@unique([storeId, id])
-  @@index([storeId])
-  @@index([status])
-  @@index([isHomepage])
+  @@index([storeId, status])
+  @@index([primaryImageId])
+  @@index([coverImageId])
   @@map("pages")
 }
 
@@ -53,24 +55,70 @@ model PageSection {
   id     String @id @default(cuid())
   pageId String
 
-  kind     PageSectionKind
+  code     String
   title    String?
   subtitle String?
-
-  content      String?
-  imageAssetId String?
+  body     String?
 
   sortOrder Int     @default(0)
-  isEnabled Boolean @default(true)
+  isActive  Boolean @default(true)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  primaryImageId String?
+  coverImageId   String?
 
-  page       Page        @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  imageAsset MediaAsset? @relation(fields: [imageAssetId], references: [id], onDelete: SetNull)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  @@index([pageId])
-  @@index([kind])
-  @@index([isEnabled])
+  page         Page        @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  primaryImage MediaAsset? @relation("PageSectionPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
+  coverImage   MediaAsset? @relation("PageSectionCoverImage", fields: [coverImageId], references: [id], onDelete: SetNull)
+
+  blocks PageBlock[]
+
+  @@unique([pageId, code])
+  @@index([pageId, isActive])
+  @@index([pageId, sortOrder])
+  @@index([primaryImageId])
+  @@index([coverImageId])
   @@map("page_sections")
+}
+
+model PageBlock {
+  id            String @id @default(cuid())
+  pageSectionId String
+
+  code String
+  type PageBlockType
+
+  title    String?
+  subtitle String?
+  body     String?
+
+  primaryImageId   String?
+  secondaryImageId String?
+
+  ctaLabel String?
+  ctaHref  String?
+
+  htmlContent String?
+
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  pageSection    PageSection @relation(fields: [pageSectionId], references: [id], onDelete: Cascade)
+  primaryImage   MediaAsset? @relation("PageBlockPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
+  secondaryImage MediaAsset? @relation("PageBlockSecondaryImage", fields: [secondaryImageId], references: [id], onDelete: SetNull)
+
+  @@unique([pageSectionId, code])
+  @@index([pageSectionId, isActive])
+  @@index([pageSectionId, sortOrder])
+  @@index([type])
+  @@index([primaryImageId])
+  @@index([secondaryImageId])
+  @@map("page_blocks")
 }

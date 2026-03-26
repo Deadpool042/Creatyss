@@ -1,53 +1,60 @@
-// -----------------------------------------------------------------------------
-// Domaine: fulfillment
-// Responsabilité: exécution logistique post-commande.
-// -----------------------------------------------------------------------------
-// prisma/fulfillment.prisma
-
 enum FulfillmentStatus {
   PENDING
-  PREPARING
   READY
-  SHIPPED
-  DELIVERED
-  READY_FOR_PICKUP
-  COMPLETED
-  BLOCKED
+  PARTIALLY_FULFILLED
+  FULFILLED
   CANCELLED
+  ARCHIVED
+}
+
+enum FulfillmentItemStatus {
+  PENDING
+  FULFILLED
+  CANCELLED
+  ARCHIVED
 }
 
 model Fulfillment {
-  id      String @id @default(cuid())
-  orderId String
+  id         String  @id @default(cuid())
+  storeId    String
+  orderId    String
+  shipmentId String?
 
-  status           FulfillmentStatus @default(PENDING)
-  trackingNumber   String?
-  trackingUrl      String?
-  carrierName      String?
-  shippedAt        DateTime?
-  deliveredAt      DateTime?
-  readyForPickupAt DateTime?
-  completedAt      DateTime?
-  blockedReason    String?
+  status FulfillmentStatus @default(PENDING)
+
+  fulfilledAt DateTime?
+  cancelledAt DateTime?
+  archivedAt  DateTime?
+
+  notes String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  order         Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  lines         FulfillmentLine[]
-  notifications Notification[]
+  store    Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  order    Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  shipment Shipment? @relation(fields: [shipmentId], references: [id], onDelete: SetNull)
 
-  @@index([orderId])
-  @@index([status])
+  items FulfillmentItem[]
+
+  @@index([storeId, status])
+  @@index([orderId, status])
+  @@index([shipmentId])
+  @@index([fulfilledAt])
   @@map("fulfillments")
 }
 
-model FulfillmentLine {
+model FulfillmentItem {
   id            String @id @default(cuid())
   fulfillmentId String
   orderLineId   String
 
+  status   FulfillmentItemStatus @default(PENDING)
   quantity Int
+
+  fulfilledAt DateTime?
+  cancelledAt DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -56,7 +63,7 @@ model FulfillmentLine {
   orderLine   OrderLine   @relation(fields: [orderLineId], references: [id], onDelete: Cascade)
 
   @@unique([fulfillmentId, orderLineId])
-  @@index([fulfillmentId])
   @@index([orderLineId])
-  @@map("fulfillment_lines")
+  @@index([status, fulfilledAt])
+  @@map("fulfillment_items")
 }

@@ -1,30 +1,36 @@
-// -----------------------------------------------------------------------------
-// Domaine: integrations
-// Responsabilité: connecteurs provider-specific, mappings, statuts externes.
-// -----------------------------------------------------------------------------
-// prisma/integrations.prisma
-
 enum IntegrationStatus {
+  DRAFT
   ACTIVE
-  DISABLED
+  INACTIVE
+  FAILED
   ARCHIVED
 }
 
-enum IntegrationProviderKind {
-  PAYMENT
-  SHIPPING
+enum IntegrationType {
+  PAYMENT_PROVIDER
+  SHIPPING_PROVIDER
+  EMAIL_PROVIDER
+  SOCIAL_PROVIDER
   ERP
-  E_INVOICING
-  EMAIL
-  CMS
+  CRM
+  MARKETPLACE
+  STORAGE
   OTHER
 }
 
 enum IntegrationCredentialStatus {
   ACTIVE
-  ROTATED
   REVOKED
-  ARCHIVED
+  EXPIRED
+}
+
+enum IntegrationSyncStatus {
+  IDLE
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
 }
 
 model Integration {
@@ -35,20 +41,34 @@ model Integration {
   name        String
   description String?
 
-  providerKind IntegrationProviderKind
-  providerName String
-  status       IntegrationStatus       @default(ACTIVE)
+  type     IntegrationType
+  provider String
+  status   IntegrationStatus @default(DRAFT)
+
+  isEnabled Boolean @default(false)
+  isSandbox Boolean @default(true)
+
+  baseUrl        String?
+  webhookBaseUrl String?
+
+  lastCheckedAt DateTime?
+  activatedAt   DateTime?
+  failedAt      DateTime?
+  archivedAt    DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store       Store?                  @relation(fields: [storeId], references: [id], onDelete: SetNull)
-  credentials IntegrationCredential[]
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  credentials      IntegrationCredential[]
+  syncStates       IntegrationSyncState[]
+  webhookEndpoints WebhookEndpoint[]
 
   @@unique([storeId, code])
-  @@index([storeId])
-  @@index([providerKind])
-  @@index([status])
+  @@index([storeId, status])
+  @@index([type, provider])
+  @@index([isEnabled, isSandbox])
   @@map("integrations")
 }
 
@@ -56,20 +76,55 @@ model IntegrationCredential {
   id            String @id @default(cuid())
   integrationId String
 
-  credentialKey String
-  secretHash    String
-  status        IntegrationCredentialStatus @default(ACTIVE)
-  expiresAt     DateTime?
-  revokedAt     DateTime?
+  key          String
+  secretHash   String?
+  secretPrefix String?
+  valueHint    String?
+
+  status IntegrationCredentialStatus @default(ACTIVE)
+
+  expiresAt  DateTime?
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   integration Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
 
-  @@unique([integrationId, credentialKey])
-  @@index([integrationId])
-  @@index([status])
+  @@unique([integrationId, key])
+  @@index([integrationId, status])
   @@index([expiresAt])
   @@map("integration_credentials")
+}
+
+model IntegrationSyncState {
+  id            String @id @default(cuid())
+  integrationId String
+
+  scopeType String
+  scopeId   String?
+
+  status IntegrationSyncStatus @default(IDLE)
+
+  lastJobId     String?
+  lastRunAt     DateTime?
+  lastSuccessAt DateTime?
+  lastFailureAt DateTime?
+
+  cursor            String?
+  externalReference String?
+  errorCode         String?
+  errorMessage      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  integration Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+
+  @@unique([integrationId, scopeType, scopeId])
+  @@index([integrationId, status])
+  @@index([scopeType, scopeId])
+  @@index([lastJobId])
+  @@map("integration_sync_states")
 }

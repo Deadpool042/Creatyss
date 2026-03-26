@@ -1,116 +1,67 @@
-// -----------------------------------------------------------------------------
-// Domaine: localization
-// Responsabilité: locales, valeurs localisées, fallback.
-// -----------------------------------------------------------------------------
-// prisma/localization.prisma
+enum LocalizationLocaleStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
 
 enum LocalizationValueStatus {
   DRAFT
   ACTIVE
+  INACTIVE
   ARCHIVED
 }
 
-model LocaleDefinition {
-  id      String @id @default(cuid())
-  storeId String
+model LocalizationLocale {
+  id      String  @id @default(cuid())
+  storeId String?
 
   code         String
   languageCode String
   countryCode  String?
-  label        String
+  name         String
 
-  isDefault Boolean @default(false)
-  isActive  Boolean @default(true)
+  status    LocalizationLocaleStatus @default(ACTIVE)
+  isDefault Boolean                  @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  store                 Store                  @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  pageLocalizations     PageLocalization[]
-  blogPostLocalizations BlogPostLocalization[]
-  productLocalizations  ProductLocalization[]
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  values LocalizedValue[]
 
   @@unique([storeId, code])
-  @@unique([storeId, id])
-  @@index([storeId])
-  @@index([isDefault])
-  @@index([isActive])
-  @@map("locale_definitions")
+  @@index([storeId, status])
+  @@index([storeId, isDefault])
+  @@map("localization_locales")
 }
 
-model PageLocalization {
-  id       String @id @default(cuid())
-  storeId  String
+model LocalizedValue {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  subjectType String
+  subjectId   String
+  fieldName   String
+
   localeId String
-  pageId   String
+  status   LocalizationValueStatus @default(DRAFT)
 
-  title       String?
-  description String?
+  valueText  String
+  isFallback Boolean @default(false)
 
-  status LocalizationValueStatus @default(DRAFT)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  store  Store?             @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  locale LocalizationLocale @relation(fields: [localeId], references: [id], onDelete: Cascade)
 
-  store  Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  locale LocaleDefinition @relation(fields: [storeId, localeId], references: [storeId, id], onDelete: Cascade)
-  page   Page             @relation(fields: [storeId, pageId], references: [storeId, id], onDelete: Cascade)
-
-  @@unique([pageId, localeId])
-  @@index([storeId])
-  @@index([localeId])
-  @@index([status])
-  @@map("page_localizations")
-}
-
-model BlogPostLocalization {
-  id         String @id @default(cuid())
-  storeId    String
-  localeId   String
-  blogPostId String
-
-  title   String?
-  excerpt String?
-  content String?
-
-  status LocalizationValueStatus @default(DRAFT)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  store    Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  locale   LocaleDefinition @relation(fields: [storeId, localeId], references: [storeId, id], onDelete: Cascade)
-  blogPost BlogPost         @relation(fields: [storeId, blogPostId], references: [storeId, id], onDelete: Cascade)
-
-  @@unique([blogPostId, localeId])
-  @@index([storeId])
-  @@index([localeId])
-  @@index([status])
-  @@map("blog_post_localizations")
-}
-
-model ProductLocalization {
-  id        String @id @default(cuid())
-  storeId   String
-  localeId  String
-  productId String
-
-  name             String?
-  shortDescription String?
-  description      String?
-
-  status LocalizationValueStatus @default(DRAFT)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  store   Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  locale  LocaleDefinition @relation(fields: [storeId, localeId], references: [storeId, id], onDelete: Cascade)
-  product Product          @relation(fields: [storeId, productId], references: [storeId, id], onDelete: Cascade)
-
-  @@unique([productId, localeId])
-  @@index([storeId])
-  @@index([localeId])
-  @@index([status])
-  @@map("product_localizations")
+  @@unique([subjectType, subjectId, fieldName, localeId])
+  @@index([storeId, status])
+  @@index([subjectType, subjectId])
+  @@index([fieldName])
+  @@index([localeId, status])
+  @@map("localized_values")
 }

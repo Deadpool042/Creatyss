@@ -351,4 +351,3 @@ En cas de doute :
 - clarifier la source de vérité
 - clarifier la frontière du domaine
 - choisir la solution la plus lisible, la plus robuste et la moins surprenante
-  EOF

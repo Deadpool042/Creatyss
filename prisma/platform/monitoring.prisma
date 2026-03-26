@@ -1,46 +1,69 @@
-// -----------------------------------------------------------------------------
-// Domaine: monitoring
-// Responsabilité: supervision technique, santé, checks, alertes.
-// -----------------------------------------------------------------------------
-// prisma/monitoring.prisma
-
 enum MonitoringCheckStatus {
-  HEALTHY
-  DEGRADED
-  FAILED
+  ACTIVE
+  INACTIVE
+  ARCHIVED
 }
 
-enum MonitoringCheckKind {
-  DATABASE
-  QUEUE
-  WEBHOOK
-  INTEGRATION
-  STORAGE
-  APPLICATION
-  OTHER
+enum MonitoringCheckResultStatus {
+  OK
+  WARNING
+  CRITICAL
+  UNKNOWN
 }
 
 model MonitoringCheck {
   id      String  @id @default(cuid())
   storeId String?
 
-  code String
-  name String
-  kind MonitoringCheckKind
+  code        String
+  name        String
+  description String?
 
-  status  MonitoringCheckStatus @default(HEALTHY)
-  summary String?
+  checkType  String
+  targetType String?
+  targetId   String?
 
-  checkedAt DateTime @default(now())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status    MonitoringCheckStatus @default(ACTIVE)
+  isEnabled Boolean               @default(true)
+
+  intervalSeconds Int?
+  timeoutMs       Int?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
   store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
 
+  results MonitoringCheckResult[]
+
   @@unique([storeId, code])
-  @@index([storeId])
-  @@index([kind])
-  @@index([status])
-  @@index([checkedAt])
+  @@index([storeId, status])
+  @@index([checkType, status])
+  @@index([targetType, targetId])
+  @@index([isEnabled])
   @@map("monitoring_checks")
+}
+
+model MonitoringCheckResult {
+  id                String @id @default(cuid())
+  monitoringCheckId String
+
+  status     MonitoringCheckResultStatus @default(UNKNOWN)
+  message    String?
+  reasonCode String?
+
+  measuredAt DateTime?
+  durationMs Int?
+
+  payloadJson String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  monitoringCheck MonitoringCheck @relation(fields: [monitoringCheckId], references: [id], onDelete: Cascade)
+
+  @@index([monitoringCheckId, measuredAt])
+  @@index([status, measuredAt])
+  @@map("monitoring_check_results")
 }

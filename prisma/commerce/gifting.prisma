@@ -1,38 +1,67 @@
-// -----------------------------------------------------------------------------
-// Domaine: gifting
-// Responsabilité: usages cadeau, bénéficiaire, message, présentation.
-// -----------------------------------------------------------------------------
-// prisma/gifting.prisma
-
-enum GiftingStatus {
-  ACTIVE
-  REMOVED
+enum GiftRequestStatus {
+  DRAFT
+  SCHEDULED
+  SENT
+  CLAIMED
+  CANCELLED
+  EXPIRED
+  ARCHIVED
 }
 
-model GiftingContext {
+model GiftRequest {
   id         String  @id @default(cuid())
-  cartId     String? @unique
-  checkoutId String? @unique
-  orderId    String? @unique
+  storeId    String
+  orderId    String?
+  customerId String?
 
-  status GiftingStatus @default(ACTIVE)
+  status GiftRequestStatus @default(DRAFT)
 
-  recipientFirstName String?
-  recipientLastName  String?
-  recipientEmail     String?
-  recipientPhone     String?
+  senderName     String?
+  senderEmail    String?
+  recipientName  String?
+  recipientEmail String?
 
-  giftMessage      String?
-  presentationNote String?
-  wantsGiftWrap    Boolean @default(false)
+  message         String?
+  scheduledSendAt DateTime?
+  sentAt          DateTime?
+  claimedAt       DateTime?
+  cancelledAt     DateTime?
+  expiresAt       DateTime?
+  archivedAt      DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cart     Cart?     @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  checkout Checkout? @relation(fields: [checkoutId], references: [id], onDelete: Cascade)
-  order    Order?    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  store    Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  order    Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
 
-  @@index([status])
-  @@map("gifting_contexts")
+  items GiftRequestItem[]
+
+  @@index([storeId, status])
+  @@index([orderId])
+  @@index([customerId])
+  @@index([scheduledSendAt, status])
+  @@index([recipientEmail])
+  @@map("gift_requests")
+}
+
+model GiftRequestItem {
+  id            String  @id @default(cuid())
+  giftRequestId String
+  productId     String?
+  variantId     String?
+
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  giftRequest GiftRequest     @relation(fields: [giftRequestId], references: [id], onDelete: Cascade)
+  product     Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variant     ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@index([giftRequestId])
+  @@index([productId])
+  @@index([variantId])
+  @@map("gift_request_items")
 }

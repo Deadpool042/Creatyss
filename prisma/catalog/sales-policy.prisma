@@ -1,20 +1,21 @@
-// -----------------------------------------------------------------------------
-// Domaine: sales-policy
-// Responsabilité: vendabilité, règles d'exposition commerciale.
-// -----------------------------------------------------------------------------
-// prisma/sales-policy.prisma
-
 enum SalesPolicyStatus {
+  DRAFT
   ACTIVE
-  DISABLED
+  INACTIVE
   ARCHIVED
 }
 
-enum SalesPolicyTargetKind {
+enum SellabilityStatus {
+  SELLABLE
+  NOT_SELLABLE
+  CONDITIONAL
+}
+
+enum SalesPolicyScopeType {
+  STORE
+  CATEGORY
   PRODUCT
   PRODUCT_VARIANT
-  CATEGORY
-  BUNDLE
 }
 
 model SalesPolicy {
@@ -25,26 +26,104 @@ model SalesPolicy {
   name        String
   description String?
 
-  targetKind SalesPolicyTargetKind
-  targetId   String
+  status    SalesPolicyStatus    @default(DRAFT)
+  scopeType SalesPolicyScopeType @default(STORE)
 
-  status     SalesPolicyStatus @default(ACTIVE)
-  isSellable Boolean           @default(true)
-  isVisible  Boolean           @default(true)
+  countryCode      String?
+  customerTypeCode String?
 
   startsAt DateTime?
   endsAt   DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
   store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
 
+  productTargets  SalesPolicyProductTarget[]
+  variantTargets  SalesPolicyVariantTarget[]
+  categoryTargets SalesPolicyCategoryTarget[]
+  decisions       SellabilityDecision[]
+
   @@unique([storeId, code])
-  @@index([storeId])
-  @@index([targetKind, targetId])
-  @@index([status])
-  @@index([startsAt])
-  @@index([endsAt])
+  @@index([storeId, status])
+  @@index([scopeType, status])
+  @@index([countryCode])
+  @@index([startsAt, endsAt])
   @@map("sales_policies")
+}
+
+model SellabilityDecision {
+  id            String  @id @default(cuid())
+  salesPolicyId String?
+  storeId       String
+
+  subjectType SalesPolicyScopeType
+  subjectId   String
+
+  status     SellabilityStatus
+  reasonCode String?
+  notes      String?
+
+  decidedAt DateTime?
+  expiresAt DateTime?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  salesPolicy SalesPolicy? @relation(fields: [salesPolicyId], references: [id], onDelete: SetNull)
+  store       Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId, status])
+  @@index([subjectType, subjectId])
+  @@index([salesPolicyId])
+  @@index([expiresAt])
+  @@map("sellability_decisions")
+}
+
+model SalesPolicyProductTarget {
+  id            String @id @default(cuid())
+  salesPolicyId String
+  productId     String
+
+  createdAt DateTime @default(now())
+
+  salesPolicy SalesPolicy @relation(fields: [salesPolicyId], references: [id], onDelete: Cascade)
+  product     Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([salesPolicyId, productId])
+  @@index([productId])
+  @@map("sales_policy_product_targets")
+}
+
+model SalesPolicyVariantTarget {
+  id            String @id @default(cuid())
+  salesPolicyId String
+  variantId     String
+
+  createdAt DateTime @default(now())
+
+  salesPolicy SalesPolicy    @relation(fields: [salesPolicyId], references: [id], onDelete: Cascade)
+  variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@unique([salesPolicyId, variantId])
+  @@index([variantId])
+  @@map("sales_policy_variant_targets")
+}
+
+model SalesPolicyCategoryTarget {
+  id            String @id @default(cuid())
+  salesPolicyId String
+  categoryId    String
+
+  createdAt DateTime @default(now())
+
+  salesPolicy SalesPolicy @relation(fields: [salesPolicyId], references: [id], onDelete: Cascade)
+  category    Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([salesPolicyId, categoryId])
+  @@index([categoryId])
+  @@map("sales_policy_category_targets")
 }

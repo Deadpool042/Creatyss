@@ -1,23 +1,14 @@
-// -----------------------------------------------------------------------------
-// Domaine: import
-// Responsabilité: imports structurés, validation, application.
-// -----------------------------------------------------------------------------
-// prisma/import.prisma
-
-enum ImportStatus {
-  PENDING
+enum ImportRequestStatus {
+  REQUESTED
   VALIDATED
+  REJECTED
   RUNNING
   PARTIALLY_APPLIED
   APPLIED
   FAILED
   CANCELLED
-}
-
-enum ImportFormat {
-  CSV
-  JSON
-  XLSX
+  EXPIRED
+  ARCHIVED
 }
 
 model ImportDefinition {
@@ -28,21 +19,23 @@ model ImportDefinition {
   name        String
   description String?
 
-  subjectType String
-  format      ImportFormat
+  targetType String
+  formatCode String
 
-  isActive Boolean @default(true)
+  isActive         Boolean @default(true)
+  requiresApproval Boolean @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  store    Store?          @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
   requests ImportRequest[]
 
   @@unique([storeId, code])
-  @@index([storeId])
-  @@index([subjectType])
-  @@index([isActive])
+  @@index([storeId, isActive])
+  @@index([targetType, formatCode])
   @@map("import_definitions")
 }
 
@@ -52,35 +45,69 @@ model ImportRequest {
   importDefinitionId String
 
   requestedByUserId String?
-  status            ImportStatus @default(PENDING)
-  format            ImportFormat
 
-  sourceFilename    String?
-  sourcePath        String?
-  parameters        Json?
-  validationSummary Json?
-  resultSummary     Json?
+  status ImportRequestStatus @default(REQUESTED)
 
+  scopeType String?
+  scopeId   String?
+
+  sourceFileName   String?
+  sourceMimeType   String?
+  sourceStorageKey String?
+  sourcePublicUrl  String?
+
+  mappingJson    String?
+  validationJson String?
+  resultJson     String?
+
+  errorCode    String?
+  errorMessage String?
+
+  requestedAt DateTime?
   validatedAt DateTime?
   startedAt   DateTime?
   finishedAt  DateTime?
-  failedAt    DateTime?
   cancelledAt DateTime?
-
-  failureCode    String?
-  failureMessage String?
+  expiresAt   DateTime?
+  archivedAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   store            Store?           @relation(fields: [storeId], references: [id], onDelete: SetNull)
-  importDefinition ImportDefinition @relation(fields: [importDefinitionId], references: [id], onDelete: Cascade)
-  requestedByUser  User?            @relation(fields: [requestedByUserId], references: [id], onDelete: SetNull)
+  importDefinition ImportDefinition @relation(fields: [importDefinitionId], references: [id], onDelete: Restrict)
+  requestedBy      User?            @relation("ImportRequestRequestedByUser", fields: [requestedByUserId], references: [id], onDelete: SetNull)
 
-  @@index([storeId])
-  @@index([importDefinitionId])
+  artifacts ImportArtifact[]
+
+  @@index([storeId, status])
+  @@index([importDefinitionId, status])
   @@index([requestedByUserId])
-  @@index([status])
-  @@index([createdAt])
+  @@index([scopeType, scopeId])
+  @@index([expiresAt])
   @@map("import_requests")
+}
+
+model ImportArtifact {
+  id              String @id @default(cuid())
+  importRequestId String
+
+  code String
+  kind String
+
+  fileName   String?
+  mimeType   String?
+  storageKey String?
+  publicUrl  String?
+
+  payloadJson String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  importRequest ImportRequest @relation(fields: [importRequestId], references: [id], onDelete: Cascade)
+
+  @@unique([importRequestId, code])
+  @@index([importRequestId, kind])
+  @@map("import_artifacts")
 }

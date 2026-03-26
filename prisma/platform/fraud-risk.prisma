@@ -1,9 +1,3 @@
-// -----------------------------------------------------------------------------
-// Domaine: fraud-risk
-// Responsabilité: signaux antifraude, assessments, reviews, décisions.
-// -----------------------------------------------------------------------------
-// prisma/fraud-risk.prisma
-
 enum FraudRiskLevel {
   LOW
   MEDIUM
@@ -11,81 +5,96 @@ enum FraudRiskLevel {
   CRITICAL
 }
 
-enum FraudRiskDecisionStatus {
-  PENDING
-  REVIEW_REQUIRED
-  ALLOWED
-  BLOCKED
-  CLEARED
+enum FraudRiskDecisionType {
+  ALLOW
+  REVIEW
+  BLOCK
+  CONDITIONAL_ALLOW
 }
 
-enum FraudRiskSubjectKind {
-  ORDER
-  PAYMENT
-  CUSTOMER
-  CHECKOUT
+enum FraudRiskReviewStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CANCELLED
+  ARCHIVED
 }
 
 model FraudRiskAssessment {
-  id      String @id @default(cuid())
-  storeId String
+  id      String  @id @default(cuid())
+  storeId String?
 
-  subjectKind FraudRiskSubjectKind
+  subjectType String
   subjectId   String
 
-  level          FraudRiskLevel
-  decisionStatus FraudRiskDecisionStatus @default(PENDING)
+  level FraudRiskLevel
+  score Decimal?       @db.Decimal(8, 2)
 
-  score   Decimal? @db.Decimal(6, 2)
-  summary String?
-  details Json?
+  decisionType FraudRiskDecisionType
+  reasonCode   String?
+  notes        String?
 
-  orderId    String?
-  paymentId  String?
-  customerId String?
-  checkoutId String?
+  assessedAt DateTime?
+  expiresAt  DateTime?
 
-  reviewedByUserId String?
-  reviewedAt       DateTime?
-  blockedAt        DateTime?
-  clearedAt        DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
 
-  store          Store             @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  order          Order?            @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  payment        Payment?          @relation(fields: [paymentId], references: [id], onDelete: SetNull)
-  customer       Customer?         @relation(fields: [customerId], references: [id], onDelete: SetNull)
-  checkout       Checkout?         @relation(fields: [checkoutId], references: [id], onDelete: SetNull)
-  reviewedByUser User?             @relation(fields: [reviewedByUserId], references: [id], onDelete: SetNull)
-  signals        FraudRiskSignal[]
+  decisions FraudRiskDecision[]
+  reviews   FraudRiskReview[]
 
-  @@index([storeId])
-  @@index([subjectKind, subjectId])
-  @@index([level])
-  @@index([decisionStatus])
-  @@index([orderId])
-  @@index([paymentId])
-  @@index([customerId])
-  @@index([checkoutId])
+  @@index([storeId, level])
+  @@index([subjectType, subjectId])
+  @@index([decisionType, level])
+  @@index([expiresAt])
   @@map("fraud_risk_assessments")
 }
 
-model FraudRiskSignal {
-  id           String @id @default(cuid())
-  assessmentId String
+model FraudRiskDecision {
+  id                    String  @id @default(cuid())
+  fraudRiskAssessmentId String
+  decidedByUserId       String?
 
-  code    String
-  label   String
-  details String?
-  weight  Decimal? @db.Decimal(6, 2)
+  type       FraudRiskDecisionType
+  reasonCode String?
+  notes      String?
 
   createdAt DateTime @default(now())
 
-  assessment FraudRiskAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  fraudRiskAssessment FraudRiskAssessment @relation(fields: [fraudRiskAssessmentId], references: [id], onDelete: Cascade)
+  decidedBy           User?               @relation("FraudRiskDecisionDecidedByUser", fields: [decidedByUserId], references: [id], onDelete: SetNull)
 
-  @@index([assessmentId])
-  @@index([code])
-  @@map("fraud_risk_signals")
+  @@index([fraudRiskAssessmentId, createdAt])
+  @@index([decidedByUserId])
+  @@index([type, createdAt])
+  @@map("fraud_risk_decisions")
+}
+
+model FraudRiskReview {
+  id                    String  @id @default(cuid())
+  fraudRiskAssessmentId String
+  assignedToUserId      String?
+
+  status     FraudRiskReviewStatus @default(OPEN)
+  reasonCode String?
+  notes      String?
+
+  openedAt    DateTime?
+  resolvedAt  DateTime?
+  cancelledAt DateTime?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  fraudRiskAssessment FraudRiskAssessment @relation(fields: [fraudRiskAssessmentId], references: [id], onDelete: Cascade)
+  assignedTo          User?               @relation("FraudRiskReviewAssignedToUser", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+
+  @@index([fraudRiskAssessmentId, status])
+  @@index([assignedToUserId, status])
+  @@index([openedAt, resolvedAt])
+  @@map("fraud_risk_reviews")
 }

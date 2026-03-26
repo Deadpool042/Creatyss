@@ -1,0 +1,213 @@
+enum UserStatus {
+  INVITED
+  ACTIVE
+  SUSPENDED
+  ARCHIVED
+}
+
+enum UserType {
+  PLATFORM
+  STORE
+}
+
+enum CredentialType {
+  PASSWORD
+  MAGIC_LINK
+  OAUTH
+  API_TOKEN
+}
+
+enum SessionStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+model User {
+  id      String  @id @default(cuid())
+  storeId String?
+
+  email       String  @unique
+  firstName   String?
+  lastName    String?
+  displayName String?
+
+  type   UserType   @default(STORE)
+  status UserStatus @default(INVITED)
+
+  emailVerifiedAt DateTime?
+  lastLoginAt     DateTime?
+  invitedAt       DateTime?
+  activatedAt     DateTime?
+  suspendedAt     DateTime?
+  archivedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+
+  credentials                      UserCredential[]
+  sessions                         UserSession[]
+  userRoles                        UserRole[]
+  assignedUserRoles                UserRole[]                 @relation("UserRoleAssignedBy")
+  grantedRolePermissions           RolePermission[]           @relation("RolePermissionGrantedBy")
+  grantedApiClientPermissions      ApiClientPermission[]      @relation("ApiClientPermissionGrantedBy")
+  auditLogsAsActor                 AuditLog[]                 @relation("AuditLogActorUser")
+  createdJobs                      Job[]                      @relation("JobCreatedByUser")
+  requestedApprovals               ApprovalRequest[]          @relation("ApprovalRequestedByUser")
+  approvalDecisions                ApprovalDecision[]         @relation("ApprovalDecidedByUser")
+  createdSchedulePlans             SchedulePlan[]             @relation("SchedulePlanCreatedByUser")
+  createdWorkflowInstances         WorkflowInstance[]         @relation("WorkflowInstanceCreatedByUser")
+  requestedImportRequests          ImportRequest[]            @relation("ImportRequestRequestedByUser")
+  requestedExportRequests          ExportRequest[]            @relation("ExportRequestRequestedByUser")
+  createdFeatureFlagOverrides      FeatureFlagOverride[]      @relation("FeatureFlagOverrideCreatedByUser")
+  fraudRiskDecisions               FraudRiskDecision[]        @relation("FraudRiskDecisionDecidedByUser")
+  assignedFraudRiskReviews         FraudRiskReview[]          @relation("FraudRiskReviewAssignedToUser")
+  notificationsAsRecipient         Notification[]             @relation("NotificationRecipientUser")
+  notificationPreferences          NotificationPreference[]   @relation("NotificationPreferenceUser")
+  createdNewsletterCampaigns       NewsletterCampaign[]       @relation("NewsletterCampaignCreatedByUser")
+  assignedSupportTickets           SupportTicket[]            @relation("SupportTicketAssignedToUser")
+  supportMessagesAsAuthor          SupportMessage[]           @relation("SupportMessageAuthorUser")
+  createdSocialPublications        SocialPublication[]        @relation("SocialPublicationCreatedByUser")
+  returnDecisions                  ReturnDecision[]
+  observabilitySignalEventsAsActor ObservabilitySignalEvent[] @relation("ObservabilitySignalEventActorUser")
+  requestedAiTasks                 AiTask[]                   @relation("AiTaskRequestedByUser")
+
+  @@index([storeId])
+  @@index([status])
+  @@index([type])
+  @@map("users")
+}
+
+model UserCredential {
+  id     String @id @default(cuid())
+  userId String
+
+  type              CredentialType
+  identifier        String?
+  secretHash        String?
+  provider          String?
+  providerAccountId String?
+
+  isPrimary Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  revokedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+  @@index([identifier])
+  @@index([isActive])
+  @@map("user_credentials")
+}
+
+model UserSession {
+  id     String @id @default(cuid())
+  userId String
+
+  tokenHash String        @unique
+  status    SessionStatus @default(ACTIVE)
+
+  ipAddress String?
+  userAgent String?
+
+  issuedAt   DateTime  @default(now())
+  expiresAt  DateTime
+  lastSeenAt DateTime?
+  revokedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([expiresAt])
+  @@map("user_sessions")
+}
+
+model Role {
+  id          String  @id @default(cuid())
+  code        String  @unique
+  name        String
+  description String?
+
+  isSystem Boolean @default(false)
+  isActive Boolean @default(true)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@index([isSystem])
+  @@index([isActive])
+  @@map("roles")
+}
+
+model Permission {
+  id          String  @id @default(cuid())
+  code        String  @unique
+  name        String
+  description String?
+
+  resource String
+  action   String
+
+  isSystem Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rolePermissions RolePermission[]
+
+  @@index([resource, action])
+  @@map("permissions")
+}
+
+model UserRole {
+  id               String  @id @default(cuid())
+  userId           String
+  roleId           String
+  assignedByUserId String?
+
+  createdAt DateTime  @default(now())
+  revokedAt DateTime?
+
+  user       User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       Role  @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  assignedBy User? @relation("UserRoleAssignedBy", fields: [assignedByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, roleId])
+  @@index([roleId])
+  @@index([assignedByUserId])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  id              String  @id @default(cuid())
+  roleId          String
+  permissionId    String
+  grantedByUserId String?
+
+  createdAt DateTime  @default(now())
+  revokedAt DateTime?
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  grantedBy  User?      @relation("RolePermissionGrantedBy", fields: [grantedByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([roleId, permissionId])
+  @@index([permissionId])
+  @@index([grantedByUserId])
+  @@map("role_permissions")
+}
