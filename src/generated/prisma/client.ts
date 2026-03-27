@@ -31,8 +31,8 @@ export * from "./enums"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more AvailabilityRecords
+ * const availabilityRecords = await prisma.availabilityRecord.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -41,4 +41,853 @@ export const PrismaClient = $Class.getPrismaClientClass()
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>
 export { Prisma }
 
-
+/**
+ * Model AvailabilityRecord
+ * 
+ */
+export type AvailabilityRecord = Prisma.AvailabilityRecordModel
+/**
+ * Model AvailabilityPolicy
+ * 
+ */
+export type AvailabilityPolicy = Prisma.AvailabilityPolicyModel
+/**
+ * Model AvailabilityOverride
+ * 
+ */
+export type AvailabilityOverride = Prisma.AvailabilityOverrideModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model ProductCategory
+ * 
+ */
+export type ProductCategory = Prisma.ProductCategoryModel
+/**
+ * Model MediaAsset
+ * 
+ */
+export type MediaAsset = Prisma.MediaAssetModel
+/**
+ * Model MediaVariant
+ * 
+ */
+export type MediaVariant = Prisma.MediaVariantModel
+/**
+ * Model MediaReference
+ * 
+ */
+export type MediaReference = Prisma.MediaReferenceModel
+/**
+ * Model PriceList
+ * 
+ */
+export type PriceList = Prisma.PriceListModel
+/**
+ * Model ProductPrice
+ * 
+ */
+export type ProductPrice = Prisma.ProductPriceModel
+/**
+ * Model ProductVariantPrice
+ * 
+ */
+export type ProductVariantPrice = Prisma.ProductVariantPriceModel
+/**
+ * Model ProductType
+ * 
+ */
+export type ProductType = Prisma.ProductTypeModel
+/**
+ * Model Product
+ * 
+ */
+export type Product = Prisma.ProductModel
+/**
+ * Model ProductVariant
+ * 
+ */
+export type ProductVariant = Prisma.ProductVariantModel
+/**
+ * Model ProductOption
+ * 
+ */
+export type ProductOption = Prisma.ProductOptionModel
+/**
+ * Model ProductOptionValue
+ * 
+ */
+export type ProductOptionValue = Prisma.ProductOptionValueModel
+/**
+ * Model ProductVariantOptionValue
+ * 
+ */
+export type ProductVariantOptionValue = Prisma.ProductVariantOptionValueModel
+/**
+ * Model RelatedProduct
+ * 
+ */
+export type RelatedProduct = Prisma.RelatedProductModel
+/**
+ * Model Cart
+ * 
+ */
+export type Cart = Prisma.CartModel
+/**
+ * Model CartLine
+ * 
+ */
+export type CartLine = Prisma.CartLineModel
+/**
+ * Model Checkout
+ * 
+ */
+export type Checkout = Prisma.CheckoutModel
+/**
+ * Model CheckoutLine
+ * 
+ */
+export type CheckoutLine = Prisma.CheckoutLineModel
+/**
+ * Model CheckoutAddress
+ * 
+ */
+export type CheckoutAddress = Prisma.CheckoutAddressModel
+/**
+ * Model CheckoutShippingSelection
+ * 
+ */
+export type CheckoutShippingSelection = Prisma.CheckoutShippingSelectionModel
+/**
+ * Model Customer
+ * 
+ */
+export type Customer = Prisma.CustomerModel
+/**
+ * Model CustomerAddress
+ * 
+ */
+export type CustomerAddress = Prisma.CustomerAddressModel
+/**
+ * Model CustomerContactPreference
+ * 
+ */
+export type CustomerContactPreference = Prisma.CustomerContactPreferenceModel
+/**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel
+/**
+ * Model OrderLine
+ * 
+ */
+export type OrderLine = Prisma.OrderLineModel
+/**
+ * Model OrderAddress
+ * 
+ */
+export type OrderAddress = Prisma.OrderAddressModel
+/**
+ * Model OrderShippingSelection
+ * 
+ */
+export type OrderShippingSelection = Prisma.OrderShippingSelectionModel
+/**
+ * Model OrderStatusHistory
+ * 
+ */
+export type OrderStatusHistory = Prisma.OrderStatusHistoryModel
+/**
+ * Model BlogCategory
+ * 
+ */
+export type BlogCategory = Prisma.BlogCategoryModel
+/**
+ * Model BlogPost
+ * 
+ */
+export type BlogPost = Prisma.BlogPostModel
+/**
+ * Model BlogPostCategory
+ * 
+ */
+export type BlogPostCategory = Prisma.BlogPostCategoryModel
+/**
+ * Model Homepage
+ * 
+ */
+export type Homepage = Prisma.HomepageModel
+/**
+ * Model HomepageSection
+ * 
+ */
+export type HomepageSection = Prisma.HomepageSectionModel
+/**
+ * Model HomepageFeaturedProduct
+ * 
+ */
+export type HomepageFeaturedProduct = Prisma.HomepageFeaturedProductModel
+/**
+ * Model HomepageFeaturedCategory
+ * 
+ */
+export type HomepageFeaturedCategory = Prisma.HomepageFeaturedCategoryModel
+/**
+ * Model HomepageFeaturedBlogPost
+ * 
+ */
+export type HomepageFeaturedBlogPost = Prisma.HomepageFeaturedBlogPostModel
+/**
+ * Model Page
+ * 
+ */
+export type Page = Prisma.PageModel
+/**
+ * Model PageSection
+ * 
+ */
+export type PageSection = Prisma.PageSectionModel
+/**
+ * Model PageBlock
+ * 
+ */
+export type PageBlock = Prisma.PageBlockModel
+/**
+ * Model SeoMetadata
+ * 
+ */
+export type SeoMetadata = Prisma.SeoMetadataModel
+/**
+ * Model ApiClient
+ * 
+ */
+export type ApiClient = Prisma.ApiClientModel
+/**
+ * Model ApiClientSecret
+ * 
+ */
+export type ApiClientSecret = Prisma.ApiClientSecretModel
+/**
+ * Model ApiClientPermission
+ * 
+ */
+export type ApiClientPermission = Prisma.ApiClientPermissionModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model UserCredential
+ * 
+ */
+export type UserCredential = Prisma.UserCredentialModel
+/**
+ * Model UserSession
+ * 
+ */
+export type UserSession = Prisma.UserSessionModel
+/**
+ * Model Role
+ * 
+ */
+export type Role = Prisma.RoleModel
+/**
+ * Model Permission
+ * 
+ */
+export type Permission = Prisma.PermissionModel
+/**
+ * Model UserRole
+ * 
+ */
+export type UserRole = Prisma.UserRoleModel
+/**
+ * Model RolePermission
+ * 
+ */
+export type RolePermission = Prisma.RolePermissionModel
+/**
+ * Model Store
+ * 
+ */
+export type Store = Prisma.StoreModel
+/**
+ * Model StoreDomain
+ * 
+ */
+export type StoreDomain = Prisma.StoreDomainModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model AuditLogChange
+ * 
+ */
+export type AuditLogChange = Prisma.AuditLogChangeModel
+/**
+ * Model DomainEvent
+ * 
+ */
+export type DomainEvent = Prisma.DomainEventModel
+/**
+ * Model DomainEventDelivery
+ * 
+ */
+export type DomainEventDelivery = Prisma.DomainEventDeliveryModel
+/**
+ * Model FeatureFlag
+ * 
+ */
+export type FeatureFlag = Prisma.FeatureFlagModel
+/**
+ * Model FeatureFlagOverride
+ * 
+ */
+export type FeatureFlagOverride = Prisma.FeatureFlagOverrideModel
+/**
+ * Model Job
+ * 
+ */
+export type Job = Prisma.JobModel
+/**
+ * Model JobAttempt
+ * 
+ */
+export type JobAttempt = Prisma.JobAttemptModel
+/**
+ * Model MonitoringCheck
+ * 
+ */
+export type MonitoringCheck = Prisma.MonitoringCheckModel
+/**
+ * Model MonitoringCheckResult
+ * 
+ */
+export type MonitoringCheckResult = Prisma.MonitoringCheckResultModel
+/**
+ * Model ObservabilitySignal
+ * 
+ */
+export type ObservabilitySignal = Prisma.ObservabilitySignalModel
+/**
+ * Model ObservabilitySignalEvent
+ * 
+ */
+export type ObservabilitySignalEvent = Prisma.ObservabilitySignalEventModel
+/**
+ * Model AiProvider
+ * 
+ */
+export type AiProvider = Prisma.AiProviderModel
+/**
+ * Model AiTask
+ * 
+ */
+export type AiTask = Prisma.AiTaskModel
+/**
+ * Model Bundle
+ * 
+ */
+export type Bundle = Prisma.BundleModel
+/**
+ * Model BundleItem
+ * 
+ */
+export type BundleItem = Prisma.BundleItemModel
+/**
+ * Model Discount
+ * 
+ */
+export type Discount = Prisma.DiscountModel
+/**
+ * Model DiscountCode
+ * 
+ */
+export type DiscountCode = Prisma.DiscountCodeModel
+/**
+ * Model DiscountRedemption
+ * 
+ */
+export type DiscountRedemption = Prisma.DiscountRedemptionModel
+/**
+ * Model DiscountProductTarget
+ * 
+ */
+export type DiscountProductTarget = Prisma.DiscountProductTargetModel
+/**
+ * Model DiscountVariantTarget
+ * 
+ */
+export type DiscountVariantTarget = Prisma.DiscountVariantTargetModel
+/**
+ * Model DiscountCategoryTarget
+ * 
+ */
+export type DiscountCategoryTarget = Prisma.DiscountCategoryTargetModel
+/**
+ * Model Document
+ * 
+ */
+export type Document = Prisma.DocumentModel
+/**
+ * Model DocumentVersion
+ * 
+ */
+export type DocumentVersion = Prisma.DocumentVersionModel
+/**
+ * Model Fulfillment
+ * 
+ */
+export type Fulfillment = Prisma.FulfillmentModel
+/**
+ * Model FulfillmentItem
+ * 
+ */
+export type FulfillmentItem = Prisma.FulfillmentItemModel
+/**
+ * Model GiftCard
+ * 
+ */
+export type GiftCard = Prisma.GiftCardModel
+/**
+ * Model GiftCardTransaction
+ * 
+ */
+export type GiftCardTransaction = Prisma.GiftCardTransactionModel
+/**
+ * Model GiftRequest
+ * 
+ */
+export type GiftRequest = Prisma.GiftRequestModel
+/**
+ * Model GiftRequestItem
+ * 
+ */
+export type GiftRequestItem = Prisma.GiftRequestItemModel
+/**
+ * Model InventoryItem
+ * 
+ */
+export type InventoryItem = Prisma.InventoryItemModel
+/**
+ * Model InventoryReservation
+ * 
+ */
+export type InventoryReservation = Prisma.InventoryReservationModel
+/**
+ * Model InventoryMovement
+ * 
+ */
+export type InventoryMovement = Prisma.InventoryMovementModel
+/**
+ * Model LoyaltyAccount
+ * 
+ */
+export type LoyaltyAccount = Prisma.LoyaltyAccountModel
+/**
+ * Model LoyaltyTransaction
+ * 
+ */
+export type LoyaltyTransaction = Prisma.LoyaltyTransactionModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model PaymentAttempt
+ * 
+ */
+export type PaymentAttempt = Prisma.PaymentAttemptModel
+/**
+ * Model PaymentRefund
+ * 
+ */
+export type PaymentRefund = Prisma.PaymentRefundModel
+/**
+ * Model ReturnRequest
+ * 
+ */
+export type ReturnRequest = Prisma.ReturnRequestModel
+/**
+ * Model ReturnItem
+ * 
+ */
+export type ReturnItem = Prisma.ReturnItemModel
+/**
+ * Model ReturnDecision
+ * 
+ */
+export type ReturnDecision = Prisma.ReturnDecisionModel
+/**
+ * Model SalesPolicy
+ * 
+ */
+export type SalesPolicy = Prisma.SalesPolicyModel
+/**
+ * Model SellabilityDecision
+ * 
+ */
+export type SellabilityDecision = Prisma.SellabilityDecisionModel
+/**
+ * Model SalesPolicyProductTarget
+ * 
+ */
+export type SalesPolicyProductTarget = Prisma.SalesPolicyProductTargetModel
+/**
+ * Model SalesPolicyVariantTarget
+ * 
+ */
+export type SalesPolicyVariantTarget = Prisma.SalesPolicyVariantTargetModel
+/**
+ * Model SalesPolicyCategoryTarget
+ * 
+ */
+export type SalesPolicyCategoryTarget = Prisma.SalesPolicyCategoryTargetModel
+/**
+ * Model ShippingZone
+ * 
+ */
+export type ShippingZone = Prisma.ShippingZoneModel
+/**
+ * Model ShippingMethod
+ * 
+ */
+export type ShippingMethod = Prisma.ShippingMethodModel
+/**
+ * Model Shipment
+ * 
+ */
+export type Shipment = Prisma.ShipmentModel
+/**
+ * Model Subscription
+ * 
+ */
+export type Subscription = Prisma.SubscriptionModel
+/**
+ * Model SubscriptionItem
+ * 
+ */
+export type SubscriptionItem = Prisma.SubscriptionItemModel
+/**
+ * Model TaxRule
+ * 
+ */
+export type TaxRule = Prisma.TaxRuleModel
+/**
+ * Model TaxRuleProductTarget
+ * 
+ */
+export type TaxRuleProductTarget = Prisma.TaxRuleProductTargetModel
+/**
+ * Model TaxRuleVariantTarget
+ * 
+ */
+export type TaxRuleVariantTarget = Prisma.TaxRuleVariantTargetModel
+/**
+ * Model TaxRuleCategoryTarget
+ * 
+ */
+export type TaxRuleCategoryTarget = Prisma.TaxRuleCategoryTargetModel
+/**
+ * Model AnalyticsMetric
+ * 
+ */
+export type AnalyticsMetric = Prisma.AnalyticsMetricModel
+/**
+ * Model AnalyticsSnapshot
+ * 
+ */
+export type AnalyticsSnapshot = Prisma.AnalyticsSnapshotModel
+/**
+ * Model AttributionModel
+ * 
+ */
+export type AttributionModel = Prisma.AttributionModelModel
+/**
+ * Model AttributionCredit
+ * 
+ */
+export type AttributionCredit = Prisma.AttributionCreditModel
+/**
+ * Model BehaviorSegment
+ * 
+ */
+export type BehaviorSegment = Prisma.BehaviorSegmentModel
+/**
+ * Model BehaviorProfile
+ * 
+ */
+export type BehaviorProfile = Prisma.BehaviorProfileModel
+/**
+ * Model BehaviorProfileSegment
+ * 
+ */
+export type BehaviorProfileSegment = Prisma.BehaviorProfileSegmentModel
+/**
+ * Model ConversionFlow
+ * 
+ */
+export type ConversionFlow = Prisma.ConversionFlowModel
+/**
+ * Model ConversionFlowProduct
+ * 
+ */
+export type ConversionFlowProduct = Prisma.ConversionFlowProductModel
+/**
+ * Model CrmContact
+ * 
+ */
+export type CrmContact = Prisma.CrmContactModel
+/**
+ * Model CrmTag
+ * 
+ */
+export type CrmTag = Prisma.CrmTagModel
+/**
+ * Model CrmContactTag
+ * 
+ */
+export type CrmContactTag = Prisma.CrmContactTagModel
+/**
+ * Model NewsletterSubscriber
+ * 
+ */
+export type NewsletterSubscriber = Prisma.NewsletterSubscriberModel
+/**
+ * Model NewsletterCampaign
+ * 
+ */
+export type NewsletterCampaign = Prisma.NewsletterCampaignModel
+/**
+ * Model NewsletterCampaignRecipient
+ * 
+ */
+export type NewsletterCampaignRecipient = Prisma.NewsletterCampaignRecipientModel
+/**
+ * Model PublicEvent
+ * 
+ */
+export type PublicEvent = Prisma.PublicEventModel
+/**
+ * Model EventRegistration
+ * 
+ */
+export type EventRegistration = Prisma.EventRegistrationModel
+/**
+ * Model EventReservation
+ * 
+ */
+export type EventReservation = Prisma.EventReservationModel
+/**
+ * Model RecommendationRule
+ * 
+ */
+export type RecommendationRule = Prisma.RecommendationRuleModel
+/**
+ * Model RecommendationLink
+ * 
+ */
+export type RecommendationLink = Prisma.RecommendationLinkModel
+/**
+ * Model SocialPublication
+ * 
+ */
+export type SocialPublication = Prisma.SocialPublicationModel
+/**
+ * Model SocialPublicationAsset
+ * 
+ */
+export type SocialPublicationAsset = Prisma.SocialPublicationAssetModel
+/**
+ * Model SupportTicket
+ * 
+ */
+export type SupportTicket = Prisma.SupportTicketModel
+/**
+ * Model SupportMessage
+ * 
+ */
+export type SupportMessage = Prisma.SupportMessageModel
+/**
+ * Model ApprovalRequest
+ * 
+ */
+export type ApprovalRequest = Prisma.ApprovalRequestModel
+/**
+ * Model ApprovalDecision
+ * 
+ */
+export type ApprovalDecision = Prisma.ApprovalDecisionModel
+/**
+ * Model ConsentPurpose
+ * 
+ */
+export type ConsentPurpose = Prisma.ConsentPurposeModel
+/**
+ * Model ConsentRecord
+ * 
+ */
+export type ConsentRecord = Prisma.ConsentRecordModel
+/**
+ * Model EmailMessage
+ * 
+ */
+export type EmailMessage = Prisma.EmailMessageModel
+/**
+ * Model EmailRecipient
+ * 
+ */
+export type EmailRecipient = Prisma.EmailRecipientModel
+/**
+ * Model ExportDefinition
+ * 
+ */
+export type ExportDefinition = Prisma.ExportDefinitionModel
+/**
+ * Model ExportRequest
+ * 
+ */
+export type ExportRequest = Prisma.ExportRequestModel
+/**
+ * Model ExportArtifact
+ * 
+ */
+export type ExportArtifact = Prisma.ExportArtifactModel
+/**
+ * Model FraudRiskAssessment
+ * 
+ */
+export type FraudRiskAssessment = Prisma.FraudRiskAssessmentModel
+/**
+ * Model FraudRiskDecision
+ * 
+ */
+export type FraudRiskDecision = Prisma.FraudRiskDecisionModel
+/**
+ * Model FraudRiskReview
+ * 
+ */
+export type FraudRiskReview = Prisma.FraudRiskReviewModel
+/**
+ * Model ImportDefinition
+ * 
+ */
+export type ImportDefinition = Prisma.ImportDefinitionModel
+/**
+ * Model ImportRequest
+ * 
+ */
+export type ImportRequest = Prisma.ImportRequestModel
+/**
+ * Model ImportArtifact
+ * 
+ */
+export type ImportArtifact = Prisma.ImportArtifactModel
+/**
+ * Model Integration
+ * 
+ */
+export type Integration = Prisma.IntegrationModel
+/**
+ * Model IntegrationCredential
+ * 
+ */
+export type IntegrationCredential = Prisma.IntegrationCredentialModel
+/**
+ * Model IntegrationSyncState
+ * 
+ */
+export type IntegrationSyncState = Prisma.IntegrationSyncStateModel
+/**
+ * Model LocalizationLocale
+ * 
+ */
+export type LocalizationLocale = Prisma.LocalizationLocaleModel
+/**
+ * Model LocalizedValue
+ * 
+ */
+export type LocalizedValue = Prisma.LocalizedValueModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model NotificationPreference
+ * 
+ */
+export type NotificationPreference = Prisma.NotificationPreferenceModel
+/**
+ * Model SchedulePlan
+ * 
+ */
+export type SchedulePlan = Prisma.SchedulePlanModel
+/**
+ * Model ScheduleWindow
+ * 
+ */
+export type ScheduleWindow = Prisma.ScheduleWindowModel
+/**
+ * Model ScheduleOccurrence
+ * 
+ */
+export type ScheduleOccurrence = Prisma.ScheduleOccurrenceModel
+/**
+ * Model WebhookEndpoint
+ * 
+ */
+export type WebhookEndpoint = Prisma.WebhookEndpointModel
+/**
+ * Model WebhookDelivery
+ * 
+ */
+export type WebhookDelivery = Prisma.WebhookDeliveryModel
+/**
+ * Model WorkflowDefinition
+ * 
+ */
+export type WorkflowDefinition = Prisma.WorkflowDefinitionModel
+/**
+ * Model WorkflowDefinitionStep
+ * 
+ */
+export type WorkflowDefinitionStep = Prisma.WorkflowDefinitionStepModel
+/**
+ * Model WorkflowInstance
+ * 
+ */
+export type WorkflowInstance = Prisma.WorkflowInstanceModel
+/**
+ * Model WorkflowStepInstance
+ * 
+ */
+export type WorkflowStepInstance = Prisma.WorkflowStepInstanceModel
+/**
+ * Model Channel
+ * 
+ */
+export type Channel = Prisma.ChannelModel
+/**
+ * Model ChannelProductStatus
+ * 
+ */
+export type ChannelProductStatus = Prisma.ChannelProductStatusModel
+/**
+ * Model ChannelVariantStatus
+ * 
+ */
+export type ChannelVariantStatus = Prisma.ChannelVariantStatusModel
+/**
+ * Model SearchDocument
+ * 
+ */
+export type SearchDocument = Prisma.SearchDocumentModel

@@ -9,7 +9,1462 @@
 * 🟢 You can import this file directly.
 */
 
+export const AvailabilityStatus = {
+  AVAILABLE: 'AVAILABLE',
+  UNAVAILABLE: 'UNAVAILABLE',
+  PREORDER: 'PREORDER',
+  BACKORDER: 'BACKORDER',
+  DISCONTINUED: 'DISCONTINUED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type AvailabilityStatus = (typeof AvailabilityStatus)[keyof typeof AvailabilityStatus]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const AvailabilityPolicyStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type AvailabilityPolicyStatus = (typeof AvailabilityPolicyStatus)[keyof typeof AvailabilityPolicyStatus]
+
+
+export const AvailabilityOverrideType = {
+  FORCE_AVAILABLE: 'FORCE_AVAILABLE',
+  FORCE_UNAVAILABLE: 'FORCE_UNAVAILABLE',
+  FORCE_PREORDER: 'FORCE_PREORDER',
+  FORCE_BACKORDER: 'FORCE_BACKORDER'
+} as const
+
+export type AvailabilityOverrideType = (typeof AvailabilityOverrideType)[keyof typeof AvailabilityOverrideType]
+
+
+export const CategoryStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type CategoryStatus = (typeof CategoryStatus)[keyof typeof CategoryStatus]
+
+
+export const MediaAssetStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type MediaAssetStatus = (typeof MediaAssetStatus)[keyof typeof MediaAssetStatus]
+
+
+export const MediaAssetKind = {
+  IMAGE: 'IMAGE',
+  VIDEO: 'VIDEO',
+  DOCUMENT: 'DOCUMENT',
+  OTHER: 'OTHER'
+} as const
+
+export type MediaAssetKind = (typeof MediaAssetKind)[keyof typeof MediaAssetKind]
+
+
+export const MediaReferenceSubjectType = {
+  PRODUCT: 'PRODUCT',
+  PRODUCT_VARIANT: 'PRODUCT_VARIANT',
+  CATEGORY: 'CATEGORY',
+  PAGE: 'PAGE',
+  BLOG_POST: 'BLOG_POST',
+  HOMEPAGE: 'HOMEPAGE',
+  HOMEPAGE_SECTION: 'HOMEPAGE_SECTION',
+  PUBLIC_EVENT: 'PUBLIC_EVENT',
+  EMAIL_TEMPLATE: 'EMAIL_TEMPLATE',
+  OTHER: 'OTHER'
+} as const
+
+export type MediaReferenceSubjectType = (typeof MediaReferenceSubjectType)[keyof typeof MediaReferenceSubjectType]
+
+
+export const MediaReferenceRole = {
+  PRIMARY: 'PRIMARY',
+  COVER: 'COVER',
+  GALLERY: 'GALLERY',
+  THUMBNAIL: 'THUMBNAIL',
+  HERO: 'HERO',
+  INLINE: 'INLINE',
+  ATTACHMENT: 'ATTACHMENT',
+  OTHER: 'OTHER'
+} as const
+
+export type MediaReferenceRole = (typeof MediaReferenceRole)[keyof typeof MediaReferenceRole]
+
+
+export const PriceListStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type PriceListStatus = (typeof PriceListStatus)[keyof typeof PriceListStatus]
+
+
+export const PriceTargetType = {
+  PRODUCT: 'PRODUCT',
+  PRODUCT_VARIANT: 'PRODUCT_VARIANT'
+} as const
+
+export type PriceTargetType = (typeof PriceTargetType)[keyof typeof PriceTargetType]
+
+
+export const ProductStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ProductStatus = (typeof ProductStatus)[keyof typeof ProductStatus]
+
+
+export const ProductVariantStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ProductVariantStatus = (typeof ProductVariantStatus)[keyof typeof ProductVariantStatus]
+
+
+export const RelatedProductType = {
+  RELATED: 'RELATED',
+  CROSS_SELL: 'CROSS_SELL',
+  UP_SELL: 'UP_SELL',
+  ACCESSORY: 'ACCESSORY',
+  SIMILAR: 'SIMILAR'
+} as const
+
+export type RelatedProductType = (typeof RelatedProductType)[keyof typeof RelatedProductType]
+
+
+export const CartStatus = {
+  ACTIVE: 'ACTIVE',
+  CONVERTED: 'CONVERTED',
+  ABANDONED: 'ABANDONED',
+  EXPIRED: 'EXPIRED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type CartStatus = (typeof CartStatus)[keyof typeof CartStatus]
+
+
+export const CheckoutStatus = {
+  OPEN: 'OPEN',
+  READY: 'READY',
+  COMPLETED: 'COMPLETED',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type CheckoutStatus = (typeof CheckoutStatus)[keyof typeof CheckoutStatus]
+
+
+export const CheckoutAddressType = {
+  BILLING: 'BILLING',
+  SHIPPING: 'SHIPPING'
+} as const
+
+export type CheckoutAddressType = (typeof CheckoutAddressType)[keyof typeof CheckoutAddressType]
+
+
+export const CustomerStatus = {
+  LEAD: 'LEAD',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  BLOCKED: 'BLOCKED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type CustomerStatus = (typeof CustomerStatus)[keyof typeof CustomerStatus]
+
+
+export const CustomerAddressType = {
+  BILLING: 'BILLING',
+  SHIPPING: 'SHIPPING',
+  BOTH: 'BOTH'
+} as const
+
+export type CustomerAddressType = (typeof CustomerAddressType)[keyof typeof CustomerAddressType]
+
+
+export const ContactChannel = {
+  EMAIL: 'EMAIL',
+  SMS: 'SMS',
+  PHONE: 'PHONE'
+} as const
+
+export type ContactChannel = (typeof ContactChannel)[keyof typeof ContactChannel]
+
+
+export const OrderStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const OrderAddressType = {
+  BILLING: 'BILLING',
+  SHIPPING: 'SHIPPING'
+} as const
+
+export type OrderAddressType = (typeof OrderAddressType)[keyof typeof OrderAddressType]
+
+
+export const BlogPostStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type BlogPostStatus = (typeof BlogPostStatus)[keyof typeof BlogPostStatus]
+
+
+export const BlogCategoryStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type BlogCategoryStatus = (typeof BlogCategoryStatus)[keyof typeof BlogCategoryStatus]
+
+
+export const HomepageStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type HomepageStatus = (typeof HomepageStatus)[keyof typeof HomepageStatus]
+
+
+export const HomepageSectionType = {
+  HERO: 'HERO',
+  RICH_TEXT: 'RICH_TEXT',
+  FEATURED_PRODUCTS: 'FEATURED_PRODUCTS',
+  FEATURED_CATEGORIES: 'FEATURED_CATEGORIES',
+  EDITORIAL: 'EDITORIAL',
+  BLOG_POSTS: 'BLOG_POSTS',
+  CTA: 'CTA'
+} as const
+
+export type HomepageSectionType = (typeof HomepageSectionType)[keyof typeof HomepageSectionType]
+
+
+export const PageStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type PageStatus = (typeof PageStatus)[keyof typeof PageStatus]
+
+
+export const PageBlockType = {
+  RICH_TEXT: 'RICH_TEXT',
+  IMAGE: 'IMAGE',
+  IMAGE_TEXT_SPLIT: 'IMAGE_TEXT_SPLIT',
+  FEATURED_PRODUCTS: 'FEATURED_PRODUCTS',
+  FEATURED_CATEGORIES: 'FEATURED_CATEGORIES',
+  CTA: 'CTA',
+  HTML: 'HTML'
+} as const
+
+export type PageBlockType = (typeof PageBlockType)[keyof typeof PageBlockType]
+
+
+export const SeoStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SeoStatus = (typeof SeoStatus)[keyof typeof SeoStatus]
+
+
+export const SeoSubjectType = {
+  PAGE: 'PAGE',
+  BLOG_POST: 'BLOG_POST',
+  BLOG_CATEGORY: 'BLOG_CATEGORY',
+  PRODUCT: 'PRODUCT',
+  PRODUCT_VARIANT: 'PRODUCT_VARIANT',
+  CATEGORY: 'CATEGORY',
+  HOMEPAGE: 'HOMEPAGE',
+  PUBLIC_EVENT: 'PUBLIC_EVENT'
+} as const
+
+export type SeoSubjectType = (typeof SeoSubjectType)[keyof typeof SeoSubjectType]
+
+
+export const SeoIndexingMode = {
+  INDEX_FOLLOW: 'INDEX_FOLLOW',
+  INDEX_NOFOLLOW: 'INDEX_NOFOLLOW',
+  NOINDEX_FOLLOW: 'NOINDEX_FOLLOW',
+  NOINDEX_NOFOLLOW: 'NOINDEX_NOFOLLOW'
+} as const
+
+export type SeoIndexingMode = (typeof SeoIndexingMode)[keyof typeof SeoIndexingMode]
+
+
+export const ApiClientStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  REVOKED: 'REVOKED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ApiClientStatus = (typeof ApiClientStatus)[keyof typeof ApiClientStatus]
+
+
+export const ApiClientSecretStatus = {
+  ACTIVE: 'ACTIVE',
+  REVOKED: 'REVOKED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type ApiClientSecretStatus = (typeof ApiClientSecretStatus)[keyof typeof ApiClientSecretStatus]
+
+
+export const UserStatus = {
+  INVITED: 'INVITED',
+  ACTIVE: 'ACTIVE',
+  SUSPENDED: 'SUSPENDED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
+
+
+export const UserType = {
+  STORE: 'STORE'
+} as const
+
+export type UserType = (typeof UserType)[keyof typeof UserType]
+
+
+export const CredentialType = {
+  PASSWORD: 'PASSWORD',
+  MAGIC_LINK: 'MAGIC_LINK',
+  OAUTH: 'OAUTH',
+  API_TOKEN: 'API_TOKEN'
+} as const
+
+export type CredentialType = (typeof CredentialType)[keyof typeof CredentialType]
+
+
+export const SessionStatus = {
+  ACTIVE: 'ACTIVE',
+  REVOKED: 'REVOKED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type SessionStatus = (typeof SessionStatus)[keyof typeof SessionStatus]
+
+
+export const StoreStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  SUSPENDED: 'SUSPENDED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type StoreStatus = (typeof StoreStatus)[keyof typeof StoreStatus]
+
+
+export const StoreDomainType = {
+  PRIMARY: 'PRIMARY',
+  SECONDARY: 'SECONDARY',
+  PREVIEW: 'PREVIEW',
+  INTERNAL: 'INTERNAL'
+} as const
+
+export type StoreDomainType = (typeof StoreDomainType)[keyof typeof StoreDomainType]
+
+
+export const CurrencyCode = {
+  EUR: 'EUR',
+  USD: 'USD',
+  GBP: 'GBP',
+  CHF: 'CHF',
+  CAD: 'CAD'
+} as const
+
+export type CurrencyCode = (typeof CurrencyCode)[keyof typeof CurrencyCode]
+
+
+export const AuditActorType = {
+  USER: 'USER',
+  API_CLIENT: 'API_CLIENT',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type AuditActorType = (typeof AuditActorType)[keyof typeof AuditActorType]
+
+
+export const AuditLevel = {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  CRITICAL: 'CRITICAL'
+} as const
+
+export type AuditLevel = (typeof AuditLevel)[keyof typeof AuditLevel]
+
+
+export const DomainEventStatus = {
+  PENDING: 'PENDING',
+  PUBLISHED: 'PUBLISHED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type DomainEventStatus = (typeof DomainEventStatus)[keyof typeof DomainEventStatus]
+
+
+export const FeatureFlagStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type FeatureFlagStatus = (typeof FeatureFlagStatus)[keyof typeof FeatureFlagStatus]
+
+
+export const FeatureFlagScopeType = {
+  GLOBAL: 'GLOBAL',
+  STORE: 'STORE',
+  USER: 'USER'
+} as const
+
+export type FeatureFlagScopeType = (typeof FeatureFlagScopeType)[keyof typeof FeatureFlagScopeType]
+
+
+export const JobStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus]
+
+
+export const JobPriority = {
+  LOW: 'LOW',
+  NORMAL: 'NORMAL',
+  HIGH: 'HIGH',
+  CRITICAL: 'CRITICAL'
+} as const
+
+export type JobPriority = (typeof JobPriority)[keyof typeof JobPriority]
+
+
+export const MonitoringCheckStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type MonitoringCheckStatus = (typeof MonitoringCheckStatus)[keyof typeof MonitoringCheckStatus]
+
+
+export const MonitoringCheckResultStatus = {
+  OK: 'OK',
+  WARNING: 'WARNING',
+  CRITICAL: 'CRITICAL',
+  UNKNOWN: 'UNKNOWN'
+} as const
+
+export type MonitoringCheckResultStatus = (typeof MonitoringCheckResultStatus)[keyof typeof MonitoringCheckResultStatus]
+
+
+export const ObservabilitySignalLevel = {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR',
+  CRITICAL: 'CRITICAL'
+} as const
+
+export type ObservabilitySignalLevel = (typeof ObservabilitySignalLevel)[keyof typeof ObservabilitySignalLevel]
+
+
+export const ObservabilitySignalStatus = {
+  OPEN: 'OPEN',
+  ACKNOWLEDGED: 'ACKNOWLEDGED',
+  RESOLVED: 'RESOLVED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ObservabilitySignalStatus = (typeof ObservabilitySignalStatus)[keyof typeof ObservabilitySignalStatus]
+
+
+export const AiProviderStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type AiProviderStatus = (typeof AiProviderStatus)[keyof typeof AiProviderStatus]
+
+
+export const AiTaskStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type AiTaskStatus = (typeof AiTaskStatus)[keyof typeof AiTaskStatus]
+
+
+export const AiTaskType = {
+  TEXT_GENERATION: 'TEXT_GENERATION',
+  TEXT_SUMMARIZATION: 'TEXT_SUMMARIZATION',
+  SEO_SUGGESTION: 'SEO_SUGGESTION',
+  PRODUCT_ENRICHMENT: 'PRODUCT_ENRICHMENT',
+  CONTENT_ASSIST: 'CONTENT_ASSIST',
+  CLASSIFICATION: 'CLASSIFICATION',
+  OTHER: 'OTHER'
+} as const
+
+export type AiTaskType = (typeof AiTaskType)[keyof typeof AiTaskType]
+
+
+export const BundleStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type BundleStatus = (typeof BundleStatus)[keyof typeof BundleStatus]
+
+
+export const DiscountStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type DiscountStatus = (typeof DiscountStatus)[keyof typeof DiscountStatus]
+
+
+export const DiscountType = {
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED_AMOUNT: 'FIXED_AMOUNT',
+  FREE_SHIPPING: 'FREE_SHIPPING'
+} as const
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
+
+
+export const DiscountScopeType = {
+  ORDER: 'ORDER',
+  PRODUCT: 'PRODUCT',
+  PRODUCT_VARIANT: 'PRODUCT_VARIANT',
+  CATEGORY: 'CATEGORY'
+} as const
+
+export type DiscountScopeType = (typeof DiscountScopeType)[keyof typeof DiscountScopeType]
+
+
+export const DiscountCodeStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  EXPIRED: 'EXPIRED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type DiscountCodeStatus = (typeof DiscountCodeStatus)[keyof typeof DiscountCodeStatus]
+
+
+export const DocumentStatus = {
+  DRAFT: 'DRAFT',
+  GENERATED: 'GENERATED',
+  ISSUED: 'ISSUED',
+  SENT: 'SENT',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type DocumentStatus = (typeof DocumentStatus)[keyof typeof DocumentStatus]
+
+
+export const DocumentTypeCode = {
+  ORDER_CONFIRMATION: 'ORDER_CONFIRMATION',
+  INVOICE: 'INVOICE',
+  CREDIT_NOTE: 'CREDIT_NOTE',
+  DELIVERY_NOTE: 'DELIVERY_NOTE',
+  RECEIPT: 'RECEIPT',
+  OTHER: 'OTHER'
+} as const
+
+export type DocumentTypeCode = (typeof DocumentTypeCode)[keyof typeof DocumentTypeCode]
+
+
+export const FulfillmentStatus = {
+  PENDING: 'PENDING',
+  READY: 'READY',
+  PARTIALLY_FULFILLED: 'PARTIALLY_FULFILLED',
+  FULFILLED: 'FULFILLED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type FulfillmentStatus = (typeof FulfillmentStatus)[keyof typeof FulfillmentStatus]
+
+
+export const FulfillmentItemStatus = {
+  PENDING: 'PENDING',
+  FULFILLED: 'FULFILLED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type FulfillmentItemStatus = (typeof FulfillmentItemStatus)[keyof typeof FulfillmentItemStatus]
+
+
+export const GiftCardStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  REDEEMED: 'REDEEMED',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type GiftCardStatus = (typeof GiftCardStatus)[keyof typeof GiftCardStatus]
+
+
+export const GiftCardTransactionType = {
+  ISSUE: 'ISSUE',
+  REDEEM: 'REDEEM',
+  REFUND: 'REFUND',
+  ADJUSTMENT: 'ADJUSTMENT',
+  EXPIRATION: 'EXPIRATION',
+  CANCELLATION: 'CANCELLATION'
+} as const
+
+export type GiftCardTransactionType = (typeof GiftCardTransactionType)[keyof typeof GiftCardTransactionType]
+
+
+export const GiftRequestStatus = {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  SENT: 'SENT',
+  CLAIMED: 'CLAIMED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type GiftRequestStatus = (typeof GiftRequestStatus)[keyof typeof GiftRequestStatus]
+
+
+export const InventoryItemStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type InventoryItemStatus = (typeof InventoryItemStatus)[keyof typeof InventoryItemStatus]
+
+
+export const InventoryReservationStatus = {
+  ACTIVE: 'ACTIVE',
+  RELEASED: 'RELEASED',
+  CONSUMED: 'CONSUMED',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type InventoryReservationStatus = (typeof InventoryReservationStatus)[keyof typeof InventoryReservationStatus]
+
+
+export const InventoryMovementType = {
+  MANUAL_ADJUSTMENT: 'MANUAL_ADJUSTMENT',
+  RECEIPT: 'RECEIPT',
+  RESERVATION: 'RESERVATION',
+  RELEASE: 'RELEASE',
+  CONSUMPTION: 'CONSUMPTION',
+  RETURN: 'RETURN',
+  CORRECTION: 'CORRECTION'
+} as const
+
+export type InventoryMovementType = (typeof InventoryMovementType)[keyof typeof InventoryMovementType]
+
+
+export const LoyaltyAccountStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  BLOCKED: 'BLOCKED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type LoyaltyAccountStatus = (typeof LoyaltyAccountStatus)[keyof typeof LoyaltyAccountStatus]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  AUTHORIZED: 'AUTHORIZED',
+  CAPTURED: 'CAPTURED',
+  PARTIALLY_REFUNDED: 'PARTIALLY_REFUNDED',
+  REFUNDED: 'REFUNDED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const PaymentAttemptStatus = {
+  PENDING: 'PENDING',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type PaymentAttemptStatus = (typeof PaymentAttemptStatus)[keyof typeof PaymentAttemptStatus]
+
+
+export const PaymentMethodType = {
+  CARD: 'CARD',
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  WALLET: 'WALLET',
+  CASH_ON_DELIVERY: 'CASH_ON_DELIVERY',
+  OTHER: 'OTHER'
+} as const
+
+export type PaymentMethodType = (typeof PaymentMethodType)[keyof typeof PaymentMethodType]
+
+
+export const ReturnRequestStatus = {
+  REQUESTED: 'REQUESTED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  RECEIVED: 'RECEIVED',
+  REFUNDED: 'REFUNDED',
+  CLOSED: 'CLOSED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ReturnRequestStatus = (typeof ReturnRequestStatus)[keyof typeof ReturnRequestStatus]
+
+
+export const ReturnItemCondition = {
+  NEW: 'NEW',
+  OPENED: 'OPENED',
+  USED: 'USED',
+  DAMAGED: 'DAMAGED',
+  UNKNOWN: 'UNKNOWN'
+} as const
+
+export type ReturnItemCondition = (typeof ReturnItemCondition)[keyof typeof ReturnItemCondition]
+
+
+export const ReturnDecisionType = {
+  APPROVE: 'APPROVE',
+  REJECT: 'REJECT',
+  PARTIAL_APPROVE: 'PARTIAL_APPROVE'
+} as const
+
+export type ReturnDecisionType = (typeof ReturnDecisionType)[keyof typeof ReturnDecisionType]
+
+
+export const SalesPolicyStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SalesPolicyStatus = (typeof SalesPolicyStatus)[keyof typeof SalesPolicyStatus]
+
+
+export const SellabilityStatus = {
+  SELLABLE: 'SELLABLE',
+  NOT_SELLABLE: 'NOT_SELLABLE',
+  CONDITIONAL: 'CONDITIONAL'
+} as const
+
+export type SellabilityStatus = (typeof SellabilityStatus)[keyof typeof SellabilityStatus]
+
+
+export const SalesPolicyScopeType = {
+  STORE: 'STORE',
+  CATEGORY: 'CATEGORY',
+  PRODUCT: 'PRODUCT',
+  PRODUCT_VARIANT: 'PRODUCT_VARIANT'
+} as const
+
+export type SalesPolicyScopeType = (typeof SalesPolicyScopeType)[keyof typeof SalesPolicyScopeType]
+
+
+export const ShippingMethodStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ShippingMethodStatus = (typeof ShippingMethodStatus)[keyof typeof ShippingMethodStatus]
+
+
+export const ShippingZoneStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ShippingZoneStatus = (typeof ShippingZoneStatus)[keyof typeof ShippingZoneStatus]
+
+
+export const ShipmentStatus = {
+  PENDING: 'PENDING',
+  READY: 'READY',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'DELIVERED',
+  RETURNED: 'RETURNED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type ShipmentStatus = (typeof ShipmentStatus)[keyof typeof ShipmentStatus]
+
+
+export const SubscriptionStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  PAUSED: 'PAUSED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const SubscriptionItemStatus = {
+  ACTIVE: 'ACTIVE',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SubscriptionItemStatus = (typeof SubscriptionItemStatus)[keyof typeof SubscriptionItemStatus]
+
+
+export const TaxRuleStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type TaxRuleStatus = (typeof TaxRuleStatus)[keyof typeof TaxRuleStatus]
+
+
+export const TaxRuleScopeType = {
+  STORE: 'STORE',
+  CATEGORY: 'CATEGORY',
+  PRODUCT: 'PRODUCT',
+  PRODUCT_VARIANT: 'PRODUCT_VARIANT'
+} as const
+
+export type TaxRuleScopeType = (typeof TaxRuleScopeType)[keyof typeof TaxRuleScopeType]
+
+
+export const AnalyticsMetricStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type AnalyticsMetricStatus = (typeof AnalyticsMetricStatus)[keyof typeof AnalyticsMetricStatus]
+
+
+export const AnalyticsSnapshotStatus = {
+  PENDING: 'PENDING',
+  READY: 'READY',
+  FAILED: 'FAILED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type AnalyticsSnapshotStatus = (typeof AnalyticsSnapshotStatus)[keyof typeof AnalyticsSnapshotStatus]
+
+
+export const AttributionModelStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type AttributionModelStatus = (typeof AttributionModelStatus)[keyof typeof AttributionModelStatus]
+
+
+export const BehaviorSegmentStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type BehaviorSegmentStatus = (typeof BehaviorSegmentStatus)[keyof typeof BehaviorSegmentStatus]
+
+
+export const BehaviorProfileStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type BehaviorProfileStatus = (typeof BehaviorProfileStatus)[keyof typeof BehaviorProfileStatus]
+
+
+export const ConversionFlowStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ConversionFlowStatus = (typeof ConversionFlowStatus)[keyof typeof ConversionFlowStatus]
+
+
+export const ConversionFlowType = {
+  CART_RECOVERY: 'CART_RECOVERY',
+  UPSELL: 'UPSELL',
+  CROSS_SELL: 'CROSS_SELL',
+  THRESHOLD: 'THRESHOLD'
+} as const
+
+export type ConversionFlowType = (typeof ConversionFlowType)[keyof typeof ConversionFlowType]
+
+
+export const CrmContactStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  BLOCKED: 'BLOCKED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type CrmContactStatus = (typeof CrmContactStatus)[keyof typeof CrmContactStatus]
+
+
+export const CrmTagStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type CrmTagStatus = (typeof CrmTagStatus)[keyof typeof CrmTagStatus]
+
+
+export const NewsletterSubscriberStatus = {
+  PENDING: 'PENDING',
+  SUBSCRIBED: 'SUBSCRIBED',
+  UNSUBSCRIBED: 'UNSUBSCRIBED',
+  BOUNCED: 'BOUNCED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type NewsletterSubscriberStatus = (typeof NewsletterSubscriberStatus)[keyof typeof NewsletterSubscriberStatus]
+
+
+export const NewsletterCampaignStatus = {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  SENDING: 'SENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type NewsletterCampaignStatus = (typeof NewsletterCampaignStatus)[keyof typeof NewsletterCampaignStatus]
+
+
+export const PublicEventStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type PublicEventStatus = (typeof PublicEventStatus)[keyof typeof PublicEventStatus]
+
+
+export const EventAudienceStatus = {
+  OPEN: 'OPEN',
+  CLOSED: 'CLOSED',
+  WAITLIST: 'WAITLIST'
+} as const
+
+export type EventAudienceStatus = (typeof EventAudienceStatus)[keyof typeof EventAudienceStatus]
+
+
+export const EventRegistrationStatus = {
+  REGISTERED: 'REGISTERED',
+  WAITLISTED: 'WAITLISTED',
+  CANCELLED: 'CANCELLED',
+  NO_SHOW: 'NO_SHOW'
+} as const
+
+export type EventRegistrationStatus = (typeof EventRegistrationStatus)[keyof typeof EventRegistrationStatus]
+
+
+export const EventReservationStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type EventReservationStatus = (typeof EventReservationStatus)[keyof typeof EventReservationStatus]
+
+
+export const RecommendationRuleStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type RecommendationRuleStatus = (typeof RecommendationRuleStatus)[keyof typeof RecommendationRuleStatus]
+
+
+export const RecommendationTargetType = {
+  PRODUCT: 'PRODUCT',
+  PRODUCT_VARIANT: 'PRODUCT_VARIANT',
+  CATEGORY: 'CATEGORY'
+} as const
+
+export type RecommendationTargetType = (typeof RecommendationTargetType)[keyof typeof RecommendationTargetType]
+
+
+export const SocialPublicationStatus = {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  PUBLISHED: 'PUBLISHED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SocialPublicationStatus = (typeof SocialPublicationStatus)[keyof typeof SocialPublicationStatus]
+
+
+export const SupportTicketStatus = {
+  OPEN: 'OPEN',
+  IN_PROGRESS: 'IN_PROGRESS',
+  WAITING_FOR_CUSTOMER: 'WAITING_FOR_CUSTOMER',
+  RESOLVED: 'RESOLVED',
+  CLOSED: 'CLOSED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SupportTicketStatus = (typeof SupportTicketStatus)[keyof typeof SupportTicketStatus]
+
+
+export const SupportMessageAuthorType = {
+  USER: 'USER',
+  CUSTOMER: 'CUSTOMER',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type SupportMessageAuthorType = (typeof SupportMessageAuthorType)[keyof typeof SupportMessageAuthorType]
+
+
+export const ApprovalRequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  RETURNED_FOR_REVISION: 'RETURNED_FOR_REVISION',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ApprovalRequestStatus = (typeof ApprovalRequestStatus)[keyof typeof ApprovalRequestStatus]
+
+
+export const ApprovalDecisionType = {
+  APPROVE: 'APPROVE',
+  REJECT: 'REJECT',
+  RETURN_FOR_REVISION: 'RETURN_FOR_REVISION'
+} as const
+
+export type ApprovalDecisionType = (typeof ApprovalDecisionType)[keyof typeof ApprovalDecisionType]
+
+
+export const ConsentStatus = {
+  GRANTED: 'GRANTED',
+  DENIED: 'DENIED',
+  REVOKED: 'REVOKED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type ConsentStatus = (typeof ConsentStatus)[keyof typeof ConsentStatus]
+
+
+export const ConsentSubjectType = {
+  CUSTOMER: 'CUSTOMER',
+  USER: 'USER',
+  VISITOR: 'VISITOR'
+} as const
+
+export type ConsentSubjectType = (typeof ConsentSubjectType)[keyof typeof ConsentSubjectType]
+
+
+export const EmailMessageStatus = {
+  DRAFT: 'DRAFT',
+  PREPARED: 'PREPARED',
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type EmailMessageStatus = (typeof EmailMessageStatus)[keyof typeof EmailMessageStatus]
+
+
+export const EmailRecipientType = {
+  TO: 'TO',
+  CC: 'CC',
+  BCC: 'BCC'
+} as const
+
+export type EmailRecipientType = (typeof EmailRecipientType)[keyof typeof EmailRecipientType]
+
+
+export const EmailCategory = {
+  TRANSACTIONAL: 'TRANSACTIONAL',
+  SUPPORT: 'SUPPORT',
+  NEWSLETTER: 'NEWSLETTER',
+  MARKETING: 'MARKETING',
+  SYSTEM: 'SYSTEM',
+  OTHER: 'OTHER'
+} as const
+
+export type EmailCategory = (typeof EmailCategory)[keyof typeof EmailCategory]
+
+
+export const ExportRequestStatus = {
+  REQUESTED: 'REQUESTED',
+  RUNNING: 'RUNNING',
+  GENERATED: 'GENERATED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ExportRequestStatus = (typeof ExportRequestStatus)[keyof typeof ExportRequestStatus]
+
+
+export const FraudRiskLevel = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  CRITICAL: 'CRITICAL'
+} as const
+
+export type FraudRiskLevel = (typeof FraudRiskLevel)[keyof typeof FraudRiskLevel]
+
+
+export const FraudRiskDecisionType = {
+  ALLOW: 'ALLOW',
+  REVIEW: 'REVIEW',
+  BLOCK: 'BLOCK',
+  CONDITIONAL_ALLOW: 'CONDITIONAL_ALLOW'
+} as const
+
+export type FraudRiskDecisionType = (typeof FraudRiskDecisionType)[keyof typeof FraudRiskDecisionType]
+
+
+export const FraudRiskReviewStatus = {
+  OPEN: 'OPEN',
+  IN_PROGRESS: 'IN_PROGRESS',
+  RESOLVED: 'RESOLVED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type FraudRiskReviewStatus = (typeof FraudRiskReviewStatus)[keyof typeof FraudRiskReviewStatus]
+
+
+export const ImportRequestStatus = {
+  REQUESTED: 'REQUESTED',
+  VALIDATED: 'VALIDATED',
+  REJECTED: 'REJECTED',
+  RUNNING: 'RUNNING',
+  PARTIALLY_APPLIED: 'PARTIALLY_APPLIED',
+  APPLIED: 'APPLIED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ImportRequestStatus = (typeof ImportRequestStatus)[keyof typeof ImportRequestStatus]
+
+
+export const IntegrationStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  FAILED: 'FAILED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type IntegrationStatus = (typeof IntegrationStatus)[keyof typeof IntegrationStatus]
+
+
+export const IntegrationType = {
+  PAYMENT_PROVIDER: 'PAYMENT_PROVIDER',
+  SHIPPING_PROVIDER: 'SHIPPING_PROVIDER',
+  EMAIL_PROVIDER: 'EMAIL_PROVIDER',
+  SOCIAL_PROVIDER: 'SOCIAL_PROVIDER',
+  ERP: 'ERP',
+  CRM: 'CRM',
+  MARKETPLACE: 'MARKETPLACE',
+  STORAGE: 'STORAGE',
+  OTHER: 'OTHER'
+} as const
+
+export type IntegrationType = (typeof IntegrationType)[keyof typeof IntegrationType]
+
+
+export const IntegrationCredentialStatus = {
+  ACTIVE: 'ACTIVE',
+  REVOKED: 'REVOKED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type IntegrationCredentialStatus = (typeof IntegrationCredentialStatus)[keyof typeof IntegrationCredentialStatus]
+
+
+export const IntegrationSyncStatus = {
+  IDLE: 'IDLE',
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type IntegrationSyncStatus = (typeof IntegrationSyncStatus)[keyof typeof IntegrationSyncStatus]
+
+
+export const LocalizationLocaleStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type LocalizationLocaleStatus = (typeof LocalizationLocaleStatus)[keyof typeof LocalizationLocaleStatus]
+
+
+export const LocalizationValueStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type LocalizationValueStatus = (typeof LocalizationValueStatus)[keyof typeof LocalizationValueStatus]
+
+
+export const NotificationStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  READ: 'READ',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type NotificationStatus = (typeof NotificationStatus)[keyof typeof NotificationStatus]
+
+
+export const NotificationChannel = {
+  IN_APP: 'IN_APP',
+  EMAIL: 'EMAIL',
+  REALTIME: 'REALTIME'
+} as const
+
+export type NotificationChannel = (typeof NotificationChannel)[keyof typeof NotificationChannel]
+
+
+export const NotificationRecipientType = {
+  USER: 'USER',
+  CUSTOMER: 'CUSTOMER'
+} as const
+
+export type NotificationRecipientType = (typeof NotificationRecipientType)[keyof typeof NotificationRecipientType]
+
+
+export const SchedulePlanStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SchedulePlanStatus = (typeof SchedulePlanStatus)[keyof typeof SchedulePlanStatus]
+
+
+export const ScheduleSubjectType = {
+  MARKETING_CAMPAIGN: 'MARKETING_CAMPAIGN',
+  NEWSLETTER_CAMPAIGN: 'NEWSLETTER_CAMPAIGN',
+  SOCIAL_PUBLICATION: 'SOCIAL_PUBLICATION',
+  PUBLIC_EVENT: 'PUBLIC_EVENT',
+  PAGE: 'PAGE',
+  BLOG_POST: 'BLOG_POST',
+  HOMEPAGE: 'HOMEPAGE',
+  OTHER: 'OTHER'
+} as const
+
+export type ScheduleSubjectType = (typeof ScheduleSubjectType)[keyof typeof ScheduleSubjectType]
+
+
+export const WebhookEndpointStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  FAILED: 'FAILED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type WebhookEndpointStatus = (typeof WebhookEndpointStatus)[keyof typeof WebhookEndpointStatus]
+
+
+export const WebhookDeliveryStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type WebhookDeliveryStatus = (typeof WebhookDeliveryStatus)[keyof typeof WebhookDeliveryStatus]
+
+
+export const WorkflowDefinitionStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type WorkflowDefinitionStatus = (typeof WorkflowDefinitionStatus)[keyof typeof WorkflowDefinitionStatus]
+
+
+export const WorkflowInstanceStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  BLOCKED: 'BLOCKED',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type WorkflowInstanceStatus = (typeof WorkflowInstanceStatus)[keyof typeof WorkflowInstanceStatus]
+
+
+export const WorkflowStepStatus = {
+  PENDING: 'PENDING',
+  READY: 'READY',
+  RUNNING: 'RUNNING',
+  BLOCKED: 'BLOCKED',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type WorkflowStepStatus = (typeof WorkflowStepStatus)[keyof typeof WorkflowStepStatus]
+
+
+export const ChannelStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ChannelStatus = (typeof ChannelStatus)[keyof typeof ChannelStatus]
+
+
+export const ChannelType = {
+  GOOGLE_SHOPPING: 'GOOGLE_SHOPPING',
+  META_CATALOG: 'META_CATALOG',
+  MARKETPLACE: 'MARKETPLACE',
+  INTERNAL_FEED: 'INTERNAL_FEED',
+  OTHER: 'OTHER'
+} as const
+
+export type ChannelType = (typeof ChannelType)[keyof typeof ChannelType]
+
+
+export const ChannelPublicationStatus = {
+  PENDING: 'PENDING',
+  ELIGIBLE: 'ELIGIBLE',
+  INELIGIBLE: 'INELIGIBLE',
+  PUBLISHED: 'PUBLISHED',
+  REJECTED: 'REJECTED',
+  EXCLUDED: 'EXCLUDED',
+  SUSPENDED: 'SUSPENDED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ChannelPublicationStatus = (typeof ChannelPublicationStatus)[keyof typeof ChannelPublicationStatus]
+
+
+export const SearchDocumentStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SearchDocumentStatus = (typeof SearchDocumentStatus)[keyof typeof SearchDocumentStatus]

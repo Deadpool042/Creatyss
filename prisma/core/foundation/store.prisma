@@ -149,4 +149,3 @@ model StoreDomain {
   @@index([host])
   @@map("store_domains")
 }
-

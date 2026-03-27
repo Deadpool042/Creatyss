@@ -28,7 +28,7 @@ enum InventoryMovementType {
 }
 
 model InventoryItem {
-  id        String  @id @default(cuid())
+  id        String @id @default(cuid())
   storeId   String
   variantId String
 
