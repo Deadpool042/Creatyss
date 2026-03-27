@@ -29,7 +29,7 @@ enum InventoryMovementType {
 
 model InventoryItem {
   id        String  @id @default(cuid())
-  storeId   String?
+  storeId   String
   variantId String
 
   sku    String?
@@ -43,7 +43,7 @@ model InventoryItem {
   updatedAt  DateTime  @updatedAt
   archivedAt DateTime?
 
-  store   Store?         @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  store   Store          @relation(fields: [storeId], references: [id], onDelete: Restrict)
   variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
 
   reservations InventoryReservation[]
@@ -80,7 +80,7 @@ model InventoryReservation {
   cart          Cart?         @relation(fields: [cartId], references: [id], onDelete: Cascade)
   checkout      Checkout?     @relation(fields: [checkoutId], references: [id], onDelete: Cascade)
   order         Order?        @relation(fields: [orderId], references: [id], onDelete: Restrict)
-  cartLine      CartLine?     @relation(fields: [cartLineId], references: [id])
+  cartLine      CartLine?     @relation(fields: [cartLineId], references: [id], onDelete: SetNull)
   cartLineId    String?
 
   @@index([inventoryItemId, status])

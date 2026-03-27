@@ -1,5 +1,5 @@
-/// Feature: satellite.documents
-/// Category: satellite
+/// Feature: commerce.documents
+/// Category: optional
 /// Level: L2
 /// DependsOn: foundation.store, commerce.orders
 
@@ -47,8 +47,8 @@ model Document {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  order Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  store Store  @relation(fields: [storeId], references: [id], onDelete: Restrict)
+  order Order? @relation(fields: [orderId], references: [id], onDelete: Restrict)
 
   versions DocumentVersion[]
 

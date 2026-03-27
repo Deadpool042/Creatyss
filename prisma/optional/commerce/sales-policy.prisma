@@ -1,6 +1,6 @@
-/// Feature: catalog.sales-policy
-/// Category: core
-/// Level: core
+/// Feature: commerce.sales-policy
+/// Category: optional
+/// Level: L2
 /// DependsOn: foundation.store, catalog.products
 
 enum SalesPolicyStatus {

@@ -11,7 +11,7 @@ description: |
 
   Do NOT use this agent for architecture decisions or documentation doctrine design.
 model: sonnet
-memory: project
+memory: repo-refactor
 ---
 
 You are a conservative repository refactor agent for Creatyss.

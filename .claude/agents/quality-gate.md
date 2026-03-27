@@ -13,7 +13,7 @@ description: |
 
   Do NOT use this agent for exploration or planning.
 model: sonnet
-memory: project
+memory: quality-gate
 ---
 
 You are a quality gate agent for Creatyss.

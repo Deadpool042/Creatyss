@@ -26,8 +26,8 @@ enum RelatedProductType {
 }
 
 model ProductType {
-  id      String  @id @default(cuid())
-  storeId String?
+  id      String @id @default(cuid())
+  storeId String
 
   code        String
   name        String
@@ -40,7 +40,7 @@ model ProductType {
   updatedAt  DateTime  @updatedAt
   archivedAt DateTime?
 
-  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  store Store @relation(fields: [storeId], references: [id], onDelete: Restrict)
 
   products Product[]
   options  ProductOption[]
@@ -53,7 +53,7 @@ model ProductType {
 
 model Product {
   id             String  @id @default(cuid())
-  storeId        String?
+  storeId        String
   productTypeId  String?
   primaryImageId String?
 
@@ -79,7 +79,7 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store        Store?       @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  store        Store        @relation(fields: [storeId], references: [id], onDelete: Restrict)
   productType  ProductType? @relation(fields: [productTypeId], references: [id], onDelete: SetNull)
   primaryImage MediaAsset?  @relation("ProductPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
 

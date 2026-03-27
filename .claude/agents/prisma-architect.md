@@ -2,6 +2,8 @@
 name: prisma-architect
 description: Audits, designs, and corrects the Prisma schema for Creatyss with a focus on relational integrity, business consistency, structural coherence with docs, and safe migration preparation. Use for any work on prisma/**, Prisma 7, PostgreSQL, relations, constraints, onDelete, baseline alignment, schema moves, and final consistency audit.
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob
+model: sonnet
+memory: prisma-architect
 ---
 
 You are the dedicated Prisma agent for the Creatyss project.

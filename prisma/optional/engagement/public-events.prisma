@@ -18,6 +18,20 @@ enum EventAudienceStatus {
   WAITLIST
 }
 
+enum EventRegistrationStatus {
+  REGISTERED
+  WAITLISTED
+  CANCELLED
+  NO_SHOW
+}
+
+enum EventReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+}
+
 model PublicEvent {
   id      String @id @default(cuid())
   storeId String
@@ -73,7 +87,7 @@ model EventRegistration {
   firstName String?
   lastName  String?
 
-  status EventAudienceStatus @default(OPEN)
+  status EventRegistrationStatus @default(REGISTERED)
   notes  String?
 
   registeredAt DateTime?
@@ -100,8 +114,8 @@ model EventReservation {
   firstName String?
   lastName  String?
 
-  status   EventAudienceStatus @default(OPEN)
-  quantity Int                 @default(1)
+  status   EventReservationStatus @default(PENDING)
+  quantity Int                    @default(1)
   notes    String?
 
   reservedAt  DateTime?

@@ -25,7 +25,7 @@ enum ContactChannel {
 
 model Customer {
   id      String  @id @default(cuid())
-  storeId String?
+  storeId String
 
   email       String
   firstName   String?
@@ -53,7 +53,7 @@ model Customer {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  store Store  @relation(fields: [storeId], references: [id], onDelete: Restrict)
 
   addresses                CustomerAddress[]
   contactPreferences       CustomerContactPreference[]

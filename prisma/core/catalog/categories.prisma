@@ -12,7 +12,7 @@ enum CategoryStatus {
 
 model Category {
   id       String  @id @default(cuid())
-  storeId  String?
+  storeId  String
   parentId String?
 
   code             String
@@ -35,7 +35,7 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store    Store?     @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  store    Store      @relation(fields: [storeId], references: [id], onDelete: Restrict)
   parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
   children Category[] @relation("CategoryHierarchy")
 
