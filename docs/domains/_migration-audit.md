@@ -78,7 +78,7 @@ Domaines réalignés ou fortement repris :
 - `core/stores.md`
 - `core/integrations.md`
 - `core/webhooks.md`
-- `core/domain-events.md`
+- `cross-cutting/domain-events.md`
 
 Arbitrages structurants déjà actés :
 
