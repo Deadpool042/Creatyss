@@ -406,9 +406,9 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `blog.md`
 - `../satellites/media.md`
 - `../cross-cutting/seo.md`
-- `../core/products.md`
-- `../core/stores.md`
+- `../core/catalog/products.md`
+- `../core/foundation/stores.md`
 - `../cross-cutting/marketing.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

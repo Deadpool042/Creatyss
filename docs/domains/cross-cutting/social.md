@@ -414,7 +414,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `dashboarding.md`
 - `audit.md`
 - `observability.md`
-- `../core/stores.md`
-- `../core/products.md`
+- `../core/foundation/stores.md`
+- `../core/catalog/products.md`
 - `../optional/blog.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

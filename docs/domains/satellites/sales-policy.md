@@ -396,14 +396,14 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/products.md`
+- `../core/catalog/products.md`
 - `inventory.md`
-- `../core/availability.md`
-- `../core/customers.md`
-- `../core/stores.md`
-- `../core/pricing.md`
+- `../core/catalog/availability.md`
+- `../core/commerce/customers.md`
+- `../core/foundation/stores.md`
+- `../core/commerce/pricing.md`
 - `discounts.md`
-- `../core/taxation.md`
+- `../optional/commerce/taxation.md`
 - `channels.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`

@@ -353,8 +353,8 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `consent.md`
 - `audit.md`
 - `observability.md`
-- `../../domains/core/checkout.md`
-- `../../domains/core/orders.md`
-- `../../domains/core/customers.md`
+- `../core/commerce/checkout.md`
+- `../core/commerce/orders.md`
+- `../core/commerce/customers.md`
 - `newsletter.md`
 - `tracking.md`

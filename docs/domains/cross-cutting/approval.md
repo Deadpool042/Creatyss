@@ -399,11 +399,11 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `audit.md`
 - `permissions.md`
 - `roles.md`
-- `../core/users.md`
-- `../core/stores.md`
-- `../core/products.md`
-- `../core/documents.md`
+- `../core/foundation/users.md`
+- `../core/foundation/stores.md`
+- `../core/catalog/products.md`
+- `../satellites/documents.md`
 - `../optional/events.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`
 - `observability.md`
 - `dashboarding.md`

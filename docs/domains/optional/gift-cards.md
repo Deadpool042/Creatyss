@@ -408,14 +408,14 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/checkout.md`
-- `../core/payments.md`
-- `../core/orders.md`
-- `../core/customers.md`
+- `../core/commerce/checkout.md`
+- `../optional/commerce/payments.md`
+- `../core/commerce/orders.md`
+- `../core/commerce/customers.md`
 - `gifting.md`
 - `../satellites/discounts.md`
 - `../cross-cutting/email.md`
 - `../cross-cutting/notifications.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

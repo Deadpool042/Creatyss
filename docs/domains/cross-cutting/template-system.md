@@ -407,10 +407,10 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `marketing.md`
 - `events.md`
 - `../optional/pages.md`
-- `../core/documents.md`
-- `../core/stores.md`
+- `../satellites/documents.md`
+- `../core/foundation/stores.md`
 - `approval.md`
 - `workflow.md`
 - `audit.md`
 - `observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

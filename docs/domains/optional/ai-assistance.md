@@ -401,11 +401,11 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `pages.md`
 - `blog.md`
 - `homepage-editorial.md`
-- `../core/products.md`
+- `../core/catalog/products.md`
 - `../cross-cutting/support.md`
 - `../cross-cutting/search.md`
 - `../cross-cutting/seo.md`
 - `../cross-cutting/legal.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

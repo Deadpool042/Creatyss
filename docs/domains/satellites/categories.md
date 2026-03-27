@@ -359,8 +359,8 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/products.md`
+- `../core/catalog/products.md`
 - `catalog-modeling.md`
 - `../cross-cutting/search.md`
 - `../cross-cutting/seo.md`
-- `../core/stores.md`
+- `../core/foundation/stores.md`

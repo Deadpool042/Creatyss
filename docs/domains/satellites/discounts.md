@@ -383,10 +383,10 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/pricing.md`
-- `../core/cart.md`
-- `../core/checkout.md`
-- `../core/orders.md`
-- `../core/taxation.md`
+- `../core/commerce/pricing.md`
+- `../core/commerce/cart.md`
+- `../core/commerce/checkout.md`
+- `../core/commerce/orders.md`
+- `../optional/commerce/taxation.md`
 - `sales-policy.md`
-- `../core/stores.md`
+- `../core/foundation/stores.md`

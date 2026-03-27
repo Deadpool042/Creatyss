@@ -415,8 +415,8 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../satellites/media.md`
 - `../cross-cutting/seo.md`
 - `../cross-cutting/search.md`
-- `../core/stores.md`
-- `../core/users.md`
+- `../core/foundation/stores.md`
+- `../core/foundation/users.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

@@ -399,11 +399,11 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/stores.md`
-- `../core/products.md`
+- `../core/foundation/stores.md`
+- `../core/catalog/products.md`
 - `../optional/pages.md`
 - `../optional/blog.md`
 - `../cross-cutting/seo.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

@@ -396,13 +396,13 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/orders.md`
-- `../core/payments.md`
-- `../core/customers.md`
+- `../core/commerce/orders.md`
+- `../optional/commerce/payments.md`
+- `../core/commerce/customers.md`
 - `commerce/fulfillment.md`
-- `../core/shipping.md`
+- `../optional/commerce/shipping.md`
 - `../cross-cutting/support.md`
 - `../cross-cutting/notifications.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

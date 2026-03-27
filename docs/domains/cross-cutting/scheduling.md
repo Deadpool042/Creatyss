@@ -408,5 +408,5 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `dashboarding.md`
 - `audit.md`
 - `observability.md`
-- `../core/stores.md`
-- `../core/integrations.md`
+- `../core/foundation/stores.md`
+- `../optional/platform/integrations.md`

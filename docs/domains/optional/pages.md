@@ -399,8 +399,8 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../satellites/media.md`
 - `../cross-cutting/template-system.md`
 - `../cross-cutting/seo.md`
-- `../core/stores.md`
+- `../core/foundation/stores.md`
 - `../cross-cutting/marketing.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

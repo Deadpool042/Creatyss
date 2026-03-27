@@ -399,10 +399,10 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/orders.md`
-- `../core/customers.md`
-- `../core/products.md`
-- `../core/documents.md`
+- `../core/commerce/orders.md`
+- `../core/commerce/customers.md`
+- `../core/catalog/products.md`
+- `../satellites/documents.md`
 - `analytics.md`
 - `events.md`
 - `support.md`
@@ -410,6 +410,6 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `audit.md`
 - `observability.md`
 - `dashboarding.md`
-- `../core/stores.md`
-- `../core/integrations.md`
+- `../core/foundation/stores.md`
+- `../optional/platform/integrations.md`
 - `webhooks.md`

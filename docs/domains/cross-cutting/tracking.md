@@ -365,5 +365,5 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `marketing.md`
 - `observability.md`
 - `audit.md`
-- `../../domains/core/integrations.md`
-- `../../domains/core/domain-events.md`
+- `../optional/platform/integrations.md`
+- `domain-events.md`

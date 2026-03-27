@@ -381,13 +381,13 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/products.md`
-- `../core/customers.md`
-- `../core/cart.md`
+- `../core/catalog/products.md`
+- `../core/commerce/customers.md`
+- `../core/commerce/cart.md`
 - `recommendations.md`
 - `../cross-cutting/crm.md`
 - `../cross-cutting/marketing.md`
 - `../cross-cutting/tracking.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

@@ -364,7 +364,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `audit.md`
 - `observability.md`
 - `legal.md`
-- `../../domains/core/customers.md`
+- `../core/commerce/customers.md`
 - `crm.md`
 - `newsletter.md`
 - `tracking.md`

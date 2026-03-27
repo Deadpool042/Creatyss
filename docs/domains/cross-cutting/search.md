@@ -265,7 +265,7 @@ Il sert à trouver, pas à décider.
 
 ## Documents liés
 
-- `../../domains/core/products.md`
+- `../core/catalog/products.md`
 - `../../domains/satellites/categories.md`
 - `../../domains/optional/commerce/inventory.md`
 - `jobs.md`

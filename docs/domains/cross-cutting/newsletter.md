@@ -349,5 +349,5 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `marketing.md`
 - `audit.md`
 - `observability.md`
-- `../../domains/core/customers.md`
-- `../../domains/core/integrations.md`
+- `../core/commerce/customers.md`
+- `../optional/platform/integrations.md`

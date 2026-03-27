@@ -398,15 +398,15 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/products.md`
-- `../core/pricing.md`
-- `../core/orders.md`
-- `../core/payments.md`
+- `../core/catalog/products.md`
+- `../core/commerce/pricing.md`
+- `../core/commerce/orders.md`
+- `../optional/commerce/payments.md`
 - `inventory.md`
-- `../core/availability.md`
+- `../core/catalog/availability.md`
 - `../cross-cutting/legal.md`
 - `../cross-cutting/support.md`
 - `../cross-cutting/fraud-risk.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

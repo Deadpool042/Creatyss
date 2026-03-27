@@ -403,9 +403,9 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/customers.md`
-- `../core/orders.md`
-- `../core/checkout.md`
+- `../core/commerce/customers.md`
+- `../core/commerce/orders.md`
+- `../core/commerce/checkout.md`
 - `../satellites/discounts.md`
 - `gift-cards.md`
 - `../cross-cutting/crm.md`
@@ -414,4 +414,4 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../cross-cutting/notifications.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

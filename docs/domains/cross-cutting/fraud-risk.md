@@ -411,17 +411,17 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/payments.md`
-- `../core/orders.md`
+- `../optional/commerce/payments.md`
+- `../core/commerce/orders.md`
 - `permissions.md`
 - `audit.md`
 - `tracking.md`
-- `../core/customers.md`
+- `../core/commerce/customers.md`
 - `checkout.md`
 - `consent.md`
 - `approval.md`
 - `observability.md`
 - `dashboarding.md`
 - `support.md`
-- `../core/stores.md`
-- `../core/integrations.md`
+- `../core/foundation/stores.md`
+- `../optional/platform/integrations.md`

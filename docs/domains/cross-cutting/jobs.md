@@ -384,8 +384,8 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../../architecture/30-execution/30-evenements-de-domaine-et-flux-asynchrones.md`
 - `../../architecture/30-execution/31-jobs-et-traitements-en-arriere-plan.md`
 - `../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
-- `../../domains/core/domain-events.md`
-- `../../domains/core/integrations.md`
-- `../../domains/core/webhooks.md`
+- `domain-events.md`
+- `../optional/platform/integrations.md`
+- `../optional/platform/webhooks.md`
 - `observability.md`
 - `audit.md`

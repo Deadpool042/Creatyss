@@ -405,16 +405,16 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../core/customers.md`
+- `../core/commerce/customers.md`
 - `crm.md`
-- `../core/orders.md`
+- `../core/commerce/orders.md`
 - `../optional/returns.md`
-- `../core/payments.md`
-- `../core/documents.md`
+- `../optional/commerce/payments.md`
+- `../satellites/documents.md`
 - `notifications.md`
 - `audit.md`
 - `observability.md`
 - `dashboarding.md`
 - `analytics.md`
-- `../core/stores.md`
-- `../core/integrations.md`
+- `../core/foundation/stores.md`
+- `../optional/platform/integrations.md`

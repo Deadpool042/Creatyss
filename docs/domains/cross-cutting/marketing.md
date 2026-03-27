@@ -377,7 +377,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../../domains/core/customers.md`
+- `../core/commerce/customers.md`
 - `crm.md`
 - `newsletter.md`
 - `tracking.md`
@@ -385,4 +385,4 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `legal.md`
 - `audit.md`
 - `observability.md`
-- `../../domains/core/integrations.md`
+- `../optional/platform/integrations.md`

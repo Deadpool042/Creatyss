@@ -369,7 +369,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 ## Documents liés
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
-- `../../domains/core/stores.md`
+- `../core/foundation/stores.md`
 - `audit.md`
 - `observability.md`
 - `jobs.md`

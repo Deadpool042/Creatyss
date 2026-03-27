@@ -348,5 +348,5 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `observability.md`
 - `audit.md`
 - `jobs.md`
-- `../../domains/core/integrations.md`
-- `../../domains/core/webhooks.md`
+- `../optional/platform/integrations.md`
+- `../optional/platform/webhooks.md`

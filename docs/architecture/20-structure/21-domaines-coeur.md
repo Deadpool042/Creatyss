@@ -58,7 +58,7 @@ Il fait partie du modèle métier central.
 
 Référence :
 
-- `../../domains/core/products.md`
+- `../../domains/core/catalog/products.md`
 
 ### Commandes
 
@@ -76,7 +76,7 @@ Elle ne doit jamais être réduite à un simple flux technique ou à une vue d�
 
 Référence :
 
-- `../../domains/core/orders.md`
+- `../../domains/core/commerce/orders.md`
 
 ---
 
@@ -136,5 +136,5 @@ Le système doit éviter :
 
 - `../10-fondations/11-modele-de-classification.md`
 - `../10-fondations/12-frontieres-et-responsabilites.md`
-- `../../domains/core/products.md`
-- `../../domains/core/orders.md`
+- `../../domains/core/catalog/products.md`
+- `../../domains/core/commerce/orders.md`

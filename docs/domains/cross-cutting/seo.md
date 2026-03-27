@@ -403,9 +403,9 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
 - `../optional/pages.md`
 - `../optional/blog.md`
-- `../core/products.md`
+- `../core/catalog/products.md`
 - `../optional/events.md`
-- `../core/stores.md`
+- `../core/foundation/stores.md`
 - `approval.md`
 - `workflow.md`
 - `audit.md`
@@ -414,4 +414,4 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `marketing.md`
 - `analytics.md`
 - `attribution.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`

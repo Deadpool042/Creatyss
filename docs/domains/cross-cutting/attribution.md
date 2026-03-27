@@ -403,8 +403,8 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `dashboarding.md`
 - `newsletter.md`
 - `events.md`
-- `../core/orders.md`
-- `../core/stores.md`
+- `../core/commerce/orders.md`
+- `../core/foundation/stores.md`
 - `audit.md`
 - `observability.md`
-- `../core/integrations.md`
+- `../optional/platform/integrations.md`
