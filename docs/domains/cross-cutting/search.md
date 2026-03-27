@@ -267,7 +267,7 @@ Il sert à trouver, pas à décider.
 
 - `../../domains/core/products.md`
 - `../../domains/satellites/categories.md`
-- `../../domains/satellites/inventory.md`
+- `../../domains/optional/commerce/inventory.md`
 - `jobs.md`
 - `domain-events.md`
 - `observability.md`

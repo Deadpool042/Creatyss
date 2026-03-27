@@ -25,17 +25,17 @@ Le domaine existe pour isoler la fiscalité de :
 
 ### Catégorie documentaire
 
-`core`
+`optional`
 
 ### Criticité architecturale
 
-`coeur`
+`élevé`
 
 ### Activable
 
 `non`
 
-Le domaine `taxation` est non optionnel dans un système commercial soumis à des règles fiscales.
+Le domaine `taxation` est optionnel dans un déploiement sans règles fiscales actives. Il est nécessaire dans tout contexte commercial soumis à des obligations fiscales.
 
 ---
 

@@ -8,14 +8,14 @@ Il définit :
 
 - ce qui est physiquement ou logiquement présent en stock ;
 - quelles quantités sont disponibles, réservées, entrantes ou sorties selon le modèle retenu ;
-- comment le système représente l’état de stock ;
+- comment le système représente l'état de stock ;
 - comment les mouvements de stock sont suivis.
 
-Le domaine existe pour fournir une vérité d’inventaire, distincte :
+Le domaine existe pour fournir une vérité d'inventaire, distincte :
 
 - de la disponibilité vendable ;
-- de l’expédition ;
-- de l’exécution logistique ;
+- de l'expédition ;
+- de l'exécution logistique ;
 - des projections commerciales.
 
 ---
@@ -24,17 +24,17 @@ Le domaine existe pour fournir une vérité d’inventaire, distincte :
 
 ### Catégorie documentaire
 
-`satellites`
+`optional`
 
 ### Criticité architecturale
 
-`satellite`
+`élevé`
 
 ### Activable
 
-`non`
+`oui`
 
-Le domaine `inventory` n’est pas une simple option, mais il n’appartient pas nécessairement au coeur métier central si le système ne fait qu’en consommer la vérité.
+Le domaine `inventory` est une capacité optionnelle activable par configuration. Il n'appartient pas au coeur structurel universel mais est nécessaire dès lors que le système porte directement la gestion et la réservation de stock.
 
 ---
 
@@ -45,18 +45,18 @@ Le domaine `inventory` est la source de vérité pour :
 - les quantités de stock ;
 - les réserves de stock si cette responsabilité est portée ici ;
 - les mouvements de stock ;
-- les états d’inventaire ;
+- les états d'inventaire ;
 - les emplacements ou structures de stockage si le modèle les inclut.
 
-Le domaine `inventory` n’est pas la source de vérité pour :
+Le domaine `inventory` n'est pas la source de vérité pour :
 
 - la disponibilité vendable, qui relève de `availability` ;
 - le produit, qui relève de `products` ;
 - la commande, qui relève de `orders` ;
-- l’expédition, qui relève de `shipping` ;
-- l’exécution logistique, qui relève de `fulfillment`.
+- l'expédition, qui relève de `shipping` ;
+- l'exécution logistique, qui relève de `fulfillment`.
 
-Le stock réel n’est pas automatiquement la disponibilité commerciale.
+Le stock réel n'est pas automatiquement la disponibilité commerciale.
 
 ---
 
@@ -66,8 +66,8 @@ Le domaine `inventory` est responsable de :
 
 - maintenir la quantité de stock ;
 - enregistrer les mouvements de stock ;
-- exprimer l’état des réserves si le modèle l’exige ;
-- exposer un état d’inventaire exploitable ;
+- exprimer l'état des réserves si le modèle l'exige ;
+- exposer un état d'inventaire exploitable ;
 - publier les événements significatifs liés au stock ;
 - protéger la cohérence des quantités.
 
@@ -84,7 +84,7 @@ Selon le périmètre exact du projet, le domaine peut également être responsab
 
 ## Non-responsabilités
 
-Le domaine `inventory` n’est pas responsable de :
+Le domaine `inventory` n'est pas responsable de :
 
 - décider si une offre est vendable ;
 - porter le produit ;
@@ -92,7 +92,7 @@ Le domaine `inventory` n’est pas responsable de :
 - confirmer la commande ;
 - calculer le prix ;
 - gérer le paiement ;
-- gérer l’expédition ;
+- gérer l'expédition ;
 - exécuter la logistique de préparation ;
 - porter les intégrations de canaux.
 
@@ -142,13 +142,13 @@ Le domaine peut interagir avec :
 - WMS ;
 - ERP ;
 - OMS ;
-- systèmes d’entrepôt ;
+- systèmes d'entrepôt ;
 - scanners, flux physiques ou outils de stock.
 
 ### Règle de frontière
 
 Le domaine `inventory` porte la vérité de quantité et de mouvement.
-Il ne doit pas absorber la disponibilité vendable ni la logique complète d’exécution.
+Il ne doit pas absorber la disponibilité vendable ni la logique complète d'exécution.
 
 ---
 
@@ -178,13 +178,13 @@ Le domaine peut consommer des signaux liés à :
 
 Le domaine `inventory` ne porte pas nécessairement un cycle de vie unique comparable à une commande.
 
-Cette section reste applicable via les états d’inventaire, par exemple :
+Cette section reste applicable via les états d'inventaire, par exemple :
 
 - disponible ;
 - réservé ;
 - en attente de réapprovisionnement ;
 - ajusté ;
-- archivé, si un périmètre ou emplacement cesse d’être actif.
+- archivé, si un périmètre ou emplacement cesse d'être actif.
 
 Si le modèle ne repose pas sur un cycle de vie unifié, cela doit être assumé explicitement.
 
@@ -195,7 +195,7 @@ Si le modèle ne repose pas sur un cycle de vie unifié, cela doit être assumé
 Le domaine `inventory` expose principalement :
 
 - des lectures de quantité ;
-- des lectures d’état de stock ;
+- des lectures d'état de stock ;
 - des mouvements ou ajustements structurés ;
 - des événements significatifs liés au stock.
 
@@ -208,7 +208,7 @@ Le domaine reçoit principalement :
 
 ---
 
-## Contraintes d’intégration
+## Contraintes d'intégration
 
 Le domaine `inventory` peut être exposé à des contraintes telles que :
 
@@ -223,7 +223,7 @@ Règles minimales :
 
 - tout mouvement doit être traçable ;
 - les traitements rejouables doivent être idempotents ou neutralisés ;
-- la hiérarchie d’autorité doit être explicite ;
+- la hiérarchie d'autorité doit être explicite ;
 - une divergence doit être visible et exploitable.
 
 ---
@@ -239,25 +239,25 @@ Le domaine `inventory` doit rendre visibles au minimum :
 - les événements significatifs publiés ;
 - les corrections manuelles.
 
-L’audit doit permettre de répondre à des questions comme :
+L'audit doit permettre de répondre à des questions comme :
 
 - quel stock a changé ;
 - quand ;
 - pour quelle cause ;
-- avec quel impact sur la disponibilité ou l’exécution.
+- avec quel impact sur la disponibilité ou l'exécution.
 
 ---
 
 ## Impact de maintenance / exploitation
 
-Le domaine `inventory` a un impact d’exploitation très élevé.
+Le domaine `inventory` a un impact d'exploitation très élevé.
 
 Raisons :
 
 - il conditionne indirectement la vente ;
 - il influence la logistique ;
 - il est exposé aux systèmes externes et aux corrections manuelles ;
-- ses erreurs contaminent la disponibilité et l’exécution.
+- ses erreurs contaminent la disponibilité et l'exécution.
 
 En exploitation, une attention particulière doit être portée à :
 
@@ -271,11 +271,11 @@ En exploitation, une attention particulière doit être portée à :
 
 ## Limites du domaine
 
-Le domaine `inventory` s’arrête :
+Le domaine `inventory` s'arrête :
 
 - avant la disponibilité vendable (`availability`) ;
-- avant l’exécution logistique (`fulfillment`) ;
-- avant l’expédition (`shipping`) ;
+- avant l'exécution logistique (`fulfillment`) ;
+- avant l'expédition (`shipping`) ;
 - avant le prix ;
 - avant la commande comme objet métier.
 
@@ -300,8 +300,8 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../core/availability.md`
-- `../core/products.md`
-- `../core/orders.md`
+- `../../core/catalog/availability.md`
+- `../../core/catalog/products.md`
+- `../../core/commerce/orders.md`
 - `fulfillment.md`
-- `../../architecture/20-structure/23-systemes-externes-et-satellites.md`
+- `../../../architecture/20-structure/23-systemes-externes-et-satellites.md`

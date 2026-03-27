@@ -26,7 +26,7 @@ Le domaine existe pour fournir un backbone événementiel interne structuré, di
 
 ### Catégorie documentaire
 
-`core`
+`cross-cutting`
 
 ### Criticité architecturale
 
@@ -375,10 +375,10 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../../architecture/30-execution/30-evenements-de-domaine-et-flux-asynchrones.md`
 - `../../architecture/30-execution/31-jobs-et-traitements-en-arriere-plan.md`
 - `../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
-- `integrations.md`
-- `webhooks.md`
-- `payments.md`
-- `orders.md`
-- `products.md`
-- `../../domains/cross-cutting/jobs.md`
-- `../../domains/cross-cutting/events.md`
+- `../optional/platform/integrations.md`
+- `../optional/platform/webhooks.md`
+- `../optional/commerce/payments.md`
+- `../core/commerce/orders.md`
+- `../core/catalog/products.md`
+- `jobs.md`
+- `events.md`

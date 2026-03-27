@@ -25,18 +25,17 @@ Le domaine existe pour fournir une vérité interne sur le statut et l’histori
 
 ### Catégorie documentaire
 
-`core`
+`optional`
 
 ### Criticité architecturale
 
-`coeur`
+`élevé`
 
 ### Activable
 
 `non`
 
-Le domaine `payments` est non optionnel dans un système transactionnel où la commande donne lieu à encaissement.
-Sans lui, le système ne peut pas porter correctement l’état métier du règlement.
+Le domaine `payments` est optionnel dans un système sans encaissement direct. Il est nécessaire dans tout déploiement transactionnel complet.
 
 ---
 

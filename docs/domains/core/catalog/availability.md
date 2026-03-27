@@ -324,10 +324,10 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 ## Documents liés
 
 - `products.md`
-- `cart.md`
-- `checkout.md`
-- `orders.md`
-- `stores.md`
-- `../../domains/satellites/inventory.md`
-- `../../domains/satellites/channels.md`
-- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../commerce/cart.md`
+- `../commerce/checkout.md`
+- `../commerce/orders.md`
+- `../foundation/stores.md`
+- `../../optional/commerce/inventory.md`
+- `../../satellites/channels.md`
+- `../../../architecture/10-fondations/12-frontieres-et-responsabilites.md`

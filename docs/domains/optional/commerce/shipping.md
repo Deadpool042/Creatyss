@@ -20,17 +20,17 @@ Le domaine existe pour structurer la transformation d’une commande confirmée 
 
 ### Catégorie documentaire
 
-`core`
+`optional`
 
 ### Criticité architecturale
 
-`coeur`
+`élevé`
 
 ### Activable
 
 `non`
 
-Le domaine `shipping` est non optionnel dans un système impliquant une livraison.
+Le domaine `shipping` est optionnel dans un système sans livraison physique directe. Il est nécessaire dans tout déploiement impliquant une livraison.
 
 ---
 
@@ -212,4 +212,4 @@ Le domaine `shipping` s’arrête :
 - `customers.md`
 - `checkout.md`
 - `pricing.md`
-- `../../domains/satellites/fulfillment.md`
+- `fulfillment.md`

@@ -46,6 +46,16 @@ Le projet est conçu pour être :
 - déployable ensuite sur un VPS OVH ;
 - réutilisable pour d'autres projets e-commerce au-delà du seul cas Creatyss.
 
+Creatyss est un **codebase unique** avec une **architecture modulaire réutilisable**.
+
+Creatyss n’est pas, à ce stade :
+
+- une site-factory ;
+- une plateforme multi-tenant ;
+- un moteur de provisioning de boutiques ;
+- un système de plugins runtime ;
+- un orchestrateur générique de sites clients.
+
 Stack cible :
 
 - Next.js App Router
@@ -58,7 +68,7 @@ Stack cible :
 
 ## Doctrine repo
 
-Le repo est désormais structuré autour d’une doctrine explicite portée par `docs/architecture/`.
+Le repo est structuré autour d’une doctrine explicite portée par `docs/architecture/`.
 
 La colonne vertébrale documentaire est :
 
@@ -75,14 +85,32 @@ La stratégie de validation se trouve dans `docs/testing/`.
 
 ---
 
-## Taxonomie documentaire
+## Taxonomie canonique du repo
 
-La taxonomie documentaire reconnue dans `docs/domains/` est :
+La taxonomie canonique reconnue dans le repo est :
 
-- `core/`
-- `optional/`
-- `cross-cutting/`
-- `satellites/`
+- `core`
+- `optional`
+- `cross-cutting`
+- `satellites`
+
+Cette taxonomie s’applique à la fois à :
+
+- `docs/domains/{core, optional, cross-cutting, satellites}`
+- `prisma/{core, optional, cross-cutting, satellites}`
+
+Les regroupements métier internes comme :
+
+- `foundation`
+- `catalog`
+- `commerce`
+- `content`
+- `engagement`
+- `platform`
+- `ai`
+
+sont des sous-structures locales.
+Ils ne remplacent pas la taxonomie canonique.
 
 Ne jamais confondre :
 
@@ -99,7 +127,9 @@ Points doctrinaux importants déjà stabilisés :
 - `shipping` porte l’expédition et le suivi de livraison ;
 - `auth`, `users`, `roles`, `permissions` relèvent d’un coeur structurel ;
 - `customers` porte le client métier ;
-- `events` dans `cross-cutting/` peut être un vrai domaine métier transverse et ne doit pas être confondu avec les domain events internes.
+- un domaine `events` éventuel dans `cross-cutting/` désigne un domaine métier transverse explicite ;
+- les `domain-events` internes désignent les événements applicatifs liés à l’exécution du système ;
+- ces deux notions ne doivent jamais être mélangées.
 
 ---
 
@@ -116,6 +146,7 @@ Points doctrinaux importants déjà stabilisés :
 - Toujours privilégier de petits lots sûrs.
 - Ne jamais faire dériver la doctrine courante à partir d’un ancien document isolé sans validation explicite.
 - Ne jamais contourner `docs/architecture/` au nom de la vitesse.
+- Ne jamais traiter Creatyss comme une site-factory ou une plateforme multi-tenant si la demande ne l’exige pas explicitement.
 
 ---
 
@@ -142,6 +173,66 @@ Séparer clairement :
 - UI.
 
 Ne pas mélanger logique métier et composants de présentation.
+
+---
+
+## Doctrine Prisma
+
+Le dossier `prisma/` doit refléter la taxonomie canonique :
+
+- `prisma/core/**`
+- `prisma/optional/**`
+- `prisma/cross-cutting/**`
+- `prisma/satellites/**`
+
+### Propriété des modèles
+
+Dans `prisma/**` :
+
+- chaque `model` doit avoir un propriétaire unique ;
+- chaque `enum` doit avoir un propriétaire unique ;
+- chaque `type` doit avoir un propriétaire unique ;
+- aucune duplication silencieuse n’est acceptable.
+
+### Discipline après déplacement
+
+Après tout déplacement structurel dans `prisma/**` :
+
+- vérifier les relations ;
+- vérifier les enums ;
+- vérifier les références croisées ;
+- exécuter `pnpm prisma validate`.
+
+### Fichiers vides
+
+Ne pas conserver de fichier `.prisma` vide comme placeholder.
+
+Un fichier Prisma ne doit exister que s’il contient au moins un vrai élément Prisma :
+
+- `model`
+- `enum`
+- `type`
+
+Si un domaine n’a pas encore de matérialisation DB réelle, sa place est dans `docs/domains/**`, pas dans `prisma/**`.
+
+### Metadata minimales Prisma
+
+Quand une demande touche la classification d’un domaine ou d’un fichier Prisma, utiliser uniquement des metadata documentaires minimales :
+
+- `Feature`
+- `Category`
+- `Level`
+- `DependsOn`
+
+Format attendu :
+
+`/// Feature: <domain>.<feature>`
+`/// Category: core | optional | cross-cutting | satellite`
+`/// Level: core | L1 | L2 | L3 | L4`
+`/// DependsOn: <feature>, <feature>`
+
+Ces metadata servent à clarifier la structure du repo.
+Elles ne constituent pas, à ce stade, un moteur runtime d’activation des fonctionnalités.
 
 ---
 
@@ -175,6 +266,17 @@ Si une modification touche la doctrine, vérifier la cohérence entre :
 - `docs/architecture/`
 - `docs/domains/`
 - `docs/testing/`
+
+### Metadata minimales docs
+
+Dans `docs/domains/**`, quand la demande le justifie, utiliser un bloc metadata minimal cohérent avec Prisma :
+
+- `feature`
+- `category`
+- `level`
+- `dependsOn`
+
+Ne pas introduire de matrice de gouvernance complexe sans besoin immédiat du projet.
 
 ---
 
@@ -265,6 +367,14 @@ Après le lot :
   - ce qui n’a pas changé ;
   - risques ou écarts éventuels ;
   - résultat des vérifications.
+
+Après un refactor structurel touchant `docs/**` ou `prisma/**`, vérifier explicitement :
+
+- la cohérence des chemins ;
+- la cohérence des liens documentaires internes ;
+- la cohérence entre taxonomie doc et taxonomie Prisma ;
+- l’absence de référence Prisma orpheline ;
+- l’absence de fichier Prisma vide.
 
 ---
 

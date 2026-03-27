@@ -1,353 +1,252 @@
-# Creatyss
+# AGENTS.md
 
-## Mission
+## Identité du projet
 
-Construire et faire évoluer Creatyss comme une plateforme e-commerce custom :
+Creatyss est un **socle e-commerce custom** pour Creatyss.
 
-- local-first via Docker ;
-- maintenable ;
-- lisible ;
-- strictement typée ;
-- documentée ;
-- déployable ensuite sur un VPS OVH.
+Le projet doit être pensé comme :
 
-Le projet doit rester cohérent à la fois :
+- un **codebase unique**
+- avec une **architecture modulaire réutilisable**
+- mais **pas** comme une site-factory, un moteur multi-tenant, ni une plateforme de provisioning de boutiques.
 
-- sur le plan métier ;
-- sur le plan architectural ;
-- sur le plan documentaire ;
-- sur le plan opérationnel.
+L’objectif est de construire une base :
 
----
-
-## Stack de référence
-
-- Next.js App Router
-- TypeScript strict
-- PostgreSQL
-- Docker Compose
-- Makefile
+- locale d’abord
+- maintenable
+- strictement typée
+- sobre
+- modulaire
+- déployable ensuite sur un VPS OVH
 
 ---
 
-## Source de vérité documentaire
+## Ce que Creatyss n’est pas
 
-Le référentiel canonique du projet est organisé dans `docs/` :
+Ne pas traiter Creatyss comme :
 
-- `docs/architecture/` : doctrine d’architecture canonique
-- `docs/domains/` : fiches détaillées par domaine
-- `docs/testing/` : stratégie, niveaux et roadmap de validation
+- une site-factory
+- une plateforme multi-tenant
+- un moteur de provisioning
+- un système de plugins runtime
+- un orchestrateur générique de sites clients
 
-### Règle absolue
-
-Pour toute demande de conception, d’implémentation, de refonte, de classification ou de documentation :
-
-1. lire d’abord `docs/architecture/`
-2. puis lire `docs/domains/` si la demande touche un domaine précis
-3. puis lire `docs/testing/` si la demande touche validation, vérification ou robustesse
-
-### Priorité documentaire
-
-En cas de conflit :
-
-1. `docs/architecture/` fait autorité sur la doctrine
-2. `docs/domains/` fait autorité sur le détail local d’un domaine, à doctrine constante
-3. `docs/testing/` fait autorité sur la stratégie de validation
-
-Aucun changement ne doit contredire `docs/architecture/`.
+Ne pas introduire de complexité "plateforme SaaS" sans besoin direct du repo actuel.
 
 ---
 
-## Ordre de lecture minimal
+## Taxonomie canonique
 
-Avant toute modification non triviale, lire au minimum :
-
-1. `docs/architecture/README.md`
-2. `docs/architecture/00-introduction/00-vue-d-ensemble-du-systeme.md`
-3. `docs/architecture/00-introduction/01-glossaire.md`
-4. `docs/architecture/10-fondations/10-principes-d-architecture.md`
-5. `docs/architecture/10-fondations/11-modele-de-classification.md`
-6. `docs/architecture/10-fondations/12-frontieres-et-responsabilites.md`
-
-Si la demande touche un domaine : 7. lire la fiche correspondante dans `docs/domains/`
-
-Si la demande touche les tests : 8. lire les documents pertinents dans `docs/testing/`
-
----
-
-## Principes de travail
-
-- Toujours choisir la solution la plus simple compatible avec l’évolution future.
-- Toujours privilégier la lisibilité, la maintenabilité et la clarté du domaine métier.
-- Toujours travailler par petits incréments sûrs.
-- Toujours rester dans le périmètre demandé.
-- Toujours préserver le comportement existant hors périmètre.
-- Toujours proposer une solution principale, concrète, directement implémentable.
-- Toujours aligner le code, la structure et les noms sur la doctrine documentaire en vigueur.
-- Toujours protéger les frontières entre domaines.
-- Toujours expliciter la source de vérité d’une donnée ou d’une décision importante.
-
----
-
-## Principes d’architecture à respecter
-
-- Le métier passe avant la technique.
-- Le coeur du système doit rester identifiable.
-- Les capacités optionnelles doivent rester bornées.
-- Les dépendances externes doivent être encapsulées.
-- La source de vérité doit être explicite.
-- Les événements doivent exprimer des faits, pas masquer une mauvaise modélisation.
-- Les préoccupations transverses doivent être traitées explicitement.
-- Les frontières doivent être compréhensibles.
-- Le système doit rester testable par responsabilité.
-- La documentation doit refléter la structure réelle.
-
----
-
-## Taxonomie du système
-
-Le système suit la taxonomie définie dans `docs/architecture/` et appliquée dans `docs/domains/`.
-
-### Catégories documentaires reconnues
+Toute structuration architecture / docs / Prisma doit suivre cette taxonomie :
 
 - `core`
-- `optional`
 - `cross-cutting`
+- `optional`
 - `satellites`
 
-### Règles
+### core
 
-- `core` : domaines coeur, métier ou structurels, indispensables
-- `optional` : capacités optionnelles activables
-- `cross-cutting` : responsabilités transverses, potentiellement critiques
-- `satellites` : blocs satellites, projections, modélisations périphériques ou sous-systèmes connexes
+Le `core` porte les vérités métier ou structurelles indispensables.
 
-Ne jamais reclassifier un domaine “par intuition”.
-Toute reclassification doit rester cohérente avec `docs/architecture/10-fondations/11-modele-de-classification.md`.
+Exemples :
 
----
+- foundation
+- catalog
+- commerce
+- content
 
-## Structure attendue du code
+### cross-cutting
 
-La structure exacte peut évoluer, mais les responsabilités doivent rester lisibles.
+Le `cross-cutting` porte les préoccupations transverses structurantes.
 
-Repères usuels :
+Exemples :
 
-- `app/` : routes, layouts, pages, handlers Next.js
-- `components/` : composants UI réutilisables
-- `lib/` : utilitaires techniques transverses
-- `db/` : migrations, seeds, accès base, repositories
-- `scripts/` : scripts techniques
-- `docs/` : doctrine, domaines, tests et documents projet
+- audit
+- observability
+- jobs
+- domain-events
+- feature-flags
 
-Règle absolue :
+### optional
 
-- ne pas mélanger logique métier et composants de présentation ;
-- ne pas dissoudre les frontières de domaine dans des helpers techniques vagues.
+Le `optional` porte les capacités activables qui enrichissent le système sans redéfinir le coeur.
 
----
+Exemples :
 
-## Règles Next.js
+- payments
+- shipping
+- loyalty
+- analytics
+- workflow
+- AI
 
-- Server Components par défaut
-- Client Components seulement si nécessaire
-- Server Actions seulement quand elles simplifient réellement le flux
-- Pas de logique métier directement dans les composants UI
-- Pas de structure de routes sophistiquée sans besoin réel
-- Pas d’abstraction Next.js prématurée
+### satellites
 
----
+Le `satellites` porte les projections, sous-systèmes périphériques, espaces de publication ou modèles dérivés non coeur.
 
-## Séparation des responsabilités
+Exemples :
 
-### UI
-
-Affichage, composition d’interface, expérience utilisateur.
-
-### Validation
-
-Validation explicite des entrées côté serveur.
-
-### Métier
-
-Règles métier pures, explicites, traçables.
-
-### Données
-
-Accès base et persistance dans une couche dédiée.
-
-### Intégration
-
-Échanges externes isolés derrière des interfaces, adaptateurs ou couches dédiées.
-
-Aucune couche ne doit absorber silencieusement la responsabilité d’une autre.
+- channels
+- documents
+- search
 
 ---
 
-## Base de données
+## Règles Prisma
 
-- Clés primaires explicites
-- Timestamps systématiques quand pertinents
-- Slugs uniques quand nécessaires
-- Relations propres et stables
-- Index utiles sans excès
-- Nommage cohérent et durable
-- Toute modification de schéma doit passer par une migration SQL explicite
-- Ne jamais modifier silencieusement le schéma existant
-- Ne jamais supprimer table, colonne, contrainte ou index sans demande explicite
-- Préserver la compatibilité tant qu’une refonte explicite n’est pas demandée
+### Arborescence
 
----
+Le dossier `prisma/` doit refléter la taxonomie canonique :
 
-## Dépendances
+- `prisma/core/**`
+- `prisma/cross-cutting/**`
+- `prisma/optional/**`
+- `prisma/satellites/**`
 
-- Préférer les solutions natives Next.js, TypeScript, Node.js et PostgreSQL quand elles suffisent
-- Vérifier d’abord si une solution simple déjà présente dans le projet existe
-- Toute nouvelle dépendance doit être justifiée explicitement
-- Ne jamais ajouter une dépendance pour masquer une faiblesse de modélisation
-- Ne jamais sur-architecturer
+Les sous-dossiers peuvent raffiner le regroupement métier :
 
----
+- foundation
+- catalog
+- commerce
+- content
+- engagement
+- platform
+- ai
 
-## Interdits
+### Propriété des modèles
 
-- Ne jamais proposer WordPress, WooCommerce, Shopify, Supabase ou Vercel
-- Ne jamais ajouter de dépendance inutile
-- Ne jamais introduire Redis, queue, microservices, websocket, IA ou analytics avancés sans demande explicite
-- Ne jamais utiliser `any` sauf justification explicite et exceptionnelle
-- Ne jamais mélanger logique métier et présentation
-- Ne jamais refactorer massivement hors périmètre
-- Ne jamais implémenter une étape suivante non demandée
-- Ne jamais contourner la doctrine d’architecture au nom de la vitesse
+Chaque modèle Prisma doit avoir **un seul fichier propriétaire**.
 
----
+Interdits :
 
-## Local-first
+- duplication silencieuse de modèles
+- duplication silencieuse d’enums
+- frontières floues entre fichiers
 
-- Le projet doit fonctionner localement via Docker
-- La commande d’entrée principale est `make up`
-- Le setup local minimal inclut au minimum `app` et `db`
-- Tout ce qui est nécessaire au lancement local doit être dockerisé
+### Discipline après déplacement
 
----
+Après tout déplacement de fichiers Prisma :
 
-## Documentation des domaines
+- vérifier les relations
+- vérifier les enums
+- vérifier les références croisées
+- exécuter `pnpm prisma validate`
 
-Toute modification métier ou structurelle importante doit être cohérente avec `docs/domains/`.
+### Fichiers vides
 
-### Règles
+Un fichier `.prisma` ne doit exister que s’il contient au moins un vrai élément Prisma :
 
-- Une fiche domaine décrit une responsabilité réelle
-- Une fiche domaine doit expliciter :
-  - rôle
-  - classification
-  - source de vérité
-  - responsabilités
-  - non-responsabilités
-  - invariants
-  - dépendances
-  - événements significatifs
-  - cycle de vie
-  - contraintes d’intégration
-  - observabilité et audit
-  - impact d’exploitation
-  - limites
-- Toute nouvelle fiche doit suivre `docs/domains/_template.md`
-- Toute migration ou contradiction doit être pilotée via `docs/domains/_migration-audit.md`
+- `model`
+- `enum`
+- `type`
+
+Un placeholder vide doit vivre en documentation, pas dans `prisma/`.
+
+### Metadata Prisma
+
+Les metadata Prisma sont **documentaires uniquement** à ce stade.
+
+Format autorisé :
+
+`/// Feature: <domain>.<feature>`
+`/// Category: core | optional | cross-cutting | satellite`
+`/// Level: core | L1 | L2 | L3 | L4`
+`/// DependsOn: <feature>, <feature>`
+
+Ne pas transformer ces metadata en moteur runtime tant que ce besoin n’est pas explicitement demandé.
 
 ---
 
-## Sécurité et robustesse
+## Règles documentation
 
-- Ne jamais faire confiance aux entrées utilisateur
-- Toujours valider côté serveur
-- Ne jamais exposer de secrets côté client
-- Gérer explicitement les erreurs métier, base de données, authentification, intégration et upload
-- Ne jamais masquer silencieusement une erreur importante
-- Toute entrée externe doit être considérée comme potentiellement dupliquée, retardée, désordonnée ou invalide
-- Toute logique rejouable doit être idempotente ou neutralisée
-- Toute divergence avec un système externe important doit être visible
+### Sources de vérité
+
+La doctrine d’architecture vit dans :
+
+- `docs/architecture/**`
+
+La cartographie et les fiches domaine vivent dans :
+
+- `docs/domains/**`
+
+La stratégie de validation vit dans :
+
+- `docs/testing/**`
+
+### Alignement docs / Prisma
+
+Tout bloc important du schéma doit être cohérent avec :
+
+- sa catégorie documentaire
+- sa place dans l’arborescence Prisma
+- sa description dans la doc domaine
+
+La doc ne doit pas décrire comme `core` un bloc clairement placé en `optional`, et inversement.
+
+### Metadata docs
+
+Dans `docs/domains/**`, utiliser un bloc metadata minimal cohérent avec Prisma :
+
+- `feature`
+- `category`
+- `level`
+- `dependsOn`
+
+Ne pas introduire de matrices de gouvernance complexes sans besoin immédiat du projet.
+
+---
+
+## Règles de modularité
+
+Creatyss est modulaire **par architecture**, pas par marketplace de modules runtime.
+
+Cela signifie :
+
+- les capacités optionnelles sont documentées et modélisées
+- mais il n’existe pas encore de moteur d’activation dynamique avancé
+- aucune hypothèse multi-tenant ne doit fuiter dans le codebase
+- aucune abstraction "factory" ne doit être introduite par anticipation
+
+---
+
+## Style de conception attendu
+
+Toujours privilégier :
+
+- code explicite
+- petits incréments sûrs
+- frontières stables
+- typage strict
+- noms précis
+- architecture métier d’abord
+
+Éviter :
+
+- abstractions spéculatives
+- couches plateforme trop générales
+- systèmes runtime inutiles
+- complexité de gouvernance prématurée
 
 ---
 
 ## Discipline de modification
 
-- Ne modifier que les fichiers nécessaires au périmètre demandé
-- Ne pas profiter d’un lot pour réorganiser des zones non demandées
-- Ne pas renommer massivement sans demande explicite
-- Préserver le comportement existant hors périmètre
-- Commencer par l’implémentation la plus simple et robuste
-- Si un document impose un plan, le suivre strictement
-- Si une doc et le code divergent, traiter l’écart explicitement ; ne pas improviser
+Quand une modification touche l’architecture, Prisma ou la doc :
+
+1. classifier le bloc en `core`, `cross-cutting`, `optional` ou `satellite`
+2. garder docs et Prisma alignés
+3. valider Prisma après refactor structurel
+4. séparer nettoyage structurel et évolution métier quand possible
+5. préférer des changements petits, lisibles, réversibles
 
 ---
 
-## Planification
+## Validation minimale attendue
 
-Pour tout lot non trivial :
+Avant de considérer une modification structurelle comme terminée, vérifier au minimum :
 
-1. objectif
-2. périmètre
-3. hors périmètre
-4. fichiers à créer ou modifier
-5. ordre d’exécution
-6. impacts de compatibilité
-7. vérifications
-
-Tant que le plan n’est pas validé, ne pas modifier le code.
-
-Si la demande touche un sous-ensemble documentaire précis, lire ce sous-ensemble en entier avant de proposer le plan.
-
----
-
-## Vérifications
-
-Pour chaque lot :
-
-- inclure au minimum un `typecheck`
-- ajouter des tests unitaires ciblés si le lot le justifie
-- ajouter des tests e2e ciblés si le lot touche un parcours critique
-- privilégier une vérification automatisée avant une vérification manuelle
-- ne proposer une vérification manuelle navigateur que lorsqu’aucune vérification automatisée utile n’existe
-
-Toujours indiquer :
-
-- les commandes lancées
-- les vérifications passées
-- les limites restantes
-
----
-
-## Format de réponse attendu
-
-Quand tu proposes une modification :
-
-1. résumer brièvement ce qui va être modifié
-2. lister les fichiers créés ou modifiés
-3. fournir le code complet ou les patchs nécessaires
-4. indiquer les variables d’environnement nécessaires
-5. indiquer la commande de test
-6. indiquer la vérification manuelle attendue si nécessaire
-7. préciser ce qui reste volontairement hors périmètre
-
----
-
-## Lisibilité métier
-
-- Le code doit privilégier des noms orientés métier
-- Les responsabilités doivent être claires
-- Les fichiers doivent rester lisibles
-- Toute compatibilité legacy doit rester isolée
-- Le modèle visible dans l’admin doit rester simple et compréhensible
-- Les abstractions ne doivent jamais masquer le domaine
-
----
-
-## Règle finale
-
-En cas de doute :
-
-- revenir à `docs/architecture/`
-- clarifier la source de vérité
-- clarifier la frontière du domaine
-- choisir la solution la plus lisible, la plus robuste et la moins surprenante
+- `pnpm prisma validate`
+- la cohérence des chemins docs
+- l’absence de référence Prisma orpheline
+- l’absence de fichier Prisma vide
+- la cohérence de la taxonomie avec `docs/domains/**`

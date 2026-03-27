@@ -96,8 +96,8 @@ Statut : `engagé`
 
 Domaines satellites déjà réalignés ou fortement repris :
 
-- `satellites/inventory.md`
-- `satellites/fulfillment.md`
+- `optional/commerce/inventory.md`
+- `optional/commerce/fulfillment.md`
 
 Arbitrages structurants déjà actés :
 

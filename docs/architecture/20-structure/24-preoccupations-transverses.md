@@ -86,7 +86,7 @@ Elles ne doivent pas être traitées comme de simples détails techniques locaux
 
 Référence :
 
-- `../../domains/core/integrations.md`
+- `../../domains/optional/platform/integrations.md`
 
 ---
 

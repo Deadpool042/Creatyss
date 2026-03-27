@@ -399,7 +399,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../core/orders.md`
 - `../core/payments.md`
 - `../core/customers.md`
-- `../satellites/fulfillment.md`
+- `commerce/fulfillment.md`
 - `../core/shipping.md`
 - `../cross-cutting/support.md`
 - `../cross-cutting/notifications.md`

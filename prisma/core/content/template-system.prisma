@@ -1,4 +1,0 @@
-/// Feature: content.template-system
-/// Category: core
-/// Level: core
-/// DependsOn: foundation.store, content.pages, content.homepage
