@@ -4,10 +4,10 @@ import {
   type CreateProductInput,
   createProductInputSchema,
   type ProductDetailsDTO,
-} from "../types";
-import { generateProductSlug } from "../helpers";
-import { createProduct, findProductBySlug } from "../repository";
-import { mapProductToDetailsDTO } from "../mappers";
+} from "@features/products/types";
+import { generateProductSlug } from "@features/products/helpers";
+import { createProduct, findProductBySlug } from "@features/products/repository";
+import { mapProductToDetailsDTO } from "@features/products/mappers";
 
 export async function createProductService(input: CreateProductInput): Promise<ProductDetailsDTO> {
   const parsedInput = createProductInputSchema.parse(input);
@@ -16,7 +16,7 @@ export async function createProductService(input: CreateProductInput): Promise<P
     ? generateProductSlug(parsedInput.slug)
     : generateProductSlug(parsedInput.name);
 
-  const existingProduct = await findProductBySlug(slug);
+  const existingProduct = await findProductBySlug(parsedInput.storeId, slug);
 
   if (existingProduct) {
     throw new Error("A product with this slug already exists.");

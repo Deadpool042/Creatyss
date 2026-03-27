@@ -1,6 +1,5 @@
-import type { Prisma, Product } from "@prisma/client";
-
-import { db } from "@/lib/db";
+import { db } from "@/core/db";
+import type { Prisma, Product } from "@prisma-generated/client";
 
 type ProductCreateData = Prisma.ProductUncheckedCreateInput;
 type ProductUpdateData = Prisma.ProductUncheckedUpdateInput;
@@ -19,9 +18,14 @@ export async function findProductById(id: string): Promise<Product | null> {
   });
 }
 
-export async function findProductBySlug(slug: string): Promise<Product | null> {
+export async function findProductBySlug(storeId: string, slug: string): Promise<Product | null> {
   return db.product.findUnique({
-    where: { slug },
+    where: {
+      storeId_slug: {
+        storeId,
+        slug,
+      },
+    },
   });
 }
 
