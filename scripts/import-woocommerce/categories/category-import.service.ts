@@ -1,11 +1,17 @@
 import type { ImportWooCommerceEnv } from "../env";
 import { importCategoryPrimaryImage } from "../media/media-import.service";
-import type { DbClient } from "../shared/db";
 import type { WooCategory } from "../schemas";
+import type { DbClient } from "../shared/db";
+import { endProgress, logProgress } from "../shared/logging";
 import { mapWooCategoryToImportedCategory } from "./category-mappers";
 import { createCategory, setCategoryParent, setCategoryPrimaryImage } from "./category.repository";
 
 export type ImportedCategoryMap = Map<string, string>;
+
+export type ImportCategoriesResult = {
+  categoryIdByExternalId: ImportedCategoryMap;
+  importedImages: number;
+};
 
 function orderWooCategories(categories: readonly WooCategory[]): WooCategory[] {
   return [...categories].sort((left, right) => {
@@ -25,18 +31,21 @@ export async function importCategories(
     categories: readonly WooCategory[];
     skipImages: boolean;
   }
-): Promise<ImportedCategoryMap> {
+): Promise<ImportCategoriesResult> {
   const orderedCategories = orderWooCategories(input.categories);
   const categoryIdByExternalId: ImportedCategoryMap = new Map();
+  let importedImages = 0;
 
   for (const [index, category] of orderedCategories.entries()) {
+    logProgress(index + 1, orderedCategories.length, "Importing categories");
+
     const mappedCategory = mapWooCategoryToImportedCategory(category, index);
     const createdCategory = await createCategory(prisma, input.storeId, mappedCategory);
 
     categoryIdByExternalId.set(mappedCategory.externalId, createdCategory.id);
 
     if (!input.skipImages && mappedCategory.image?.src) {
-      const primaryImageId = await importCategoryPrimaryImage(prisma, {
+      const imageResult = await importCategoryPrimaryImage(prisma, {
         env: input.env,
         storeId: input.storeId,
         categoryId: createdCategory.id,
@@ -44,13 +53,21 @@ export async function importCategories(
         image: mappedCategory.image,
       });
 
-      if (primaryImageId !== null) {
-        await setCategoryPrimaryImage(prisma, createdCategory.id, primaryImageId);
+      importedImages += imageResult.importedImages;
+
+      if (imageResult.primaryImageId !== null) {
+        await setCategoryPrimaryImage(prisma, createdCategory.id, imageResult.primaryImageId);
       }
     }
   }
 
+  if (orderedCategories.length > 0) {
+    endProgress(`Imported ${categoryIdByExternalId.size} categories`);
+  }
+
   for (const [index, category] of orderedCategories.entries()) {
+    logProgress(index + 1, orderedCategories.length, "Linking category hierarchy");
+
     const mappedCategory = mapWooCategoryToImportedCategory(category, index);
     const categoryId = categoryIdByExternalId.get(mappedCategory.externalId);
 
@@ -66,5 +83,12 @@ export async function importCategories(
     await setCategoryParent(prisma, categoryId, parentId);
   }
 
-  return categoryIdByExternalId;
+  if (orderedCategories.length > 0) {
+    endProgress("Linked category hierarchy");
+  }
+
+  return {
+    categoryIdByExternalId,
+    importedImages,
+  };
 }

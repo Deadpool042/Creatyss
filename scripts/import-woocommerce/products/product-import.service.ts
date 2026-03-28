@@ -1,9 +1,10 @@
 import type { ImportWooCommerceEnv } from "../env";
 import { importProductImages } from "../media/media-import.service";
-import type { DbClient } from "../shared/db";
-import type { PreparedWooProduct } from "../schemas";
 import { normalizeMoneyToDecimalString, resolveCompareAtAmount } from "../normalizers/money";
 import { createProductPrice } from "../pricing/price.repository";
+import type { PreparedWooProduct } from "../schemas";
+import type { DbClient } from "../shared/db";
+import { endProgress, logProgress } from "../shared/logging";
 import { createProductCategoryLinks } from "./product-category.repository";
 import { mapWooProductToImportedProduct } from "./product-mappers";
 import { createProduct, setProductPrimaryImage } from "./product.repository";
@@ -19,6 +20,7 @@ export type ImportProductsResult = {
   importedProducts: ImportedProductRecord[];
   productIdByExternalId: Map<string, string>;
   primaryImageIdByProductId: Map<string, string | null>;
+  importedImages: number;
 };
 
 function buildProductCategoryLinks(
@@ -57,8 +59,11 @@ export async function importProducts(
   const importedProducts: ImportedProductRecord[] = [];
   const productIdByExternalId = new Map<string, string>();
   const primaryImageIdByProductId = new Map<string, string | null>();
+  let importedImages = 0;
 
-  for (const preparedProduct of input.preparedProducts) {
+  for (const [index, preparedProduct] of input.preparedProducts.entries()) {
+    logProgress(index + 1, input.preparedProducts.length, "Importing products");
+
     const mappedProduct = mapWooProductToImportedProduct(
       preparedProduct.product,
       input.productTypeId
@@ -92,13 +97,16 @@ export async function importProducts(
     let primaryImageId: string | null = null;
 
     if (!input.skipImages) {
-      primaryImageId = await importProductImages(prisma, {
+      const imageResult = await importProductImages(prisma, {
         env: input.env,
         storeId: input.storeId,
         productId: createdProduct.id,
         productSlug: mappedProduct.slug,
         images: mappedProduct.images,
       });
+
+      importedImages += imageResult.importedImages;
+      primaryImageId = imageResult.primaryImageId;
 
       if (primaryImageId !== null) {
         await setProductPrimaryImage(prisma, createdProduct.id, primaryImageId);
@@ -116,9 +124,14 @@ export async function importProducts(
     primaryImageIdByProductId.set(createdProduct.id, primaryImageId);
   }
 
+  if (input.preparedProducts.length > 0) {
+    endProgress(`Imported ${importedProducts.length} products`);
+  }
+
   return {
     importedProducts,
     productIdByExternalId,
     primaryImageIdByProductId,
+    importedImages,
   };
 }

@@ -19,6 +19,11 @@ import {
   attachVariantPrimaryImageReference,
 } from "./media-reference.repository";
 
+type PersistedMediaAssetResult = {
+  assetId: string;
+  imported: boolean;
+};
+
 async function persistImageAsMediaAsset(
   prisma: DbClient,
   input: {
@@ -27,13 +32,13 @@ async function persistImageAsMediaAsset(
     storageKey: string;
     image: WooImage;
   }
-) {
+): Promise<PersistedMediaAssetResult> {
   const buffer = await downloadImage(input.image.src);
   const transformed = await transformImageToWebp(buffer);
 
   await writeStoredMedia(input.env, input.storageKey, transformed.data);
 
-  return upsertMediaAsset(prisma, {
+  const mediaAsset = await upsertMediaAsset(prisma, {
     storeId: input.storeId,
     storageKey: input.storageKey,
     publicUrl: buildPublicUrl(input.env, input.storageKey),
@@ -45,6 +50,11 @@ async function persistImageAsMediaAsset(
     heightPx: transformed.heightPx,
     sizeBytes: transformed.sizeBytes,
   });
+
+  return {
+    assetId: mediaAsset.id,
+    imported: true,
+  };
 }
 
 export async function importCategoryPrimaryImage(
@@ -56,9 +66,12 @@ export async function importCategoryPrimaryImage(
     categorySlug: string;
     image: WooImage | null;
   }
-): Promise<string | null> {
+): Promise<{ primaryImageId: string | null; importedImages: number }> {
   if (!input.image?.src) {
-    return null;
+    return {
+      primaryImageId: null,
+      importedImages: 0,
+    };
   }
 
   const storageKey = `imports/woocommerce/categories/${input.categorySlug}/primary.webp`;
@@ -71,11 +84,14 @@ export async function importCategoryPrimaryImage(
   });
 
   await attachCategoryPrimaryImageReference(prisma, {
-    assetId: mediaAsset.id,
+    assetId: mediaAsset.assetId,
     categoryId: input.categoryId,
   });
 
-  return mediaAsset.id;
+  return {
+    primaryImageId: mediaAsset.assetId,
+    importedImages: mediaAsset.imported ? 1 : 0,
+  };
 }
 
 export async function importProductImages(
@@ -87,8 +103,9 @@ export async function importProductImages(
     productSlug: string;
     images: readonly WooImage[];
   }
-): Promise<string | null> {
+): Promise<{ primaryImageId: string | null; importedImages: number }> {
   let primaryImageId: string | null = null;
+  let importedImages = 0;
 
   for (const [index, image] of input.images.entries()) {
     if (!image.src) {
@@ -104,24 +121,29 @@ export async function importProductImages(
       image,
     });
 
+    importedImages += mediaAsset.imported ? 1 : 0;
+
     if (index === 0) {
       await attachProductPrimaryImageReference(prisma, {
-        assetId: mediaAsset.id,
+        assetId: mediaAsset.assetId,
         productId: input.productId,
       });
 
-      primaryImageId = mediaAsset.id;
+      primaryImageId = mediaAsset.assetId;
       continue;
     }
 
     await attachProductGalleryImageReference(prisma, {
-      assetId: mediaAsset.id,
+      assetId: mediaAsset.assetId,
       productId: input.productId,
       sortOrder: index,
     });
   }
 
-  return primaryImageId;
+  return {
+    primaryImageId,
+    importedImages,
+  };
 }
 
 export async function importVariantPrimaryImage(
@@ -134,9 +156,12 @@ export async function importVariantPrimaryImage(
     image: WooImage | null;
     sortOrder: number;
   }
-): Promise<string | null> {
+): Promise<{ primaryImageId: string | null; importedImages: number }> {
   if (!input.image?.src) {
-    return null;
+    return {
+      primaryImageId: null,
+      importedImages: 0,
+    };
   }
 
   const storageKey = buildVariantImageStorageKey(
@@ -153,10 +178,13 @@ export async function importVariantPrimaryImage(
   });
 
   await attachVariantPrimaryImageReference(prisma, {
-    assetId: mediaAsset.id,
+    assetId: mediaAsset.assetId,
     variantId: input.variantId,
     sortOrder: input.sortOrder,
   });
 
-  return mediaAsset.id;
+  return {
+    primaryImageId: mediaAsset.assetId,
+    importedImages: mediaAsset.imported ? 1 : 0,
+  };
 }

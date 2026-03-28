@@ -4,44 +4,52 @@ import { parseCliOptions } from "./cli";
 import { ensureDefaultPriceList } from "./bootstrap/ensure-price-list";
 import { ensureStore } from "./bootstrap/ensure-store";
 import { ensureWooImportedProductType } from "./bootstrap/ensure-product-type";
+import { importCategories } from "./categories/category-import.service";
 import { WooCommerceClient } from "./client/woocommerce-client";
 import { readImportWooCommerceEnv } from "./env";
-import { importCategories } from "./categories/category-import.service";
-import { importProducts } from "./products/product-import.service";
-import { importVariants } from "./variants/variant-import.service";
-import { resetImportedCatalog } from "./reset/reset-imported-catalog";
 import type { PreparedWooProduct } from "./schemas";
+import { importProducts } from "./products/product-import.service";
+import { resetImportedCatalog } from "./reset/reset-imported-catalog";
+import { createEmptyImportResult, incrementCounter } from "./shared/result";
+import {
+  endProgress,
+  failSpinner,
+  logError,
+  logStep,
+  logSuccess,
+  logProgress,
+  startSpinner,
+  succeedSpinner,
+} from "./shared/logging";
+import { importVariants } from "./variants/variant-import.service";
 
 export async function runImportWooCommerceCatalog(argv: readonly string[]): Promise<void> {
   const options = parseCliOptions(argv);
   const env = readImportWooCommerceEnv();
   const prisma = createScriptPrismaClient();
   const wooClient = new WooCommerceClient(env);
+  const result = createEmptyImportResult();
 
   try {
-    process.stdout.write("Fetching categories from WooCommerce...\n");
+    logStep("Fetching categories from WooCommerce");
+    startSpinner("Fetching categories");
     const categories = await wooClient.fetchCategories();
+    succeedSpinner(`Fetched ${categories.length} categories`);
 
-    process.stdout.write("Fetching products from WooCommerce...\n");
+    logStep("Fetching products from WooCommerce");
+    startSpinner("Fetching products");
     const products = await wooClient.fetchProducts();
+    succeedSpinner(`Fetched ${products.length} products`);
 
     const preparedProducts: PreparedWooProduct[] = [];
 
-    process.stdout.write(`Preparing ${products.length} WooCommerce products...\n`);
+    logStep("Preparing WooCommerce products");
 
     for (const [index, product] of products.entries()) {
-      process.stdout.write(
-        `[prepare ${index + 1}/${products.length}] ${product.slug} (${product.type})\n`
-      );
+      logProgress(index + 1, products.length, "Preparing products");
 
       const variations =
         product.type === "variable" ? await wooClient.fetchVariations(product.id) : [];
-
-      if (product.type === "variable") {
-        process.stdout.write(
-          `[prepare ${index + 1}/${products.length}] ${product.slug}: ${variations.length} variations\n`
-        );
-      }
 
       preparedProducts.push({
         product,
@@ -49,35 +57,45 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
       });
     }
 
+    if (products.length > 0) {
+      endProgress(`Prepared ${preparedProducts.length} WooCommerce products`);
+    }
+
     const store = await ensureStore(prisma);
     const priceList = await ensureDefaultPriceList(prisma, store.id);
     const productType = await ensureWooImportedProductType(prisma, store.id);
 
     if (options.resetCatalog) {
-      process.stdout.write("Resetting imported catalog...\n");
+      logStep("Resetting imported catalog");
+      startSpinner("Resetting catalog");
       await resetImportedCatalog(prisma, store.id);
+      succeedSpinner("Catalog reset completed");
     }
 
-    process.stdout.write("Importing categories...\n");
-    const categoryIdByExternalId = await importCategories(prisma, {
+    logStep("Importing categories");
+    const categoriesResult = await importCategories(prisma, {
       env,
       storeId: store.id,
       categories,
       skipImages: options.skipImages,
     });
+    incrementCounter(result, "categories", categoriesResult.categoryIdByExternalId.size);
+    incrementCounter(result, "images", categoriesResult.importedImages);
 
-    process.stdout.write("Importing products...\n");
+    logStep("Importing products");
     const importedProducts = await importProducts(prisma, {
       env,
       storeId: store.id,
       priceListId: priceList.id,
       productTypeId: productType.id,
       preparedProducts,
-      categoryIdByExternalId,
+      categoryIdByExternalId: categoriesResult.categoryIdByExternalId,
       skipImages: options.skipImages,
     });
+    incrementCounter(result, "products", importedProducts.importedProducts.length);
+    incrementCounter(result, "images", importedProducts.importedImages);
 
-    process.stdout.write("Importing variants...\n");
+    logStep("Importing variants");
     const importedVariants = await importVariants(prisma, {
       env,
       priceListId: priceList.id,
@@ -86,10 +104,17 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
       primaryImageIdByProductId: importedProducts.primaryImageIdByProductId,
       skipImages: options.skipImages,
     });
+    incrementCounter(result, "variants", importedVariants.importedVariants.length);
+    incrementCounter(result, "images", importedVariants.importedImages);
 
-    process.stdout.write(
-      `Imported ${categoryIdByExternalId.size} categories, ${importedProducts.importedProducts.length} products, ${importedVariants.importedVariants.length} variants.\n`
+    logSuccess(
+      `Imported ${result.counters.categories} categories, ${result.counters.products} products, ${result.counters.variants} variants, ${result.counters.images} images.`
     );
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown WooCommerce import error.";
+    failSpinner(message);
+    logError(message);
+    throw error;
   } finally {
     await prisma.$disconnect();
   }
@@ -100,9 +125,7 @@ async function main(): Promise<void> {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main().catch((error: unknown) => {
-    const message = error instanceof Error ? error.message : "Unknown WooCommerce import error.";
-    process.stderr.write(`${message}\n`);
+  main().catch(() => {
     process.exitCode = 1;
   });
 }

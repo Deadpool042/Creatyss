@@ -1,8 +1,9 @@
 import type { ImportWooCommerceEnv } from "../env";
 import { importVariantPrimaryImage } from "../media/media-import.service";
+import { createVariantPrice } from "../pricing/price.repository";
 import type { PreparedWooProduct } from "../schemas";
 import type { DbClient } from "../shared/db";
-import { createVariantPrice } from "../pricing/price.repository";
+import { endProgress, logProgress } from "../shared/logging";
 import { mapPreparedProductToImportedVariants } from "./variant-mappers";
 import { syncVariantOptionSelections } from "./variant-option.repository";
 import { createVariant, setVariantPrimaryImage } from "./variant.repository";
@@ -15,7 +16,18 @@ export type ImportedVariantRecord = {
 
 export type ImportVariantsResult = {
   importedVariants: ImportedVariantRecord[];
+  importedImages: number;
 };
+
+function countTotalVariantsToImport(preparedProducts: readonly PreparedWooProduct[]): number {
+  return preparedProducts.reduce((count, preparedProduct) => {
+    if (preparedProduct.product.type !== "variable" || preparedProduct.variations.length === 0) {
+      return count + 1;
+    }
+
+    return count + preparedProduct.variations.length;
+  }, 0);
+}
 
 export async function importVariants(
   prisma: DbClient,
@@ -29,6 +41,10 @@ export async function importVariants(
   }
 ): Promise<ImportVariantsResult> {
   const importedVariants: ImportedVariantRecord[] = [];
+  const totalVariantsToImport = countTotalVariantsToImport(input.preparedProducts);
+
+  let importedImages = 0;
+  let importedVariantCount = 0;
 
   for (const preparedProduct of input.preparedProducts) {
     const productExternalId = `woo_product:${preparedProduct.product.id}`;
@@ -59,6 +75,9 @@ export async function importVariants(
     });
 
     for (const mappedVariant of mappedVariants) {
+      importedVariantCount += 1;
+      logProgress(importedVariantCount, totalVariantsToImport, "Importing variants");
+
       const createdVariant = await createVariant(prisma, {
         productId,
         variant: mappedVariant,
@@ -83,7 +102,7 @@ export async function importVariants(
         let variantPrimaryImageId: string | null = null;
 
         if (mappedVariant.image?.src && productRecord.slug) {
-          variantPrimaryImageId = await importVariantPrimaryImage(prisma, {
+          const imageResult = await importVariantPrimaryImage(prisma, {
             env: input.env,
             storeId: productRecord.storeId,
             variantId: createdVariant.id,
@@ -91,6 +110,9 @@ export async function importVariants(
             image: mappedVariant.image,
             sortOrder: mappedVariant.sortOrder,
           });
+
+          importedImages += imageResult.importedImages;
+          variantPrimaryImageId = imageResult.primaryImageId;
         }
 
         if (variantPrimaryImageId === null) {
@@ -110,7 +132,12 @@ export async function importVariants(
     }
   }
 
+  if (totalVariantsToImport > 0) {
+    endProgress(`Imported ${importedVariants.length} variants`);
+  }
+
   return {
     importedVariants,
+    importedImages,
   };
 }

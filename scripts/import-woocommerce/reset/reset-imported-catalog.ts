@@ -16,15 +16,31 @@ export async function resetImportedCatalog(prisma: PrismaClient, storeId: string
 
   const importedMediaIds = importedMedia.map((item) => item.id);
 
-  await prisma.product.deleteMany({
+  const importedProductType = await prisma.productType.findFirst({
     where: {
       storeId,
+      code: "woo-imported",
+    },
+    select: {
+      id: true,
     },
   });
+
+  if (importedProductType) {
+    await prisma.product.deleteMany({
+      where: {
+        storeId,
+        productTypeId: importedProductType.id,
+      },
+    });
+  }
 
   await prisma.category.deleteMany({
     where: {
       storeId,
+      code: {
+        startsWith: "woo_cat_",
+      },
     },
   });
 
