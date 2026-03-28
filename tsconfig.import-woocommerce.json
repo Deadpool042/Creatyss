@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["scripts/import-woocommerce/**/*.ts", "scripts/helpers/prisma-client.ts"],
+  "exclude": ["app/**", "tests/**", "scripts/_legacy/**", "**/_old/**"]
+}

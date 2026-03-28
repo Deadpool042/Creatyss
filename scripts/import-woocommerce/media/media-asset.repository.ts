@@ -1,0 +1,76 @@
+import { MediaAssetKind, MediaAssetStatus } from "../../../src/generated/prisma/client";
+import type { DbClient } from "../shared/db";
+
+export async function upsertMediaAsset(
+  prisma: DbClient,
+  input: {
+    storeId: string;
+    storageKey: string;
+    publicUrl: string;
+    originalFilename: string;
+    altText: string | null;
+    mimeType: string;
+    extension: string | null;
+    widthPx: number | null;
+    heightPx: number | null;
+    sizeBytes: number;
+  }
+) {
+  const existing = await prisma.mediaAsset.findFirst({
+    where: {
+      storeId: input.storeId,
+      storageKey: input.storageKey,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (existing) {
+    return prisma.mediaAsset.update({
+      where: {
+        id: existing.id,
+      },
+      data: {
+        kind: MediaAssetKind.IMAGE,
+        status: MediaAssetStatus.ACTIVE,
+        originalFilename: input.originalFilename,
+        mimeType: input.mimeType,
+        extension: input.extension,
+        altText: input.altText,
+        storageKey: input.storageKey,
+        publicUrl: input.publicUrl,
+        widthPx: input.widthPx,
+        heightPx: input.heightPx,
+        sizeBytes: input.sizeBytes,
+        isPublic: true,
+        publishedAt: new Date(),
+      },
+      select: {
+        id: true,
+      },
+    });
+  }
+
+  return prisma.mediaAsset.create({
+    data: {
+      storeId: input.storeId,
+      kind: MediaAssetKind.IMAGE,
+      status: MediaAssetStatus.ACTIVE,
+      originalFilename: input.originalFilename,
+      mimeType: input.mimeType,
+      extension: input.extension,
+      altText: input.altText,
+      storageKey: input.storageKey,
+      publicUrl: input.publicUrl,
+      widthPx: input.widthPx,
+      heightPx: input.heightPx,
+      sizeBytes: input.sizeBytes,
+      isPublic: true,
+      publishedAt: new Date(),
+    },
+    select: {
+      id: true,
+    },
+  });
+}
