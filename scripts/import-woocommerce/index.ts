@@ -7,21 +7,25 @@ import { ensureWooImportedProductType } from "./bootstrap/ensure-product-type";
 import { importCategories } from "./categories/category-import.service";
 import { WooCommerceClient } from "./client/woocommerce-client";
 import { readImportWooCommerceEnv } from "./env";
-import type { PreparedWooProduct } from "./schemas";
 import { importProducts } from "./products/product-import.service";
 import { resetImportedCatalog } from "./reset/reset-imported-catalog";
-import { createEmptyImportResult, incrementCounter } from "./shared/result";
+import type { PreparedWooProduct } from "./schemas";
 import {
   endProgress,
   failSpinner,
   logError,
+  logProgress,
   logStep,
   logSuccess,
-  logProgress,
   startSpinner,
   succeedSpinner,
 } from "./shared/logging";
+import { createEmptyImportResult, incrementCounter } from "./shared/result";
 import { importVariants } from "./variants/variant-import.service";
+
+function pluralize(count: number, singular: string, plural: string): string {
+  return count > 1 ? plural : singular;
+}
 
 export async function runImportWooCommerceCatalog(argv: readonly string[]): Promise<void> {
   const options = parseCliOptions(argv);
@@ -81,7 +85,7 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     });
     incrementCounter(result, "categories", categoriesResult.categoryIdByExternalId.size);
     incrementCounter(result, "images", categoriesResult.importedImages);
-    incrementCounter(result, "skippedImages", categoriesResult.skippedImages);
+    incrementCounter(result, "missingImages", categoriesResult.skippedImages);
     incrementCounter(result, "failedImages", categoriesResult.failedImages);
 
     logStep("Importing products");
@@ -96,7 +100,7 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     });
     incrementCounter(result, "products", importedProducts.importedProducts.length);
     incrementCounter(result, "images", importedProducts.importedImages);
-    incrementCounter(result, "skippedImages", importedProducts.skippedImages);
+    incrementCounter(result, "missingImages", importedProducts.skippedImages);
     incrementCounter(result, "failedImages", importedProducts.failedImages);
 
     logStep("Importing variants");
@@ -110,11 +114,19 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     });
     incrementCounter(result, "variants", importedVariants.importedVariants.length);
     incrementCounter(result, "images", importedVariants.importedImages);
-    incrementCounter(result, "skippedImages", importedVariants.skippedImages);
+    incrementCounter(result, "missingImages", importedVariants.skippedImages);
     incrementCounter(result, "failedImages", importedVariants.failedImages);
 
     logSuccess(
-      `Imported ${result.counters.categories} categories, ${result.counters.products} products, ${result.counters.variants} variants, ${result.counters.images} images, ${result.counters.skippedImages} skipped images, ${result.counters.failedImages} failed images.`
+      [
+        "Import terminé",
+        `${result.counters.categories} ${pluralize(result.counters.categories, "catégorie", "catégories")}`,
+        `${result.counters.products} ${pluralize(result.counters.products, "produit", "produits")}`,
+        `${result.counters.variants} ${pluralize(result.counters.variants, "variante", "variantes")}`,
+        `${result.counters.images} ${pluralize(result.counters.images, "image importée", "images importées")}`,
+        `${result.counters.missingImages} ${pluralize(result.counters.missingImages, "image absente", "images absentes")}`,
+        `${result.counters.failedImages} ${pluralize(result.counters.failedImages, "image en erreur", "images en erreur")}`,
+      ].join(", ")
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown WooCommerce import error.";
