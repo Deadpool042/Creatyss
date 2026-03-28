@@ -23,7 +23,7 @@ export async function resetImportedCatalog(prisma: PrismaClient, storeId: string
     },
   });
 
-  const importedMediaIds = importedMedia.map((item) => item.id);
+  const importedMediaIds = importedMedia.map((item: { id: any }) => item.id);
 
   const importedProductType = await prisma.productType.findFirst({
     where: {

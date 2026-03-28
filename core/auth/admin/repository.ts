@@ -55,6 +55,10 @@ function hasActiveAdminRole(user: AdminUserRecord): boolean {
   });
 }
 
+function isEligibleAdminUser(user: AdminUserRecord): boolean {
+  return user.status === UserStatus.ACTIVE && hasActiveAdminRole(user);
+}
+
 function mapUserToAuthenticatedAdmin(user: AdminUserRecord): AuthenticatedAdmin {
   return {
     id: user.id,
@@ -105,11 +109,7 @@ async function findAdminUserRecordById(userId: string): Promise<AdminUserRecord 
 export async function findAdminUserByEmail(email: string): Promise<AuthenticatedAdmin | null> {
   const user = await findAdminUserRecordByEmail(email);
 
-  if (!user) {
-    return null;
-  }
-
-  if (!hasActiveAdminRole(user)) {
+  if (!user || !isEligibleAdminUser(user)) {
     return null;
   }
 
@@ -119,11 +119,7 @@ export async function findAdminUserByEmail(email: string): Promise<Authenticated
 export async function findAdminUserById(userId: string): Promise<AuthenticatedAdmin | null> {
   const user = await findAdminUserRecordById(userId);
 
-  if (!user) {
-    return null;
-  }
-
-  if (!hasActiveAdminRole(user)) {
+  if (!user || !isEligibleAdminUser(user)) {
     return null;
   }
 

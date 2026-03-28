@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "features/admin/products/list/**/*.ts",
+    "features/admin/products/list/**/*.tsx",
+    "features/admin/products/details/**/*.ts",
+    "features/admin/products/details/**/*.tsx",
+    "features/admin/products/editor/**/*.ts",
+    "features/admin/products/editor/**/*.tsx",
+    "features/admin/products/navigation/**/*.ts",
+    "features/admin/products/navigation/**/*.tsx",
+    "features/admin/products/create/**/*.ts",
+    "features/admin/products/create/**/*.tsx",
+    "features/admin/products/types/**/*.ts",
+    "features/admin/products/mappers/**/*.ts",
+    "components/admin/products/**/*.ts",
+    "components/admin/products/**/*.tsx",
+    "app/admin/(protected)/products/**/*.ts",
+    "app/admin/(protected)/products/**/*.tsx"
+  ],
+  "exclude": ["node_modules", ".next", "features/admin/products/actions/**/*"]
+}

@@ -129,7 +129,11 @@ export async function deleteUnreferencedImportedMediaAssets(
     return { count: 0 };
   }
 
-  const orphanedIds = orphanedAssets.map((asset) => asset.id);
+  interface OrphanedAsset {
+    id: string;
+  }
+
+  const orphanedIds: string[] = (orphanedAssets as OrphanedAsset[]).map((asset) => asset.id);
 
   const deleted = await prisma.mediaAsset.deleteMany({
     where: {
