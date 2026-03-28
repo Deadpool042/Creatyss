@@ -127,10 +127,11 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
       skipImages: options.skipImages,
     });
     incrementCounter(result, "products", importedProducts.importedProducts.length);
+    incrementCounter(result, "archivedProducts", importedProducts.archivedProducts);
     incrementCounter(result, "images", importedProducts.importedImages);
+    incrementCounter(result, "reusedImages", importedProducts.reusedImages);
     incrementCounter(result, "missingImages", importedProducts.skippedImages);
     incrementCounter(result, "failedImages", importedProducts.failedImages);
-    incrementCounter(result, "reusedImages", importedProducts.reusedImages);
 
     logStep("Importing variants");
     const importedVariants = await importVariants(prisma, {
@@ -167,6 +168,7 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
         "Import terminé",
         `${result.counters.categories} ${pluralize(result.counters.categories, "catégorie", "catégories")}`,
         `${result.counters.products} ${pluralize(result.counters.products, "produit", "produits")}`,
+        `${result.counters.archivedProducts} ${pluralize(result.counters.archivedProducts, "produit archivé", "produits archivés")}`,
         `${result.counters.variants} ${pluralize(result.counters.variants, "variante", "variantes")}`,
         `${result.counters.blogPosts} ${pluralize(result.counters.blogPosts, "article", "articles")}`,
         `${result.counters.archivedBlogPosts} ${pluralize(result.counters.archivedBlogPosts, "article archivé", "articles archivés")}`,

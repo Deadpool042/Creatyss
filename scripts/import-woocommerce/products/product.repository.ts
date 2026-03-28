@@ -1,3 +1,4 @@
+import { ProductStatus } from "../../../src/generated/prisma/client";
 import type { DbClient } from "../shared/db";
 import type { ImportedProductInput } from "./product.types";
 
@@ -96,6 +97,50 @@ export async function upsertImportedProduct(
   }
 
   return createProduct(prisma, storeId, input);
+}
+
+export async function archiveMissingImportedProducts(
+  prisma: DbClient,
+  input: {
+    storeId: string;
+    productTypeId: string | null;
+    preservedSlugs: readonly string[];
+  }
+) {
+  if (input.productTypeId === null) {
+    return { count: 0 };
+  }
+
+  if (input.preservedSlugs.length === 0) {
+    return prisma.product.updateMany({
+      where: {
+        storeId: input.storeId,
+        productTypeId: input.productTypeId,
+        status: {
+          not: ProductStatus.ARCHIVED,
+        },
+      },
+      data: {
+        status: ProductStatus.ARCHIVED,
+      },
+    });
+  }
+
+  return prisma.product.updateMany({
+    where: {
+      storeId: input.storeId,
+      productTypeId: input.productTypeId,
+      slug: {
+        notIn: [...input.preservedSlugs],
+      },
+      status: {
+        not: ProductStatus.ARCHIVED,
+      },
+    },
+    data: {
+      status: ProductStatus.ARCHIVED,
+    },
+  });
 }
 
 export async function setProductPrimaryImage(

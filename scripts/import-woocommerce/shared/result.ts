@@ -6,6 +6,7 @@ export type ImportWarning = {
 export type ImportCounters = {
   categories: number;
   products: number;
+  archivedProducts: number;
   variants: number;
   blogPosts: number;
   archivedBlogPosts: number;
@@ -25,6 +26,7 @@ export function createEmptyImportResult(): ImportResult {
     counters: {
       categories: 0,
       products: 0,
+      archivedProducts: 0,
       variants: 0,
       blogPosts: 0,
       archivedBlogPosts: 0,

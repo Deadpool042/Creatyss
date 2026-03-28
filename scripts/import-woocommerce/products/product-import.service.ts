@@ -7,7 +7,11 @@ import type { DbClient } from "../shared/db";
 import { endProgress, logProgress } from "../shared/logging";
 import { replaceProductCategoryLinks } from "./product-category.repository";
 import { mapWooProductToImportedProduct } from "./product-mappers";
-import { setProductPrimaryImage, upsertImportedProduct } from "./product.repository";
+import {
+  archiveMissingImportedProducts,
+  setProductPrimaryImage,
+  upsertImportedProduct,
+} from "./product.repository";
 
 export type ImportedProductRecord = {
   productId: string;
@@ -18,6 +22,7 @@ export type ImportedProductRecord = {
 
 export type ImportProductsResult = {
   importedProducts: ImportedProductRecord[];
+  archivedProducts: number;
   productIdByExternalId: Map<string, string>;
   primaryImageIdByProductId: Map<string, string | null>;
   importedImages: number;
@@ -62,6 +67,7 @@ export async function importProducts(
   const importedProducts: ImportedProductRecord[] = [];
   const productIdByExternalId = new Map<string, string>();
   const primaryImageIdByProductId = new Map<string, string | null>();
+  const preservedSlugs: string[] = [];
 
   let importedImages = 0;
   let reusedImages = 0;
@@ -77,6 +83,7 @@ export async function importProducts(
     );
 
     const savedProduct = await upsertImportedProduct(prisma, input.storeId, mappedProduct);
+    preservedSlugs.push(mappedProduct.slug);
 
     const categoryLinks = buildProductCategoryLinks(
       mappedProduct.categoryExternalIds,
@@ -138,8 +145,15 @@ export async function importProducts(
     endProgress(`Imported ${importedProducts.length} products`);
   }
 
+  const archivedResult = await archiveMissingImportedProducts(prisma, {
+    storeId: input.storeId,
+    productTypeId: input.productTypeId,
+    preservedSlugs,
+  });
+
   return {
     importedProducts,
+    archivedProducts: archivedResult.count,
     productIdByExternalId,
     primaryImageIdByProductId,
     importedImages,
