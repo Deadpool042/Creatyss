@@ -8,6 +8,8 @@ export type ImportCounters = {
   products: number;
   variants: number;
   images: number;
+  skippedImages: number;
+  failedImages: number;
 };
 
 export type ImportResult = {
@@ -22,6 +24,8 @@ export function createEmptyImportResult(): ImportResult {
       products: 0,
       variants: 0,
       images: 0,
+      skippedImages: 0,
+      failedImages: 0,
     },
     warnings: [],
   };

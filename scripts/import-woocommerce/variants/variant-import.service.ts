@@ -17,6 +17,8 @@ export type ImportedVariantRecord = {
 export type ImportVariantsResult = {
   importedVariants: ImportedVariantRecord[];
   importedImages: number;
+  skippedImages: number;
+  failedImages: number;
 };
 
 function countTotalVariantsToImport(preparedProducts: readonly PreparedWooProduct[]): number {
@@ -44,6 +46,8 @@ export async function importVariants(
   const totalVariantsToImport = countTotalVariantsToImport(input.preparedProducts);
 
   let importedImages = 0;
+  let skippedImages = 0;
+  let failedImages = 0;
   let importedVariantCount = 0;
 
   for (const preparedProduct of input.preparedProducts) {
@@ -112,7 +116,11 @@ export async function importVariants(
           });
 
           importedImages += imageResult.importedImages;
+          skippedImages += imageResult.skippedImages;
+          failedImages += imageResult.failedImages;
           variantPrimaryImageId = imageResult.primaryImageId;
+        } else if (!mappedVariant.image?.src) {
+          skippedImages += 1;
         }
 
         if (variantPrimaryImageId === null) {
@@ -123,7 +131,6 @@ export async function importVariants(
           await setVariantPrimaryImage(prisma, createdVariant.id, variantPrimaryImageId);
         }
       }
-
       importedVariants.push({
         variantId: createdVariant.id,
         externalId: mappedVariant.externalId,
@@ -139,5 +146,7 @@ export async function importVariants(
   return {
     importedVariants,
     importedImages,
+    skippedImages,
+    failedImages,
   };
 }

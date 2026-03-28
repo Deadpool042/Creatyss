@@ -81,6 +81,8 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     });
     incrementCounter(result, "categories", categoriesResult.categoryIdByExternalId.size);
     incrementCounter(result, "images", categoriesResult.importedImages);
+    incrementCounter(result, "skippedImages", categoriesResult.skippedImages);
+    incrementCounter(result, "failedImages", categoriesResult.failedImages);
 
     logStep("Importing products");
     const importedProducts = await importProducts(prisma, {
@@ -94,6 +96,8 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     });
     incrementCounter(result, "products", importedProducts.importedProducts.length);
     incrementCounter(result, "images", importedProducts.importedImages);
+    incrementCounter(result, "skippedImages", importedProducts.skippedImages);
+    incrementCounter(result, "failedImages", importedProducts.failedImages);
 
     logStep("Importing variants");
     const importedVariants = await importVariants(prisma, {
@@ -106,9 +110,11 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     });
     incrementCounter(result, "variants", importedVariants.importedVariants.length);
     incrementCounter(result, "images", importedVariants.importedImages);
+    incrementCounter(result, "skippedImages", importedVariants.skippedImages);
+    incrementCounter(result, "failedImages", importedVariants.failedImages);
 
     logSuccess(
-      `Imported ${result.counters.categories} categories, ${result.counters.products} products, ${result.counters.variants} variants, ${result.counters.images} images.`
+      `Imported ${result.counters.categories} categories, ${result.counters.products} products, ${result.counters.variants} variants, ${result.counters.images} images, ${result.counters.skippedImages} skipped images, ${result.counters.failedImages} failed images.`
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown WooCommerce import error.";

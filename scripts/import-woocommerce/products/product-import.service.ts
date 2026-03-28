@@ -21,6 +21,8 @@ export type ImportProductsResult = {
   productIdByExternalId: Map<string, string>;
   primaryImageIdByProductId: Map<string, string | null>;
   importedImages: number;
+  skippedImages: number;
+  failedImages: number;
 };
 
 function buildProductCategoryLinks(
@@ -59,7 +61,10 @@ export async function importProducts(
   const importedProducts: ImportedProductRecord[] = [];
   const productIdByExternalId = new Map<string, string>();
   const primaryImageIdByProductId = new Map<string, string | null>();
+
   let importedImages = 0;
+  let skippedImages = 0;
+  let failedImages = 0;
 
   for (const [index, preparedProduct] of input.preparedProducts.entries()) {
     logProgress(index + 1, input.preparedProducts.length, "Importing products");
@@ -106,6 +111,8 @@ export async function importProducts(
       });
 
       importedImages += imageResult.importedImages;
+      skippedImages += imageResult.skippedImages;
+      failedImages += imageResult.failedImages;
       primaryImageId = imageResult.primaryImageId;
 
       if (primaryImageId !== null) {
@@ -133,5 +140,7 @@ export async function importProducts(
     productIdByExternalId,
     primaryImageIdByProductId,
     importedImages,
+    skippedImages,
+    failedImages,
   };
 }

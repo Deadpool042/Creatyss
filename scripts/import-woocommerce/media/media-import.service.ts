@@ -1,16 +1,10 @@
+import type { ImportWooCommerceEnv } from "../env";
 import { toNullableText } from "../normalizers/text";
 import type { WooImage } from "../schemas";
 import type { DbClient } from "../shared/db";
-import type { ImportWooCommerceEnv } from "../env";
+import { logWarn } from "../shared/logging";
 import { downloadImage } from "./download-image";
 import { transformImageToWebp } from "./image-transform";
-import {
-  buildOriginalFilenameFromUrl,
-  buildProductImageStorageKey,
-  buildPublicUrl,
-  buildVariantImageStorageKey,
-  writeStoredMedia,
-} from "./media-storage";
 import { upsertMediaAsset } from "./media-asset.repository";
 import {
   attachCategoryPrimaryImageReference,
@@ -18,11 +12,43 @@ import {
   attachProductPrimaryImageReference,
   attachVariantPrimaryImageReference,
 } from "./media-reference.repository";
+import {
+  buildOriginalFilenameFromUrl,
+  buildProductImageStorageKey,
+  buildPublicUrl,
+  buildVariantImageStorageKey,
+  writeStoredMedia,
+} from "./media-storage";
 
-type PersistedMediaAssetResult = {
-  assetId: string;
-  imported: boolean;
+type MediaImportSummary = {
+  importedImages: number;
+  skippedImages: number;
+  failedImages: number;
 };
+
+type PersistedMediaAssetResult = MediaImportSummary & {
+  assetId: string | null;
+};
+
+type PrimaryImageImportResult = MediaImportSummary & {
+  primaryImageId: string | null;
+};
+
+function createEmptyMediaSummary(): MediaImportSummary {
+  return {
+    importedImages: 0,
+    skippedImages: 0,
+    failedImages: 0,
+  };
+}
+
+function mergeMediaSummary(base: MediaImportSummary, next: MediaImportSummary): MediaImportSummary {
+  return {
+    importedImages: base.importedImages + next.importedImages,
+    skippedImages: base.skippedImages + next.skippedImages,
+    failedImages: base.failedImages + next.failedImages,
+  };
+}
 
 async function persistImageAsMediaAsset(
   prisma: DbClient,
@@ -30,31 +56,55 @@ async function persistImageAsMediaAsset(
     env: ImportWooCommerceEnv;
     storeId: string;
     storageKey: string;
-    image: WooImage;
+    image: WooImage | null;
+    contextLabel: string;
   }
 ): Promise<PersistedMediaAssetResult> {
-  const buffer = await downloadImage(input.image.src);
-  const transformed = await transformImageToWebp(buffer);
+  if (!input.image?.src) {
+    return {
+      assetId: null,
+      importedImages: 0,
+      skippedImages: 1,
+      failedImages: 0,
+    };
+  }
 
-  await writeStoredMedia(input.env, input.storageKey, transformed.data);
+  try {
+    const buffer = await downloadImage(input.image.src);
+    const transformed = await transformImageToWebp(buffer);
 
-  const mediaAsset = await upsertMediaAsset(prisma, {
-    storeId: input.storeId,
-    storageKey: input.storageKey,
-    publicUrl: buildPublicUrl(input.env, input.storageKey),
-    originalFilename: buildOriginalFilenameFromUrl(input.image.src),
-    altText: toNullableText(input.image.alt),
-    mimeType: transformed.mimeType,
-    extension: transformed.extension,
-    widthPx: transformed.widthPx,
-    heightPx: transformed.heightPx,
-    sizeBytes: transformed.sizeBytes,
-  });
+    await writeStoredMedia(input.env, input.storageKey, transformed.data);
 
-  return {
-    assetId: mediaAsset.id,
-    imported: true,
-  };
+    const mediaAsset = await upsertMediaAsset(prisma, {
+      storeId: input.storeId,
+      storageKey: input.storageKey,
+      publicUrl: buildPublicUrl(input.env, input.storageKey),
+      originalFilename: buildOriginalFilenameFromUrl(input.image.src),
+      altText: toNullableText(input.image.alt),
+      mimeType: transformed.mimeType,
+      extension: transformed.extension,
+      widthPx: transformed.widthPx,
+      heightPx: transformed.heightPx,
+      sizeBytes: transformed.sizeBytes,
+    });
+
+    return {
+      assetId: mediaAsset.id,
+      importedImages: 1,
+      skippedImages: 0,
+      failedImages: 0,
+    };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown image import error";
+    logWarn(`${input.contextLabel}: ${message}`);
+
+    return {
+      assetId: null,
+      importedImages: 0,
+      skippedImages: 0,
+      failedImages: 1,
+    };
+  }
 }
 
 export async function importCategoryPrimaryImage(
@@ -66,31 +116,27 @@ export async function importCategoryPrimaryImage(
     categorySlug: string;
     image: WooImage | null;
   }
-): Promise<{ primaryImageId: string | null; importedImages: number }> {
-  if (!input.image?.src) {
-    return {
-      primaryImageId: null,
-      importedImages: 0,
-    };
-  }
-
-  const storageKey = `imports/woocommerce/categories/${input.categorySlug}/primary.webp`;
-
-  const mediaAsset = await persistImageAsMediaAsset(prisma, {
+): Promise<PrimaryImageImportResult> {
+  const result = await persistImageAsMediaAsset(prisma, {
     env: input.env,
     storeId: input.storeId,
-    storageKey,
+    storageKey: `imports/woocommerce/categories/${input.categorySlug}/primary.webp`,
     image: input.image,
+    contextLabel: `category image ${input.categorySlug}`,
   });
 
-  await attachCategoryPrimaryImageReference(prisma, {
-    assetId: mediaAsset.assetId,
-    categoryId: input.categoryId,
-  });
+  if (result.assetId !== null) {
+    await attachCategoryPrimaryImageReference(prisma, {
+      assetId: result.assetId,
+      categoryId: input.categoryId,
+    });
+  }
 
   return {
-    primaryImageId: mediaAsset.assetId,
-    importedImages: mediaAsset.imported ? 1 : 0,
+    primaryImageId: result.assetId,
+    importedImages: result.importedImages,
+    skippedImages: result.skippedImages,
+    failedImages: result.failedImages,
   };
 }
 
@@ -103,38 +149,46 @@ export async function importProductImages(
     productSlug: string;
     images: readonly WooImage[];
   }
-): Promise<{ primaryImageId: string | null; importedImages: number }> {
+): Promise<PrimaryImageImportResult> {
   let primaryImageId: string | null = null;
-  let importedImages = 0;
+  let summary = createEmptyMediaSummary();
+
+  if (input.images.length === 0) {
+    return {
+      primaryImageId: null,
+      importedImages: 0,
+      skippedImages: 1,
+      failedImages: 0,
+    };
+  }
 
   for (const [index, image] of input.images.entries()) {
-    if (!image.src) {
+    const result = await persistImageAsMediaAsset(prisma, {
+      env: input.env,
+      storeId: input.storeId,
+      storageKey: buildProductImageStorageKey(input.productSlug, index),
+      image,
+      contextLabel: `product image ${input.productSlug}#${index + 1}`,
+    });
+
+    summary = mergeMediaSummary(summary, result);
+
+    if (result.assetId === null) {
       continue;
     }
 
-    const storageKey = buildProductImageStorageKey(input.productSlug, index);
-
-    const mediaAsset = await persistImageAsMediaAsset(prisma, {
-      env: input.env,
-      storeId: input.storeId,
-      storageKey,
-      image,
-    });
-
-    importedImages += mediaAsset.imported ? 1 : 0;
-
     if (index === 0) {
       await attachProductPrimaryImageReference(prisma, {
-        assetId: mediaAsset.assetId,
+        assetId: result.assetId,
         productId: input.productId,
       });
 
-      primaryImageId = mediaAsset.assetId;
+      primaryImageId = result.assetId;
       continue;
     }
 
     await attachProductGalleryImageReference(prisma, {
-      assetId: mediaAsset.assetId,
+      assetId: result.assetId,
       productId: input.productId,
       sortOrder: index,
     });
@@ -142,7 +196,9 @@ export async function importProductImages(
 
   return {
     primaryImageId,
-    importedImages,
+    importedImages: summary.importedImages,
+    skippedImages: summary.skippedImages,
+    failedImages: summary.failedImages,
   };
 }
 
@@ -156,35 +212,31 @@ export async function importVariantPrimaryImage(
     image: WooImage | null;
     sortOrder: number;
   }
-): Promise<{ primaryImageId: string | null; importedImages: number }> {
-  if (!input.image?.src) {
-    return {
-      primaryImageId: null,
-      importedImages: 0,
-    };
-  }
-
-  const storageKey = buildVariantImageStorageKey(
-    input.productSlug,
-    input.image.id ?? null,
-    input.sortOrder
-  );
-
-  const mediaAsset = await persistImageAsMediaAsset(prisma, {
+): Promise<PrimaryImageImportResult> {
+  const result = await persistImageAsMediaAsset(prisma, {
     env: input.env,
     storeId: input.storeId,
-    storageKey,
+    storageKey: buildVariantImageStorageKey(
+      input.productSlug,
+      input.image?.id ?? null,
+      input.sortOrder
+    ),
     image: input.image,
+    contextLabel: `variant image ${input.productSlug}#${input.sortOrder + 1}`,
   });
 
-  await attachVariantPrimaryImageReference(prisma, {
-    assetId: mediaAsset.assetId,
-    variantId: input.variantId,
-    sortOrder: input.sortOrder,
-  });
+  if (result.assetId !== null) {
+    await attachVariantPrimaryImageReference(prisma, {
+      assetId: result.assetId,
+      variantId: input.variantId,
+      sortOrder: input.sortOrder,
+    });
+  }
 
   return {
-    primaryImageId: mediaAsset.assetId,
-    importedImages: mediaAsset.imported ? 1 : 0,
+    primaryImageId: result.assetId,
+    importedImages: result.importedImages,
+    skippedImages: result.skippedImages,
+    failedImages: result.failedImages,
   };
 }

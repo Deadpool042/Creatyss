@@ -11,6 +11,8 @@ export type ImportedCategoryMap = Map<string, string>;
 export type ImportCategoriesResult = {
   categoryIdByExternalId: ImportedCategoryMap;
   importedImages: number;
+  skippedImages: number;
+  failedImages: number;
 };
 
 function orderWooCategories(categories: readonly WooCategory[]): WooCategory[] {
@@ -34,7 +36,10 @@ export async function importCategories(
 ): Promise<ImportCategoriesResult> {
   const orderedCategories = orderWooCategories(input.categories);
   const categoryIdByExternalId: ImportedCategoryMap = new Map();
+
   let importedImages = 0;
+  let skippedImages = 0;
+  let failedImages = 0;
 
   for (const [index, category] of orderedCategories.entries()) {
     logProgress(index + 1, orderedCategories.length, "Importing categories");
@@ -44,7 +49,7 @@ export async function importCategories(
 
     categoryIdByExternalId.set(mappedCategory.externalId, createdCategory.id);
 
-    if (!input.skipImages && mappedCategory.image?.src) {
+    if (!input.skipImages) {
       const imageResult = await importCategoryPrimaryImage(prisma, {
         env: input.env,
         storeId: input.storeId,
@@ -54,6 +59,8 @@ export async function importCategories(
       });
 
       importedImages += imageResult.importedImages;
+      skippedImages += imageResult.skippedImages;
+      failedImages += imageResult.failedImages;
 
       if (imageResult.primaryImageId !== null) {
         await setCategoryPrimaryImage(prisma, createdCategory.id, imageResult.primaryImageId);
@@ -90,5 +97,7 @@ export async function importCategories(
   return {
     categoryIdByExternalId,
     importedImages,
+    skippedImages,
+    failedImages,
   };
 }
