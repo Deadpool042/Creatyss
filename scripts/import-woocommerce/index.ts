@@ -10,6 +10,7 @@ import { WooCommerceClient } from "./client/woocommerce-client";
 import { readImportWooCommerceEnv } from "./env";
 import { importProducts } from "./products/product-import.service";
 import { resetImportedCatalog } from "./reset/reset-imported-catalog";
+import { deleteUnreferencedImportedMediaAssets } from "./media/media-asset.repository";
 import type { PreparedWooProduct, WordPressMedia } from "./schemas";
 import {
   endProgress,
@@ -111,10 +112,11 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
       skipImages: options.skipImages,
     });
     incrementCounter(result, "categories", categoriesResult.categoryIdByExternalId.size);
+    incrementCounter(result, "archivedCategories", categoriesResult.archivedCategories);
     incrementCounter(result, "images", categoriesResult.importedImages);
+    incrementCounter(result, "reusedImages", categoriesResult.reusedImages);
     incrementCounter(result, "missingImages", categoriesResult.skippedImages);
     incrementCounter(result, "failedImages", categoriesResult.failedImages);
-    incrementCounter(result, "reusedImages", categoriesResult.reusedImages);
 
     logStep("Importing products");
     const importedProducts = await importProducts(prisma, {
@@ -143,10 +145,11 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
       skipImages: options.skipImages,
     });
     incrementCounter(result, "variants", importedVariants.importedVariants.length);
+    incrementCounter(result, "archivedVariants", importedVariants.archivedVariants);
     incrementCounter(result, "images", importedVariants.importedImages);
+    incrementCounter(result, "reusedImages", importedVariants.reusedImages);
     incrementCounter(result, "missingImages", importedVariants.skippedImages);
     incrementCounter(result, "failedImages", importedVariants.failedImages);
-    incrementCounter(result, "reusedImages", importedVariants.reusedImages);
 
     logStep("Importing blog posts");
     const importedBlogPosts = await importBlogPosts(prisma, {
@@ -163,19 +166,32 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     incrementCounter(result, "failedImages", importedBlogPosts.failedImages);
     incrementCounter(result, "reusedImages", importedBlogPosts.reusedImages);
 
+    if (!options.skipImages) {
+      logStep("Cleaning unreferenced imported media");
+      startSpinner("Cleaning orphan media assets");
+      const deletedMediaAssets = await deleteUnreferencedImportedMediaAssets(prisma, {
+        storeId: store.id,
+      });
+      succeedSpinner(`Deleted ${deletedMediaAssets.count} orphan media assets`);
+      incrementCounter(result, "deletedMediaAssets", deletedMediaAssets.count);
+    }
+
     logSuccess(
       [
         "Import terminé",
         `${result.counters.categories} ${pluralize(result.counters.categories, "catégorie", "catégories")}`,
+        `${result.counters.archivedCategories} ${pluralize(result.counters.archivedCategories, "catégorie archivée", "catégories archivées")}`,
         `${result.counters.products} ${pluralize(result.counters.products, "produit", "produits")}`,
         `${result.counters.archivedProducts} ${pluralize(result.counters.archivedProducts, "produit archivé", "produits archivés")}`,
         `${result.counters.variants} ${pluralize(result.counters.variants, "variante", "variantes")}`,
+        `${result.counters.archivedVariants} ${pluralize(result.counters.archivedVariants, "variante archivée", "variantes archivées")}`,
         `${result.counters.blogPosts} ${pluralize(result.counters.blogPosts, "article", "articles")}`,
         `${result.counters.archivedBlogPosts} ${pluralize(result.counters.archivedBlogPosts, "article archivé", "articles archivés")}`,
         `${result.counters.images} ${pluralize(result.counters.images, "image importée", "images importées")}`,
         `${result.counters.missingImages} ${pluralize(result.counters.missingImages, "image absente", "images absentes")}`,
         `${result.counters.failedImages} ${pluralize(result.counters.failedImages, "image en erreur", "images en erreur")}`,
         `${result.counters.reusedImages} ${pluralize(result.counters.reusedImages, "image réutilisée", "images réutilisées")}`,
+        `${result.counters.deletedMediaAssets} ${pluralize(result.counters.deletedMediaAssets, "asset média supprimé", "assets médias supprimés")}`,
       ].join(", ")
     );
   } catch (error: unknown) {

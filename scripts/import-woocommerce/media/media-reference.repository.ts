@@ -59,6 +59,26 @@ async function upsertMediaReference(
   });
 }
 
+export async function clearProductGalleryImageReferences(prisma: DbClient, productId: string) {
+  return prisma.mediaReference.deleteMany({
+    where: {
+      subjectType: MediaReferenceSubjectType.PRODUCT,
+      subjectId: productId,
+      role: MediaReferenceRole.GALLERY,
+    },
+  });
+}
+
+export async function clearVariantPrimaryImageReferences(prisma: DbClient, variantId: string) {
+  return prisma.mediaReference.deleteMany({
+    where: {
+      subjectType: MediaReferenceSubjectType.PRODUCT_VARIANT,
+      subjectId: variantId,
+      role: MediaReferenceRole.PRIMARY,
+    },
+  });
+}
+
 export async function attachProductPrimaryImageReference(
   prisma: DbClient,
   input: {

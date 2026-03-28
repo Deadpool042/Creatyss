@@ -53,7 +53,8 @@ endef
 	typecheck-local typecheck typecheck-watch typecheck-import-woocommerce \
 	lint-local lint lint-fix lint-watch \
 	format format-check format-check-local \
-	test test-unit test-e2e test-e2e-ui test-e2e-headed test-select
+	test test-unit test-e2e test-e2e-ui test-e2e-headed test-select \
+	db-diagnostics-import
 
 help:
 	@printf "$(COLOR_BOLD)Usage:$(COLOR_RESET) make [target]\n\n"
@@ -89,6 +90,7 @@ help:
 	@printf "  $(COLOR_BOLD)db-sync-woocommerce$(COLOR_RESET)          Met a jour le catalogue WooCommerce sans reset, sans images\n"
 	@printf "  $(COLOR_BOLD)db-sync-woocommerce-images$(COLOR_RESET)   Met a jour le catalogue WooCommerce sans reset, avec images\n"
 	@printf "  $(COLOR_BOLD)db-import-woocommerce-images$(COLOR_RESET) Reimporte le catalogue WooCommerce avec images\n"
+	@printf "  $(COLOR_BOLD)db-diagnostics-import$(COLOR_RESET)        Lance les diagnostics d'import WooCommerce\n"
 	@printf "  $(COLOR_BOLD)db-reseed-dev$(COLOR_RESET)                Re-seed de la base de dev\n"
 	@printf "  $(COLOR_BOLD)db-reset-dev$(COLOR_RESET)                 Reset complet de la base de dev puis schema courant + seed\n"
 	@printf "  $(COLOR_BOLD)db-reset-empty$(COLOR_RESET)               Reset complet de la base vide puis schema courant, sans seed\n"
@@ -251,6 +253,12 @@ db-sync-woocommerce-images:
 	@$(MAKE) prisma-generate
 	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run import:woo:sync
 	$(call log_success,Sync WooCommerce sans reset avec images termine)
+
+db-diagnostics-import:
+	$(call log_info,Diagnostic post-import)
+	@$(MAKE) prisma-generate
+	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run diagnostics:import
+	$(call log_success,Diagnostic termine)
 
 db-reseed-dev:
 	@$(MAKE) db-reset-dev

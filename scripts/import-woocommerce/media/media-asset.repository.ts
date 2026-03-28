@@ -94,3 +94,52 @@ export async function upsertMediaAsset(
     },
   });
 }
+
+export async function deleteUnreferencedImportedMediaAssets(
+  prisma: DbClient,
+  input: {
+    storeId: string;
+  }
+) {
+  const orphanedAssets = await prisma.mediaAsset.findMany({
+    where: {
+      storeId: input.storeId,
+      OR: [
+        {
+          storageKey: {
+            startsWith: "imports/woocommerce",
+          },
+        },
+        {
+          storageKey: {
+            startsWith: "imports/wordpress/blog",
+          },
+        },
+      ],
+      references: {
+        none: {},
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (orphanedAssets.length === 0) {
+    return { count: 0 };
+  }
+
+  const orphanedIds = orphanedAssets.map((asset) => asset.id);
+
+  const deleted = await prisma.mediaAsset.deleteMany({
+    where: {
+      id: {
+        in: orphanedIds,
+      },
+    },
+  });
+
+  return {
+    count: deleted.count,
+  };
+}

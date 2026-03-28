@@ -6,7 +6,11 @@ import type { DbClient } from "../shared/db";
 import { endProgress, logProgress } from "../shared/logging";
 import { mapPreparedProductToImportedVariants } from "./variant-mappers";
 import { syncVariantOptionSelections } from "./variant-option.repository";
-import { setVariantPrimaryImage, upsertImportedVariant } from "./variant.repository";
+import {
+  archiveMissingImportedVariants,
+  setVariantPrimaryImage,
+  upsertImportedVariant,
+} from "./variant.repository";
 
 export type ImportedVariantRecord = {
   variantId: string;
@@ -16,6 +20,7 @@ export type ImportedVariantRecord = {
 
 export type ImportVariantsResult = {
   importedVariants: ImportedVariantRecord[];
+  archivedVariants: number;
   importedImages: number;
   reusedImages: number;
   skippedImages: number;
@@ -46,9 +51,10 @@ export async function importVariants(
   const importedVariants: ImportedVariantRecord[] = [];
   const totalVariantsToImport = countTotalVariantsToImport(input.preparedProducts);
 
+  let archivedVariants = 0;
   let importedImages = 0;
-  let skippedImages = 0;
   let reusedImages = 0;
+  let skippedImages = 0;
   let failedImages = 0;
   let importedVariantCount = 0;
 
@@ -80,6 +86,8 @@ export async function importVariants(
       variations: preparedProduct.variations,
     });
 
+    const preservedSkus: string[] = [];
+
     for (const mappedVariant of mappedVariants) {
       importedVariantCount += 1;
       logProgress(importedVariantCount, totalVariantsToImport, "Importing variants");
@@ -88,6 +96,8 @@ export async function importVariants(
         productId,
         variant: mappedVariant,
       });
+
+      preservedSkus.push(mappedVariant.sku);
 
       if (mappedVariant.amount !== null) {
         await replaceVariantPrice(prisma, {
@@ -141,6 +151,13 @@ export async function importVariants(
         productId,
       });
     }
+
+    const archivedResult = await archiveMissingImportedVariants(prisma, {
+      productId,
+      preservedSkus,
+    });
+
+    archivedVariants += archivedResult.count;
   }
 
   if (totalVariantsToImport > 0) {
@@ -149,6 +166,7 @@ export async function importVariants(
 
   return {
     importedVariants,
+    archivedVariants,
     importedImages,
     reusedImages,
     skippedImages,

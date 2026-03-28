@@ -5,6 +5,7 @@ import type { DbClient } from "../shared/db";
 import { endProgress, logProgress } from "../shared/logging";
 import { mapWooCategoryToImportedCategory } from "./category-mappers";
 import {
+  archiveMissingImportedCategories,
   setCategoryParent,
   setCategoryPrimaryImage,
   upsertImportedCategory,
@@ -14,6 +15,7 @@ export type ImportedCategoryMap = Map<string, string>;
 
 export type ImportCategoriesResult = {
   categoryIdByExternalId: ImportedCategoryMap;
+  archivedCategories: number;
   importedImages: number;
   reusedImages: number;
   skippedImages: number;
@@ -41,7 +43,9 @@ export async function importCategories(
 ): Promise<ImportCategoriesResult> {
   const orderedCategories = orderWooCategories(input.categories);
   const categoryIdByExternalId: ImportedCategoryMap = new Map();
+  const preservedCodes: string[] = [];
 
+  let archivedCategories = 0;
   let importedImages = 0;
   let reusedImages = 0;
   let skippedImages = 0;
@@ -53,6 +57,7 @@ export async function importCategories(
     const mappedCategory = mapWooCategoryToImportedCategory(category, index);
     const savedCategory = await upsertImportedCategory(prisma, input.storeId, mappedCategory);
 
+    preservedCodes.push(mappedCategory.code);
     categoryIdByExternalId.set(mappedCategory.externalId, savedCategory.id);
 
     if (!input.skipImages) {
@@ -101,11 +106,19 @@ export async function importCategories(
     endProgress("Linked category hierarchy");
   }
 
+  const archivedResult = await archiveMissingImportedCategories(prisma, {
+    storeId: input.storeId,
+    preservedCodes,
+  });
+
+  archivedCategories = archivedResult.count;
+
   return {
     categoryIdByExternalId,
+    archivedCategories,
     importedImages,
+    reusedImages,
     skippedImages,
     failedImages,
-    reusedImages,
   };
 }

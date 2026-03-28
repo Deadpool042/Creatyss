@@ -97,6 +97,43 @@ export async function upsertImportedVariant(
   return createVariant(prisma, input);
 }
 
+export async function archiveMissingImportedVariants(
+  prisma: DbClient,
+  input: {
+    productId: string;
+    preservedSkus: readonly string[];
+  }
+) {
+  if (input.preservedSkus.length === 0) {
+    return prisma.productVariant.updateMany({
+      where: {
+        productId: input.productId,
+        status: {
+          not: ProductVariantStatus.ARCHIVED,
+        },
+      },
+      data: {
+        status: ProductVariantStatus.ARCHIVED,
+      },
+    });
+  }
+
+  return prisma.productVariant.updateMany({
+    where: {
+      productId: input.productId,
+      sku: {
+        notIn: [...input.preservedSkus],
+      },
+      status: {
+        not: ProductVariantStatus.ARCHIVED,
+      },
+    },
+    data: {
+      status: ProductVariantStatus.ARCHIVED,
+    },
+  });
+}
+
 export async function setVariantPrimaryImage(
   prisma: DbClient,
   variantId: string,

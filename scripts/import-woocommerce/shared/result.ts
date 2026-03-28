@@ -5,15 +5,18 @@ export type ImportWarning = {
 
 export type ImportCounters = {
   categories: number;
+  archivedCategories: number;
   products: number;
   archivedProducts: number;
   variants: number;
+  archivedVariants: number;
   blogPosts: number;
   archivedBlogPosts: number;
   images: number;
   reusedImages: number;
   missingImages: number;
   failedImages: number;
+  deletedMediaAssets: number;
 };
 
 export type ImportResult = {
@@ -25,15 +28,18 @@ export function createEmptyImportResult(): ImportResult {
   return {
     counters: {
       categories: 0,
+      archivedCategories: 0,
       products: 0,
       archivedProducts: 0,
       variants: 0,
+      archivedVariants: 0,
       blogPosts: 0,
       archivedBlogPosts: 0,
       images: 0,
       reusedImages: 0,
       missingImages: 0,
       failedImages: 0,
+      deletedMediaAssets: 0,
     },
     warnings: [],
   };

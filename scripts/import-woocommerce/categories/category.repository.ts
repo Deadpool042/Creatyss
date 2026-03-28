@@ -1,3 +1,4 @@
+import { CategoryStatus } from "../../../src/generated/prisma/client";
 import type { DbClient } from "../shared/db";
 import type { ImportedCategoryInput } from "./category.types";
 
@@ -93,6 +94,47 @@ export async function upsertImportedCategory(
   }
 
   return createCategory(prisma, storeId, input);
+}
+
+export async function archiveMissingImportedCategories(
+  prisma: DbClient,
+  input: {
+    storeId: string;
+    preservedCodes: readonly string[];
+  }
+) {
+  if (input.preservedCodes.length === 0) {
+    return prisma.category.updateMany({
+      where: {
+        storeId: input.storeId,
+        code: {
+          startsWith: "woo_cat_",
+        },
+        status: {
+          not: CategoryStatus.ARCHIVED,
+        },
+      },
+      data: {
+        status: CategoryStatus.ARCHIVED,
+      },
+    });
+  }
+
+  return prisma.category.updateMany({
+    where: {
+      storeId: input.storeId,
+      code: {
+        startsWith: "woo_cat_",
+        notIn: [...input.preservedCodes],
+      },
+      status: {
+        not: CategoryStatus.ARCHIVED,
+      },
+    },
+    data: {
+      status: CategoryStatus.ARCHIVED,
+    },
+  });
 }
 
 export async function setCategoryParent(

@@ -11,6 +11,8 @@ import {
   attachProductGalleryImageReference,
   attachProductPrimaryImageReference,
   attachVariantPrimaryImageReference,
+  clearProductGalleryImageReferences,
+  clearVariantPrimaryImageReferences,
 } from "./media-reference.repository";
 import {
   buildOriginalFilenameFromUrl,
@@ -185,6 +187,8 @@ export async function importProductImages(
     };
   }
 
+  await clearProductGalleryImageReferences(prisma, input.productId);
+
   for (const [index, image] of input.images.entries()) {
     const result = await persistImageAsMediaAsset(prisma, {
       env: input.env,
@@ -250,6 +254,8 @@ export async function importVariantPrimaryImage(
   });
 
   if (result.assetId !== null) {
+    await clearVariantPrimaryImageReferences(prisma, input.variantId);
+
     await attachVariantPrimaryImageReference(prisma, {
       assetId: result.assetId,
       variantId: input.variantId,
