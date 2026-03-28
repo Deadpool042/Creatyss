@@ -1,4 +1,4 @@
-import { ensureDefaultAdminRole, ensureDefaultStore } from "./helpers/store-bootstrap.ts";
+import { ensureDefaultAdminRole, ensureDefaultStore } from "./bootstrap-store-and-admin.js";
 import { upsertAdminUser } from "./helpers/admin-bootstrap.ts";
 import { createScriptPrismaClient } from "./helpers/prisma-client.ts";
 

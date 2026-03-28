@@ -1,8 +1,8 @@
 import { fileURLToPath } from "node:url";
-import { runImportWooCommerceCatalog } from "./import-woocommerce.ts";
-import { createScriptPrismaClient } from "./helpers/prisma-client.ts";
-import { runSeedDevAdminUsers } from "./seed-dev-admin-users.ts";
-import { ensureDefaultPriceList, ensureDefaultStore } from "./helpers/store-bootstrap.ts";
+import { runImportWooCommerceCatalog } from "../import-woocommerce.js";
+import { createScriptPrismaClient } from "../helpers/prisma-client.js";
+import { runSeedDevAdminUsers } from "./seed-dev-admin-users.js";
+import { ensureDefaultPriceList, ensureDefaultStore } from "../bootstrap-store-and-admin.js";
 
 type CliOptions = {
   skipImages: boolean;

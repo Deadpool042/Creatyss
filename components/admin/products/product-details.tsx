@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { Package } from "lucide-react";
 
 import type { ProductDetailsDTO } from "@features/products";
+import { EmptyState } from "@components/shared/empty-state";
 import { Button } from "@components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
 
@@ -11,16 +13,15 @@ type ProductDetailsProps = {
 export function ProductDetails({ product }: ProductDetailsProps) {
   if (!product) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Product details</CardTitle>
-          <CardDescription>Select a product to view its details.</CardDescription>
-        </CardHeader>
-
-        <CardContent>
-          <p className="text-sm text-muted-foreground">No product selected.</p>
-        </CardContent>
-      </Card>
+      <EmptyState
+        title="Aucun produit sélectionné"
+        description="Sélectionnez un produit dans la liste pour voir son détail ou ouvrez l’éditeur pour en créer un nouveau."
+        icon={Package}
+        action={{
+          label: "Créer un produit",
+          href: "/admin/products?editor=create",
+        }}
+      />
     );
   }
 
@@ -33,7 +34,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
         </div>
 
         <Button asChild variant="outline">
-          <Link href={`/products?productId=${product.id}&editor=edit`}>Edit</Link>
+          <Link href={`/admin/products?productId=${product.id}&editor=edit`}>Modifier</Link>
         </Button>
       </CardHeader>
 
@@ -43,21 +44,21 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           <p className="text-sm text-muted-foreground">
             {product.description && product.description.trim().length > 0
               ? product.description
-              : "No description provided."}
+              : "Aucune description renseignée."}
           </p>
         </section>
 
         <section className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1">
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              Created
+              Créé le
             </p>
             <p className="text-sm">{new Date(product.createdAt).toLocaleString()}</p>
           </div>
 
           <div className="space-y-1">
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              Updated
+              Mis à jour le
             </p>
             <p className="text-sm">{new Date(product.updatedAt).toLocaleString()}</p>
           </div>

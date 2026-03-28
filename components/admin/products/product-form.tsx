@@ -1,6 +1,6 @@
 "use client";
 
-import type { CreateProductInput, ProductDetailsDTO, UpdateProductInput } from "@features/products";
+import type { ProductDetailsDTO } from "@features/products";
 import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import { Label } from "@components/ui/label";

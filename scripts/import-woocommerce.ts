@@ -12,7 +12,7 @@ import {
   type PrismaClient,
 } from "@prisma/client";
 import { createScriptPrismaClient } from "./helpers/prisma-client.ts";
-import { ensureDefaultPriceList, ensureDefaultStore } from "./helpers/store-bootstrap.ts";
+import { ensureDefaultPriceList, ensureDefaultStore } from "./bootstrap-store-and-admin.js";
 
 type CliOptions = {
   skipImages: boolean;
@@ -270,10 +270,7 @@ function buildVariationName(productName: string, variation: WooVariation, index:
   return `${productName} - Déclinaison ${index + 1}`;
 }
 
-function buildFallbackVariantSku(input: {
-  product: WooProduct;
-  variation?: WooVariation;
-}): string {
+function buildFallbackVariantSku(input: { product: WooProduct; variation?: WooVariation }): string {
   if (input.variation) {
     return `WOO-VARIATION-${input.variation.id}`;
   }
@@ -304,11 +301,15 @@ function resolveRequiredVariantSku(input: {
   return fallbackSku;
 }
 
-function buildVariantSeeds(product: WooProduct, variations: readonly WooVariation[]): VariantSeed[] {
+function buildVariantSeeds(
+  product: WooProduct,
+  variations: readonly WooVariation[]
+): VariantSeed[] {
   const productStatus = normalizeProductStatus(product.status);
 
   if (product.type !== "variable" || variations.length === 0) {
-    const amount = normalizeMoneyToDecimalString(product.price) ??
+    const amount =
+      normalizeMoneyToDecimalString(product.price) ??
       normalizeMoneyToDecimalString(product.regular_price);
 
     return [
@@ -450,7 +451,8 @@ async function attachProductImages(
         primaryMediaAssetId = mediaAsset.id;
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown product image import error.";
+      const message =
+        error instanceof Error ? error.message : "Unknown product image import error.";
       process.stderr.write(`product image skipped for ${productSlug}: ${message}\n`);
     }
   }
@@ -714,7 +716,8 @@ async function importProducts(
             });
           }
         } catch (error) {
-          const message = error instanceof Error ? error.message : "Unknown variant image import error.";
+          const message =
+            error instanceof Error ? error.message : "Unknown variant image import error.";
           process.stderr.write(`variant image skipped for ${product.slug}: ${message}\n`);
         }
       }

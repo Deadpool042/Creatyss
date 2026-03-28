@@ -7,7 +7,6 @@ import {
   Globe,
   ImageIcon,
   LayoutDashboard,
-  LogOut,
   Mail,
   Megaphone,
   Package,
@@ -38,6 +37,8 @@ import {
 
 import { AdminSidebarGroup } from "./admin-sidebar-group";
 import { AdminSidebarLink } from "./admin-sidebar-link";
+import { AdminLogoutButton } from "./admin-logout-button";
+import Link from "next/link";
 
 type AdminSidebarProps = {
   displayName: string;
@@ -196,7 +197,7 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild className="rounded-xl hover:bg-sidebar-accent/40">
-              <a href="/admin" aria-label="Administration Creatyss">
+              <Link href="/admin" aria-label="Administration Creatyss">
                 <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand/10">
                   <LayoutDashboard className="size-4 text-brand" />
                 </div>
@@ -208,7 +209,7 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
                     Administration
                   </span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -261,16 +262,7 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <form action="/admin/logout" method="post">
-              <SidebarMenuButton
-                type="submit"
-                tooltip="Se déconnecter"
-                className="h-9 rounded-lg text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-              >
-                <LogOut className="size-4" />
-                <span className="group-data-[collapsible=icon]:hidden">Se déconnecter</span>
-              </SidebarMenuButton>
-            </form>
+            <AdminLogoutButton />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

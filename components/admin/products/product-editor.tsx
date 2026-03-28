@@ -35,7 +35,7 @@ export function ProductEditor({ open, mode, product, action }: ProductEditorProp
           <SheetDescription>{description}</SheetDescription>
         </SheetHeader>
 
-        <ProductForm mode={mode} product={product} action={action} />
+        <ProductForm mode={mode} product={product ?? null} action={action} />
       </SheetContent>
     </Sheet>
   );

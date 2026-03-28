@@ -1,3 +1,4 @@
+//components/admin/auth-shell.tsx
 import type { ReactNode } from "react";
 
 type AuthShellProps = {

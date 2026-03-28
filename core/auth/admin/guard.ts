@@ -1,318 +1,134 @@
-import { createHmac, randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
-
-import { cookies } from "next/headers";
+import { SessionStatus } from "@prisma-generated/client";
 import { redirect } from "next/navigation";
 
-import { serverEnv } from "@core/config/env/server";
+import { verifyAdminPassword } from "./password";
+import {
+  createAdminSession,
+  findActivePasswordCredentialByUserId,
+  findAdminSessionByTokenHash,
+  findAdminUserByEmail,
+  findAdminUserById,
+  markAdminSessionExpired,
+  revokeAdminSessionByTokenHash,
+  touchAdminSessionLastSeen,
+  updateAdminLastLogin,
+} from "./repository";
+import {
+  ADMIN_SESSION_DURATION_SECONDS,
+  clearAdminSessionToken,
+  createAdminSessionToken,
+  hashAdminSessionToken,
+  readAdminSessionToken,
+  setAdminSessionToken,
+} from "./session";
+import type { AuthenticatedAdmin, CurrentAdminResult } from "./types";
+import { normalizeAdminLoginCredentials } from "./validation";
 
-import { findAdminUserById, type AuthenticatedAdmin } from "./repository";
-
-const ADMIN_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const ADMIN_PASSWORD_MIN_LENGTH = 12;
-const ADMIN_SESSION_VERSION = 1;
-const ADMIN_SESSION_MAX_AGE_SECONDS = 8 * 60 * 60;
-const SCRYPT_KEY_LENGTH = 64;
-const SCRYPT_SALT_BYTES = 16;
-const SCRYPT_PREFIX = "scrypt";
-const SCRYPT_VERSION = "1";
-
-type SessionVerificationResult =
-  | {
-      status: "valid";
-      payload: AdminSessionPayload;
-    }
-  | {
-      status: "malformed" | "invalid" | "expired";
-    };
-
-export const ADMIN_SESSION_COOKIE_NAME = "creatyss_admin_session";
-export const adminSessionCookieOptions = {
-  httpOnly: true,
-  path: "/",
-  sameSite: "lax" as const,
-  secure: serverEnv.nodeEnv === "production",
-};
-export const ADMIN_SESSION_DURATION_SECONDS = ADMIN_SESSION_MAX_AGE_SECONDS;
-
-export type AdminSessionPayload = {
-  adminId: string;
-  exp: number;
-  v: 1;
-};
-
-export type NormalizedAdminCredentials = {
+export async function loginAdmin(input: {
   email: string;
   password: string;
-};
-
-export type NormalizedAdminBootstrapInput = {
-  email: string;
-  displayName: string;
-  password: string;
-};
-
-export type CurrentAdminResult =
-  | {
-      status: "authenticated";
-      admin: AuthenticatedAdmin;
-    }
-  | {
-      status: "missing" | "invalid" | "expired" | "inactive";
-    };
-
-function normalizeTextInput(value: string): string {
-  return value.trim();
-}
-
-function isValidEmail(email: string): boolean {
-  return ADMIN_EMAIL_PATTERN.test(email);
-}
-
-function isExactAdminSessionPayload(value: unknown): value is AdminSessionPayload {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    return false;
-  }
-
-  const keys = Object.keys(value).sort();
-
-  if (keys.length !== 3 || keys.join(",") !== "adminId,exp,v") {
-    return false;
-  }
-
-  const payload = value as Record<string, unknown>;
-
-  return (
-    typeof payload.adminId === "string" &&
-    payload.adminId.trim().length > 0 &&
-    typeof payload.exp === "number" &&
-    Number.isFinite(payload.exp) &&
-    payload.v === ADMIN_SESSION_VERSION
-  );
-}
-
-function signAdminSessionPayload(payloadEncoded: string): string {
-  return createHmac("sha256", serverEnv.adminSessionSecret)
-    .update(payloadEncoded, "utf8")
-    .digest("base64url");
-}
-
-function verifyAdminSessionValue(sessionValue: string): SessionVerificationResult {
-  const segments = sessionValue.split(".");
-
-  if (segments.length !== 2) {
-    return { status: "malformed" };
-  }
-
-  const [payloadEncoded, signatureEncoded] = segments;
-
-  if (!payloadEncoded || !signatureEncoded) {
-    return { status: "malformed" };
-  }
-
-  const expectedSignature = Buffer.from(signAdminSessionPayload(payloadEncoded), "utf8");
-  const actualSignature = Buffer.from(signatureEncoded, "utf8");
-
-  if (actualSignature.length !== expectedSignature.length) {
-    return { status: "invalid" };
-  }
-
-  if (!timingSafeEqual(actualSignature, expectedSignature)) {
-    return { status: "invalid" };
-  }
-
-  let payloadJson: string;
-
-  try {
-    payloadJson = Buffer.from(payloadEncoded, "base64url").toString("utf8");
-  } catch {
-    return { status: "malformed" };
-  }
-
-  let payloadValue: unknown;
-
-  try {
-    payloadValue = JSON.parse(payloadJson);
-  } catch {
-    return { status: "invalid" };
-  }
-
-  if (!isExactAdminSessionPayload(payloadValue)) {
-    return { status: "invalid" };
-  }
-
-  const nowInSeconds = Math.floor(Date.now() / 1000);
-
-  if (payloadValue.exp <= nowInSeconds) {
-    return { status: "expired" };
-  }
-
-  return {
-    status: "valid",
-    payload: payloadValue,
-  };
-}
-
-function parseStoredPasswordHash(value: string) {
-  const parts = value.split(":");
-
-  if (parts.length !== 4) {
-    return null;
-  }
-
-  const [algorithm, version, saltEncoded, hashEncoded] = parts;
-
-  if (algorithm !== SCRYPT_PREFIX || version !== SCRYPT_VERSION || !saltEncoded || !hashEncoded) {
-    return null;
-  }
-
-  return {
-    hashEncoded,
-    saltEncoded,
-  };
-}
-
-function deriveScryptKey(password: string, salt: string): Promise<Buffer> {
-  return new Promise((resolve, reject) => {
-    scryptCallback(password, salt, SCRYPT_KEY_LENGTH, (error, derivedKey) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-
-      resolve(Buffer.from(derivedKey));
-    });
+  ipAddress?: string | null;
+  userAgent?: string | null;
+}): Promise<AuthenticatedAdmin | null> {
+  const normalized = normalizeAdminLoginCredentials({
+    email: input.email,
+    password: input.password,
   });
-}
 
-export function normalizeAdminEmail(email: string): string {
-  return normalizeTextInput(email).toLowerCase();
-}
-
-export function normalizeAdminLoginCredentials(input: {
-  email: FormDataEntryValue | string | null | undefined;
-  password: FormDataEntryValue | string | null | undefined;
-}): NormalizedAdminCredentials | null {
-  if (typeof input.email !== "string" || typeof input.password !== "string") {
+  if (!normalized) {
     return null;
   }
 
-  const email = normalizeAdminEmail(input.email);
-  const password = input.password;
+  const admin = await findAdminUserByEmail(normalized.email);
 
-  if (!isValidEmail(email) || password.length === 0) {
+  if (!admin || !admin.isActive) {
     return null;
   }
 
-  return {
-    email,
-    password,
-  };
-}
+  const credential = await findActivePasswordCredentialByUserId(admin.id);
 
-export function normalizeAdminBootstrapInput(input: {
-  email: string;
-  displayName: string;
-  password: string;
-}): NormalizedAdminBootstrapInput | null {
-  const email = normalizeAdminEmail(input.email);
-  const displayName = normalizeTextInput(input.displayName);
-  const password = input.password;
-
-  if (
-    !isValidEmail(email) ||
-    displayName.length === 0 ||
-    password.length < ADMIN_PASSWORD_MIN_LENGTH
-  ) {
+  if (!credential?.secretHash) {
     return null;
   }
 
-  return {
-    email,
-    displayName,
-    password,
-  };
+  const isPasswordValid = await verifyAdminPassword(normalized.password, credential.secretHash);
+
+  if (!isPasswordValid) {
+    return null;
+  }
+
+  const sessionToken = createAdminSessionToken();
+  const tokenHash = hashAdminSessionToken(sessionToken);
+  const expiresAt = new Date(Date.now() + ADMIN_SESSION_DURATION_SECONDS * 1000);
+
+  await createAdminSession({
+    userId: admin.id,
+    tokenHash,
+    expiresAt,
+    ipAddress: input.ipAddress ?? null,
+    userAgent: input.userAgent ?? null,
+  });
+
+  await updateAdminLastLogin(admin.id);
+  await setAdminSessionToken(sessionToken);
+
+  return admin;
 }
 
-export async function hashAdminPassword(password: string): Promise<string> {
-  if (password.length === 0) {
-    throw new Error("Password must not be empty.");
+export async function logoutAdmin(): Promise<void> {
+  const sessionToken = await readAdminSessionToken();
+
+  if (sessionToken) {
+    const tokenHash = hashAdminSessionToken(sessionToken);
+    await revokeAdminSessionByTokenHash(tokenHash);
   }
 
-  const saltEncoded = randomBytes(SCRYPT_SALT_BYTES).toString("base64url");
-  const derivedKey = await deriveScryptKey(password, saltEncoded);
-  const hashEncoded = derivedKey.toString("base64url");
-
-  return `${SCRYPT_PREFIX}:${SCRYPT_VERSION}:${saltEncoded}:${hashEncoded}`;
-}
-
-export async function verifyAdminPassword(
-  password: string,
-  storedPasswordHash: string
-): Promise<boolean> {
-  if (password.length === 0) {
-    return false;
-  }
-
-  const parsedHash = parseStoredPasswordHash(storedPasswordHash);
-
-  if (parsedHash === null) {
-    return false;
-  }
-
-  const actualHash = Buffer.from(parsedHash.hashEncoded, "utf8");
-  const expectedHash = Buffer.from(
-    (await deriveScryptKey(password, parsedHash.saltEncoded)).toString("base64url"),
-    "utf8"
-  );
-
-  if (actualHash.length !== expectedHash.length) {
-    return false;
-  }
-
-  return timingSafeEqual(actualHash, expectedHash);
-}
-
-export async function createAdminSessionValue(adminId: string): Promise<string> {
-  const payload: AdminSessionPayload = {
-    adminId,
-    exp: Math.floor(Date.now() / 1000) + ADMIN_SESSION_MAX_AGE_SECONDS,
-    v: ADMIN_SESSION_VERSION,
-  };
-
-  const payloadEncoded = Buffer.from(JSON.stringify(payload), "utf8").toString("base64url");
-
-  const signatureEncoded = signAdminSessionPayload(payloadEncoded);
-
-  return `${payloadEncoded}.${signatureEncoded}`;
+  await clearAdminSessionToken();
 }
 
 export async function getCurrentAdmin(): Promise<CurrentAdminResult> {
-  const cookieStore = await cookies();
-  const sessionValue = cookieStore.get(ADMIN_SESSION_COOKIE_NAME)?.value;
+  const sessionToken = await readAdminSessionToken();
 
-  if (!sessionValue) {
+  if (!sessionToken) {
     return { status: "missing" };
   }
 
-  const session = verifyAdminSessionValue(sessionValue);
+  const tokenHash = hashAdminSessionToken(sessionToken);
+  const session = await findAdminSessionByTokenHash(tokenHash);
 
-  if (session.status === "expired") {
+  if (!session) {
+    await clearAdminSessionToken();
+    return { status: "invalid" };
+  }
+
+  if (session.status !== SessionStatus.ACTIVE) {
+    await clearAdminSessionToken();
+
+    return {
+      status: session.status === SessionStatus.EXPIRED ? "expired" : "invalid",
+    };
+  }
+
+  if (session.expiresAt.getTime() <= Date.now()) {
+    await markAdminSessionExpired(session.id);
+    await clearAdminSessionToken();
+
     return { status: "expired" };
   }
 
-  if (session.status !== "valid") {
+  const admin = await findAdminUserById(session.userId);
+
+  if (!admin) {
+    await clearAdminSessionToken();
     return { status: "invalid" };
   }
 
-  const admin = await findAdminUserById(session.payload.adminId);
-
-  if (admin === null) {
-    return { status: "invalid" };
+  if (!admin.isActive) {
+    await clearAdminSessionToken();
+    return { status: "inactive" };
   }
 
-  // if (!admin.isActive) {
-  //   return { status: "inactive" };
-  // }
+  await touchAdminSessionLastSeen(session.id);
 
   return {
     status: "authenticated",

@@ -2,7 +2,7 @@
 import type { ReactNode } from "react";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
-import { ModeToggle } from "../shared/mode-toggle";
+import { ModeToggle } from "@/components/shared/mode-toggle";
 
 type AdminShellProps = {
   children: ReactNode;

@@ -28,7 +28,7 @@ const serverEnvSchema = z.object({
     "Invalid placeholder value for BREVO_API_KEY"
   ),
 
-  EMAIL_FROM: z.email().trim(),
+  EMAIL_FROM: nonEmptyStringSchema,
 
   UPLOADS_DIR: nonEmptyStringSchema.default("public/uploads"),
 });

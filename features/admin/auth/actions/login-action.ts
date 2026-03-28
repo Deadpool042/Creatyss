@@ -1,15 +1,8 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { findAdminUserByEmail } from "@/db/repositories/admin-users.repository";
-import {
-  ADMIN_SESSION_COOKIE_NAME,
-  ADMIN_SESSION_DURATION_SECONDS,
-  adminSessionCookieOptions,
-  createAdminSessionValue,
-  verifyAdminPassword,
-} from "@/lib/admin-auth";
+
+import { loginAdmin } from "@core/auth/admin/guard";
 
 import { LoginSchema } from "../schemas/login-schema";
 
@@ -23,29 +16,14 @@ export async function loginAction(formData: FormData): Promise<void> {
     redirect("/admin/login?error=invalid_credentials");
   }
 
-  const { email, password } = parsed.data;
-
-  const adminUser = await findAdminUserByEmail(email);
-
-  if (adminUser === null || !adminUser.isActive) {
-    redirect("/admin/login?error=invalid_credentials");
-  }
-
-  const isPasswordValid = await verifyAdminPassword(password, adminUser.passwordHash);
-
-  if (!isPasswordValid) {
-    redirect("/admin/login?error=invalid_credentials");
-  }
-
-  const sessionValue = await createAdminSessionValue(adminUser.id);
-  const cookieStore = await cookies();
-
-  cookieStore.set({
-    name: ADMIN_SESSION_COOKIE_NAME,
-    value: sessionValue,
-    ...adminSessionCookieOptions,
-    maxAge: ADMIN_SESSION_DURATION_SECONDS,
+  const admin = await loginAdmin({
+    email: parsed.data.email,
+    password: parsed.data.password,
   });
+
+  if (!admin) {
+    redirect("/admin/login?error=invalid_credentials");
+  }
 
   redirect("/admin");
 }

@@ -1,7 +1,7 @@
 import { fileURLToPath } from "node:url";
-import { seedDevAdminUsers } from "./helpers/admin-bootstrap.ts";
-import { createScriptPrismaClient } from "./helpers/prisma-client.ts";
-import { ensureDefaultAdminRole, ensureDefaultStore } from "./helpers/store-bootstrap.ts";
+import { seedDevAdminUsers } from "../helpers/admin-bootstrap.js";
+import { createScriptPrismaClient } from "../helpers/prisma-client.js";
+import { ensureDefaultAdminRole, ensureDefaultStore } from "../bootstrap-store-and-admin.js";
 
 export async function runSeedDevAdminUsers(): Promise<void> {
   const prisma = createScriptPrismaClient();

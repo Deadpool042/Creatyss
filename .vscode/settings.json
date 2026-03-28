@@ -59,16 +59,16 @@
   // Remplacement des anciens paramètres TypeScript par les nouveaux
   "js/ts.tsserver.maxMemory": 2048,
   "js/ts.tsserver.automaticTypeAcquisition.enabled": false,
+  "js/ts.updateImportsOnFileMove.enabled": "always",
   "js/ts.tsserver.watchOptions": {
     "watchFile": "useFsEventsOnParentDirectory",
     "watchDirectory": "useFsEvents",
-    "fallbackPolling": "dynamicPriority"
+    "fallbackPolling": "dynamicPriorityPolling"
   },
   "editor.codeLens": false,
-  "breadcrumbs.enabled": false,
+  "breadcrumbs.enabled": true,
   "editor.minimap.enabled": false,
-  "extensions.autoUpdate": false,
   "git.autofetch": false,
   "npm.autoDetect": "off",
-  "typescript.surveys.enabled": false
+  "workbench.editor.labelFormat": "medium"
 }

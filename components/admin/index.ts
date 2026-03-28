@@ -8,3 +8,4 @@ export { AdminFormActions } from "@/components/admin/admin-form-actions";
 export { AdminOrderCard } from "@/components/admin/admin-order-card";
 export { AdminProductCard } from "@/components/admin/admin-product-card";
 export { AdminSidebarLink } from "@/components/admin/admin-sidebar-link";
+export { AdminLogoutButton } from "@/components/admin/admin-logout-button";

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { MediaAssetKind, MediaAssetStatus, type PrismaClient } from "@prisma/client";
 import { createScriptPrismaClient } from "./helpers/prisma-client.ts";
-import { ensureDefaultStore } from "./helpers/store-bootstrap.ts";
+import { ensureDefaultStore } from "./bootstrap-store-and-admin.js";
 
 type ProductImageEntry = {
   src: string;

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
-import { LoginForm, loginAction } from "@/features/admin/auth";
-import { getCurrentAdmin } from "@/lib/admin-auth";
+
+import { getCurrentAdmin } from "@core/auth/admin/guard";
+import { LoginForm, loginAction } from "@features/admin/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,7 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
   const errorParam = Array.isArray(resolvedSearchParams.error)
     ? resolvedSearchParams.error[0]
     : resolvedSearchParams.error;
+
   const showError = errorParam === "invalid_credentials";
 
   return <LoginForm action={loginAction} showError={showError} />;
