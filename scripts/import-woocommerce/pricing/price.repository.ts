@@ -1,6 +1,6 @@
 import type { DbClient } from "../shared/db";
 
-export async function createProductPrice(
+export async function replaceProductPrice(
   prisma: DbClient,
   input: {
     priceListId: string;
@@ -9,6 +9,13 @@ export async function createProductPrice(
     compareAtAmount: string | null;
   }
 ) {
+  await prisma.productPrice.deleteMany({
+    where: {
+      priceListId: input.priceListId,
+      productId: input.productId,
+    },
+  });
+
   return prisma.productPrice.create({
     data: {
       priceListId: input.priceListId,
@@ -25,7 +32,7 @@ export async function createProductPrice(
   });
 }
 
-export async function createVariantPrice(
+export async function replaceVariantPrice(
   prisma: DbClient,
   input: {
     priceListId: string;
@@ -34,6 +41,13 @@ export async function createVariantPrice(
     compareAtAmount: string | null;
   }
 ) {
+  await prisma.productVariantPrice.deleteMany({
+    where: {
+      priceListId: input.priceListId,
+      variantId: input.variantId,
+    },
+  });
+
   return prisma.productVariantPrice.create({
     data: {
       priceListId: input.priceListId,

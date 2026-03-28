@@ -1,12 +1,12 @@
 import type { ImportWooCommerceEnv } from "../env";
 import { importVariantPrimaryImage } from "../media/media-import.service";
-import { createVariantPrice } from "../pricing/price.repository";
+import { replaceVariantPrice } from "../pricing/price.repository";
 import type { PreparedWooProduct } from "../schemas";
 import type { DbClient } from "../shared/db";
 import { endProgress, logProgress } from "../shared/logging";
 import { mapPreparedProductToImportedVariants } from "./variant-mappers";
 import { syncVariantOptionSelections } from "./variant-option.repository";
-import { createVariant, setVariantPrimaryImage } from "./variant.repository";
+import { setVariantPrimaryImage, upsertImportedVariant } from "./variant.repository";
 
 export type ImportedVariantRecord = {
   variantId: string;
@@ -17,6 +17,7 @@ export type ImportedVariantRecord = {
 export type ImportVariantsResult = {
   importedVariants: ImportedVariantRecord[];
   importedImages: number;
+  reusedImages: number;
   skippedImages: number;
   failedImages: number;
 };
@@ -47,6 +48,7 @@ export async function importVariants(
 
   let importedImages = 0;
   let skippedImages = 0;
+  let reusedImages = 0;
   let failedImages = 0;
   let importedVariantCount = 0;
 
@@ -82,15 +84,15 @@ export async function importVariants(
       importedVariantCount += 1;
       logProgress(importedVariantCount, totalVariantsToImport, "Importing variants");
 
-      const createdVariant = await createVariant(prisma, {
+      const savedVariant = await upsertImportedVariant(prisma, {
         productId,
         variant: mappedVariant,
       });
 
       if (mappedVariant.amount !== null) {
-        await createVariantPrice(prisma, {
+        await replaceVariantPrice(prisma, {
           priceListId: input.priceListId,
-          variantId: createdVariant.id,
+          variantId: savedVariant.id,
           amount: mappedVariant.amount,
           compareAtAmount: mappedVariant.compareAtAmount,
         });
@@ -98,7 +100,7 @@ export async function importVariants(
 
       await syncVariantOptionSelections(prisma, {
         productTypeId: productRecord.productTypeId,
-        variantId: createdVariant.id,
+        variantId: savedVariant.id,
         selections: mappedVariant.optionSelections,
       });
 
@@ -109,13 +111,14 @@ export async function importVariants(
           const imageResult = await importVariantPrimaryImage(prisma, {
             env: input.env,
             storeId: productRecord.storeId,
-            variantId: createdVariant.id,
+            variantId: savedVariant.id,
             productSlug: productRecord.slug,
             image: mappedVariant.image,
             sortOrder: mappedVariant.sortOrder,
           });
 
           importedImages += imageResult.importedImages;
+          reusedImages += imageResult.reusedImages;
           skippedImages += imageResult.skippedImages;
           failedImages += imageResult.failedImages;
           variantPrimaryImageId = imageResult.primaryImageId;
@@ -128,11 +131,12 @@ export async function importVariants(
         }
 
         if (variantPrimaryImageId !== null) {
-          await setVariantPrimaryImage(prisma, createdVariant.id, variantPrimaryImageId);
+          await setVariantPrimaryImage(prisma, savedVariant.id, variantPrimaryImageId);
         }
       }
+
       importedVariants.push({
-        variantId: createdVariant.id,
+        variantId: savedVariant.id,
         externalId: mappedVariant.externalId,
         productId,
       });
@@ -146,6 +150,7 @@ export async function importVariants(
   return {
     importedVariants,
     importedImages,
+    reusedImages,
     skippedImages,
     failedImages,
   };

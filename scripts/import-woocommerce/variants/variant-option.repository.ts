@@ -79,35 +79,28 @@ async function ensureProductOptionValue(
   });
 }
 
-async function ensureVariantOptionValueLink(
+async function replaceVariantOptionValueLinks(
   prisma: DbClient,
   input: {
     variantId: string;
-    optionValueId: string;
+    optionValueIds: readonly string[];
   }
 ) {
-  const existing = await prisma.productVariantOptionValue.findFirst({
+  await prisma.productVariantOptionValue.deleteMany({
     where: {
       variantId: input.variantId,
-      optionValueId: input.optionValueId,
-    },
-    select: {
-      id: true,
     },
   });
 
-  if (existing) {
-    return existing;
+  if (input.optionValueIds.length === 0) {
+    return;
   }
 
-  return prisma.productVariantOptionValue.create({
-    data: {
+  await prisma.productVariantOptionValue.createMany({
+    data: input.optionValueIds.map((optionValueId) => ({
       variantId: input.variantId,
-      optionValueId: input.optionValueId,
-    },
-    select: {
-      id: true,
-    },
+      optionValueId,
+    })),
   });
 }
 
@@ -119,9 +112,25 @@ export async function syncVariantOptionSelections(
     selections: readonly ImportedVariantOptionSelectionInput[];
   }
 ): Promise<void> {
-  if (input.productTypeId === null || input.selections.length === 0) {
+  if (input.productTypeId === null) {
+    await prisma.productVariantOptionValue.deleteMany({
+      where: {
+        variantId: input.variantId,
+      },
+    });
     return;
   }
+
+  if (input.selections.length === 0) {
+    await prisma.productVariantOptionValue.deleteMany({
+      where: {
+        variantId: input.variantId,
+      },
+    });
+    return;
+  }
+
+  const optionValueIds: string[] = [];
 
   for (const [index, selection] of input.selections.entries()) {
     const option = await ensureProductOption(prisma, {
@@ -139,9 +148,11 @@ export async function syncVariantOptionSelections(
       sortOrder: index,
     });
 
-    await ensureVariantOptionValueLink(prisma, {
-      variantId: input.variantId,
-      optionValueId: optionValue.id,
-    });
+    optionValueIds.push(optionValue.id);
   }
+
+  await replaceVariantOptionValueLinks(prisma, {
+    variantId: input.variantId,
+    optionValueIds,
+  });
 }

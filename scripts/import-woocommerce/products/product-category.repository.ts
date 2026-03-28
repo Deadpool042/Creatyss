@@ -1,11 +1,17 @@
 import type { DbClient } from "../shared/db";
 import type { ImportedProductCategoryLinkInput } from "./product.types";
 
-export async function createProductCategoryLinks(
+export async function replaceProductCategoryLinks(
   prisma: DbClient,
   productId: string,
   links: readonly ImportedProductCategoryLinkInput[]
 ) {
+  await prisma.productCategory.deleteMany({
+    where: {
+      productId,
+    },
+  });
+
   if (links.length === 0) {
     return;
   }

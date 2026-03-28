@@ -30,7 +30,9 @@
     "bootstrap:store-admin": "tsx scripts/bootstrap-store-and-admin.ts",
     "import:woo": "tsx scripts/import-woocommerce/index.ts",
     "import:woo:reset": "tsx scripts/import-woocommerce/index.ts --reset",
-    "import:woo:reset:skip-images": "tsx scripts/import-woocommerce/index.ts --reset --skip-images"
+    "import:woo:reset:skip-images": "tsx scripts/import-woocommerce/index.ts --reset --skip-images",
+    "import:woo:sync": "tsx scripts/import-woocommerce/index.ts --no-reset",
+    "import:woo:sync:skip-images": "tsx scripts/import-woocommerce/index.ts --no-reset --skip-images"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

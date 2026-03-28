@@ -4,7 +4,7 @@ import {
 } from "../../../src/generated/prisma/client";
 import type { DbClient } from "../shared/db";
 
-async function createMediaReference(
+async function upsertMediaReference(
   prisma: DbClient,
   input: {
     assetId: string;
@@ -15,6 +15,34 @@ async function createMediaReference(
     isPrimary: boolean;
   }
 ) {
+  const existing = await prisma.mediaReference.findFirst({
+    where: {
+      assetId: input.assetId,
+      subjectType: input.subjectType,
+      subjectId: input.subjectId,
+      role: input.role,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (existing) {
+    return prisma.mediaReference.update({
+      where: {
+        id: existing.id,
+      },
+      data: {
+        sortOrder: input.sortOrder,
+        isPrimary: input.isPrimary,
+        isActive: true,
+      },
+      select: {
+        id: true,
+      },
+    });
+  }
+
   return prisma.mediaReference.create({
     data: {
       assetId: input.assetId,
@@ -38,7 +66,7 @@ export async function attachProductPrimaryImageReference(
     productId: string;
   }
 ) {
-  return createMediaReference(prisma, {
+  return upsertMediaReference(prisma, {
     assetId: input.assetId,
     subjectType: MediaReferenceSubjectType.PRODUCT,
     subjectId: input.productId,
@@ -56,7 +84,7 @@ export async function attachProductGalleryImageReference(
     sortOrder: number;
   }
 ) {
-  return createMediaReference(prisma, {
+  return upsertMediaReference(prisma, {
     assetId: input.assetId,
     subjectType: MediaReferenceSubjectType.PRODUCT,
     subjectId: input.productId,
@@ -74,7 +102,7 @@ export async function attachVariantPrimaryImageReference(
     sortOrder: number;
   }
 ) {
-  return createMediaReference(prisma, {
+  return upsertMediaReference(prisma, {
     assetId: input.assetId,
     subjectType: MediaReferenceSubjectType.PRODUCT_VARIANT,
     subjectId: input.variantId,
@@ -91,10 +119,27 @@ export async function attachCategoryPrimaryImageReference(
     categoryId: string;
   }
 ) {
-  return createMediaReference(prisma, {
+  return upsertMediaReference(prisma, {
     assetId: input.assetId,
     subjectType: MediaReferenceSubjectType.CATEGORY,
     subjectId: input.categoryId,
+    role: MediaReferenceRole.PRIMARY,
+    sortOrder: 0,
+    isPrimary: true,
+  });
+}
+
+export async function attachBlogPostPrimaryImageReference(
+  prisma: DbClient,
+  input: {
+    assetId: string;
+    blogPostId: string;
+  }
+) {
+  return upsertMediaReference(prisma, {
+    assetId: input.assetId,
+    subjectType: MediaReferenceSubjectType.BLOG_POST,
+    subjectId: input.blogPostId,
     role: MediaReferenceRole.PRIMARY,
     sortOrder: 0,
     isPrimary: true,

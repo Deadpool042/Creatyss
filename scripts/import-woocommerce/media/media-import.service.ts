@@ -5,7 +5,7 @@ import type { DbClient } from "../shared/db";
 import { logWarn } from "../shared/logging";
 import { downloadImage } from "./download-image";
 import { transformImageToWebp } from "./image-transform";
-import { upsertMediaAsset } from "./media-asset.repository";
+import { findMediaAssetByStorageKey, upsertMediaAsset } from "./media-asset.repository";
 import {
   attachCategoryPrimaryImageReference,
   attachProductGalleryImageReference,
@@ -22,6 +22,7 @@ import {
 
 type MediaImportSummary = {
   importedImages: number;
+  reusedImages: number;
   skippedImages: number;
   failedImages: number;
 };
@@ -30,13 +31,14 @@ type PersistedMediaAssetResult = MediaImportSummary & {
   assetId: string | null;
 };
 
-type PrimaryImageImportResult = MediaImportSummary & {
+export type PrimaryImageImportResult = MediaImportSummary & {
   primaryImageId: string | null;
 };
 
 function createEmptyMediaSummary(): MediaImportSummary {
   return {
     importedImages: 0,
+    reusedImages: 0,
     skippedImages: 0,
     failedImages: 0,
   };
@@ -45,6 +47,7 @@ function createEmptyMediaSummary(): MediaImportSummary {
 function mergeMediaSummary(base: MediaImportSummary, next: MediaImportSummary): MediaImportSummary {
   return {
     importedImages: base.importedImages + next.importedImages,
+    reusedImages: base.reusedImages + next.reusedImages,
     skippedImages: base.skippedImages + next.skippedImages,
     failedImages: base.failedImages + next.failedImages,
   };
@@ -64,7 +67,23 @@ async function persistImageAsMediaAsset(
     return {
       assetId: null,
       importedImages: 0,
+      reusedImages: 0,
       skippedImages: 1,
+      failedImages: 0,
+    };
+  }
+
+  const existing = await findMediaAssetByStorageKey(prisma, {
+    storeId: input.storeId,
+    storageKey: input.storageKey,
+  });
+
+  if (existing) {
+    return {
+      assetId: existing.id,
+      importedImages: 0,
+      reusedImages: 1,
+      skippedImages: 0,
       failedImages: 0,
     };
   }
@@ -91,6 +110,7 @@ async function persistImageAsMediaAsset(
     return {
       assetId: mediaAsset.id,
       importedImages: 1,
+      reusedImages: 0,
       skippedImages: 0,
       failedImages: 0,
     };
@@ -101,6 +121,7 @@ async function persistImageAsMediaAsset(
     return {
       assetId: null,
       importedImages: 0,
+      reusedImages: 0,
       skippedImages: 0,
       failedImages: 1,
     };
@@ -135,6 +156,7 @@ export async function importCategoryPrimaryImage(
   return {
     primaryImageId: result.assetId,
     importedImages: result.importedImages,
+    reusedImages: result.reusedImages,
     skippedImages: result.skippedImages,
     failedImages: result.failedImages,
   };
@@ -157,6 +179,7 @@ export async function importProductImages(
     return {
       primaryImageId: null,
       importedImages: 0,
+      reusedImages: 0,
       skippedImages: 1,
       failedImages: 0,
     };
@@ -197,6 +220,7 @@ export async function importProductImages(
   return {
     primaryImageId,
     importedImages: summary.importedImages,
+    reusedImages: summary.reusedImages,
     skippedImages: summary.skippedImages,
     failedImages: summary.failedImages,
   };
@@ -236,6 +260,7 @@ export async function importVariantPrimaryImage(
   return {
     primaryImageId: result.assetId,
     importedImages: result.importedImages,
+    reusedImages: result.reusedImages,
     skippedImages: result.skippedImages,
     failedImages: result.failedImages,
   };

@@ -4,13 +4,18 @@ import type { WooCategory } from "../schemas";
 import type { DbClient } from "../shared/db";
 import { endProgress, logProgress } from "../shared/logging";
 import { mapWooCategoryToImportedCategory } from "./category-mappers";
-import { createCategory, setCategoryParent, setCategoryPrimaryImage } from "./category.repository";
+import {
+  setCategoryParent,
+  setCategoryPrimaryImage,
+  upsertImportedCategory,
+} from "./category.repository";
 
 export type ImportedCategoryMap = Map<string, string>;
 
 export type ImportCategoriesResult = {
   categoryIdByExternalId: ImportedCategoryMap;
   importedImages: number;
+  reusedImages: number;
   skippedImages: number;
   failedImages: number;
 };
@@ -38,6 +43,7 @@ export async function importCategories(
   const categoryIdByExternalId: ImportedCategoryMap = new Map();
 
   let importedImages = 0;
+  let reusedImages = 0;
   let skippedImages = 0;
   let failedImages = 0;
 
@@ -45,25 +51,26 @@ export async function importCategories(
     logProgress(index + 1, orderedCategories.length, "Importing categories");
 
     const mappedCategory = mapWooCategoryToImportedCategory(category, index);
-    const createdCategory = await createCategory(prisma, input.storeId, mappedCategory);
+    const savedCategory = await upsertImportedCategory(prisma, input.storeId, mappedCategory);
 
-    categoryIdByExternalId.set(mappedCategory.externalId, createdCategory.id);
+    categoryIdByExternalId.set(mappedCategory.externalId, savedCategory.id);
 
     if (!input.skipImages) {
       const imageResult = await importCategoryPrimaryImage(prisma, {
         env: input.env,
         storeId: input.storeId,
-        categoryId: createdCategory.id,
+        categoryId: savedCategory.id,
         categorySlug: mappedCategory.slug,
         image: mappedCategory.image,
       });
 
       importedImages += imageResult.importedImages;
+      reusedImages += imageResult.reusedImages;
       skippedImages += imageResult.skippedImages;
       failedImages += imageResult.failedImages;
 
       if (imageResult.primaryImageId !== null) {
-        await setCategoryPrimaryImage(prisma, createdCategory.id, imageResult.primaryImageId);
+        await setCategoryPrimaryImage(prisma, savedCategory.id, imageResult.primaryImageId);
       }
     }
   }
@@ -99,5 +106,6 @@ export async function importCategories(
     importedImages,
     skippedImages,
     failedImages,
+    reusedImages,
   };
 }

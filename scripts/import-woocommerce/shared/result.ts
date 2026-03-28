@@ -7,7 +7,10 @@ export type ImportCounters = {
   categories: number;
   products: number;
   variants: number;
+  blogPosts: number;
+  archivedBlogPosts: number;
   images: number;
+  reusedImages: number;
   missingImages: number;
   failedImages: number;
 };
@@ -23,7 +26,10 @@ export function createEmptyImportResult(): ImportResult {
       categories: 0,
       products: 0,
       variants: 0,
+      blogPosts: 0,
+      archivedBlogPosts: 0,
       images: 0,
+      reusedImages: 0,
       missingImages: 0,
       failedImages: 0,
     },

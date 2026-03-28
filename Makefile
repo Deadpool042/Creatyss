@@ -86,6 +86,8 @@ help:
 	@printf "  $(COLOR_BOLD)db-seed-dev$(COLOR_RESET)                  Cree le socle local puis importe le catalogue WooCommerce Creatyss\n"
 	@printf "  $(COLOR_BOLD)db-seed-images$(COLOR_RESET)               Convertit + aligne les images seed\n"
 	@printf "  $(COLOR_BOLD)db-import-woocommerce$(COLOR_RESET)        Reimporte le catalogue WooCommerce sans images\n"
+	@printf "  $(COLOR_BOLD)db-sync-woocommerce$(COLOR_RESET)          Met a jour le catalogue WooCommerce sans reset, sans images\n"
+	@printf "  $(COLOR_BOLD)db-sync-woocommerce-images$(COLOR_RESET)   Met a jour le catalogue WooCommerce sans reset, avec images\n"
 	@printf "  $(COLOR_BOLD)db-import-woocommerce-images$(COLOR_RESET) Reimporte le catalogue WooCommerce avec images\n"
 	@printf "  $(COLOR_BOLD)db-reseed-dev$(COLOR_RESET)                Re-seed de la base de dev\n"
 	@printf "  $(COLOR_BOLD)db-reset-dev$(COLOR_RESET)                 Reset complet de la base de dev puis schema courant + seed\n"
@@ -237,6 +239,18 @@ db-import-woocommerce-images:
 	@$(MAKE) prisma-generate
 	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run import:woo:reset
 	$(call log_success,Import WooCommerce avec images termine)
+
+db-sync-woocommerce:
+	$(call log_info,Sync WooCommerce sans reset et sans images)
+	@$(MAKE) prisma-generate
+	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run import:woo:sync:skip-images
+	$(call log_success,Sync WooCommerce sans reset termine)
+
+db-sync-woocommerce-images:
+	$(call log_info,Sync WooCommerce sans reset avec images)
+	@$(MAKE) prisma-generate
+	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run import:woo:sync
+	$(call log_success,Sync WooCommerce sans reset avec images termine)
 
 db-reseed-dev:
 	@$(MAKE) db-reset-dev

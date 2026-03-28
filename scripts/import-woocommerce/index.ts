@@ -4,12 +4,13 @@ import { parseCliOptions } from "./cli";
 import { ensureDefaultPriceList } from "./bootstrap/ensure-price-list";
 import { ensureStore } from "./bootstrap/ensure-store";
 import { ensureWooImportedProductType } from "./bootstrap/ensure-product-type";
+import { importBlogPosts } from "./blog/blog-import.service";
 import { importCategories } from "./categories/category-import.service";
 import { WooCommerceClient } from "./client/woocommerce-client";
 import { readImportWooCommerceEnv } from "./env";
 import { importProducts } from "./products/product-import.service";
 import { resetImportedCatalog } from "./reset/reset-imported-catalog";
-import type { PreparedWooProduct } from "./schemas";
+import type { PreparedWooProduct, WordPressMedia } from "./schemas";
 import {
   endProgress,
   failSpinner,
@@ -45,6 +46,30 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     const products = await wooClient.fetchProducts();
     succeedSpinner(`Fetched ${products.length} products`);
 
+    logStep("Fetching WordPress blog posts");
+    startSpinner("Fetching blog posts");
+    const blogPosts = await wooClient.fetchWordPressPosts();
+    succeedSpinner(`Fetched ${blogPosts.length} blog posts`);
+
+    const featuredMediaByPostId = new Map<number, WordPressMedia | null>();
+
+    if (!options.skipImages && blogPosts.length > 0) {
+      logStep("Fetching WordPress featured media");
+
+      for (const [index, post] of blogPosts.entries()) {
+        logProgress(index + 1, blogPosts.length, "Fetching featured media");
+
+        const media =
+          post.featured_media && post.featured_media > 0
+            ? await wooClient.fetchWordPressMediaById(post.featured_media)
+            : null;
+
+        featuredMediaByPostId.set(post.id, media);
+      }
+
+      endProgress(`Fetched featured media for ${blogPosts.length} blog posts`);
+    }
+
     const preparedProducts: PreparedWooProduct[] = [];
 
     logStep("Preparing WooCommerce products");
@@ -74,6 +99,8 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
       startSpinner("Resetting catalog");
       await resetImportedCatalog(prisma, store.id);
       succeedSpinner("Catalog reset completed");
+    } else {
+      logStep("Running import without reset");
     }
 
     logStep("Importing categories");
@@ -87,6 +114,7 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     incrementCounter(result, "images", categoriesResult.importedImages);
     incrementCounter(result, "missingImages", categoriesResult.skippedImages);
     incrementCounter(result, "failedImages", categoriesResult.failedImages);
+    incrementCounter(result, "reusedImages", categoriesResult.reusedImages);
 
     logStep("Importing products");
     const importedProducts = await importProducts(prisma, {
@@ -102,6 +130,7 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     incrementCounter(result, "images", importedProducts.importedImages);
     incrementCounter(result, "missingImages", importedProducts.skippedImages);
     incrementCounter(result, "failedImages", importedProducts.failedImages);
+    incrementCounter(result, "reusedImages", importedProducts.reusedImages);
 
     logStep("Importing variants");
     const importedVariants = await importVariants(prisma, {
@@ -116,6 +145,22 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     incrementCounter(result, "images", importedVariants.importedImages);
     incrementCounter(result, "missingImages", importedVariants.skippedImages);
     incrementCounter(result, "failedImages", importedVariants.failedImages);
+    incrementCounter(result, "reusedImages", importedVariants.reusedImages);
+
+    logStep("Importing blog posts");
+    const importedBlogPosts = await importBlogPosts(prisma, {
+      env,
+      storeId: store.id,
+      posts: blogPosts,
+      featuredMediaByPostId,
+      skipImages: options.skipImages,
+    });
+    incrementCounter(result, "blogPosts", importedBlogPosts.importedBlogPosts.length);
+    incrementCounter(result, "archivedBlogPosts", importedBlogPosts.archivedBlogPosts);
+    incrementCounter(result, "images", importedBlogPosts.importedImages);
+    incrementCounter(result, "missingImages", importedBlogPosts.skippedImages);
+    incrementCounter(result, "failedImages", importedBlogPosts.failedImages);
+    incrementCounter(result, "reusedImages", importedBlogPosts.reusedImages);
 
     logSuccess(
       [
@@ -123,9 +168,12 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
         `${result.counters.categories} ${pluralize(result.counters.categories, "catégorie", "catégories")}`,
         `${result.counters.products} ${pluralize(result.counters.products, "produit", "produits")}`,
         `${result.counters.variants} ${pluralize(result.counters.variants, "variante", "variantes")}`,
+        `${result.counters.blogPosts} ${pluralize(result.counters.blogPosts, "article", "articles")}`,
+        `${result.counters.archivedBlogPosts} ${pluralize(result.counters.archivedBlogPosts, "article archivé", "articles archivés")}`,
         `${result.counters.images} ${pluralize(result.counters.images, "image importée", "images importées")}`,
         `${result.counters.missingImages} ${pluralize(result.counters.missingImages, "image absente", "images absentes")}`,
         `${result.counters.failedImages} ${pluralize(result.counters.failedImages, "image en erreur", "images en erreur")}`,
+        `${result.counters.reusedImages} ${pluralize(result.counters.reusedImages, "image réutilisée", "images réutilisées")}`,
       ].join(", ")
     );
   } catch (error: unknown) {

@@ -1,6 +1,26 @@
 import { MediaAssetKind, MediaAssetStatus } from "../../../src/generated/prisma/client";
 import type { DbClient } from "../shared/db";
 
+export async function findMediaAssetByStorageKey(
+  prisma: DbClient,
+  input: {
+    storeId: string;
+    storageKey: string;
+  }
+) {
+  return prisma.mediaAsset.findFirst({
+    where: {
+      storeId: input.storeId,
+      storageKey: input.storageKey,
+    },
+    select: {
+      id: true,
+      storageKey: true,
+      publicUrl: true,
+    },
+  });
+}
+
 export async function upsertMediaAsset(
   prisma: DbClient,
   input: {

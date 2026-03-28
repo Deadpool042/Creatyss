@@ -1,13 +1,13 @@
 import type { ImportWooCommerceEnv } from "../env";
 import { importProductImages } from "../media/media-import.service";
 import { normalizeMoneyToDecimalString, resolveCompareAtAmount } from "../normalizers/money";
-import { createProductPrice } from "../pricing/price.repository";
+import { replaceProductPrice } from "../pricing/price.repository";
 import type { PreparedWooProduct } from "../schemas";
 import type { DbClient } from "../shared/db";
 import { endProgress, logProgress } from "../shared/logging";
-import { createProductCategoryLinks } from "./product-category.repository";
+import { replaceProductCategoryLinks } from "./product-category.repository";
 import { mapWooProductToImportedProduct } from "./product-mappers";
-import { createProduct, setProductPrimaryImage } from "./product.repository";
+import { setProductPrimaryImage, upsertImportedProduct } from "./product.repository";
 
 export type ImportedProductRecord = {
   productId: string;
@@ -21,6 +21,7 @@ export type ImportProductsResult = {
   productIdByExternalId: Map<string, string>;
   primaryImageIdByProductId: Map<string, string | null>;
   importedImages: number;
+  reusedImages: number;
   skippedImages: number;
   failedImages: number;
 };
@@ -63,6 +64,7 @@ export async function importProducts(
   const primaryImageIdByProductId = new Map<string, string | null>();
 
   let importedImages = 0;
+  let reusedImages = 0;
   let skippedImages = 0;
   let failedImages = 0;
 
@@ -74,23 +76,23 @@ export async function importProducts(
       input.productTypeId
     );
 
-    const createdProduct = await createProduct(prisma, input.storeId, mappedProduct);
+    const savedProduct = await upsertImportedProduct(prisma, input.storeId, mappedProduct);
 
     const categoryLinks = buildProductCategoryLinks(
       mappedProduct.categoryExternalIds,
       input.categoryIdByExternalId
     );
 
-    await createProductCategoryLinks(prisma, createdProduct.id, categoryLinks);
+    await replaceProductCategoryLinks(prisma, savedProduct.id, categoryLinks);
 
     const amount =
       normalizeMoneyToDecimalString(preparedProduct.product.price) ??
       normalizeMoneyToDecimalString(preparedProduct.product.regular_price);
 
     if (amount !== null) {
-      await createProductPrice(prisma, {
+      await replaceProductPrice(prisma, {
         priceListId: input.priceListId,
-        productId: createdProduct.id,
+        productId: savedProduct.id,
         amount,
         compareAtAmount: resolveCompareAtAmount(
           amount,
@@ -105,30 +107,31 @@ export async function importProducts(
       const imageResult = await importProductImages(prisma, {
         env: input.env,
         storeId: input.storeId,
-        productId: createdProduct.id,
+        productId: savedProduct.id,
         productSlug: mappedProduct.slug,
         images: mappedProduct.images,
       });
 
       importedImages += imageResult.importedImages;
+      reusedImages += imageResult.reusedImages;
       skippedImages += imageResult.skippedImages;
       failedImages += imageResult.failedImages;
       primaryImageId = imageResult.primaryImageId;
 
       if (primaryImageId !== null) {
-        await setProductPrimaryImage(prisma, createdProduct.id, primaryImageId);
+        await setProductPrimaryImage(prisma, savedProduct.id, primaryImageId);
       }
     }
 
     importedProducts.push({
-      productId: createdProduct.id,
+      productId: savedProduct.id,
       externalId: mappedProduct.externalId,
-      productTypeId: createdProduct.productTypeId,
+      productTypeId: savedProduct.productTypeId,
       primaryImageId,
     });
 
-    productIdByExternalId.set(mappedProduct.externalId, createdProduct.id);
-    primaryImageIdByProductId.set(createdProduct.id, primaryImageId);
+    productIdByExternalId.set(mappedProduct.externalId, savedProduct.id);
+    primaryImageIdByProductId.set(savedProduct.id, primaryImageId);
   }
 
   if (input.preparedProducts.length > 0) {
@@ -140,6 +143,7 @@ export async function importProducts(
     productIdByExternalId,
     primaryImageIdByProductId,
     importedImages,
+    reusedImages,
     skippedImages,
     failedImages,
   };

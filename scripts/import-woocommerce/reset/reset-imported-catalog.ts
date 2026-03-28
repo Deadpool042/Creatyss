@@ -5,9 +5,18 @@ export async function resetImportedCatalog(prisma: PrismaClient, storeId: string
   const importedMedia = await prisma.mediaAsset.findMany({
     where: {
       storeId,
-      storageKey: {
-        startsWith: WOOCOMMERCE_MEDIA_ROOT,
-      },
+      OR: [
+        {
+          storageKey: {
+            startsWith: WOOCOMMERCE_MEDIA_ROOT,
+          },
+        },
+        {
+          storageKey: {
+            startsWith: "imports/wordpress/blog",
+          },
+        },
+      ],
     },
     select: {
       id: true,
@@ -40,6 +49,15 @@ export async function resetImportedCatalog(prisma: PrismaClient, storeId: string
       storeId,
       code: {
         startsWith: "woo_cat_",
+      },
+    },
+  });
+
+  await prisma.blogPost.deleteMany({
+    where: {
+      storeId,
+      slug: {
+        startsWith: "wp-",
       },
     },
   });
