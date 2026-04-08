@@ -1,6 +1,6 @@
-import { MediaReferenceSubjectType } from "@prisma-generated/client";
+import { MediaReferenceSubjectType } from "@/prisma-generated/client";
 
-import { db } from "@core/db";
+import { db } from "@/core/db";
 import { mapProductEditorData } from "../mappers/map-product-editor-data";
 import type { AdminProductEditorData } from "../types/product-editor.types";
 

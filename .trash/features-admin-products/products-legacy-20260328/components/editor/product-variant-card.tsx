@@ -129,7 +129,7 @@ export function ProductVariantCard({
               />
             </AdminFormField>
 
-            <AdminFormField htmlFor={compareAtPriceId} label="Prix barré">
+            <AdminFormField htmlFor={compareAtPriceId} label="Prix avant réduction">
               <Input
                 defaultValue={variant.compareAtPrice ?? ""}
                 id={compareAtPriceId}

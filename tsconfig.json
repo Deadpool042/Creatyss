@@ -18,10 +18,11 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"],
-      "@core/*": ["./core/*"],
-      "@features/*": ["./features/*"],
-      "@components/*": ["./components/*"],
-      "@prisma-generated/*": ["./src/generated/prisma/*"]
+      "@/core/*": ["./core/*"],
+      "@/features/*": ["./features/*"],
+      "@/components/*": ["./components/*"],
+      "@/prisma-generated/*": ["./src/generated/prisma/*"],
+      "@/entities/*": ["./entities/*"]
     },
     "plugins": [
       {

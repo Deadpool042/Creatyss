@@ -1,6 +1,6 @@
-import { ProductStatus, ProductVariantStatus } from "@prisma-generated/client";
+import { ProductStatus, ProductVariantStatus } from "@/prisma-generated/client";
 
-import type { AdminProductDetails } from "../types/product-detail-types";
+import type { AdminProductDetails } from "@/features/admin/products/details/types/product-detail-types";
 
 type ProductDetailsSource = {
   id: string;

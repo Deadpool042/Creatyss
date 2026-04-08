@@ -1,11 +1,6 @@
 import { createProductAction } from "@/features/admin/products/create";
-import {
-  ProductCreateForm,
-  type ProductCreateFormAction,
-} from "@/components/admin/products/product-create-form";
+import { ProductCreatePanel } from "@/features/admin/products/components";
 
 export default function ProductCreatePage() {
-  return (
-    <ProductCreateForm action={createProductAction as unknown as ProductCreateFormAction} />
-  );
+  return <ProductCreatePanel action={createProductAction} />;
 }

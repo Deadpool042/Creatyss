@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/shared/notice";
-import { AdminFormActions } from "@/components/admin/admin-form-actions";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { getAdminHomepageEditorData } from "@/db/repositories/admin-homepage.repository";
 import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";

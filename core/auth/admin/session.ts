@@ -2,7 +2,7 @@ import { createHash, randomBytes } from "node:crypto";
 
 import { cookies } from "next/headers";
 
-import { serverEnv } from "@core/config/env/server";
+import { serverEnv } from "@/core/config/env/server";
 
 const ADMIN_SESSION_COOKIE_NAME = "creatyss_admin_session";
 const ADMIN_SESSION_MAX_AGE_SECONDS = 8 * 60 * 60;

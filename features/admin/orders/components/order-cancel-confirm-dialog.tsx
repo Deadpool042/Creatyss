@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { updateOrderStatusAction } from "@/features/admin/orders/actions";
+import { ConfirmDestructiveDialog } from "@/components/shared";
 
 type OrderCancelConfirmDialogProps = {
   orderId: string;
@@ -26,6 +27,18 @@ export function OrderCancelConfirmDialog({ orderId }: OrderCancelConfirmDialogPr
     <form ref={formRef} action={updateOrderStatusAction}>
       <input type="hidden" name="orderId" value={orderId} />
       <input type="hidden" name="nextStatus" value="cancelled" />
+
+      <ConfirmDestructiveDialog
+        trigger={
+          <Button variant="destructive" type="button" size="sm">
+            Annuler la commande
+          </Button>
+        }
+        title="Annuler cette commande ?"
+        description="Cette action est irréversible. La commande sera annulée et le stock des articles sera rétabli automatiquement."
+        actionLabel="Annuler la commande"
+        onConfirm={() => formRef.current?.requestSubmit()}
+      />
 
       <AlertDialog>
         <AlertDialogTrigger asChild>

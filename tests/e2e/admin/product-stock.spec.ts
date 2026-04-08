@@ -59,7 +59,7 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
 
     await simpleOfferForm.getByLabel("SKU").fill(updatedSku);
     await simpleOfferForm.getByLabel("Prix", { exact: true }).fill("109");
-    await simpleOfferForm.getByLabel("Prix barré").fill("129");
+    await simpleOfferForm.getByLabel("Prix avant réduction").fill("129");
     await simpleOfferForm.getByLabel("Stock disponible").fill("0");
 
     await Promise.all([
@@ -83,7 +83,7 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
 
     await expect(legacyVariantCard.getByLabel("SKU")).toHaveValue(updatedSku);
     await expect(legacyVariantCard.getByLabel("Prix", { exact: true })).toHaveValue("109.00");
-    await expect(legacyVariantCard.getByLabel("Prix barré")).toHaveValue("129.00");
+    await expect(legacyVariantCard.getByLabel("Prix avant réduction")).toHaveValue("129.00");
     await expect(legacyVariantCard.getByLabel("Stock disponible")).toHaveValue("0");
     await expect(legacyVariantCard.getByLabel("Statut")).toHaveValue("published");
   });
@@ -98,7 +98,7 @@ test("updates a native simple offer and keeps a single legacy variant in sync", 
       })
     ).toBeVisible();
     await expect(page.getByText("109.00").first()).toBeVisible();
-    await expect(page.getByText("Prix barré : 129.00")).toBeVisible();
+    await expect(page.getByText("Prix avant réduction : 129.00")).toBeVisible();
     await expect(page.getByText("Temporairement indisponible").first()).toBeVisible();
   });
 });

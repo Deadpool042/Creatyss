@@ -1,3 +1,4 @@
+//features/admin/products/editor/types/product-editor.types.ts
 export type AdminProductEditorStatus = "draft" | "published" | "archived";
 
 export type AdminProductEditorImage = {
@@ -24,6 +25,7 @@ export type AdminProductEditorCategory = {
   id: string;
   slug: string;
   name: string;
+  parentName: string | null;
   isPrimary: boolean;
   sortOrder: number;
 };
@@ -36,6 +38,7 @@ export type AdminProductEditorData = {
   description: string;
   status: AdminProductEditorStatus;
   isFeatured: boolean;
+  primaryCategoryId: string | null;
   categoryIds: string[];
   categories: AdminProductEditorCategory[];
   images: AdminProductEditorImage[];

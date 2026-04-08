@@ -100,9 +100,9 @@ export function getSimpleOfferErrorMessage(error: string | undefined): string | 
     case "invalid_price":
       return "Renseignez un prix valide.";
     case "invalid_compare_at_price":
-      return "Renseignez un prix barré valide.";
+      return "Renseignez un Prix avant réduction valide.";
     case "compare_at_price_below_price":
-      return "Le prix barré doit être supérieur ou égal au prix.";
+      return "Le Prix avant réduction doit être supérieur ou égal au prix.";
     case "missing_stock_quantity":
       return "Le stock disponible est obligatoire.";
     case "invalid_stock_quantity":
@@ -137,9 +137,9 @@ export function getVariantErrorMessage(error: string | undefined): string | null
     case "invalid_price":
       return "Renseignez un prix valide.";
     case "invalid_compare_at_price":
-      return "Renseignez un prix barré valide.";
+      return "Renseignez un Prix avant réduction valide.";
     case "compare_at_price_below_price":
-      return "Le prix barré doit être supérieur ou égal au prix.";
+      return "Le Prix avant réduction doit être supérieur ou égal au prix.";
     case "missing_stock_quantity":
       return "Le stock disponible est obligatoire.";
     case "invalid_stock_quantity":

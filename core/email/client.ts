@@ -1,4 +1,4 @@
-import { serverEnv } from "@core/config/env/server";
+import { serverEnv } from "@/core/config/env/server";
 
 import { parseEmailFrom } from "./from";
 

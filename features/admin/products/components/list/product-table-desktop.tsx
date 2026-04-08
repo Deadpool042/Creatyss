@@ -1,0 +1,147 @@
+// features/admin/products/components/list/product-table-desktop.tsx
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import type { JSX } from "react";
+
+import { AdminDataTableEmptyState } from "@/components/admin/tables/admin-data-table-empty-state";
+import { PlaceholderImage } from "@/components/shared/placeholder-image";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { hasRealImage } from "@/core/media";
+import { toggleProductFeaturedAction } from "@/features/admin/products/list/actions/toggle-product-featured.action";
+import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
+import { stripHtml } from "@/features/admin/products/list/utils";
+import { ProductStatusBadge } from "@/features/admin/products/components/shared/product-status-badge";
+import { AdminProductsCategoryCell } from "./admin-products-category-cell";
+import { AdminProductsPriceCell } from "./admin-products-price-cell";
+import { ProductFeaturedToggle } from "./product-featured-toggle";
+import { ProductStockBadge } from "./product-stock-badge";
+import { ProductTableRowActions } from "./product-table-row-actions";
+
+type ProductTableDesktopProps = {
+  products: ProductTableItem[];
+};
+
+export function ProductTableDesktop({ products }: ProductTableDesktopProps): JSX.Element {
+  return (
+    <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border">
+      <div className="min-h-0 flex-1 overflow-auto">
+        <Table>
+          <TableHeader className="sticky top-0 z-10 bg-background">
+            <TableRow>
+              <TableHead className="w-14" />
+              <TableHead>Produit</TableHead>
+              <TableHead className="w-14 text-center">★</TableHead>
+              <TableHead className="w-32">Statut</TableHead>
+              <TableHead className="w-36">Stock</TableHead>
+              <TableHead className="w-40">Prix</TableHead>
+              <TableHead className="w-52">Catégorie</TableHead>
+              <TableHead className="w-12" />
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {products.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8} className="p-0">
+                  <AdminDataTableEmptyState message="Aucun produit trouvé." />
+                </TableCell>
+              </TableRow>
+            ) : (
+              products.map((product) => {
+                const shortDescription = product.shortDescription
+                  ? stripHtml(product.shortDescription)
+                  : null;
+
+                return (
+                  <TableRow key={product.id}>
+                    <TableCell className="p-2">
+                      <div className="relative h-10 w-10 overflow-hidden rounded-md border bg-muted">
+                        {hasRealImage(product.primaryImageUrl) ? (
+                          <Image
+                            src={product.primaryImageUrl!}
+                            alt={product.primaryImageAlt ?? product.name}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <PlaceholderImage
+                            alt={product.primaryImageAlt ?? product.name}
+                            className="bg-muted"
+                            imageClassName="opacity-15"
+                          />
+                        )}
+                      </div>
+                    </TableCell>
+
+                    <TableCell>
+                      <Link href={`/admin/products/${product.slug}/edit`} className="group block">
+                        <span className="font-medium group-hover:underline">{product.name}</span>
+
+                        {shortDescription ? (
+                          <span className="block max-w-sm truncate text-xs text-muted-foreground">
+                            {shortDescription}
+                          </span>
+                        ) : null}
+
+                        <div className="mt-1 flex flex-wrap items-center gap-2">
+                          <span className="rounded-md border px-2 py-0.5 text-[11px] text-muted-foreground">
+                            {product.variantCount} variante
+                            {product.variantCount > 1 ? "s" : ""}
+                          </span>
+                        </div>
+                      </Link>
+                    </TableCell>
+
+                    <TableCell className="text-center">
+                      <ProductFeaturedToggle
+                        productId={product.id}
+                        isFeatured={product.isFeatured}
+                        onToggle={toggleProductFeaturedAction}
+                      />
+                    </TableCell>
+
+                    <TableCell>
+                      <ProductStatusBadge status={product.status} />
+                    </TableCell>
+
+                    <TableCell>
+                      <ProductStockBadge
+                        state={product.stockState}
+                        quantity={product.stockQuantity}
+                      />
+                    </TableCell>
+
+                    <TableCell>
+                      <AdminProductsPriceCell
+                        priceLabel={product.priceLabel}
+                        compareAtPriceLabel={product.compareAtPriceLabel}
+                        hasPromotion={product.hasPromotion}
+                      />
+                    </TableCell>
+
+                    <TableCell>
+                      <AdminProductsCategoryCell label={product.categoryPathLabel} />
+                    </TableCell>
+
+                    <TableCell className="p-2">
+                      <ProductTableRowActions slug={product.slug} productName={product.name} />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}

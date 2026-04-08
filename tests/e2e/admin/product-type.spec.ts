@@ -37,7 +37,7 @@ test("edits a simple product natively without creating a legacy variant", async 
 
     await simpleOfferForm.getByLabel("SKU").fill(`SIMPLE-${product.suffix}`);
     await simpleOfferForm.getByLabel("Prix", { exact: true }).fill("49");
-    await simpleOfferForm.getByLabel("Prix barré").fill("59");
+    await simpleOfferForm.getByLabel("Prix avant réduction").fill("59");
     await simpleOfferForm.getByLabel("Stock disponible").fill("3");
 
     await Promise.all([

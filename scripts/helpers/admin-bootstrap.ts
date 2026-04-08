@@ -4,7 +4,7 @@ import {
   UserStatus,
   UserType,
   type PrismaClient,
-} from "@prisma-generated/client";
+} from "@/prisma-generated/client";
 
 import { hashAdminPassword } from "../../core/auth/admin/password";
 import { normalizeAdminBootstrapInput } from "../../core/auth/admin/validation";

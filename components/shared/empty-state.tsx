@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { ComponentType, ReactNode } from "react";
 
-import { Button } from "@components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 type EmptyStateProps = {
   title: string;

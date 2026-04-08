@@ -1,6 +1,6 @@
-import { CredentialType, SessionStatus, UserStatus, type Prisma } from "@prisma-generated/client";
+import { CredentialType, SessionStatus, UserStatus, type Prisma } from "@/prisma-generated/client";
 
-import { db } from "@core/db";
+import { db } from "@/core/db";
 
 import type { AuthenticatedAdmin } from "./types";
 

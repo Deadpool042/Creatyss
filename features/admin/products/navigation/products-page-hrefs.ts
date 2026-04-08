@@ -1,4 +1,4 @@
-import type { ProductsPageParams } from "./products-page-params";
+import type { ProductsPageParams } from "./types/products-page-params.types";
 
 type ProductsPageQueryValue = string | null | undefined;
 

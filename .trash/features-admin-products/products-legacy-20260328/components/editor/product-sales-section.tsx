@@ -145,7 +145,7 @@ function renderSimpleOfferForm(productId: string, salesState: ProductSalesState)
             />
           </AdminFormField>
 
-          <AdminFormField htmlFor={compareAtPriceId} label="Prix barré">
+          <AdminFormField htmlFor={compareAtPriceId} label="Prix avant réduction">
             <Input
               defaultValue={salesState.simpleOfferFormDefaults.compareAtPrice}
               id={compareAtPriceId}
@@ -212,7 +212,7 @@ function renderVariantCreateForm(
             <Input id={priceId} inputMode="decimal" name="price" required type="text" />
           </AdminFormField>
 
-          <AdminFormField htmlFor={compareAtPriceId} label="Prix barré">
+          <AdminFormField htmlFor={compareAtPriceId} label="Prix avant réduction">
             <Input id={compareAtPriceId} inputMode="decimal" name="compareAtPrice" type="text" />
           </AdminFormField>
 
@@ -306,7 +306,7 @@ export function ProductSalesSection({
         contentClassName="gap-6"
         description={
           salesState.isSimpleProduct
-            ? "Complétez ici la référence, le prix, le prix barré et le stock du produit simple."
+            ? "Complétez ici la référence, le prix, le Prix avant réduction et le stock du produit simple."
             : productPresentation.sectionDescription
         }
         eyebrow={salesState.isSimpleProduct ? "Produit simple" : productPresentation.sectionEyebrow}

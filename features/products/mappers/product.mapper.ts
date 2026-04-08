@@ -1,4 +1,4 @@
-import type { Product } from "@prisma-generated/client";
+import type { Product } from "@/prisma-generated/client";
 
 import { productDetailsDTOSchema, productListItemDTOSchema } from "../types";
 

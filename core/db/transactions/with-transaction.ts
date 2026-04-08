@@ -1,6 +1,6 @@
 //core/db/transactions/with-transaction.ts
-import { db } from "@/core/db";
-import type { Prisma } from "@prisma-generated/client";
+import type { Prisma } from "@/prisma-generated/client";
+import { db } from "../client";
 
 export type DbTx = Prisma.TransactionClient;
 

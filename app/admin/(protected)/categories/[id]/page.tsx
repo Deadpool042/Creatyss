@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/notice";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { AdminFormSection } from "@/components/admin/admin-form-section";
-import { AdminFormField } from "@/components/admin/admin-form-field";
-import { AdminFormActions } from "@/components/admin/admin-form-actions";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
 import { findAdminCategoryById } from "@/db/repositories/admin-category.repository";
 import { getUploadsPublicPath } from "@/lib/uploads";
@@ -120,11 +120,7 @@ export default async function EditAdminCategoryPage({
 
   return (
     <AdminPageShell
-      actions={
-        <Button asChild size="sm" variant="outline">
-          <Link href="/admin/categories">Retour à la liste</Link>
-        </Button>
-      }
+      pageTitleNavigation={{ label: "Retour", href: "/admin/categories" }}
       description="Modifiez d'abord les informations de la catégorie. La suppression reste disponible séparément en bas de page."
       eyebrow="Catégories"
       title="Modifier la catégorie"
@@ -178,7 +174,7 @@ export default async function EditAdminCategoryPage({
         {imageStatusMessage ? <Notice tone="success">{imageStatusMessage}</Notice> : null}
 
         {currentImageUrl ? (
-          <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
+          <div className="overflow-hidden rounded-xl border border-border-soft bg-surface-panel-soft shadow-xs">
             <Image
               alt={category.name}
               className="aspect-video w-full object-cover"
@@ -188,7 +184,7 @@ export default async function EditAdminCategoryPage({
             />
           </div>
         ) : (
-          <div className="flex min-h-32 items-center justify-center rounded-xl border border-dashed border-border/70 bg-muted/20 px-6 text-center text-sm leading-6 text-muted-foreground">
+          <div className="flex min-h-32 items-center justify-center rounded-xl border border-dashed border-border-soft bg-surface-panel-soft px-6 text-center text-sm leading-6 text-muted-foreground">
             Aucune image pour cette catégorie
           </div>
         )}

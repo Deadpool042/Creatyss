@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
-import { getCurrentAdmin } from "@core/auth/admin/guard";
-import { LoginForm, loginAction } from "@features/admin/auth";
+import { getCurrentAdmin } from "@/core/auth/admin/guard";
+import { LoginForm, loginAction } from "@/features/admin/auth";
 
 export const dynamic = "force-dynamic";
 

@@ -98,9 +98,9 @@
 
   /* Sections : blanc cassé rosé, plus clair que le fond de page */
   --shell-surface: rgb(253 249 245 / 0.97);
-  --shell-surface-blur: rgb(253 249 245 / 0.9);
+  --shell-surface-blur: rgb(253 249 245 / 0.78);
   --shell-drawer: rgb(255 251 248 / 0.98);
-  --shell-drawer-blur: rgb(255 251 248 / 0.93);
+  --shell-drawer-blur: rgb(255 251 248 / 0.86);
   --shell-border: rgb(120 90 60 / 0.12);
 
   /* ==========================================================================
@@ -241,10 +241,10 @@
      ========================================================================== */
 
   /* Sections brun cacao visibles sur le fond sombre */
-  --shell-surface: rgb(54 42 34 / 0.93);
-  --shell-surface-blur: rgb(54 42 34 / 0.85);
-  --shell-drawer: rgb(46 36 30 / 0.97);
-  --shell-drawer-blur: rgb(46 36 30 / 0.9);
+  --shell-surface: rgb(54 42 34 / 0.9);
+  --shell-surface-blur: rgb(54 42 34 / 0.58);
+  --shell-drawer: rgb(46 36 30 / 0.94);
+  --shell-drawer-blur: rgb(46 36 30 / 0.68);
   --shell-border: rgb(225 200 180 / 0.1);
 
   /* ==========================================================================

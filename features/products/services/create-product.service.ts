@@ -4,10 +4,10 @@ import {
   type CreateProductInput,
   createProductInputSchema,
   type ProductDetailsDTO,
-} from "@features/products/types";
-import { generateProductSlug } from "@features/products/helpers";
-import { createProduct, findProductBySlug } from "@features/products/repository";
-import { mapProductToDetailsDTO } from "@features/products/mappers";
+} from "@/features/products/types";
+import { generateProductSlug } from "@/features/products/helpers";
+import { createProduct, findProductBySlug } from "@/features/products/repository";
+import { mapProductToDetailsDTO } from "@/features/products/mappers";
 
 export async function createProductService(input: CreateProductInput): Promise<ProductDetailsDTO> {
   const parsedInput = createProductInputSchema.parse(input);

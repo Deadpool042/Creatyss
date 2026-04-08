@@ -1,7 +1,7 @@
-import { ProductStatus, type Prisma } from "@prisma-generated/client";
+import { ProductStatus, type Prisma } from "@/prisma-generated/client";
 
-import { db } from "@core/db";
-import type { ProductsPageParams } from "@features/admin/products/navigation";
+import { db } from "@/core/db";
+import type { ProductsPageParams } from "@/features/admin/products/navigation";
 import { mapProductListItem } from "../mappers/map-product-list-item";
 import type { AdminProductListItem } from "../types/product-list.types";
 

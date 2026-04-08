@@ -31,6 +31,7 @@ const serverEnvSchema = z.object({
   EMAIL_FROM: nonEmptyStringSchema,
 
   UPLOADS_DIR: nonEmptyStringSchema.default("public/uploads"),
+  MEDIA_IMAGE_PLACEHOLDER: nonEmptyStringSchema.default("creatyss.webp"),
 });
 
 const parsedServerEnv = serverEnvSchema.safeParse(process.env);
@@ -54,4 +55,5 @@ export const serverEnv = {
   brevoApiKey: parsedServerEnv.data.BREVO_API_KEY,
   emailFrom: parsedServerEnv.data.EMAIL_FROM,
   uploadsDir: parsedServerEnv.data.UPLOADS_DIR,
+  mediaImagePlaceholder: parsedServerEnv.data.MEDIA_IMAGE_PLACEHOLDER,
 } as const;

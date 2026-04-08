@@ -1,6 +1,6 @@
 //core/payments/stripe/server.ts
 import Stripe from "stripe";
-import { serverEnv } from "@core/config/env";
+import { serverEnv } from "@/core/config/env";
 
 const env = serverEnv;
 

@@ -1,8 +1,8 @@
 //core/db/client.ts
-import { PrismaClient } from "@prisma-generated/client";
+import { PrismaClient } from "@/prisma-generated/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-import { serverEnv } from "@core/config/env";
+import { serverEnv } from "@/core/config/env";
 
 declare global {
   var __db__: PrismaClient | undefined;

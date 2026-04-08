@@ -1,8 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Notice } from "@/components/shared/notice";
-import { AdminFormField } from "@/components/admin/admin-form-field";
-import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 
 const checkboxClassName =
   "mt-0.5 size-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30";

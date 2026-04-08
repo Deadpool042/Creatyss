@@ -1,6 +1,6 @@
-import { db } from "@core/db";
+import { db } from "@/core/db";
 
-import type { AdminDashboardStats } from "@features/admin/dashboard/types/dashboard.types";
+import type { AdminDashboardStats } from "@/features/admin/dashboard/types/dashboard.types";
 
 export async function getAdminDashboardStats(): Promise<AdminDashboardStats> {
   const [productsCount, ordersCount, blogPostsCount] = await Promise.all([

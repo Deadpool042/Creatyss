@@ -1,5 +1,5 @@
 //features/admin/products/details/queries/read-admin-product-details-by-slug.query.ts
-import { db } from "@core/db";
+import { db } from "@/core/db";
 import { mapProductDetails } from "../mappers/map-product-details";
 import type { AdminProductDetails } from "../types/product-detail-types";
 

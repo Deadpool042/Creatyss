@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/notice";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { AdminFormSection } from "@/components/admin/admin-form-section";
-import { AdminFormField } from "@/components/admin/admin-form-field";
-import { AdminFormActions } from "@/components/admin/admin-form-actions";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
 import { createBlogPostAction } from "@/features/admin/blog";
 
@@ -53,11 +53,7 @@ export default async function NewAdminBlogPostPage({ searchParams }: NewAdminBlo
 
   return (
     <AdminPageShell
-      actions={
-        <Button asChild size="sm" variant="outline">
-          <Link href="/admin/blog">Retour à la liste</Link>
-        </Button>
-      }
+      pageTitleNavigation={{ label: "Retour", href: "/admin/blog" }}
       description="Renseignez le titre, le contenu et les informations de publication avant de créer l'article."
       eyebrow="Blog"
       title="Nouvel article"

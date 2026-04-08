@@ -1,7 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "noEmit": true
-  },
-  "include": ["db/repositories/products/**/*.ts", "db/prisma-client.ts"]
+  "include": ["features/admin/products/**/*.ts", "features/admin/products/**/*.tsx"],
+  "exclude": ["features/admin/blog/**", "features/admin/categories/**", "features/admin/orders/**"]
 }

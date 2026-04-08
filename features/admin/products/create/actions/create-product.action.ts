@@ -1,16 +1,17 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { ProductStatus } from "@prisma-generated/client";
+import { ProductStatus } from "@/prisma-generated/client";
 import type { z } from "zod";
 
-import { db } from "@core/db";
-import { createProductSchema } from "../schemas/create-product.schema";
+import { db } from "@/core/db";
+
 import type {
   CreateProductActionState,
   CreateProductFormValues,
-} from "../types/create-product.types";
-import { redirect } from "next/navigation";
+} from "@/features/admin/products/create/types/create-product.types";
+import { createProductSchema } from "@/features/admin/products/create/schemas";
 
 function mapFormDataToValues(formData: FormData): CreateProductFormValues {
   return {
@@ -29,27 +30,16 @@ function buildFieldErrors(input: {
 }): CreateProductActionState["fieldErrors"] {
   const fieldErrors: CreateProductActionState["fieldErrors"] = {};
 
-  if (input.name) {
-    fieldErrors.name = input.name;
-  }
-
-  if (input.slug) {
-    fieldErrors.slug = input.slug;
-  }
-
-  if (input.shortDescription) {
-    fieldErrors.shortDescription = input.shortDescription;
-  }
-
-  if (input.status) {
-    fieldErrors.status = input.status;
-  }
+  if (input.name) fieldErrors.name = input.name;
+  if (input.slug) fieldErrors.slug = input.slug;
+  if (input.shortDescription) fieldErrors.shortDescription = input.shortDescription;
+  if (input.status) fieldErrors.status = input.status;
 
   return fieldErrors;
 }
 
 function getFirstIssueMessage(
-  issues: readonly z.ZodIssue[],
+  issues: readonly z.core.$ZodIssue[],
   fieldName: keyof CreateProductFormValues
 ): string | undefined {
   const issue = issues.find((entry) => entry.path[0] === fieldName);
@@ -79,12 +69,8 @@ export async function createProductAction(
   }
 
   const existingProduct = await db.product.findFirst({
-    where: {
-      slug: parsed.data.slug,
-    },
-    select: {
-      id: true,
-    },
+    where: { slug: parsed.data.slug },
+    select: { id: true },
   });
 
   if (existingProduct) {
@@ -98,12 +84,8 @@ export async function createProductAction(
   }
 
   const store = await db.store.findFirst({
-    select: {
-      id: true,
-    },
-    orderBy: {
-      createdAt: "asc",
-    },
+    select: { id: true },
+    orderBy: { createdAt: "asc" },
   });
 
   if (!store) {

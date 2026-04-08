@@ -1,4 +1,4 @@
-import { ProductStatus } from "@prisma-generated/client";
+import { ProductStatus } from "@/prisma-generated/client";
 
 import type { AdminProductListItem } from "../types/product-list.types";
 

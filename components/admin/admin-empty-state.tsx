@@ -8,7 +8,7 @@ type AdminEmptyStateProps = {
 
 export function AdminEmptyState({ eyebrow, title, description }: AdminEmptyStateProps) {
   return (
-    <Empty className="empty-state !flex !items-start !justify-start !gap-3 !rounded-xl !border !border-solid !border-border/70 !bg-card !p-5 !text-left !text-card-foreground shadow-sm">
+    <Empty className="empty-state flex! items-start! justify-start! gap-3! rounded-xl! border! border-solid! border-border-soft! bg-card! p-5! text-left! text-card-foreground! shadow-card">
       <EmptyHeader className="items-start gap-1 text-left">
         <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
           {eyebrow}

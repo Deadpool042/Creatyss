@@ -1,6 +1,4 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/shared/notice";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { findAdminOrderById } from "@/db/repositories/order.repository";
@@ -99,11 +97,7 @@ export default async function AdminOrderDetailPage({
 
   return (
     <AdminPageShell
-      actions={
-        <Button asChild size="sm" variant="outline">
-          <Link href="/admin/orders">Retour aux commandes</Link>
-        </Button>
-      }
+      pageTitleNavigation={{ label: "Retour", href: "/admin/orders" }}
       description="Repérez d'abord l'état de la commande, appliquez l'action utile si nécessaire, puis consultez les détails."
       eyebrow="Commandes"
       title={`Commande ${order.reference}`}

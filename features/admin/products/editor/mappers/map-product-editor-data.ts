@@ -1,6 +1,6 @@
-import { MediaReferenceRole, ProductStatus, ProductVariantStatus } from "@prisma-generated/client";
+import { MediaReferenceRole, ProductStatus, ProductVariantStatus } from "@/prisma-generated/client";
 
-import type { AdminProductEditorData } from "../types/product-editor.types";
+import type { AdminProductEditorData } from "@/features/admin/products/editor/types";
 
 type ProductEditorMediaReferenceSource = {
   role: MediaReferenceRole;
@@ -16,6 +16,7 @@ type ProductEditorMediaReferenceSource = {
 type ProductEditorSource = {
   product: {
     id: string;
+    storeId: string;
     slug: string | null;
     name: string;
     shortDescription: string | null;
@@ -30,6 +31,9 @@ type ProductEditorSource = {
         id: string;
         slug: string;
         name: string;
+        parent: {
+          name: string;
+        } | null;
       };
     }>;
     variants: Array<{
@@ -49,6 +53,10 @@ type ProductEditorSource = {
     }>;
   };
   mediaReferences: ProductEditorMediaReferenceSource[];
+  seoMetadata: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
 };
 
 function decimalToString(value: { toString(): string } | null): string {
@@ -82,17 +90,19 @@ function mapVariantStatusToAdminStatus(
 }
 
 export function mapProductEditorData(input: ProductEditorSource): AdminProductEditorData {
-  const { product, mediaReferences } = input;
+  const { product, mediaReferences, seoMetadata } = input;
 
   const categories = product.productCategories.map((item) => ({
     id: item.category.id,
     slug: item.category.slug,
     name: item.category.name,
+    parentName: item.category.parent?.name ?? null,
     isPrimary: item.isPrimary,
     sortOrder: item.sortOrder,
   }));
 
   const categoryIds = categories.map((category) => category.id);
+  const primaryCategoryId = categories.find((category) => category.isPrimary)?.id ?? null;
 
   const images = mediaReferences
     .filter(
@@ -136,13 +146,14 @@ export function mapProductEditorData(input: ProductEditorSource): AdminProductEd
     description: product.description ?? "",
     status: mapProductStatusToAdminStatus(product.status),
     isFeatured: product.isFeatured,
+    primaryCategoryId,
     categoryIds,
     categories,
     images,
     variants,
     seo: {
-      title: product.name,
-      description: product.shortDescription ?? "",
+      title: seoMetadata?.metaTitle ?? "",
+      description: seoMetadata?.metaDescription ?? "",
     },
   };
 }

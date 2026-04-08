@@ -1,4 +1,4 @@
-import { MediaReferenceRole, ProductStatus, ProductVariantStatus } from "@prisma-generated/client";
+import { MediaReferenceRole, ProductStatus, ProductVariantStatus } from "@/prisma-generated/client";
 
 import type { AdminProductEditorData } from "../types/product-editor.types";
 

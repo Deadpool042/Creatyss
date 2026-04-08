@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { AdminFormField } from "@/components/admin/admin-form-field";
-import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 
 type EditorialSectionProps = {
   editorialTitle: string | null;

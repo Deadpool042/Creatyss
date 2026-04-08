@@ -1,12 +1,11 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/notice";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { AdminFormSection } from "@/components/admin/admin-form-section";
-import { AdminFormField } from "@/components/admin/admin-form-field";
-import { AdminFormActions } from "@/components/admin/admin-form-actions";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { createCategoryAction } from "@/features/admin/categories";
 
 export const dynamic = "force-dynamic";
@@ -43,11 +42,7 @@ export default async function NewAdminCategoryPage({ searchParams }: NewAdminCat
 
   return (
     <AdminPageShell
-      actions={
-        <Button asChild size="sm" variant="outline">
-          <Link href="/admin/categories">Retour à la liste</Link>
-        </Button>
-      }
+      pageTitleNavigation={{ label: "Retour", href: "/admin/categories" }}
       description="Créez une catégorie simple pour organiser le catalogue."
       eyebrow="Catégories"
       title="Nouvelle catégorie"

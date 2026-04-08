@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/notice";
-import { AdminFormField } from "@/components/admin/admin-form-field";
-import { AdminFormSection } from "@/components/admin/admin-form-section";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 
 const nativeSelectClassName =
   "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";

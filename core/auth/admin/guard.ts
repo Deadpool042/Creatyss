@@ -1,4 +1,4 @@
-import { SessionStatus } from "@prisma-generated/client";
+import { SessionStatus } from "@/prisma-generated/client";
 import { redirect } from "next/navigation";
 
 import { verifyAdminPassword } from "./password";

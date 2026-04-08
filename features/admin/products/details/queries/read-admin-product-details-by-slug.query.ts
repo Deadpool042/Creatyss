@@ -1,6 +1,6 @@
-import { db } from "@core/db";
-import { mapProductDetails } from "../mappers/map-product-details";
-import type { AdminProductDetails } from "../types/product-detail-types";
+import { db } from "@/core/db";
+import { mapProductDetails } from "@/features/admin/products/details/mappers/map-product-details";
+import type { AdminProductDetails } from "@/features/admin/products/details/types/product-detail-types";
 
 export async function readAdminProductDetailsBySlug(
   slug: string

@@ -1,43 +1,47 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { listAdminProducts } from "@/features/admin/products/list";
+import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { ProductTable } from "@/features/admin/products/components/list/product-table";
 import { parseProductsPageParams } from "@/features/admin/products/navigation";
-import { ProductTable } from "@/components/admin/products/product-table";
-import type { ProductListItemData } from "@/components/admin/products/product-list-item";
+import { mapProductTableItem } from "@/features/admin/products/list/mappers/server";
+import { getAdminProductsFeed } from "@/features/admin/products/list/queries/get-admin-products-feed.query";
+import { listAdminProducts } from "@/features/admin/products/list/queries/list-admin-products.query";
+import { listProductFilterCategories } from "@/features/admin/products/list/queries/list-product-filter-categories.query";
+import { ProductCreateTopbarMenu } from "@/features/admin/products/components";
 
 export default async function AdminProductsPage() {
   const params = parseProductsPageParams(undefined);
-  const raw = await listAdminProducts(params);
 
-  const products: ProductListItemData[] = raw.map((p) => ({
-    id: p.id,
-    slug: p.slug,
-    name: p.name,
-    status: p.status,
-    ...(p.shortDescription ? { shortDescription: p.shortDescription } : {}),
-    ...(p.primaryImageUrl ? { imageUrl: p.primaryImageUrl } : {}),
-    ...(p.amount ? { price: `${parseFloat(p.amount).toFixed(2)} €` } : {}),
-    ...(p.primaryCategory ? { category: p.primaryCategory.name } : {}),
-  }));
+  const [rawProducts, categoryOptions, initialMobileFeed] = await Promise.all([
+    listAdminProducts(params),
+    listProductFilterCategories(),
+    getAdminProductsFeed({
+      limit: 12,
+      cursor: null,
+      ...(params.search.trim().length > 0 ? { search: params.search } : {}),
+    }),
+  ]);
 
-  // h-[calc(100svh-5.5rem)] : 100svh − shell header (3.5rem) − padding top+bottom (2×1rem)
-  // md:h-[calc(100svh-6.5rem)] : idem avec padding md (2×1.5rem)
+  const products = rawProducts.map(mapProductTableItem);
+
   return (
-    <div className="flex h-[calc(100svh-5.5rem)] flex-col gap-6 md:h-[calc(100svh-6.5rem)]">
-      <div className="flex shrink-0 items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Produits</h1>
-          <p className="text-sm text-muted-foreground">
-            {products.length} produit{products.length !== 1 ? "s" : ""}
-          </p>
-        </div>
-        <Button asChild>
-          <Link href="/admin/products/new">Nouveau produit</Link>
-        </Button>
-      </div>
-      <div className="flex min-h-0 flex-1 flex-col">
-        <ProductTable products={products} />
-      </div>
-    </div>
+    <AdminPageShell
+      headerVisibility="desktop"
+      eyebrow="Catalogue"
+      title="Produits"
+      description="Pilotez le catalogue et affinez rapidement la liste."
+      topbarAction={<ProductCreateTopbarMenu productId="" />}
+      navigation={{ label: "Accueil", href: "/admin" }}
+      breadcrumbs={[
+        { label: "Accueil", href: "/admin" },
+        { label: "Produits", href: "/admin/products" },
+      ]}
+      viewportClassName="!h-full"
+      contentClassName={["lg:px-6", "lg:pb-6"].join(" ")}
+    >
+      <ProductTable
+        products={products}
+        categoryOptions={categoryOptions}
+        initialMobileFeed={initialMobileFeed}
+      />
+    </AdminPageShell>
   );
 }

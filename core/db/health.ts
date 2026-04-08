@@ -1,5 +1,5 @@
 //core/db/health.ts
-import { getErrorMessage } from "@core/shared/errors";
+import { getErrorMessage } from "@/core/shared/errors";
 import { db } from "./client";
 
 type DatabaseHealth = { ok: true } | { ok: false; message: string };

@@ -1,36 +1,113 @@
 import type { ReactNode } from "react";
+
+import { AdminPageHeader } from "@/components/admin/admin-page-header";
+import { AdminPageTitle } from "@/components/admin/admin-page-title";
+import type { AppBreadcrumbItem } from "@/components/shared/breadcrumbs";
+import { ViewportScrollArea } from "@/components/shared/viewport-scroll-area";
 import { cn } from "@/lib/utils";
 
+type AdminPageShellLinkAction = {
+  label: string;
+  href: string;
+  ariaLabel?: string;
+};
+
 type AdminPageShellProps = {
-  eyebrow: string;
   title: string;
+  children: ReactNode;
+
+  eyebrow?: ReactNode;
   description?: ReactNode;
   actions?: ReactNode;
-  children: ReactNode;
+  breadcrumbs?: ReadonlyArray<AppBreadcrumbItem>;
+
+  navigation?: AdminPageShellLinkAction;
+  topbarAction?: ReactNode;
+
+  headerVisibility?: "all" | "desktop";
+  scrollMode?: "area" | "nested";
+  compactMobileTitle?: boolean;
+  hideEyebrowOnLowHeight?: boolean;
+  hideDescriptionOnMobile?: boolean;
+
   className?: string;
+  viewportClassName?: string;
+  headerClassName?: string;
+  bodyClassName?: string;
+  contentClassName?: string;
 };
 
 export function AdminPageShell({
-  eyebrow,
   title,
+  children,
+  eyebrow,
   description,
   actions,
-  children,
+  breadcrumbs = [],
+  navigation,
+  topbarAction,
+  headerVisibility = "all",
+  scrollMode = "nested",
+  compactMobileTitle = false,
+  hideEyebrowOnLowHeight = false,
+  hideDescriptionOnMobile = false,
   className,
+  viewportClassName,
+  headerClassName,
+  bodyClassName,
+  contentClassName,
 }: AdminPageShellProps) {
   return (
-    <div className={cn("space-y-6", className)}>
-      <div className="flex items-end justify-between gap-4 border-b border-border/60 pb-6">
-        <div>
-          <p className="mb-3 text-sm font-bold uppercase tracking-[0.08em] text-brand">{eyebrow}</p>
-          <h1 className="m-0">{title}</h1>
-          {description ? (
-            <p className="mt-4 leading-relaxed text-muted-foreground">{description}</p>
-          ) : null}
+    <>
+      <AdminPageTitle
+        title={title}
+        {...(navigation ? { navigation } : {})}
+        {...(topbarAction ? { actionNode: topbarAction } : {})}
+      />
+
+      <ViewportScrollArea
+        className={cn(
+          "gap-4 lg:gap-6 [@media(max-height:480px)]:gap-2",
+          className,
+          viewportClassName
+        )}
+        headerClassName={cn(
+          "shrink-0 border-b border-border-soft/80 p-4",
+          headerVisibility === "desktop" &&
+            "hidden lg:block lg:pt-16 [@media(max-height:480px)]:lg:pt-12",
+          headerClassName
+        )}
+        bodyClassName={cn(
+          "flex min-h-0 flex-1 flex-col",
+          scrollMode === "nested" && "overflow-hidden",
+          bodyClassName
+        )}
+        scrollMode={scrollMode}
+        header={
+          <AdminPageHeader
+            actions={actions}
+            breadcrumbs={breadcrumbs}
+            compactMobileTitle={compactMobileTitle}
+            description={description}
+            eyebrow={eyebrow}
+            hideDescriptionOnMobile={hideDescriptionOnMobile}
+            hideEyebrowOnLowHeight={hideEyebrowOnLowHeight}
+            title={title}
+          />
+        }
+      >
+        <div
+          className={cn(
+            scrollMode === "area"
+              ? "flex min-h-full min-w-0 flex-col"
+              : "flex min-h-0 flex-1 min-w-0 flex-col",
+            scrollMode === "nested" && "overflow-hidden",
+            contentClassName
+          )}
+        >
+          {children}
         </div>
-        {actions ?? null}
-      </div>
-      {children}
-    </div>
+      </ViewportScrollArea>
+    </>
   );
 }

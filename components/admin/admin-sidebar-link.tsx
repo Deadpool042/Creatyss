@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 
+import { isAdminNavigationItemActive } from "@/components/admin/navigation";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
@@ -11,13 +13,20 @@ type AdminSidebarLinkProps = {
   href: string;
   icon: LucideIcon;
   tooltip: string;
-  children: React.ReactNode;
+  children: ReactNode;
+  exact?: boolean;
 };
 
-export function AdminSidebarLink({ href, icon: Icon, tooltip, children }: AdminSidebarLinkProps) {
+export function AdminSidebarLink({
+  href,
+  icon: Icon,
+  tooltip,
+  children,
+  exact = false,
+}: AdminSidebarLinkProps) {
   const pathname = usePathname();
 
-  const isActive = pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`));
+  const isActive = exact ? pathname === href : isAdminNavigationItemActive(pathname, href);
 
   return (
     <SidebarMenuItem>

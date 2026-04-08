@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 
-import { loginAdmin } from "@core/auth/admin/guard";
+import { loginAdmin } from "@/core/auth/admin/guard";
 
 import { LoginSchema } from "../schemas/login-schema";
 

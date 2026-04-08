@@ -1,3 +1,4 @@
+/* app/styles/theme.css */
 @custom-variant dark (&:is(.dark *));
 
 @import "./themes/creatyss.css";

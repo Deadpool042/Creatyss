@@ -1,9 +1,10 @@
-import { ProductStatus, type Prisma } from "@prisma-generated/client";
+import { ProductStatus, type Prisma } from "@/prisma-generated/client";
 
-import { db } from "@core/db";
-import type { ProductsPageParams } from "@features/admin/products/navigation";
-import { mapProductListItem } from "../mappers/map-product-list-item";
-import type { AdminProductListItem } from "../types/product-list.types";
+import { db } from "@/core/db";
+import type { ProductsPageParams } from "@/features/admin/products/navigation";
+import { mapProductListItem } from "@/features/admin/products/list/mappers";
+import type { AdminProductListItem } from "@/features/admin/products/list/types";
+import { buildAdminProductsCategoryFilter } from "@/features/admin/products/list/utils/build-admin-products-category-filter";
 
 type ListAdminProductsQueryInput = Pick<
   ProductsPageParams,
@@ -44,7 +45,9 @@ function buildProductsWhere(input: ListAdminProductsQueryInput): Prisma.ProductW
   const search = input.search.trim();
   const status = normalizeStatusFilter(input.status);
   const featured = normalizeFeaturedFilter(input.featured);
-  const category = input.category.trim();
+  const productCategories = buildAdminProductsCategoryFilter({
+    category: input.category,
+  });
 
   if (search.length > 0) {
     where.OR = [
@@ -77,21 +80,8 @@ function buildProductsWhere(input: ListAdminProductsQueryInput): Prisma.ProductW
     where.isFeatured = featured;
   }
 
-  if (category.length > 0) {
-    where.productCategories = {
-      some: {
-        category: {
-          OR: [
-            {
-              id: category,
-            },
-            {
-              slug: category,
-            },
-          ],
-        },
-      },
-    };
+  if (productCategories) {
+    where.productCategories = productCategories;
   }
 
   return where;
@@ -121,6 +111,28 @@ export async function listAdminProducts(
           code: true,
         },
       },
+      variants: {
+        select: {
+          inventoryItems: {
+            where: {
+              status: "ACTIVE",
+            },
+            select: {
+              onHandQuantity: true,
+              reservedQuantity: true,
+            },
+          },
+          prices: {
+            where: {
+              isActive: true,
+            },
+            select: {
+              amount: true,
+              compareAtAmount: true,
+            },
+          },
+        },
+      },
       _count: {
         select: {
           variants: true,
@@ -131,6 +143,9 @@ export async function listAdminProducts(
         where: {
           isPrimary: true,
         },
+        orderBy: {
+          sortOrder: "asc",
+        },
         take: 1,
         select: {
           category: {
@@ -138,21 +153,13 @@ export async function listAdminProducts(
               id: true,
               slug: true,
               name: true,
+              parent: {
+                select: {
+                  name: true,
+                },
+              },
             },
           },
-        },
-      },
-      prices: {
-        where: {
-          isActive: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: 1,
-        select: {
-          amount: true,
-          compareAtAmount: true,
         },
       },
     },

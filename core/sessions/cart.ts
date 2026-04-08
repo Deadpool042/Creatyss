@@ -2,7 +2,7 @@ import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 
 import { cookies } from "next/headers";
 
-import { serverEnv } from "@core/config/env/server";
+import { serverEnv } from "@/core/config/env/server";
 
 const CART_SESSION_COOKIE_NAME = "creatyss_cart";
 const CART_SESSION_MAX_AGE_SECONDS = 30 * 24 * 60 * 60;

@@ -1,7 +1,8 @@
 export {
+  createProduct,
   findManyProducts,
   findProductById,
   findProductBySlug,
-  createProduct,
+  findProductsPage,
   updateProduct,
 } from "./product.repository";

@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/notice";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { AdminFormSection } from "@/components/admin/admin-form-section";
-import { AdminFormField } from "@/components/admin/admin-form-field";
-import { AdminFormActions } from "@/components/admin/admin-form-actions";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
 import { findAdminBlogPostById } from "@/db/repositories/admin-blog.repository";
 import { deleteBlogPostAction, updateBlogPostAction } from "@/features/admin/blog";
@@ -122,11 +122,7 @@ export default async function EditAdminBlogPostPage({
 
   return (
     <AdminPageShell
-      actions={
-        <Button asChild size="sm" variant="outline">
-          <Link href="/admin/blog">Retour à la liste</Link>
-        </Button>
-      }
+      pageTitleNavigation={{ label: "Retour", href: "/admin/blog" }}
       description="Modifiez d'abord le contenu et le statut de l'article, puis ajustez sa couverture si nécessaire."
       eyebrow="Blog"
       title="Modifier l'article"

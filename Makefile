@@ -45,7 +45,7 @@ define log_error
 endef
 
 .PHONY: help \
-	up up-proxy down restart build app-build logs ps sh dev stripe-dev certs hosts-setup \
+	up up-proxy down restart build app-build logs ps sh dev stripe-dev certs hosts-setup install-packages \
 	prisma-format prisma-validate prisma-generate prisma-db-push prisma-db-reset prisma-studio \
 	db-schema \
 	db-shell db-seed-dev db-seed-images db-import-woocommerce db-import-woocommerce-images \
@@ -64,6 +64,7 @@ help:
 	@printf "  $(COLOR_BOLD)down$(COLOR_RESET)                         Stoppe les services\n"
 	@printf "  $(COLOR_BOLD)restart$(COLOR_RESET)                      Redemarre app + db\n"
 	@printf "  $(COLOR_BOLD)build$(COLOR_RESET)                        Construit les images Docker\n"
+	@printf "  $(COLOR_BOLD)install-packages$(COLOR_RESET)             Installe les packages dans le conteneur app\n"
 	@printf "  $(COLOR_BOLD)app-build$(COLOR_RESET)                    Lance le build Next.js dans le conteneur\n"
 	@printf "  $(COLOR_BOLD)logs$(COLOR_RESET)                         Suit les logs\n"
 	@printf "  $(COLOR_BOLD)ps$(COLOR_RESET)                           Liste les conteneurs\n"
@@ -144,6 +145,11 @@ build:
 	$(call log_info,Build des images Docker)
 	$(COMPOSE_CORE) build
 	$(call log_success,Images construites)
+
+install-packages:
+	$(call log_info,Installation des packages dans le conteneur)
+	$(COMPOSE_CORE) exec $(APP_SERVICE) pnpm install
+	$(call log_success,Packages installes)
 
 app-build:
 	$(call log_info,Build Next.js dans le conteneur)

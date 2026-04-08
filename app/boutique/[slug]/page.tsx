@@ -286,7 +286,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                   <p className="text-2xl font-bold leading-tight">{singleOffer.price}</p>
                   {singleOffer.compareAtPrice ? (
                     <p className="text-sm text-muted-foreground">
-                      Prix barré : {singleOffer.compareAtPrice}
+                      Prix avant réduction : {singleOffer.compareAtPrice}
                     </p>
                   ) : null}
                 </div>
@@ -427,7 +427,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                       <p className="text-2xl font-bold leading-tight">{variant.price}</p>
                       {variant.compareAtPrice ? (
                         <p className="text-sm text-muted-foreground">
-                          Prix barré : {variant.compareAtPrice}
+                          Prix avant réduction : {variant.compareAtPrice}
                         </p>
                       ) : null}
                     </div>
