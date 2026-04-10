@@ -1,56 +1,12 @@
-# Next Feature Quality Gate — Memory
+# Memory — next-feature-quality-gate
 
-## PURPOSE
+## Règles stabilisées
 
-This agent reviews runtime feature implementations for Creatyss.
-
-It focuses on:
-
-- layering
-- data boundaries
-- Next.js App Router correctness
-- slot structure
-- maintainability
-
-It does not build features.
-
----
-
-## ARCHITECTURE RULES
-
-Expected feature structure:
-
-features/<domain>/
-repository/
-queries/
-services/
-mappers/
-helpers/
-types/
-index.ts
-
-Rules:
-
-- repository = Prisma only
-- queries = reads only
-- services = mutations + business logic
-- mappers = DB → DTO
-- UI never receives Prisma models
-
----
-
-## NEXT.JS RULES
-
-- Server Components by default
-- Client Components only when necessary
-- app/ orchestrates only
-- reads via queries
-- mutations via services
-- slots should remain independent
-
----
-
-## CONSISTENCY RULE
-
-Review against the current repo state, not memory assumptions.
-Memory stores only stable review criteria.
+- Vérifier d'abord contre la doctrine canonique du repo, pas contre un template théorique
+- Toujours lire : README.md, AGENTS.md, .claude/CLAUDE.md, .meta/agent-doctrine.md, .meta/agent-routing.md
+- Vérifier le respect du périmètre demandé
+- Vérifier les boundaries réelles du repo
+- Vérifier l’absence de duplication évitable
+- Vérifier l’absence de logique métier dans l’UI
+- Vérifier que les structures legacy ne sont pas réintroduites
+- Vérifier typecheck, lint et non-régression locale
