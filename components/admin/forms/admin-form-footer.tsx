@@ -21,7 +21,7 @@ export function AdminFormFooter({
       className={cn(
         [
           "site-header-blur w-full",
-          "border-t border-shell-border/60",
+          "border-t border-shell-border shadow-card",
           "px-4 pt-2 pb-1.5 md:px-6 md:pt-2.5 md:pb-2",
           "[@media(max-height:480px)]:py-1 ",
         ].join(" "),

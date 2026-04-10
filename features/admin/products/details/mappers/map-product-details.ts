@@ -62,51 +62,58 @@ function decimalToString(value: { toString(): string } | null): string | null {
 }
 
 function mapProductStatusToAdminStatus(status: ProductStatus): AdminProductDetails["status"] {
-  if (status === ProductStatus.ACTIVE) {
-    return "published";
+  switch (status) {
+    case ProductStatus.DRAFT:
+      return "draft";
+    case ProductStatus.ACTIVE:
+      return "active";
+    case ProductStatus.INACTIVE:
+      return "inactive";
+    case ProductStatus.ARCHIVED:
+      return "archived";
   }
-
-  if (status === ProductStatus.ARCHIVED) {
-    return "archived";
-  }
-
-  return "draft";
 }
 
 function mapVariantStatusToAdminStatus(
   status: ProductVariantStatus
 ): AdminProductDetails["variants"][number]["status"] {
-  if (status === ProductVariantStatus.ACTIVE) {
-    return "published";
+  switch (status) {
+    case ProductVariantStatus.DRAFT:
+      return "draft";
+    case ProductVariantStatus.ACTIVE:
+      return "active";
+    case ProductVariantStatus.INACTIVE:
+      return "inactive";
+    case ProductVariantStatus.ARCHIVED:
+      return "archived";
   }
-
-  if (status === ProductVariantStatus.ARCHIVED) {
-    return "archived";
-  }
-
-  return "draft";
 }
 
 function mapProductTypeToAdminProductType(input: {
   productTypeCode: string | null;
   variantCount: number;
 }): AdminProductDetails["productType"] {
-  if (input.productTypeCode === "variable") {
-    return "variable";
+  if (input.productTypeCode === null) {
+    return input.variantCount > 1 ? "variable" : "simple";
   }
 
   if (input.productTypeCode === "simple") {
     return "simple";
   }
 
-  return input.variantCount > 1 ? "variable" : "simple";
+  if (input.productTypeCode === "variable") {
+    return "variable";
+  }
+
+  return "typed";
 }
 
 export function mapProductDetails(product: ProductDetailsSource): AdminProductDetails {
   const activePrice = product.prices[0] ?? null;
   const variantCount = product.variants.length;
+  const productTypeCode = product.productType?.code ?? null;
   const productType = mapProductTypeToAdminProductType({
-    productTypeCode: product.productType?.code ?? null,
+    productTypeCode,
     variantCount,
   });
 
@@ -149,6 +156,7 @@ export function mapProductDetails(product: ProductDetailsSource): AdminProductDe
     status: mapProductStatusToAdminStatus(product.status),
     isFeatured: product.isFeatured,
     productType,
+    productTypeCode,
     updatedAt: product.updatedAt.toISOString(),
     primaryImageUrl: product.primaryImage?.publicUrl ?? null,
     primaryImageAlt: product.primaryImage?.altText ?? null,

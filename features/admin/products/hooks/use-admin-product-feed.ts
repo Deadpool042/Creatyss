@@ -89,6 +89,80 @@ export function useAdminProductFeed({
     []
   );
 
+  useEffect(() => {
+    const trimmedSearch = search.trim();
+
+    if (trimmedSearch.length === 0) {
+      reset({
+        items: initialItems,
+        nextCursor: initialNextCursor,
+        hasMore: initialHasMore,
+      });
+      return;
+    }
+
+    const controller = new AbortController();
+    activeRequestRef.current?.abort();
+    activeRequestRef.current = controller;
+
+    setIsLoading(true);
+    setError(null);
+
+    async function refresh(): Promise<void> {
+      try {
+        const response = await fetch(
+          buildFeedUrl({
+            limit,
+            search: trimmedSearch,
+            cursor: null,
+          }),
+          {
+            method: "GET",
+            signal: controller.signal,
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Impossible d’actualiser la liste des produits.");
+        }
+
+        const payload = (await response.json()) as AdminProductFeedPageResult;
+        setItems(payload.items);
+        setNextCursor(payload.nextCursor);
+        setHasMore(payload.hasMore);
+      } catch (caughtError) {
+        if (caughtError instanceof DOMException && caughtError.name === "AbortError") {
+          return;
+        }
+
+        setError(
+          caughtError instanceof Error
+            ? caughtError.message
+            : "Impossible d’actualiser la liste des produits."
+        );
+      } finally {
+        if (activeRequestRef.current === controller) {
+          activeRequestRef.current = null;
+        }
+
+        setIsLoading(false);
+      }
+    }
+
+    void refresh();
+
+    return () => {
+      controller.abort();
+
+      if (activeRequestRef.current === controller) {
+        activeRequestRef.current = null;
+      }
+    };
+  }, [initialHasMore, initialItems, initialNextCursor, limit, reset, search]);
+
   const loadMore = useCallback(async () => {
     if (isLoading || !hasMore || !nextCursor) {
       return;

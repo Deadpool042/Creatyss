@@ -2,8 +2,8 @@ export type ProductImageReorderDirection = "up" | "down";
 
 export type ReorderProductImageInput = {
   productId: string;
-  assetId: string;
-  direction: ProductImageReorderDirection;
+  imageId: string;
+  sortOrder: number;
 };
 
 export type ReorderProductImageResult = {

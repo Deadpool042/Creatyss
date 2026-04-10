@@ -1,32 +1,38 @@
 "use client";
 
-import { useState, useTransition, type JSX } from "react";
 import Image from "next/image";
-import { ArrowDown, ArrowUp, Check, Pencil, Star, Trash2, X } from "lucide-react";
+import { useState, useTransition, type JSX } from "react";
+import { ArrowDown, ArrowUp, Check, MoreHorizontal, Pencil, Star, Trash2, X } from "lucide-react";
 
-import { hasRealImage } from "@/core/media";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { AdminProductImageItem } from "@/features/admin/products/editor/types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import type {
-  ProductImageReorderDirection,
+  AdminProductImageItem,
   ReorderProductImageResult,
-} from "@/features/admin/products/editor/types/product-image-reorder.types";
-import { PlaceholderImage } from "@/components/shared/placeholder-image";
-import { ConfirmDestructiveDialog } from "@/components/shared/confirm-desctructive-dialog";
+} from "@/features/admin/products/editor/types";
+import { PlaceholderImage } from "@/components/shared";
+
+function hasRealImage(url: string | null): boolean {
+  return typeof url === "string" && url.trim().length > 0;
+}
 
 type ProductImageItemProps = {
   productId: string;
   image: AdminProductImageItem;
   canMoveUp: boolean;
   canMoveDown: boolean;
-  onSetPrimary?: (assetId: string) => Promise<ReorderProductImageResult>;
-  onDelete?: (assetId: string) => Promise<ReorderProductImageResult>;
-  onUpdateAltText?: (assetId: string, altText: string) => Promise<ReorderProductImageResult>;
-  onReorder?: (
-    assetId: string,
-    direction: ProductImageReorderDirection
-  ) => Promise<ReorderProductImageResult>;
+  previousSortOrder: number | null;
+  nextSortOrder: number | null;
+  onSetPrimary?: (mediaAssetId: string) => Promise<ReorderProductImageResult>;
+  onDelete?: (imageId: string) => Promise<ReorderProductImageResult>;
+  onUpdateAltText?: (imageId: string, altText: string) => Promise<ReorderProductImageResult>;
+  onReorder?: (imageId: string, sortOrder: number) => Promise<ReorderProductImageResult>;
 };
 
 export function ProductImageItem({
@@ -34,6 +40,8 @@ export function ProductImageItem({
   image,
   canMoveUp,
   canMoveDown,
+  previousSortOrder,
+  nextSortOrder,
   onSetPrimary,
   onDelete,
   onUpdateAltText,
@@ -50,7 +58,7 @@ export function ProductImageItem({
     }
 
     startTransition(async () => {
-      const result = await onSetPrimary(image.assetId);
+      const result = await onSetPrimary(image.mediaAssetId);
       setMessage(result.message);
     });
   }
@@ -62,7 +70,7 @@ export function ProductImageItem({
 
     return new Promise<boolean>((resolve) => {
       startTransition(async () => {
-        const result = await onDelete(image.assetId);
+        const result = await onDelete(image.id);
         setMessage(result.message);
         resolve(result.status === "success");
       });
@@ -75,7 +83,7 @@ export function ProductImageItem({
     }
 
     startTransition(async () => {
-      const result = await onUpdateAltText(image.assetId, altText);
+      const result = await onUpdateAltText(image.id, altText);
       setMessage(result.message);
 
       if (result.status === "success") {
@@ -84,13 +92,24 @@ export function ProductImageItem({
     });
   }
 
-  async function handleReorder(direction: ProductImageReorderDirection): Promise<void> {
-    if (!onReorder) {
+  async function handleMoveUp(): Promise<void> {
+    if (!onReorder || previousSortOrder === null) {
       return;
     }
 
     startTransition(async () => {
-      const result = await onReorder(image.assetId, direction);
+      const result = await onReorder(image.id, previousSortOrder);
+      setMessage(result.message);
+    });
+  }
+
+  async function handleMoveDown(): Promise<void> {
+    if (!onReorder || nextSortOrder === null) {
+      return;
+    }
+
+    startTransition(async () => {
+      const result = await onReorder(image.id, nextSortOrder);
       setMessage(result.message);
     });
   }
@@ -109,134 +128,142 @@ export function ProductImageItem({
           <PlaceholderImage alt={image.altText ?? "Image produit"} />
         )}
 
-        <div className="absolute left-3 top-3 flex flex-wrap gap-2">
-          {image.isPrimary ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-background/90 px-2 py-1 text-[11px] font-medium">
-              <Star className="h-3.5 w-3.5" />
-              Principale
-            </span>
-          ) : null}
+        <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-2 p-3">
+          <div className="flex flex-wrap gap-2">
+            {image.isPrimary ? (
+              <span className="inline-flex items-center gap-1 rounded-full bg-background/90 px-2 py-1 text-[11px] font-medium text-foreground shadow-sm backdrop-blur">
+                <Star className="h-3.5 w-3.5" />
+                Principale
+              </span>
+            ) : null}
+          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                disabled={isPending}
+                className="h-8 w-8 rounded-full border border-white/15 bg-background/80 text-foreground shadow-sm backdrop-blur"
+                aria-label="Actions image"
+              >
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" sideOffset={8} className="w-52 rounded-xl">
+              <DropdownMenuItem
+                onSelect={() => {
+                  void handleMoveUp();
+                }}
+                disabled={!onReorder || !canMoveUp || isPending}
+              >
+                <ArrowUp className="mr-2 h-4 w-4" />
+                Monter
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onSelect={() => {
+                  void handleMoveDown();
+                }}
+                disabled={!onReorder || !canMoveDown || isPending}
+              >
+                <ArrowDown className="mr-2 h-4 w-4" />
+                Descendre
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onSelect={() => {
+                  setIsEditingAltText(true);
+                  setMessage(null);
+                }}
+                disabled={isEditingAltText || isPending}
+              >
+                <Pencil className="mr-2 h-4 w-4" />
+                Modifier le texte alt
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onSelect={() => {
+                  void handleSetPrimary();
+                }}
+                disabled={!onSetPrimary || image.isPrimary || isPending}
+              >
+                <Star className="mr-2 h-4 w-4" />
+                Définir comme principale
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onSelect={() => {
+                  void handleDelete();
+                }}
+                disabled={!onDelete || isPending}
+                className="text-destructive focus:text-destructive"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Supprimer
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
-      <div className="space-y-4 p-4">
-        <div className="space-y-2">
+      <div className="space-y-3 p-3">
+        <div className="space-y-1">
           <p className="text-xs text-muted-foreground">Ordre : {image.sortOrder}</p>
 
-          {isEditingAltText ? (
-            <div className="space-y-2">
-              <Input
-                value={altText}
-                onChange={(event) => setAltText(event.target.value)}
-                placeholder="Texte alternatif"
-                disabled={isPending}
-              />
-
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  type="button"
-                  onClick={() => void handleSaveAltText()}
-                  disabled={isPending}
-                >
-                  <Check className="mr-2 h-4 w-4" />
-                  Enregistrer
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  type="button"
-                  onClick={() => {
-                    setAltText(image.altText ?? "");
-                    setIsEditingAltText(false);
-                    setMessage(null);
-                  }}
-                  disabled={isPending}
-                >
-                  <X className="mr-2 h-4 w-4" />
-                  Annuler
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-1">
-              <p className="text-sm font-medium">Texte alternatif</p>
-              <p className="text-sm text-muted-foreground">
+          {!isEditingAltText ? (
+            <>
+              <p className="text-sm font-medium text-foreground">Texte alternatif</p>
+              <p className="line-clamp-2 text-sm text-muted-foreground">
                 {image.altText && image.altText.trim().length > 0
                   ? image.altText
                   : "Aucun texte alternatif"}
               </p>
-            </div>
-          )}
+            </>
+          ) : null}
 
           {message ? <p className="text-xs text-muted-foreground">{message}</p> : null}
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            type="button"
-            onClick={() => void handleReorder("up")}
-            disabled={!onReorder || !canMoveUp || isPending}
-          >
-            <ArrowUp className="mr-2 h-4 w-4" />
-            Monter
-          </Button>
+        {isEditingAltText ? (
+          <div className="space-y-2">
+            <Input
+              value={altText}
+              onChange={(event) => setAltText(event.target.value)}
+              placeholder="Texte alternatif"
+              disabled={isPending}
+            />
 
-          <Button
-            variant="outline"
-            size="sm"
-            type="button"
-            onClick={() => void handleReorder("down")}
-            disabled={!onReorder || !canMoveDown || isPending}
-          >
-            <ArrowDown className="mr-2 h-4 w-4" />
-            Descendre
-          </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                size="sm"
+                type="button"
+                onClick={() => void handleSaveAltText()}
+                disabled={isPending}
+              >
+                <Check className="mr-2 h-4 w-4" />
+                Enregistrer
+              </Button>
 
-          <Button
-            variant="outline"
-            size="sm"
-            type="button"
-            onClick={() => setIsEditingAltText(true)}
-            disabled={isEditingAltText || isPending}
-          >
-            <Pencil className="mr-2 h-4 w-4" />
-            Alt
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            type="button"
-            onClick={() => void handleSetPrimary()}
-            disabled={!onSetPrimary || image.isPrimary || isPending}
-          >
-            <Star className="mr-2 h-4 w-4" />
-            Principale
-          </Button>
-
-          <ConfirmDestructiveDialog
-            trigger={
               <Button
                 variant="outline"
                 size="sm"
                 type="button"
-                disabled={!onDelete || isPending}
-                className="col-span-2 text-destructive"
+                onClick={() => {
+                  setAltText(image.altText ?? "");
+                  setIsEditingAltText(false);
+                  setMessage(null);
+                }}
+                disabled={isPending}
               >
-                <Trash2 className="mr-2 h-4 w-4" />
-                {isPending ? "Suppression…" : "Supprimer"}
+                <X className="mr-2 h-4 w-4" />
+                Annuler
               </Button>
-            }
-            title="Supprimer cette image ?"
-            description="Cette image sera retirée de la galerie produit. Cette action est irréversible."
-            pending={isPending}
-            onConfirm={handleDelete}
-          />
-        </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );

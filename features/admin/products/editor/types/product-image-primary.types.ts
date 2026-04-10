@@ -1,6 +1,6 @@
 export type SetProductPrimaryImageInput = {
   productId: string;
-  assetId: string;
+  mediaAssetId: string | null;
 };
 
 export type SetProductPrimaryImageResult = {

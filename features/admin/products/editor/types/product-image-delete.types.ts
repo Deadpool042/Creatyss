@@ -1,6 +1,6 @@
 export type DeleteProductImageInput = {
   productId: string;
-  assetId: string;
+  imageId: string;
 };
 
 export type DeleteProductImageResult = {

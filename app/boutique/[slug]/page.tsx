@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/notice";
-import { getPublishedProductBySlug } from "@/db/repositories/catalog/catalog.repository";
+import { getUploadsPublicPath } from "@/core/uploads";
+import { getPublishedProductBySlug } from "@/features/storefront/catalog";
 import { addToCartAction } from "@/features/cart";
 import {
   getOfferAvailabilityMessage,
@@ -18,7 +19,6 @@ import {
   getVariantAvailabilityLabel,
   getVariantDefaultBadgeLabel,
 } from "@/entities/product/product-public-presentation";
-import { getUploadsPublicPath } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";
 
@@ -71,7 +71,14 @@ function getImageUrl(uploadsPublicPath: string, filePath: string): string {
   return `${uploadsPublicPath}/${filePath.replace(/^\/+/, "")}`;
 }
 
-function getDisplayImage<TImage extends { isPrimary: boolean }>(
+function getDisplayImage<
+  TImage extends {
+    id: string;
+    filePath: string;
+    altText: string | null;
+    isPrimary: boolean;
+  },
+>(
   images: readonly TImage[]
 ): TImage | null {
   return images.find((image) => image.isPrimary) ?? images[0] ?? null;

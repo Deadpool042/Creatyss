@@ -1,109 +1,52 @@
 import { db } from "@/core/db";
-import { mapProductDetails } from "@/features/admin/products/details/mappers/map-product-details";
-import type { AdminProductDetails } from "@/features/admin/products/details/types/product-detail-types";
+import type { AdminProductDetails, AdminProductDisplayStatus } from "../types";
+
+function mapStatus(status: string): AdminProductDisplayStatus {
+  switch (status) {
+    case "ACTIVE":
+      return "active";
+    case "INACTIVE":
+      return "inactive";
+    case "ARCHIVED":
+      return "archived";
+    default:
+      return "draft";
+  }
+}
 
 export async function readAdminProductDetailsBySlug(
   slug: string
 ): Promise<AdminProductDetails | null> {
-  const normalizedSlug = slug.trim();
-
-  if (normalizedSlug.length === 0) {
-    return null;
-  }
-
   const product = await db.product.findFirst({
     where: {
-      slug: normalizedSlug,
+      slug,
+      archivedAt: null,
     },
     select: {
       id: true,
       slug: true,
       name: true,
-      shortDescription: true,
-      description: true,
       status: true,
       isFeatured: true,
-      updatedAt: true,
-      productType: {
-        select: {
-          code: true,
-        },
-      },
+      description: true,
+      shortDescription: true,
       primaryImage: {
         select: {
           publicUrl: true,
           altText: true,
         },
       },
-      productCategories: {
-        orderBy: {
-          sortOrder: "asc",
-        },
+      productType: {
         select: {
-          isPrimary: true,
-          sortOrder: true,
+          name: true,
+        },
+      },
+      productCategories: {
+        orderBy: [{ isPrimary: "desc" }, { sortOrder: "asc" }],
+        select: {
           category: {
             select: {
-              id: true,
-              slug: true,
               name: true,
-            },
-          },
-        },
-      },
-      prices: {
-        where: {
-          isActive: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: 1,
-        select: {
-          amount: true,
-          compareAtAmount: true,
-        },
-      },
-      variants: {
-        orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
-        select: {
-          id: true,
-          slug: true,
-          name: true,
-          sku: true,
-          status: true,
-          primaryImage: {
-            select: {
-              publicUrl: true,
-              altText: true,
-            },
-          },
-          prices: {
-            where: {
-              isActive: true,
-            },
-            orderBy: {
-              createdAt: "desc",
-            },
-            take: 1,
-            select: {
-              amount: true,
-              compareAtAmount: true,
-            },
-          },
-          optionValues: {
-            select: {
-              optionValue: {
-                select: {
-                  label: true,
-                  value: true,
-                  option: {
-                    select: {
-                      name: true,
-                    },
-                  },
-                },
-              },
             },
           },
         },
@@ -111,9 +54,21 @@ export async function readAdminProductDetailsBySlug(
     },
   });
 
-  if (!product) {
+  if (product === null) {
     return null;
   }
 
-  return mapProductDetails(product);
+  return {
+    id: product.id,
+    slug: product.slug,
+    name: product.name,
+    status: mapStatus(product.status),
+    isFeatured: product.isFeatured,
+    description: product.description,
+    shortDescription: product.shortDescription,
+    imageUrl: product.primaryImage?.publicUrl ?? null,
+    imageAlt: product.primaryImage?.altText ?? null,
+    productTypeName: product.productType?.name ?? null,
+    categoryNames: product.productCategories.map((link) => link.category.name),
+  };
 }

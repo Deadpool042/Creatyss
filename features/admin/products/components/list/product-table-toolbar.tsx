@@ -87,7 +87,7 @@ export function ProductTableToolbar({
                 className={cn(
                   "inline-flex items-center gap-2 rounded-full",
                   hasActiveFilters &&
-                    "border-primary/30 bg-primary/10 text-foreground hover:bg-primary/15"
+                    "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
                 )}
               >
                 <SlidersHorizontal className="h-4 w-4" />
@@ -129,7 +129,7 @@ export function ProductTableToolbar({
               className={cn(
                 "inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 text-[11px] sm:px-3 sm:text-xs [@media(max-height:480px)]:gap-1 [@media(max-height:480px)]:px-2 [@media(max-height:480px)]:text-[10px]",
                 hasActiveFilters &&
-                  "border-primary/30 bg-primary/10 text-foreground hover:bg-primary/15"
+                  "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
               )}
               aria-label={
                 hasActiveFilters ? `${activeFiltersCount} filtres actifs` : "Ouvrir les filtres"

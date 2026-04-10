@@ -47,6 +47,7 @@
   --accent-foreground: oklch(0.34 0.055 45);
 
   --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0.003 70);
 
   --border: oklch(0.89 0.012 70);
   --input: oklch(0.89 0.012 70);
@@ -78,6 +79,48 @@
     radial-gradient(circle at top, oklch(0.83 0.05 45 / 0.22), transparent 36rem), var(--page-bg);
 
   /* ==========================================================================
+     Overlay and interaction
+     ========================================================================== */
+
+  --overlay-scrim: rgb(28 22 16 / 0.18);
+  --overlay-scrim-strong: rgb(28 22 16 / 0.32);
+
+  --interactive-hover: rgb(120 90 60 / 0.06);
+  --interactive-hover-strong: rgb(120 90 60 / 0.1);
+  --interactive-selected: rgb(120 90 60 / 0.14);
+  --interactive-selected-foreground: oklch(0.22 0.02 55);
+  --interactive-disabled: rgb(120 90 60 / 0.04);
+  --interactive-disabled-foreground: oklch(0.62 0.014 55);
+
+  /* ==========================================================================
+     Feedback and focus
+     ========================================================================== */
+
+  --feedback-info: oklch(0.52 0.015 250);
+  --feedback-info-foreground: oklch(0.32 0.01 250);
+  --feedback-info-surface: oklch(0.52 0.015 250 / 0.1);
+  --feedback-info-border: oklch(0.52 0.015 250 / 0.18);
+
+  --feedback-success: oklch(0.64 0.11 155);
+  --feedback-success-foreground: oklch(0.32 0.04 155);
+  --feedback-success-surface: oklch(0.64 0.11 155 / 0.12);
+  --feedback-success-border: oklch(0.64 0.11 155 / 0.22);
+
+  --feedback-warning: oklch(0.72 0.14 75);
+  --feedback-warning-foreground: oklch(0.36 0.05 75);
+  --feedback-warning-surface: oklch(0.72 0.14 75 / 0.14);
+  --feedback-warning-border: oklch(0.72 0.14 75 / 0.24);
+
+  --feedback-error: var(--destructive);
+  --feedback-error-foreground: oklch(0.36 0.09 27);
+  --feedback-error-surface: oklch(0.577 0.245 27.325 / 0.12);
+  --feedback-error-surface-strong: oklch(0.577 0.245 27.325 / 0.2);
+  --feedback-error-border: oklch(0.577 0.245 27.325 / 0.22);
+
+  --focus-ring: var(--ring);
+  --focus-ring-offset-surface: var(--background);
+
+  /* ==========================================================================
      Shared surfaces
      ========================================================================== */
 
@@ -91,6 +134,9 @@
 
   --shadow-soft: 0 20px 60px rgb(70 45 25 / 0.1);
   --shadow-card: 0 16px 40px rgb(70 45 25 / 0.08);
+  --shadow-raised: 0 12px 32px rgb(70 45 25 / 0.14);
+  --shadow-overlay: 0 28px 96px rgb(45 25 10 / 0.18);
+  --shadow-inset-soft: inset 0 1px 0 rgb(255 255 255 / 0.58);
 
   /* ==========================================================================
      Public shell
@@ -199,6 +245,7 @@
   --accent-foreground: oklch(0.94 0.008 72);
 
   --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0.003 70);
 
   --border: rgb(225 200 180 / 0.22);
   --input: rgb(225 200 180 / 0.22);
@@ -223,6 +270,48 @@
     radial-gradient(circle at top, oklch(0.5 0.08 45 / 0.18), transparent 32rem), var(--page-bg);
 
   /* ==========================================================================
+     Overlay and interaction
+     ========================================================================== */
+
+  --overlay-scrim: rgb(0 0 0 / 0.38);
+  --overlay-scrim-strong: rgb(0 0 0 / 0.58);
+
+  --interactive-hover: rgb(255 248 242 / 0.06);
+  --interactive-hover-strong: rgb(255 248 242 / 0.1);
+  --interactive-selected: rgb(255 248 242 / 0.14);
+  --interactive-selected-foreground: oklch(0.94 0.008 72);
+  --interactive-disabled: rgb(255 248 242 / 0.04);
+  --interactive-disabled-foreground: oklch(0.66 0.01 72);
+
+  /* ==========================================================================
+     Feedback and focus
+     ========================================================================== */
+
+  --feedback-info: oklch(0.78 0.015 250);
+  --feedback-info-foreground: oklch(0.92 0.008 250);
+  --feedback-info-surface: oklch(0.78 0.015 250 / 0.16);
+  --feedback-info-border: oklch(0.78 0.015 250 / 0.28);
+
+  --feedback-success: oklch(0.76 0.1 155);
+  --feedback-success-foreground: oklch(0.94 0.02 155);
+  --feedback-success-surface: oklch(0.76 0.1 155 / 0.18);
+  --feedback-success-border: oklch(0.76 0.1 155 / 0.3);
+
+  --feedback-warning: oklch(0.82 0.11 75);
+  --feedback-warning-foreground: oklch(0.96 0.015 75);
+  --feedback-warning-surface: oklch(0.82 0.11 75 / 0.18);
+  --feedback-warning-border: oklch(0.82 0.11 75 / 0.3);
+
+  --feedback-error: var(--destructive);
+  --feedback-error-foreground: oklch(0.95 0.015 27);
+  --feedback-error-surface: oklch(0.704 0.191 22.216 / 0.18);
+  --feedback-error-surface-strong: oklch(0.704 0.191 22.216 / 0.26);
+  --feedback-error-border: oklch(0.704 0.191 22.216 / 0.3);
+
+  --focus-ring: var(--ring);
+  --focus-ring-offset-surface: var(--background);
+
+  /* ==========================================================================
      Shared surfaces
      ========================================================================== */
 
@@ -235,6 +324,9 @@
 
   --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.42);
   --shadow-card: 0 16px 40px rgb(0 0 0 / 0.32);
+  --shadow-raised: 0 14px 38px rgb(0 0 0 / 0.3);
+  --shadow-overlay: 0 30px 104px rgb(0 0 0 / 0.56);
+  --shadow-inset-soft: inset 0 1px 0 rgb(255 255 255 / 0.08);
 
   /* ==========================================================================
      Public shell

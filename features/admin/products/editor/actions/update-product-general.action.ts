@@ -1,170 +1,165 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { ProductStatus } from "@/prisma-generated/client";
-import type { z } from "zod";
+import { validateAdminProductInput } from "@/entities/product";
+import {
+  productGeneralFormInitialState,
+  type ProductGeneralFormAction,
+} from "../types/product-general-form.types";
+import {
+  AdminProductEditorServiceError,
+  updateProductGeneral,
+} from "../services";
 
-import { db } from "@/core/db";
-import type {
-  ProductGeneralFormState,
-  ProductGeneralFormValues,
-} from "@/features/admin/products/editor/types";
-import { updateProductGeneralSchema } from "@/features/admin/products/editor/schemas";
-
-function mapFormDataToValues(formData: FormData): ProductGeneralFormValues {
-  return {
-    id: String(formData.get("id") ?? ""),
-    name: String(formData.get("name") ?? ""),
-    slug: String(formData.get("slug") ?? ""),
-    shortDescription: String(formData.get("shortDescription") ?? ""),
-    description: String(formData.get("description") ?? ""),
-    status: String(formData.get("status") ?? "draft") as ProductGeneralFormValues["status"],
-    isFeatured: String(formData.get("isFeatured") ?? "false") === "true",
-  };
+function getString(formData: FormData, key: string): FormDataEntryValue | null {
+  return formData.get(key);
 }
 
-function buildFieldErrors(input: {
-  id?: string | undefined;
-  name?: string | undefined;
-  slug?: string | undefined;
-  shortDescription?: string | undefined;
-  description?: string | undefined;
-  status?: string | undefined;
-  isFeatured?: string | undefined;
-}): ProductGeneralFormState["fieldErrors"] {
-  const fieldErrors: ProductGeneralFormState["fieldErrors"] = {};
-
-  if (input.id) fieldErrors.id = input.id;
-  if (input.name) fieldErrors.name = input.name;
-  if (input.slug) fieldErrors.slug = input.slug;
-  if (input.shortDescription) fieldErrors.shortDescription = input.shortDescription;
-  if (input.description) fieldErrors.description = input.description;
-  if (input.status) fieldErrors.status = input.status;
-  if (input.isFeatured) fieldErrors.isFeatured = input.isFeatured;
-
-  return fieldErrors;
+function getAll(formData: FormData, key: string): FormDataEntryValue[] {
+  return formData.getAll(key);
 }
 
-function getFirstIssueMessage(
-  issues: readonly z.core.$ZodIssue[],
-  fieldName: keyof ProductGeneralFormValues
-): string | undefined {
-  const issue = issues.find((entry) => entry.path[0] === fieldName);
-  return issue?.message;
-}
+function buildCategorySortOrders(formData: FormData): Record<string, FormDataEntryValue | null> {
+  const result: Record<string, FormDataEntryValue | null> = {};
 
-function mapAdminStatusToProductStatus(status: ProductGeneralFormValues["status"]): ProductStatus {
-  if (status === "published") {
-    return ProductStatus.ACTIVE;
+  for (const [key, value] of formData.entries()) {
+    if (!key.startsWith("categorySortOrder:")) {
+      continue;
+    }
+
+    const categoryId = key.slice("categorySortOrder:".length);
+    result[categoryId] = value;
   }
 
-  if (status === "archived") {
-    return ProductStatus.ARCHIVED;
-  }
-
-  return ProductStatus.DRAFT;
+  return result;
 }
 
-export async function updateProductGeneralAction(
-  _previousState: ProductGeneralFormState,
-  formData: FormData
-): Promise<ProductGeneralFormState> {
-  const rawValues = mapFormDataToValues(formData);
-  const parsed = updateProductGeneralSchema.safeParse({
-    ...rawValues,
-    isFeatured: rawValues.isFeatured ? "true" : "false",
-  });
+function buildRelatedTypes(formData: FormData): Record<string, FormDataEntryValue | null> {
+  const result: Record<string, FormDataEntryValue | null> = {};
 
-  if (!parsed.success) {
-    const issues = parsed.error.issues;
+  for (const [key, value] of formData.entries()) {
+    if (!key.startsWith("relatedProductType:")) {
+      continue;
+    }
 
+    const productId = key.slice("relatedProductType:".length);
+    result[productId] = value;
+  }
+
+  return result;
+}
+
+function buildRelatedSortOrders(formData: FormData): Record<string, FormDataEntryValue | null> {
+  const result: Record<string, FormDataEntryValue | null> = {};
+
+  for (const [key, value] of formData.entries()) {
+    if (!key.startsWith("relatedProductSortOrder:")) {
+      continue;
+    }
+
+    const productId = key.slice("relatedProductSortOrder:".length);
+    result[productId] = value;
+  }
+
+  return result;
+}
+
+function mapValidationErrorToField(
+  code: string
+): keyof typeof productGeneralFormInitialState.fieldErrors | null {
+  switch (code) {
+    case "missing_name":
+      return "name";
+    case "missing_slug":
+    case "invalid_slug":
+      return "slug";
+    case "invalid_status":
+      return "status";
+    case "invalid_product_type_id":
+      return "productTypeId";
+    case "invalid_primary_image":
+      return "primaryImageId";
+    default:
+      return null;
+  }
+}
+
+export const updateProductGeneralAction: ProductGeneralFormAction = async (
+  _prevState,
+  formData
+) => {
+  const productIdValue = getString(formData, "productId");
+
+  if (typeof productIdValue !== "string" || productIdValue.trim().length === 0) {
     return {
+      ...productGeneralFormInitialState,
       status: "error",
-      message: "Le formulaire contient des erreurs.",
-      fieldErrors: buildFieldErrors({
-        id: getFirstIssueMessage(issues, "id"),
-        name: getFirstIssueMessage(issues, "name"),
-        slug: getFirstIssueMessage(issues, "slug"),
-        shortDescription: getFirstIssueMessage(issues, "shortDescription"),
-        description: getFirstIssueMessage(issues, "description"),
-        status: getFirstIssueMessage(issues, "status"),
-        isFeatured: getFirstIssueMessage(issues, "isFeatured"),
-      }),
+      message: "Produit introuvable.",
     };
   }
 
-  const existingProduct = await db.product.findUnique({
-    where: {
-      id: parsed.data.id,
-    },
-    select: {
-      id: true,
-      slug: true,
-    },
+  const validated = validateAdminProductInput({
+    name: getString(formData, "name"),
+    slug: getString(formData, "slug"),
+    skuRoot: getString(formData, "skuRoot"),
+    shortDescription: getString(formData, "shortDescription"),
+    description: getString(formData, "description"),
+    productTypeId: getString(formData, "productTypeId"),
+    primaryImageMediaAssetId: getString(formData, "primaryImageId"),
+    status: getString(formData, "status"),
+    isFeatured: getString(formData, "isFeatured"),
+    isStandalone: getString(formData, "isStandalone"),
+    categoryIds: getAll(formData, "categoryIds"),
+    categoryPrimaryIds: getAll(formData, "categoryPrimaryIds"),
+    categorySortOrders: buildCategorySortOrders(formData),
+    relatedProductIds: getAll(formData, "relatedProductIds"),
+    relatedProductTypes: buildRelatedTypes(formData),
+    relatedProductSortOrders: buildRelatedSortOrders(formData),
   });
 
-  if (!existingProduct) {
+  if (!validated.ok) {
+    const field = mapValidationErrorToField(validated.code);
+
     return {
+      ...productGeneralFormInitialState,
       status: "error",
-      message: "Le produit demandé est introuvable.",
-      fieldErrors: buildFieldErrors({
-        id: "Produit introuvable.",
-      }),
+      message: "Données invalides.",
+      fieldErrors: field ? { [field]: "Valeur invalide." } : {},
     };
   }
 
-  const slugOwner = await db.product.findFirst({
-    where: {
-      slug: parsed.data.slug,
-    },
-    select: {
-      id: true,
-    },
-  });
+  try {
+    await updateProductGeneral({
+      productId: productIdValue.trim(),
+      name: validated.data.name,
+      slug: validated.data.slug,
+      skuRoot: validated.data.skuRoot,
+      shortDescription: validated.data.shortDescription,
+      description: validated.data.description,
+      status: validated.data.status,
+      isFeatured: validated.data.isFeatured,
+      isStandalone: validated.data.isStandalone,
+      productTypeId: validated.data.productTypeId,
+      primaryImageId: validated.data.primaryImageMediaAssetId,
+    });
 
-  if (slugOwner && slugOwner.id !== parsed.data.id) {
     return {
+      ...productGeneralFormInitialState,
+      status: "success",
+      message: "Mise à jour effectuée.",
+    };
+  } catch (error: unknown) {
+    if (error instanceof AdminProductEditorServiceError) {
+      return {
+        ...productGeneralFormInitialState,
+        status: "error",
+        message: "Mise à jour impossible.",
+      };
+    }
+
+    return {
+      ...productGeneralFormInitialState,
       status: "error",
-      message: "Le slug est déjà utilisé.",
-      fieldErrors: buildFieldErrors({
-        slug: "Choisis un autre slug.",
-      }),
+      message: "Erreur inattendue.",
     };
   }
-
-  const updatedProduct = await db.product.update({
-    where: {
-      id: parsed.data.id,
-    },
-    data: {
-      name: parsed.data.name,
-      slug: parsed.data.slug,
-      shortDescription: parsed.data.shortDescription || null,
-      description: parsed.data.description || null,
-      status: mapAdminStatusToProductStatus(parsed.data.status),
-      isFeatured: parsed.data.isFeatured,
-    },
-    select: {
-      id: true,
-      slug: true,
-    },
-  });
-
-  const previousEditorPath = `/admin/products/${existingProduct.slug}/edit`;
-  const nextEditorPath = `/admin/products/${updatedProduct.slug}/edit`;
-
-  revalidatePath("/admin/products");
-  revalidatePath(previousEditorPath);
-  revalidatePath(nextEditorPath);
-
-  if (existingProduct.slug !== updatedProduct.slug) {
-    redirect(nextEditorPath);
-  }
-
-  return {
-    status: "success",
-    message: "Les informations générales du produit ont été enregistrées.",
-    fieldErrors: {},
-  };
-}
+};

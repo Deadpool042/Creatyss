@@ -1,16 +1,15 @@
-import { PriceListStatus } from "@/prisma-generated/client";
-
 import { db } from "@/core/db";
-import { mapAdminPriceListOption } from "@/features/admin/products/editor/mappers";
-import type { AdminPriceListOption } from "@/features/admin/products/editor/types";
+import type { AdminPriceListOption } from "../types";
 
-export async function readAdminPriceLists(): Promise<AdminPriceListOption[]> {
+export async function readAdminPriceLists(): Promise<readonly AdminPriceListOption[]> {
   const priceLists = await db.priceList.findMany({
     where: {
-      status: PriceListStatus.ACTIVE,
       archivedAt: null,
     },
-    orderBy: [{ isDefault: "desc" }, { createdAt: "asc" }],
+    orderBy: [
+      { isDefault: "desc" },
+      { createdAt: "asc" },
+    ],
     select: {
       id: true,
       code: true,
@@ -19,5 +18,10 @@ export async function readAdminPriceLists(): Promise<AdminPriceListOption[]> {
     },
   });
 
-  return priceLists.map(mapAdminPriceListOption);
+  return priceLists.map((priceList) => ({
+    id: priceList.id,
+    code: priceList.code,
+    name: priceList.name,
+    isDefault: priceList.isDefault,
+  }));
 }

@@ -6,16 +6,14 @@ import { useMemo, useState, type JSX } from "react";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Button } from "@/components/ui/button";
-import type {
-  deleteProductVariantAction,
-  setDefaultProductVariantAction,
-} from "@/features/admin/products/editor";
-import type {
-  AdminPriceListOption,
-  AdminProductImageItem,
-  AdminProductVariantListItem,
-  ProductVariantFormAction,
-} from "@/features/admin/products/editor/types";
+import {
+  type deleteProductVariantAction,
+  type setDefaultProductVariantAction,
+  type AdminPriceListOption,
+  type AdminProductImageItem,
+  type AdminProductVariantListItem,
+  type ProductVariantFormAction,
+} from "@/features/admin/products/editor/public";
 import { ProductVariantEditorSheet } from "./variants/product-variant-editor-sheet";
 import { ProductVariantList } from "./variants/product-variant-list";
 
@@ -32,7 +30,7 @@ type ProductVariantsTabProps = {
   productSlug: string;
   variants: AdminProductVariantListItem[];
   images: AdminProductImageItem[];
-  priceLists: AdminPriceListOption[];
+  priceLists: readonly AdminPriceListOption[];
   createAction?: ProductVariantFormAction;
   updateAction?: ProductVariantFormAction;
   setDefaultAction?: SetDefaultProductVariantAction;
@@ -94,17 +92,10 @@ export function ProductVariantsTab({
     variantId: string
   ): Promise<{ status: "success" | "error"; message: string }> {
     if (!setDefaultAction) {
-      return {
-        status: "error",
-        message: "Action indisponible.",
-      };
+      return { status: "error", message: "Action indisponible." };
     }
 
-    const result = await setDefaultAction({
-      productId,
-      variantId,
-    });
-
+    const result = await setDefaultAction({ productId, variantId });
     setMessageState(result);
     return result;
   }
@@ -113,17 +104,10 @@ export function ProductVariantsTab({
     variantId: string
   ): Promise<{ status: "success" | "error"; message: string }> {
     if (!deleteAction) {
-      return {
-        status: "error",
-        message: "Action indisponible.",
-      };
+      return { status: "error", message: "Action indisponible." };
     }
 
-    const result = await deleteAction({
-      productId,
-      variantId,
-    });
-
+    const result = await deleteAction({ productId, variantId });
     setMessageState(result);
     return result;
   }
@@ -131,8 +115,8 @@ export function ProductVariantsTab({
   return (
     <>
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        <div className="min-h-0 flex-1 overflow-y-auto pt-[7.0625rem] pb-[calc(3.5rem_+_env(safe-area-inset-bottom))] sm:pt-[7.3125rem] md:pt-[7.5625rem] [@media(max-height:480px)]:pt-[6.3125rem] [@media(max-height:480px)]:pb-[calc(3rem_+_env(safe-area-inset-bottom))] lg:pt-17.25 lg:pb-0">
-          <div className="w-full space-y-5 px-4 pt-4 pb-3 md:space-y-8 md:px-6 md:pt-6 md:pb-6 lg:mx-auto lg:max-w-5xl lg:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:pt-3 [@media(max-height:480px)]:pb-2.5">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          <div className="w-full space-y-5 px-4 py-4 md:space-y-8 md:px-6 md:py-6 lg:mx-auto lg:max-w-6xl lg:px-4 xl:px-0">
             <AdminFormMessage
               tone={messageState?.status === "success" ? "success" : "error"}
               message={messageState?.message ?? null}
@@ -140,74 +124,42 @@ export function ProductVariantsTab({
 
             <AdminFormSection
               title="Variantes"
-              description="Gère les variantes du produit, leur statut, leur SKU, leur prix actif et leur image principale propre."
+              description="Gestion des variantes, du statut métier, de l’ordre et de l’image principale."
             >
-              <div className="space-y-3">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="text-sm text-muted-foreground">
-                    {variants.length} variante{variants.length > 1 ? "s" : ""}
-                  </div>
-
-                  <Button
-                    type="button"
-                    size="sm"
-                    className="hidden lg:inline-flex"
-                    onClick={openCreateSheet}
-                  >
-                    <Plus className="mr-2 h-4 w-4" />
-                    Ajouter une variante
-                  </Button>
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-sm text-muted-foreground">
+                  {variants.length} variante{variants.length > 1 ? "s" : ""}
                 </div>
 
-                <p className="text-sm text-muted-foreground">
-                  L’image affichée pour chaque ligne correspond à l’image principale de la variante,
-                  indépendante de la galerie du produit.
-                </p>
+                <Button type="button" variant="outline" onClick={openCreateSheet}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Ajouter une variante
+                </Button>
               </div>
 
               <ProductVariantList
+                productId={productId}
+                productSlug={productSlug}
                 variants={variants}
                 onEdit={handleEdit}
                 {...(setDefaultAction ? { onSetDefault: handleSetDefault } : {})}
                 {...(deleteAction ? { onDelete: handleDelete } : {})}
               />
             </AdminFormSection>
-
-            <AdminFormSection
-              title="Informations techniques"
-              description="Vue de contrôle rapide des données variantes, indépendantes de la galerie produit."
-            >
-              <div className="grid gap-3 text-sm text-muted-foreground md:grid-cols-3">
-                <div className="rounded-lg border border-border/60 px-4 py-3">
-                  <p className="text-[11px] uppercase tracking-wide">Produit</p>
-                  <p className="mt-1 font-medium text-foreground">{productSlug}</p>
-                </div>
-
-                <div className="rounded-lg border border-border/60 px-4 py-3">
-                  <p className="text-[11px] uppercase tracking-wide">Identifiant produit</p>
-                  <p className="mt-1 truncate font-medium text-foreground">{productId}</p>
-                </div>
-
-                <div className="rounded-lg border border-border/60 px-4 py-3">
-                  <p className="text-[11px] uppercase tracking-wide">Listes de prix actives</p>
-                  <p className="mt-1 font-medium text-foreground">{priceLists.length}</p>
-                </div>
-              </div>
-            </AdminFormSection>
           </div>
         </div>
       </div>
 
       <ProductVariantEditorSheet
+        key={sheetInstanceKey}
         open={sheetOpen}
         onOpenChange={setSheetOpen}
         productId={productId}
         variant={selectedVariant}
-        images={images}
         priceLists={priceLists}
+        images={images}
         {...(createAction ? { createAction } : {})}
         {...(updateAction ? { updateAction } : {})}
-        key={sheetInstanceKey}
       />
     </>
   );

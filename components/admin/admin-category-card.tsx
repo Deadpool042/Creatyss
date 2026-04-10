@@ -12,19 +12,19 @@ interface AdminCategoryCardProps {
 const statusConfig = {
   active: {
     label: "Active",
-    className: "bg-primary/10 text-primary",
+    className: "border-surface-border-strong bg-interactive-selected text-foreground",
   },
   draft: {
     label: "Brouillon",
-    className: "bg-muted text-muted-foreground",
+    className: "border-surface-border bg-surface-panel-soft text-muted-foreground",
   },
   inactive: {
     label: "Inactive",
-    className: "bg-muted text-muted-foreground",
+    className: "border-surface-border bg-surface-panel-soft text-muted-foreground",
   },
   archived: {
     label: "Archivée",
-    className: "bg-destructive/10 text-destructive",
+    className: "border-feedback-error-border bg-feedback-error-surface text-feedback-error-foreground",
   },
 } satisfies Record<AdminCategoryCardItem["status"], { label: string; className: string }>;
 
@@ -41,7 +41,10 @@ function InfoTile({
 }) {
   return (
     <div
-      className={cn("rounded-2xl border border-border-soft bg-surface-panel-soft p-4", className)}
+      className={cn(
+        "rounded-2xl border border-surface-border bg-surface-panel-soft p-4",
+        className
+      )}
     >
       <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
       <p className={cn("mt-2 text-sm leading-6 text-foreground", valueClassName)}>{value}</p>
@@ -56,10 +59,10 @@ export function AdminCategoryCard({ category }: AdminCategoryCardProps) {
   return (
     <Link
       aria-label={`Ouvrir la catégorie ${category.name}`}
-      className="group block h-full"
+      className="group block h-full rounded-4xl focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-focus-ring/50"
       href={`/admin/categories/${category.id}`}
     >
-      <article className="flex h-full flex-col gap-4 rounded-4xl border border-border-soft bg-card p-4 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-border hover:shadow-lg">
+      <article className="flex h-full flex-col gap-4 rounded-4xl border border-surface-border bg-card p-4 shadow-card transition-colors duration-200 group-hover:border-surface-border-strong">
         <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-surface-panel-soft">
           {category.primaryImageUrl ? (
             <Image
@@ -79,12 +82,17 @@ export function AdminCategoryCard({ category }: AdminCategoryCardProps) {
         <div className="flex flex-1 flex-col gap-4">
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className={cn("badge-base border-transparent", status.className)}>
+              <span
+                className={cn(
+                  "inline-flex h-7 items-center rounded-full border px-3 text-xs font-medium",
+                  status.className
+                )}
+              >
                 {status.label}
               </span>
 
               {category.isFeatured ? (
-                <span className="inline-flex h-7 items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 text-xs font-medium text-primary">
+                <span className="inline-flex h-7 items-center gap-1.5 rounded-full border border-surface-border-strong bg-interactive-selected px-3 text-xs font-medium text-foreground">
                   <Star className="h-3.5 w-3.5 fill-current" />
                   Mis en avant
                 </span>
@@ -100,7 +108,7 @@ export function AdminCategoryCard({ category }: AdminCategoryCardProps) {
             <InfoTile label="Slug" value={category.slug} valueClassName="truncate" />
 
             {category.description ? (
-              <div className="rounded-2xl border border-border-soft bg-surface-panel-soft p-4">
+              <div className="rounded-2xl border border-surface-border bg-surface-panel-soft p-4">
                 <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
                   Description
                 </p>

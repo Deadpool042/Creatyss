@@ -4,12 +4,13 @@ import {
   createOrderEmailEventIfAbsent,
   markOrderEmailEventFailed,
   markOrderEmailEventSent,
-} from "@/db/repositories/order-email.repository";
-import type { OrderEmailEventType } from "@/db/repositories/order-email.types";
-import { findOrderEmailContextById } from "@/db/repositories/order.repository";
+} from "@/features/email/lib/order-email.repository";
+import { serverEnv } from "@/core/config/env/server";
+import { sendEmail } from "@/core/email/client";
+import { findOrderEmailContextById } from "@/features/orders/lib/order.repository";
 import { buildOrderEmailTemplate } from "@/features/email/order-email-templates";
-import { sendEmail } from "@/lib/email";
-import { env } from "@/lib/env";
+
+import type { OrderEmailEventType } from "./order-email.types";
 
 function formatEmailError(error: unknown): string {
   if (error instanceof Error) {
@@ -40,7 +41,10 @@ export async function sendOrderTransactionalEmail(input: {
       return;
     }
 
-    const orderUrl = new URL(`/checkout/confirmation/${order.reference}`, env.appUrl).toString();
+    const orderUrl = new URL(
+      `/checkout/confirmation/${order.reference}`,
+      serverEnv.appUrl
+    ).toString();
     const template = buildOrderEmailTemplate({
       eventType: input.eventType,
       customerFirstName: order.customerFirstName,

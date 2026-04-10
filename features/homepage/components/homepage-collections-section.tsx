@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PLACEHOLDER_FILENAME } from "@/components/shared/placeholderImage";
+import { PLACEHOLDER_FILENAME } from "@/core/media";
 import { type FeaturedCategory } from "@/features/homepage/types";
 
 type TagStyle = "light" | "vert" | "terra";

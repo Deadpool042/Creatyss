@@ -1,19 +1,12 @@
-export { useProductTableFilters } from "./hooks";
-export type { ProductTableFiltersState } from "./hooks/use-product-table-filters";
+export { getAdminProductsFeedPage } from "./queries/get-admin-products-feed-page.query";
+export { listAdminProducts } from "./queries/list-admin-products.query";
+export { listProductFilterCategories } from "./queries/list-product-filter-categories.query";
 
-export { productTableFiltersSchema } from "./schemas/product-table-filters.schema";
-export type {
-  ProductTableFeaturedFilter,
-  ProductTableFiltersInput,
-  ProductTableFiltersValues,
-  ProductTableImageFilter,
-  ProductTableSortOption,
-  ProductTableStatusFilter,
-  ProductTableStockFilter,
-  ProductTableVariantFilter,
-} from "./schemas/product-table-filters.schema";
+export { mapProductTableItem } from "./mappers/server/map-product-table-item";
+export { mapProductFilterCategoryOption } from "./mappers/map-product-filter-category-option";
 
-export { buildAdminProductsCategoryFilter } from "./utils";
+export { useProductTableFilters } from "./hooks/use-product-table-filters";
+
 export {
   getFeaturedLabel,
   getImageLabel,
@@ -23,30 +16,35 @@ export {
   getVariantLabel,
   parsePriceValue,
   stripHtml,
-} from "./utils";
+} from "./utils/product-table-filter-labels";
 
-export { mapProductFilterCategoryOption, mapProductListItem } from "./mappers/client-safe";
-export { mapAdminProductFeedItemToTableItem } from "./mappers/shared";
+export {
+  productTableFiltersSchema,
+  adminProductFeedQuerySchema,
+} from "./schemas";
 
 export type {
-  AdminProductFeedItem,
-  AdminProductFeedPageResult,
-  AdminProductFeedQuery,
-  AdminProductListCategory,
-  AdminProductListItem,
-  AdminProductListPriceSummary,
-  AdminProductsListFeaturedFilter,
-  AdminProductsListFilters,
-  AdminProductsListStatusFilter,
+  ProductTableStatus,
+  ProductStockState,
   ProductFilterCategoryOption,
   ProductFilterFeaturedOption,
   ProductFilterImageOption,
   ProductFilterStockOption,
   ProductFilterVariantOption,
   ProductSortOption,
-  ProductStockState,
+  ProductTableFeaturedFilter,
+  ProductTableImageFilter,
+  ProductTableStockFilter,
+  ProductTableVariantFilter,
+  ProductTableSortOption,
+  ProductTableStatusFilter,
   ProductTableItem,
+  ProductTableFiltersInput,
+  ProductTableFiltersState,
+  ProductTableFiltersValues,
   ToggleProductFeaturedResult,
+  AdminProductFeedItem,
+  GetAdminProductsFeedPageCursor,
+  GetAdminProductsFeedPageInput,
+  GetAdminProductsFeedPageResult,
 } from "./types";
-
-export { adminProductFeedQuerySchema } from "./types";

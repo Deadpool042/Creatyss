@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { checkDatabaseHealth } from "@/db/health";
-import { ensureUploadsDirectory, getUploadsPublicPath } from "@/lib/uploads";
+
+import { checkDatabaseHealth } from "@/core/db/health";
+import { ensureUploadsDirectory, getUploadsPublicPath } from "@/core/uploads";
 
 export const dynamic = "force-dynamic";
 

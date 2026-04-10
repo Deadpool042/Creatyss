@@ -1,4 +1,3 @@
-// features/admin/products/components/editor/product-editor-panel.tsx
 "use client";
 
 import { useEffect, useState, type JSX } from "react";
@@ -8,27 +7,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-editor-topbar-menu";
 import { ProductMediaTopbarMenu } from "@/features/admin/products/components/editor/product-media-topbar-menu";
 import { ProductVariantTopbarMenu } from "@/features/admin/products/components/editor/product-variant-topbar-menu";
-import type {
-  attachProductImagesAction,
-  deleteProductImageAction,
-  deleteProductVariantAction,
-  reorderProductImageAction,
-  setDefaultProductVariantAction,
-  setProductPrimaryImageAction,
-  updateProductImageAltTextAction,
-  uploadProductImagesAction,
-} from "@/features/admin/products/editor";
-import type {
-  AdminPriceListOption,
-  AdminProductEditorData,
-  AdminProductImageItem,
-  AdminProductVariantListItem,
-  AttachableMediaAssetItem,
-  ProductCategoriesFormAction,
-  ProductGeneralFormAction,
-  ProductSeoFormAction,
-  ProductVariantFormAction,
-} from "@/features/admin/products/editor/types";
+import {
+  type attachProductImagesAction,
+  type deleteProductImageAction,
+  type deleteProductVariantAction,
+  type setDefaultProductVariantAction,
+  type setProductPrimaryImageAction,
+  type updateProductImageAltTextAction,
+  type uploadProductImagesAction,
+  type reorderProductImageAction,
+  type AdminPriceListOption,
+  type AdminProductEditorData,
+  type AdminProductImageItem,
+  type AdminProductVariantListItem,
+  type AttachableMediaAssetItem,
+  type ProductCategoriesFormAction,
+  type ProductGeneralFormAction,
+  type ProductSeoFormAction,
+  type ProductVariantFormAction,
+} from "@/features/admin/products/editor/public";
 import { cn } from "@/lib/utils";
 import { ProductCategoriesTab, type ProductCategoryOption } from "./product-categories-tab";
 import { ProductGeneralTab } from "./product-general-tab";
@@ -62,15 +59,22 @@ type ProductEditorPanelProps = {
   deleteVariantAction?: DeleteProductVariantAction;
   uploadImagesAction?: UploadProductImagesAction;
   availableCategories: ProductCategoryOption[];
+  productTypeOptions?: Array<{
+    id: string;
+    code: string;
+    name: string;
+    slug: string;
+    isActive: boolean;
+  }>;
   variants: AdminProductVariantListItem[];
   images: AdminProductImageItem[];
   attachableMediaItems: AttachableMediaAssetItem[];
-  priceLists: AdminPriceListOption[];
+  priceLists: readonly AdminPriceListOption[];
   product: AdminProductEditorData;
 };
 
 const defaultClassNameTabTrigger = cn(
-  "h-7 flex-none rounded-full px-3.5 text-[11px] font-medium  sm:px-4 sm:text-sm ",
+  "h-7 flex-none rounded-full px-3.5 text-[11px] font-medium sm:px-4 sm:text-sm",
   "text-muted-foreground",
   "focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:outline-none",
   "data-[state=active]:bg-background/90 data-[state=active]:text-foreground",
@@ -79,36 +83,14 @@ const defaultClassNameTabTrigger = cn(
 
 function ProductEditorTabs(): JSX.Element {
   return (
-    <div
-      className={[
-        "site-header-blur absolute left-0 right-0 z-20 border-b border-shell-border/80",
-        "top-13.75 [@media(max-height:480px)]:top-11.75 lg:top-0",
-        "px-1 py-2 md:px-6 md:py-2.5",
-        "lg:px-6 lg:py-3",
-        "[@media(max-height:480px)]:px-3 [@media(max-height:480px)]:py-1.5",
-      ].join(" ")}
-    >
-      <div className="no-scrollbar w-full overflow-x-auto overflow-y-hidden">
+    <div className="absolute left-0 right-0 top-0 z-20 border-b border-border bg-background/95 px-1 py-2 backdrop-blur md:px-6 md:py-2.5 lg:px-6 lg:py-3">
+      <div className="w-full overflow-x-auto overflow-y-hidden">
         <TabsList className="h-auto min-w-max flex-nowrap justify-start gap-1 rounded-full bg-muted/30">
-          <TabsTrigger className={defaultClassNameTabTrigger} value="general">
-            Général
-          </TabsTrigger>
-
-          <TabsTrigger className={defaultClassNameTabTrigger} value="variants">
-            Variantes
-          </TabsTrigger>
-
-          <TabsTrigger className={defaultClassNameTabTrigger} value="images">
-            Galerie
-          </TabsTrigger>
-
-          <TabsTrigger className={defaultClassNameTabTrigger} value="categories">
-            Catégories
-          </TabsTrigger>
-
-          <TabsTrigger className={defaultClassNameTabTrigger} value="seo">
-            SEO
-          </TabsTrigger>
+          <TabsTrigger className={defaultClassNameTabTrigger} value="general">Général</TabsTrigger>
+          <TabsTrigger className={defaultClassNameTabTrigger} value="variants">Variantes</TabsTrigger>
+          <TabsTrigger className={defaultClassNameTabTrigger} value="images">Galerie</TabsTrigger>
+          <TabsTrigger className={defaultClassNameTabTrigger} value="categories">Catégories</TabsTrigger>
+          <TabsTrigger className={defaultClassNameTabTrigger} value="seo">SEO</TabsTrigger>
         </TabsList>
       </div>
     </div>
@@ -130,6 +112,7 @@ export function ProductEditorPanel({
   attachImagesAction,
   uploadImagesAction,
   availableCategories,
+  productTypeOptions = [],
   variants,
   images,
   attachableMediaItems,
@@ -146,7 +129,7 @@ export function ProductEditorPanel({
     if (activeTab === "variants") {
       setPageActionNode(
         <ProductVariantTopbarMenu
-          productId={product.id}
+          productId={product.product.id}
           onCreateVariant={() => setIsCreateVariantOpen(true)}
         />
       );
@@ -156,7 +139,7 @@ export function ProductEditorPanel({
     if (activeTab === "images") {
       setPageActionNode(
         <ProductMediaTopbarMenu
-          productId={product.id}
+          productId={product.product.id}
           onOpenLibrary={() => setIsLibraryOpen(true)}
           onOpenUpload={() => setIsUploadFormOpen(true)}
         />
@@ -164,8 +147,8 @@ export function ProductEditorPanel({
       return;
     }
 
-    setPageActionNode(<ProductEditorTopbarMenu productId={product.id} />);
-  }, [activeTab, product.id, setPageActionNode]);
+    setPageActionNode(<ProductEditorTopbarMenu productId={product.product.id} />);
+  }, [activeTab, product.product.id, setPageActionNode]);
 
   useEffect(() => {
     return () => {
@@ -174,7 +157,7 @@ export function ProductEditorPanel({
   }, [setPageActionNode]);
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden border border-surface-border  shadow-card lg:rounded-2xl ">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       <Tabs
         value={activeTab}
         onValueChange={(value) => setActiveTab(value as ProductEditorTabKey)}
@@ -182,21 +165,15 @@ export function ProductEditorPanel({
       >
         <ProductEditorTabs />
 
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden ">
-          <TabsContent
-            value="general"
-            className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden "
-          >
-            <ProductGeneralTab action={generalAction} product={product} />
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden pt-16">
+          <TabsContent value="general" className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden">
+            <ProductGeneralTab action={generalAction} product={product} productTypeOptions={productTypeOptions} />
           </TabsContent>
 
-          <TabsContent
-            value="variants"
-            className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden"
-          >
+          <TabsContent value="variants" className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden">
             <ProductVariantsTab
-              productId={product.id}
-              productSlug={product.slug}
+              productId={product.product.id}
+              productSlug={product.product.slug}
               variants={variants}
               images={images}
               priceLists={priceLists}
@@ -211,8 +188,8 @@ export function ProductEditorPanel({
 
           <TabsContent value="images" className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden">
             <ProductImagesTab
-              productId={product.id}
-              productSlug={product.slug}
+              productId={product.product.id}
+              productSlug={product.product.slug}
               images={images}
               attachableMediaItems={attachableMediaItems}
               attachLibraryOpen={isLibraryOpen}
@@ -228,10 +205,7 @@ export function ProductEditorPanel({
             />
           </TabsContent>
 
-          <TabsContent
-            value="categories"
-            className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden"
-          >
+          <TabsContent value="categories" className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden">
             <ProductCategoriesTab
               action={categoriesAction}
               product={product}

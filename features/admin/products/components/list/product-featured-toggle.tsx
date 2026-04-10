@@ -35,8 +35,8 @@ export function ProductFeaturedToggle({
       className={cn(
         "h-8 w-8 rounded-full p-0 transition-colors",
         isFeatured
-          ? "border border-primary/30 bg-primary/10 text-primary hover:bg-primary/15"
-          : "border border-border/60 bg-background/20 text-muted-foreground hover:bg-background/35"
+          ? "border border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
+          : "border border-surface-border bg-card text-muted-foreground hover:bg-interactive-hover"
       )}
       title={isFeatured ? "Retirer de la mise en avant" : "Mettre en avant"}
       aria-label={isFeatured ? "Retirer de la mise en avant" : "Mettre en avant"}
@@ -45,7 +45,7 @@ export function ProductFeaturedToggle({
       <Star
         className={cn(
           "h-4 w-4 transition-colors",
-          isFeatured ? "fill-current text-primary" : "text-muted-foreground"
+          isFeatured ? "fill-current text-foreground" : "text-muted-foreground"
         )}
       />
     </Button>

@@ -58,13 +58,13 @@ export function AdminCollectionSection({
   const hasToolbar = toolbar !== undefined && toolbar !== null && toolbar !== false;
   const summaryPanelClassName =
     !isPlain && hasSummary && !hasToolbar
-      ? "rounded-xl border border-surface-border bg-surface-panel-soft p-4 sm:p-5 lg:bg-card lg:shadow-card"
+      ? "rounded-xl border border-surface-border bg-card p-4 shadow-card sm:p-5"
       : null;
   const toolbarPanelClassName = isPlain
     ? "px-0"
     : hasSummary
-      ? "site-header-blur relative z-10 overflow-hidden rounded-xl border border-shell-border px-4 py-3 lg:shadow-card "
-      : "relative z-10 overflow-hidden px-0 lg:rounded-xl lg:border lg:border-shell-border lg:p-3 lg:shadow-card lg:site-header-blur";
+      ? "relative z-10 overflow-hidden rounded-xl border border-surface-border bg-card px-4 py-3 shadow-card"
+      : "relative z-10 overflow-hidden px-0 lg:rounded-xl lg:border lg:border-surface-border lg:bg-card lg:p-3 lg:shadow-card";
 
   return (
     <section className={cn("flex flex-col gap-3 sm:gap-4", className)}>

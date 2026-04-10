@@ -16,7 +16,7 @@ export function AdminTopbar(): JSX.Element {
   return (
     <header
       className={[
-        "site-header-blur absolute top-0 left-0 right-0 z-20 border-b border-shell-border shadow-card",
+        "site-header-blur absolute top-0 left-0 right-0 z-20 border-b border-shell-border shadow-raised",
         "h-14 px-4 md:h-14 md:px-6",
         "[@media(max-height:480px)]:h-12 ",
       ].join(" ")}

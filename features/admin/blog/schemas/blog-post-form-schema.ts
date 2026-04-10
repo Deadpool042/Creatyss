@@ -23,55 +23,44 @@ export const BlogPostFormSchema = z.object({
   seoTitle: formOptionalText(),
   seoDescription: formOptionalText(),
   status: formEnum(["draft", "published"] as const),
-  // Champs cover image : présents tels quels, résolution via parseCoverImageSelection
+  primaryImageMediaAssetId: formOptionalText(),
+  currentPrimaryImagePath: formOptionalText(),
   coverImageMediaAssetId: formOptionalText(),
   currentCoverImagePath: formOptionalText(),
 });
 
 export type BlogPostFormInput = z.infer<typeof BlogPostFormSchema>;
 
-// --- Cover image resolution ---
-
-export type CoverImageSelection =
+export type ImageSelection =
   | { kind: "clear" }
   | { kind: "keep_current"; filePath: string }
   | { kind: "media_asset"; mediaAssetId: string };
 
-/**
- * Résout les champs bruts du formulaire en une sélection d'image de couverture typée.
- * Remplace la logique de validateCoverImageSelection de entities/blog/blog-post-input.ts.
- *
- * Logique :
- * - null / vide → clear (pas d'image)
- * - "__keep_current__" + currentPath présent → keep_current
- * - "__keep_current__" + currentPath absent → invalide
- * - id numérique → media_asset
- * - autre valeur → invalide
- */
-export function parseCoverImageSelection(
-  coverImageMediaAssetId: string | null,
-  currentCoverImagePath: string | null
-): { ok: true; data: CoverImageSelection } | { ok: false } {
-  if (coverImageMediaAssetId === null) {
+export function parseImageSelection(
+  mediaAssetId: string | null,
+  currentFilePath: string | null
+): { ok: true; data: ImageSelection } | { ok: false } {
+  if (mediaAssetId === null) {
     return { ok: true, data: { kind: "clear" } };
   }
 
-  if (coverImageMediaAssetId === "__keep_current__") {
-    if (currentCoverImagePath === null) {
+  if (mediaAssetId === "__keep_current__") {
+    if (currentFilePath === null) {
       return { ok: false };
     }
+
     return {
       ok: true,
-      data: { kind: "keep_current", filePath: currentCoverImagePath },
+      data: { kind: "keep_current", filePath: currentFilePath },
     };
   }
 
-  if (!/^[0-9]+$/.test(coverImageMediaAssetId)) {
+  if (mediaAssetId.trim().length === 0) {
     return { ok: false };
   }
 
   return {
     ok: true,
-    data: { kind: "media_asset", mediaAssetId: coverImageMediaAssetId },
+    data: { kind: "media_asset", mediaAssetId },
   };
 }

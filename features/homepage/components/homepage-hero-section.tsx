@@ -1,6 +1,6 @@
-import PlaceholderImage from "@/components/shared/placeholderImage";
 import Image from "next/image";
 import Link from "next/link";
+import { PlaceholderImage } from "@/components/shared/placeholder-image";
 
 type HomepageHeroSectionProps = {
   heroTitle: string | null;

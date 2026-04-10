@@ -8,12 +8,26 @@ const tsPlugin = nextVitals.find((c) => c.plugins?.["@typescript-eslint"])?.plug
   "@typescript-eslint"
 ];
 
+const appPatterns = ["@/app", "@/app/**"];
+const componentsPatterns = ["@/components", "@/components/**"];
+const dbPatterns = ["@/db", "@/db/**", "@/core/db"];
+const productsUiPatterns = ["@/features/admin/products/components/**"];
+const productsServerPatterns = ["@/features/admin/products/server"];
+const productsEditorActionPatterns = ["@/features/admin/products/editor/actions/**"];
+const productsEditorQueryPatterns = ["@/features/admin/products/editor/queries/**"];
+const productsEditorMapperPatterns = ["@/features/admin/products/editor/mappers/**"];
+const productsListQueryPatterns = ["@/features/admin/products/list/queries/**"];
+const productsListServerMapperPatterns = ["@/features/admin/products/list/mappers/server/**"];
+
 export default defineConfig([
   ...nextVitals,
 
   {
     settings: {
       react: { version: "19" },
+    },
+    linterOptions: {
+      reportUnusedDisableDirectives: "error",
     },
   },
 
@@ -78,11 +92,11 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/app", "@/app/**"],
+              group: appPatterns,
               message: "entities/ ne doit pas importer depuis app/",
             },
             {
-              group: ["@/components", "@/components/**"],
+              group: componentsPatterns,
               message: "entities/ ne doit pas importer depuis components/",
             },
             {
@@ -103,7 +117,7 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/components", "@/components/**"],
+              group: componentsPatterns,
               message: "db/ ne doit pas importer depuis components/",
             },
             {
@@ -124,9 +138,9 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/db", "@/db/**"],
+              group: dbPatterns,
               message:
-                "Les composants feature ne doivent pas importer directement depuis db/ — passer par les actions ou les types publics du repository",
+                "Les composants feature ne doivent pas importer directement depuis db/ — passer par les actions, props ou types publics.",
             },
           ],
         },
@@ -142,7 +156,7 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/db", "@/db/**"],
+              group: dbPatterns,
               message:
                 "components/admin/ ne doit pas importer directement depuis db/ — passer par les hubs de types features/admin/**/types/",
             },
@@ -160,9 +174,9 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/db", "@/db/**"],
+              group: dbPatterns,
               message:
-                "Les mappers feature ne doivent pas importer directement depuis db/ — passer par les hubs de types features/**/types/",
+                "Les mappers feature ne doivent pas importer directement depuis db/ — passer par les hubs de types features/**/types/ ou le client généré si nécessaire.",
             },
           ],
         },
@@ -178,7 +192,7 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/components", "@/components/**"],
+              group: componentsPatterns,
               message: "Les schemas ne doivent pas importer depuis components/",
             },
           ],
@@ -187,7 +201,6 @@ export default defineConfig([
     },
   },
 
-  // ─── Strict module boundaries: features/admin/products ───────────────────
   {
     files: ["features/admin/products/**/*.{ts,tsx}"],
     rules: {
@@ -196,7 +209,7 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/app", "@/app/**"],
+              group: appPatterns,
               message:
                 "features/admin/products ne doit pas importer depuis app/ — passer par les props, actions ou façades publiques.",
             },
@@ -218,7 +231,6 @@ export default defineConfig([
     },
   },
 
-  // ─── products/components = UI only ───────────────────────────────────────
   {
     files: ["features/admin/products/components/**/*.{ts,tsx}"],
     rules: {
@@ -227,20 +239,20 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/db", "@/db/**", "@/core/db"],
+              group: dbPatterns,
               message: "Les composants products ne doivent pas accéder directement à la base.",
             },
             {
               group: [
-                "@/features/admin/products/server",
+                ...productsServerPatterns,
                 "@/features/admin/products/create/actions/**",
                 "@/features/admin/products/details/mappers/**",
                 "@/features/admin/products/details/queries/**",
-                "@/features/admin/products/editor/actions/**",
-                "@/features/admin/products/editor/mappers/**",
-                "@/features/admin/products/editor/queries/**",
-                "@/features/admin/products/list/queries/**",
-                "@/features/admin/products/list/mappers/server/**",
+                ...productsEditorActionPatterns,
+                ...productsEditorMapperPatterns,
+                ...productsEditorQueryPatterns,
+                ...productsListQueryPatterns,
+                ...productsListServerMapperPatterns,
               ],
               message:
                 "Les composants products doivent importer via les façades publiques, les props, ou les mappers shared explicitement client-safe.",
@@ -251,7 +263,6 @@ export default defineConfig([
     },
   },
 
-  // ─── products/editor/actions = server/business only ──────────────────────
   {
     files: ["features/admin/products/editor/actions/**/*.{ts,tsx}"],
     rules: {
@@ -260,7 +271,7 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/components", "@/components/**"],
+              group: componentsPatterns,
               message: "Les actions products ne doivent pas importer de composants UI.",
             },
             {
@@ -279,7 +290,6 @@ export default defineConfig([
     },
   },
 
-  // ─── products/editor/queries = read model only ───────────────────────────
   {
     files: ["features/admin/products/editor/queries/**/*.{ts,tsx}"],
     rules: {
@@ -288,14 +298,11 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/components", "@/components/**"],
+              group: componentsPatterns,
               message: "Les queries products ne doivent pas importer de composants.",
             },
             {
-              group: [
-                "@/features/admin/products/components/**",
-                "@/features/admin/products/editor/actions/**",
-              ],
+              group: ["@/features/admin/products/components/**", ...productsEditorActionPatterns],
               message:
                 "Les queries products ne doivent pas dépendre des composants ni des actions.",
             },
@@ -305,7 +312,6 @@ export default defineConfig([
     },
   },
 
-  // ─── products/editor/mappers = pure mapping only ─────────────────────────
   {
     files: ["features/admin/products/editor/mappers/**/*.{ts,tsx}"],
     rules: {
@@ -315,11 +321,10 @@ export default defineConfig([
           patterns: [
             {
               group: [
-                "@/components",
-                "@/components/**",
-                "@/features/admin/products/components/**",
-                "@/features/admin/products/editor/actions/**",
-                "@/features/admin/products/editor/queries/**",
+                ...componentsPatterns,
+                ...productsUiPatterns,
+                ...productsEditorActionPatterns,
+                ...productsEditorQueryPatterns,
               ],
               message:
                 "Les mappers products doivent rester purs et indépendants de l’UI, des actions et des queries.",
@@ -330,7 +335,6 @@ export default defineConfig([
     },
   },
 
-  // ─── products/list/mappers/shared = client-safe ──────────────────────────
   {
     files: ["features/admin/products/list/mappers/shared/**/*.{ts,tsx}"],
     rules: {
@@ -340,14 +344,12 @@ export default defineConfig([
           patterns: [
             {
               group: [
-                "@/db",
-                "@/db/**",
-                "@/core/db",
-                "@/features/admin/products/server",
-                "@/features/admin/products/list/queries/**",
-                "@/features/admin/products/list/mappers/server/**",
-                "@/features/admin/products/editor/actions/**",
-                "@/features/admin/products/editor/queries/**",
+                ...dbPatterns,
+                ...productsServerPatterns,
+                ...productsListQueryPatterns,
+                ...productsListServerMapperPatterns,
+                ...productsEditorActionPatterns,
+                ...productsEditorQueryPatterns,
               ],
               message:
                 "Les mappers shared de products doivent rester client-safe et ne pas dépendre des couches serveur.",
@@ -358,7 +360,6 @@ export default defineConfig([
     },
   },
 
-  // ─── products/list/mappers/server = server-only ──────────────────────────
   {
     files: ["features/admin/products/list/mappers/server/**/*.{ts,tsx}"],
     rules: {
@@ -367,7 +368,7 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["@/components", "@/components/**", "@/features/admin/products/components/**"],
+              group: [...componentsPatterns, ...productsUiPatterns],
               message: "Les mappers server de products ne doivent pas dépendre de l’UI.",
             },
           ],
@@ -376,7 +377,6 @@ export default defineConfig([
     },
   },
 
-  // ─── products/editor/types = types only ──────────────────────────────────
   {
     files: ["features/admin/products/**/types/**/*.{ts,tsx}"],
     rules: {
@@ -386,12 +386,9 @@ export default defineConfig([
           patterns: [
             {
               group: [
-                "@/components",
-                "@/components/**",
-                "@/db",
-                "@/db/**",
-                "@/core/db",
-                "@/features/admin/products/components/**",
+                ...componentsPatterns,
+                ...dbPatterns,
+                ...productsUiPatterns,
                 "@/features/admin/products/**/actions/**",
                 "@/features/admin/products/**/queries/**",
                 "@/features/admin/products/**/mappers/**",
@@ -405,7 +402,6 @@ export default defineConfig([
     },
   },
 
-  // ─── products/schemas = validation only ──────────────────────────────────
   {
     files: ["features/admin/products/**/schemas/**/*.{ts,tsx}"],
     rules: {
@@ -415,12 +411,9 @@ export default defineConfig([
           patterns: [
             {
               group: [
-                "@/components",
-                "@/components/**",
-                "@/db",
-                "@/db/**",
-                "@/core/db",
-                "@/features/admin/products/components/**",
+                ...componentsPatterns,
+                ...dbPatterns,
+                ...productsUiPatterns,
                 "@/features/admin/products/**/actions/**",
                 "@/features/admin/products/**/queries/**",
                 "@/features/admin/products/**/mappers/**",
@@ -433,9 +426,13 @@ export default defineConfig([
     },
   },
 
-  // ─── products façades publiques ───────────────────────────────────────────
   {
-    files: ["features/admin/products/index.ts", "features/admin/products/list/index.ts"],
+    files: [
+      "features/admin/products/index.ts",
+      "features/admin/products/list/index.ts",
+      "features/admin/products/details/index.ts",
+      "features/admin/products/editor/public/index.ts",
+    ],
     rules: {
       "no-restricted-imports": [
         "error",
@@ -469,7 +466,6 @@ export default defineConfig([
     },
   },
 
-  // ─── products server façade ───────────────────────────────────────────────
   {
     files: ["features/admin/products/server.ts"],
     rules: {
@@ -478,7 +474,7 @@ export default defineConfig([
         {
           patterns: [
             {
-              group: ["./components", "./components/**", "@/components", "@/components/**"],
+              group: ["./components", "./components/**", ...componentsPatterns],
               message: "features/admin/products/server.ts ne doit pas dépendre des composants UI.",
             },
           ],
@@ -487,7 +483,6 @@ export default defineConfig([
     },
   },
 
-  // ─── products/index façades explicites ───────────────────────────────────
   {
     files: ["features/admin/products/**/index.ts"],
     rules: {
@@ -511,7 +506,8 @@ export default defineConfig([
     "dist/**",
     "node_modules/**",
     "public/**",
-    "src/**",
     ".trash/**",
+    "src/generated/**",
+    "prisma-generated/**",
   ]),
 ]);

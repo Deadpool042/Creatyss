@@ -7,13 +7,6 @@ export { AdminSidebarGroup } from "./admin-sidebar-group";
 export { AdminSidebarLink } from "./admin-sidebar-link";
 
 export {
-  adminMobileMoreNavigationItems,
-  adminMobilePrimaryNavigationItems,
-  adminNavigationGroupDefinitions,
-  adminNavigationGroups,
-  adminNavigationItems,
-  adminSidebarDesktopGroups,
-  adminSidebarRootItems,
   AdminMobileBottomNav,
   AdminMobileMoreSheet,
   AdminNavigationLinkItem,
@@ -22,13 +15,4 @@ export {
   AdminTopbar,
 } from "./navigation";
 
-export type {
-  AdminNavigationGroup,
-  AdminNavigationGroupDefinition,
-  AdminNavigationItem,
-  AdminNavigationItemGroupKey,
-  AdminNavigationSurface,
-  AdminNavigationVisibility,
-  AdminSidebarNavGroup,
-  AdminSidebarNavItem,
-} from "./navigation";
+export type { AdminSidebarNavGroup, AdminSidebarNavItem } from "./navigation";

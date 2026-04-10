@@ -95,10 +95,6 @@ function normalizeOptionalVariantId(
     return null;
   }
 
-  if (!/^[0-9]+$/.test(normalizedValue)) {
-    return undefined;
-  }
-
   return normalizedValue;
 }
 
@@ -111,13 +107,6 @@ export function validateCreateProductImageInput(
     return {
       ok: false,
       code: "missing_media_asset",
-    };
-  }
-
-  if (!/^[0-9]+$/.test(mediaAssetId)) {
-    return {
-      ok: false,
-      code: "invalid_media_asset",
     };
   }
 

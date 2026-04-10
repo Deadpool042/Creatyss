@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Notice } from "@/components/shared/notice";
-import { findPublicOrderByReference } from "@/db/repositories/order.repository";
+import { findPublicOrderByReference } from "@/features/orders/lib/order.repository";
 import {
   getOrderPaymentNotice,
   getOrderStatusLabel,

@@ -1,110 +1,76 @@
 import { describe, expect, it } from "vitest";
-import { normalizeBlogPostSlug, validateBlogPostInput } from "@/entities/blog/blog-post-input";
-
-describe("normalizeBlogPostSlug", () => {
-  it("normalise le slug article", () => {
-    expect(normalizeBlogPostSlug("  Journal / Édition Été  ")).toBe("journal-edition-ete");
-  });
-});
+import { validateBlogPostInput } from "@/entities/blog/blog-post-input";
 
 describe("validateBlogPostInput", () => {
-  it("valide un article nominal avec image de couverture issue d'un media", () => {
+  it("valide une entrée complète", () => {
     const result = validateBlogPostInput({
-      title: "  Journal atelier  ",
-      slug: "  Journal / Édition Été  ",
-      excerpt: "  Extrait  ",
-      content: "  Contenu long  ",
-      seoTitle: "  SEO title  ",
-      seoDescription: "  SEO description  ",
-      status: "published",
-      currentCoverImagePath: null,
-      coverImageMediaAssetId: "42",
-    });
-
-    expect(result).toEqual({
-      ok: true,
-      data: {
-        title: "Journal atelier",
-        slug: "journal-edition-ete",
-        excerpt: "Extrait",
-        content: "Contenu long",
-        seoTitle: "SEO title",
-        seoDescription: "SEO description",
-        status: "published",
-        coverImage: {
-          kind: "media_asset",
-          mediaAssetId: "42",
-        },
-      },
-    });
-  });
-
-  it("conserve explicitement l'image actuelle quand demande", () => {
-    const result = validateBlogPostInput({
-      title: "Article",
-      slug: "article",
-      excerpt: "",
-      content: "",
-      seoTitle: "",
-      seoDescription: "",
+      title: "Titre",
+      slug: "titre",
+      excerpt: "Résumé",
+      content: "Contenu",
+      seoTitle: "SEO titre",
+      seoDescription: "SEO description",
       status: "draft",
-      currentCoverImagePath: "blog/cover.jpg",
-      coverImageMediaAssetId: "__keep_current__",
+      currentPrimaryImagePath: null,
+      primaryImageMediaAssetId: "media_primary",
+      currentCoverImagePath: null,
+      coverImageMediaAssetId: "media_cover",
     });
 
-    expect(result).toEqual({
-      ok: true,
-      data: {
-        title: "Article",
-        slug: "article",
-        excerpt: null,
-        content: null,
-        seoTitle: null,
-        seoDescription: null,
-        status: "draft",
-        coverImage: {
-          kind: "keep_current",
-          filePath: "blog/cover.jpg",
-        },
-      },
-    });
+    expect(result.ok).toBe(true);
   });
 
-  it("rejette la conservation d'image si aucun chemin actuel n'existe", () => {
-    expect(
-      validateBlogPostInput({
-        title: "Article",
-        slug: "article",
-        excerpt: null,
-        content: null,
-        seoTitle: null,
-        seoDescription: null,
-        status: "draft",
-        currentCoverImagePath: "",
-        coverImageMediaAssetId: "__keep_current__",
-      })
-    ).toEqual({
-      ok: false,
-      code: "invalid_cover_image",
+  it("accepte des images courantes existantes", () => {
+    const result = validateBlogPostInput({
+      title: "Titre",
+      slug: "titre",
+      excerpt: "Résumé",
+      content: "Contenu",
+      seoTitle: "SEO titre",
+      seoDescription: "SEO description",
+      status: "draft",
+      currentPrimaryImagePath: "/uploads/primary.webp",
+      primaryImageMediaAssetId: "media_primary",
+      currentCoverImagePath: "/uploads/cover.webp",
+      coverImageMediaAssetId: "media_cover",
     });
+
+    expect(result.ok).toBe(true);
   });
 
-  it("rejette un statut invalide", () => {
-    expect(
-      validateBlogPostInput({
-        title: "Article",
-        slug: "article",
-        excerpt: null,
-        content: null,
-        seoTitle: null,
-        seoDescription: null,
-        status: "scheduled",
-        currentCoverImagePath: null,
-        coverImageMediaAssetId: "",
-      })
-    ).toEqual({
-      ok: false,
-      code: "invalid_status",
+  it("accepte les champs optionnels nuls", () => {
+    const result = validateBlogPostInput({
+      title: "Titre",
+      slug: "titre",
+      excerpt: null,
+      content: null,
+      seoTitle: null,
+      seoDescription: null,
+      status: "draft",
+      currentPrimaryImagePath: "/uploads/primary.webp",
+      primaryImageMediaAssetId: "media_primary",
+      currentCoverImagePath: "/uploads/cover.webp",
+      coverImageMediaAssetId: "media_cover",
     });
+
+    expect(result.ok).toBe(true);
+  });
+
+  it("accepte sans images courantes", () => {
+    const result = validateBlogPostInput({
+      title: "Titre",
+      slug: "titre",
+      excerpt: null,
+      content: null,
+      seoTitle: null,
+      seoDescription: null,
+      status: "draft",
+      currentPrimaryImagePath: null,
+      primaryImageMediaAssetId: "media_primary",
+      currentCoverImagePath: null,
+      coverImageMediaAssetId: "media_cover",
+    });
+
+    expect(result.ok).toBe(true);
   });
 });

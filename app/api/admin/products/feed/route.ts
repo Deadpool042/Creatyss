@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
-import { getAdminProductsFeed } from "@/features/admin/products/server";
-import { productFeedCursorSchema } from "@/features/products/types";
+import { getAdminProductsFeedPage } from "@/features/admin/products/list/queries/get-admin-products-feed-page.query";
 
 function parsePositiveInt(value: string | null, fallback: number): number {
   if (!value) {
@@ -22,25 +21,18 @@ export async function GET(request: Request) {
   await requireAuthenticatedAdmin();
 
   const url = new URL(request.url);
-
-  const cursorUpdatedAt = url.searchParams.get("cursorUpdatedAt");
-  const cursorId = url.searchParams.get("cursorId");
-
-  const cursor =
-    cursorUpdatedAt && cursorId
-      ? productFeedCursorSchema.parse({
-          updatedAt: cursorUpdatedAt,
-          id: cursorId,
-        })
-      : null;
-
   const limit = parsePositiveInt(url.searchParams.get("limit"), 12);
+  const cursor = url.searchParams.get("cursor");
   const search = url.searchParams.get("search")?.trim() ?? "";
 
-  const result = await getAdminProductsFeed({
+  const result = await getAdminProductsFeedPage({
     limit,
     cursor,
-    ...(search.length > 0 ? { search } : {}),
+    search: search.length > 0 ? search : null,
+    status: [],
+    categoryId: null,
+    featured: null,
+    sort: "updated-desc",
   });
 
   return NextResponse.json(result);

@@ -32,10 +32,10 @@ type ProductTableDesktopProps = {
 
 export function ProductTableDesktop({ products }: ProductTableDesktopProps): JSX.Element {
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border">
-      <div className="min-h-0 flex-1 overflow-auto">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-surface-border bg-card shadow-card">
+      <div className="min-h-0 flex-1 overflow-auto overscroll-contain">
         <Table>
-          <TableHeader className="sticky top-0 z-10 bg-background">
+          <TableHeader className="sticky top-0 z-10 bg-card">
             <TableRow>
               <TableHead className="w-14" />
               <TableHead>Produit</TableHead>
@@ -64,7 +64,7 @@ export function ProductTableDesktop({ products }: ProductTableDesktopProps): JSX
                 return (
                   <TableRow key={product.id}>
                     <TableCell className="p-2">
-                      <div className="relative h-10 w-10 overflow-hidden rounded-md border bg-muted">
+                      <div className="relative h-10 w-10 overflow-hidden rounded-md border border-surface-border bg-surface-panel-soft">
                         {hasRealImage(product.primaryImageUrl) ? (
                           <Image
                             src={product.primaryImageUrl!}
@@ -93,7 +93,7 @@ export function ProductTableDesktop({ products }: ProductTableDesktopProps): JSX
                         ) : null}
 
                         <div className="mt-1 flex flex-wrap items-center gap-2">
-                          <span className="rounded-md border px-2 py-0.5 text-[11px] text-muted-foreground">
+                          <span className="rounded-md border border-surface-border bg-surface-panel-soft px-2 py-0.5 text-[11px] text-muted-foreground">
                             {product.variantCount} variante
                             {product.variantCount > 1 ? "s" : ""}
                           </span>

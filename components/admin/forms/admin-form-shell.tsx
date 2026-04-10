@@ -25,8 +25,8 @@ export function AdminFormShell({
   contentClassName,
 }: AdminFormShellProps) {
   return (
-    <div className="flex h-full flex-col">
-      <div className="shrink-0 border-b px-6 py-5">
+    <div className="flex h-full flex-col bg-page-background text-page-foreground">
+      <div className="shrink-0 border-b border-surface-border bg-card px-6 py-5 shadow-card">
         <Button variant="outline" type="button" size="sm" asChild>
           <Link href={backHref} className="inline-flex items-center gap-2">
             <ChevronLeftSquareIcon className="h-4 w-4" />
@@ -43,7 +43,7 @@ export function AdminFormShell({
         <div className={contentClassName ?? "mx-auto max-w-xl space-y-5 px-6 py-6"}>{children}</div>
       </div>
 
-      <div className="flex shrink-0 items-center justify-end gap-3 border-t px-6 py-4">
+      <div className="site-header-blur flex shrink-0 items-center justify-end gap-3 border-t border-shell-border px-6 py-4 shadow-card">
         {footer}
       </div>
     </div>

@@ -4,14 +4,12 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Notice } from "@/components/shared/notice";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
-import { listAdminMediaAssets } from "@/db/repositories/admin-media.repository";
-import { findAdminCategoryById } from "@/db/repositories/admin-category.repository";
-import { getUploadsPublicPath } from "@/lib/uploads";
+import { getAdminCategoryDetail } from "@/features/admin/categories/queries";
+import { listAdminMediaAssets } from "@/features/admin/media";
 import {
   deleteCategoryAction,
   updateCategoryAction,
@@ -22,9 +20,7 @@ import {
 export const dynamic = "force-dynamic";
 
 type EditAdminCategoryPageProps = Readonly<{
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ id: string }>;
   searchParams: Promise<{
     error?: string | string[];
     image_error?: string | string[];
@@ -32,104 +28,60 @@ type EditAdminCategoryPageProps = Readonly<{
   }>;
 }>;
 
-function getErrorMessage(error: string | undefined): string | null {
-  switch (error) {
-    case "missing_name":
-      return "Le nom est obligatoire.";
-    case "missing_slug":
-      return "Le slug est obligatoire.";
-    case "invalid_slug":
-      return "Renseignez un slug valide.";
-    case "slug_taken":
-      return "Ce slug est déjà utilisé par une autre catégorie.";
-    case "in_use":
-      return "Cette catégorie ne peut pas être supprimée car elle est encore utilisée par au moins un produit.";
-    case "referenced":
-      return "Cette catégorie ne peut pas être supprimée car elle est encore référencée ailleurs.";
-    case "save_failed":
-      return "La catégorie n'a pas pu être mise à jour.";
-    case "delete_failed":
-      return "La catégorie n'a pas pu être supprimée.";
-    default:
-      return null;
-  }
-}
-
-function getImageErrorMessage(error: string | undefined): string | null {
-  switch (error) {
-    case "missing_media":
-      return "Sélectionnez un média avant d'enregistrer.";
-    case "media_not_found":
-      return "Le média sélectionné est introuvable.";
-    default:
-      return null;
-  }
-}
-
-function getImageStatusMessage(status: string | undefined): string | null {
-  switch (status) {
-    case "updated":
-      return "L'image de la catégorie a été mise à jour.";
-    case "deleted":
-      return "L'image de la catégorie a été supprimée.";
-    default:
-      return null;
-  }
-}
-
-const nativeSelectClassName =
-  "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";
-
 export default async function EditAdminCategoryPage({
   params,
-  searchParams,
 }: EditAdminCategoryPageProps) {
   const { id } = await params;
-  const [category, mediaAssets, resolvedSearchParams] = await Promise.all([
-    findAdminCategoryById(id),
+
+  const [category, mediaAssets] = await Promise.all([
+    getAdminCategoryDetail({ categoryId: id }),
     listAdminMediaAssets(),
-    searchParams,
   ]);
 
   if (category === null) {
     notFound();
   }
 
-  const errorParam = Array.isArray(resolvedSearchParams.error)
-    ? resolvedSearchParams.error[0]
-    : resolvedSearchParams.error;
-  const errorMessage = getErrorMessage(errorParam);
+  async function handleUpdateCategory(formData: FormData): Promise<void> {
+    "use server";
+    await updateCategoryAction(formData);
+  }
 
-  const imageErrorParam = Array.isArray(resolvedSearchParams.image_error)
-    ? resolvedSearchParams.image_error[0]
-    : resolvedSearchParams.image_error;
-  const imageErrorMessage = getImageErrorMessage(imageErrorParam);
+  async function handleSetCategoryImage(formData: FormData): Promise<void> {
+    "use server";
+    const categoryId = String(formData.get("categoryId") ?? "");
+    const mediaAssetIdRaw = String(formData.get("mediaAssetId") ?? "");
+    await setCategoryImageAction({
+      categoryId,
+      mediaAssetId: mediaAssetIdRaw.trim().length > 0 ? mediaAssetIdRaw : null,
+    });
+  }
 
-  const imageStatusParam = Array.isArray(resolvedSearchParams.image_status)
-    ? resolvedSearchParams.image_status[0]
-    : resolvedSearchParams.image_status;
-  const imageStatusMessage = getImageStatusMessage(imageStatusParam);
+  async function handleDeleteCategoryImage(formData: FormData): Promise<void> {
+    "use server";
+    const categoryId = String(formData.get("categoryId") ?? "");
+    await deleteCategoryImageAction({ categoryId });
+  }
 
-  const uploadsPublicPath = getUploadsPublicPath();
-  const currentImageUrl = category.imagePath
-    ? `${uploadsPublicPath}/${category.imagePath.replace(/^\/+/, "")}`
-    : null;
-  const currentMediaAsset = category.imagePath
-    ? (mediaAssets.find((a) => a.filePath === category.imagePath) ?? null)
-    : null;
+  async function handleDeleteCategory(formData: FormData): Promise<void> {
+    "use server";
+    const categoryId = String(formData.get("categoryId") ?? "");
+    await deleteCategoryAction({ categoryId });
+  }
 
   return (
     <AdminPageShell
       pageTitleNavigation={{ label: "Retour", href: "/admin/categories" }}
-      description="Modifiez d'abord les informations de la catégorie. La suppression reste disponible séparément en bas de page."
+      description="Gestion de la catégorie."
       eyebrow="Catégories"
       title="Modifier la catégorie"
     >
-      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
-
       <AdminFormSection>
-        <form action={updateCategoryAction} className="grid gap-4">
+        <form action={handleUpdateCategory} className="grid gap-4">
           <input name="categoryId" type="hidden" value={category.id} />
+          <input name="sortOrder" type="hidden" value={String(category.sortOrder)} />
+          <input name="parentId" type="hidden" value={category.parentId ?? ""} />
+          <input name="primaryImageId" type="hidden" value={category.primaryImageId ?? ""} />
 
           <AdminFormField htmlFor="cat-name" label="Nom">
             <Input defaultValue={category.name} id="cat-name" name="name" required type="text" />
@@ -156,102 +108,85 @@ export default async function EditAdminCategoryPage({
               type="checkbox"
               value="on"
             />
-            <span>Mettre cette catégorie en avant</span>
+            <span>Mise en avant</span>
           </label>
 
           <AdminFormActions>
-            <Button type="submit">Enregistrer les modifications</Button>
+            <Button type="submit">Enregistrer</Button>
           </AdminFormActions>
         </form>
       </AdminFormSection>
 
-      <AdminFormSection
-        description="Cette image illustre la catégorie dans l'interface d'administration. Sélectionnez un média depuis la bibliothèque."
-        eyebrow="Visuel"
-        title="Image de la catégorie"
-      >
-        {imageErrorMessage ? <Notice tone="alert">{imageErrorMessage}</Notice> : null}
-        {imageStatusMessage ? <Notice tone="success">{imageStatusMessage}</Notice> : null}
-
-        {currentImageUrl ? (
-          <div className="overflow-hidden rounded-xl border border-border-soft bg-surface-panel-soft shadow-xs">
+      <AdminFormSection eyebrow="Visuel" title="Image principale">
+        {category.primaryImageUrl ? (
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             <Image
               alt={category.name}
               className="aspect-video w-full object-cover"
-              src={currentImageUrl}
+              src={category.primaryImageUrl}
               width={800}
               height={450}
             />
           </div>
         ) : (
-          <div className="flex min-h-32 items-center justify-center rounded-xl border border-dashed border-border-soft bg-surface-panel-soft px-6 text-center text-sm leading-6 text-muted-foreground">
-            Aucune image pour cette catégorie
+          <div className="flex min-h-32 items-center justify-center rounded-xl border border-dashed border-border bg-card px-6 text-center text-sm text-muted-foreground">
+            Aucun visuel associé
           </div>
         )}
 
         {mediaAssets.length > 0 ? (
-          <form action={setCategoryImageAction} className="grid gap-4">
+          <form action={handleSetCategoryImage} className="grid gap-4">
             <input name="categoryId" type="hidden" value={category.id} />
+
             <AdminFormField htmlFor="cat-image-media-asset" label="Choisir un média">
               <select
-                className={nativeSelectClassName}
-                defaultValue={currentMediaAsset?.id ?? ""}
+                className="flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50"
+                defaultValue={category.primaryImageId ?? ""}
                 id="cat-image-media-asset"
                 name="mediaAssetId"
               >
-                <option disabled value="">
-                  Sélectionnez un média
-                </option>
-                {mediaAssets.map((asset) => (
+                <option value="">Aucun média</option>
+                {mediaAssets.map((asset: { id: string; originalName: string; mimeType: string }) => (
                   <option key={asset.id} value={asset.id}>
                     {asset.originalName} · {asset.mimeType}
                   </option>
                 ))}
               </select>
             </AdminFormField>
+
             <AdminFormActions>
-              <Button type="submit">
-                {category.imagePath ? "Changer l'image" : "Définir l'image"}
-              </Button>
+              <Button type="submit">Mettre à jour</Button>
             </AdminFormActions>
           </form>
         ) : (
           <p className="text-sm text-muted-foreground">
             Aucun média disponible.{" "}
-            <Link
-              className="underline underline-offset-4 hover:text-foreground"
-              href="/admin/media"
-            >
-              Importer un média
+            <Link className="underline underline-offset-4 hover:text-foreground" href="/admin/media">
+              Ouvrir la médiathèque
             </Link>
           </p>
         )}
 
-        {category.imagePath ? (
-          <form action={deleteCategoryImageAction}>
+        {category.primaryImageId ? (
+          <form action={handleDeleteCategoryImage}>
             <input name="categoryId" type="hidden" value={category.id} />
             <Button
-              className="w-fit px-0 text-destructive hover:bg-transparent hover:text-destructive"
+              className="w-fit px-0 text-destructive hover:text-destructive"
               size="sm"
               type="submit"
               variant="ghost"
             >
-              Supprimer l&apos;image
+              Supprimer l’image
             </Button>
           </form>
         ) : null}
       </AdminFormSection>
 
-      <AdminFormSection
-        description="La suppression est refusée tant que cette catégorie est encore utilisée par un produit."
-        eyebrow="Suppression"
-        title="Supprimer cette catégorie"
-      >
-        <form action={deleteCategoryAction}>
+      <AdminFormSection eyebrow="Suppression" title="Supprimer la catégorie">
+        <form action={handleDeleteCategory}>
           <input name="categoryId" type="hidden" value={category.id} />
-
           <Button type="submit" variant="destructive">
-            Supprimer la catégorie
+            Supprimer
           </Button>
         </form>
       </AdminFormSection>

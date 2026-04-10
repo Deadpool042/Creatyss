@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { type AdminBlogPostSummary } from "@/features/admin/blog/types/blog-types";
+import type { AdminBlogPostSummary } from "@/features/admin/blog/types/blog-types";
 
 const blogDateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",
@@ -54,7 +54,7 @@ export function AdminBlogPostCard({ blogPost }: AdminBlogPostCardProps) {
 
       <Link
         className="inline-flex w-fit items-center text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline"
-        href={`/admin/blog/${blogPost.id}`}
+        href={`/admin/content/blog/${blogPost.id}`}
       >
         Modifier l&apos;article
       </Link>

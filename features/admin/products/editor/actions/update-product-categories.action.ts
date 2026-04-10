@@ -1,146 +1,100 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { validateAdminProductInput } from "@/entities/product";
+import {
+  productCategoriesFormInitialState,
+  type ProductCategoriesFormAction,
+} from "../types/product-categories-form.types";
+import {
+  AdminProductEditorServiceError,
+  updateProductCategories,
+} from "../services";
 
-import { db, withTransaction } from "@/core/db";
-import { updateProductCategoriesSchema } from "@/features/admin/products/editor/schemas";
-import type {
-  ProductCategoriesFormState,
-  ProductCategoriesFormValues,
-} from "@/features/admin/products/editor/types";
-
-function mapFormDataToValues(formData: FormData): ProductCategoriesFormValues {
-  return {
-    id: String(formData.get("id") ?? "").trim(),
-    categoryIds: formData
-      .getAll("categoryIds")
-      .map((value) => String(value).trim())
-      .filter((value) => value.length > 0),
-    primaryCategoryId: String(formData.get("primaryCategoryId") ?? "").trim(),
-  };
+function getString(formData: FormData, key: string): FormDataEntryValue | null {
+  return formData.get(key);
 }
 
-function buildFieldErrors(input: {
-  id?: string;
-  categoryIds?: string;
-  primaryCategoryId?: string;
-}): ProductCategoriesFormState["fieldErrors"] {
-  const fieldErrors: ProductCategoriesFormState["fieldErrors"] = {};
-
-  if (input.id) fieldErrors.id = input.id;
-  if (input.categoryIds) fieldErrors.categoryIds = input.categoryIds;
-  if (input.primaryCategoryId) fieldErrors.primaryCategoryId = input.primaryCategoryId;
-
-  return fieldErrors;
+function getAll(formData: FormData, key: string): FormDataEntryValue[] {
+  return formData.getAll(key);
 }
 
-export async function updateProductCategoriesAction(
-  _previousState: ProductCategoriesFormState,
-  formData: FormData
-): Promise<ProductCategoriesFormState> {
-  const rawValues = mapFormDataToValues(formData);
-  const parsed = updateProductCategoriesSchema.safeParse(rawValues);
+function buildCategorySortOrders(formData: FormData): Record<string, FormDataEntryValue | null> {
+  const result: Record<string, FormDataEntryValue | null> = {};
 
-  if (!parsed.success) {
-    const issues = parsed.error.issues;
-    const idError = issues.find((issue) => issue.path[0] === "id")?.message;
-    const categoryIdsError = issues.find((issue) => issue.path[0] === "categoryIds")?.message;
-    const primaryCategoryIdError = issues.find(
-      (issue) => issue.path[0] === "primaryCategoryId"
-    )?.message;
+  for (const [key, value] of formData.entries()) {
+    if (key.startsWith("categorySortOrder:")) {
+      result[key.slice("categorySortOrder:".length)] = value;
+    }
+  }
 
+  return result;
+}
+
+export const updateProductCategoriesAction: ProductCategoriesFormAction = async (
+  _prevState,
+  formData
+) => {
+  const productIdValue = getString(formData, "productId");
+
+  if (typeof productIdValue !== "string" || productIdValue.trim().length === 0) {
     return {
+      ...productCategoriesFormInitialState,
       status: "error",
-      message: "Le formulaire catégories contient des erreurs.",
-      fieldErrors: buildFieldErrors({
-        ...(idError ? { id: idError } : {}),
-        ...(categoryIdsError ? { categoryIds: categoryIdsError } : {}),
-        ...(primaryCategoryIdError ? { primaryCategoryId: primaryCategoryIdError } : {}),
-      }),
+      message: "Produit introuvable.",
     };
   }
 
-  const { id, categoryIds, primaryCategoryId } = parsed.data;
-
-  const existingProduct = await db.product.findUnique({
-    where: {
-      id,
-    },
-    select: {
-      id: true,
-      slug: true,
-    },
+  const validated = validateAdminProductInput({
+    name: "placeholder",
+    slug: "placeholder",
+    skuRoot: null,
+    shortDescription: null,
+    description: null,
+    productTypeId: null,
+    primaryImageMediaAssetId: null,
+    status: "draft",
+    isFeatured: null,
+    isStandalone: null,
+    categoryIds: getAll(formData, "categoryIds"),
+    categoryPrimaryIds: getAll(formData, "categoryPrimaryIds"),
+    categorySortOrders: buildCategorySortOrders(formData),
+    relatedProductIds: [],
+    relatedProductTypes: {},
+    relatedProductSortOrders: {},
   });
 
-  if (!existingProduct) {
+  if (!validated.ok) {
     return {
+      ...productCategoriesFormInitialState,
       status: "error",
-      message: "Le produit demandé est introuvable.",
-      fieldErrors: buildFieldErrors({
-        id: "Produit introuvable.",
-      }),
+      message: "Données invalides.",
     };
   }
 
-  const existingCategories = await db.category.findMany({
-    where: {
-      id: {
-        in: categoryIds,
-      },
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  if (existingCategories.length !== categoryIds.length) {
-    return {
-      status: "error",
-      message: "Une ou plusieurs catégories sélectionnées sont invalides.",
-      fieldErrors: buildFieldErrors({
-        categoryIds: "Sélection de catégories invalide.",
-      }),
-    };
-  }
-
-  if (primaryCategoryId.length > 0 && !categoryIds.includes(primaryCategoryId)) {
-    return {
-      status: "error",
-      message: "La catégorie principale doit faire partie des catégories sélectionnées.",
-      fieldErrors: buildFieldErrors({
-        primaryCategoryId: "Choisis une catégorie principale parmi les catégories liées.",
-      }),
-    };
-  }
-
-  await withTransaction(async (tx) => {
-    await tx.productCategory.deleteMany({
-      where: {
-        productId: id,
-      },
+  try {
+    await updateProductCategories({
+      productId: productIdValue.trim(),
+      links: validated.data.categoryLinks,
     });
 
-    if (categoryIds.length > 0) {
-      const resolvedPrimaryCategoryId =
-        primaryCategoryId.length > 0 ? primaryCategoryId : categoryIds[0];
-
-      await tx.productCategory.createMany({
-        data: categoryIds.map((categoryId, index) => ({
-          productId: id,
-          categoryId,
-          isPrimary: categoryId === resolvedPrimaryCategoryId,
-          sortOrder: index,
-        })),
-      });
+    return {
+      ...productCategoriesFormInitialState,
+      status: "success",
+      message: "Mise à jour effectuée.",
+    };
+  } catch (error: unknown) {
+    if (error instanceof AdminProductEditorServiceError) {
+      return {
+        ...productCategoriesFormInitialState,
+        status: "error",
+        message: "Mise à jour impossible.",
+      };
     }
-  });
 
-  revalidatePath("/admin/products");
-  revalidatePath(`/admin/products/${existingProduct.slug}/edit`);
-
-  return {
-    status: "success",
-    message: "Les catégories du produit ont été enregistrées.",
-    fieldErrors: {},
-  };
-}
+    return {
+      ...productCategoriesFormInitialState,
+      status: "error",
+      message: "Erreur inattendue.",
+    };
+  }
+};

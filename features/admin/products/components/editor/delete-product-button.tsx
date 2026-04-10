@@ -1,44 +1,42 @@
 "use client";
 
-import { useTransition, type JSX, type ReactNode } from "react";
+import { useTransition, type ReactNode } from "react";
+import { Trash2 } from "lucide-react";
 
-import { ConfirmDestructiveDialog } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { deleteProductAction } from "@/features/admin/products/editor/actions";
+import { deleteProductAction } from "@/features/admin/products/editor/public";
 
 type DeleteProductButtonProps = {
   productId: string;
   trigger?: ReactNode;
+  onDelete?: (input: { productId: string }) => Promise<{ status: "success" | "error"; message: string }>;
 };
 
-export function DeleteProductButton({ productId, trigger }: DeleteProductButtonProps): JSX.Element {
+export function DeleteProductButton({
+  productId,
+  trigger,
+  onDelete = deleteProductAction,
+}: DeleteProductButtonProps) {
   const [isPending, startTransition] = useTransition();
 
-  return (
-    <ConfirmDestructiveDialog
-      title="Supprimer ce produit ?"
-      description="Cette action est irréversible. Le produit, ses variantes et ses images associées ne seront plus disponibles dans l’administration."
-      confirmLabel="Supprimer le produit"
-      pending={isPending}
-      trigger={
-        trigger ?? (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive"
-          >
-            Supprimer
-          </Button>
-        )
-      }
-      onConfirm={() => {
-        startTransition(async () => {
-          await deleteProductAction({ productId });
-        });
+  function handleDelete(): void {
+    startTransition(async () => {
+      await onDelete({ productId });
+    });
+  }
 
-        return false;
-      }}
-    />
+  if (trigger) {
+    return (
+      <button type="button" disabled={isPending} onClick={handleDelete}>
+        {trigger}
+      </button>
+    );
+  }
+
+  return (
+    <Button type="button" variant="outline" size="sm" disabled={isPending} onClick={handleDelete}>
+      <Trash2 className="mr-2 h-4 w-4" />
+      Supprimer
+    </Button>
   );
 }

@@ -1,75 +1,52 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import {
-  AdminCategoryRepositoryError,
-  updateAdminCategory,
-} from "@/db/repositories/admin-category.repository";
-import { normalizeCategorySlug } from "@/entities/category/category-input";
+import { validateAdminCategoryInput } from "@/entities/category";
+import { updateAdminCategory } from "../services";
 
-import { CategoryFormSchema } from "../schemas/category-form-schema";
+export async function updateCategoryAction(formData: FormData): Promise<{
+  status: "success" | "error";
+  message: string;
+}> {
+  const categoryId = formData.get("categoryId");
 
-function normalizeCategoryId(value: FormDataEntryValue | null): string | null {
-  if (typeof value !== "string") {
-    return null;
+  if (typeof categoryId !== "string" || categoryId.trim().length === 0) {
+    return {
+      status: "error",
+      message: "Catégorie introuvable.",
+    };
   }
 
-  const normalizedValue = value.trim();
-
-  if (!/^[0-9]+$/.test(normalizedValue)) {
-    return null;
-  }
-
-  return normalizedValue;
-}
-
-export async function updateCategoryAction(formData: FormData): Promise<void> {
-  const categoryId = normalizeCategoryId(formData.get("categoryId"));
-
-  if (categoryId === null) {
-    redirect("/admin/categories?error=missing_category");
-  }
-
-  const parsed = CategoryFormSchema.safeParse({
+  const validated = validateAdminCategoryInput({
     name: formData.get("name"),
     slug: formData.get("slug"),
     description: formData.get("description"),
+    parentId: formData.get("parentId"),
+    primaryImageId: formData.get("primaryImageId"),
     isFeatured: formData.get("isFeatured"),
+    sortOrder: formData.get("sortOrder"),
   });
 
-  if (!parsed.success) {
-    const field = parsed.error.issues[0]?.path[0];
-    const code =
-      field === "name" ? "missing_name" : field === "slug" ? "missing_slug" : "save_failed";
-    redirect(`/admin/categories/${categoryId}?error=${code}`);
-  }
-
-  const slug = normalizeCategorySlug(parsed.data.slug);
-
-  if (slug.length === 0) {
-    redirect(`/admin/categories/${categoryId}?error=invalid_slug`);
+  if (!validated.ok) {
+    return {
+      status: "error",
+      message: "Données invalides.",
+    };
   }
 
   try {
-    const category = await updateAdminCategory({
-      id: categoryId,
-      name: parsed.data.name,
-      slug,
-      description: parsed.data.description,
-      isFeatured: parsed.data.isFeatured,
+    await updateAdminCategory({
+      categoryId: categoryId.trim(),
+      ...validated.data,
     });
 
-    if (category === null) {
-      redirect("/admin/categories?error=missing_category");
-    }
-  } catch (error) {
-    if (error instanceof AdminCategoryRepositoryError && error.code === "slug_taken") {
-      redirect(`/admin/categories/${categoryId}?error=slug_taken`);
-    }
-
-    console.error(error);
-    redirect(`/admin/categories/${categoryId}?error=save_failed`);
+    return {
+      status: "success",
+      message: "Mise à jour effectuée.",
+    };
+  } catch {
+    return {
+      status: "error",
+      message: "Mise à jour impossible.",
+    };
   }
-
-  redirect("/admin/categories?status=updated");
 }

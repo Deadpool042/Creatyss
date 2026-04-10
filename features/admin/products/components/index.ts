@@ -26,7 +26,6 @@ export { ProductTableMobile } from "./list";
 export { ProductTableToolbar } from "./list";
 export { ProductFeaturedToggle } from "./list";
 export { ProductCollectionCard } from "./list";
-export { ProductCompactCard } from "./list";
 export { ProductSearchSheet } from "./list";
 export { ProductFeedSentinel } from "./list";
 

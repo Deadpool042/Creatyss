@@ -1,2 +1,9 @@
 export { getBlogPostPublishability } from "./blog-post-publishability";
-export { validateBlogPostInput } from "./blog-post-input";
+export {
+  normalizeBlogPostSlug,
+  validateBlogPostInput,
+  type BlogPostInputErrorCode,
+  type BlogPostInputValidationResult,
+  type BlogPostStatus,
+  type ValidatedBlogPostInput,
+} from "./blog-post-input";

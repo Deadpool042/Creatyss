@@ -1,32 +1,28 @@
-export { adminProductFeedQuerySchema } from "./admin-product-feed.types";
-
 export type {
-  AdminProductFeedItem,
-  AdminProductFeedPageResult,
-  AdminProductFeedQuery,
-} from "./admin-product-feed.types";
-
-export type {
-  AdminProductListCategory,
-  AdminProductListItem,
-  AdminProductListPriceSummary,
-} from "./admin-product-list-item.types";
-
-export type {
-  AdminProductsListFeaturedFilter,
-  AdminProductsListFilters,
-  AdminProductsListStatusFilter,
-} from "./admin-products-list-filters.types";
-
-export type {
+  ProductTableStatus,
+  ProductStockState,
   ProductFilterCategoryOption,
   ProductFilterFeaturedOption,
   ProductFilterImageOption,
   ProductFilterStockOption,
   ProductFilterVariantOption,
   ProductSortOption,
-  ProductStockState,
+  ProductTableFeaturedFilter,
+  ProductTableImageFilter,
+  ProductTableStockFilter,
+  ProductTableVariantFilter,
+  ProductTableSortOption,
+  ProductTableStatusFilter,
   ProductTableItem,
+  ProductTableFiltersInput,
+  ProductTableFiltersState,
+  ProductTableFiltersValues,
+  ToggleProductFeaturedResult,
 } from "./product-table.types";
 
-export type { ToggleProductFeaturedResult } from "./toggle-product-featured.types";
+export type {
+  AdminProductFeedItem,
+  GetAdminProductsFeedPageCursor,
+  GetAdminProductsFeedPageInput,
+  GetAdminProductsFeedPageResult,
+} from "./product-feed.types";

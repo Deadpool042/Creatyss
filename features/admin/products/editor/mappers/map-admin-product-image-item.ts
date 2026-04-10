@@ -1,39 +1,51 @@
-import { MediaReferenceRole } from "@/prisma-generated/client";
-
+import { MediaReferenceRole, type MediaReferenceSubjectType } from "@/prisma-generated/client";
 import type { AdminProductImageItem } from "@/features/admin/products/editor/types/product-images.types";
 
 type ProductImageSource = {
   id: string;
+  assetId: string;
+  subjectType: MediaReferenceSubjectType;
+  subjectId: string;
   role: MediaReferenceRole;
   sortOrder: number;
   isPrimary: boolean;
   asset: {
-    id: string;
     publicUrl: string | null;
+    storageKey: string;
     altText: string | null;
+    originalFilename: string | null;
+    mimeType: string | null;
   };
 };
 
 function mapRole(role: MediaReferenceRole): AdminProductImageItem["role"] {
-  if (role === MediaReferenceRole.PRIMARY) {
-    return "primary";
+  switch (role) {
+    case MediaReferenceRole.PRIMARY:
+      return "primary";
+    case MediaReferenceRole.COVER:
+      return "cover";
+    case MediaReferenceRole.THUMBNAIL:
+      return "thumbnail";
+    case MediaReferenceRole.OTHER:
+      return "other";
+    default:
+      return "gallery";
   }
-
-  return "gallery";
 }
 
-export function mapAdminProductImageItem(image: ProductImageSource): AdminProductImageItem | null {
-  if (!image.asset.publicUrl) {
-    return null;
-  }
-
+export function mapAdminProductImageItem(image: ProductImageSource): AdminProductImageItem {
   return {
-    assetId: image.asset.id,
-    referenceId: image.id,
-    publicUrl: image.asset.publicUrl,
-    altText: image.asset.altText,
+    id: image.id,
+    mediaAssetId: image.assetId,
+    subjectType: image.subjectType === "PRODUCT_VARIANT" ? "product_variant" : "product",
+    subjectId: image.subjectId,
     role: mapRole(image.role),
-    isPrimary: image.isPrimary,
     sortOrder: image.sortOrder,
+    isPrimary: image.isPrimary,
+    publicUrl: image.asset.publicUrl,
+    storageKey: image.asset.storageKey,
+    altText: image.asset.altText,
+    originalName: image.asset.originalFilename,
+    mimeType: image.asset.mimeType,
   };
 }

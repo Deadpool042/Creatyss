@@ -1,224 +1,198 @@
 "use client";
 
-import { useState, type JSX, type ReactNode } from "react";
 import Image from "next/image";
-import { BadgeCheck, MoreHorizontal, Pencil, Star, Tag, Trash2 } from "lucide-react";
+import { Pencil, Star, Trash2 } from "lucide-react";
+import { useState, useTransition, type JSX } from "react";
 
-import { hasRealImage } from "@/core/media";
-import { ConfirmDestructiveDialog, PlaceholderImage } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ProductStatusBadge } from "@/features/admin/products/components/shared";
-import type { AdminProductVariantListItem } from "@/features/admin/products/editor/types/product-variants.types";
+import { Badge } from "@/components/ui/badge";
+import type { AdminProductVariantListItem } from "@/features/admin/products/editor/types";
 
 type ProductVariantItemProps = {
+  productId: string;
+  productSlug: string;
   variant: AdminProductVariantListItem;
-  variantCount: number;
-  onEdit?: (variantId: string) => void;
+  onEdit: (variantId: string) => void;
   onSetDefault?: (variantId: string) => Promise<{ status: "success" | "error"; message: string }>;
   onDelete?: (variantId: string) => Promise<{ status: "success" | "error"; message: string }>;
 };
 
-function formatPrice(amount: string | null): string {
-  if (!amount) {
-    return "—";
+function getStatusLabel(status: AdminProductVariantListItem["status"]): string {
+  switch (status) {
+    case "draft":
+      return "Brouillon";
+    case "active":
+      return "Actif";
+    case "inactive":
+      return "Inactif";
+    case "archived":
+      return "Archivé";
   }
-
-  const parsed = Number.parseFloat(amount);
-
-  if (!Number.isFinite(parsed)) {
-    return amount;
-  }
-
-  return `${parsed.toFixed(2)} €`;
 }
 
-function InfoTile({ label, children }: { label: string; children: ReactNode }): JSX.Element {
-  return (
-    <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-3 py-3">
-      <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
-      <div className="mt-1.5 min-h-8 text-sm">{children}</div>
-    </div>
-  );
+function getStatusVariant(status: AdminProductVariantListItem["status"]) {
+  switch (status) {
+    case "active":
+      return "secondary" as const;
+    case "draft":
+      return "outline" as const;
+    case "inactive":
+      return "outline" as const;
+    case "archived":
+      return "outline" as const;
+  }
 }
 
 export function ProductVariantItem({
+  productId: _productId,
+  productSlug: _productSlug,
   variant,
-  variantCount,
   onEdit,
   onSetDefault,
   onDelete,
 }: ProductVariantItemProps): JSX.Element {
-  const [isSettingDefault, setIsSettingDefault] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
-  const imageAlt = (variant.primaryImageAlt ?? variant.name) || variant.sku;
-  const displayName = variant.name.trim().length > 0 ? variant.name : "Variante sans nom";
-  const canDelete = variantCount > 1;
-  const canSetDefault = !variant.isDefault;
-
-  async function handleSetDefault(): Promise<void> {
-    if (!onSetDefault || !canSetDefault) {
+  function handleSetDefault(): void {
+    if (!onSetDefault || variant.isDefault) {
       return;
     }
 
-    setIsSettingDefault(true);
-    await onSetDefault(variant.id);
-    setIsSettingDefault(false);
+    startTransition(async () => {
+      const result = await onSetDefault(variant.id);
+      setMessage(result.message);
+    });
   }
 
-  async function handleDelete(): Promise<boolean> {
-    if (!onDelete || !canDelete) {
-      return false;
+  function handleDelete(): void {
+    if (!onDelete) {
+      return;
     }
 
-    setIsDeleting(true);
-    const result = await onDelete(variant.id);
-    setIsDeleting(false);
-
-    return result.status === "success";
+    startTransition(async () => {
+      const result = await onDelete(variant.id);
+      setMessage(result.message);
+    });
   }
 
   return (
-    <Card className="overflow-hidden rounded-2xl border border-surface-border bg-card shadow-card">
-      <CardContent className="flex h-full flex-col space-y-3 p-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
-            <h3 className="line-clamp-2 text-xl font-semibold leading-tight tracking-tight text-foreground sm:text-2xl lg:text-xl xl:text-2xl">
-              {displayName}
-            </h3>
-          </div>
+    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      <div className="grid gap-4 p-4 md:grid-cols-[8rem_minmax(0,1fr)] md:p-5">
+        <div className="relative aspect-square overflow-hidden rounded-xl border border-border bg-muted">
+          {variant.primaryImageUrl ? (
+            <Image
+              src={variant.primaryImageUrl}
+              alt={variant.primaryImageAltText ?? variant.name ?? variant.sku}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
+              Aucune image
+            </div>
+          )}
+        </div>
 
-          <div className="flex shrink-0 items-center gap-1.5">
-            {variant.isDefault ? (
-              <div className="rounded-full border border-surface-border bg-surface-panel-soft p-0.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full text-primary">
-                  <BadgeCheck className="h-4 w-4" />
-                </span>
+        <div className="grid gap-3">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0 space-y-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="truncate text-base font-semibold text-foreground">
+                  {variant.name && variant.name.trim().length > 0 ? variant.name : "Variante sans nom"}
+                </h3>
+
+                {variant.isDefault ? (
+                  <Badge variant="secondary">Par défaut</Badge>
+                ) : null}
+
+                <Badge variant={getStatusVariant(variant.status)}>
+                  {getStatusLabel(variant.status)}
+                </Badge>
               </div>
-            ) : null}
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                <span>SKU : {variant.sku}</span>
+                <span>Ordre : {variant.sortOrder}</span>
+                {variant.slug ? <span>Slug : {variant.slug}</span> : null}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <Button type="button" variant="outline" size="sm" onClick={() => onEdit(variant.id)}>
+                <Pencil className="mr-2 h-4 w-4" />
+                Modifier
+              </Button>
+
+              {!variant.isDefault && onSetDefault ? (
                 <Button
                   type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-full border border-surface-border bg-surface-panel-soft text-muted-foreground"
-                  aria-label={`Actions pour ${displayName}`}
-                  disabled={isSettingDefault || isDeleting}
-                >
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent align="end" sideOffset={8} className="w-48 rounded-xl">
-                <DropdownMenuItem
-                  onSelect={() => {
-                    onEdit?.(variant.id);
-                  }}
-                  disabled={!onEdit || isSettingDefault || isDeleting}
-                >
-                  <Pencil className="mr-2 h-4 w-4" />
-                  Modifier
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  onSelect={() => {
-                    void handleSetDefault();
-                  }}
-                  disabled={!onSetDefault || !canSetDefault || isSettingDefault || isDeleting}
+                  variant="outline"
+                  size="sm"
+                  disabled={isPending}
+                  onClick={handleSetDefault}
                 >
                   <Star className="mr-2 h-4 w-4" />
-                  {variant.isDefault ? "Par défaut" : isSettingDefault ? "Application…" : "Définir"}
-                </DropdownMenuItem>
+                  Définir par défaut
+                </Button>
+              ) : null}
 
-                <ConfirmDestructiveDialog
-                  trigger={
-                    <button
-                      type="button"
-                      className="flex w-full items-center rounded-sm px-2 py-1.5 text-sm text-destructive outline-none transition-colors hover:bg-accent hover:text-destructive disabled:pointer-events-none disabled:opacity-50"
-                      disabled={!onDelete || !canDelete || isSettingDefault || isDeleting}
-                    >
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      {isDeleting ? "Suppression…" : "Supprimer"}
-                    </button>
-                  }
-                  title="Supprimer cette variante ?"
-                  description={`La variante "${displayName}" va être supprimée définitivement. Cette action est irréversible.`}
-                  pending={isDeleting}
-                  onConfirm={handleDelete}
-                />
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-
-        <div className="flex items-start gap-3">
-          <div className="relative h-18 w-18 shrink-0 overflow-hidden rounded-lg border border-surface-border bg-muted">
-            {variant.primaryImageUrl && hasRealImage(variant.primaryImageUrl) ? (
-              <Image
-                src={variant.primaryImageUrl}
-                alt={imageAlt}
-                fill
-                sizes="72px"
-                className="object-cover"
-              />
-            ) : (
-              <PlaceholderImage alt={imageAlt} className="bg-muted" imageClassName="opacity-15" />
-            )}
-          </div>
-
-          <div className="min-w-0 flex-1 space-y-2 pt-0.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <ProductStatusBadge status={variant.status} />
-
-              {variant.isDefault ? (
-                <span className="inline-flex h-6 items-center gap-1 rounded-full border border-surface-border bg-surface-panel-soft px-2.5 text-xs font-medium leading-none text-muted-foreground">
-                  <BadgeCheck className="h-3.5 w-3.5" />
-                  Par défaut
-                </span>
+              {onDelete ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={isPending}
+                  onClick={handleDelete}
+                >
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Supprimer
+                </Button>
               ) : null}
             </div>
+          </div>
 
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1">
-                <Tag className="h-3.5 w-3.5" />
-                SKU : {variant.sku}
-              </span>
+          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded-xl border border-border bg-muted/30 px-3 py-2">
+              <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Code-barres</p>
+              <p className="mt-1 text-sm text-foreground">
+                {variant.barcode && variant.barcode.trim().length > 0 ? variant.barcode : "—"}
+              </p>
+            </div>
 
-              {variant.slug ? <span>Slug : {variant.slug}</span> : null}
-              <span>Ordre : {variant.sortOrder}</span>
+            <div className="rounded-xl border border-border bg-muted/30 px-3 py-2">
+              <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Réf. externe</p>
+              <p className="mt-1 text-sm text-foreground">
+                {variant.externalReference && variant.externalReference.trim().length > 0
+                  ? variant.externalReference
+                  : "—"}
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-border bg-muted/30 px-3 py-2">
+              <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Poids</p>
+              <p className="mt-1 text-sm text-foreground">
+                {variant.weightGrams && variant.weightGrams.trim().length > 0
+                  ? `${variant.weightGrams} g`
+                  : "—"}
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-border bg-muted/30 px-3 py-2">
+              <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Dimensions</p>
+              <p className="mt-1 text-sm text-foreground">
+                {[variant.widthMm, variant.heightMm, variant.depthMm].some(
+                  (value) => value && value.trim().length > 0
+                )
+                  ? `${variant.widthMm ?? "—"} × ${variant.heightMm ?? "—"} × ${variant.depthMm ?? "—"} mm`
+                  : "—"}
+              </p>
             </div>
           </div>
+
+          {message ? <p className="text-sm text-muted-foreground">{message}</p> : null}
         </div>
-
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          <InfoTile label="Prix">
-            <p className="font-medium tabular-nums text-foreground">
-              {formatPrice(variant.amount)}
-            </p>
-          </InfoTile>
-
-          <InfoTile label="Prix avant réduction">
-            <p className="font-medium tabular-nums text-foreground">
-              {formatPrice(variant.compareAtAmount)}
-            </p>
-          </InfoTile>
-        </div>
-
-        {!canDelete ? (
-          <p className="text-xs text-muted-foreground">
-            Le produit doit conserver au moins une variante.
-          </p>
-        ) : null}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

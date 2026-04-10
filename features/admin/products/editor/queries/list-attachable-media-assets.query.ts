@@ -1,51 +1,33 @@
-import {
-  MediaAssetKind,
-  MediaAssetStatus,
-  MediaReferenceSubjectType,
-} from "@/prisma-generated/client";
-
 import { db } from "@/core/db";
-import { mapAttachableMediaAsset } from "@/features/admin/products/editor/mappers/map-attachable-media-asset";
-import type { AttachableMediaAssetsData } from "@/features/admin/products/editor/types/product-image-library.types";
-
-const DEFAULT_LIMIT = 48;
+import type { AttachableMediaAssetItem, AttachableMediaAssetsData } from "../types";
 
 export async function listAttachableMediaAssets(
-  productId: string,
-  limit = DEFAULT_LIMIT
-): Promise<AttachableMediaAssetsData | null> {
-  const product = await db.product.findUnique({
+  productId: string
+): Promise<AttachableMediaAssetsData> {
+  const product = await db.product.findFirst({
     where: {
       id: productId,
+      archivedAt: null,
     },
     select: {
       id: true,
+      storeId: true,
     },
   });
 
-  if (!product) {
-    return null;
+  if (product === null) {
+    return {
+      productId,
+      items: [],
+    };
   }
 
   const assets = await db.mediaAsset.findMany({
     where: {
-      kind: MediaAssetKind.IMAGE,
-      status: MediaAssetStatus.ACTIVE,
-      publicUrl: {
-        not: null,
-      },
-      NOT: {
-        references: {
-          some: {
-            subjectType: MediaReferenceSubjectType.PRODUCT,
-            subjectId: product.id,
-            archivedAt: null,
-          },
-        },
-      },
+      storeId: product.storeId,
+      archivedAt: null,
     },
     orderBy: [{ createdAt: "desc" }],
-    take: limit,
     select: {
       id: true,
       publicUrl: true,
@@ -55,10 +37,18 @@ export async function listAttachableMediaAssets(
     },
   });
 
+  const items: AttachableMediaAssetItem[] = assets
+    .filter((asset) => typeof asset.publicUrl === "string" && asset.publicUrl.length > 0)
+    .map((asset) => ({
+      id: asset.id,
+      publicUrl: asset.publicUrl as string,
+      altText: asset.altText,
+      originalFilename: asset.originalFilename,
+      createdAt: asset.createdAt.toISOString(),
+    }));
+
   return {
     productId: product.id,
-    items: assets
-      .map(mapAttachableMediaAsset)
-      .filter((item): item is NonNullable<typeof item> => item !== null),
+    items,
   };
 }

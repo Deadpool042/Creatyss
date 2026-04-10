@@ -1,8 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { deleteAdminBlogPost, findAdminBlogPostById } from "@/db/repositories/admin-blog.repository";
-import { AdminBlogRepositoryError } from "@/db/repositories/admin-blog.types";
+import { deleteAdminBlogPost } from "../services";
+import { getAdminBlogPostById } from "../queries";
 
 function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
   if (typeof value !== "string") {
@@ -10,41 +10,32 @@ function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
   }
 
   const normalizedValue = value.trim();
-
-  if (!/^[0-9]+$/.test(normalizedValue)) {
-    return null;
-  }
-
-  return normalizedValue;
+  return normalizedValue.length > 0 ? normalizedValue : null;
 }
 
 export async function deleteBlogPostAction(formData: FormData): Promise<void> {
   const blogPostId = normalizeBlogPostId(formData.get("blogPostId"));
 
   if (blogPostId === null) {
-    redirect("/admin/blog?error=missing_blog_post");
+    redirect("/admin/content/blog?error=missing_blog_post");
   }
 
-  const blogPost = await findAdminBlogPostById(blogPostId);
+  const blogPost = await getAdminBlogPostById(blogPostId);
 
   if (blogPost === null) {
-    redirect("/admin/blog?error=missing_blog_post");
+    redirect("/admin/content/blog?error=missing_blog_post");
   }
 
   try {
     const wasDeleted = await deleteAdminBlogPost(blogPostId);
 
     if (!wasDeleted) {
-      redirect("/admin/blog?error=missing_blog_post");
+      redirect("/admin/content/blog?error=missing_blog_post");
     }
-  } catch (error) {
-    if (error instanceof AdminBlogRepositoryError && error.code === "blog_post_referenced") {
-      redirect(`/admin/blog/${blogPostId}?error=referenced`);
-    }
-
+  } catch (error: unknown) {
     console.error(error);
-    redirect(`/admin/blog/${blogPostId}?error=delete_failed`);
+    redirect(`/admin/content/blog/${blogPostId}?error=delete_failed`);
   }
 
-  redirect("/admin/blog?status=deleted");
+  redirect("/admin/content/blog?status=deleted");
 }

@@ -36,8 +36,8 @@ export function AdminDataTableShell({
       <div className="flex h-full min-h-0 flex-col gap-3 lg:hidden">
         {summary ? <div className="shrink-0 min-w-0">{summary}</div> : null}
 
-        <div className="min-h-0 flex-1 overflow-y-auto">
-          <div className="site-header-blur sticky top-14 z-10 mb-0 border-b border-shell-border pt-1.5 pb-0.5 [@media(max-height:480px)]:top-12 [@media(max-height:480px)]:mb-0 [@media(max-height:480px)]:pt-1">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          <div className="site-header-blur sticky top-14 z-10 mb-0 border-b border-shell-border shadow-card pt-1.5 pb-0.5 [@media(max-height:480px)]:top-12 [@media(max-height:480px)]:mb-0 [@media(max-height:480px)]:pt-1">
             <div className="px-4 md:px-6 lg:px-0">{mobileToolbar ?? toolbar}</div>
           </div>
 

@@ -1,25 +1,28 @@
 import { db } from "@/core/db";
-import { mapProductFilterCategoryOption } from "@/features/admin/products/list/mappers";
-import type { ProductFilterCategoryOption } from "@/features/admin/products/list/types";
+import type { ProductFilterCategoryOption } from "../types";
 
 export async function listProductFilterCategories(): Promise<ProductFilterCategoryOption[]> {
   const categories = await db.category.findMany({
     where: {
-      status: "ACTIVE",
-    },
-    select: {
-      id: true,
-      slug: true,
-      name: true,
-      parentId: true,
-      parent: {
-        select: {
-          name: true,
-        },
+      archivedAt: null,
+      status: {
+        in: ["ACTIVE", "DRAFT", "INACTIVE"],
       },
     },
-    orderBy: [{ parentId: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
+    orderBy: [{ name: "asc" }],
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      parentId: true,
+    },
   });
 
-  return categories.map(mapProductFilterCategoryOption);
+  return categories.map((category) => ({
+    id: category.id,
+    name: category.name,
+    slug: category.slug,
+    parentId: category.parentId,
+    productCount: 0,
+  }));
 }

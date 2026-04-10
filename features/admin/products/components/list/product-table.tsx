@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type JSX } from "react";
+import type { JSX } from "react";
 
 import { AdminDataTablePagination } from "@/components/admin/tables/admin-data-table-pagination";
 import { AdminDataTableShell } from "@/components/admin/tables/admin-data-table-shell";
@@ -18,7 +18,7 @@ import { ProductTableToolbar } from "./product-table-toolbar";
 type ProductTableProps = {
   products: ProductTableItem[];
   categoryOptions: ProductFilterCategoryOption[];
-  initialMobileFeed?: {
+  initialMobileFeed: {
     items: AdminProductFeedItem[];
     nextCursor: {
       updatedAt: string;
@@ -44,26 +44,13 @@ export function ProductTable({
     isLoading: mobileIsLoading,
     error: mobileError,
     loadMore: loadMoreMobileFeed,
-    reset: resetMobileFeed,
   } = useAdminProductFeed({
-    initialItems: initialMobileFeed?.items ?? [],
-    initialNextCursor: initialMobileFeed?.nextCursor ?? null,
-    initialHasMore: initialMobileFeed?.hasMore ?? false,
+    initialItems: initialMobileFeed.items,
+    initialNextCursor: initialMobileFeed.nextCursor,
+    initialHasMore: initialMobileFeed.hasMore,
     search: state.search,
     limit: 12,
   });
-
-  useEffect(() => {
-    if (!initialMobileFeed) {
-      return;
-    }
-
-    resetMobileFeed({
-      items: initialMobileFeed.items,
-      nextCursor: initialMobileFeed.nextCursor,
-      hasMore: initialMobileFeed.hasMore,
-    });
-  }, [initialMobileFeed, resetMobileFeed, state.search]);
 
   return (
     <AdminDataTableShell
@@ -71,18 +58,13 @@ export function ProductTable({
       mobileToolbar={<ProductTableToolbar categoryOptions={categoryOptions} state={state} />}
       desktop={<ProductTableDesktop products={state.paginated} />}
       mobile={
-        initialMobileFeed ? (
-          <ProductTableMobile
-            mode="infinite"
-            products={mobileItems}
-            hasMore={mobileHasMore}
-            isLoading={mobileIsLoading}
-            error={mobileError}
-            onLoadMore={loadMoreMobileFeed}
-          />
-        ) : (
-          <ProductTableMobile products={state.paginated} />
-        )
+        <ProductTableMobile
+          products={mobileItems}
+          hasMore={mobileHasMore}
+          isLoading={mobileIsLoading}
+          error={mobileError}
+          onLoadMore={loadMoreMobileFeed}
+        />
       }
       pagination={
         <div className="hidden lg:block [@media(max-height:480px)]:hidden">

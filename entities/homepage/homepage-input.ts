@@ -10,8 +10,6 @@ export type {
   HomepageFeaturedProductSelection,
 };
 
-// --- Validation constants ---
-
 export const HOMEPAGE_HERO_TITLE_MAX_LENGTH = 120;
 export const HOMEPAGE_HERO_TEXT_MAX_LENGTH = 500;
 export const HOMEPAGE_EDITORIAL_TITLE_MAX_LENGTH = 120;
@@ -21,18 +19,13 @@ export const HOMEPAGE_FEATURED_PRODUCTS_MAX_COUNT = 12;
 export const HOMEPAGE_FEATURED_CATEGORIES_MAX_COUNT = 8;
 export const HOMEPAGE_FEATURED_BLOG_POSTS_MAX_COUNT = 6;
 
-// --- Internal types ---
-
 type RawInputValue = FormDataEntryValue | string | null | undefined;
-
 type SelectionSortOrders = Readonly<Record<string, RawInputValue>>;
 
 type HomepageHeroImageSelection =
   | { kind: "clear" }
   | { kind: "keep_current" }
   | { kind: "media_asset"; mediaAssetId: string };
-
-// --- Public types ---
 
 export type ValidatedHomepageInput = {
   homepageId: string;
@@ -94,8 +87,6 @@ type SelectionValidationOptions<TSelection> = {
   toSelection: (id: string, sortOrder: number) => TSelection;
 };
 
-// --- Internal utilities ---
-
 function readTrimmedString(value: RawInputValue): string | null {
   if (typeof value !== "string") {
     return null;
@@ -114,10 +105,10 @@ function normalizeOptionalText(value: RawInputValue): string | null {
   return normalizedValue;
 }
 
-function normalizeRequiredNumericId(value: RawInputValue): string | null {
+function normalizeRequiredId(value: RawInputValue): string | null {
   const normalizedValue = readTrimmedString(value);
 
-  if (normalizedValue === null || !/^[0-9]+$/.test(normalizedValue)) {
+  if (normalizedValue === null || normalizedValue.length === 0) {
     return null;
   }
 
@@ -134,7 +125,7 @@ function normalizeSelectedIds(values: readonly RawInputValue[]): string[] | null
 
     const normalizedValue = value.trim();
 
-    if (!/^[0-9]+$/.test(normalizedValue)) {
+    if (normalizedValue.length === 0) {
       return null;
     }
 
@@ -217,17 +208,11 @@ function validateHeroImageSelection(
     return { ok: true, data: { kind: "keep_current" } };
   }
 
-  if (!/^[0-9]+$/.test(selection)) {
-    return { ok: false, code: "invalid_hero_image" };
-  }
-
   return { ok: true, data: { kind: "media_asset", mediaAssetId: selection } };
 }
 
-// --- Public function ---
-
 export function validateHomepageInput(input: HomepageInputSource): HomepageInputValidationResult {
-  const homepageId = normalizeRequiredNumericId(input.homepageId);
+  const homepageId = normalizeRequiredId(input.homepageId);
 
   if (homepageId === null) {
     return { ok: false, code: "missing_homepage" };

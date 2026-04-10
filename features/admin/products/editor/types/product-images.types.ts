@@ -11,13 +11,18 @@ export const uploadProductImageFormInitialState: UploadProductImageFormState = {
 };
 
 export type AdminProductImageItem = {
-  assetId: string;
-  referenceId: string;
-  publicUrl: string;
-  altText: string | null;
-  role: "primary" | "gallery";
-  isPrimary: boolean;
+  id: string;
+  mediaAssetId: string;
+  subjectType: "product" | "product_variant";
+  subjectId: string;
+  role: "primary" | "cover" | "gallery" | "thumbnail" | "other";
   sortOrder: number;
+  isPrimary: boolean;
+  publicUrl: string | null;
+  storageKey: string;
+  altText: string | null;
+  originalName: string | null;
+  mimeType: string | null;
 };
 
 export type AdminProductImagesData = {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { parseEmailFrom } from "@/lib/email-from";
+
+import { parseEmailFrom } from "@/core/email/from";
 
 describe("parseEmailFrom", () => {
   it("accepts a plain email address", () => {

@@ -1,12 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { readCartSessionToken } from "@/core/sessions/cart";
 import {
   readGuestCheckoutContextByToken,
   upsertGuestCheckoutDetails,
-} from "@/db/repositories/guest-cart.repository";
+} from "@/features/cart/lib/guest-cart.repository";
 import { validateGuestCheckoutInput } from "@/entities/checkout/guest-checkout-input";
-import { readCartSessionToken } from "@/lib/cart-session";
 
 export async function saveGuestCheckoutAction(formData: FormData): Promise<void> {
   const cartToken = await readCartSessionToken();

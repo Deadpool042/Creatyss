@@ -5,15 +5,9 @@
  *
  * Identité : cool, corporate, indigo, sidebar sombre en mode clair.
  *
- * Tokens qui changent par rapport à Creatyss (13) :
- *   --page-bg, --body-background
- *   --brand, --brand-foreground
- *   --radius
- *   --sidebar, --sidebar-foreground, --sidebar-primary, --sidebar-primary-foreground,
- *   --sidebar-accent, --sidebar-accent-foreground, --sidebar-border, --sidebar-ring
- *
- * Tokens invariants (identiques à Creatyss) :
- *   tous les core semantic tokens (--background → --ring)
+ * Ce pack implémente le même contrat sémantique socle que Creatyss
+ * (background/content, surface, overlay, elevation, interactive, feedback, focus),
+ * avec une identité plus froide et corporate.
  *
  * La police est gérée via --font-sans injecté par Next.js (app/layout.tsx).
  */
@@ -36,6 +30,7 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
@@ -45,7 +40,44 @@
 
   /* --- Page background — varie : neutre, sans gradient --- */
   --page-bg: oklch(0.99 0 0);
+  --page-foreground: oklch(0.145 0 0);
   --body-background: var(--page-bg);
+
+  /* --- Overlay / interaction / focus --- */
+  --overlay-scrim: rgb(15 23 42 / 0.18);
+  --overlay-scrim-strong: rgb(15 23 42 / 0.32);
+
+  --interactive-hover: rgb(15 23 42 / 0.04);
+  --interactive-hover-strong: rgb(15 23 42 / 0.08);
+  --interactive-selected: rgb(15 23 42 / 0.1);
+  --interactive-selected-foreground: oklch(0.145 0 0);
+  --interactive-disabled: rgb(15 23 42 / 0.03);
+  --interactive-disabled-foreground: oklch(0.62 0 0);
+
+  --focus-ring: var(--ring);
+  --focus-ring-offset-surface: var(--background);
+
+  /* --- Feedback --- */
+  --feedback-info: oklch(0.62 0.06 262);
+  --feedback-info-foreground: oklch(0.3 0.06 262);
+  --feedback-info-surface: oklch(0.62 0.06 262 / 0.12);
+  --feedback-info-border: oklch(0.62 0.06 262 / 0.22);
+
+  --feedback-success: oklch(0.63 0.12 155);
+  --feedback-success-foreground: oklch(0.3 0.05 155);
+  --feedback-success-surface: oklch(0.63 0.12 155 / 0.12);
+  --feedback-success-border: oklch(0.63 0.12 155 / 0.22);
+
+  --feedback-warning: oklch(0.74 0.14 80);
+  --feedback-warning-foreground: oklch(0.36 0.06 80);
+  --feedback-warning-surface: oklch(0.74 0.14 80 / 0.14);
+  --feedback-warning-border: oklch(0.74 0.14 80 / 0.24);
+
+  --feedback-error: var(--destructive);
+  --feedback-error-foreground: oklch(0.36 0.08 27);
+  --feedback-error-surface: oklch(0.577 0.245 27.325 / 0.12);
+  --feedback-error-surface-strong: oklch(0.577 0.245 27.325 / 0.2);
+  --feedback-error-border: oklch(0.577 0.245 27.325 / 0.22);
 
   /* --- Brand — varie : indigo froid --- */
   --brand: oklch(0.52 0.18 262); /* indigo-violet */
@@ -72,10 +104,14 @@
 
   --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.07);
   --shadow-card: 0 16px 40px rgb(0 0 0 / 0.05);
+  --shadow-raised: 0 12px 32px rgb(0 0 0 / 0.1);
+  --shadow-overlay: 0 28px 96px rgb(0 0 0 / 0.18);
+  --shadow-inset-soft: inset 0 1px 0 rgb(255 255 255 / 0.8);
 
   /* --- Media / decorative blocks --- */
   --media-surface: rgb(0 0 0 / 0.04);
   --media-foreground: rgb(0 0 0 / 0.55);
+  --media-overlay: rgb(15 23 42 / 0.56);
 
   /* --- Shell public --- */
   --shell-surface: rgb(255 255 255 / 0.92);
@@ -93,6 +129,8 @@
 }
 
 .dark {
+  color-scheme: dark;
+
   /* --- Core semantic — dark mode (même logique que Creatyss) --- */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -109,13 +147,51 @@
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
 
   /* --- Page background dark --- */
   --page-bg: oklch(0.145 0 0);
+  --page-foreground: oklch(0.985 0 0);
   --body-background: var(--page-bg);
+
+  /* --- Overlay / interaction / focus dark --- */
+  --overlay-scrim: rgb(0 0 0 / 0.44);
+  --overlay-scrim-strong: rgb(0 0 0 / 0.62);
+
+  --interactive-hover: rgb(255 255 255 / 0.05);
+  --interactive-hover-strong: rgb(255 255 255 / 0.09);
+  --interactive-selected: rgb(255 255 255 / 0.12);
+  --interactive-selected-foreground: oklch(0.985 0 0);
+  --interactive-disabled: rgb(255 255 255 / 0.04);
+  --interactive-disabled-foreground: oklch(0.62 0 0);
+
+  --focus-ring: var(--ring);
+  --focus-ring-offset-surface: var(--background);
+
+  /* --- Feedback dark --- */
+  --feedback-info: oklch(0.74 0.08 262);
+  --feedback-info-foreground: oklch(0.95 0.01 262);
+  --feedback-info-surface: oklch(0.74 0.08 262 / 0.18);
+  --feedback-info-border: oklch(0.74 0.08 262 / 0.3);
+
+  --feedback-success: oklch(0.76 0.1 155);
+  --feedback-success-foreground: oklch(0.95 0.015 155);
+  --feedback-success-surface: oklch(0.76 0.1 155 / 0.18);
+  --feedback-success-border: oklch(0.76 0.1 155 / 0.3);
+
+  --feedback-warning: oklch(0.82 0.12 80);
+  --feedback-warning-foreground: oklch(0.96 0.015 80);
+  --feedback-warning-surface: oklch(0.82 0.12 80 / 0.18);
+  --feedback-warning-border: oklch(0.82 0.12 80 / 0.3);
+
+  --feedback-error: var(--destructive);
+  --feedback-error-foreground: oklch(0.95 0.015 27);
+  --feedback-error-surface: oklch(0.704 0.191 22.216 / 0.18);
+  --feedback-error-surface-strong: oklch(0.704 0.191 22.216 / 0.26);
+  --feedback-error-border: oklch(0.704 0.191 22.216 / 0.3);
 
   /* --- Shared surfaces dark --- */
   --surface-panel: rgb(255 255 255 / 0.05);
@@ -127,10 +203,14 @@
 
   --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.35);
   --shadow-card: 0 16px 40px rgb(0 0 0 / 0.28);
+  --shadow-raised: 0 14px 40px rgb(0 0 0 / 0.34);
+  --shadow-overlay: 0 30px 104px rgb(0 0 0 / 0.58);
+  --shadow-inset-soft: inset 0 1px 0 rgb(255 255 255 / 0.08);
 
   /* --- Media dark --- */
   --media-surface: rgb(255 255 255 / 0.05);
   --media-foreground: rgb(255 255 255 / 0.55);
+  --media-overlay: rgb(0 0 0 / 0.68);
 
   /* --- Shell public dark --- */
   --shell-surface: rgb(20 20 20 / 0.9);

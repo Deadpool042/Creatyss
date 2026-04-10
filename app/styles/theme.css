@@ -15,6 +15,9 @@
      Core semantic colors
      ========================================================================== */
 
+  --color-page-background: var(--page-bg);
+  --color-page-foreground: var(--page-foreground);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
@@ -37,10 +40,64 @@
   --color-accent-foreground: var(--accent-foreground);
 
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 
   --color-border: var(--border);
   --color-input: var(--input);
-  --color-ring: var(--ring);
+
+  /* Compatibility alias: keep `ring-*` utilities working while `focus-ring`
+     becomes the canonical semantic token for focus styling. */
+  --color-ring: var(--focus-ring);
+
+  /* ==========================================================================
+     Overlay
+     ========================================================================== */
+
+  --color-overlay-scrim: var(--overlay-scrim);
+  --color-overlay-scrim-strong: var(--overlay-scrim-strong);
+
+  /* ==========================================================================
+     Interactive states
+     ========================================================================== */
+
+  --color-interactive-hover: var(--interactive-hover);
+  --color-interactive-hover-strong: var(--interactive-hover-strong);
+  --color-interactive-selected: var(--interactive-selected);
+  --color-interactive-selected-foreground: var(--interactive-selected-foreground);
+  --color-interactive-disabled: var(--interactive-disabled);
+  --color-interactive-disabled-foreground: var(--interactive-disabled-foreground);
+
+  /* ==========================================================================
+     Feedback
+     ========================================================================== */
+
+  --color-feedback-info: var(--feedback-info);
+  --color-feedback-info-foreground: var(--feedback-info-foreground);
+  --color-feedback-info-surface: var(--feedback-info-surface);
+  --color-feedback-info-border: var(--feedback-info-border);
+
+  --color-feedback-success: var(--feedback-success);
+  --color-feedback-success-foreground: var(--feedback-success-foreground);
+  --color-feedback-success-surface: var(--feedback-success-surface);
+  --color-feedback-success-border: var(--feedback-success-border);
+
+  --color-feedback-warning: var(--feedback-warning);
+  --color-feedback-warning-foreground: var(--feedback-warning-foreground);
+  --color-feedback-warning-surface: var(--feedback-warning-surface);
+  --color-feedback-warning-border: var(--feedback-warning-border);
+
+  --color-feedback-error: var(--feedback-error);
+  --color-feedback-error-foreground: var(--feedback-error-foreground);
+  --color-feedback-error-surface: var(--feedback-error-surface);
+  --color-feedback-error-surface-strong: var(--feedback-error-surface-strong);
+  --color-feedback-error-border: var(--feedback-error-border);
+
+  /* ==========================================================================
+     Focus
+     ========================================================================== */
+
+  --color-focus-ring: var(--focus-ring);
+  --color-focus-ring-offset-surface: var(--focus-ring-offset-surface);
 
   /* ==========================================================================
      Brand
@@ -128,11 +185,14 @@
   --color-media-overlay: var(--media-overlay);
 
   /* ==========================================================================
-     Shadows
+     Elevation
      ========================================================================== */
 
   --shadow-soft: var(--shadow-soft);
   --shadow-card: var(--shadow-card);
+  --shadow-raised: var(--shadow-raised);
+  --shadow-overlay: var(--shadow-overlay);
+  --shadow-inset-soft: var(--shadow-inset-soft);
 
   /* ==========================================================================
      Radius scale
@@ -145,4 +205,7 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Deprecated alias kept for existing `border-border-soft` utilities. */
+  --color-border-soft: var(--surface-border);
 }

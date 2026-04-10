@@ -1,97 +1,25 @@
-import { ProductStatus, type Prisma } from "@/prisma-generated/client";
-
 import { db } from "@/core/db";
-import type { ProductsPageParams } from "@/features/admin/products/navigation";
-import { mapProductListItem } from "@/features/admin/products/list/mappers";
-import type { AdminProductListItem } from "@/features/admin/products/list/types";
-import { buildAdminProductsCategoryFilter } from "@/features/admin/products/list/utils/build-admin-products-category-filter";
+import type { AdminProductFeedItem } from "../types";
 
-type ListAdminProductsQueryInput = Pick<
-  ProductsPageParams,
-  "search" | "status" | "category" | "featured"
->;
-
-function normalizeStatusFilter(value: string): ProductStatus | null {
-  switch (value) {
-    case "published":
-      return ProductStatus.ACTIVE;
-    case "draft":
-      return ProductStatus.DRAFT;
-    case "archived":
-      return ProductStatus.ARCHIVED;
+function mapProductStatus(status: string): AdminProductFeedItem["status"] {
+  switch (status) {
+    case "ACTIVE":
+      return "active";
+    case "INACTIVE":
+      return "inactive";
+    case "ARCHIVED":
+      return "archived";
     default:
-      return null;
+      return "draft";
   }
 }
 
-function normalizeFeaturedFilter(value: string): boolean | null {
-  switch (value) {
-    case "true":
-    case "1":
-    case "featured":
-      return true;
-    case "false":
-    case "0":
-    case "standard":
-      return false;
-    default:
-      return null;
-  }
-}
-
-function buildProductsWhere(input: ListAdminProductsQueryInput): Prisma.ProductWhereInput {
-  const where: Prisma.ProductWhereInput = {};
-
-  const search = input.search.trim();
-  const status = normalizeStatusFilter(input.status);
-  const featured = normalizeFeaturedFilter(input.featured);
-  const productCategories = buildAdminProductsCategoryFilter({
-    category: input.category,
-  });
-
-  if (search.length > 0) {
-    where.OR = [
-      {
-        name: {
-          contains: search,
-          mode: "insensitive",
-        },
-      },
-      {
-        slug: {
-          contains: search,
-          mode: "insensitive",
-        },
-      },
-      {
-        shortDescription: {
-          contains: search,
-          mode: "insensitive",
-        },
-      },
-    ];
-  }
-
-  if (status !== null) {
-    where.status = status;
-  }
-
-  if (featured !== null) {
-    where.isFeatured = featured;
-  }
-
-  if (productCategories) {
-    where.productCategories = productCategories;
-  }
-
-  return where;
-}
-
-export async function listAdminProducts(
-  input: ListAdminProductsQueryInput
-): Promise<AdminProductListItem[]> {
+export async function listAdminProducts(): Promise<AdminProductFeedItem[]> {
   const products = await db.product.findMany({
-    where: buildProductsWhere(input),
+    where: {
+      archivedAt: null,
+    },
+    orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
     select: {
       id: true,
       slug: true,
@@ -108,70 +36,51 @@ export async function listAdminProducts(
       },
       productType: {
         select: {
-          code: true,
-        },
-      },
-      variants: {
-        select: {
-          inventoryItems: {
-            where: {
-              status: "ACTIVE",
-            },
-            select: {
-              onHandQuantity: true,
-              reservedQuantity: true,
-            },
-          },
-          prices: {
-            where: {
-              isActive: true,
-            },
-            select: {
-              amount: true,
-              compareAtAmount: true,
-            },
-          },
-        },
-      },
-      _count: {
-        select: {
-          variants: true,
-          productCategories: true,
+          name: true,
         },
       },
       productCategories: {
-        where: {
-          isPrimary: true,
-        },
-        orderBy: {
-          sortOrder: "asc",
-        },
-        take: 1,
+        orderBy: [{ isPrimary: "desc" }, { sortOrder: "asc" }],
         select: {
           category: {
             select: {
-              id: true,
-              slug: true,
               name: true,
-              parent: {
-                select: {
-                  name: true,
-                },
-              },
             },
           },
         },
       },
+      variants: {
+        where: {
+          archivedAt: null,
+        },
+        select: {
+          id: true,
+        },
+      },
     },
-    orderBy: [
-      {
-        updatedAt: "desc",
-      },
-      {
-        createdAt: "desc",
-      },
-    ],
   });
 
-  return products.map(mapProductListItem);
+  return products.map((product) => ({
+    id: product.id,
+    slug: product.slug,
+    name: product.name,
+    shortDescription: product.shortDescription,
+    status: mapProductStatus(product.status),
+    isFeatured: product.isFeatured,
+    primaryImageUrl: product.primaryImage?.publicUrl ?? null,
+    primaryImageAlt: product.primaryImage?.altText ?? null,
+    categoryNames: product.productCategories.map((link) => link.category.name),
+    categoryPathLabel:
+      product.productCategories.length > 0
+        ? product.productCategories.map((link) => link.category.name).join(" / ")
+        : null,
+    productTypeName: product.productType?.name ?? null,
+    variantCount: product.variants.length,
+    stockState: product.variants.length > 0 ? "in-stock" : "out-of-stock",
+    stockQuantity: null,
+    priceLabel: "",
+    compareAtPriceLabel: "",
+    hasPromotion: false,
+    updatedAt: product.updatedAt.toISOString(),
+  }));
 }

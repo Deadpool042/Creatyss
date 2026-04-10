@@ -2,8 +2,8 @@ import Link from "next/link";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminCollectionSection } from "@/components/admin/admin-collection-section";
 import { AdminCategoryCard } from "@/components/admin/admin-category-card";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/shared/notice";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { listAdminCategories } from "@/features/admin/categories/list/queries/list-admin-categories.query";
 
@@ -52,13 +52,10 @@ export default async function AdminCategoriesPage({ searchParams }: AdminCategor
 
   return (
     <AdminPageShell
-      mode="viewport"
-      variant="tool"
       compactMobileTitle
       eyebrow="Catégories"
       title="Catégories"
       description="Organisez le catalogue avec des catégories simples et réutilisables."
-      pageTitleAction={{ label: "Nouvelle catégorie", href: "/admin/categories/new" }}
       actions={
         <Button asChild size="sm" className="w-full sm:min-w-40 sm:w-auto">
           <Link href="/admin/categories/new">Nouvelle catégorie</Link>
@@ -67,16 +64,12 @@ export default async function AdminCategoriesPage({ searchParams }: AdminCategor
       scrollMode="nested"
     >
       <div className="flex min-h-0 flex-1 flex-col gap-4 lg:gap-6 [@media(max-height:480px)]:gap-3">
-        {successMessage ? (
-          <div className="shrink-0">
-            <Notice tone="success">{successMessage}</Notice>
-          </div>
-        ) : null}
-        {errorMessage ? (
-          <div className="shrink-0">
-            <Notice tone="alert">{errorMessage}</Notice>
-          </div>
-        ) : null}
+        <AdminFormMessage
+          tone="success"
+          message={successMessage}
+          className="shrink-0"
+        />
+        <AdminFormMessage tone="error" message={errorMessage} className="shrink-0" />
 
         <AdminCollectionSection
           className="min-h-0 flex-1"
@@ -87,7 +80,7 @@ export default async function AdminCategoriesPage({ searchParams }: AdminCategor
           variant="plain"
           meta={
             categories.length > 0 ? (
-              <span className="inline-flex h-7 items-center rounded-full border border-border-soft bg-surface-panel-soft px-3 text-xs font-medium text-foreground">
+              <span className="inline-flex h-7 items-center rounded-full border border-surface-border bg-surface-panel-soft px-3 text-xs font-medium text-foreground">
                 {categories.length} catégor{categories.length > 1 ? "ies" : "ie"}
               </span>
             ) : null

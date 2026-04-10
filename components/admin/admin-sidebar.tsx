@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { LayoutDashboard } from "lucide-react";
 
+import type { AdminNavigationGroup, AdminNavigationItem } from "@/features/admin/navigation";
 import { AdminSidebarNav } from "@/components/admin/navigation";
 import { AdminLogoutButton } from "./admin-logout-button";
 import {
@@ -19,18 +20,20 @@ import {
 type AdminSidebarProps = {
   displayName: string;
   email: string;
+  rootItems: ReadonlyArray<AdminNavigationItem>;
+  groups: ReadonlyArray<AdminNavigationGroup>;
 };
 
-export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
+export function AdminSidebar({ displayName, email, rootItems, groups }: AdminSidebarProps) {
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border/70 bg-sidebar">
-      <SidebarHeader className="border-b border-sidebar-border/70 p-2 group-data-[collapsible=icon]:hidden">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
+      <SidebarHeader className="border-b border-sidebar-border p-2 group-data-[collapsible=icon]:hidden">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild className="rounded-xl hover:bg-sidebar-accent/40">
+            <SidebarMenuButton size="lg" asChild className="rounded-xl">
               <Link href="/admin" aria-label="Administration Creatyss">
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand/10">
-                  <LayoutDashboard className="size-4 text-brand" />
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-accent text-brand">
+                  <LayoutDashboard className="size-4" />
                 </div>
                 <div className="grid min-w-0 flex-1 text-left leading-tight">
                   <span className="truncate text-sm font-semibold text-sidebar-foreground">
@@ -47,21 +50,21 @@ export function AdminSidebar({ displayName, email }: AdminSidebarProps) {
       </SidebarHeader>
 
       <SidebarContent className="px-2 py-2">
-        <AdminSidebarNav />
+        <AdminSidebarNav rootItems={rootItems} groups={groups} />
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border/70 p-2">
+      <SidebarFooter className="border-t border-sidebar-border p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" className="rounded-xl hover:bg-sidebar-accent/40">
-              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-accent/60 text-sm font-semibold text-sidebar-foreground">
+            <SidebarMenuButton size="lg" className="rounded-xl">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-accent text-sm font-semibold text-sidebar-foreground">
                 {displayName.charAt(0).toUpperCase()}
               </div>
               <div className="grid min-w-0 flex-1 text-left leading-tight">
                 <span className="truncate text-sm font-medium text-sidebar-foreground">
                   {displayName}
                 </span>
-                <span className="truncate text-xs text-muted-foreground">{email}</span>
+                <span className="truncate text-xs text-sidebar-foreground/70">{email}</span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>

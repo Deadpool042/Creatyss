@@ -1,6 +1,5 @@
 import { ProductStatus, type Prisma } from "@/prisma-generated/client";
-
-import type { AdminProductFeedItem } from "@/features/admin/products/list/types/admin-product-feed.types";
+import type { AdminProductFeedItem } from "@/features/admin/products/list/types/product-feed.types";
 
 type DecimalLike = {
   toString(): string;
@@ -20,6 +19,11 @@ type ProductFeedRow = Prisma.ProductGetPayload<{
       select: {
         publicUrl: true;
         altText: true;
+      };
+    };
+    productType: {
+      select: {
+        name: true;
       };
     };
     variants: {
@@ -50,13 +54,9 @@ type ProductFeedRow = Prisma.ProductGetPayload<{
       };
     };
     productCategories: {
-      where: {
-        isPrimary: true;
-      };
       orderBy: {
         sortOrder: "asc";
       };
-      take: 1;
       select: {
         category: {
           select: {
@@ -90,11 +90,15 @@ function parseDecimal(value: DecimalLike | null): number | null {
 
 function normalizeProductStatus(status: ProductStatus): AdminProductFeedItem["status"] {
   if (status === ProductStatus.ACTIVE) {
-    return "published";
+    return "active";
   }
 
   if (status === ProductStatus.ARCHIVED) {
     return "archived";
+  }
+
+  if (status === ProductStatus.INACTIVE) {
+    return "inactive";
   }
 
   return "draft";
@@ -123,13 +127,6 @@ function mapStock(input: {
     };
   }
 
-  if (stockQuantity <= 5) {
-    return {
-      stockQuantity,
-      stockState: "low-stock",
-    };
-  }
-
   return {
     stockQuantity,
     stockState: "in-stock",
@@ -143,13 +140,7 @@ function mapPriceSummary(input: {
       compareAtAmount: DecimalLike | null;
     }>;
   }>;
-}): {
-  minAmount: string | null;
-  maxAmount: string | null;
-  minCompareAtAmount: string | null;
-  hasPriceRange: boolean;
-  hasPromotion: boolean;
-} {
+}) {
   const prices = input.variants.flatMap((variant) => variant.prices);
 
   if (prices.length === 0) {
@@ -222,10 +213,10 @@ function formatPriceValue(value: string | null): string | null {
 
 function buildPriceLabel(input: { minAmount: string | null; hasPriceRange: boolean }): string {
   if (!input.minAmount) {
-    return "—";
+    return "";
   }
 
-  const minAmountLabel = formatPriceValue(input.minAmount) ?? "—";
+  const minAmountLabel = formatPriceValue(input.minAmount) ?? "";
 
   if (input.hasPriceRange) {
     return `À partir de ${minAmountLabel}`;
@@ -237,22 +228,20 @@ function buildPriceLabel(input: { minAmount: string | null; hasPriceRange: boole
 function buildCompareAtPriceLabel(input: {
   minCompareAtAmount: string | null;
   hasPriceRange: boolean;
-}): string | null {
+}): string {
   if (input.hasPriceRange) {
-    return null;
+    return "";
   }
 
-  return formatPriceValue(input.minCompareAtAmount);
+  return formatPriceValue(input.minCompareAtAmount) ?? "";
 }
 
-function buildCategoryPathLabel(
-  input: {
-    name: string;
-    parentName: string | null;
-  } | null
-): string | null {
+function buildCategoryPathLabel(input: {
+  name: string;
+  parentName: string | null;
+} | null): string {
   if (!input) {
-    return null;
+    return "";
   }
 
   if (input.parentName && input.parentName.trim().length > 0) {
@@ -272,9 +261,6 @@ export function mapAdminProductFeedItem(product: ProductFeedRow): AdminProductFe
   });
 
   const primaryCategory = product.productCategories[0]?.category ?? null;
-  const minPriceValue = priceSummary.minAmount
-    ? parseDecimal({ toString: () => priceSummary.minAmount as string })
-    : null;
 
   return {
     id: product.id,
@@ -286,15 +272,7 @@ export function mapAdminProductFeedItem(product: ProductFeedRow): AdminProductFe
     primaryImageUrl: product.primaryImage?.publicUrl ?? null,
     primaryImageAlt: product.primaryImage?.altText ?? null,
 
-    stockQuantity: stock.stockQuantity,
-    stockState: stock.stockState,
-    variantCount: product._count.variants,
-
-    priceLabel: buildPriceLabel(priceSummary),
-    compareAtPriceLabel: buildCompareAtPriceLabel(priceSummary),
-    hasPromotion: priceSummary.hasPromotion,
-    priceValue: minPriceValue,
-
+    categoryNames: product.productCategories.map((link) => link.category.name),
     categoryPathLabel: buildCategoryPathLabel(
       primaryCategory
         ? {
@@ -303,8 +281,15 @@ export function mapAdminProductFeedItem(product: ProductFeedRow): AdminProductFe
           }
         : null
     ),
-    categorySlug: primaryCategory?.slug ?? null,
-    categoryId: primaryCategory?.id ?? null,
+    productTypeName: product.productType?.name ?? null,
+
+    stockQuantity: stock.stockQuantity,
+    stockState: stock.stockState,
+    variantCount: product._count.variants,
+
+    priceLabel: buildPriceLabel(priceSummary),
+    compareAtPriceLabel: buildCompareAtPriceLabel(priceSummary),
+    hasPromotion: priceSummary.hasPromotion,
 
     isFeatured: product.isFeatured,
     updatedAt: product.updatedAt.toISOString(),

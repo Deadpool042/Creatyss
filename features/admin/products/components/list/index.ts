@@ -10,7 +10,6 @@ export { ProductTableMobile } from "./product-table-mobile";
 export { ProductTableRowActions } from "./product-table-row-actions";
 export { ProductTableToolbar } from "./product-table-toolbar";
 export { ProductFeaturedToggle } from "./product-featured-toggle";
-export { ProductCompactCard } from "./product-compact-card";
 export { ProductSearchSheet } from "./product-search-sheet";
 export { ProductFeedSentinel } from "./product-feed-sentinel";
 export { ProductMobileFeed } from "./product-mobile-feed";

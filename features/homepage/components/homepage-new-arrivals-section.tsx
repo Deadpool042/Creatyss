@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import PlaceholderImage, { PLACEHOLDER_FILENAME } from "@/components/shared/placeholderImage";
+import { PLACEHOLDER_FILENAME } from "@/core/media";
+import { PlaceholderImage } from "@/components/shared/placeholder-image";
 
 type NewArrivalImage = {
   filePath: string;

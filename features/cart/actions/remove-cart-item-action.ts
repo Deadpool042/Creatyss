@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 import {
   findGuestCartIdByToken,
   removeGuestCartItem,
-} from "@/db/repositories/guest-cart.repository";
-import { readCartSessionToken } from "@/lib/cart-session";
+} from "@/features/cart/lib/guest-cart.repository";
+import { readCartSessionToken } from "@/core/sessions/cart";
 
 function normalizeCartItemId(value: FormDataEntryValue | string | null | undefined): string | null {
   if (typeof value !== "string") {

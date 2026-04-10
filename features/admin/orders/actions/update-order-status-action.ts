@@ -1,8 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { updateOrderStatus } from "@/db/repositories/order.repository";
-import { OrderRepositoryError } from "@/db/repositories/order.types";
+import { updateOrderStatus } from "@/features/orders/lib/order.repository";
+import { OrderRepositoryError } from "@/features/orders/lib/order.types";
 import type { OrderStatus } from "@/entities/order/order-status-transition";
 
 function normalizeNumericId(value: FormDataEntryValue | null): string | null {

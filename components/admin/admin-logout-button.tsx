@@ -7,7 +7,7 @@ export function AdminLogoutButton() {
       <SidebarMenuButton
         type="submit"
         tooltip="Se déconnecter"
-        className="h-9 rounded-lg text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+        className="h-9 rounded-xl"
       >
         <LogOut className="size-4" />
         <span className="group-data-[collapsible=icon]:hidden">Se déconnecter</span>

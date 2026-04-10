@@ -47,9 +47,10 @@ endef
 .PHONY: help \
 	up up-proxy down restart build app-build logs ps sh dev stripe-dev certs hosts-setup install-packages \
 	prisma-format prisma-validate prisma-generate prisma-db-push prisma-db-reset prisma-studio \
-	db-schema \
-	db-shell db-seed-dev db-seed-images db-import-woocommerce db-import-woocommerce-images \
-	db-reseed-dev db-reset-dev db-reset-empty uploads-import seed seed-data-init \
+	db-schema bootstrap-store-admin \
+	db-shell db-seed-dev db-import-woocommerce db-import-woocommerce-images \
+	db-sync-woocommerce db-sync-woocommerce-images db-reseed-dev db-reset-dev db-reset-empty \
+	uploads-import seed seed-data-init \
 	typecheck-local typecheck typecheck-watch typecheck-import-woocommerce \
 	lint-local lint lint-fix lint-watch \
 	format format-check format-check-local \
@@ -84,9 +85,9 @@ help:
 
 	@printf "$(COLOR_CYAN)Base de donnees$(COLOR_RESET)\n"
 	@printf "  $(COLOR_BOLD)db-schema$(COLOR_RESET)                    Regenere le client Prisma puis applique le schema courant\n"
+	@printf "  $(COLOR_BOLD)bootstrap-store-admin$(COLOR_RESET)        Cree/met a jour le store local, le role admin et admin@creatyss.local\n"
 	@printf "  $(COLOR_BOLD)db-shell$(COLOR_RESET)                     Ouvre psql dans le conteneur db\n"
 	@printf "  $(COLOR_BOLD)db-seed-dev$(COLOR_RESET)                  Cree le socle local puis importe le catalogue WooCommerce Creatyss\n"
-	@printf "  $(COLOR_BOLD)db-seed-images$(COLOR_RESET)               Convertit + aligne les images seed\n"
 	@printf "  $(COLOR_BOLD)db-import-woocommerce$(COLOR_RESET)        Reimporte le catalogue WooCommerce sans images\n"
 	@printf "  $(COLOR_BOLD)db-sync-woocommerce$(COLOR_RESET)          Met a jour le catalogue WooCommerce sans reset, sans images\n"
 	@printf "  $(COLOR_BOLD)db-sync-woocommerce-images$(COLOR_RESET)   Met a jour le catalogue WooCommerce sans reset, avec images\n"
@@ -220,6 +221,12 @@ db-schema:
 	$(COMPOSE_CORE) exec $(APP_SERVICE) pnpm run prisma:db:push
 	$(call log_success,Schema synchronise)
 
+bootstrap-store-admin:
+	$(call log_info,Bootstrap store + admin dans le conteneur)
+	@$(MAKE) prisma-generate
+	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run bootstrap:store-admin
+	$(call log_success,Bootstrap store + admin termine)
+
 db-shell:
 	$(call log_info,Ouverture de psql dans le conteneur db)
 	$(COMPOSE_CORE) exec $(DB_SERVICE) sh -lc 'psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"'
@@ -229,12 +236,6 @@ db-seed-dev:
 	@$(MAKE) prisma-generate
 	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run seed:dev
 	$(call log_success,Seed dev termine)
-
-db-seed-images:
-	$(call log_info,Seed des images)
-	@$(MAKE) prisma-generate
-	@$(COMPOSE_CORE) exec -T $(APP_SERVICE) pnpm run seed:images
-	$(call log_success,Images de seed traitees)
 
 db-import-woocommerce:
 	$(call log_info,Import WooCommerce sans images)

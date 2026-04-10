@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminCollectionSection } from "@/components/admin/admin-collection-section";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Notice } from "@/components/shared/notice";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
@@ -106,13 +106,10 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
 
   return (
     <AdminPageShell
-      mode="viewport"
-      variant="tool"
       compactMobileTitle
       eyebrow="Médias"
       title="Bibliothèque médias"
       description="Importez et réutilisez vos visuels dans le catalogue et les contenus."
-      pageTitleAction={{ label: "Importer", href: "/admin/media#admin-media-upload" }}
       actions={
         <Button asChild size="sm" className="w-full sm:min-w-40 sm:w-auto">
           <a href="#admin-media-upload">Importer</a>
@@ -121,65 +118,61 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
       scrollMode="nested"
     >
       <div className="flex min-h-0 flex-1 flex-col gap-4 lg:gap-6 [@media(max-height:480px)]:gap-3">
-        {successMessage ? (
-          <div className="shrink-0">
-            <Notice tone="success">{successMessage}</Notice>
-          </div>
-        ) : null}
-        {errorMessage ? (
-          <div className="shrink-0">
-            <Notice tone="alert">{errorMessage}</Notice>
-          </div>
-        ) : null}
+        <AdminFormMessage
+          tone="success"
+          message={successMessage}
+          className="shrink-0"
+        />
+        <AdminFormMessage tone="error" message={errorMessage} className="shrink-0" />
 
-          <div id="admin-media-upload" className="shrink-0 scroll-mt-24">
-            <AdminFormSection
-              description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP. Taille maximale : 10 MB."
-              eyebrow="Import"
-              title="Importer une image"
+        <div id="admin-media-upload" className="shrink-0 scroll-mt-24">
+          <AdminFormSection
+            description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP. Taille maximale : 10 MB."
+            eyebrow="Import"
+            title="Importer une image"
+          >
+            <form
+              action={uploadMediaAction}
+              className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start"
             >
-              <form
-                action={uploadMediaAction}
-                className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start"
-              >
-                <div className="rounded-2xl border border-surface-border bg-surface-panel-soft p-4">
-                  <AdminFormField
-                    htmlFor="media-file"
-                    label="Image"
-                    description="Sélectionnez un fichier source depuis votre poste. Le média reste ensuite immédiatement disponible dans l'administration."
+              <div className="rounded-2xl border border-surface-border bg-card p-4 shadow-card">
+                <AdminFormField
+                  htmlFor="media-file"
+                  label="Image"
+                  description="Sélectionnez un fichier source depuis votre poste. Le média reste ensuite immédiatement disponible dans l'administration."
+                  required
+                >
+                  <Input
+                    accept="image/jpeg,image/png,image/webp"
+                    className="h-11 rounded-2xl border-surface-border bg-card px-3 shadow-none file:mr-3 file:rounded-full file:border file:border-surface-border file:bg-surface-panel file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-foreground"
+                    id="media-file"
+                    name="file"
                     required
-                  >
-                    <Input
-                      accept="image/jpeg,image/png,image/webp"
-                      className="h-11 rounded-2xl border-surface-border bg-card px-3 shadow-none file:mr-3 file:rounded-full file:bg-primary/10 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-primary"
-                      id="media-file"
-                      name="file"
-                      required
-                      type="file"
-                    />
-                  </AdminFormField>
+                    type="file"
+                  />
+                </AdminFormField>
+              </div>
+
+              <div className="grid gap-4">
+                <div className="grid gap-3 text-sm leading-6 text-muted-foreground">
+                  <p>
+                    Réutilisable ensuite dans les produits, catégories, articles et sections
+                    éditoriales.
+                  </p>
+                  <p>
+                    Import limité à 10 MB, avec prise en charge des fichiers JPEG, PNG et WebP.
+                  </p>
                 </div>
 
-                <div className="grid gap-4">
-                  <div className="grid gap-3 text-sm leading-6 text-muted-foreground">
-                    <p>
-                      Réutilisable ensuite dans les produits, catégories, articles et sections
-                      éditoriales.
-                    </p>
-                    <p>
-                      Import limité à 10 MB, avec prise en charge des fichiers JPEG, PNG et WebP.
-                    </p>
-                  </div>
-
-                  <AdminFormActions className="sm:justify-end lg:justify-start">
-                    <Button className="sm:min-w-40" type="submit">
-                      Importer le média
-                    </Button>
-                  </AdminFormActions>
-                </div>
-              </form>
-            </AdminFormSection>
-          </div>
+                <AdminFormActions className="sm:justify-end lg:justify-start">
+                  <Button className="sm:min-w-40" type="submit">
+                    Importer le média
+                  </Button>
+                </AdminFormActions>
+              </div>
+            </form>
+          </AdminFormSection>
+        </div>
 
         <AdminCollectionSection
           className="min-h-0 flex-1"
@@ -190,7 +183,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
           variant="plain"
           meta={
             assets.length > 0 ? (
-              <span className="inline-flex h-7 items-center rounded-full border border-border-soft bg-surface-panel-soft px-3 text-xs font-medium text-foreground">
+              <span className="inline-flex h-7 items-center rounded-full border border-surface-border bg-surface-panel-soft px-3 text-xs font-medium text-foreground">
                 {assets.length} média{assets.length > 1 ? "s" : ""}
               </span>
             ) : null

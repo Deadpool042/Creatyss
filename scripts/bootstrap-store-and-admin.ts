@@ -1,3 +1,4 @@
+//scripts/bootstrap-store-and-admin.ts
 import {
   DEV_ADMINS,
   ensureAdminRole,
@@ -5,6 +6,7 @@ import {
   upsertAdminUser,
 } from "./helpers/admin-bootstrap";
 import { createScriptPrismaClient } from "./helpers/prisma-client";
+import { seedAdminNavigationAccess } from "../prisma/seed/admin-navigation-access.seed";
 
 const prisma = createScriptPrismaClient();
 
@@ -19,6 +21,9 @@ async function main() {
     const user = await upsertAdminUser(prisma, admin, store.id, role.id);
     process.stdout.write(`Admin ready: ${user.email}\n`);
   }
+
+  await seedAdminNavigationAccess(prisma);
+  process.stdout.write("Admin navigation access ready.\n");
 
   process.stdout.write("\nBootstrap completed.\n");
   process.stdout.write("Login:\n");

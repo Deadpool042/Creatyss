@@ -1,2 +1,2 @@
-export { ProductDetailsPanel } from "./product-details-panel";
 export { ProductDetails } from "./product-details";
+export { ProductDetailsPanel } from "./product-details-panel";

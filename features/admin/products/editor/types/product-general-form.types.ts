@@ -1,11 +1,15 @@
 export type ProductGeneralFormValues = {
-  id: string;
+  productId: string;
   name: string;
   slug: string;
+  skuRoot: string;
   shortDescription: string;
   description: string;
-  status: "draft" | "published" | "archived";
+  status: "draft" | "active" | "inactive" | "archived";
   isFeatured: boolean;
+  isStandalone: boolean;
+  productTypeId: string;
+  primaryImageId: string;
 };
 
 export type ProductGeneralFormState = {
@@ -13,7 +17,17 @@ export type ProductGeneralFormState = {
   message: string | null;
   fieldErrors: Partial<
     Record<
-      "id" | "name" | "slug" | "shortDescription" | "description" | "status" | "isFeatured",
+      | "productId"
+      | "name"
+      | "slug"
+      | "skuRoot"
+      | "shortDescription"
+      | "description"
+      | "status"
+      | "isFeatured"
+      | "isStandalone"
+      | "productTypeId"
+      | "primaryImageId",
       string
     >
   >;

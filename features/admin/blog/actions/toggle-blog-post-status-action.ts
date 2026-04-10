@@ -1,10 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  findAdminBlogPostById,
-  toggleAdminBlogPostStatus,
-} from "@/db/repositories/admin-blog.repository";
+import { getAdminBlogPostById } from "../queries";
+import { toggleAdminBlogPostStatus } from "../services";
 import { getBlogPostPublishability } from "@/entities/blog/blog-post-publishability";
 
 function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
@@ -13,41 +11,35 @@ function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
   }
 
   const normalizedValue = value.trim();
-
-  if (!/^[0-9]+$/.test(normalizedValue)) {
-    return null;
-  }
-
-  return normalizedValue;
+  return normalizedValue.length > 0 ? normalizedValue : null;
 }
 
 export async function toggleBlogPostStatusAction(formData: FormData): Promise<void> {
   const postId = normalizeBlogPostId(formData.get("postId"));
 
   if (postId === null) {
-    redirect("/admin/blog?error=missing_blog_post");
+    redirect("/admin/content/blog?error=missing_blog_post");
   }
 
-  const post = await findAdminBlogPostById(postId);
+  const post = await getAdminBlogPostById(postId);
 
   if (post === null) {
-    redirect("/admin/blog?error=missing_blog_post");
+    redirect("/admin/content/blog?error=missing_blog_post");
   }
 
-  // If toggling draft → published, validate publishability first
   if (post.status === "draft") {
     const publishability = getBlogPostPublishability({ content: post.content });
 
     if (!publishability.ok) {
-      redirect(`/admin/blog/${postId}?error=${publishability.code}`);
+      redirect(`/admin/content/blog/${postId}?error=${publishability.code}`);
     }
   }
 
   const newStatus = await toggleAdminBlogPostStatus(postId);
 
   if (newStatus === null) {
-    redirect("/admin/blog?error=missing_blog_post");
+    redirect("/admin/content/blog?error=missing_blog_post");
   }
 
-  redirect(`/admin/blog/${postId}?status=updated`);
+  redirect(`/admin/content/blog/${postId}?status=updated`);
 }

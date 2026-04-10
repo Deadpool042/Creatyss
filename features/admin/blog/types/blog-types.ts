@@ -1,1 +1,1 @@
-export type { AdminBlogPostSummary } from "@/db/repositories/admin-blog.types";
+export type { AdminBlogPostSummary } from "./admin-blog.types";

@@ -1,6 +1,10 @@
-export type AdminProductDisplayStatus = "draft" | "published" | "archived";
+export type AdminProductDisplayStatus =
+  | "draft"
+  | "active"
+  | "inactive"
+  | "archived";
 
-export type AdminProductDisplayType = "simple" | "variable";
+export type AdminProductDisplayType = "simple" | "variable" | "typed";
 
 export type AdminProductDetailsCategory = {
   id: string;
@@ -43,6 +47,7 @@ export type AdminProductDetails = {
   status: AdminProductDisplayStatus;
   isFeatured: boolean;
   productType: AdminProductDisplayType;
+  productTypeCode: string | null;
   updatedAt: string;
   primaryImageUrl: string | null;
   primaryImageAlt: string | null;

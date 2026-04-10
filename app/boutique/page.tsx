@@ -3,13 +3,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { listCatalogFilterCategories, listPublishedProducts } from "@/db/repositories/catalog/catalog.repository";
+import { getUploadsPublicPath } from "@/core/uploads";
+import { listCatalogFilterCategories, listPublishedProducts } from "@/features/storefront/catalog";
 import {
   CATALOG_AVAILABILITY_FILTER_VALUE,
   validateCatalogFilterInput,
 } from "@/entities/catalog/catalog-filter-input";
 import { validateCatalogSearchQuery } from "@/entities/catalog/catalog-search-input";
-import { getUploadsPublicPath } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";
 

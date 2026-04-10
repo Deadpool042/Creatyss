@@ -114,7 +114,7 @@ export function AdminRichTextEditor({
     >
       <input type="hidden" name={name} value={html} />
 
-      <div className="overflow-hidden rounded-xl border border-border/70 bg-background">
+      <div className="overflow-hidden rounded-xl border border-surface-border bg-card shadow-card">
         <AdminRichTextToolbar editor={editor} preset={preset} />
         <EditorContent editor={editor} />
       </div>

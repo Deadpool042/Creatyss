@@ -43,7 +43,7 @@ function InfoTile({
 
 export function AdminMediaAssetCard({ asset }: AdminMediaAssetCardProps) {
   return (
-    <article className="flex h-full flex-col gap-4 rounded-4xl border border-surface-border bg-card p-4 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-border hover:shadow-lg">
+    <article className="flex h-full flex-col gap-4 rounded-4xl border border-surface-border bg-card p-4 shadow-card transition-colors duration-200 hover:border-surface-border-strong">
       <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-media-surface">
         {asset.previewUrl ? (
           <Image
@@ -66,11 +66,11 @@ export function AdminMediaAssetCard({ asset }: AdminMediaAssetCardProps) {
         <div className="space-y-3">
           <div className="flex flex-wrap gap-2">
             {asset.previewUrl ? (
-              <span className="inline-flex h-7 items-center rounded-full border border-primary/20 bg-primary/10 px-3 text-xs font-medium text-primary">
+              <span className="inline-flex h-7 items-center rounded-full border border-surface-border-strong bg-interactive-selected px-3 text-xs font-medium text-foreground">
                 Aperçu disponible
               </span>
             ) : (
-              <span className="inline-flex h-7 items-center rounded-full border border-destructive/20 bg-destructive/10 px-3 text-xs font-medium text-destructive">
+              <span className="inline-flex h-7 items-center rounded-full border border-feedback-warning-border bg-feedback-warning-surface px-3 text-xs font-medium text-feedback-warning-foreground">
                 Aperçu indisponible
               </span>
             )}

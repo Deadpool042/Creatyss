@@ -1,63 +1,61 @@
-import { ProductStatus } from "@/prisma-generated/client";
-
+import { ProductVariantStatus } from "@/prisma-generated/client";
 import type { AdminProductVariantListItem } from "@/features/admin/products/editor/types/product-variants.types";
 
 type ProductVariantListSource = {
   id: string;
-  productId: string;
   slug: string | null;
   name: string | null;
   sku: string;
-  status: ProductStatus;
+  status: ProductVariantStatus;
   isDefault: boolean;
   sortOrder: number;
+  barcode: string | null;
+  externalReference: string | null;
+  weightGrams: number | null;
+  widthMm: number | null;
+  heightMm: number | null;
+  depthMm: number | null;
   primaryImageId: string | null;
   primaryImage: {
     publicUrl: string | null;
+    storageKey: string | null;
     altText: string | null;
   } | null;
-  prices: Array<{
-    amount: { toString(): string };
-    compareAtAmount: { toString(): string } | null;
-  }>;
 };
 
-function decimalToString(value: { toString(): string } | null): string | null {
-  return value ? value.toString() : null;
-}
-
-function mapProductStatusToAdminVariantStatus(
-  status: ProductStatus
-): AdminProductVariantListItem["status"] {
-  if (status === ProductStatus.ACTIVE) {
-    return "published";
+function mapStatus(status: ProductVariantStatus): AdminProductVariantListItem["status"] {
+  switch (status) {
+    case ProductVariantStatus.ACTIVE:
+      return "active";
+    case ProductVariantStatus.INACTIVE:
+      return "inactive";
+    case ProductVariantStatus.ARCHIVED:
+      return "archived";
+    default:
+      return "draft";
   }
-
-  if (status === ProductStatus.ARCHIVED) {
-    return "archived";
-  }
-
-  return "draft";
 }
 
 export function mapAdminProductVariantListItem(
   variant: ProductVariantListSource
 ): AdminProductVariantListItem {
-  const activePrice = variant.prices[0] ?? null;
-
   return {
     id: variant.id,
-    productId: variant.productId,
-    slug: variant.slug ?? "",
-    name: variant.name ?? "",
+    slug: variant.slug,
+    name: variant.name,
     sku: variant.sku,
-    status: mapProductStatusToAdminVariantStatus(variant.status),
+    status: mapStatus(variant.status),
     isDefault: variant.isDefault,
     sortOrder: variant.sortOrder,
+    barcode: variant.barcode,
+    externalReference: variant.externalReference,
+    weightGrams: variant.weightGrams?.toString() ?? null,
+    widthMm: variant.widthMm?.toString() ?? null,
+    heightMm: variant.heightMm?.toString() ?? null,
+    depthMm: variant.depthMm?.toString() ?? null,
     primaryImageId: variant.primaryImageId,
     primaryImageUrl: variant.primaryImage?.publicUrl ?? null,
-    primaryImageAlt: variant.primaryImage?.altText ?? null,
-    amount: decimalToString(activePrice?.amount ?? null),
-    compareAtAmount: decimalToString(activePrice?.compareAtAmount ?? null),
+    primaryImageStorageKey: variant.primaryImage?.storageKey ?? null,
+    primaryImageAltText: variant.primaryImage?.altText ?? null,
   };
 }

@@ -1,86 +1,116 @@
 import type {
-  ProductTableFeaturedFilter,
-  ProductTableImageFilter,
-  ProductTableSortOption,
-  ProductTableStatusFilter,
-  ProductTableStockFilter,
-  ProductTableVariantFilter,
-} from "@/features/admin/products/list/schemas/product-table-filters.schema";
+  ProductFilterFeaturedOption,
+  ProductFilterImageOption,
+  ProductFilterStockOption,
+  ProductFilterVariantOption,
+  ProductSortOption,
+} from "../types";
 
-export function getStatusLabel(status: ProductTableStatusFilter): string {
-  switch (status) {
-    case "published":
-      return "Publié";
-    case "draft":
-      return "Brouillon";
-    case "archived":
-      return "Archivé";
-    default:
-      return "Tous les statuts";
-  }
-}
-
-export function getFeaturedLabel(value: ProductTableFeaturedFilter): string {
+export function getFeaturedLabel(value: ProductFilterFeaturedOption): string {
   switch (value) {
+    case "all":
+      return "Tous";
     case "featured":
       return "Mis en avant";
     case "standard":
-      return "Produits standards";
-    default:
-      return "Tous les produits";
+      return "Standard";
   }
 }
 
-export function getImageLabel(value: ProductTableImageFilter): string {
+export function getImageLabel(value: ProductFilterImageOption): string {
   switch (value) {
+    case "all":
+      return "Toutes";
     case "with-image":
       return "Avec image";
     case "without-image":
       return "Sans image";
-    default:
-      return "Toutes les images";
   }
 }
 
-export function getVariantLabel(value: ProductTableVariantFilter): string {
+export function getStockLabel(value: ProductFilterStockOption): string {
   switch (value) {
+    case "all":
+      return "Tous";
+    case "in-stock":
+      return "En stock";
+    case "out-of-stock":
+      return "Rupture";
+    case "low-stock":
+      return "Stock faible";
+  }
+}
+
+export function getVariantLabel(value: ProductFilterVariantOption): string {
+  switch (value) {
+    case "all":
+      return "Toutes";
+    case "single":
+      return "Simple";
+    case "multiple":
+      return "Multiple";
     case "with-variants":
       return "Avec variantes";
     case "without-variants":
       return "Sans variantes";
     case "single-variant":
-      return "1 variante";
+      return "Variante unique";
     case "multi-variant":
-      return "Plusieurs variantes";
-    default:
-      return "Toutes les variantes";
+      return "Variantes multiples";
   }
 }
 
-export function getStockLabel(value: ProductTableStockFilter): string {
+export function getSortLabel(value: ProductSortOption): string {
   switch (value) {
-    case "in-stock":
-      return "En stock";
-    case "low-stock":
-      return "Stock faible";
-    case "out-of-stock":
-      return "Rupture";
-    default:
-      return "Tous les stocks";
-  }
-}
-
-export function getSortLabel(value: ProductTableSortOption): string {
-  switch (value) {
+    case "updated-desc":
+      return "Modif. récentes";
+    case "updated-asc":
+      return "Modif. anciennes";
+    case "created-desc":
+      return "Création récente";
+    case "created-asc":
+      return "Création ancienne";
     case "name-asc":
-      return "Nom A → Z";
+      return "Nom A-Z";
     case "name-desc":
-      return "Nom Z → A";
+      return "Nom Z-A";
     case "price-asc":
       return "Prix croissant";
     case "price-desc":
       return "Prix décroissant";
-    default:
-      return "Plus récents";
   }
+}
+
+export function getStatusLabel(value: "draft" | "active" | "inactive" | "archived" | "published"): string {
+  switch (value) {
+    case "draft":
+      return "Brouillon";
+    case "active":
+      return "Actif";
+    case "inactive":
+      return "Inactif";
+    case "archived":
+      return "Archivé";
+    case "published":
+      return "Publié";
+  }
+}
+
+export function parsePriceValue(value: string | null): number | null {
+  if (!value) {
+    return null;
+  }
+
+  const normalized = value.replace(",", ".").replace(/[^\d.-]/g, "");
+  const parsed = Number.parseFloat(normalized);
+
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+export function stripHtml(value: string | null): string {
+  if (!value) {
+    return "";
+  }
+
+  return value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }

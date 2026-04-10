@@ -1,4 +1,3 @@
-// components/shared/viewport-scroll-area.tsx
 "use client";
 
 import type { ReactNode } from "react";
@@ -18,6 +17,13 @@ const ADMIN_VIEWPORT_SCROLL_AREA_CLASS_NAME = [
   "[@media(max-height:480px)]:supports-[height:100dvh]:h-[calc(100dvh-6.75rem)]",
 ].join(" ");
 
+const SHEET_VIEWPORT_SCROLL_AREA_CLASS_NAME = [
+  "flex min-h-0 flex-col overflow-hidden",
+  "max-h-[85dvh]",
+].join(" ");
+
+type ViewportPreset = "admin" | "sheet" | "none";
+
 type ViewportScrollAreaProps = Readonly<{
   header?: ReactNode;
   children: ReactNode;
@@ -26,7 +32,7 @@ type ViewportScrollAreaProps = Readonly<{
   bodyClassName?: string;
   scrollAreaClassName?: string;
   contentClassName?: string;
-  viewportPreset?: "admin" | "none";
+  viewportPreset?: ViewportPreset;
   scrollMode?: "area" | "nested";
 }>;
 
@@ -41,6 +47,13 @@ export function ViewportScrollArea({
   viewportPreset = "admin",
   scrollMode = "area",
 }: ViewportScrollAreaProps) {
+  const viewportPresetClassName =
+    viewportPreset === "admin"
+      ? ADMIN_VIEWPORT_SCROLL_AREA_CLASS_NAME
+      : viewportPreset === "sheet"
+        ? SHEET_VIEWPORT_SCROLL_AREA_CLASS_NAME
+        : null;
+
   const body =
     scrollMode === "area" ? (
       <ScrollArea className={cn("min-h-0 flex-1", bodyClassName, scrollAreaClassName)}>
@@ -52,11 +65,7 @@ export function ViewportScrollArea({
 
   return (
     <div
-      className={cn(
-        "flex min-h-0 flex-col overflow-hidden",
-        viewportPreset === "admin" ? ADMIN_VIEWPORT_SCROLL_AREA_CLASS_NAME : null,
-        className
-      )}
+      className={cn("flex min-h-0 flex-col overflow-hidden", viewportPresetClassName, className)}
     >
       {header ? <div className={cn("shrink-0", headerClassName)}>{header}</div> : null}
       {body}

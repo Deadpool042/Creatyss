@@ -17,7 +17,8 @@ function getStockConfig(state: string, quantity: number | null): StockConfig {
     case "in-stock":
       return {
         label: typeof quantity === "number" && quantity > 0 ? `En stock · ${quantity}` : "En stock",
-        className: "border-transparent bg-primary/10 text-foreground",
+        className:
+          "border-feedback-success-border bg-feedback-success-surface text-feedback-success-foreground",
       };
 
     case "low-stock":
@@ -26,19 +27,21 @@ function getStockConfig(state: string, quantity: number | null): StockConfig {
           typeof quantity === "number" && quantity >= 0
             ? `Stock faible · ${quantity}`
             : "Stock faible",
-        className: "border-transparent bg-amber-500/12 text-amber-700 dark:text-amber-300",
+        className:
+          "border-feedback-warning-border bg-feedback-warning-surface text-feedback-warning-foreground",
       };
 
     case "out-of-stock":
       return {
         label: "Rupture",
-        className: "border-transparent bg-destructive/12 text-destructive",
+        className:
+          "border-feedback-error-border bg-feedback-error-surface text-feedback-error-foreground",
       };
 
     default:
       return {
         label: "Stock inconnu",
-        className: "border-border/60 bg-background/40 text-muted-foreground",
+        className: "border-surface-border bg-surface-panel-soft text-muted-foreground",
       };
   }
 }

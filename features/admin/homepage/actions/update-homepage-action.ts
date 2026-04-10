@@ -1,12 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { getAdminMediaAssetById } from "@/db/repositories/admin-media.repository";
 import {
   getAdminHomepageCurrentHeroImagePath,
   updateAdminHomepage,
-} from "@/db/repositories/admin-homepage.repository";
-import { AdminHomepageRepositoryError } from "@/db/repositories/admin-homepage.types";
+  AdminHomepageServiceError,
+} from "@/features/admin/homepage";
+import { getAdminMediaAssetById } from "@/features/admin/media";
 import { validateHomepageInput } from "@/entities/homepage/homepage-input";
 
 import { HomepageFormSchema } from "../schemas/homepage-form-schema";
@@ -50,8 +50,6 @@ function mapHomepageTextError(field: PropertyKey | undefined): string {
 }
 
 export async function updateHomepageAction(formData: FormData): Promise<void> {
-  // Étape 1 : validation des champs texte par Zod (fail-fast, sortie typée).
-  // Si un champ texte est trop long, on redirige avant tout parsing des sélections.
   const textParsed = HomepageFormSchema.safeParse({
     heroTitle: formData.get("heroTitle"),
     heroText: formData.get("heroText"),
@@ -61,12 +59,9 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
 
   if (!textParsed.success) {
     const code = mapHomepageTextError(textParsed.error.issues[0]?.path[0]);
-    redirect(`/admin/homepage?error=${code}`);
+    redirect(`/admin/content/homepage?error=${code}`);
   }
 
-  // Étape 2 : validation complète via entity validator.
-  // Périmètre : homepageId, hero image, sélections featured + sort orders.
-  // Les champs texte sont re-validés ici aussi (même normalisation que Zod).
   const validation = validateHomepageInput({
     homepageId: formData.get("homepageId"),
     heroTitle: formData.get("heroTitle"),
@@ -83,7 +78,7 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
   });
 
   if (!validation.ok) {
-    redirect(`/admin/homepage?error=${validation.code}`);
+    redirect(`/admin/content/homepage?error=${validation.code}`);
   }
 
   let heroImagePath: string | null = null;
@@ -95,54 +90,44 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
     const mediaAsset = await getAdminMediaAssetById(mediaAssetId);
 
     if (mediaAsset === null) {
-      redirect("/admin/homepage?error=hero_media_missing");
+      redirect("/admin/content/homepage?error=hero_media_missing");
     }
 
     heroImagePath = mediaAsset.filePath;
   }
 
-  let wasUpdated = false;
-
   try {
-    const homepage = await updateAdminHomepage({
+    await updateAdminHomepage({
       id: validation.data.homepageId,
-      // Champs texte : issus de Zod (typés, normalisés par formOptionalText)
       heroTitle: textParsed.data.heroTitle,
       heroText: textParsed.data.heroText,
       heroImagePath,
       editorialTitle: textParsed.data.editorialTitle,
       editorialText: textParsed.data.editorialText,
-      // Sélections : issues de l'entity validator (logique déduplication + sort orders)
       featuredProducts: validation.data.featuredProducts,
       featuredCategories: validation.data.featuredCategories,
       featuredBlogPosts: validation.data.featuredBlogPosts,
     });
-
-    wasUpdated = homepage !== null;
-  } catch (error) {
-    if (error instanceof AdminHomepageRepositoryError && error.code === "homepage_missing") {
-      redirect("/admin/homepage?error=missing_homepage");
+  } catch (error: unknown) {
+    if (error instanceof AdminHomepageServiceError && error.code === "homepage_missing") {
+      redirect("/admin/content/homepage?error=missing_homepage");
     }
 
-    if (error instanceof AdminHomepageRepositoryError && error.code === "product_missing") {
-      redirect("/admin/homepage?error=product_missing");
+    if (error instanceof AdminHomepageServiceError && error.code === "product_missing") {
+      redirect("/admin/content/homepage?error=product_missing");
     }
 
-    if (error instanceof AdminHomepageRepositoryError && error.code === "category_missing") {
-      redirect("/admin/homepage?error=category_missing");
+    if (error instanceof AdminHomepageServiceError && error.code === "category_missing") {
+      redirect("/admin/content/homepage?error=category_missing");
     }
 
-    if (error instanceof AdminHomepageRepositoryError && error.code === "blog_post_missing") {
-      redirect("/admin/homepage?error=blog_post_missing");
+    if (error instanceof AdminHomepageServiceError && error.code === "blog_post_missing") {
+      redirect("/admin/content/homepage?error=blog_post_missing");
     }
 
     console.error(error);
-    redirect("/admin/homepage?error=save_failed");
+    redirect("/admin/content/homepage?error=save_failed");
   }
 
-  if (!wasUpdated) {
-    redirect("/admin/homepage?error=missing_homepage");
-  }
-
-  redirect("/admin/homepage?status=updated");
+  redirect("/admin/content/homepage?status=updated");
 }

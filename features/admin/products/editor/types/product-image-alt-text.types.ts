@@ -1,6 +1,6 @@
 export type UpdateProductImageAltTextInput = {
   productId: string;
-  assetId: string;
+  imageId: string;
   altText: string;
 };
 

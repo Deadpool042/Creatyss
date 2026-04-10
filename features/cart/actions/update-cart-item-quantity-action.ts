@@ -6,9 +6,9 @@ import {
   findGuestCartItemById,
   findGuestCartVariantById,
   updateGuestCartItemQuantity,
-} from "@/db/repositories/guest-cart.repository";
+} from "@/features/cart/lib/guest-cart.repository";
 import { validateCartItemInput } from "@/entities/cart/cart-item-input";
-import { readCartSessionToken } from "@/lib/cart-session";
+import { readCartSessionToken } from "@/core/sessions/cart";
 
 function normalizeCartItemId(value: FormDataEntryValue | string | null | undefined): string | null {
   if (typeof value !== "string") {

@@ -5,7 +5,13 @@ export type {
 } from "./product-categories-form.types";
 export { productCategoriesFormInitialState } from "./product-categories-form.types";
 
-export type { AdminProductEditorData } from "./product-editor.types";
+export type {
+  AdminProductEditorCategoryLink,
+  AdminProductEditorData,
+  AdminProductEditorProduct,
+  AdminProductEditorRelatedProduct,
+  AdminProductEditorStatus,
+} from "./product-editor.types";
 
 export type {
   ProductGeneralFormAction,

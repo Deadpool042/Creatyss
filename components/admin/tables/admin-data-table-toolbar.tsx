@@ -40,7 +40,9 @@ export function AdminDataTableToolbar({
       </div>
 
       {secondaryFilters ? (
-        <div className="rounded-xl border bg-card p-4">{secondaryFilters}</div>
+        <div className="rounded-xl border border-surface-border bg-surface-panel-soft p-4">
+          {secondaryFilters}
+        </div>
       ) : null}
     </div>
   );

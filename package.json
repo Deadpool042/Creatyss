@@ -28,6 +28,7 @@
     "prisma:db:reset": "prisma db push --force-reset --accept-data-loss",
     "prisma:studio": "prisma studio --port 5555 --browser none",
     "bootstrap:store-admin": "tsx scripts/bootstrap-store-and-admin.ts",
+    "seed:dev": "pnpm run bootstrap:store-admin && pnpm run import:woo:reset:skip-images",
     "import:woo": "tsx scripts/import-woocommerce/index.ts",
     "import:woo:reset": "tsx scripts/import-woocommerce/index.ts --reset",
     "import:woo:reset:skip-images": "tsx scripts/import-woocommerce/index.ts --reset --skip-images",

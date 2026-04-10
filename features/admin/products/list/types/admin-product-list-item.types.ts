@@ -18,9 +18,10 @@ export type AdminProductListItem = {
   slug: string;
   name: string;
   shortDescription: string | null;
-  status: "draft" | "published" | "archived";
+  status: "draft" | "active" | "inactive" | "archived";
   isFeatured: boolean;
-  productType: "simple" | "variable";
+  productType: "simple" | "variable" | "typed";
+  productTypeCode: string | null;
   variantCount: number;
   categoryCount: number;
   primaryCategory: AdminProductListCategory | null;

@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/notice";
-import { readGuestCartByToken } from "@/db/repositories/guest-cart.repository";
-import type { GuestCart } from "@/db/repositories/guest-cart.types";
+import { readCartSessionToken } from "@/core/sessions/cart";
+import { readGuestCartByToken } from "@/features/cart/lib/guest-cart.repository";
+import type { GuestCart } from "@/features/cart/lib/guest-cart.types";
 import { updateCartItemQuantityAction, removeCartItemAction } from "@/features/cart";
-import { readCartSessionToken } from "@/lib/cart-session";
 
 export const dynamic = "force-dynamic";
 

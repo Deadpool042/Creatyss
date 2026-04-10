@@ -1,72 +1,76 @@
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
 import type Stripe from "stripe";
+
 import {
+  findPaymentByCheckoutSessionId,
   markPaymentFailedByCheckoutSessionId,
   markPaymentSucceededByCheckoutSessionId,
-} from "@/db/repositories/payment.repository";
-import { sendOrderTransactionalEmail } from "@/features/email";
-import { getStripeWebhookSecret } from "@/lib/env";
-import { stripe } from "@/lib/stripe";
+} from "@/features/payment/lib/payment.repository";
+import { serverEnv } from "@/core/config/env";
+import { stripe } from "@/core/payments/stripe/server";
 
-export const runtime = "nodejs";
-
-function extractStripePaymentIntentId(session: Stripe.Checkout.Session): string | null {
-  return typeof session.payment_intent === "string" ? session.payment_intent : null;
-}
-
-export async function POST(request: Request): Promise<Response> {
-  const signature = request.headers.get("stripe-signature");
+export async function POST(request: Request) {
+  const body = await request.text();
+  const headersList = await headers();
+  const signature = headersList.get("stripe-signature");
 
   if (!signature) {
-    return new Response("Missing Stripe signature.", { status: 400 });
+    return NextResponse.json({ error: "Missing Stripe signature." }, { status: 400 });
   }
-
-  const payload = await request.text();
 
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(payload, signature, getStripeWebhookSecret());
+    event = stripe.webhooks.constructEvent(body, signature, serverEnv.stripeWebhookSecret);
   } catch (error) {
-    console.error(error);
-    return new Response("Invalid Stripe webhook signature.", { status: 400 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Invalid webhook signature." },
+      { status: 400 }
+    );
   }
 
-  try {
-    switch (event.type) {
-      case "checkout.session.completed": {
-        const session = event.data.object as Stripe.Checkout.Session;
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object as Stripe.Checkout.Session;
 
-        const orderId = await markPaymentSucceededByCheckoutSessionId({
-          stripeCheckoutSessionId: session.id,
-          stripePaymentIntentId: extractStripePaymentIntentId(session),
-        });
-
-        if (orderId !== null) {
-          await sendOrderTransactionalEmail({
-            orderId,
-            eventType: "payment_succeeded",
-          });
-        }
-        break;
-      }
-
-      case "checkout.session.expired": {
-        const session = event.data.object as Stripe.Checkout.Session;
-
-        await markPaymentFailedByCheckoutSessionId({
-          stripeCheckoutSessionId: session.id,
-          stripePaymentIntentId: extractStripePaymentIntentId(session),
-        });
-        break;
-      }
-
-      default:
-        break;
+    if (typeof session.id === "string") {
+      await markPaymentSucceededByCheckoutSessionId({
+        stripeCheckoutSessionId: session.id,
+        stripePaymentIntentId:
+          typeof session.payment_intent === "string" ? session.payment_intent : null,
+      });
     }
-  } catch (error) {
-    console.error(error);
-    return new Response("Webhook handling failed.", { status: 500 });
   }
 
-  return Response.json({ received: true });
+  if (event.type === "checkout.session.expired") {
+    const session = event.data.object as Stripe.Checkout.Session;
+
+    if (typeof session.id === "string") {
+      await markPaymentFailedByCheckoutSessionId({
+        stripeCheckoutSessionId: session.id,
+        stripePaymentIntentId:
+          typeof session.payment_intent === "string" ? session.payment_intent : null,
+      });
+    }
+  }
+
+  if (event.type === "payment_intent.payment_failed") {
+    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+
+    if (typeof paymentIntent.id === "string") {
+      const payment = await findPaymentByCheckoutSessionId({
+        stripeCheckoutSessionId: paymentIntent.id,
+        stripePaymentIntentId: paymentIntent.id,
+      });
+
+      if (payment?.providerReference) {
+        await markPaymentFailedByCheckoutSessionId({
+          stripeCheckoutSessionId: payment.providerReference,
+          stripePaymentIntentId: paymentIntent.id,
+        });
+      }
+    }
+  }
+
+  return NextResponse.json({ received: true });
 }

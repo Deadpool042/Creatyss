@@ -19,15 +19,11 @@ type NewAdminCategoryPageProps = Readonly<{
 function getErrorMessage(error: string | undefined): string | null {
   switch (error) {
     case "missing_name":
-      return "Le nom est obligatoire.";
+      return "Nom requis.";
     case "missing_slug":
-      return "Le slug est obligatoire.";
+      return "Slug requis.";
     case "invalid_slug":
-      return "Renseignez un slug valide.";
-    case "slug_taken":
-      return "Ce slug est déjà utilisé par une autre catégorie.";
-    case "save_failed":
-      return "La catégorie n'a pas pu être enregistrée.";
+      return "Slug invalide.";
     default:
       return null;
   }
@@ -40,17 +36,22 @@ export default async function NewAdminCategoryPage({ searchParams }: NewAdminCat
     : resolvedSearchParams.error;
   const errorMessage = getErrorMessage(errorParam);
 
+  async function handleCreateCategory(formData: FormData): Promise<void> {
+    "use server";
+    await createCategoryAction(formData);
+  }
+
   return (
     <AdminPageShell
       pageTitleNavigation={{ label: "Retour", href: "/admin/categories" }}
-      description="Créez une catégorie simple pour organiser le catalogue."
+      description="Création d’une catégorie de catalogue."
       eyebrow="Catégories"
       title="Nouvelle catégorie"
     >
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       <AdminFormSection>
-        <form action={createCategoryAction} className="grid gap-4">
+        <form action={handleCreateCategory} className="grid gap-4">
           <AdminFormField htmlFor="cat-name" label="Nom">
             <Input id="cat-name" name="name" required type="text" />
           </AdminFormField>
@@ -65,11 +66,15 @@ export default async function NewAdminCategoryPage({ searchParams }: NewAdminCat
 
           <label className="flex items-center gap-3 text-sm text-foreground">
             <input className="size-4" name="isFeatured" type="checkbox" value="on" />
-            <span>Mettre cette catégorie en avant</span>
+            <span>Mise en avant</span>
           </label>
 
+          <input type="hidden" name="sortOrder" value="0" />
+          <input type="hidden" name="parentId" value="" />
+          <input type="hidden" name="primaryImageId" value="" />
+
           <AdminFormActions>
-            <Button type="submit">Créer la catégorie</Button>
+            <Button type="submit">Créer</Button>
           </AdminFormActions>
         </form>
       </AdminFormSection>

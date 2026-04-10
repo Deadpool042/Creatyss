@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listPublishedBlogPosts } from "@/db/repositories/catalog/catalog.repository";
+import { listPublishedBlogPosts } from "@/features/storefront/catalog";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +20,7 @@ export default async function BlogPage() {
 
         {posts.length > 0 ? (
           <div className="grid gap-5 min-[700px]:grid-cols-3">
-            {posts.map((post) => (
+            {posts.map((post: Awaited<ReturnType<typeof listPublishedBlogPosts>>[number]) => (
               <article
                 className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6 shadow-card"
                 key={post.id}

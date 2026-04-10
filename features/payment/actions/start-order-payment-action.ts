@@ -5,9 +5,9 @@ import {
   findPaymentStartContextByOrderReference,
   markPaymentFailedByCheckoutSessionId,
   saveStripeCheckoutSessionForOrder,
-} from "@/db/repositories/payment.repository";
-import { env } from "@/lib/env";
-import { stripe } from "@/lib/stripe";
+} from "@/features/payment/lib/payment.repository";
+import { serverEnv } from "@/core/config/env";
+import { stripe } from "@/core/payments/stripe/server";
 import { resolveStripeCheckoutSessionState } from "@/features/payment/stripe-checkout-session-state";
 
 function moneyStringToCents(value: string): number {
@@ -91,7 +91,9 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
-      customer_email: paymentContext.customerEmail,
+      ...(paymentContext.customerEmail !== null
+        ? { customer_email: paymentContext.customerEmail }
+        : {}),
       line_items: [
         {
           price_data: {
@@ -108,8 +110,8 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
         orderId: paymentContext.orderId,
         orderReference: paymentContext.reference,
       },
-      success_url: `${env.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=return`,
-      cancel_url: `${env.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=cancelled`,
+      success_url: `${serverEnv.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=return`,
+      cancel_url: `${serverEnv.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=cancelled`,
     });
 
     if (!session.url) {
@@ -122,6 +124,7 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
       stripePaymentIntentId:
         typeof session.payment_intent === "string" ? session.payment_intent : null,
     });
+
     redirectTarget = session.url;
   } catch (error) {
     console.error(error);

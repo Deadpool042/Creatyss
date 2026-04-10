@@ -2,14 +2,18 @@
 
 import { redirect } from "next/navigation";
 import {
+  createCartToken,
+  readCartSessionToken,
+  setCartSessionToken,
+} from "@/core/sessions/cart";
+import {
   addGuestCartItemQuantity,
   createGuestCart,
   findGuestCartIdByToken,
   findGuestCartItemByVariant,
   findGuestCartVariantById,
-} from "@/db/repositories/guest-cart.repository";
+} from "@/features/cart/lib/guest-cart.repository";
 import { validateCartItemInput } from "@/entities/cart/cart-item-input";
-import { createCartToken, readCartSessionToken, setCartSessionToken } from "@/lib/cart-session";
 
 function normalizeProductSlug(
   value: FormDataEntryValue | string | null | undefined

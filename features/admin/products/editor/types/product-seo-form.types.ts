@@ -1,13 +1,40 @@
+import type { SeoIndexingMode } from "@/prisma-generated/client";
+
 export type ProductSeoFormValues = {
-  id: string;
-  seoTitle: string;
-  seoDescription: string;
+  productId: string;
+  title: string;
+  description: string;
+  canonicalPath: string;
+  indexingMode: SeoIndexingMode;
+  sitemapIncluded: boolean;
+  openGraphTitle: string;
+  openGraphDescription: string;
+  openGraphImageId: string;
+  twitterTitle: string;
+  twitterDescription: string;
+  twitterImageId: string;
 };
 
 export type ProductSeoFormState = {
   status: "idle" | "success" | "error";
   message: string | null;
-  fieldErrors: Partial<Record<"id" | "seoTitle" | "seoDescription", string>>;
+  fieldErrors: Partial<
+    Record<
+      | "productId"
+      | "title"
+      | "description"
+      | "canonicalPath"
+      | "indexingMode"
+      | "sitemapIncluded"
+      | "openGraphTitle"
+      | "openGraphDescription"
+      | "openGraphImageId"
+      | "twitterTitle"
+      | "twitterDescription"
+      | "twitterImageId",
+      string
+    >
+  >;
 };
 
 export const productSeoFormInitialState: ProductSeoFormState = {

@@ -1,15 +1,15 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createOrderFromGuestCartToken } from "@/db/repositories/order.repository";
-import { OrderRepositoryError } from "@/db/repositories/order.types";
+import { clearCartSessionToken, readCartSessionToken } from "@/core/sessions/cart";
+import { createOrderFromGuestCartToken } from "@/features/orders/lib/order.repository";
+import { OrderRepositoryError } from "@/features/orders/lib/order.types";
 import {
   readGuestCheckoutContextByToken,
   upsertGuestCheckoutDetails,
-} from "@/db/repositories/guest-cart.repository";
+} from "@/features/cart/lib/guest-cart.repository";
 import { validateGuestCheckoutInput } from "@/entities/checkout/guest-checkout-input";
 import { sendOrderTransactionalEmail } from "@/features/email";
-import { clearCartSessionToken, readCartSessionToken } from "@/lib/cart-session";
 
 export async function createOrderAction(formData: FormData): Promise<void> {
   const cartToken = await readCartSessionToken();

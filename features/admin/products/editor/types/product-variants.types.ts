@@ -1,19 +1,27 @@
-export type AdminProductVariantStatus = "draft" | "published" | "archived";
+export type AdminProductVariantStatus =
+  | "draft"
+  | "active"
+  | "inactive"
+  | "archived";
 
 export type AdminProductVariantListItem = {
   id: string;
-  productId: string;
-  slug: string;
-  name: string;
+  slug: string | null;
   sku: string;
+  name: string | null;
   status: AdminProductVariantStatus;
   isDefault: boolean;
   sortOrder: number;
+  barcode: string | null;
+  externalReference: string | null;
+  weightGrams: string | null;
+  widthMm: string | null;
+  heightMm: string | null;
+  depthMm: string | null;
   primaryImageId: string | null;
   primaryImageUrl: string | null;
-  primaryImageAlt: string | null;
-  amount: string | null;
-  compareAtAmount: string | null;
+  primaryImageStorageKey: string | null;
+  primaryImageAltText: string | null;
 };
 
 export type AdminProductVariantEditorData = {
@@ -35,13 +43,16 @@ export type ProductVariantFormValues = {
   name: string;
   slug: string;
   sku: string;
-  status: "draft" | "published";
+  status: "draft" | "active" | "inactive";
   isDefault: boolean;
   sortOrder: string;
-  priceListId: string;
-  amount: string;
-  compareAtAmount: string;
   primaryImageId: string;
+  barcode: string;
+  externalReference: string;
+  weightGrams: string;
+  widthMm: string;
+  heightMm: string;
+  depthMm: string;
 };
 
 export type ProductVariantFormState = {
@@ -57,10 +68,13 @@ export type ProductVariantFormState = {
       | "status"
       | "isDefault"
       | "sortOrder"
-      | "priceListId"
-      | "amount"
-      | "compareAtAmount"
-      | "primaryImageId",
+      | "primaryImageId"
+      | "barcode"
+      | "externalReference"
+      | "weightGrams"
+      | "widthMm"
+      | "heightMm"
+      | "depthMm",
       string
     >
   >;

@@ -23,7 +23,7 @@ export function AdminProductsPriceCell({
         <span className="text-sm font-medium text-foreground">{priceLabel}</span>
 
         {hasPromotion ? (
-          <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 text-[11px] text-primary">
+          <span className="inline-flex items-center rounded-full border border-surface-border-strong bg-interactive-selected px-2 py-0.5 text-[11px] text-foreground">
             Promo
           </span>
         ) : null}

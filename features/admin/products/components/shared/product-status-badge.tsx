@@ -1,39 +1,35 @@
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 
 type ProductStatusBadgeProps = {
-  status: string;
-  className?: string;
+  status: "draft" | "active" | "inactive" | "archived";
 };
 
-const statusConfig = {
-  draft: {
-    label: "Brouillon",
-    className: "border-transparent bg-muted text-muted-foreground",
-  },
-  published: {
-    label: "Publié",
-    className: "border-transparent bg-primary/10 text-foreground",
-  },
-  archived: {
-    label: "Archivé",
-    className: "border-border/60 bg-background/40 text-muted-foreground",
-  },
-};
+function getStatusLabel(status: ProductStatusBadgeProps["status"]): string {
+  switch (status) {
+    case "draft":
+      return "Brouillon";
+    case "active":
+      return "Actif";
+    case "inactive":
+      return "Inactif";
+    case "archived":
+      return "Archivé";
+  }
+}
 
-export function ProductStatusBadge({ status, className }: ProductStatusBadgeProps) {
-  const config = statusConfig[status as keyof typeof statusConfig] ?? statusConfig.draft;
+function getStatusVariant(status: ProductStatusBadgeProps["status"]) {
+  switch (status) {
+    case "active":
+      return "secondary" as const;
+    case "draft":
+      return "outline" as const;
+    case "inactive":
+      return "outline" as const;
+    case "archived":
+      return "outline" as const;
+  }
+}
 
-  return (
-    <Badge
-      variant="outline"
-      className={cn(
-        "inline-flex h-7 items-center rounded-full px-2.5 text-[12px] font-medium leading-none",
-        config.className,
-        className
-      )}
-    >
-      {config.label}
-    </Badge>
-  );
+export function ProductStatusBadge({ status }: ProductStatusBadgeProps) {
+  return <Badge variant={getStatusVariant(status)}>{getStatusLabel(status)}</Badge>;
 }

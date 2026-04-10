@@ -28,7 +28,7 @@ export function AdminDataTableActiveFilters({
           key={item.key}
           type="button"
           onClick={item.onRemove}
-          className="inline-flex h-8 items-center gap-1.5 rounded-full border border-border/60 bg-background/20 px-3 text-xs font-medium text-muted-foreground transition-colors hover:bg-background/35 hover:text-foreground"
+          className="inline-flex h-8 items-center gap-1.5 rounded-full border border-surface-border bg-surface-panel-soft px-3 text-xs font-medium text-muted-foreground outline-none transition-colors hover:bg-interactive-hover hover:text-foreground focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50"
         >
           <span className="truncate">{item.label}</span>
           <X className="h-3.5 w-3.5" />

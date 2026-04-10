@@ -1,4 +1,3 @@
-// features/admin/products/components/editor/variants/product-variant-editor-sheet.tsx
 "use client";
 
 import { useActionState, useEffect, useMemo, type JSX } from "react";
@@ -30,7 +29,7 @@ import {
   type AdminProductImageItem,
   type AdminProductVariantListItem,
   type ProductVariantFormAction,
-} from "@/features/admin/products/editor/types";
+} from "@/features/admin/products/editor/public";
 import { ProductVariantImagePicker } from "./product-variant-image-picker";
 
 type ProductVariantEditorSheetProps = {
@@ -38,20 +37,16 @@ type ProductVariantEditorSheetProps = {
   onOpenChange: (open: boolean) => void;
   productId: string;
   variant: AdminProductVariantListItem | null;
-  priceLists: AdminPriceListOption[];
+  priceLists: readonly AdminPriceListOption[];
   images: AdminProductImageItem[];
   createAction?: ProductVariantFormAction;
   updateAction?: ProductVariantFormAction;
 };
 
-function formatInputPrice(value: string | null): string {
-  return value ?? "";
-}
-
 const noopVariantAction: ProductVariantFormAction = async () => {
   return {
     status: "error",
-    message: "Aucune action disponible.",
+    message: "Action indisponible.",
     fieldErrors: {},
   };
 };
@@ -80,11 +75,16 @@ export function ProductVariantEditorSheet({
     return priceLists.find((entry) => entry.isDefault)?.id ?? priceLists[0]?.id ?? "";
   }, [priceLists]);
 
+  const productImages = useMemo(
+    () => images.filter((image) => image.subjectType === "product"),
+    [images]
+  );
+
   const initialValues = useMemo(() => {
     const primaryImageId =
       variant?.primaryImageId ??
-      images.find((image) => image.isPrimary)?.assetId ??
-      images[0]?.assetId ??
+      productImages.find((image) => image.isPrimary)?.mediaAssetId ??
+      productImages[0]?.mediaAssetId ??
       "";
 
     return {
@@ -93,15 +93,19 @@ export function ProductVariantEditorSheet({
       name: variant?.name ?? "",
       slug: variant?.slug ?? "",
       sku: variant?.sku ?? "",
-      status: variant?.status === "published" ? "published" : "draft",
+      status: variant?.status ?? "draft",
       isDefault: variant?.isDefault ? "true" : "false",
       sortOrder: String(variant?.sortOrder ?? 0),
       priceListId: defaultPriceListId,
-      amount: formatInputPrice(variant?.amount ?? null),
-      compareAtAmount: formatInputPrice(variant?.compareAtAmount ?? null),
       primaryImageId,
+      barcode: variant?.barcode ?? "",
+      externalReference: variant?.externalReference ?? "",
+      weightGrams: variant?.weightGrams ?? "",
+      widthMm: variant?.widthMm ?? "",
+      heightMm: variant?.heightMm ?? "",
+      depthMm: variant?.depthMm ?? "",
     };
-  }, [variant, productId, defaultPriceListId, images]);
+  }, [variant, productId, defaultPriceListId, productImages]);
 
   const {
     sourceValue: nameValue,
@@ -113,8 +117,6 @@ export function ProductVariantEditorSheet({
     initialSourceValue: initialValues.name,
     initialSlugValue: initialValues.slug,
   });
-
-  const hasMultiplePriceLists = priceLists.length > 1;
 
   useEffect(() => {
     if (state.status === "success" && open) {
@@ -137,14 +139,14 @@ export function ProductVariantEditorSheet({
             <SheetTitle>{isEdit ? "Modifier la variante" : "Ajouter une variante"}</SheetTitle>
             <SheetDescription>
               {isEdit
-                ? "Mets à jour les informations principales de la variante."
-                : "Crée une nouvelle variante pour ce produit."}
+                ? "Mise à jour des informations principales de la variante."
+                : "Création d’une nouvelle variante pour ce produit."}
             </SheetDescription>
           </div>
         </SheetHeader>
 
         <form action={formAction} className="flex min-h-0 flex-1 flex-col overflow-hidden">
-          <input type="hidden" name="id" value={initialValues.id} />
+          <input type="hidden" name="variantId" value={initialValues.id} />
           <input type="hidden" name="productId" value={initialValues.productId} />
 
           <div className="min-h-0 flex-1 overflow-y-auto">
@@ -156,7 +158,7 @@ export function ProductVariantEditorSheet({
 
               <AdminFormSection
                 title="Informations générales"
-                description="Définis l’identité et le statut de la variante."
+                description="Définition de l’identité et du statut de la variante."
               >
                 <AdminFormField
                   label="Nom"
@@ -175,7 +177,7 @@ export function ProductVariantEditorSheet({
                 <AdminFormField
                   label="Slug"
                   htmlFor="variant-slug"
-                  description="Généré automatiquement depuis le nom. Modifiable."
+                  description="Génération automatique depuis le nom. Valeur modifiable."
                   {...(state.fieldErrors.slug ? { error: state.fieldErrors.slug } : {})}
                 >
                   <Input
@@ -213,7 +215,9 @@ export function ProductVariantEditorSheet({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="draft">Brouillon</SelectItem>
-                        <SelectItem value="published">Publié</SelectItem>
+                        <SelectItem value="active">Actif</SelectItem>
+                        <SelectItem value="inactive">Inactif</SelectItem>
+                        <SelectItem value="archived">Archivé</SelectItem>
                       </SelectContent>
                     </Select>
                   </AdminFormField>
@@ -241,7 +245,7 @@ export function ProductVariantEditorSheet({
                   {...(state.fieldErrors.isDefault ? { error: state.fieldErrors.isDefault } : {})}
                 >
                   <Select name="isDefault" defaultValue={initialValues.isDefault}>
-                    <SelectTrigger id="variant-is-default" className="text-sm md:w-56">
+                    <SelectTrigger id="variant-is-default" className="text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -252,95 +256,63 @@ export function ProductVariantEditorSheet({
                 </AdminFormField>
               </AdminFormSection>
 
-              <AdminFormSection title="Prix" description="Renseigne le prix actif de la variante.">
-                {hasMultiplePriceLists ? (
-                  <AdminFormField
-                    label="Tarification"
-                    htmlFor="variant-price-list"
-                    {...(state.fieldErrors.priceListId
-                      ? { error: state.fieldErrors.priceListId }
-                      : {})}
-                  >
-                    <Select name="priceListId" defaultValue={initialValues.priceListId}>
-                      <SelectTrigger id="variant-price-list" className="text-sm md:w-72">
-                        <SelectValue placeholder="Choisir une tarification" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {priceLists.map((priceList) => (
-                          <SelectItem key={priceList.id} value={priceList.id}>
-                            {priceList.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </AdminFormField>
-                ) : (
-                  <input type="hidden" name="priceListId" value={initialValues.priceListId} />
-                )}
-
-                <div className="grid gap-4 md:grid-cols-2">
-                  <AdminFormField
-                    label="Prix"
-                    htmlFor="variant-amount"
-                    {...(state.fieldErrors.amount ? { error: state.fieldErrors.amount } : {})}
-                  >
-                    <Input
-                      id="variant-amount"
-                      name="amount"
-                      defaultValue={initialValues.amount}
-                      inputMode="decimal"
-                      className="text-sm"
-                    />
-                  </AdminFormField>
-
-                  <AdminFormField
-                    label="Prix avant réduction"
-                    htmlFor="variant-compare-at-amount"
-                    {...(state.fieldErrors.compareAtAmount
-                      ? { error: state.fieldErrors.compareAtAmount }
-                      : {})}
-                  >
-                    <Input
-                      id="variant-compare-at-amount"
-                      name="compareAtAmount"
-                      defaultValue={initialValues.compareAtAmount}
-                      inputMode="decimal"
-                      className="text-sm"
-                    />
-                  </AdminFormField>
-                </div>
-
-                <p className="text-sm text-muted-foreground">
-                  Optionnel. Ce montant est affiché barré sur la boutique pour mettre en avant une
-                  réduction.
-                </p>
+              <AdminFormSection
+                title="Média principal"
+                description="Choix de l’image principale de la variante."
+              >
+                <ProductVariantImagePicker
+                  images={productImages}
+                  currentSelectedMediaAssetId={initialValues.primaryImageId}
+                />
               </AdminFormSection>
 
               <AdminFormSection
-                title="Image de couverture"
-                description="Choisis le visuel principal utilisé lorsque cette variante est sélectionnée sur la boutique. Cette sélection n’affecte pas l’ordre de la galerie produit."
+                title="Données techniques"
+                description="Informations complémentaires de la variante."
               >
-                <ProductVariantImagePicker
-                  name="primaryImageId"
-                  images={images}
-                  selectedAssetId={initialValues.primaryImageId}
-                />
+                <div className="grid gap-4 md:grid-cols-2">
+                  <AdminFormField label="Code-barres" htmlFor="variant-barcode">
+                    <Input id="variant-barcode" name="barcode" defaultValue={initialValues.barcode} />
+                  </AdminFormField>
+
+                  <AdminFormField label="Référence externe" htmlFor="variant-external-reference">
+                    <Input
+                      id="variant-external-reference"
+                      name="externalReference"
+                      defaultValue={initialValues.externalReference}
+                    />
+                  </AdminFormField>
+
+                  <AdminFormField label="Poids (g)" htmlFor="variant-weight-grams">
+                    <Input
+                      id="variant-weight-grams"
+                      name="weightGrams"
+                      defaultValue={initialValues.weightGrams}
+                    />
+                  </AdminFormField>
+
+                  <AdminFormField label="Largeur (mm)" htmlFor="variant-width-mm">
+                    <Input id="variant-width-mm" name="widthMm" defaultValue={initialValues.widthMm} />
+                  </AdminFormField>
+
+                  <AdminFormField label="Hauteur (mm)" htmlFor="variant-height-mm">
+                    <Input id="variant-height-mm" name="heightMm" defaultValue={initialValues.heightMm} />
+                  </AdminFormField>
+
+                  <AdminFormField label="Profondeur (mm)" htmlFor="variant-depth-mm">
+                    <Input id="variant-depth-mm" name="depthMm" defaultValue={initialValues.depthMm} />
+                  </AdminFormField>
+                </div>
               </AdminFormSection>
             </div>
           </div>
 
-          <AdminFormFooter>
-            <Button variant="ghost" type="button" onClick={() => onOpenChange(false)}>
+          <AdminFormFooter className="border-t px-6 py-4">
+            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
               Annuler
             </Button>
-            <Button type="submit" disabled={pending || (!createAction && !updateAction)}>
-              {isEdit
-                ? pending
-                  ? "Enregistrement…"
-                  : "Enregistrer la variante"
-                : pending
-                  ? "Création…"
-                  : "Créer la variante"}
+            <Button type="submit" disabled={pending}>
+              {pending ? "Enregistrement…" : isEdit ? "Enregistrer" : "Créer"}
             </Button>
           </AdminFormFooter>
         </form>

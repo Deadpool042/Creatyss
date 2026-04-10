@@ -1,9 +1,11 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminPageTitle } from "@/components/admin/admin-page-title";
 import type { AppBreadcrumbItem } from "@/components/shared/breadcrumbs";
 import { ViewportScrollArea } from "@/components/shared/viewport-scroll-area";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type AdminPageShellLinkAction = {
@@ -23,6 +25,10 @@ type AdminPageShellProps = {
 
   navigation?: AdminPageShellLinkAction;
   topbarAction?: ReactNode;
+  pageTitleNavigation?: AdminPageShellLinkAction;
+  pageTitleAction?: AdminPageShellLinkAction;
+  mode?: "viewport";
+  variant?: "tool";
 
   headerVisibility?: "all" | "desktop";
   scrollMode?: "area" | "nested";
@@ -46,6 +52,10 @@ export function AdminPageShell({
   breadcrumbs = [],
   navigation,
   topbarAction,
+  pageTitleNavigation,
+  pageTitleAction,
+  mode,
+  variant,
   headerVisibility = "all",
   scrollMode = "nested",
   compactMobileTitle = false,
@@ -57,12 +67,29 @@ export function AdminPageShell({
   bodyClassName,
   contentClassName,
 }: AdminPageShellProps) {
+  const resolvedNavigation = navigation ?? pageTitleNavigation;
+  const resolvedTopbarAction =
+    topbarAction ??
+    (pageTitleAction ? (
+      <Button asChild size="sm" variant="outline">
+        <Link
+          href={pageTitleAction.href}
+          aria-label={pageTitleAction.ariaLabel ?? pageTitleAction.label}
+        >
+          {pageTitleAction.label}
+        </Link>
+      </Button>
+    ) : undefined);
+
+  void mode;
+  void variant;
+
   return (
     <>
       <AdminPageTitle
         title={title}
-        {...(navigation ? { navigation } : {})}
-        {...(topbarAction ? { actionNode: topbarAction } : {})}
+        {...(resolvedNavigation ? { navigation: resolvedNavigation } : {})}
+        {...(resolvedTopbarAction ? { actionNode: resolvedTopbarAction } : {})}
       />
 
       <ViewportScrollArea
@@ -72,7 +99,7 @@ export function AdminPageShell({
           viewportClassName
         )}
         headerClassName={cn(
-          "shrink-0 border-b border-border-soft/80 p-4",
+          "shrink-0 border-b border-surface-border p-4",
           headerVisibility === "desktop" &&
             "hidden lg:block lg:pt-16 [@media(max-height:480px)]:lg:pt-12",
           headerClassName

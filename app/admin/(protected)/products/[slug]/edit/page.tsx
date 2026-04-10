@@ -1,4 +1,3 @@
-//app/admin/(protected)/products/[slug]/edit/page.tsx
 import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
@@ -7,8 +6,10 @@ import { db } from "@/core/db";
 import {
   attachProductImagesAction,
   createProductVariantAction,
+  deleteProductAction,
   deleteProductImageAction,
   deleteProductVariantAction,
+  listAdminProductTypeOptions,
   listAttachableMediaAssets,
   readAdminPriceLists,
   readAdminProductEditorBySlug,
@@ -30,11 +31,11 @@ import { DeleteProductButton } from "@/features/admin/products/components/editor
 export default async function ProductEditorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  const [editor, availableCategories, priceLists] = await Promise.all([
+  const [editor, availableCategories, priceLists, productTypeOptions] = await Promise.all([
     readAdminProductEditorBySlug(slug),
     db.category.findMany({
-      where: { status: "ACTIVE" },
-      orderBy: [{ parentId: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
+      where: { archivedAt: null },
+      orderBy: [{ name: "asc" }],
       select: {
         id: true,
         name: true,
@@ -48,13 +49,13 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
       },
     }),
     readAdminPriceLists(),
+    listAdminProductTypeOptions(),
   ]);
 
   if (!editor) {
     return (
-      <div className="rounded-2xl border bg-card p-6 text-sm text-muted-foreground">
-        Le produit demandé est introuvable. Veuillez retourner à la liste des produits et
-        sélectionner un produit existant pour l’édition.
+      <div className="rounded-2xl border border-border bg-card p-6 text-sm text-muted-foreground">
+        Produit introuvable.
         <Button variant="outline" size="sm" className="mt-4" asChild>
           <Link className="inline-flex items-center gap-2" href="/admin/products">
             Retour à la liste des produits
@@ -65,35 +66,28 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
   }
 
   const [variantsData, imagesData, attachableMediaData] = await Promise.all([
-    readAdminProductVariants(editor.id),
-    readAdminProductImages(editor.id),
-    listAttachableMediaAssets(editor.id),
+    readAdminProductVariants(editor.product.id),
+    readAdminProductImages(editor.product.id),
+    listAttachableMediaAssets(editor.product.id),
   ]);
 
   return (
     <AdminPageShell
-      title={editor.name}
+      title={editor.product.name}
       eyebrow="Produits"
-      description="Modifiez les détails du produit, gérez les variantes, les images et les catégories."
+      description="Modification du produit, des variantes, des médias et des catégories."
       viewportClassName="!h-full"
       navigation={{ label: "Produits", href: "/admin/products" }}
       breadcrumbs={[
-        {
-          label: "Accueil",
-          href: "/admin",
-        },
-        {
-          label: "Produits",
-          href: "/admin/products",
-        },
+        { label: "Accueil", href: "/admin" },
+        { label: "Produits", href: "/admin/products" },
       ]}
-      topbarAction={<ProductEditorTopbarMenu productId={editor.id} />}
-      contentClassName={["lg:px-6", "lg:pb-6"].join(" ")}
+      topbarAction={<ProductEditorTopbarMenu productId={editor.product.id} />}
+      contentClassName="lg:px-6 lg:pb-6"
       actions={
         <div className="flex items-center gap-2">
           <div className="hidden lg:flex lg:items-center lg:gap-2">
-            <DeleteProductButton productId={editor.id} />
-
+            <DeleteProductButton productId={editor.product.id} onDelete={deleteProductAction} />
             <Button asChild size="sm" className="lg:min-w-40">
               <Link href="/admin/products/new">Nouveau produit</Link>
             </Button>
@@ -123,9 +117,10 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
           parentId: category.parentId,
           parentName: category.parent?.name ?? null,
         }))}
+        productTypeOptions={productTypeOptions}
         variants={variantsData?.variants ?? []}
         images={imagesData?.images ?? []}
-        attachableMediaItems={attachableMediaData?.items ?? []}
+        attachableMediaItems={attachableMediaData.items}
         priceLists={priceLists}
         product={editor}
       />

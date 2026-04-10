@@ -124,7 +124,7 @@ export function ProductTableRowActions({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="rounded-lg border bg-muted/30 px-3 py-3 text-sm text-muted-foreground">
+          <div className="rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-3 text-sm text-muted-foreground">
             Produit concerné : <span className="font-medium text-foreground">{displayName}</span>
           </div>
 

@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Info, TriangleAlert } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
-type AdminFormMessageTone = "error" | "success" | "info";
+type AdminFormMessageTone = "error" | "success" | "info" | "warning";
 
 type AdminFormMessageProps = Readonly<{
   tone?: AdminFormMessageTone;
@@ -21,22 +22,32 @@ export function AdminFormMessage({ tone = "info", message, className }: AdminFor
       icon: typeof AlertCircle;
       className: string;
       textClassName: string;
+      role: "alert" | "status";
     }
   > = {
     error: {
       icon: AlertCircle,
-      className: "border-destructive/30 bg-destructive/5",
-      textClassName: "text-destructive",
+      className: "border-feedback-error-border bg-feedback-error-surface",
+      textClassName: "text-feedback-error-foreground",
+      role: "alert",
     },
     success: {
       icon: CheckCircle2,
-      className: "border-border bg-muted/30",
-      textClassName: "text-foreground",
+      className: "border-feedback-success-border bg-feedback-success-surface",
+      textClassName: "text-feedback-success-foreground",
+      role: "status",
     },
     info: {
-      icon: AlertCircle,
-      className: "border-border bg-muted/30",
-      textClassName: "text-foreground",
+      icon: Info,
+      className: "border-feedback-info-border bg-feedback-info-surface",
+      textClassName: "text-feedback-info-foreground",
+      role: "status",
+    },
+    warning: {
+      icon: TriangleAlert,
+      className: "border-feedback-warning-border bg-feedback-warning-surface",
+      textClassName: "text-feedback-warning-foreground",
+      role: "alert",
     },
   };
 
@@ -44,14 +55,16 @@ export function AdminFormMessage({ tone = "info", message, className }: AdminFor
 
   return (
     <div
+      role={config[tone].role}
+      aria-live={config[tone].role === "alert" ? "assertive" : "polite"}
       className={cn(
-        "flex items-center gap-2 rounded-lg border px-3 py-2.5",
+        "flex items-start gap-2 rounded-xl border px-3 py-2.5",
         config[tone].className,
         className
       )}
     >
       <Icon className={cn("h-4 w-4 shrink-0", config[tone].textClassName)} />
-      <div className={cn("text-xs", config[tone].textClassName)}>{message}</div>
+      <div className={cn("text-xs leading-5", config[tone].textClassName)}>{message}</div>
     </div>
   );
 }
