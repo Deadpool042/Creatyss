@@ -1,0 +1,21 @@
+# Default owner
+* @Deadpool042
+
+# Doctrine and instructions
+/AGENTS.md @Deadpool042
+/.claude/ @Deadpool042
+/.codex/ @Deadpool042
+/docs/ @Deadpool042
+
+# Database and schema
+/prisma/ @Deadpool042
+
+# App and features
+/app/ @Deadpool042
+/features/ @Deadpool042
+/components/ @Deadpool042
+/entities/ @Deadpool042
+/core/ @Deadpool042
+
+# CI / GitHub config
+/.github/ @Deadpool042

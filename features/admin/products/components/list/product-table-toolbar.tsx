@@ -35,7 +35,6 @@ function ResultsCount({
       <span className="[@media(max-height:480px)]:hidden">
         {filteredCount} résultat{filteredCount !== 1 ? "s" : ""}
       </span>
-
       <span className="hidden [@media(max-height:480px)]:inline">{filteredCount} res.</span>
     </span>
   );
@@ -52,7 +51,7 @@ export function ProductTableToolbar({
   const mobileFiltersLabel = hasActiveFilters ? `Filtres · ${activeFiltersCount}` : "Filtres";
   const mobileFiltersDescription = hasActiveFilters
     ? `${activeFiltersCount} filtre${activeFiltersCount > 1 ? "s" : ""} actif${activeFiltersCount > 1 ? "s" : ""}.`
-    : "Affiner rapidement la liste.";
+    : "Affiner la liste.";
 
   return (
     <div className="space-y-3 [@media(max-height:480px)]:space-y-1">
@@ -110,40 +109,40 @@ export function ProductTableToolbar({
         </div>
       </div>
 
-      <div className="space-y-1 px-0.5 lg:hidden">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex min-w-0 items-center gap-1.5 overflow-x-auto">
-            <ProductSearchSheet
-              open={mobileSearchOpen}
-              onOpenChange={setMobileSearchOpen}
-              value={state.search}
-              onChange={state.handleSearchChange}
-              triggerClassName="shrink-0"
-            />
+      <div className="space-y-2 lg:hidden">
+        <div className="-mx-3 sticky top-0 z-20 border-b border-shell-border site-header-blur px-3 py-2 shadow-card [@media(max-height:480px)]:-mx-2.5 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:py-1.5">
+          <div className="flex items-center gap-2 [@media(max-height:480px)]:gap-1.5">
+            <div className="flex min-w-0 flex-1 items-center gap-2 [@media(max-height:480px)]:gap-1.5">
+              <ProductSearchSheet
+                open={mobileSearchOpen}
+                onOpenChange={setMobileSearchOpen}
+                value={state.search}
+                onChange={state.handleSearchChange}
+                triggerClassName="shrink-0"
+              />
 
-            <Button
-              variant="outline"
-              size="sm"
-              type="button"
-              onClick={() => state.setMobileFiltersOpen(true)}
-              className={cn(
-                "inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 text-[11px] sm:px-3 sm:text-xs [@media(max-height:480px)]:gap-1 [@media(max-height:480px)]:px-2 [@media(max-height:480px)]:text-[10px]",
-                hasActiveFilters &&
-                  "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
-              )}
-              aria-label={
-                hasActiveFilters ? `${activeFiltersCount} filtres actifs` : "Ouvrir les filtres"
-              }
-            >
-              <Filter className="h-4 w-4" />
-              <span>{mobileFiltersLabel}</span>
-            </Button>
-          </div>
+              <Button
+                variant="outline"
+                size="sm"
+                type="button"
+                onClick={() => state.setMobileFiltersOpen(true)}
+                className={cn(
+                  "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3 text-xs [@media(max-height:480px)]:h-8 [@media(max-height:480px)]:gap-1 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:text-[11px]",
+                  hasActiveFilters &&
+                    "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
+                )}
+                aria-label={
+                  hasActiveFilters ? `${activeFiltersCount} filtres actifs` : "Ouvrir les filtres"
+                }
+              >
+                <Filter className="h-4 w-4" />
+                <span>{mobileFiltersLabel}</span>
+              </Button>
+            </div>
 
-          <div className="shrink-0 pr-0.5 text-right">
             <ResultsCount
               filteredCount={state.filteredCount}
-              className="hidden whitespace-nowrap text-[10px] sm:text-[11px] [@media(max-height:480px)]:inline-flex"
+              className="shrink-0 whitespace-nowrap rounded-full border border-surface-border bg-surface-panel-soft px-2.5 py-1 [@media(max-height:480px)]:px-2"
             />
           </div>
         </div>
@@ -159,19 +158,23 @@ export function ProductTableToolbar({
                 variant="ghost"
                 type="button"
                 onClick={state.reset}
-                className="px-2 text-muted-foreground"
+                className="h-9 rounded-full px-3 text-muted-foreground [@media(max-height:480px)]:h-8"
                 disabled={!hasActiveFilters}
               >
                 Réinitialiser
               </Button>
 
-              <Button type="button" onClick={() => state.setMobileFiltersOpen(false)}>
+              <Button
+                type="button"
+                onClick={() => state.setMobileFiltersOpen(false)}
+                className="h-9 rounded-full px-4 [@media(max-height:480px)]:h-8"
+              >
                 Appliquer
               </Button>
             </div>
           }
         >
-          <div className="space-y-4">
+          <div className="space-y-3.5 [@media(max-height:480px)]:space-y-3">
             {hasActiveFilters ? (
               <div className="rounded-xl border border-surface-border bg-surface-panel-soft p-3">
                 <div className="mb-2 flex items-center justify-between gap-3">

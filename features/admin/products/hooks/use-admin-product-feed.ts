@@ -6,238 +6,152 @@ import type {
   AdminProductFeedItem,
   AdminProductFeedPageResult,
 } from "@/features/admin/products/list/types/admin-product-feed.types";
-import type { ProductFeedCursor } from "@/features/products/types";
+
+type FeedCursor = {
+  updatedAt: string;
+  id: string;
+} | null;
 
 type UseAdminProductFeedInput = {
-  initialItems: AdminProductFeedItem[];
-  initialNextCursor: ProductFeedCursor | null;
-  initialHasMore: boolean;
-  search: string;
+  initialFeed: AdminProductFeedPageResult;
   limit?: number;
 };
 
 type UseAdminProductFeedResult = {
   items: AdminProductFeedItem[];
   hasMore: boolean;
-  isLoading: boolean;
-  error: string | null;
+  isLoadingMore: boolean;
   loadMore: () => Promise<void>;
-  reset: (input: {
-    items: AdminProductFeedItem[];
-    nextCursor: ProductFeedCursor | null;
-    hasMore: boolean;
-  }) => void;
+  resetFeed: (nextFeed: AdminProductFeedPageResult) => void;
 };
 
-function buildFeedUrl(input: {
-  limit: number;
-  search: string;
-  cursor: ProductFeedCursor | null;
-}): string {
-  const params = new URLSearchParams();
-
-  params.set("limit", String(input.limit));
-
-  const trimmedSearch = input.search.trim();
-  if (trimmedSearch.length > 0) {
-    params.set("search", trimmedSearch);
+function getCursorKey(cursor: FeedCursor): string {
+  if (cursor === null) {
+    return "__initial__";
   }
 
-  if (input.cursor) {
-    params.set("cursorUpdatedAt", input.cursor.updatedAt);
-    params.set("cursorId", input.cursor.id);
+  return `${cursor.updatedAt}::${cursor.id}`;
+}
+
+function mergeItems(
+  currentItems: AdminProductFeedItem[],
+  nextItems: AdminProductFeedItem[]
+): AdminProductFeedItem[] {
+  const map = new Map<string, AdminProductFeedItem>();
+
+  for (const item of currentItems) {
+    map.set(item.id, item);
   }
 
-  return `/api/admin/products/feed?${params.toString()}`;
+  for (const item of nextItems) {
+    map.set(item.id, item);
+  }
+
+  return Array.from(map.values());
 }
 
 export function useAdminProductFeed({
-  initialItems,
-  initialNextCursor,
-  initialHasMore,
-  search,
+  initialFeed,
   limit = 12,
 }: UseAdminProductFeedInput): UseAdminProductFeedResult {
-  const [items, setItems] = useState<AdminProductFeedItem[]>(initialItems);
-  const [nextCursor, setNextCursor] = useState<ProductFeedCursor | null>(initialNextCursor);
-  const [hasMore, setHasMore] = useState<boolean>(initialHasMore);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [items, setItems] = useState<AdminProductFeedItem[]>(initialFeed.items);
+  const [nextCursor, setNextCursor] = useState<FeedCursor>(initialFeed.nextCursor);
+  const [hasMore, setHasMore] = useState<boolean>(initialFeed.hasMore);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const activeRequestRef = useRef<AbortController | null>(null);
-  const latestSearchRef = useRef(search);
+  const inFlightRef = useRef(false);
+  const requestedCursorKeysRef = useRef<Set<string>>(new Set());
 
-  useEffect(() => {
-    latestSearchRef.current = search;
-  }, [search]);
-
-  const reset = useCallback(
-    (input: {
-      items: AdminProductFeedItem[];
-      nextCursor: ProductFeedCursor | null;
-      hasMore: boolean;
-    }) => {
-      activeRequestRef.current?.abort();
-      activeRequestRef.current = null;
-
-      setItems(input.items);
-      setNextCursor(input.nextCursor);
-      setHasMore(input.hasMore);
-      setIsLoading(false);
-      setError(null);
-    },
-    []
-  );
+  const initialFeedKey = useMemo(() => {
+    return JSON.stringify({
+      itemIds: initialFeed.items.map((item) => item.id),
+      nextCursor: initialFeed.nextCursor,
+      hasMore: initialFeed.hasMore,
+    });
+  }, [initialFeed]);
 
   useEffect(() => {
-    const trimmedSearch = search.trim();
-
-    if (trimmedSearch.length === 0) {
-      reset({
-        items: initialItems,
-        nextCursor: initialNextCursor,
-        hasMore: initialHasMore,
-      });
-      return;
-    }
-
-    const controller = new AbortController();
-    activeRequestRef.current?.abort();
-    activeRequestRef.current = controller;
-
-    setIsLoading(true);
-    setError(null);
-
-    async function refresh(): Promise<void> {
-      try {
-        const response = await fetch(
-          buildFeedUrl({
-            limit,
-            search: trimmedSearch,
-            cursor: null,
-          }),
-          {
-            method: "GET",
-            signal: controller.signal,
-            headers: {
-              Accept: "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Impossible d’actualiser la liste des produits.");
-        }
-
-        const payload = (await response.json()) as AdminProductFeedPageResult;
-        setItems(payload.items);
-        setNextCursor(payload.nextCursor);
-        setHasMore(payload.hasMore);
-      } catch (caughtError) {
-        if (caughtError instanceof DOMException && caughtError.name === "AbortError") {
-          return;
-        }
-
-        setError(
-          caughtError instanceof Error
-            ? caughtError.message
-            : "Impossible d’actualiser la liste des produits."
-        );
-      } finally {
-        if (activeRequestRef.current === controller) {
-          activeRequestRef.current = null;
-        }
-
-        setIsLoading(false);
-      }
-    }
-
-    void refresh();
-
-    return () => {
-      controller.abort();
-
-      if (activeRequestRef.current === controller) {
-        activeRequestRef.current = null;
-      }
-    };
-  }, [initialHasMore, initialItems, initialNextCursor, limit, reset, search]);
+    setItems(initialFeed.items);
+    setNextCursor(initialFeed.nextCursor);
+    setHasMore(initialFeed.hasMore);
+    setIsLoadingMore(false);
+    inFlightRef.current = false;
+    requestedCursorKeysRef.current = new Set();
+  }, [initialFeedKey, initialFeed]);
 
   const loadMore = useCallback(async () => {
-    if (isLoading || !hasMore || !nextCursor) {
+    if (inFlightRef.current || isLoadingMore || !hasMore || nextCursor === null) {
       return;
     }
 
-    const controller = new AbortController();
-    activeRequestRef.current?.abort();
-    activeRequestRef.current = controller;
+    const cursorKey = getCursorKey(nextCursor);
 
-    setIsLoading(true);
-    setError(null);
+    if (requestedCursorKeysRef.current.has(cursorKey)) {
+      return;
+    }
+
+    inFlightRef.current = true;
+    requestedCursorKeysRef.current.add(cursorKey);
+    setIsLoadingMore(true);
 
     try {
-      const response = await fetch(
-        buildFeedUrl({
-          limit,
-          search: latestSearchRef.current,
-          cursor: nextCursor,
-        }),
-        {
-          method: "GET",
-          signal: controller.signal,
-          headers: {
-            Accept: "application/json",
-          },
-        }
-      );
+      const params = new URLSearchParams();
+      params.set("limit", String(limit));
+      params.set("cursorUpdatedAt", nextCursor.updatedAt);
+      params.set("cursorId", nextCursor.id);
+
+      const response = await fetch(`/api/admin/products/feed?${params.toString()}`, {
+        method: "GET",
+        cache: "no-store",
+      });
 
       if (!response.ok) {
-        throw new Error("Impossible de charger plus de produits.");
+        throw new Error("Failed to load admin products feed.");
       }
 
-      const payload = (await response.json()) as AdminProductFeedPageResult;
+      const data = (await response.json()) as AdminProductFeedPageResult;
 
-      setItems((currentItems) => {
-        const existingIds = new Set(currentItems.map((item) => item.id));
-        const nextItems = payload.items.filter((item) => !existingIds.has(item.id));
-        return [...currentItems, ...nextItems];
-      });
-      setNextCursor(payload.nextCursor);
-      setHasMore(payload.hasMore);
-    } catch (caughtError) {
-      if (caughtError instanceof DOMException && caughtError.name === "AbortError") {
-        return;
+      setItems((currentItems) => mergeItems(currentItems, data.items));
+
+      const currentCursorKey = getCursorKey(nextCursor);
+      const nextCursorKey = getCursorKey(data.nextCursor);
+
+      const cursorDidAdvance =
+        data.nextCursor !== null && nextCursorKey !== currentCursorKey;
+
+      if (!cursorDidAdvance) {
+        setNextCursor(data.nextCursor);
+        setHasMore(false);
+      } else {
+        setNextCursor(data.nextCursor);
+        setHasMore(data.hasMore);
       }
 
-      setError(
-        caughtError instanceof Error
-          ? caughtError.message
-          : "Impossible de charger plus de produits."
-      );
+      if (data.items.length === 0) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error(error);
     } finally {
-      if (activeRequestRef.current === controller) {
-        activeRequestRef.current = null;
-      }
-
-      setIsLoading(false);
+      inFlightRef.current = false;
+      setIsLoadingMore(false);
     }
-  }, [hasMore, isLoading, limit, nextCursor]);
+  }, [hasMore, isLoadingMore, limit, nextCursor]);
 
-  useEffect(() => {
-    return () => {
-      activeRequestRef.current?.abort();
-    };
+  const resetFeed = useCallback((nextFeed: AdminProductFeedPageResult) => {
+    setItems(nextFeed.items);
+    setNextCursor(nextFeed.nextCursor);
+    setHasMore(nextFeed.hasMore);
+    setIsLoadingMore(false);
+    inFlightRef.current = false;
+    requestedCursorKeysRef.current = new Set();
   }, []);
 
-  return useMemo(
-    () => ({
-      items,
-      hasMore,
-      isLoading,
-      error,
-      loadMore,
-      reset,
-    }),
-    [error, hasMore, isLoading, items, loadMore, reset]
-  );
+  return {
+    items,
+    hasMore,
+    isLoadingMore,
+    loadMore,
+    resetFeed,
+  };
 }

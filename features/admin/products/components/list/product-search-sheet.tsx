@@ -23,6 +23,8 @@ export function ProductSearchSheet({
   onChange,
   triggerClassName,
 }: ProductSearchSheetProps): JSX.Element {
+  const hasActiveSearch = value.trim().length > 0;
+
   return (
     <>
       <Button
@@ -31,18 +33,24 @@ export function ProductSearchSheet({
         size="sm"
         onClick={() => onOpenChange(true)}
         className={cn(
-          "inline-flex items-center gap-1.5 rounded-full px-2.5 text-[11px] sm:px-3 sm:text-xs [@media(max-height:480px)]:gap-1 [@media(max-height:480px)]:px-2 [@media(max-height:480px)]:text-[10px]",
+          "inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-xs [@media(max-height:480px)]:h-8 [@media(max-height:480px)]:gap-1 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:text-[11px]",
+          hasActiveSearch &&
+            "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected",
           triggerClassName
         )}
         aria-label="Rechercher un produit"
       >
         <Search className="h-4 w-4" />
-        <span>Recherche</span>
+        <span className="[@media(max-height:480px)]:hidden">Recherche</span>
+        <span className="hidden [@media(max-height:480px)]:inline">Rech.</span>
       </Button>
 
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="top" className="flex flex-col gap-4 border-b p-0 sm:max-w-none">
-          <SheetHeader className="border-b px-4 py-4 text-left">
+        <SheetContent
+          side="top"
+          className="flex max-h-[72svh] flex-col gap-3 border-b p-0 sm:max-w-none [@media(max-height:480px)]:max-h-[82svh]"
+        >
+          <SheetHeader className="border-b px-4 py-3 text-left [@media(max-height:480px)]:py-2.5">
             <SheetTitle>Rechercher un produit</SheetTitle>
           </SheetHeader>
 

@@ -4,7 +4,8 @@ import type {
   ProductFilterStockOption,
   ProductFilterVariantOption,
   ProductSortOption,
-} from "../types";
+  ProductTableStatus,
+} from "../types/product-table.types";
 
 export function getFeaturedLabel(value: ProductFilterFeaturedOption): string {
   switch (value) {
@@ -36,52 +37,34 @@ export function getStockLabel(value: ProductFilterStockOption): string {
       return "En stock";
     case "out-of-stock":
       return "Rupture";
-    case "low-stock":
-      return "Stock faible";
   }
 }
 
 export function getVariantLabel(value: ProductFilterVariantOption): string {
   switch (value) {
     case "all":
-      return "Toutes";
+      return "Tous";
     case "single":
       return "Simple";
     case "multiple":
-      return "Multiple";
-    case "with-variants":
-      return "Avec variantes";
-    case "without-variants":
-      return "Sans variantes";
-    case "single-variant":
-      return "Variante unique";
-    case "multi-variant":
-      return "Variantes multiples";
+      return "Multi-variantes";
   }
 }
 
 export function getSortLabel(value: ProductSortOption): string {
   switch (value) {
     case "updated-desc":
-      return "Modif. récentes";
+      return "Plus récents";
     case "updated-asc":
-      return "Modif. anciennes";
-    case "created-desc":
-      return "Création récente";
-    case "created-asc":
-      return "Création ancienne";
+      return "Plus anciens";
     case "name-asc":
-      return "Nom A-Z";
+      return "Nom A → Z";
     case "name-desc":
-      return "Nom Z-A";
-    case "price-asc":
-      return "Prix croissant";
-    case "price-desc":
-      return "Prix décroissant";
+      return "Nom Z → A";
   }
 }
 
-export function getStatusLabel(value: "draft" | "active" | "inactive" | "archived" | "published"): string {
+export function getStatusLabel(value: ProductTableStatus): string {
   switch (value) {
     case "draft":
       return "Brouillon";
@@ -91,8 +74,6 @@ export function getStatusLabel(value: "draft" | "active" | "inactive" | "archive
       return "Inactif";
     case "archived":
       return "Archivé";
-    case "published":
-      return "Publié";
   }
 }
 

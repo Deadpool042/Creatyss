@@ -12,22 +12,31 @@ type ProductCardBadgesProps = {
     ProductTableItem,
     "isFeatured" | "status" | "stockQuantity" | "stockState" | "variantCount"
   >;
-  showFeaturedBadge?: boolean;
+  compact?: boolean;
   className?: string;
   statusClassName?: string;
   stockClassName?: string;
   metricClassName?: string;
 };
 
+function getVariantLabel(variantCount: number, compact: boolean): string {
+  if (variantCount <= 1) {
+    return "Simple";
+  }
+
+  return compact ? `${variantCount} var.` : `${variantCount} variantes`;
+}
+
 export function ProductCardBadges({
   product,
+  compact = false,
   className,
   statusClassName,
   stockClassName,
   metricClassName,
 }: ProductCardBadgesProps): JSX.Element {
   return (
-    <div className={cn("flex flex-wrap items-center gap-2", className)}>
+    <div className={cn("flex min-w-0 flex-wrap items-center gap-1.5", className)}>
       <ProductStatusBadge
         status={product.status}
         {...(statusClassName ? { className: statusClassName } : {})}
@@ -35,19 +44,21 @@ export function ProductCardBadges({
       <ProductStockBadge
         state={product.stockState}
         quantity={product.stockQuantity}
+        compact={compact}
         {...(stockClassName ? { className: stockClassName } : {})}
       />
 
       <span
         className={cn(
           [
-            "inline-flex h-7 items-center rounded-full border border-surface-border",
-            "bg-surface-panel-soft px-2.5 text-xs font-medium leading-none text-muted-foreground",
+            compact
+              ? "inline-flex h-6 items-center rounded-full border border-surface-border bg-surface-panel-soft px-2 text-[11px] font-medium leading-none text-muted-foreground"
+              : "inline-flex h-7 items-center rounded-full border border-surface-border bg-surface-panel-soft px-2.5 text-xs font-medium leading-none text-muted-foreground",
           ].join(" "),
           metricClassName
         )}
       >
-        {product.variantCount} variante{product.variantCount > 1 ? "s" : ""}
+        {getVariantLabel(product.variantCount, compact)}
       </span>
     </div>
   );

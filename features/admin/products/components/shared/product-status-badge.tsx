@@ -1,7 +1,9 @@
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 type ProductStatusBadgeProps = {
   status: "draft" | "active" | "inactive" | "archived";
+  className?: string;
 };
 
 function getStatusLabel(status: ProductStatusBadgeProps["status"]): string {
@@ -30,6 +32,10 @@ function getStatusVariant(status: ProductStatusBadgeProps["status"]) {
   }
 }
 
-export function ProductStatusBadge({ status }: ProductStatusBadgeProps) {
-  return <Badge variant={getStatusVariant(status)}>{getStatusLabel(status)}</Badge>;
+export function ProductStatusBadge({ status, className }: ProductStatusBadgeProps) {
+  return (
+    <Badge variant={getStatusVariant(status)} className={cn(className)}>
+      {getStatusLabel(status)}
+    </Badge>
+  );
 }

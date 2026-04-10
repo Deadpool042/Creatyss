@@ -25,68 +25,80 @@ export function ProductCollectionCard({
   return (
     <article
       className={cn(
-        "flex h-full flex-col rounded-2xl border border-surface-border bg-card p-3.5 shadow-card",
-        "[@media(max-height:480px)]:p-3"
+        "flex h-full flex-col rounded-2xl border border-surface-border bg-card p-3 shadow-card",
+        "[@media(max-height:480px)]:rounded-xl [@media(max-height:480px)]:p-2.5"
       )}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-2.5 [@media(max-height:480px)]:gap-2">
         <ProductCardImage
           product={product}
-          sizes="56px"
-          className="h-14 w-14 shrink-0 rounded-lg [@media(max-height:480px)]:h-12 [@media(max-height:480px)]:w-12"
+          sizes="(min-width: 667px) 44px, 48px"
+          className="h-12 w-12 shrink-0 rounded-xl [@media(min-width:667px)]:h-11 [@media(min-width:667px)]:w-11 [@media(max-height:480px)]:h-10 [@media(max-height:480px)]:w-10"
           placeholderClassName="bg-muted"
         />
 
         <div className="min-w-0 flex-1">
-          <div className="flex items-start gap-3">
-            <div className="min-w-0 flex-1">
+          <div className="flex items-start gap-2">
+            <div className="min-w-0 flex-1 space-y-1">
               <Link href={`/admin/products/${product.slug}/edit`} className="block">
-                <h3 className="line-clamp-2 text-lg font-semibold leading-snug tracking-tight text-foreground [@media(max-height:480px)]:text-base">
+                <h3 className="line-clamp-2 text-base font-semibold leading-5 tracking-tight text-foreground [@media(min-width:667px)]:line-clamp-1 [@media(max-height:480px)]:line-clamp-1 [@media(max-height:480px)]:text-sm [@media(max-height:480px)]:leading-4">
                   {product.name}
                 </h3>
               </Link>
+
+              <ProductCardBadges
+                product={product}
+                compact
+                className="gap-1.5"
+                statusClassName="h-6 px-2 text-[11px]"
+                stockClassName="h-6 px-2 text-[11px]"
+                metricClassName="h-6 px-2 text-[11px]"
+              />
             </div>
 
-            <div className="flex shrink-0 items-center gap-1.5">
-              <ProductCardFeaturedControl productId={product.id} isFeatured={product.isFeatured} />
+            <div className="flex shrink-0 items-center gap-1">
+              <ProductCardFeaturedControl
+                productId={product.id}
+                isFeatured={product.isFeatured}
+                className="p-0.5"
+                buttonClassName="h-7 w-7 [@media(max-height:480px)]:h-6 [@media(max-height:480px)]:w-6"
+                iconClassName="h-3.5 w-3.5"
+              />
               <ProductCardActionMenu
                 product={product}
+                triggerClassName="h-7 w-7 [@media(max-height:480px)]:h-6 [@media(max-height:480px)]:w-6"
                 {...(onConfirmDelete ? { onConfirmDelete } : {})}
               />
             </div>
           </div>
-
-          <ProductCardBadges
-            product={product}
-            className="mt-1.5 gap-1.5"
-            statusClassName="h-6 px-2 text-[11px]"
-            stockClassName="h-6 px-2 text-[11px]"
-            metricClassName="h-6 px-2 text-[11px]"
-          />
         </div>
       </div>
 
-      <div className="mt-3 grid flex-1 grid-cols-2 gap-2 [@media(max-height:480px)]:mt-2.5">
+      <div className="mt-2 grid grid-cols-2 gap-1.5 [@media(max-height:480px)]:mt-1.5">
         <ProductCardInfoTile
           label="Prix"
-          className="px-3 py-2.5"
-          labelClassName="mb-1.5 block"
-          bodyClassName="min-h-12 text-sm leading-5"
+          className="px-2.5 py-2 [@media(max-height:480px)]:px-2 [@media(max-height:480px)]:py-1.5"
+          labelClassName="mb-1 block text-[9px]"
+          bodyClassName="min-h-0 text-[13px] leading-5 [@media(max-height:480px)]:text-xs [@media(max-height:480px)]:leading-4"
         >
           <AdminProductsPriceCell
             priceLabel={product.priceLabel}
             compareAtPriceLabel={product.compareAtPriceLabel}
             hasPromotion={product.hasPromotion}
+            compact
           />
         </ProductCardInfoTile>
 
         <ProductCardInfoTile
           label="Catégorie"
-          className="px-3 py-2.5"
-          labelClassName="mb-1.5 block"
-          bodyClassName="min-h-12 text-sm leading-5"
+          className="px-2.5 py-2 [@media(max-height:480px)]:px-2 [@media(max-height:480px)]:py-1.5"
+          labelClassName="mb-1 block text-[9px]"
+          bodyClassName="min-h-0 text-[13px] leading-5 [@media(max-height:480px)]:text-xs [@media(max-height:480px)]:leading-4"
         >
-          <AdminProductsCategoryCell label={product.categoryPathLabel} />
+          <AdminProductsCategoryCell
+            label={product.categoryPathLabel}
+            className="line-clamp-2 break-words text-[13px] leading-5 [@media(max-height:480px)]:text-xs [@media(max-height:480px)]:leading-4"
+          />
         </ProductCardInfoTile>
       </div>
     </article>

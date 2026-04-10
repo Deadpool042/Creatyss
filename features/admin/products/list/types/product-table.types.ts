@@ -4,32 +4,22 @@ export type ProductStockState = "in-stock" | "out-of-stock";
 
 export type ProductFilterFeaturedOption = "all" | "featured" | "standard";
 export type ProductFilterImageOption = "all" | "with-image" | "without-image";
-export type ProductFilterStockOption = "all" | "in-stock" | "out-of-stock" | "low-stock";
-export type ProductFilterVariantOption =
-  | "all"
-  | "single"
-  | "multiple"
-  | "with-variants"
-  | "without-variants"
-  | "single-variant"
-  | "multi-variant";
+export type ProductFilterStockOption = "all" | "in-stock" | "out-of-stock";
+export type ProductFilterVariantOption = "all" | "single" | "multiple";
 
 export type ProductSortOption =
   | "updated-desc"
   | "updated-asc"
-  | "created-desc"
-  | "created-asc"
   | "name-asc"
-  | "name-desc"
-  | "price-asc"
-  | "price-desc";
+  | "name-desc";
 
 export type ProductTableFeaturedFilter = ProductFilterFeaturedOption;
 export type ProductTableImageFilter = ProductFilterImageOption;
 export type ProductTableStockFilter = ProductFilterStockOption;
 export type ProductTableVariantFilter = ProductFilterVariantOption;
 export type ProductTableSortOption = ProductSortOption;
-export type ProductTableStatusFilter = "all" | ProductTableStatus | "published";
+
+export type ProductTableStatusFilter = "all" | ProductTableStatus;
 
 export type ProductFilterCategoryOption = {
   id: string;
@@ -64,6 +54,7 @@ export type ProductTableFiltersInput = {
   search?: string | null;
   status?: ProductTableStatusFilter;
   categoryId?: string | null;
+  parentCategoryId?: string | null;
   featured?: ProductFilterFeaturedOption;
   image?: ProductFilterImageOption;
   stock?: ProductFilterStockOption;
@@ -71,14 +62,16 @@ export type ProductTableFiltersInput = {
   sort?: ProductSortOption;
 };
 
-export type ProductTableFiltersValues = Required<
-  Pick<
-    ProductTableFiltersInput,
-    "status" | "featured" | "image" | "stock" | "variant" | "sort"
-  >
-> & {
+export type ProductTableFiltersValues = {
   search: string;
+  status: ProductTableStatusFilter;
   categoryId: string;
+  parentCategoryId: string;
+  featured: ProductFilterFeaturedOption;
+  image: ProductFilterImageOption;
+  stock: ProductFilterStockOption;
+  variant: ProductFilterVariantOption;
+  sort: ProductSortOption;
 };
 
 export type ProductTableActiveFilter = {
@@ -94,43 +87,30 @@ export type ProductTableFiltersState = {
 
   status: ProductTableStatusFilter;
   setStatus: (value: ProductTableStatusFilter) => void;
-  statusFilter: ProductTableStatusFilter;
-  setStatusFilter: (value: ProductTableStatusFilter) => void;
 
   categoryId: string;
   setCategoryId: (value: string) => void;
-  categoryFilter: string;
-  setCategoryFilter: (value: string) => void;
 
-  parentCategoryFilter: string;
-  setParentCategoryFilter: (value: string) => void;
+  parentCategoryId: string;
+  setParentCategoryId: (value: string) => void;
 
   featured: ProductFilterFeaturedOption;
   setFeatured: (value: ProductFilterFeaturedOption) => void;
-  featuredFilter: ProductFilterFeaturedOption;
-  setFeaturedFilter: (value: ProductFilterFeaturedOption) => void;
 
   image: ProductFilterImageOption;
   setImage: (value: ProductFilterImageOption) => void;
-  imageFilter: ProductFilterImageOption;
-  setImageFilter: (value: ProductFilterImageOption) => void;
 
   stock: ProductFilterStockOption;
   setStock: (value: ProductFilterStockOption) => void;
-  stockFilter: ProductFilterStockOption;
-  setStockFilter: (value: ProductFilterStockOption) => void;
 
   variant: ProductFilterVariantOption;
   setVariant: (value: ProductFilterVariantOption) => void;
-  variantFilter: ProductFilterVariantOption;
-  setVariantFilter: (value: ProductFilterVariantOption) => void;
 
   sort: ProductSortOption;
   setSort: (value: ProductSortOption) => void;
-  sortOption: ProductSortOption;
-  setSortOption: (value: ProductSortOption) => void;
 
   categoryOptions: ProductFilterCategoryOption[];
+  allFilteredProducts: ProductTableItem[];
   paginated: ProductTableItem[];
   currentPage: number;
   totalPages: number;

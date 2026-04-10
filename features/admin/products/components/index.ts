@@ -27,7 +27,6 @@ export { ProductTableToolbar } from "./list";
 export { ProductFeaturedToggle } from "./list";
 export { ProductCollectionCard } from "./list";
 export { ProductSearchSheet } from "./list";
-export { ProductFeedSentinel } from "./list";
 
 // Shared components
 export { ProductSection } from "./shared";

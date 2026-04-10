@@ -10,12 +10,16 @@ type ProductCardFeaturedControlProps = {
   productId: string;
   isFeatured: boolean;
   className?: string;
+  buttonClassName?: string;
+  iconClassName?: string;
 };
 
 export function ProductCardFeaturedControl({
   productId,
   isFeatured,
   className,
+  buttonClassName,
+  iconClassName,
 }: ProductCardFeaturedControlProps): JSX.Element {
   return (
     <div
@@ -28,6 +32,8 @@ export function ProductCardFeaturedControl({
         productId={productId}
         isFeatured={isFeatured}
         onToggle={toggleProductFeaturedAction}
+        {...(buttonClassName ? { className: buttonClassName } : {})}
+        {...(iconClassName ? { iconClassName } : {})}
       />
     </div>
   );

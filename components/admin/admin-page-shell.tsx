@@ -124,6 +124,7 @@ export function AdminPageShell({
         }
       >
         <div
+          data-scroll-root="true"
           className={cn(
             scrollMode === "area"
               ? "flex min-h-full min-w-0 flex-col"

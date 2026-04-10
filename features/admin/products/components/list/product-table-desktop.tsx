@@ -1,4 +1,3 @@
-// features/admin/products/components/list/product-table-desktop.tsx
 "use client";
 
 import Image from "next/image";
@@ -18,7 +17,6 @@ import {
 import { hasRealImage } from "@/core/media";
 import { toggleProductFeaturedAction } from "@/features/admin/products/list/actions/toggle-product-featured.action";
 import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
-import { stripHtml } from "@/features/admin/products/list/utils";
 import { ProductStatusBadge } from "@/features/admin/products/components/shared/product-status-badge";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";
 import { AdminProductsPriceCell } from "./admin-products-price-cell";
@@ -30,6 +28,11 @@ type ProductTableDesktopProps = {
   products: ProductTableItem[];
 };
 
+function getVariantLabel(variantCount: number): string {
+  if (variantCount <= 1) return "Simple";
+  return `${variantCount} variantes`;
+}
+
 export function ProductTableDesktop({ products }: ProductTableDesktopProps): JSX.Element {
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-surface-border bg-card shadow-card">
@@ -37,11 +40,11 @@ export function ProductTableDesktop({ products }: ProductTableDesktopProps): JSX
         <Table>
           <TableHeader className="sticky top-0 z-10 bg-card">
             <TableRow>
-              <TableHead className="w-14" />
+              <TableHead className="w-16" />
               <TableHead>Produit</TableHead>
               <TableHead className="w-14 text-center">★</TableHead>
               <TableHead className="w-32">Statut</TableHead>
-              <TableHead className="w-36">Stock</TableHead>
+              <TableHead className="w-36">Disponibilité</TableHead>
               <TableHead className="w-40">Prix</TableHead>
               <TableHead className="w-52">Catégorie</TableHead>
               <TableHead className="w-12" />
@@ -56,88 +59,76 @@ export function ProductTableDesktop({ products }: ProductTableDesktopProps): JSX
                 </TableCell>
               </TableRow>
             ) : (
-              products.map((product) => {
-                const shortDescription = product.shortDescription
-                  ? stripHtml(product.shortDescription)
-                  : null;
+              products.map((product) => (
+                <TableRow key={product.id} className="group">
+                  <TableCell className="p-2.5">
+                    <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-surface-border bg-surface-panel-soft">
+                      {hasRealImage(product.primaryImageUrl) ? (
+                        <Image
+                          src={product.primaryImageUrl!}
+                          alt={product.primaryImageAlt ?? product.name}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      ) : (
+                        <PlaceholderImage
+                          alt={product.primaryImageAlt ?? product.name}
+                          className="bg-muted"
+                          imageClassName="opacity-15"
+                        />
+                      )}
+                    </div>
+                  </TableCell>
 
-                return (
-                  <TableRow key={product.id}>
-                    <TableCell className="p-2">
-                      <div className="relative h-10 w-10 overflow-hidden rounded-md border border-surface-border bg-surface-panel-soft">
-                        {hasRealImage(product.primaryImageUrl) ? (
-                          <Image
-                            src={product.primaryImageUrl!}
-                            alt={product.primaryImageAlt ?? product.name}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <PlaceholderImage
-                            alt={product.primaryImageAlt ?? product.name}
-                            className="bg-muted"
-                            imageClassName="opacity-15"
-                          />
-                        )}
+                  <TableCell>
+                    <Link href={`/admin/products/${product.slug}/edit`} className="group/link block">
+                      <span className="font-semibold leading-snug group-hover/link:underline">
+                        {product.name}
+                      </span>
+                      <div className="mt-1">
+                        <span className="inline-flex items-center rounded-md border border-surface-border bg-surface-panel-soft px-2 py-0.5 text-[11px] text-muted-foreground">
+                          {getVariantLabel(product.variantCount)}
+                        </span>
                       </div>
-                    </TableCell>
+                    </Link>
+                  </TableCell>
 
-                    <TableCell>
-                      <Link href={`/admin/products/${product.slug}/edit`} className="group block">
-                        <span className="font-medium group-hover:underline">{product.name}</span>
+                  <TableCell className="text-center">
+                    <ProductFeaturedToggle
+                      productId={product.id}
+                      isFeatured={product.isFeatured}
+                      onToggle={toggleProductFeaturedAction}
+                    />
+                  </TableCell>
 
-                        {shortDescription ? (
-                          <span className="block max-w-sm truncate text-xs text-muted-foreground">
-                            {shortDescription}
-                          </span>
-                        ) : null}
+                  <TableCell>
+                    <ProductStatusBadge status={product.status} />
+                  </TableCell>
 
-                        <div className="mt-1 flex flex-wrap items-center gap-2">
-                          <span className="rounded-md border border-surface-border bg-surface-panel-soft px-2 py-0.5 text-[11px] text-muted-foreground">
-                            {product.variantCount} variante
-                            {product.variantCount > 1 ? "s" : ""}
-                          </span>
-                        </div>
-                      </Link>
-                    </TableCell>
+                  <TableCell>
+                    <ProductStockBadge
+                      state={product.stockState}
+                      quantity={product.stockQuantity}
+                    />
+                  </TableCell>
 
-                    <TableCell className="text-center">
-                      <ProductFeaturedToggle
-                        productId={product.id}
-                        isFeatured={product.isFeatured}
-                        onToggle={toggleProductFeaturedAction}
-                      />
-                    </TableCell>
+                  <TableCell>
+                    <AdminProductsPriceCell
+                      priceLabel={product.priceLabel}
+                      compareAtPriceLabel={product.compareAtPriceLabel}
+                      hasPromotion={product.hasPromotion}
+                    />
+                  </TableCell>
 
-                    <TableCell>
-                      <ProductStatusBadge status={product.status} />
-                    </TableCell>
+                  <TableCell>
+                    <AdminProductsCategoryCell label={product.categoryPathLabel} />
+                  </TableCell>
 
-                    <TableCell>
-                      <ProductStockBadge
-                        state={product.stockState}
-                        quantity={product.stockQuantity}
-                      />
-                    </TableCell>
-
-                    <TableCell>
-                      <AdminProductsPriceCell
-                        priceLabel={product.priceLabel}
-                        compareAtPriceLabel={product.compareAtPriceLabel}
-                        hasPromotion={product.hasPromotion}
-                      />
-                    </TableCell>
-
-                    <TableCell>
-                      <AdminProductsCategoryCell label={product.categoryPathLabel} />
-                    </TableCell>
-
-                    <TableCell className="p-2">
-                      <ProductTableRowActions slug={product.slug} productName={product.name} />
-                    </TableCell>
-                  </TableRow>
-                );
-              })
+                  <TableCell className="p-2">
+                    <ProductTableRowActions slug={product.slug} productName={product.name} />
+                  </TableCell>
+                </TableRow>
+              ))
             )}
           </TableBody>
         </Table>

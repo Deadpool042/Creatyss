@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { ProductFilterCategoryOption } from "@/features/admin/products/list/types/product-table.types";
+import { cn } from "@/lib/utils";
 
 type AdminProductsCategoryFilterProps = {
   categories: ProductFilterCategoryOption[];
@@ -18,6 +19,8 @@ type AdminProductsCategoryFilterProps = {
   selectedCategoryId: string;
   onParentCategoryChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
+  className?: string;
+  triggerClassName?: string;
 };
 
 function sortCategories(
@@ -33,6 +36,8 @@ export function AdminProductsCategoryFilter({
   selectedCategoryId,
   onParentCategoryChange,
   onCategoryChange,
+  className,
+  triggerClassName,
 }: AdminProductsCategoryFilterProps): JSX.Element {
   const parentCategories = useMemo(() => {
     return categories.filter((category) => category.parentId === null).sort(sortCategories);
@@ -51,7 +56,7 @@ export function AdminProductsCategoryFilter({
   const hasChildCategories = childCategories.length > 0;
 
   return (
-    <div className="grid gap-3 xl:grid-cols-2">
+    <div className={cn("grid gap-3 xl:grid-cols-2", className)}>
       <Select
         value={selectedParentCategoryId}
         onValueChange={(value) => {
@@ -59,7 +64,7 @@ export function AdminProductsCategoryFilter({
           onCategoryChange("all");
         }}
       >
-        <SelectTrigger className="w-full text-sm">
+        <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
           <SelectValue placeholder="Toutes les catégories" />
         </SelectTrigger>
         <SelectContent>
@@ -74,7 +79,7 @@ export function AdminProductsCategoryFilter({
 
       {hasChildCategories ? (
         <Select value={selectedCategoryId} onValueChange={onCategoryChange}>
-          <SelectTrigger className="w-full text-sm">
+          <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
             <SelectValue placeholder="Toutes les sous-catégories" />
           </SelectTrigger>
           <SelectContent>

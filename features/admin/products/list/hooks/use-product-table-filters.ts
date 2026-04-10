@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import type { AdminDataTableActiveFilterItem } from "@/components/admin/tables/admin-data-table-active-filters";
 import type {
   ProductFilterCategoryOption,
   ProductFilterFeaturedOption,
@@ -19,6 +18,13 @@ type UseProductTableFiltersInput = {
 
 const PAGE_SIZE = 24;
 
+function sortCategories(
+  left: ProductFilterCategoryOption,
+  right: ProductFilterCategoryOption
+): number {
+  return left.name.localeCompare(right.name, "fr");
+}
+
 export function useProductTableFilters({
   products,
   categoryOptions,
@@ -26,7 +32,7 @@ export function useProductTableFilters({
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<ProductTableStatusFilter>("all");
   const [categoryId, setCategoryId] = useState("all");
-  const [parentCategoryFilter, setParentCategoryFilter] = useState("all");
+  const [parentCategoryId, setParentCategoryId] = useState("all");
   const [featured, setFeatured] = useState<ProductFilterFeaturedOption>("all");
   const [image, setImage] = useState<ProductFilterImageOption>("all");
   const [stock, setStock] = useState<ProductFilterStockOption>("all");
@@ -36,18 +42,34 @@ export function useProductTableFilters({
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  const normalizedStatus = status === "published" ? "active" : status;
+  const filteredCategoryOptions = useMemo(() => {
+    if (parentCategoryId === "all") {
+      return categoryOptions;
+    }
+
+    return categoryOptions.filter(
+      (category) => category.id === parentCategoryId || category.parentId === parentCategoryId
+    );
+  }, [categoryOptions, parentCategoryId]);
 
   const filtered = useMemo(() => {
     let result = [...products];
 
     if (search.trim().length > 0) {
-      const normalized = search.trim().toLowerCase();
-      result = result.filter((product) => product.name.toLowerCase().includes(normalized));
+      const normalizedSearch = search.trim().toLowerCase();
+      result = result.filter((product) => {
+        return (
+          product.name.toLowerCase().includes(normalizedSearch) ||
+          product.slug.toLowerCase().includes(normalizedSearch) ||
+          product.categoryNames.some((categoryName) =>
+            categoryName.toLowerCase().includes(normalizedSearch)
+          )
+        );
+      });
     }
 
-    if (normalizedStatus !== "all") {
-      result = result.filter((product) => product.status === normalizedStatus);
+    if (status !== "all") {
+      result = result.filter((product) => product.status === status);
     }
 
     if (featured === "featured") {
@@ -68,53 +90,50 @@ export function useProductTableFilters({
       result = result.filter((product) => product.stockState === "out-of-stock");
     }
 
-    if (variant === "single" || variant === "single-variant") {
+    if (variant === "single") {
       result = result.filter((product) => product.variantCount <= 1);
-    } else if (variant === "multiple" || variant === "multi-variant" || variant === "with-variants") {
+    } else if (variant === "multiple") {
       result = result.filter((product) => product.variantCount > 1);
-    } else if (variant === "without-variants") {
-      result = result.filter((product) => product.variantCount === 0);
     }
 
     if (categoryId !== "all") {
-      const selectedCategory = categoryOptions.find((entry) => entry.id === categoryId);
+      const selectedCategory = categoryOptions.find((category) => category.id === categoryId);
+
       if (selectedCategory) {
-        result = result.filter((product) => product.categoryNames.includes(selectedCategory.name));
+        result = result.filter((product) =>
+          product.categoryNames.includes(selectedCategory.name)
+        );
       }
     }
 
     switch (sort) {
       case "name-asc":
-        result.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+        result.sort((left, right) => left.name.localeCompare(right.name, "fr"));
         break;
       case "name-desc":
-        result.sort((a, b) => b.name.localeCompare(a.name, "fr"));
+        result.sort((left, right) => right.name.localeCompare(left.name, "fr"));
         break;
-      case "created-asc":
       case "updated-asc":
-        result.sort((a, b) => a.updatedAt.localeCompare(b.updatedAt));
+        result.sort((left, right) => left.updatedAt.localeCompare(right.updatedAt));
         break;
-      case "price-asc":
-      case "price-desc":
-      case "created-desc":
       case "updated-desc":
       default:
-        result.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+        result.sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
         break;
     }
 
     return result;
   }, [
-    products,
-    search,
-    normalizedStatus,
     categoryId,
+    categoryOptions,
     featured,
     image,
+    products,
+    search,
+    sort,
+    status,
     stock,
     variant,
-    sort,
-    categoryOptions,
   ]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -126,7 +145,7 @@ export function useProductTableFilters({
     setSearch("");
     setStatus("all");
     setCategoryId("all");
-    setParentCategoryFilter("all");
+    setParentCategoryId("all");
     setFeatured("all");
     setImage("all");
     setStock("all");
@@ -135,27 +154,72 @@ export function useProductTableFilters({
     setCurrentPage(1);
   }
 
-  const activeFilters: AdminDataTableActiveFilterItem[] = [
-    ...(normalizedStatus !== "all"
-      ? [{ key: "status", label: String(status), onRemove: () => setStatus("all") }]
+  const activeFilters = [
+    ...(status !== "all"
+      ? [
+          {
+            key: "status",
+            label: `Statut · ${status}`,
+            onRemove: () => setStatus("all"),
+          },
+        ]
       : []),
     ...(categoryId !== "all"
-      ? [{ key: "category", label: categoryId, onRemove: () => setCategoryId("all") }]
+      ? [
+          {
+            key: "category",
+            label:
+              `Catégorie · ${
+                categoryOptions.find((category) => category.id === categoryId)?.name ?? categoryId
+              }`,
+            onRemove: () => setCategoryId("all"),
+          },
+        ]
       : []),
     ...(featured !== "all"
-      ? [{ key: "featured", label: featured, onRemove: () => setFeatured("all") }]
+      ? [
+          {
+            key: "featured",
+            label: featured === "featured" ? "Mis en avant" : "Standard",
+            onRemove: () => setFeatured("all"),
+          },
+        ]
       : []),
     ...(image !== "all"
-      ? [{ key: "image", label: image, onRemove: () => setImage("all") }]
+      ? [
+          {
+            key: "image",
+            label: image === "with-image" ? "Avec image" : "Sans image",
+            onRemove: () => setImage("all"),
+          },
+        ]
       : []),
     ...(stock !== "all"
-      ? [{ key: "stock", label: stock, onRemove: () => setStock("all") }]
+      ? [
+          {
+            key: "stock",
+            label: stock === "in-stock" ? "En stock" : "Rupture",
+            onRemove: () => setStock("all"),
+          },
+        ]
       : []),
     ...(variant !== "all"
-      ? [{ key: "variant", label: variant, onRemove: () => setVariant("all") }]
+      ? [
+          {
+            key: "variant",
+            label: variant === "single" ? "Simple" : "Multi-variantes",
+            onRemove: () => setVariant("all"),
+          },
+        ]
       : []),
     ...(search.trim().length > 0
-      ? [{ key: "search", label: search.trim(), onRemove: () => setSearch("") }]
+      ? [
+          {
+            key: "search",
+            label: `Recherche · ${search.trim()}`,
+            onRemove: () => setSearch(""),
+          },
+        ]
       : []),
   ];
 
@@ -166,43 +230,30 @@ export function useProductTableFilters({
 
     status,
     setStatus,
-    statusFilter: status,
-    setStatusFilter: setStatus,
 
     categoryId,
     setCategoryId,
-    categoryFilter: categoryId,
-    setCategoryFilter: setCategoryId,
 
-    parentCategoryFilter,
-    setParentCategoryFilter,
+    parentCategoryId,
+    setParentCategoryId,
 
     featured,
     setFeatured,
-    featuredFilter: featured,
-    setFeaturedFilter: setFeatured,
 
     image,
     setImage,
-    imageFilter: image,
-    setImageFilter: setImage,
 
     stock,
     setStock,
-    stockFilter: stock,
-    setStockFilter: setStock,
 
     variant,
     setVariant,
-    variantFilter: variant,
-    setVariantFilter: setVariant,
 
     sort,
     setSort,
-    sortOption: sort,
-    setSortOption: setSort,
 
-    categoryOptions,
+    categoryOptions: filteredCategoryOptions.sort(sortCategories),
+    allFilteredProducts: filtered,
     paginated,
     currentPage: safeCurrentPage,
     totalPages,
@@ -219,4 +270,4 @@ export function useProductTableFilters({
   };
 }
 
-export type { ProductTableFiltersState } from "../types";
+export type { ProductTableFiltersState } from "../types/product-table.types";

@@ -1,89 +1,118 @@
 "use client";
 
-import type { JSX } from "react";
+import { useEffect, useRef, type JSX } from "react";
 
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { Button } from "@/components/ui/button";
-import { mapAdminProductFeedItemToTableItem } from "@/features/admin/products/list/mappers/shared";
-import type { AdminProductFeedItem } from "@/features/admin/products/list/types/admin-product-feed.types";
-import {
-  PRODUCT_CARD_COLLECTION_ONLY_CLASS_NAME,
-  PRODUCT_CARD_FULL_WIDTH_CLASS_NAME,
-  PRODUCT_CARD_MOBILE_ONLY_CLASS_NAME,
-  PRODUCT_CARD_TWO_COLUMN_CLASS_NAME,
-} from "./mobile/product-card-layout";
+import { useAdminProductFeed } from "@/features/admin/products/hooks/use-admin-product-feed";
+import { mapAdminProductFeedItemToTableItem } from "@/features/admin/products/list/mappers/shared/map-admin-product-feed-item-to-table-item";
+import type { AdminProductFeedPageResult } from "@/features/admin/products/list/types/admin-product-feed.types";
 import { ProductCollectionCard } from "./product-collection-card";
-import { ProductFeedSentinel } from "./product-feed-sentinel";
-import { ProductMobileCard } from "./product-mobile-card";
 
 type ProductMobileFeedProps = {
-  products: AdminProductFeedItem[];
-  hasMore: boolean;
-  isLoading: boolean;
-  error: string | null;
-  onLoadMore: () => Promise<void>;
+  initialFeed: AdminProductFeedPageResult;
 };
 
-export function ProductMobileFeed({
-  products,
-  hasMore,
-  isLoading,
-  error,
-  onLoadMore,
-}: ProductMobileFeedProps): JSX.Element {
-  return (
-    <div className="min-h-0">
-      <div
-        className={["grid grid-cols-1 gap-3 pb-4 pt-1", PRODUCT_CARD_TWO_COLUMN_CLASS_NAME].join(
-          " "
-        )}
-      >
-        {products.map((product) => {
-          const tableItem = mapAdminProductFeedItemToTableItem(product);
+function getScrollableParent(node: HTMLElement | null): HTMLElement | null {
+  if (node === null) {
+    return null;
+  }
 
-          return (
-            <div key={product.id} className="min-w-0 h-full">
-              <div className={["h-full", PRODUCT_CARD_MOBILE_ONLY_CLASS_NAME].join(" ")}>
-                <ProductMobileCard product={tableItem} />
-              </div>
+  let current: HTMLElement | null = node.parentElement;
 
-              <div className={["h-full", PRODUCT_CARD_COLLECTION_ONLY_CLASS_NAME].join(" ")}>
-                <ProductCollectionCard product={tableItem} />
-              </div>
-            </div>
-          );
-        })}
+  while (current !== null) {
+    const style = window.getComputedStyle(current);
+    const overflowY = style.overflowY;
+    const isScrollable =
+      (overflowY === "auto" || overflowY === "scroll") &&
+      current.scrollHeight > current.clientHeight;
 
-        {hasMore ? (
-          <>
-            <div className={PRODUCT_CARD_FULL_WIDTH_CLASS_NAME}>
-              <ProductFeedSentinel disabled={isLoading} onIntersect={onLoadMore} />
-            </div>
+    if (isScrollable) {
+      return current;
+    }
 
-            <div
-              className={["flex justify-center pt-1", PRODUCT_CARD_FULL_WIDTH_CLASS_NAME].join(" ")}
-            >
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  void onLoadMore();
-                }}
-                disabled={isLoading}
-              >
-                {isLoading ? "Chargement..." : "Charger plus"}
-              </Button>
-            </div>
-          </>
-        ) : null}
+    current = current.parentElement;
+  }
 
-        {error ? (
-          <div className={PRODUCT_CARD_FULL_WIDTH_CLASS_NAME}>
-            <AdminFormMessage tone="error" message={error} />
-          </div>
-        ) : null}
+  return null;
+}
+
+export function ProductMobileFeed({ initialFeed }: ProductMobileFeedProps): JSX.Element {
+  const { items, hasMore, isLoadingMore, loadMore } = useAdminProductFeed({
+    initialFeed,
+    limit: 12,
+  });
+
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const sentinelNode = sentinelRef.current;
+
+    if (sentinelNode === null || !hasMore || isLoadingMore) {
+      return;
+    }
+
+    const scrollRoot = getScrollableParent(sentinelNode);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+
+        if (!entry?.isIntersecting || isLoadingMore) {
+          return;
+        }
+
+        void loadMore();
+      },
+      {
+        root: scrollRoot,
+        rootMargin: "240px 0px",
+        threshold: 0,
+      }
+    );
+
+    observer.observe(sentinelNode);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasMore, isLoadingMore, loadMore, items.length]);
+
+  if (items.length === 0) {
+    return (
+      <div className="rounded-2xl border border-border bg-card p-6 text-center text-muted-foreground">
+        Aucun produit trouvé.
       </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-4 sm:grid-cols-2">
+        {items.map((item) => (
+          <ProductCollectionCard
+            key={item.id}
+            product={mapAdminProductFeedItemToTableItem(item)}
+          />
+        ))}
+      </div>
+
+      {hasMore ? (
+        <div className="space-y-3 pt-2">
+          <div ref={sentinelRef} aria-hidden="true" className="h-12 w-full" />
+
+          <div className="flex justify-center">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => void loadMore()}
+              disabled={isLoadingMore}
+              className="rounded-full"
+            >
+              {isLoadingMore ? "Chargement…" : "Charger plus"}
+            </Button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
