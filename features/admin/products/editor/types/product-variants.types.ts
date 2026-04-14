@@ -4,6 +4,55 @@ export type AdminProductVariantStatus =
   | "inactive"
   | "archived";
 
+export type AdminProductAvailabilityStatus =
+  | "available"
+  | "unavailable"
+  | "preorder"
+  | "backorder"
+  | "discontinued"
+  | "archived";
+
+export type AdminProductVariantAvailability = {
+  status: AdminProductAvailabilityStatus;
+  isSellable: boolean;
+  backorderAllowed: boolean;
+  sellableFrom: string | null;
+  sellableUntil: string | null;
+  preorderStartsAt: string | null;
+  preorderEndsAt: string | null;
+};
+
+export type AdminProductVariantInventory = {
+  onHandQuantity: number;
+  reservedQuantity: number;
+  availableQuantity: number;
+  hasInventoryRecord: boolean;
+};
+
+export type AdminProductVariantOptionValue = {
+  optionName: string;
+  value: string;
+  optionValueId: string;
+  optionId: string;
+};
+
+export type AdminProductOptionValueItem = {
+  id: string;
+  code: string;
+  value: string;
+  label: string | null;
+  sortOrder: number;
+};
+
+export type AdminProductOptionItem = {
+  id: string;
+  code: string;
+  name: string;
+  sortOrder: number;
+  isVariantAxis: boolean;
+  values: AdminProductOptionValueItem[];
+};
+
 export type AdminProductVariantListItem = {
   id: string;
   slug: string | null;
@@ -22,6 +71,9 @@ export type AdminProductVariantListItem = {
   primaryImageUrl: string | null;
   primaryImageStorageKey: string | null;
   primaryImageAltText: string | null;
+  availability: AdminProductVariantAvailability;
+  inventory: AdminProductVariantInventory;
+  optionValues: AdminProductVariantOptionValue[];
 };
 
 export type AdminProductVariantEditorData = {
@@ -53,6 +105,7 @@ export type ProductVariantFormValues = {
   widthMm: string;
   heightMm: string;
   depthMm: string;
+  optionValueIds: string[];
 };
 
 export type ProductVariantFormState = {
@@ -74,7 +127,8 @@ export type ProductVariantFormState = {
       | "weightGrams"
       | "widthMm"
       | "heightMm"
-      | "depthMm",
+      | "depthMm"
+      | "optionValues",
       string
     >
   >;

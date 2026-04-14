@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { JSX } from "react";
 
+import { Checkbox } from "@/components/ui/checkbox";
 import { AdminDataTableEmptyState } from "@/components/admin/tables/admin-data-table-empty-state";
 import { PlaceholderImage } from "@/components/shared/placeholder-image";
 import {
@@ -24,8 +25,17 @@ import { ProductFeaturedToggle } from "./product-featured-toggle";
 import { ProductStockBadge } from "./product-stock-badge";
 import { ProductTableRowActions } from "./product-table-row-actions";
 
+type ProductListView = "active" | "trash";
+
 type ProductTableDesktopProps = {
   products: ProductTableItem[];
+  selectedProductIds: string[];
+  areAllCurrentPageSelected: boolean;
+  onToggleProductSelection: (productId: string) => void;
+  onToggleSelectAllCurrentPage: () => void;
+  view: ProductListView;
+  onConfirmArchive?: (slug: string) => void | Promise<void>;
+  onConfirmRestore?: (slug: string) => void | Promise<void>;
 };
 
 function getVariantLabel(variantCount: number): string {
@@ -33,13 +43,31 @@ function getVariantLabel(variantCount: number): string {
   return `${variantCount} variantes`;
 }
 
-export function ProductTableDesktop({ products }: ProductTableDesktopProps): JSX.Element {
+export function ProductTableDesktop({
+  products,
+  selectedProductIds,
+  areAllCurrentPageSelected,
+  onToggleProductSelection,
+  onToggleSelectAllCurrentPage,
+  view,
+  onConfirmArchive,
+  onConfirmRestore,
+}: ProductTableDesktopProps): JSX.Element {
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-surface-border bg-card shadow-card">
       <div className="min-h-0 flex-1 overflow-auto overscroll-contain">
         <Table>
           <TableHeader className="sticky top-0 z-10 bg-card">
             <TableRow>
+              <TableHead className="w-12">
+                <div className="flex items-center justify-center">
+                  <Checkbox
+                    checked={areAllCurrentPageSelected}
+                    onCheckedChange={() => onToggleSelectAllCurrentPage()}
+                    aria-label="Sélectionner les produits de la page"
+                  />
+                </div>
+              </TableHead>
               <TableHead className="w-16" />
               <TableHead>Produit</TableHead>
               <TableHead className="w-14 text-center">★</TableHead>
@@ -54,81 +82,110 @@ export function ProductTableDesktop({ products }: ProductTableDesktopProps): JSX
           <TableBody>
             {products.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="p-0">
-                  <AdminDataTableEmptyState message="Aucun produit trouvé." />
+                <TableCell colSpan={9} className="p-0">
+                  <AdminDataTableEmptyState
+                    message={
+                      view === "trash"
+                        ? "Aucun produit dans la corbeille."
+                        : "Aucun produit trouvé."
+                    }
+                  />
                 </TableCell>
               </TableRow>
             ) : (
-              products.map((product) => (
-                <TableRow key={product.id} className="group">
-                  <TableCell className="p-2.5">
-                    <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-surface-border bg-surface-panel-soft">
-                      {hasRealImage(product.primaryImageUrl) ? (
-                        <Image
-                          src={product.primaryImageUrl!}
-                          alt={product.primaryImageAlt ?? product.name}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      ) : (
-                        <PlaceholderImage
-                          alt={product.primaryImageAlt ?? product.name}
-                          className="bg-muted"
-                          imageClassName="opacity-15"
-                        />
-                      )}
-                    </div>
-                  </TableCell>
+              products.map((product) => {
+                const isSelected = selectedProductIds.includes(product.id);
 
-                  <TableCell>
-                    <Link href={`/admin/products/${product.slug}/edit`} className="group/link block">
-                      <span className="font-semibold leading-snug group-hover/link:underline">
-                        {product.name}
-                      </span>
-                      <div className="mt-1">
-                        <span className="inline-flex items-center rounded-md border border-surface-border bg-surface-panel-soft px-2 py-0.5 text-[11px] text-muted-foreground">
-                          {getVariantLabel(product.variantCount)}
-                        </span>
+                return (
+                  <TableRow key={product.id} className="group">
+                    <TableCell className="p-2 text-center">
+                      <div className="flex items-center justify-center">
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={() => onToggleProductSelection(product.id)}
+                          aria-label={`Sélectionner ${product.name}`}
+                        />
                       </div>
-                    </Link>
-                  </TableCell>
+                    </TableCell>
 
-                  <TableCell className="text-center">
-                    <ProductFeaturedToggle
-                      productId={product.id}
-                      isFeatured={product.isFeatured}
-                      onToggle={toggleProductFeaturedAction}
-                    />
-                  </TableCell>
+                    <TableCell className="p-2.5">
+                      <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-surface-border bg-surface-panel-soft">
+                        {hasRealImage(product.primaryImageUrl) ? (
+                          <Image
+                            src={product.primaryImageUrl!}
+                            alt={product.primaryImageAlt ?? product.name}
+                            fill
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        ) : (
+                          <PlaceholderImage
+                            alt={product.primaryImageAlt ?? product.name}
+                            className="bg-muted"
+                            imageClassName="opacity-15"
+                          />
+                        )}
+                      </div>
+                    </TableCell>
 
-                  <TableCell>
-                    <ProductStatusBadge status={product.status} />
-                  </TableCell>
+                    <TableCell>
+                      <Link
+                        href={`/admin/products/${product.slug}/edit`}
+                        className="group/link block"
+                      >
+                        <span className="font-semibold leading-snug group-hover/link:underline">
+                          {product.name}
+                        </span>
+                        <div className="mt-1">
+                          <span className="inline-flex items-center rounded-md border border-surface-border bg-surface-panel-soft px-2 py-0.5 text-[11px] text-muted-foreground">
+                            {getVariantLabel(product.variantCount)}
+                          </span>
+                        </div>
+                      </Link>
+                    </TableCell>
 
-                  <TableCell>
-                    <ProductStockBadge
-                      state={product.stockState}
-                      quantity={product.stockQuantity}
-                    />
-                  </TableCell>
+                    <TableCell className="text-center">
+                      <ProductFeaturedToggle
+                        productId={product.id}
+                        isFeatured={product.isFeatured}
+                        onToggle={toggleProductFeaturedAction}
+                      />
+                    </TableCell>
 
-                  <TableCell>
-                    <AdminProductsPriceCell
-                      priceLabel={product.priceLabel}
-                      compareAtPriceLabel={product.compareAtPriceLabel}
-                      hasPromotion={product.hasPromotion}
-                    />
-                  </TableCell>
+                    <TableCell>
+                      <ProductStatusBadge status={product.status} />
+                    </TableCell>
 
-                  <TableCell>
-                    <AdminProductsCategoryCell label={product.categoryPathLabel} />
-                  </TableCell>
+                    <TableCell>
+                      <ProductStockBadge
+                        state={product.stockState}
+                        quantity={product.stockQuantity}
+                      />
+                    </TableCell>
 
-                  <TableCell className="p-2">
-                    <ProductTableRowActions slug={product.slug} productName={product.name} />
-                  </TableCell>
-                </TableRow>
-              ))
+                    <TableCell>
+                      <AdminProductsPriceCell
+                        priceLabel={product.priceLabel}
+                        compareAtPriceLabel={product.compareAtPriceLabel}
+                        hasPromotion={product.hasPromotion}
+                      />
+                    </TableCell>
+
+                    <TableCell>
+                      <AdminProductsCategoryCell label={product.categoryPathLabel} />
+                    </TableCell>
+
+                    <TableCell className="p-2">
+                      <ProductTableRowActions
+                        slug={product.slug}
+                        productName={product.name}
+                        view={view}
+                        onConfirmArchive={onConfirmArchive}
+                        onConfirmRestore={onConfirmRestore}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>

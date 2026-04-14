@@ -1,4 +1,9 @@
 import type { SeoIndexingMode } from "@/prisma-generated/client";
+import type {
+  AdminProductVariantListItem,
+  AdminProductVariantStatus,
+} from "./product-variants.types";
+export type { AdminProductVariantListItem, AdminProductVariantStatus };
 
 export type AdminProductEditorStatus =
   | "draft"
@@ -78,31 +83,6 @@ export type AdminProductEditorData = {
   seo: AdminProductEditorSeo;
 };
 
-export type AdminProductVariantStatus =
-  | "draft"
-  | "active"
-  | "inactive"
-  | "archived";
-
-export type AdminProductVariantListItem = {
-  id: string;
-  slug: string | null;
-  sku: string;
-  name: string | null;
-  status: AdminProductVariantStatus;
-  isDefault: boolean;
-  sortOrder: number;
-  barcode: string | null;
-  externalReference: string | null;
-  weightGrams: string | null;
-  widthMm: string | null;
-  heightMm: string | null;
-  depthMm: string | null;
-  primaryImageId: string | null;
-  primaryImageUrl: string | null;
-  primaryImageStorageKey: string | null;
-  primaryImageAltText: string | null;
-};
 
 export type AdminProductImageItem = {
   id: string;

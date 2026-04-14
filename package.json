@@ -34,6 +34,7 @@
     "import:woo:reset:skip-images": "tsx scripts/import-woocommerce/index.ts --reset --skip-images",
     "import:woo:sync": "tsx scripts/import-woocommerce/index.ts --no-reset",
     "import:woo:sync:skip-images": "tsx scripts/import-woocommerce/index.ts --no-reset --skip-images",
+    "import:woo:normalize-product-types": "tsx scripts/import-woocommerce/normalize/normalize-imported-product-types.ts",
     "diagnostics:import": "tsx scripts/import-woocommerce/diagnostics/catalog-diagnostics.ts"
   },
   "dependencies": {

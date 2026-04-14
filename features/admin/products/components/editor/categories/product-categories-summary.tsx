@@ -18,7 +18,7 @@ export function ProductCategoriesSummary({
           Catégories liées
         </p>
         <p className="mt-1 text-sm font-medium text-foreground">
-          {linkedCount} sélectionnée{linkedCount > 1 ? "s" : ""}
+          {linkedCount} sélectionnées
         </p>
       </div>
 

@@ -3,9 +3,10 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  "js/ts.tsdk.path": "node_modules/typescript/lib",
+
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,
   "prisma.schemaPath": "prisma.config.ts",
+
   "markdownlint.config": {
     "default": true,
     "MD013": false,
@@ -14,6 +15,7 @@
     "MD024": false,
     "MD025": false
   },
+
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
@@ -29,8 +31,13 @@
     "**/.output/**": true,
     "**/out/**": true,
     "**/tmp/**": true,
-    "**/logs/**": true
+    "**/logs/**": true,
+    "**/.sst/**": true,
+    "**/*.map": true,
+    "**/*.meta": true,
+    "**/*.webp": true
   },
+
   "search.exclude": {
     "**/node_modules": true,
     "**/.next": true,
@@ -43,8 +50,12 @@
     "**/.output": true,
     "**/out": true,
     "**/tmp": true,
-    "**/logs": true
+    "**/logs": true,
+    "**/.sst": true,
+    "**/*.map": true,
+    "**/*.meta": true
   },
+
   "files.exclude": {
     "**/.next": true,
     "**/dist": true,
@@ -54,9 +65,11 @@
     "**/.cache": true,
     "**/.vercel": true,
     "**/.output": true,
-    "**/out": true
+    "**/out": true,
+    "**/.sst": true,
+    "**/*.map": true
   },
-  // Remplacement des anciens paramètres TypeScript par les nouveaux
+
   "js/ts.tsserver.maxMemory": 2048,
   "js/ts.tsserver.automaticTypeAcquisition.enabled": false,
   "js/ts.updateImportsOnFileMove.enabled": "always",
@@ -65,6 +78,7 @@
     "watchDirectory": "useFsEvents",
     "fallbackPolling": "dynamicPriorityPolling"
   },
+
   "editor.codeLens": false,
   "breadcrumbs.enabled": true,
   "editor.minimap.enabled": false,

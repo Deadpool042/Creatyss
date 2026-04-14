@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { refresh } from "next/cache";
 import { ProductStatus } from "@/prisma-generated/client";
 import type { z } from "zod";
 
@@ -12,28 +12,30 @@ import type {
   CreateProductFormValues,
 } from "@/features/admin/products/create/types/create-product.types";
 import { createProductSchema } from "@/features/admin/products/create/schemas";
+import { ensureAdminCreatableProductTypes } from "@/features/admin/products/create/services/ensure-admin-creatable-product-types.service";
 
-function mapFormDataToValues(formData: FormData): CreateProductFormValues {
+function mapFormDataToValues(formData: FormData): {
+  name: string;
+  slug: string;
+  productTypeCode: string;
+} {
   return {
     name: String(formData.get("name") ?? ""),
     slug: String(formData.get("slug") ?? ""),
-    shortDescription: String(formData.get("shortDescription") ?? ""),
-    status: String(formData.get("status") ?? "draft") as CreateProductFormValues["status"],
+    productTypeCode: String(formData.get("productTypeCode") ?? ""),
   };
 }
 
 function buildFieldErrors(input: {
   name?: string | undefined;
   slug?: string | undefined;
-  shortDescription?: string | undefined;
-  status?: string | undefined;
+  productTypeCode?: string | undefined;
 }): CreateProductActionState["fieldErrors"] {
   const fieldErrors: CreateProductActionState["fieldErrors"] = {};
 
   if (input.name) fieldErrors.name = input.name;
   if (input.slug) fieldErrors.slug = input.slug;
-  if (input.shortDescription) fieldErrors.shortDescription = input.shortDescription;
-  if (input.status) fieldErrors.status = input.status;
+  if (input.productTypeCode) fieldErrors.productTypeCode = input.productTypeCode;
 
   return fieldErrors;
 }
@@ -62,8 +64,7 @@ export async function createProductAction(
       fieldErrors: buildFieldErrors({
         name: getFirstIssueMessage(issues, "name"),
         slug: getFirstIssueMessage(issues, "slug"),
-        shortDescription: getFirstIssueMessage(issues, "shortDescription"),
-        status: getFirstIssueMessage(issues, "status"),
+        productTypeCode: getFirstIssueMessage(issues, "productTypeCode"),
       }),
     };
   }
@@ -83,35 +84,33 @@ export async function createProductAction(
     };
   }
 
-  const store = await db.store.findFirst({
-    select: { id: true },
-    orderBy: { createdAt: "asc" },
-  });
+  const { storeId, productTypes } = await ensureAdminCreatableProductTypes();
+  const productType = productTypes.find((item) => item.code === parsed.data.productTypeCode);
 
-  if (!store) {
+  if (!productType) {
     return {
       status: "error",
-      message: "Aucune boutique n'est configurée.",
-      fieldErrors: {},
+      message: "Type de produit introuvable.",
+      fieldErrors: buildFieldErrors({
+        productTypeCode: "Choisis un type valide.",
+      }),
     };
   }
+
+  const isStandalone = parsed.data.productTypeCode === "simple";
 
   await db.product.create({
     data: {
       slug: parsed.data.slug,
       name: parsed.data.name,
-      shortDescription: parsed.data.shortDescription || null,
-      status: parsed.data.status === "published" ? ProductStatus.ACTIVE : ProductStatus.DRAFT,
+      status: ProductStatus.DRAFT,
       isFeatured: false,
-      isStandalone: false,
-      store: {
-        connect: {
-          id: store.id,
-        },
-      },
+      isStandalone,
+      productType: { connect: { id: productType.id } },
+      store: { connect: { id: storeId } },
     },
   });
 
-  revalidatePath("/admin/products");
-  redirect(`/admin/products/${parsed.data.slug}`);
+  refresh();
+  redirect(`/admin/products/${parsed.data.slug}/edit`);
 }

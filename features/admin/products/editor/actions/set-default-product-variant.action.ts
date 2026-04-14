@@ -1,5 +1,6 @@
 "use server";
 
+import { refresh } from "next/cache";
 import {
   AdminProductEditorServiceError,
   setDefaultProductVariant,
@@ -17,6 +18,8 @@ export async function setDefaultProductVariantAction(
       productId: input.productId,
       variantId: input.variantId,
     });
+
+    refresh();
 
     return {
       status: "success",

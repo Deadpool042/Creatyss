@@ -1,5 +1,8 @@
+//features/admin/products/list/queries/list-admin-products.query.ts
 import { db } from "@/core/db";
 import type { AdminProductFeedItem } from "../types";
+
+export type AdminProductsListView = "active" | "trash";
 
 function mapProductStatus(status: string): AdminProductFeedItem["status"] {
   switch (status) {
@@ -28,11 +31,11 @@ function formatMoney(value: { toString(): string } | null): string {
   return `${parsed.toFixed(2)} €`;
 }
 
-export async function listAdminProducts(): Promise<AdminProductFeedItem[]> {
+export async function listAdminProducts(
+  view: AdminProductsListView = "active"
+): Promise<AdminProductFeedItem[]> {
   const products = await db.product.findMany({
-    where: {
-      archivedAt: null,
-    },
+    where: view === "trash" ? { archivedAt: { not: null } } : { archivedAt: null },
     orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
     select: {
       id: true,
@@ -121,10 +124,7 @@ export async function listAdminProducts(): Promise<AdminProductFeedItem[]> {
       const compareAtValue =
         price.compareAtAmount === null ? null : Number.parseFloat(price.compareAtAmount.toString());
 
-      if (
-        minAmount === null ||
-        amountValue < Number.parseFloat(minAmount.toString())
-      ) {
+      if (minAmount === null || amountValue < Number.parseFloat(minAmount.toString())) {
         minAmount = price.amount;
       }
 

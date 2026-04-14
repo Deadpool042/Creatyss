@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { JSX } from "react";
 
+import { Checkbox } from "@/components/ui/checkbox";
 import type { ProductTableItem } from "@/features/admin/products/list/types";
 import { cn } from "@/lib/utils";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";
@@ -13,22 +14,61 @@ import { ProductCardFeaturedControl } from "./mobile/cards/product-card-featured
 import { ProductCardImage } from "./mobile/cards/product-card-image";
 import { ProductCardInfoTile } from "./mobile/cards/product-card-info-tile";
 
+type ProductListView = "active" | "trash";
+
 type ProductCollectionCardProps = {
   product: ProductTableItem;
-  onConfirmDelete?: (slug: string) => void | Promise<void>;
+  view: ProductListView;
+  isSelected: boolean;
+  onToggleSelection: (productId: string) => void;
+  onConfirmArchive: ((slug: string) => void | Promise<void>) | undefined;
+  onConfirmRestore: ((slug: string) => void | Promise<void>) | undefined;
 };
 
 export function ProductCollectionCard({
   product,
-  onConfirmDelete,
+  view,
+  isSelected,
+  onToggleSelection,
+  onConfirmArchive,
+  onConfirmRestore,
 }: ProductCollectionCardProps): JSX.Element {
   return (
     <article
       className={cn(
         "flex h-full flex-col rounded-2xl border border-surface-border bg-card p-3 shadow-card",
+        isSelected && "border-surface-border-strong ring-1 ring-surface-border-strong",
         "[@media(max-height:480px)]:rounded-xl [@media(max-height:480px)]:p-2.5"
       )}
     >
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <label className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+          <Checkbox
+            checked={isSelected}
+            onCheckedChange={() => onToggleSelection(product.id)}
+            aria-label={`Sélectionner ${product.name}`}
+          />
+          <span>Sélectionner</span>
+        </label>
+
+        <div className="flex shrink-0 items-center gap-1">
+          <ProductCardFeaturedControl
+            productId={product.id}
+            isFeatured={product.isFeatured}
+            className="p-0.5"
+            buttonClassName="h-7 w-7 [@media(max-height:480px)]:h-6 [@media(max-height:480px)]:w-6"
+            iconClassName="h-3.5 w-3.5"
+          />
+          <ProductCardActionMenu
+            product={product}
+            view={view}
+            triggerClassName="h-7 w-7 [@media(max-height:480px)]:h-6 [@media(max-height:480px)]:w-6"
+            onConfirmArchive={onConfirmArchive}
+            onConfirmRestore={onConfirmRestore}
+          />
+        </div>
+      </div>
+
       <div className="flex items-start gap-2.5 [@media(max-height:480px)]:gap-2">
         <ProductCardImage
           product={product}
@@ -53,21 +93,6 @@ export function ProductCollectionCard({
                 statusClassName="h-6 px-2 text-[11px]"
                 stockClassName="h-6 px-2 text-[11px]"
                 metricClassName="h-6 px-2 text-[11px]"
-              />
-            </div>
-
-            <div className="flex shrink-0 items-center gap-1">
-              <ProductCardFeaturedControl
-                productId={product.id}
-                isFeatured={product.isFeatured}
-                className="p-0.5"
-                buttonClassName="h-7 w-7 [@media(max-height:480px)]:h-6 [@media(max-height:480px)]:w-6"
-                iconClassName="h-3.5 w-3.5"
-              />
-              <ProductCardActionMenu
-                product={product}
-                triggerClassName="h-7 w-7 [@media(max-height:480px)]:h-6 [@media(max-height:480px)]:w-6"
-                {...(onConfirmDelete ? { onConfirmDelete } : {})}
               />
             </div>
           </div>
@@ -97,7 +122,7 @@ export function ProductCollectionCard({
         >
           <AdminProductsCategoryCell
             label={product.categoryPathLabel}
-            className="line-clamp-2 break-words text-[13px] leading-5 [@media(max-height:480px)]:text-xs [@media(max-height:480px)]:leading-4"
+            className="line-clamp-2 wrap-break-word text-[13px] leading-5 [@media(max-height:480px)]:text-xs [@media(max-height:480px)]:leading-4"
           />
         </ProductCardInfoTile>
       </div>

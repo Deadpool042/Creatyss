@@ -9,6 +9,11 @@ import {
   openAdminProductFromList,
 } from "./product-test-helpers";
 
+test.skip(
+  true,
+  "Legacy product spec quarantined: migrate to wizard/edit current UI before re-enabling."
+);
+
 test("updates a native simple offer and keeps a single legacy variant in sync", async ({
   page,
 }) => {

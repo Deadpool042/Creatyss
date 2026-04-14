@@ -7,26 +7,43 @@ import { PRODUCT_CARD_TWO_COLUMN_CLASS_NAME } from "./mobile/product-card-layout
 import { ProductCollectionCard } from "./product-collection-card";
 
 const MOBILE_PAGE_SIZE = 12;
+const MOBILE_BOTTOM_NAV_CLEARANCE_CLASS_NAME =
+  "pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom)+0.75rem)]";
+
+type ProductListView = "active" | "trash";
 
 type ProductTableMobileProps = {
   products: ProductTableItem[];
+  view: ProductListView;
+  selectedProductIds: string[];
+  onToggleProductSelection: (productId: string) => void;
+  onVisibleSelectionStatsChange?: (stats: {
+    visibleCount: number;
+    visibleSelectedCount: number;
+    areAllVisibleSelected: boolean;
+  }) => void;
+  onConfirmArchive?: (slug: string) => void | Promise<void>;
+  onConfirmRestore?: (slug: string) => void | Promise<void>;
 };
 
-export function ProductTableMobile({ products }: ProductTableMobileProps): JSX.Element {
+export function ProductTableMobile({
+  products,
+  view,
+  selectedProductIds,
+  onToggleProductSelection,
+  onVisibleSelectionStatsChange,
+  onConfirmArchive,
+  onConfirmRestore,
+}: ProductTableMobileProps): JSX.Element {
   const [visibleCount, setVisibleCount] = useState(MOBILE_PAGE_SIZE);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  // Stable key identifying the current filter set.
-  // Resets visible window when filters change without relying on reference equality.
   const filterKey = useMemo(() => {
     const first = products[0]?.id ?? "";
     const last = products[products.length - 1]?.id ?? "";
     return `${products.length}::${first}::${last}`;
   }, [products]);
 
-  // "Adjusting state on render" pattern (React docs recommended).
-  // Avoids useEffect cascade: sets state synchronously during render,
-  // React immediately re-renders with the new value — no extra cycle.
   const [prevFilterKey, setPrevFilterKey] = useState(filterKey);
   if (prevFilterKey !== filterKey) {
     setPrevFilterKey(filterKey);
@@ -43,8 +60,6 @@ export function ProductTableMobile({ products }: ProductTableMobileProps): JSX.E
     const sentinel = sentinelRef.current;
     if (sentinel === null || !hasMore) return;
 
-    // Find the nearest scroll container exposed by AdminPageShell.
-    // This is deterministic unlike a scrollHeight heuristic.
     const scrollRoot = sentinel.closest<HTMLElement>("[data-scroll-root]") ?? null;
 
     const observer = new IntersectionObserver(
@@ -65,17 +80,46 @@ export function ProductTableMobile({ products }: ProductTableMobileProps): JSX.E
   }, [hasMore, loadMore]);
 
   const visibleItems = products.slice(0, visibleCount);
+  const visibleProductIds = visibleItems.map((product) => product.id);
+
+  const visibleSelectedCount = visibleProductIds.filter((productId) =>
+    selectedProductIds.includes(productId)
+  ).length;
+
+  const areAllVisibleSelected =
+    visibleProductIds.length > 0 &&
+    visibleProductIds.every((productId) => selectedProductIds.includes(productId));
+
+  useEffect(() => {
+    onVisibleSelectionStatsChange?.({
+      visibleCount: visibleItems.length,
+      visibleSelectedCount,
+      areAllVisibleSelected,
+    });
+  }, [
+    areAllVisibleSelected,
+    onVisibleSelectionStatsChange,
+    visibleItems.length,
+    visibleSelectedCount,
+  ]);
 
   if (products.length === 0) {
     return (
       <div className="rounded-2xl border border-surface-border bg-card p-8 text-center">
-        <p className="text-sm text-muted-foreground">Aucun produit trouvé.</p>
+        <p className="text-sm text-muted-foreground">
+          {view === "trash" ? "Aucun produit dans la corbeille." : "Aucun produit trouvé."}
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-2.5 [@media(max-height:480px)]:space-y-2">
+    <div
+      className={[
+        "space-y-2 [@media(max-height:480px)]:space-y-1.5",
+        MOBILE_BOTTOM_NAV_CLEARANCE_CLASS_NAME,
+      ].join(" ")}
+    >
       <div
         className={[
           "grid gap-2.5 [@media(max-height:480px)]:gap-2",
@@ -83,7 +127,15 @@ export function ProductTableMobile({ products }: ProductTableMobileProps): JSX.E
         ].join(" ")}
       >
         {visibleItems.map((product) => (
-          <ProductCollectionCard key={product.id} product={product} />
+          <ProductCollectionCard
+            key={product.id}
+            product={product}
+            view={view}
+            isSelected={selectedProductIds.includes(product.id)}
+            onToggleSelection={onToggleProductSelection}
+            onConfirmArchive={onConfirmArchive}
+            onConfirmRestore={onConfirmRestore}
+          />
         ))}
       </div>
 
@@ -95,7 +147,14 @@ export function ProductTableMobile({ products }: ProductTableMobileProps): JSX.E
         >
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-surface-border border-t-foreground/40" />
         </div>
-      ) : null}
+      ) : (
+        <div className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-3 py-2.5 text-center [@media(max-height:480px)]:py-2">
+          <p className="text-xs font-medium text-muted-foreground">Fin de la liste</p>
+          <p className="mt-1 text-[11px] text-muted-foreground/85">
+            {products.length} produit{products.length !== 1 ? "s" : ""}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

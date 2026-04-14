@@ -9,18 +9,25 @@ import {
   deleteProductAction,
   deleteProductImageAction,
   deleteProductVariantAction,
+  listAdminRelatedProductOptions,
   listAdminProductTypeOptions,
   listAttachableMediaAssets,
   readAdminPriceLists,
   readAdminProductEditorBySlug,
   readAdminProductImages,
+  readAdminProductPrices,
+  readAdminProductTypeWithOptions,
   readAdminProductVariants,
   reorderProductImageAction,
   setDefaultProductVariantAction,
   setProductPrimaryImageAction,
   updateProductCategoriesAction,
   updateProductGeneralAction,
+  updateProductAvailabilityAction,
+  updateProductInventoryAction,
   updateProductImageAltTextAction,
+  updateProductRelatedProductsAction,
+  updateProductPricesAction,
   updateProductSeoAction,
   updateProductVariantAction,
   uploadProductImagesAction,
@@ -65,22 +72,35 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
     );
   }
 
-  const [variantsData, imagesData, attachableMediaData] = await Promise.all([
+  const [
+    variantsData,
+    imagesData,
+    attachableMediaData,
+    pricingData,
+    productOptions,
+    relatedProductOptions,
+  ] = await Promise.all([
     readAdminProductVariants(editor.product.id),
     readAdminProductImages(editor.product.id),
     listAttachableMediaAssets(editor.product.id),
+    readAdminProductPrices({ productId: editor.product.id }),
+    editor.product.productTypeId
+      ? readAdminProductTypeWithOptions(editor.product.productTypeId)
+      : Promise.resolve([]),
+    listAdminRelatedProductOptions({ excludeProductId: editor.product.id }),
   ]);
 
   return (
     <AdminPageShell
       title={editor.product.name}
       eyebrow="Produits"
-      description="Modification du produit, des variantes, des médias et des catégories."
+      description="Édition du produit, de ses variantes, de ses médias, de ses catégories et de son SEO."
       viewportClassName="!h-full"
       navigation={{ label: "Produits", href: "/admin/products" }}
       breadcrumbs={[
         { label: "Accueil", href: "/admin" },
         { label: "Produits", href: "/admin/products" },
+        { label: editor.product.name },
       ]}
       topbarAction={<ProductEditorTopbarMenu productId={editor.product.id} />}
       contentClassName="lg:px-6 lg:pb-6"
@@ -94,12 +114,20 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
           </div>
         </div>
       }
+      headerDensity="compact"
+      compactMobileTitle
+      hideDescriptionOnMobile
       headerVisibility="desktop"
     >
       <ProductEditorPanel
         generalAction={updateProductGeneralAction}
         seoAction={updateProductSeoAction}
         categoriesAction={updateProductCategoriesAction}
+        availabilityAction={updateProductAvailabilityAction}
+        inventoryAction={updateProductInventoryAction}
+        relatedProductsAction={updateProductRelatedProductsAction}
+        pricingAction={updateProductPricesAction}
+        pricingData={pricingData}
         createVariantAction={createProductVariantAction}
         updateVariantAction={updateProductVariantAction}
         setDefaultVariantAction={setDefaultProductVariantAction}
@@ -118,9 +146,11 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
           parentName: category.parent?.name ?? null,
         }))}
         productTypeOptions={productTypeOptions}
+        productOptions={productOptions}
         variants={variantsData?.variants ?? []}
         images={imagesData?.images ?? []}
         attachableMediaItems={attachableMediaData.items}
+        relatedProductOptions={relatedProductOptions}
         priceLists={priceLists}
         product={editor}
       />

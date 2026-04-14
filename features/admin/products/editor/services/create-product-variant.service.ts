@@ -2,6 +2,7 @@ import { withTransaction } from "@/core/db";
 import {
   assertMediaAssetExists,
   assertProductExists,
+  assertVariantOptionValuesAreValid,
   mapEditorVariantStatusToPrismaStatus,
 } from "./shared";
 
@@ -20,6 +21,7 @@ type CreateProductVariantServiceInput = {
   widthMm: number | null;
   heightMm: number | null;
   depthMm: number | null;
+  optionValueIds: string[];
 };
 
 export async function createProductVariant(
@@ -27,6 +29,7 @@ export async function createProductVariant(
 ): Promise<{ id: string }> {
   return withTransaction(async (tx) => {
     await assertProductExists(tx, input.productId);
+    await assertVariantOptionValuesAreValid(tx, input.productId, input.optionValueIds);
 
     if (input.primaryImageId !== null) {
       await assertMediaAssetExists(tx, input.primaryImageId);
@@ -45,7 +48,7 @@ export async function createProductVariant(
       });
     }
 
-    return tx.productVariant.create({
+    const created = await tx.productVariant.create({
       data: {
         productId: input.productId,
         sku: input.sku,
@@ -67,5 +70,17 @@ export async function createProductVariant(
         id: true,
       },
     });
+
+    if (input.optionValueIds.length > 0) {
+      await tx.productVariantOptionValue.createMany({
+        data: input.optionValueIds.map((optionValueId) => ({
+          variantId: created.id,
+          optionValueId,
+        })),
+        skipDuplicates: true,
+      });
+    }
+
+    return created;
   });
 }

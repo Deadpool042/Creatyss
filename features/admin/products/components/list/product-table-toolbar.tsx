@@ -1,21 +1,47 @@
 "use client";
 
-import { Filter, SlidersHorizontal } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, Filter, SlidersHorizontal } from "lucide-react";
 import { useState, type JSX } from "react";
 
 import { AdminDataTableActiveFilters } from "@/components/admin/tables/admin-data-table-active-filters";
 import { AdminDataTableFiltersSheet } from "@/components/admin/tables/admin-data-table-filters-sheet";
 import { AdminSearchInput } from "@/components/admin/tables/admin-search-input";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import type { ProductTableFiltersState } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type { ProductFilterCategoryOption } from "@/features/admin/products/list/types/product-table.types";
 import { cn } from "@/lib/utils";
 import { ProductSearchSheet } from "./product-search-sheet";
 import { ProductTableFiltersForm } from "./product-table-filters-form";
 
+const MOBILE_STICKY_TOOLBAR_HEIGHT_CLASS_NAME = "h-13 [@media(max-height:480px)]:h-11";
+const MOBILE_BULK_BAR_BOTTOM_CLASS_NAME =
+  "bottom-[calc(3.5rem+env(safe-area-inset-bottom)+0.5rem)] [@media(max-height:480px)]:bottom-[calc(2.75rem+env(safe-area-inset-bottom)+0.4rem)]";
+
+type ProductListView = "active" | "trash";
+
 type ProductTableToolbarProps = {
   categoryOptions: ProductFilterCategoryOption[];
   state: ProductTableFiltersState;
+  mode: "desktop" | "mobile";
+  view: ProductListView;
+  selectedCount?: number;
+  onClearSelection?: () => void;
+  bulkMessage?: string | null;
+  bulkError?: string | null;
+  isBulkPending?: boolean;
+  onBulkSetDraft?: () => void;
+  onBulkSetActive?: () => void;
+  onBulkSetInactive?: () => void;
+  onBulkSetFeatured?: () => void;
+  onBulkUnsetFeatured?: () => void;
+  onBulkArchive?: () => void;
+  onBulkRestore?: () => void;
+  mobileVisibleCount?: number;
+  mobileVisibleSelectedCount?: number;
+  mobileAllVisibleSelected?: boolean;
+  onToggleSelectAllMobileVisible?: () => void;
 };
 
 function ResultsCount({
@@ -40,64 +66,260 @@ function ResultsCount({
   );
 }
 
+type BulkActionButtonProps = {
+  children: string;
+  onClick: (() => void) | undefined;
+  disabled?: boolean;
+  danger?: boolean;
+};
+
+function BulkActionButton({
+  children,
+  onClick,
+  disabled = false,
+  danger = false,
+}: BulkActionButtonProps): JSX.Element {
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      onClick={onClick}
+      disabled={disabled}
+      className={cn(
+        "h-8 shrink-0 whitespace-nowrap rounded-full px-3 text-xs shadow-none",
+        danger && "border-destructive/30 text-destructive/70 hover:text-destructive/70"
+      )}
+    >
+      {children}
+    </Button>
+  );
+}
+
+function BulkActions({
+  view,
+  isBulkPending,
+  onBulkSetDraft,
+  onBulkSetActive,
+  onBulkSetInactive,
+  onBulkSetFeatured,
+  onBulkUnsetFeatured,
+  onBulkArchive,
+  onBulkRestore,
+}: {
+  view: ProductListView;
+  isBulkPending: boolean;
+  onBulkSetDraft: (() => void) | undefined;
+  onBulkSetActive: (() => void) | undefined;
+  onBulkSetInactive: (() => void) | undefined;
+  onBulkSetFeatured: (() => void) | undefined;
+  onBulkUnsetFeatured: (() => void) | undefined;
+  onBulkArchive: (() => void) | undefined;
+  onBulkRestore: (() => void) | undefined;
+}): JSX.Element {
+  if (view === "trash") {
+    return (
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        <BulkActionButton onClick={onBulkRestore} disabled={isBulkPending}>
+          Restaurer
+        </BulkActionButton>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex gap-2 overflow-x-auto pb-1">
+      <BulkActionButton onClick={onBulkSetDraft} disabled={isBulkPending}>
+        Brouillon
+      </BulkActionButton>
+      <BulkActionButton onClick={onBulkSetActive} disabled={isBulkPending}>
+        Activer
+      </BulkActionButton>
+      <BulkActionButton onClick={onBulkSetInactive} disabled={isBulkPending}>
+        Désactiver
+      </BulkActionButton>
+      <BulkActionButton onClick={onBulkSetFeatured} disabled={isBulkPending}>
+        Mettre en avant
+      </BulkActionButton>
+      <BulkActionButton onClick={onBulkUnsetFeatured} disabled={isBulkPending}>
+        Retirer la mise en avant
+      </BulkActionButton>
+      <BulkActionButton onClick={onBulkArchive} disabled={isBulkPending} danger>
+        Corbeille
+      </BulkActionButton>
+    </div>
+  );
+}
+
+function ProductViewSwitch({ view }: { view: ProductListView }): JSX.Element {
+  return (
+    <div className="flex items-center gap-2">
+      <Link
+        href="/admin/products"
+        className={cn(
+          "inline-flex h-8 items-center rounded-full border px-3 text-xs font-medium transition-colors",
+          view === "active"
+            ? "border-surface-border-strong bg-interactive-selected text-foreground"
+            : "border-surface-border bg-surface-panel-soft text-muted-foreground hover:text-foreground"
+        )}
+      >
+        Actifs
+      </Link>
+
+      <Link
+        href="/admin/products?view=trash"
+        className={cn(
+          "inline-flex h-8 items-center rounded-full border px-3 text-xs font-medium transition-colors",
+          view === "trash"
+            ? "border-surface-border-strong bg-interactive-selected text-foreground"
+            : "border-surface-border bg-surface-panel-soft text-muted-foreground hover:text-foreground"
+        )}
+      >
+        Corbeille
+      </Link>
+    </div>
+  );
+}
+
 export function ProductTableToolbar({
   categoryOptions,
   state,
+  mode,
+  view,
+  selectedCount = 0,
+  onClearSelection,
+  bulkMessage = null,
+  bulkError = null,
+  isBulkPending = false,
+  onBulkSetDraft,
+  onBulkSetActive,
+  onBulkSetInactive,
+  onBulkSetFeatured,
+  onBulkUnsetFeatured,
+  onBulkArchive,
+  onBulkRestore,
+  mobileVisibleCount = 0,
+  mobileVisibleSelectedCount = 0,
+  mobileAllVisibleSelected = false,
+  onToggleSelectAllMobileVisible,
 }: ProductTableToolbarProps): JSX.Element {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const activeFiltersCount = state.activeFilters.length;
   const hasActiveFilters = activeFiltersCount > 0;
+  const hasSelection = selectedCount > 0;
+
   const mobileFiltersLabel = hasActiveFilters ? `Filtres · ${activeFiltersCount}` : "Filtres";
   const mobileFiltersDescription = hasActiveFilters
     ? `${activeFiltersCount} filtre${activeFiltersCount > 1 ? "s" : ""} actif${activeFiltersCount > 1 ? "s" : ""}.`
     : "Affiner la liste.";
 
-  return (
-    <div className="space-y-3 [@media(max-height:480px)]:space-y-1">
-      <div className="hidden lg:block">
-        <div className="space-y-3">
-          <div className="flex flex-col gap-3 2xl:flex-row 2xl:items-center 2xl:gap-4">
-            <div className="w-full 2xl:max-w-sm 2xl:flex-none">
-              <AdminSearchInput
-                value={state.search}
-                onChange={state.handleSearchChange}
-                placeholder="Rechercher un produit…"
-                className="relative w-full"
-              />
+  if (mode === "desktop") {
+    return (
+      <div className="space-y-1.5">
+        {hasSelection ? (
+          <div className="rounded-xl border border-surface-border-strong bg-interactive-selected px-3 py-3 shadow-card">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm font-medium text-foreground">
+                {selectedCount} produit{selectedCount > 1 ? "s" : ""} sélectionné
+                {selectedCount > 1 ? "s" : ""}
+              </p>
+
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={onClearSelection}
+                className="h-8 rounded-full px-3 text-xs"
+              >
+                Effacer la sélection
+              </Button>
             </div>
 
-            <div className="min-w-0 2xl:min-w-lg 2xl:flex-1">
+            <div className="mt-3">
+              <BulkActions
+                view={view}
+                isBulkPending={isBulkPending}
+                onBulkSetDraft={onBulkSetDraft}
+                onBulkSetActive={onBulkSetActive}
+                onBulkSetInactive={onBulkSetInactive}
+                onBulkSetFeatured={onBulkSetFeatured}
+                onBulkUnsetFeatured={onBulkUnsetFeatured}
+                onBulkArchive={onBulkArchive}
+                onBulkRestore={onBulkRestore}
+              />
+            </div>
+          </div>
+        ) : null}
+
+        {bulkMessage ? (
+          <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-3 py-2 text-sm text-foreground shadow-card">
+            {bulkMessage}
+          </div>
+        ) : null}
+
+        {bulkError ? (
+          <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive shadow-card">
+            {bulkError}
+          </div>
+        ) : null}
+
+        <div className="rounded-xl border border-surface-border bg-card p-3 lg:p-4 shadow-card">
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="min-w-0 flex-1 max-w-120 xl:max-w-136 2xl:max-w-152">
+                <AdminSearchInput
+                  value={state.search}
+                  onChange={state.handleSearchChange}
+                  placeholder="Rechercher un produit…"
+                  className="relative w-full"
+                />
+              </div>
+
+              <div className="flex shrink-0 items-center gap-2">
+                <ProductViewSwitch view={view} />
+
+                <ResultsCount
+                  filteredCount={state.filteredCount}
+                  className="whitespace-nowrap rounded-full border border-surface-border bg-surface-panel-soft px-2.5 py-1"
+                />
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  type="button"
+                  onClick={() => state.setShowAdvancedFilters(!state.showAdvancedFilters)}
+                  className={cn(
+                    "inline-flex h-9 items-center gap-2 rounded-full px-3",
+                    hasActiveFilters &&
+                      "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
+                  )}
+                  aria-expanded={state.showAdvancedFilters}
+                >
+                  <SlidersHorizontal className="h-4 w-4" />
+                  {hasActiveFilters ? `Filtres · ${activeFiltersCount}` : "Filtres"}
+                  <ChevronDown
+                    className={cn(
+                      "h-3.5 w-3.5 text-muted-foreground transition-transform duration-200",
+                      state.showAdvancedFilters && "rotate-180"
+                    )}
+                  />
+                </Button>
+              </div>
+            </div>
+
+            <div className="min-w-0">
               <ProductTableFiltersForm
                 categoryOptions={categoryOptions}
                 state={state}
                 mode="primary"
               />
             </div>
-
-            <div className="flex items-center justify-between gap-3 2xl:shrink-0 2xl:justify-end">
-              <ResultsCount filteredCount={state.filteredCount} className="whitespace-nowrap" />
-
-              <Button
-                variant="outline"
-                size="sm"
-                type="button"
-                onClick={() => state.setShowAdvancedFilters(!state.showAdvancedFilters)}
-                className={cn(
-                  "inline-flex items-center gap-2 rounded-full",
-                  hasActiveFilters &&
-                    "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
-                )}
-              >
-                <SlidersHorizontal className="h-4 w-4" />
-                {hasActiveFilters ? `Filtres · ${activeFiltersCount}` : "Filtres"}
-              </Button>
-            </div>
           </div>
 
           {state.showAdvancedFilters ? (
-            <div className="rounded-xl border border-surface-border bg-surface-panel-soft p-3 lg:p-4">
-              <div className="grid gap-3 md:grid-cols-2">
+            <div className="mt-3 border-t border-surface-border pt-3">
+              <div className="grid gap-2 xl:grid-cols-2 2xl:grid-cols-4">
                 <ProductTableFiltersForm
                   categoryOptions={categoryOptions}
                   state={state}
@@ -107,102 +329,189 @@ export function ProductTableToolbar({
             </div>
           ) : null}
         </div>
+
+        {hasActiveFilters ? (
+          <AdminDataTableActiveFilters items={state.activeFilters} onClearAll={state.reset} />
+        ) : null}
       </div>
+    );
+  }
 
-      <div className="space-y-2 lg:hidden">
-        <div className="-mx-3 sticky top-0 z-20 border-b border-shell-border site-header-blur px-3 py-2 shadow-card [@media(max-height:480px)]:-mx-2.5 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:py-1.5">
-          <div className="flex items-center gap-2 [@media(max-height:480px)]:gap-1.5">
-            <div className="flex min-w-0 flex-1 items-center gap-2 [@media(max-height:480px)]:gap-1.5">
-              <ProductSearchSheet
-                open={mobileSearchOpen}
-                onOpenChange={setMobileSearchOpen}
-                value={state.search}
-                onChange={state.handleSearchChange}
-                triggerClassName="shrink-0"
-              />
-
-              <Button
-                variant="outline"
-                size="sm"
-                type="button"
-                onClick={() => state.setMobileFiltersOpen(true)}
-                className={cn(
-                  "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3 text-xs [@media(max-height:480px)]:h-8 [@media(max-height:480px)]:gap-1 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:text-[11px]",
-                  hasActiveFilters &&
-                    "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
-                )}
-                aria-label={
-                  hasActiveFilters ? `${activeFiltersCount} filtres actifs` : "Ouvrir les filtres"
-                }
-              >
-                <Filter className="h-4 w-4" />
-                <span>{mobileFiltersLabel}</span>
-              </Button>
-            </div>
-
-            <ResultsCount
-              filteredCount={state.filteredCount}
-              className="shrink-0 whitespace-nowrap rounded-full border border-surface-border bg-surface-panel-soft px-2.5 py-1 [@media(max-height:480px)]:px-2"
-            />
-          </div>
+  return (
+    <>
+      {bulkMessage ? (
+        <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-3 py-2 text-sm text-foreground shadow-card lg:hidden">
+          {bulkMessage}
         </div>
+      ) : null}
 
-        <AdminDataTableFiltersSheet
-          open={state.mobileFiltersOpen}
-          onOpenChange={state.setMobileFiltersOpen}
-          title={hasActiveFilters ? `Filtres produits · ${activeFiltersCount}` : "Filtres produits"}
-          description={mobileFiltersDescription}
-          footer={
-            <div className="flex items-center justify-between gap-3">
-              <Button
-                variant="ghost"
-                type="button"
-                onClick={state.reset}
-                className="h-9 rounded-full px-3 text-muted-foreground [@media(max-height:480px)]:h-8"
-                disabled={!hasActiveFilters}
-              >
-                Réinitialiser
-              </Button>
+      {bulkError ? (
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive shadow-card lg:hidden">
+          {bulkError}
+        </div>
+      ) : null}
 
-              <Button
-                type="button"
-                onClick={() => state.setMobileFiltersOpen(false)}
-                className="h-9 rounded-full px-4 [@media(max-height:480px)]:h-8"
-              >
-                Appliquer
-              </Button>
+      {hasSelection ? (
+        <>
+          <div className={cn("lg:hidden", MOBILE_STICKY_TOOLBAR_HEIGHT_CLASS_NAME)}>
+            <div className="-mx-3 site-header-blur flex h-full items-center border-b border-shell-border px-3 shadow-card [@media(max-height:480px)]:-mx-2.5 [@media(max-height:480px)]:px-2.5">
+              <div className="flex w-full items-center justify-between gap-2">
+                <p className="truncate text-sm font-medium text-foreground">
+                  {selectedCount} sélectionné{selectedCount > 1 ? "s" : ""}
+                </p>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  onClick={onClearSelection}
+                  className="h-8 shrink-0 rounded-full px-3 text-xs"
+                >
+                  Effacer
+                </Button>
+              </div>
             </div>
-          }
-        >
-          <div className="space-y-3.5 [@media(max-height:480px)]:space-y-3">
-            {hasActiveFilters ? (
-              <div className="rounded-xl border border-surface-border bg-surface-panel-soft p-3">
-                <div className="mb-2 flex items-center justify-between gap-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    Filtres actifs
-                  </p>
+          </div>
 
-                  <span className="rounded-full border border-surface-border bg-card px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                    {activeFiltersCount}
-                  </span>
+          <div
+            className={cn(
+              "fixed inset-x-0 z-40 px-3 lg:hidden [@media(max-height:480px)]:px-2.5",
+              MOBILE_BULK_BAR_BOTTOM_CLASS_NAME
+            )}
+          >
+            <div className="rounded-2xl border border-surface-border bg-card/95 p-2 shadow-lg backdrop-blur supports-backdrop-filter:bg-card/80">
+              <BulkActions
+                view={view}
+                isBulkPending={isBulkPending}
+                onBulkSetDraft={onBulkSetDraft}
+                onBulkSetActive={onBulkSetActive}
+                onBulkSetInactive={onBulkSetInactive}
+                onBulkSetFeatured={onBulkSetFeatured}
+                onBulkUnsetFeatured={onBulkUnsetFeatured}
+                onBulkArchive={onBulkArchive}
+                onBulkRestore={onBulkRestore}
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={cn("lg:hidden", MOBILE_STICKY_TOOLBAR_HEIGHT_CLASS_NAME)}>
+            <div className="-mx-3 site-header-blur flex h-full items-center border-b border-shell-border px-3 shadow-card [@media(max-height:480px)]:-mx-2.5 [@media(max-height:480px)]:px-2.5">
+              <div className="flex w-full items-center gap-2 [@media(max-height:480px)]:gap-1.5">
+                <div className="flex min-w-0 flex-1 items-center gap-2 [@media(max-height:480px)]:gap-1.5">
+                  <ProductSearchSheet
+                    open={mobileSearchOpen}
+                    onOpenChange={setMobileSearchOpen}
+                    value={state.search}
+                    onChange={state.handleSearchChange}
+                    triggerClassName="shrink-0"
+                  />
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    type="button"
+                    onClick={() => state.setMobileFiltersOpen(true)}
+                    className={cn(
+                      "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3 text-xs [@media(max-height:480px)]:h-8 [@media(max-height:480px)]:gap-1 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:text-[11px]",
+                      hasActiveFilters &&
+                        "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
+                    )}
+                    aria-label={
+                      hasActiveFilters
+                        ? `${activeFiltersCount} filtres actifs`
+                        : "Ouvrir les filtres"
+                    }
+                  >
+                    <Filter className="h-4 w-4" />
+                    <span>{mobileFiltersLabel}</span>
+                  </Button>
                 </div>
 
-                <AdminDataTableActiveFilters items={state.activeFilters} onClearAll={state.reset} />
+                <ResultsCount
+                  filteredCount={state.filteredCount}
+                  className="shrink-0 whitespace-nowrap rounded-full border border-surface-border bg-surface-panel-soft px-2.5 py-1 [@media(max-height:480px)]:px-2"
+                />
               </div>
-            ) : null}
-
-            <ProductTableFiltersForm
-              categoryOptions={categoryOptions}
-              state={state}
-              mode="mobile"
-            />
+            </div>
           </div>
-        </AdminDataTableFiltersSheet>
-      </div>
 
-      <div className="hidden md:block [@media(max-height:480px)]:hidden">
-        <AdminDataTableActiveFilters items={state.activeFilters} onClearAll={state.reset} />
-      </div>
-    </div>
+          <div className="mt-2 flex items-center justify-between gap-2 lg:hidden">
+            <ProductViewSwitch view={view} />
+
+            <label className="flex shrink-0 items-center gap-2 rounded-full border border-surface-border bg-surface-panel-soft px-3 py-2 text-xs font-medium text-foreground">
+              <Checkbox
+                checked={mobileAllVisibleSelected}
+                aria-label="Sélectionner les produits affichés"
+                {...(onToggleSelectAllMobileVisible
+                  ? { onCheckedChange: () => onToggleSelectAllMobileVisible() }
+                  : {})}
+              />
+              <span>
+                {mobileVisibleSelectedCount}/{mobileVisibleCount}
+              </span>
+            </label>
+          </div>
+
+          <AdminDataTableFiltersSheet
+            open={state.mobileFiltersOpen}
+            onOpenChange={state.setMobileFiltersOpen}
+            title={
+              hasActiveFilters ? `Filtres produits · ${activeFiltersCount}` : "Filtres produits"
+            }
+            description={mobileFiltersDescription}
+            footer={
+              <div className="flex items-center justify-between gap-3">
+                <Button
+                  variant="ghost"
+                  type="button"
+                  onClick={state.reset}
+                  className="h-9 rounded-full px-3 text-muted-foreground [@media(max-height:480px)]:h-8"
+                  disabled={!hasActiveFilters}
+                >
+                  Réinitialiser
+                </Button>
+
+                <Button
+                  type="button"
+                  onClick={() => state.setMobileFiltersOpen(false)}
+                  className="h-9 rounded-full px-4 [@media(max-height:480px)]:h-8"
+                >
+                  Appliquer
+                </Button>
+              </div>
+            }
+          >
+            <div className="space-y-3.5 [@media(max-height:480px)]:space-y-3">
+              {hasActiveFilters ? (
+                <div className="rounded-xl border border-surface-border bg-surface-panel-soft p-3">
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                      Filtres actifs
+                    </p>
+
+                    <span className="rounded-full border border-surface-border bg-card px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                      {activeFiltersCount}
+                    </span>
+                  </div>
+
+                  <AdminDataTableActiveFilters
+                    items={state.activeFilters}
+                    onClearAll={state.reset}
+                  />
+                </div>
+              ) : null}
+
+              <ProductTableFiltersForm
+                categoryOptions={categoryOptions}
+                state={state}
+                mode="mobile"
+              />
+            </div>
+          </AdminDataTableFiltersSheet>
+        </>
+      )}
+    </>
   );
 }

@@ -1,3 +1,4 @@
+//features/admin/products/list/hooks/use-product-table-filters.ts
 import { useMemo, useState } from "react";
 import type {
   ProductFilterCategoryOption,
@@ -100,9 +101,7 @@ export function useProductTableFilters({
       const selectedCategory = categoryOptions.find((category) => category.id === categoryId);
 
       if (selectedCategory) {
-        result = result.filter((product) =>
-          product.categoryNames.includes(selectedCategory.name)
-        );
+        result = result.filter((product) => product.categoryNames.includes(selectedCategory.name));
       }
     }
 
@@ -168,10 +167,9 @@ export function useProductTableFilters({
       ? [
           {
             key: "category",
-            label:
-              `Catégorie · ${
-                categoryOptions.find((category) => category.id === categoryId)?.name ?? categoryId
-              }`,
+            label: `Catégorie · ${
+              categoryOptions.find((category) => category.id === categoryId)?.name ?? categoryId
+            }`,
             onRemove: () => setCategoryId("all"),
           },
         ]

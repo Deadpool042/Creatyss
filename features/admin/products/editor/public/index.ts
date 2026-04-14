@@ -10,6 +10,7 @@ export { uploadProductImagesAction } from "../actions/upload-product-images.acti
 
 export type {
   AdminProductEditorData,
+  AdminRelatedProductEditorType,
   AdminProductEditorProduct,
   AdminProductEditorCategoryLink,
   AdminProductEditorRelatedProduct,
@@ -27,9 +28,15 @@ export {
 } from "../types/product-variants.types";
 
 export type {
+  AdminProductAvailabilityStatus,
   AdminPriceListOption,
+  AdminProductOptionItem,
+  AdminProductOptionValueItem,
+  AdminProductVariantAvailability,
   AdminProductVariantEditorData,
+  AdminProductVariantInventory,
   AdminProductVariantListItem,
+  AdminProductVariantOptionValue,
   AdminProductVariantStatus,
   ProductVariantFormAction,
   ProductVariantFormState,
@@ -51,6 +58,26 @@ export type {
   ProductGeneralFormState,
   ProductGeneralFormValues,
 } from "../types/product-general-form.types";
+
+export type {
+  ProductAvailabilityFormAction,
+  ProductAvailabilityFormState,
+  ProductAvailabilityRowInput,
+} from "../types/product-availability-form.types";
+export { productAvailabilityFormInitialState } from "../types/product-availability-form.types";
+
+export type {
+  ProductInventoryFormAction,
+  ProductInventoryFormState,
+  ProductInventoryRowInput,
+} from "../types/product-inventory-form.types";
+export { productInventoryFormInitialState } from "../types/product-inventory-form.types";
+
+export type {
+  ProductRelatedProductsFormAction,
+  ProductRelatedProductsFormState,
+} from "../types/product-related-products-form.types";
+export { productRelatedProductsFormInitialState } from "../types/product-related-products-form.types";
 
 export type {
   ProductSeoFormAction,
@@ -93,3 +120,13 @@ export type {
   UploadProductImagesFormState,
   UploadProductImagesInput,
 } from "../types/product-image-upload-multi.types";
+
+export type {
+  AdminPriceEntry,
+  AdminProductPriceEntry,
+  AdminVariantPriceEntry,
+  AdminProductPricingData,
+  ProductPricingFormState,
+  ProductPricingFormAction,
+} from "../types/product-pricing-form.types";
+export { productPricingFormInitialState } from "../types/product-pricing-form.types";

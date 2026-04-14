@@ -1,10 +1,15 @@
 "use server";
 
+import { refresh } from "next/cache";
 import { validateAdminProductInput } from "@/entities/product";
 import {
   AdminProductEditorServiceError,
   updateProductRelatedProducts,
 } from "../services";
+import {
+  productRelatedProductsFormInitialState,
+  type ProductRelatedProductsFormAction,
+} from "../types/product-related-products-form.types";
 
 function getString(formData: FormData, key: string): FormDataEntryValue | null {
   return formData.get(key);
@@ -38,14 +43,15 @@ function buildRelatedSortOrders(formData: FormData): Record<string, FormDataEntr
   return result;
 }
 
-export async function updateProductRelatedProductsAction(formData: FormData): Promise<{
-  status: "success" | "error";
-  message: string;
-}> {
+export const updateProductRelatedProductsAction: ProductRelatedProductsFormAction = async (
+  _prevState,
+  formData
+) => {
   const productIdValue = getString(formData, "productId");
 
   if (typeof productIdValue !== "string" || productIdValue.trim().length === 0) {
     return {
+      ...productRelatedProductsFormInitialState,
       status: "error",
       message: "Produit introuvable.",
     };
@@ -72,6 +78,7 @@ export async function updateProductRelatedProductsAction(formData: FormData): Pr
 
   if (!validated.ok) {
     return {
+      ...productRelatedProductsFormInitialState,
       status: "error",
       message: "Données invalides.",
     };
@@ -83,21 +90,26 @@ export async function updateProductRelatedProductsAction(formData: FormData): Pr
       relatedProducts: validated.data.relatedProducts,
     });
 
+    refresh();
+
     return {
+      ...productRelatedProductsFormInitialState,
       status: "success",
       message: "Mise à jour effectuée.",
     };
   } catch (error: unknown) {
     if (error instanceof AdminProductEditorServiceError) {
       return {
+        ...productRelatedProductsFormInitialState,
         status: "error",
         message: "Mise à jour impossible.",
       };
     }
 
     return {
+      ...productRelatedProductsFormInitialState,
       status: "error",
       message: "Erreur inattendue.",
     };
   }
-}
+};

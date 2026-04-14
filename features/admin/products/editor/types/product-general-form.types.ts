@@ -7,7 +7,6 @@ export type ProductGeneralFormValues = {
   description: string;
   status: "draft" | "active" | "inactive" | "archived";
   isFeatured: boolean;
-  isStandalone: boolean;
   productTypeId: string;
   primaryImageId: string;
 };
@@ -25,7 +24,6 @@ export type ProductGeneralFormState = {
       | "description"
       | "status"
       | "isFeatured"
-      | "isStandalone"
       | "productTypeId"
       | "primaryImageId",
       string

@@ -183,8 +183,8 @@ export function ProductImagesTab({
   return (
     <>
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-28.25 pb-[calc(3.5rem+env(safe-area-inset-bottom))] sm:pt-29.25 md:pt-30.25 [@media(max-height:480px)]:pt-25.25 [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom))] lg:pt-17.25 lg:pb-4">
-          <div className="w-full space-y-5 px-4 pt-4 pb-4 md:space-y-8 md:px-6 md:pt-6 md:pb-6 lg:mx-auto lg:max-w-6xl lg:px-4 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:pt-3 [@media(max-height:480px)]:pb-2.5">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(3.5rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom))] lg:pb-4">
+          <div className="w-full space-y-6 px-4 py-4 md:space-y-7 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
             <AdminFormMessage
               tone={messageState?.status === "success" ? "success" : "error"}
               message={messageState?.message ?? null}
@@ -238,27 +238,20 @@ export function ProductImagesTab({
                 {...(updateAltTextAction ? { onUpdateAltText: handleUpdateAltText } : {})}
                 {...(reorderImageAction ? { onReorder: handleReorder } : {})}
               />
-
-              <ProductImageLibrarySheet
-                open={effectiveLibraryOpen}
-                onOpenChange={setEffectiveLibraryOpen}
-                items={attachableMediaItems}
-                {...(attachImagesAction ? { onAttach: handleAttach } : {})}
-              />
             </AdminFormSection>
 
             <AdminFormSection
-              title="Informations techniques"
-              description="Vue de contrôle rapide de la galerie produit et de son affichage."
+              title="Informations de repère"
+              description="Repères rapides sur la galerie et l’image principale."
             >
               <div className="grid gap-3 text-sm text-muted-foreground md:grid-cols-3">
                 <div className="rounded-lg border border-border/60 px-4 py-3">
-                  <p className="text-[11px] uppercase tracking-wide">Produit</p>
+                  <p className="text-[11px] uppercase tracking-wide">Lien du produit</p>
                   <p className="mt-1 font-medium text-foreground">{productSlug}</p>
                 </div>
 
                 <div className="rounded-lg border border-border/60 px-4 py-3">
-                  <p className="text-[11px] uppercase tracking-wide">Identifiant produit</p>
+                  <p className="text-[11px] uppercase tracking-wide">Identifiant interne</p>
                   <p className="mt-1 truncate font-medium text-foreground">{productId}</p>
                 </div>
 

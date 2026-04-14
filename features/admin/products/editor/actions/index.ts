@@ -1,5 +1,6 @@
 export { updateProductGeneralAction } from "./update-product-general.action";
 export { updateProductCategoriesAction } from "./update-product-categories.action";
+export { updateProductAvailabilityAction } from "./update-product-availability.action";
 export { updateProductRelatedProductsAction } from "./update-product-related-products.action";
 export { createProductVariantAction } from "./create-product-variant.action";
 export { updateProductVariantAction } from "./update-product-variant.action";
@@ -13,3 +14,5 @@ export { updateProductImageAltTextAction } from "./update-product-image-alt-text
 export { updateProductSeoAction } from "./update-product-seo.action";
 export { uploadProductImagesAction } from "./upload-product-images.action";
 export { deleteProductAction } from "./delete-product.action";
+export { updateProductPricesAction } from "./update-product-prices.action";
+export { updateProductInventoryAction } from "./update-product-inventory.action";

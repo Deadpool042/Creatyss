@@ -1,17 +1,31 @@
 "use server";
 
+import { refresh } from "next/cache";
 import { validateAdminProductInput } from "@/entities/product";
 import {
   productGeneralFormInitialState,
   type ProductGeneralFormAction,
 } from "../types/product-general-form.types";
-import {
-  AdminProductEditorServiceError,
-  updateProductGeneral,
-} from "../services";
+import { AdminProductEditorServiceError, updateProductGeneral } from "../services";
 
 function getString(formData: FormData, key: string): FormDataEntryValue | null {
   return formData.get(key);
+}
+
+function getOptionalString(formData: FormData, key: string): string | null {
+  const value = formData.get(key);
+
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const trimmed = value.trim();
+
+  if (trimmed.length === 0 || trimmed === "__none__") {
+    return null;
+  }
+
+  return trimmed;
 }
 
 function getAll(formData: FormData, key: string): FormDataEntryValue[] {
@@ -103,11 +117,11 @@ export const updateProductGeneralAction: ProductGeneralFormAction = async (
     skuRoot: getString(formData, "skuRoot"),
     shortDescription: getString(formData, "shortDescription"),
     description: getString(formData, "description"),
-    productTypeId: getString(formData, "productTypeId"),
-    primaryImageMediaAssetId: getString(formData, "primaryImageId"),
-    status: getString(formData, "status"),
-    isFeatured: getString(formData, "isFeatured"),
-    isStandalone: getString(formData, "isStandalone"),
+    productTypeId: getOptionalString(formData, "productTypeId"),
+    primaryImageMediaAssetId: getOptionalString(formData, "primaryImageId"),
+    status: getOptionalString(formData, "status"),
+    isFeatured: getOptionalString(formData, "isFeatured"),
+    isStandalone: null,
     categoryIds: getAll(formData, "categoryIds"),
     categoryPrimaryIds: getAll(formData, "categoryPrimaryIds"),
     categorySortOrders: buildCategorySortOrders(formData),
@@ -137,10 +151,11 @@ export const updateProductGeneralAction: ProductGeneralFormAction = async (
       description: validated.data.description,
       status: validated.data.status,
       isFeatured: validated.data.isFeatured,
-      isStandalone: validated.data.isStandalone,
       productTypeId: validated.data.productTypeId,
       primaryImageId: validated.data.primaryImageMediaAssetId,
     });
+
+    refresh();
 
     return {
       ...productGeneralFormInitialState,

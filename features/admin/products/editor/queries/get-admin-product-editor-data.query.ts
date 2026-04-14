@@ -35,6 +35,25 @@ function mapVariantStatus(status: string): AdminProductVariantListItem["status"]
   }
 }
 
+function mapAvailabilityStatus(
+  status: string
+): AdminProductVariantListItem["availability"]["status"] {
+  switch (status) {
+    case "AVAILABLE":
+      return "available";
+    case "PREORDER":
+      return "preorder";
+    case "BACKORDER":
+      return "backorder";
+    case "DISCONTINUED":
+      return "discontinued";
+    case "ARCHIVED":
+      return "archived";
+    default:
+      return "unavailable";
+  }
+}
+
 function mapMediaRole(role: string): AdminProductImageItem["role"] {
   switch (role) {
     case "PRIMARY":
@@ -140,6 +159,53 @@ export async function getAdminProductEditorData(
               altText: true,
             },
           },
+          optionValues: {
+            select: {
+              optionValue: {
+                select: {
+                  id: true,
+                  value: true,
+                  label: true,
+                  sortOrder: true,
+                  option: {
+                    select: {
+                      id: true,
+                      name: true,
+                      sortOrder: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          availabilityRecords: {
+            where: {
+              archivedAt: null,
+            },
+            orderBy: [{ updatedAt: "desc" }],
+            take: 1,
+            select: {
+              status: true,
+              isSellable: true,
+              backorderAllowed: true,
+              sellableFrom: true,
+              sellableUntil: true,
+              preorderStartsAt: true,
+              preorderEndsAt: true,
+            },
+          },
+          inventoryItems: {
+            where: {
+              archivedAt: null,
+              status: "ACTIVE",
+            },
+            orderBy: [{ updatedAt: "desc" }],
+            take: 1,
+            select: {
+              onHandQuantity: true,
+              reservedQuantity: true,
+            },
+          },
         },
       },
     },
@@ -209,25 +275,69 @@ export async function getAdminProductEditorData(
     }),
   ]);
 
-  const variants: AdminProductVariantListItem[] = product.variants.map((variant) => ({
-    id: variant.id,
-    slug: variant.slug,
-    sku: variant.sku,
-    name: variant.name,
-    status: mapVariantStatus(variant.status),
-    isDefault: variant.isDefault,
-    sortOrder: variant.sortOrder,
-    barcode: variant.barcode,
-    externalReference: variant.externalReference,
-    weightGrams: variant.weightGrams?.toString() ?? null,
-    widthMm: variant.widthMm?.toString() ?? null,
-    heightMm: variant.heightMm?.toString() ?? null,
-    depthMm: variant.depthMm?.toString() ?? null,
-    primaryImageId: variant.primaryImageId,
-    primaryImageUrl: variant.primaryImage?.publicUrl ?? null,
-    primaryImageStorageKey: variant.primaryImage?.storageKey ?? null,
-    primaryImageAltText: variant.primaryImage?.altText ?? null,
-  }));
+  const variants: AdminProductVariantListItem[] = product.variants.map((variant) => {
+    const availabilityRecord = variant.availabilityRecords[0] ?? null;
+    const inventoryItem = variant.inventoryItems[0] ?? null;
+    const onHandQuantity = inventoryItem?.onHandQuantity ?? 0;
+    const reservedQuantity = inventoryItem?.reservedQuantity ?? 0;
+
+    return {
+      id: variant.id,
+      slug: variant.slug,
+      sku: variant.sku,
+      name: variant.name,
+      status: mapVariantStatus(variant.status),
+      isDefault: variant.isDefault,
+      sortOrder: variant.sortOrder,
+      barcode: variant.barcode,
+      externalReference: variant.externalReference,
+      weightGrams: variant.weightGrams?.toString() ?? null,
+      widthMm: variant.widthMm?.toString() ?? null,
+      heightMm: variant.heightMm?.toString() ?? null,
+      depthMm: variant.depthMm?.toString() ?? null,
+      primaryImageId: variant.primaryImageId,
+      primaryImageUrl: variant.primaryImage?.publicUrl ?? null,
+      primaryImageStorageKey: variant.primaryImage?.storageKey ?? null,
+      primaryImageAltText: variant.primaryImage?.altText ?? null,
+      availability: {
+        status: mapAvailabilityStatus(availabilityRecord?.status ?? "UNAVAILABLE"),
+        isSellable: availabilityRecord?.isSellable ?? false,
+        backorderAllowed: availabilityRecord?.backorderAllowed ?? false,
+        sellableFrom: availabilityRecord?.sellableFrom?.toISOString() ?? null,
+        sellableUntil: availabilityRecord?.sellableUntil?.toISOString() ?? null,
+        preorderStartsAt: availabilityRecord?.preorderStartsAt?.toISOString() ?? null,
+        preorderEndsAt: availabilityRecord?.preorderEndsAt?.toISOString() ?? null,
+      },
+      inventory: {
+        onHandQuantity,
+        reservedQuantity,
+        availableQuantity: onHandQuantity - reservedQuantity,
+        hasInventoryRecord: inventoryItem !== null,
+      },
+      optionValues: [...variant.optionValues]
+        .sort((left, right) => {
+          const optionOrder = left.optionValue.option.sortOrder - right.optionValue.option.sortOrder;
+
+          if (optionOrder !== 0) {
+            return optionOrder;
+          }
+
+          const valueOrder = left.optionValue.sortOrder - right.optionValue.sortOrder;
+
+          if (valueOrder !== 0) {
+            return valueOrder;
+          }
+
+          return left.optionValue.option.name.localeCompare(right.optionValue.option.name, "fr");
+        })
+        .map((item) => ({
+          optionName: item.optionValue.option.name,
+          value: item.optionValue.label ?? item.optionValue.value,
+          optionValueId: item.optionValue.id,
+          optionId: item.optionValue.option.id,
+        })),
+    };
+  });
 
   const images: AdminProductImageItem[] = mediaReferences.map((reference) => ({
     id: reference.id,

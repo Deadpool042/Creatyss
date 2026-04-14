@@ -4,13 +4,12 @@ import { Plus } from "lucide-react";
 import { useMemo, useState, type JSX } from "react";
 
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Button } from "@/components/ui/button";
 import {
   type deleteProductVariantAction,
   type setDefaultProductVariantAction,
-  type AdminPriceListOption,
   type AdminProductImageItem,
+  type AdminProductOptionItem,
   type AdminProductVariantListItem,
   type ProductVariantFormAction,
 } from "@/features/admin/products/editor/public";
@@ -30,7 +29,7 @@ type ProductVariantsTabProps = {
   productSlug: string;
   variants: AdminProductVariantListItem[];
   images: AdminProductImageItem[];
-  priceLists: readonly AdminPriceListOption[];
+  productOptions?: AdminProductOptionItem[];
   createAction?: ProductVariantFormAction;
   updateAction?: ProductVariantFormAction;
   setDefaultAction?: SetDefaultProductVariantAction;
@@ -44,7 +43,7 @@ export function ProductVariantsTab({
   productSlug,
   variants,
   images,
-  priceLists,
+  productOptions = [],
   createAction,
   updateAction,
   setDefaultAction,
@@ -65,6 +64,10 @@ export function ProductVariantsTab({
   const selectedVariant = useMemo(
     () => variants.find((variant) => variant.id === selectedVariantId) ?? null,
     [variants, selectedVariantId]
+  );
+  const defaultVariant = useMemo(
+    () => variants.find((variant) => variant.isDefault) ?? null,
+    [variants]
   );
 
   function setSheetOpen(nextOpen: boolean): void {
@@ -114,39 +117,41 @@ export function ProductVariantsTab({
 
   return (
     <>
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-          <div className="w-full space-y-5 px-4 py-4 md:space-y-8 md:px-6 md:py-6 lg:mx-auto lg:max-w-6xl lg:px-4 xl:px-0">
-            <AdminFormMessage
-              tone={messageState?.status === "success" ? "success" : "error"}
-              message={messageState?.message ?? null}
-            />
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(3.5rem+env(safe-area-inset-bottom)+0.75rem)] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom)+0.5rem)] lg:pb-6">
+        <div className="w-full space-y-6 px-4 py-4 md:space-y-7 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
+          <AdminFormMessage
+            tone={messageState?.status === "success" ? "success" : "error"}
+            message={messageState?.message ?? null}
+          />
 
-            <AdminFormSection
-              title="Variantes"
-              description="Gestion des variantes, du statut métier, de l’ordre et de l’image principale."
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div className="text-sm text-muted-foreground">
-                  {variants.length} variante{variants.length > 1 ? "s" : ""}
-                </div>
+          <div className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
+            <div className="min-w-0 space-y-1">
+              <p className="text-sm font-medium text-foreground">
+                {variants.length} variante{variants.length > 1 ? "s" : ""}
+                {defaultVariant ? ` • variante par défaut : ${defaultVariant.sku}` : ""}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                L&apos;image principale de chaque variante est choisie parmi les médias déjà
+                rattachés au produit.
+              </p>
+            </div>
 
-                <Button type="button" variant="outline" onClick={openCreateSheet}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Ajouter une variante
-                </Button>
-              </div>
-
-              <ProductVariantList
-                productId={productId}
-                productSlug={productSlug}
-                variants={variants}
-                onEdit={handleEdit}
-                {...(setDefaultAction ? { onSetDefault: handleSetDefault } : {})}
-                {...(deleteAction ? { onDelete: handleDelete } : {})}
-              />
-            </AdminFormSection>
+            <div className="flex shrink-0">
+              <Button type="button" variant="outline" onClick={openCreateSheet}>
+                <Plus className="mr-2 h-4 w-4" />
+                Ajouter une variante
+              </Button>
+            </div>
           </div>
+
+          <ProductVariantList
+            productId={productId}
+            productSlug={productSlug}
+            variants={variants}
+            onEdit={handleEdit}
+            {...(setDefaultAction ? { onSetDefault: handleSetDefault } : {})}
+            {...(deleteAction ? { onDelete: handleDelete } : {})}
+          />
         </div>
       </div>
 
@@ -156,8 +161,8 @@ export function ProductVariantsTab({
         onOpenChange={setSheetOpen}
         productId={productId}
         variant={selectedVariant}
-        priceLists={priceLists}
         images={images}
+        productOptions={productOptions}
         {...(createAction ? { createAction } : {})}
         {...(updateAction ? { updateAction } : {})}
       />

@@ -25,5 +25,33 @@ export type {
   ProductTableStatusFilter,
   ProductTableStockFilter,
   ProductTableVariantFilter,
-  ToggleProductFeaturedResult,
 } from "./product-table.types";
+
+export type {
+  ToggleProductFeaturedInput,
+  ToggleProductFeaturedResult,
+} from "./toggle-product-featured.types";
+
+export type {
+  BulkUpdateProductStatusInput,
+  BulkUpdateProductStatusResult,
+} from "./bulk-update-product-status.types";
+
+export type {
+  BulkUpdateProductFeaturedInput,
+  BulkUpdateProductFeaturedResult,
+} from "./bulk-update-product-featured.types";
+
+export type { ArchiveProductInput, ArchiveProductResult } from "./archive-product.types";
+
+export type { RestoreProductInput, RestoreProductResult } from "./restore-product.types";
+
+export type {
+  BulkRestoreProductsInput,
+  BulkRestoreProductsResult,
+} from "./bulk-restore-products.types";
+
+export type {
+  BulkArchiveProductsInput,
+  BulkArchiveProductsResult,
+} from "./bulk-archive-products.types";

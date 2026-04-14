@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2024",
-    "lib": ["dom", "dom.iterable", "es2024"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2024"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
@@ -17,12 +21,24 @@
     "jsx": "react-jsx",
     "incremental": true,
     "paths": {
-      "@/*": ["./*"],
-      "@/core/*": ["./core/*"],
-      "@/features/*": ["./features/*"],
-      "@/components/*": ["./components/*"],
-      "@/prisma-generated/*": ["./src/generated/prisma/*"],
-      "@/entities/*": ["./entities/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@/core/*": [
+        "./core/*"
+      ],
+      "@/features/*": [
+        "./features/*"
+      ],
+      "@/components/*": [
+        "./components/*"
+      ],
+      "@/prisma-generated/*": [
+        "./src/generated/prisma/*"
+      ],
+      "@/entities/*": [
+        "./entities/*"
+      ]
     },
     "plugins": [
       {
@@ -37,5 +53,21 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "coverage",
+    ".turbo",
+    ".cache",
+    ".vercel",
+    ".output",
+    "out",
+    "tmp",
+    "logs",
+    ".sst",
+    "**/*.map",
+    "**/*.meta"
+  ]
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { useMemo, useState, type JSX, type ReactNode } from "react";
+import { useMemo, useState, type JSX } from "react";
 
 import {
   Select,
@@ -38,40 +38,23 @@ type SecondaryFiltersProps = {
 const MOBILE_SELECT_TRIGGER_CLASS_NAME =
   "h-10 rounded-xl bg-card text-sm [@media(max-height:480px)]:h-9";
 
-function FilterSection({
-  title,
-  description,
-  children,
-}: {
-  title: string;
-  description?: string;
-  children: ReactNode;
-}): JSX.Element {
+function MobileFilterSectionTitle({ children }: { children: string }): JSX.Element {
   return (
-    <section className="space-y-2.5 rounded-xl border border-surface-border bg-surface-panel-soft p-3.5 [@media(max-height:480px)]:space-y-2 [@media(max-height:480px)]:p-3">
-      <div className="space-y-1">
-        <h3 className="text-sm font-semibold tracking-tight text-foreground">{title}</h3>
-        {description ? (
-          <p className="text-xs leading-5 text-muted-foreground [@media(max-height:480px)]:hidden">
-            {description}
-          </p>
-        ) : null}
-      </div>
-
+    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
       {children}
-    </section>
+    </p>
   );
 }
 
 function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.Element {
   return (
-    <div className="flex flex-col gap-2.5 xl:flex-row xl:items-center">
-      <div className="xl:w-48 xl:flex-none">
+    <div className="grid grid-cols-[10rem_minmax(0,1fr)_10rem] gap-2">
+      <div className="min-w-0">
         <Select
           value={state.status}
           onValueChange={(value) => state.setStatus(value as ProductTableStatusFilter)}
         >
-          <SelectTrigger className="w-full text-sm">
+          <SelectTrigger className="h-8 w-full text-xs">
             <SelectValue placeholder="Statut" />
           </SelectTrigger>
           <SelectContent>
@@ -84,43 +67,59 @@ function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.El
         </Select>
       </div>
 
-      <div className="min-w-0 xl:min-w-[20rem] xl:flex-1">
+      <div className="min-w-0">
         <AdminProductsCategoryFilter
           categories={categoryOptions}
           selectedParentCategoryId={state.parentCategoryId}
           selectedCategoryId={state.categoryId}
           onParentCategoryChange={state.setParentCategoryId}
           onCategoryChange={state.setCategoryId}
+          triggerClassName="h-8 text-xs"
+          className="gap-2"
         />
       </div>
 
-      <div className="xl:w-52 xl:flex-none">
+      <div className="min-w-0">
         <Select
-          value={state.featured}
-          onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
+          value={state.sort}
+          onValueChange={(value) => state.setSort(value as ProductSortOption)}
         >
-          <SelectTrigger className="w-full text-sm">
-            <SelectValue placeholder="Mise en avant" />
+          <SelectTrigger className="h-8 w-full text-xs">
+            <SelectValue placeholder="Tri" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Tous les produits</SelectItem>
-            <SelectItem value="featured">Mis en avant</SelectItem>
-            <SelectItem value="standard">Standard</SelectItem>
+            <SelectItem value="updated-desc">Plus récents</SelectItem>
+            <SelectItem value="updated-asc">Plus anciens</SelectItem>
+            <SelectItem value="name-asc">Nom A → Z</SelectItem>
+            <SelectItem value="name-desc">Nom Z → A</SelectItem>
           </SelectContent>
         </Select>
       </div>
     </div>
   );
 }
-
 function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): JSX.Element {
   return (
     <>
       <Select
+        value={state.featured}
+        onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
+      >
+        <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
+          <SelectValue placeholder="Mise en avant" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Tous les produits</SelectItem>
+          <SelectItem value="featured">Mis en avant</SelectItem>
+          <SelectItem value="standard">Standard</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Select
         value={state.image}
         onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
       >
-        <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
+        <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
           <SelectValue placeholder="Images" />
         </SelectTrigger>
         <SelectContent>
@@ -134,7 +133,7 @@ function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): J
         value={state.variant}
         onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
       >
-        <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
+        <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
           <SelectValue placeholder="Variantes" />
         </SelectTrigger>
         <SelectContent>
@@ -148,7 +147,7 @@ function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): J
         value={state.stock}
         onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
       >
-        <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
+        <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
           <SelectValue placeholder="Disponibilité" />
         </SelectTrigger>
         <SelectContent>
@@ -157,31 +156,15 @@ function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): J
           <SelectItem value="out-of-stock">Rupture</SelectItem>
         </SelectContent>
       </Select>
-
-      <Select
-        value={state.sort}
-        onValueChange={(value) => state.setSort(value as ProductSortOption)}
-      >
-        <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
-          <SelectValue placeholder="Tri" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="updated-desc">Plus récents</SelectItem>
-          <SelectItem value="updated-asc">Plus anciens</SelectItem>
-          <SelectItem value="name-asc">Nom A → Z</SelectItem>
-          <SelectItem value="name-desc">Nom Z → A</SelectItem>
-        </SelectContent>
-      </Select>
     </>
   );
 }
 
 function MobilePrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.Element {
   return (
-    <FilterSection
-      title="Filtres principaux"
-      description="Les réglages les plus utiles pour affiner rapidement la liste."
-    >
+    <section className="space-y-2.5 rounded-xl border border-surface-border bg-surface-panel-soft p-3 [@media(max-height:480px)]:space-y-2">
+      <MobileFilterSectionTitle>Principaux</MobileFilterSectionTitle>
+
       <div className="grid gap-2 sm:grid-cols-2">
         <Select
           value={state.status}
@@ -226,7 +209,69 @@ function MobilePrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): 
           />
         </div>
       </div>
-    </FilterSection>
+    </section>
+  );
+}
+
+function MobileAdvancedFiltersFields({ state }: { state: ProductTableFiltersState }): JSX.Element {
+  return (
+    <>
+      <Select
+        value={state.featured}
+        onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
+      >
+        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
+          <SelectValue placeholder="Mise en avant" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Tous les produits</SelectItem>
+          <SelectItem value="featured">Mis en avant</SelectItem>
+          <SelectItem value="standard">Standard</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Select
+        value={state.image}
+        onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
+      >
+        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
+          <SelectValue placeholder="Images" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Toutes les images</SelectItem>
+          <SelectItem value="with-image">Avec image</SelectItem>
+          <SelectItem value="without-image">Sans image</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Select
+        value={state.variant}
+        onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
+      >
+        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
+          <SelectValue placeholder="Variantes" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Tous les produits</SelectItem>
+          <SelectItem value="single">Simple</SelectItem>
+          <SelectItem value="multiple">Multi-variantes</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Select
+        value={state.stock}
+        onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
+      >
+        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
+          <SelectValue placeholder="Disponibilité" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">Toutes les disponibilités</SelectItem>
+          <SelectItem value="in-stock">En stock</SelectItem>
+          <SelectItem value="out-of-stock">Rupture</SelectItem>
+        </SelectContent>
+      </Select>
+    </>
   );
 }
 
@@ -235,8 +280,12 @@ function MobileAdvancedFilters({ state }: SecondaryFiltersProps): JSX.Element {
 
   const activeAdvancedFiltersCount = useMemo(
     () =>
-      [state.featured !== "all", state.image !== "all", state.variant !== "all", state.stock !== "all"].filter(Boolean)
-        .length,
+      [
+        state.featured !== "all",
+        state.image !== "all",
+        state.variant !== "all",
+        state.stock !== "all",
+      ].filter(Boolean).length,
     [state.featured, state.image, state.stock, state.variant]
   );
 
@@ -252,14 +301,12 @@ function MobileAdvancedFilters({ state }: SecondaryFiltersProps): JSX.Element {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="flex w-full items-center justify-between gap-3 px-3.5 py-3.5 text-left transition-colors hover:bg-background/20 [@media(max-height:480px)]:px-3 [@media(max-height:480px)]:py-3"
+        className="flex w-full items-center justify-between gap-3 px-3 py-3 text-left transition-colors hover:bg-interactive-hover"
         aria-expanded={open}
       >
-        <div className="space-y-1">
-          <p className="text-sm font-semibold tracking-tight text-foreground">Filtres secondaires</p>
-          <p className="text-xs leading-5 text-muted-foreground [@media(max-height:480px)]:hidden">
-            Mise en avant, images, variantes et disponibilité.
-          </p>
+        <div className="space-y-0.5">
+          <MobileFilterSectionTitle>Avancés</MobileFilterSectionTitle>
+          <p className="text-xs text-foreground">Mise en avant, images, variantes, stock</p>
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
@@ -267,15 +314,18 @@ function MobileAdvancedFilters({ state }: SecondaryFiltersProps): JSX.Element {
             {summaryLabel}
           </span>
           <ChevronDown
-            className={cn("h-4 w-4 text-muted-foreground transition-transform", open && "rotate-180")}
+            className={cn(
+              "h-4 w-4 text-muted-foreground transition-transform",
+              open && "rotate-180"
+            )}
           />
         </div>
       </button>
 
       {open ? (
-        <div className="border-t border-surface-border px-3.5 py-3.5 [@media(max-height:480px)]:px-3 [@media(max-height:480px)]:py-3">
+        <div className="border-t border-surface-border px-3 py-3">
           <div className="grid gap-2 sm:grid-cols-2">
-            <SecondaryFilters state={state} triggerClassName={MOBILE_SELECT_TRIGGER_CLASS_NAME} />
+            <MobileAdvancedFiltersFields state={state} />
           </div>
         </div>
       ) : null}
@@ -297,7 +347,7 @@ export function ProductTableFiltersForm({
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       <MobilePrimaryFilters categoryOptions={categoryOptions} state={state} />
       <MobileAdvancedFilters state={state} />
     </div>

@@ -1,11 +1,11 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useState, type JSX } from "react";
+import { useActionState, useMemo, useState, type JSX } from "react";
 
 import { useAutoSlug } from "@/entities/shared/slug/hooks/use-auto-slug";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -39,6 +39,44 @@ type ProductGeneralTabInnerProps = ProductGeneralTabProps & {
   onReset: () => void;
 };
 
+type ProductStatusValue = "draft" | "active" | "inactive" | "archived";
+type IsFeaturedValue = "true" | "false";
+
+function getProductTypeLabel(option: { code: string; name: string; slug: string }): string {
+  const normalizedCode = option.code.trim().toLowerCase();
+  const normalizedName = option.name.trim().toLowerCase();
+  const normalizedSlug = option.slug.trim().toLowerCase();
+
+  if (normalizedCode === "simple") {
+    return "Produit simple";
+  }
+
+  if (normalizedCode === "variable") {
+    return "Produit à variantes";
+  }
+
+  if (
+    normalizedCode.includes("woo") ||
+    normalizedSlug.includes("woo") ||
+    normalizedName.includes("woo") ||
+    normalizedCode.includes("import") ||
+    normalizedSlug.includes("import") ||
+    normalizedName.includes("import")
+  ) {
+    return "Import catalogue historique";
+  }
+
+  return option.name;
+}
+
+function SectionEyebrow({ children }: { children: string }): JSX.Element {
+  return (
+    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+      {children}
+    </p>
+  );
+}
+
 function ProductGeneralTabInner({
   action,
   product,
@@ -52,135 +90,186 @@ function ProductGeneralTabInner({
     slugValue,
     setSourceValue: setNameValue,
     setSlugValue,
-    resetAutoSlug,
   } = useAutoSlug({
     initialSourceValue: product.product.name,
     initialSlugValue: product.product.slug,
   });
 
-  useEffect(() => {
-    resetAutoSlug({
-      initialSourceValue: product.product.name,
-      initialSlugValue: product.product.slug,
-    });
-  }, [product.product.name, product.product.slug, resetAutoSlug]);
+  const [skuRoot, setSkuRoot] = useState(product.product.skuRoot ?? "");
+  const [productTypeId, setProductTypeId] = useState(product.product.productTypeId ?? "__none__");
+  const [status, setStatus] = useState<ProductStatusValue>(product.product.status);
+  const [isFeatured, setIsFeatured] = useState<IsFeaturedValue>(
+    product.product.isFeatured ? "true" : "false"
+  );
 
-  const primaryImageLabel = useMemo(() => {
-    if (product.product.primaryImageStorageKey) {
-      return product.product.primaryImageStorageKey;
+  function handleStatusChange(value: string): void {
+    if (value === "draft" || value === "active" || value === "inactive" || value === "archived") {
+      setStatus(value);
+    }
+  }
+
+  function handleIsFeaturedChange(value: string): void {
+    if (value === "true" || value === "false") {
+      setIsFeatured(value);
+    }
+  }
+
+  const primaryImageSummary = useMemo(() => {
+    if (product.product.primaryImageId === null) {
+      return "Aucune image principale définie.";
     }
 
-    return "Aucune image principale";
-  }, [product.product.primaryImageStorageKey]);
+    if (product.product.primaryImageAltText) {
+      return `Image actuelle : ${product.product.primaryImageAltText}`;
+    }
+
+    return "Une image principale est déjà définie.";
+  }, [product.product.primaryImageAltText, product.product.primaryImageId]);
 
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-28.25 pb-[calc(7rem+env(safe-area-inset-bottom))] sm:pt-29.25 md:pt-30.25 [@media(max-height:480px)]:pt-25.25 [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pt-17.25 lg:pb-14">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
         <input type="hidden" name="productId" value={product.product.id} />
 
-        <div className="w-full space-y-5 px-4 pt-4 pb-4 md:space-y-8 md:px-6 md:pt-6 md:pb-6 lg:mx-auto lg:max-w-3xl lg:px-4 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:pt-3 [@media(max-height:480px)]:pb-3">
-          <AdminFormMessage tone="error" message={state.status === "error" ? state.message : null} />
+        <div className="w-full space-y-6 px-4 py-4 md:space-y-7 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
+          <AdminFormMessage
+            tone="error"
+            message={state.status === "error" ? state.message : null}
+          />
           <AdminFormMessage
             tone="success"
             message={state.status === "success" ? state.message : null}
           />
 
-          <AdminFormSection
-            title="Informations générales"
-            description="Renseignez les informations principales du produit."
-          >
-            <AdminFormField
-              label="Nom du produit"
-              htmlFor="edit-name"
-              required
-              error={state.fieldErrors.name}
-            >
-              <Input
-                id="edit-name"
-                name="name"
-                value={nameValue}
-                onChange={(event) => setNameValue(event.target.value)}
-                className="text-sm"
-              />
-            </AdminFormField>
-
-            <AdminFormField
-              label="Slug"
-              htmlFor="edit-slug"
-              required
-              hint="Généré automatiquement depuis le nom. Vous pouvez le modifier."
-              error={state.fieldErrors.slug}
-            >
-              <Input
-                id="edit-slug"
-                name="slug"
-                value={slugValue}
-                onChange={(event) => setSlugValue(event.target.value)}
-                className="font-mono text-sm"
-              />
-            </AdminFormField>
-
-            <div className="grid gap-4 md:grid-cols-2">
+          <Card className="rounded-[1.4rem] border border-surface-border-strong bg-surface-panel shadow-raised py-0">
+            <CardHeader className="rounded-t-[1.4rem] border-b border-surface-border bg-surface-panel-soft px-5 py-5 md:px-6">
+              <div className="space-y-1.5">
+                <SectionEyebrow>Identité</SectionEyebrow>
+                <CardTitle className="text-lg">Identité produit</CardTitle>
+                <CardDescription className="leading-6 text-foreground/70">
+                  Renseignez les attributs structurants qui identifient ce produit dans le
+                  catalogue.
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-5 px-5 py-5 md:px-6 md:py-6">
               <AdminFormField
-                label="SKU racine"
-                htmlFor="edit-sku-root"
-                error={state.fieldErrors.skuRoot}
+                label="Nom du produit"
+                htmlFor="edit-name"
+                required
+                error={state.fieldErrors.name}
               >
                 <Input
-                  id="edit-sku-root"
-                  name="skuRoot"
-                  defaultValue={product.product.skuRoot ?? ""}
+                  id="edit-name"
+                  name="name"
+                  value={nameValue}
+                  onChange={(event) => setNameValue(event.target.value)}
                   className="text-sm"
                 />
               </AdminFormField>
 
               <AdminFormField
-                label="Type produit"
-                htmlFor="edit-product-type"
-                error={state.fieldErrors.productTypeId}
+                label="Slug"
+                htmlFor="edit-slug"
+                required
+                hint="Généré automatiquement depuis le nom. Vous pouvez le modifier."
+                error={state.fieldErrors.slug}
               >
-                <Select name="productTypeId" defaultValue={product.product.productTypeId ?? "__none__"}>
-                  <SelectTrigger id="edit-product-type" className="text-sm">
-                    <SelectValue placeholder="Aucun type produit" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="__none__">Aucun type produit</SelectItem>
-                    {productTypeOptions.map((option) => (
-                      <SelectItem key={option.id} value={option.id}>
-                        {option.name} · {option.code}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  id="edit-slug"
+                  name="slug"
+                  value={slugValue}
+                  onChange={(event) => setSlugValue(event.target.value)}
+                  className="font-mono text-sm"
+                />
               </AdminFormField>
-            </div>
 
-            <AdminRichTextEditor
-              name="shortDescription"
-              label="Courte description"
-              preset="full"
-              initialValue={product.product.shortDescription ?? ""}
-              {...(state.fieldErrors.shortDescription
-                ? { error: state.fieldErrors.shortDescription }
-                : {})}
-            />
+              <div className="grid gap-4 md:grid-cols-2">
+                <AdminFormField
+                  label="SKU racine"
+                  htmlFor="edit-sku-root"
+                  error={state.fieldErrors.skuRoot}
+                >
+                  <Input
+                    id="edit-sku-root"
+                    name="skuRoot"
+                    value={skuRoot}
+                    onChange={(event) => setSkuRoot(event.target.value)}
+                    className="text-sm"
+                  />
+                </AdminFormField>
 
-            <AdminRichTextEditor
-              name="description"
-              label="Description"
-              preset="full"
-              initialValue={product.product.description ?? ""}
-              {...(state.fieldErrors.description ? { error: state.fieldErrors.description } : {})}
-            />
-          </AdminFormSection>
+                <AdminFormField
+                  label="Classification catalogue"
+                  htmlFor="edit-product-type"
+                  description="Repère interne utilisé pour organiser le produit dans le catalogue."
+                  error={state.fieldErrors.productTypeId}
+                >
+                  <input type="hidden" name="productTypeId" value={productTypeId} />
 
-          <AdminFormSection
-            title="Publication"
-            description="Définissez le cycle de vie du produit et sa visibilité métier."
-          >
-            <div className="grid gap-4 md:grid-cols-2">
+                  <Select value={productTypeId} onValueChange={setProductTypeId}>
+                    <SelectTrigger id="edit-product-type" className="text-sm">
+                      <SelectValue placeholder="Aucune classification" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="__none__">Aucune classification</SelectItem>
+                      {productTypeOptions.map((option) => (
+                        <SelectItem key={option.id} value={option.id}>
+                          {getProductTypeLabel(option)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </AdminFormField>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
+            <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4 md:px-6">
+              <div className="space-y-1.5">
+                <SectionEyebrow>Contenus</SectionEyebrow>
+                <CardTitle>Contenus éditoriaux</CardTitle>
+                <CardDescription className="leading-6">
+                  Rédigez le résumé et la description complète du produit.
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6 px-5 py-5 md:px-6 md:py-6">
+              <AdminRichTextEditor
+                name="shortDescription"
+                label="Résumé"
+                preset="full"
+                initialValue={product.product.shortDescription ?? ""}
+                {...(state.fieldErrors.shortDescription
+                  ? { error: state.fieldErrors.shortDescription }
+                  : {})}
+              />
+              <AdminRichTextEditor
+                name="description"
+                label="Description détaillée"
+                preset="full"
+                initialValue={product.product.description ?? ""}
+                {...(state.fieldErrors.description ? { error: state.fieldErrors.description } : {})}
+              />
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
+            <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4 md:px-6">
+              <div className="space-y-1.5">
+                <SectionEyebrow>Publication</SectionEyebrow>
+                <CardTitle>Publication et visibilité</CardTitle>
+                <CardDescription className="leading-6">
+                  Contrôlez la mise en ligne du produit et sa mise en avant.
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-4 px-5 py-5 md:grid-cols-2 md:px-6 md:py-6">
               <AdminFormField label="Statut" htmlFor="edit-status" error={state.fieldErrors.status}>
-                <Select name="status" defaultValue={product.product.status}>
+                <input type="hidden" name="status" value={status} />
+
+                <Select value={status} onValueChange={handleStatusChange}>
                   <SelectTrigger id="edit-status" className="text-sm">
                     <SelectValue />
                   </SelectTrigger>
@@ -198,10 +287,9 @@ function ProductGeneralTabInner({
                 htmlFor="edit-is-featured"
                 error={state.fieldErrors.isFeatured}
               >
-                <Select
-                  name="isFeatured"
-                  defaultValue={product.product.isFeatured ? "true" : "false"}
-                >
+                <input type="hidden" name="isFeatured" value={isFeatured} />
+
+                <Select value={isFeatured} onValueChange={handleIsFeaturedChange}>
                   <SelectTrigger id="edit-is-featured" className="text-sm">
                     <SelectValue />
                   </SelectTrigger>
@@ -212,40 +300,23 @@ function ProductGeneralTabInner({
                 </Select>
               </AdminFormField>
 
-              <AdminFormField
-                label="Standalone"
-                htmlFor="edit-is-standalone"
-                error={state.fieldErrors.isStandalone}
-              >
-                <Select
-                  name="isStandalone"
-                  defaultValue={product.product.isStandalone ? "true" : "false"}
-                >
-                  <SelectTrigger id="edit-is-standalone" className="text-sm">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="true">Oui</SelectItem>
-                    <SelectItem value="false">Non</SelectItem>
-                  </SelectContent>
-                </Select>
-              </AdminFormField>
+              <input
+                type="hidden"
+                name="primaryImageId"
+                value={product.product.primaryImageId ?? ""}
+              />
 
-              <AdminFormField
-                label="Image principale"
-                htmlFor="edit-primary-image-id"
-                error={state.fieldErrors.primaryImageId}
-                hint={primaryImageLabel}
-              >
-                <Input
-                  id="edit-primary-image-id"
-                  name="primaryImageId"
-                  defaultValue={product.product.primaryImageId ?? ""}
-                  className="font-mono text-sm"
-                />
-              </AdminFormField>
-            </div>
-          </AdminFormSection>
+              <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-3 text-sm shadow-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Image principale
+                </p>
+                <p className="mt-2 font-medium text-foreground">{primaryImageSummary}</p>
+                <p className="mt-1 leading-6 text-muted-foreground">
+                  Gérez ce choix depuis l’onglet Médias.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
@@ -285,9 +356,19 @@ function ProductGeneralTabInner({
 export function ProductGeneralTab(props: ProductGeneralTabProps): JSX.Element {
   const [formInstanceKey, setFormInstanceKey] = useState(0);
 
+  const resetKey = [
+    props.product.product.id,
+    props.product.product.name,
+    props.product.product.slug,
+    props.product.product.skuRoot ?? "",
+    props.product.product.productTypeId ?? "__none__",
+    props.product.product.status,
+    props.product.product.isFeatured ? "true" : "false",
+  ].join(":");
+
   return (
     <ProductGeneralTabInner
-      key={formInstanceKey}
+      key={`${resetKey}:${formInstanceKey}`}
       {...props}
       onReset={() => setFormInstanceKey((current) => current + 1)}
     />

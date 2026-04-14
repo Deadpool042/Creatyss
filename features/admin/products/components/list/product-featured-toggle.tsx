@@ -1,3 +1,4 @@
+//features/admin/products/components/list/product-featured-toggle.tsx
 "use client";
 
 import { Star } from "lucide-react";

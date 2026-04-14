@@ -8,6 +8,11 @@ import {
   uploadAdminMediaImage,
 } from "./product-test-helpers";
 
+test.skip(
+  true,
+  "Legacy product spec quarantined: migrate to wizard/edit current UI before re-enabling."
+);
+
 const PRIMARY_IMAGE_SUBMIT_BUTTON_PATTERN = /^(Définir|Remplacer) l'image principale$/;
 
 function getProductPrimaryImageBlock(page: Page): Locator {

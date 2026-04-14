@@ -20,6 +20,26 @@ export type {
 } from "./product-general-form.types";
 export { productGeneralFormInitialState } from "./product-general-form.types";
 
+export type {
+  ProductAvailabilityFormAction,
+  ProductAvailabilityFormState,
+  ProductAvailabilityRowInput,
+} from "./product-availability-form.types";
+export { productAvailabilityFormInitialState } from "./product-availability-form.types";
+
+export type {
+  ProductInventoryFormAction,
+  ProductInventoryFormState,
+  ProductInventoryRowInput,
+} from "./product-inventory-form.types";
+export { productInventoryFormInitialState } from "./product-inventory-form.types";
+
+export type {
+  ProductRelatedProductsFormAction,
+  ProductRelatedProductsFormState,
+} from "./product-related-products-form.types";
+export { productRelatedProductsFormInitialState } from "./product-related-products-form.types";
+
 export type { AdminProductImageItem, AdminProductImagesData } from "./product-images.types";
 
 export type {
@@ -30,8 +50,11 @@ export type {
 export { productSeoFormInitialState } from "./product-seo-form.types";
 
 export type {
+  AdminProductAvailabilityStatus,
   AdminPriceListOption,
+  AdminProductVariantAvailability,
   AdminProductVariantEditorData,
+  AdminProductVariantInventory,
   AdminProductVariantListItem,
   AdminProductVariantStatus,
   ProductVariantFormAction,
@@ -88,3 +111,13 @@ export type {
 } from "./product-variant-delete.types";
 
 export type { DeleteProductInput, DeleteProductResult } from "./product-delete.types";
+
+export type {
+  AdminPriceEntry,
+  AdminProductPriceEntry,
+  AdminVariantPriceEntry,
+  AdminProductPricingData,
+  ProductPricingFormState,
+  ProductPricingFormAction,
+} from "./product-pricing-form.types";
+export { productPricingFormInitialState } from "./product-pricing-form.types";

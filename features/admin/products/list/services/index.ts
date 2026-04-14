@@ -1,0 +1,7 @@
+export { toggleProductFeatured } from "./toggle-product-featured.service";
+export { bulkUpdateProductStatus } from "./bulk-update-product-status.service";
+export { bulkUpdateProductFeatured } from "./bulk-update-product-featured.service";
+export { archiveProduct } from "./archive-product.service";
+export { restoreProduct } from "./restore-product.service";
+export { bulkRestoreProducts } from "./bulk-restore-products.service";
+export { bulkArchiveProducts } from "./bulk-archive-products.service";

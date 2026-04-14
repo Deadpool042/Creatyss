@@ -1,19 +1,11 @@
-import { z } from "zod";
+export { productTableFiltersSchema } from "./product-table-filters.schema";
+export { adminProductFeedQuerySchema } from "./admin-product-feed-query.schema";
+export { bulkUpdateProductStatusSchema } from "./bulk-update-product-status.schema";
+export { bulkUpdateProductFeaturedSchema } from "./bulk-update-product-featured.schema";
+export { bulkArchiveProductsSchema } from "./bulk-archive-products.schema";
+export { bulkRestoreProductsSchema } from "./bulk-restore-products.schema";
 
-export const productTableFiltersSchema = z.object({
-  search: z.string().optional(),
-  status: z.enum(["all", "draft", "active", "inactive", "archived"]).optional(),
-  categoryId: z.string().optional(),
-  featured: z.enum(["all", "featured", "standard"]).optional(),
-  image: z.enum(["all", "with-image", "without-image"]).optional(),
-  stock: z.enum(["all", "in-stock", "out-of-stock"]).optional(),
-  variant: z.enum(["all", "single", "multiple"]).optional(),
-  sort: z
-    .enum(["updated-desc", "updated-asc", "created-desc", "created-asc", "name-asc", "name-desc"])
-    .optional(),
-});
-
-export const adminProductFeedQuerySchema = productTableFiltersSchema.extend({
-  limit: z.coerce.number().int().positive().optional(),
-  cursor: z.string().nullable().optional(),
-});
+export type { ProductTableFiltersSchema } from "./product-table-filters.schema";
+export type { AdminProductFeedQuerySchema } from "./admin-product-feed-query.schema";
+export type { BulkArchiveProductsSchema } from "./bulk-archive-products.schema";
+export type { BulkRestoreProductsSchema } from "./bulk-restore-products.schema";

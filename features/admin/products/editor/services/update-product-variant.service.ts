@@ -2,6 +2,7 @@ import { withTransaction } from "@/core/db";
 import {
   assertMediaAssetExists,
   assertVariantExists,
+  assertVariantOptionValuesAreValid,
   mapEditorVariantStatusToPrismaStatus,
 } from "./shared";
 
@@ -21,6 +22,7 @@ type UpdateProductVariantServiceInput = {
   widthMm: number | null;
   heightMm: number | null;
   depthMm: number | null;
+  optionValueIds: string[];
 };
 
 export async function updateProductVariant(
@@ -28,6 +30,7 @@ export async function updateProductVariant(
 ): Promise<{ id: string }> {
   return withTransaction(async (tx) => {
     await assertVariantExists(tx, input.productId, input.variantId);
+    await assertVariantOptionValuesAreValid(tx, input.productId, input.optionValueIds);
 
     if (input.primaryImageId !== null) {
       await assertMediaAssetExists(tx, input.primaryImageId);
@@ -49,7 +52,7 @@ export async function updateProductVariant(
       });
     }
 
-    return tx.productVariant.update({
+    const updated = await tx.productVariant.update({
       where: {
         id: input.variantId,
       },
@@ -73,5 +76,30 @@ export async function updateProductVariant(
         id: true,
       },
     });
+
+    // Sync ciblé : supprime uniquement les associations isVariantAxis=true
+    // pour préserver les associations hors périmètre UI (isVariantAxis=false)
+    await tx.productVariantOptionValue.deleteMany({
+      where: {
+        variantId: input.variantId,
+        optionValue: {
+          option: {
+            isVariantAxis: true,
+          },
+        },
+      },
+    });
+
+    if (input.optionValueIds.length > 0) {
+      await tx.productVariantOptionValue.createMany({
+        data: input.optionValueIds.map((optionValueId) => ({
+          variantId: input.variantId,
+          optionValueId,
+        })),
+        skipDuplicates: true,
+      });
+    }
+
+    return updated;
   });
 }

@@ -1,6 +1,22 @@
 export { useProductTableFilters } from "./hooks/use-product-table-filters";
 
 export { toggleProductFeaturedAction } from "./actions/toggle-product-featured.action";
+export { bulkUpdateProductStatusAction } from "./actions/bulk-update-product-status.action";
+export { bulkUpdateProductFeaturedAction } from "./actions/bulk-update-product-featured.action";
+export { archiveProductAction } from "./actions/archive-product.action";
+export { restoreProductAction } from "./actions/restore-product.action";
+export { bulkRestoreProductsAction } from "./actions/bulk-restore-products.action";
+export { bulkArchiveProductsAction } from "./actions/bulk-archive-products.action";
+
+export {
+  toggleProductFeatured,
+  bulkUpdateProductStatus,
+  bulkUpdateProductFeatured,
+  archiveProduct,
+  restoreProduct,
+  bulkRestoreProducts,
+  bulkArchiveProducts,
+} from "./services";
 
 export { getAdminProductsFeedPage } from "./queries/get-admin-products-feed-page.query";
 export { getAdminProductsFeedPage as getAdminProductsFeed } from "./queries/get-admin-products-feed-page.query";
@@ -24,6 +40,10 @@ export {
 
 export { productTableFiltersSchema } from "./schemas/product-table-filters.schema";
 export { adminProductFeedQuerySchema } from "./schemas/admin-product-feed-query.schema";
+export { bulkUpdateProductStatusSchema } from "./schemas/bulk-update-product-status.schema";
+export { bulkUpdateProductFeaturedSchema } from "./schemas/bulk-update-product-featured.schema";
+export { bulkArchiveProductsSchema } from "./schemas/bulk-archive-products.schema";
+export { bulkRestoreProductsSchema } from "./schemas/bulk-restore-products.schema";
 
 export type {
   AdminProductFeedItem,
@@ -49,5 +69,18 @@ export type {
   ProductTableStatusFilter,
   ProductTableStockFilter,
   ProductTableVariantFilter,
+  ToggleProductFeaturedInput,
   ToggleProductFeaturedResult,
+  BulkUpdateProductStatusInput,
+  BulkUpdateProductStatusResult,
+  BulkUpdateProductFeaturedInput,
+  BulkUpdateProductFeaturedResult,
+  ArchiveProductInput,
+  ArchiveProductResult,
+  RestoreProductInput,
+  RestoreProductResult,
+  BulkRestoreProductsInput,
+  BulkRestoreProductsResult,
+  BulkArchiveProductsInput,
+  BulkArchiveProductsResult,
 } from "./types";

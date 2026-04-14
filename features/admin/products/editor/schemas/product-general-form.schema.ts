@@ -1,3 +1,4 @@
+//features/admin/products/editor/schemas/product-general-form.schema.ts
 import { z } from "zod";
 
 export const productGeneralFormSchema = z.object({
@@ -9,7 +10,6 @@ export const productGeneralFormSchema = z.object({
   description: z.string().optional().default(""),
   status: z.enum(["draft", "active", "inactive", "archived"]),
   isFeatured: z.enum(["true", "false"]).default("false"),
-  isStandalone: z.enum(["true", "false"]).default("false"),
   productTypeId: z.string().optional().default(""),
   primaryImageId: z.string().optional().default(""),
 });

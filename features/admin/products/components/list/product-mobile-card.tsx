@@ -14,14 +14,20 @@ import { ProductCardFeaturedControl } from "./mobile/cards/product-card-featured
 import { ProductCardImage } from "./mobile/cards/product-card-image";
 import { ProductCardInfoTile } from "./mobile/cards/product-card-info-tile";
 
+type ProductListView = "active" | "trash";
+
 type ProductMobileCardProps = {
   product: ProductTableItem;
-  onConfirmDelete?: (slug: string) => void | Promise<void>;
+  view: ProductListView;
+  onConfirmArchive: ((slug: string) => void | Promise<void>) | undefined;
+  onConfirmRestore: ((slug: string) => void | Promise<void>) | undefined;
 };
 
 export function ProductMobileCard({
   product,
-  onConfirmDelete,
+  view,
+  onConfirmArchive,
+  onConfirmRestore,
 }: ProductMobileCardProps): JSX.Element {
   const shortDescription = product.shortDescription ? stripHtml(product.shortDescription) : null;
 
@@ -41,7 +47,9 @@ export function ProductMobileCard({
             <ProductCardFeaturedControl productId={product.id} isFeatured={product.isFeatured} />
             <ProductCardActionMenu
               product={product}
-              {...(onConfirmDelete ? { onConfirmDelete } : {})}
+              view={view}
+              onConfirmArchive={onConfirmArchive}
+              onConfirmRestore={onConfirmRestore}
             />
           </div>
         </div>

@@ -29,6 +29,8 @@ type AdminPageShellProps = {
   pageTitleAction?: AdminPageShellLinkAction;
   mode?: "viewport";
   variant?: "tool";
+  contentWidth?: "standard" | "full";
+  headerDensity?: "default" | "compact";
 
   headerVisibility?: "all" | "desktop";
   scrollMode?: "area" | "nested";
@@ -56,6 +58,8 @@ export function AdminPageShell({
   pageTitleAction,
   mode,
   variant,
+  contentWidth = "standard",
+  headerDensity = "default",
   headerVisibility = "all",
   scrollMode = "nested",
   compactMobileTitle = false,
@@ -84,6 +88,8 @@ export function AdminPageShell({
   void mode;
   void variant;
 
+  const widthClass = contentWidth === "full" ? undefined : "mx-auto w-full max-w-screen-2xl";
+
   return (
     <>
       <AdminPageTitle
@@ -99,9 +105,12 @@ export function AdminPageShell({
           viewportClassName
         )}
         headerClassName={cn(
-          "shrink-0 border-b border-surface-border p-4",
+          "shrink-0 border-b border-surface-border",
+          headerDensity === "compact" ? "p-3 lg:pt-16 [@media(max-height:480px)]:lg:pt-12" : "p-4",
           headerVisibility === "desktop" &&
-            "hidden lg:block lg:pt-16 [@media(max-height:480px)]:lg:pt-12",
+            (headerDensity === "compact"
+              ? "hidden lg:block"
+              : "hidden lg:block lg:pt-16 [@media(max-height:480px)]:lg:pt-12"),
           headerClassName
         )}
         bodyClassName={cn(
@@ -111,25 +120,29 @@ export function AdminPageShell({
         )}
         scrollMode={scrollMode}
         header={
-          <AdminPageHeader
-            actions={actions}
-            breadcrumbs={breadcrumbs}
-            compactMobileTitle={compactMobileTitle}
-            description={description}
-            eyebrow={eyebrow}
-            hideDescriptionOnMobile={hideDescriptionOnMobile}
-            hideEyebrowOnLowHeight={hideEyebrowOnLowHeight}
-            title={title}
-          />
+          <div className={widthClass}>
+            <AdminPageHeader
+              actions={actions}
+              breadcrumbs={breadcrumbs}
+              compact={headerDensity === "compact"}
+              compactMobileTitle={compactMobileTitle}
+              description={description}
+              eyebrow={eyebrow}
+              hideDescriptionOnMobile={hideDescriptionOnMobile}
+              hideEyebrowOnLowHeight={hideEyebrowOnLowHeight}
+              title={title}
+            />
+          </div>
         }
       >
         <div
           data-scroll-root="true"
           className={cn(
             scrollMode === "area"
-              ? "flex min-h-full min-w-0 flex-col"
-              : "flex min-h-0 flex-1 min-w-0 flex-col",
+              ? "flex min-h-full min-w-0 flex-col pt-2"
+              : "flex min-h-0 flex-1 min-w-0 flex-col pt-2",
             scrollMode === "nested" && "overflow-hidden",
+            widthClass,
             contentClassName
           )}
         >

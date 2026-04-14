@@ -3,7 +3,7 @@ import { createScriptPrismaClient } from "../helpers/prisma-client";
 import { parseCliOptions } from "./cli";
 import { ensureDefaultPriceList } from "./bootstrap/ensure-price-list";
 import { ensureStore } from "./bootstrap/ensure-store";
-import { ensureWooImportedProductType } from "./bootstrap/ensure-product-type";
+import { ensureCanonicalProductTypes } from "./bootstrap/ensure-canonical-product-types";
 import { importBlogPosts } from "./blog/blog-import.service";
 import { importCategories } from "./categories/category-import.service";
 import { WooCommerceClient } from "./client/woocommerce-client";
@@ -93,7 +93,7 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
 
     const store = await ensureStore(prisma);
     const priceList = await ensureDefaultPriceList(prisma, store.id);
-    const productType = await ensureWooImportedProductType(prisma, store.id);
+    const productTypes = await ensureCanonicalProductTypes(prisma, store.id);
 
     if (options.resetCatalog) {
       logStep("Resetting imported catalog");
@@ -123,7 +123,10 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
       env,
       storeId: store.id,
       priceListId: priceList.id,
-      productTypeId: productType.id,
+      productTypeIds: {
+        simple: productTypes.simple.id,
+        variable: productTypes.variable.id,
+      },
       preparedProducts,
       categoryIdByExternalId: categoriesResult.categoryIdByExternalId,
       skipImages: options.skipImages,

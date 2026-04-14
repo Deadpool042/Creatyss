@@ -1,15 +1,21 @@
 import { z } from "zod";
 
 export const productTableFiltersSchema = z.object({
-  search: z.string().trim().default(""),
-  status: z.enum(["all", "draft", "active", "inactive", "archived"]).default("all"),
-  categoryId: z.string().trim().default("all"),
-  parentCategoryId: z.string().trim().default("all"),
-  featured: z.enum(["all", "featured", "standard"]).default("all"),
-  image: z.enum(["all", "with-image", "without-image"]).default("all"),
-  stock: z.enum(["all", "in-stock", "out-of-stock"]).default("all"),
-  variant: z.enum(["all", "single", "multiple"]).default("all"),
-  sort: z.enum(["updated-desc", "updated-asc", "name-asc", "name-desc"]).default("updated-desc"),
+  search: z.string().optional(),
+  status: z.enum(["all", "draft", "active", "inactive", "archived"]).optional(),
+  categoryId: z.string().optional(),
+  featured: z.enum(["all", "featured", "standard"]).optional(),
+  image: z.enum(["all", "with-image", "without-image"]).optional(),
+  stock: z.enum(["all", "in-stock", "out-of-stock"]).optional(),
+  variant: z.enum(["all", "single", "multiple"]).optional(),
+  sort: z
+    .enum(["updated-desc", "updated-asc", "created-desc", "created-asc", "name-asc", "name-desc"])
+    .optional(),
 });
 
-export type ProductTableFiltersSchema = typeof productTableFiltersSchema;
+export const adminProductFeedQuerySchema = productTableFiltersSchema.extend({
+  limit: z.coerce.number().int().positive().optional(),
+  cursor: z.string().nullable().optional(),
+});
+
+export type ProductTableFiltersSchema = z.infer<typeof productTableFiltersSchema>;

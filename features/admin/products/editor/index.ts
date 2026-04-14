@@ -1,10 +1,13 @@
 export { getAdminProductEditorData } from "./queries/get-admin-product-editor-data.query";
 export { listAdminProductTypeOptions } from "./queries/list-admin-product-type-options.query";
+export { listAdminRelatedProductOptions } from "./queries/list-admin-related-product-options.query";
 export { listAttachableMediaAssets } from "./queries/list-attachable-media-assets.query";
 export { readAdminPriceLists } from "./queries/read-admin-price-lists.query";
+export { readAdminProductPrices } from "./queries/read-admin-product-prices.query";
 export { readAdminProductEditorBySlug } from "./queries/read-admin-product-editor-by-slug.query";
 export { readAdminProductImages } from "./queries/read-admin-product-images.query";
 export { readAdminProductVariants } from "./queries/read-admin-product-variants.query";
+export { readAdminProductTypeWithOptions } from "./queries/read-admin-product-type-with-options.query";
 
 export { attachProductImagesAction } from "./actions/attach-product-images.action";
 export { createProductVariantAction } from "./actions/create-product-variant.action";
@@ -16,8 +19,12 @@ export { setDefaultProductVariantAction } from "./actions/set-default-product-va
 export { setProductPrimaryImageAction } from "./actions/set-product-primary-image.action";
 export { updateProductCategoriesAction } from "./actions/update-product-categories.action";
 export { updateProductGeneralAction } from "./actions/update-product-general.action";
+export { updateProductAvailabilityAction } from "./actions/update-product-availability.action";
+export { updateProductInventoryAction } from "./actions/update-product-inventory.action";
 export { updateProductImageAltTextAction } from "./actions/update-product-image-alt-text.action";
+export { updateProductRelatedProductsAction } from "./actions/update-product-related-products.action";
 export { updateProductSeoAction } from "./actions/update-product-seo.action";
+export { updateProductPricesAction } from "./actions/update-product-prices.action";
 export { updateProductVariantAction } from "./actions/update-product-variant.action";
 export { uploadProductImagesAction } from "./actions/upload-product-images.action";
 
@@ -31,6 +38,7 @@ export {
 
 export type {
   AdminProductEditorData,
+  AdminRelatedProductEditorType,
   AdminProductEditorProduct,
   AdminProductEditorCategoryLink,
   AdminProductEditorRelatedProduct,
@@ -49,9 +57,15 @@ export {
 } from "./types/product-variants.types";
 
 export type {
+  AdminProductAvailabilityStatus,
   AdminPriceListOption,
+  AdminProductOptionItem,
+  AdminProductOptionValueItem,
+  AdminProductVariantAvailability,
   AdminProductVariantEditorData,
+  AdminProductVariantInventory,
   AdminProductVariantListItem,
+  AdminProductVariantOptionValue,
   AdminProductVariantStatus,
   ProductVariantFormAction,
   ProductVariantFormState,
@@ -73,6 +87,26 @@ export type {
   ProductGeneralFormState,
   ProductGeneralFormValues,
 } from "./types/product-general-form.types";
+
+export type {
+  ProductAvailabilityFormAction,
+  ProductAvailabilityFormState,
+  ProductAvailabilityRowInput,
+} from "./types/product-availability-form.types";
+export { productAvailabilityFormInitialState } from "./types/product-availability-form.types";
+
+export type {
+  ProductInventoryFormAction,
+  ProductInventoryFormState,
+  ProductInventoryRowInput,
+} from "./types/product-inventory-form.types";
+export { productInventoryFormInitialState } from "./types/product-inventory-form.types";
+
+export type {
+  ProductRelatedProductsFormAction,
+  ProductRelatedProductsFormState,
+} from "./types/product-related-products-form.types";
+export { productRelatedProductsFormInitialState } from "./types/product-related-products-form.types";
 
 export type {
   ProductSeoFormAction,
@@ -119,3 +153,13 @@ export type {
   UploadProductImagesFormState,
   UploadProductImagesInput,
 } from "./types/product-image-upload-multi.types";
+
+export type {
+  AdminPriceEntry,
+  AdminProductPriceEntry,
+  AdminVariantPriceEntry,
+  AdminProductPricingData,
+  ProductPricingFormState,
+  ProductPricingFormAction,
+} from "./types/product-pricing-form.types";
+export { productPricingFormInitialState } from "./types/product-pricing-form.types";

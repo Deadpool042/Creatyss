@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, type JSX } from "react";
-import { Eye, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Archive, Eye, MoreHorizontal, Pencil, RotateCcw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -22,12 +22,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+type ProductListView = "active" | "trash";
+
 type ProductTableRowActionsProps = {
   slug: string;
   productName?: string;
-  onConfirmDelete?: (slug: string) => void | Promise<void>;
+  view: ProductListView;
+  onConfirmArchive: ((slug: string) => void | Promise<void>) | undefined;
+  onConfirmRestore: ((slug: string) => void | Promise<void>) | undefined;
 };
-
 type ProductRowAction = {
   label: string;
   icon: typeof Pencil;
@@ -50,25 +53,30 @@ const productRowActions: ProductRowAction[] = [
 export function ProductTableRowActions({
   slug,
   productName,
-  onConfirmDelete,
+  view,
+  onConfirmArchive,
+  onConfirmRestore,
 }: ProductTableRowActionsProps): JSX.Element {
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const displayName = productName ?? slug;
 
-  async function handleDelete(): Promise<void> {
-    if (!onConfirmDelete) {
-      setDeleteDialogOpen(false);
-      return;
-    }
-
+  async function handleConfirm(): Promise<void> {
     try {
-      setIsDeleting(true);
-      await onConfirmDelete(slug);
-      setDeleteDialogOpen(false);
+      setIsPending(true);
+
+      if (view === "trash") {
+        if (onConfirmRestore) {
+          await onConfirmRestore(slug);
+        }
+      } else if (onConfirmArchive) {
+        await onConfirmArchive(slug);
+      }
+
+      setDialogOpen(false);
     } finally {
-      setIsDeleting(false);
+      setIsPending(false);
     }
   }
 
@@ -87,40 +95,67 @@ export function ProductTableRowActions({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" className="w-52">
-          <DropdownMenuGroup>
-            {productRowActions.map((action) => (
-              <DropdownMenuItem key={action.label} asChild>
-                <Link href={action.href(slug)} className="flex items-center gap-2">
-                  <action.icon className="h-4 w-4 text-muted-foreground" />
-                  <span>{action.label}</span>
-                </Link>
+          {view === "active" ? (
+            <>
+              <DropdownMenuGroup>
+                {productRowActions.map((action) => (
+                  <DropdownMenuItem key={action.label} asChild>
+                    <Link href={action.href(slug)} className="flex items-center gap-2">
+                      <action.icon className="h-4 w-4 text-muted-foreground" />
+                      <span>{action.label}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  className="text-destructive focus:text-destructive"
+                  onSelect={(event) => {
+                    event.preventDefault();
+                    setDialogOpen(true);
+                  }}
+                >
+                  <Archive className="h-4 w-4" />
+                  <span>Mettre à la corbeille</span>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </>
+          ) : (
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault();
+                  setDialogOpen(true);
+                }}
+              >
+                <RotateCcw className="h-4 w-4" />
+                <span>Restaurer</span>
               </DropdownMenuItem>
-            ))}
-          </DropdownMenuGroup>
-
-          <DropdownMenuSeparator />
-
-          <DropdownMenuGroup>
-            <DropdownMenuItem
-              className="text-destructive focus:text-destructive"
-              onSelect={(event) => {
-                event.preventDefault();
-                setDeleteDialogOpen(true);
-              }}
-            >
-              <Trash2 className="h-4 w-4" />
-              <span>Supprimer</span>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+            </DropdownMenuGroup>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Supprimer ce produit ?</DialogTitle>
+            <DialogTitle>
+              {view === "trash" ? "Restaurer ce produit ?" : "Mettre ce produit à la corbeille ?"}
+            </DialogTitle>
             <DialogDescription>
-              Cette action retirera <strong>{displayName}</strong> du catalogue admin.
+              {view === "trash" ? (
+                <>
+                  <strong>{displayName}</strong> reviendra dans la liste active en brouillon.
+                </>
+              ) : (
+                <>
+                  <strong>{displayName}</strong> sera retiré du catalogue actif, sans suppression
+                  définitive.
+                </>
+              )}
             </DialogDescription>
           </DialogHeader>
 
@@ -132,19 +167,20 @@ export function ProductTableRowActions({
             <Button
               variant="ghost"
               type="button"
-              onClick={() => setDeleteDialogOpen(false)}
-              disabled={isDeleting}
+              onClick={() => setDialogOpen(false)}
+              disabled={isPending}
             >
               Annuler
             </Button>
 
-            <Button
-              variant="destructive"
-              type="button"
-              onClick={() => void handleDelete()}
-              disabled={isDeleting}
-            >
-              {isDeleting ? "Suppression…" : "Confirmer la suppression"}
+            <Button type="button" onClick={() => void handleConfirm()} disabled={isPending}>
+              {isPending
+                ? view === "trash"
+                  ? "Restauration…"
+                  : "Archivage…"
+                : view === "trash"
+                  ? "Confirmer la restauration"
+                  : "Confirmer"}
             </Button>
           </DialogFooter>
         </DialogContent>

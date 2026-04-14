@@ -4,9 +4,18 @@ type ListAdminRelatedProductOptionsInput = {
   excludeProductId?: string;
 };
 
+export type AdminRelatedProductOptionStatus = "draft" | "active" | "inactive" | "archived";
+
+export type AdminRelatedProductOption = {
+  id: string;
+  name: string;
+  slug: string;
+  status: AdminRelatedProductOptionStatus;
+};
+
 export async function listAdminRelatedProductOptions(
   input: ListAdminRelatedProductOptionsInput = {}
-) {
+): Promise<AdminRelatedProductOption[]> {
   const products = await db.product.findMany({
     where: {
       archivedAt: null,
@@ -27,7 +36,7 @@ export async function listAdminRelatedProductOptions(
     },
   });
 
-  return products.map((product) => ({
+  return products.map<AdminRelatedProductOption>((product) => ({
     id: product.id,
     name: product.name,
     slug: product.slug ?? "",

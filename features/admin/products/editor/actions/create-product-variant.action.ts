@@ -1,5 +1,6 @@
 "use server";
 
+import { refresh } from "next/cache";
 import { validateAdminProductVariantInput } from "@/entities/product";
 import {
   productVariantFormInitialState,
@@ -52,6 +53,18 @@ export const createProductVariantAction: ProductVariantFormAction = async (
     };
   }
 
+  const optionValueIds: string[] = [];
+  for (const [key, value] of formData.entries()) {
+    if (
+      key.startsWith("optionValue:") &&
+      typeof value === "string" &&
+      value.trim().length > 0 &&
+      value.trim() !== "__none__"
+    ) {
+      optionValueIds.push(value.trim());
+    }
+  }
+
   try {
     await createProductVariant({
       productId: productIdValue.trim(),
@@ -68,15 +81,27 @@ export const createProductVariantAction: ProductVariantFormAction = async (
       widthMm: validated.data.widthMm,
       heightMm: validated.data.heightMm,
       depthMm: validated.data.depthMm,
+      optionValueIds,
     });
+
+    refresh();
 
     return {
       ...productVariantFormInitialState,
       status: "success",
       message: "Création effectuée.",
     };
-  } catch (error: unknown) {
+  } catch (error) {
     if (error instanceof AdminProductEditorServiceError) {
+      if (error.code === "option_values_invalid") {
+        return {
+          ...productVariantFormInitialState,
+          status: "error",
+          message: "Attributs invalides.",
+          fieldErrors: { optionValues: "Les valeurs d'option sélectionnées sont invalides ou incohérentes avec ce produit." },
+        };
+      }
+
       return {
         ...productVariantFormInitialState,
         status: "error",

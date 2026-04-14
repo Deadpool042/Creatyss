@@ -58,7 +58,10 @@ export async function importProducts(
     env: ImportWooCommerceEnv;
     storeId: string;
     priceListId: string;
-    productTypeId: string | null;
+    productTypeIds: {
+      simple: string;
+      variable: string;
+    };
     preparedProducts: readonly PreparedWooProduct[];
     categoryIdByExternalId: ReadonlyMap<string, string>;
     skipImages: boolean;
@@ -79,7 +82,7 @@ export async function importProducts(
 
     const mappedProduct = mapWooProductToImportedProduct(
       preparedProduct.product,
-      input.productTypeId
+      input.productTypeIds
     );
 
     const savedProduct = await upsertImportedProduct(prisma, input.storeId, mappedProduct);
@@ -145,9 +148,11 @@ export async function importProducts(
     endProgress(`Imported ${importedProducts.length} products`);
   }
 
+  // Imported products are now mapped to canonical types (simple/variable),
+  // so we no longer archive by productType to avoid touching non-imported products.
   const archivedResult = await archiveMissingImportedProducts(prisma, {
     storeId: input.storeId,
-    productTypeId: input.productTypeId,
+    productTypeId: null,
     preservedSlugs,
   });
 

@@ -1,5 +1,6 @@
 "use server";
 
+import { refresh } from "next/cache";
 import { deleteProductVariant, AdminProductEditorServiceError } from "../services";
 import type { DeleteProductVariantInput, DeleteProductVariantResult } from "../types";
 
@@ -11,6 +12,8 @@ export async function deleteProductVariantAction(
       productId: input.productId,
       variantId: input.variantId,
     });
+
+    refresh();
 
     return {
       status: "success",

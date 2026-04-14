@@ -1,4 +1,5 @@
 import {
+  AvailabilityStatus,
   MediaReferenceRole,
   MediaReferenceSubjectType,
   ProductStatus,
@@ -19,7 +20,9 @@ export class AdminProductEditorServiceError extends Error {
     | "variant_slug_taken"
     | "variant_sku_taken"
     | "default_variant_required"
-    | "cannot_delete_default_variant";
+    | "cannot_delete_default_variant"
+    | "option_values_invalid"
+    | "inventory_invalid";
 
   constructor(code: AdminProductEditorServiceError["code"], message?: string) {
     super(message ?? code);
@@ -55,6 +58,25 @@ export function mapEditorVariantStatusToPrismaStatus(
       return ProductVariantStatus.INACTIVE;
     case "archived":
       return ProductVariantStatus.ARCHIVED;
+  }
+}
+
+export function mapEditorAvailabilityStatusToPrismaStatus(
+  status: "available" | "unavailable" | "preorder" | "backorder" | "discontinued" | "archived"
+): AvailabilityStatus {
+  switch (status) {
+    case "available":
+      return AvailabilityStatus.AVAILABLE;
+    case "preorder":
+      return AvailabilityStatus.PREORDER;
+    case "backorder":
+      return AvailabilityStatus.BACKORDER;
+    case "discontinued":
+      return AvailabilityStatus.DISCONTINUED;
+    case "archived":
+      return AvailabilityStatus.ARCHIVED;
+    default:
+      return AvailabilityStatus.UNAVAILABLE;
   }
 }
 
@@ -215,6 +237,62 @@ export async function assertCategoriesExist(
 
   if (categories.length !== categoryIds.length) {
     throw new AdminProductEditorServiceError("category_missing");
+  }
+}
+
+export async function assertVariantOptionValuesAreValid(
+  executor: DbExecutor,
+  productId: string,
+  optionValueIds: readonly string[]
+): Promise<void> {
+  if (optionValueIds.length === 0) return;
+
+  const product = await executor.product.findFirst({
+    where: { id: productId, archivedAt: null },
+    select: { productTypeId: true },
+  });
+
+  if (product === null) {
+    throw new AdminProductEditorServiceError("product_missing");
+  }
+
+  // No productTypeId → no valid option axis exists for this product
+  if (product.productTypeId === null) {
+    throw new AdminProductEditorServiceError("option_values_invalid");
+  }
+
+  const values = await executor.productOptionValue.findMany({
+    where: {
+      id: { in: [...optionValueIds] },
+      isActive: true,
+      archivedAt: null,
+    },
+    select: {
+      id: true,
+      option: {
+        select: {
+          isVariantAxis: true,
+          isActive: true,
+          archivedAt: true,
+          productTypeId: true,
+        },
+      },
+    },
+  });
+
+  if (values.length !== optionValueIds.length) {
+    throw new AdminProductEditorServiceError("option_values_invalid");
+  }
+
+  for (const v of values) {
+    if (
+      !v.option.isVariantAxis ||
+      !v.option.isActive ||
+      v.option.archivedAt !== null ||
+      v.option.productTypeId !== product.productTypeId
+    ) {
+      throw new AdminProductEditorServiceError("option_values_invalid");
+    }
   }
 }
 

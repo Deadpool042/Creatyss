@@ -24,20 +24,21 @@ export function ProductVariantList({
 }: ProductVariantListProps): JSX.Element {
   if (variants.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-border bg-card px-4 py-10 text-center text-sm text-muted-foreground">
-        Aucune variante définie.
+      <div className="rounded-2xl border border-dashed border-surface-border bg-muted/20 px-4 py-7 text-center text-sm text-muted-foreground">
+        Aucune variante définie pour ce produit.
       </div>
     );
   }
 
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4 md:gap-5">
       {variants.map((variant) => (
         <ProductVariantItem
           key={variant.id}
           productId={productId}
           productSlug={productSlug}
           variant={variant}
+          hasOtherVariants={variants.length > 1}
           onEdit={onEdit}
           {...(onSetDefault ? { onSetDefault } : {})}
           {...(onDelete ? { onDelete } : {})}

@@ -19,8 +19,8 @@ export function ProductCreateTopbarMenu({ productId: _productId }: ProductCreate
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button size="sm">
-          <Plus className="mr-2 h-4 w-4" />
-          Nouveau
+          <Plus className="sm:mr-2 sm:h-4 sm:w-4" />
+          <span className="hidden sm:inline">Nouveau</span>
         </Button>
       </DropdownMenuTrigger>
 

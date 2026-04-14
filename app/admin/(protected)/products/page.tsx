@@ -2,12 +2,28 @@ import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { ProductTable } from "@/features/admin/products/components/list/product-table";
 import { ProductCreateTopbarMenu } from "@/features/admin/products/components";
 import { mapProductTableItem } from "@/features/admin/products/list/mappers/server";
-import { listAdminProducts } from "@/features/admin/products/list/queries/list-admin-products.query";
+import {
+  listAdminProducts,
+  type AdminProductsListView,
+} from "@/features/admin/products/list/queries/list-admin-products.query";
 import { listProductFilterCategories } from "@/features/admin/products/list/queries/list-product-filter-categories.query";
 
-export default async function AdminProductsPage() {
+type AdminProductsPageProps = {
+  searchParams?: Promise<{
+    view?: string;
+  }>;
+};
+
+function resolveProductsView(rawView: string | undefined): AdminProductsListView {
+  return rawView === "trash" ? "trash" : "active";
+}
+
+export default async function AdminProductsPage({ searchParams }: AdminProductsPageProps) {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const view = resolveProductsView(resolvedSearchParams?.view);
+
   const [rawProducts, categoryOptions] = await Promise.all([
-    listAdminProducts(),
+    listAdminProducts(view),
     listProductFilterCategories(),
   ]);
 
@@ -16,22 +32,22 @@ export default async function AdminProductsPage() {
   return (
     <AdminPageShell
       headerVisibility="desktop"
+      headerDensity="compact"
       eyebrow="Catalogue"
-      title="Produits"
-      description="Pilotage du catalogue."
-      topbarAction={<ProductCreateTopbarMenu productId="" />}
+      title={view === "trash" ? "Corbeille produits" : "Produits"}
+      description={
+        view === "trash" ? "Produits archivés, restaurables plus tard." : "Pilotage du catalogue."
+      }
+      topbarAction={view === "active" ? <ProductCreateTopbarMenu productId="" /> : undefined}
       navigation={{ label: "Accueil", href: "/admin" }}
       breadcrumbs={[
         { label: "Accueil", href: "/admin" },
         { label: "Produits", href: "/admin/products" },
       ]}
       viewportClassName="!h-full"
-      contentClassName="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pt-14 pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom)+0.75rem)] md:overflow-hidden md:pb-6 md:pt-3 lg:px-6 lg:pb-8 lg:pt-4"
+      contentClassName="min-h-0 flex-1 overflow-hidden px-3 pt-14 pb-0 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 [@media(max-height:480px)]:pb-0 lg:px-6 lg:pb-4 lg:pt-0"
     >
-      <ProductTable
-        products={products}
-        categoryOptions={categoryOptions}
-      />
+      <ProductTable products={products} categoryOptions={categoryOptions} view={view} />
     </AdminPageShell>
   );
 }

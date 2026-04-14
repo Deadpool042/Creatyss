@@ -37,8 +37,8 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
       <input type="hidden" name="productId" value={product.product.id} />
 
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-28.25 pb-[calc(7rem+env(safe-area-inset-bottom))] sm:pt-29.25 md:pt-30.25 [@media(max-height:480px)]:pt-25.25 [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pt-17.25 lg:pb-14">
-        <div className="w-full space-y-5 px-4 pt-4 pb-4 md:space-y-8 md:px-6 md:pt-6 md:pb-6 lg:mx-auto lg:max-w-3xl lg:px-4 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:pt-3 [@media(max-height:480px)]:pb-3">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
+        <div className="w-full space-y-6 px-4 py-4 md:space-y-7 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
           <AdminFormMessage
             tone={state.status === "success" ? "success" : "error"}
             message={state.status !== "idle" ? state.message : null}
@@ -71,7 +71,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
             </AdminFormField>
 
             <AdminFormField
-              label="Canonical path"
+              label="URL canonique"
               htmlFor="seo-canonical-path"
               error={state.fieldErrors.canonicalPath}
             >
@@ -95,10 +95,12 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="INDEX_FOLLOW">INDEX_FOLLOW</SelectItem>
-                    <SelectItem value="INDEX_NOFOLLOW">INDEX_NOFOLLOW</SelectItem>
-                    <SelectItem value="NOINDEX_FOLLOW">NOINDEX_FOLLOW</SelectItem>
-                    <SelectItem value="NOINDEX_NOFOLLOW">NOINDEX_NOFOLLOW</SelectItem>
+                    <SelectItem value="INDEX_FOLLOW">Indexer et suivre les liens</SelectItem>
+                    <SelectItem value="INDEX_NOFOLLOW">Indexer sans suivre les liens</SelectItem>
+                    <SelectItem value="NOINDEX_FOLLOW">Ne pas indexer, suivre les liens</SelectItem>
+                    <SelectItem value="NOINDEX_NOFOLLOW">
+                      Ne pas indexer, ne pas suivre les liens
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </AdminFormField>

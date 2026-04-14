@@ -8,9 +8,12 @@ export { ProductDetails } from "./details";
 
 // Editor components
 export { ProductEditorPanel } from "./editor";
+export { ProductAvailabilityTab } from "./editor";
 export { ProductGeneralTab } from "./editor";
 export { ProductImagesTab } from "./editor";
+export { ProductInventoryTab } from "./editor";
 export { ProductCategoriesTab } from "./editor";
+export { ProductRelatedProductsTab } from "./editor";
 export { ProductSeoTab } from "./editor";
 export { ProductVariantsTab } from "./editor";
 export { ProductEditorTopbarMenu } from "./editor";

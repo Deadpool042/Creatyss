@@ -1,3 +1,4 @@
+// features/admin/products/list/types/product-table.types.ts
 export type ProductTableStatus = "draft" | "active" | "inactive" | "archived";
 
 export type ProductStockState = "in-stock" | "out-of-stock";
@@ -7,11 +8,7 @@ export type ProductFilterImageOption = "all" | "with-image" | "without-image";
 export type ProductFilterStockOption = "all" | "in-stock" | "out-of-stock";
 export type ProductFilterVariantOption = "all" | "single" | "multiple";
 
-export type ProductSortOption =
-  | "updated-desc"
-  | "updated-asc"
-  | "name-asc"
-  | "name-desc";
+export type ProductSortOption = "updated-desc" | "updated-asc" | "name-asc" | "name-desc";
 
 export type ProductTableFeaturedFilter = ProductFilterFeaturedOption;
 export type ProductTableImageFilter = ProductFilterImageOption;
@@ -124,10 +121,4 @@ export type ProductTableFiltersState = {
   mobileFiltersOpen: boolean;
   setMobileFiltersOpen: (value: boolean) => void;
   reset: () => void;
-};
-
-export type ToggleProductFeaturedResult = {
-  status: "success" | "error";
-  message: string;
-  isFeatured?: boolean;
 };
