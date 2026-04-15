@@ -9,6 +9,14 @@ import { AdminDataTableFiltersSheet } from "@/components/admin/tables/admin-data
 import { AdminSearchInput } from "@/components/admin/tables/admin-search-input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import type { ProductTableFiltersState } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type { ProductFilterCategoryOption } from "@/features/admin/products/list/types/product-table.types";
 import { cn } from "@/lib/utils";
@@ -38,6 +46,7 @@ type ProductTableToolbarProps = {
   onBulkUnsetFeatured?: () => void;
   onBulkArchive?: () => void;
   onBulkRestore?: () => void;
+  onBulkPermanentDelete?: () => void;
   mobileVisibleCount?: number;
   mobileVisibleSelectedCount?: number;
   mobileAllVisibleSelected?: boolean;
@@ -68,7 +77,7 @@ function ResultsCount({
 
 type BulkActionButtonProps = {
   children: string;
-  onClick: (() => void) | undefined;
+  onClick: () => void;
   disabled?: boolean;
   danger?: boolean;
 };
@@ -106,47 +115,74 @@ function BulkActions({
   onBulkUnsetFeatured,
   onBulkArchive,
   onBulkRestore,
+  onOpenPermanentDeleteDialog,
 }: {
   view: ProductListView;
   isBulkPending: boolean;
-  onBulkSetDraft: (() => void) | undefined;
-  onBulkSetActive: (() => void) | undefined;
-  onBulkSetInactive: (() => void) | undefined;
-  onBulkSetFeatured: (() => void) | undefined;
-  onBulkUnsetFeatured: (() => void) | undefined;
-  onBulkArchive: (() => void) | undefined;
-  onBulkRestore: (() => void) | undefined;
+  onBulkSetDraft?: () => void;
+  onBulkSetActive?: () => void;
+  onBulkSetInactive?: () => void;
+  onBulkSetFeatured?: () => void;
+  onBulkUnsetFeatured?: () => void;
+  onBulkArchive?: () => void;
+  onBulkRestore?: () => void;
+  onOpenPermanentDeleteDialog?: () => void;
 }): JSX.Element {
   if (view === "trash") {
     return (
       <div className="flex gap-2 overflow-x-auto pb-1">
-        <BulkActionButton onClick={onBulkRestore} disabled={isBulkPending}>
-          Restaurer
-        </BulkActionButton>
+        {onBulkRestore ? (
+          <BulkActionButton onClick={onBulkRestore} disabled={isBulkPending}>
+            Restaurer
+          </BulkActionButton>
+        ) : null}
+
+        {onOpenPermanentDeleteDialog ? (
+          <BulkActionButton onClick={onOpenPermanentDeleteDialog} disabled={isBulkPending} danger>
+            Supprimer définitivement
+          </BulkActionButton>
+        ) : null}
       </div>
     );
   }
 
   return (
     <div className="flex gap-2 overflow-x-auto pb-1">
-      <BulkActionButton onClick={onBulkSetDraft} disabled={isBulkPending}>
-        Brouillon
-      </BulkActionButton>
-      <BulkActionButton onClick={onBulkSetActive} disabled={isBulkPending}>
-        Activer
-      </BulkActionButton>
-      <BulkActionButton onClick={onBulkSetInactive} disabled={isBulkPending}>
-        Désactiver
-      </BulkActionButton>
-      <BulkActionButton onClick={onBulkSetFeatured} disabled={isBulkPending}>
-        Mettre en avant
-      </BulkActionButton>
-      <BulkActionButton onClick={onBulkUnsetFeatured} disabled={isBulkPending}>
-        Retirer la mise en avant
-      </BulkActionButton>
-      <BulkActionButton onClick={onBulkArchive} disabled={isBulkPending} danger>
-        Corbeille
-      </BulkActionButton>
+      {onBulkSetDraft ? (
+        <BulkActionButton onClick={onBulkSetDraft} disabled={isBulkPending}>
+          Brouillon
+        </BulkActionButton>
+      ) : null}
+
+      {onBulkSetActive ? (
+        <BulkActionButton onClick={onBulkSetActive} disabled={isBulkPending}>
+          Activer
+        </BulkActionButton>
+      ) : null}
+
+      {onBulkSetInactive ? (
+        <BulkActionButton onClick={onBulkSetInactive} disabled={isBulkPending}>
+          Désactiver
+        </BulkActionButton>
+      ) : null}
+
+      {onBulkSetFeatured ? (
+        <BulkActionButton onClick={onBulkSetFeatured} disabled={isBulkPending}>
+          Mettre en avant
+        </BulkActionButton>
+      ) : null}
+
+      {onBulkUnsetFeatured ? (
+        <BulkActionButton onClick={onBulkUnsetFeatured} disabled={isBulkPending}>
+          Retirer la mise en avant
+        </BulkActionButton>
+      ) : null}
+
+      {onBulkArchive ? (
+        <BulkActionButton onClick={onBulkArchive} disabled={isBulkPending} danger>
+          Corbeille
+        </BulkActionButton>
+      ) : null}
     </div>
   );
 }
@@ -198,12 +234,14 @@ export function ProductTableToolbar({
   onBulkUnsetFeatured,
   onBulkArchive,
   onBulkRestore,
+  onBulkPermanentDelete,
   mobileVisibleCount = 0,
   mobileVisibleSelectedCount = 0,
   mobileAllVisibleSelected = false,
   onToggleSelectAllMobileVisible,
 }: ProductTableToolbarProps): JSX.Element {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [permanentDeleteDialogOpen, setPermanentDeleteDialogOpen] = useState(false);
 
   const activeFiltersCount = state.activeFilters.length;
   const hasActiveFilters = activeFiltersCount > 0;
@@ -214,126 +252,177 @@ export function ProductTableToolbar({
     ? `${activeFiltersCount} filtre${activeFiltersCount > 1 ? "s" : ""} actif${activeFiltersCount > 1 ? "s" : ""}.`
     : "Affiner la liste.";
 
+  async function handleBulkPermanentDelete(): Promise<void> {
+    if (!onBulkPermanentDelete) {
+      setPermanentDeleteDialogOpen(false);
+      return;
+    }
+
+    await onBulkPermanentDelete();
+    setPermanentDeleteDialogOpen(false);
+  }
+
   if (mode === "desktop") {
     return (
-      <div className="space-y-1.5">
-        {hasSelection ? (
-          <div className="rounded-xl border border-surface-border-strong bg-interactive-selected px-3 py-3 shadow-card">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm font-medium text-foreground">
-                {selectedCount} produit{selectedCount > 1 ? "s" : ""} sélectionné
-                {selectedCount > 1 ? "s" : ""}
-              </p>
-
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={onClearSelection}
-                className="h-8 rounded-full px-3 text-xs"
-              >
-                Effacer la sélection
-              </Button>
-            </div>
-
-            <div className="mt-3">
-              <BulkActions
-                view={view}
-                isBulkPending={isBulkPending}
-                onBulkSetDraft={onBulkSetDraft}
-                onBulkSetActive={onBulkSetActive}
-                onBulkSetInactive={onBulkSetInactive}
-                onBulkSetFeatured={onBulkSetFeatured}
-                onBulkUnsetFeatured={onBulkUnsetFeatured}
-                onBulkArchive={onBulkArchive}
-                onBulkRestore={onBulkRestore}
-              />
-            </div>
-          </div>
-        ) : null}
-
-        {bulkMessage ? (
-          <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-3 py-2 text-sm text-foreground shadow-card">
-            {bulkMessage}
-          </div>
-        ) : null}
-
-        {bulkError ? (
-          <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive shadow-card">
-            {bulkError}
-          </div>
-        ) : null}
-
-        <div className="rounded-xl border border-surface-border bg-card p-3 lg:p-4 shadow-card">
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="min-w-0 flex-1 max-w-120 xl:max-w-136 2xl:max-w-152">
-                <AdminSearchInput
-                  value={state.search}
-                  onChange={state.handleSearchChange}
-                  placeholder="Rechercher un produit…"
-                  className="relative w-full"
-                />
-              </div>
-
-              <div className="flex shrink-0 items-center gap-2">
-                <ProductViewSwitch view={view} />
-
-                <ResultsCount
-                  filteredCount={state.filteredCount}
-                  className="whitespace-nowrap rounded-full border border-surface-border bg-surface-panel-soft px-2.5 py-1"
-                />
+      <>
+        <div className="space-y-1.5">
+          {hasSelection ? (
+            <div className="rounded-xl border border-surface-border-strong bg-interactive-selected px-3 py-3 shadow-card">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className="text-sm font-medium text-foreground">
+                  {selectedCount} produit{selectedCount > 1 ? "s" : ""} sélectionné
+                  {selectedCount > 1 ? "s" : ""}
+                </p>
 
                 <Button
-                  variant="outline"
-                  size="sm"
                   type="button"
-                  onClick={() => state.setShowAdvancedFilters(!state.showAdvancedFilters)}
-                  className={cn(
-                    "inline-flex h-9 items-center gap-2 rounded-full px-3",
-                    hasActiveFilters &&
-                      "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
-                  )}
-                  aria-expanded={state.showAdvancedFilters}
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClearSelection}
+                  className="h-8 rounded-full px-3 text-xs"
                 >
-                  <SlidersHorizontal className="h-4 w-4" />
-                  {hasActiveFilters ? `Filtres · ${activeFiltersCount}` : "Filtres"}
-                  <ChevronDown
-                    className={cn(
-                      "h-3.5 w-3.5 text-muted-foreground transition-transform duration-200",
-                      state.showAdvancedFilters && "rotate-180"
-                    )}
-                  />
+                  Effacer la sélection
                 </Button>
               </div>
-            </div>
 
-            <div className="min-w-0">
-              <ProductTableFiltersForm
-                categoryOptions={categoryOptions}
-                state={state}
-                mode="primary"
-              />
-            </div>
-          </div>
-
-          {state.showAdvancedFilters ? (
-            <div className="mt-3 border-t border-surface-border pt-3">
-              <div className="grid gap-2 xl:grid-cols-2 2xl:grid-cols-4">
-                <ProductTableFiltersForm
-                  categoryOptions={categoryOptions}
-                  state={state}
-                  mode="secondary"
+              <div className="mt-3">
+                <BulkActions
+                  view={view}
+                  isBulkPending={isBulkPending}
+                  {...(onBulkSetDraft ? { onBulkSetDraft } : {})}
+                  {...(onBulkSetActive ? { onBulkSetActive } : {})}
+                  {...(onBulkSetInactive ? { onBulkSetInactive } : {})}
+                  {...(onBulkSetFeatured ? { onBulkSetFeatured } : {})}
+                  {...(onBulkUnsetFeatured ? { onBulkUnsetFeatured } : {})}
+                  {...(onBulkArchive ? { onBulkArchive } : {})}
+                  {...(onBulkRestore ? { onBulkRestore } : {})}
+                  {...(onBulkPermanentDelete
+                    ? { onOpenPermanentDeleteDialog: () => setPermanentDeleteDialogOpen(true) }
+                    : {})}
                 />
               </div>
             </div>
           ) : null}
+
+          {bulkMessage ? (
+            <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-3 py-2 text-sm text-foreground shadow-card">
+              {bulkMessage}
+            </div>
+          ) : null}
+
+          {bulkError ? (
+            <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive shadow-card">
+              {bulkError}
+            </div>
+          ) : null}
+
+          <div className="rounded-xl border border-surface-border bg-card p-3 lg:p-4 shadow-card">
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="min-w-0 flex-1 max-w-120 xl:max-w-136 2xl:max-w-152">
+                  <AdminSearchInput
+                    value={state.search}
+                    onChange={state.handleSearchChange}
+                    placeholder="Rechercher un produit…"
+                    className="relative w-full"
+                  />
+                </div>
+
+                <div className="flex shrink-0 items-center gap-2">
+                  <ProductViewSwitch view={view} />
+
+                  <ResultsCount
+                    filteredCount={state.filteredCount}
+                    className="whitespace-nowrap rounded-full border border-surface-border bg-surface-panel-soft px-2.5 py-1"
+                  />
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    type="button"
+                    onClick={() => state.setShowAdvancedFilters(!state.showAdvancedFilters)}
+                    className={cn(
+                      "inline-flex h-9 items-center gap-2 rounded-full px-3",
+                      hasActiveFilters &&
+                        "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
+                    )}
+                    aria-expanded={state.showAdvancedFilters}
+                  >
+                    <SlidersHorizontal className="h-4 w-4" />
+                    {hasActiveFilters ? `Filtres · ${activeFiltersCount}` : "Filtres"}
+                    <ChevronDown
+                      className={cn(
+                        "h-3.5 w-3.5 text-muted-foreground transition-transform duration-200",
+                        state.showAdvancedFilters && "rotate-180"
+                      )}
+                    />
+                  </Button>
+                </div>
+              </div>
+
+              <div className="min-w-0">
+                <ProductTableFiltersForm
+                  categoryOptions={categoryOptions}
+                  state={state}
+                  mode="primary"
+                />
+              </div>
+            </div>
+
+            {state.showAdvancedFilters ? (
+              <div className="mt-3 border-t border-surface-border pt-3">
+                <div className="grid gap-2 xl:grid-cols-2 2xl:grid-cols-4">
+                  <ProductTableFiltersForm
+                    categoryOptions={categoryOptions}
+                    state={state}
+                    mode="secondary"
+                  />
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          {hasActiveFilters ? (
+            <AdminDataTableActiveFilters items={state.activeFilters} onClearAll={state.reset} />
+          ) : null}
         </div>
 
-        {hasActiveFilters ? (
-          <AdminDataTableActiveFilters items={state.activeFilters} onClearAll={state.reset} />
-        ) : null}
-      </div>
+        <Dialog open={permanentDeleteDialogOpen} onOpenChange={setPermanentDeleteDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Supprimer définitivement la sélection ?</DialogTitle>
+              <DialogDescription>
+                Cette action est irréversible. Les produits sélectionnés seront supprimés
+                définitivement du catalogue.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-3 text-sm text-destructive">
+              Cette suppression est définitive et ne pourra pas être annulée.
+            </div>
+
+            <DialogFooter>
+              <Button
+                variant="ghost"
+                type="button"
+                onClick={() => setPermanentDeleteDialogOpen(false)}
+                disabled={isBulkPending}
+              >
+                Annuler
+              </Button>
+
+              <Button
+                variant="destructive"
+                type="button"
+                onClick={() => void handleBulkPermanentDelete()}
+                disabled={isBulkPending}
+              >
+                {isBulkPending ? "Suppression…" : "Supprimer définitivement"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </>
     );
   }
 
@@ -383,13 +472,16 @@ export function ProductTableToolbar({
               <BulkActions
                 view={view}
                 isBulkPending={isBulkPending}
-                onBulkSetDraft={onBulkSetDraft}
-                onBulkSetActive={onBulkSetActive}
-                onBulkSetInactive={onBulkSetInactive}
-                onBulkSetFeatured={onBulkSetFeatured}
-                onBulkUnsetFeatured={onBulkUnsetFeatured}
-                onBulkArchive={onBulkArchive}
-                onBulkRestore={onBulkRestore}
+                {...(onBulkSetDraft ? { onBulkSetDraft } : {})}
+                {...(onBulkSetActive ? { onBulkSetActive } : {})}
+                {...(onBulkSetInactive ? { onBulkSetInactive } : {})}
+                {...(onBulkSetFeatured ? { onBulkSetFeatured } : {})}
+                {...(onBulkUnsetFeatured ? { onBulkUnsetFeatured } : {})}
+                {...(onBulkArchive ? { onBulkArchive } : {})}
+                {...(onBulkRestore ? { onBulkRestore } : {})}
+                {...(onBulkPermanentDelete
+                  ? { onOpenPermanentDeleteDialog: () => setPermanentDeleteDialogOpen(true) }
+                  : {})}
               />
             </div>
           </div>
@@ -512,6 +604,42 @@ export function ProductTableToolbar({
           </AdminDataTableFiltersSheet>
         </>
       )}
+
+      <Dialog open={permanentDeleteDialogOpen} onOpenChange={setPermanentDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Supprimer définitivement la sélection ?</DialogTitle>
+            <DialogDescription>
+              Cette action est irréversible. Les produits sélectionnés seront supprimés
+              définitivement du catalogue.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-3 text-sm text-destructive">
+            Cette suppression est définitive et ne pourra pas être annulée.
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              type="button"
+              onClick={() => setPermanentDeleteDialogOpen(false)}
+              disabled={isBulkPending}
+            >
+              Annuler
+            </Button>
+
+            <Button
+              variant="destructive"
+              type="button"
+              onClick={() => void handleBulkPermanentDelete()}
+              disabled={isBulkPending}
+            >
+              {isBulkPending ? "Suppression…" : "Supprimer définitivement"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

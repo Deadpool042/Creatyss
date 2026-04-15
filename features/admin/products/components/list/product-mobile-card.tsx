@@ -21,6 +21,7 @@ type ProductMobileCardProps = {
   view: ProductListView;
   onConfirmArchive: ((slug: string) => void | Promise<void>) | undefined;
   onConfirmRestore: ((slug: string) => void | Promise<void>) | undefined;
+  onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
 };
 
 export function ProductMobileCard({
@@ -28,6 +29,7 @@ export function ProductMobileCard({
   view,
   onConfirmArchive,
   onConfirmRestore,
+  onConfirmPermanentDelete,
 }: ProductMobileCardProps): JSX.Element {
   const shortDescription = product.shortDescription ? stripHtml(product.shortDescription) : null;
 
@@ -48,8 +50,9 @@ export function ProductMobileCard({
             <ProductCardActionMenu
               product={product}
               view={view}
-              onConfirmArchive={onConfirmArchive}
-              onConfirmRestore={onConfirmRestore}
+              {...(onConfirmArchive ? { onConfirmArchive } : {})}
+              {...(onConfirmRestore ? { onConfirmRestore } : {})}
+              {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
             />
           </div>
         </div>

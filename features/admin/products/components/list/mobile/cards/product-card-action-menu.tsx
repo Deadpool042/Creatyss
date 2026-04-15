@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, type JSX } from "react";
-import { Archive, Eye, MoreHorizontal, Pencil, RotateCcw } from "lucide-react";
+import { Eye, MoreHorizontal, Pencil, RotateCcw, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,8 +27,9 @@ type ProductListView = "active" | "trash";
 type ProductCardActionMenuProps = {
   product: Pick<ProductTableItem, "name" | "slug">;
   view: ProductListView;
-  onConfirmArchive: ((slug: string) => void | Promise<void>) | undefined;
-  onConfirmRestore: ((slug: string) => void | Promise<void>) | undefined;
+  onConfirmArchive?: (slug: string) => void | Promise<void>;
+  onConfirmRestore?: (slug: string) => void | Promise<void>;
+  onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
   triggerClassName?: string;
   contentClassName?: string;
 };
@@ -38,27 +39,57 @@ export function ProductCardActionMenu({
   view,
   onConfirmArchive,
   onConfirmRestore,
+  onConfirmPermanentDelete,
   triggerClassName,
   contentClassName,
 }: ProductCardActionMenuProps): JSX.Element {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [isPending, setIsPending] = useState(false);
+  const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
+  const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
+  const [permanentDeleteDialogOpen, setPermanentDeleteDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function handleConfirm(): Promise<void> {
+  async function handleArchive(): Promise<void> {
+    if (!onConfirmArchive) {
+      setArchiveDialogOpen(false);
+      return;
+    }
+
     try {
-      setIsPending(true);
-
-      if (view === "trash") {
-        if (onConfirmRestore) {
-          await onConfirmRestore(product.slug);
-        }
-      } else if (onConfirmArchive) {
-        await onConfirmArchive(product.slug);
-      }
-
-      setDialogOpen(false);
+      setIsSubmitting(true);
+      await onConfirmArchive(product.slug);
+      setArchiveDialogOpen(false);
     } finally {
-      setIsPending(false);
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleRestore(): Promise<void> {
+    if (!onConfirmRestore) {
+      setRestoreDialogOpen(false);
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await onConfirmRestore(product.slug);
+      setRestoreDialogOpen(false);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handlePermanentDelete(): Promise<void> {
+    if (!onConfirmPermanentDelete) {
+      setPermanentDeleteDialogOpen(false);
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await onConfirmPermanentDelete(product.slug);
+      setPermanentDeleteDialogOpen(false);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -86,91 +117,144 @@ export function ProductCardActionMenu({
         <DropdownMenuContent
           align="end"
           sideOffset={8}
-          className={cn("w-48 rounded-xl", contentClassName)}
+          className={cn("w-56 rounded-xl", contentClassName)}
         >
-          {view === "active" ? (
-            <>
-              <DropdownMenuItem asChild>
-                <Link href={`/products/${product.slug}`} target="_blank" rel="noreferrer">
-                  <Eye className="mr-2 h-4 w-4" />
-                  Aperçu
-                </Link>
-              </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={`/products/${product.slug}`} target="_blank" rel="noreferrer">
+              <Eye className="mr-2 h-4 w-4" />
+              Aperçu
+            </Link>
+          </DropdownMenuItem>
 
-              <DropdownMenuItem asChild>
-                <Link href={`/admin/products/${product.slug}/edit`}>
-                  <Pencil className="mr-2 h-4 w-4" />
-                  Modifier
-                </Link>
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/products/${product.slug}/edit`}>
+              <Pencil className="mr-2 h-4 w-4" />
+              Modifier
+            </Link>
+          </DropdownMenuItem>
+
+          {view === "active" ? (
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive"
+              onSelect={(event) => {
+                event.preventDefault();
+                setArchiveDialogOpen(true);
+              }}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Mettre à la corbeille
+            </DropdownMenuItem>
+          ) : (
+            <>
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault();
+                  setRestoreDialogOpen(true);
+                }}
+              >
+                <RotateCcw className="mr-2 h-4 w-4" />
+                Restaurer
               </DropdownMenuItem>
 
               <DropdownMenuItem
                 className="text-destructive focus:text-destructive"
                 onSelect={(event) => {
                   event.preventDefault();
-                  setDialogOpen(true);
+                  setPermanentDeleteDialogOpen(true);
                 }}
               >
-                <Archive className="mr-2 h-4 w-4" />
-                Mettre à la corbeille
+                <Trash2 className="mr-2 h-4 w-4" />
+                Supprimer définitivement
               </DropdownMenuItem>
             </>
-          ) : (
-            <DropdownMenuItem
-              onSelect={(event) => {
-                event.preventDefault();
-                setDialogOpen(true);
-              }}
-            >
-              <RotateCcw className="mr-2 h-4 w-4" />
-              Restaurer
-            </DropdownMenuItem>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <Dialog open={archiveDialogOpen} onOpenChange={setArchiveDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {view === "trash" ? "Restaurer ce produit ?" : "Mettre ce produit à la corbeille ?"}
-            </DialogTitle>
+            <DialogTitle>Mettre ce produit à la corbeille ?</DialogTitle>
             <DialogDescription>
-              {view === "trash" ? (
-                <>
-                  <strong>{product.name}</strong> reviendra dans la liste active.
-                </>
-              ) : (
-                <>
-                  <strong>{product.name}</strong> sera retiré du catalogue actif, sans suppression
-                  définitive.
-                </>
-              )}
+              Cette action retirera <strong>{product.name}</strong> du catalogue actif.
             </DialogDescription>
           </DialogHeader>
-
-          <div className="rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-3 text-sm text-muted-foreground">
-            Produit concerné : <span className="font-medium text-foreground">{product.name}</span>
-          </div>
 
           <DialogFooter>
             <Button
               variant="ghost"
               type="button"
-              onClick={() => setDialogOpen(false)}
-              disabled={isPending}
+              onClick={() => setArchiveDialogOpen(false)}
+              disabled={isSubmitting}
             >
               Annuler
             </Button>
 
-            <Button type="button" onClick={() => void handleConfirm()} disabled={isPending}>
-              {isPending
-                ? view === "trash"
-                  ? "Restauration…"
-                  : "Archivage…"
-                : view === "trash"
-                  ? "Confirmer la restauration"
-                  : "Confirmer"}
+            <Button
+              variant="destructive"
+              type="button"
+              onClick={() => void handleArchive()}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Déplacement…" : "Mettre à la corbeille"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={restoreDialogOpen} onOpenChange={setRestoreDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Restaurer ce produit ?</DialogTitle>
+            <DialogDescription>
+              Cette action replacera <strong>{product.name}</strong> dans le catalogue actif.
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              type="button"
+              onClick={() => setRestoreDialogOpen(false)}
+              disabled={isSubmitting}
+            >
+              Annuler
+            </Button>
+
+            <Button type="button" onClick={() => void handleRestore()} disabled={isSubmitting}>
+              {isSubmitting ? "Restauration…" : "Restaurer"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={permanentDeleteDialogOpen} onOpenChange={setPermanentDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Supprimer définitivement ce produit ?</DialogTitle>
+            <DialogDescription>
+              Cette action est irréversible. <strong>{product.name}</strong> sera supprimé
+              définitivement du catalogue.
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              type="button"
+              onClick={() => setPermanentDeleteDialogOpen(false)}
+              disabled={isSubmitting}
+            >
+              Annuler
+            </Button>
+
+            <Button
+              variant="destructive"
+              type="button"
+              onClick={() => void handlePermanentDelete()}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Suppression…" : "Supprimer définitivement"}
             </Button>
           </DialogFooter>
         </DialogContent>

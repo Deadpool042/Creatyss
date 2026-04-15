@@ -55,3 +55,13 @@ export type {
   BulkArchiveProductsInput,
   BulkArchiveProductsResult,
 } from "./bulk-archive-products.types";
+
+export type {
+  DeleteProductPermanentlyInput,
+  DeleteProductPermanentlyResult,
+} from "./delete-product-permanently.types";
+
+export type {
+  BulkDeleteProductsPermanentlyInput,
+  BulkDeleteProductsPermanentlyResult,
+} from "./bulk-delete-products-permanently.types";

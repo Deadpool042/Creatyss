@@ -21,8 +21,9 @@ type ProductCollectionCardProps = {
   view: ProductListView;
   isSelected: boolean;
   onToggleSelection: (productId: string) => void;
-  onConfirmArchive: ((slug: string) => void | Promise<void>) | undefined;
-  onConfirmRestore: ((slug: string) => void | Promise<void>) | undefined;
+  onConfirmArchive?: (slug: string) => void | Promise<void>;
+  onConfirmRestore?: (slug: string) => void | Promise<void>;
+  onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
 };
 
 export function ProductCollectionCard({
@@ -32,23 +33,24 @@ export function ProductCollectionCard({
   onToggleSelection,
   onConfirmArchive,
   onConfirmRestore,
+  onConfirmPermanentDelete,
 }: ProductCollectionCardProps): JSX.Element {
   return (
     <article
       className={cn(
         "flex h-full flex-col rounded-2xl border border-surface-border bg-card p-3 shadow-card",
-        isSelected && "border-surface-border-strong ring-1 ring-surface-border-strong",
+        isSelected && "border-surface-border-strong bg-interactive-selected/30",
         "[@media(max-height:480px)]:rounded-xl [@media(max-height:480px)]:p-2.5"
       )}
     >
       <div className="mb-2 flex items-center justify-between gap-2">
-        <label className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+        <label className="flex items-center gap-2 text-xs font-medium text-foreground">
           <Checkbox
             checked={isSelected}
             onCheckedChange={() => onToggleSelection(product.id)}
             aria-label={`Sélectionner ${product.name}`}
           />
-          <span>Sélectionner</span>
+          <span className="truncate">Sélectionner</span>
         </label>
 
         <div className="flex shrink-0 items-center gap-1">
@@ -63,8 +65,9 @@ export function ProductCollectionCard({
             product={product}
             view={view}
             triggerClassName="h-7 w-7 [@media(max-height:480px)]:h-6 [@media(max-height:480px)]:w-6"
-            onConfirmArchive={onConfirmArchive}
-            onConfirmRestore={onConfirmRestore}
+            {...(onConfirmArchive ? { onConfirmArchive } : {})}
+            {...(onConfirmRestore ? { onConfirmRestore } : {})}
+            {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
           />
         </div>
       </div>
@@ -78,23 +81,21 @@ export function ProductCollectionCard({
         />
 
         <div className="min-w-0 flex-1">
-          <div className="flex items-start gap-2">
-            <div className="min-w-0 flex-1 space-y-1">
-              <Link href={`/admin/products/${product.slug}/edit`} className="block">
-                <h3 className="line-clamp-2 text-base font-semibold leading-5 tracking-tight text-foreground [@media(min-width:667px)]:line-clamp-1 [@media(max-height:480px)]:line-clamp-1 [@media(max-height:480px)]:text-sm [@media(max-height:480px)]:leading-4">
-                  {product.name}
-                </h3>
-              </Link>
+          <Link href={`/admin/products/${product.slug}/edit`} className="block">
+            <h3 className="line-clamp-2 text-base font-semibold leading-5 tracking-tight text-foreground [@media(min-width:667px)]:line-clamp-1 [@media(max-height:480px)]:line-clamp-1 [@media(max-height:480px)]:text-sm [@media(max-height:480px)]:leading-4">
+              {product.name}
+            </h3>
+          </Link>
 
-              <ProductCardBadges
-                product={product}
-                compact
-                className="gap-1.5"
-                statusClassName="h-6 px-2 text-[11px]"
-                stockClassName="h-6 px-2 text-[11px]"
-                metricClassName="h-6 px-2 text-[11px]"
-              />
-            </div>
+          <div className="mt-1">
+            <ProductCardBadges
+              product={product}
+              compact
+              className="gap-1.5"
+              statusClassName="h-6 px-2 text-[11px]"
+              stockClassName="h-6 px-2 text-[11px]"
+              metricClassName="h-6 px-2 text-[11px]"
+            />
           </div>
         </div>
       </div>

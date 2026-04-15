@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, type JSX } from "react";
-import { Archive, Eye, MoreHorizontal, Pencil, RotateCcw } from "lucide-react";
+import { Eye, MoreHorizontal, Pencil, RotateCcw, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,9 +28,11 @@ type ProductTableRowActionsProps = {
   slug: string;
   productName?: string;
   view: ProductListView;
-  onConfirmArchive: ((slug: string) => void | Promise<void>) | undefined;
-  onConfirmRestore: ((slug: string) => void | Promise<void>) | undefined;
+  onConfirmArchive?: (slug: string) => void | Promise<void>;
+  onConfirmRestore?: (slug: string) => void | Promise<void>;
+  onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
 };
+
 type ProductRowAction = {
   label: string;
   icon: typeof Pencil;
@@ -56,27 +58,57 @@ export function ProductTableRowActions({
   view,
   onConfirmArchive,
   onConfirmRestore,
+  onConfirmPermanentDelete,
 }: ProductTableRowActionsProps): JSX.Element {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [isPending, setIsPending] = useState(false);
+  const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
+  const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
+  const [permanentDeleteDialogOpen, setPermanentDeleteDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const displayName = productName ?? slug;
 
-  async function handleConfirm(): Promise<void> {
+  async function handleArchive(): Promise<void> {
+    if (!onConfirmArchive) {
+      setArchiveDialogOpen(false);
+      return;
+    }
+
     try {
-      setIsPending(true);
-
-      if (view === "trash") {
-        if (onConfirmRestore) {
-          await onConfirmRestore(slug);
-        }
-      } else if (onConfirmArchive) {
-        await onConfirmArchive(slug);
-      }
-
-      setDialogOpen(false);
+      setIsSubmitting(true);
+      await onConfirmArchive(slug);
+      setArchiveDialogOpen(false);
     } finally {
-      setIsPending(false);
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleRestore(): Promise<void> {
+    if (!onConfirmRestore) {
+      setRestoreDialogOpen(false);
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await onConfirmRestore(slug);
+      setRestoreDialogOpen(false);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handlePermanentDelete(): Promise<void> {
+    if (!onConfirmPermanentDelete) {
+      setPermanentDeleteDialogOpen(false);
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await onConfirmPermanentDelete(slug);
+      setPermanentDeleteDialogOpen(false);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -94,68 +126,66 @@ export function ProductTableRowActions({
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="w-52">
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuGroup>
+            {productRowActions.map((action) => (
+              <DropdownMenuItem key={action.label} asChild>
+                <Link href={action.href(slug)} className="flex items-center gap-2">
+                  <action.icon className="h-4 w-4 text-muted-foreground" />
+                  <span>{action.label}</span>
+                </Link>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuGroup>
+
+          <DropdownMenuSeparator />
+
           {view === "active" ? (
-            <>
-              <DropdownMenuGroup>
-                {productRowActions.map((action) => (
-                  <DropdownMenuItem key={action.label} asChild>
-                    <Link href={action.href(slug)} className="flex items-center gap-2">
-                      <action.icon className="h-4 w-4 text-muted-foreground" />
-                      <span>{action.label}</span>
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator />
-
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  className="text-destructive focus:text-destructive"
-                  onSelect={(event) => {
-                    event.preventDefault();
-                    setDialogOpen(true);
-                  }}
-                >
-                  <Archive className="h-4 w-4" />
-                  <span>Mettre à la corbeille</span>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </>
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive"
+                onSelect={(event) => {
+                  event.preventDefault();
+                  setArchiveDialogOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4" />
+                <span>Mettre à la corbeille</span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           ) : (
             <DropdownMenuGroup>
               <DropdownMenuItem
                 onSelect={(event) => {
                   event.preventDefault();
-                  setDialogOpen(true);
+                  setRestoreDialogOpen(true);
                 }}
               >
                 <RotateCcw className="h-4 w-4" />
                 <span>Restaurer</span>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive"
+                onSelect={(event) => {
+                  event.preventDefault();
+                  setPermanentDeleteDialogOpen(true);
+                }}
+              >
+                <Trash2 className="h-4 w-4" />
+                <span>Supprimer définitivement</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <Dialog open={archiveDialogOpen} onOpenChange={setArchiveDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {view === "trash" ? "Restaurer ce produit ?" : "Mettre ce produit à la corbeille ?"}
-            </DialogTitle>
+            <DialogTitle>Mettre ce produit à la corbeille ?</DialogTitle>
             <DialogDescription>
-              {view === "trash" ? (
-                <>
-                  <strong>{displayName}</strong> reviendra dans la liste active en brouillon.
-                </>
-              ) : (
-                <>
-                  <strong>{displayName}</strong> sera retiré du catalogue actif, sans suppression
-                  définitive.
-                </>
-              )}
+              Cette action retirera <strong>{displayName}</strong> du catalogue actif.
             </DialogDescription>
           </DialogHeader>
 
@@ -167,20 +197,85 @@ export function ProductTableRowActions({
             <Button
               variant="ghost"
               type="button"
-              onClick={() => setDialogOpen(false)}
-              disabled={isPending}
+              onClick={() => setArchiveDialogOpen(false)}
+              disabled={isSubmitting}
             >
               Annuler
             </Button>
 
-            <Button type="button" onClick={() => void handleConfirm()} disabled={isPending}>
-              {isPending
-                ? view === "trash"
-                  ? "Restauration…"
-                  : "Archivage…"
-                : view === "trash"
-                  ? "Confirmer la restauration"
-                  : "Confirmer"}
+            <Button
+              variant="destructive"
+              type="button"
+              onClick={() => void handleArchive()}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Déplacement…" : "Mettre à la corbeille"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={restoreDialogOpen} onOpenChange={setRestoreDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Restaurer ce produit ?</DialogTitle>
+            <DialogDescription>
+              Cette action replacera <strong>{displayName}</strong> dans le catalogue actif.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-3 text-sm text-muted-foreground">
+            Produit concerné : <span className="font-medium text-foreground">{displayName}</span>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              type="button"
+              onClick={() => setRestoreDialogOpen(false)}
+              disabled={isSubmitting}
+            >
+              Annuler
+            </Button>
+
+            <Button type="button" onClick={() => void handleRestore()} disabled={isSubmitting}>
+              {isSubmitting ? "Restauration…" : "Restaurer"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={permanentDeleteDialogOpen} onOpenChange={setPermanentDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Supprimer définitivement ce produit ?</DialogTitle>
+            <DialogDescription>
+              Cette action est irréversible. <strong>{displayName}</strong> sera supprimé
+              définitivement du catalogue.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-3 text-sm text-destructive">
+            Cette suppression est définitive et ne pourra pas être annulée.
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              type="button"
+              onClick={() => setPermanentDeleteDialogOpen(false)}
+              disabled={isSubmitting}
+            >
+              Annuler
+            </Button>
+
+            <Button
+              variant="destructive"
+              type="button"
+              onClick={() => void handlePermanentDelete()}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Suppression…" : "Supprimer définitivement"}
             </Button>
           </DialogFooter>
         </DialogContent>

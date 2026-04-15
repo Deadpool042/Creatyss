@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import type { JSX } from "react";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { AdminDataTableEmptyState } from "@/components/admin/tables/admin-data-table-empty-state";
+import { Checkbox } from "@/components/ui/checkbox";
 import { PlaceholderImage } from "@/components/shared/placeholder-image";
 import {
   Table,
@@ -36,6 +36,7 @@ type ProductTableDesktopProps = {
   view: ProductListView;
   onConfirmArchive?: (slug: string) => void | Promise<void>;
   onConfirmRestore?: (slug: string) => void | Promise<void>;
+  onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
 };
 
 function getVariantLabel(variantCount: number): string {
@@ -52,9 +53,10 @@ export function ProductTableDesktop({
   view,
   onConfirmArchive,
   onConfirmRestore,
+  onConfirmPermanentDelete,
 }: ProductTableDesktopProps): JSX.Element {
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-surface-border bg-card shadow-card">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-surface-border bg-card shadow-card ">
       <div className="min-h-0 flex-1 overflow-auto overscroll-contain">
         <Table>
           <TableHeader className="sticky top-0 z-10 bg-card">
@@ -98,7 +100,7 @@ export function ProductTableDesktop({
 
                 return (
                   <TableRow key={product.id} className="group">
-                    <TableCell className="p-2 text-center">
+                    <TableCell className="p-2.5">
                       <div className="flex items-center justify-center">
                         <Checkbox
                           checked={isSelected}
@@ -179,8 +181,9 @@ export function ProductTableDesktop({
                         slug={product.slug}
                         productName={product.name}
                         view={view}
-                        onConfirmArchive={onConfirmArchive}
-                        onConfirmRestore={onConfirmRestore}
+                        {...(onConfirmArchive ? { onConfirmArchive } : {})}
+                        {...(onConfirmRestore ? { onConfirmRestore } : {})}
+                        {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
                       />
                     </TableCell>
                   </TableRow>

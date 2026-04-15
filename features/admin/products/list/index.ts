@@ -7,6 +7,8 @@ export { archiveProductAction } from "./actions/archive-product.action";
 export { restoreProductAction } from "./actions/restore-product.action";
 export { bulkRestoreProductsAction } from "./actions/bulk-restore-products.action";
 export { bulkArchiveProductsAction } from "./actions/bulk-archive-products.action";
+export { deleteProductPermanentlyAction } from "./actions/delete-product-permanently.action";
+export { bulkDeleteProductsPermanentlyAction } from "./actions/bulk-delete-products-permanently.action";
 
 export {
   toggleProductFeatured,
@@ -16,6 +18,8 @@ export {
   restoreProduct,
   bulkRestoreProducts,
   bulkArchiveProducts,
+  deleteProductPermanently,
+  bulkDeleteProductsPermanently,
 } from "./services";
 
 export { getAdminProductsFeedPage } from "./queries/get-admin-products-feed-page.query";
@@ -44,6 +48,8 @@ export { bulkUpdateProductStatusSchema } from "./schemas/bulk-update-product-sta
 export { bulkUpdateProductFeaturedSchema } from "./schemas/bulk-update-product-featured.schema";
 export { bulkArchiveProductsSchema } from "./schemas/bulk-archive-products.schema";
 export { bulkRestoreProductsSchema } from "./schemas/bulk-restore-products.schema";
+export { deleteProductPermanentlySchema } from "./schemas/delete-product-permanently.schema";
+export { bulkDeleteProductsPermanentlySchema } from "./schemas/bulk-delete-products-permanently.schema";
 
 export type {
   AdminProductFeedItem,
@@ -83,4 +89,8 @@ export type {
   BulkRestoreProductsResult,
   BulkArchiveProductsInput,
   BulkArchiveProductsResult,
+  DeleteProductPermanentlyInput,
+  DeleteProductPermanentlyResult,
+  BulkDeleteProductsPermanentlyInput,
+  BulkDeleteProductsPermanentlyResult,
 } from "./types";

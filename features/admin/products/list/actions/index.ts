@@ -5,3 +5,5 @@ export { archiveProductAction } from "./archive-product.action";
 export { restoreProductAction } from "./restore-product.action";
 export { bulkRestoreProductsAction } from "./bulk-restore-products.action";
 export { bulkArchiveProductsAction } from "./bulk-archive-products.action";
+export { deleteProductPermanentlyAction } from "./delete-product-permanently.action";
+export { bulkDeleteProductsPermanentlyAction } from "./bulk-delete-products-permanently.action";

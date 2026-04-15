@@ -24,6 +24,7 @@ type ProductTableMobileProps = {
   }) => void;
   onConfirmArchive?: (slug: string) => void | Promise<void>;
   onConfirmRestore?: (slug: string) => void | Promise<void>;
+  onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
 };
 
 export function ProductTableMobile({
@@ -34,6 +35,7 @@ export function ProductTableMobile({
   onVisibleSelectionStatsChange,
   onConfirmArchive,
   onConfirmRestore,
+  onConfirmPermanentDelete,
 }: ProductTableMobileProps): JSX.Element {
   const [visibleCount, setVisibleCount] = useState(MOBILE_PAGE_SIZE);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -133,8 +135,9 @@ export function ProductTableMobile({
             view={view}
             isSelected={selectedProductIds.includes(product.id)}
             onToggleSelection={onToggleProductSelection}
-            onConfirmArchive={onConfirmArchive}
-            onConfirmRestore={onConfirmRestore}
+            {...(onConfirmArchive ? { onConfirmArchive } : {})}
+            {...(onConfirmRestore ? { onConfirmRestore } : {})}
+            {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
           />
         ))}
       </div>

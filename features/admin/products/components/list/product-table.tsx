@@ -5,9 +5,11 @@ import { useEffect, useMemo, useState, type JSX } from "react";
 import { Button } from "@/components/ui/button";
 import { archiveProductAction } from "@/features/admin/products/list/actions/archive-product.action";
 import { bulkArchiveProductsAction } from "@/features/admin/products/list/actions/bulk-archive-products.action";
+import { bulkDeleteProductsPermanentlyAction } from "@/features/admin/products/list/actions/bulk-delete-products-permanently.action";
 import { bulkRestoreProductsAction } from "@/features/admin/products/list/actions/bulk-restore-products.action";
 import { bulkUpdateProductFeaturedAction } from "@/features/admin/products/list/actions/bulk-update-product-featured.action";
 import { bulkUpdateProductStatusAction } from "@/features/admin/products/list/actions/bulk-update-product-status.action";
+import { deleteProductPermanentlyAction } from "@/features/admin/products/list/actions/delete-product-permanently.action";
 import { restoreProductAction } from "@/features/admin/products/list/actions/restore-product.action";
 import { useProductTableFilters } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type {
@@ -218,6 +220,27 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
     setIsBulkPending(false);
   }
 
+  async function handleBulkPermanentDelete(): Promise<void> {
+    if (selectedProductIds.length === 0 || isBulkPending) return;
+
+    setIsBulkPending(true);
+    setBulkMessage(null);
+    setBulkError(null);
+
+    const result = await bulkDeleteProductsPermanentlyAction({
+      productIds: selectedProductIds,
+    });
+
+    if (result.status === "success") {
+      setBulkMessage(result.message);
+      setSelectedProductIds([]);
+    } else {
+      setBulkError(result.message);
+    }
+
+    setIsBulkPending(false);
+  }
+
   async function handleArchiveOne(productSlug: string): Promise<void> {
     const result = await archiveProductAction(productSlug);
 
@@ -232,6 +255,20 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
 
   async function handleRestoreOne(productSlug: string): Promise<void> {
     const result = await restoreProductAction(productSlug);
+
+    if (result.status === "success") {
+      setBulkMessage(result.message);
+      setBulkError(null);
+    } else {
+      setBulkError(result.message);
+      setBulkMessage(null);
+    }
+  }
+
+  async function handlePermanentDeleteOne(productSlug: string): Promise<void> {
+    const result = await deleteProductPermanentlyAction({
+      productSlug,
+    });
 
     if (result.status === "success") {
       setBulkMessage(result.message);
@@ -262,6 +299,9 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
           onBulkUnsetFeatured={() => void handleBulkFeaturedChange(false)}
           onBulkArchive={() => void handleBulkArchive()}
           onBulkRestore={() => void handleBulkRestore()}
+          {...(view === "trash"
+            ? { onBulkPermanentDelete: () => void handleBulkPermanentDelete() }
+            : {})}
         />
 
         <div className="min-h-0 flex-1">
@@ -272,8 +312,9 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
             onToggleProductSelection={toggleProductSelection}
             onToggleSelectAllCurrentPage={toggleSelectAllCurrentPage}
             view={view}
-            onConfirmArchive={handleArchiveOne}
-            onConfirmRestore={handleRestoreOne}
+            {...(view === "active" ? { onConfirmArchive: handleArchiveOne } : {})}
+            {...(view === "trash" ? { onConfirmRestore: handleRestoreOne } : {})}
+            {...(view === "trash" ? { onConfirmPermanentDelete: handlePermanentDeleteOne } : {})}
           />
         </div>
 
@@ -331,6 +372,9 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
           onBulkUnsetFeatured={() => void handleBulkFeaturedChange(false)}
           onBulkArchive={() => void handleBulkArchive()}
           onBulkRestore={() => void handleBulkRestore()}
+          {...(view === "trash"
+            ? { onBulkPermanentDelete: () => void handleBulkPermanentDelete() }
+            : {})}
           mobileVisibleCount={mobileVisibleSelection?.visibleCount ?? 0}
           mobileVisibleSelectedCount={mobileVisibleSelection?.visibleSelectedCount ?? 0}
           mobileAllVisibleSelected={mobileVisibleSelection?.areAllVisibleSelected ?? false}
@@ -362,8 +406,9 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
                 return nextStats;
               });
             }}
-            onConfirmArchive={handleArchiveOne}
-            onConfirmRestore={handleRestoreOne}
+            {...(view === "active" ? { onConfirmArchive: handleArchiveOne } : {})}
+            {...(view === "trash" ? { onConfirmRestore: handleRestoreOne } : {})}
+            {...(view === "trash" ? { onConfirmPermanentDelete: handlePermanentDeleteOne } : {})}
           />
         </div>
       </div>

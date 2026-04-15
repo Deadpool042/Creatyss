@@ -1,3 +1,4 @@
+//tests/e2e/admin/product-test-helpers.ts
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
@@ -179,13 +180,21 @@ export async function createSimpleAdminProduct(
   const productTypeLabel = mapProductTypeToVisibleLabel(productTypeCode);
   const submitButton = page.getByRole("button", { name: "Créer le produit" });
 
-  await expect(page.getByLabel("Type de produit")).toBeVisible();
+  await expect(page.getByText("Étape 2 sur 2")).toBeVisible();
+  await expect(submitButton).toBeVisible();
 
   let redirectedToEditor = false;
+
   for (let attempt = 0; attempt < 3; attempt += 1) {
-    await page.getByLabel("Type de produit").click();
+    const productTypeSelect = page.getByRole("combobox").first();
+
+    await expect(productTypeSelect).toBeVisible({ timeout: 10_000 });
+    await expect(productTypeSelect).toBeEnabled();
+
+    await productTypeSelect.click();
     await page.getByRole("option", { name: productTypeLabel, exact: true }).click();
-    await expect(submitButton).toBeEnabled({ timeout: 3_000 });
+
+    await expect(submitButton).toBeEnabled({ timeout: 5_000 });
     await submitButton.click();
 
     try {
@@ -247,9 +256,7 @@ export async function setupAdminEditorScenario(page: Page): Promise<SeededAdminE
 export async function openAdminProduct(page: Page, detailUrl: string): Promise<void> {
   const canonicalUrl = toCanonicalEditUrl(detailUrl);
   await gotoAdminPageWithRetry(page, canonicalUrl);
-  await expect(page).toHaveURL(
-    new RegExp(`${toRegExpEscaped(canonicalUrl)}(?:\\?.*)?$`)
-  );
+  await expect(page).toHaveURL(new RegExp(`${toRegExpEscaped(canonicalUrl)}(?:\\?.*)?$`));
 }
 
 export function getAdminProductDetailUrlWithoutSearch(url: string): string {
@@ -306,7 +313,10 @@ const ONE_PIXEL_PNG = Buffer.from(
 
 async function ensureTempImagePath(filename: string): Promise<string> {
   const safeFilename = filename.replace(/[^a-zA-Z0-9._-]/g, "-");
-  const absolutePath = join(tmpdir(), safeFilename.endsWith(".png") ? safeFilename : `${safeFilename}.png`);
+  const absolutePath = join(
+    tmpdir(),
+    safeFilename.endsWith(".png") ? safeFilename : `${safeFilename}.png`
+  );
   await writeFile(absolutePath, ONE_PIXEL_PNG);
   return absolutePath;
 }

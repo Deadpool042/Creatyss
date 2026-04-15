@@ -5,3 +5,5 @@ export { archiveProduct } from "./archive-product.service";
 export { restoreProduct } from "./restore-product.service";
 export { bulkRestoreProducts } from "./bulk-restore-products.service";
 export { bulkArchiveProducts } from "./bulk-archive-products.service";
+export { deleteProductPermanently } from "./delete-product-permanently.service";
+export { bulkDeleteProductsPermanently } from "./bulk-delete-products-permanently.service";
