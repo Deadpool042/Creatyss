@@ -383,15 +383,15 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../../architecture/10-fondations/10-principes-d-architecture.md`
-- `../../architecture/10-fondations/11-modele-de-classification.md`
-- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md`
-- `../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
-- `checkout.md`
-- `orders.md`
-- `pricing.md`
-- `customers.md`
+- `../../../architecture/10-fondations/10-principes-d-architecture.md`
+- `../../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md`
+- `../../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
+- `../../core/commerce/checkout.md`
+- `../../core/commerce/orders.md`
+- `../../core/commerce/pricing.md`
+- `../../core/commerce/customers.md`
 - `taxation.md`
-- `integrations.md`
-- `webhooks.md`
+- `../platform/integrations.md`
+- `../platform/webhooks.md`

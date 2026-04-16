@@ -363,12 +363,12 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md`
-- `../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
+- `../../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md`
+- `../../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
 - `webhooks.md`
-- `api-clients.md`
-- `payments.md`
-- `orders.md`
-- `products.md`
-- `customers.md`
-- `../../domains/cross-cutting/jobs.md`
+- `../../satellites/api-clients.md`
+- `../commerce/payments.md`
+- `../../core/commerce/orders.md`
+- `../../core/catalog/products.md`
+- `../../core/commerce/customers.md`
+- `../../cross-cutting/jobs.md`

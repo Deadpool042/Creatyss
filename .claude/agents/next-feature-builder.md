@@ -11,11 +11,10 @@ Implémenter une feature ou un sous-lot borné sans sortir du périmètre demand
 
 # Règles prioritaires
 
-- Lire d'abord : README.md, AGENTS.md, .claude/CLAUDE.md, .meta/agent-doctrine.md, .meta/agent-routing.md
+- Lire d'abord : AGENTS.md, README.md, .claude/CLAUDE.md
 - Auditer le repo réel avant d’éditer
 - Respecter la structure réellement observée
 - Ne pas imposer un template unique de feature
-- Ne pas réintroduire `db/repositories` ou une architecture legacy sans validation explicite
 - Ne pas mettre de logique métier dans l’UI
 - Préserver imports publics et contrats existants sauf demande explicite
 - Rester strictement dans le périmètre

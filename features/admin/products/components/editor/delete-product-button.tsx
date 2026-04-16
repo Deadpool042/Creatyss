@@ -1,27 +1,38 @@
 "use client";
 
 import { useTransition, type ReactNode } from "react";
-import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Archive } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { deleteProductAction } from "@/features/admin/products/editor/public";
+import { deleteProductAction } from "@/features/admin/products/editor/public/delete-product.action";
 
 type DeleteProductButtonProps = {
   productId: string;
   trigger?: ReactNode;
-  onDelete?: (input: { productId: string }) => Promise<{ status: "success" | "error"; message: string }>;
+  redirectTo?: string;
+  onDelete?: (input: {
+    productId: string;
+  }) => Promise<{ status: "success" | "error"; message: string }>;
 };
 
 export function DeleteProductButton({
   productId,
   trigger,
+  redirectTo = "/admin/products",
   onDelete = deleteProductAction,
 }: DeleteProductButtonProps) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   function handleDelete(): void {
     startTransition(async () => {
-      await onDelete({ productId });
+      const result = await onDelete({ productId });
+
+      if (result.status === "success") {
+        router.push(redirectTo);
+        router.refresh();
+      }
     });
   }
 
@@ -35,8 +46,8 @@ export function DeleteProductButton({
 
   return (
     <Button type="button" variant="outline" size="sm" disabled={isPending} onClick={handleDelete}>
-      <Trash2 className="mr-2 h-4 w-4" />
-      Supprimer
+      <Archive className="mr-2 h-4 w-4" />
+      {isPending ? "Déplacement…" : "Mettre à la corbeille"}
     </Button>
   );
 }

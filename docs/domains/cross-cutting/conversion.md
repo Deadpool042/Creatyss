@@ -411,12 +411,12 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../core/commerce/customers.md`
 - `../core/catalog/products.md`
 - `marketing.md`
-- `discounts.md`
+- `../satellites/discounts.md`
 - `newsletter.md`
 - `notifications.md`
 - `analytics.md`
 - `dashboarding.md`
-- `recommendations.md`
+- `../optional/recommendations.md`
 - `audit.md`
 - `observability.md`
 - `../core/foundation/stores.md`

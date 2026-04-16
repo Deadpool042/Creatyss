@@ -397,7 +397,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
 - `../core/catalog/products.md`
-- `inventory.md`
+- `../optional/commerce/inventory.md`
 - `../core/catalog/availability.md`
 - `../core/commerce/customers.md`
 - `../core/foundation/stores.md`

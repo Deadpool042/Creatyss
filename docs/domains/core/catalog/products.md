@@ -345,16 +345,16 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../../architecture/10-fondations/10-principes-d-architecture.md`
-- `../../architecture/10-fondations/11-modele-de-classification.md`
-- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../../architecture/20-structure/21-domaines-coeur.md`
-- `../../architecture/20-structure/23-systemes-externes-et-satellites.md`
-- `pricing.md`
+- `../../../architecture/10-fondations/10-principes-d-architecture.md`
+- `../../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../../../architecture/20-structure/21-domaines-coeur.md`
+- `../../../architecture/20-structure/23-systemes-externes-et-satellites.md`
+- `../commerce/pricing.md`
 - `availability.md`
-- `cart.md`
-- `checkout.md`
-- `orders.md`
-- `../../domains/satellites/categories.md`
-- `../../domains/satellites/media.md`
-- `../../domains/satellites/catalog-modeling.md`
+- `../commerce/cart.md`
+- `../commerce/checkout.md`
+- `../commerce/orders.md`
+- `../../satellites/categories.md`
+- `../../satellites/media.md`
+- `../../satellites/catalog-modeling.md`

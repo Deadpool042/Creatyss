@@ -2,7 +2,7 @@
 
 import type { JSX } from "react";
 
-import { toggleProductFeaturedAction } from "@/features/admin/products/list/actions";
+import { toggleProductFeaturedAction } from "@/features/admin/products/list/actions/toggle-product-featured.action";
 import { cn } from "@/lib/utils";
 import { ProductFeaturedToggle } from "../../product-featured-toggle";
 

@@ -404,7 +404,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `observability.md`
 - `dashboarding.md`
 - `../core/foundation/stores.md`
-- `../optional/events.md`
+- `events.md`
 - `../satellites/documents.md`
 - `../core/catalog/products.md`
 - `../optional/platform/integrations.md`

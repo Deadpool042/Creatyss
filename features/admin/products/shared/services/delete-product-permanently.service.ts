@@ -1,6 +1,9 @@
 import { withTransaction } from "@/core/db";
-import type { DeleteProductPermanentlyInput } from "../types";
 import { deleteProductCatalogByIdInTx } from "./delete-product-permanently.helpers";
+
+type DeleteProductPermanentlyInput = {
+  productSlug: string;
+};
 
 type DeleteProductPermanentlyServiceResult = {
   id: string;

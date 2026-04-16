@@ -1,34 +1,37 @@
 ---
 name: creatyss-implementation
-description: Discipline d’implémentation, format de livraison, critères de qualité et garde-fous de production pour Creatyss.
+description: Discipline d’implémentation, garde-fous d’exécution et format de livraison pour les changements sur Creatyss.
 ---
 
-Quand tu proposes une implémentation sur Creatyss, tu dois produire une réponse exploitable, concrète, disciplinée, strictement alignée sur le dépôt, et compatible avec une base réelle.
+`AGENTS.md` est la doctrine canonique du dépôt.
+Ce skill ne la recopie pas.
+Il définit uniquement la discipline d’implémentation et le format de sortie attendu quand une modification est proposée.
 
-## Règles de mise en œuvre
+## Règle d’exécution
+
+Quand tu implémentes sur Creatyss, tu dois produire une réponse exploitable, locale, bornée et cohérente avec le dépôt réel.
 
 Tu dois toujours :
 
 - rester strictement dans le périmètre demandé ;
 - procéder par petits incréments sûrs ;
 - limiter les changements au strict nécessaire ;
-- préférer une solution simple si elle satisfait correctement le besoin ;
-- produire du code réel quand le code est attendu ;
-- éviter les réponses vagues, abstraites ou uniquement conceptuelles si l’utilisateur attend une implémentation ;
-- respecter les contraintes des documents du dépôt ;
-- préserver la lisibilité générale du projet ;
-- nommer clairement les fichiers, fonctions, types et responsabilités.
+- préférer la solution la plus simple qui satisfait correctement le besoin ;
+- préserver la lisibilité générale du repo ;
+- nommer clairement fichiers, fonctions, types et responsabilités ;
+- signaler toute hypothèse importante au lieu de l’introduire silencieusement.
 
-Tu ne dois jamais :
+## Ce que tu ne dois jamais faire
+
+Ne jamais :
 
 - sur-architecturer ;
-- ajouter des couches inutiles ;
-- introduire une dépendance sans nécessité claire ;
+- ajouter une couche ou une abstraction sans besoin réel ;
+- introduire une dépendance sans justification claire ;
 - mélanger logique métier et présentation ;
-- cacher une hypothèse importante ;
-- diluer le besoin dans une réponse trop large ;
-- traiter comme “petite amélioration” un changement qui modifie fortement l’architecture ou le domaine ;
-- modifier silencieusement une convention structurante du projet.
+- élargir discrètement le périmètre ;
+- modifier silencieusement une convention structurante du dépôt ;
+- présenter une implémentation générique comme si elle était alignée sur le repo.
 
 ## Discipline de qualité
 
@@ -40,91 +43,80 @@ Le code proposé doit être :
 - prévisible ;
 - modulaire ;
 - cohérent avec le dépôt ;
-- cohérent avec le runtime local Docker ;
-- cohérent avec PostgreSQL et Prisma si la persistance est concernée.
+- compatible avec le runtime local Docker.
 
 Toujours :
 
 - typer les entrées et sorties ;
-- valider les payloads côté serveur quand c’est nécessaire ;
-- gérer les erreurs de façon claire et prévisible ;
+- valider côté serveur quand nécessaire ;
+- gérer les erreurs de façon claire ;
 - éviter la magie ;
 - éviter les abstractions prématurées ;
-- éviter les gros fichiers si une découpe simple améliore la lisibilité ;
 - éviter la duplication inutile ;
-- préférer des fonctions pures quand c’est pertinent ;
-- utiliser des noms précis ;
-- commenter seulement si cela apporte une vraie clarification.
+- préférer une extraction locale simple à une refonte publique.
 
-## Contraintes Next.js
+## Garde-fous Next.js
 
-Respecter les règles suivantes :
+Pour une implémentation Next.js :
 
 - Server Components par défaut ;
-- Client Components uniquement si nécessaire ;
-- Server Actions seulement quand elles ont un vrai sens ;
+- Client Components seulement si nécessaire ;
+- Server Actions seulement quand elles simplifient réellement le flux ;
 - Route Handlers pour les besoins API ;
 - pas de logique métier directement dans les composants UI ;
-- pas d’accès DB direct depuis la présentation ;
-- pas de confusion entre logique serveur et composants visuels.
+- pas d’accès DB direct depuis la présentation.
 
-## Contraintes base de données
+## Garde-fous persistance
 
 Si la tâche touche la persistance :
 
-- PostgreSQL uniquement ;
-- cohérence avec Prisma ;
-- clés primaires explicites ;
-- timestamps systématiques ;
-- slugs uniques quand nécessaire ;
-- relations propres ;
-- index si pertinent ;
-- noms de tables et colonnes cohérents et stables ;
+- rester cohérent avec PostgreSQL et Prisma ;
+- préserver des noms clairs et stables ;
+- garder des relations propres ;
+- garder des contraintes cohérentes ;
 - éviter les colonnes ambiguës ;
-- éviter les relations inutiles ;
-- ne pas mélanger les invariants métier complexes avec des décisions de persistance mal placées.
+- ne pas supprimer silencieusement tables, colonnes, index ou contraintes ;
+- signaler explicitement tout impact DB.
 
-## Contraintes sécurité
+## Garde-fous sécurité
 
 Toujours :
 
 - ne jamais faire confiance aux entrées utilisateur ;
 - valider côté serveur ;
-- protéger l’admin si la tâche est concernée ;
-- ne jamais exposer de secret côté client ;
-- limiter les permissions ;
+- ne jamais exposer un secret côté client ;
 - éviter toute crédential hardcodée ;
-- conserver une posture compatible avec un déploiement VPS classique.
+- limiter les permissions au strict nécessaire ;
+- préserver une posture compatible avec un déploiement VPS classique.
 
-## Contraintes locales et livraison
+## Compatibilité locale
 
-Le projet doit rester exploitable localement avec Docker Compose.
-Toute proposition doit rester compatible avec un lancement local simple.
+Toute proposition doit rester compatible avec un usage local simple via Docker Compose.
 
-Quand c’est pertinent, tu dois expliciter :
+Quand c’est pertinent, expliciter :
 
-- les variables d’environnement nécessaires ;
+- l’impact sur les variables d’environnement ;
 - l’impact Docker ;
 - l’impact DB ;
-- les validations locales ;
-- les points de vérification manuelle.
+- les validations locales à exécuter ;
+- les vérifications manuelles utiles.
 
-## Protocole de réponse attendu
+## Format de livraison attendu
 
-Quand tu proposes une implémentation, tu dois structurer ta sortie pour qu’elle soit directement exploitable.
-
-À la fin de chaque proposition, fournir systématiquement :
+Quand tu proposes une implémentation, terminer systématiquement par :
 
 1. Fichiers créés ou modifiés
 2. Variables d’environnement nécessaires
 3. Commandes de validation/test
 4. Vérification manuelle à effectuer
 
-Quand la tâche implique un choix non évident, tu dois aussi :
+## Choix non évidents
 
-- expliquer brièvement pourquoi ce choix est retenu ;
-- indiquer pourquoi les options plus lourdes sont écartées ;
-- relier explicitement le choix aux contraintes du dépôt quand c’est pertinent.
+Quand un choix technique n’est pas trivial :
+
+- expliquer brièvement le choix retenu ;
+- indiquer pourquoi une option plus lourde n’est pas nécessaire ;
+- relier ce choix aux contraintes du dépôt si pertinent.
 
 ## Gestion des hypothèses
 
@@ -135,19 +127,9 @@ Si une information manque :
 - signaler clairement qu’il s’agit d’une hypothèse ;
 - éviter de faire dériver le projet à partir de cette hypothèse.
 
-## Interdiction des réponses décorrelées du dépôt
-
-Tu ne dois pas produire une réponse générique correcte en théorie mais non alignée sur le dépôt.
-Une réponse n’est acceptable que si elle est à la fois :
-
-- techniquement cohérente ;
-- compatible avec les sources du projet ;
-- adaptée à l’état réel du repo.
-
 ## Critère final
 
-Une bonne proposition sur Creatyss n’est pas seulement “fonctionnelle”.
-Elle doit être :
+Une bonne implémentation sur Creatyss doit être :
 
 - fidèle au dépôt ;
 - strictement dans le périmètre ;
@@ -156,4 +138,4 @@ Elle doit être :
 - lisible ;
 - maintenable ;
 - compatible avec le mode local Docker ;
-- cohérente avec une future mise en production sur VPS OVH.
+- exploitable immédiatement.

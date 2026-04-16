@@ -357,14 +357,14 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../../architecture/10-fondations/10-principes-d-architecture.md`
-- `../../architecture/10-fondations/11-modele-de-classification.md`
-- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `products.md`
-- `pricing.md`
-- `availability.md`
-- `customers.md`
+- `../../../architecture/10-fondations/10-principes-d-architecture.md`
+- `../../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../catalog/products.md`
+- `../commerce/pricing.md`
+- `../catalog/availability.md`
+- `../commerce/customers.md`
 - `users.md`
 - `roles.md`
 - `permissions.md`
-- `../../domains/satellites/channels.md`
+- `../../satellites/channels.md`

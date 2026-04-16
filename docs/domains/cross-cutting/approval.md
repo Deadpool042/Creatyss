@@ -397,13 +397,13 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
 - `workflow.md`
 - `audit.md`
-- `permissions.md`
-- `roles.md`
+- `../core/foundation/permissions.md`
+- `../core/foundation/roles.md`
 - `../core/foundation/users.md`
 - `../core/foundation/stores.md`
 - `../core/catalog/products.md`
 - `../satellites/documents.md`
-- `../optional/events.md`
+- `events.md`
 - `../optional/platform/integrations.md`
 - `observability.md`
 - `dashboarding.md`

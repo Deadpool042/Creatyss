@@ -208,8 +208,8 @@ Le domaine `shipping` s’arrête :
 
 ## Documents liés
 
-- `orders.md`
-- `customers.md`
-- `checkout.md`
-- `pricing.md`
+- `../../core/commerce/orders.md`
+- `../../core/commerce/customers.md`
+- `../../core/commerce/checkout.md`
+- `../../core/commerce/pricing.md`
 - `fulfillment.md`

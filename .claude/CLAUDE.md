@@ -1,5 +1,20 @@
 # Claude Code – Creatyss
 
+## Rôle de ce fichier
+
+`AGENTS.md` est la doctrine canonique du repo.
+
+Ce fichier définit uniquement les règles d’exécution spécifiques à Claude Code :
+
+- routage des agents ;
+- séquencement des interventions ;
+- règles de collaboration entre agents ;
+- garde-fous opérationnels pour l’exécution des lots.
+
+Ne pas dupliquer ici la doctrine générale du projet sauf si un rappel bref est strictement utile à l’exécution.
+
+---
+
 ## Source de vérité
 
 Lire par défaut, dans cet ordre :
@@ -25,258 +40,20 @@ Ensuite seulement, lire la documentation ciblée par la demande :
 
 - fiche précise dans `docs/domains/`
 - document précis dans `docs/testing/`
-- document de lot explicitement visé
-- ancienne documentation seulement si la demande la vise explicitement
-
-Les anciennes docs `docs/v*` et les anciens chemins plats de `docs/architecture/` ne sont plus la source de vérité courante.
 
 ---
 
-## Contexte projet
+## Règles opérationnelles globales
 
-Creatyss est un socle e-commerce custom.
-
-Le projet est conçu pour être :
-
-- local-first via Docker Compose ;
-- maintenable ;
-- lisible ;
-- strictement typé ;
-- documenté ;
-- déployable ensuite sur un VPS OVH ;
-- réutilisable pour d'autres projets e-commerce au-delà du seul cas Creatyss.
-
-Creatyss est un **codebase unique** avec une **architecture modulaire réutilisable**.
-
-Creatyss n’est pas, à ce stade :
-
-- une site-factory ;
-- une plateforme multi-tenant ;
-- un moteur de provisioning de boutiques ;
-- un système de plugins runtime ;
-- un orchestrateur générique de sites clients.
-
-Stack cible :
-
-- Next.js App Router
-- TypeScript strict
-- PostgreSQL
-- Docker / Docker Compose
-- Makefile
-
----
-
-## Doctrine repo
-
-Le repo est structuré autour d’une doctrine explicite portée par `docs/architecture/`.
-
-La colonne vertébrale documentaire est :
-
-- `00-introduction/`
-- `10-fondations/`
-- `20-structure/`
-- `30-execution/`
-- `40-exploitation/`
-- `90-reference/`
-
-La documentation détaillée des domaines se trouve dans `docs/domains/`.
-
-La stratégie de validation se trouve dans `docs/testing/`.
-
----
-
-## Taxonomie canonique du repo
-
-La taxonomie canonique reconnue dans le repo est :
-
-- `core`
-- `optional`
-- `cross-cutting`
-- `satellites`
-
-Cette taxonomie s’applique à la fois à :
-
-- `docs/domains/{core, optional, cross-cutting, satellites}`
-- `prisma/{core, optional, cross-cutting, satellites}`
-
-Les regroupements métier internes comme :
-
-- `foundation`
-- `catalog`
-- `commerce`
-- `content`
-- `engagement`
-- `platform`
-- `ai`
-
-sont des sous-structures locales.
-Ils ne remplacent pas la taxonomie canonique.
-
-Ne jamais confondre :
-
-- catégorie documentaire ;
-- criticité architecturale ;
-- activabilité ;
-- source de vérité.
-
-Points doctrinaux importants déjà stabilisés :
-
-- `availability` porte la disponibilité vendable ;
-- `inventory` porte la vérité de stock ;
-- `fulfillment` porte l’exécution logistique ;
-- `shipping` porte l’expédition et le suivi de livraison ;
-- `auth`, `users`, `roles`, `permissions` relèvent d’un coeur structurel ;
-- `customers` porte le client métier ;
-- un domaine `events` éventuel dans `cross-cutting/` désigne un domaine métier transverse explicite ;
-- les `domain-events` internes désignent les événements applicatifs liés à l’exécution du système ;
-- ces deux notions ne doivent jamais être mélangées.
-
----
-
-## Règles absolues
-
+- Toujours appliquer `AGENTS.md` comme doctrine canonique.
 - Toujours rester dans le périmètre demandé.
-- Toujours proposer un plan avant un lot non trivial.
+- Toujours privilégier les plus petits changements sûrs.
 - Ne jamais faire de refactor opportuniste hors périmètre.
-- Ne pas ajouter de dépendance sans nécessité explicite.
-- Ne pas modifier le comportement métier sans demande explicite.
-- Ne pas changer les contrats publics ou signatures runtime sans l’annoncer explicitement.
-- Ne pas introduire de nouvelle abstraction si une extraction locale suffit.
-- Ne pas utiliser `any` sauf justification explicite.
-- Toujours privilégier de petits lots sûrs.
-- Ne jamais faire dériver la doctrine courante à partir d’un ancien document isolé sans validation explicite.
-- Ne jamais contourner `docs/architecture/` au nom de la vitesse.
-- Ne jamais traiter Creatyss comme une site-factory ou une plateforme multi-tenant si la demande ne l’exige pas explicitement.
-
----
-
-## Doctrine architecture
-
-- Le métier passe avant la technique.
-- Le coeur doit rester identifiable.
-- Les capacités optionnelles doivent rester bornées.
-- Les dépendances externes doivent être encapsulées.
-- La source de vérité doit être explicite.
-- Les événements expriment des faits ; ils ne corrigent pas une mauvaise modélisation.
-- Les préoccupations transverses doivent être traitées explicitement.
-- Les frontières doivent être compréhensibles.
-- Le système doit rester testable par responsabilité.
-- La documentation doit refléter la structure réelle.
-
-Séparer clairement :
-
-- domaine métier ;
-- structure d’accès ;
-- intégration ;
-- exécution ;
-- données ;
-- UI.
-
-Ne pas mélanger logique métier et composants de présentation.
-
----
-
-## Doctrine Prisma
-
-Le dossier `prisma/` doit refléter la taxonomie canonique :
-
-- `prisma/core/**`
-- `prisma/optional/**`
-- `prisma/cross-cutting/**`
-- `prisma/satellites/**`
-
-### Propriété des modèles
-
-Dans `prisma/**` :
-
-- chaque `model` doit avoir un propriétaire unique ;
-- chaque `enum` doit avoir un propriétaire unique ;
-- chaque `type` doit avoir un propriétaire unique ;
-- aucune duplication silencieuse n’est acceptable.
-
-### Discipline après déplacement
-
-Après tout déplacement structurel dans `prisma/**` :
-
-- vérifier les relations ;
-- vérifier les enums ;
-- vérifier les références croisées ;
-- exécuter `pnpm prisma validate`.
-
-### Fichiers vides
-
-Ne pas conserver de fichier `.prisma` vide comme placeholder.
-
-Un fichier Prisma ne doit exister que s’il contient au moins un vrai élément Prisma :
-
-- `model`
-- `enum`
-- `type`
-
-Si un domaine n’a pas encore de matérialisation DB réelle, sa place est dans `docs/domains/**`, pas dans `prisma/**`.
-
-### Metadata minimales Prisma
-
-Quand une demande touche la classification d’un domaine ou d’un fichier Prisma, utiliser uniquement des metadata documentaires minimales :
-
-- `Feature`
-- `Category`
-- `Level`
-- `DependsOn`
-
-Format attendu :
-
-`/// Feature: <domain>.<feature>`
-`/// Category: core | optional | cross-cutting | satellite`
-`/// Level: core | L1 | L2 | L3 | L4`
-`/// DependsOn: <feature>, <feature>`
-
-Ces metadata servent à clarifier la structure du repo.
-Elles ne constituent pas, à ce stade, un moteur runtime d’activation des fonctionnalités.
-
----
-
-## Doctrine documentation
-
-- La documentation doit refléter le code réel.
-- Ne jamais documenter une architecture future comme si elle existait déjà.
-- Toujours distinguer :
-  - état réel actuel ;
-  - cible visée ;
-  - hors périmètre.
-- Toute fiche domaine doit rester cohérente avec :
-  - `docs/architecture/`
-  - `docs/domains/README.md`
-  - `docs/domains/_template.md`
-  - `docs/domains/_migration-audit.md` si le lot touche une zone en migration.
-- Toute doc de lot doit préciser :
-  - objectif ;
-  - périmètre ;
-  - hors périmètre ;
-  - invariants ;
-  - risques ;
-  - vérifications ;
-  - critères de fin.
-
-Si une modification touche la doctrine, vérifier la cohérence entre :
-
-- `README.md`
-- `AGENTS.md`
-- `.claude/CLAUDE.md`
-- `docs/architecture/`
-- `docs/domains/`
-- `docs/testing/`
-
-### Metadata minimales docs
-
-Dans `docs/domains/**`, quand la demande le justifie, utiliser un bloc metadata minimal cohérent avec Prisma :
-
-- `feature`
-- `category`
-- `level`
-- `dependsOn`
-
-Ne pas introduire de matrice de gouvernance complexe sans besoin immédiat du projet.
+- Ne jamais remplacer une contrainte projet par une préférence générique.
+- Ne jamais traiter Creatyss comme une site-factory ou une plateforme multi-tenant sans demande explicite.
+- Ne jamais réintroduire une architecture legacy sans validation explicite de la doctrine courante.
+- Ne jamais modifier silencieusement un contrat public, une signature runtime ou une sémantique métier.
+- En cas de doute, préférer la compatibilité, la lisibilité et la solution la plus simple.
 
 ---
 
@@ -323,69 +100,179 @@ Quand la demande concerne uniquement :
 
 utiliser en priorité `docs-keeper`.
 
-Règles supplémentaires :
+Quand la demande concerne :
 
-- si la demande mélange plan et implémentation, commencer par `architect-review` ;
-- si la demande mélange code et documentation, traiter d’abord le code avec `repo-refactor`, puis la documentation avec `docs-keeper` ;
-- si la demande est ambiguë, commencer par `architect-review` ;
-- `repo-refactor` ne décide pas seul de l’architecture ;
-- `docs-keeper` ne modifie pas le code ;
-- `quality-gate` n’implémente pas de changements.
+- `prisma/**`
+- Prisma
+- PostgreSQL
+- relations
+- contraintes
+- taxonomie Prisma
+- migrations ou réalignement de schéma
 
-Quand l’usage d’un agent est pertinent, l’annoncer explicitement au début de la réponse.
-Ne pas transformer cette règle en formalisme rigide inutile si aucun routage n’est réellement nécessaire.
+utiliser en priorité `prisma-architect`.
+
+Quand la demande concerne une implémentation Next.js bornée hors Prisma :
+
+- feature applicative ;
+- sous-lot technique localisé ;
+- action / query / service / composant lié à une feature ;
+
+utiliser en priorité `next-feature-builder`.
+
+Quand la demande concerne une UI admin :
+
+- écran admin ;
+- formulaire admin ;
+- table admin ;
+- responsive admin ;
+- cohérence visuelle admin ;
+
+utiliser en priorité `next-admin-ui-builder`.
+
+Quand la demande consiste à contrôler une UI admin déjà modifiée :
+
+- respect des tokens ;
+- responsive ;
+- absence de logique métier dans l’UI ;
+- non-régression visuelle ou structurelle ;
+
+utiliser en priorité `next-admin-ui-quality-gate`.
+
+Quand la demande consiste à contrôler une feature Next déjà modifiée :
+
+- périmètre ;
+- boundaries ;
+- contrats publics ;
+- lint / typecheck / non-régression ;
+
+utiliser en priorité `next-feature-quality-gate`.
 
 ---
 
-## Méthode de travail
+## Règles de séquencement
 
-Avant de modifier :
+Appliquer les séquences suivantes par défaut.
+
+### 1. Demande ambiguë ou non cadrée
+
+- commencer par `architect-review` ;
+- ne pas partir directement en implémentation.
+
+### 2. Demande mêlant plan et implémentation
+
+- commencer par `architect-review` ;
+- exécuter ensuite avec l’agent d’implémentation adapté ;
+- finir par un quality gate adapté si le lot est significatif.
+
+### 3. Demande mêlant code et documentation
+
+- traiter d’abord le code avec l’agent d’implémentation adapté ;
+- traiter ensuite la documentation avec `docs-keeper` ;
+- ne pas réaligner la doc avant d’avoir stabilisé le code concerné.
+
+### 4. Demande Prisma avec impact doctrine ou taxonomie
+
+- commencer par `architect-review` si l’impact structurel est ambigu ;
+- sinon utiliser `prisma-architect` ;
+- terminer par `quality-gate` si le lot est large ou structurant.
+
+### 5. Lot d’implémentation non trivial
+
+- cadrage si nécessaire ;
+- implémentation ;
+- vérification ;
+- documentation si impactée.
+
+---
+
+## Frontières entre agents
+
+- `architect-review` cadre ; il n’implémente pas par défaut.
+- `repo-refactor` ou les builders implémentent ; ils ne décident pas seuls de l’architecture.
+- `docs-keeper` maintient la cohérence documentaire ; il ne modifie pas le code.
+- `quality-gate` et les quality gates spécialisés vérifient ; ils n’implémentent pas.
+- `prisma-architect` travaille sur la persistance ; il n’étend pas son périmètre à l’UI ou à des refactors applicatifs larges sans demande explicite.
+
+En cas d’ambiguïté entre plusieurs agents, préférer :
+
+1. l’agent le plus spécialisé ;
+2. sinon `architect-review` pour cadrer ;
+3. sinon l’agent le plus local au périmètre demandé.
+
+---
+
+## Règles d’annonce et de sortie
+
+Quand l’usage d’un agent est pertinent, l’annoncer explicitement au début de la réponse.
+
+Cette annonce doit rester simple et utile.
+Ne pas transformer le routage en formalisme lourd si aucun gain réel n’en découle.
+
+Quand un lot est exécuté, rendre un compte-rendu précis comprenant, si pertinent :
+
+- fichiers modifiés ;
+- ce qui a changé ;
+- ce qui n’a pas changé ;
+- risques ou limites éventuelles ;
+- vérifications effectuées ;
+- points restant hors périmètre.
+
+Quand une vérification n’a pas été exécutée, le dire explicitement.
+Ne jamais supposer qu’un contrôle a eu lieu s’il n’a pas été montré.
+
+---
+
+## Règles de prudence
+
+Avant toute modification :
 
 - auditer le périmètre réel ;
-- identifier les fichiers réellement concernés ;
-- identifier les imports, contrats et docs impactés ;
+- identifier les fichiers concernés ;
+- identifier les contrats et imports impactés ;
 - expliciter les invariants à préserver ;
-- signaler les ambiguïtés avant exécution.
+- signaler toute ambiguïté structurante.
 
 Pendant le lot :
 
-- faire les changements les plus locaux possibles ;
-- préserver la compatibilité publique ;
-- éviter le churn inutile ;
-- éviter les renommages si le gain n’est pas net.
+- limiter le churn ;
+- éviter les renommages sans gain net ;
+- préserver les contrats publics sauf demande explicite ;
+- éviter les restructurations larges non demandées.
 
 Après le lot :
 
-- exécuter les vérifications pertinentes :
-  - `pnpm run typecheck`
-  - `pnpm run lint`
-  - tests ciblés si pertinent
-  - e2e ciblés si le lot touche l’UI ou un parcours critique
-- rendre un compte-rendu précis :
-  - fichiers modifiés ;
-  - ce qui a changé ;
-  - ce qui n’a pas changé ;
-  - risques ou écarts éventuels ;
-  - résultat des vérifications.
-
-Après un refactor structurel touchant `docs/**` ou `prisma/**`, vérifier explicitement :
-
-- la cohérence des chemins ;
-- la cohérence des liens documentaires internes ;
-- la cohérence entre taxonomie doc et taxonomie Prisma ;
-- l’absence de référence Prisma orpheline ;
-- l’absence de fichier Prisma vide.
+- exécuter les vérifications pertinentes ;
+- distinguer clairement validé / non validé ;
+- signaler les écarts doctrine / code / documentation si détectés.
 
 ---
 
-## Règle de prudence
+## Cohérence avec le repo
 
-En cas de doute :
+Si un écart est détecté entre :
 
-- préférer la solution la plus simple ;
-- préférer la compatibilité au redesign ;
-- préférer une extraction interne locale à une refonte publique ;
-- revenir à `docs/architecture/` ;
-- clarifier la source de vérité ;
-- clarifier la frontière du domaine ;
-- demander validation avant tout changement de sémantique ou de contrat.
+- `AGENTS.md`
+- `.claude/CLAUDE.md`
+- `docs/architecture/**`
+- `docs/domains/**`
+- `docs/testing/**`
+- code réel
+
+ne pas choisir silencieusement.
+
+Il faut :
+
+1. signaler l’écart ;
+2. identifier la source la plus structurante pour la tâche en cours ;
+3. rester aligné sur la doctrine canonique ;
+4. éviter toute dérive implicite.
+
+---
+
+## Principe final
+
+Sur Creatyss, Claude Code doit se comporter comme un exécutant discipliné de la doctrine du dépôt.
+
+La priorité n’est pas de produire vite une réponse générique.
+La priorité est de produire une réponse fidèle au repo, bornée, maintenable, claire et vérifiable.

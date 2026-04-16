@@ -18,6 +18,8 @@ export { ProductSeoTab } from "./editor";
 export { ProductVariantsTab } from "./editor";
 export { ProductEditorTopbarMenu } from "./editor";
 export { ProductVariantTopbarMenu } from "./editor";
+export { ProductArchivedBanner } from "./editor";
+export { ProductArchivedActions } from "./editor";
 
 // List components
 export { ProductMobileCard } from "./list";

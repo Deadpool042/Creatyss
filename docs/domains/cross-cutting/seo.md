@@ -404,7 +404,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../optional/pages.md`
 - `../optional/blog.md`
 - `../core/catalog/products.md`
-- `../optional/events.md`
+- `events.md`
 - `../core/foundation/stores.md`
 - `approval.md`
 - `workflow.md`

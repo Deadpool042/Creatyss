@@ -76,22 +76,3 @@ export function getStatusLabel(value: ProductTableStatus): string {
       return "Archivé";
   }
 }
-
-export function parsePriceValue(value: string | null): number | null {
-  if (!value) {
-    return null;
-  }
-
-  const normalized = value.replace(",", ".").replace(/[^\d.-]/g, "");
-  const parsed = Number.parseFloat(normalized);
-
-  return Number.isFinite(parsed) ? parsed : null;
-}
-
-export function stripHtml(value: string | null): string {
-  if (!value) {
-    return "";
-  }
-
-  return value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
-}

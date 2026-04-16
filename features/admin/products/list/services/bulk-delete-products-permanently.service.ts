@@ -1,7 +1,6 @@
 import { withTransaction } from "@/core/db";
 import type { BulkDeleteProductsPermanentlyInput } from "../types";
-import { deleteProductCatalogByIdInTx } from "./delete-product-permanently.helpers";
-
+import { deleteProductCatalogByIdInTx } from "@/features/admin/products/shared/services/delete-product-permanently.helpers";
 type BulkDeleteProductsPermanentlyServiceResult = {
   deletedCount: number;
 };

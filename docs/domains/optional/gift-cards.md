@@ -412,7 +412,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../optional/commerce/payments.md`
 - `../core/commerce/orders.md`
 - `../core/commerce/customers.md`
-- `gifting.md`
+- `../satellites/gifting.md`
 - `../satellites/discounts.md`
 - `../cross-cutting/email.md`
 - `../cross-cutting/notifications.md`

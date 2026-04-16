@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Images, MoreHorizontal, Plus, Trash2, Upload, type LucideIcon } from "lucide-react";
-import type { JSX, ReactNode } from "react";
+import { Images, MoreHorizontal, Plus, Trash2, Upload } from "lucide-react";
+import type { JSX } from "react";
 
 import { DeleteProductButton } from "@/features/admin/products/components/editor/delete-product-button";
 import { Button } from "@/components/ui/button";
@@ -13,36 +13,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { TopbarMenuActionItem } from "./topbar-menu-action-item";
 
 type ProductMediaTopbarMenuProps = {
   productId: string;
   onOpenLibrary: () => void;
   onOpenUpload: () => void;
 };
-
-type MenuActionItemProps = {
-  icon: LucideIcon;
-  children: ReactNode;
-  destructive?: boolean;
-};
-
-function MenuActionItem({
-  icon: Icon,
-  children,
-  destructive = false,
-}: MenuActionItemProps): JSX.Element {
-  return (
-    <span
-      className={[
-        "flex w-full items-center gap-2 text-sm",
-        destructive ? "text-destructive" : "text-foreground",
-      ].join(" ")}
-    >
-      <Icon className="h-4 w-4 shrink-0" />
-      <span>{children}</span>
-    </span>
-  );
-}
 
 export function ProductMediaTopbarMenu({
   productId,
@@ -70,7 +47,9 @@ export function ProductMediaTopbarMenu({
             onOpenLibrary();
           }}
         >
-          <MenuActionItem icon={Images}>Associer depuis la bibliothèque</MenuActionItem>
+          <TopbarMenuActionItem icon={Images}>
+            Associer depuis la bibliothèque
+          </TopbarMenuActionItem>
         </DropdownMenuItem>
 
         <DropdownMenuItem
@@ -79,14 +58,14 @@ export function ProductMediaTopbarMenu({
             onOpenUpload();
           }}
         >
-          <MenuActionItem icon={Upload}>Importer une image</MenuActionItem>
+          <TopbarMenuActionItem icon={Upload}>Importer une image</TopbarMenuActionItem>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
           <Link href="/admin/products/new">
-            <MenuActionItem icon={Plus}>Nouveau produit</MenuActionItem>
+            <TopbarMenuActionItem icon={Plus}>Nouveau produit</TopbarMenuActionItem>
           </Link>
         </DropdownMenuItem>
 
@@ -100,9 +79,9 @@ export function ProductMediaTopbarMenu({
                 event.preventDefault();
               }}
             >
-              <MenuActionItem icon={Trash2} destructive>
+              <TopbarMenuActionItem icon={Trash2} destructive>
                 Supprimer le produit
-              </MenuActionItem>
+              </TopbarMenuActionItem>
             </DropdownMenuItem>
           }
         />

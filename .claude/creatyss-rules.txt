@@ -3,8 +3,8 @@ Projet Creatyss.
 Socle e-commerce custom, local-first, maintenable, lisible, strictement typé, documenté, déployable ensuite sur VPS OVH, et réutilisable pour d'autres projets e-commerce.
 
 Source de vérité courante :
-- README.md
 - AGENTS.md
+- README.md
 - .claude/CLAUDE.md
 - docs/architecture/README.md
 - docs/architecture/00-introduction/*
@@ -69,8 +69,8 @@ Règles absolues :
 - Ne jamais contourner `docs/architecture/` au nom de la vitesse.
 
 Quand une demande touche la doctrine ou la documentation, vérifier la cohérence entre :
-- README.md
 - AGENTS.md
+- README.md
 - .claude/CLAUDE.md
 - .claude/creatyss-rules.txt
 - docs/architecture/

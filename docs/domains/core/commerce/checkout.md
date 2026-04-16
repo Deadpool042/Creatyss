@@ -352,14 +352,14 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../../architecture/10-fondations/10-principes-d-architecture.md`
-- `../../architecture/10-fondations/11-modele-de-classification.md`
-- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../../../architecture/10-fondations/10-principes-d-architecture.md`
+- `../../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
 - `cart.md`
 - `pricing.md`
 - `orders.md`
-- `payments.md`
+- `../../optional/commerce/payments.md`
 - `customers.md`
-- `shipping.md`
-- `taxation.md`
-- `availability.md`
+- `../../optional/commerce/shipping.md`
+- `../../optional/commerce/taxation.md`
+- `../catalog/availability.md`

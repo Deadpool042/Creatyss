@@ -420,5 +420,5 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `audit.md`
 - `observability.md`
 - `dashboarding.md`
-- `pricing.md`
+- `../core/commerce/pricing.md`
 - `../optional/platform/integrations.md`

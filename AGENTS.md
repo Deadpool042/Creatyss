@@ -1,28 +1,46 @@
 # AGENTS.md
 
+## Statut de ce document
+
+`AGENTS.md` est la doctrine canonique du repo.
+
+Tous les autres fichiers d’instructions du projet doivent s’y aligner, notamment :
+
+- `.claude/CLAUDE.md`
+- `.github/copilot-instructions.md`
+- les skills projet
+- les instructions contextuelles
+- les agents spécialisés
+
+Ces fichiers peuvent compléter `AGENTS.md` pour leur outil ou leur périmètre, mais ne doivent ni le contredire ni le remplacer.
+
+---
+
 ## Identité du projet
 
 Creatyss est un socle e-commerce custom.
 
 Le projet est conçu pour être :
 
-- local-first via Docker Compose
-- maintenable
-- lisible
-- strictement typé
-- documenté
-- déployable ensuite sur un VPS OVH
-- réutilisable pour d’autres projets e-commerce au-delà du seul cas Creatyss
+- local-first via Docker Compose ;
+- maintenable ;
+- lisible ;
+- strictement typé ;
+- documenté ;
+- déployable ensuite sur un VPS OVH ;
+- réutilisable pour d’autres projets e-commerce au-delà du seul cas Creatyss.
 
 Creatyss est un **codebase unique** avec une **architecture modulaire réutilisable**.
 
 Creatyss n’est pas, à ce stade :
 
-- une site-factory
-- une plateforme multi-tenant
-- un moteur de provisioning de boutiques
-- un système de plugins runtime
-- un orchestrateur générique de sites clients
+- une site-factory ;
+- une plateforme multi-tenant ;
+- un moteur de provisioning de boutiques ;
+- un système de plugins runtime ;
+- un orchestrateur générique de sites clients.
+
+---
 
 ## Stack cible
 
@@ -61,8 +79,6 @@ Ensuite seulement, lire la documentation ciblée par la demande :
 - document précis dans `docs/testing/`
 - document de lot explicitement visé
 - ancienne documentation seulement si la demande la vise explicitement
-
-Les anciennes docs `docs/v*` et les anciens chemins plats de `docs/architecture/` ne sont plus la source de vérité courante.
 
 ---
 
@@ -114,63 +130,73 @@ Ils ne remplacent pas la taxonomie canonique.
 
 Ne jamais confondre :
 
-- catégorie documentaire
-- criticité architecturale
-- activabilité
-- source de vérité
+- catégorie documentaire ;
+- criticité architecturale ;
+- activabilité ;
+- source de vérité.
 
 Points doctrinaux stabilisés :
 
-- `availability` porte la disponibilité vendable
-- `inventory` porte la vérité de stock
-- `fulfillment` porte l’exécution logistique
-- `shipping` porte l’expédition et le suivi de livraison
-- `auth`, `users`, `roles`, `permissions` relèvent d’un coeur structurel
-- `customers` porte le client métier
-- un domaine `events` éventuel dans `cross-cutting/` désigne un domaine métier transverse explicite
-- les `domain-events` internes désignent les événements applicatifs liés à l’exécution du système
-- ces deux notions ne doivent jamais être mélangées
+- `availability` porte la disponibilité vendable ;
+- `inventory` porte la vérité de stock ;
+- `fulfillment` porte l’exécution logistique ;
+- `shipping` porte l’expédition et le suivi de livraison ;
+- `auth`, `users`, `roles`, `permissions` relèvent d’un coeur structurel ;
+- `customers` porte le client métier ;
+- un domaine `events` éventuel dans `cross-cutting/` désigne un domaine métier transverse explicite ;
+- les `domain-events` internes désignent les événements applicatifs liés à l’exécution du système ;
+- ces deux notions ne doivent jamais être mélangées.
 
 ---
 
 ## Règles absolues
 
-- Toujours rester dans le périmètre demandé.
-- Toujours proposer un plan avant un lot non trivial.
-- Ne jamais faire de refactor opportuniste hors périmètre.
-- Ne pas ajouter de dépendance sans nécessité explicite.
-- Ne pas modifier le comportement métier sans demande explicite.
-- Ne pas changer les contrats publics ou signatures runtime sans l’annoncer explicitement.
-- Ne pas introduire de nouvelle abstraction si une extraction locale suffit.
-- Ne pas utiliser `any` sauf justification explicite.
-- Toujours privilégier de petits lots sûrs.
-- Ne jamais faire dériver la doctrine courante à partir d’un ancien document isolé sans validation explicite.
-- Ne jamais contourner `docs/architecture/` au nom de la vitesse.
-- Ne jamais traiter Creatyss comme une site-factory ou une plateforme multi-tenant si la demande ne l’exige pas explicitement.
+Toujours :
+
+- rester dans le périmètre demandé ;
+- proposer un plan avant un lot non trivial ;
+- privilégier de petits lots sûrs ;
+- partir de la structure réellement observée dans le repo ;
+- préserver les contrats publics sauf demande explicite ;
+- expliciter les impacts sur signatures, comportement métier ou structure publique ;
+- préférer une extraction locale à une nouvelle abstraction publique ;
+- préférer la solution la plus simple compatible avec l’évolution future.
+
+Ne jamais :
+
+- faire de refactor opportuniste hors périmètre ;
+- ajouter une dépendance sans nécessité explicite ;
+- modifier le comportement métier sans demande explicite ;
+- réintroduire une architecture legacy sans validation explicite ;
+- utiliser `any` sauf justification explicite ;
+- traiter Creatyss comme une site-factory ou une plateforme multi-tenant sans besoin explicite ;
+- contourner la doctrine portée par `docs/architecture/` au nom de la vitesse.
 
 ---
 
 ## Doctrine architecture
 
-- Le métier passe avant la technique.
-- Le coeur doit rester identifiable.
-- Les capacités optionnelles doivent rester bornées.
-- Les dépendances externes doivent être encapsulées.
-- La source de vérité doit être explicite.
-- Les événements expriment des faits ; ils ne corrigent pas une mauvaise modélisation.
-- Les préoccupations transverses doivent être traitées explicitement.
-- Les frontières doivent être compréhensibles.
-- Le système doit rester testable par responsabilité.
-- La documentation doit refléter la structure réelle.
+Principes directeurs :
+
+- le métier passe avant la technique ;
+- le coeur doit rester identifiable ;
+- les capacités optionnelles doivent rester bornées ;
+- les dépendances externes doivent être encapsulées ;
+- la source de vérité doit être explicite ;
+- les événements expriment des faits ; ils ne corrigent pas une mauvaise modélisation ;
+- les préoccupations transverses doivent être traitées explicitement ;
+- les frontières doivent être compréhensibles ;
+- le système doit rester testable par responsabilité ;
+- la documentation doit refléter la structure réelle.
 
 Séparer clairement :
 
-- domaine métier
-- structure d’accès
-- intégration
-- exécution
-- données
-- UI
+- domaine métier ;
+- structure d’accès ;
+- intégration ;
+- exécution ;
+- données ;
+- UI.
 
 Ne pas mélanger logique métier et composants de présentation.
 
@@ -185,23 +211,23 @@ Le dossier `prisma/` doit refléter la taxonomie canonique :
 - `prisma/cross-cutting/**`
 - `prisma/satellites/**`
 
-### Propriété des modèles
+### Propriété des éléments Prisma
 
 Dans `prisma/**` :
 
-- chaque `model` doit avoir un propriétaire unique
-- chaque `enum` doit avoir un propriétaire unique
-- chaque `type` doit avoir un propriétaire unique
-- aucune duplication silencieuse n’est acceptable
+- chaque `model` doit avoir un propriétaire unique ;
+- chaque `enum` doit avoir un propriétaire unique ;
+- chaque `type` doit avoir un propriétaire unique ;
+- aucune duplication silencieuse n’est acceptable.
 
 ### Discipline après déplacement
 
 Après tout déplacement structurel dans `prisma/**` :
 
-- vérifier les relations
-- vérifier les enums
-- vérifier les références croisées
-- exécuter `pnpm prisma validate`
+- vérifier les relations ;
+- vérifier les enums ;
+- vérifier les références croisées ;
+- exécuter `pnpm prisma validate`.
 
 ### Fichiers vides
 
@@ -227,7 +253,7 @@ Quand une demande touche la classification d’un domaine ou d’un fichier Pris
 Format attendu :
 
 `/// Feature: <domain>.<feature>`
-`/// Category: core | optional | cross-cutting | satellite`
+`/// Category: core | optional | cross-cutting | satellites`
 `/// Level: core | L1 | L2 | L3 | L4`
 `/// DependsOn: <feature>, <feature>`
 
@@ -238,12 +264,14 @@ Elles ne constituent pas, à ce stade, un moteur runtime d’activation des fonc
 
 ## Doctrine documentation
 
-- La documentation doit refléter le code réel.
-- Ne jamais documenter une architecture future comme si elle existait déjà.
-- Toujours distinguer :
-  - état réel actuel
-  - cible visée
-  - hors périmètre
+La documentation doit :
+
+- refléter le code réel ;
+- ne jamais présenter une architecture future comme si elle existait déjà ;
+- toujours distinguer :
+  - état réel actuel ;
+  - cible visée ;
+  - hors périmètre.
 
 Toute fiche domaine doit rester cohérente avec :
 
@@ -254,15 +282,15 @@ Toute fiche domaine doit rester cohérente avec :
 
 Toute doc de lot doit préciser :
 
-- objectif
-- périmètre
-- hors périmètre
-- invariants
-- risques
-- vérifications
-- critères de fin
+- objectif ;
+- périmètre ;
+- hors périmètre ;
+- invariants ;
+- risques ;
+- vérifications ;
+- critères de fin.
 
-Si une modification touche la doctrine, vérifier la cohérence entre :
+Si une modification touche la doctrine, vérifier explicitement la cohérence entre :
 
 - `README.md`
 - `AGENTS.md`
@@ -294,7 +322,7 @@ Ne pas introduire de matrice de gouvernance complexe sans besoin immédiat du pr
 - pas de `any` sauf justification explicite
 - pas de dépendance inutile
 - pas de sur-architecture
-- pas de WordPress, WooCommerce, Shopify, Supabase, Vercel
+- pas de WordPress, WooCommerce, Shopify, Supabase ou Vercel
 
 ---
 
@@ -305,7 +333,7 @@ Respecter d’abord la structure réellement observée dans le repo.
 Repères généraux :
 
 - `app/` : routes, layouts, pages, handlers
-- `features/` : verticales / cas d’usage
+- `features/` : verticales et cas d’usage
 - `entities/` ou `domain/` : types, règles métier, validations métier
 - `components/` : UI
 - `core/` : infrastructure et primitives partagées si présent
@@ -314,7 +342,7 @@ Repères généraux :
 - `scripts/` : scripts techniques
 - `public/` : assets et uploads locaux
 
-Ne jamais imposer un template fixe de feature si le repo réel n’utilise pas cette structure.
+Ne jamais imposer un template fixe si le repo réel n’utilise pas cette structure.
 
 Ne jamais réintroduire `db/repositories` ou une architecture legacy sans validation explicite de la doctrine courante.
 
@@ -324,18 +352,18 @@ Ne jamais réintroduire `db/repositories` ou une architecture legacy sans valida
 
 Avant de modifier :
 
-- auditer le périmètre réel
-- identifier les fichiers réellement concernés
-- identifier les imports, contrats et docs impactés
-- expliciter les invariants à préserver
-- signaler les ambiguïtés avant exécution
+- auditer le périmètre réel ;
+- identifier les fichiers réellement concernés ;
+- identifier les imports, contrats et docs impactés ;
+- expliciter les invariants à préserver ;
+- signaler les ambiguïtés structurantes avant exécution.
 
 Pendant le lot :
 
-- faire les changements les plus locaux possibles
-- préserver la compatibilité publique
-- éviter le churn inutile
-- éviter les renommages si le gain n’est pas net
+- faire les changements les plus locaux possibles ;
+- préserver la compatibilité publique ;
+- éviter le churn inutile ;
+- éviter les renommages si le gain n’est pas net.
 
 Après le lot :
 
@@ -345,19 +373,19 @@ Après le lot :
   - tests ciblés si pertinent
   - e2e ciblés si le lot touche l’UI ou un parcours critique
 - rendre un compte-rendu précis :
-  - fichiers modifiés
-  - ce qui a changé
-  - ce qui n’a pas changé
-  - risques ou écarts éventuels
-  - résultat des vérifications
+  - fichiers modifiés ;
+  - ce qui a changé ;
+  - ce qui n’a pas changé ;
+  - risques ou écarts éventuels ;
+  - résultat des vérifications.
 
 Après un refactor structurel touchant `docs/**` ou `prisma/**`, vérifier explicitement :
 
-- la cohérence des chemins
-- la cohérence des liens documentaires internes
-- la cohérence entre taxonomie doc et taxonomie Prisma
-- l’absence de référence Prisma orpheline
-- l’absence de fichier Prisma vide
+- la cohérence des chemins ;
+- la cohérence des liens documentaires internes ;
+- la cohérence entre taxonomie doc et taxonomie Prisma ;
+- l’absence de référence Prisma orpheline ;
+- l’absence de fichier Prisma vide.
 
 ---
 
@@ -365,23 +393,26 @@ Après un refactor structurel touchant `docs/**` ou `prisma/**`, vérifier expli
 
 En cas de doute :
 
-- préférer la solution la plus simple
-- préférer la compatibilité au redesign
-- préférer une extraction interne locale à une refonte publique
-- revenir à `docs/architecture/`
-- clarifier la source de vérité
-- clarifier la frontière du domaine
-- demander validation avant tout changement de sémantique ou de contrat
+- préférer la solution la plus simple ;
+- préférer la compatibilité au redesign ;
+- préférer une extraction interne locale à une refonte publique ;
+- revenir à `docs/architecture/` ;
+- clarifier la source de vérité ;
+- clarifier la frontière du domaine ;
+- demander validation avant tout changement de sémantique ou de contrat.
 
 ---
 
-## Relation avec `.claude/CLAUDE.md`
+## Relation avec les autres couches d’instructions
 
-`AGENTS.md` porte la doctrine projet canonique.
+`AGENTS.md` porte la doctrine canonique du repo.
 
-`.claude/CLAUDE.md` est sa déclinaison opérationnelle pour Claude Code :
-- plus détaillée
-- plus prescriptive sur le routage
-- plus orientée exécution
+Les autres couches ont des rôles distincts :
 
-En cas d’écart, réaligner les deux documents.
+- `.claude/CLAUDE.md` : routage, séquencement et règles opérationnelles propres à Claude Code
+- `.github/copilot-instructions.md` : version courte et compatible Copilot
+- skills projet : protocoles réutilisables
+- instructions contextuelles : garde-fous locaux par zone de fichiers
+- agents spécialisés : mission, périmètre et critères propres à chaque rôle
+
+En cas d’écart, réaligner les autres couches sur `AGENTS.md`.

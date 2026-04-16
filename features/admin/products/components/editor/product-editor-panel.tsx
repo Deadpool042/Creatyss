@@ -216,8 +216,20 @@ export function ProductEditorPanel({
       return;
     }
 
-    setPageActionNode(<ProductEditorTopbarMenu productId={product.product.id} />);
-  }, [activeTab, product.product.id, setPageActionNode]);
+    setPageActionNode(
+      <ProductEditorTopbarMenu
+        productId={product.product.id}
+        productSlug={product.product.slug}
+        isArchived={product.product.isArchived}
+      />
+    );
+  }, [
+    activeTab,
+    product.product.id,
+    product.product.slug,
+    product.product.isArchived,
+    setPageActionNode,
+  ]);
 
   useEffect(() => {
     return () => {

@@ -1,9 +1,9 @@
 export { toggleProductFeatured } from "./toggle-product-featured.service";
 export { bulkUpdateProductStatus } from "./bulk-update-product-status.service";
 export { bulkUpdateProductFeatured } from "./bulk-update-product-featured.service";
-export { archiveProduct } from "./archive-product.service";
-export { restoreProduct } from "./restore-product.service";
+export { archiveProduct } from "../../shared/services/archive-product.service";
+export { restoreProduct } from "../../shared/services/restore-product.service";
 export { bulkRestoreProducts } from "./bulk-restore-products.service";
 export { bulkArchiveProducts } from "./bulk-archive-products.service";
-export { deleteProductPermanently } from "./delete-product-permanently.service";
+export { deleteProductPermanently } from "../../shared/services/delete-product-permanently.service";
 export { bulkDeleteProductsPermanently } from "./bulk-delete-products-permanently.service";

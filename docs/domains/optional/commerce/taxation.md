@@ -207,8 +207,8 @@ Le domaine `taxation` s’arrête :
 
 ## Documents liés
 
-- `pricing.md`
-- `orders.md`
-- `checkout.md`
-- `customers.md`
-- `products.md`
+- `../../core/commerce/pricing.md`
+- `../../core/commerce/orders.md`
+- `../../core/commerce/checkout.md`
+- `../../core/commerce/customers.md`
+- `../../core/catalog/products.md`

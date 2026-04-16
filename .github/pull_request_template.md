@@ -9,9 +9,9 @@ Décrire brièvement le but du lot.
 
 ## Changements
 
-- 
-- 
-- 
+-
+-
+-
 
 ## Doctrine / contrats
 
@@ -28,11 +28,11 @@ Décrire brièvement le but du lot.
 
 ## Vérification manuelle attendue
 
-- 
-- 
-- 
+-
+-
+-
 
 ## Risques / points d’attention
 
-- 
-- 
+-
+-

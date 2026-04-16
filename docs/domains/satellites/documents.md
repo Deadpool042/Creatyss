@@ -402,16 +402,16 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `orders.md`
-- `customers.md`
-- `payments.md`
+- `../core/commerce/orders.md`
+- `../core/commerce/customers.md`
+- `../optional/commerce/payments.md`
 - `../optional/returns.md`
-- `users.md`
-- `stores.md`
+- `../core/foundation/users.md`
+- `../core/foundation/stores.md`
 - `../satellites/media.md`
 - `../cross-cutting/email.md`
 - `../cross-cutting/export.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
 - `../cross-cutting/legal.md`
-- `integrations.md`
+- `../optional/platform/integrations.md`

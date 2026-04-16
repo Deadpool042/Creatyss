@@ -384,17 +384,17 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../../architecture/10-fondations/10-principes-d-architecture.md`
-- `../../architecture/10-fondations/11-modele-de-classification.md`
-- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../../architecture/20-structure/21-domaines-coeur.md`
-- `../../architecture/30-execution/30-evenements-de-domaine-et-flux-asynchrones.md`
-- `../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
-- `products.md`
+- `../../../architecture/10-fondations/10-principes-d-architecture.md`
+- `../../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../../../architecture/20-structure/21-domaines-coeur.md`
+- `../../../architecture/30-execution/30-evenements-de-domaine-et-flux-asynchrones.md`
+- `../../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
+- `../catalog/products.md`
 - `pricing.md`
 - `cart.md`
 - `checkout.md`
-- `payments.md`
+- `../../optional/commerce/payments.md`
 - `customers.md`
-- `shipping.md`
-- `taxation.md`
+- `../../optional/commerce/shipping.md`
+- `../../optional/commerce/taxation.md`

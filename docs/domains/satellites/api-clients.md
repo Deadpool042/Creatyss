@@ -393,11 +393,11 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `users.md`
-- `permissions.md`
-- `roles.md`
-- `stores.md`
-- `integrations.md`
+- `../core/foundation/users.md`
+- `../core/foundation/permissions.md`
+- `../core/foundation/roles.md`
+- `../core/foundation/stores.md`
+- `../optional/platform/integrations.md`
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
 - `../cross-cutting/monitoring.md`

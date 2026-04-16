@@ -21,18 +21,23 @@ import {
   reorderProductImageAction,
   setDefaultProductVariantAction,
   setProductPrimaryImageAction,
+  updateProductAvailabilityAction,
   updateProductCategoriesAction,
   updateProductGeneralAction,
-  updateProductAvailabilityAction,
-  updateProductInventoryAction,
   updateProductImageAltTextAction,
-  updateProductRelatedProductsAction,
+  updateProductInventoryAction,
   updateProductPricesAction,
+  updateProductRelatedProductsAction,
   updateProductSeoAction,
   updateProductVariantAction,
   uploadProductImagesAction,
 } from "@/features/admin/products/editor";
-import { ProductEditorTopbarMenu, ProductEditorPanel } from "@/features/admin/products/components";
+import {
+  ProductArchivedActions,
+  ProductArchivedBanner,
+  ProductEditorPanel,
+  ProductEditorTopbarMenu,
+} from "@/features/admin/products/components";
 import { DeleteProductButton } from "@/features/admin/products/components/editor/delete-product-button";
 
 export default async function ProductEditorPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -72,6 +77,63 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
     );
   }
 
+  if (editor.product.isArchived) {
+    return (
+      <AdminPageShell
+        title={editor.product.name}
+        eyebrow="Produits"
+        description="Produit archivé."
+        viewportClassName="!h-full"
+        navigation={{ label: "Produits", href: "/admin/products" }}
+        breadcrumbs={[
+          { label: "Accueil", href: "/admin" },
+          { label: "Produits", href: "/admin/products" },
+          { label: editor.product.name },
+        ]}
+        topbarAction={
+          <ProductEditorTopbarMenu
+            productId={editor.product.id}
+            productSlug={editor.product.slug}
+            isArchived
+          />
+        }
+        contentClassName="lg:px-6 lg:pb-6"
+        actions={
+          <div className="hidden lg:flex lg:items-center lg:gap-2">
+            <ProductArchivedActions productSlug={editor.product.slug} />
+          </div>
+        }
+        headerDensity="compact"
+        compactMobileTitle
+        hideDescriptionOnMobile
+        headerVisibility="desktop"
+      >
+        <div className="space-y-4">
+          <ProductArchivedBanner />
+
+          <div className="rounded-2xl border border-surface-border bg-card p-4 shadow-card lg:hidden">
+            <ProductArchivedActions productSlug={editor.product.slug} />
+          </div>
+
+          <div className="rounded-2xl border border-surface-border bg-card p-4 shadow-card">
+            <p className="text-sm font-medium text-foreground">
+              Ce produit est actuellement dans la corbeille.
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Restaurez-le pour reprendre son édition, ou supprimez-le définitivement.
+            </p>
+
+            <div className="mt-4">
+              <Button asChild variant="outline" size="sm">
+                <Link href="/admin/products?view=trash">Retour à la corbeille</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </AdminPageShell>
+    );
+  }
+
   const [
     variantsData,
     imagesData,
@@ -102,7 +164,9 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
         { label: "Produits", href: "/admin/products" },
         { label: editor.product.name },
       ]}
-      topbarAction={<ProductEditorTopbarMenu productId={editor.product.id} />}
+      topbarAction={
+        <ProductEditorTopbarMenu productId={editor.product.id} productSlug={editor.product.slug} />
+      }
       contentClassName="lg:px-6 lg:pb-6"
       actions={
         <div className="flex items-center gap-2">

@@ -42,6 +42,21 @@ En cas de divergence, `docs/domains/core/` fait autorité.
 
 À l’état actuel de la doctrine, les domaines coeur explicitement structurants sont les suivants.
 
+### Coeur métier stabilisé
+
+- `products`
+- `orders`
+- `customers`
+- `pricing`
+- `availability`
+
+### Coeur structurel stabilisé
+
+- `auth`
+- `users`
+- `roles`
+- `permissions`
+
 ### Produits
 
 Le domaine `products` appartient au coeur.
@@ -80,35 +95,10 @@ Référence :
 
 ---
 
-## Domaines coeur potentiels à confirmer explicitement
+## Notes de gouvernance
 
-Les domaines suivants peuvent être structurellement coeur selon le périmètre réel retenu.
-Ils ne doivent être ajoutés ici qu’une fois leur statut doctrinal stabilisé dans `docs/domains/core/`.
-
-### Clients
-
-À classer comme coeur seulement si :
-
-- le système porte une vérité métier propre sur le client ;
-- les invariants et décisions associés dépassent un simple référentiel externe.
-
-### Tarification
-
-À classer comme coeur seulement si :
-
-- le système porte les règles de prix comme responsabilité métier centrale ;
-- la logique de prix ne se réduit pas à une projection ou à une donnée importée.
-
-### Stock / disponibilité
-
-À classer comme coeur seulement si :
-
-- le système fait autorité sur cette vérité ;
-- les décisions métier critiques en dépendent directement.
-
-Tant que ce statut n’est pas stabilisé, ces blocs ne doivent pas être promus artificiellement au rang de coeur.
-
----
+Les éléments ci-dessus sont stabilisés doctrinalement.
+Tout ajout futur dans cette liste doit être explicitement tranché, puis reflété dans `docs/domains/core/`.
 
 ## Critère de validation
 

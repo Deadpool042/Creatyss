@@ -353,11 +353,11 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md`
-- `../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
+- `../../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md`
+- `../../../architecture/30-execution/33-modele-de-defaillance-et-idempotence.md`
 - `integrations.md`
-- `payments.md`
-- `orders.md`
-- `shipping.md`
-- `../../domains/cross-cutting/jobs.md`
-- `../../domains/cross-cutting/observability.md`
+- `../commerce/payments.md`
+- `../../core/commerce/orders.md`
+- `../commerce/shipping.md`
+- `../../cross-cutting/jobs.md`
+- `../../cross-cutting/observability.md`

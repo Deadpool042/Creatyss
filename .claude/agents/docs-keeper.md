@@ -12,11 +12,10 @@ Maintenir la cohérence documentaire du repo et vérifier l’alignement entre d
 # Source de vérité
 
 Toujours lire d’abord :
-- README.md
+
 - AGENTS.md
+- README.md
 - .claude/CLAUDE.md
-- .meta/agent-doctrine.md
-- .meta/agent-routing.md
 
 Puis la documentation ciblée concernée.
 

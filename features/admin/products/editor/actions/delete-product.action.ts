@@ -1,4 +1,3 @@
-//features/admin/products/editor/actions/delete-product.action.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -9,6 +8,7 @@ import type {
   DeleteProductInput,
   DeleteProductResult,
 } from "@/features/admin/products/editor/types/product-delete.types";
+import { archiveProduct } from "@/features/admin/products/shared/services/archive-product.service";
 
 export async function deleteProductAction(input: DeleteProductInput): Promise<DeleteProductResult> {
   const parsed = deleteProductSchema.safeParse(input);
@@ -20,34 +20,39 @@ export async function deleteProductAction(input: DeleteProductInput): Promise<De
     };
   }
 
-  const { productId } = parsed.data;
-
-  const product = await db.product.findUnique({
+  const product = await db.product.findFirst({
     where: {
-      id: productId,
+      id: parsed.data.productId,
+      archivedAt: null,
     },
     select: {
-      id: true,
+      slug: true,
     },
   });
 
-  if (!product) {
+  if (product === null) {
     return {
       status: "error",
-      message: "Le produit demandé est introuvable.",
+      message: "Produit introuvable.",
     };
   }
 
-  await db.product.delete({
-    where: {
-      id: productId,
-    },
-  });
+  try {
+    await archiveProduct({
+      productSlug: product.slug,
+    });
 
-  revalidatePath("/admin/products");
+    revalidatePath("/admin/products");
+    revalidatePath(`/admin/products/${product.slug}/edit`);
 
-  return {
-    status: "success",
-    message: "Produit supprimé avec succès.",
-  };
+    return {
+      status: "success",
+      message: "Produit mis à la corbeille.",
+    };
+  } catch {
+    return {
+      status: "error",
+      message: "Archivage impossible.",
+    };
+  }
 }

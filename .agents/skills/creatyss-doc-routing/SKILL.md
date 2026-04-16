@@ -3,41 +3,43 @@ name: creatyss-doc-routing
 description: Protocole obligatoire de lecture, de routage documentaire et d’arbitrage des sources avant toute proposition sur Creatyss.
 ---
 
-Avant toute proposition de code, de structure, de schéma, de refactor, de workflow ou de décision technique, tu dois identifier puis consulter les sources pertinentes du dépôt.
-
-L’objectif n’est pas simplement de “tenir compte” des docs.
-L’objectif est de faire de la documentation du dépôt la base explicite de la réponse.
+`AGENTS.md` est la doctrine canonique du dépôt.
+Ce skill ne la recopie pas.
+Il définit uniquement comment identifier, lire et arbitrer les bonnes sources avant de proposer du code, une structure, un schéma, un refactor ou une décision technique.
 
 ## Règle générale
 
-Ne jamais proposer une implémentation directe si les sources projet pertinentes n’ont pas été consultées.
+Ne jamais proposer directement une solution si les sources projet pertinentes n’ont pas été identifiées puis consultées.
 
-Tu dois :
+Sur Creatyss, la documentation du dépôt n’est pas un décor.
+Elle doit servir de base explicite au raisonnement.
 
-1. identifier le type exact de demande ;
-2. déterminer quels dossiers du dépôt sont pertinents ;
-3. lire les documents nécessaires ;
+## Séquence obligatoire avant réponse
+
+Avant toute proposition, suivre cette séquence :
+
+1. identifier la nature exacte de la demande ;
+2. déterminer les zones du dépôt concernées ;
+3. lire les sources pertinentes ;
 4. extraire les contraintes applicables ;
-5. produire une réponse compatible avec ces contraintes ;
-6. signaler toute ambiguïté, contradiction ou absence de source.
+5. signaler les ambiguïtés ou contradictions détectées ;
+6. proposer la solution la plus simple et la plus fidèle au dépôt.
 
-## Routage documentaire obligatoire
+## Routage documentaire par type de demande
 
-### Architecture, structure et séparation des couches
+### Architecture, structure et boundaries
 
-Pour toute question portant sur :
+Pour toute demande liée à :
 
-- architecture applicative
-- structure de fichiers
-- séparation des couches
-- frontières de modules
-- façades
-- repositories
-- services
-- organisation technique
-- conventions de placement du code
-- refactor structurel
-- nomenclature technique
+- architecture applicative ;
+- structure de fichiers ;
+- séparation des couches ;
+- frontières de modules ;
+- façades ;
+- services ;
+- organisation technique ;
+- conventions de placement ;
+- refactor structurel ;
 
 consulter en priorité :
 
@@ -45,59 +47,50 @@ consulter en priorité :
 
 ### Métier et règles fonctionnelles
 
-Pour toute question portant sur :
+Pour toute demande liée à :
 
-- vocabulaire métier
-- invariants métier
-- catalogue
-- produits
-- variantes
-- images
-- catégories
-- homepage
-- blog
-- admin
-- règles fonctionnelles
-- comportement métier attendu
-- périmètre V1
-- entités et relations métier
+- vocabulaire métier ;
+- invariants métier ;
+- catalogue ;
+- produits ;
+- variantes ;
+- images ;
+- catégories ;
+- homepage ;
+- blog ;
+- admin ;
+- périmètre fonctionnel V1 ;
 
 consulter en priorité :
 
-- `docs/domaines/**`
+- `docs/domains/**`
 
-### Schéma, persistance et Prisma
+### Persistance, schéma et Prisma
 
-Pour toute question portant sur :
+Pour toute demande liée à :
 
-- Prisma
-- PostgreSQL
-- schéma
-- relations
-- migration
-- repositories DB
-- colonnes
-- noms de tables
-- clés
-- index
-- cohérence de persistance
-- règles de modélisation de données
+- Prisma ;
+- PostgreSQL ;
+- schéma ;
+- relations ;
+- migrations ;
+- modélisation de données ;
+- cohérence de persistance ;
+- classification dans `prisma/**` ;
 
 consulter en priorité :
 
 - `prisma/**`
 
-### Règles d’agents, workflows et conventions d’outillage
+### Workflow, agents et conventions d’outillage
 
-Pour toute question portant sur :
+Pour toute demande liée à :
 
-- comportement attendu des assistants
-- conventions de livraison
-- workflows de contribution
-- règles de travail
-- instructions agent
-- patterns de review
-- conventions liées à Claude, Codex ou GitHub
+- comportement attendu des assistants ;
+- workflows de contribution ;
+- conventions de livraison ;
+- règles d’agents ;
+- fichiers d’instructions IA ;
 
 consulter si pertinent :
 
@@ -105,81 +98,65 @@ consulter si pertinent :
 - `.codex/**`
 - `.github/**`
 
-## Arbitrage entre sources
-
-Quand plusieurs sources existent, appliquer les règles suivantes :
-
-1. La source la plus spécifique au sujet traité prime sur la plus générale.
-2. Une décision explicite prime sur une convention implicite.
-3. Une doc projet prime sur une préférence générique.
-4. Une contrainte locale du dépôt prime sur une pratique “habituelle”.
-5. Si plusieurs docs du dépôt divergent, ne jamais choisir silencieusement : signaler l’écart.
-
-## Procédure d’analyse avant réponse
-
-Avant de proposer quoi que ce soit, tu dois raisonner selon cette séquence :
-
-1. Quelle est la nature exacte de la demande ?
-2. Cette demande touche-t-elle :
-   - l’architecture ?
-   - le métier ?
-   - la persistance ?
-   - le workflow de contribution ?
-   - plusieurs de ces domaines à la fois ?
-3. Quels dossiers doivent être consultés en priorité ?
-4. Quelles contraintes explicites ont été trouvées ?
-5. Existe-t-il une contradiction entre docs, code ou demande ?
-6. Quelle est la solution la plus simple et la plus fidèle au dépôt ?
-
 ## Cas multi-domaines
 
-Si une demande touche plusieurs domaines, tu dois croiser les sources pertinentes avant de répondre.
+Si la demande touche plusieurs dimensions, croiser les sources avant de conclure.
 
 Exemples :
 
-- une feature produit avec impact DB et admin → `docs/domaines/**` + `docs/architecture/**` + `prisma/**`
-- une refonte de repository liée à des façades → `docs/architecture/**` + `prisma/**`
-- une homepage éditable avec admin → `docs/domaines/**` + `docs/architecture/**`
-- une règle de livraison spécifique à un workflow agent → `.claude/**` ou `.codex/**` si pertinent, en complément des docs métier/architecture
+- feature produit avec impact admin et DB → `docs/domains/**` + `docs/architecture/**` + `prisma/**`
+- refactor de façades ou repositories → `docs/architecture/**` + code réel concerné
+- homepage éditable avec admin → `docs/domains/**` + `docs/architecture/**`
+- modification Prisma avec impact doctrine → `prisma/**` + `docs/architecture/**` + `docs/domains/**` si nécessaire
 
-## Gestion des écarts doc / code
+## Arbitrage entre sources
 
-Si la doc est plus précise que le code existant :
+Quand plusieurs sources existent, appliquer cet ordre :
 
-- signaler explicitement que la doc porte la règle ;
-- éviter de légitimer une implémentation locale incohérente juste parce qu’elle existe.
+1. la source la plus spécifique au sujet traité ;
+2. une décision explicite plutôt qu’une convention implicite ;
+3. la documentation projet plutôt qu’une préférence générique ;
+4. la structure réelle du repo plutôt qu’un modèle théorique externe.
 
-Si le code existant paraît plus avancé que la doc :
+Ne jamais choisir silencieusement si deux sources du dépôt divergent.
 
-- signaler l’écart ;
-- ne pas prétendre que la doc couvre un point qu’elle ne couvre pas ;
-- éviter d’inventer une justification rétrospective.
+## Gestion des écarts
 
-## Si aucune doc pertinente n’est trouvée
+### Si la documentation est plus précise que le code local
 
-Si aucune source projet pertinente n’est trouvée :
+- signaler explicitement l’écart ;
+- traiter la documentation structurante comme règle de référence pour la tâche ;
+- ne pas légitimer une implémentation incohérente uniquement parce qu’elle existe déjà.
+
+### Si le code local paraît plus avancé que la documentation
+
+- signaler explicitement l’écart ;
+- ne pas prétendre que la documentation couvre déjà ce point ;
+- éviter d’inventer une justification après coup.
+
+### Si plusieurs documents du dépôt divergent
+
+- signaler la divergence ;
+- identifier la source la plus structurante pour la tâche en cours ;
+- éviter toute synthèse floue qui efface une contrainte explicite.
+
+## Si aucune source pertinente n’est trouvée
+
+Quand aucune source projet utile n’existe :
 
 1. le dire explicitement ;
 2. ne pas faire semblant qu’une règle projet existe ;
 3. choisir l’option la plus simple, robuste et maintenable pour une V1 locale dockerisée ;
-4. indiquer clairement qu’il s’agit d’un choix par défaut faute de source projet explicite.
-
-## Application obligatoire des règles trouvées
-
-Si une règle explicite est trouvée dans la documentation pertinente du dépôt :
-
-- elle doit être appliquée dans la solution proposée ;
-- elle ne doit pas être remplacée par une préférence générique ;
-- elle doit primer sur une convention habituelle non documentée ;
-- la réponse doit refléter concrètement cette règle dans la structure, le code ou la recommandation.
-
-Si plusieurs règles pertinentes coexistent :
-
-- retenir d’abord la plus spécifique ;
-- signaler toute contradiction ;
-- éviter toute synthèse floue qui efface une contrainte explicite.
+4. signaler clairement qu’il s’agit d’un choix par défaut faute de source explicite.
 
 ## Règle de sortie
 
-Une réponse de bonne qualité sur Creatyss doit être visiblement fondée sur les sources du dépôt.
-Tu ne dois jamais répondre comme si le projet était vide de contraintes si le dépôt contient déjà une documentation structurante.
+Une bonne réponse sur Creatyss doit être visiblement ancrée dans les sources du dépôt.
+
+Avant toute proposition, il faut pouvoir répondre clairement à ces questions :
+
+- quelle est la nature exacte de la demande ?
+- quelles sources ont été consultées ?
+- quelles contraintes explicites ont été trouvées ?
+- y a-t-il un écart entre doc, code et demande ?
+- quelle solution minimale reste fidèle au dépôt ?

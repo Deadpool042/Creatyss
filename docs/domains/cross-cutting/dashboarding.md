@@ -415,6 +415,6 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `jobs.md`
 - `../optional/platform/integrations.md`
 - `../core/foundation/stores.md`
-- `roles.md`
-- `permissions.md`
+- `../core/foundation/roles.md`
+- `../core/foundation/permissions.md`
 - `audit.md`

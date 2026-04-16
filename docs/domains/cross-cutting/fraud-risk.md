@@ -413,11 +413,11 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
 - `../optional/commerce/payments.md`
 - `../core/commerce/orders.md`
-- `permissions.md`
+- `../core/foundation/permissions.md`
 - `audit.md`
 - `tracking.md`
 - `../core/commerce/customers.md`
-- `checkout.md`
+- `../core/commerce/checkout.md`
 - `consent.md`
 - `approval.md`
 - `observability.md`

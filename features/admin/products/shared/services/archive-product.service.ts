@@ -1,23 +1,21 @@
 import { withTransaction } from "@/core/db";
 
-type RestoreProductServiceInput = {
+export type ArchiveProductInput = {
   productSlug: string;
 };
 
-type RestoreProductServiceResult = {
+export type ArchiveProductResult = {
   id: string;
 };
 
-export async function restoreProduct(
-  input: RestoreProductServiceInput
-): Promise<RestoreProductServiceResult> {
+export async function archiveProduct(
+  input: ArchiveProductInput
+): Promise<ArchiveProductResult> {
   return withTransaction(async (tx) => {
     const product = await tx.product.findFirst({
       where: {
         slug: input.productSlug,
-        archivedAt: {
-          not: null,
-        },
+        archivedAt: null,
       },
       select: {
         id: true,
@@ -33,7 +31,7 @@ export async function restoreProduct(
         id: product.id,
       },
       data: {
-        archivedAt: null,
+        archivedAt: new Date(),
       },
       select: {
         id: true,

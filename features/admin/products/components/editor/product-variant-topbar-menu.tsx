@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { MoreHorizontal, Plus, Trash2, type LucideIcon } from "lucide-react";
-import type { JSX, ReactNode } from "react";
+import { MoreHorizontal, Plus, Trash2 } from "lucide-react";
+import type { JSX } from "react";
 
 import { DeleteProductButton } from "@/features/admin/products/components/editor/delete-product-button";
 import { Button } from "@/components/ui/button";
@@ -13,35 +13,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { TopbarMenuActionItem } from "./topbar-menu-action-item";
 
 type ProductVariantTopbarMenuProps = {
   productId: string;
   onCreateVariant: () => void;
 };
-
-type MenuActionItemProps = {
-  icon: LucideIcon;
-  children: ReactNode;
-  destructive?: boolean;
-};
-
-function MenuActionItem({
-  icon: Icon,
-  children,
-  destructive = false,
-}: MenuActionItemProps): JSX.Element {
-  return (
-    <span
-      className={[
-        "flex w-full items-center gap-2 text-sm",
-        destructive ? "text-destructive" : "text-foreground",
-      ].join(" ")}
-    >
-      <Icon className="h-4 w-4 shrink-0" />
-      <span>{children}</span>
-    </span>
-  );
-}
 
 export function ProductVariantTopbarMenu({
   productId,
@@ -68,14 +45,14 @@ export function ProductVariantTopbarMenu({
             onCreateVariant();
           }}
         >
-          <MenuActionItem icon={Plus}>Ajouter une variante</MenuActionItem>
+          <TopbarMenuActionItem icon={Plus}>Ajouter une variante</TopbarMenuActionItem>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
           <Link href="/admin/products/new">
-            <MenuActionItem icon={Plus}>Nouveau produit</MenuActionItem>
+            <TopbarMenuActionItem icon={Plus}>Nouveau produit</TopbarMenuActionItem>
           </Link>
         </DropdownMenuItem>
 
@@ -89,9 +66,9 @@ export function ProductVariantTopbarMenu({
                 event.preventDefault();
               }}
             >
-              <MenuActionItem icon={Trash2} destructive>
+              <TopbarMenuActionItem icon={Trash2} destructive>
                 Supprimer le produit
-              </MenuActionItem>
+              </TopbarMenuActionItem>
             </DropdownMenuItem>
           }
         />

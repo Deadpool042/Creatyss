@@ -413,7 +413,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `consent.md`
 - `conversion.md`
 - `marketing.md`
-- `recommendations.md`
+- `../optional/recommendations.md`
 - `dashboarding.md`
 - `audit.md`
 - `observability.md`

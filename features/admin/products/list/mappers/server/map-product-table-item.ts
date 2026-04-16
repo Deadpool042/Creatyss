@@ -1,24 +1,6 @@
 import type { AdminProductFeedItem, ProductTableItem } from "../../types";
+import { mapAdminProductFeedItemToTableItem } from "../shared/map-admin-product-feed-item-to-table-item";
 
 export function mapProductTableItem(item: AdminProductFeedItem): ProductTableItem {
-  return {
-    id: item.id,
-    slug: item.slug,
-    name: item.name,
-    shortDescription: item.shortDescription,
-    status: item.status,
-    isFeatured: item.isFeatured,
-    primaryImageUrl: item.primaryImageUrl,
-    primaryImageAlt: item.primaryImageAlt,
-    categoryNames: item.categoryNames,
-    categoryPathLabel: item.categoryPathLabel ?? "",
-    productTypeName: item.productTypeName,
-    variantCount: item.variantCount,
-    stockState: item.stockState,
-    stockQuantity: item.stockQuantity,
-    priceLabel: item.priceLabel ?? "",
-    compareAtPriceLabel: item.compareAtPriceLabel ?? "",
-    hasPromotion: item.hasPromotion,
-    updatedAt: item.updatedAt,
-  };
+  return mapAdminProductFeedItemToTableItem(item);
 }

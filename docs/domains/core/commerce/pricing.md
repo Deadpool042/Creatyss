@@ -370,16 +370,16 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../../architecture/10-fondations/10-principes-d-architecture.md`
-- `../../architecture/10-fondations/11-modele-de-classification.md`
-- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
-- `../../architecture/20-structure/21-domaines-coeur.md`
-- `products.md`
+- `../../../architecture/10-fondations/10-principes-d-architecture.md`
+- `../../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../../../architecture/20-structure/21-domaines-coeur.md`
+- `../catalog/products.md`
 - `cart.md`
 - `checkout.md`
 - `orders.md`
-- `payments.md`
-- `taxation.md`
-- `stores.md`
-- `../../domains/satellites/discounts.md`
-- `../../domains/satellites/channels.md`
+- `../../optional/commerce/payments.md`
+- `../../optional/commerce/taxation.md`
+- `../foundation/stores.md`
+- `../../satellites/discounts.md`
+- `../../satellites/channels.md`

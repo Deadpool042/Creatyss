@@ -239,7 +239,7 @@ Le domaine `auth` s’arrête :
 ## Documents liés
 
 - `users.md`
-- `customers.md`
+- `../commerce/customers.md`
 - `permissions.md`
 - `roles.md`
-- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../../../architecture/10-fondations/12-frontieres-et-responsabilites.md`

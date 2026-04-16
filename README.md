@@ -45,14 +45,12 @@ Creatyss est une base e-commerce pensée pour :
 - `docs/domains/README.md`
 - `docs/testing/**`
 
-Les anciens documents `docs/v*` et les anciens chemins plats de `docs/architecture/*` ne sont plus la source de vérité courante.
-
 ### Lecture recommandée
 
 Pour comprendre le projet dans son état courant :
 
-1. lire `README.md`
-2. lire `AGENTS.md`
+1. lire `AGENTS.md`
+2. lire `README.md`
 3. lire `docs/architecture/README.md`
 4. lire `docs/architecture/00-introduction/00-vue-d-ensemble-du-systeme.md`
 5. lire `docs/architecture/00-introduction/01-glossaire.md`
@@ -101,7 +99,7 @@ Le dépôt couvre actuellement une base locale exploitable pour Creatyss avec :
 - CRUD blog admin
 - front public catalogue, blog et homepage
 - SEO de base sur produits et articles
-- seed local de développement alimenté depuis la source WooCommerce Creatyss d’origine
+- seed local de développement pouvant importer ponctuellement des données historiques WooCommerce
 
 ## Démarrage local
 
@@ -250,7 +248,8 @@ pnpm run typecheck
 
 ## Seed dev
 
-Le seed de développement reconstruit un socle local minimal puis hydrate le catalogue depuis le WooCommerce Creatyss d’origine.
+Le seed de développement reconstruit un socle local minimal.
+Il peut aussi hydrater le catalogue via un import historique ponctuel depuis le WooCommerce Creatyss d’origine.
 
 Il est destiné uniquement au développement local.
 
@@ -352,6 +351,7 @@ Le système media admin accepte actuellement uniquement :
 - `image/jpeg`
 - `image/png`
 - `image/webp`
+- `image/avif`
 
 ### Vérification locale exacte
 
@@ -369,7 +369,7 @@ Puis :
 
 1. connectez-vous sur `http://localhost:3000/admin/login`
 2. ouvrez `http://localhost:3000/admin/media`
-3. importez une image JPEG, PNG ou WebP valide
+3. importez une image JPEG, PNG, AVIF ou WebP valide
 4. vérifiez la ligne créée en base :
 
 ```bash
@@ -386,32 +386,23 @@ rm <chemin_retourne>
 
 ## Documentation
 
-### Documentation courante
+La hiérarchie documentaire canonique est définie dans la section `Doctrine documentaire actuelle` plus haut.
 
-- `AGENTS.md`
-- `docs/architecture/README.md`
-- `docs/architecture/00-introduction/**`
-- `docs/architecture/10-fondations/**`
-- `docs/architecture/20-structure/**`
-- `docs/architecture/30-execution/**`
-- `docs/architecture/40-exploitation/**`
-- `docs/architecture/90-reference/**`
-- `docs/domains/README.md`
-- `docs/testing/**`
-- `.claude/CLAUDE.md`
-- `.github/copilot-instructions.md`
-- `.codex/config.toml`
-- `.codex/skills/`
+Pour la trajectoire projet :
+
+- `docs/roadmap/projet-creatyss.md`
 
 ## Contraintes importantes
 
-Le projet n’utilise pas :
+Le projet n’utilise pas en runtime :
 
 - WordPress
-- WooCommerce
+- WooCommerce comme base applicative
 - Shopify
 - Supabase
 - Vercel
+
+Un import historique ponctuel depuis WooCommerce est possible uniquement pour l’alimentation de données (seed local, migration), sans dépendance runtime.
 
 ## État actuel du projet
 

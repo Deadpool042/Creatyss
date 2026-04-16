@@ -7,6 +7,8 @@ export { ProductInventoryTab } from "./product-inventory-tab";
 export { ProductRelatedProductsTab } from "./product-related-products-tab";
 export { ProductSeoTab } from "./product-seo-tab";
 export { ProductVariantsTab } from "./product-variants-tab";
+export { ProductArchivedActions } from "./product-archived-actions";
+export { ProductArchivedBanner } from "./product-archived-banner";
 
 export {
   ProductImageGallery,

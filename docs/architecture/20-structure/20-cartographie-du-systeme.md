@@ -26,8 +26,8 @@ Le système est structuré autour de quatre ensembles :
 
 ### Domaines coeur explicitement stabilisés
 
-- produits ;
-- commandes.
+- coeur métier : `products`, `orders`, `customers`, `pricing`, `availability` ;
+- coeur structurel : `auth`, `users`, `roles`, `permissions`.
 
 ### Préoccupations transverses explicitement structurantes
 
@@ -62,12 +62,16 @@ Ils doivent être traités comme dépendances externes encapsulées.
 +--------------------------------------------------------------------------+
 |                               Coeur interne                               |
 |                                                                          |
-|   +------------------+           +------------------+                    |
-|   |     Produits     |<--------->|    Commandes     |                    |
-|   +------------------+           +------------------+                    |
+|   +------------------+      +------------------+      +--------------+   |
+|   |   Products       |<---->|    Orders        |<---->|  Customers   |   |
+|   +------------------+      +------------------+      +--------------+   |
+|            ^                          ^                       ^           |
+|            |                          |                       |           |
+|   +------------------+      +------------------+      +--------------+   |
+|   |    Pricing       |<---->|   Availability   |      | Auth/Users/  |   |
+|   +------------------+      +------------------+      | Roles/Perms  |   |
+|                                                       +--------------+   |
 |                                                                          |
-|          ^                             ^                                  |
-|          |                             |                                  |
 |          +----------- capacités optionnelles ----------------------------+
 |                                                                          |
 +--------------------------------------------------------------------------+

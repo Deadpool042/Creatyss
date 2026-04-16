@@ -5,11 +5,7 @@ import type {
 } from "./product-variants.types";
 export type { AdminProductVariantListItem, AdminProductVariantStatus };
 
-export type AdminProductEditorStatus =
-  | "draft"
-  | "active"
-  | "inactive"
-  | "archived";
+export type AdminProductEditorStatus = "draft" | "active" | "inactive" | "archived";
 
 export type AdminRelatedProductEditorType =
   | "related"
@@ -65,6 +61,8 @@ export type AdminProductEditorProduct = {
   description: string | null;
   status: AdminProductEditorStatus;
   isFeatured: boolean;
+  archivedAt: Date | null;
+  isArchived: boolean;
   isStandalone: boolean;
   productTypeId: string | null;
   productTypeCode: string | null;
@@ -82,7 +80,6 @@ export type AdminProductEditorData = {
   images: AdminProductImageItem[];
   seo: AdminProductEditorSeo;
 };
-
 
 export type AdminProductImageItem = {
   id: string;

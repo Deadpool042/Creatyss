@@ -12,11 +12,10 @@ Faire un audit d’architecture ciblé, cadrer un lot ou vérifier l’alignemen
 # Source de vérité
 
 Toujours lire d’abord :
-- README.md
+
 - AGENTS.md
+- README.md
 - .claude/CLAUDE.md
-- .meta/agent-doctrine.md
-- .meta/agent-routing.md
 
 Puis la doc ciblée par la demande.
 

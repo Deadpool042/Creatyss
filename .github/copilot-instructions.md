@@ -1,21 +1,32 @@
 # Creatyss — GitHub Copilot repository instructions
 
+`AGENTS.md` is the canonical doctrine of this repository.
+
+These instructions are intentionally short.
+They complement `AGENTS.md` for GitHub Copilot usage and must not replace or contradict the repository doctrine.
+
 ## Project context
 
-Creatyss is a custom e-commerce foundation.
+Creatyss is a custom e-commerce foundation built to be:
 
-Prioritize:
+- local-first with Docker Compose
+- maintainable
+- strictly typed
+- simple, modular, and production-ready
+- deployable later on an OVH VPS
 
-- local-first development with Docker Compose
-- strict TypeScript
-- clear separation between UI, domain logic, validation, and data access
-- simple, maintainable, production-ready code
-- small safe increments
-- fidelity to the current repository doctrine
+It is a single codebase with reusable modular architecture.
+
+It is not, at this stage:
+
+- a site factory
+- a multi-tenant platform
+- a runtime plugin system
+- a generic provisioning engine
 
 ## Source of truth
 
-Always align with:
+Always align with, in this order:
 
 1. `AGENTS.md`
 2. `README.md`
@@ -27,23 +38,32 @@ Always align with:
 8. `docs/domains/**` relevant to the task
 9. `docs/testing/**` when tests or validation are involved
 
-Do not use `docs/v*` or old flat `docs/architecture/*.md` files as the default source of truth.
-
 ## Core rules
 
-- Do not introduce WordPress, WooCommerce, Shopify, Supabase, or Vercel.
+- Stay strictly within the requested scope.
+- Prefer the real repository structure over generic templates.
+- Prefer small safe increments over broad redesigns.
+- Keep business logic out of UI components.
+- Do not reintroduce legacy patterns without explicit confirmation from the current doctrine.
+- Preserve public contracts unless the task explicitly requires changing them.
 - Do not add unnecessary dependencies.
 - Do not use `any` unless explicitly justified.
 - Do not over-architect.
-- Do not reintroduce legacy `db/repositories` patterns without explicit confirmation from the current doctrine.
-- Respect the real repository structure before applying any generic template.
-- Keep business logic out of UI components.
-- Preserve public contracts unless the task explicitly requires changing them.
+- Do not introduce WordPress, WooCommerce, Shopify, Supabase, or Vercel.
 
-## Stack
+## Technical constraints
 
 - Next.js App Router
 - TypeScript strict
 - PostgreSQL
 - Docker Compose
 - Makefile
+
+## Working rule
+
+When documentation, code, and request appear to diverge:
+
+- do not choose silently;
+- identify the most relevant project source for the current task;
+- stay aligned with repository doctrine;
+- make assumptions explicit when needed.

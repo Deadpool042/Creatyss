@@ -365,14 +365,14 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Documents liés
 
-- `../../architecture/10-fondations/10-principes-d-architecture.md`
-- `../../architecture/10-fondations/11-modele-de-classification.md`
-- `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
+- `../../../architecture/10-fondations/10-principes-d-architecture.md`
+- `../../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
 - `orders.md`
 - `cart.md`
 - `checkout.md`
-- `payments.md`
+- `../../optional/commerce/payments.md`
 - `pricing.md`
-- `auth.md`
-- `users.md`
-- `../../domains/cross-cutting/crm.md`
+- `../foundation/auth.md`
+- `../foundation/users.md`
+- `../../cross-cutting/crm.md`

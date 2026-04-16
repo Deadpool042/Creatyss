@@ -402,7 +402,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../core/commerce/pricing.md`
 - `../core/commerce/orders.md`
 - `../optional/commerce/payments.md`
-- `inventory.md`
+- `commerce/inventory.md`
 - `../core/catalog/availability.md`
 - `../cross-cutting/legal.md`
 - `../cross-cutting/support.md`

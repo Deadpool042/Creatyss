@@ -22,11 +22,10 @@ Implémenter ou corriger une UI admin bornée.
 # Source de vérité
 
 Toujours lire :
-- README.md
+
 - AGENTS.md
+- README.md
 - .claude/CLAUDE.md
-- .meta/agent-doctrine.md
-- .meta/agent-routing.md
 - puis la feature concernée dans le repo réel
 
 # Interdictions

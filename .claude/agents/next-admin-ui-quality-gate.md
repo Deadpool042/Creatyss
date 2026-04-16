@@ -22,8 +22,7 @@ Faire une revue qualité ciblée d’une UI admin.
 # Source
 
 Toujours lire :
-- README.md
+
 - AGENTS.md
+- README.md
 - .claude/CLAUDE.md
-- .meta/agent-doctrine.md
-- .meta/agent-routing.md

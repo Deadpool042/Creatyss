@@ -23,8 +23,7 @@ Vérifier qu’une feature implémentée respecte le repo réel et la doctrine c
 # Source
 
 Toujours lire d'abord :
-- README.md
+
 - AGENTS.md
+- README.md
 - .claude/CLAUDE.md
-- .meta/agent-doctrine.md
-- .meta/agent-routing.md

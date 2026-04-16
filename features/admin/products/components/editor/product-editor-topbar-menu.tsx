@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { MoreHorizontal, Plus, Trash2, type LucideIcon } from "lucide-react";
-import type { JSX, ReactNode } from "react";
+import { Archive, MoreHorizontal, Plus, RotateCcw, Trash2 } from "lucide-react";
+import type { JSX } from "react";
 
 import { DeleteProductButton } from "@/features/admin/products/components/editor/delete-product-button";
 import { Button } from "@/components/ui/button";
@@ -13,36 +13,24 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { TopbarMenuActionItem } from "./topbar-menu-action-item";
+import { useArchivedProductMutations } from "./use-archived-product-mutations";
 
 type ProductEditorTopbarMenuProps = {
   productId: string;
+  productSlug: string;
+  isArchived?: boolean;
 };
 
-type MenuActionItemProps = {
-  icon: LucideIcon;
-  children: ReactNode;
-  destructive?: boolean;
-};
+export function ProductEditorTopbarMenu({
+  productId,
+  productSlug,
+  isArchived = false,
+}: ProductEditorTopbarMenuProps): JSX.Element {
+  const { isPending, handleRestore, handlePermanentDelete } = useArchivedProductMutations({
+    productSlug,
+  });
 
-function MenuActionItem({
-  icon: Icon,
-  children,
-  destructive = false,
-}: MenuActionItemProps): JSX.Element {
-  return (
-    <span
-      className={[
-        "flex w-full items-center gap-2 text-sm",
-        destructive ? "text-destructive" : "text-foreground",
-      ].join(" ")}
-    >
-      <Icon className="h-4 w-4 shrink-0" />
-      <span>{children}</span>
-    </span>
-  );
-}
-
-export function ProductEditorTopbarMenu({ productId }: ProductEditorTopbarMenuProps): JSX.Element {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -52,6 +40,7 @@ export function ProductEditorTopbarMenu({ productId }: ProductEditorTopbarMenuPr
           size="icon"
           aria-label="Ouvrir les actions du produit"
           className="h-9 w-9 rounded-full"
+          disabled={isPending}
         >
           <MoreHorizontal className="h-4 w-4" />
         </Button>
@@ -60,26 +49,50 @@ export function ProductEditorTopbarMenu({ productId }: ProductEditorTopbarMenuPr
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem asChild>
           <Link href="/admin/products/new">
-            <MenuActionItem icon={Plus}>Nouveau produit</MenuActionItem>
+            <TopbarMenuActionItem icon={Plus}>Nouveau produit</TopbarMenuActionItem>
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
-        <DeleteProductButton
-          productId={productId}
-          trigger={
+        {isArchived ? (
+          <>
             <DropdownMenuItem
               onSelect={(event) => {
                 event.preventDefault();
+                handleRestore();
               }}
             >
-              <MenuActionItem icon={Trash2} destructive>
-                Supprimer le produit
-              </MenuActionItem>
+              <TopbarMenuActionItem icon={RotateCcw}>Restaurer</TopbarMenuActionItem>
             </DropdownMenuItem>
-          }
-        />
+
+            <DropdownMenuItem
+              onSelect={(event) => {
+                event.preventDefault();
+                handlePermanentDelete();
+              }}
+            >
+              <TopbarMenuActionItem icon={Trash2} destructive>
+                Supprimer définitivement
+              </TopbarMenuActionItem>
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <DeleteProductButton
+            productId={productId}
+            trigger={
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault();
+                }}
+              >
+                <TopbarMenuActionItem icon={Archive} destructive>
+                  Mettre à la corbeille
+                </TopbarMenuActionItem>
+              </DropdownMenuItem>
+            }
+          />
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

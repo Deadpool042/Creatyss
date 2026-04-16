@@ -8,7 +8,6 @@ export async function readAdminProductEditorBySlug(
   const product = await db.product.findFirst({
     where: {
       slug,
-      archivedAt: null,
     },
     select: {
       id: true,
