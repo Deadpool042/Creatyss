@@ -1,3 +1,9 @@
+/**
+ * Façade publique de l'éditeur produit admin.
+ * Point d'entrée unique pour les composants UI qui consomment les actions
+ * et les types de l'éditeur — aucun import direct vers les sous-modules
+ * internes ne doit contourner ce barrel.
+ */
 export { deleteProductAction } from "../actions/delete-product.action";
 export { deleteProductVariantAction } from "../actions/delete-product-variant.action";
 export { setDefaultProductVariantAction } from "../actions/set-default-product-variant.action";
@@ -18,14 +24,9 @@ export type {
   AdminProductEditorStatus,
 } from "../types/product-editor.types";
 
-export type {
-  AdminProductImageItem,
-  AdminProductImagesData,
-} from "../types/product-images.types";
+export type { AdminProductImageItem, AdminProductImagesData } from "../types/product-images.types";
 
-export {
-  productVariantFormInitialState,
-} from "../types/product-variants.types";
+export { productVariantFormInitialState } from "../types/product-variants.types";
 
 export type {
   AdminProductAvailabilityStatus,

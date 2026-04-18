@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Archive } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { deleteProductAction } from "@/features/admin/products/editor/public/delete-product.action";
+import { deleteProductAction } from "@/features/admin/products/editor/public";
 
 type DeleteProductButtonProps = {
   productId: string;
