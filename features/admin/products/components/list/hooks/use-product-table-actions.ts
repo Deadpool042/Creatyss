@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { archiveProductBySlugAction } from "@/features/admin/products/shared/actions/archive-product.action";
 import { bulkArchiveProductsAction } from "@/features/admin/products/list/actions/bulk-archive-products.action";
@@ -10,7 +10,9 @@ import { bulkUpdateProductFeaturedAction } from "@/features/admin/products/list/
 import { bulkUpdateProductStatusAction } from "@/features/admin/products/list/actions/bulk-update-product-status.action";
 import { deleteProductPermanentlyBySlugAction } from "@/features/admin/products/shared/actions/delete-product-permanently.action";
 import { restoreProductBySlugAction } from "@/features/admin/products/shared/actions/restore-product.action";
+import type { AdminProductActionResult } from "@/features/admin/products/types/action-result.types";
 import type { ProductTableStatus } from "@/features/admin/products/list/types/product-table.types";
+import { useProductTableFeedback } from "./use-product-table-feedback";
 
 type UseProductTableActionsInput = {
   currentPageProductIds: string[];
@@ -43,28 +45,52 @@ export function useProductTableActions({
   mobileVisibleProductIds,
 }: UseProductTableActionsInput): UseProductTableActionsResult {
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
-  const [bulkMessage, setBulkMessage] = useState<string | null>(null);
-  const [bulkError, setBulkError] = useState<string | null>(null);
   const [isBulkPending, setIsBulkPending] = useState(false);
 
-  useEffect(() => {
-    if (bulkMessage === null && bulkError === null) {
-      return;
-    }
-
-    const timeout = window.setTimeout(() => {
-      setBulkMessage(null);
-      setBulkError(null);
-    }, 3500);
-
-    return () => window.clearTimeout(timeout);
-  }, [bulkMessage, bulkError]);
+  const { bulkMessage, bulkError, setBulkMessage, setBulkError } = useProductTableFeedback();
 
   const selectedCount = selectedProductIds.length;
 
   const areAllCurrentPageSelected =
     currentPageProductIds.length > 0 &&
     currentPageProductIds.every((productId) => selectedProductIds.includes(productId));
+
+  // ── Internal action runners ───────────────────────────────────────────────
+
+  async function executeBulkAction(
+    action: () => Promise<AdminProductActionResult>,
+  ): Promise<void> {
+    if (selectedProductIds.length === 0 || isBulkPending) return;
+
+    setIsBulkPending(true);
+    setBulkMessage(null);
+    setBulkError(null);
+
+    const result = await action();
+
+    if (result.status === "success") {
+      setBulkMessage(result.message);
+      setSelectedProductIds([]);
+    } else {
+      setBulkError(result.message);
+    }
+
+    setIsBulkPending(false);
+  }
+
+  async function executeOneAction(
+    action: () => Promise<AdminProductActionResult>,
+  ): Promise<void> {
+    const result = await action();
+
+    if (result.status === "success") {
+      setBulkMessage(result.message);
+      setBulkError(null);
+    } else {
+      setBulkError(result.message);
+      setBulkMessage(null);
+    }
+  }
 
   // ── Selection handlers ────────────────────────────────────────────────────
 
@@ -132,150 +158,47 @@ export function useProductTableActions({
   // ── Bulk action handlers ──────────────────────────────────────────────────
 
   async function handleBulkStatusChange(status: ProductTableStatus): Promise<void> {
-    if (selectedProductIds.length === 0 || isBulkPending) return;
-
-    setIsBulkPending(true);
-    setBulkMessage(null);
-    setBulkError(null);
-
-    const result = await bulkUpdateProductStatusAction({
-      productIds: selectedProductIds,
-      status,
-    });
-
-    if (result.status === "success") {
-      setBulkMessage(result.message);
-      setSelectedProductIds([]);
-    } else {
-      setBulkError(result.message);
-    }
-
-    setIsBulkPending(false);
+    await executeBulkAction(() =>
+      bulkUpdateProductStatusAction({ productIds: selectedProductIds, status }),
+    );
   }
 
   async function handleBulkFeaturedChange(isFeatured: boolean): Promise<void> {
-    if (selectedProductIds.length === 0 || isBulkPending) return;
-
-    setIsBulkPending(true);
-    setBulkMessage(null);
-    setBulkError(null);
-
-    const result = await bulkUpdateProductFeaturedAction({
-      productIds: selectedProductIds,
-      isFeatured,
-    });
-
-    if (result.status === "success") {
-      setBulkMessage(result.message);
-      setSelectedProductIds([]);
-    } else {
-      setBulkError(result.message);
-    }
-
-    setIsBulkPending(false);
+    await executeBulkAction(() =>
+      bulkUpdateProductFeaturedAction({ productIds: selectedProductIds, isFeatured }),
+    );
   }
 
   async function handleBulkArchive(): Promise<void> {
-    if (selectedProductIds.length === 0 || isBulkPending) return;
-
-    setIsBulkPending(true);
-    setBulkMessage(null);
-    setBulkError(null);
-
-    const result = await bulkArchiveProductsAction({
-      productIds: selectedProductIds,
-    });
-
-    if (result.status === "success") {
-      setBulkMessage(result.message);
-      setSelectedProductIds([]);
-    } else {
-      setBulkError(result.message);
-    }
-
-    setIsBulkPending(false);
+    await executeBulkAction(() =>
+      bulkArchiveProductsAction({ productIds: selectedProductIds }),
+    );
   }
 
   async function handleBulkRestore(): Promise<void> {
-    if (selectedProductIds.length === 0 || isBulkPending) return;
-
-    setIsBulkPending(true);
-    setBulkMessage(null);
-    setBulkError(null);
-
-    const result = await bulkRestoreProductsAction({
-      productIds: selectedProductIds,
-    });
-
-    if (result.status === "success") {
-      setBulkMessage(result.message);
-      setSelectedProductIds([]);
-    } else {
-      setBulkError(result.message);
-    }
-
-    setIsBulkPending(false);
+    await executeBulkAction(() =>
+      bulkRestoreProductsAction({ productIds: selectedProductIds }),
+    );
   }
 
   async function handleBulkPermanentDelete(): Promise<void> {
-    if (selectedProductIds.length === 0 || isBulkPending) return;
-
-    setIsBulkPending(true);
-    setBulkMessage(null);
-    setBulkError(null);
-
-    const result = await bulkDeleteProductsPermanentlyAction({
-      productIds: selectedProductIds,
-    });
-
-    if (result.status === "success") {
-      setBulkMessage(result.message);
-      setSelectedProductIds([]);
-    } else {
-      setBulkError(result.message);
-    }
-
-    setIsBulkPending(false);
+    await executeBulkAction(() =>
+      bulkDeleteProductsPermanentlyAction({ productIds: selectedProductIds }),
+    );
   }
 
   // ── Single-item action handlers ───────────────────────────────────────────
 
   async function handleArchiveOne(productSlug: string): Promise<void> {
-    const result = await archiveProductBySlugAction(productSlug);
-
-    if (result.status === "success") {
-      setBulkMessage(result.message);
-      setBulkError(null);
-    } else {
-      setBulkError(result.message);
-      setBulkMessage(null);
-    }
+    await executeOneAction(() => archiveProductBySlugAction(productSlug));
   }
 
   async function handleRestoreOne(productSlug: string): Promise<void> {
-    const result = await restoreProductBySlugAction(productSlug);
-
-    if (result.status === "success") {
-      setBulkMessage(result.message);
-      setBulkError(null);
-    } else {
-      setBulkError(result.message);
-      setBulkMessage(null);
-    }
+    await executeOneAction(() => restoreProductBySlugAction(productSlug));
   }
 
   async function handlePermanentDeleteOne(productSlug: string): Promise<void> {
-    const result = await deleteProductPermanentlyBySlugAction({
-      productSlug,
-    });
-
-    if (result.status === "success") {
-      setBulkMessage(result.message);
-      setBulkError(null);
-    } else {
-      setBulkError(result.message);
-      setBulkMessage(null);
-    }
+    await executeOneAction(() => deleteProductPermanentlyBySlugAction({ productSlug }));
   }
 
   return {
