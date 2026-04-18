@@ -42,10 +42,6 @@ export type {
   BulkUpdateProductFeaturedResult,
 } from "./bulk-update-product-featured.types";
 
-export type { ArchiveProductInput, ArchiveProductResult } from "./archive-product.types";
-
-export type { RestoreProductInput, RestoreProductResult } from "./restore-product.types";
-
 export type {
   BulkRestoreProductsInput,
   BulkRestoreProductsResult,
@@ -55,11 +51,6 @@ export type {
   BulkArchiveProductsInput,
   BulkArchiveProductsResult,
 } from "./bulk-archive-products.types";
-
-export type {
-  DeleteProductPermanentlyInput,
-  DeleteProductPermanentlyResult,
-} from "./delete-product-permanently.types";
 
 export type {
   BulkDeleteProductsPermanentlyInput,
