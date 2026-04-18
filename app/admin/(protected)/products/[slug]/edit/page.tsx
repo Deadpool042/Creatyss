@@ -2,13 +2,13 @@ import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { Button } from "@/components/ui/button";
-import { db } from "@/core/db";
 import {
   attachProductImagesAction,
   createProductVariantAction,
   deleteProductAction,
   deleteProductImageAction,
   deleteProductVariantAction,
+  listAdminProductCategoryOptions,
   listAdminRelatedProductOptions,
   listAdminProductTypeOptions,
   listAttachableMediaAssets,
@@ -38,28 +38,14 @@ import {
   ProductEditorPanel,
   ProductEditorTopbarMenu,
 } from "@/features/admin/products/components";
-import { DeleteProductButton } from "@/features/admin/products/components/editor/delete-product-button";
+import { DeleteProductButton } from "@/features/admin/products/components/editor";
 
 export default async function ProductEditorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
   const [editor, availableCategories, priceLists, productTypeOptions] = await Promise.all([
     readAdminProductEditorBySlug(slug),
-    db.category.findMany({
-      where: { archivedAt: null },
-      orderBy: [{ name: "asc" }],
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        parentId: true,
-        parent: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    }),
+    listAdminProductCategoryOptions(),
     readAdminPriceLists(),
     listAdminProductTypeOptions(),
   ]);
@@ -202,13 +188,7 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
         reorderImageAction={reorderProductImageAction}
         attachImagesAction={attachProductImagesAction}
         uploadImagesAction={uploadProductImagesAction}
-        availableCategories={availableCategories.map((category) => ({
-          id: category.id,
-          name: category.name,
-          slug: category.slug,
-          parentId: category.parentId,
-          parentName: category.parent?.name ?? null,
-        }))}
+        availableCategories={availableCategories}
         productTypeOptions={productTypeOptions}
         productOptions={productOptions}
         variants={variantsData?.variants ?? []}

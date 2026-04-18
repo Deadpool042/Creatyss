@@ -12,7 +12,8 @@ export class AdminProductEditorServiceError extends Error {
     | "default_variant_required"
     | "cannot_delete_default_variant"
     | "option_values_invalid"
-    | "inventory_invalid";
+    | "inventory_invalid"
+    | "product_not_variable";
 
   constructor(code: AdminProductEditorServiceError["code"], message?: string) {
     super(message ?? code);

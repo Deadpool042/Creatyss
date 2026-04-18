@@ -1,4 +1,5 @@
 export { getAdminProductEditorData } from "./queries/get-admin-product-editor-data.query";
+export { listAdminProductCategoryOptions } from "./queries/list-admin-product-category-options.query";
 export { listAdminProductTypeOptions } from "./queries/list-admin-product-type-options.query";
 export { listAdminRelatedProductOptions } from "./queries/list-admin-related-product-options.query";
 export { listAttachableMediaAssets } from "./queries/list-attachable-media-assets.query";
@@ -52,9 +53,7 @@ export type {
   UploadProductImageFormState,
 } from "./types/product-images.types";
 
-export {
-  productVariantFormInitialState,
-} from "./types/product-variants.types";
+export { productVariantFormInitialState } from "./types/product-variants.types";
 
 export type {
   AdminProductAvailabilityStatus,
@@ -145,9 +144,7 @@ export type {
   AttachableMediaAssetsData,
 } from "./types/product-image-library.types";
 
-export {
-  uploadProductImagesFormInitialState,
-} from "./types/product-image-upload-multi.types";
+export { uploadProductImagesFormInitialState } from "./types/product-image-upload-multi.types";
 
 export type {
   UploadProductImagesFormState,

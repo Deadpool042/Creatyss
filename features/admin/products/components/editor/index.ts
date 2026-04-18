@@ -27,3 +27,4 @@ export {
 
 export { ProductEditorTopbarMenu } from "./product-editor-topbar-menu";
 export { ProductVariantTopbarMenu } from "./product-variant-topbar-menu";
+export { DeleteProductButton } from "./delete-product-button";

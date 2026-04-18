@@ -2,6 +2,7 @@ import { withTransaction } from "@/core/db";
 import {
   assertMediaAssetExists,
   assertProductExists,
+  assertProductIsVariable,
   assertVariantOptionValuesAreValid,
   mapEditorVariantStatusToPrismaStatus,
 } from "./shared";
@@ -28,7 +29,8 @@ export async function createProductVariant(
   input: CreateProductVariantServiceInput
 ): Promise<{ id: string }> {
   return withTransaction(async (tx) => {
-    await assertProductExists(tx, input.productId);
+    const product = await assertProductExists(tx, input.productId);
+    assertProductIsVariable(product);
     await assertVariantOptionValuesAreValid(tx, input.productId, input.optionValueIds);
 
     if (input.primaryImageId !== null) {

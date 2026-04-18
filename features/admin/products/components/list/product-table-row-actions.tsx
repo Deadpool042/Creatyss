@@ -42,7 +42,7 @@ const productRowActions: ProductRowAction[] = [
   {
     label: "Voir la fiche",
     icon: Eye,
-    href: (slug: string) => `/admin/products/${slug}/view`,
+    href: (slug: string) => `/admin/products/${slug}/preview`,
   },
 ];
 

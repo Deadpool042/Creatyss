@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Images, MoreHorizontal, Plus, Trash2, Upload } from "lucide-react";
 import type { JSX } from "react";
 
-import { DeleteProductButton } from "@/features/admin/products/components/editor/delete-product-button";
+import { DeleteProductButton } from "./delete-product-button";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -47,9 +47,7 @@ export function ProductMediaTopbarMenu({
             onOpenLibrary();
           }}
         >
-          <TopbarMenuActionItem icon={Images}>
-            Associer depuis la bibliothèque
-          </TopbarMenuActionItem>
+          <TopbarMenuActionItem icon={Images}>Associer depuis la bibliothèque</TopbarMenuActionItem>
         </DropdownMenuItem>
 
         <DropdownMenuItem

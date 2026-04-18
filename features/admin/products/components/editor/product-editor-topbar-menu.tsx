@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Archive, MoreHorizontal, Plus, RotateCcw, Trash2 } from "lucide-react";
 import type { JSX } from "react";
 
-import { DeleteProductButton } from "@/features/admin/products/components/editor/delete-product-button";
+import { DeleteProductButton } from "./delete-product-button";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

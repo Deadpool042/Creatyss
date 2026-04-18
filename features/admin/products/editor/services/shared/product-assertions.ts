@@ -9,6 +9,7 @@ export async function assertProductExists(
   id: string;
   storeId: string;
   primaryImageId: string | null;
+  isStandalone: boolean;
 }> {
   const product = await executor.product.findFirst({
     where: {
@@ -19,6 +20,7 @@ export async function assertProductExists(
       id: true,
       storeId: true,
       primaryImageId: true,
+      isStandalone: true,
     },
   });
 
@@ -29,10 +31,13 @@ export async function assertProductExists(
   return product;
 }
 
-export async function assertMediaAssetExists(
-  executor: DbExecutor,
-  assetId: string
-): Promise<void> {
+export function assertProductIsVariable(product: { isStandalone: boolean }): void {
+  if (product.isStandalone) {
+    throw new AdminProductEditorServiceError("product_not_variable");
+  }
+}
+
+export async function assertMediaAssetExists(executor: DbExecutor, assetId: string): Promise<void> {
   const asset = await executor.mediaAsset.findFirst({
     where: {
       id: assetId,

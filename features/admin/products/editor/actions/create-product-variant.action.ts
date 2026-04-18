@@ -6,10 +6,7 @@ import {
   productVariantFormInitialState,
   type ProductVariantFormAction,
 } from "../types/product-variants.types";
-import {
-  AdminProductEditorServiceError,
-  createProductVariant,
-} from "../services";
+import { AdminProductEditorServiceError, createProductVariant } from "../services";
 
 function getField(formData: FormData, key: string): FormDataEntryValue | null {
   return formData.get(key);
@@ -93,12 +90,23 @@ export const createProductVariantAction: ProductVariantFormAction = async (
     };
   } catch (error) {
     if (error instanceof AdminProductEditorServiceError) {
+      if (error.code === "product_not_variable") {
+        return {
+          ...productVariantFormInitialState,
+          status: "error",
+          message: "Ce produit ne supporte pas les variantes.",
+        };
+      }
+
       if (error.code === "option_values_invalid") {
         return {
           ...productVariantFormInitialState,
           status: "error",
           message: "Attributs invalides.",
-          fieldErrors: { optionValues: "Les valeurs d'option sélectionnées sont invalides ou incohérentes avec ce produit." },
+          fieldErrors: {
+            optionValues:
+              "Les valeurs d'option sélectionnées sont invalides ou incohérentes avec ce produit.",
+          },
         };
       }
 
