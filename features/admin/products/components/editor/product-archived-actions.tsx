@@ -4,7 +4,7 @@ import type { JSX } from "react";
 import { RotateCcw, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { useArchivedProductMutations } from "./use-archived-product-mutations";
+import { useArchivedProductMutations } from "./hooks/use-archived-product-mutations";
 
 type ProductArchivedActionsProps = {
   productSlug: string;

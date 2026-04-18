@@ -1,9 +1,9 @@
+import type { AdminProductActionResult } from "@/features/admin/products/types";
+
 export type ToggleProductFeaturedInput = {
   productId: string;
 };
 
-export type ToggleProductFeaturedResult = {
-  status: "success" | "error";
-  message: string;
+export type ToggleProductFeaturedResult = AdminProductActionResult & {
   isFeatured?: boolean;
 };

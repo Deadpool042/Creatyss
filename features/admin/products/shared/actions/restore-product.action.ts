@@ -2,16 +2,12 @@
 
 import { refresh } from "next/cache";
 
+import type { AdminProductActionResult } from "@/features/admin/products/types";
 import { restoreProduct } from "../services/restore-product.service";
-
-type ProductRestoreActionResult = {
-  status: "success" | "error";
-  message: string;
-};
 
 export async function restoreProductBySlugAction(
   productSlug: string
-): Promise<ProductRestoreActionResult> {
+): Promise<AdminProductActionResult> {
   const normalizedProductSlug = productSlug.trim();
 
   if (normalizedProductSlug.length === 0) {

@@ -10,3 +10,5 @@ export type {
   AdminRelatedProductLink,
   AdminRelatedProductType,
 } from "./admin-product-shared.types";
+
+export type { AdminProductActionResult } from "./action-result.types";

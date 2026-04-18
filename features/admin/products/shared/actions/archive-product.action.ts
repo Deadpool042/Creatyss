@@ -2,16 +2,12 @@
 
 import { refresh } from "next/cache";
 
+import type { AdminProductActionResult } from "@/features/admin/products/types";
 import { archiveProduct } from "../services/archive-product.service";
-
-type ProductArchiveActionResult = {
-  status: "success" | "error";
-  message: string;
-};
 
 export async function archiveProductBySlugAction(
   productSlug: string
-): Promise<ProductArchiveActionResult> {
+): Promise<AdminProductActionResult> {
   const normalizedProductSlug = productSlug.trim();
 
   if (normalizedProductSlug.length === 0) {

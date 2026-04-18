@@ -2,20 +2,16 @@
 
 import { refresh } from "next/cache";
 
+import type { AdminProductActionResult } from "@/features/admin/products/types";
 import { deleteProductPermanently } from "../services/delete-product-permanently.service";
 
 type DeleteProductPermanentlyActionInput = {
   productSlug: string;
 };
 
-type DeleteProductPermanentlyActionResult = {
-  status: "success" | "error";
-  message: string;
-};
-
 export async function deleteProductPermanentlyBySlugAction(
   input: DeleteProductPermanentlyActionInput
-): Promise<DeleteProductPermanentlyActionResult> {
+): Promise<AdminProductActionResult> {
   const normalizedProductSlug = input.productSlug.trim();
 
   if (normalizedProductSlug.length === 0) {

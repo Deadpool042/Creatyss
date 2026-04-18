@@ -1,3 +1,5 @@
+import type { AdminProductActionResult } from "@/features/admin/products/types";
+
 export type ProductImageReorderDirection = "up" | "down";
 
 export type ReorderProductImageInput = {
@@ -6,7 +8,4 @@ export type ReorderProductImageInput = {
   sortOrder: number;
 };
 
-export type ReorderProductImageResult = {
-  status: "success" | "error";
-  message: string;
-};
+export type ReorderProductImageResult = AdminProductActionResult;

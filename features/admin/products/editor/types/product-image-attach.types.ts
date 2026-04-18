@@ -1,3 +1,5 @@
+import type { AdminProductActionResult } from "@/features/admin/products/types";
+
 export type AttachProductImagesInput = {
   images: Array<{
     productId: string;
@@ -10,7 +12,4 @@ export type AttachProductImagesInput = {
   }>;
 };
 
-export type AttachProductImagesResult = {
-  status: "success" | "error";
-  message: string;
-};
+export type AttachProductImagesResult = AdminProductActionResult;

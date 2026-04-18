@@ -1,9 +1,9 @@
+import type { AdminProductActionResult } from "@/features/admin/products/types";
+
 export type BulkDeleteProductsPermanentlyInput = {
   productIds: string[];
 };
 
-export type BulkDeleteProductsPermanentlyResult = {
-  status: "success" | "error";
-  message: string;
+export type BulkDeleteProductsPermanentlyResult = AdminProductActionResult & {
   deletedCount?: number;
 };

@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TopbarMenuActionItem } from "./topbar-menu-action-item";
-import { useArchivedProductMutations } from "./use-archived-product-mutations";
+import { useArchivedProductMutations } from "./hooks/use-archived-product-mutations";
 
 type ProductEditorTopbarMenuProps = {
   productId: string;
