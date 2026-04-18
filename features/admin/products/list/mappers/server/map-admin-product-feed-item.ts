@@ -1,4 +1,4 @@
-import { ProductStatus, type Prisma } from "@/prisma-generated/client";
+import { type Prisma } from "@/prisma-generated/client";
 import { mapAdminProductStatus } from "@/features/admin/products/mappers";
 import type { AdminProductFeedItem } from "@/features/admin/products/list/types/product-feed.types";
 

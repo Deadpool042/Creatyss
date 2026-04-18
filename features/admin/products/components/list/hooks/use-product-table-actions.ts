@@ -10,7 +10,7 @@ import { bulkUpdateProductFeaturedAction } from "@/features/admin/products/list/
 import { bulkUpdateProductStatusAction } from "@/features/admin/products/list/actions/bulk-update-product-status.action";
 import { deleteProductPermanentlyBySlugAction } from "@/features/admin/products/shared/actions/delete-product-permanently.action";
 import { restoreProductBySlugAction } from "@/features/admin/products/shared/actions/restore-product.action";
-import type { AdminProductActionResult } from "@/features/admin/products/types/action-result.types";
+import type { AdminProductActionResult } from "@/features/admin/products/types";
 import type { ProductTableStatus } from "@/features/admin/products/list/types/product-table.types";
 import { useProductTableFeedback } from "./use-product-table-feedback";
 

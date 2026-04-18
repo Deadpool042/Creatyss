@@ -1,4 +1,4 @@
-import { ProductVariantStatus } from "@/prisma-generated/client";
+import { type ProductVariantStatus } from "@/prisma-generated/client";
 import { mapAdminProductVariantStatus } from "@/features/admin/products/mappers";
 import type { AdminProductVariantListItem } from "@/features/admin/products/editor/types/product-variants.types";
 

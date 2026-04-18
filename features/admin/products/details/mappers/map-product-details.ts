@@ -1,4 +1,4 @@
-import { ProductStatus, ProductVariantStatus } from "@/prisma-generated/client";
+import { type ProductStatus, type ProductVariantStatus } from "@/prisma-generated/client";
 import {
   mapAdminProductStatus,
   mapAdminProductVariantStatus,
