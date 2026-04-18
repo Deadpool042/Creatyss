@@ -13,8 +13,10 @@ type ProductsToolbarProps = {
 
 function getStatusLabel(status: string): string {
   switch (status) {
-    case "published":
-      return "Publiés";
+    case "active":
+      return "Actifs";
+    case "inactive":
+      return "Inactifs";
     case "draft":
       return "Brouillons";
     case "archived":
@@ -47,9 +49,14 @@ export function ProductsToolbar({ params }: ProductsToolbarProps): JSX.Element {
       isActive: params.status === "",
     },
     {
-      label: "Publiés",
-      href: buildProductsFiltersHref(params, { status: "published" }),
-      isActive: params.status === "published",
+      label: "Actifs",
+      href: buildProductsFiltersHref(params, { status: "active" }),
+      isActive: params.status === "active",
+    },
+    {
+      label: "Inactifs",
+      href: buildProductsFiltersHref(params, { status: "inactive" }),
+      isActive: params.status === "inactive",
     },
     {
       label: "Brouillons",

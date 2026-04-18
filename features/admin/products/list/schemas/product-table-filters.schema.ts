@@ -13,9 +13,4 @@ export const productTableFiltersSchema = z.object({
     .optional(),
 });
 
-export const adminProductFeedQuerySchema = productTableFiltersSchema.extend({
-  limit: z.coerce.number().int().positive().optional(),
-  cursor: z.string().nullable().optional(),
-});
-
 export type ProductTableFiltersSchema = z.infer<typeof productTableFiltersSchema>;

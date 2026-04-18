@@ -1,4 +1,4 @@
-export type AdminProductsListStatusFilter = "all" | "draft" | "published" | "archived";
+export type AdminProductsListStatusFilter = "all" | "draft" | "active" | "inactive" | "archived";
 
 export type AdminProductsListFeaturedFilter = "all" | "featured" | "standard";
 

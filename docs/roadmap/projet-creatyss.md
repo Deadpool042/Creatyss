@@ -13,57 +13,87 @@ Elle cadre la trajectoire du projet sans décrire une architecture future non va
 - PostgreSQL / Prisma
 - admin simple pour non-tech
 - séparation claire domaine / orchestration / UI
+- pas de dérive vers une plateforme générique ou une site-factory
 
 ## Socle actuel
 
-Le socle actuel couvre la base documentaire et produit nécessaire pour avancer de manière stable :
+Le projet dispose déjà d’un socle exploitable pour avancer proprement :
 
 - doctrine centralisée (`AGENTS.md`, `docs/architecture/`, `docs/domains/`)
 - environnement local Docker
-- base e-commerce initiale avec catalogue, admin et front public
+- base front/admin existante
+- modèle initial catalogue / contenu / admin
+- base documentaire de pilotage
 - seed local avec import historique ponctuel possible
 
-## V1 obligatoire
+## Phase 1 — Stabilisation du socle
 
-La V1 doit garantir un parcours e-commerce exploitable de bout en bout avec :
+Objectif : fiabiliser la base avant extension fonctionnelle.
 
-- catalogue produits (produits, variantes, images, catégories)
+Priorités :
+
+- corriger les incohérences documentaires et structurelles bloquantes
+- consolider les frontières des domaines coeur et transverses critiques
+- réduire la dette de maintenabilité la plus risquée
+- stabiliser la gouvernance doc / architecture / repo
+
+## Phase 2 — V1 catalogue, contenu et admin
+
+Objectif : garantir le coeur éditorial et catalogue de la boutique.
+
+Périmètre :
+
+- produits
+- variantes
+- images
+- catégories
 - homepage éditable
 - blog éditable
 - admin simple et robuste pour les opérations courantes
-- cohérence des domaines coeur et des frontières documentées
+- SEO de base
 
-## Lots prioritaires
+## Phase 3 — V1 commerce transactionnel minimal
 
-### Phase 1 — Stabilisation du socle
+Objectif : rendre la boutique exploitable de bout en bout sur son flux métier principal.
 
-- fiabiliser la cohérence documentaire et les liens internes
-- consolider les frontières des domaines coeur et transverses critiques
-- réduire la dette structurelle qui fragilise la maintenabilité
+Périmètre :
 
-### Phase 2 — V1 métier
+- panier
+- checkout
+- commandes
+- clients
+- prix
+- disponibilité
+- validations métier minimales sur les flux critiques
 
-- finaliser les flux admin/public indispensables à l’exploitation
-- sécuriser les invariants catalogue/commande/prix/disponibilité
-- garantir une UX admin claire pour les opérations non-tech
+## Phase 4 — Robustesse, qualité et exploitation
 
-### Phase 3 — Robustesse et qualité
+Objectif : rendre le socle plus fiable au quotidien.
 
-- renforcer typecheck, lint et validations ciblées
-- consolider les contrôles de non-régression sur les flux critiques
-- fiabiliser l’exploitation locale et la reproductibilité Docker
+Périmètre :
 
-## Lots différés
+- typecheck, lint et validations ciblées
+- non-régression sur les flux critiques
+- exploitation locale reproductible
+- sécurité admin et durcissement des flux sensibles
+- maintenance plus prévisible
 
-### Commerce étendu (plus tard)
+## Phase 5 — Commerce étendu (plus tard)
+
+À ouvrir uniquement sur besoin explicite :
 
 - retours
-- fidélité
 - cartes cadeaux
+- fidélité
+- expédition avancée
+- taxation plus riche
+- extensions de paiement non indispensables au socle
+
+## Phase 6 — Capacités optionnelles (plus tard)
+
+À ouvrir uniquement si elles restent bornées et sans contamination du coeur :
+
 - recommandations
-
-### Capacités optionnelles (plus tard)
-
 - enrichissements marketing avancés
 - intégrations additionnelles non bloquantes pour la V1
 - optimisations UX non critiques

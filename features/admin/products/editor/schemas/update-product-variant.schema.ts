@@ -6,7 +6,7 @@ export const updateProductVariantSchema = z.object({
   name: z.string().trim().max(120, "Nom trop long."),
   slug: z.string().trim().max(160, "Slug trop long."),
   sku: z.string().trim().min(1, "Le SKU est obligatoire.").max(120, "SKU trop long."),
-  status: z.enum(["draft", "published", "archived"]),
+  status: z.enum(["draft", "active", "inactive", "archived"]),
   isDefault: z.enum(["true", "false"]),
   sortOrder: z
     .string()

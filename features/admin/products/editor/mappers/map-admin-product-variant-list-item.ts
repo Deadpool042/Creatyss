@@ -1,4 +1,5 @@
 import { ProductVariantStatus } from "@/prisma-generated/client";
+import { mapAdminProductVariantStatus } from "@/features/admin/products/mappers";
 import type { AdminProductVariantListItem } from "@/features/admin/products/editor/types/product-variants.types";
 
 type ProductVariantListSource = {
@@ -34,18 +35,6 @@ type ProductVariantListSource = {
   }>;
 };
 
-function mapStatus(status: ProductVariantStatus): AdminProductVariantListItem["status"] {
-  switch (status) {
-    case ProductVariantStatus.ACTIVE:
-      return "active";
-    case ProductVariantStatus.INACTIVE:
-      return "inactive";
-    case ProductVariantStatus.ARCHIVED:
-      return "archived";
-    default:
-      return "draft";
-  }
-}
 
 export function mapAdminProductVariantListItem(
   variant: ProductVariantListSource
@@ -55,7 +44,7 @@ export function mapAdminProductVariantListItem(
     slug: variant.slug,
     name: variant.name,
     sku: variant.sku,
-    status: mapStatus(variant.status),
+    status: mapAdminProductVariantStatus(variant.status),
     isDefault: variant.isDefault,
     sortOrder: variant.sortOrder,
     barcode: variant.barcode,

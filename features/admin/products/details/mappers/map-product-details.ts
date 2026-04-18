@@ -1,4 +1,8 @@
 import { ProductStatus, ProductVariantStatus } from "@/prisma-generated/client";
+import {
+  mapAdminProductStatus,
+  mapAdminProductVariantStatus,
+} from "@/features/admin/products/mappers";
 
 import type { AdminProductDetails } from "@/features/admin/products/details/types/product-detail-types";
 
@@ -61,33 +65,6 @@ function decimalToString(value: { toString(): string } | null): string | null {
   return value ? value.toString() : null;
 }
 
-function mapProductStatusToAdminStatus(status: ProductStatus): AdminProductDetails["status"] {
-  switch (status) {
-    case ProductStatus.DRAFT:
-      return "draft";
-    case ProductStatus.ACTIVE:
-      return "active";
-    case ProductStatus.INACTIVE:
-      return "inactive";
-    case ProductStatus.ARCHIVED:
-      return "archived";
-  }
-}
-
-function mapVariantStatusToAdminStatus(
-  status: ProductVariantStatus
-): AdminProductDetails["variants"][number]["status"] {
-  switch (status) {
-    case ProductVariantStatus.DRAFT:
-      return "draft";
-    case ProductVariantStatus.ACTIVE:
-      return "active";
-    case ProductVariantStatus.INACTIVE:
-      return "inactive";
-    case ProductVariantStatus.ARCHIVED:
-      return "archived";
-  }
-}
 
 function mapProductTypeToAdminProductType(input: {
   productTypeCode: string | null;
@@ -135,7 +112,7 @@ export function mapProductDetails(product: ProductDetailsSource): AdminProductDe
       slug: variant.slug ?? "",
       name: variant.name,
       sku: variant.sku,
-      status: mapVariantStatusToAdminStatus(variant.status),
+      status: mapAdminProductVariantStatus(variant.status),
       primaryImageUrl: variant.primaryImage?.publicUrl ?? null,
       primaryImageAlt: variant.primaryImage?.altText ?? null,
       amount: decimalToString(variantPrice?.amount ?? null),
@@ -153,7 +130,7 @@ export function mapProductDetails(product: ProductDetailsSource): AdminProductDe
     name: product.name,
     shortDescription: product.shortDescription,
     description: product.description,
-    status: mapProductStatusToAdminStatus(product.status),
+    status: mapAdminProductStatus(product.status),
     isFeatured: product.isFeatured,
     productType,
     productTypeCode,

@@ -13,7 +13,7 @@ export const updateProductGeneralSchema = z.object({
     ),
   shortDescription: z.string().trim(),
   description: z.string().trim(),
-  status: z.enum(["draft", "published", "archived"], {
+  status: z.enum(["draft", "active", "inactive", "archived"], {
     error: "Le statut est invalide.",
   }),
   isFeatured: z.enum(["true", "false"]).transform((value) => value === "true"),

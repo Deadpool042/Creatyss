@@ -3,14 +3,14 @@
 import { useEffect, useMemo, useState, type JSX } from "react";
 
 import { Button } from "@/components/ui/button";
-import { archiveProductAction } from "@/features/admin/products/list/actions/archive-product.action";
+import { archiveProductBySlugAction } from "@/features/admin/products/shared/actions/archive-product.action";
 import { bulkArchiveProductsAction } from "@/features/admin/products/list/actions/bulk-archive-products.action";
 import { bulkDeleteProductsPermanentlyAction } from "@/features/admin/products/list/actions/bulk-delete-products-permanently.action";
 import { bulkRestoreProductsAction } from "@/features/admin/products/list/actions/bulk-restore-products.action";
 import { bulkUpdateProductFeaturedAction } from "@/features/admin/products/list/actions/bulk-update-product-featured.action";
 import { bulkUpdateProductStatusAction } from "@/features/admin/products/list/actions/bulk-update-product-status.action";
-import { deleteProductPermanentlyAction } from "@/features/admin/products/list/actions/delete-product-permanently.action";
-import { restoreProductAction } from "@/features/admin/products/list/actions/restore-product.action";
+import { deleteProductPermanentlyBySlugAction } from "@/features/admin/products/shared/actions/delete-product-permanently.action";
+import { restoreProductBySlugAction } from "@/features/admin/products/shared/actions/restore-product.action";
 import { useProductTableFilters } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type {
   ProductFilterCategoryOption,
@@ -242,7 +242,7 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
   }
 
   async function handleArchiveOne(productSlug: string): Promise<void> {
-    const result = await archiveProductAction(productSlug);
+    const result = await archiveProductBySlugAction(productSlug);
 
     if (result.status === "success") {
       setBulkMessage(result.message);
@@ -254,7 +254,7 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
   }
 
   async function handleRestoreOne(productSlug: string): Promise<void> {
-    const result = await restoreProductAction(productSlug);
+    const result = await restoreProductBySlugAction(productSlug);
 
     if (result.status === "success") {
       setBulkMessage(result.message);
@@ -266,7 +266,7 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
   }
 
   async function handlePermanentDeleteOne(productSlug: string): Promise<void> {
-    const result = await deleteProductPermanentlyAction({
+    const result = await deleteProductPermanentlyBySlugAction({
       productSlug,
     });
 

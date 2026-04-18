@@ -1,4 +1,5 @@
 import { ProductStatus, type Prisma } from "@/prisma-generated/client";
+import { mapAdminProductStatus } from "@/features/admin/products/mappers";
 import type { AdminProductFeedItem } from "@/features/admin/products/list/types/product-feed.types";
 
 type DecimalLike = {
@@ -88,21 +89,6 @@ function parseDecimal(value: DecimalLike | null): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-function normalizeProductStatus(status: ProductStatus): AdminProductFeedItem["status"] {
-  if (status === ProductStatus.ACTIVE) {
-    return "active";
-  }
-
-  if (status === ProductStatus.ARCHIVED) {
-    return "archived";
-  }
-
-  if (status === ProductStatus.INACTIVE) {
-    return "inactive";
-  }
-
-  return "draft";
-}
 
 function mapStock(input: {
   variants: Array<{
@@ -236,10 +222,12 @@ function buildCompareAtPriceLabel(input: {
   return formatPriceValue(input.minCompareAtAmount) ?? "";
 }
 
-function buildCategoryPathLabel(input: {
-  name: string;
-  parentName: string | null;
-} | null): string {
+function buildCategoryPathLabel(
+  input: {
+    name: string;
+    parentName: string | null;
+  } | null
+): string {
   if (!input) {
     return "";
   }
@@ -267,7 +255,7 @@ export function mapAdminProductFeedItem(product: ProductFeedRow): AdminProductFe
     slug: product.slug,
     name: product.name,
     shortDescription: product.shortDescription ?? product.description ?? null,
-    status: normalizeProductStatus(product.status),
+    status: mapAdminProductStatus(product.status),
 
     primaryImageUrl: product.primaryImage?.publicUrl ?? null,
     primaryImageAlt: product.primaryImage?.altText ?? null,

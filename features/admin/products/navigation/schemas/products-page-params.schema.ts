@@ -1,7 +1,9 @@
 //features/admin/products/navigation/schemas/products-page-params.schema.ts
 import { z } from "zod";
 
-export const productsPageStatusSchema = z.enum(["", "published", "draft", "archived"]);
+export const productsPageStatusSchema = z
+  .enum(["", "draft", "active", "inactive", "archived"])
+  .catch("");
 
 export const productsPageFeaturedSchema = z.enum(["", "featured", "standard"]);
 

@@ -1,6 +1,6 @@
-export type AdminProductStatus = "draft" | "published";
+export type AdminProductStatus = "draft" | "active" | "inactive" | "archived";
 export type AdminProductType = "simple" | "variable";
-export type AdminProductVariantStatus = "draft" | "published";
+export type AdminProductVariantStatus = "draft" | "active" | "inactive" | "archived";
 
 export type AdminProductCategoryOption = {
   id: string;

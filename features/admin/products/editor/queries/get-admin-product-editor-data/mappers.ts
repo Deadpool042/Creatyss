@@ -1,3 +1,8 @@
+import {
+  mapAdminProductStatus,
+  mapAdminProductVariantStatus,
+} from "@/features/admin/products/mappers";
+
 import type {
   AdminProductEditorData,
   AdminProductImageItem,
@@ -9,32 +14,6 @@ import type {
   ProductEditorMediaReferenceRecord,
   ProductEditorSeoMetadataRecord,
 } from "./types";
-
-function mapProductStatus(status: string): AdminProductEditorData["product"]["status"] {
-  switch (status) {
-    case "ACTIVE":
-      return "active";
-    case "INACTIVE":
-      return "inactive";
-    case "ARCHIVED":
-      return "archived";
-    default:
-      return "draft";
-  }
-}
-
-function mapVariantStatus(status: string): AdminProductVariantListItem["status"] {
-  switch (status) {
-    case "ACTIVE":
-      return "active";
-    case "INACTIVE":
-      return "inactive";
-    case "ARCHIVED":
-      return "archived";
-    default:
-      return "draft";
-  }
-}
 
 function mapAvailabilityStatus(
   status: string
@@ -84,7 +63,7 @@ function mapAdminProductVariants(
       slug: variant.slug,
       sku: variant.sku,
       name: variant.name,
-      status: mapVariantStatus(variant.status),
+      status: mapAdminProductVariantStatus(variant.status),
       isDefault: variant.isDefault,
       sortOrder: variant.sortOrder,
       barcode: variant.barcode,
@@ -158,7 +137,9 @@ function mapAdminProductImages(
   }));
 }
 
-function mapRelatedProductType(type: string): AdminProductEditorData["product"]["relatedProducts"][number]["type"] {
+function mapRelatedProductType(
+  type: string
+): AdminProductEditorData["product"]["relatedProducts"][number]["type"] {
   if (type === "CROSS_SELL") return "cross_sell";
   if (type === "UP_SELL") return "up_sell";
   if (type === "ACCESSORY") return "accessory";
@@ -195,7 +176,7 @@ export function mapProductEditorData(input: {
       skuRoot: input.product.skuRoot,
       shortDescription: input.product.shortDescription,
       description: input.product.description,
-      status: mapProductStatus(input.product.status),
+      status: mapAdminProductStatus(input.product.status),
       isFeatured: input.product.isFeatured,
       archivedAt: input.product.archivedAt,
       isArchived: input.product.archivedAt !== null,

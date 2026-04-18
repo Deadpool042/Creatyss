@@ -1,5 +1,5 @@
 //features/admin/products/navigation/types/products-page-params.types.ts
-export type ProductsPageStatusParam = "" | "published" | "draft" | "archived";
+export type ProductsPageStatusParam = "" | "draft" | "active" | "inactive" | "archived";
 
 export type ProductsPageFeaturedParam = "" | "featured" | "standard";
 

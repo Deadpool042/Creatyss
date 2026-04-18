@@ -1,21 +1,9 @@
 //features/admin/products/list/queries/list-admin-products.query.ts
 import { db } from "@/core/db";
+import { mapAdminProductStatus } from "@/features/admin/products/mappers";
 import type { AdminProductFeedItem } from "../types";
 
 export type AdminProductsListView = "active" | "trash";
-
-function mapProductStatus(status: string): AdminProductFeedItem["status"] {
-  switch (status) {
-    case "ACTIVE":
-      return "active";
-    case "INACTIVE":
-      return "inactive";
-    case "ARCHIVED":
-      return "archived";
-    default:
-      return "draft";
-  }
-}
 
 function formatMoney(value: { toString(): string } | null): string {
   if (value === null) {
@@ -146,7 +134,7 @@ export async function listAdminProducts(
       slug: product.slug,
       name: product.name,
       shortDescription: product.shortDescription,
-      status: mapProductStatus(product.status),
+      status: mapAdminProductStatus(product.status),
       isFeatured: product.isFeatured,
       primaryImageUrl: product.primaryImage?.publicUrl ?? null,
       primaryImageAlt: product.primaryImage?.altText ?? null,

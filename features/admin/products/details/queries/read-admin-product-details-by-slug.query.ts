@@ -1,18 +1,6 @@
 import { db } from "@/core/db";
-import type { AdminProductDetails, AdminProductDisplayStatus } from "../types";
-
-function mapStatus(status: string): AdminProductDisplayStatus {
-  switch (status) {
-    case "ACTIVE":
-      return "active";
-    case "INACTIVE":
-      return "inactive";
-    case "ARCHIVED":
-      return "archived";
-    default:
-      return "draft";
-  }
-}
+import { mapAdminProductStatus } from "@/features/admin/products/mappers";
+import type { AdminProductDetails } from "../types";
 
 export async function readAdminProductDetailsBySlug(
   slug: string
@@ -62,7 +50,7 @@ export async function readAdminProductDetailsBySlug(
     id: product.id,
     slug: product.slug,
     name: product.name,
-    status: mapStatus(product.status),
+    status: mapAdminProductStatus(product.status),
     isFeatured: product.isFeatured,
     description: product.description,
     shortDescription: product.shortDescription,

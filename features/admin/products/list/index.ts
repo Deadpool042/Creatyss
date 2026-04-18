@@ -3,11 +3,8 @@ export { useProductTableFilters } from "./hooks/use-product-table-filters";
 export { toggleProductFeaturedAction } from "./actions/toggle-product-featured.action";
 export { bulkUpdateProductStatusAction } from "./actions/bulk-update-product-status.action";
 export { bulkUpdateProductFeaturedAction } from "./actions/bulk-update-product-featured.action";
-export { archiveProductAction } from "./actions/archive-product.action";
-export { restoreProductAction } from "./actions/restore-product.action";
 export { bulkRestoreProductsAction } from "./actions/bulk-restore-products.action";
 export { bulkArchiveProductsAction } from "./actions/bulk-archive-products.action";
-export { deleteProductPermanentlyAction } from "./actions/delete-product-permanently.action";
 export { bulkDeleteProductsPermanentlyAction } from "./actions/bulk-delete-products-permanently.action";
 
 export {
