@@ -1,3 +1,5 @@
+import type { AdminProductActionResult } from "@/features/admin/products/types";
+
 export type AdminProductVariantStatus =
   | "draft"
   | "active"
@@ -150,17 +152,11 @@ export type SetDefaultProductVariantInput = {
   variantId: string;
 };
 
-export type SetDefaultProductVariantResult = {
-  status: "success" | "error";
-  message: string;
-};
+export type SetDefaultProductVariantResult = AdminProductActionResult;
 
 export type DeleteProductVariantInput = {
   productId: string;
   variantId: string;
 };
 
-export type DeleteProductVariantResult = {
-  status: "success" | "error";
-  message: string;
-};
+export type DeleteProductVariantResult = AdminProductActionResult;
