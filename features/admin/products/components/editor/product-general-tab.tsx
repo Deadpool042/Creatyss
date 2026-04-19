@@ -202,7 +202,7 @@ function ProductGeneralTabInner({
                 <AdminFormField
                   label="Type de produit"
                   htmlFor="edit-product-type"
-                  description="Repère interne utilisé pour organiser le produit dans le catalogue."
+                  description="Définit si ce produit est vendu seul (produit simple) ou avec des déclinaisons (produit à variantes)."
                   error={state.fieldErrors.productTypeId}
                 >
                   <input type="hidden" name="productTypeId" value={productTypeId} />
