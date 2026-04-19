@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useState, type JSX } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect, useState, type JSX } from "react";
 
 import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
@@ -72,7 +73,14 @@ function ProductPricingTabInner({
   isStandalone,
   onReset,
 }: ProductPricingTabInnerProps): JSX.Element {
+  const router = useRouter();
   const [state, formAction, pending] = useActionState(action, productPricingFormInitialState);
+
+  useEffect(() => {
+    if (state.status === "success") {
+      router.refresh();
+    }
+  }, [state.status, router]);
 
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -116,7 +124,7 @@ function ProductPricingTabInner({
 
                     <div className="grid gap-3 sm:grid-cols-3">
                       <AdminFormField
-                        label="Prix de vente"
+                        label="Prix actuel"
                         htmlFor={`amount-${priceList.id}`}
                         error={state.fieldErrors[`amount:${priceList.id}`]}
                       >
@@ -130,7 +138,7 @@ function ProductPricingTabInner({
                       </AdminFormField>
 
                       <AdminFormField
-                        label="Prix avant réduction"
+                        label="Prix barré"
                         htmlFor={`compareAtAmount-${priceList.id}`}
                         error={state.fieldErrors[`compareAtAmount:${priceList.id}`]}
                       >
@@ -333,13 +341,19 @@ function ProductPricingTabInner({
 }
 
 export function ProductPricingTab(props: ProductPricingTabProps): JSX.Element {
-  const [formInstanceKey, setFormInstanceKey] = useState(0);
+  const [manualResetKey, setManualResetKey] = useState(0);
+
+  // Derive a stable key from the content of productPrices. When router.refresh()
+  // completes after a successful save, the Server Component sends new pricingData;
+  // the key changes, causing ProductPricingTabInner to remount and reinitialize
+  // its uncontrolled <Input defaultValue> fields from the fresh server values.
+  const serverDataKey = JSON.stringify(props.pricingData.productPrices);
 
   return (
     <ProductPricingTabInner
-      key={formInstanceKey}
+      key={`${manualResetKey}-${serverDataKey}`}
       {...props}
-      onReset={() => setFormInstanceKey((current) => current + 1)}
+      onReset={() => setManualResetKey((current) => current + 1)}
     />
   );
 }
