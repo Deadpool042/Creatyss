@@ -4,6 +4,7 @@ export async function listAdminProductTypeOptions() {
   return db.productType.findMany({
     where: {
       archivedAt: null,
+      store: { isProduction: true },
     },
     orderBy: [{ isActive: "desc" }, { name: "asc" }],
     select: {

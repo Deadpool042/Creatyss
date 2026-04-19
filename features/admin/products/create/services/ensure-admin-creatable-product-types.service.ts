@@ -40,7 +40,7 @@ export async function ensureAdminCreatableProductTypes(): Promise<{
   productTypes: AdminCreatableProductTypeRecord[];
 }> {
   const store = await db.store.findFirst({
-    orderBy: { createdAt: "asc" },
+    where: { isProduction: true },
     select: { id: true },
   });
 
@@ -102,8 +102,10 @@ export async function ensureAdminCreatableProductTypes(): Promise<{
       isAdminCreatableProductTypeCode(item.code)
     )
     .sort((left, right) => {
-      return (order.get(left.code) ?? Number.MAX_SAFE_INTEGER) -
-        (order.get(right.code) ?? Number.MAX_SAFE_INTEGER);
+      return (
+        (order.get(left.code) ?? Number.MAX_SAFE_INTEGER) -
+        (order.get(right.code) ?? Number.MAX_SAFE_INTEGER)
+      );
     });
 
   return {

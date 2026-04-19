@@ -84,5 +84,8 @@
   "editor.minimap.enabled": false,
   "git.autofetch": false,
   "npm.autoDetect": "off",
-  "workbench.editor.labelFormat": "medium"
+  "workbench.editor.labelFormat": "medium",
+  "chat.tools.terminal.autoApprove": {
+    "docker exec": true
+  }
 }
