@@ -110,7 +110,7 @@ const defaultClassNameTabTrigger = cn(
   "data-[state=active]:shadow-card [@media(max-height:480px)]:h-7"
 );
 
-function ProductEditorTabs(): JSX.Element {
+function ProductEditorTabs({ isStandalone }: { isStandalone: boolean }): JSX.Element {
   return (
     <div className="min-w-0 shrink-0 border-b border-surface-border bg-card px-2 py-1.5 sm:px-3 md:px-4 md:py-2">
       <div className="no-scrollbar w-full overflow-x-auto overflow-y-hidden">
@@ -122,9 +122,11 @@ function ProductEditorTabs(): JSX.Element {
             <TabsTrigger className={defaultClassNameTabTrigger} value="general">
               Général
             </TabsTrigger>
-            <TabsTrigger className={defaultClassNameTabTrigger} value="variants">
-              Variantes
-            </TabsTrigger>
+            {!isStandalone && (
+              <TabsTrigger className={defaultClassNameTabTrigger} value="variants">
+                Variantes
+              </TabsTrigger>
+            )}
             <TabsTrigger className={defaultClassNameTabTrigger} value="pricing">
               Tarification
             </TabsTrigger>
@@ -195,7 +197,7 @@ export function ProductEditorPanel({
   ].join("|");
 
   useEffect(() => {
-    if (activeTab === "variants") {
+    if (activeTab === "variants" && !product.product.isStandalone) {
       setPageActionNode(
         <ProductVariantTopbarMenu
           productId={product.product.id}
@@ -228,6 +230,7 @@ export function ProductEditorPanel({
     product.product.id,
     product.product.slug,
     product.product.isArchived,
+    product.product.isStandalone,
     setPageActionNode,
   ]);
 
@@ -244,7 +247,7 @@ export function ProductEditorPanel({
       className="flex min-h-0 min-w-0 flex-1 flex-col overflow-x-hidden pt-10.5 lg:pt-0"
     >
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden lg:rounded-3xl border border-surface-border bg-card shadow-card ">
-        <ProductEditorTabs />
+        <ProductEditorTabs isStandalone={product.product.isStandalone} />
 
         <TabsContent
           value="general"
@@ -257,24 +260,26 @@ export function ProductEditorPanel({
           />
         </TabsContent>
 
-        <TabsContent
-          value="variants"
-          className="mt-0 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden"
-        >
-          <ProductVariantsTab
-            productId={product.product.id}
-            productSlug={product.product.slug}
-            variants={variants}
-            images={images}
-            productOptions={productOptions}
-            createDialogOpen={isCreateVariantOpen}
-            onCreateDialogOpenChange={setIsCreateVariantOpen}
-            {...(createVariantAction ? { createAction: createVariantAction } : {})}
-            {...(updateVariantAction ? { updateAction: updateVariantAction } : {})}
-            {...(setDefaultVariantAction ? { setDefaultAction: setDefaultVariantAction } : {})}
-            {...(deleteVariantAction ? { deleteAction: deleteVariantAction } : {})}
-          />
-        </TabsContent>
+        {!product.product.isStandalone && (
+          <TabsContent
+            value="variants"
+            className="mt-0 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden"
+          >
+            <ProductVariantsTab
+              productId={product.product.id}
+              productSlug={product.product.slug}
+              variants={variants}
+              images={images}
+              productOptions={productOptions}
+              createDialogOpen={isCreateVariantOpen}
+              onCreateDialogOpenChange={setIsCreateVariantOpen}
+              {...(createVariantAction ? { createAction: createVariantAction } : {})}
+              {...(updateVariantAction ? { updateAction: updateVariantAction } : {})}
+              {...(setDefaultVariantAction ? { setDefaultAction: setDefaultVariantAction } : {})}
+              {...(deleteVariantAction ? { deleteAction: deleteVariantAction } : {})}
+            />
+          </TabsContent>
+        )}
 
         <TabsContent
           value="pricing"
