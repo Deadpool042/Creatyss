@@ -300,6 +300,7 @@ export function ProductEditorPanel({
             action={availabilityAction}
             productId={product.product.id}
             variants={variants}
+            isStandalone={product.product.isStandalone}
           />
         </TabsContent>
 
@@ -311,6 +312,7 @@ export function ProductEditorPanel({
             action={inventoryAction}
             productId={product.product.id}
             variants={variants}
+            isStandalone={product.product.isStandalone}
           />
         </TabsContent>
 

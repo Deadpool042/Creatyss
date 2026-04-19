@@ -18,15 +18,19 @@ type ProductInventoryTabProps = {
   action: ProductInventoryFormAction;
   productId: string;
   variants: AdminProductVariantListItem[];
+  isStandalone: boolean;
 };
 
 export function ProductInventoryTab({
   action,
   productId,
   variants,
+  isStandalone,
 }: ProductInventoryTabProps): JSX.Element {
   const [state, formAction, pending] = useActionState(action, productInventoryFormInitialState);
   const hasVariants = variants.length > 0;
+
+  const standaloneVariant = isStandalone ? variants[0] : null;
 
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -48,78 +52,147 @@ export function ProductInventoryTab({
             message={state.status !== "idle" ? state.message : null}
           />
 
-          <AdminFormSection
-            title="Stock par variante"
-            description="Gérez les quantités de stock sans modifier ici la vendabilité."
-          >
-            {hasVariants ? (
-              <div className="space-y-4">
-                {variants.map((variant) => (
-                  <div
-                    key={variant.id}
-                    data-testid="product-stock-card"
-                    className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
-                  >
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-foreground">
-                        {variant.name ?? "Variante sans nom"}
-                      </p>
-                      <p className="text-xs font-mono text-muted-foreground">{variant.sku}</p>
-                    </div>
+          {isStandalone ? (
+            <AdminFormSection
+              title="Stock du produit"
+              description="Gérez les quantités disponibles pour ce produit."
+            >
+              {standaloneVariant != null ? (
+                <div
+                  data-testid="product-stock-card"
+                  className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
+                >
+                  {standaloneVariant.sku && (
+                    <p className="text-xs font-mono text-muted-foreground">
+                      {standaloneVariant.sku}
+                    </p>
+                  )}
 
-                    <div className="grid gap-3 md:grid-cols-2">
-                      <AdminFormField label="Stock physique">
-                        <Input
-                          type="number"
-                          min={0}
-                          step={1}
-                          name={`inventoryOnHand:${variant.id}`}
-                          defaultValue={variant.inventory.onHandQuantity.toString()}
-                          className="text-sm"
-                        />
-                      </AdminFormField>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <AdminFormField label="Stock physique">
+                      <Input
+                        type="number"
+                        min={0}
+                        step={1}
+                        name={`inventoryOnHand:${standaloneVariant.id}`}
+                        defaultValue={standaloneVariant.inventory.onHandQuantity.toString()}
+                        className="text-sm"
+                      />
+                    </AdminFormField>
 
-                      <AdminFormField label="Stock réservé">
-                        <Input
-                          type="number"
-                          min={0}
-                          step={1}
-                          name={`inventoryReserved:${variant.id}`}
-                          defaultValue={variant.inventory.reservedQuantity.toString()}
-                          className="text-sm"
-                        />
-                      </AdminFormField>
-                    </div>
-
-                    <div className="grid gap-3 rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-2 text-xs text-muted-foreground md:grid-cols-3">
-                      <p>
-                        Stock disponible:{" "}
-                        <span className="font-medium text-foreground">
-                          {variant.inventory.availableQuantity}
-                        </span>
-                      </p>
-                      <p>
-                        Backorder:{" "}
-                        <span className="font-medium text-foreground">
-                          {variant.availability.backorderAllowed ? "Autorisé" : "Interdit"}
-                        </span>
-                      </p>
-                      <p>
-                        État inventaire:{" "}
-                        <span className="font-medium text-foreground">
-                          {variant.inventory.hasInventoryRecord ? "Enregistré" : "À créer"}
-                        </span>
-                      </p>
-                    </div>
+                    <AdminFormField label="Stock réservé">
+                      <Input
+                        type="number"
+                        min={0}
+                        step={1}
+                        name={`inventoryReserved:${standaloneVariant.id}`}
+                        defaultValue={standaloneVariant.inventory.reservedQuantity.toString()}
+                        className="text-sm"
+                      />
+                    </AdminFormField>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
-                Aucune variante disponible pour gérer le stock.
-              </p>
-            )}
-          </AdminFormSection>
+
+                  <div className="grid gap-3 rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-2 text-xs text-muted-foreground md:grid-cols-3">
+                    <p>
+                      Stock disponible:{" "}
+                      <span className="font-medium text-foreground">
+                        {standaloneVariant.inventory.availableQuantity}
+                      </span>
+                    </p>
+                    <p>
+                      Backorder:{" "}
+                      <span className="font-medium text-foreground">
+                        {standaloneVariant.availability.backorderAllowed ? "Autorisé" : "Interdit"}
+                      </span>
+                    </p>
+                    <p>
+                      État inventaire:{" "}
+                      <span className="font-medium text-foreground">
+                        {standaloneVariant.inventory.hasInventoryRecord ? "Enregistré" : "À créer"}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
+                  Aucune donnée de stock disponible pour ce produit.
+                </p>
+              )}
+            </AdminFormSection>
+          ) : (
+            <AdminFormSection
+              title="Stock par variante"
+              description="Gérez les quantités de stock sans modifier ici la vendabilité."
+            >
+              {hasVariants ? (
+                <div className="space-y-4">
+                  {variants.map((variant) => (
+                    <div
+                      key={variant.id}
+                      data-testid="product-stock-card"
+                      className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
+                    >
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium text-foreground">
+                          {variant.name ?? "Variante sans nom"}
+                        </p>
+                        <p className="text-xs font-mono text-muted-foreground">{variant.sku}</p>
+                      </div>
+
+                      <div className="grid gap-3 md:grid-cols-2">
+                        <AdminFormField label="Stock physique">
+                          <Input
+                            type="number"
+                            min={0}
+                            step={1}
+                            name={`inventoryOnHand:${variant.id}`}
+                            defaultValue={variant.inventory.onHandQuantity.toString()}
+                            className="text-sm"
+                          />
+                        </AdminFormField>
+
+                        <AdminFormField label="Stock réservé">
+                          <Input
+                            type="number"
+                            min={0}
+                            step={1}
+                            name={`inventoryReserved:${variant.id}`}
+                            defaultValue={variant.inventory.reservedQuantity.toString()}
+                            className="text-sm"
+                          />
+                        </AdminFormField>
+                      </div>
+
+                      <div className="grid gap-3 rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-2 text-xs text-muted-foreground md:grid-cols-3">
+                        <p>
+                          Stock disponible:{" "}
+                          <span className="font-medium text-foreground">
+                            {variant.inventory.availableQuantity}
+                          </span>
+                        </p>
+                        <p>
+                          Backorder:{" "}
+                          <span className="font-medium text-foreground">
+                            {variant.availability.backorderAllowed ? "Autorisé" : "Interdit"}
+                          </span>
+                        </p>
+                        <p>
+                          État inventaire:{" "}
+                          <span className="font-medium text-foreground">
+                            {variant.inventory.hasInventoryRecord ? "Enregistré" : "À créer"}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
+                  Aucune variante disponible pour gérer le stock.
+                </p>
+              )}
+            </AdminFormSection>
+          )}
         </div>
       </div>
 
