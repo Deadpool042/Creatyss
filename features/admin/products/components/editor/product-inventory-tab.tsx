@@ -108,7 +108,7 @@ export function ProductInventoryTab({
                     <p>
                       État inventaire:{" "}
                       <span className="font-medium text-foreground">
-                        {standaloneVariant.inventory.hasInventoryRecord ? "Enregistré" : "À créer"}
+                        {standaloneVariant.inventory.hasInventoryRecord ? "Enregistré" : "Non configuré"}
                       </span>
                     </p>
                   </div>
@@ -179,7 +179,7 @@ export function ProductInventoryTab({
                         <p>
                           État inventaire:{" "}
                           <span className="font-medium text-foreground">
-                            {variant.inventory.hasInventoryRecord ? "Enregistré" : "À créer"}
+                            {variant.inventory.hasInventoryRecord ? "Enregistré" : "Non configuré"}
                           </span>
                         </p>
                       </div>

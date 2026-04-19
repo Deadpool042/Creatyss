@@ -6,6 +6,8 @@ type PriceUpsertEntry = {
   amount: string;
   compareAtAmount: string | null;
   costAmount: string | null;
+  startsAt: string | null;
+  endsAt: string | null;
 };
 
 type UpdateProductPricesServiceInput = {
@@ -13,9 +15,7 @@ type UpdateProductPricesServiceInput = {
   prices: PriceUpsertEntry[];
 };
 
-export async function updateProductPrices(
-  input: UpdateProductPricesServiceInput
-): Promise<void> {
+export async function updateProductPrices(input: UpdateProductPricesServiceInput): Promise<void> {
   await withTransaction(async (tx) => {
     await assertProductExists(tx, input.productId);
 
@@ -59,11 +59,15 @@ export async function updateProductPrices(
           amount,
           compareAtAmount,
           costAmount,
+          startsAt: entry.startsAt ? new Date(entry.startsAt) : null,
+          endsAt: entry.endsAt ? new Date(entry.endsAt) : null,
         },
         update: {
           amount,
           compareAtAmount,
           costAmount,
+          startsAt: entry.startsAt ? new Date(entry.startsAt) : null,
+          endsAt: entry.endsAt ? new Date(entry.endsAt) : null,
           archivedAt: null,
         },
       });

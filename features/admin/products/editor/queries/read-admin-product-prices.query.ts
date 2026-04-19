@@ -21,6 +21,8 @@ export async function readAdminProductPrices(
         amount: true,
         compareAtAmount: true,
         costAmount: true,
+        startsAt: true,
+        endsAt: true,
       },
     }),
     db.productVariant.findMany({
@@ -38,6 +40,8 @@ export async function readAdminProductPrices(
             amount: true,
             compareAtAmount: true,
             costAmount: true,
+            startsAt: true,
+            endsAt: true,
           },
         },
       },
@@ -50,6 +54,8 @@ export async function readAdminProductPrices(
     amount: p.amount.toString(),
     compareAtAmount: p.compareAtAmount?.toString() ?? null,
     costAmount: p.costAmount?.toString() ?? null,
+    startsAt: p.startsAt ? p.startsAt.toISOString().split("T")[0]! : null,
+    endsAt: p.endsAt ? p.endsAt.toISOString().split("T")[0]! : null,
   }));
 
   const variantPrices: AdminVariantPriceEntry[] = variants.map((v) => ({
@@ -62,6 +68,8 @@ export async function readAdminProductPrices(
       amount: p.amount.toString(),
       compareAtAmount: p.compareAtAmount?.toString() ?? null,
       costAmount: p.costAmount?.toString() ?? null,
+      startsAt: p.startsAt ? p.startsAt.toISOString().split("T")[0]! : null,
+      endsAt: p.endsAt ? p.endsAt.toISOString().split("T")[0]! : null,
     })),
   }));
 

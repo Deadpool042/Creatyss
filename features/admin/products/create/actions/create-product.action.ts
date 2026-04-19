@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { refresh } from "next/cache";
-import { ProductStatus } from "@/prisma-generated/client";
 import type { z } from "zod";
 
 import { db } from "@/core/db";
@@ -13,6 +12,7 @@ import type {
 } from "@/features/admin/products/create/types/create-product.types";
 import { createProductSchema } from "@/features/admin/products/create/schemas";
 import { ensureAdminCreatableProductTypes } from "@/features/admin/products/create/services/ensure-admin-creatable-product-types.service";
+import { createProduct } from "@/features/admin/products/create/services/create-product.service";
 
 function mapFormDataToValues(formData: FormData): {
   name: string;
@@ -99,16 +99,12 @@ export async function createProductAction(
 
   const isStandalone = parsed.data.productTypeCode === "simple";
 
-  await db.product.create({
-    data: {
-      slug: parsed.data.slug,
-      name: parsed.data.name,
-      status: ProductStatus.DRAFT,
-      isFeatured: false,
-      isStandalone,
-      productType: { connect: { id: productType.id } },
-      store: { connect: { id: storeId } },
-    },
+  await createProduct({
+    slug: parsed.data.slug,
+    name: parsed.data.name,
+    storeId,
+    productTypeId: productType.id,
+    isStandalone,
   });
 
   refresh();

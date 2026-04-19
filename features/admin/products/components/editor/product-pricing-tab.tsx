@@ -6,6 +6,7 @@ import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,6 +20,7 @@ type ProductPricingTabProps = {
   action: ProductPricingFormAction;
   priceLists: readonly AdminPriceListOption[];
   pricingData: AdminProductPricingData;
+  isStandalone: boolean;
 };
 
 type ProductPricingTabInnerProps = ProductPricingTabProps & {
@@ -38,10 +40,36 @@ function findVariantPrice(
   return variantEntry?.prices.find((p) => p.priceListId === priceListId) ?? null;
 }
 
+type PromotionStatus = "active" | "planned" | "expired" | "none";
+
+function getPromotionStatus(startsAt: string | null, endsAt: string | null): PromotionStatus {
+  if (!startsAt && !endsAt) return "none";
+  const now = new Date();
+  const start = startsAt ? new Date(startsAt) : null;
+  const end = endsAt ? new Date(endsAt) : null;
+  if (end && end < now) return "expired";
+  if (start && start > now) return "planned";
+  if ((!start || start <= now) && (!end || end >= now)) return "active";
+  return "none";
+}
+
+function PromotionBadge({ startsAt, endsAt }: { startsAt: string | null; endsAt: string | null }): JSX.Element | null {
+  const status = getPromotionStatus(startsAt, endsAt);
+  if (status === "none") return null;
+  if (status === "expired") {
+    return <Badge variant="secondary">Expirée</Badge>;
+  }
+  if (status === "planned") {
+    return <Badge variant="outline">Planifiée</Badge>;
+  }
+  return <Badge variant="default">Active</Badge>;
+}
+
 function ProductPricingTabInner({
   action,
   priceLists,
   pricingData,
+  isStandalone,
   onReset,
 }: ProductPricingTabInnerProps): JSX.Element {
   const [state, formAction, pending] = useActionState(action, productPricingFormInitialState);
@@ -58,14 +86,20 @@ function ProductPricingTabInner({
           />
 
           <AdminFormSection
-            title="Prix produit"
-            description="Définissez le prix de base du produit pour chaque liste de prix."
+            title={isStandalone ? "Tarification" : "Prix produit"}
+            description={
+              isStandalone
+                ? "Définissez le prix du produit pour chaque liste de prix."
+                : "Définissez le prix de base du produit pour chaque liste de prix."
+            }
           >
             {priceLists.length === 0 ? (
               <p className="text-sm text-muted-foreground">Aucune liste de prix disponible.</p>
             ) : (
               priceLists.map((priceList) => {
                 const existing = findProductPrice(pricingData, priceList.id);
+                const startsAt = existing?.startsAt ?? null;
+                const endsAt = existing?.endsAt ?? null;
                 return (
                   <div
                     key={priceList.id}
@@ -123,16 +157,54 @@ function ProductPricingTabInner({
                         />
                       </AdminFormField>
                     </div>
+
+                    <div className="border-t border-border pt-3 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-medium text-muted-foreground">
+                          Période de promotion
+                        </span>
+                        <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
+                      </div>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <AdminFormField
+                          label="Début de promotion"
+                          htmlFor={`startsAt-${priceList.id}`}
+                          error={state.fieldErrors[`startsAt:${priceList.id}`]}
+                        >
+                          <Input
+                            id={`startsAt-${priceList.id}`}
+                            name={`startsAt:${priceList.id}`}
+                            type="date"
+                            defaultValue={startsAt ?? ""}
+                            className="text-sm font-mono"
+                          />
+                        </AdminFormField>
+
+                        <AdminFormField
+                          label="Fin de promotion"
+                          htmlFor={`endsAt-${priceList.id}`}
+                          error={state.fieldErrors[`endsAt:${priceList.id}`]}
+                        >
+                          <Input
+                            id={`endsAt-${priceList.id}`}
+                            name={`endsAt:${priceList.id}`}
+                            type="date"
+                            defaultValue={endsAt ?? ""}
+                            className="text-sm font-mono"
+                          />
+                        </AdminFormField>
+                      </div>
+                    </div>
                   </div>
                 );
               })
             )}
           </AdminFormSection>
 
-          {pricingData.variantPrices.length > 0 && (
+          {pricingData.variantPrices.length > 0 && !isStandalone && (
             <AdminFormSection
               title="Prix variantes"
-              description="Chaque variante peut avoir son propre prix. Si aucun prix n’est renseigné, le prix du produit est utilisé."
+              description="Chaque variante peut avoir son propre prix. Si aucun prix n'est renseigné, le prix du produit est utilisé."
             >
               <div className="overflow-x-auto rounded-xl border border-border">
                 <table className="w-full text-sm">

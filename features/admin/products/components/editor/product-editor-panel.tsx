@@ -289,6 +289,7 @@ export function ProductEditorPanel({
             action={pricingAction}
             priceLists={priceLists}
             pricingData={pricingData}
+            isStandalone={product.product.isStandalone}
           />
         </TabsContent>
 

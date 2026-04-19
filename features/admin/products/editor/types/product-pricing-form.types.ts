@@ -4,6 +4,8 @@ export type AdminPriceEntry = {
   amount: string | null;
   compareAtAmount: string | null;
   costAmount: string | null;
+  startsAt: string | null;
+  endsAt: string | null;
 };
 
 export type AdminProductPriceEntry = AdminPriceEntry;
