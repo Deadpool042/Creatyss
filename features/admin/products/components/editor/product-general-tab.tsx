@@ -200,7 +200,7 @@ function ProductGeneralTabInner({
                 </AdminFormField>
 
                 <AdminFormField
-                  label="Classification catalogue"
+                  label="Type de produit"
                   htmlFor="edit-product-type"
                   description="Repère interne utilisé pour organiser le produit dans le catalogue."
                   error={state.fieldErrors.productTypeId}
