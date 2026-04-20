@@ -91,7 +91,7 @@ export const updateProductGeneralAction: ProductGeneralFormAction = async (
   }
 
   try {
-    await updateProductGeneral({
+    const result = await updateProductGeneral({
       productId: productIdValue.trim(),
       name: validated.data.name,
       slug: validated.data.slug,
@@ -108,10 +108,21 @@ export const updateProductGeneralAction: ProductGeneralFormAction = async (
     return {
       ...productGeneralFormInitialState,
       status: "success",
-      message: "Mise à jour effectuée.",
+      message: result.wasConvertedToVariable
+        ? "Ce produit utilise maintenant des variantes. Une variante initiale existe déjà dans l'onglet Variantes — vous pouvez la renommer ou la compléter si nécessaire."
+        : "Mise à jour effectuée.",
     };
   } catch (error: unknown) {
     if (error instanceof AdminProductEditorServiceError) {
+      if (error.code === "product_has_multiple_variants") {
+        return {
+          ...productGeneralFormInitialState,
+          status: "error",
+          message:
+            "Ce produit possède plusieurs variantes non archivées. Archivez les variantes supplémentaires avant de le convertir en produit simple.",
+        };
+      }
+
       return {
         ...productGeneralFormInitialState,
         status: "error",

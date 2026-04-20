@@ -27,7 +27,7 @@ function mapProductTypeCodeToIsStandalone(code: string): boolean | null {
 
 export async function updateProductGeneral(
   input: UpdateProductGeneralServiceInput
-): Promise<{ id: string }> {
+): Promise<{ id: string; wasConvertedToVariable: boolean }> {
   return withTransaction(async (tx) => {
     await assertProductExists(tx, input.productId);
 
@@ -82,8 +82,23 @@ export async function updateProductGeneral(
       }
     }
 
+    if (!currentProduct.isStandalone && resolvedIsStandalone) {
+      const activeVariantCount = await tx.productVariant.count({
+        where: {
+          productId: input.productId,
+          archivedAt: null,
+        },
+      });
+
+      if (activeVariantCount > 1) {
+        throw new AdminProductEditorServiceError("product_has_multiple_variants");
+      }
+    }
+
+    const wasConvertedToVariable = currentProduct.isStandalone && !resolvedIsStandalone;
+
     try {
-      return await tx.product.update({
+      const updated = await tx.product.update({
         where: {
           id: input.productId,
         },
@@ -105,6 +120,8 @@ export async function updateProductGeneral(
           id: true,
         },
       });
+
+      return { id: updated.id, wasConvertedToVariable };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "update_failed";
       throw new AdminProductEditorServiceError("product_missing", message);

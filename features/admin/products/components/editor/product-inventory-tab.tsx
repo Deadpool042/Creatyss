@@ -114,7 +114,9 @@ export function ProductInventoryTab({
   const [state, formAction, pending] = useActionState(action, productInventoryFormInitialState);
   const hasVariants = variants.length > 0;
 
-  const standaloneVariant = isStandalone ? variants[0] : null;
+  const standaloneVariant = isStandalone
+    ? (variants.find((variant) => variant.isDefault) ?? variants[0] ?? null)
+    : null;
 
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
