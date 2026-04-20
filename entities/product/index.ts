@@ -42,6 +42,10 @@ export {
 export {
   normalizeProductSlug as normalizeAdminProductSlug,
   validateAdminProductInput,
+  validateAdminProductCategoryLinks,
+  validateAdminProductRelatedProducts,
+  type AdminProductCategoryLinksValidationResult,
+  type AdminProductRelatedProductsValidationResult,
   type AdminProductInputErrorCode,
   type AdminProductInputValidationResult,
   type ProductLifecycleStatus,

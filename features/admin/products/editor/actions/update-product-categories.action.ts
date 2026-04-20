@@ -1,14 +1,13 @@
 "use server";
 
-import { validateAdminProductInput } from "@/entities/product";
+import { refresh } from "next/cache";
+
+import { validateAdminProductCategoryLinks } from "@/entities/product";
 import {
   productCategoriesFormInitialState,
   type ProductCategoriesFormAction,
 } from "../types/product-categories-form.types";
-import {
-  AdminProductEditorServiceError,
-  updateProductCategories,
-} from "../services";
+import { AdminProductEditorServiceError, updateProductCategories } from "../services";
 
 function getString(formData: FormData, key: string): FormDataEntryValue | null {
   return formData.get(key);
@@ -44,23 +43,10 @@ export const updateProductCategoriesAction: ProductCategoriesFormAction = async 
     };
   }
 
-  const validated = validateAdminProductInput({
-    name: "placeholder",
-    slug: "placeholder",
-    skuRoot: null,
-    shortDescription: null,
-    description: null,
-    productTypeId: null,
-    primaryImageMediaAssetId: null,
-    status: "draft",
-    isFeatured: null,
-    isStandalone: null,
+  const validated = validateAdminProductCategoryLinks({
     categoryIds: getAll(formData, "categoryIds"),
     categoryPrimaryIds: getAll(formData, "categoryPrimaryIds"),
     categorySortOrders: buildCategorySortOrders(formData),
-    relatedProductIds: [],
-    relatedProductTypes: {},
-    relatedProductSortOrders: {},
   });
 
   if (!validated.ok) {
@@ -74,8 +60,10 @@ export const updateProductCategoriesAction: ProductCategoriesFormAction = async 
   try {
     await updateProductCategories({
       productId: productIdValue.trim(),
-      links: validated.data.categoryLinks,
+      links: validated.data,
     });
+
+    refresh();
 
     return {
       ...productCategoriesFormInitialState,

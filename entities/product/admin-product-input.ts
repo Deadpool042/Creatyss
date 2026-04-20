@@ -2,12 +2,7 @@ type RawInputValue = FormDataEntryValue | string | null | undefined;
 
 export type ProductLifecycleStatus = "draft" | "active" | "inactive" | "archived";
 
-export type RelatedProductLinkType =
-  | "related"
-  | "cross_sell"
-  | "up_sell"
-  | "accessory"
-  | "similar";
+export type RelatedProductLinkType = "related" | "cross_sell" | "up_sell" | "accessory" | "similar";
 
 export type ValidatedAdminProductCategoryLinkInput = {
   categoryId: string;
@@ -272,6 +267,30 @@ function validateRelatedProducts(input: {
   relatedProducts.sort((left, right) => left.sortOrder - right.sortOrder);
 
   return { ok: true, data: relatedProducts };
+}
+
+export type AdminProductCategoryLinksValidationResult =
+  | { ok: true; data: ValidatedAdminProductCategoryLinkInput[] }
+  | { ok: false; code: AdminProductInputErrorCode };
+
+export function validateAdminProductCategoryLinks(input: {
+  categoryIds: readonly RawInputValue[] | undefined;
+  categoryPrimaryIds: readonly RawInputValue[] | undefined;
+  categorySortOrders: Readonly<Record<string, RawInputValue>>;
+}): AdminProductCategoryLinksValidationResult {
+  return validateCategoryLinks(input);
+}
+
+export type AdminProductRelatedProductsValidationResult =
+  | { ok: true; data: ValidatedAdminRelatedProductInput[] }
+  | { ok: false; code: AdminProductInputErrorCode };
+
+export function validateAdminProductRelatedProducts(input: {
+  relatedProductIds: readonly RawInputValue[] | undefined;
+  relatedProductTypes: Readonly<Record<string, RawInputValue>>;
+  relatedProductSortOrders: Readonly<Record<string, RawInputValue>>;
+}): AdminProductRelatedProductsValidationResult {
+  return validateRelatedProducts(input);
 }
 
 export function validateAdminProductInput(

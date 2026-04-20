@@ -145,8 +145,6 @@ export function ProductVariantsTab({
           </div>
 
           <ProductVariantList
-            productId={productId}
-            productSlug={productSlug}
             variants={variants}
             onEdit={handleEdit}
             {...(setDefaultAction ? { onSetDefault: handleSetDefault } : {})}

@@ -26,7 +26,7 @@ export async function deleteProductVariantAction(
     ) {
       return {
         status: "error",
-        message: "Suppression impossible.",
+        message: "Choisissez d'abord une autre variante par défaut avant de supprimer celle-ci.",
       };
     }
 

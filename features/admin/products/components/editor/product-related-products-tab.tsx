@@ -1,12 +1,13 @@
 "use client";
 
 import { useActionState, useMemo, useState, type JSX } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { AlertTriangle, ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
 
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   productRelatedProductsFormInitialState,
   type AdminProductEditorData,
@@ -45,11 +47,20 @@ type EditableRelatedProduct = {
 };
 
 const relatedTypeLabels: Record<AdminRelatedProductEditorType, string> = {
-  related: "Produit lié",
-  cross_sell: "Vente croisée",
-  up_sell: "Montée en gamme",
+  related: "À découvrir aussi",
+  cross_sell: "Compléter avec",
+  up_sell: "Version premium",
   accessory: "Accessoire",
-  similar: "Produit similaire",
+  similar: "Alternative similaire",
+};
+
+const relatedTypeTooltips: Record<AdminRelatedProductEditorType, string> = {
+  related: "Produit que le client pourrait aussi aimer.",
+  cross_sell:
+    "Produit qui complète naturellement cet article (ex : housse pour un appareil photo).",
+  up_sell: "Version plus complète ou haut de gamme de ce produit.",
+  accessory: "Accessoire conçu pour fonctionner avec ce produit.",
+  similar: "Produit comparable, utile si celui-ci est indisponible.",
 };
 
 const relatedTypeOptions: readonly AdminRelatedProductEditorType[] = [
@@ -65,6 +76,12 @@ const productStatusLabels: Record<RelatedProductOption["status"], string> = {
   active: "Actif",
   inactive: "Inactif",
   archived: "Archivé",
+};
+
+const productStatusWarnings: Partial<Record<RelatedProductOption["status"], string>> = {
+  draft: "Ce produit est en brouillon — il ne sera pas visible par les clients.",
+  inactive: "Ce produit est inactif — il ne sera pas visible par les clients.",
+  archived: "Ce produit est archivé — cette association ne sera pas exploitable en vitrine.",
 };
 
 function parseNonNegativeInteger(value: string): number {
@@ -177,6 +194,32 @@ export function ProductRelatedProductsTab({
     setLinks((current) => current.filter((link) => link.targetProductId !== targetProductId));
   }
 
+  function handleMoveUp(index: number): void {
+    if (index <= 0) return;
+    setLinks((current) => {
+      const next = [...current];
+      const prevSortOrder = next[index - 1]!.sortOrder;
+      const currSortOrder = next[index]!.sortOrder;
+      next[index - 1] = { ...next[index - 1]!, sortOrder: currSortOrder };
+      next[index] = { ...next[index]!, sortOrder: prevSortOrder };
+      [next[index - 1], next[index]] = [next[index]!, next[index - 1]!];
+      return next;
+    });
+  }
+
+  function handleMoveDown(index: number): void {
+    setLinks((current) => {
+      if (index >= current.length - 1) return current;
+      const next = [...current];
+      const nextSortOrderVal = next[index + 1]!.sortOrder;
+      const currSortOrder = next[index]!.sortOrder;
+      next[index + 1] = { ...next[index + 1]!, sortOrder: currSortOrder };
+      next[index] = { ...next[index]!, sortOrder: nextSortOrderVal };
+      [next[index], next[index + 1]] = [next[index + 1]!, next[index]!];
+      return next;
+    });
+  }
+
   function handleAdd(): void {
     if (
       resolvedNewTargetProductId.length === 0 ||
@@ -254,7 +297,7 @@ export function ProductRelatedProductsTab({
 
           <AdminFormSection
             title="Relations enregistrées"
-            description="Associez ce produit à d’autres produits pour l’aider à la découverte dans l’admin."
+            description="Ces associations suggèrent d’autres produits aux clients lors de la navigation ou de l’achat."
           >
             {links.length === 0 ? (
               <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
@@ -262,10 +305,13 @@ export function ProductRelatedProductsTab({
               </p>
             ) : (
               <div className="space-y-3">
-                {links.map((link) => {
+                {links.map((link, index) => {
                   const productOption = optionsById.get(link.targetProductId);
                   const productStatus = productOption
                     ? productStatusLabels[productOption.status]
+                    : null;
+                  const statusWarning = productOption
+                    ? (productStatusWarnings[productOption.status] ?? null)
                     : null;
 
                   return (
@@ -273,53 +319,82 @@ export function ProductRelatedProductsTab({
                       key={link.targetProductId}
                       className="space-y-3 rounded-xl border border-surface-border bg-card p-4"
                     >
-                      <div className="space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
                         <p className="text-sm font-medium text-foreground">
                           {link.targetProductName}
                         </p>
-                        <p className="text-xs text-muted-foreground">
-                          /{link.targetProductSlug}
-                          {productStatus ? ` • ${productStatus}` : ""}
-                        </p>
+                        <Badge variant="outline">{relatedTypeLabels[link.type]}</Badge>
                       </div>
+                      <p className="text-xs text-muted-foreground">
+                        /{link.targetProductSlug}
+                        {productOption && productOption.status !== "active"
+                          ? ` · ${productStatus}`
+                          : ""}
+                      </p>
 
-                      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_160px_auto]">
-                        <AdminFormField label="Type de relation">
-                          <Select
-                            value={link.type}
-                            onValueChange={(value) =>
-                              handleUpdateType(
-                                link.targetProductId,
-                                value as AdminRelatedProductEditorType
-                              )
-                            }
+                      {statusWarning !== null ? (
+                        <p className="flex items-start gap-1.5 rounded-lg border border-feedback-warning-border bg-feedback-warning-surface px-3 py-2 text-xs leading-5 text-feedback-warning-foreground">
+                          <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                          {statusWarning}
+                        </p>
+                      ) : null}
+
+                      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto_auto]">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <AdminFormField label="Type de relation">
+                              <Select
+                                value={link.type}
+                                onValueChange={(value) =>
+                                  handleUpdateType(
+                                    link.targetProductId,
+                                    value as AdminRelatedProductEditorType
+                                  )
+                                }
+                              >
+                                <TooltipTrigger asChild>
+                                  <SelectTrigger className="text-sm">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                </TooltipTrigger>
+                                <SelectContent>
+                                  {relatedTypeOptions.map((type) => (
+                                    <SelectItem key={type} value={type}>
+                                      {relatedTypeLabels[type]}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </AdminFormField>
+                            <TooltipContent side="top">
+                              {relatedTypeTooltips[link.type]}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+
+
+                        <div className="flex items-end gap-1">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            aria-label="Monter"
+                            disabled={index === 0}
+                            onClick={() => handleMoveUp(index)}
                           >
-                            <SelectTrigger className="text-sm">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {relatedTypeOptions.map((type) => (
-                                <SelectItem key={type} value={type}>
-                                  {relatedTypeLabels[type]}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </AdminFormField>
-
-                        <AdminFormField label="Ordre">
-                          <Input
-                            type="number"
-                            min={0}
-                            step={1}
-                            value={link.sortOrder}
-                            onChange={(event) =>
-                              handleUpdateSortOrder(link.targetProductId, event.target.value)
-                            }
-                            className="text-sm font-mono"
-                          />
-                        </AdminFormField>
-
+                            <ChevronUp className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            aria-label="Descendre"
+                            disabled={index === links.length - 1}
+                            onClick={() => handleMoveDown(index)}
+                          >
+                            <ChevronDown className="h-4 w-4" />
+                          </Button>
+                        </div>
                         <div className="flex items-end">
                           <Button
                             type="button"
@@ -327,7 +402,7 @@ export function ProductRelatedProductsTab({
                             onClick={() => handleRemove(link.targetProductId)}
                           >
                             <Trash2 className="mr-2 h-4 w-4" />
-                            Supprimer
+                            Retirer
                           </Button>
                         </div>
                       </div>
@@ -340,13 +415,16 @@ export function ProductRelatedProductsTab({
 
           <AdminFormSection
             title="Ajouter une relation"
-            description="Sélectionnez un autre produit et son type de relation."
+            description="Choisissez un produit et la façon dont il est lié à cet article."
           >
             <div
               data-testid="product-related-add-section"
               className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_140px_auto]"
             >
-              <AdminFormField label="Produit cible">
+              <AdminFormField
+                label="Produit à lier"
+                hint="Seuls les produits non encore associés à cet article sont proposés."
+              >
                 <Select value={resolvedNewTargetProductId} onValueChange={setNewTargetProductId}>
                   <SelectTrigger className="text-sm">
                     <SelectValue
@@ -360,32 +438,50 @@ export function ProductRelatedProductsTab({
                   <SelectContent>
                     {addableOptions.map((option) => (
                       <SelectItem key={option.id} value={option.id}>
-                        {option.name} ({productStatusLabels[option.status]})
+                        <div className="flex flex-col gap-0.5 py-0.5">
+                          <span className="font-medium leading-tight">{option.name}</span>
+                          <span className="text-xs leading-tight text-muted-foreground">
+                            /{option.slug}
+                            {option.status !== "active"
+                              ? ` · ${productStatusLabels[option.status]}`
+                              : ""}
+                          </span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </AdminFormField>
 
-              <AdminFormField label="Type de relation">
-                <Select
-                  value={newType}
-                  onValueChange={(value) => setNewType(value as AdminRelatedProductEditorType)}
-                >
-                  <SelectTrigger className="text-sm">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {relatedTypeOptions.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {relatedTypeLabels[type]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </AdminFormField>
+              <TooltipProvider>
+                <Tooltip>
+                  <AdminFormField label="Type de relation">
+                    <Select
+                      value={newType}
+                      onValueChange={(value) => setNewType(value as AdminRelatedProductEditorType)}
+                    >
+                      <TooltipTrigger asChild>
+                        <SelectTrigger className="text-sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                      </TooltipTrigger>
+                      <SelectContent>
+                        {relatedTypeOptions.map((type) => (
+                          <SelectItem key={type} value={type}>
+                            {relatedTypeLabels[type]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </AdminFormField>
+                  <TooltipContent side="top">{relatedTypeTooltips[newType]}</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
-              <AdminFormField label="Ordre">
+              <AdminFormField
+                label="Ordre d’affichage"
+                hint="Position dans la liste des suggestions (0 = en premier)."
+              >
                 <Input
                   type="number"
                   min={0}

@@ -41,6 +41,22 @@ type CatalogProductDetail = {
   isAvailable: boolean;
   images: CatalogImage[];
   variants: CatalogVariant[];
+  relatedProductGroups: CatalogRelatedProductGroup[];
+};
+
+export type CatalogRelatedProduct = {
+  id: string;
+  slug: string;
+  name: string;
+  shortDescription: string | null;
+  imageFilePath: string | null;
+  imageAltText: string | null;
+};
+
+export type CatalogRelatedProductGroup = {
+  type: "related" | "cross_sell" | "up_sell" | "accessory" | "similar";
+  label: string;
+  products: CatalogRelatedProduct[];
 };
 
 type CatalogProductListItem = {
@@ -405,6 +421,32 @@ export async function getPublishedProductBySlug(
           },
         },
       },
+      relatedFrom: {
+        where: {
+          targetProduct: {
+            status: "ACTIVE",
+            archivedAt: null,
+          },
+        },
+        orderBy: { sortOrder: "asc" },
+        select: {
+          type: true,
+          targetProduct: {
+            select: {
+              id: true,
+              slug: true,
+              name: true,
+              shortDescription: true,
+              primaryImage: {
+                select: {
+                  storageKey: true,
+                  altText: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
   });
 
@@ -467,6 +509,44 @@ export async function getPublishedProductBySlug(
   const ogImageStorageKey = seoMetadata?.openGraphImage?.storageKey ?? null;
   const twitterImageStorageKey = seoMetadata?.twitterImage?.storageKey ?? null;
 
+  const relatedTypeConfig: Record<
+    string,
+    { type: CatalogRelatedProductGroup["type"]; label: string }
+  > = {
+    RELATED: { type: "related", label: "À découvrir aussi" },
+    CROSS_SELL: { type: "cross_sell", label: "Compléter avec" },
+    UP_SELL: { type: "up_sell", label: "Version premium" },
+    ACCESSORY: { type: "accessory", label: "Accessoires conseillés" },
+    SIMILAR: { type: "similar", label: "Alternative similaire" },
+  };
+
+  const relatedTypeOrder = ["RELATED", "CROSS_SELL", "UP_SELL", "ACCESSORY", "SIMILAR"] as const;
+  const relatedGroupsMap = new Map<string, CatalogRelatedProduct[]>();
+
+  for (const rel of product.relatedFrom) {
+    const config = relatedTypeConfig[rel.type];
+    if (!config) continue;
+    if (!relatedGroupsMap.has(rel.type)) {
+      relatedGroupsMap.set(rel.type, []);
+    }
+    relatedGroupsMap.get(rel.type)!.push({
+      id: rel.targetProduct.id,
+      slug: rel.targetProduct.slug,
+      name: rel.targetProduct.name,
+      shortDescription: rel.targetProduct.shortDescription,
+      imageFilePath: rel.targetProduct.primaryImage?.storageKey ?? null,
+      imageAltText: rel.targetProduct.primaryImage?.altText ?? null,
+    });
+  }
+
+  const relatedProductGroups: CatalogRelatedProductGroup[] = relatedTypeOrder
+    .filter((t) => relatedGroupsMap.has(t))
+    .map((t) => ({
+      type: relatedTypeConfig[t]!.type,
+      label: relatedTypeConfig[t]!.label,
+      products: relatedGroupsMap.get(t)!,
+    }));
+
   return {
     id: product.id,
     slug: product.slug,
@@ -491,5 +571,6 @@ export async function getPublishedProductBySlug(
     isAvailable,
     images,
     variants,
+    relatedProductGroups,
   };
 }

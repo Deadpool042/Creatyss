@@ -43,9 +43,8 @@ import { DeleteProductButton } from "@/features/admin/products/components/editor
 export default async function ProductEditorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  const [editor, availableCategories, priceLists, productTypeOptions] = await Promise.all([
+  const [editor, priceLists, productTypeOptions] = await Promise.all([
     readAdminProductEditorBySlug(slug),
-    listAdminProductCategoryOptions(),
     readAdminPriceLists(),
     listAdminProductTypeOptions(),
   ]);
@@ -127,6 +126,7 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
     pricingData,
     productOptions,
     relatedProductOptions,
+    availableCategories,
   ] = await Promise.all([
     readAdminProductVariants(editor.product.id),
     readAdminProductImages(editor.product.id),
@@ -135,7 +135,8 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
     editor.product.productTypeId
       ? readAdminProductTypeWithOptions(editor.product.productTypeId)
       : Promise.resolve([]),
-    listAdminRelatedProductOptions({ excludeProductId: editor.product.id }),
+    listAdminRelatedProductOptions({ storeId: editor.product.storeId, excludeProductId: editor.product.id }),
+    listAdminProductCategoryOptions(editor.product.storeId),
   ]);
 
   return (

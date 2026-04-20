@@ -10,8 +10,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import type { AdminProductVariantListItem } from "@/features/admin/products/editor/types";
 
 type ProductVariantItemProps = {
-  productId: string;
-  productSlug: string;
   variant: AdminProductVariantListItem;
   hasOtherVariants: boolean;
   onEdit: (variantId: string) => void;
@@ -54,8 +52,6 @@ function SectionLabel({ children }: { children: string }): JSX.Element {
 }
 
 export function ProductVariantItem({
-  productId: _productId,
-  productSlug: _productSlug,
   variant,
   hasOtherVariants,
   onEdit,
@@ -70,7 +66,8 @@ export function ProductVariantItem({
   const hasDimensions = [variant.widthMm, variant.heightMm, variant.depthMm].some(
     (value) => value && value.trim().length > 0
   );
-  const shouldShowFooterMessage = Boolean(message) || (variant.isDefault && hasOtherVariants && onDelete);
+  const shouldShowFooterMessage =
+    Boolean(message) || (variant.isDefault && hasOtherVariants && onDelete);
 
   function handleSetDefault(): void {
     if (!onSetDefault || variant.isDefault) {
@@ -105,7 +102,9 @@ export function ProductVariantItem({
             <div className="flex flex-wrap items-center gap-2">
               <CardTitle className="truncate text-base">{displayName}</CardTitle>
               {variant.isDefault ? <Badge variant="secondary">Par défaut</Badge> : null}
-              <Badge variant={getStatusVariant(variant.status)}>{getStatusLabel(variant.status)}</Badge>
+              <Badge variant={getStatusVariant(variant.status)}>
+                {getStatusLabel(variant.status)}
+              </Badge>
               <Badge variant="outline" className="border-surface-border bg-transparent">
                 Ordre {variant.sortOrder}
               </Badge>

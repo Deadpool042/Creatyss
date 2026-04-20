@@ -10,6 +10,7 @@ import { Notice } from "@/components/shared/notice";
 import { getUploadsPublicPath } from "@/core/uploads";
 import { clientEnv } from "@/core/config/env";
 import { getPublishedProductBySlug } from "@/features/storefront/catalog";
+import { ProductRelatedSection } from "@/features/storefront/catalog/product-related-section";
 import { addToCartAction } from "@/features/cart";
 import {
   getOfferAvailabilityMessage,
@@ -634,6 +635,14 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
           )}
         </section>
       </div>
+      {product.relatedProductGroups.some((g) => g.products.length > 0) && (
+        <div className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+          <ProductRelatedSection
+            groups={product.relatedProductGroups}
+            uploadsPublicPath={uploadsPublicPath}
+          />
+        </div>
+      )}
     </>
   );
 }

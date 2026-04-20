@@ -1,11 +1,8 @@
 "use server";
 
 import { refresh } from "next/cache";
-import { validateAdminProductInput } from "@/entities/product";
-import {
-  AdminProductEditorServiceError,
-  updateProductRelatedProducts,
-} from "../services";
+import { validateAdminProductRelatedProducts } from "@/entities/product";
+import { AdminProductEditorServiceError, updateProductRelatedProducts } from "../services";
 import {
   productRelatedProductsFormInitialState,
   type ProductRelatedProductsFormAction,
@@ -57,20 +54,7 @@ export const updateProductRelatedProductsAction: ProductRelatedProductsFormActio
     };
   }
 
-  const validated = validateAdminProductInput({
-    name: "placeholder",
-    slug: "placeholder",
-    skuRoot: null,
-    shortDescription: null,
-    description: null,
-    productTypeId: null,
-    primaryImageMediaAssetId: null,
-    status: "draft",
-    isFeatured: null,
-    isStandalone: null,
-    categoryIds: [],
-    categoryPrimaryIds: [],
-    categorySortOrders: {},
+  const validated = validateAdminProductRelatedProducts({
     relatedProductIds: getAll(formData, "relatedProductIds"),
     relatedProductTypes: buildRelatedTypes(formData),
     relatedProductSortOrders: buildRelatedSortOrders(formData),
@@ -87,7 +71,7 @@ export const updateProductRelatedProductsAction: ProductRelatedProductsFormActio
   try {
     await updateProductRelatedProducts({
       productId: productIdValue.trim(),
-      relatedProducts: validated.data.relatedProducts,
+      relatedProducts: validated.data,
     });
 
     refresh();

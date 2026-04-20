@@ -6,8 +6,6 @@ import type { AdminProductVariantListItem } from "@/features/admin/products/edit
 import { ProductVariantItem } from "./product-variant-item";
 
 type ProductVariantListProps = {
-  productId: string;
-  productSlug: string;
   variants: AdminProductVariantListItem[];
   onEdit: (variantId: string) => void;
   onSetDefault?: (variantId: string) => Promise<{ status: "success" | "error"; message: string }>;
@@ -15,8 +13,6 @@ type ProductVariantListProps = {
 };
 
 export function ProductVariantList({
-  productId,
-  productSlug,
   variants,
   onEdit,
   onSetDefault,
@@ -35,8 +31,6 @@ export function ProductVariantList({
       {variants.map((variant) => (
         <ProductVariantItem
           key={variant.id}
-          productId={productId}
-          productSlug={productSlug}
           variant={variant}
           hasOtherVariants={variants.length > 1}
           onEdit={onEdit}
