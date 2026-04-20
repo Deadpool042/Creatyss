@@ -64,7 +64,7 @@ export function ProductCategoriesLinkedList({
 
                     {category.parentId === null ? (
                       <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] text-muted-foreground">
-                        Catégorie générale
+                        Catégorie parente
                       </span>
                     ) : null}
                   </div>

@@ -100,7 +100,7 @@ function ProductCategoriesTabInner({
 
           <AdminFormSection
             title="Catégories"
-            description="Associer ce produit à une ou plusieurs catégories du catalogue et définir la catégorie principale la plus précise."
+            description="Les catégories déterminent où ce produit apparaît dans la navigation de la boutique. La catégorie principale est celle qui le représente le mieux — choisir la plus spécifique améliore la lisibilité et le référencement."
           >
             <ProductCategoriesSummary
               linkedCount={manager.linkedCategoryIds.length}

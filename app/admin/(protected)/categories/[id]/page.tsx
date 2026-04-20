@@ -13,6 +13,7 @@ import { listAdminMediaAssets } from "@/features/admin/media";
 import {
   deleteCategoryAction,
   updateCategoryAction,
+  updateCategorySeoAction,
   setCategoryImageAction,
   deleteCategoryImageAction,
 } from "@/features/admin/categories";
@@ -28,9 +29,7 @@ type EditAdminCategoryPageProps = Readonly<{
   }>;
 }>;
 
-export default async function EditAdminCategoryPage({
-  params,
-}: EditAdminCategoryPageProps) {
+export default async function EditAdminCategoryPage({ params }: EditAdminCategoryPageProps) {
   const { id } = await params;
 
   const [category, mediaAssets] = await Promise.all([
@@ -67,6 +66,11 @@ export default async function EditAdminCategoryPage({
     "use server";
     const categoryId = String(formData.get("categoryId") ?? "");
     await deleteCategoryAction({ categoryId });
+  }
+
+  async function handleUpdateCategorySeo(formData: FormData): Promise<void> {
+    "use server";
+    await updateCategorySeoAction(formData);
   }
 
   return (
@@ -146,11 +150,13 @@ export default async function EditAdminCategoryPage({
                 name="mediaAssetId"
               >
                 <option value="">Aucun média</option>
-                {mediaAssets.map((asset: { id: string; originalName: string; mimeType: string }) => (
-                  <option key={asset.id} value={asset.id}>
-                    {asset.originalName} · {asset.mimeType}
-                  </option>
-                ))}
+                {mediaAssets.map(
+                  (asset: { id: string; originalName: string; mimeType: string }) => (
+                    <option key={asset.id} value={asset.id}>
+                      {asset.originalName} · {asset.mimeType}
+                    </option>
+                  )
+                )}
               </select>
             </AdminFormField>
 
@@ -161,7 +167,10 @@ export default async function EditAdminCategoryPage({
         ) : (
           <p className="text-sm text-muted-foreground">
             Aucun média disponible.{" "}
-            <Link className="underline underline-offset-4 hover:text-foreground" href="/admin/media">
+            <Link
+              className="underline underline-offset-4 hover:text-foreground"
+              href="/admin/media"
+            >
               Ouvrir la médiathèque
             </Link>
           </p>
@@ -180,6 +189,113 @@ export default async function EditAdminCategoryPage({
             </Button>
           </form>
         ) : null}
+      </AdminFormSection>
+
+      <AdminFormSection eyebrow="Référencement" title="SEO">
+        <form action={handleUpdateCategorySeo} className="grid gap-4">
+          <input name="categoryId" type="hidden" value={category.id} />
+
+          <AdminFormField htmlFor="cat-seo-title" label="Titre SEO">
+            <Input
+              defaultValue={category.seo.metaTitle ?? ""}
+              id="cat-seo-title"
+              maxLength={255}
+              name="title"
+              placeholder={category.name}
+              type="text"
+            />
+          </AdminFormField>
+
+          <AdminFormField htmlFor="cat-seo-description" label="Description SEO">
+            <Textarea
+              defaultValue={category.seo.metaDescription ?? ""}
+              id="cat-seo-description"
+              maxLength={320}
+              name="description"
+              placeholder={`Sélection de produits : ${category.name}`}
+              rows={3}
+            />
+          </AdminFormField>
+
+          <AdminFormField htmlFor="cat-seo-canonical" label="Chemin canonique">
+            <Input
+              defaultValue={category.seo.canonicalPath ?? ""}
+              id="cat-seo-canonical"
+              name="canonicalPath"
+              placeholder="/boutique/categories/..."
+              type="text"
+            />
+          </AdminFormField>
+
+          <AdminFormField htmlFor="cat-seo-indexing" label="Indexation">
+            <select
+              className="flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30"
+              defaultValue={category.seo.indexingMode}
+              id="cat-seo-indexing"
+              name="indexingMode"
+            >
+              <option value="INDEX_FOLLOW">Indexer et suivre les liens</option>
+              <option value="INDEX_NOFOLLOW">Indexer, ne pas suivre les liens</option>
+              <option value="NOINDEX_FOLLOW">Ne pas indexer, suivre les liens</option>
+              <option value="NOINDEX_NOFOLLOW">Ne pas indexer, ne pas suivre</option>
+            </select>
+          </AdminFormField>
+
+          <label className="flex items-center gap-3 text-sm text-foreground">
+            <input
+              className="size-4"
+              defaultChecked={category.seo.sitemapIncluded}
+              name="sitemapIncluded"
+              type="checkbox"
+              value="true"
+            />
+            <span>Inclure dans le sitemap</span>
+          </label>
+
+          <AdminFormField htmlFor="cat-og-title" label="Titre Open Graph">
+            <Input
+              defaultValue={category.seo.openGraphTitle ?? ""}
+              id="cat-og-title"
+              maxLength={255}
+              name="openGraphTitle"
+              type="text"
+            />
+          </AdminFormField>
+
+          <AdminFormField htmlFor="cat-og-description" label="Description Open Graph">
+            <Textarea
+              defaultValue={category.seo.openGraphDescription ?? ""}
+              id="cat-og-description"
+              maxLength={320}
+              name="openGraphDescription"
+              rows={2}
+            />
+          </AdminFormField>
+
+          <AdminFormField htmlFor="cat-tw-title" label="Titre réseau social">
+            <Input
+              defaultValue={category.seo.twitterTitle ?? ""}
+              id="cat-tw-title"
+              maxLength={255}
+              name="twitterTitle"
+              type="text"
+            />
+          </AdminFormField>
+
+          <AdminFormField htmlFor="cat-tw-description" label="Description réseau social">
+            <Textarea
+              defaultValue={category.seo.twitterDescription ?? ""}
+              id="cat-tw-description"
+              maxLength={320}
+              name="twitterDescription"
+              rows={2}
+            />
+          </AdminFormField>
+
+          <AdminFormActions>
+            <Button type="submit">Enregistrer le SEO</Button>
+          </AdminFormActions>
+        </form>
       </AdminFormSection>
 
       <AdminFormSection eyebrow="Suppression" title="Supprimer la catégorie">

@@ -26,7 +26,14 @@ export function ProductCategoriesSummary({
         <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
           Catégorie principale
         </p>
-        <p className="mt-1 text-sm font-medium text-foreground">{primaryLabel}</p>
+        <p
+          className={[
+            "mt-1 text-sm font-medium",
+            primaryLabel === "Aucune" ? "text-amber-600 dark:text-amber-400" : "text-foreground",
+          ].join(" ")}
+        >
+          {primaryLabel}
+        </p>
       </div>
     </div>
   );

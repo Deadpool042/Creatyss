@@ -23,6 +23,17 @@ export type AdminCategoryDetail = {
   primaryImageId: string | null;
   primaryImageUrl: string | null;
   updatedAt: string;
+  seo: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+    canonicalPath: string | null;
+    indexingMode: "INDEX_FOLLOW" | "INDEX_NOFOLLOW" | "NOINDEX_FOLLOW" | "NOINDEX_NOFOLLOW";
+    sitemapIncluded: boolean;
+    openGraphTitle: string | null;
+    openGraphDescription: string | null;
+    twitterTitle: string | null;
+    twitterDescription: string | null;
+  };
 };
 
 export type AdminCategoryServiceErrorCode =

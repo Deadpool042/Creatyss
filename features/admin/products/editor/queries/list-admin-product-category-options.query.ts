@@ -1,9 +1,8 @@
 import { db } from "@/core/db";
 
-export async function listAdminProductCategoryOptions(storeId: string) {
+export async function listAdminProductCategoryOptions() {
   const categories = await db.category.findMany({
     where: {
-      storeId,
       archivedAt: null,
     },
     orderBy: [{ name: "asc" }],

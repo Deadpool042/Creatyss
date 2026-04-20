@@ -37,7 +37,7 @@ export function ProductCategoriesPrimaryFields({
     <AdminFormField
       label="Catégorie principale"
       error={error}
-      hint="Utiliser de préférence la catégorie la plus spécifique pour ce produit."
+      hint="La catégorie principale définit le classement principal de ce produit dans la boutique. Choisir la plus spécifique disponible."
     >
       <div className="grid gap-3 md:grid-cols-2">
         <Select value={primaryRootId} onValueChange={onPrimaryRootChange}>
@@ -59,7 +59,7 @@ export function ProductCategoriesPrimaryFields({
               <SelectValue placeholder="Choisir une sous-catégorie" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={rootCategorySentinel}>Catégorie générale</SelectItem>
+              <SelectItem value={rootCategorySentinel}>Catégorie parente</SelectItem>
               {primaryRootChildren.map((category) => (
                 <SelectItem key={category.id} value={category.id}>
                   {category.name}
