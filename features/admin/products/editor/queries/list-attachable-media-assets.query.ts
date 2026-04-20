@@ -4,27 +4,8 @@ import type { AttachableMediaAssetItem, AttachableMediaAssetsData } from "../typ
 export async function listAttachableMediaAssets(
   productId: string
 ): Promise<AttachableMediaAssetsData> {
-  const product = await db.product.findFirst({
-    where: {
-      id: productId,
-      archivedAt: null,
-    },
-    select: {
-      id: true,
-      storeId: true,
-    },
-  });
-
-  if (product === null) {
-    return {
-      productId,
-      items: [],
-    };
-  }
-
   const assets = await db.mediaAsset.findMany({
     where: {
-      storeId: product.storeId,
       archivedAt: null,
     },
     orderBy: [{ createdAt: "desc" }],
@@ -48,7 +29,7 @@ export async function listAttachableMediaAssets(
     }));
 
   return {
-    productId: product.id,
+    productId,
     items,
   };
 }

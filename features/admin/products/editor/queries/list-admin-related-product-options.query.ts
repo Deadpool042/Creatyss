@@ -1,7 +1,6 @@
 import { db } from "@/core/db";
 
 type ListAdminRelatedProductOptionsInput = {
-  storeId: string;
   excludeProductId?: string;
 };
 
@@ -19,7 +18,6 @@ export async function listAdminRelatedProductOptions(
 ): Promise<AdminRelatedProductOption[]> {
   const products = await db.product.findMany({
     where: {
-      storeId: input.storeId,
       archivedAt: null,
       ...(input.excludeProductId
         ? {
