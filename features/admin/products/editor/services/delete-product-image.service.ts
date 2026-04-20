@@ -10,7 +10,7 @@ export async function deleteProductImage(
   input: DeleteProductImageServiceInput
 ): Promise<{ id: string }> {
   return withTransaction(async (tx) => {
-    await assertProductExists(tx, input.productId);
+    const product = await assertProductExists(tx, input.productId);
 
     const image = await tx.mediaReference.findFirst({
       where: {
@@ -19,6 +19,7 @@ export async function deleteProductImage(
       },
       select: {
         id: true,
+        assetId: true,
       },
     });
 
@@ -26,7 +27,7 @@ export async function deleteProductImage(
       throw new AdminProductEditorServiceError("image_missing");
     }
 
-    return tx.mediaReference.update({
+    const archived = await tx.mediaReference.update({
       where: {
         id: input.imageId,
       },
@@ -38,5 +39,14 @@ export async function deleteProductImage(
         id: true,
       },
     });
+
+    if (product.primaryImageId === image.assetId) {
+      await tx.product.update({
+        where: { id: input.productId },
+        data: { primaryImageId: null },
+      });
+    }
+
+    return archived;
   });
 }

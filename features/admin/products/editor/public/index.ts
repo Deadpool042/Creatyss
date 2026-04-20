@@ -124,7 +124,6 @@ export type {
 
 export type {
   AdminPriceEntry,
-  AdminProductPriceEntry,
   AdminVariantPriceEntry,
   AdminProductPricingData,
   ProductPricingFormState,

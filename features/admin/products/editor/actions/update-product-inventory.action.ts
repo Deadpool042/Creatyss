@@ -6,10 +6,7 @@ import {
   type ProductInventoryFormAction,
   type ProductInventoryRowInput,
 } from "../types/product-inventory-form.types";
-import {
-  AdminProductEditorServiceError,
-  updateProductInventory,
-} from "../services";
+import { AdminProductEditorServiceError, updateProductInventory } from "../services";
 
 function getString(formData: FormData, key: string): FormDataEntryValue | null {
   return formData.get(key);
@@ -81,26 +78,23 @@ export const updateProductInventoryAction: ProductInventoryFormAction = async (
   }
 
   const onHandMap = buildMap(formData, "inventoryOnHand:");
-  const reservedMap = buildMap(formData, "inventoryReserved:");
 
   const rows: ProductInventoryRowInput[] = [];
 
   for (const variantId of variantIds) {
     const onHandQuantity = normalizeNonNegativeInteger(onHandMap[variantId]);
-    const reservedQuantity = normalizeNonNegativeInteger(reservedMap[variantId]);
 
-    if (onHandQuantity === null || reservedQuantity === null) {
+    if (onHandQuantity === null) {
       return {
         ...productInventoryFormInitialState,
         status: "error",
-        message: "Les quantités de stock doivent être des entiers positifs ou nuls.",
+        message: "La quantité de stock doit être un entier positif ou nul.",
       };
     }
 
     rows.push({
       variantId,
       onHandQuantity,
-      reservedQuantity,
     });
   }
 
@@ -119,14 +113,6 @@ export const updateProductInventoryAction: ProductInventoryFormAction = async (
     };
   } catch (error) {
     if (error instanceof AdminProductEditorServiceError) {
-      if (error.code === "inventory_invalid") {
-        return {
-          ...productInventoryFormInitialState,
-          status: "error",
-          message: "Le stock réservé ne peut pas dépasser le stock physique.",
-        };
-      }
-
       return {
         ...productInventoryFormInitialState,
         status: "error",

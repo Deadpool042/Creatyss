@@ -12,6 +12,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type {
   AdminProductImageItem,
   ReorderProductImageResult,
@@ -138,74 +144,127 @@ export function ProductImageItem({
             ) : null}
           </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                disabled={isPending}
-                className="h-8 w-8 rounded-full border border-white/15 bg-background/80 text-foreground shadow-sm backdrop-blur"
-                aria-label="Actions image"
-              >
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
+          <div className="flex items-center gap-1">
+            <TooltipProvider>
+              {/* Bouton "Définir comme principale" — visible desktop uniquement */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    disabled={!onSetPrimary || image.isPrimary || isPending}
+                    onClick={() => void handleSetPrimary()}
+                    className={`hidden h-8 w-8 rounded-full border border-white/15 bg-background/80 shadow-sm backdrop-blur sm:inline-flex${image.isPrimary ? " text-amber-500" : " text-foreground"}`}
+                    aria-label="Définir comme principale"
+                  >
+                    <Star className="h-4 w-4" fill={image.isPrimary ? "currentColor" : "none"} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  {image.isPrimary ? "Image principale" : "Définir comme principale"}
+                </TooltipContent>
+              </Tooltip>
 
-            <DropdownMenuContent align="end" sideOffset={8} className="w-52 rounded-xl">
-              <DropdownMenuItem
-                onSelect={() => {
-                  void handleMoveUp();
-                }}
-                disabled={!onReorder || !canMoveUp || isPending}
-              >
-                <ArrowUp className="mr-2 h-4 w-4" />
-                Monter
-              </DropdownMenuItem>
+              {/* Bouton "Modifier le texte alt" — visible desktop uniquement */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    disabled={isEditingAltText || isPending}
+                    onClick={() => {
+                      setIsEditingAltText(true);
+                      setMessage(null);
+                    }}
+                    className="hidden h-8 w-8 rounded-full border border-white/15 bg-background/80 text-foreground shadow-sm backdrop-blur sm:inline-flex"
+                    aria-label="Modifier le texte alt"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">Modifier le texte alternatif</TooltipContent>
+              </Tooltip>
 
-              <DropdownMenuItem
-                onSelect={() => {
-                  void handleMoveDown();
-                }}
-                disabled={!onReorder || !canMoveDown || isPending}
-              >
-                <ArrowDown className="mr-2 h-4 w-4" />
-                Descendre
-              </DropdownMenuItem>
+              <DropdownMenu>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        disabled={isPending}
+                        className="h-8 w-8 rounded-full border border-white/15 bg-background/80 text-foreground shadow-sm backdrop-blur"
+                        aria-label="Actions image"
+                      >
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">Plus d&apos;actions</TooltipContent>
+                </Tooltip>
 
-              <DropdownMenuItem
-                onSelect={() => {
-                  setIsEditingAltText(true);
-                  setMessage(null);
-                }}
-                disabled={isEditingAltText || isPending}
-              >
-                <Pencil className="mr-2 h-4 w-4" />
-                Modifier le texte alt
-              </DropdownMenuItem>
+                <DropdownMenuContent align="end" sideOffset={8} className="w-52 rounded-xl">
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      void handleMoveUp();
+                    }}
+                    disabled={!onReorder || !canMoveUp || isPending}
+                  >
+                    <ArrowUp className="mr-2 h-4 w-4" />
+                    Monter
+                  </DropdownMenuItem>
 
-              <DropdownMenuItem
-                onSelect={() => {
-                  void handleSetPrimary();
-                }}
-                disabled={!onSetPrimary || image.isPrimary || isPending}
-              >
-                <Star className="mr-2 h-4 w-4" />
-                Définir comme principale
-              </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      void handleMoveDown();
+                    }}
+                    disabled={!onReorder || !canMoveDown || isPending}
+                  >
+                    <ArrowDown className="mr-2 h-4 w-4" />
+                    Descendre
+                  </DropdownMenuItem>
 
-              <DropdownMenuItem
-                onSelect={() => {
-                  void handleDelete();
-                }}
-                disabled={!onDelete || isPending}
-                className="text-destructive focus:text-destructive"
-              >
-                <Trash2 className="mr-2 h-4 w-4" />
-                Supprimer
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  {/* Mobile uniquement : actions exposées en boutons inline sur desktop */}
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      setIsEditingAltText(true);
+                      setMessage(null);
+                    }}
+                    disabled={isEditingAltText || isPending}
+                    className="sm:hidden"
+                  >
+                    <Pencil className="mr-2 h-4 w-4" />
+                    Modifier le texte alt
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      void handleSetPrimary();
+                    }}
+                    disabled={!onSetPrimary || image.isPrimary || isPending}
+                    className="sm:hidden"
+                  >
+                    <Star className="mr-2 h-4 w-4" />
+                    Définir comme principale
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      void handleDelete();
+                    }}
+                    disabled={!onDelete || isPending}
+                    className="text-destructive focus:text-destructive"
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Supprimer
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TooltipProvider>
+          </div>
         </div>
       </div>
 

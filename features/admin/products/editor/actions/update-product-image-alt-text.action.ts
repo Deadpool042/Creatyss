@@ -1,25 +1,33 @@
 "use server";
 
-import { productImageAltTextSchema } from "../schemas";
-import type {
-  UpdateProductImageAltTextInput,
-  UpdateProductImageAltTextResult,
-} from "../types";
+import { AdminProductEditorServiceError, updateProductImageAltText } from "../services";
+import type { UpdateProductImageAltTextInput, UpdateProductImageAltTextResult } from "../types";
 
 export async function updateProductImageAltTextAction(
   input: UpdateProductImageAltTextInput
 ): Promise<UpdateProductImageAltTextResult> {
-  const parsed = productImageAltTextSchema.safeParse(input);
+  try {
+    await updateProductImageAltText({
+      productId: input.productId,
+      imageId: input.imageId,
+      altText: input.altText,
+    });
 
-  if (!parsed.success) {
+    return {
+      status: "success",
+      message: "Texte alternatif mis à jour.",
+    };
+  } catch (error: unknown) {
+    if (error instanceof AdminProductEditorServiceError) {
+      return {
+        status: "error",
+        message: "Mise à jour impossible.",
+      };
+    }
+
     return {
       status: "error",
-      message: "Données invalides.",
+      message: "Erreur inattendue.",
     };
   }
-
-  return {
-    status: "success",
-    message: "Mise à jour effectuée.",
-  };
 }

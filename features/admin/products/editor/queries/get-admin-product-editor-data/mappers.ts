@@ -119,7 +119,8 @@ function mapAdminProductVariants(
 }
 
 function mapAdminProductImages(
-  mediaReferences: ProductEditorMediaReferenceRecord[]
+  mediaReferences: ProductEditorMediaReferenceRecord[],
+  primaryImageId: string | null
 ): AdminProductImageItem[] {
   return mediaReferences.map((reference) => ({
     id: reference.id,
@@ -128,7 +129,7 @@ function mapAdminProductImages(
     subjectId: reference.subjectId,
     role: mapMediaRole(reference.role),
     sortOrder: reference.sortOrder,
-    isPrimary: reference.isPrimary,
+    isPrimary: reference.assetId === primaryImageId,
     publicUrl: reference.asset.publicUrl,
     storageKey: reference.asset.storageKey,
     altText: reference.asset.altText,
@@ -153,7 +154,7 @@ export function mapProductEditorData(input: {
   seoMetadata: ProductEditorSeoMetadataRecord;
 }): AdminProductEditorData {
   const variants = mapAdminProductVariants(input.product.variants);
-  const images = mapAdminProductImages(input.mediaReferences);
+  const images = mapAdminProductImages(input.mediaReferences, input.product.primaryImageId);
 
   const fallbackTitle = input.product.name;
   const fallbackDescription = input.product.shortDescription ?? "";

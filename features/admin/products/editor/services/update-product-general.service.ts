@@ -2,7 +2,6 @@
 import { withTransaction } from "@/core/db";
 import {
   AdminProductEditorServiceError,
-  assertMediaAssetExists,
   assertProductExists,
   assertProductTypeExists,
   mapEditorStatusToPrismaStatus,
@@ -18,7 +17,6 @@ type UpdateProductGeneralServiceInput = {
   status: "draft" | "active" | "inactive" | "archived";
   isFeatured: boolean;
   productTypeId: string | null;
-  primaryImageId: string | null;
 };
 
 function mapProductTypeCodeToIsStandalone(code: string): boolean | null {
@@ -40,6 +38,7 @@ export async function updateProductGeneral(
       },
       select: {
         isStandalone: true,
+        publishedAt: true,
         productType: {
           select: {
             code: true,
@@ -83,10 +82,6 @@ export async function updateProductGeneral(
       }
     }
 
-    if (input.primaryImageId !== null) {
-      await assertMediaAssetExists(tx, input.primaryImageId);
-    }
-
     try {
       return await tx.product.update({
         where: {
@@ -102,8 +97,9 @@ export async function updateProductGeneral(
           isFeatured: input.isFeatured,
           isStandalone: resolvedIsStandalone,
           productTypeId: input.productTypeId,
-          primaryImageId: input.primaryImageId,
-          publishedAt: input.status === "active" ? new Date() : null,
+          publishedAt: input.status === "active" && currentProduct.publishedAt === null
+            ? new Date()
+            : currentProduct.publishedAt,
         },
         select: {
           id: true,

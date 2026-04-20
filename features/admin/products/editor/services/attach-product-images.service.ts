@@ -14,7 +14,6 @@ type AttachProductImageInput = {
   subjectId: string;
   role: "gallery" | "thumbnail" | "other";
   sortOrder: number;
-  isPrimary: boolean;
 };
 
 type AttachProductImagesServiceInput = {
@@ -42,7 +41,7 @@ export async function attachProductImages(
           subjectId: image.subjectId,
           role: mapEditorRoleToPrismaRole(image.role),
           sortOrder: image.sortOrder,
-          isPrimary: image.isPrimary,
+          isPrimary: false,
           isActive: true,
         },
       });

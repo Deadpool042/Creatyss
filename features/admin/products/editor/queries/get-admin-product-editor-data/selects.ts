@@ -107,8 +107,8 @@ export const PRODUCT_EDITOR_CORE_SELECT = {
           archivedAt: null,
         },
         orderBy: [{ updatedAt: "desc" }],
-        take: 1,
         select: {
+          storeId: true,
           status: true,
           isSellable: true,
           backorderAllowed: true,
@@ -124,8 +124,8 @@ export const PRODUCT_EDITOR_CORE_SELECT = {
           status: "ACTIVE",
         },
         orderBy: [{ updatedAt: "desc" }],
-        take: 1,
         select: {
+          storeId: true,
           onHandQuantity: true,
           reservedQuantity: true,
         },
@@ -141,7 +141,6 @@ export const PRODUCT_EDITOR_MEDIA_REFERENCE_SELECT = {
   subjectId: true,
   role: true,
   sortOrder: true,
-  isPrimary: true,
   asset: {
     select: {
       publicUrl: true,

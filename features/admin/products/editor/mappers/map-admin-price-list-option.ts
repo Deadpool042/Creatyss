@@ -5,6 +5,7 @@ type PriceListOptionSource = {
   code: string;
   name: string;
   isDefault: boolean;
+  currencyCode: string;
 };
 
 export function mapAdminPriceListOption(priceList: PriceListOptionSource): AdminPriceListOption {
@@ -13,5 +14,6 @@ export function mapAdminPriceListOption(priceList: PriceListOptionSource): Admin
     code: priceList.code,
     name: priceList.name,
     isDefault: priceList.isDefault,
+    currencyCode: priceList.currencyCode,
   };
 }

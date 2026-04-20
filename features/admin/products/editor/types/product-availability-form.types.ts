@@ -14,13 +14,11 @@ export type ProductAvailabilityRowInput = {
 export type ProductAvailabilityFormState = {
   status: "idle" | "success" | "error";
   message: string | null;
-  fieldErrors: Partial<Record<string, string>>;
 };
 
 export const productAvailabilityFormInitialState: ProductAvailabilityFormState = {
   status: "idle",
   message: null,
-  fieldErrors: {},
 };
 
 export type ProductAvailabilityFormAction = (

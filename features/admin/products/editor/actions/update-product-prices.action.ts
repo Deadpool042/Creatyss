@@ -37,10 +37,12 @@ export const updateProductPricesAction: ProductPricingFormAction = async (_prevS
     startsAt: string | null;
     endsAt: string | null;
   }[] = [];
+  const toArchive: string[] = [];
 
   for (const priceListId of priceListIds) {
     const rawAmount = formData.get(`amount:${priceListId}`);
     if (typeof rawAmount !== "string" || rawAmount.trim().length === 0) {
+      toArchive.push(priceListId);
       continue;
     }
     const rawCompareAtAmount = formData.get(`compareAtAmount:${priceListId}`);
@@ -99,6 +101,7 @@ export const updateProductPricesAction: ProductPricingFormAction = async (_prevS
     await updateProductPrices({
       productId: productIdValue.trim(),
       prices,
+      toArchive,
     });
 
     return {

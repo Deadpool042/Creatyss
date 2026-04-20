@@ -13,6 +13,7 @@ type PriceUpsertEntry = {
 type UpdateProductPricesServiceInput = {
   productId: string;
   prices: PriceUpsertEntry[];
+  toArchive: string[];
 };
 
 export async function updateProductPrices(input: UpdateProductPricesServiceInput): Promise<void> {
@@ -70,6 +71,17 @@ export async function updateProductPrices(input: UpdateProductPricesServiceInput
           endsAt: entry.endsAt ? new Date(entry.endsAt) : null,
           archivedAt: null,
         },
+      });
+    }
+
+    if (input.toArchive.length > 0) {
+      await tx.productPrice.updateMany({
+        where: {
+          productId: input.productId,
+          priceListId: { in: input.toArchive },
+          archivedAt: null,
+        },
+        data: { archivedAt: new Date() },
       });
     }
   });

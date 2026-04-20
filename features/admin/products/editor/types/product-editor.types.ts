@@ -4,6 +4,8 @@ import type {
   AdminProductVariantStatus,
 } from "./product-variants.types";
 export type { AdminProductVariantListItem, AdminProductVariantStatus };
+import type { AdminProductImageItem } from "./product-images.types";
+export type { AdminProductImageItem };
 
 export type AdminProductEditorStatus = "draft" | "active" | "inactive" | "archived";
 
@@ -79,19 +81,4 @@ export type AdminProductEditorData = {
   variants: AdminProductVariantListItem[];
   images: AdminProductImageItem[];
   seo: AdminProductEditorSeo;
-};
-
-export type AdminProductImageItem = {
-  id: string;
-  mediaAssetId: string;
-  subjectType: "product" | "product_variant";
-  subjectId: string;
-  role: "primary" | "cover" | "gallery" | "thumbnail" | "other";
-  sortOrder: number;
-  isPrimary: boolean;
-  publicUrl: string | null;
-  storageKey: string;
-  altText: string | null;
-  originalName: string | null;
-  mimeType: string | null;
 };

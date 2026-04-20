@@ -89,6 +89,7 @@ export type AdminPriceListOption = {
   code: string;
   name: string;
   isDefault: boolean;
+  currencyCode: string;
 };
 
 export type ProductVariantFormValues = {

@@ -28,55 +28,6 @@ function getOptionalString(formData: FormData, key: string): string | null {
   return trimmed;
 }
 
-function getAll(formData: FormData, key: string): FormDataEntryValue[] {
-  return formData.getAll(key);
-}
-
-function buildCategorySortOrders(formData: FormData): Record<string, FormDataEntryValue | null> {
-  const result: Record<string, FormDataEntryValue | null> = {};
-
-  for (const [key, value] of formData.entries()) {
-    if (!key.startsWith("categorySortOrder:")) {
-      continue;
-    }
-
-    const categoryId = key.slice("categorySortOrder:".length);
-    result[categoryId] = value;
-  }
-
-  return result;
-}
-
-function buildRelatedTypes(formData: FormData): Record<string, FormDataEntryValue | null> {
-  const result: Record<string, FormDataEntryValue | null> = {};
-
-  for (const [key, value] of formData.entries()) {
-    if (!key.startsWith("relatedProductType:")) {
-      continue;
-    }
-
-    const productId = key.slice("relatedProductType:".length);
-    result[productId] = value;
-  }
-
-  return result;
-}
-
-function buildRelatedSortOrders(formData: FormData): Record<string, FormDataEntryValue | null> {
-  const result: Record<string, FormDataEntryValue | null> = {};
-
-  for (const [key, value] of formData.entries()) {
-    if (!key.startsWith("relatedProductSortOrder:")) {
-      continue;
-    }
-
-    const productId = key.slice("relatedProductSortOrder:".length);
-    result[productId] = value;
-  }
-
-  return result;
-}
-
 function mapValidationErrorToField(
   code: string
 ): keyof typeof productGeneralFormInitialState.fieldErrors | null {
@@ -90,8 +41,6 @@ function mapValidationErrorToField(
       return "status";
     case "invalid_product_type_id":
       return "productTypeId";
-    case "invalid_primary_image":
-      return "primaryImageId";
     default:
       return null;
   }
@@ -118,16 +67,16 @@ export const updateProductGeneralAction: ProductGeneralFormAction = async (
     shortDescription: getString(formData, "shortDescription"),
     description: getString(formData, "description"),
     productTypeId: getOptionalString(formData, "productTypeId"),
-    primaryImageMediaAssetId: getOptionalString(formData, "primaryImageId"),
+    primaryImageMediaAssetId: null,
     status: getOptionalString(formData, "status"),
     isFeatured: getOptionalString(formData, "isFeatured"),
     isStandalone: null,
-    categoryIds: getAll(formData, "categoryIds"),
-    categoryPrimaryIds: getAll(formData, "categoryPrimaryIds"),
-    categorySortOrders: buildCategorySortOrders(formData),
-    relatedProductIds: getAll(formData, "relatedProductIds"),
-    relatedProductTypes: buildRelatedTypes(formData),
-    relatedProductSortOrders: buildRelatedSortOrders(formData),
+    categoryIds: undefined,
+    categoryPrimaryIds: undefined,
+    categorySortOrders: {},
+    relatedProductIds: undefined,
+    relatedProductTypes: {},
+    relatedProductSortOrders: {},
   });
 
   if (!validated.ok) {
@@ -152,7 +101,6 @@ export const updateProductGeneralAction: ProductGeneralFormAction = async (
       status: validated.data.status,
       isFeatured: validated.data.isFeatured,
       productTypeId: validated.data.productTypeId,
-      primaryImageId: validated.data.primaryImageMediaAssetId,
     });
 
     refresh();

@@ -5,7 +5,6 @@ import { AdminProductEditorServiceError, assertProductExists } from "./shared";
 type UpdateProductInventoryRowInput = {
   variantId: string;
   onHandQuantity: number;
-  reservedQuantity: number;
 };
 
 type UpdateProductInventoryServiceInput = {
@@ -41,11 +40,7 @@ export async function updateProductInventory(
     const skuByVariantId = new Map(variants.map((variant) => [variant.id, variant.sku]));
 
     for (const row of input.rows) {
-      if (
-        row.onHandQuantity < 0 ||
-        row.reservedQuantity < 0 ||
-        row.reservedQuantity > row.onHandQuantity
-      ) {
+      if (row.onHandQuantity < 0) {
         throw new AdminProductEditorServiceError("inventory_invalid");
       }
 
@@ -67,7 +62,6 @@ export async function updateProductInventory(
           status: InventoryItemStatus.ACTIVE,
           archivedAt: null,
           onHandQuantity: row.onHandQuantity,
-          reservedQuantity: row.reservedQuantity,
         },
         create: {
           storeId: product.storeId,
@@ -75,7 +69,6 @@ export async function updateProductInventory(
           sku,
           status: InventoryItemStatus.ACTIVE,
           onHandQuantity: row.onHandQuantity,
-          reservedQuantity: row.reservedQuantity,
         },
       });
     }

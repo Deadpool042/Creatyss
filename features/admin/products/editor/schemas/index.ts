@@ -1,8 +1,4 @@
 export {
-  productGeneralFormSchema,
-  type ProductGeneralFormSchema,
-} from "./product-general-form.schema";
-export {
   productVariantFormSchema,
   type ProductVariantFormSchema,
 } from "./product-variant-form.schema";

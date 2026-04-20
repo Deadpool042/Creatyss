@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, type JSX } from "react";
+import { Images, Upload } from "lucide-react";
 
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
@@ -172,7 +173,6 @@ export function ProductImagesTab({
         subjectId: productId,
         role: "gallery",
         sortOrder: highestSortOrder + index + 1,
-        isPrimary: false,
       })),
     });
 
@@ -192,11 +192,47 @@ export function ProductImagesTab({
 
             <AdminFormSection
               title="Galerie produit"
-              description="Gère les médias affichés sur la fiche produit, leur ordre et l'image principale du produit."
+              description="Gère les médias affichés sur la fiche produit, leur ordre et leur image principale — c'est-à-dire la photo mise en avant en premier sur la boutique."
             >
               <div className="text-sm text-muted-foreground">
                 {productImages.length} image{productImages.length > 1 ? "s" : ""}
               </div>
+
+              {uploadImagesAction || attachImagesAction ? (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {uploadImagesAction ? (
+                    <button
+                      type="button"
+                      onClick={() => setEffectiveUploadFormOpen(true)}
+                      className="flex flex-col gap-1.5 rounded-xl border border-border/60 bg-card px-4 py-4 text-left transition-colors hover:bg-muted/40"
+                    >
+                      <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                        <Upload className="h-4 w-4 shrink-0" />
+                        Importer depuis l&apos;appareil
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Charge de nouveaux fichiers images depuis votre ordinateur.
+                      </p>
+                    </button>
+                  ) : null}
+
+                  {attachImagesAction ? (
+                    <button
+                      type="button"
+                      onClick={() => setEffectiveLibraryOpen(true)}
+                      className="flex flex-col gap-1.5 rounded-xl border border-border/60 bg-card px-4 py-4 text-left transition-colors hover:bg-muted/40"
+                    >
+                      <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                        <Images className="h-4 w-4 shrink-0" />
+                        Choisir depuis la médiathèque
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Réutilise des médias déjà présents dans votre bibliothèque.
+                      </p>
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
 
               {effectiveUploadFormOpen && uploadImagesAction ? (
                 <div className="space-y-2">
@@ -210,6 +246,10 @@ export function ProductImagesTab({
                       Fermer
                     </button>
                   </div>
+                  <p className="text-xs text-muted-foreground">
+                    Charge des fichiers depuis votre appareil pour les ajouter à la galerie du
+                    produit.
+                  </p>
 
                   <div className="rounded-2xl border border-border/60 bg-muted/10 p-4">
                     <ProductImageUploadForm productId={productId} action={uploadImagesAction} />

@@ -47,6 +47,11 @@ export async function updateProductAvailability(
     }
 
     for (const row of input.rows) {
+      const effectiveIsSellable =
+        row.status === "unavailable" || row.status === "discontinued" || row.status === "archived"
+          ? false
+          : row.isSellable;
+
       await tx.availabilityRecord.upsert({
         where: {
           storeId_variantId: {
@@ -56,7 +61,7 @@ export async function updateProductAvailability(
         },
         update: {
           status: mapEditorAvailabilityStatusToPrismaStatus(row.status),
-          isSellable: row.isSellable,
+          isSellable: effectiveIsSellable,
           backorderAllowed: row.backorderAllowed,
           sellableFrom: row.sellableFrom,
           sellableUntil: row.sellableUntil,
@@ -68,7 +73,7 @@ export async function updateProductAvailability(
           storeId: product.storeId,
           variantId: row.variantId,
           status: mapEditorAvailabilityStatusToPrismaStatus(row.status),
-          isSellable: row.isSellable,
+          isSellable: effectiveIsSellable,
           backorderAllowed: row.backorderAllowed,
           sellableFrom: row.sellableFrom,
           sellableUntil: row.sellableUntil,

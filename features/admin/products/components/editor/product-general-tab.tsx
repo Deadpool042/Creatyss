@@ -129,7 +129,11 @@ function ProductGeneralTabInner({
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
-        <input type="hidden" name="productId" value={product.product.id} />
+              <input
+                type="hidden"
+                name="productId"
+                value={product.product.id}
+              />
 
         <div className="w-full space-y-6 px-4 py-4 md:space-y-7 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
           <AdminFormMessage
@@ -186,8 +190,9 @@ function ProductGeneralTabInner({
 
               <div className="grid gap-4 md:grid-cols-2">
                 <AdminFormField
-                  label="SKU racine"
+                  label="Référence produit (SKU)"
                   htmlFor="edit-sku-root"
+                  hint="Identifiant interne utilisé pour gérer les stocks. Pour un produit à variantes, chaque déclinaison génère automatiquement son propre code à partir de cette base."
                   error={state.fieldErrors.skuRoot}
                 >
                   <Input
@@ -209,10 +214,10 @@ function ProductGeneralTabInner({
 
                   <Select value={productTypeId} onValueChange={setProductTypeId}>
                     <SelectTrigger id="edit-product-type" className="text-sm">
-                      <SelectValue placeholder="Aucune classification" />
+                      <SelectValue placeholder="Non défini" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="__none__">Aucune classification</SelectItem>
+                      <SelectItem value="__none__">Non défini</SelectItem>
                       {productTypeOptions.map((option) => (
                         <SelectItem key={option.id} value={option.id}>
                           {getProductTypeLabel(option)}
@@ -266,7 +271,12 @@ function ProductGeneralTabInner({
               </div>
             </CardHeader>
             <CardContent className="grid gap-4 px-5 py-5 md:grid-cols-2 md:px-6 md:py-6">
-              <AdminFormField label="Statut" htmlFor="edit-status" error={state.fieldErrors.status}>
+              <AdminFormField
+                label="Statut"
+                htmlFor="edit-status"
+                hint="Brouillon : non visible. Actif : publié sur la boutique. Inactif : retiré temporairement. Archivé : retiré définitivement."
+                error={state.fieldErrors.status}
+              >
                 <input type="hidden" name="status" value={status} />
 
                 <Select value={status} onValueChange={handleStatusChange}>
@@ -299,12 +309,6 @@ function ProductGeneralTabInner({
                   </SelectContent>
                 </Select>
               </AdminFormField>
-
-              <input
-                type="hidden"
-                name="primaryImageId"
-                value={product.product.primaryImageId ?? ""}
-              />
 
               <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-3 text-sm shadow-sm">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">

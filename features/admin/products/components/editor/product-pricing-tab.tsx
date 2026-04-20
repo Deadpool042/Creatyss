@@ -115,6 +115,9 @@ function ProductPricingTabInner({
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium">{priceList.name}</span>
+                      <span className="text-xs text-muted-foreground font-mono">
+                        {priceList.currencyCode}
+                      </span>
                       {priceList.isDefault && (
                         <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                           Par défaut
@@ -122,7 +125,14 @@ function ProductPricingTabInner({
                       )}
                     </div>
 
-                    <div className="grid gap-3 sm:grid-cols-3">
+                    {/* costAmount est masqué de l'UI mais transporté en hidden pour ne pas écraser la valeur en base */}
+                    <input
+                      type="hidden"
+                      name={`costAmount:${priceList.id}`}
+                      value={existing?.costAmount ?? ""}
+                    />
+
+                    <div className="grid gap-3 sm:grid-cols-2">
                       <AdminFormField
                         label="Prix actuel"
                         htmlFor={`amount-${priceList.id}`}
@@ -141,25 +151,12 @@ function ProductPricingTabInner({
                         label="Prix barré"
                         htmlFor={`compareAtAmount-${priceList.id}`}
                         error={state.fieldErrors[`compareAtAmount:${priceList.id}`]}
+                        hint="Prix affiché barré sur la fiche produit pour indiquer une promotion."
                       >
                         <Input
                           id={`compareAtAmount-${priceList.id}`}
                           name={`compareAtAmount:${priceList.id}`}
                           defaultValue={existing?.compareAtAmount ?? ""}
-                          placeholder="—"
-                          className="text-sm font-mono"
-                        />
-                      </AdminFormField>
-
-                      <AdminFormField
-                        label="Coût de revient"
-                        htmlFor={`costAmount-${priceList.id}`}
-                        error={state.fieldErrors[`costAmount:${priceList.id}`]}
-                      >
-                        <Input
-                          id={`costAmount-${priceList.id}`}
-                          name={`costAmount:${priceList.id}`}
-                          defaultValue={existing?.costAmount ?? ""}
                           placeholder="—"
                           className="text-sm font-mono"
                         />
@@ -173,6 +170,9 @@ function ProductPricingTabInner({
                         </span>
                         <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
                       </div>
+                      <p className="text-xs text-muted-foreground leading-5">
+                        Facultatif. Ces dates définissent la période d&apos;activation du prix promotionnel.
+                      </p>
                       <div className="grid gap-3 sm:grid-cols-2">
                         <AdminFormField
                           label="Début de promotion"
@@ -214,6 +214,9 @@ function ProductPricingTabInner({
               title="Prix variantes"
               description="Chaque variante peut avoir son propre prix. Si aucun prix n'est renseigné, le prix du produit est utilisé."
             >
+              <p className="text-xs text-muted-foreground leading-5">
+                Ces prix sont en lecture seule. Pour modifier le prix d&apos;une variante, éditez-la depuis la tab Variantes.
+              </p>
               <div className="overflow-x-auto rounded-xl border border-border">
                 <table className="w-full text-sm">
                   <thead>
@@ -227,6 +230,7 @@ function ProductPricingTabInner({
                           className="px-3 py-2 text-right text-xs font-medium text-muted-foreground"
                         >
                           {pl.name}
+                          <span className="ml-1 font-mono font-normal opacity-60">{pl.currencyCode}</span>
                         </th>
                       ))}
                     </tr>

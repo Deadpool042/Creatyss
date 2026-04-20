@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, type JSX } from "react";
+import { useActionState, useState, type JSX } from "react";
 
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
@@ -58,6 +58,136 @@ function toDateTimeLocalValue(value: string | null): string {
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
+type AvailabilityFieldsProps = {
+  variantId: string;
+  availability: AdminProductVariantAvailability;
+};
+
+function AvailabilityFields({ variantId, availability }: AvailabilityFieldsProps): JSX.Element {
+  const [selectedStatus, setSelectedStatus] = useState<AdminProductVariantAvailability["status"]>(
+    availability.status,
+  );
+
+  return (
+    <div className="space-y-3">
+      <div className="grid gap-3 md:grid-cols-2">
+        <AdminFormField label="Statut de disponibilité">
+          <Select
+            name={`availabilityStatus:${variantId}`}
+            defaultValue={availability.status}
+            onValueChange={(v) =>
+              setSelectedStatus(v as AdminProductVariantAvailability["status"])
+            }
+          >
+            <SelectTrigger className="text-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.entries(availabilityStatusLabels).map(([value, label]) => (
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </AdminFormField>
+
+        <AdminFormField label="Vente en ligne">
+          <Select
+            name={`availabilityIsSellable:${variantId}`}
+            defaultValue={availability.isSellable ? "true" : "false"}
+          >
+            <SelectTrigger className="text-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="true">Vendable</SelectItem>
+              <SelectItem value="false">Non vendable</SelectItem>
+            </SelectContent>
+          </Select>
+        </AdminFormField>
+
+        <AdminFormField label="Commandes en rupture de stock">
+          <Select
+            name={`availabilityBackorderAllowed:${variantId}`}
+            defaultValue={availability.backorderAllowed ? "true" : "false"}
+          >
+            <SelectTrigger className="text-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="false">Interdite</SelectItem>
+              <SelectItem value="true">Autorisée</SelectItem>
+            </SelectContent>
+          </Select>
+        </AdminFormField>
+      </div>
+
+      <p className="text-xs text-muted-foreground">
+        Le statut indique l&apos;état commercial du produit. La vendabilité contrôle si l&apos;ajout
+        au panier est autorisé.
+      </p>
+
+      <div className="grid gap-3 md:grid-cols-2">
+        <AdminFormField label="Début de vente">
+          <Input
+            type="datetime-local"
+            name={`availabilitySellableFrom:${variantId}`}
+            defaultValue={toDateTimeLocalValue(availability.sellableFrom)}
+            className="text-sm"
+          />
+        </AdminFormField>
+        <AdminFormField label="Fin de vente">
+          <Input
+            type="datetime-local"
+            name={`availabilitySellableUntil:${variantId}`}
+            defaultValue={toDateTimeLocalValue(availability.sellableUntil)}
+            className="text-sm"
+          />
+        </AdminFormField>
+        {selectedStatus === "preorder" && (
+          <>
+            <AdminFormField label="Début de précommande">
+              <Input
+                type="datetime-local"
+                name={`availabilityPreorderStartsAt:${variantId}`}
+                defaultValue={toDateTimeLocalValue(availability.preorderStartsAt)}
+                className="text-sm"
+              />
+            </AdminFormField>
+            <AdminFormField label="Fin de précommande">
+              <Input
+                type="datetime-local"
+                name={`availabilityPreorderEndsAt:${variantId}`}
+                defaultValue={toDateTimeLocalValue(availability.preorderEndsAt)}
+                className="text-sm"
+              />
+            </AdminFormField>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function VariantAvailabilityCard({ variant }: { variant: AdminProductVariantListItem }): JSX.Element {
+  return (
+    <div
+      data-testid="product-availability-card"
+      className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
+    >
+      <div className="space-y-1">
+        <p className="text-sm font-medium text-foreground">
+          {variant.name ?? "Variante sans nom"}
+        </p>
+        <p className="text-xs font-mono text-muted-foreground">{variant.sku}</p>
+      </div>
+
+      <AvailabilityFields variantId={variant.id} availability={variant.availability} />
+    </div>
+  );
+}
+
 export function ProductAvailabilityTab({
   action,
   productId,
@@ -100,94 +230,15 @@ export function ProductAvailabilityTab({
               ) : (
                 <>
                   {standaloneVariant.sku !== null && (
-                    <p className="text-xs font-mono text-muted-foreground -mt-2 mb-2">
-                      {standaloneVariant.sku}
+                    <p className="text-xs text-muted-foreground -mt-2 mb-2">
+                      <span className="font-medium">SKU :</span>{" "}
+                      <span className="font-mono">{standaloneVariant.sku}</span>
                     </p>
                   )}
-                  <div className="grid gap-3 md:grid-cols-2">
-                    <AdminFormField label="Statut de disponibilité">
-                      <Select
-                        name={`availabilityStatus:${standaloneVariant.id}`}
-                        defaultValue={standaloneVariant.availability.status}
-                      >
-                        <SelectTrigger className="text-sm">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(availabilityStatusLabels).map(([value, label]) => (
-                            <SelectItem key={value} value={value}>
-                              {label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </AdminFormField>
-
-                    <AdminFormField label="Vente en ligne">
-                      <Select
-                        name={`availabilityIsSellable:${standaloneVariant.id}`}
-                        defaultValue={standaloneVariant.availability.isSellable ? "true" : "false"}
-                      >
-                        <SelectTrigger className="text-sm">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="true">Vendable</SelectItem>
-                          <SelectItem value="false">Non vendable</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </AdminFormField>
-
-                    <AdminFormField label="Commande en rupture">
-                      <Select
-                        name={`availabilityBackorderAllowed:${standaloneVariant.id}`}
-                        defaultValue={standaloneVariant.availability.backorderAllowed ? "true" : "false"}
-                      >
-                        <SelectTrigger className="text-sm">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="false">Interdite</SelectItem>
-                          <SelectItem value="true">Autorisée</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </AdminFormField>
-                  </div>
-
-                  <div className="grid gap-3 md:grid-cols-2 mt-3">
-                    <AdminFormField label="Début de vente">
-                      <Input
-                        type="datetime-local"
-                        name={`availabilitySellableFrom:${standaloneVariant.id}`}
-                        defaultValue={toDateTimeLocalValue(standaloneVariant.availability.sellableFrom)}
-                        className="text-sm"
-                      />
-                    </AdminFormField>
-                    <AdminFormField label="Fin de vente">
-                      <Input
-                        type="datetime-local"
-                        name={`availabilitySellableUntil:${standaloneVariant.id}`}
-                        defaultValue={toDateTimeLocalValue(standaloneVariant.availability.sellableUntil)}
-                        className="text-sm"
-                      />
-                    </AdminFormField>
-                    <AdminFormField label="Début de précommande">
-                      <Input
-                        type="datetime-local"
-                        name={`availabilityPreorderStartsAt:${standaloneVariant.id}`}
-                        defaultValue={toDateTimeLocalValue(standaloneVariant.availability.preorderStartsAt)}
-                        className="text-sm"
-                      />
-                    </AdminFormField>
-                    <AdminFormField label="Fin de précommande">
-                      <Input
-                        type="datetime-local"
-                        name={`availabilityPreorderEndsAt:${standaloneVariant.id}`}
-                        defaultValue={toDateTimeLocalValue(standaloneVariant.availability.preorderEndsAt)}
-                        className="text-sm"
-                      />
-                    </AdminFormField>
-                  </div>
+                  <AvailabilityFields
+                    variantId={standaloneVariant.id}
+                    availability={standaloneVariant.availability}
+                  />
                 </>
               )}
             </AdminFormSection>
@@ -198,105 +249,9 @@ export function ProductAvailabilityTab({
             >
               {hasVariants ? (
                 <div className="space-y-4">
-                  {variants.map((variant) => (
-                    <div
-                      key={variant.id}
-                      data-testid="product-availability-card"
-                      className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
-                    >
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium text-foreground">
-                          {variant.name ?? "Variante sans nom"}
-                        </p>
-                        <p className="text-xs font-mono text-muted-foreground">{variant.sku}</p>
-                      </div>
-
-                      <div className="grid gap-3 md:grid-cols-2">
-                        <AdminFormField label="Statut de disponibilité">
-                          <Select
-                            name={`availabilityStatus:${variant.id}`}
-                            defaultValue={variant.availability.status}
-                          >
-                            <SelectTrigger className="text-sm">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {Object.entries(availabilityStatusLabels).map(([value, label]) => (
-                                <SelectItem key={value} value={value}>
-                                  {label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </AdminFormField>
-
-                        <AdminFormField label="Vente en ligne">
-                          <Select
-                            name={`availabilityIsSellable:${variant.id}`}
-                            defaultValue={variant.availability.isSellable ? "true" : "false"}
-                          >
-                            <SelectTrigger className="text-sm">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="true">Vendable</SelectItem>
-                              <SelectItem value="false">Non vendable</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </AdminFormField>
-
-                        <AdminFormField label="Commande en rupture">
-                          <Select
-                            name={`availabilityBackorderAllowed:${variant.id}`}
-                            defaultValue={variant.availability.backorderAllowed ? "true" : "false"}
-                          >
-                            <SelectTrigger className="text-sm">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="false">Interdite</SelectItem>
-                              <SelectItem value="true">Autorisée</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </AdminFormField>
-                      </div>
-
-                      <div className="grid gap-3 md:grid-cols-2">
-                        <AdminFormField label="Début de vente">
-                          <Input
-                            type="datetime-local"
-                            name={`availabilitySellableFrom:${variant.id}`}
-                            defaultValue={toDateTimeLocalValue(variant.availability.sellableFrom)}
-                            className="text-sm"
-                          />
-                        </AdminFormField>
-                        <AdminFormField label="Fin de vente">
-                          <Input
-                            type="datetime-local"
-                            name={`availabilitySellableUntil:${variant.id}`}
-                            defaultValue={toDateTimeLocalValue(variant.availability.sellableUntil)}
-                            className="text-sm"
-                          />
-                        </AdminFormField>
-                        <AdminFormField label="Début de précommande">
-                          <Input
-                            type="datetime-local"
-                            name={`availabilityPreorderStartsAt:${variant.id}`}
-                            defaultValue={toDateTimeLocalValue(variant.availability.preorderStartsAt)}
-                            className="text-sm"
-                          />
-                        </AdminFormField>
-                        <AdminFormField label="Fin de précommande">
-                          <Input
-                            type="datetime-local"
-                            name={`availabilityPreorderEndsAt:${variant.id}`}
-                            defaultValue={toDateTimeLocalValue(variant.availability.preorderEndsAt)}
-                            className="text-sm"
-                          />
-                        </AdminFormField>
-                      </div>
-                    </div>
-                  ))}
+                {variants.map((variant) => (
+                  <VariantAvailabilityCard key={variant.id} variant={variant} />
+                ))}
                 </div>
               ) : (
                 <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">

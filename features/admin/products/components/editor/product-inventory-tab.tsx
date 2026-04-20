@@ -14,6 +14,90 @@ import {
   type ProductInventoryFormAction,
 } from "@/features/admin/products/editor/public";
 
+// ─── Internal components ──────────────────────────────────────────────────────
+
+function InventoryFields({
+  variantId,
+  inventory,
+  availability,
+}: {
+  variantId: string;
+  inventory: AdminProductVariantListItem["inventory"];
+  availability: AdminProductVariantListItem["availability"];
+}): JSX.Element {
+  return (
+    <>
+      <div className="grid gap-3 md:grid-cols-1">
+        <AdminFormField label="Stock physique">
+          <Input
+            type="number"
+            min={0}
+            step={1}
+            name={`inventoryOnHand:${variantId}`}
+            defaultValue={inventory.onHandQuantity.toString()}
+            className="text-sm"
+          />
+        </AdminFormField>
+      </div>
+
+      <p className="text-xs text-muted-foreground">
+        Le stock réservé est géré automatiquement par le système. Le stock disponible est calculé en conséquence.
+      </p>
+
+      <div className="grid gap-3 rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-2 text-xs text-muted-foreground md:grid-cols-2">
+        <p>
+          Stock disponible:{" "}
+          <span className="font-medium text-foreground">
+            {inventory.availableQuantity}
+          </span>
+        </p>
+        <p>
+          Stock réservé :{" "}
+          <span className="font-medium text-foreground">
+            {inventory.reservedQuantity}
+          </span>
+        </p>
+        <p>
+          Rupture de stock :{" "}
+          <span className="font-medium text-foreground">
+            {availability.backorderAllowed ? "Autorisée" : "Non autorisée"}
+          </span>
+        </p>
+        <p>
+          État du stock :{" "}
+          <span className="font-medium text-foreground">
+            {inventory.hasInventoryRecord ? "Enregistré" : "Non enregistré"}
+          </span>
+        </p>
+      </div>
+    </>
+  );
+}
+
+function VariantInventoryCard({ variant }: { variant: AdminProductVariantListItem }): JSX.Element {
+  return (
+    <div
+      data-testid="product-stock-card"
+      className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
+    >
+      <div className="space-y-1">
+        <p className="text-sm font-medium text-foreground">
+          {variant.name ?? "Variante sans nom"}
+        </p>
+        <p className="text-xs font-mono text-muted-foreground">{variant.sku}</p>
+      </div>
+
+      <InventoryFields
+        variantId={variant.id}
+        inventory={variant.inventory}
+        availability={variant.availability}
+      />
+    </div>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
 type ProductInventoryTabProps = {
   action: ProductInventoryFormAction;
   productId: string;
@@ -63,55 +147,17 @@ export function ProductInventoryTab({
                   className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
                 >
                   {standaloneVariant.sku && (
-                    <p className="text-xs font-mono text-muted-foreground">
-                      {standaloneVariant.sku}
+                    <p className="text-xs text-muted-foreground">
+                      <span className="font-medium">SKU :</span>{" "}
+                      <span className="font-mono">{standaloneVariant.sku}</span>
                     </p>
                   )}
 
-                  <div className="grid gap-3 md:grid-cols-2">
-                    <AdminFormField label="Stock physique">
-                      <Input
-                        type="number"
-                        min={0}
-                        step={1}
-                        name={`inventoryOnHand:${standaloneVariant.id}`}
-                        defaultValue={standaloneVariant.inventory.onHandQuantity.toString()}
-                        className="text-sm"
-                      />
-                    </AdminFormField>
-
-                    <AdminFormField label="Stock réservé">
-                      <Input
-                        type="number"
-                        min={0}
-                        step={1}
-                        name={`inventoryReserved:${standaloneVariant.id}`}
-                        defaultValue={standaloneVariant.inventory.reservedQuantity.toString()}
-                        className="text-sm"
-                      />
-                    </AdminFormField>
-                  </div>
-
-                  <div className="grid gap-3 rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-2 text-xs text-muted-foreground md:grid-cols-3">
-                    <p>
-                      Stock disponible:{" "}
-                      <span className="font-medium text-foreground">
-                        {standaloneVariant.inventory.availableQuantity}
-                      </span>
-                    </p>
-                    <p>
-                      Backorder:{" "}
-                      <span className="font-medium text-foreground">
-                        {standaloneVariant.availability.backorderAllowed ? "Autorisé" : "Interdit"}
-                      </span>
-                    </p>
-                    <p>
-                      État inventaire:{" "}
-                      <span className="font-medium text-foreground">
-                        {standaloneVariant.inventory.hasInventoryRecord ? "Enregistré" : "Non configuré"}
-                      </span>
-                    </p>
-                  </div>
+                  <InventoryFields
+                    variantId={standaloneVariant.id}
+                    inventory={standaloneVariant.inventory}
+                    availability={standaloneVariant.availability}
+                  />
                 </div>
               ) : (
                 <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
@@ -127,63 +173,7 @@ export function ProductInventoryTab({
               {hasVariants ? (
                 <div className="space-y-4">
                   {variants.map((variant) => (
-                    <div
-                      key={variant.id}
-                      data-testid="product-stock-card"
-                      className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
-                    >
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium text-foreground">
-                          {variant.name ?? "Variante sans nom"}
-                        </p>
-                        <p className="text-xs font-mono text-muted-foreground">{variant.sku}</p>
-                      </div>
-
-                      <div className="grid gap-3 md:grid-cols-2">
-                        <AdminFormField label="Stock physique">
-                          <Input
-                            type="number"
-                            min={0}
-                            step={1}
-                            name={`inventoryOnHand:${variant.id}`}
-                            defaultValue={variant.inventory.onHandQuantity.toString()}
-                            className="text-sm"
-                          />
-                        </AdminFormField>
-
-                        <AdminFormField label="Stock réservé">
-                          <Input
-                            type="number"
-                            min={0}
-                            step={1}
-                            name={`inventoryReserved:${variant.id}`}
-                            defaultValue={variant.inventory.reservedQuantity.toString()}
-                            className="text-sm"
-                          />
-                        </AdminFormField>
-                      </div>
-
-                      <div className="grid gap-3 rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-2 text-xs text-muted-foreground md:grid-cols-3">
-                        <p>
-                          Stock disponible:{" "}
-                          <span className="font-medium text-foreground">
-                            {variant.inventory.availableQuantity}
-                          </span>
-                        </p>
-                        <p>
-                          Backorder:{" "}
-                          <span className="font-medium text-foreground">
-                            {variant.availability.backorderAllowed ? "Autorisé" : "Interdit"}
-                          </span>
-                        </p>
-                        <p>
-                          État inventaire:{" "}
-                          <span className="font-medium text-foreground">
-                            {variant.inventory.hasInventoryRecord ? "Enregistré" : "Non configuré"}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
+                    <VariantInventoryCard key={variant.id} variant={variant} />
                   ))}
                 </div>
               ) : (

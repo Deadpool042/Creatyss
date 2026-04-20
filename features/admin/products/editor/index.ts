@@ -33,7 +33,6 @@ export {
   productImageAltTextSchema,
   productImageReorderSchema,
   productSeoFormSchema,
-  productGeneralFormSchema,
   productVariantFormSchema,
 } from "./schemas";
 
@@ -153,7 +152,6 @@ export type {
 
 export type {
   AdminPriceEntry,
-  AdminProductPriceEntry,
   AdminVariantPriceEntry,
   AdminProductPricingData,
   ProductPricingFormState,

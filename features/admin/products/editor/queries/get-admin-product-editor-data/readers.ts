@@ -14,12 +14,29 @@ import type {
 export async function readProductEditorCore(
   productId: string
 ): Promise<ProductEditorCoreRecord | null> {
-  return db.product.findFirst({
+  const product = await db.product.findFirst({
     where: {
       id: productId,
     },
     select: PRODUCT_EDITOR_CORE_SELECT,
   });
+
+  if (product === null) {
+    return null;
+  }
+
+  return {
+    ...product,
+    variants: product.variants.map((variant) => ({
+      ...variant,
+      availabilityRecords: variant.availabilityRecords.filter(
+        (record) => record.storeId === product.storeId
+      ),
+      inventoryItems: variant.inventoryItems.filter(
+        (item) => item.storeId === product.storeId
+      ),
+    })),
+  };
 }
 
 export async function readProductEditorSideData(input: {

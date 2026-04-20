@@ -3,12 +3,12 @@
 import { useMemo, useState, useTransition, type JSX } from "react";
 
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { AttachableMediaAssetItem } from "@/features/admin/products/editor/types";
@@ -40,11 +40,7 @@ export function ProductImageLibrarySheet({
     }
 
     return items.filter((item) => {
-      const haystack = [
-        item.originalFilename ?? "",
-        item.altText ?? "",
-        item.publicUrl,
-      ]
+      const haystack = [item.originalFilename ?? "", item.altText ?? "", item.publicUrl]
         .join(" ")
         .toLowerCase();
 
@@ -75,40 +71,43 @@ export function ProductImageLibrarySheet({
   }
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="flex w-full flex-col p-0 sm:max-w-5xl">
-        <SheetHeader className="border-b px-6 py-4 text-left">
-          <SheetTitle>Médiathèque</SheetTitle>
-          <SheetDescription>
-            Sélectionne un ou plusieurs médias existants à rattacher à la galerie produit.
-          </SheetDescription>
-        </SheetHeader>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="p-0 sm:max-w-4xl overflow-hidden">
+        <div className="flex max-h-[85dvh] flex-col">
+          <DialogHeader className="border-b px-6 py-4 text-left">
+            <DialogTitle>Médiathèque</DialogTitle>
+            <DialogDescription>
+              Sélectionne un ou plusieurs médias déjà présents dans ta médiathèque pour les ajouter à
+              la galerie du produit.
+            </DialogDescription>
+          </DialogHeader>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-4 px-6 py-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <Input
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Rechercher un média…"
-              className="sm:max-w-sm"
-            />
+          <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden px-6 py-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <Input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Rechercher un média…"
+                className="sm:max-w-sm"
+              />
 
-            <div className="text-sm text-muted-foreground">
-              {selectedIds.length} sélection{selectedIds.length > 1 ? "s" : ""}
+              <div className="text-sm text-muted-foreground">
+                {selectedIds.length} sélection{selectedIds.length > 1 ? "s" : ""}
+              </div>
+            </div>
+
+            {message ? <p className="text-sm text-muted-foreground">{message}</p> : null}
+
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              <ProductImageLibraryPicker
+                items={filteredItems}
+                selectedIds={selectedIds}
+                onToggle={toggleItem}
+              />
             </div>
           </div>
 
-          {message ? <p className="text-sm text-muted-foreground">{message}</p> : null}
-
-          <div className="min-h-0 flex-1 overflow-y-auto">
-            <ProductImageLibraryPicker
-              items={filteredItems}
-              selectedIds={selectedIds}
-              onToggle={toggleItem}
-            />
-          </div>
-
-          <div className="flex items-center justify-end gap-2 border-t pt-4">
+          <div className="flex items-center justify-end gap-2 border-t px-6 py-4">
             <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
               Annuler
             </Button>
@@ -118,11 +117,11 @@ export function ProductImageLibrarySheet({
               disabled={!onAttach || selectedIds.length === 0 || isPending}
               onClick={handleAttach}
             >
-              {isPending ? "Association…" : "Associer les médias"}
+              {isPending ? "Ajout en cours…" : "Ajouter à la galerie"}
             </Button>
           </div>
         </div>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }

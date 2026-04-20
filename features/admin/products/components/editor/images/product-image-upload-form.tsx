@@ -39,7 +39,7 @@ export function ProductImageUploadForm({
     }
 
     if (selectedFilesCount === 1) {
-      return "Cette image sera utilisée comme image principale du produit.";
+      return "Cette image sera définie comme image principale du produit. Si une image principale est déjà définie, elle sera remplacée.";
     }
 
     return "Avec plusieurs images sélectionnées, cette option est désactivée. Si le produit n’a pas encore d’image principale, la première importée sera utilisée automatiquement.";
@@ -65,9 +65,10 @@ export function ProductImageUploadForm({
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
         <AdminFormField
-          label="Images"
+          label="Images à importer"
           htmlFor="product-image-files"
           required
+          description="Formats acceptés : JPEG, PNG, WebP, AVIF. La sélection multiple est autorisée."
           {...(state.fieldErrors.files ? { error: state.fieldErrors.files } : {})}
         >
           <Input
@@ -98,7 +99,7 @@ export function ProductImageUploadForm({
               disabled={!canSetPrimary}
               onChange={(event) => setMakePrimaryChecked(event.target.checked)}
             />
-            <span>Utiliser comme principale</span>
+            <span>Utiliser comme image principale</span>
           </label>
         </AdminFormField>
       </div>

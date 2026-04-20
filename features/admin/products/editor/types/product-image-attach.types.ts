@@ -8,7 +8,6 @@ export type AttachProductImagesInput = {
     subjectId: string;
     role: "gallery" | "thumbnail" | "other";
     sortOrder: number;
-    isPrimary: boolean;
   }>;
 };
 

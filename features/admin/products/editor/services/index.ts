@@ -20,5 +20,7 @@ export { attachProductImages } from "./attach-product-images.service";
 export { reorderProductImage } from "./reorder-product-image.service";
 export { deleteProductImage } from "./delete-product-image.service";
 export { setProductPrimaryImage } from "./set-product-primary-image.service";
+export { updateProductImageAltText } from "./update-product-image-alt-text.service";
 export { updateProductPrices } from "./update-product-prices.service";
 export { updateProductInventory } from "./update-product-inventory.service";
+export { uploadProductImages } from "./upload-product-images.service";

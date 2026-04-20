@@ -114,7 +114,6 @@ export type { DeleteProductInput, DeleteProductResult } from "./product-delete.t
 
 export type {
   AdminPriceEntry,
-  AdminProductPriceEntry,
   AdminVariantPriceEntry,
   AdminProductPricingData,
   ProductPricingFormState,

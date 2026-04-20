@@ -1,4 +1,5 @@
 import { db } from "@/core/db";
+import { getUploadsPublicPath } from "@/core/uploads";
 
 type CatalogImage = {
   id: string;
@@ -28,6 +29,14 @@ type CatalogProductDetail = {
   description: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
+  seoIndexingMode: "INDEX_FOLLOW" | "INDEX_NOFOLLOW" | "NOINDEX_FOLLOW" | "NOINDEX_NOFOLLOW" | null;
+  seoCanonicalPath: string | null;
+  seoOpenGraphTitle: string | null;
+  seoOpenGraphDescription: string | null;
+  seoOpenGraphImageUrl: string | null;
+  seoTwitterTitle: string | null;
+  seoTwitterDescription: string | null;
+  seoTwitterImageUrl: string | null;
   productType: "simple" | "variable";
   isAvailable: boolean;
   images: CatalogImage[];
@@ -52,6 +61,12 @@ type CatalogCategoryFilterItem = {
   id: string;
   slug: string;
   name: string;
+};
+
+type CatalogSitemapProduct = {
+  slug: string;
+  updatedAt: Date;
+  sitemapIncluded: boolean;
 };
 
 type CatalogBlogListItem = {
@@ -94,22 +109,58 @@ function getVariantAvailability(variant: {
     reservedQuantity: number;
   }>;
 }): boolean {
-  return variant.inventoryItems.some(
-    (item) => item.onHandQuantity - item.reservedQuantity > 0
-  );
+  return variant.inventoryItems.some((item) => item.onHandQuantity - item.reservedQuantity > 0);
 }
 
-function mapImage(input: {
-  id: string;
-  storageKey: string;
-  altText: string | null;
-}): CatalogImage {
+function mapImage(input: { id: string; storageKey: string; altText: string | null }): CatalogImage {
   return {
     id: input.id,
     filePath: input.storageKey,
     altText: input.altText,
     isPrimary: true,
   };
+}
+
+export async function getPublishedProductsForSitemap(): Promise<CatalogSitemapProduct[]> {
+  const products = await db.product.findMany({
+    where: {
+      status: "ACTIVE",
+      archivedAt: null,
+    },
+    orderBy: { updatedAt: "desc" },
+    select: {
+      id: true,
+      slug: true,
+      updatedAt: true,
+    },
+  });
+
+  if (products.length === 0) {
+    return [];
+  }
+
+  const productIds = products.map((p) => p.id);
+
+  const seoMetadataList = await db.seoMetadata.findMany({
+    where: {
+      subjectType: "PRODUCT",
+      subjectId: { in: productIds },
+      archivedAt: null,
+    },
+    select: {
+      subjectId: true,
+      sitemapIncluded: true,
+    },
+  });
+
+  const seoMap = new Map(seoMetadataList.map((s) => [s.subjectId, s.sitemapIncluded]));
+
+  return products.map((product) => ({
+    slug: product.slug,
+    updatedAt: product.updatedAt,
+    // default: true — a published product with no SeoMetadata must appear in the sitemap
+    sitemapIncluded: seoMap.get(product.id) ?? true,
+  }));
 }
 
 export async function listPublishedBlogPosts(): Promise<CatalogBlogListItem[]> {
@@ -137,9 +188,7 @@ export async function listPublishedBlogPosts(): Promise<CatalogBlogListItem[]> {
   }));
 }
 
-export async function getPublishedBlogPostBySlug(
-  slug: string
-): Promise<CatalogBlogDetail | null> {
+export async function getPublishedBlogPostBySlug(slug: string): Promise<CatalogBlogDetail | null> {
   const post = await db.blogPost.findFirst({
     where: {
       slug,
@@ -299,6 +348,7 @@ export async function getPublishedProductBySlug(
     },
     select: {
       id: true,
+      storeId: true,
       slug: true,
       name: true,
       shortDescription: true,
@@ -362,6 +412,35 @@ export async function getPublishedProductBySlug(
     return null;
   }
 
+  const seoMetadata = await db.seoMetadata.findFirst({
+    where: {
+      storeId: product.storeId,
+      subjectType: "PRODUCT",
+      subjectId: product.id,
+      archivedAt: null,
+    },
+    select: {
+      metaTitle: true,
+      metaDescription: true,
+      indexingMode: true,
+      canonicalPath: true,
+      openGraphTitle: true,
+      openGraphDescription: true,
+      openGraphImage: {
+        select: {
+          storageKey: true,
+        },
+      },
+      twitterTitle: true,
+      twitterDescription: true,
+      twitterImage: {
+        select: {
+          storageKey: true,
+        },
+      },
+    },
+  });
+
   const variants: CatalogVariant[] = product.variants.map((variant) => {
     const activePrice = variant.prices[0] ?? null;
     const image = variant.primaryImage ? [mapImage(variant.primaryImage)] : [];
@@ -380,8 +459,13 @@ export async function getPublishedProductBySlug(
     };
   });
 
+  const uploadsPublicPath = getUploadsPublicPath();
+
   const images = product.primaryImage ? [mapImage(product.primaryImage)] : [];
   const isAvailable = variants.some((variant) => variant.isAvailable);
+
+  const ogImageStorageKey = seoMetadata?.openGraphImage?.storageKey ?? null;
+  const twitterImageStorageKey = seoMetadata?.twitterImage?.storageKey ?? null;
 
   return {
     id: product.id,
@@ -389,8 +473,20 @@ export async function getPublishedProductBySlug(
     name: product.name,
     shortDescription: product.shortDescription,
     description: product.description,
-    seoTitle: null,
-    seoDescription: null,
+    seoTitle: seoMetadata?.metaTitle ?? null,
+    seoDescription: seoMetadata?.metaDescription ?? null,
+    seoIndexingMode: seoMetadata?.indexingMode ?? null,
+    seoCanonicalPath: seoMetadata?.canonicalPath ?? null,
+    seoOpenGraphTitle: seoMetadata?.openGraphTitle ?? null,
+    seoOpenGraphDescription: seoMetadata?.openGraphDescription ?? null,
+    seoOpenGraphImageUrl: ogImageStorageKey
+      ? `${uploadsPublicPath}/${ogImageStorageKey.replace(/^\/+/, "")}`
+      : null,
+    seoTwitterTitle: seoMetadata?.twitterTitle ?? null,
+    seoTwitterDescription: seoMetadata?.twitterDescription ?? null,
+    seoTwitterImageUrl: twitterImageStorageKey
+      ? `${uploadsPublicPath}/${twitterImageStorageKey.replace(/^\/+/, "")}`
+      : null,
     productType: product.isStandalone ? "simple" : "variable",
     isAvailable,
     images,

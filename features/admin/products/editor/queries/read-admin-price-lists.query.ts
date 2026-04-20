@@ -6,15 +6,13 @@ export async function readAdminPriceLists(): Promise<readonly AdminPriceListOpti
     where: {
       archivedAt: null,
     },
-    orderBy: [
-      { isDefault: "desc" },
-      { createdAt: "asc" },
-    ],
+    orderBy: [{ isDefault: "desc" }, { createdAt: "asc" }],
     select: {
       id: true,
       code: true,
       name: true,
       isDefault: true,
+      currencyCode: true,
     },
   });
 
@@ -23,5 +21,6 @@ export async function readAdminPriceLists(): Promise<readonly AdminPriceListOpti
     code: priceList.code,
     name: priceList.name,
     isDefault: priceList.isDefault,
+    currencyCode: priceList.currencyCode,
   }));
 }

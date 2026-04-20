@@ -8,7 +8,6 @@ export type AdminPriceEntry = {
   endsAt: string | null;
 };
 
-export type AdminProductPriceEntry = AdminPriceEntry;
 
 export type AdminVariantPriceEntry = {
   variantId: string;
@@ -19,7 +18,7 @@ export type AdminVariantPriceEntry = {
 
 export type AdminProductPricingData = {
   productId: string;
-  productPrices: AdminProductPriceEntry[];
+  productPrices: AdminPriceEntry[];
   variantPrices: AdminVariantPriceEntry[];
 };
 
