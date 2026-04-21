@@ -377,6 +377,15 @@ export async function getPublishedProductBySlug(
           altText: true,
         },
       },
+      prices: {
+        where: { archivedAt: null },
+        orderBy: { createdAt: "asc" as const },
+        take: 1,
+        select: {
+          amount: true,
+          compareAtAmount: true,
+        },
+      },
       variants: {
         where: {
           status: "ACTIVE",
@@ -483,8 +492,10 @@ export async function getPublishedProductBySlug(
     },
   });
 
+  const productLevelPrice = product.prices[0] ?? null;
+
   const variants: CatalogVariant[] = product.variants.map((variant) => {
-    const activePrice = variant.prices[0] ?? null;
+    const activePrice = variant.prices[0] ?? productLevelPrice;
     const image = variant.primaryImage ? [mapImage(variant.primaryImage)] : [];
 
     return {

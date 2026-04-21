@@ -5,8 +5,10 @@
  * - Pas de filtre `status: "ACTIVE"` sur le produit principal.
  * - `archivedAt: null` conservé sur le produit.
  * - `status` du produit remonté dans le retour (forme admin lowercase).
- * - Variantes, stocks et prix : mêmes filtres que le storefront (ACTIVE uniquement)
- *   pour refléter ce qui serait réellement affiché en cas de publication.
+ * - Variantes : filtre `archivedAt: null` uniquement (DRAFT inclus) pour que la
+ *   preview admin reflète les données réelles même avant publication.
+ * - Prix : lecture depuis `ProductPrice` (product-level) en fallback — les prix sont
+ *   écrits par `updateProductPrices` sur `ProductPrice`, pas sur `ProductVariantPrice`.
  * - Images : retournées sous forme d'URL résolue (getUploadsPublicPath) plutôt que
  *   de storageKey brut.
  */
@@ -165,9 +167,17 @@ export async function getAdminProductPreviewBySlug(
           altText: true,
         },
       },
+      prices: {
+        where: { archivedAt: null },
+        orderBy: { createdAt: "asc" as const },
+        take: 1,
+        select: {
+          amount: true,
+          compareAtAmount: true,
+        },
+      },
       variants: {
         where: {
-          status: "ACTIVE",
           archivedAt: null,
         },
         orderBy: [{ isDefault: "desc" }, { sortOrder: "asc" }, { createdAt: "asc" }],
@@ -282,8 +292,10 @@ export async function getAdminProductPreviewBySlug(
       ]
     : [];
 
+  const productLevelPrice = product.prices[0] ?? null;
+
   const variants: AdminProductPreviewVariant[] = product.variants.map((variant) => {
-    const activePrice = variant.prices[0] ?? null;
+    const activePrice = variant.prices[0] ?? productLevelPrice;
     const variantImages: AdminProductPreviewImage[] = variant.primaryImage
       ? [
           {

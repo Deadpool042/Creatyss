@@ -68,6 +68,8 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
   const isSimpleProduct = product.productType === "simple";
   const singleVariant =
     isSimpleProduct && product.variants.length === 1 ? product.variants[0] : null;
+  // For variable products, show the default (first ordered) variant price in the hero
+  const heroVariant = singleVariant ?? product.variants[0] ?? null;
 
   return (
     <AdminPageShell
@@ -101,64 +103,68 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
         ) : null}
 
         {/* ------------------------------------------------------------------ */}
-        {/* Fiche principale                                                     */}
+        {/* Fiche principale — hero storefront                                  */}
         {/* ------------------------------------------------------------------ */}
-        <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
-          <div className="mb-8 grid gap-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <p className="text-sm font-bold uppercase tracking-widest text-brand">
-                Aperçu produit
-              </p>
-              <Badge variant="secondary">{isSimpleProduct ? "Simple" : "Variable"}</Badge>
-            </div>
-            <h1 className="m-0">{product.name}</h1>
-            {/* {product.shortDescription ? ( */}
-            <div
-              className="leading-relaxed text-muted-foreground prose max-w-none dark:prose-invert "
-              dangerouslySetInnerHTML={{ __html: product.shortDescription ?? "" }}
-            />
-            {/* {product.shortDescription} */}
-            {/* </p> */}
-            {/* ) : null} */}
-          </div>
-
-          <div className="grid gap-8 min-[900px]:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] min-[900px]:items-start">
-            {/* Image principale — edge-to-edge, ratio 4:3 */}
-            <div className="overflow-hidden rounded-xl border border-surface-border bg-media-surface">
+        <section className="w-full overflow-hidden rounded-xl border border-shell-border bg-shell-surface shadow-soft">
+          <div className="grid min-[900px]:grid-cols-[minmax(0,1fr)_minmax(22rem,0.85fr)]">
+            {/* Image principale — padded pour objet-contain propre */}
+            <div className="border-b border-surface-border bg-media-surface min-[900px]:border-b-0 min-[900px]:border-r">
               {primaryImage ? (
-                <figure className="relative aspect-[4/3] w-full overflow-hidden">
-                  <Image
-                    alt={primaryImage.altText ?? product.name}
-                    className="object-cover"
-                    fill
-                    loading="lazy"
-                    sizes="(min-width: 900px) 55vw, 100vw"
-                    src={primaryImage.url}
-                  />
-                </figure>
+                <div className="aspect-square w-full p-6">
+                  <div className="relative h-full w-full">
+                    <Image
+                      alt={primaryImage.altText ?? product.name}
+                      className="object-contain"
+                      fill
+                      loading="lazy"
+                      sizes="(min-width: 900px) 50vw, 100vw"
+                      src={primaryImage.url}
+                    />
+                  </div>
+                </div>
               ) : (
-                <div className="grid aspect-[4/3] place-items-center text-center text-sm text-media-foreground">
+                <div className="grid aspect-square place-items-center text-center text-sm text-media-foreground">
                   Aucune image.
                 </div>
               )}
             </div>
 
-            {/* Infos produit — prix en tête, meta compacte */}
-            <aside className="grid gap-6 rounded-xl border border-surface-border bg-surface-panel p-6">
-              {/* Prix — produit simple uniquement */}
-              {singleVariant ? (
-                <div className="grid gap-1 border-b border-surface-border pb-5">
+            {/* Infos produit — nom, prix, meta */}
+            <aside className="grid content-start gap-6 p-8 min-[700px]:p-10">
+              {/* Nom + description courte */}
+              <div className="grid gap-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="secondary">{isSimpleProduct ? "Simple" : "Variable"}</Badge>
+                </div>
+                <h1 className="m-0 text-2xl font-bold leading-snug">{product.name}</h1>
+                {product.shortDescription ? (
+                  <div
+                    className="prose prose-sm max-w-none leading-relaxed text-muted-foreground dark:prose-invert"
+                    dangerouslySetInnerHTML={{ __html: product.shortDescription }}
+                  />
+                ) : null}
+              </div>
+
+              {/* Prix — produit simple : prix exact ; variable : prix du premier variant */}
+              {heroVariant ? (
+                <div className="grid gap-1 border-b border-surface-border pb-6">
+                  {!isSimpleProduct ? (
+                    <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                      Dès
+                    </p>
+                  ) : null}
                   <p className="text-3xl font-bold leading-tight tracking-tight">
-                    {singleVariant.price || "—"}
+                    {heroVariant.price || "—"}
                   </p>
-                  {singleVariant.compareAtPrice ? (
+                  {heroVariant.compareAtPrice ? (
                     <p className="text-sm text-muted-foreground line-through">
-                      {singleVariant.compareAtPrice}
+                      {heroVariant.compareAtPrice}
                     </p>
                   ) : null}
                 </div>
               ) : null}
 
+              {/* Meta */}
               <div className="grid gap-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
@@ -169,13 +175,6 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
                       {getProductAvailabilityLabel(product.isAvailable)}
                     </span>
                   </Badge>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    Type
-                  </p>
-                  <Badge variant="secondary">{isSimpleProduct ? "Simple" : "Variable"}</Badge>
                 </div>
 
                 {singleVariant?.sku ? (
@@ -245,40 +244,27 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
                   </Badge>
                 </div>
 
-                <div className="grid gap-4">
+                {singleVariant.sku ? (
                   <div className="grid gap-1">
                     <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                      Prix
+                      SKU
                     </p>
-                    <p className="text-2xl font-bold leading-tight">{singleVariant.price || "—"}</p>
-                    {singleVariant.compareAtPrice ? (
-                      <p className="text-sm text-muted-foreground">
-                        Prix avant réduction : {singleVariant.compareAtPrice}
-                      </p>
-                    ) : null}
+                    <p className="font-mono leading-relaxed">{singleVariant.sku}</p>
                   </div>
-
-                  {singleVariant.sku ? (
-                    <div className="grid gap-1">
-                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                        SKU
-                      </p>
-                      <p className="leading-relaxed">{singleVariant.sku}</p>
-                    </div>
-                  ) : null}
-                </div>
+                ) : null}
 
                 {singleVariant.images[0] ? (
-                  <figure className="overflow-hidden rounded-lg bg-media-surface min-h-40">
-                    <Image
-                      alt={singleVariant.images[0].altText ?? singleVariant.name}
-                      className="block w-full object-cover"
-                      loading="lazy"
-                      src={singleVariant.images[0].url}
-                      width={600}
-                      height={450}
-                    />
-                  </figure>
+                  <div className="aspect-video w-full overflow-hidden rounded-lg bg-media-surface p-4">
+                    <div className="relative h-full w-full">
+                      <Image
+                        alt={singleVariant.images[0].altText ?? singleVariant.name}
+                        className="object-contain"
+                        fill
+                        loading="lazy"
+                        src={singleVariant.images[0].url}
+                      />
+                    </div>
+                  </div>
                 ) : null}
               </article>
             ) : (
@@ -289,77 +275,85 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
               </div>
             )
           ) : product.variants.length > 0 ? (
-            <div className="grid gap-5 grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
-              {product.variants.map((variant) => {
-                const variantImage = variant.images[0] ?? null;
-                const defaultBadgeLabel = getVariantDefaultBadgeLabel(variant.isDefault);
+            <>
+              {/* Résumé de disponibilité */}
+              <div className="mb-6 flex flex-wrap gap-3">
+                <Badge variant="secondary">
+                  {product.variants.length} déclinaison{product.variants.length > 1 ? "s" : ""}
+                </Badge>
+                <Badge variant="outline">
+                  <span className={product.isAvailable ? "text-emerald-700" : "text-destructive"}>
+                    {product.variants.filter((v) => v.isAvailable).length} disponible
+                    {product.variants.filter((v) => v.isAvailable).length > 1 ? "s" : ""}
+                  </span>
+                </Badge>
+              </div>
 
-                return (
-                  <article
-                    className="grid gap-5 rounded-lg border border-surface-border bg-surface-panel-soft p-6"
-                    key={variant.id}
-                  >
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <h3>{variant.name}</h3>
-                      <div className="flex flex-wrap items-center gap-2">
-                        {defaultBadgeLabel ? (
-                          <Badge variant="secondary">{defaultBadgeLabel}</Badge>
-                        ) : null}
-                        <Badge variant="outline">
-                          <span
-                            className={
-                              variant.isAvailable ? "text-emerald-700" : "text-destructive"
-                            }
-                          >
-                            {getVariantAvailabilityLabel(variant.isAvailable)}
-                          </span>
-                        </Badge>
-                      </div>
-                    </div>
+              <div className="grid gap-5 grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
+                {product.variants.map((variant) => {
+                  const variantImage = variant.images[0] ?? null;
+                  const defaultBadgeLabel = getVariantDefaultBadgeLabel(variant.isDefault);
 
-                    <div className="grid gap-4">
-                      <div className="grid gap-1">
-                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                          Prix
-                        </p>
-                        <p className="text-2xl font-bold leading-tight">{variant.price || "—"}</p>
-                        {variant.compareAtPrice ? (
-                          <p className="text-sm text-muted-foreground">
-                            Prix avant réduction : {variant.compareAtPrice}
-                          </p>
-                        ) : null}
-                      </div>
-
-                      {variant.sku ? (
-                        <div className="grid gap-1">
-                          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                            SKU
-                          </p>
-                          <p className="leading-relaxed">{variant.sku}</p>
+                  return (
+                    <article
+                      className="grid gap-5 rounded-lg border border-surface-border bg-surface-panel-soft p-6"
+                      key={variant.id}
+                    >
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <h3 className="text-base font-semibold">{variant.name}</h3>
+                        <div className="flex flex-wrap items-center gap-2">
+                          {defaultBadgeLabel ? (
+                            <Badge variant="secondary">{defaultBadgeLabel}</Badge>
+                          ) : null}
+                          <Badge variant="outline">
+                            <span
+                              className={
+                                variant.isAvailable ? "text-emerald-700" : "text-destructive"
+                              }
+                            >
+                              {getVariantAvailabilityLabel(variant.isAvailable)}
+                            </span>
+                          </Badge>
                         </div>
-                      ) : null}
-                    </div>
-
-                    {variantImage ? (
-                      <figure className="overflow-hidden rounded-lg bg-media-surface min-h-40">
-                        <Image
-                          alt={variantImage.altText ?? variant.name}
-                          className="block w-full object-cover"
-                          loading="lazy"
-                          src={variantImage.url}
-                          width={600}
-                          height={450}
-                        />
-                      </figure>
-                    ) : (
-                      <div className="grid place-items-center min-h-40 rounded-lg bg-media-surface p-4 text-center text-media-foreground">
-                        Aucun visuel.
                       </div>
-                    )}
-                  </article>
-                );
-              })}
-            </div>
+
+                      <div className="grid gap-3">
+                        <div className="flex items-baseline gap-2">
+                          <p className="text-xl font-bold leading-tight">{variant.price || "—"}</p>
+                          {variant.compareAtPrice ? (
+                            <p className="text-sm text-muted-foreground line-through">
+                              {variant.compareAtPrice}
+                            </p>
+                          ) : null}
+                        </div>
+
+                        {variant.sku ? (
+                          <p className="font-mono text-sm text-muted-foreground">{variant.sku}</p>
+                        ) : null}
+                      </div>
+
+                      {variantImage ? (
+                        <div className="aspect-square w-full overflow-hidden rounded-lg bg-media-surface p-3">
+                          <div className="relative h-full w-full">
+                            <Image
+                              alt={variantImage.altText ?? variant.name}
+                              className="object-contain"
+                              fill
+                              loading="lazy"
+                              src={variantImage.url}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="grid aspect-square place-items-center rounded-lg bg-media-surface p-4 text-center text-sm text-media-foreground">
+                          Aucun visuel.
+                        </div>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
+            </>
           ) : (
             <div className="rounded-lg border border-surface-border bg-surface-panel-soft p-6">
               <p className="leading-relaxed text-muted-foreground">

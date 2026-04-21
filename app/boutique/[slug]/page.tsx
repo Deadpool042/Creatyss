@@ -228,7 +228,10 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
             <p className="text-sm font-bold uppercase tracking-widest text-brand">Produit</p>
             <h1 className="m-0">{product.name}</h1>
             {product.shortDescription ? (
-              <p className="leading-relaxed text-muted-foreground">{product.shortDescription}</p>
+              <div
+                className="prose prose-sm max-w-none leading-relaxed text-muted-foreground dark:prose-invert"
+                dangerouslySetInnerHTML={{ __html: product.shortDescription }}
+              />
             ) : null}
           </div>
 
@@ -326,7 +329,10 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                   <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
                     Description
                   </p>
-                  <p className="leading-relaxed">{product.description}</p>
+                  <div
+                    className="prose prose-sm max-w-none leading-relaxed dark:prose-invert"
+                    dangerouslySetInnerHTML={{ __html: product.description }}
+                  />
                 </div>
               ) : null}
 
