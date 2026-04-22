@@ -65,7 +65,6 @@ function decimalToString(value: { toString(): string } | null): string | null {
   return value ? value.toString() : null;
 }
 
-
 function mapProductTypeToAdminProductType(input: {
   productTypeCode: string | null;
   variantCount: number;

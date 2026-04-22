@@ -77,8 +77,8 @@ export function ProductImageLibrarySheet({
           <DialogHeader className="border-b px-6 py-4 text-left">
             <DialogTitle>Médiathèque</DialogTitle>
             <DialogDescription>
-              Sélectionne un ou plusieurs médias déjà présents dans ta médiathèque pour les ajouter à
-              la galerie du produit.
+              Sélectionne un ou plusieurs médias déjà présents dans ta médiathèque pour les ajouter
+              à la galerie du produit.
             </DialogDescription>
           </DialogHeader>
 

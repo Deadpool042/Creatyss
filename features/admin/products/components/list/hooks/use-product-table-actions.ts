@@ -57,9 +57,7 @@ export function useProductTableActions({
 
   // ── Internal action runners ───────────────────────────────────────────────
 
-  async function executeBulkAction(
-    action: () => Promise<AdminProductActionResult>,
-  ): Promise<void> {
+  async function executeBulkAction(action: () => Promise<AdminProductActionResult>): Promise<void> {
     if (selectedProductIds.length === 0 || isBulkPending) return;
 
     setIsBulkPending(true);
@@ -78,9 +76,7 @@ export function useProductTableActions({
     setIsBulkPending(false);
   }
 
-  async function executeOneAction(
-    action: () => Promise<AdminProductActionResult>,
-  ): Promise<void> {
+  async function executeOneAction(action: () => Promise<AdminProductActionResult>): Promise<void> {
     const result = await action();
 
     if (result.status === "success") {
@@ -159,31 +155,27 @@ export function useProductTableActions({
 
   async function handleBulkStatusChange(status: ProductTableStatus): Promise<void> {
     await executeBulkAction(() =>
-      bulkUpdateProductStatusAction({ productIds: selectedProductIds, status }),
+      bulkUpdateProductStatusAction({ productIds: selectedProductIds, status })
     );
   }
 
   async function handleBulkFeaturedChange(isFeatured: boolean): Promise<void> {
     await executeBulkAction(() =>
-      bulkUpdateProductFeaturedAction({ productIds: selectedProductIds, isFeatured }),
+      bulkUpdateProductFeaturedAction({ productIds: selectedProductIds, isFeatured })
     );
   }
 
   async function handleBulkArchive(): Promise<void> {
-    await executeBulkAction(() =>
-      bulkArchiveProductsAction({ productIds: selectedProductIds }),
-    );
+    await executeBulkAction(() => bulkArchiveProductsAction({ productIds: selectedProductIds }));
   }
 
   async function handleBulkRestore(): Promise<void> {
-    await executeBulkAction(() =>
-      bulkRestoreProductsAction({ productIds: selectedProductIds }),
-    );
+    await executeBulkAction(() => bulkRestoreProductsAction({ productIds: selectedProductIds }));
   }
 
   async function handleBulkPermanentDelete(): Promise<void> {
     await executeBulkAction(() =>
-      bulkDeleteProductsPermanentlyAction({ productIds: selectedProductIds }),
+      bulkDeleteProductsPermanentlyAction({ productIds: selectedProductIds })
     );
   }
 

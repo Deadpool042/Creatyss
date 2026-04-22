@@ -72,7 +72,9 @@ export const updateProductPricesAction: ProductPricingFormAction = async (_prevS
     if (!parsed.success) {
       for (const issue of parsed.error.issues) {
         const field =
-          issue.path.length > 0 ? `${String(issue.path[0])}:${priceListId}` : `price:${priceListId}`;
+          issue.path.length > 0
+            ? `${String(issue.path[0])}:${priceListId}`
+            : `price:${priceListId}`;
         fieldErrors[field] = issue.message;
       }
       continue;

@@ -27,11 +27,22 @@
   gap: 2rem;
 }
 
+/* Eyebrow label — pattern typographique récurrent (overlines, labels de section).
+   Usage : class="text-eyebrow text-muted-foreground" ou "text-eyebrow text-brand"
+   Ne pas inclure la couleur ici — elle est contextuelle. */
+.text-eyebrow {
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+}
+
 .hero,
 .section {
   width: 100%;
   border: 1px solid var(--shell-border);
-  border-radius: 1rem;
+  border-radius: var(--radius-lg); /* token — ne pas hardcoder 1rem */
   background: var(--shell-surface);
   box-shadow: var(--shadow-soft);
 }

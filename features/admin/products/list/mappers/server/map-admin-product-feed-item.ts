@@ -89,7 +89,6 @@ function parseDecimal(value: DecimalLike | null): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-
 function mapStock(input: {
   variants: Array<{
     inventoryItems: Array<{

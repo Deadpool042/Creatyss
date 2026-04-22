@@ -23,7 +23,7 @@ export function ProductDescriptionSection({ description }: ProductDescriptionSec
   return (
     <section className="w-full rounded-xl border border-shell-border bg-surface-panel-soft p-4 shadow-soft min-[700px]:p-6 min-[900px]:p-8">
       <div className="mb-3 min-[700px]:mb-5 grid gap-1.5 min-[700px]:gap-2">
-        <p className="text-[11px] font-semibold uppercase tracking-widest text-brand">Description</p>
+        <p className="text-eyebrow text-brand">Description</p>
         <h2 className="m-0">À propos de ce produit</h2>
       </div>
       <div

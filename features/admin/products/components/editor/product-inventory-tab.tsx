@@ -41,21 +41,18 @@ function InventoryFields({
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Le stock réservé est géré automatiquement par le système. Le stock disponible est calculé en conséquence.
+        Le stock réservé est géré automatiquement par le système. Le stock disponible est calculé en
+        conséquence.
       </p>
 
       <div className="grid gap-3 rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-2 text-xs text-muted-foreground md:grid-cols-2">
         <p>
           Stock disponible:{" "}
-          <span className="font-medium text-foreground">
-            {inventory.availableQuantity}
-          </span>
+          <span className="font-medium text-foreground">{inventory.availableQuantity}</span>
         </p>
         <p>
           Stock réservé :{" "}
-          <span className="font-medium text-foreground">
-            {inventory.reservedQuantity}
-          </span>
+          <span className="font-medium text-foreground">{inventory.reservedQuantity}</span>
         </p>
         <p>
           Rupture de stock :{" "}
@@ -81,9 +78,7 @@ function VariantInventoryCard({ variant }: { variant: AdminProductVariantListIte
       className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
     >
       <div className="space-y-1">
-        <p className="text-sm font-medium text-foreground">
-          {variant.name ?? "Variante sans nom"}
-        </p>
+        <p className="text-sm font-medium text-foreground">{variant.name ?? "Variante sans nom"}</p>
         <p className="text-xs font-mono text-muted-foreground">{variant.sku}</p>
       </div>
 

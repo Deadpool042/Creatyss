@@ -88,6 +88,7 @@
   "chat.tools.terminal.autoApprove": {
     "docker exec": true,
     "pnpm": true,
-    "docker compose": true
+    "docker compose": true,
+    "uniq": true
   }
 }

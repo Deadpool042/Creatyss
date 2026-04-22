@@ -372,7 +372,6 @@ export function ProductRelatedProductsTab({
                           </Tooltip>
                         </TooltipProvider>
 
-
                         <div className="flex items-end gap-1">
                           <Button
                             type="button"

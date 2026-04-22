@@ -8,7 +8,6 @@ export type AdminPriceEntry = {
   endsAt: string | null;
 };
 
-
 export type AdminVariantPriceEntry = {
   variantId: string;
   variantName: string | null;

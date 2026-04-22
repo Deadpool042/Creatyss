@@ -126,6 +126,25 @@
   --chart-3: oklch(0.546 0.245 262.881);
   --chart-4: oklch(0.488 0.243 264.376);
   --chart-5: oklch(0.424 0.199 265.638);
+
+  /* --- Hero editorial — cool, surfaces neutres, encre slate --- */
+  --hero-bg: rgb(248 249 252);
+  --hero-bg-media: rgb(240 242 248);
+  --hero-ink: rgb(15 23 42);
+  --hero-ink-soft: rgb(71 85 105);
+  --hero-ink-muted: rgb(148 163 184);
+  --hero-border: rgb(203 213 225);
+  --hero-vignette: rgb(15 23 42 / 0.08);
+
+  /* --- Band — always-dark editorial band (indigo sombre) --- */
+  /* Always identical in :root and .dark since band-bg never changes. */
+  --band-bg: rgb(15 23 42);
+  --band-border: rgb(255 255 255 / 0.06);
+  --band-foreground: rgb(255 255 255 / 0.85);
+  --band-foreground-muted: rgb(255 255 255 / 0.55);
+  --band-icon: rgb(255 255 255 / 0.45);
+  --band-eyebrow: rgb(255 255 255 / 0.3);
+  --band-form-border: rgb(255 255 255 / 0.15);
 }
 
 .dark {
@@ -239,4 +258,22 @@
   --chart-3: oklch(0.546 0.245 262.881);
   --chart-4: oklch(0.488 0.243 264.376);
   --chart-5: oklch(0.424 0.199 265.638);
+
+  /* --- Hero editorial dark — surfaces sombres cool, encre claire --- */
+  --hero-bg: rgb(15 23 42);
+  --hero-bg-media: rgb(10 17 33);
+  --hero-ink: rgb(240 244 252);
+  --hero-ink-soft: rgb(186 199 220);
+  --hero-ink-muted: rgb(100 118 143);
+  --hero-border: rgb(51 65 85);
+  --hero-vignette: rgb(0 0 0 / 0.18);
+
+  /* --- Band — always-dark (same as :root — intentionally identical) --- */
+  --band-bg: rgb(15 23 42);
+  --band-border: rgb(255 255 255 / 0.06);
+  --band-foreground: rgb(255 255 255 / 0.85);
+  --band-foreground-muted: rgb(255 255 255 / 0.55);
+  --band-icon: rgb(255 255 255 / 0.45);
+  --band-eyebrow: rgb(255 255 255 / 0.3);
+  --band-form-border: rgb(255 255 255 / 0.15);
 }

@@ -65,7 +65,7 @@ type AvailabilityFieldsProps = {
 
 function AvailabilityFields({ variantId, availability }: AvailabilityFieldsProps): JSX.Element {
   const [selectedStatus, setSelectedStatus] = useState<AdminProductVariantAvailability["status"]>(
-    availability.status,
+    availability.status
   );
 
   return (
@@ -75,9 +75,7 @@ function AvailabilityFields({ variantId, availability }: AvailabilityFieldsProps
           <Select
             name={`availabilityStatus:${variantId}`}
             defaultValue={availability.status}
-            onValueChange={(v) =>
-              setSelectedStatus(v as AdminProductVariantAvailability["status"])
-            }
+            onValueChange={(v) => setSelectedStatus(v as AdminProductVariantAvailability["status"])}
           >
             <SelectTrigger className="text-sm">
               <SelectValue />
@@ -170,16 +168,18 @@ function AvailabilityFields({ variantId, availability }: AvailabilityFieldsProps
   );
 }
 
-function VariantAvailabilityCard({ variant }: { variant: AdminProductVariantListItem }): JSX.Element {
+function VariantAvailabilityCard({
+  variant,
+}: {
+  variant: AdminProductVariantListItem;
+}): JSX.Element {
   return (
     <div
       data-testid="product-availability-card"
       className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
     >
       <div className="space-y-1">
-        <p className="text-sm font-medium text-foreground">
-          {variant.name ?? "Variante sans nom"}
-        </p>
+        <p className="text-sm font-medium text-foreground">{variant.name ?? "Variante sans nom"}</p>
         <p className="text-xs font-mono text-muted-foreground">{variant.sku}</p>
       </div>
 
@@ -251,9 +251,9 @@ export function ProductAvailabilityTab({
             >
               {hasVariants ? (
                 <div className="space-y-4">
-                {variants.map((variant) => (
-                  <VariantAvailabilityCard key={variant.id} variant={variant} />
-                ))}
+                  {variants.map((variant) => (
+                    <VariantAvailabilityCard key={variant.id} variant={variant} />
+                  ))}
                 </div>
               ) : (
                 <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">

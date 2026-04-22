@@ -1,10 +1,6 @@
 import type { AdminProductActionResult } from "@/features/admin/products/types";
 
-export type AdminProductVariantStatus =
-  | "draft"
-  | "active"
-  | "inactive"
-  | "archived";
+export type AdminProductVariantStatus = "draft" | "active" | "inactive" | "archived";
 
 export type AdminProductAvailabilityStatus =
   | "available"

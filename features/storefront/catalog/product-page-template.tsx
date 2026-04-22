@@ -136,19 +136,19 @@ export function ProductPageTemplate({
       {/* Bandeau contextuel (statut admin / messages panier storefront) */}
       {statusBanner}
 
-      <div className="grid gap-4 min-[700px]:gap-6 min-[900px]:gap-7">
+      <div className="grid gap-4 min-[700px]:gap-6">
         {/* ------------------------------------------------------------------ */}
         {/* Pré-header éditorial — badge, nom, accroche courte                  */}
         {/* ------------------------------------------------------------------ */}
-        <ProductPreHeaderSection
-          productName={productName}
-          isSimpleProduct={isSimpleProduct}
-          marketingHook={marketingHook ?? null}
-        />
-
         <div className="grid gap-3 min-[700px]:gap-4">
+          <ProductPreHeaderSection
+            productName={productName}
+            isSimpleProduct={isSimpleProduct}
+            marketingHook={marketingHook ?? null}
+          />
+
           {/* ---------------------------------------------------------------- */}
-          {/* Hero — grid 2 colonnes : image gauche / infos transactionnelles   */}
+          {/* Hero — grid image / aside transactionnel                         */}
           {/* ---------------------------------------------------------------- */}
           <ProductHeroSection
             productName={productName}
@@ -158,16 +158,15 @@ export function ProductPageTemplate({
             primaryImage={primaryImage}
             heroVariant={heroVariant}
             singleVariantSku={singleOffer?.sku ?? null}
-            imageClassName="object-cover rounded-xl border border-shell-border bg-shell-surface shadow-soft"
             cta={heroCta}
             asideExtra={heroAsideExtra}
           />
-
-          {/* ---------------------------------------------------------------- */}
-          {/* Description — section dédiée, pleine largeur                      */}
-          {/* ---------------------------------------------------------------- */}
-          {description ? <ProductDescriptionSection description={description} /> : null}
         </div>
+
+        {/* ------------------------------------------------------------------ */}
+        {/* Description — section dédiée sous le hero                           */}
+        {/* ------------------------------------------------------------------ */}
+        {description ? <ProductDescriptionSection description={description} /> : null}
       </div>
 
       <div className="mt-6 grid gap-6 min-[700px]:mt-8 min-[700px]:gap-10">
@@ -191,7 +190,7 @@ export function ProductPageTemplate({
                   <dt className="shrink-0 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                     {c.label}
                   </dt>
-                  <dd className="min-w-0 break-words text-sm text-foreground">{c.value}</dd>
+                  <dd className="min-w-0 wrap-break-word text-sm text-foreground">{c.value}</dd>
                 </div>
               ))}
             </dl>

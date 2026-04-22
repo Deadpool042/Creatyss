@@ -1,3 +1,9 @@
+/* =============================================================================
+   Reset CSS pur — s'applique globalement, sans Tailwind, sans @layer.
+   Ces règles précèdent le système de tokens et définissent le comportement
+   de base du document.
+   ============================================================================= */
+
 * {
   box-sizing: border-box;
 }
@@ -9,9 +15,16 @@ body {
 }
 
 body {
+  /* --body-background est une valeur CSS complète définie dans le thème actif.
+     Elle peut inclure un gradient ET une couleur de fond (ex: gradient + page-bg).
+     Ce n'est pas un simple token de couleur — ne pas remplacer par bg-page-background. */
   background: var(--body-background);
 }
 
+/* =============================================================================
+   Layer base Tailwind — requiert le système de tokens et @apply.
+   Ces règles s'appliquent dans la cascade Tailwind, après le reset ci-dessus.
+   ============================================================================= */
 @layer base {
   a {
     color: inherit;

@@ -129,9 +129,17 @@
   --surface-panel-soft: rgb(255 252 249 / 0.88);
   --surface-subtle: rgb(196 118 74 / 0.06);
 
+  /* --surface-border    : séparateurs INTERNES — dividers et bordures inter-blocs à l'intérieur d'une surface (ex: séparation prix / dispo dans hero) */
+  /* --surface-border-strong : idem, avec plus de contraste (ex: tableaux, lignes de focus) */
   --surface-border: rgb(120 90 60 / 0.14);
   --surface-border-strong: rgb(120 90 60 / 0.22);
 
+  /* Échelle d'élévation — du plus doux au plus fort :
+     shadow-soft    : sections/pages entières (grande, très diffuse, non directive)
+     shadow-card    : cards autonomes (légèrement plus compacte que soft)
+     shadow-raised  : éléments flottants dans une surface (ex: image produit dans hero)
+     shadow-overlay : modals / drawers / overlays critiques
+     shadow-inset-soft : séparateurs ou reliefs intérieurs subtils */
   --shadow-soft: 0 20px 60px rgb(70 45 25 / 0.1);
   --shadow-card: 0 16px 40px rgb(70 45 25 / 0.08);
   --shadow-raised: 0 12px 32px rgb(70 45 25 / 0.14);
@@ -142,6 +150,9 @@
      Public shell
      ========================================================================== */
 
+  /* --shell-surface  : fond des sections/cards de premier niveau (fond de page → shell → surface-panel)
+     --shell-border   : bordure EXTERNE des sections/cards (plus légère que surface-border — juste visible)
+     Règle : utiliser shell-border pour le contour d'un conteneur entier, surface-border pour ses dividers internes. */
   /* Sections : blanc cassé rosé, plus clair que le fond de page */
   --shell-surface: rgb(253 249 245 / 0.97);
   --shell-surface-blur: rgb(253 249 245 / 0.78);
@@ -322,6 +333,7 @@
   --surface-border: rgb(225 200 180 / 0.14);
   --surface-border-strong: rgb(225 200 180 / 0.24);
 
+  /* Même sémantique qu'en light — cf. commentaires :root */
   --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.42);
   --shadow-card: 0 16px 40px rgb(0 0 0 / 0.32);
   --shadow-raised: 0 14px 38px rgb(0 0 0 / 0.3);

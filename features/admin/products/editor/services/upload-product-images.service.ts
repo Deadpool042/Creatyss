@@ -93,7 +93,6 @@ export async function uploadProductImages(
       const altTextValue = input.altText.length > 0 ? input.altText : null;
 
       for (const [i, saved] of savedImages.entries()) {
-
         const asset = await tx.mediaAsset.create({
           data: {
             kind: MediaAssetKind.IMAGE,

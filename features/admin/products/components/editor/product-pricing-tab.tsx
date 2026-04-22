@@ -54,7 +54,13 @@ function getPromotionStatus(startsAt: string | null, endsAt: string | null): Pro
   return "none";
 }
 
-function PromotionBadge({ startsAt, endsAt }: { startsAt: string | null; endsAt: string | null }): JSX.Element | null {
+function PromotionBadge({
+  startsAt,
+  endsAt,
+}: {
+  startsAt: string | null;
+  endsAt: string | null;
+}): JSX.Element | null {
   const status = getPromotionStatus(startsAt, endsAt);
   if (status === "none") return null;
   if (status === "expired") {
@@ -171,7 +177,8 @@ function ProductPricingTabInner({
                         <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
                       </div>
                       <p className="text-xs text-muted-foreground leading-5">
-                        Facultatif. Ces dates définissent la période d&apos;activation du prix promotionnel.
+                        Facultatif. Ces dates définissent la période d&apos;activation du prix
+                        promotionnel.
                       </p>
                       <div className="grid gap-3 sm:grid-cols-2">
                         <AdminFormField
@@ -215,7 +222,8 @@ function ProductPricingTabInner({
               description="Chaque variante peut avoir son propre prix. Si aucun prix n'est renseigné, le prix du produit est utilisé."
             >
               <p className="text-xs text-muted-foreground leading-5">
-                Ces prix sont en lecture seule. Pour modifier le prix d&apos;une variante, éditez-la depuis la tab Variantes.
+                Ces prix sont en lecture seule. Pour modifier le prix d&apos;une variante, éditez-la
+                depuis la tab Variantes.
               </p>
               <div className="overflow-x-auto rounded-xl border border-border">
                 <table className="w-full text-sm">
@@ -230,7 +238,9 @@ function ProductPricingTabInner({
                           className="px-3 py-2 text-right text-xs font-medium text-muted-foreground"
                         >
                           {pl.name}
-                          <span className="ml-1 font-mono font-normal opacity-60">{pl.currencyCode}</span>
+                          <span className="ml-1 font-mono font-normal opacity-60">
+                            {pl.currencyCode}
+                          </span>
                         </th>
                       ))}
                     </tr>

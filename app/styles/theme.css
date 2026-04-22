@@ -1,6 +1,12 @@
 /* app/styles/theme.css */
 @custom-variant dark (&:is(.dark *));
 
+/* ─── Activation du thème actif ──────────────────────────────────────────────
+   Cette ligne sélectionne le thème CSS actif pour tout le projet.
+   Pour changer de thème, remplacer l'import par un autre fichier de themes/.
+   Le fichier importé doit implémenter le contrat de thème complet.
+   Voir : docs/architecture/90-reference/design-system.md
+   ─────────────────────────────────────────────────────────────────────────── */
 @import "./themes/creatyss.css";
 
 @theme inline {
@@ -8,6 +14,9 @@
      Typography
      ========================================================================== */
 
+  /* --font-sans et --font-serif sont injectés par Next.js depuis app/layout.tsx
+     via la prop `variable` des fonctions next/font. Leur valeur concrète vient
+     du layout, pas du thème. Ce mapping les expose uniquement au système Tailwind. */
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
 
@@ -205,7 +214,4 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-
-  /* Deprecated alias kept for existing `border-border-soft` utilities. */
-  --color-border-soft: var(--surface-border);
 }

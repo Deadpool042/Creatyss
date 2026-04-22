@@ -79,7 +79,9 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
             view={view}
             {...(view === "active" ? { onConfirmArchive: actions.handleArchiveOne } : {})}
             {...(view === "trash" ? { onConfirmRestore: actions.handleRestoreOne } : {})}
-            {...(view === "trash" ? { onConfirmPermanentDelete: actions.handlePermanentDeleteOne } : {})}
+            {...(view === "trash"
+              ? { onConfirmPermanentDelete: actions.handlePermanentDeleteOne }
+              : {})}
           />
         </div>
 
@@ -173,7 +175,9 @@ export function ProductTable({ products, categoryOptions, view }: ProductTablePr
             }}
             {...(view === "active" ? { onConfirmArchive: actions.handleArchiveOne } : {})}
             {...(view === "trash" ? { onConfirmRestore: actions.handleRestoreOne } : {})}
-            {...(view === "trash" ? { onConfirmPermanentDelete: actions.handlePermanentDeleteOne } : {})}
+            {...(view === "trash"
+              ? { onConfirmPermanentDelete: actions.handlePermanentDeleteOne }
+              : {})}
           />
         </div>
       </div>

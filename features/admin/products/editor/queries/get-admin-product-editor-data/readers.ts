@@ -32,9 +32,7 @@ export async function readProductEditorCore(
       availabilityRecords: variant.availabilityRecords.filter(
         (record) => record.storeId === product.storeId
       ),
-      inventoryItems: variant.inventoryItems.filter(
-        (item) => item.storeId === product.storeId
-      ),
+      inventoryItems: variant.inventoryItems.filter((item) => item.storeId === product.storeId),
     })),
   };
 }
