@@ -18,6 +18,7 @@ import { getProductOfferSectionPresentation } from "@/entities/product/product-p
 import { ProductDescriptionSection } from "./product-description-section";
 import { ProductHeroSection } from "./product-hero-section";
 import { ProductOffersSection, type OfferVariant } from "./product-offers-section";
+import { ProductPreHeaderSection } from "./product-preheader-section";
 import { ProductRelatedSection } from "./product-related-section";
 
 // ---------------------------------------------------------------------------
@@ -47,7 +48,7 @@ type ProductPageRelatedGroup = {
 export type ProductPageTemplateProps = {
   // Données produit normalisées
   productName: string;
-  shortDescription?: string | null;
+  marketingHook?: string | null;
   description?: string | null;
   productType: "simple" | "variable";
   isAvailable: boolean;
@@ -107,7 +108,7 @@ export type ProductPageTemplateProps = {
 
 export function ProductPageTemplate({
   productName,
-  shortDescription,
+  marketingHook,
   description,
   productType,
   isAvailable,
@@ -134,11 +135,19 @@ export function ProductPageTemplate({
       {statusBanner}
 
       {/* ------------------------------------------------------------------ */}
-      {/* Hero — grid 2 colonnes : image gauche / infos droite                */}
+      {/* Pré-header éditorial — badge, nom, accroche courte                  */}
+      {/* ------------------------------------------------------------------ */}
+      <ProductPreHeaderSection
+        productName={productName}
+        isSimpleProduct={isSimpleProduct}
+        marketingHook={marketingHook ?? null}
+      />
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Hero — grid 2 colonnes : image gauche / infos transactionnelles     */}
       {/* ------------------------------------------------------------------ */}
       <ProductHeroSection
         productName={productName}
-        shortDescription={shortDescription}
         isSimpleProduct={isSimpleProduct}
         isAvailable={isAvailable}
         primaryImage={primaryImage}

@@ -224,7 +224,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
       />
       <ProductPageTemplate
         productName={product.name}
-        shortDescription={product.shortDescription}
+        marketingHook={product.marketingHook}
         description={product.description}
         productType={product.productType}
         isAvailable={product.isAvailable}

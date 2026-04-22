@@ -71,3 +71,8 @@ export {
   type ProductMediaReferenceSubjectType,
   type ValidatedAdminProductMediaReferenceInput,
 } from "./admin-product-media-reference-input";
+
+export {
+  getProductStructurePresentation,
+  type ProductStructurePresentation,
+} from "./product-public-presentation";

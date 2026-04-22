@@ -22,7 +22,6 @@ type HeroVariant = {
 
 type ProductHeroSectionProps = {
   productName: string;
-  shortDescription?: string | null | undefined;
   isSimpleProduct: boolean;
   isAvailable: boolean;
   primaryImage?: { src: string; alt: string | null } | null;
@@ -53,7 +52,6 @@ type ProductHeroSectionProps = {
 
 export function ProductHeroSection({
   productName,
-  shortDescription,
   isSimpleProduct,
   isAvailable,
   primaryImage,
@@ -65,11 +63,11 @@ export function ProductHeroSection({
 }: ProductHeroSectionProps) {
   return (
     <section className="w-full overflow-hidden rounded-xl border border-shell-border bg-shell-surface shadow-soft">
-      <div className="grid min-[900px]:grid-cols-[minmax(0,1fr)_minmax(22rem,0.85fr)]">
+      <div className="grid min-[900px]:grid-cols-[2fr_3fr]">
         {/* Image principale — padded pour objet-contain propre */}
         <div className="border-b border-surface-border bg-media-surface min-[900px]:border-b-0 min-[900px]:border-r">
           {primaryImage ? (
-            <div className="aspect-square w-full p-6">
+            <div className="aspect-square w-full p-6 min-[900px]:p-8">
               <div className="relative h-full w-full">
                 <Image
                   alt={primaryImage.alt ?? productName}
@@ -88,23 +86,9 @@ export function ProductHeroSection({
           )}
         </div>
 
-        {/* Informations produit — badge, titre, prix, disponibilité, SKU, CTA */}
+        {/* Prix, disponibilité, SKU, CTA */}
         <aside className="grid content-start gap-6 p-8 min-[700px]:p-10">
-          {/* Badge type + h1 + description courte */}
-          <div className="grid gap-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="secondary">{isSimpleProduct ? "Simple" : "Variable"}</Badge>
-            </div>
-            <h1 className="m-0 text-2xl font-bold leading-snug">{productName}</h1>
-            {shortDescription ? (
-              <div
-                className="prose prose-sm max-w-none leading-relaxed text-muted-foreground dark:prose-invert"
-                dangerouslySetInnerHTML={{ __html: shortDescription }}
-              />
-            ) : null}
-          </div>
-
-          {/* Prix */}
+        {/* Prix */}
           {heroVariant ? (
             <div className="grid gap-1 border-b border-surface-border pb-6">
               {!isSimpleProduct ? (

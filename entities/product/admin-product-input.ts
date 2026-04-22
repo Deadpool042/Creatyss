@@ -20,6 +20,7 @@ export type ValidatedAdminProductInput = {
   name: string;
   slug: string;
   skuRoot: string | null;
+  marketingHook: string | null;
   shortDescription: string | null;
   description: string | null;
   productTypeId: string | null;
@@ -51,6 +52,7 @@ type AdminProductInputSource = {
   name: RawInputValue;
   slug: RawInputValue;
   skuRoot: RawInputValue;
+  marketingHook: RawInputValue;
   shortDescription: RawInputValue;
   description: RawInputValue;
   productTypeId: RawInputValue;
@@ -358,6 +360,7 @@ export function validateAdminProductInput(
       name,
       slug,
       skuRoot: normalizeOptionalText(input.skuRoot),
+      marketingHook: normalizeOptionalText(input.marketingHook),
       shortDescription: normalizeOptionalText(input.shortDescription),
       description: normalizeOptionalText(input.description),
       productTypeId,

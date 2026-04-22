@@ -12,6 +12,7 @@ type UpdateProductGeneralServiceInput = {
   name: string;
   slug: string;
   skuRoot: string | null;
+  marketingHook: string | null;
   shortDescription: string | null;
   description: string | null;
   status: "draft" | "active" | "inactive" | "archived";
@@ -106,6 +107,7 @@ export async function updateProductGeneral(
           name: input.name,
           slug: input.slug,
           skuRoot: input.skuRoot,
+          marketingHook: input.marketingHook,
           shortDescription: input.shortDescription,
           description: input.description,
           status: mapEditorStatusToPrismaStatus(input.status),

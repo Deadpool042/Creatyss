@@ -61,9 +61,6 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
     isSimpleProduct && product.variants.length === 1 ? product.variants[0] : null;
   const availableVariantCount = product.variants.filter((v) => v.isAvailable).length;
 
-  // Images déjà au shape { src, alt } — pas de résolution URL nécessaire ici.
-  const primaryImageNormalized = primaryImage;
-
   const variantsNormalized: OfferVariant[] = product.variants.map((variant) => {
     const variantImage = variant.images[0] ?? null;
     return {
@@ -107,11 +104,11 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
     >
       <ProductPageTemplate
         productName={product.name}
-        shortDescription={product.shortDescription}
+        marketingHook={product.marketingHook}
         description={product.description}
         productType={product.productType}
         isAvailable={product.isAvailable}
-        primaryImage={primaryImageNormalized}
+        primaryImage={primaryImage}
         variants={variantsNormalized}
         // AdminProductPreviewRelatedProductGroup est structurellement identique à
         // ProductPageRelatedGroup — TypeScript les accepte par compatibilité de forme.

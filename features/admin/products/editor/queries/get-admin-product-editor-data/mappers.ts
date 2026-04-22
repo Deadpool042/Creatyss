@@ -175,6 +175,7 @@ export function mapProductEditorData(input: {
       slug: input.product.slug,
       name: input.product.name,
       skuRoot: input.product.skuRoot,
+      marketingHook: input.product.marketingHook,
       shortDescription: input.product.shortDescription,
       description: input.product.description,
       status: mapAdminProductStatus(input.product.status),

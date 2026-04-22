@@ -5,6 +5,7 @@ export const PRODUCT_EDITOR_CORE_SELECT = {
   storeId: true,
   slug: true,
   name: true,
+  marketingHook: true,
   skuRoot: true,
   shortDescription: true,
   description: true,

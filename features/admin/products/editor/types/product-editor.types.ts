@@ -66,6 +66,7 @@ export type AdminProductEditorProduct = {
   slug: string;
   name: string;
   skuRoot: string | null;
+  marketingHook: string | null;
   shortDescription: string | null;
   description: string | null;
   status: AdminProductEditorStatus;

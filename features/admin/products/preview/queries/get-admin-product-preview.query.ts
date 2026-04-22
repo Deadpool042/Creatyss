@@ -65,6 +65,7 @@ export type AdminProductPreview = {
   id: string;
   slug: string;
   name: string;
+  marketingHook: string | null;
   shortDescription: string | null;
   description: string | null;
   status: AdminProductLifecycleStatus;
@@ -163,6 +164,7 @@ export async function getAdminProductPreviewBySlug(
       storeId: true,
       slug: true,
       name: true,
+      marketingHook: true,
       shortDescription: true,
       description: true,
       status: true,
@@ -377,6 +379,7 @@ export async function getAdminProductPreviewBySlug(
     id: product.id,
     slug: product.slug,
     name: product.name,
+    marketingHook: product.marketingHook,
     shortDescription: product.shortDescription,
     description: product.description,
     status: mapAdminProductStatus(product.status),

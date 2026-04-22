@@ -132,3 +132,29 @@ export function getOfferAvailabilityMessage(input: {
 export function getVariantDefaultBadgeLabel(isDefault: boolean): string | null {
   return isDefault ? "Par défaut" : null;
 }
+
+// ---------------------------------------------------------------------------
+// Structure produit — distinct de la famille catalogue (ProductType)
+// ---------------------------------------------------------------------------
+
+export type ProductStructurePresentation = {
+  code: "simple" | "variable";
+  label: string;
+};
+
+/**
+ * Retourne la présentation UX de la structure de vente d'un produit.
+ *
+ * "Structure" = simple (vendu seul) ou variable (avec déclinaisons).
+ * Distinct de la "Famille produit" (ProductType = catégorie catalogue optionnelle).
+ * Basé sur isStandalone — pas sur la relation ProductType.
+ */
+export function getProductStructurePresentation(
+  isStandalone: boolean
+): ProductStructurePresentation {
+  if (isStandalone) {
+    return { code: "simple", label: "Simple" };
+  }
+
+  return { code: "variable", label: "À variantes" };
+}

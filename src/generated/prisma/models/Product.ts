@@ -32,6 +32,7 @@ export type ProductMinAggregateOutputType = {
   skuRoot: string | null
   slug: string | null
   name: string | null
+  marketingHook: string | null
   shortDescription: string | null
   description: string | null
   status: $Enums.ProductStatus | null
@@ -51,6 +52,7 @@ export type ProductMaxAggregateOutputType = {
   skuRoot: string | null
   slug: string | null
   name: string | null
+  marketingHook: string | null
   shortDescription: string | null
   description: string | null
   status: $Enums.ProductStatus | null
@@ -70,6 +72,7 @@ export type ProductCountAggregateOutputType = {
   skuRoot: number
   slug: number
   name: number
+  marketingHook: number
   shortDescription: number
   description: number
   status: number
@@ -91,6 +94,7 @@ export type ProductMinAggregateInputType = {
   skuRoot?: true
   slug?: true
   name?: true
+  marketingHook?: true
   shortDescription?: true
   description?: true
   status?: true
@@ -110,6 +114,7 @@ export type ProductMaxAggregateInputType = {
   skuRoot?: true
   slug?: true
   name?: true
+  marketingHook?: true
   shortDescription?: true
   description?: true
   status?: true
@@ -129,6 +134,7 @@ export type ProductCountAggregateInputType = {
   skuRoot?: true
   slug?: true
   name?: true
+  marketingHook?: true
   shortDescription?: true
   description?: true
   status?: true
@@ -221,6 +227,7 @@ export type ProductGroupByOutputType = {
   skuRoot: string | null
   slug: string
   name: string
+  marketingHook: string | null
   shortDescription: string | null
   description: string | null
   status: $Enums.ProductStatus
@@ -261,6 +268,7 @@ export type ProductWhereInput = {
   skuRoot?: Prisma.StringNullableFilter<"Product"> | string | null
   slug?: Prisma.StringFilter<"Product"> | string
   name?: Prisma.StringFilter<"Product"> | string
+  marketingHook?: Prisma.StringNullableFilter<"Product"> | string | null
   shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
   status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
@@ -301,6 +309,7 @@ export type ProductOrderByWithRelationInput = {
   skuRoot?: Prisma.SortOrderInput | Prisma.SortOrder
   slug?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  marketingHook?: Prisma.SortOrderInput | Prisma.SortOrder
   shortDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -345,6 +354,7 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   skuRoot?: Prisma.StringNullableFilter<"Product"> | string | null
   slug?: Prisma.StringFilter<"Product"> | string
   name?: Prisma.StringFilter<"Product"> | string
+  marketingHook?: Prisma.StringNullableFilter<"Product"> | string | null
   shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
   status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
@@ -385,6 +395,7 @@ export type ProductOrderByWithAggregationInput = {
   skuRoot?: Prisma.SortOrderInput | Prisma.SortOrder
   slug?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  marketingHook?: Prisma.SortOrderInput | Prisma.SortOrder
   shortDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -410,6 +421,7 @@ export type ProductScalarWhereWithAggregatesInput = {
   skuRoot?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   slug?: Prisma.StringWithAggregatesFilter<"Product"> | string
   name?: Prisma.StringWithAggregatesFilter<"Product"> | string
+  marketingHook?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   shortDescription?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   status?: Prisma.EnumProductStatusWithAggregatesFilter<"Product"> | $Enums.ProductStatus
@@ -426,6 +438,7 @@ export type ProductCreateInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -466,6 +479,7 @@ export type ProductUncheckedCreateInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -500,6 +514,7 @@ export type ProductUpdateInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -540,6 +555,7 @@ export type ProductUncheckedUpdateInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -577,6 +593,7 @@ export type ProductCreateManyInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -593,6 +610,7 @@ export type ProductUpdateManyMutationInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -612,6 +630,7 @@ export type ProductUncheckedUpdateManyInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -651,6 +670,7 @@ export type ProductCountOrderByAggregateInput = {
   skuRoot?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  marketingHook?: Prisma.SortOrder
   shortDescription?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -670,6 +690,7 @@ export type ProductMaxOrderByAggregateInput = {
   skuRoot?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  marketingHook?: Prisma.SortOrder
   shortDescription?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -689,6 +710,7 @@ export type ProductMinOrderByAggregateInput = {
   skuRoot?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  marketingHook?: Prisma.SortOrder
   shortDescription?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -1100,6 +1122,7 @@ export type ProductCreateWithoutProductCategoriesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1139,6 +1162,7 @@ export type ProductUncheckedCreateWithoutProductCategoriesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1188,6 +1212,7 @@ export type ProductUpdateWithoutProductCategoriesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -1227,6 +1252,7 @@ export type ProductUncheckedUpdateWithoutProductCategoriesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -1260,6 +1286,7 @@ export type ProductCreateWithoutPrimaryImageInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1298,6 +1325,7 @@ export type ProductUncheckedCreateWithoutPrimaryImageInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1364,6 +1392,7 @@ export type ProductScalarWhereInput = {
   skuRoot?: Prisma.StringNullableFilter<"Product"> | string | null
   slug?: Prisma.StringFilter<"Product"> | string
   name?: Prisma.StringFilter<"Product"> | string
+  marketingHook?: Prisma.StringNullableFilter<"Product"> | string | null
   shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
   status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
@@ -1380,6 +1409,7 @@ export type ProductCreateWithoutPricesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1419,6 +1449,7 @@ export type ProductUncheckedCreateWithoutPricesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1468,6 +1499,7 @@ export type ProductUpdateWithoutPricesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -1507,6 +1539,7 @@ export type ProductUncheckedUpdateWithoutPricesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -1540,6 +1573,7 @@ export type ProductCreateWithoutProductTypeInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1578,6 +1612,7 @@ export type ProductUncheckedCreateWithoutProductTypeInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1638,6 +1673,7 @@ export type ProductCreateWithoutCharacteristicsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1677,6 +1713,7 @@ export type ProductUncheckedCreateWithoutCharacteristicsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1726,6 +1763,7 @@ export type ProductUpdateWithoutCharacteristicsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -1765,6 +1803,7 @@ export type ProductUncheckedUpdateWithoutCharacteristicsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -1798,6 +1837,7 @@ export type ProductCreateWithoutVariantsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1837,6 +1877,7 @@ export type ProductUncheckedCreateWithoutVariantsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1886,6 +1927,7 @@ export type ProductUpdateWithoutVariantsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -1925,6 +1967,7 @@ export type ProductUncheckedUpdateWithoutVariantsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -1958,6 +2001,7 @@ export type ProductCreateWithoutRelatedFromInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -1997,6 +2041,7 @@ export type ProductUncheckedCreateWithoutRelatedFromInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2035,6 +2080,7 @@ export type ProductCreateWithoutRelatedToInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2074,6 +2120,7 @@ export type ProductUncheckedCreateWithoutRelatedToInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2123,6 +2170,7 @@ export type ProductUpdateWithoutRelatedFromInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2162,6 +2210,7 @@ export type ProductUncheckedUpdateWithoutRelatedFromInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2206,6 +2255,7 @@ export type ProductUpdateWithoutRelatedToInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2245,6 +2295,7 @@ export type ProductUncheckedUpdateWithoutRelatedToInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2278,6 +2329,7 @@ export type ProductCreateWithoutCartLinesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2317,6 +2369,7 @@ export type ProductUncheckedCreateWithoutCartLinesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2366,6 +2419,7 @@ export type ProductUpdateWithoutCartLinesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2405,6 +2459,7 @@ export type ProductUncheckedUpdateWithoutCartLinesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2438,6 +2493,7 @@ export type ProductCreateWithoutCheckoutLinesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2477,6 +2533,7 @@ export type ProductUncheckedCreateWithoutCheckoutLinesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2526,6 +2583,7 @@ export type ProductUpdateWithoutCheckoutLinesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2565,6 +2623,7 @@ export type ProductUncheckedUpdateWithoutCheckoutLinesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2598,6 +2657,7 @@ export type ProductCreateWithoutOrderLinesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2637,6 +2697,7 @@ export type ProductUncheckedCreateWithoutOrderLinesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2686,6 +2747,7 @@ export type ProductUpdateWithoutOrderLinesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2725,6 +2787,7 @@ export type ProductUncheckedUpdateWithoutOrderLinesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2758,6 +2821,7 @@ export type ProductCreateWithoutHomepageFeaturedInInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2797,6 +2861,7 @@ export type ProductUncheckedCreateWithoutHomepageFeaturedInInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2846,6 +2911,7 @@ export type ProductUpdateWithoutHomepageFeaturedInInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2885,6 +2951,7 @@ export type ProductUncheckedUpdateWithoutHomepageFeaturedInInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -2918,6 +2985,7 @@ export type ProductCreateWithoutStoreInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -2956,6 +3024,7 @@ export type ProductUncheckedCreateWithoutStoreInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3016,6 +3085,7 @@ export type ProductCreateWithoutBundleItemsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3055,6 +3125,7 @@ export type ProductUncheckedCreateWithoutBundleItemsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3104,6 +3175,7 @@ export type ProductUpdateWithoutBundleItemsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3143,6 +3215,7 @@ export type ProductUncheckedUpdateWithoutBundleItemsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3176,6 +3249,7 @@ export type ProductCreateWithoutDiscountProductTargetsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3215,6 +3289,7 @@ export type ProductUncheckedCreateWithoutDiscountProductTargetsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3264,6 +3339,7 @@ export type ProductUpdateWithoutDiscountProductTargetsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3303,6 +3379,7 @@ export type ProductUncheckedUpdateWithoutDiscountProductTargetsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3336,6 +3413,7 @@ export type ProductCreateWithoutGiftRequestItemsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3375,6 +3453,7 @@ export type ProductUncheckedCreateWithoutGiftRequestItemsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3424,6 +3503,7 @@ export type ProductUpdateWithoutGiftRequestItemsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3463,6 +3543,7 @@ export type ProductUncheckedUpdateWithoutGiftRequestItemsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3496,6 +3577,7 @@ export type ProductCreateWithoutSalesPolicyProductTargetsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3535,6 +3617,7 @@ export type ProductUncheckedCreateWithoutSalesPolicyProductTargetsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3584,6 +3667,7 @@ export type ProductUpdateWithoutSalesPolicyProductTargetsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3623,6 +3707,7 @@ export type ProductUncheckedUpdateWithoutSalesPolicyProductTargetsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3656,6 +3741,7 @@ export type ProductCreateWithoutSubscriptionItemsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3695,6 +3781,7 @@ export type ProductUncheckedCreateWithoutSubscriptionItemsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3744,6 +3831,7 @@ export type ProductUpdateWithoutSubscriptionItemsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3783,6 +3871,7 @@ export type ProductUncheckedUpdateWithoutSubscriptionItemsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3816,6 +3905,7 @@ export type ProductCreateWithoutTaxRuleProductTargetsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3855,6 +3945,7 @@ export type ProductUncheckedCreateWithoutTaxRuleProductTargetsInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -3904,6 +3995,7 @@ export type ProductUpdateWithoutTaxRuleProductTargetsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3943,6 +4035,7 @@ export type ProductUncheckedUpdateWithoutTaxRuleProductTargetsInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -3976,6 +4069,7 @@ export type ProductCreateWithoutConversionFlowLinksInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -4015,6 +4109,7 @@ export type ProductUncheckedCreateWithoutConversionFlowLinksInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -4064,6 +4159,7 @@ export type ProductUpdateWithoutConversionFlowLinksInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4103,6 +4199,7 @@ export type ProductUncheckedUpdateWithoutConversionFlowLinksInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4136,6 +4233,7 @@ export type ProductCreateWithoutChannelStatusesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -4175,6 +4273,7 @@ export type ProductUncheckedCreateWithoutChannelStatusesInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -4224,6 +4323,7 @@ export type ProductUpdateWithoutChannelStatusesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4263,6 +4363,7 @@ export type ProductUncheckedUpdateWithoutChannelStatusesInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4298,6 +4399,7 @@ export type ProductCreateManyPrimaryImageInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -4314,6 +4416,7 @@ export type ProductUpdateWithoutPrimaryImageInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4352,6 +4455,7 @@ export type ProductUncheckedUpdateWithoutPrimaryImageInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4388,6 +4492,7 @@ export type ProductUncheckedUpdateManyWithoutPrimaryImageInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4406,6 +4511,7 @@ export type ProductCreateManyProductTypeInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -4422,6 +4528,7 @@ export type ProductUpdateWithoutProductTypeInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4460,6 +4567,7 @@ export type ProductUncheckedUpdateWithoutProductTypeInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4496,6 +4604,7 @@ export type ProductUncheckedUpdateManyWithoutProductTypeInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4514,6 +4623,7 @@ export type ProductCreateManyStoreInput = {
   skuRoot?: string | null
   slug: string
   name: string
+  marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
   status?: $Enums.ProductStatus
@@ -4530,6 +4640,7 @@ export type ProductUpdateWithoutStoreInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4568,6 +4679,7 @@ export type ProductUncheckedUpdateWithoutStoreInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4604,6 +4716,7 @@ export type ProductUncheckedUpdateManyWithoutStoreInput = {
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
@@ -4807,6 +4920,7 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   skuRoot?: boolean
   slug?: boolean
   name?: boolean
+  marketingHook?: boolean
   shortDescription?: boolean
   description?: boolean
   status?: boolean
@@ -4848,6 +4962,7 @@ export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   skuRoot?: boolean
   slug?: boolean
   name?: boolean
+  marketingHook?: boolean
   shortDescription?: boolean
   description?: boolean
   status?: boolean
@@ -4870,6 +4985,7 @@ export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   skuRoot?: boolean
   slug?: boolean
   name?: boolean
+  marketingHook?: boolean
   shortDescription?: boolean
   description?: boolean
   status?: boolean
@@ -4892,6 +5008,7 @@ export type ProductSelectScalar = {
   skuRoot?: boolean
   slug?: boolean
   name?: boolean
+  marketingHook?: boolean
   shortDescription?: boolean
   description?: boolean
   status?: boolean
@@ -4903,7 +5020,7 @@ export type ProductSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "productTypeId" | "primaryImageId" | "skuRoot" | "slug" | "name" | "shortDescription" | "description" | "status" | "isFeatured" | "isStandalone" | "publishedAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "productTypeId" | "primaryImageId" | "skuRoot" | "slug" | "name" | "marketingHook" | "shortDescription" | "description" | "status" | "isFeatured" | "isStandalone" | "publishedAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prices?: boolean | Prisma.Product$pricesArgs<ExtArgs>
   cartLines?: boolean | Prisma.Product$cartLinesArgs<ExtArgs>
@@ -4972,6 +5089,7 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     skuRoot: string | null
     slug: string
     name: string
+    marketingHook: string | null
     shortDescription: string | null
     description: string | null
     status: $Enums.ProductStatus
@@ -5432,6 +5550,7 @@ export interface ProductFieldRefs {
   readonly skuRoot: Prisma.FieldRef<"Product", 'String'>
   readonly slug: Prisma.FieldRef<"Product", 'String'>
   readonly name: Prisma.FieldRef<"Product", 'String'>
+  readonly marketingHook: Prisma.FieldRef<"Product", 'String'>
   readonly shortDescription: Prisma.FieldRef<"Product", 'String'>
   readonly description: Prisma.FieldRef<"Product", 'String'>
   readonly status: Prisma.FieldRef<"Product", 'ProductStatus'>

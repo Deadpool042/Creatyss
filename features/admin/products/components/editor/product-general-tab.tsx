@@ -3,6 +3,7 @@
 import { useActionState, useMemo, useState, type JSX } from "react";
 
 import { useAutoSlug } from "@/entities/shared/slug/hooks/use-auto-slug";
+import { getProductStructurePresentation } from "@/entities/product";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -96,6 +97,7 @@ function ProductGeneralTabInner({
   });
 
   const [skuRoot, setSkuRoot] = useState(product.product.skuRoot ?? "");
+  const [marketingHook, setMarketingHook] = useState(product.product.marketingHook ?? "");
   const [productTypeId, setProductTypeId] = useState(product.product.productTypeId ?? "__none__");
   const [status, setStatus] = useState<ProductStatusValue>(product.product.status);
   const [isFeatured, setIsFeatured] = useState<IsFeaturedValue>(
@@ -129,11 +131,7 @@ function ProductGeneralTabInner({
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
-              <input
-                type="hidden"
-                name="productId"
-                value={product.product.id}
-              />
+        <input type="hidden" name="productId" value={product.product.id} />
 
         <div className="w-full space-y-6 px-4 py-4 md:space-y-7 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
           <AdminFormMessage
@@ -205,19 +203,19 @@ function ProductGeneralTabInner({
                 </AdminFormField>
 
                 <AdminFormField
-                  label="Type de produit"
+                  label="Famille produit"
                   htmlFor="edit-product-type"
-                  description="Définit si ce produit est vendu seul (produit simple) ou avec des déclinaisons (produit à variantes)."
+                  description="Classe le produit dans une famille catalogue."
                   error={state.fieldErrors.productTypeId}
                 >
                   <input type="hidden" name="productTypeId" value={productTypeId} />
 
                   <Select value={productTypeId} onValueChange={setProductTypeId}>
                     <SelectTrigger id="edit-product-type" className="text-sm">
-                      <SelectValue placeholder="Non défini" />
+                      <SelectValue placeholder="Non renseignée" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="__none__">Non défini</SelectItem>
+                      <SelectItem value="__none__">Non renseignée</SelectItem>
                       {productTypeOptions.map((option) => (
                         <SelectItem key={option.id} value={option.id}>
                           {getProductTypeLabel(option)}
@@ -226,6 +224,18 @@ function ProductGeneralTabInner({
                     </SelectContent>
                   </Select>
                 </AdminFormField>
+              </div>
+
+              <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-3 text-sm shadow-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Structure du produit
+                </p>
+                <p className="mt-2 font-medium text-foreground">
+                  {getProductStructurePresentation(product.product.isStandalone).label}
+                </p>
+                <p className="mt-1 leading-6 text-muted-foreground">
+                  Indique si le produit est vendu seul ou avec plusieurs déclinaisons.
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -241,6 +251,21 @@ function ProductGeneralTabInner({
               </div>
             </CardHeader>
             <CardContent className="space-y-6 px-5 py-5 md:px-6 md:py-6">
+              <AdminFormField
+                label="Accroche commerciale"
+                htmlFor="edit-marketing-hook"
+                hint="Phrase courte affichée en haut de la fiche produit pour mettre le produit en valeur."
+                error={state.fieldErrors.marketingHook}
+              >
+                <Input
+                  id="edit-marketing-hook"
+                  name="marketingHook"
+                  value={marketingHook}
+                  onChange={(event) => setMarketingHook(event.target.value)}
+                  placeholder="Ex. Un sac artisanal pensé pour illuminer le quotidien."
+                  className="text-sm"
+                />
+              </AdminFormField>
               <AdminRichTextEditor
                 name="shortDescription"
                 label="Résumé"
@@ -365,6 +390,7 @@ export function ProductGeneralTab(props: ProductGeneralTabProps): JSX.Element {
     props.product.product.name,
     props.product.product.slug,
     props.product.product.skuRoot ?? "",
+    props.product.product.marketingHook ?? "",
     props.product.product.productTypeId ?? "__none__",
     props.product.product.status,
     props.product.product.isFeatured ? "true" : "false",

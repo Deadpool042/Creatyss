@@ -29,6 +29,7 @@ type CatalogProductDetail = {
   id: string;
   slug: string;
   name: string;
+  marketingHook: string | null;
   shortDescription: string | null;
   description: string | null;
   seoTitle: string | null;
@@ -373,6 +374,7 @@ export async function getPublishedProductBySlug(
       storeId: true,
       slug: true,
       name: true,
+      marketingHook: true,
       shortDescription: true,
       description: true,
       isStandalone: true,
@@ -583,6 +585,7 @@ export async function getPublishedProductBySlug(
     id: product.id,
     slug: product.slug,
     name: product.name,
+    marketingHook: product.marketingHook,
     shortDescription: product.shortDescription,
     description: product.description,
     seoTitle: seoMetadata?.metaTitle ?? null,

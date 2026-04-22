@@ -9,8 +9,6 @@
  *
  * Lot : PAGE-SHARED-1
  */
-import Image from "next/image";
-
 import { Badge } from "@/components/ui/badge";
 import {
   getSimpleOfferCardTitle,
@@ -148,19 +146,6 @@ function SimpleOfferCard({ variant }: { variant: OfferVariant }) {
           ) : null}
         </div>
       ) : null}
-
-      {variant.displayImage ? (
-        <figure className="overflow-hidden rounded-lg bg-media-surface min-h-40">
-          <Image
-            alt={variant.displayImage.alt}
-            className="block w-full object-cover"
-            loading="lazy"
-            src={variant.displayImage.src}
-            width={600}
-            height={450}
-          />
-        </figure>
-      ) : null}
     </article>
   );
 }
@@ -232,23 +217,6 @@ function VariantOfferCard({
           ) : null}
         </div>
       ) : null}
-
-      {variant.displayImage ? (
-        <figure className="overflow-hidden rounded-lg bg-media-surface min-h-40">
-          <Image
-            alt={variant.displayImage.alt}
-            className="block w-full object-cover"
-            loading="lazy"
-            src={variant.displayImage.src}
-            width={600}
-            height={450}
-          />
-        </figure>
-      ) : (
-        <div className="grid place-items-center min-h-56 rounded-lg bg-media-surface p-4 text-center text-media-foreground">
-          Aucun visuel pour cette déclinaison.
-        </div>
-      )}
     </article>
   );
 }

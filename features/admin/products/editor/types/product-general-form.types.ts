@@ -3,6 +3,7 @@ export type ProductGeneralFormValues = {
   name: string;
   slug: string;
   skuRoot: string;
+  marketingHook: string;
   shortDescription: string;
   description: string;
   status: "draft" | "active" | "inactive" | "archived";
@@ -20,6 +21,7 @@ export type ProductGeneralFormState = {
       | "name"
       | "slug"
       | "skuRoot"
+      | "marketingHook"
       | "shortDescription"
       | "description"
       | "status"

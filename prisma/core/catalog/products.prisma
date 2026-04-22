@@ -82,6 +82,7 @@ model Product {
   skuRoot          String?
   slug             String
   name             String
+  marketingHook    String?
   shortDescription String?
   description      String?
 
