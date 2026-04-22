@@ -27,7 +27,7 @@ export function ProductDescriptionSection({ description }: ProductDescriptionSec
         <h2 className="m-0">À propos de ce produit</h2>
       </div>
       <div
-        className="prose prose-sm dark:prose-invert max-w-3xl text-hero-ink-soft min-[900px]:prose-base [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+        className="prose prose-sm dark:prose-invert max-w-3xl text-foreground min-[900px]:prose-base [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
         dangerouslySetInnerHTML={{ __html: description }}
       />
     </section>

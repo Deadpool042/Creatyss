@@ -202,10 +202,10 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
     cartStatusMessage !== null || cartErrorMessage !== null ? (
       <>
         {cartStatusMessage !== null ? (
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-600/20 bg-emerald-50/60 px-4 py-3 text-sm text-emerald-800">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-feedback-success-border bg-feedback-success-surface px-4 py-3 text-sm text-feedback-success-foreground">
             <span>{cartStatusMessage}</span>
             <Link
-              className="font-medium underline-offset-4 transition-colors hover:underline"
+              className="font-medium underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
               href="/panier"
             >
               Voir le panier

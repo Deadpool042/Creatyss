@@ -145,6 +145,7 @@ export function ProductPageTemplate({
             productName={productName}
             isSimpleProduct={isSimpleProduct}
             marketingHook={marketingHook ?? null}
+            shortDescription={shortDescription ?? null}
           />
 
           {/* ---------------------------------------------------------------- */}
@@ -154,7 +155,6 @@ export function ProductPageTemplate({
             productName={productName}
             isSimpleProduct={isSimpleProduct}
             isAvailable={isAvailable}
-            shortDescription={shortDescription ?? null}
             primaryImage={primaryImage}
             heroVariant={heroVariant}
             singleVariantSku={singleOffer?.sku ?? null}

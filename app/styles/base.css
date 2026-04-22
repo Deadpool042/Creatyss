@@ -61,10 +61,14 @@ body {
   }
 
   h2 {
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-size: clamp(1.5rem, 2.8vw, 2.1rem);
   }
 
   h3 {
-    font-size: 1.2rem;
+    font-size: clamp(1.12rem, 1.2vw, 1.2rem);
+  }
+
+  p {
+    line-height: 1.6;
   }
 }

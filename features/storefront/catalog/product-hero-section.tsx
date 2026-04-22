@@ -17,7 +17,6 @@ type ProductHeroSectionProps = {
   productName: string;
   isSimpleProduct: boolean;
   isAvailable: boolean;
-  shortDescription?: string | null;
   primaryImage?: { src: string; alt: string | null } | null;
   heroVariant?: HeroVariant | null;
   singleVariantSku?: string | null;
@@ -29,7 +28,6 @@ export function ProductHeroSection({
   productName,
   isSimpleProduct,
   isAvailable,
-  shortDescription,
   primaryImage,
   heroVariant,
   singleVariantSku,
@@ -37,18 +35,18 @@ export function ProductHeroSection({
   asideExtra,
 }: ProductHeroSectionProps) {
   return (
-    <section className="w-full overflow-hidden rounded-xl border border-surface-border-strong bg-shell-surface shadow-card">
+    <section className="w-full overflow-hidden rounded-xl border border-shell-border bg-shell-surface shadow-card">
       <div className="grid min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[1300px]:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)]">
         <div className="border-b border-surface-border bg-media-surface min-[900px]:border-r min-[900px]:border-b-0 ">
           {primaryImage ? (
             <div className="flex items-center justify-center p-6 min-[700px]:p-8 min-[900px]:p-8 min-[1200px]:p-10">
               <Image
                 alt={primaryImage.alt ?? productName}
-                className="h-auto max-h-96 w-auto max-w-full object-contain rounded-3xl shadow-raised min-[700px]:max-h-108 min-[1200px]:max-h-128"
+                className="h-auto max-h-96 w-auto max-w-full object-contain rounded-3xl shadow-raised min-[700px]:max-h-116 min-[1200px]:max-h-136 [@media(max-height:520px)]:max-h-80"
                 width={1200}
                 height={1200}
                 loading="lazy"
-                sizes="(min-width: 1300px) 42vw, (min-width: 900px) 48vw, 100vw"
+                sizes="(min-width: 1300px) 42vw, (min-width: 900px) 48vw, (min-width: 700px) 90vw, 92vw"
                 src={primaryImage.src}
               />
             </div>
@@ -119,15 +117,6 @@ export function ProductHeroSection({
                 </div>
               ) : null}
             </div>
-
-            {shortDescription ? (
-              <div className="pt-4 min-[900px]:pt-5">
-                <div
-                  className="prose prose-sm dark:prose-invert max-w-[42ch] text-hero-ink-soft [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3] overflow-hidden"
-                  dangerouslySetInnerHTML={{ __html: shortDescription }}
-                />
-              </div>
-            ) : null}
 
             {cta ? <div className="mt-auto pt-5 min-[900px]:pt-6">{cta}</div> : null}
 

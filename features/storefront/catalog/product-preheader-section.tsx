@@ -15,6 +15,7 @@ type ProductPreHeaderSectionProps = {
   productName: string;
   isSimpleProduct: boolean;
   marketingHook?: string | null;
+  shortDescription?: string | null;
 };
 
 // ---------------------------------------------------------------------------
@@ -25,6 +26,7 @@ export function ProductPreHeaderSection({
   productName,
   isSimpleProduct,
   marketingHook,
+  shortDescription,
 }: ProductPreHeaderSectionProps) {
   return (
     <div className="grid gap-2 px-1 min-[700px]:gap-3">
@@ -41,9 +43,16 @@ export function ProductPreHeaderSection({
       {/* marketingHook — légèrement écarté du titre pour marquer la séparation
           entre identité produit (titre) et promesse commerciale (accroche) */}
       {marketingHook ? (
-        <p className="mt-1 max-w-[48ch] border-l-2 border-brand/50 pl-3 font-serif text-lg font-semibold leading-snug text-foreground min-[900px]:text-xl">
+        <p className="mt-1 max-w-[50ch] border-l-2 border-brand/35 pl-3 font-serif text-lg font-medium leading-snug text-foreground min-[900px]:text-xl">
           {marketingHook}
         </p>
+      ) : null}
+
+      {shortDescription ? (
+        <div
+          className="prose prose-sm dark:prose-invert mt-1 max-w-[56ch] text-foreground min-[900px]:prose-base [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+          dangerouslySetInnerHTML={{ __html: shortDescription }}
+        />
       ) : null}
     </div>
   );
