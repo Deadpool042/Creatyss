@@ -49,6 +49,7 @@ export type ProductPageTemplateProps = {
   // Données produit normalisées
   productName: string;
   marketingHook?: string | null;
+  shortDescription?: string | null;
   description?: string | null;
   productType: "simple" | "variable";
   isAvailable: boolean;
@@ -109,6 +110,7 @@ export type ProductPageTemplateProps = {
 export function ProductPageTemplate({
   productName,
   marketingHook,
+  shortDescription,
   description,
   productType,
   isAvailable,
@@ -130,92 +132,101 @@ export function ProductPageTemplate({
   const hasRelatedProducts = relatedProductGroups.some((g) => g.products.length > 0);
 
   return (
-    <div className="mx-auto grid max-w-6xl gap-10 pb-6">
+    <div className="mx-auto max-w-6xl pb-6">
       {/* Bandeau contextuel (statut admin / messages panier storefront) */}
       {statusBanner}
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Pré-header éditorial — badge, nom, accroche courte                  */}
-      {/* ------------------------------------------------------------------ */}
-      <ProductPreHeaderSection
-        productName={productName}
-        isSimpleProduct={isSimpleProduct}
-        marketingHook={marketingHook ?? null}
-      />
+      <div className="grid gap-4 min-[700px]:gap-6 min-[900px]:gap-7">
+        {/* ------------------------------------------------------------------ */}
+        {/* Pré-header éditorial — badge, nom, accroche courte                  */}
+        {/* ------------------------------------------------------------------ */}
+        <ProductPreHeaderSection
+          productName={productName}
+          isSimpleProduct={isSimpleProduct}
+          marketingHook={marketingHook ?? null}
+        />
 
-      {/* ------------------------------------------------------------------ */}
-      {/* Hero — grid 2 colonnes : image gauche / infos transactionnelles     */}
-      {/* ------------------------------------------------------------------ */}
-      <ProductHeroSection
-        productName={productName}
-        isSimpleProduct={isSimpleProduct}
-        isAvailable={isAvailable}
-        primaryImage={primaryImage}
-        heroVariant={heroVariant}
-        singleVariantSku={singleOffer?.sku ?? null}
-        imageClassName="object-cover rounded-xl border border-shell-border bg-shell-surface shadow-soft"
-        cta={heroCta}
-        asideExtra={heroAsideExtra}
-      />
-
-      {/* ------------------------------------------------------------------ */}
-      {/* Description — section dédiée, pleine largeur                        */}
-      {/* ------------------------------------------------------------------ */}
-      {description ? <ProductDescriptionSection description={description} /> : null}
-
-      {/* ------------------------------------------------------------------ */}
-      {/* Caractéristiques produit                                             */}
-      {/* ------------------------------------------------------------------ */}
-      {characteristics && characteristics.length > 0 ? (
-        <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
-          <div className="mb-6 grid gap-2">
-            <p className="text-sm font-bold uppercase tracking-widest text-brand">
-              Caractéristiques
-            </p>
-            <h2 className="m-0">Détails du produit</h2>
-          </div>
-          <dl className="divide-y divide-surface-border">
-            {characteristics.map((c) => (
-              <div
-                key={c.id}
-                className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3 first:pt-0 last:pb-0"
-              >
-                <dt className="shrink-0 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  {c.label}
-                </dt>
-                <dd className="min-w-0 break-words text-sm text-foreground">{c.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      ) : null}
-
-      {/* ------------------------------------------------------------------ */}
-      {/* Offre / déclinaisons                                                */}
-      {/* ------------------------------------------------------------------ */}
-      <ProductOffersSection
-        productType={productType}
-        variants={variants}
-        presentation={offerSectionPresentation}
-        summaryContent={offersSummaryContent}
-        renderVariantCta={renderVariantCta}
-      />
-
-      {/* ------------------------------------------------------------------ */}
-      {/* Produits liés                                                        */}
-      {/* ------------------------------------------------------------------ */}
-      {hasRelatedProducts ? (
-        <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
-          <div className="mb-8 grid gap-2">
-            <p className="text-sm font-bold uppercase tracking-widest text-brand">Produits liés</p>
-            <h2 className="m-0">Produits associés</h2>
-          </div>
-          <ProductRelatedSection
-            groups={relatedProductGroups}
-            uploadsPublicPath={uploadsPublicPath}
+        <div className="grid gap-3 min-[700px]:gap-4">
+          {/* ---------------------------------------------------------------- */}
+          {/* Hero — grid 2 colonnes : image gauche / infos transactionnelles   */}
+          {/* ---------------------------------------------------------------- */}
+          <ProductHeroSection
+            productName={productName}
+            isSimpleProduct={isSimpleProduct}
+            isAvailable={isAvailable}
+            shortDescription={shortDescription ?? null}
+            primaryImage={primaryImage}
+            heroVariant={heroVariant}
+            singleVariantSku={singleOffer?.sku ?? null}
+            imageClassName="object-cover rounded-xl border border-shell-border bg-shell-surface shadow-soft"
+            cta={heroCta}
+            asideExtra={heroAsideExtra}
           />
-        </section>
-      ) : null}
+
+          {/* ---------------------------------------------------------------- */}
+          {/* Description — section dédiée, pleine largeur                      */}
+          {/* ---------------------------------------------------------------- */}
+          {description ? <ProductDescriptionSection description={description} /> : null}
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-6 min-[700px]:mt-8 min-[700px]:gap-10">
+        {/* ------------------------------------------------------------------ */}
+        {/* Caractéristiques produit                                             */}
+        {/* ------------------------------------------------------------------ */}
+        {characteristics && characteristics.length > 0 ? (
+          <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
+            <div className="mb-6 grid gap-2">
+              <p className="text-sm font-bold uppercase tracking-widest text-brand">
+                Caractéristiques
+              </p>
+              <h2 className="m-0">Détails du produit</h2>
+            </div>
+            <dl className="divide-y divide-surface-border">
+              {characteristics.map((c) => (
+                <div
+                  key={c.id}
+                  className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3 first:pt-0 last:pb-0"
+                >
+                  <dt className="shrink-0 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    {c.label}
+                  </dt>
+                  <dd className="min-w-0 break-words text-sm text-foreground">{c.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ) : null}
+
+        {/* ------------------------------------------------------------------ */}
+        {/* Offre / déclinaisons                                                */}
+        {/* ------------------------------------------------------------------ */}
+        <ProductOffersSection
+          productType={productType}
+          variants={variants}
+          presentation={offerSectionPresentation}
+          summaryContent={offersSummaryContent}
+          renderVariantCta={renderVariantCta}
+        />
+
+        {/* ------------------------------------------------------------------ */}
+        {/* Produits liés                                                        */}
+        {/* ------------------------------------------------------------------ */}
+        {hasRelatedProducts ? (
+          <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
+            <div className="mb-8 grid gap-2">
+              <p className="text-sm font-bold uppercase tracking-widest text-brand">
+                Produits liés
+              </p>
+              <h2 className="m-0">Produits associés</h2>
+            </div>
+            <ProductRelatedSection
+              groups={relatedProductGroups}
+              uploadsPublicPath={uploadsPublicPath}
+            />
+          </section>
+        ) : null}
+      </div>
     </div>
   );
 }

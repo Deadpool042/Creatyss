@@ -205,13 +205,13 @@ function ProductGeneralTabInner({
                 <AdminFormField
                   label="Famille produit"
                   htmlFor="edit-product-type"
-                  description="Classe le produit dans une famille catalogue."
+                  hint="Classe le produit dans une famille catalogue."
                   error={state.fieldErrors.productTypeId}
                 >
                   <input type="hidden" name="productTypeId" value={productTypeId} />
 
                   <Select value={productTypeId} onValueChange={setProductTypeId}>
-                    <SelectTrigger id="edit-product-type" className="text-sm">
+                    <SelectTrigger id="edit-product-type" className="w-full text-sm">
                       <SelectValue placeholder="Non renseignée" />
                     </SelectTrigger>
                     <SelectContent>
@@ -305,7 +305,7 @@ function ProductGeneralTabInner({
                 <input type="hidden" name="status" value={status} />
 
                 <Select value={status} onValueChange={handleStatusChange}>
-                  <SelectTrigger id="edit-status" className="text-sm">
+                  <SelectTrigger id="edit-status" className="w-full text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -325,7 +325,7 @@ function ProductGeneralTabInner({
                 <input type="hidden" name="isFeatured" value={isFeatured} />
 
                 <Select value={isFeatured} onValueChange={handleIsFeaturedChange}>
-                  <SelectTrigger id="edit-is-featured" className="text-sm">
+                  <SelectTrigger id="edit-is-featured" className="w-full text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

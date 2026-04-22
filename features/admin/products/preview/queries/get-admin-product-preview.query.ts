@@ -320,7 +320,13 @@ export async function getAdminProductPreviewBySlug(
   const productLevelPrice = product.prices[0] ?? null;
 
   const variants: AdminProductPreviewVariant[] = product.variants.map((variant) => {
-    const activePrice = variant.prices[0] ?? productLevelPrice;
+    const variantPrice = variant.prices[0] ?? null;
+    const activePrice = variantPrice ?? productLevelPrice;
+    // compareAtAmount : hérite du niveau produit si la variante ne le porte pas.
+    // Cas fréquent pour les produits importés où compareAtAmount n'est renseigné
+    // qu'en product_prices mais pas en product_variant_prices.
+    const compareAtAmount =
+      variantPrice?.compareAtAmount ?? productLevelPrice?.compareAtAmount ?? null;
     const variantImages: AdminProductPreviewImage[] = variant.primaryImage
       ? [
           {
@@ -339,7 +345,7 @@ export async function getAdminProductPreviewBySlug(
       isDefault: variant.isDefault,
       isAvailable: mapVariantAvailability(variant),
       price: formatMoney(activePrice?.amount ?? null),
-      compareAtPrice: formatMoney(activePrice?.compareAtAmount ?? null) || null,
+      compareAtPrice: formatMoney(compareAtAmount) || null,
       images: variantImages,
     };
   });

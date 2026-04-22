@@ -520,7 +520,13 @@ export async function getPublishedProductBySlug(
   const uploadsPublicPath = getUploadsPublicPath();
 
   const variants: CatalogVariant[] = product.variants.map((variant) => {
-    const activePrice = variant.prices[0] ?? productLevelPrice;
+    const variantPrice = variant.prices[0] ?? null;
+    const activePrice = variantPrice ?? productLevelPrice;
+    // compareAtAmount : hérite du niveau produit si la variante ne le porte pas.
+    // Cas fréquent pour les produits importés (WooCommerce) où compareAtAmount
+    // n'est renseigné qu'en product_prices mais pas en product_variant_prices.
+    const compareAtAmount =
+      variantPrice?.compareAtAmount ?? productLevelPrice?.compareAtAmount ?? null;
     const image = variant.primaryImage ? [mapImage(variant.primaryImage, uploadsPublicPath)] : [];
 
     return {
@@ -532,7 +538,7 @@ export async function getPublishedProductBySlug(
       isDefault: variant.isDefault,
       isAvailable: getVariantAvailability(variant),
       price: formatMoney(activePrice?.amount ?? null),
-      compareAtPrice: formatMoney(activePrice?.compareAtAmount ?? null) || null,
+      compareAtPrice: formatMoney(compareAtAmount) || null,
       images: image,
     };
   });

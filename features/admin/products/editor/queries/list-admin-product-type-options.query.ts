@@ -1,10 +1,10 @@
 import { db } from "@/core/db";
 
-export async function listAdminProductTypeOptions() {
+export async function listAdminProductTypeOptions(input: { storeId: string }) {
   return db.productType.findMany({
     where: {
+      storeId: input.storeId,
       archivedAt: null,
-      store: { isProduction: true },
     },
     orderBy: [{ isActive: "desc" }, { name: "asc" }],
     select: {

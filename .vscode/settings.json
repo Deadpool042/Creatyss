@@ -86,6 +86,8 @@
   "npm.autoDetect": "off",
   "workbench.editor.labelFormat": "medium",
   "chat.tools.terminal.autoApprove": {
-    "docker exec": true
+    "docker exec": true,
+    "pnpm": true,
+    "docker compose": true
   }
 }

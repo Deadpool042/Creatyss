@@ -105,6 +105,7 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
       <ProductPageTemplate
         productName={product.name}
         marketingHook={product.marketingHook}
+        shortDescription={product.shortDescription}
         description={product.description}
         productType={product.productType}
         isAvailable={product.isAvailable}
