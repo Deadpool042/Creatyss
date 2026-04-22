@@ -160,19 +160,21 @@ export function ProductPageTemplate({
       {characteristics && characteristics.length > 0 ? (
         <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
           <div className="mb-6 grid gap-2">
-            <p className="text-sm font-bold uppercase tracking-widest text-brand">Caractéristiques</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-brand">
+              Caractéristiques
+            </p>
             <h2 className="m-0">Détails du produit</h2>
           </div>
-          <dl className="grid gap-3 sm:grid-cols-2">
+          <dl className="divide-y divide-surface-border">
             {characteristics.map((c) => (
               <div
                 key={c.id}
-                className="flex flex-col gap-0.5 rounded-lg border border-shell-border bg-background px-4 py-3"
+                className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3 first:pt-0 last:pb-0"
               >
-                <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <dt className="shrink-0 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                   {c.label}
                 </dt>
-                <dd className="text-sm text-foreground">{c.value}</dd>
+                <dd className="min-w-0 break-words text-sm text-foreground">{c.value}</dd>
               </div>
             ))}
           </dl>
