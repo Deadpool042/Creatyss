@@ -48,7 +48,7 @@ export async function ensureDefaultStore(prisma: PrismaClient) {
       status: StoreStatus.ACTIVE,
       legalName: "Creatyss",
       supportEmail: "admin@creatyss.local",
-      defaultLocaleCode: "fr",
+      defaultLocaleCode: "fr-FR",
       defaultCurrency: "EUR",
       timezone: "Europe/Paris",
       isProduction: true,

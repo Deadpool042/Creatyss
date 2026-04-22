@@ -327,6 +327,77 @@ Il ne doit pas devenir le point d’accumulation de toutes les informations pér
 
 ---
 
+## ProductCharacteristic
+
+### Rôle métier
+
+`ProductCharacteristic` porte les caractéristiques structurées d'un produit.
+
+Une caractéristique est une paire **libellé / valeur** décrivant une propriété factuelle du produit :
+matière, dimensions, fermeture, poids, composition, entretien, etc.
+
+Ces données sont affichées telles quelles sur la fiche produit, sans transformation métier :
+elles informent l'acheteur sur les attributs objectifs du produit.
+
+### Portée V1
+
+En V1, toutes les caractéristiques d'un produit sont visibles si elles existent.
+Il n'y a pas de statut par caractéristique, pas de visibilité conditionnelle,
+pas de filtrage par canal.
+
+La seule condition d'affichage est la présence de données.
+
+### Relation avec Product
+
+Un `Product` possède zéro ou plusieurs `ProductCharacteristic`.
+
+- Relation : `Product` 1 → N `ProductCharacteristic`
+- Pas de partage entre produits : une caractéristique appartient à un seul produit
+- Pas de `storeId` sur `ProductCharacteristic` : le produit est déjà scopé au store
+
+### Ordre d'affichage
+
+Le champ `sortOrder Int @default(0)` détermine l'ordre d'affichage des caractéristiques.
+
+Les caractéristiques sont toujours lues ordonnées par `[sortOrder ASC, createdAt ASC]`.
+
+L'ordre est géré en édition admin (stratégie replace-all à la sauvegarde).
+
+### Comportement de suppression
+
+Si un produit est supprimé, toutes ses caractéristiques sont supprimées automatiquement.
+
+Contrainte : `onDelete: Cascade` sur la FK `productId → products.id`.
+
+### Ce que ce n'est pas
+
+- **Pas une variante** : une caractéristique ne génère pas de déclinaison produit.
+  Les variantes relèvent de `ProductVariant` / `ProductOption`.
+- **Pas un `ProductOption` ni un `ProductOptionValue`** : ces modèles servent à définir
+  les axes de variation (taille, couleur…) et les valeurs sélectionnables par l'acheteur.
+  Les caractéristiques sont purement informationnelles, non sélectionnables.
+- **Pas du SEO** : les caractéristiques ne sont ni des métadonnées SEO ni du contenu
+  structuré pour les moteurs de recherche. Elles relèvent du référentiel produit.
+- **Pas du contenu éditorial global** : une caractéristique est toujours liée à un produit
+  précis. Ce n'est pas une donnée de contenu partagée ou administrable globalement.
+- **Pas de la disponibilité ni du stock** : ces responsabilités relèvent d'`availability`
+  et d'`inventory`.
+
+### Implémentation
+
+- Table : `product_characteristics`
+- Champs : `id`, `productId`, `label`, `value`, `sortOrder`, `createdAt`, `updatedAt`
+- Index : `@@index([productId, sortOrder])`
+- Présent dans la migration `20260421113740_init`
+
+Rendu :
+
+- Storefront : section "Caractéristiques" dans `features/storefront/catalog/product-page-template.tsx`
+- Admin preview : même template partagé
+- Admin éditeur : onglet "Caractéristiques" dans `features/admin/products/components/editor/product-characteristics-tab.tsx`
+
+---
+
 ## Questions ouvertes
 
 À confirmer explicitement dans le projet :

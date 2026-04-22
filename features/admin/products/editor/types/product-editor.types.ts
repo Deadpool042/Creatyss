@@ -53,6 +53,13 @@ export type AdminProductEditorSeo = {
   fallbackOpenGraphDescription: string;
 };
 
+export type AdminProductEditorCharacteristic = {
+  id: string;
+  label: string;
+  value: string;
+  sortOrder: number;
+};
+
 export type AdminProductEditorProduct = {
   id: string;
   storeId: string;
@@ -74,6 +81,7 @@ export type AdminProductEditorProduct = {
   primaryImageAltText: string | null;
   categoryLinks: AdminProductEditorCategoryLink[];
   relatedProducts: AdminProductEditorRelatedProduct[];
+  characteristics: AdminProductEditorCharacteristic[];
 };
 
 export type AdminProductEditorData = {

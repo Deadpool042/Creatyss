@@ -12,6 +12,7 @@ export { updateProductAvailability } from "./update-product-availability.service
 export { updateProductGeneral } from "./update-product-general.service";
 export { updateProductCategories } from "./update-product-categories.service";
 export { updateProductRelatedProducts } from "./update-product-related-products.service";
+export { updateProductCharacteristics } from "./update-product-characteristics.service";
 export { createProductVariant } from "./create-product-variant.service";
 export { updateProductVariant } from "./update-product-variant.service";
 export { deleteProductVariant } from "./delete-product-variant.service";

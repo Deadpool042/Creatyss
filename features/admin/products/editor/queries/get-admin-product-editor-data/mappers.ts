@@ -204,6 +204,12 @@ export function mapProductEditorData(input: {
         type: mapRelatedProductType(link.type),
         sortOrder: link.sortOrder,
       })),
+      characteristics: input.product.characteristics.map((c) => ({
+        id: c.id,
+        label: c.label,
+        value: c.value,
+        sortOrder: c.sortOrder,
+      })),
     },
     variants,
     images,

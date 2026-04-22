@@ -22,14 +22,20 @@ import type { SeoIndexingMode } from "@/entities/seo";
 // Types exportés — utilisés par PREV-2 (page preview)
 // ---------------------------------------------------------------------------
 
+export type AdminProductPreviewCharacteristic = {
+  id: string;
+  label: string;
+  value: string;
+};
+
 export type AdminProductPreviewImage = {
-  url: string;
-  altText: string | null;
+  src: string;
+  alt: string | null;
 };
 
 export type AdminProductPreviewVariant = {
   id: string;
-  sku: string | null;
+  sku: string;
   name: string;
   isDefault: boolean;
   isAvailable: boolean;
@@ -67,6 +73,7 @@ export type AdminProductPreview = {
   images: AdminProductPreviewImage[];
   variants: AdminProductPreviewVariant[];
   relatedProductGroups: AdminProductPreviewRelatedProductGroup[];
+  characteristics: AdminProductPreviewCharacteristic[];
   seoTitle: string | null;
   seoDescription: string | null;
   seoIndexingMode: SeoIndexingMode | null;
@@ -167,8 +174,11 @@ export async function getAdminProductPreviewBySlug(
           altText: true,
         },
       },
+      // Prix produit-level (ProductPrice) — source canonique V1.
+      // Filtre isActive: true aligné sur le filtre variant-level (ProductVariantPrice).
+      // Note : productCategories non fetché en V1 — non requis par la preview admin.
       prices: {
-        where: { archivedAt: null },
+        where: { isActive: true, archivedAt: null },
         orderBy: { createdAt: "asc" as const },
         take: 1,
         select: {
@@ -193,6 +203,9 @@ export async function getAdminProductPreviewBySlug(
               altText: true,
             },
           },
+          // Disponibilité V1 : calculée depuis l'inventaire (onHandQuantity - reservedQuantity).
+          // AvailabilityRecord.isSellable (domaine availability) non utilisé en V1 —
+          // à intégrer quand le domaine availability sera alimenté.
           inventoryItems: {
             where: {
               status: "ACTIVE",
@@ -217,6 +230,8 @@ export async function getAdminProductPreviewBySlug(
               compareAtAmount: true,
             },
           },
+          // optionValues non fetché en V1 — colorName/colorHex toujours null.
+          // À câbler quand les options de variante seront affichées.
         },
       },
       relatedFrom: {
@@ -243,6 +258,14 @@ export async function getAdminProductPreviewBySlug(
               },
             },
           },
+        },
+      },
+      characteristics: {
+        orderBy: { sortOrder: "asc" },
+        select: {
+          id: true,
+          label: true,
+          value: true,
         },
       },
     },
@@ -286,8 +309,8 @@ export async function getAdminProductPreviewBySlug(
   const images: AdminProductPreviewImage[] = product.primaryImage
     ? [
         {
-          url: buildImageUrl(product.primaryImage.storageKey, uploadsPublicPath),
-          altText: product.primaryImage.altText,
+          src: buildImageUrl(product.primaryImage.storageKey, uploadsPublicPath),
+          alt: product.primaryImage.altText,
         },
       ]
     : [];
@@ -299,8 +322,8 @@ export async function getAdminProductPreviewBySlug(
     const variantImages: AdminProductPreviewImage[] = variant.primaryImage
       ? [
           {
-            url: buildImageUrl(variant.primaryImage.storageKey, uploadsPublicPath),
-            altText: variant.primaryImage.altText,
+            src: buildImageUrl(variant.primaryImage.storageKey, uploadsPublicPath),
+            alt: variant.primaryImage.altText,
           },
         ]
       : [];
@@ -362,6 +385,11 @@ export async function getAdminProductPreviewBySlug(
     images,
     variants,
     relatedProductGroups,
+    characteristics: product.characteristics.map((c) => ({
+      id: c.id,
+      label: c.label,
+      value: c.value,
+    })),
     seoTitle: seoMetadata?.metaTitle ?? null,
     seoDescription: seoMetadata?.metaDescription ?? null,
     seoIndexingMode: (seoMetadata?.indexingMode as SeoIndexingMode) ?? null,

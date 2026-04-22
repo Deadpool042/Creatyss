@@ -3,10 +3,9 @@ import { z } from "zod";
 const ADMIN_PASSWORD_MIN_LENGTH = 12;
 
 const adminEmailSchema = z
-  .string()
+  .email()
   .trim()
   .min(1)
-  .email()
   .transform((value) => value.toLowerCase());
 
 const adminPasswordSchema = z.string().min(1);

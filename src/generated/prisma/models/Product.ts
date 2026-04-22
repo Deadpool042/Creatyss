@@ -290,6 +290,7 @@ export type ProductWhereInput = {
   discountProductTargets?: Prisma.DiscountProductTargetListRelationFilter
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetListRelationFilter
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetListRelationFilter
+  characteristics?: Prisma.ProductCharacteristicListRelationFilter
 }
 
 export type ProductOrderByWithRelationInput = {
@@ -329,6 +330,7 @@ export type ProductOrderByWithRelationInput = {
   discountProductTargets?: Prisma.DiscountProductTargetOrderByRelationAggregateInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetOrderByRelationAggregateInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetOrderByRelationAggregateInput
+  characteristics?: Prisma.ProductCharacteristicOrderByRelationAggregateInput
 }
 
 export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -372,6 +374,7 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   discountProductTargets?: Prisma.DiscountProductTargetListRelationFilter
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetListRelationFilter
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetListRelationFilter
+  characteristics?: Prisma.ProductCharacteristicListRelationFilter
 }, "id" | "storeId_slug">
 
 export type ProductOrderByWithAggregationInput = {
@@ -452,6 +455,7 @@ export type ProductCreateInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateInput = {
@@ -488,6 +492,7 @@ export type ProductUncheckedCreateInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductUpdateInput = {
@@ -524,6 +529,7 @@ export type ProductUpdateInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateInput = {
@@ -560,6 +566,7 @@ export type ProductUncheckedUpdateInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateManyInput = {
@@ -808,6 +815,20 @@ export type ProductUncheckedUpdateManyWithoutProductTypeNestedInput = {
   update?: Prisma.ProductUpdateWithWhereUniqueWithoutProductTypeInput | Prisma.ProductUpdateWithWhereUniqueWithoutProductTypeInput[]
   updateMany?: Prisma.ProductUpdateManyWithWhereWithoutProductTypeInput | Prisma.ProductUpdateManyWithWhereWithoutProductTypeInput[]
   deleteMany?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
+}
+
+export type ProductCreateNestedOneWithoutCharacteristicsInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutCharacteristicsInput, Prisma.ProductUncheckedCreateWithoutCharacteristicsInput>
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutCharacteristicsInput
+  connect?: Prisma.ProductWhereUniqueInput
+}
+
+export type ProductUpdateOneRequiredWithoutCharacteristicsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutCharacteristicsInput, Prisma.ProductUncheckedCreateWithoutCharacteristicsInput>
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutCharacteristicsInput
+  upsert?: Prisma.ProductUpsertWithoutCharacteristicsInput
+  connect?: Prisma.ProductWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProductUpdateToOneWithWhereWithoutCharacteristicsInput, Prisma.ProductUpdateWithoutCharacteristicsInput>, Prisma.ProductUncheckedUpdateWithoutCharacteristicsInput>
 }
 
 export type EnumProductStatusFieldUpdateOperationsInput = {
@@ -1107,6 +1128,7 @@ export type ProductCreateWithoutProductCategoriesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutProductCategoriesInput = {
@@ -1142,6 +1164,7 @@ export type ProductUncheckedCreateWithoutProductCategoriesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutProductCategoriesInput = {
@@ -1193,6 +1216,7 @@ export type ProductUpdateWithoutProductCategoriesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutProductCategoriesInput = {
@@ -1228,6 +1252,7 @@ export type ProductUncheckedUpdateWithoutProductCategoriesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutPrimaryImageInput = {
@@ -1263,6 +1288,7 @@ export type ProductCreateWithoutPrimaryImageInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutPrimaryImageInput = {
@@ -1298,6 +1324,7 @@ export type ProductUncheckedCreateWithoutPrimaryImageInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutPrimaryImageInput = {
@@ -1381,6 +1408,7 @@ export type ProductCreateWithoutPricesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutPricesInput = {
@@ -1416,6 +1444,7 @@ export type ProductUncheckedCreateWithoutPricesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutPricesInput = {
@@ -1467,6 +1496,7 @@ export type ProductUpdateWithoutPricesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutPricesInput = {
@@ -1502,6 +1532,7 @@ export type ProductUncheckedUpdateWithoutPricesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutProductTypeInput = {
@@ -1537,6 +1568,7 @@ export type ProductCreateWithoutProductTypeInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutProductTypeInput = {
@@ -1572,6 +1604,7 @@ export type ProductUncheckedCreateWithoutProductTypeInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutProductTypeInput = {
@@ -1598,6 +1631,166 @@ export type ProductUpdateWithWhereUniqueWithoutProductTypeInput = {
 export type ProductUpdateManyWithWhereWithoutProductTypeInput = {
   where: Prisma.ProductScalarWhereInput
   data: Prisma.XOR<Prisma.ProductUpdateManyMutationInput, Prisma.ProductUncheckedUpdateManyWithoutProductTypeInput>
+}
+
+export type ProductCreateWithoutCharacteristicsInput = {
+  id?: string
+  skuRoot?: string | null
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.ProductStatus
+  isFeatured?: boolean
+  isStandalone?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prices?: Prisma.ProductPriceCreateNestedManyWithoutProductInput
+  cartLines?: Prisma.CartLineCreateNestedManyWithoutProductInput
+  checkoutLines?: Prisma.CheckoutLineCreateNestedManyWithoutProductInput
+  orderLines?: Prisma.OrderLineCreateNestedManyWithoutProductInput
+  store: Prisma.StoreCreateNestedOneWithoutProductsInput
+  productType?: Prisma.ProductTypeCreateNestedOneWithoutProductsInput
+  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutProductsAsPrimaryImageInput
+  variants?: Prisma.ProductVariantCreateNestedManyWithoutProductInput
+  relatedFrom?: Prisma.RelatedProductCreateNestedManyWithoutSourceProductInput
+  relatedTo?: Prisma.RelatedProductCreateNestedManyWithoutTargetProductInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedProductCreateNestedManyWithoutProductInput
+  productCategories?: Prisma.ProductCategoryCreateNestedManyWithoutProductInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductCreateNestedManyWithoutProductInput
+  channelStatuses?: Prisma.ChannelProductStatusCreateNestedManyWithoutProductInput
+  giftRequestItems?: Prisma.GiftRequestItemCreateNestedManyWithoutProductInput
+  bundleItems?: Prisma.BundleItemCreateNestedManyWithoutProductInput
+  subscriptionItems?: Prisma.SubscriptionItemCreateNestedManyWithoutProductInput
+  discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+}
+
+export type ProductUncheckedCreateWithoutCharacteristicsInput = {
+  id?: string
+  storeId: string
+  productTypeId?: string | null
+  primaryImageId?: string | null
+  skuRoot?: string | null
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.ProductStatus
+  isFeatured?: boolean
+  isStandalone?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prices?: Prisma.ProductPriceUncheckedCreateNestedManyWithoutProductInput
+  cartLines?: Prisma.CartLineUncheckedCreateNestedManyWithoutProductInput
+  checkoutLines?: Prisma.CheckoutLineUncheckedCreateNestedManyWithoutProductInput
+  orderLines?: Prisma.OrderLineUncheckedCreateNestedManyWithoutProductInput
+  variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutProductInput
+  relatedFrom?: Prisma.RelatedProductUncheckedCreateNestedManyWithoutSourceProductInput
+  relatedTo?: Prisma.RelatedProductUncheckedCreateNestedManyWithoutTargetProductInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedProductUncheckedCreateNestedManyWithoutProductInput
+  productCategories?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutProductInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedCreateNestedManyWithoutProductInput
+  channelStatuses?: Prisma.ChannelProductStatusUncheckedCreateNestedManyWithoutProductInput
+  giftRequestItems?: Prisma.GiftRequestItemUncheckedCreateNestedManyWithoutProductInput
+  bundleItems?: Prisma.BundleItemUncheckedCreateNestedManyWithoutProductInput
+  subscriptionItems?: Prisma.SubscriptionItemUncheckedCreateNestedManyWithoutProductInput
+  discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+}
+
+export type ProductCreateOrConnectWithoutCharacteristicsInput = {
+  where: Prisma.ProductWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProductCreateWithoutCharacteristicsInput, Prisma.ProductUncheckedCreateWithoutCharacteristicsInput>
+}
+
+export type ProductUpsertWithoutCharacteristicsInput = {
+  update: Prisma.XOR<Prisma.ProductUpdateWithoutCharacteristicsInput, Prisma.ProductUncheckedUpdateWithoutCharacteristicsInput>
+  create: Prisma.XOR<Prisma.ProductCreateWithoutCharacteristicsInput, Prisma.ProductUncheckedCreateWithoutCharacteristicsInput>
+  where?: Prisma.ProductWhereInput
+}
+
+export type ProductUpdateToOneWithWhereWithoutCharacteristicsInput = {
+  where?: Prisma.ProductWhereInput
+  data: Prisma.XOR<Prisma.ProductUpdateWithoutCharacteristicsInput, Prisma.ProductUncheckedUpdateWithoutCharacteristicsInput>
+}
+
+export type ProductUpdateWithoutCharacteristicsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prices?: Prisma.ProductPriceUpdateManyWithoutProductNestedInput
+  cartLines?: Prisma.CartLineUpdateManyWithoutProductNestedInput
+  checkoutLines?: Prisma.CheckoutLineUpdateManyWithoutProductNestedInput
+  orderLines?: Prisma.OrderLineUpdateManyWithoutProductNestedInput
+  store?: Prisma.StoreUpdateOneRequiredWithoutProductsNestedInput
+  productType?: Prisma.ProductTypeUpdateOneWithoutProductsNestedInput
+  primaryImage?: Prisma.MediaAssetUpdateOneWithoutProductsAsPrimaryImageNestedInput
+  variants?: Prisma.ProductVariantUpdateManyWithoutProductNestedInput
+  relatedFrom?: Prisma.RelatedProductUpdateManyWithoutSourceProductNestedInput
+  relatedTo?: Prisma.RelatedProductUpdateManyWithoutTargetProductNestedInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedProductUpdateManyWithoutProductNestedInput
+  productCategories?: Prisma.ProductCategoryUpdateManyWithoutProductNestedInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductUpdateManyWithoutProductNestedInput
+  channelStatuses?: Prisma.ChannelProductStatusUpdateManyWithoutProductNestedInput
+  giftRequestItems?: Prisma.GiftRequestItemUpdateManyWithoutProductNestedInput
+  bundleItems?: Prisma.BundleItemUpdateManyWithoutProductNestedInput
+  subscriptionItems?: Prisma.SubscriptionItemUpdateManyWithoutProductNestedInput
+  discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+}
+
+export type ProductUncheckedUpdateWithoutCharacteristicsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  productTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prices?: Prisma.ProductPriceUncheckedUpdateManyWithoutProductNestedInput
+  cartLines?: Prisma.CartLineUncheckedUpdateManyWithoutProductNestedInput
+  checkoutLines?: Prisma.CheckoutLineUncheckedUpdateManyWithoutProductNestedInput
+  orderLines?: Prisma.OrderLineUncheckedUpdateManyWithoutProductNestedInput
+  variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+  relatedFrom?: Prisma.RelatedProductUncheckedUpdateManyWithoutSourceProductNestedInput
+  relatedTo?: Prisma.RelatedProductUncheckedUpdateManyWithoutTargetProductNestedInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedProductUncheckedUpdateManyWithoutProductNestedInput
+  productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedUpdateManyWithoutProductNestedInput
+  channelStatuses?: Prisma.ChannelProductStatusUncheckedUpdateManyWithoutProductNestedInput
+  giftRequestItems?: Prisma.GiftRequestItemUncheckedUpdateManyWithoutProductNestedInput
+  bundleItems?: Prisma.BundleItemUncheckedUpdateManyWithoutProductNestedInput
+  subscriptionItems?: Prisma.SubscriptionItemUncheckedUpdateManyWithoutProductNestedInput
+  discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutVariantsInput = {
@@ -1633,6 +1826,7 @@ export type ProductCreateWithoutVariantsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutVariantsInput = {
@@ -1668,6 +1862,7 @@ export type ProductUncheckedCreateWithoutVariantsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutVariantsInput = {
@@ -1719,6 +1914,7 @@ export type ProductUpdateWithoutVariantsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutVariantsInput = {
@@ -1754,6 +1950,7 @@ export type ProductUncheckedUpdateWithoutVariantsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutRelatedFromInput = {
@@ -1789,6 +1986,7 @@ export type ProductCreateWithoutRelatedFromInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutRelatedFromInput = {
@@ -1824,6 +2022,7 @@ export type ProductUncheckedCreateWithoutRelatedFromInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutRelatedFromInput = {
@@ -1864,6 +2063,7 @@ export type ProductCreateWithoutRelatedToInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutRelatedToInput = {
@@ -1899,6 +2099,7 @@ export type ProductUncheckedCreateWithoutRelatedToInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutRelatedToInput = {
@@ -1950,6 +2151,7 @@ export type ProductUpdateWithoutRelatedFromInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutRelatedFromInput = {
@@ -1985,6 +2187,7 @@ export type ProductUncheckedUpdateWithoutRelatedFromInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUpsertWithoutRelatedToInput = {
@@ -2031,6 +2234,7 @@ export type ProductUpdateWithoutRelatedToInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutRelatedToInput = {
@@ -2066,6 +2270,7 @@ export type ProductUncheckedUpdateWithoutRelatedToInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutCartLinesInput = {
@@ -2101,6 +2306,7 @@ export type ProductCreateWithoutCartLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutCartLinesInput = {
@@ -2136,6 +2342,7 @@ export type ProductUncheckedCreateWithoutCartLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutCartLinesInput = {
@@ -2187,6 +2394,7 @@ export type ProductUpdateWithoutCartLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutCartLinesInput = {
@@ -2222,6 +2430,7 @@ export type ProductUncheckedUpdateWithoutCartLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutCheckoutLinesInput = {
@@ -2257,6 +2466,7 @@ export type ProductCreateWithoutCheckoutLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutCheckoutLinesInput = {
@@ -2292,6 +2502,7 @@ export type ProductUncheckedCreateWithoutCheckoutLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutCheckoutLinesInput = {
@@ -2343,6 +2554,7 @@ export type ProductUpdateWithoutCheckoutLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutCheckoutLinesInput = {
@@ -2378,6 +2590,7 @@ export type ProductUncheckedUpdateWithoutCheckoutLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutOrderLinesInput = {
@@ -2413,6 +2626,7 @@ export type ProductCreateWithoutOrderLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutOrderLinesInput = {
@@ -2448,6 +2662,7 @@ export type ProductUncheckedCreateWithoutOrderLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutOrderLinesInput = {
@@ -2499,6 +2714,7 @@ export type ProductUpdateWithoutOrderLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutOrderLinesInput = {
@@ -2534,6 +2750,7 @@ export type ProductUncheckedUpdateWithoutOrderLinesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutHomepageFeaturedInInput = {
@@ -2569,6 +2786,7 @@ export type ProductCreateWithoutHomepageFeaturedInInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutHomepageFeaturedInInput = {
@@ -2604,6 +2822,7 @@ export type ProductUncheckedCreateWithoutHomepageFeaturedInInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutHomepageFeaturedInInput = {
@@ -2655,6 +2874,7 @@ export type ProductUpdateWithoutHomepageFeaturedInInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutHomepageFeaturedInInput = {
@@ -2690,6 +2910,7 @@ export type ProductUncheckedUpdateWithoutHomepageFeaturedInInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutStoreInput = {
@@ -2725,6 +2946,7 @@ export type ProductCreateWithoutStoreInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutStoreInput = {
@@ -2760,6 +2982,7 @@ export type ProductUncheckedCreateWithoutStoreInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutStoreInput = {
@@ -2821,6 +3044,7 @@ export type ProductCreateWithoutBundleItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutBundleItemsInput = {
@@ -2856,6 +3080,7 @@ export type ProductUncheckedCreateWithoutBundleItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutBundleItemsInput = {
@@ -2907,6 +3132,7 @@ export type ProductUpdateWithoutBundleItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutBundleItemsInput = {
@@ -2942,6 +3168,7 @@ export type ProductUncheckedUpdateWithoutBundleItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutDiscountProductTargetsInput = {
@@ -2977,6 +3204,7 @@ export type ProductCreateWithoutDiscountProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutDiscountProductTargetsInput = {
@@ -3012,6 +3240,7 @@ export type ProductUncheckedCreateWithoutDiscountProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutDiscountProductTargetsInput = {
@@ -3063,6 +3292,7 @@ export type ProductUpdateWithoutDiscountProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutDiscountProductTargetsInput = {
@@ -3098,6 +3328,7 @@ export type ProductUncheckedUpdateWithoutDiscountProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutGiftRequestItemsInput = {
@@ -3133,6 +3364,7 @@ export type ProductCreateWithoutGiftRequestItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutGiftRequestItemsInput = {
@@ -3168,6 +3400,7 @@ export type ProductUncheckedCreateWithoutGiftRequestItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutGiftRequestItemsInput = {
@@ -3219,6 +3452,7 @@ export type ProductUpdateWithoutGiftRequestItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutGiftRequestItemsInput = {
@@ -3254,6 +3488,7 @@ export type ProductUncheckedUpdateWithoutGiftRequestItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutSalesPolicyProductTargetsInput = {
@@ -3289,6 +3524,7 @@ export type ProductCreateWithoutSalesPolicyProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemCreateNestedManyWithoutProductInput
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutSalesPolicyProductTargetsInput = {
@@ -3324,6 +3560,7 @@ export type ProductUncheckedCreateWithoutSalesPolicyProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemUncheckedCreateNestedManyWithoutProductInput
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutSalesPolicyProductTargetsInput = {
@@ -3375,6 +3612,7 @@ export type ProductUpdateWithoutSalesPolicyProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemUpdateManyWithoutProductNestedInput
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutSalesPolicyProductTargetsInput = {
@@ -3410,6 +3648,7 @@ export type ProductUncheckedUpdateWithoutSalesPolicyProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemUncheckedUpdateManyWithoutProductNestedInput
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutSubscriptionItemsInput = {
@@ -3445,6 +3684,7 @@ export type ProductCreateWithoutSubscriptionItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutSubscriptionItemsInput = {
@@ -3480,6 +3720,7 @@ export type ProductUncheckedCreateWithoutSubscriptionItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutSubscriptionItemsInput = {
@@ -3531,6 +3772,7 @@ export type ProductUpdateWithoutSubscriptionItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutSubscriptionItemsInput = {
@@ -3566,6 +3808,7 @@ export type ProductUncheckedUpdateWithoutSubscriptionItemsInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutTaxRuleProductTargetsInput = {
@@ -3601,6 +3844,7 @@ export type ProductCreateWithoutTaxRuleProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemCreateNestedManyWithoutProductInput
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutTaxRuleProductTargetsInput = {
@@ -3636,6 +3880,7 @@ export type ProductUncheckedCreateWithoutTaxRuleProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemUncheckedCreateNestedManyWithoutProductInput
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutTaxRuleProductTargetsInput = {
@@ -3687,6 +3932,7 @@ export type ProductUpdateWithoutTaxRuleProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemUpdateManyWithoutProductNestedInput
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutTaxRuleProductTargetsInput = {
@@ -3722,6 +3968,7 @@ export type ProductUncheckedUpdateWithoutTaxRuleProductTargetsInput = {
   subscriptionItems?: Prisma.SubscriptionItemUncheckedUpdateManyWithoutProductNestedInput
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutConversionFlowLinksInput = {
@@ -3757,6 +4004,7 @@ export type ProductCreateWithoutConversionFlowLinksInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutConversionFlowLinksInput = {
@@ -3792,6 +4040,7 @@ export type ProductUncheckedCreateWithoutConversionFlowLinksInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutConversionFlowLinksInput = {
@@ -3843,6 +4092,7 @@ export type ProductUpdateWithoutConversionFlowLinksInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutConversionFlowLinksInput = {
@@ -3878,6 +4128,7 @@ export type ProductUncheckedUpdateWithoutConversionFlowLinksInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateWithoutChannelStatusesInput = {
@@ -3913,6 +4164,7 @@ export type ProductCreateWithoutChannelStatusesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
 }
 
 export type ProductUncheckedCreateWithoutChannelStatusesInput = {
@@ -3948,6 +4200,7 @@ export type ProductUncheckedCreateWithoutChannelStatusesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductCreateOrConnectWithoutChannelStatusesInput = {
@@ -3999,6 +4252,7 @@ export type ProductUpdateWithoutChannelStatusesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutChannelStatusesInput = {
@@ -4034,6 +4288,7 @@ export type ProductUncheckedUpdateWithoutChannelStatusesInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateManyPrimaryImageInput = {
@@ -4087,6 +4342,7 @@ export type ProductUpdateWithoutPrimaryImageInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutPrimaryImageInput = {
@@ -4122,6 +4378,7 @@ export type ProductUncheckedUpdateWithoutPrimaryImageInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateManyWithoutPrimaryImageInput = {
@@ -4193,6 +4450,7 @@ export type ProductUpdateWithoutProductTypeInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutProductTypeInput = {
@@ -4228,6 +4486,7 @@ export type ProductUncheckedUpdateWithoutProductTypeInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateManyWithoutProductTypeInput = {
@@ -4299,6 +4558,7 @@ export type ProductUpdateWithoutStoreInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutStoreInput = {
@@ -4334,6 +4594,7 @@ export type ProductUncheckedUpdateWithoutStoreInput = {
   discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductUncheckedUpdateManyWithoutStoreInput = {
@@ -4377,6 +4638,7 @@ export type ProductCountOutputType = {
   discountProductTargets: number
   taxRuleProductTargets: number
   salesPolicyProductTargets: number
+  characteristics: number
 }
 
 export type ProductCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4397,6 +4659,7 @@ export type ProductCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   discountProductTargets?: boolean | ProductCountOutputTypeCountDiscountProductTargetsArgs
   taxRuleProductTargets?: boolean | ProductCountOutputTypeCountTaxRuleProductTargetsArgs
   salesPolicyProductTargets?: boolean | ProductCountOutputTypeCountSalesPolicyProductTargetsArgs
+  characteristics?: boolean | ProductCountOutputTypeCountCharacteristicsArgs
 }
 
 /**
@@ -4528,6 +4791,13 @@ export type ProductCountOutputTypeCountSalesPolicyProductTargetsArgs<ExtArgs ext
   where?: Prisma.SalesPolicyProductTargetWhereInput
 }
 
+/**
+ * ProductCountOutputType without action
+ */
+export type ProductCountOutputTypeCountCharacteristicsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProductCharacteristicWhereInput
+}
+
 
 export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4566,6 +4836,7 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   discountProductTargets?: boolean | Prisma.Product$discountProductTargetsArgs<ExtArgs>
   taxRuleProductTargets?: boolean | Prisma.Product$taxRuleProductTargetsArgs<ExtArgs>
   salesPolicyProductTargets?: boolean | Prisma.Product$salesPolicyProductTargetsArgs<ExtArgs>
+  characteristics?: boolean | Prisma.Product$characteristicsArgs<ExtArgs>
   _count?: boolean | Prisma.ProductCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["product"]>
 
@@ -4654,6 +4925,7 @@ export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   discountProductTargets?: boolean | Prisma.Product$discountProductTargetsArgs<ExtArgs>
   taxRuleProductTargets?: boolean | Prisma.Product$taxRuleProductTargetsArgs<ExtArgs>
   salesPolicyProductTargets?: boolean | Prisma.Product$salesPolicyProductTargetsArgs<ExtArgs>
+  characteristics?: boolean | Prisma.Product$characteristicsArgs<ExtArgs>
   _count?: boolean | Prisma.ProductCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProductIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4690,6 +4962,7 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     discountProductTargets: Prisma.$DiscountProductTargetPayload<ExtArgs>[]
     taxRuleProductTargets: Prisma.$TaxRuleProductTargetPayload<ExtArgs>[]
     salesPolicyProductTargets: Prisma.$SalesPolicyProductTargetPayload<ExtArgs>[]
+    characteristics: Prisma.$ProductCharacteristicPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5122,6 +5395,7 @@ export interface Prisma__ProductClient<T, Null = never, ExtArgs extends runtime.
   discountProductTargets<T extends Prisma.Product$discountProductTargetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Product$discountProductTargetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DiscountProductTargetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   taxRuleProductTargets<T extends Prisma.Product$taxRuleProductTargetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Product$taxRuleProductTargetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaxRuleProductTargetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   salesPolicyProductTargets<T extends Prisma.Product$salesPolicyProductTargetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Product$salesPolicyProductTargetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SalesPolicyProductTargetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  characteristics<T extends Prisma.Product$characteristicsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Product$characteristicsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductCharacteristicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6011,6 +6285,30 @@ export type Product$salesPolicyProductTargetsArgs<ExtArgs extends runtime.Types.
   take?: number
   skip?: number
   distinct?: Prisma.SalesPolicyProductTargetScalarFieldEnum | Prisma.SalesPolicyProductTargetScalarFieldEnum[]
+}
+
+/**
+ * Product.characteristics
+ */
+export type Product$characteristicsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProductCharacteristic
+   */
+  select?: Prisma.ProductCharacteristicSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProductCharacteristic
+   */
+  omit?: Prisma.ProductCharacteristicOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductCharacteristicInclude<ExtArgs> | null
+  where?: Prisma.ProductCharacteristicWhereInput
+  orderBy?: Prisma.ProductCharacteristicOrderByWithRelationInput | Prisma.ProductCharacteristicOrderByWithRelationInput[]
+  cursor?: Prisma.ProductCharacteristicWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProductCharacteristicScalarFieldEnum | Prisma.ProductCharacteristicScalarFieldEnum[]
 }
 
 /**

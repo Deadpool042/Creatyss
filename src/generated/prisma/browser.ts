@@ -78,6 +78,11 @@ export type ProductVariantPrice = Prisma.ProductVariantPriceModel
  */
 export type ProductType = Prisma.ProductTypeModel
 /**
+ * Model ProductCharacteristic
+ * 
+ */
+export type ProductCharacteristic = Prisma.ProductCharacteristicModel
+/**
  * Model Product
  * 
  */

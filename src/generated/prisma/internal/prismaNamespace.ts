@@ -396,6 +396,7 @@ export const ModelName = {
   ProductPrice: 'ProductPrice',
   ProductVariantPrice: 'ProductVariantPrice',
   ProductType: 'ProductType',
+  ProductCharacteristic: 'ProductCharacteristic',
   Product: 'Product',
   ProductVariant: 'ProductVariant',
   ProductOption: 'ProductOption',
@@ -569,7 +570,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "availabilityRecord" | "availabilityPolicy" | "availabilityOverride" | "category" | "productCategory" | "mediaAsset" | "mediaVariant" | "mediaReference" | "priceList" | "productPrice" | "productVariantPrice" | "productType" | "product" | "productVariant" | "productOption" | "productOptionValue" | "productVariantOptionValue" | "relatedProduct" | "cart" | "cartLine" | "checkout" | "checkoutLine" | "checkoutAddress" | "checkoutShippingSelection" | "customer" | "customerAddress" | "customerContactPreference" | "order" | "orderLine" | "orderAddress" | "orderShippingSelection" | "orderStatusHistory" | "blogCategory" | "blogPost" | "blogPostCategory" | "homepage" | "homepageSection" | "homepageFeaturedProduct" | "homepageFeaturedCategory" | "homepageFeaturedBlogPost" | "page" | "pageSection" | "pageBlock" | "seoMetadata" | "apiClient" | "apiClientSecret" | "apiClientPermission" | "user" | "userCredential" | "userSession" | "role" | "permission" | "userRole" | "rolePermission" | "store" | "storeDomain" | "auditLog" | "auditLogChange" | "domainEvent" | "domainEventDelivery" | "featureFlag" | "featureFlagOverride" | "job" | "jobAttempt" | "monitoringCheck" | "monitoringCheckResult" | "observabilitySignal" | "observabilitySignalEvent" | "aiProvider" | "aiTask" | "bundle" | "bundleItem" | "discount" | "discountCode" | "discountRedemption" | "discountProductTarget" | "discountVariantTarget" | "discountCategoryTarget" | "document" | "documentVersion" | "fulfillment" | "fulfillmentItem" | "giftCard" | "giftCardTransaction" | "giftRequest" | "giftRequestItem" | "inventoryItem" | "inventoryReservation" | "inventoryMovement" | "loyaltyAccount" | "loyaltyTransaction" | "payment" | "paymentAttempt" | "paymentRefund" | "returnRequest" | "returnItem" | "returnDecision" | "salesPolicy" | "sellabilityDecision" | "salesPolicyProductTarget" | "salesPolicyVariantTarget" | "salesPolicyCategoryTarget" | "shippingZone" | "shippingMethod" | "shipment" | "subscription" | "subscriptionItem" | "taxRule" | "taxRuleProductTarget" | "taxRuleVariantTarget" | "taxRuleCategoryTarget" | "analyticsMetric" | "analyticsSnapshot" | "attributionModel" | "attributionCredit" | "behaviorSegment" | "behaviorProfile" | "behaviorProfileSegment" | "conversionFlow" | "conversionFlowProduct" | "crmContact" | "crmTag" | "crmContactTag" | "newsletterSubscriber" | "newsletterCampaign" | "newsletterCampaignRecipient" | "publicEvent" | "eventRegistration" | "eventReservation" | "recommendationRule" | "recommendationLink" | "socialPublication" | "socialPublicationAsset" | "supportTicket" | "supportMessage" | "approvalRequest" | "approvalDecision" | "consentPurpose" | "consentRecord" | "emailMessage" | "emailRecipient" | "exportDefinition" | "exportRequest" | "exportArtifact" | "fraudRiskAssessment" | "fraudRiskDecision" | "fraudRiskReview" | "importDefinition" | "importRequest" | "importArtifact" | "integration" | "integrationCredential" | "integrationSyncState" | "localizationLocale" | "localizedValue" | "notification" | "notificationPreference" | "schedulePlan" | "scheduleWindow" | "scheduleOccurrence" | "webhookEndpoint" | "webhookDelivery" | "workflowDefinition" | "workflowDefinitionStep" | "workflowInstance" | "workflowStepInstance" | "channel" | "channelProductStatus" | "channelVariantStatus" | "searchDocument"
+    modelProps: "availabilityRecord" | "availabilityPolicy" | "availabilityOverride" | "category" | "productCategory" | "mediaAsset" | "mediaVariant" | "mediaReference" | "priceList" | "productPrice" | "productVariantPrice" | "productType" | "productCharacteristic" | "product" | "productVariant" | "productOption" | "productOptionValue" | "productVariantOptionValue" | "relatedProduct" | "cart" | "cartLine" | "checkout" | "checkoutLine" | "checkoutAddress" | "checkoutShippingSelection" | "customer" | "customerAddress" | "customerContactPreference" | "order" | "orderLine" | "orderAddress" | "orderShippingSelection" | "orderStatusHistory" | "blogCategory" | "blogPost" | "blogPostCategory" | "homepage" | "homepageSection" | "homepageFeaturedProduct" | "homepageFeaturedCategory" | "homepageFeaturedBlogPost" | "page" | "pageSection" | "pageBlock" | "seoMetadata" | "apiClient" | "apiClientSecret" | "apiClientPermission" | "user" | "userCredential" | "userSession" | "role" | "permission" | "userRole" | "rolePermission" | "store" | "storeDomain" | "auditLog" | "auditLogChange" | "domainEvent" | "domainEventDelivery" | "featureFlag" | "featureFlagOverride" | "job" | "jobAttempt" | "monitoringCheck" | "monitoringCheckResult" | "observabilitySignal" | "observabilitySignalEvent" | "aiProvider" | "aiTask" | "bundle" | "bundleItem" | "discount" | "discountCode" | "discountRedemption" | "discountProductTarget" | "discountVariantTarget" | "discountCategoryTarget" | "document" | "documentVersion" | "fulfillment" | "fulfillmentItem" | "giftCard" | "giftCardTransaction" | "giftRequest" | "giftRequestItem" | "inventoryItem" | "inventoryReservation" | "inventoryMovement" | "loyaltyAccount" | "loyaltyTransaction" | "payment" | "paymentAttempt" | "paymentRefund" | "returnRequest" | "returnItem" | "returnDecision" | "salesPolicy" | "sellabilityDecision" | "salesPolicyProductTarget" | "salesPolicyVariantTarget" | "salesPolicyCategoryTarget" | "shippingZone" | "shippingMethod" | "shipment" | "subscription" | "subscriptionItem" | "taxRule" | "taxRuleProductTarget" | "taxRuleVariantTarget" | "taxRuleCategoryTarget" | "analyticsMetric" | "analyticsSnapshot" | "attributionModel" | "attributionCredit" | "behaviorSegment" | "behaviorProfile" | "behaviorProfileSegment" | "conversionFlow" | "conversionFlowProduct" | "crmContact" | "crmTag" | "crmContactTag" | "newsletterSubscriber" | "newsletterCampaign" | "newsletterCampaignRecipient" | "publicEvent" | "eventRegistration" | "eventReservation" | "recommendationRule" | "recommendationLink" | "socialPublication" | "socialPublicationAsset" | "supportTicket" | "supportMessage" | "approvalRequest" | "approvalDecision" | "consentPurpose" | "consentRecord" | "emailMessage" | "emailRecipient" | "exportDefinition" | "exportRequest" | "exportArtifact" | "fraudRiskAssessment" | "fraudRiskDecision" | "fraudRiskReview" | "importDefinition" | "importRequest" | "importArtifact" | "integration" | "integrationCredential" | "integrationSyncState" | "localizationLocale" | "localizedValue" | "notification" | "notificationPreference" | "schedulePlan" | "scheduleWindow" | "scheduleOccurrence" | "webhookEndpoint" | "webhookDelivery" | "workflowDefinition" | "workflowDefinitionStep" | "workflowInstance" | "workflowStepInstance" | "channel" | "channelProductStatus" | "channelVariantStatus" | "searchDocument"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1458,6 +1459,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ProductTypeCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ProductTypeCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProductCharacteristic: {
+      payload: Prisma.$ProductCharacteristicPayload<ExtArgs>
+      fields: Prisma.ProductCharacteristicFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProductCharacteristicFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProductCharacteristicFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload>
+        }
+        findFirst: {
+          args: Prisma.ProductCharacteristicFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProductCharacteristicFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload>
+        }
+        findMany: {
+          args: Prisma.ProductCharacteristicFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload>[]
+        }
+        create: {
+          args: Prisma.ProductCharacteristicCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload>
+        }
+        createMany: {
+          args: Prisma.ProductCharacteristicCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProductCharacteristicCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload>[]
+        }
+        delete: {
+          args: Prisma.ProductCharacteristicDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload>
+        }
+        update: {
+          args: Prisma.ProductCharacteristicUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProductCharacteristicDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProductCharacteristicUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProductCharacteristicUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProductCharacteristicUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductCharacteristicPayload>
+        }
+        aggregate: {
+          args: Prisma.ProductCharacteristicAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProductCharacteristic>
+        }
+        groupBy: {
+          args: Prisma.ProductCharacteristicGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProductCharacteristicGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProductCharacteristicCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProductCharacteristicCountAggregateOutputType> | number
         }
       }
     }
@@ -13421,6 +13496,19 @@ export const ProductTypeScalarFieldEnum = {
 export type ProductTypeScalarFieldEnum = (typeof ProductTypeScalarFieldEnum)[keyof typeof ProductTypeScalarFieldEnum]
 
 
+export const ProductCharacteristicScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  label: 'label',
+  value: 'value',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductCharacteristicScalarFieldEnum = (typeof ProductCharacteristicScalarFieldEnum)[keyof typeof ProductCharacteristicScalarFieldEnum]
+
+
 export const ProductScalarFieldEnum = {
   id: 'id',
   storeId: 'storeId',
@@ -18412,6 +18500,7 @@ export type GlobalOmitConfig = {
   productPrice?: Prisma.ProductPriceOmit
   productVariantPrice?: Prisma.ProductVariantPriceOmit
   productType?: Prisma.ProductTypeOmit
+  productCharacteristic?: Prisma.ProductCharacteristicOmit
   product?: Prisma.ProductOmit
   productVariant?: Prisma.ProductVariantOmit
   productOption?: Prisma.ProductOptionOmit

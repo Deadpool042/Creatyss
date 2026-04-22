@@ -22,6 +22,7 @@ export type {
   AdminProductEditorRelatedProduct,
   AdminProductEditorSeo,
   AdminProductEditorStatus,
+  AdminProductEditorCharacteristic,
 } from "../types/product-editor.types";
 
 export type { AdminProductImageItem, AdminProductImagesData } from "../types/product-images.types";
@@ -130,3 +131,10 @@ export type {
   ProductPricingFormAction,
 } from "../types/product-pricing-form.types";
 export { productPricingFormInitialState } from "../types/product-pricing-form.types";
+
+export type {
+  AdminProductCharacteristicItem,
+  ProductCharacteristicsFormState,
+  ProductCharacteristicsFormAction,
+} from "../types/product-characteristics-form.types";
+export { productCharacteristicsFormInitialState } from "../types/product-characteristics-form.types";

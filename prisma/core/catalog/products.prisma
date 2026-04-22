@@ -51,6 +51,28 @@ model ProductType {
   @@map("product_types")
 }
 
+/// Feature: catalog.product-characteristics
+/// Category: core
+/// Level: core
+/// DependsOn: catalog.products
+
+model ProductCharacteristic {
+  id        String @id @default(cuid())
+  productId String
+
+  label     String
+  value     String
+  sortOrder Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, sortOrder])
+  @@map("product_characteristics")
+}
+
 model Product {
   id             String  @id @default(cuid())
   storeId        String
@@ -96,6 +118,7 @@ model Product {
   discountProductTargets    DiscountProductTarget[]
   taxRuleProductTargets     TaxRuleProductTarget[]
   salesPolicyProductTargets SalesPolicyProductTarget[]
+  characteristics           ProductCharacteristic[]
 
   @@unique([storeId, slug])
   @@index([storeId])

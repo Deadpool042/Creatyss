@@ -56,6 +56,15 @@ export const PRODUCT_EDITOR_CORE_SELECT = {
       },
     },
   },
+  characteristics: {
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+    select: {
+      id: true,
+      label: true,
+      value: true,
+      sortOrder: true,
+    },
+  },
   variants: {
     where: {
       archivedAt: null,

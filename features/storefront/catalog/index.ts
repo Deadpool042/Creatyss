@@ -2,10 +2,8 @@ import { db } from "@/core/db";
 import { getUploadsPublicPath } from "@/core/uploads";
 
 type CatalogImage = {
-  id: string;
-  filePath: string;
-  altText: string | null;
-  isPrimary: boolean;
+  src: string;
+  alt: string | null;
 };
 
 type CatalogVariant = {
@@ -19,6 +17,12 @@ type CatalogVariant = {
   price: string;
   compareAtPrice: string | null;
   images: CatalogImage[];
+};
+
+export type CatalogProductCharacteristic = {
+  id: string;
+  label: string;
+  value: string;
 };
 
 type CatalogProductDetail = {
@@ -42,6 +46,7 @@ type CatalogProductDetail = {
   images: CatalogImage[];
   variants: CatalogVariant[];
   relatedProductGroups: CatalogRelatedProductGroup[];
+  characteristics: CatalogProductCharacteristic[];
 };
 
 export type CatalogRelatedProduct = {
@@ -128,12 +133,13 @@ function getVariantAvailability(variant: {
   return variant.inventoryItems.some((item) => item.onHandQuantity - item.reservedQuantity > 0);
 }
 
-function mapImage(input: { id: string; storageKey: string; altText: string | null }): CatalogImage {
+function mapImage(
+  input: { storageKey: string; altText: string | null },
+  uploadsPublicPath: string
+): CatalogImage {
   return {
-    id: input.id,
-    filePath: input.storageKey,
-    altText: input.altText,
-    isPrimary: true,
+    src: `${uploadsPublicPath}/${input.storageKey.replace(/^\/+/, "")}`,
+    alt: input.altText,
   };
 }
 
@@ -372,13 +378,14 @@ export async function getPublishedProductBySlug(
       isStandalone: true,
       primaryImage: {
         select: {
-          id: true,
           storageKey: true,
           altText: true,
         },
       },
+      // Filtre isActive: true aligné sur le filtre variant-level (ProductVariantPrice).
+      // Note : productCategories non fetché en V1 — non requis par la fiche storefront.
       prices: {
-        where: { archivedAt: null },
+        where: { isActive: true, archivedAt: null },
         orderBy: { createdAt: "asc" as const },
         take: 1,
         select: {
@@ -388,6 +395,9 @@ export async function getPublishedProductBySlug(
       },
       variants: {
         where: {
+          // Storefront : seules les variantes publiées (ACTIVE) sont exposées.
+          // Admin (preview) : archivedAt: null seul — DRAFT/INACTIVE inclus intentionnellement
+          // pour que la preview reflète l'état réel du produit avant publication.
           status: "ACTIVE",
           archivedAt: null,
         },
@@ -399,11 +409,13 @@ export async function getPublishedProductBySlug(
           isDefault: true,
           primaryImage: {
             select: {
-              id: true,
               storageKey: true,
               altText: true,
             },
           },
+          // Disponibilité V1 : calculée depuis l'inventaire (onHandQuantity - reservedQuantity).
+          // AvailabilityRecord.isSellable (domaine availability) non utilisé en V1 —
+          // à intégrer quand le domaine availability sera alimenté.
           inventoryItems: {
             where: {
               status: "ACTIVE",
@@ -428,6 +440,8 @@ export async function getPublishedProductBySlug(
               compareAtAmount: true,
             },
           },
+          // optionValues non fetché en V1 — colorName/colorHex toujours null.
+          // À câbler quand les options de variante seront affichées.
         },
       },
       relatedFrom: {
@@ -454,6 +468,14 @@ export async function getPublishedProductBySlug(
               },
             },
           },
+        },
+      },
+      characteristics: {
+        orderBy: { sortOrder: "asc" },
+        select: {
+          id: true,
+          label: true,
+          value: true,
         },
       },
     },
@@ -493,10 +515,11 @@ export async function getPublishedProductBySlug(
   });
 
   const productLevelPrice = product.prices[0] ?? null;
+  const uploadsPublicPath = getUploadsPublicPath();
 
   const variants: CatalogVariant[] = product.variants.map((variant) => {
     const activePrice = variant.prices[0] ?? productLevelPrice;
-    const image = variant.primaryImage ? [mapImage(variant.primaryImage)] : [];
+    const image = variant.primaryImage ? [mapImage(variant.primaryImage, uploadsPublicPath)] : [];
 
     return {
       id: variant.id,
@@ -512,9 +535,7 @@ export async function getPublishedProductBySlug(
     };
   });
 
-  const uploadsPublicPath = getUploadsPublicPath();
-
-  const images = product.primaryImage ? [mapImage(product.primaryImage)] : [];
+  const images = product.primaryImage ? [mapImage(product.primaryImage, uploadsPublicPath)] : [];
   const isAvailable = variants.some((variant) => variant.isAvailable);
 
   const ogImageStorageKey = seoMetadata?.openGraphImage?.storageKey ?? null;
@@ -583,5 +604,10 @@ export async function getPublishedProductBySlug(
     images,
     variants,
     relatedProductGroups,
+    characteristics: product.characteristics.map((c) => ({
+      id: c.id,
+      label: c.label,
+      value: c.value,
+    })),
   };
 }

@@ -11,6 +11,7 @@ export type {
   AdminProductEditorProduct,
   AdminProductEditorRelatedProduct,
   AdminProductEditorStatus,
+  AdminProductEditorCharacteristic,
 } from "./product-editor.types";
 
 export type {
@@ -120,3 +121,10 @@ export type {
   ProductPricingFormAction,
 } from "./product-pricing-form.types";
 export { productPricingFormInitialState } from "./product-pricing-form.types";
+
+export type {
+  AdminProductCharacteristicItem,
+  ProductCharacteristicsFormState,
+  ProductCharacteristicsFormAction,
+} from "./product-characteristics-form.types";
+export { productCharacteristicsFormInitialState } from "./product-characteristics-form.types";

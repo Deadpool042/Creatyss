@@ -31,10 +31,12 @@ import {
   type ProductRelatedProductsFormAction,
   type ProductSeoFormAction,
   type ProductVariantFormAction,
+  type ProductCharacteristicsFormAction,
 } from "@/features/admin/products/editor/public";
 import { cn } from "@/lib/utils";
 import { ProductAvailabilityTab } from "./product-availability-tab";
 import { ProductCategoriesTab, type ProductCategoryOption } from "./product-categories-tab";
+import { ProductCharacteristicsTab } from "./product-characteristics-tab";
 import { ProductGeneralTab } from "./product-general-tab";
 import { ProductImagesTab } from "./product-images-tab";
 import { ProductInventoryTab } from "./product-inventory-tab";
@@ -63,6 +65,7 @@ type ProductEditorTabKey =
   | "images"
   | "categories"
   | "related-products"
+  | "characteristics"
   | "seo"
   | "pricing";
 
@@ -73,6 +76,7 @@ type ProductEditorPanelProps = {
   availabilityAction: ProductAvailabilityFormAction;
   inventoryAction: ProductInventoryFormAction;
   relatedProductsAction: ProductRelatedProductsFormAction;
+  characteristicsAction: ProductCharacteristicsFormAction;
   pricingAction: ProductPricingFormAction;
   pricingData: AdminProductPricingData;
   setPrimaryImageAction?: SetProductPrimaryImageAction;
@@ -145,6 +149,9 @@ function ProductEditorTabs({ isStandalone }: { isStandalone: boolean }): JSX.Ele
             <TabsTrigger className={defaultClassNameTabTrigger} value="related-products">
               Produits liés
             </TabsTrigger>
+            <TabsTrigger className={defaultClassNameTabTrigger} value="characteristics">
+              Caractéristiques
+            </TabsTrigger>
             <TabsTrigger className={defaultClassNameTabTrigger} value="seo">
               SEO
             </TabsTrigger>
@@ -162,6 +169,7 @@ export function ProductEditorPanel({
   availabilityAction,
   inventoryAction,
   relatedProductsAction,
+  characteristicsAction,
   pricingAction,
   pricingData,
   createVariantAction,
@@ -359,6 +367,17 @@ export function ProductEditorPanel({
             action={relatedProductsAction}
             product={product}
             relatedProductOptions={relatedProductOptions}
+          />
+        </TabsContent>
+
+        <TabsContent
+          value="characteristics"
+          className="mt-0 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden"
+        >
+          <ProductCharacteristicsTab
+            action={characteristicsAction}
+            productId={product.product.id}
+            initialCharacteristics={product.product.characteristics}
           />
         </TabsContent>
 

@@ -28,6 +28,7 @@ import {
   updateProductInventoryAction,
   updateProductPricesAction,
   updateProductRelatedProductsAction,
+  updateProductCharacteristicsAction,
   updateProductSeoAction,
   updateProductVariantAction,
   uploadProductImagesAction,
@@ -177,6 +178,7 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
         availabilityAction={updateProductAvailabilityAction}
         inventoryAction={updateProductInventoryAction}
         relatedProductsAction={updateProductRelatedProductsAction}
+        characteristicsAction={updateProductCharacteristicsAction}
         pricingAction={updateProductPricesAction}
         pricingData={pricingData}
         createVariantAction={createProductVariantAction}

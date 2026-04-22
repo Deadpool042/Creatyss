@@ -24,6 +24,7 @@ export { updateProductAvailabilityAction } from "./actions/update-product-availa
 export { updateProductInventoryAction } from "./actions/update-product-inventory.action";
 export { updateProductImageAltTextAction } from "./actions/update-product-image-alt-text.action";
 export { updateProductRelatedProductsAction } from "./actions/update-product-related-products.action";
+export { updateProductCharacteristicsAction } from "./actions/update-product-characteristics.action";
 export { updateProductSeoAction } from "./actions/update-product-seo.action";
 export { updateProductPricesAction } from "./actions/update-product-prices.action";
 export { updateProductVariantAction } from "./actions/update-product-variant.action";
@@ -158,3 +159,12 @@ export type {
   ProductPricingFormAction,
 } from "./types/product-pricing-form.types";
 export { productPricingFormInitialState } from "./types/product-pricing-form.types";
+
+export type {
+  AdminProductCharacteristicItem,
+  ProductCharacteristicsFormState,
+  ProductCharacteristicsFormAction,
+} from "./types/product-characteristics-form.types";
+export { productCharacteristicsFormInitialState } from "./types/product-characteristics-form.types";
+
+export type { AdminProductEditorCharacteristic } from "./types/product-editor.types";
