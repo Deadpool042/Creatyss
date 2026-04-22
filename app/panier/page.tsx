@@ -77,8 +77,8 @@ export default async function CartPage({ searchParams }: CartPageProps) {
   const hasUnavailableLine = cart?.lines.some((line) => !line.isAvailable) ?? false;
 
   return (
-    <div className="page">
-      <section className="section">
+    <div className="grid gap-8">
+      <section className="w-full border border-shell-border rounded-lg bg-shell-surface shadow-soft p-7">
         <div className="mb-6 grid gap-2">
           <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Panier</p>
           <h1 className="m-0">Votre panier</h1>
@@ -92,10 +92,10 @@ export default async function CartPage({ searchParams }: CartPageProps) {
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
         {cart && cart.lines.length > 0 ? (
-          <div className="cart-layout">
+          <div className="grid gap-4">
             <div className="grid gap-4">
               {cart.lines.map((line) => (
-                <article className="store-card cart-line" key={line.id}>
+                <article className="store-card grid gap-4" key={line.id}>
                   <div className="grid gap-1">
                     <p className="text-[0.95rem] text-foreground/68">Produit</p>
                     <h2>{line.productName}</h2>
@@ -178,7 +178,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
               ))}
             </div>
 
-            <aside className="product-panel cart-summary">
+            <aside className="product-panel grid gap-4">
               {hasUnavailableLine ? (
                 <Notice tone="alert">
                   Au moins une ligne bloque la commande. Corrigez le panier avant de continuer.

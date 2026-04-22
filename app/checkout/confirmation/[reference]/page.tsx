@@ -54,8 +54,8 @@ export default async function OrderConfirmationPage({
   });
 
   return (
-    <div className="page">
-      <section className="section">
+    <div className="grid gap-8">
+      <section className="w-full border border-shell-border rounded-lg bg-shell-surface shadow-soft p-7">
         <div className="mb-6 grid gap-2">
           <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Confirmation</p>
           <h1 className="m-0">{summary.title}</h1>
@@ -71,9 +71,9 @@ export default async function OrderConfirmationPage({
           </Notice>
         ) : null}
 
-        <div className="cart-layout">
+        <div className="grid gap-4">
           <div className="grid gap-4">
-            <article className="store-card checkout-line">
+            <article className="store-card grid gap-4">
               <div className="grid gap-1">
                 <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Synthèse</p>
                 <h2>{summary.title}</h2>
@@ -87,7 +87,7 @@ export default async function OrderConfirmationPage({
               </div>
             </article>
 
-            <article className="store-card checkout-line">
+            <article className="store-card grid gap-4">
               <div className="grid gap-1">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Référence
@@ -119,7 +119,7 @@ export default async function OrderConfirmationPage({
               </div>
             </article>
 
-            <article className="store-card checkout-line">
+            <article className="store-card grid gap-4">
               <div className="grid gap-1">
                 <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Cliente</p>
                 <h2>
@@ -132,7 +132,7 @@ export default async function OrderConfirmationPage({
               </div>
             </article>
 
-            <article className="store-card checkout-line">
+            <article className="store-card grid gap-4">
               <div className="grid gap-1">
                 <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                   Livraison
@@ -160,7 +160,7 @@ export default async function OrderConfirmationPage({
               </div>
             </article>
 
-            <article className="store-card checkout-line">
+            <article className="store-card grid gap-4">
               <div className="grid gap-1">
                 <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                   Facturation
@@ -190,7 +190,7 @@ export default async function OrderConfirmationPage({
             </article>
           </div>
 
-          <aside className="product-panel checkout-summary">
+          <aside className="product-panel grid gap-4">
             <div className="grid gap-1">
               <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                 Récapitulatif
@@ -200,7 +200,7 @@ export default async function OrderConfirmationPage({
 
             <div className="grid gap-4">
               {order.lines.map((line) => (
-                <article className="store-card checkout-line" key={line.id}>
+                <article className="store-card grid gap-4" key={line.id}>
                   <div className="grid gap-1">
                     <h3>{line.productName}</h3>
                     <p className="text-[0.95rem] text-foreground/68">

@@ -75,8 +75,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     : null;
 
   return (
-    <div className="page">
-      <article className="section grid gap-3 max-w-[52rem]">
+    <div className="grid gap-8">
+      <article className="w-full border border-shell-border rounded-lg bg-shell-surface shadow-soft p-7 grid gap-3 max-w-[52rem]">
         <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Blog</p>
         <h1 className="m-0">{post.title}</h1>
 
@@ -89,11 +89,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {post.excerpt ? <p className="mt-4 leading-relaxed">{post.excerpt}</p> : null}
 
         {coverImagePath ? (
-          <figure className="article-cover">
-            <Image alt={post.title} src={coverImagePath} width={900} height={450} />
+          <figure className="overflow-hidden rounded-lg bg-media-surface min-h-56">
+            <Image
+              alt={post.title}
+              src={coverImagePath}
+              width={900}
+              height={450}
+              className="block w-full h-full object-cover"
+            />
           </figure>
         ) : (
-          <div className="media-placeholder">Aucun visuel de couverture.</div>
+          <div className="grid place-items-center min-h-64 rounded-lg bg-media-surface p-4 text-media-foreground text-center">
+            Aucun visuel de couverture.
+          </div>
         )}
 
         <div className="leading-[1.65] whitespace-pre-wrap">

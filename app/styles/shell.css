@@ -22,11 +22,6 @@
   }
 }
 
-.page {
-  display: grid;
-  gap: 2rem;
-}
-
 /* Eyebrow label — pattern typographique récurrent (overlines, labels de section).
    Usage : class="text-eyebrow text-muted-foreground" ou "text-eyebrow text-brand"
    Ne pas inclure la couleur ici — elle est contextuelle. */
@@ -36,30 +31,4 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   line-height: 1.4;
-}
-
-.hero,
-.section {
-  width: 100%;
-  border: 1px solid var(--shell-border);
-  border-radius: var(--radius-lg); /* token — ne pas hardcoder 1rem */
-  background: var(--shell-surface);
-  box-shadow: var(--shadow-soft);
-}
-
-.hero {
-  display: grid;
-  gap: 1.5rem;
-  padding: 2rem;
-}
-
-.section {
-  padding: 1.75rem;
-}
-
-@media (min-width: 700px) {
-  .hero {
-    grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
-    align-items: center;
-  }
 }

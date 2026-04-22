@@ -105,8 +105,8 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   const billingSameAsShipping = draft?.billingSameAsShipping ?? true;
 
   return (
-    <div className="page">
-      <section className="section">
+    <div className="grid gap-8">
+      <section className="w-full border border-shell-border rounded-lg bg-shell-surface shadow-soft p-7">
         <div className="mb-6 grid gap-2">
           <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Commande</p>
           <h1 className="m-0">Finaliser la commande</h1>
@@ -120,7 +120,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         {checkoutIssueMessage ? <Notice tone="alert">{checkoutIssueMessage}</Notice> : null}
 
         {cart ? (
-          <div className="checkout-layout">
+          <div className="grid gap-4">
             <form className="grid gap-4 content-start" noValidate>
               <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
                 <div className="grid gap-1">
@@ -381,7 +381,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               </div>
             </form>
 
-            <aside className="product-panel checkout-summary">
+            <aside className="product-panel grid gap-4">
               <div className="grid gap-1">
                 <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                   Récapitulatif
@@ -392,7 +392,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               {cart.lines.length > 0 ? (
                 <div className="grid gap-4">
                   {cart.lines.map((line) => (
-                    <article className="store-card checkout-line" key={line.id}>
+                    <article className="store-card grid gap-4" key={line.id}>
                       <div className="grid gap-1">
                         <h3>{line.productName}</h3>
                         <p className="text-[0.95rem] text-foreground/68">

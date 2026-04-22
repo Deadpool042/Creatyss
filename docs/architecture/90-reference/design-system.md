@@ -18,7 +18,6 @@ app/globals.css
   → app/styles/theme.css          ← importe aussi ./themes/creatyss.css
   → app/styles/base.css
   → app/styles/shell.css
-  → app/styles/storefront.css
   → app/styles/animation.css
 ```
 
@@ -30,8 +29,7 @@ app/globals.css
 | `themes/novamart.css` | Thème alternatif de référence (cool, corporate, indigo) — non actif, non importé | Thème CSS pur |
 | `theme.css` | Point d'activation du thème + mapping Tailwind (`@theme inline`) + `@custom-variant dark` | Config Tailwind |
 | `base.css` | Reset CSS global (box-sizing, body background) + `@layer base` Tailwind (html, body, headings) | Reset + base |
-| `shell.css` | Classes structurelles layout (`@supports` backdrop-filter) + utilitaires composites globaux (`.text-eyebrow`) | CSS classes |
-| `storefront.css` | Utilitaires CSS survivants storefront (blog, cart, checkout) non convertibles en Tailwind | CSS classes |
+| `shell.css` | Primitives CSS globales non triviales : `.site-header-blur`, `.shell-drawer` (backdrop-filter + `@supports`), `.text-eyebrow` (typographie composite 11px) | CSS classes |
 | `animation.css` | Keyframes accordéon via `@theme {}` | Keyframes |
 
 ---
@@ -136,10 +134,20 @@ Le thème actif est sélectionné dans `app/styles/theme.css`, ligne `@import` e
 Avant de toucher un fichier de styles :
 
 1. Le token existe-t-il déjà dans `themes/creatyss.css` ? → l'utiliser
-2. La classe utilitaire existe-t-elle dans `shell.css` ou `storefront.css` ? → l'utiliser
-3. Besoin global (storefront + admin) ? → ajouter dans `shell.css`
-4. Besoin strictement storefront ? → ajouter dans `storefront.css`
+2. La classe utilitaire existe-t-elle dans `shell.css` ? → l'utiliser
+3. La composition est triviale (≤ 3 classes Tailwind token-driven) ? → l'écrire inline dans le composant
+4. Besoin global non trivial (backdrop-filter, vendor prefix, `@supports`, taille hors-Tailwind) ? → ajouter dans `shell.css`
 5. Nouveau token systémique ? → ajouter dans `themes/creatyss.css` + mapper dans `theme.css`
+
+**Frontière CSS custom vs Tailwind inline :**
+
+| Couche | Ce qui y vit |
+| --- | --- |
+| `themes/*.css` | Valeurs concrètes des CSS custom properties (source de vérité) |
+| `theme.css` | Mapping Tailwind + activation du thème — aucune valeur concrète |
+| `base.css` | Reset global, fondations HTML/body |
+| `shell.css` | Uniquement ce que Tailwind ne peut pas exprimer proprement : vendor prefixes, `@supports`, valeurs hors-scale (`0.6875rem`), patterns cross-cutting répétés ≥ 3× avec sémantique claire |
+| Tailwind inline | Toute composition locale simple : surfaces, bordures, radius, shadows, gaps, paddings — tant que les tokens du design system sont utilisés |
 
 **Interdit : valeurs arbitraires inline (`shadow-[...]`, `rounded-[...]`, `text-[11px]`) quand un token ou utilitaire existe.**
 
