@@ -7,6 +7,13 @@ type CatalogImage = {
   alt: string | null;
 };
 
+type CatalogVariantOptionValue = {
+  optionId: string;
+  optionName: string;
+  valueId: string;
+  valueLabel: string;
+};
+
 type CatalogVariant = {
   id: string;
   sku: string;
@@ -24,6 +31,7 @@ type CatalogVariant = {
   widthMm: number | null;
   heightMm: number | null;
   depthMm: number | null;
+  optionValues: CatalogVariantOptionValue[];
 };
 
 export type CatalogProductCharacteristic = {
@@ -203,7 +211,6 @@ export async function getPublishedProductsForSitemap(): Promise<CatalogSitemapPr
   return products.map((product) => ({
     slug: product.slug,
     updatedAt: product.updatedAt,
-    // default: true — a published product with no SeoMetadata must appear in the sitemap
     sitemapIncluded: seoMap.get(product.id) ?? true,
   }));
 }
@@ -406,8 +413,6 @@ export async function getPublishedProductBySlug(
           altText: true,
         },
       },
-      // Filtre isActive: true aligné sur le filtre variant-level (ProductVariantPrice).
-      // Note : productCategories non fetché en V1 — non requis par la fiche storefront.
       prices: {
         where: { isActive: true, archivedAt: null },
         orderBy: { createdAt: "asc" as const },
@@ -419,9 +424,6 @@ export async function getPublishedProductBySlug(
       },
       variants: {
         where: {
-          // Storefront : seules les variantes publiées (ACTIVE) sont exposées.
-          // Admin (preview) : archivedAt: null seul — DRAFT/INACTIVE inclus intentionnellement
-          // pour que la preview reflète l'état réel du produit avant publication.
           status: "ACTIVE",
           archivedAt: null,
         },
@@ -443,9 +445,6 @@ export async function getPublishedProductBySlug(
               altText: true,
             },
           },
-          // Disponibilité V1 : calculée depuis l'inventaire (onHandQuantity - reservedQuantity).
-          // AvailabilityRecord.isSellable (domaine availability) non utilisé en V1 —
-          // à intégrer quand le domaine availability sera alimenté.
           inventoryItems: {
             where: {
               status: "ACTIVE",
@@ -470,8 +469,25 @@ export async function getPublishedProductBySlug(
               compareAtAmount: true,
             },
           },
-          // optionValues non fetché en V1 — colorName/colorHex toujours null.
-          // À câbler quand les options de variante seront affichées.
+          optionValues: {
+            select: {
+              optionValue: {
+                select: {
+                  id: true,
+                  value: true,
+                  label: true,
+                  sortOrder: true,
+                  option: {
+                    select: {
+                      id: true,
+                      name: true,
+                      sortOrder: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
       relatedFrom: {
@@ -573,9 +589,6 @@ export async function getPublishedProductBySlug(
   const variants: CatalogVariant[] = product.variants.map((variant) => {
     const variantPrice = variant.prices[0] ?? null;
     const activePrice = variantPrice ?? productLevelPrice;
-    // compareAtAmount : hérite du niveau produit si la variante ne le porte pas.
-    // Cas fréquent pour les produits importés (WooCommerce) où compareAtAmount
-    // n'est renseigné qu'en product_prices mais pas en product_variant_prices.
     const compareAtAmount =
       variantPrice?.compareAtAmount ?? productLevelPrice?.compareAtAmount ?? null;
     const image = variant.primaryImage ? [mapImage(variant.primaryImage, uploadsPublicPath)] : [];
@@ -597,10 +610,35 @@ export async function getPublishedProductBySlug(
       widthMm: variant.widthMm ?? null,
       heightMm: variant.heightMm ?? null,
       depthMm: variant.depthMm ?? null,
+      optionValues: [...variant.optionValues]
+        .sort((left, right) => {
+          const optionOrder =
+            left.optionValue.option.sortOrder - right.optionValue.option.sortOrder;
+
+          if (optionOrder !== 0) {
+            return optionOrder;
+          }
+
+          const valueOrder = left.optionValue.sortOrder - right.optionValue.sortOrder;
+
+          if (valueOrder !== 0) {
+            return valueOrder;
+          }
+
+          return left.optionValue.option.name.localeCompare(right.optionValue.option.name, "fr");
+        })
+        .map((item) => ({
+          optionId: item.optionValue.option.id,
+          optionName: item.optionValue.option.name,
+          valueId: item.optionValue.id,
+          valueLabel: item.optionValue.label ?? item.optionValue.value,
+        })),
     };
   });
 
-  const primaryImage = product.primaryImage ? [mapImage(product.primaryImage, uploadsPublicPath)] : [];
+  const primaryImage = product.primaryImage
+    ? [mapImage(product.primaryImage, uploadsPublicPath)]
+    : [];
   const galleryImages = galleryImageReferences.map((reference) =>
     mapImage(reference.asset, uploadsPublicPath)
   );

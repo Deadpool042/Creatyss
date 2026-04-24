@@ -12,7 +12,7 @@
 import { Badge } from "@/components/ui/badge";
 import {
   getSimpleOfferCardTitle,
-  getVariantAvailabilityLabel,
+  getOfferAvailabilityMessage,
   getVariantDefaultBadgeLabel,
   type ProductPublicSectionPresentation,
 } from "@/entities/product/product-public-presentation";
@@ -20,6 +20,13 @@ import {
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
+
+export type OfferVariantOptionValue = {
+  optionId: string;
+  optionName: string;
+  valueId: string;
+  valueLabel: string;
+};
 
 /**
  * Représentation normalisée d'un variant pour la section offres.
@@ -38,6 +45,14 @@ export type OfferVariant = {
   colorName: string | null;
   colorHex: string | null;
   displayImage: { src: string; alt: string } | null;
+  images: { src: string; alt: string | null }[];
+  barcode: string | null;
+  externalReference: string | null;
+  weightGrams: number | null;
+  widthMm: number | null;
+  heightMm: number | null;
+  depthMm: number | null;
+  optionValues: OfferVariantOptionValue[];
 };
 
 type ProductOffersSectionProps = {
@@ -45,18 +60,7 @@ type ProductOffersSectionProps = {
   productType: "simple" | "variable";
   variants: OfferVariant[];
   presentation: ProductPublicSectionPresentation;
-  /**
-   * Render prop injectant la zone CTA dans chaque carte variant (produits variables),
-   * placée après le bloc prix.
-   * Storefront : message de disponibilité + form addToCart.
-   * Admin : bouton disabled.
-   * Si absent, aucun CTA n'est rendu.
-   */
   renderVariantCta?: ((variant: OfferVariant) => React.ReactNode) | undefined;
-  /**
-   * Contenu optionnel rendu avant la grille de variants (produits variables uniquement).
-   * Utilisé par l'admin pour afficher les badges de résumé (nombre / disponibles).
-   */
   summaryContent?: React.ReactNode | undefined;
 };
 
@@ -96,7 +100,7 @@ export function ProductOffersSection({
 
       {isSimpleProduct ? (
         singleVariant ? (
-          <SimpleOfferCard variant={singleVariant} />
+          <SimpleOfferCard variant={singleVariant} presentation={presentation} />
         ) : (
           <OfferEmptyState presentation={presentation} />
         )
@@ -105,7 +109,7 @@ export function ProductOffersSection({
           {summaryContent ?? null}
           <div className="grid gap-5 grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
             {variants.map((variant) => (
-              <VariantOfferCard key={variant.id} renderCta={renderVariantCta} variant={variant} />
+              <VariantOfferCard key={variant.id} variant={variant} renderCta={renderVariantCta} />
             ))}
           </div>
         </>
@@ -127,7 +131,10 @@ function getVariantMetaText(variant: OfferVariant): string | null {
     parts.push(`Ref. ${variant.sku}`);
   }
 
-  if (variant.colorName) {
+  const optionLabel = variant.optionValues.map((item) => item.valueLabel).join(" · ");
+  if (optionLabel.length > 0) {
+    parts.push(optionLabel);
+  } else if (variant.colorName) {
     parts.push(variant.colorHex ? `${variant.colorName} · ${variant.colorHex}` : variant.colorName);
   } else if (variant.colorHex) {
     parts.push(variant.colorHex);
@@ -137,7 +144,13 @@ function getVariantMetaText(variant: OfferVariant): string | null {
   return text.length > 0 ? text : null;
 }
 
-function SimpleOfferCard({ variant }: { variant: OfferVariant }) {
+function SimpleOfferCard({
+  variant,
+  presentation,
+}: {
+  variant: OfferVariant;
+  presentation: ProductPublicSectionPresentation;
+}) {
   const metaText = getVariantMetaText(variant);
 
   return (
@@ -151,7 +164,10 @@ function SimpleOfferCard({ variant }: { variant: OfferVariant }) {
         </div>
         <Badge variant="outline">
           <span className={variant.isAvailable ? "text-emerald-700" : "text-destructive"}>
-            {getVariantAvailabilityLabel(variant.isAvailable)}
+            {getOfferAvailabilityMessage({
+              productType: "simple",
+              isAvailable: variant.isAvailable,
+            })}
           </span>
         </Badge>
       </div>
@@ -168,6 +184,10 @@ function SimpleOfferCard({ variant }: { variant: OfferVariant }) {
       {metaText ? (
         <p className="m-0 text-micro-copy reading-compact text-text-muted-soft">{metaText}</p>
       ) : null}
+
+      <p className="m-0 text-secondary-copy reading-compact text-text-muted-strong">
+        {presentation.description}
+      </p>
     </article>
   );
 }
@@ -195,7 +215,10 @@ function VariantOfferCard({
           {defaultBadgeLabel ? <Badge variant="secondary">{defaultBadgeLabel}</Badge> : null}
           <Badge variant="outline">
             <span className={variant.isAvailable ? "text-emerald-700" : "text-destructive"}>
-              {getVariantAvailabilityLabel(variant.isAvailable)}
+              {getOfferAvailabilityMessage({
+                productType: "variable",
+                isAvailable: variant.isAvailable,
+              })}
             </span>
           </Badge>
         </div>

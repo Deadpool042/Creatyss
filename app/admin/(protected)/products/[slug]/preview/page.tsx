@@ -65,7 +65,8 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
   const availableVariantCount = product.variants.filter((v) => v.isAvailable).length;
 
   const variantsNormalized: OfferVariant[] = product.variants.map((variant) => {
-    const variantImage = variant.images[0] ?? null;
+    const variantDisplayImage = variant.images[0] ?? null;
+
     return {
       id: variant.id,
       name: variant.name,
@@ -76,9 +77,23 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
       sku: variant.sku,
       colorName: variant.colorName,
       colorHex: variant.colorHex,
-      displayImage: variantImage
-        ? { src: variantImage.src, alt: variantImage.alt ?? variant.name }
+      displayImage: variantDisplayImage
+        ? {
+            src: variantDisplayImage.src,
+            alt: variantDisplayImage.alt ?? variant.name,
+          }
         : null,
+      images: variant.images.map((image) => ({
+        src: image.src,
+        alt: image.alt ?? null,
+      })),
+      barcode: null,
+      externalReference: null,
+      weightGrams: null,
+      widthMm: null,
+      heightMm: null,
+      depthMm: null,
+      optionValues: [],
     };
   });
 

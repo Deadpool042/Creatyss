@@ -7,14 +7,11 @@
  * et la preview admin (app/admin/.../products/[slug]/preview/page.tsx).
  */
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { getProductAvailabilityLabel } from "@/entities/product/product-public-presentation";
 
-type HeroVariant = {
-  price: string;
-  compareAtPrice: string | null;
-};
+import type { OfferVariant } from "./product-offers-section";
 
 type ProductHeroSectionProps = {
   productName: string;
@@ -22,7 +19,8 @@ type ProductHeroSectionProps = {
   isAvailable: boolean;
   images: { src: string; alt: string | null }[];
   shortDescription?: string | null;
-  heroVariant?: HeroVariant | null;
+  heroVariant?: OfferVariant | null;
+  variableVariants?: OfferVariant[] | undefined;
   /**
    * Résumé des déclinaisons (produits variables).
    * Exemple: { total: 4, available: 3 }
@@ -43,6 +41,36 @@ type ProductHeroSectionProps = {
   asideExtra?: React.ReactNode | undefined;
 };
 
+function dedupeHeroImages(images: { src: string; alt: string | null }[]) {
+  const seen = new Set<string>();
+  const result: { src: string; alt: string | null }[] = [];
+
+  for (const image of images) {
+    const key = image.src.trim();
+    if (key.length === 0 || seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+    result.push(image);
+  }
+
+  return result;
+}
+
+function getVariantSelectionLabel(variant: OfferVariant): string {
+  const optionLabel = variant.optionValues
+    .map((item) => item.valueLabel)
+    .join(" · ")
+    .trim();
+
+  if (optionLabel.length > 0) {
+    return optionLabel;
+  }
+
+  return variant.name;
+}
+
 export function ProductHeroSection({
   productName,
   isSimpleProduct,
@@ -50,6 +78,7 @@ export function ProductHeroSection({
   images,
   shortDescription,
   heroVariant,
+  variableVariants,
   variantSummary,
   variablePriceLabel,
   imageFit = "contain",
@@ -57,17 +86,73 @@ export function ProductHeroSection({
   cta,
   asideExtra,
 }: ProductHeroSectionProps) {
-  const galleryImages = useMemo(
-    () => images.filter((image) => image.src.trim().length > 0),
-    [images]
+  const initialSelectedVariantId = useMemo(() => {
+    if (isSimpleProduct || !variableVariants || variableVariants.length === 0) {
+      return null;
+    }
+
+    return (
+      variableVariants.find((variant) => variant.isDefault)?.id ?? variableVariants[0]?.id ?? null
+    );
+  }, [isSimpleProduct, variableVariants]);
+
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
+    initialSelectedVariantId
   );
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [loadedImageSrc, setLoadedImageSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    setSelectedVariantId(initialSelectedVariantId);
+  }, [initialSelectedVariantId]);
+
+  const selectedVariableVariant = useMemo(() => {
+    if (isSimpleProduct || !variableVariants || variableVariants.length === 0) {
+      return null;
+    }
+
+    return (
+      variableVariants.find((variant) => variant.id === selectedVariantId) ??
+      variableVariants.find((variant) => variant.isDefault) ??
+      variableVariants[0] ??
+      null
+    );
+  }, [isSimpleProduct, selectedVariantId, variableVariants]);
+
+  const resolvedHeroVariant =
+    !isSimpleProduct && selectedVariableVariant ? selectedVariableVariant : (heroVariant ?? null);
+
+  const resolvedIsAvailable =
+    !isSimpleProduct && selectedVariableVariant ? selectedVariableVariant.isAvailable : isAvailable;
+
+  const resolvedSingleVariantSku =
+    !isSimpleProduct && selectedVariableVariant ? selectedVariableVariant.sku : singleVariantSku;
+
+  const resolvedImages = useMemo(() => {
+    if (!isSimpleProduct && selectedVariableVariant) {
+      return dedupeHeroImages([...(selectedVariableVariant.images ?? []), ...images]);
+    }
+
+    return dedupeHeroImages(images);
+  }, [images, isSimpleProduct, selectedVariableVariant]);
+
+  const galleryImages = useMemo(
+    () => resolvedImages.filter((image) => image.src.trim().length > 0),
+    [resolvedImages]
+  );
+
+  useEffect(() => {
+    if (!isSimpleProduct) {
+      setSelectedImageIndex(0);
+      setLoadedImageSrc(null);
+    }
+  }, [isSimpleProduct, selectedVariantId]);
 
   const activeImageIndex =
     galleryImages.length === 0 ? 0 : Math.min(selectedImageIndex, galleryImages.length - 1);
   const selectedImage = galleryImages[activeImageIndex] ?? null;
   const isImageReady = selectedImage ? loadedImageSrc === selectedImage.src : false;
+
   const variableSummaryText = useMemo(() => {
     if (!variantSummary) {
       return null;
@@ -80,6 +165,7 @@ export function ProductHeroSection({
 
     return `${declLabel} · ${availLabel}`;
   }, [variantSummary]);
+
   const shortDescriptionPlainText = useMemo(() => {
     if (!shortDescription) {
       return null;
@@ -90,6 +176,7 @@ export function ProductHeroSection({
       .replace(/\s+/g, " ")
       .trim();
   }, [shortDescription]);
+
   const compactLandscapeThumbnails = useMemo(() => {
     if (galleryImages.length <= 1) {
       return [];
@@ -220,12 +307,12 @@ export function ProductHeroSection({
               <div className="grid min-w-0 gap-1">
                 <p className="truncate text-meta-label text-text-muted-soft">{productName}</p>
                 <div className="flex flex-wrap items-baseline gap-1.5">
-                  {heroVariant?.compareAtPrice ? (
+                  {resolvedHeroVariant?.compareAtPrice ? (
                     <span className="text-micro-copy reading-compact font-medium line-through text-text-muted-strong">
-                      {heroVariant.compareAtPrice}
+                      {resolvedHeroVariant.compareAtPrice}
                     </span>
                   ) : null}
-                  <span className="text-price-compact">{heroVariant?.price || "—"}</span>
+                  <span className="text-price-compact">{resolvedHeroVariant?.price || "—"}</span>
                 </div>
                 {!isSimpleProduct && variableSummaryText ? (
                   <p className="text-micro-copy reading-compact text-text-muted-strong">
@@ -256,6 +343,40 @@ export function ProductHeroSection({
             </div>
           ) : null}
 
+          {!isSimpleProduct && variableVariants && variableVariants.length > 1 ? (
+            <div className="grid gap-2 rounded-2xl border border-control-border bg-linear-to-b from-control-surface-hover/95 to-control-surface px-3 py-3 min-[900px]:px-4 min-[900px]:py-4 shadow-control">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-meta-label text-text-muted-soft">Choisir une déclinaison</p>
+                {selectedVariableVariant ? (
+                  <p className="text-micro-copy reading-compact text-text-muted-strong">
+                    {getVariantSelectionLabel(selectedVariableVariant)}
+                  </p>
+                ) : null}
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {variableVariants.map((variant) => {
+                  const isSelected = variant.id === selectedVariableVariant?.id;
+
+                  return (
+                    <button
+                      key={variant.id}
+                      type="button"
+                      onClick={() => setSelectedVariantId(variant.id)}
+                      className={`rounded-full border px-3 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/40 ${
+                        isSelected
+                          ? "border-control-border-strong bg-control-surface-selected text-foreground shadow-control"
+                          : "border-control-border bg-control-surface text-text-muted-strong hover:border-control-border-strong hover:bg-control-surface-hover"
+                      }`}
+                    >
+                      {getVariantSelectionLabel(variant)}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
+
           {cta ? (
             <div className="mt-auto grid gap-1 [&_form]:grid [&_form]:gap-1 [&_label]:text-[0.58rem] [&_input]:h-6 [&_input]:max-w-20 [&_input]:px-1.5 [&_input]:text-[0.78rem] **:data-[slot=button]:h-7.5 **:data-[slot=button]:px-2 **:data-[slot=button]:text-[0.7rem]">
               {cta}
@@ -265,13 +386,13 @@ export function ProductHeroSection({
 
         <aside className="flex flex-col border-l border-shell-border-strong bg-linear-to-b from-surface-panel via-surface-panel-soft to-surface-subtle p-4 shadow-inset-soft min-[700px]:p-5 min-[900px]:p-6 min-[1200px]:p-7 [@media(max-width:899px)_and_(max-height:430px)_and_(orientation:landscape)]:hidden">
           <div className="flex h-full flex-col gap-6 min-[900px]:gap-7">
-            {heroVariant ? (
+            {resolvedHeroVariant ? (
               <div className="grid gap-3 rounded-2xl border border-control-border-strong bg-linear-to-b from-control-surface-hover to-control-surface px-3 py-3 shadow-card min-[900px]:px-4 min-[900px]:py-4">
-                {heroVariant.compareAtPrice ? (
+                {resolvedHeroVariant.compareAtPrice ? (
                   <div className="flex items-baseline gap-2">
                     <span className="text-meta-label text-text-muted-soft">Ancien prix</span>
                     <span className="text-secondary-copy reading-compact font-medium line-through text-text-muted-strong">
-                      {heroVariant.compareAtPrice}
+                      {resolvedHeroVariant.compareAtPrice}
                     </span>
                   </div>
                 ) : null}
@@ -284,7 +405,7 @@ export function ProductHeroSection({
                   </p>
                 ) : null}
 
-                <p className="text-price-display">{heroVariant.price || "—"}</p>
+                <p className="text-price-display">{resolvedHeroVariant.price || "—"}</p>
 
                 {!isSimpleProduct && variableSummaryText ? (
                   <p className="text-micro-copy reading-compact text-text-muted-strong">
@@ -313,12 +434,46 @@ export function ProductHeroSection({
               />
             ) : null}
 
+            {!isSimpleProduct && variableVariants && variableVariants.length > 1 ? (
+              <div className="grid gap-2 rounded-2xl border border-control-border bg-linear-to-b from-control-surface-hover/95 to-control-surface px-3 py-3 min-[900px]:px-4 min-[900px]:py-4 shadow-control">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-meta-label text-text-muted-soft">Choisir une déclinaison</p>
+                  {selectedVariableVariant ? (
+                    <p className="text-micro-copy reading-compact text-text-muted-strong">
+                      {getVariantSelectionLabel(selectedVariableVariant)}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {variableVariants.map((variant) => {
+                    const isSelected = variant.id === selectedVariableVariant?.id;
+
+                    return (
+                      <button
+                        key={variant.id}
+                        type="button"
+                        onClick={() => setSelectedVariantId(variant.id)}
+                        className={`rounded-full border px-3 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/40 ${
+                          isSelected
+                            ? "border-control-border-strong bg-control-surface-selected text-foreground shadow-control"
+                            : "border-control-border bg-control-surface text-text-muted-strong hover:border-control-border-strong hover:bg-control-surface-hover"
+                        }`}
+                      >
+                        {getVariantSelectionLabel(variant)}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
+
             <div className="grid gap-2 rounded-2xl border border-control-border bg-linear-to-b from-control-surface-hover/95 to-control-surface px-3 py-3 min-[900px]:px-4 min-[900px]:py-4 shadow-control">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <p className="text-meta-label text-text-muted-soft">Disponibilité</p>
                 <span
                   className={`flex items-center gap-1.5 text-sm font-medium ${
-                    isAvailable
+                    resolvedIsAvailable
                       ? "text-feedback-success-foreground"
                       : "text-feedback-error-foreground"
                   }`}
@@ -326,17 +481,19 @@ export function ProductHeroSection({
                   <span
                     aria-hidden="true"
                     className={`h-1.5 w-1.5 rounded-full ${
-                      isAvailable ? "bg-feedback-success" : "bg-feedback-error"
+                      resolvedIsAvailable ? "bg-feedback-success" : "bg-feedback-error"
                     }`}
                   />
-                  {getProductAvailabilityLabel(isAvailable)}
+                  {getProductAvailabilityLabel(resolvedIsAvailable)}
                 </span>
               </div>
 
-              {singleVariantSku ? (
+              {resolvedSingleVariantSku ? (
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                   <p className="text-meta-label text-text-muted-soft">Référence</p>
-                  <p className="font-mono text-sm text-text-muted-strong">{singleVariantSku}</p>
+                  <p className="font-mono text-sm text-text-muted-strong">
+                    {resolvedSingleVariantSku}
+                  </p>
                 </div>
               ) : null}
             </div>

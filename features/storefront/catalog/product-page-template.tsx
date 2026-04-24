@@ -21,10 +21,6 @@ import { ProductOffersSection, type OfferVariant } from "./product-offers-sectio
 import { ProductPreHeaderSection } from "./product-preheader-section";
 import { ProductRelatedSection } from "./product-related-section";
 
-// ---------------------------------------------------------------------------
-// Types de présentation locaux — découplés des types de query et Prisma
-// ---------------------------------------------------------------------------
-
 type ProductPageImage = {
   src: string;
   alt: string | null;
@@ -46,83 +42,24 @@ type ProductPageRelatedGroup = {
 };
 
 export type ProductPageTemplateProps = {
-  // Données produit normalisées
   productName: string;
   marketingHook?: string | null;
   shortDescription?: string | null;
-  /**
-   * Description rich-text (HTML) issue de l'admin.
-   *
-   * Contrat: la valeur est sanitizée/normalisée côté domaine à l'écriture
-   * (validateAdminProductInput) avant d'être stockée/relue.
-   * Le template peut donc l'injecter via dangerouslySetInnerHTML.
-   */
   description?: string | null;
   productType: "simple" | "variable";
   isAvailable: boolean;
   images: ProductPageImage[];
   variants: OfferVariant[];
-  /**
-   * Caractéristiques produit structurées (matière, dimensions, etc.).
-   * Non affichées si absent ou vide.
-   */
   characteristics?: { id: string; label: string; value: string }[];
-  /**
-   * Spécifications techniques (SKU, code-barres, poids, dimensions, etc.).
-   * Séparées des caractéristiques éditoriales.
-   */
   technicalSpecs?: { label: string; value: string }[];
-  /**
-   * Groupes de produits liés.
-   * Compatible structurellement avec CatalogRelatedProductGroup[] (storefront)
-   * et AdminProductPreviewRelatedProductGroup[] (admin) — TypeScript structural typing.
-   * imageFilePath contient un storageKey brut ; l'URL est résolue en interne via
-   * getUploadsPublicPath().
-   */
   relatedProductGroups: ProductPageRelatedGroup[];
-  // ---------------------------------------------------------------------------
-  // Injections contextuelles
-  // ---------------------------------------------------------------------------
-  /**
-   * Bandeau rendu avant le hero.
-   * Storefront : messages panier (succès + erreur).
-   * Admin    : notice de statut du produit (brouillon / inactif / archivé).
-   */
   statusBanner?: React.ReactNode;
-  /**
-   * CTA rendu dans l'aside du hero (conditionnel selon disponibilité).
-   * Storefront : form addToCart complet.
-   * Admin    : bouton disabled « disponible en boutique ».
-   */
   heroCta?: React.ReactNode;
-  /**
-   * Résumé des déclinaisons pour les produits variables (storefront uniquement en V1).
-   * Exemple: "4 déclinaisons · 3 disponibles".
-   */
   heroVariantSummary?: { total: number; available: number } | null;
-  /**
-   * Contenu additionnel en bas de l'aside du hero.
-   * Admin : bloc « Référence de page » (slug).
-   * Storefront : absent.
-   */
   heroAsideExtra?: React.ReactNode;
-  /**
-   * Contenu de résumé rendu avant la grille de variants (produits variables uniquement).
-   * Admin : badges nb déclinaisons / nb disponibles.
-   * Storefront : absent.
-   */
   offersSummaryContent?: React.ReactNode;
-  /**
-   * Render prop pour le CTA de chaque carte variant.
-   * Storefront : message de disponibilité + form addToCart.
-   * Admin    : bouton disabled.
-   */
   renderVariantCta?: (variant: OfferVariant) => React.ReactNode;
 };
-
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
 
 export function ProductPageTemplate({
   productName,
@@ -146,8 +83,7 @@ export function ProductPageTemplate({
   const uploadsPublicPath = getUploadsPublicPath();
   const isSimpleProduct = productType === "simple";
   const isVariableProduct = !isSimpleProduct;
-  const singleOffer = isSimpleProduct && variants.length === 1 ? variants[0] : null;
-  const heroVariant = singleOffer ?? variants[0] ?? null;
+  const singleOffer = isSimpleProduct && variants.length === 1 ? (variants[0] ?? null) : null;
   const offerSectionPresentation = getProductOfferSectionPresentation(productType);
   const hasRelatedProducts = relatedProductGroups.some((g) => g.products.length > 0);
   const resolvedTechnicalSpecs = technicalSpecs ?? [];
@@ -155,13 +91,9 @@ export function ProductPageTemplate({
 
   return (
     <div className="mx-auto max-w-6xl pb-6">
-      {/* Bandeau contextuel (statut admin / messages panier storefront) */}
       {statusBanner}
 
       <div className="grid gap-4 min-[700px]:gap-6">
-        {/* ------------------------------------------------------------------ */}
-        {/* Pré-header éditorial — badge, nom, accroche courte                  */}
-        {/* ------------------------------------------------------------------ */}
         <div className="grid gap-3 min-[700px]:gap-4">
           <ProductPreHeaderSection
             productName={productName}
@@ -169,16 +101,14 @@ export function ProductPageTemplate({
             marketingHook={marketingHook ?? null}
           />
 
-          {/* ---------------------------------------------------------------- */}
-          {/* Hero — grid image / aside transactionnel                         */}
-          {/* ---------------------------------------------------------------- */}
           <ProductHeroSection
             productName={productName}
             isSimpleProduct={isSimpleProduct}
             isAvailable={isAvailable}
             images={images}
             shortDescription={shortDescription ?? null}
-            heroVariant={heroVariant}
+            heroVariant={singleOffer ?? null}
+            variableVariants={!isSimpleProduct ? variants : undefined}
             variantSummary={!isSimpleProduct ? (heroVariantSummary ?? null) : null}
             variablePriceLabel={!isSimpleProduct ? "Prix (selon déclinaison)" : null}
             imageFit={!isSimpleProduct ? "cover" : "contain"}
@@ -188,9 +118,6 @@ export function ProductPageTemplate({
           />
         </div>
 
-        {/* ------------------------------------------------------------------ */}
-        {/* Déclinaisons — point de décision prioritaire (variable uniquement)  */}
-        {/* ------------------------------------------------------------------ */}
         {isVariableProduct ? (
           <ProductOffersSection
             id="offers"
@@ -198,20 +125,14 @@ export function ProductPageTemplate({
             variants={variants}
             presentation={offerSectionPresentation}
             summaryContent={offersSummaryContent}
-            renderVariantCta={renderVariantCta}
+            {...(renderVariantCta ? { renderVariantCta } : {})}
           />
         ) : null}
 
-        {/* ------------------------------------------------------------------ */}
-        {/* Description — section dédiée sous le hero                           */}
-        {/* ------------------------------------------------------------------ */}
         {description ? <ProductDescriptionSection descriptionHtml={description} /> : null}
       </div>
 
       <div className="mt-6 grid gap-6 min-[700px]:mt-8 min-[700px]:gap-8">
-        {/* ------------------------------------------------------------------ */}
-        {/* Caractéristiques produit                                             */}
-        {/* ------------------------------------------------------------------ */}
         {characteristics && characteristics.length > 0 ? (
           <section className="w-full rounded-xl border border-shell-border bg-surface-panel-soft p-5 shadow-soft [@media(max-height:480px)]:p-4 min-[700px]:p-8">
             <div className="mb-5 grid gap-2 min-[700px]:mb-6">
@@ -234,9 +155,6 @@ export function ProductPageTemplate({
           </section>
         ) : null}
 
-        {/* ------------------------------------------------------------------ */}
-        {/* Spécifications techniques                                           */}
-        {/* ------------------------------------------------------------------ */}
         {hasTechnicalSpecs ? (
           <section className="w-full rounded-xl border border-shell-border bg-surface-panel-soft p-5 shadow-soft [@media(max-height:480px)]:p-4 min-[700px]:p-8">
             <div className="mb-5 grid gap-2 min-[700px]:mb-6">
@@ -259,9 +177,6 @@ export function ProductPageTemplate({
           </section>
         ) : null}
 
-        {/* ------------------------------------------------------------------ */}
-        {/* Offre / déclinaisons                                                */}
-        {/* ------------------------------------------------------------------ */}
         {isSimpleProduct ? (
           <ProductOffersSection
             id="offers"
@@ -269,13 +184,10 @@ export function ProductPageTemplate({
             variants={variants}
             presentation={offerSectionPresentation}
             summaryContent={offersSummaryContent}
-            renderVariantCta={renderVariantCta}
+            {...(renderVariantCta ? { renderVariantCta } : {})}
           />
         ) : null}
 
-        {/* ------------------------------------------------------------------ */}
-        {/* Produits liés                                                        */}
-        {/* ------------------------------------------------------------------ */}
         {hasRelatedProducts ? (
           <section className="w-full rounded-xl border border-shell-border bg-surface-panel-soft p-5 shadow-soft [@media(max-height:480px)]:p-4 min-[700px]:p-8">
             <div className="mb-5 grid gap-2 min-[700px]:mb-6">

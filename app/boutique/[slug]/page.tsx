@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
 import { CustomButton } from "@/components/shared";
+import { Notice } from "@/components/shared/notice";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Notice } from "@/components/shared/notice";
 import { clientEnv } from "@/core/config/env";
-import { getPublishedProductBySlug } from "@/features/storefront/catalog";
-import { type OfferVariant } from "@/features/storefront/catalog/product-offers-section";
-import { ProductPageTemplate } from "@/features/storefront/catalog/product-page-template";
 import { addToCartAction } from "@/features/cart";
-import { getOfferAvailabilityMessage } from "@/entities/product/product-public-presentation";
+import { getPublishedProductBySlug } from "@/features/storefront/catalog";
+import { ProductPageTemplate } from "@/features/storefront/catalog/product-page-template";
+import { type OfferVariant } from "@/features/storefront/catalog/product-offers-section";
 import { buildSeoDescription, pickSeoText } from "@/entities/product/seo-text";
 
 export const dynamic = "force-dynamic";
@@ -63,8 +63,6 @@ function getProductMetadataDescription(product: ProductMetadataSource): string {
 }
 
 function getProductJsonLdDescription(product: ProductMetadataSource): string {
-  // JSON-LD can be longer than the meta description; we keep the same source/normalization,
-  // with a higher cap to avoid overly long rich-text bodies.
   return buildSeoDescription({
     candidates: [product.seoDescription, product.shortDescription, product.description],
     defaultValue: "Produit Creatyss.",
@@ -73,7 +71,6 @@ function getProductJsonLdDescription(product: ProductMetadataSource): string {
 }
 
 function toAbsoluteUrl(input: string, base: string): string {
-  // Base must be absolute (`https://...`). We accept relative paths ("/uploads/...") as input.
   try {
     return new URL(input, base).toString();
   } catch {
@@ -90,7 +87,7 @@ function getRobotsFromIndexingMode(
   mode: "INDEX_FOLLOW" | "INDEX_NOFOLLOW" | "NOINDEX_FOLLOW" | "NOINDEX_NOFOLLOW" | null
 ): RobotsMetadata | undefined {
   if (mode === null || mode === "INDEX_FOLLOW") {
-    return undefined; // Next.js default: index + follow
+    return undefined;
   }
 
   const map: Record<
@@ -123,10 +120,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const canonical = `${clientEnv.appUrl}${canonicalPath}`;
 
   const metaDescription = getProductMetadataDescription(product);
-
   const metaTitle = pickSeoText(product.seoTitle, product.name) ?? product.name;
 
-  const ogTitle = pickSeoText(product.seoOpenGraphTitle, product.seoTitle, product.name) ?? metaTitle;
+  const ogTitle =
+    pickSeoText(product.seoOpenGraphTitle, product.seoTitle, product.name) ?? metaTitle;
   const ogDescription = buildSeoDescription({
     candidates: [product.seoOpenGraphDescription, metaDescription],
     defaultValue: metaDescription,
@@ -135,8 +132,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const ogImageUrl = product.seoOpenGraphImageUrl ?? product.images[0]?.src;
 
   const twitterTitle =
-    pickSeoText(product.seoTwitterTitle, product.seoOpenGraphTitle, product.seoTitle, product.name) ??
-    metaTitle;
+    pickSeoText(
+      product.seoTwitterTitle,
+      product.seoOpenGraphTitle,
+      product.seoTitle,
+      product.name
+    ) ?? metaTitle;
   const twitterDescription = buildSeoDescription({
     candidates: [product.seoTwitterDescription, product.seoOpenGraphDescription, metaDescription],
     defaultValue: metaDescription,
@@ -227,7 +228,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
 
   const isSimpleProduct = product.productType === "simple";
   const singleOffer = isSimpleProduct && product.variants.length === 1 ? product.variants[0] : null;
-  // Images déjà résolues (src, alt) dans la query — pas de résolution URL ici.
+
   const baseProductImages = product.images.map((image) => ({
     src: image.src,
     alt: image.alt ?? null,
@@ -235,6 +236,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
 
   const variantsNormalized: OfferVariant[] = product.variants.map((variant) => {
     const variantDisplayImage = variant.images[0] ?? null;
+
     return {
       id: variant.id,
       name: variant.name,
@@ -251,12 +253,29 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
             alt: variantDisplayImage.alt ?? variant.name,
           }
         : null,
+      images: variant.images.map((image) => ({
+        src: image.src,
+        alt: image.alt ?? null,
+      })),
+      barcode: variant.barcode,
+      externalReference: variant.externalReference,
+      weightGrams: variant.weightGrams,
+      widthMm: variant.widthMm,
+      heightMm: variant.heightMm,
+      depthMm: variant.depthMm,
+      optionValues: variant.optionValues.map((item) => ({
+        optionId: item.optionId,
+        optionName: item.optionName,
+        valueId: item.valueId,
+        valueLabel: item.valueLabel,
+      })),
     };
   });
 
   const defaultVariant = !isSimpleProduct
     ? (product.variants.find((variant) => variant.isDefault) ?? product.variants[0] ?? null)
     : null;
+
   const heroVariantImage = defaultVariant?.images[0] ?? null;
   const productImages = (() => {
     if (heroVariantImage === null) {
@@ -310,7 +329,10 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
       specs.push({ label: "Code-barres", value: referenceVariant.barcode });
     }
 
-    if (referenceVariant.externalReference && referenceVariant.externalReference.trim().length > 0) {
+    if (
+      referenceVariant.externalReference &&
+      referenceVariant.externalReference.trim().length > 0
+    ) {
       specs.push({ label: "Référence externe", value: referenceVariant.externalReference });
     }
 
@@ -321,48 +343,109 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
       }
     }
 
-    const dims = formatDimensions({
-      widthMm: referenceVariant.widthMm,
-      heightMm: referenceVariant.heightMm,
-      depthMm: referenceVariant.depthMm,
-    });
-    if (dims.length > 0) {
-      specs.push({ label: "Dimensions", value: dims });
+    const dimensions = formatDimensions(referenceVariant);
+    if (dimensions.length > 0) {
+      specs.push({ label: "Dimensions", value: dimensions });
     }
 
     return specs;
   })();
 
-  const jsonLdCanonicalPath = pickSeoText(product.seoCanonicalPath) ?? `/boutique/${product.slug}`;
-  const jsonLdUrl = toAbsoluteUrl(jsonLdCanonicalPath, clientEnv.appUrl);
-  const jsonLdImageUrl = productImages[0]?.src ?? null;
+  const statusBanner =
+    cartStatusMessage || cartErrorMessage ? (
+      <div className="mb-4 min-[700px]:mb-5">
+        {cartStatusMessage ? <Notice tone="success">{cartStatusMessage}</Notice> : null}
+        {cartErrorMessage ? <Notice tone="alert">{cartErrorMessage}</Notice> : null}
+      </div>
+    ) : undefined;
+
+  const heroCta =
+    singleOffer && singleOffer.isAvailable ? (
+      <form action={addToCartAction} className="grid gap-3">
+        <input type="hidden" name="productSlug" value={product.slug} />
+        <input type="hidden" name="variantId" value={singleOffer.id} />
+
+        <div className="grid gap-2">
+          <Label htmlFor="hero-quantity">Quantité</Label>
+          <Input
+            id="hero-quantity"
+            name="quantity"
+            type="number"
+            min={1}
+            step={1}
+            defaultValue={1}
+          />
+        </div>
+
+        <CustomButton type="submit">Ajouter au panier</CustomButton>
+      </form>
+    ) : !isSimpleProduct ? (
+      <CustomButton asChild>
+        <Link href="#offers">Choisir une déclinaison</Link>
+      </CustomButton>
+    ) : null;
+
+  const offersSummaryContent =
+    !isSimpleProduct && variantSummary ? (
+      <div className="flex flex-wrap gap-2">
+        <span className="rounded-full border border-control-border bg-control-surface px-2.5 py-1 text-micro-copy font-medium text-text-muted-strong">
+          {variantSummary.total} déclinaison{variantSummary.total > 1 ? "s" : ""}
+        </span>
+        <span className="rounded-full border border-control-border bg-control-surface px-2.5 py-1 text-micro-copy font-medium text-text-muted-strong">
+          {variantSummary.available} disponible{variantSummary.available > 1 ? "s" : ""}
+        </span>
+      </div>
+    ) : undefined;
+
+  const renderVariantCta = (variant: OfferVariant) => {
+    if (!variant.isAvailable) {
+      return (
+        <p className="text-micro-copy reading-compact font-medium text-feedback-error-foreground">
+          Indisponible actuellement.
+        </p>
+      );
+    }
+
+    return (
+      <div className="grid gap-2">
+        <p className="text-micro-copy reading-compact text-text-muted-strong">Ajout au panier</p>
+        <form action={addToCartAction} className="flex flex-wrap items-end gap-2">
+          <input type="hidden" name="productSlug" value={product.slug} />
+          <input type="hidden" name="variantId" value={variant.id} />
+
+          <div className="grid gap-1">
+            <Label htmlFor={`quantity-${variant.id}`} className="sr-only">
+              Quantité
+            </Label>
+            <Input
+              id={`quantity-${variant.id}`}
+              name="quantity"
+              type="number"
+              min={1}
+              step={1}
+              defaultValue={1}
+              className="h-9 w-20"
+            />
+          </div>
+
+          <CustomButton type="submit" size="sm">
+            Ajouter au panier
+          </CustomButton>
+        </form>
+      </div>
+    );
+  };
 
   const productJsonLd: ProductJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: pickSeoText(product.name) ?? product.name,
     description: getProductJsonLdDescription(product),
-    url: jsonLdUrl,
-    ...(jsonLdImageUrl !== null && { image: toAbsoluteUrl(jsonLdImageUrl, clientEnv.appUrl) }),
+    url: `${clientEnv.appUrl}/boutique/${product.slug}`,
+    ...(product.images[0] && {
+      image: toAbsoluteUrl(product.images[0].src, clientEnv.appUrl),
+    }),
   };
-
-  const statusBanner =
-    cartStatusMessage !== null || cartErrorMessage !== null ? (
-      <>
-        {cartStatusMessage !== null ? (
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-feedback-success-border bg-feedback-success-surface px-4 py-3 text-sm text-feedback-success-foreground">
-            <span>{cartStatusMessage}</span>
-            <Link
-              className="font-medium underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
-              href="/panier"
-            >
-              Voir le panier
-            </Link>
-          </div>
-        ) : null}
-        {cartErrorMessage !== null ? <Notice tone="alert">{cartErrorMessage}</Notice> : null}
-      </>
-    ) : undefined;
 
   return (
     <>
@@ -370,6 +453,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
       />
+
       <ProductPageTemplate
         productName={product.name}
         marketingHook={product.marketingHook}
@@ -383,79 +467,10 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
         technicalSpecs={technicalSpecs}
         relatedProductGroups={product.relatedProductGroups}
         statusBanner={statusBanner}
+        heroCta={heroCta}
         heroVariantSummary={variantSummary}
-        heroCta={
-          !isSimpleProduct ? (
-            <CustomButton asChild fullWidth>
-              <a href="#offers">Choisir une déclinaison</a>
-            </CustomButton>
-          ) : isSimpleProduct && singleOffer != null && singleOffer.isAvailable ? (
-            <form action={addToCartAction} className="grid gap-4">
-              <input name="productSlug" type="hidden" value={product.slug} />
-              <input name="variantId" type="hidden" value={singleOffer.id} />
-              <div className="grid max-w-40 gap-2">
-                <Label htmlFor={`qty-hero-${singleOffer.id}`}>Quantité</Label>
-                <Input
-                  defaultValue="1"
-                  id={`qty-hero-${singleOffer.id}`}
-                  min="1"
-                  name="quantity"
-                  required
-                  step="1"
-                  type="number"
-                />
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <CustomButton type="submit" loading={false}>
-                  Ajouter au panier
-                </CustomButton>
-              </div>
-            </form>
-          ) : undefined
-        }
-        renderVariantCta={(variant) => (
-          <>
-            <div className="grid gap-2">
-              <p
-                className={
-                  variant.isAvailable
-                    ? "text-micro-copy reading-compact text-text-muted-strong"
-                    : "text-micro-copy reading-compact text-text-muted-soft"
-                }
-              >
-                {getOfferAvailabilityMessage({
-                  productType: product.productType,
-                  isAvailable: variant.isAvailable,
-                })}
-              </p>
-
-              {variant.isAvailable ? (
-                <form action={addToCartAction} className="flex flex-wrap items-end gap-2">
-                  <input name="productSlug" type="hidden" value={product.slug} />
-                  <input name="variantId" type="hidden" value={variant.id} />
-                  <div className="grid gap-1">
-                    <Label className="sr-only" htmlFor={`quantity-${variant.id}`}>
-                      Quantité
-                    </Label>
-                    <Input
-                      className="h-9 w-20 px-2 text-sm"
-                      defaultValue="1"
-                      id={`quantity-${variant.id}`}
-                      min="1"
-                      name="quantity"
-                      required
-                      step="1"
-                      type="number"
-                    />
-                  </div>
-                  <CustomButton size="sm" type="submit">
-                    Ajouter au panier
-                  </CustomButton>
-                </form>
-              ) : null}
-            </div>
-          </>
-        )}
+        offersSummaryContent={offersSummaryContent}
+        renderVariantCta={renderVariantCta}
       />
     </>
   );
