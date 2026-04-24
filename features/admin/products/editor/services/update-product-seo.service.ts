@@ -1,7 +1,7 @@
-import { withTransaction } from "@/core/db";
+import { withTransaction, type DbExecutor } from "@/core/db";
 import type { SeoIndexingMode } from "@/prisma-generated/client";
 
-import { assertProductExists } from "./shared";
+import { AdminProductEditorServiceError, assertProductExists } from "./shared";
 
 type UpdateProductSeoServiceInput = {
   productId: string;
@@ -18,6 +18,34 @@ type UpdateProductSeoServiceInput = {
   twitterImageId: string | null;
 };
 
+async function assertSeoImageAssetIsUsable(input: {
+  executor: DbExecutor;
+  storeId: string;
+  assetId: string;
+}): Promise<void> {
+  const asset = await input.executor.mediaAsset.findFirst({
+    where: {
+      id: input.assetId,
+      storeId: input.storeId,
+      archivedAt: null,
+      kind: "IMAGE",
+      status: {
+        not: "ARCHIVED",
+      },
+      mimeType: {
+        startsWith: "image/",
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (asset === null) {
+    throw new AdminProductEditorServiceError("media_asset_missing");
+  }
+}
+
 export async function updateProductSeo(
   input: UpdateProductSeoServiceInput
 ): Promise<{ productId: string }> {
@@ -25,6 +53,22 @@ export async function updateProductSeo(
     const product = await assertProductExists(tx, input.productId);
 
     const toNullable = (value: string) => (value.trim().length === 0 ? null : value.trim());
+
+    if (input.openGraphImageId !== null) {
+      await assertSeoImageAssetIsUsable({
+        executor: tx,
+        storeId: product.storeId,
+        assetId: input.openGraphImageId,
+      });
+    }
+
+    if (input.twitterImageId !== null && input.twitterImageId !== input.openGraphImageId) {
+      await assertSeoImageAssetIsUsable({
+        executor: tx,
+        storeId: product.storeId,
+        assetId: input.twitterImageId,
+      });
+    }
 
     await tx.seoMetadata.upsert({
       where: {

@@ -166,7 +166,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
           <div className="min-w-36 flex-1">
             <select
-              className="h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="h-9 w-full rounded-lg border border-control-border bg-control-surface px-3 py-1 text-sm text-foreground shadow-control outline-none transition-all hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50"
               defaultValue={filters.categorySlug ?? ""}
               name="category"
             >
@@ -179,9 +179,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </select>
           </div>
 
-          <label className="flex items-center gap-2 text-sm text-muted-foreground">
+          <label className="flex items-center gap-2 text-sm text-text-muted-strong">
             <input
-              className="size-4"
+              className="size-4 rounded-[6px] border border-control-border bg-control-surface shadow-control transition-all hover:border-control-border-strong hover:bg-control-surface-hover focus-visible:ring-3 focus-visible:ring-focus-ring/50"
               defaultChecked={filters.onlyAvailable}
               name="availability"
               type="checkbox"
@@ -196,7 +196,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
           {hasActiveFilters ? (
             <Link
-              className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              className="text-sm text-text-muted-strong underline-offset-4 transition-colors hover:text-foreground hover:underline"
               href="/boutique"
             >
               Tout voir
@@ -205,7 +205,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </form>
 
         {hasActiveFilters ? (
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-text-muted-strong">
             <span>Filtres :</span>
             {activeFilters.map((filter) => (
               <Badge key={filter} variant="secondary">
@@ -227,7 +227,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               {/* Image zone */}
               <Link className="block" href={`/boutique/${product.slug}`} tabIndex={-1}>
                 {product.primaryImage !== null ? (
-                  <figure className="relative aspect-[4/3] overflow-hidden bg-media-surface">
+                  <figure className="relative aspect-4/3 overflow-hidden bg-media-surface">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       alt={product.primaryImage.altText ?? product.name}
@@ -237,7 +237,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     />
                   </figure>
                 ) : (
-                  <div className="flex aspect-[4/3] items-center justify-center bg-media-surface text-media-foreground">
+                  <div className="flex aspect-4/3 items-center justify-center bg-media-surface text-media-foreground">
                     <span className="text-xs font-medium uppercase tracking-widest opacity-60">
                       {product.name}
                     </span>
@@ -248,11 +248,17 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               {/* Text content */}
               <div className="grid gap-3 p-5">
                 <div className="flex flex-wrap items-start justify-between gap-2">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-strong">
                     {product.isFeatured ? "Pièce phare" : "Produit"}
                   </p>
                   <Badge variant="outline">
-                    <span className={product.isAvailable ? "text-emerald-700" : "text-destructive"}>
+                    <span
+                      className={
+                        product.isAvailable
+                          ? "text-feedback-success-foreground"
+                          : "text-destructive"
+                      }
+                    >
                       {product.isAvailable ? "Disponible" : "Indisponible"}
                     </span>
                   </Badge>
@@ -268,7 +274,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 </h3>
 
                 {(product.shortDescription ?? product.description) ? (
-                  <p className="text-sm leading-relaxed text-muted-foreground line-clamp-2">
+                  <p className="text-sm leading-relaxed text-text-muted-strong line-clamp-2">
                     {product.shortDescription ?? product.description}
                   </p>
                 ) : null}

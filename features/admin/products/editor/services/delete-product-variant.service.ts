@@ -1,6 +1,6 @@
 import { withTransaction } from "@/core/db";
 import {
-  AdminProductEditorServiceError,
+  ensureDefaultVariantExists,
   assertVariantExists,
 } from "./shared";
 
@@ -13,22 +13,9 @@ export async function deleteProductVariant(
   input: DeleteProductVariantServiceInput
 ): Promise<{ id: string }> {
   return withTransaction(async (tx) => {
-    const variant = await assertVariantExists(tx, input.productId, input.variantId);
+    await assertVariantExists(tx, input.productId, input.variantId);
 
-    if (variant.isDefault) {
-      const siblingCount = await tx.productVariant.count({
-        where: {
-          productId: input.productId,
-          archivedAt: null,
-        },
-      });
-
-      if (siblingCount > 1) {
-        throw new AdminProductEditorServiceError("cannot_delete_default_variant");
-      }
-    }
-
-    return tx.productVariant.update({
+    const archived = await tx.productVariant.update({
       where: {
         id: input.variantId,
       },
@@ -41,5 +28,9 @@ export async function deleteProductVariant(
         id: true,
       },
     });
+
+    await ensureDefaultVariantExists(tx, { productId: input.productId });
+
+    return archived;
   });
 }

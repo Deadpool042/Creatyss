@@ -121,6 +121,21 @@ function buildImageUrl(storageKey: string, uploadsPublicPath: string): string {
   return `${uploadsPublicPath}/${storageKey.replace(/^\/+/, "")}`;
 }
 
+function dedupeImages(images: AdminProductPreviewImage[]): AdminProductPreviewImage[] {
+  const seen = new Set<string>();
+  const result: AdminProductPreviewImage[] = [];
+
+  for (const image of images) {
+    if (seen.has(image.src)) {
+      continue;
+    }
+    seen.add(image.src);
+    result.push(image);
+  }
+
+  return result;
+}
+
 // ---------------------------------------------------------------------------
 // Config groupes produits liés — miroir de getPublishedProductBySlug
 // ---------------------------------------------------------------------------
@@ -277,38 +292,61 @@ export async function getAdminProductPreviewBySlug(
     return null;
   }
 
-  const seoMetadata = await db.seoMetadata.findFirst({
-    where: {
-      storeId: product.storeId,
-      subjectType: "PRODUCT",
-      subjectId: product.id,
-      archivedAt: null,
-    },
-    select: {
-      metaTitle: true,
-      metaDescription: true,
-      indexingMode: true,
-      canonicalPath: true,
-      openGraphTitle: true,
-      openGraphDescription: true,
-      openGraphImage: {
-        select: {
-          storageKey: true,
+  const [seoMetadata, galleryImageReferences] = await Promise.all([
+    db.seoMetadata.findFirst({
+      where: {
+        storeId: product.storeId,
+        subjectType: "PRODUCT",
+        subjectId: product.id,
+        archivedAt: null,
+      },
+      select: {
+        metaTitle: true,
+        metaDescription: true,
+        indexingMode: true,
+        canonicalPath: true,
+        openGraphTitle: true,
+        openGraphDescription: true,
+        openGraphImage: {
+          select: {
+            storageKey: true,
+          },
+        },
+        twitterTitle: true,
+        twitterDescription: true,
+        twitterImage: {
+          select: {
+            storageKey: true,
+          },
         },
       },
-      twitterTitle: true,
-      twitterDescription: true,
-      twitterImage: {
-        select: {
-          storageKey: true,
+    }),
+    db.mediaReference.findMany({
+      where: {
+        subjectType: "PRODUCT",
+        subjectId: product.id,
+        role: "GALLERY",
+        isActive: true,
+        archivedAt: null,
+        asset: {
+          archivedAt: null,
         },
       },
-    },
-  });
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+      select: {
+        asset: {
+          select: {
+            storageKey: true,
+            altText: true,
+          },
+        },
+      },
+    }),
+  ]);
 
   const uploadsPublicPath = getUploadsPublicPath();
 
-  const images: AdminProductPreviewImage[] = product.primaryImage
+  const primaryImage: AdminProductPreviewImage[] = product.primaryImage
     ? [
         {
           src: buildImageUrl(product.primaryImage.storageKey, uploadsPublicPath),
@@ -316,6 +354,11 @@ export async function getAdminProductPreviewBySlug(
         },
       ]
     : [];
+  const galleryImages: AdminProductPreviewImage[] = galleryImageReferences.map((reference) => ({
+    src: buildImageUrl(reference.asset.storageKey, uploadsPublicPath),
+    alt: reference.asset.altText,
+  }));
+  const images = dedupeImages([...primaryImage, ...galleryImages]);
 
   const productLevelPrice = product.prices[0] ?? null;
 

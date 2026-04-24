@@ -1,7 +1,10 @@
 "use server";
 
 import { refresh } from "next/cache";
-import { validateAdminProductRelatedProducts } from "@/entities/product";
+import {
+  validateAdminProductRelatedProducts,
+  type AdminProductInputErrorCode,
+} from "@/entities/product";
 import { AdminProductEditorServiceError, updateProductRelatedProducts } from "../services";
 import {
   productRelatedProductsFormInitialState,
@@ -40,6 +43,21 @@ function buildRelatedSortOrders(formData: FormData): Record<string, FormDataEntr
   return result;
 }
 
+function getValidationErrorMessage(code: AdminProductInputErrorCode): string {
+  switch (code) {
+    case "invalid_related_products":
+      return "Liste de produits liés invalide.";
+    case "invalid_related_product_type":
+      return "Type de relation invalide.";
+    case "invalid_related_product_sort_order":
+      return "Ordre d’affichage invalide.";
+    case "duplicate_related_product":
+      return "Un même produit ne peut être lié qu’une seule fois.";
+    default:
+      return "Données invalides.";
+  }
+}
+
 export const updateProductRelatedProductsAction: ProductRelatedProductsFormAction = async (
   _prevState,
   formData
@@ -64,7 +82,7 @@ export const updateProductRelatedProductsAction: ProductRelatedProductsFormActio
     return {
       ...productRelatedProductsFormInitialState,
       status: "error",
-      message: "Données invalides.",
+      message: getValidationErrorMessage(validated.code),
     };
   }
 
@@ -86,7 +104,10 @@ export const updateProductRelatedProductsAction: ProductRelatedProductsFormActio
       return {
         ...productRelatedProductsFormInitialState,
         status: "error",
-        message: "Mise à jour impossible.",
+        message:
+          error.code === "related_product_missing"
+            ? "Un produit lié est introuvable, archivé ou hors boutique."
+            : "Mise à jour impossible.",
       };
     }
 

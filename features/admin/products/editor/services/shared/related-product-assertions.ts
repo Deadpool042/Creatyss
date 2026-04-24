@@ -5,6 +5,7 @@ import { AdminProductEditorServiceError } from "./error";
 export async function assertRelatedProductsExist(
   executor: DbExecutor,
   productId: string,
+  storeId: string,
   relatedProductIds: readonly string[]
 ): Promise<void> {
   if (relatedProductIds.length === 0) {
@@ -20,6 +21,7 @@ export async function assertRelatedProductsExist(
       id: {
         in: [...relatedProductIds],
       },
+      storeId,
       archivedAt: null,
     },
     select: {

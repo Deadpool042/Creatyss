@@ -1,10 +1,15 @@
 import { withTransaction } from "@/core/db";
+import { Prisma } from "@/prisma-generated/client";
 import {
   assertMediaAssetExists,
   assertVariantExists,
+  assertVariantAxisCombinationIsUnique,
+  assertDefaultVariantWouldRemain,
   assertVariantOptionValuesAreValid,
+  ensureDefaultVariantExists,
   mapEditorVariantStatusToPrismaStatus,
 } from "./shared";
+import { AdminProductEditorServiceError } from "./shared/error";
 
 type UpdateProductVariantServiceInput = {
   productId: string;
@@ -29,11 +34,23 @@ export async function updateProductVariant(
   input: UpdateProductVariantServiceInput
 ): Promise<{ id: string }> {
   return withTransaction(async (tx) => {
-    await assertVariantExists(tx, input.productId, input.variantId);
+    const existing = await assertVariantExists(tx, input.productId, input.variantId);
     await assertVariantOptionValuesAreValid(tx, input.productId, input.optionValueIds);
+    await assertVariantAxisCombinationIsUnique(tx, {
+      productId: input.productId,
+      optionValueIds: input.optionValueIds,
+      excludeVariantId: input.variantId,
+    });
 
     if (input.primaryImageId !== null) {
       await assertMediaAssetExists(tx, input.primaryImageId);
+    }
+
+    if (existing.isDefault && !input.isDefault) {
+      await assertDefaultVariantWouldRemain(tx, {
+        productId: input.productId,
+        excludeVariantId: input.variantId,
+      });
     }
 
     if (input.isDefault) {
@@ -52,30 +69,55 @@ export async function updateProductVariant(
       });
     }
 
-    const updated = await tx.productVariant.update({
-      where: {
-        id: input.variantId,
-      },
-      data: {
-        sku: input.sku,
-        slug: input.slug,
-        name: input.name,
-        primaryImageId: input.primaryImageId,
-        status: mapEditorVariantStatusToPrismaStatus(input.status),
-        isDefault: input.isDefault,
-        sortOrder: input.sortOrder,
-        barcode: input.barcode,
-        externalReference: input.externalReference,
-        weightGrams: input.weightGrams,
-        widthMm: input.widthMm,
-        heightMm: input.heightMm,
-        depthMm: input.depthMm,
-        publishedAt: input.status === "active" ? new Date() : null,
-      },
-      select: {
-        id: true,
-      },
-    });
+    let updated: { id: string };
+    try {
+      updated = await tx.productVariant.update({
+        where: {
+          id: input.variantId,
+        },
+        data: {
+          sku: input.sku,
+          slug: input.slug,
+          name: input.name,
+          primaryImageId: input.primaryImageId,
+          status: mapEditorVariantStatusToPrismaStatus(input.status),
+          isDefault: input.isDefault,
+          sortOrder: input.sortOrder,
+          barcode: input.barcode,
+          externalReference: input.externalReference,
+          weightGrams: input.weightGrams,
+          widthMm: input.widthMm,
+          heightMm: input.heightMm,
+          depthMm: input.depthMm,
+          publishedAt: input.status === "active" ? new Date() : null,
+        },
+        select: {
+          id: true,
+        },
+      });
+    } catch (error: unknown) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+        const meta = error.meta;
+        const targetRaw =
+          meta && typeof meta === "object" ? (meta as Record<string, unknown>).target : null;
+        const target =
+          typeof targetRaw === "string"
+            ? targetRaw
+            : Array.isArray(targetRaw)
+              ? targetRaw.filter((item) => typeof item === "string").join(",")
+              : "";
+
+        if (target.includes("sku")) {
+          throw new AdminProductEditorServiceError("variant_sku_taken");
+        }
+
+        if (target.includes("slug")) {
+          throw new AdminProductEditorServiceError("variant_slug_taken");
+        }
+      }
+
+      throw error;
+    }
 
     // Sync ciblé : supprime uniquement les associations isVariantAxis=true
     // pour préserver les associations hors périmètre UI (isVariantAxis=false)
@@ -99,6 +141,8 @@ export async function updateProductVariant(
         skipDuplicates: true,
       });
     }
+
+    await ensureDefaultVariantExists(tx, { productId: input.productId });
 
     return updated;
   });

@@ -3,7 +3,7 @@ import { unlink } from "node:fs/promises";
 import { MediaAssetKind, MediaAssetStatus } from "@/prisma-generated/client";
 
 import { db } from "@/core/db";
-import { ensureUploadsDirectory, saveUploadedImage } from "@/core/uploads";
+import { buildStorageKeyFromPublicUrl, ensureUploadsDirectory, saveUploadedImage } from "@/core/uploads";
 import { buildAdminMediaUploadRelativeDirectory } from "@/features/admin/media/helpers/build-admin-media-upload-relative-directory";
 import { mapAdminMediaListItem } from "@/features/admin/media/mappers/map-admin-media-list-item";
 import type { AdminMediaListItem } from "@/features/admin/media/types/admin-media-list-item.types";
@@ -113,7 +113,7 @@ export async function uploadAdminMedia(
         originalFilename: normalizeOriginalFilename(input.file.name),
         mimeType: savedImage.mimeType,
         extension: "webp",
-        storageKey: savedImage.publicUrl.replace(/^\/+/, ""),
+        storageKey: buildStorageKeyFromPublicUrl(savedImage.publicUrl),
         publicUrl: savedImage.publicUrl,
         widthPx: savedImage.width > 0 ? savedImage.width : null,
         heightPx: savedImage.height > 0 ? savedImage.height : null,

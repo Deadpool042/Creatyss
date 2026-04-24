@@ -1,5 +1,5 @@
 import type { OrderStatus } from "@/entities/order/order-status-transition";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { SectionIntro } from "@/components/shared/section-intro";
@@ -10,12 +10,12 @@ import { updateOrderStatusAction, shipOrderAction } from "@/features/admin/order
 import { OrderCancelConfirmDialog } from "./order-cancel-confirm-dialog";
 import { getOrderTransitionLabel } from "@/features/admin/orders/mappers/order-detail-mappers";
 
-const detailCardClassName = "grid gap-1 rounded-lg border border-border/60 bg-muted/10 p-3";
+const detailCardClassName =
+  "grid gap-1 rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3";
 
-const detailLabelClassName =
-  "text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground";
+const detailLabelClassName = "text-meta-label text-text-muted-soft";
 
-const detailValueClassName = "text-sm font-medium leading-6 text-foreground";
+const detailValueClassName = "text-secondary-copy reading-compact font-medium text-foreground";
 
 type OrderDetailActionsCardProps = Readonly<{
   order: {
@@ -35,7 +35,7 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
   const statusTransitions = allowedTransitions.filter((nextStatus) => nextStatus !== "shipped");
 
   return (
-    <article className="grid gap-5 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+    <article className="grid gap-5 rounded-xl border border-surface-border bg-surface-panel p-5 text-card-foreground shadow-card">
       <SectionIntro
         className="grid gap-2"
         description="Vérifiez le statut, puis utilisez l'action disponible si une étape reste à effectuer."
@@ -72,7 +72,7 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
           {canShip ? (
             <form
               action={shipOrderAction}
-              className="grid gap-4 rounded-lg border border-border/60 bg-muted/10 p-4"
+              className="grid gap-4 rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-4"
             >
               <input name="orderId" type="hidden" value={order.id} />
 
@@ -86,9 +86,9 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
                 />
               </AdminFormField>
 
-              <Button className="w-full sm:w-fit" type="submit">
+              <CustomButton type="submit" fullWidth className="sm:w-fit">
                 Marquer comme expédiée
-              </Button>
+              </CustomButton>
             </form>
           ) : null}
 
@@ -101,9 +101,9 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
                   <form action={updateOrderStatusAction} key={nextStatus}>
                     <input name="orderId" type="hidden" value={order.id} />
                     <input name="nextStatus" type="hidden" value={nextStatus} />
-                    <Button variant="outline" type="submit">
+                    <CustomButton variant="outline" type="submit">
                       {getOrderTransitionLabel(nextStatus)}
-                    </Button>
+                    </CustomButton>
                   </form>
                 )
               )}

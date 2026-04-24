@@ -7,12 +7,16 @@ export type AdminProductCharacteristicItem = {
 
 export type ProductCharacteristicsFormState = {
   status: "idle" | "success" | "error";
-  message: string;
+  message: string | null;
+  fieldErrors: Partial<Record<"productId" | "characteristics", string>>;
+  rowErrors: Record<number, Partial<Record<"label" | "value", string>>>;
 };
 
 export const productCharacteristicsFormInitialState: ProductCharacteristicsFormState = {
   status: "idle",
-  message: "",
+  message: null,
+  fieldErrors: {},
+  rowErrors: {},
 };
 
 export type ProductCharacteristicsFormAction = (

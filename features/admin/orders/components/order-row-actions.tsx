@@ -50,7 +50,11 @@ export function OrderRowActions({ order }: OrderRowActionsProps) {
       <AlertDialog>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-8">
+            <Button
+              variant="outline"
+              size="icon-sm"
+              className="text-text-muted-strong data-[state=open]:border-control-border-strong data-[state=open]:bg-control-surface-selected data-[state=open]:text-foreground"
+            >
               <MoreHorizontalIcon className="size-4" />
               <span className="sr-only">Actions commande {order.reference}</span>
             </Button>
@@ -90,7 +94,7 @@ export function OrderRowActions({ order }: OrderRowActionsProps) {
           <AlertDialogFooter>
             <AlertDialogCancel>Garder la commande</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="border-feedback-error-border bg-feedback-error-surface text-destructive hover:bg-feedback-error-surface-strong"
               onClick={() => cancelFormRef.current?.requestSubmit()}
             >
               Annuler la commande

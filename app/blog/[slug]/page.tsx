@@ -76,7 +76,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="grid gap-8">
-      <article className="w-full border border-shell-border rounded-lg bg-shell-surface shadow-soft p-7 grid gap-3 max-w-[52rem]">
+      <article className="w-full border border-shell-border rounded-lg bg-shell-surface shadow-soft p-7 grid gap-3 max-w-208">
         <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Blog</p>
         <h1 className="m-0">{post.title}</h1>
 

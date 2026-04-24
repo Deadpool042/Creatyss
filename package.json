@@ -29,6 +29,7 @@
     "prisma:studio": "prisma studio --port 5555 --browser none",
     "bootstrap:store-admin": "tsx scripts/bootstrap-store-and-admin.ts",
     "seed:dev": "pnpm run bootstrap:store-admin && pnpm run import:woo:reset:skip-images",
+    "seed:variables": "pnpm run bootstrap:store-admin && tsx scripts/seed-categories.ts && tsx scripts/seed-variable-products.ts",
     "import:woo": "tsx scripts/import-woocommerce/index.ts",
     "import:woo:reset": "tsx scripts/import-woocommerce/index.ts --reset",
     "import:woo:reset:skip-images": "tsx scripts/import-woocommerce/index.ts --reset --skip-images",
@@ -56,6 +57,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dotenv": "^17.3.1",
+    "embla-carousel-react": "^8.6.0",
     "lucide-react": "^0.577.0",
     "next": "^16.0.0",
     "next-themes": "^0.4.6",
@@ -92,7 +94,7 @@
     "typescript": "^5.9.0",
     "vitest": "^4.0.18"
   },
-  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
+  "packageManager": "pnpm@10.33.1+sha512.05ba3c1d5d1c18f68df06470d74055e62d41fc110a0c660db1b2dfb2785327f04cf0f68345d4609bc52089e7fa0343c31593b2f9594e2c5d5da426230acc9820",
   "pnpm": {
     "onlyBuiltDependencies": [
       "@prisma/engines",

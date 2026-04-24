@@ -23,6 +23,8 @@ export type AdminProductImageItem = {
   altText: string | null;
   originalName: string | null;
   mimeType: string | null;
+  widthPx: number | null;
+  heightPx: number | null;
 };
 
 export type AdminProductImagesData = {

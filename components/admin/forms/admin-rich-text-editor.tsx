@@ -9,6 +9,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import { Color, TextStyle } from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 
+import { AdminCharCounter } from "@/components/admin/forms/admin-char-counter";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import {
   AdminRichTextToolbar,
@@ -30,7 +31,16 @@ type AdminRichTextEditorProps = {
   editorClassName?: string | undefined;
   minHeightClassName?: string;
   preset?: AdminRichTextEditorPreset;
+  counter?: { min: number; max: number; visibleText?: boolean };
 };
+
+function getVisibleTextLength(html: string): number {
+  return html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim().length;
+}
 
 export function AdminRichTextEditor({
   name,
@@ -44,6 +54,7 @@ export function AdminRichTextEditor({
   editorClassName,
   minHeightClassName = "min-h-[240px]",
   preset = "default",
+  counter,
 }: AdminRichTextEditorProps) {
   const initialHtml = useMemo(() => initialValue ?? "", [initialValue]);
   const [html, setHtml] = useState(initialHtml);
@@ -118,6 +129,17 @@ export function AdminRichTextEditor({
         <AdminRichTextToolbar editor={editor} preset={preset} />
         <EditorContent editor={editor} />
       </div>
+      {counter ? (
+        <div className="flex items-center justify-end">
+          <AdminCharCounter
+            {...(counter.visibleText
+              ? { length: getVisibleTextLength(html) }
+              : { value: html })}
+            min={counter.min}
+            max={counter.max}
+          />
+        </div>
+      ) : null}
     </AdminFormField>
   );
 }

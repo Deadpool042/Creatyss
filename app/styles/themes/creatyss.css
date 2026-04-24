@@ -41,6 +41,8 @@
 
   --muted: oklch(0.955 0.01 72);
   --muted-foreground: oklch(0.5 0.018 55);
+  --text-muted-strong: oklch(0.4 0.017 55);
+  --text-muted-soft: oklch(0.58 0.013 55);
 
   /* Accent UI discret : rosé chaud très léger */
   --accent: oklch(0.958 0.016 45);
@@ -88,6 +90,8 @@
   --interactive-hover: rgb(120 90 60 / 0.06);
   --interactive-hover-strong: rgb(120 90 60 / 0.1);
   --interactive-selected: rgb(120 90 60 / 0.14);
+  --interactive-selected-hover: rgb(120 90 60 / 0.22);
+  --interactive-pressed: rgb(120 90 60 / 0.28);
   --interactive-selected-foreground: oklch(0.22 0.02 55);
   --interactive-disabled: rgb(120 90 60 / 0.04);
   --interactive-disabled-foreground: oklch(0.62 0.014 55);
@@ -127,12 +131,25 @@
   /* Panneaux intérieurs : blancs chauds, nets sur le fond ivoire */
   --surface-panel: rgb(255 252 249 / 0.96);
   --surface-panel-soft: rgb(255 252 249 / 0.88);
+  --surface-floating: rgb(255 251 247 / 0.985);
+  --surface-floating-strong: rgb(255 251 247 / 1);
   --surface-subtle: rgb(196 118 74 / 0.06);
+  --surface-border-subtle: rgb(120 90 60 / 0.11);
+  --border-floating: rgb(120 90 60 / 0.3);
 
   /* --surface-border    : séparateurs INTERNES — dividers et bordures inter-blocs à l'intérieur d'une surface (ex: séparation prix / dispo dans hero) */
   /* --surface-border-strong : idem, avec plus de contraste (ex: tableaux, lignes de focus) */
   --surface-border: rgb(120 90 60 / 0.14);
   --surface-border-strong: rgb(120 90 60 / 0.22);
+
+  /* Contrôles (boutons, tabs, items interactifs) :
+     surfaces dédiées pour éviter de détourner les tokens de panels. */
+  --control-surface: rgb(255 252 249 / 0.96);
+  --control-surface-hover: rgb(255 253 250 / 0.99);
+  --control-surface-active: rgb(250 241 233 / 0.99);
+  --control-surface-selected: rgb(196 118 74 / 0.2);
+  --control-border: rgb(120 90 60 / 0.2);
+  --control-border-strong: rgb(120 90 60 / 0.34);
 
   /* Échelle d'élévation — du plus doux au plus fort :
      shadow-soft    : sections/pages entières (grande, très diffuse, non directive)
@@ -143,6 +160,11 @@
   --shadow-soft: 0 20px 60px rgb(70 45 25 / 0.1);
   --shadow-card: 0 16px 40px rgb(70 45 25 / 0.08);
   --shadow-raised: 0 12px 32px rgb(70 45 25 / 0.14);
+  --shadow-floating: 0 14px 36px rgb(45 28 14 / 0.16);
+  --shadow-control: 0 1px 3px rgb(70 45 25 / 0.16), 0 3px 8px rgb(70 45 25 / 0.14);
+  --shadow-control-hover: 0 2px 5px rgb(70 45 25 / 0.18), 0 6px 14px rgb(70 45 25 / 0.16);
+  --shadow-control-pressed:
+    inset 0 1px 0 rgb(255 255 255 / 0.56), inset 0 2px 5px rgb(70 45 25 / 0.18);
   --shadow-overlay: 0 28px 96px rgb(45 25 10 / 0.18);
   --shadow-inset-soft: inset 0 1px 0 rgb(255 255 255 / 0.58);
 
@@ -159,6 +181,7 @@
   --shell-drawer: rgb(255 251 248 / 0.98);
   --shell-drawer-blur: rgb(255 251 248 / 0.86);
   --shell-border: rgb(120 90 60 / 0.12);
+  --shell-border-strong: rgb(120 90 60 / 0.24);
 
   /* ==========================================================================
      Media / decorative blocks
@@ -251,6 +274,8 @@
 
   --muted: oklch(0.295 0.01 55);
   --muted-foreground: oklch(0.72 0.012 72);
+  --text-muted-strong: oklch(0.86 0.012 72);
+  --text-muted-soft: oklch(0.7 0.01 72);
 
   --accent: oklch(0.32 0.02 45);
   --accent-foreground: oklch(0.94 0.008 72);
@@ -287,9 +312,11 @@
   --overlay-scrim: rgb(0 0 0 / 0.38);
   --overlay-scrim-strong: rgb(0 0 0 / 0.58);
 
-  --interactive-hover: rgb(255 248 242 / 0.06);
-  --interactive-hover-strong: rgb(255 248 242 / 0.1);
-  --interactive-selected: rgb(255 248 242 / 0.14);
+  --interactive-hover: rgb(255 248 242 / 0.1);
+  --interactive-hover-strong: rgb(255 248 242 / 0.14);
+  --interactive-selected: rgb(255 248 242 / 0.2);
+  --interactive-selected-hover: rgb(255 248 242 / 0.28);
+  --interactive-pressed: rgb(255 248 242 / 0.34);
   --interactive-selected-foreground: oklch(0.94 0.008 72);
   --interactive-disabled: rgb(255 248 242 / 0.04);
   --interactive-disabled-foreground: oklch(0.66 0.01 72);
@@ -326,30 +353,47 @@
      Shared surfaces
      ========================================================================== */
 
-  --surface-panel: rgb(255 248 242 / 0.075);
-  --surface-panel-soft: rgb(255 248 242 / 0.055);
-  --surface-subtle: rgb(255 255 255 / 0.05);
+  --surface-panel: rgb(255 248 242 / 0.12);
+  --surface-panel-soft: rgb(255 248 242 / 0.085);
+  --surface-floating: rgb(52 40 32 / 0.97);
+  --surface-floating-strong: rgb(52 40 32 / 0.99);
+  --surface-subtle: rgb(255 255 255 / 0.065);
+  --surface-border-subtle: rgb(225 200 180 / 0.18);
+  --border-floating: rgb(225 200 180 / 0.38);
 
-  --surface-border: rgb(225 200 180 / 0.14);
-  --surface-border-strong: rgb(225 200 180 / 0.24);
+  --surface-border: rgb(225 200 180 / 0.2);
+  --surface-border-strong: rgb(225 200 180 / 0.32);
+
+  --control-surface: rgb(255 248 242 / 0.19);
+  --control-surface-hover: rgb(255 248 242 / 0.24);
+  --control-surface-active: rgb(255 248 242 / 0.28);
+  --control-surface-selected: rgb(255 248 242 / 0.32);
+  --control-border: rgb(225 200 180 / 0.3);
+  --control-border-strong: rgb(225 200 180 / 0.42);
 
   /* Même sémantique qu'en light — cf. commentaires :root */
-  --shadow-soft: 0 20px 60px rgb(0 0 0 / 0.42);
-  --shadow-card: 0 16px 40px rgb(0 0 0 / 0.32);
-  --shadow-raised: 0 14px 38px rgb(0 0 0 / 0.3);
+  --shadow-soft: 0 8px 20px rgb(0 0 0 / 0.34);
+  --shadow-card: 0 10px 24px rgb(0 0 0 / 0.4);
+  --shadow-raised: 0 6px 14px rgb(0 0 0 / 0.46);
+  --shadow-floating: 0 14px 34px rgb(0 0 0 / 0.56);
+  --shadow-control: 0 1px 3px rgb(0 0 0 / 0.42), 0 3px 8px rgb(0 0 0 / 0.38);
+  --shadow-control-hover: 0 2px 5px rgb(0 0 0 / 0.46), 0 6px 14px rgb(0 0 0 / 0.42);
+  --shadow-control-pressed:
+    inset 0 1px 0 rgb(255 255 255 / 0.2), inset 0 2px 5px rgb(0 0 0 / 0.5);
   --shadow-overlay: 0 30px 104px rgb(0 0 0 / 0.56);
-  --shadow-inset-soft: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  --shadow-inset-soft: inset 0 1px 0 rgb(255 255 255 / 0.14);
 
   /* ==========================================================================
      Public shell
      ========================================================================== */
 
   /* Sections brun cacao visibles sur le fond sombre */
-  --shell-surface: rgb(54 42 34 / 0.9);
+  --shell-surface: rgb(58 45 36 / 0.94);
   --shell-surface-blur: rgb(54 42 34 / 0.58);
   --shell-drawer: rgb(46 36 30 / 0.94);
   --shell-drawer-blur: rgb(46 36 30 / 0.68);
-  --shell-border: rgb(225 200 180 / 0.1);
+  --shell-border: rgb(225 200 180 / 0.14);
+  --shell-border-strong: rgb(225 200 180 / 0.3);
 
   /* ==========================================================================
      Media / decorative blocks

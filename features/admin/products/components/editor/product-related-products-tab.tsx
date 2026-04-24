@@ -9,7 +9,6 @@ import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -43,7 +42,6 @@ type EditableRelatedProduct = {
   targetProductName: string;
   targetProductSlug: string;
   type: AdminRelatedProductEditorType;
-  sortOrder: string;
 };
 
 const relatedTypeLabels: Record<AdminRelatedProductEditorType, string> = {
@@ -84,44 +82,24 @@ const productStatusWarnings: Partial<Record<RelatedProductOption["status"], stri
   archived: "Ce produit est archivé — cette association ne sera pas exploitable en vitrine.",
 };
 
-function parseNonNegativeInteger(value: string): number {
-  const normalized = value.trim();
-
-  if (!/^\d+$/.test(normalized)) {
-    return 0;
-  }
-
-  return Number(normalized);
+function formatEditorialPosition(index: number): string {
+  if (index === 0) return "1er";
+  if (index === 1) return "2e";
+  if (index === 2) return "3e";
+  return `${index + 1}e`;
 }
 
 function mapEditorRelatedProducts(
   product: AdminProductEditorData["product"]
 ): EditableRelatedProduct[] {
-  return product.relatedProducts
+  return [...product.relatedProducts]
+    .sort((left, right) => left.sortOrder - right.sortOrder)
     .map((link) => ({
       targetProductId: link.targetProductId,
       targetProductName: link.targetProductName,
       targetProductSlug: link.targetProductSlug,
       type: link.type,
-      sortOrder: String(link.sortOrder),
-    }))
-    .sort(
-      (left, right) =>
-        parseNonNegativeInteger(left.sortOrder) - parseNonNegativeInteger(right.sortOrder)
-    );
-}
-
-function nextSortOrder(links: readonly EditableRelatedProduct[]): string {
-  if (links.length === 0) {
-    return "0";
-  }
-
-  const maxSortOrder = links.reduce(
-    (current, link) => Math.max(current, parseNonNegativeInteger(link.sortOrder)),
-    0
-  );
-
-  return String(maxSortOrder + 1);
+    }));
 }
 
 export function ProductRelatedProductsTab({
@@ -138,7 +116,6 @@ export function ProductRelatedProductsTab({
 
   const [links, setLinks] = useState<EditableRelatedProduct[]>(initialLinks);
   const [newType, setNewType] = useState<AdminRelatedProductEditorType>("related");
-  const [newSortOrder, setNewSortOrder] = useState<string>(nextSortOrder(initialLinks));
   const [newTargetProductId, setNewTargetProductId] = useState<string>("");
 
   const optionsById = useMemo(
@@ -154,11 +131,6 @@ export function ProductRelatedProductsTab({
   const addableOptions = useMemo(
     () => relatedProductOptions.filter((option) => !linkedTargetIds.has(option.id)),
     [relatedProductOptions, linkedTargetIds]
-  );
-
-  const hasInvalidSortOrder = useMemo(
-    () => links.some((link) => !/^\d+$/.test(link.sortOrder.trim())),
-    [links]
   );
 
   const resolvedNewTargetProductId =
@@ -178,18 +150,6 @@ export function ProductRelatedProductsTab({
     );
   }
 
-  function handleUpdateSortOrder(targetProductId: string, nextSortOrderValue: string): void {
-    if (nextSortOrderValue.length > 0 && !/^\d+$/.test(nextSortOrderValue)) {
-      return;
-    }
-
-    setLinks((current) =>
-      current.map((link) =>
-        link.targetProductId === targetProductId ? { ...link, sortOrder: nextSortOrderValue } : link
-      )
-    );
-  }
-
   function handleRemove(targetProductId: string): void {
     setLinks((current) => current.filter((link) => link.targetProductId !== targetProductId));
   }
@@ -198,10 +158,6 @@ export function ProductRelatedProductsTab({
     if (index <= 0) return;
     setLinks((current) => {
       const next = [...current];
-      const prevSortOrder = next[index - 1]!.sortOrder;
-      const currSortOrder = next[index]!.sortOrder;
-      next[index - 1] = { ...next[index - 1]!, sortOrder: currSortOrder };
-      next[index] = { ...next[index]!, sortOrder: prevSortOrder };
       [next[index - 1], next[index]] = [next[index]!, next[index - 1]!];
       return next;
     });
@@ -211,10 +167,6 @@ export function ProductRelatedProductsTab({
     setLinks((current) => {
       if (index >= current.length - 1) return current;
       const next = [...current];
-      const nextSortOrderVal = next[index + 1]!.sortOrder;
-      const currSortOrder = next[index]!.sortOrder;
-      next[index + 1] = { ...next[index + 1]!, sortOrder: currSortOrder };
-      next[index] = { ...next[index]!, sortOrder: nextSortOrderVal };
       [next[index], next[index + 1]] = [next[index + 1]!, next[index]!];
       return next;
     });
@@ -234,10 +186,6 @@ export function ProductRelatedProductsTab({
       return;
     }
 
-    const normalizedSortOrder = /^\d+$/.test(newSortOrder.trim())
-      ? newSortOrder.trim()
-      : nextSortOrder(links);
-
     setLinks((current) => [
       ...current,
       {
@@ -245,17 +193,14 @@ export function ProductRelatedProductsTab({
         targetProductName: targetOption.name,
         targetProductSlug: targetOption.slug,
         type: newType,
-        sortOrder: normalizedSortOrder,
       },
     ]);
-
-    setNewSortOrder(String(parseNonNegativeInteger(normalizedSortOrder) + 1));
+    setNewTargetProductId("");
   }
 
   function handleReset(): void {
     setLinks(initialLinks);
     setNewType("related");
-    setNewSortOrder(nextSortOrder(initialLinks));
     setNewTargetProductId("");
   }
 
@@ -279,12 +224,12 @@ export function ProductRelatedProductsTab({
           value={link.type}
         />
       ))}
-      {links.map((link) => (
+      {links.map((link, index) => (
         <input
           key={`related-product-sort-order:${link.targetProductId}`}
           type="hidden"
           name={`relatedProductSortOrder:${link.targetProductId}`}
-          value={link.sortOrder}
+          value={String(index)}
         />
       ))}
 
@@ -296,13 +241,17 @@ export function ProductRelatedProductsTab({
           />
 
           <AdminFormSection
-            title="Relations enregistrées"
-            description="Ces associations suggèrent d’autres produits aux clients lors de la navigation ou de l’achat."
+            title="Produits liés"
+            description="Ces produits sont affichés sur la fiche produit. Le type change l’intitulé en vitrine, et l’ordre d’affichage se gère avec Monter/Descendre."
           >
             {links.length === 0 ? (
-              <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
-                Aucune relation enregistrée pour ce produit.
-              </p>
+              <div className="grid gap-2 rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-4 text-sm text-muted-foreground">
+                <p className="font-medium text-foreground">Aucun produit lié pour le moment.</p>
+                <p className="leading-6">
+                  Ajoutez 1 à 3 produits complémentaires pour guider la navigation. Vous pourrez
+                  ajuster le type et l’ordre ensuite.
+                </p>
+              </div>
             ) : (
               <div className="space-y-3">
                 {links.map((link, index) => {
@@ -324,6 +273,9 @@ export function ProductRelatedProductsTab({
                           {link.targetProductName}
                         </p>
                         <Badge variant="outline">{relatedTypeLabels[link.type]}</Badge>
+                        <span className="text-xs text-muted-foreground">
+                          {formatEditorialPosition(index)}
+                        </span>
                       </div>
                       <p className="text-xs text-muted-foreground">
                         /{link.targetProductSlug}
@@ -413,12 +365,12 @@ export function ProductRelatedProductsTab({
           </AdminFormSection>
 
           <AdminFormSection
-            title="Ajouter une relation"
-            description="Choisissez un produit et la façon dont il est lié à cet article."
+            title="Ajouter un produit lié"
+            description="Choisissez un produit à mettre en avant depuis cette fiche. Vous pourrez ensuite ajuster le type et l’ordre."
           >
             <div
               data-testid="product-related-add-section"
-              className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_140px_auto]"
+              className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]"
             >
               <AdminFormField
                 label="Produit à lier"
@@ -477,25 +429,6 @@ export function ProductRelatedProductsTab({
                 </Tooltip>
               </TooltipProvider>
 
-              <AdminFormField
-                label="Ordre d’affichage"
-                hint="Position dans la liste des suggestions (0 = en premier)."
-              >
-                <Input
-                  type="number"
-                  min={0}
-                  step={1}
-                  value={newSortOrder}
-                  onChange={(event) => {
-                    if (event.target.value.length > 0 && !/^\d+$/.test(event.target.value)) {
-                      return;
-                    }
-                    setNewSortOrder(event.target.value);
-                  }}
-                  className="text-sm font-mono"
-                />
-              </AdminFormField>
-
               <div className="flex items-end">
                 <Button
                   type="button"
@@ -536,7 +469,7 @@ export function ProductRelatedProductsTab({
           variant="outline"
           size="xs"
           className="h-8 w-fit rounded-full border-shell-border px-4 text-foreground shadow-none sm:flex-none lg:h-9"
-          disabled={pending || hasInvalidSortOrder}
+          disabled={pending}
         >
           {pending ? "Mise à jour…" : "Enregistrer"}
         </Button>

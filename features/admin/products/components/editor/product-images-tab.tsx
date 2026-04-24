@@ -88,6 +88,37 @@ export function ProductImagesTab({
     [productImages]
   );
 
+  const ratioStats = useMemo(() => {
+    let conformCount = 0;
+    let nonConformCount = 0;
+    let unknownCount = 0;
+
+    for (const image of productImages) {
+      if (
+        image.widthPx === null ||
+        image.heightPx === null ||
+        image.widthPx <= 0 ||
+        image.heightPx <= 0
+      ) {
+        unknownCount += 1;
+        continue;
+      }
+
+      const ratio = image.widthPx / image.heightPx;
+      if (Math.abs(ratio - 4 / 5) <= 0.02) {
+        conformCount += 1;
+      } else {
+        nonConformCount += 1;
+      }
+    }
+
+    return {
+      conformCount,
+      nonConformCount,
+      unknownCount,
+    };
+  }, [productImages]);
+
   async function handleSetPrimary(
     mediaAssetId: string
   ): Promise<{ status: "success" | "error"; message: string }> {
@@ -194,8 +225,78 @@ export function ProductImagesTab({
               title="Galerie produit"
               description="Gère les médias affichés sur la fiche produit, leur ordre et leur image principale — c'est-à-dire la photo mise en avant en premier sur la boutique."
             >
+              <div className="rounded-xl border border-border/60 bg-muted/10 px-4 py-3">
+                <p className="text-xs font-bold uppercase tracking-wide text-foreground">
+                  Convention média — galerie produit
+                </p>
+                <div className="mt-2 space-y-2 text-xs text-muted-foreground">
+                  <p>
+                    Pour garantir un rendu storefront premium, stable et cohérent, toutes les
+                    images de galerie produit doivent respecter les règles suivantes.
+                  </p>
+                  <div>
+                    <p className="font-medium text-foreground">Ratio</p>
+                    <ul className="list-disc pl-4">
+                      <li>Image galerie source : 4:5</li>
+                      <li>Miniatures UI : 1:1 dérivées de l&apos;image galerie</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground">Ordre recommandé</p>
+                    <ol className="list-decimal pl-4">
+                      <li>Vue principale hero</li>
+                      <li>Vue portée ou vue d&apos;échelle</li>
+                      <li>Détail matière ou finition</li>
+                      <li>Détail fonctionnel</li>
+                      <li>Vue complémentaire</li>
+                    </ol>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground">Règles éditoriales</p>
+                    <ul className="list-disc pl-4">
+                      <li>Le produit doit rester clairement lisible</li>
+                      <li>La première image doit montrer le produit entier</li>
+                      <li>Les détails serrés ne doivent jamais être en première position</li>
+                      <li>Le cadrage doit rester cohérent d&apos;une image à l&apos;autre</li>
+                      <li>
+                        La lumière et la distance de prise de vue doivent rester homogènes
+                      </li>
+                      <li>
+                        Une image non conforme au ratio 4:5 n&apos;est pas considérée comme
+                        hero-ready
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+                    Cette convention évite les compensations CSS en front et permet un hero
+                    produit plus stable, plus lisible et plus premium sur desktop comme sur mobile.
+                  </p>
+                </div>
+              </div>
+
               <div className="text-sm text-muted-foreground">
                 {productImages.length} image{productImages.length > 1 ? "s" : ""}
+              </div>
+
+              <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-3">
+                <div className="rounded-lg border border-border/60 px-3 py-2">
+                  <p className="text-[11px] uppercase tracking-wide">Conformes 4:5</p>
+                  <p className="mt-1 text-sm font-semibold text-feedback-success-foreground">
+                    {ratioStats.conformCount}
+                  </p>
+                </div>
+                <div className="rounded-lg border border-border/60 px-3 py-2">
+                  <p className="text-[11px] uppercase tracking-wide">À recadrer</p>
+                  <p className="mt-1 text-sm font-semibold text-feedback-warning-foreground">
+                    {ratioStats.nonConformCount}
+                  </p>
+                </div>
+                <div className="rounded-lg border border-border/60 px-3 py-2">
+                  <p className="text-[11px] uppercase tracking-wide">Dimensions inconnues</p>
+                  <p className="mt-1 text-sm font-semibold text-muted-foreground">
+                    {ratioStats.unknownCount}
+                  </p>
+                </div>
               </div>
 
               {uploadImagesAction || attachImagesAction ? (

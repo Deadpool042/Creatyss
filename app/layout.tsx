@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { PublicSiteShell } from "@/components/storefront/public-site-shell";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/shared/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <TooltipProvider>
             <PublicSiteShell>{children}</PublicSiteShell>
           </TooltipProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

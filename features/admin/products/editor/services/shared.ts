@@ -22,6 +22,9 @@ export {
 
 export {
   assertVariantExists,
+  assertVariantAxisCombinationIsUnique,
+  assertDefaultVariantWouldRemain,
+  ensureDefaultVariantExists,
   assertVariantOptionValuesAreValid,
 } from "./shared/variant-assertions";
 

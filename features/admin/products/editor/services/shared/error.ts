@@ -9,6 +9,8 @@ export class AdminProductEditorServiceError extends Error {
     | "related_product_missing"
     | "variant_slug_taken"
     | "variant_sku_taken"
+    | "missing_product_sku_root"
+    | "duplicate_variant_option_combination"
     | "default_variant_required"
     | "cannot_delete_default_variant"
     | "option_values_invalid"

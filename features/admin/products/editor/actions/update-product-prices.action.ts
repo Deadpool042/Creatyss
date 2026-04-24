@@ -31,8 +31,8 @@ export const updateProductPricesAction: ProductPricingFormAction = async (_prevS
   const fieldErrors: Record<string, string> = {};
   const prices: {
     priceListId: string;
-    amount: string;
-    compareAtAmount: string | null;
+    amount: number;
+    compareAtAmount: number | null;
     costAmount: string | null;
     startsAt: string | null;
     endsAt: string | null;
@@ -94,7 +94,7 @@ export const updateProductPricesAction: ProductPricingFormAction = async (_prevS
     return {
       ...productPricingFormInitialState,
       status: "error",
-      message: "Vérifiez les dates de promotion.",
+      message: "Vérifiez les montants et les dates.",
       fieldErrors,
     };
   }

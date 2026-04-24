@@ -5,6 +5,7 @@ import { useMemo, useState, type JSX } from "react";
 
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/shared";
 import {
   type deleteProductVariantAction,
   type setDefaultProductVariantAction,
@@ -40,7 +41,7 @@ type ProductVariantsTabProps = {
 
 export function ProductVariantsTab({
   productId,
-  productSlug,
+  productSlug: _productSlug,
   variants,
   images,
   productOptions = [],
@@ -69,6 +70,20 @@ export function ProductVariantsTab({
     () => variants.find((variant) => variant.isDefault) ?? null,
     [variants]
   );
+  const defaultVariantLabel = useMemo(() => {
+    if (!defaultVariant) return null;
+
+    if (defaultVariant.name && defaultVariant.name.trim().length > 0) {
+      return defaultVariant.name.trim();
+    }
+
+    const optionValues = defaultVariant.optionValues.map((item) => item.value).filter(Boolean);
+    if (optionValues.length > 0) {
+      return optionValues.join(" · ");
+    }
+
+    return defaultVariant.sku;
+  }, [defaultVariant]);
 
   function setSheetOpen(nextOpen: boolean): void {
     if (isCreateDialogControlled) {
@@ -99,7 +114,12 @@ export function ProductVariantsTab({
     }
 
     const result = await setDefaultAction({ productId, variantId });
-    setMessageState(result);
+    if (result.status === "success") {
+      toast.success(result.message);
+      setMessageState(null);
+    } else {
+      setMessageState(result);
+    }
     return result;
   }
 
@@ -111,7 +131,12 @@ export function ProductVariantsTab({
     }
 
     const result = await deleteAction({ productId, variantId });
-    setMessageState(result);
+    if (result.status === "success") {
+      toast.success(result.message);
+      setMessageState(null);
+    } else {
+      setMessageState(result);
+    }
     return result;
   }
 
@@ -120,15 +145,15 @@ export function ProductVariantsTab({
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(3.5rem+env(safe-area-inset-bottom)+0.75rem)] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom)+0.5rem)] lg:pb-6">
         <div className="w-full space-y-6 px-4 py-4 md:space-y-7 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
           <AdminFormMessage
-            tone={messageState?.status === "success" ? "success" : "error"}
-            message={messageState?.message ?? null}
+            tone="error"
+            message={messageState?.status === "error" ? messageState.message : null}
           />
 
           <div className="flex flex-col gap-2.5 md:flex-row md:items-start md:justify-between">
             <div className="min-w-0 space-y-1">
               <p className="text-sm font-medium text-foreground">
                 {variants.length} variante{variants.length > 1 ? "s" : ""}
-                {defaultVariant ? ` • variante par défaut : ${defaultVariant.sku}` : ""}
+                {defaultVariantLabel ? ` • variante par défaut : ${defaultVariantLabel}` : ""}
               </p>
               <p className="text-sm text-muted-foreground">
                 L&apos;image principale de chaque variante est choisie parmi les médias déjà

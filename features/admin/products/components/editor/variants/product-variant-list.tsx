@@ -28,10 +28,12 @@ export function ProductVariantList({
 
   return (
     <div className="grid gap-4 md:gap-5">
-      {variants.map((variant) => (
+      {variants.map((variant, index) => (
         <ProductVariantItem
           key={variant.id}
           variant={variant}
+          position={index + 1}
+          total={variants.length}
           hasOtherVariants={variants.length > 1}
           onEdit={onEdit}
           {...(onSetDefault ? { onSetDefault } : {})}

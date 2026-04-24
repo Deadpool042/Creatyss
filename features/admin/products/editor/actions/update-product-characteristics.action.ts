@@ -1,6 +1,7 @@
 "use server";
 
 import { refresh } from "next/cache";
+import { validateAdminProductCharacteristics } from "@/entities/product";
 
 import { AdminProductEditorServiceError } from "../services/shared";
 import { updateProductCharacteristics } from "../services/update-product-characteristics.service";
@@ -8,6 +9,46 @@ import {
   productCharacteristicsFormInitialState,
   type ProductCharacteristicsFormAction,
 } from "../types/product-characteristics-form.types";
+
+function collectCharacteristicIndexes(formData: FormData): number[] {
+  const indexes = new Set<number>();
+
+  for (const key of formData.keys()) {
+    const match = /^characteristicLabel:(\d+)$/.exec(key);
+
+    if (!match) {
+      continue;
+    }
+
+    indexes.add(Number.parseInt(match[1]!, 10));
+  }
+
+  return [...indexes].sort((left, right) => left - right);
+}
+
+function getSectionValidationErrorMessage(code: string): string {
+  switch (code) {
+    case "too_many_characteristics":
+      return "Vous pouvez enregistrer jusqu’à 20 caractéristiques maximum.";
+    default:
+      return "Certaines lignes contiennent des erreurs.";
+  }
+}
+
+function getRowValidationErrorMessage(code: string): string {
+  switch (code) {
+    case "missing_label":
+      return "Libellé requis.";
+    case "missing_value":
+      return "Valeur requise.";
+    case "label_too_long":
+      return "80 caractères maximum.";
+    case "value_too_long":
+      return "220 caractères maximum.";
+    default:
+      return "Valeur invalide.";
+  }
+}
 
 export const updateProductCharacteristicsAction: ProductCharacteristicsFormAction = async (
   _prevState,
@@ -20,63 +61,49 @@ export const updateProductCharacteristicsAction: ProductCharacteristicsFormActio
       ...productCharacteristicsFormInitialState,
       status: "error",
       message: "Produit introuvable.",
+      fieldErrors: {
+        productId: "Produit introuvable.",
+      },
+      rowErrors: {},
     };
   }
 
-  // Collect characteristic rows sent as:
-  //   characteristicLabel:0, characteristicValue:0, characteristicSortOrder:0
-  //   characteristicLabel:1, characteristicValue:1, characteristicSortOrder:1
-  //   ...
-  const characteristics: Array<{
-    id: string | null;
-    label: string;
-    value: string;
-    sortOrder: number;
-  }> = [];
+  const indexes = collectCharacteristicIndexes(formData);
+  const rawCharacteristics = indexes.map((index) => ({
+    label: formData.get(`characteristicLabel:${index}`),
+    value: formData.get(`characteristicValue:${index}`),
+  }));
 
-  let index = 0;
+  const validated = validateAdminProductCharacteristics({
+    characteristics: rawCharacteristics,
+  });
 
-  while (true) {
-    const label = formData.get(`characteristicLabel:${index}`);
-    const value = formData.get(`characteristicValue:${index}`);
-    const sortOrder = formData.get(`characteristicSortOrder:${index}`);
-    const id = formData.get(`characteristicId:${index}`);
+  if (!validated.ok) {
+    const rowErrors: Record<number, Partial<Record<"label" | "value", string>>> = {};
 
-    if (label === null && value === null) {
-      break;
-    }
-
-    const labelStr = typeof label === "string" ? label.trim() : "";
-    const valueStr = typeof value === "string" ? value.trim() : "";
-
-    // Skip rows where both label and value are empty
-    if (labelStr.length === 0 && valueStr.length === 0) {
-      index++;
-      continue;
-    }
-
-    if (labelStr.length === 0 || valueStr.length === 0) {
-      return {
-        ...productCharacteristicsFormInitialState,
-        status: "error",
-        message: "Chaque caractéristique doit avoir un libellé et une valeur.",
+    for (const issue of validated.issues) {
+      rowErrors[issue.index] = {
+        ...(rowErrors[issue.index] ?? {}),
+        [issue.field]: getRowValidationErrorMessage(issue.code),
       };
     }
 
-    characteristics.push({
-      id: typeof id === "string" && id.trim().length > 0 ? id.trim() : null,
-      label: labelStr,
-      value: valueStr,
-      sortOrder: typeof sortOrder === "string" ? parseInt(sortOrder, 10) || index : index,
-    });
-
-    index++;
+    return {
+      ...productCharacteristicsFormInitialState,
+      status: "error",
+      message: getSectionValidationErrorMessage(validated.code),
+      fieldErrors:
+        validated.code === "too_many_characteristics"
+          ? { characteristics: getSectionValidationErrorMessage(validated.code) }
+          : {},
+      rowErrors,
+    };
   }
 
   try {
     await updateProductCharacteristics({
       productId: productIdValue.trim(),
-      characteristics,
+      characteristics: validated.data,
     });
 
     refresh();
@@ -85,6 +112,8 @@ export const updateProductCharacteristicsAction: ProductCharacteristicsFormActio
       ...productCharacteristicsFormInitialState,
       status: "success",
       message: "Caractéristiques mises à jour.",
+      fieldErrors: {},
+      rowErrors: {},
     };
   } catch (error: unknown) {
     if (error instanceof AdminProductEditorServiceError) {
@@ -92,6 +121,8 @@ export const updateProductCharacteristicsAction: ProductCharacteristicsFormActio
         ...productCharacteristicsFormInitialState,
         status: "error",
         message: "Mise à jour impossible.",
+        fieldErrors: {},
+        rowErrors: {},
       };
     }
 
@@ -99,6 +130,8 @@ export const updateProductCharacteristicsAction: ProductCharacteristicsFormActio
       ...productCharacteristicsFormInitialState,
       status: "error",
       message: "Erreur inattendue.",
+      fieldErrors: {},
+      rowErrors: {},
     };
   }
 };

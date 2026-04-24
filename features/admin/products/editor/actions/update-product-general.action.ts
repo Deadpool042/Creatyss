@@ -37,12 +37,23 @@ function mapValidationErrorToField(
     case "missing_slug":
     case "invalid_slug":
       return "slug";
+    case "short_description_too_long":
+      return "shortDescription";
     case "invalid_status":
       return "status";
     case "invalid_product_type_id":
       return "productTypeId";
     default:
       return null;
+  }
+}
+
+function getValidationErrorMessage(code: string): string {
+  switch (code) {
+    case "short_description_too_long":
+      return "La description courte est trop longue (220 caractères max en texte visible).";
+    default:
+      return "Valeur invalide.";
   }
 }
 
@@ -87,7 +98,7 @@ export const updateProductGeneralAction: ProductGeneralFormAction = async (
       ...productGeneralFormInitialState,
       status: "error",
       message: "Données invalides.",
-      fieldErrors: field ? { [field]: "Valeur invalide." } : {},
+      fieldErrors: field ? { [field]: getValidationErrorMessage(validated.code) } : {},
     };
   }
 
@@ -116,6 +127,17 @@ export const updateProductGeneralAction: ProductGeneralFormAction = async (
     };
   } catch (error: unknown) {
     if (error instanceof AdminProductEditorServiceError) {
+      if (error.code === "missing_product_sku_root") {
+        return {
+          ...productGeneralFormInitialState,
+          status: "error",
+          message: "Renseignez une référence produit (SKU) pour un produit simple.",
+          fieldErrors: {
+            skuRoot: "Le SKU produit est requis tant que le produit n'utilise pas de variantes.",
+          },
+        };
+      }
+
       if (error.code === "product_has_multiple_variants") {
         return {
           ...productGeneralFormInitialState,

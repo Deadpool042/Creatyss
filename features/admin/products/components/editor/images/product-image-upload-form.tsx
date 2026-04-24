@@ -5,7 +5,7 @@ import { ImagePlus } from "lucide-react";
 
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
 import type { uploadProductImagesAction } from "@/features/admin/products/editor/public";
 import {
@@ -119,10 +119,9 @@ export function ProductImageUploadForm({
       </AdminFormField>
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={pending}>
-          <ImagePlus className="mr-2 h-4 w-4" />
+        <CustomButton type="submit" loading={pending} leadingIcon={<ImagePlus className="h-4 w-4" />}>
           {pending ? "Import…" : "Importer les images"}
-        </Button>
+        </CustomButton>
       </div>
     </form>
   );

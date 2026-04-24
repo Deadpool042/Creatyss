@@ -72,6 +72,8 @@
   --color-interactive-hover: var(--interactive-hover);
   --color-interactive-hover-strong: var(--interactive-hover-strong);
   --color-interactive-selected: var(--interactive-selected);
+  --color-interactive-selected-hover: var(--interactive-selected-hover);
+  --color-interactive-pressed: var(--interactive-pressed);
   --color-interactive-selected-foreground: var(--interactive-selected-foreground);
   --color-interactive-disabled: var(--interactive-disabled);
   --color-interactive-disabled-foreground: var(--interactive-disabled-foreground);
@@ -150,6 +152,7 @@
   --color-shell-drawer: var(--shell-drawer);
   --color-shell-drawer-blur: var(--shell-drawer-blur);
   --color-shell-border: var(--shell-border);
+  --color-shell-border-strong: var(--shell-border-strong);
 
   /* ==========================================================================
      Shared surfaces
@@ -157,9 +160,31 @@
 
   --color-surface-panel: var(--surface-panel);
   --color-surface-panel-soft: var(--surface-panel-soft);
+  --color-surface-floating: var(--surface-floating);
+  --color-surface-floating-strong: var(--surface-floating-strong);
   --color-surface-subtle: var(--surface-subtle);
+  --color-border-floating: var(--border-floating);
+  --color-surface-border-subtle: var(--surface-border-subtle);
   --color-surface-border: var(--surface-border);
   --color-surface-border-strong: var(--surface-border-strong);
+
+  /* ==========================================================================
+     Controls
+     ========================================================================== */
+
+  --color-control-surface: var(--control-surface);
+  --color-control-surface-hover: var(--control-surface-hover);
+  --color-control-surface-active: var(--control-surface-active);
+  --color-control-surface-selected: var(--control-surface-selected);
+  --color-control-border: var(--control-border);
+  --color-control-border-strong: var(--control-border-strong);
+
+  /* ==========================================================================
+     Secondary text hierarchy
+     ========================================================================== */
+
+  --color-text-muted-strong: var(--text-muted-strong);
+  --color-text-muted-soft: var(--text-muted-soft);
 
   /* ==========================================================================
      Media
@@ -200,6 +225,10 @@
   --shadow-soft: var(--shadow-soft);
   --shadow-card: var(--shadow-card);
   --shadow-raised: var(--shadow-raised);
+  --shadow-floating: var(--shadow-floating);
+  --shadow-control: var(--shadow-control);
+  --shadow-control-hover: var(--shadow-control-hover);
+  --shadow-control-pressed: var(--shadow-control-pressed);
   --shadow-overlay: var(--shadow-overlay);
   --shadow-inset-soft: var(--shadow-inset-soft);
 

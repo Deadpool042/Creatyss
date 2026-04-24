@@ -3,8 +3,8 @@ import { AdminProductEditorServiceError, assertProductExists } from "./shared";
 
 type PriceUpsertEntry = {
   priceListId: string;
-  amount: string;
-  compareAtAmount: string | null;
+  amount: number;
+  compareAtAmount: number | null;
   costAmount: string | null;
   startsAt: string | null;
   endsAt: string | null;
@@ -33,19 +33,11 @@ export async function updateProductPrices(input: UpdateProductPricesServiceInput
         );
       }
 
-      const amount = parseFloat(entry.amount);
-      const compareAtAmount =
-        entry.compareAtAmount !== null && entry.compareAtAmount.trim().length > 0
-          ? parseFloat(entry.compareAtAmount)
-          : null;
       const costAmount =
         entry.costAmount !== null && entry.costAmount.trim().length > 0
           ? parseFloat(entry.costAmount)
           : null;
-
-      if (isNaN(amount)) {
-        continue;
-      }
+      const safeCostAmount = costAmount !== null && Number.isFinite(costAmount) ? costAmount : null;
 
       await tx.productPrice.upsert({
         where: {
@@ -57,16 +49,16 @@ export async function updateProductPrices(input: UpdateProductPricesServiceInput
         create: {
           productId: input.productId,
           priceListId: entry.priceListId,
-          amount,
-          compareAtAmount,
-          costAmount,
+          amount: entry.amount,
+          compareAtAmount: entry.compareAtAmount,
+          costAmount: safeCostAmount,
           startsAt: entry.startsAt ? new Date(entry.startsAt) : null,
           endsAt: entry.endsAt ? new Date(entry.endsAt) : null,
         },
         update: {
-          amount,
-          compareAtAmount,
-          costAmount,
+          amount: entry.amount,
+          compareAtAmount: entry.compareAtAmount,
+          costAmount: safeCostAmount,
           startsAt: entry.startsAt ? new Date(entry.startsAt) : null,
           endsAt: entry.endsAt ? new Date(entry.endsAt) : null,
           archivedAt: null,

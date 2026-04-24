@@ -98,6 +98,13 @@ export async function updateProductGeneral(
 
     const wasConvertedToVariable = currentProduct.isStandalone && !resolvedIsStandalone;
 
+    if (resolvedIsStandalone) {
+      const skuRoot = input.skuRoot?.trim() ?? "";
+      if (skuRoot.length === 0) {
+        throw new AdminProductEditorServiceError("missing_product_sku_root");
+      }
+    }
+
     try {
       const updated = await tx.product.update({
         where: {
@@ -106,7 +113,7 @@ export async function updateProductGeneral(
         data: {
           name: input.name,
           slug: input.slug,
-          skuRoot: input.skuRoot,
+          skuRoot: input.skuRoot?.trim() ?? null,
           marketingHook: input.marketingHook,
           shortDescription: input.shortDescription,
           description: input.description,

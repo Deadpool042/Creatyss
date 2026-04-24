@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Pencil, Star, Trash2 } from "lucide-react";
-import { useState, useTransition, type JSX } from "react";
+import { useState, useTransition, type ComponentProps, type JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,8 @@ import type { AdminProductVariantListItem } from "@/features/admin/products/edit
 
 type ProductVariantItemProps = {
   variant: AdminProductVariantListItem;
+  position: number;
+  total: number;
   hasOtherVariants: boolean;
   onEdit: (variantId: string) => void;
   onSetDefault?: (variantId: string) => Promise<{ status: "success" | "error"; message: string }>;
@@ -28,6 +30,57 @@ function getStatusLabel(status: AdminProductVariantListItem["status"]): string {
     case "archived":
       return "Archivé";
   }
+}
+
+type AvailabilityBadge = {
+  label: string;
+  variant: ComponentProps<typeof Badge>["variant"];
+};
+
+function getAvailabilityBadge(
+  availability: AdminProductVariantListItem["availability"]
+): AvailabilityBadge {
+  if (!availability.isSellable) {
+    return { label: "Indisponible", variant: "outline" };
+  }
+
+  switch (availability.status) {
+    case "available":
+      return { label: "Disponible", variant: "secondary" };
+    case "preorder":
+      return { label: "Précommande", variant: "secondary" };
+    case "backorder":
+      return { label: "Sur commande", variant: "secondary" };
+    case "discontinued":
+      return { label: "Arrêté", variant: "outline" };
+    case "archived":
+      return { label: "Archivé", variant: "outline" };
+    case "unavailable":
+    default:
+      return { label: "Indisponible", variant: "outline" };
+  }
+}
+
+type StockBadge = {
+  label: string;
+  variant: ComponentProps<typeof Badge>["variant"];
+};
+
+function getStockBadge(inventory: AdminProductVariantListItem["inventory"]): StockBadge {
+  if (!inventory.hasInventoryRecord) {
+    return { label: "Stock non suivi", variant: "outline" };
+  }
+
+  const availableQuantity = Math.max(0, inventory.availableQuantity);
+  if (availableQuantity <= 0) {
+    return { label: "Rupture", variant: "destructive" };
+  }
+
+  if (availableQuantity <= 2) {
+    return { label: `Stock faible · ${availableQuantity}`, variant: "outline" };
+  }
+
+  return { label: `Stock · ${availableQuantity}`, variant: "outline" };
 }
 
 function getStatusVariant(status: AdminProductVariantListItem["status"]) {
@@ -53,6 +106,8 @@ function SectionLabel({ children }: { children: string }): JSX.Element {
 
 export function ProductVariantItem({
   variant,
+  position,
+  total,
   hasOtherVariants,
   onEdit,
   onSetDefault,
@@ -62,10 +117,15 @@ export function ProductVariantItem({
   const [isPending, startTransition] = useTransition();
   const displayName =
     variant.name && variant.name.trim().length > 0 ? variant.name : "Variante sans nom";
-  const slugLabel = variant.slug ? `/${variant.slug}` : "Aucun slug défini";
+  const optionValueSummary =
+    variant.optionValues.length > 0
+      ? variant.optionValues.map((item) => item.value).join(" · ")
+      : "Aucun attribut";
   const hasDimensions = [variant.widthMm, variant.heightMm, variant.depthMm].some(
     (value) => value && value.trim().length > 0
   );
+  const availabilityBadge = getAvailabilityBadge(variant.availability);
+  const stockBadge = getStockBadge(variant.inventory);
   const shouldShowFooterMessage =
     Boolean(message) || (variant.isDefault && hasOtherVariants && onDelete);
 
@@ -105,14 +165,16 @@ export function ProductVariantItem({
               <Badge variant={getStatusVariant(variant.status)}>
                 {getStatusLabel(variant.status)}
               </Badge>
+              <Badge variant={availabilityBadge.variant}>{availabilityBadge.label}</Badge>
+              <Badge variant={stockBadge.variant}>{stockBadge.label}</Badge>
               <Badge variant="outline" className="border-surface-border bg-transparent">
-                Ordre {variant.sortOrder}
+                Position {position}/{total}
               </Badge>
             </div>
 
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <span>SKU {variant.sku}</span>
-              <span className="font-mono">{slugLabel}</span>
+              <span className="font-medium text-foreground">{optionValueSummary}</span>
+              <span className="font-mono">SKU {variant.sku}</span>
             </div>
           </div>
 
@@ -201,6 +263,20 @@ export function ProductVariantItem({
             <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-4 shadow-sm">
               <SectionLabel>Repères techniques</SectionLabel>
               <div className="mt-3 grid gap-x-5 gap-y-3 sm:grid-cols-2">
+                <div className="space-y-1">
+                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Slug</p>
+                  <p className="text-sm text-foreground">
+                    {variant.slug && variant.slug.trim().length > 0 ? `/${variant.slug}` : "—"}
+                  </p>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                    Ordre interne
+                  </p>
+                  <p className="text-sm text-foreground">{variant.sortOrder}</p>
+                </div>
+
                 <div className="space-y-1">
                   <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
                     Code-barres

@@ -23,6 +23,40 @@ Le domaine existe pour fournir une représentation stable des actifs média, dis
 
 ---
 
+## Convention galerie produit (V1)
+
+Pour garantir un rendu storefront premium, stable et cohérent, toutes les images de galerie
+produit doivent respecter les règles suivantes.
+
+### Ratio
+
+- Image galerie source : **4:5**
+- Miniatures UI : **1:1** dérivées de l’image galerie
+
+### Ordre recommandé
+
+1. Vue principale hero
+2. Vue portée ou vue d’échelle
+3. Détail matière ou finition
+4. Détail fonctionnel
+5. Vue complémentaire
+
+### Règles éditoriales
+
+- Le produit doit rester clairement lisible
+- La première image doit montrer le produit entier
+- Les détails serrés ne doivent jamais être en première position
+- Le cadrage doit rester cohérent d’une image à l’autre
+- La lumière et la distance de prise de vue doivent rester homogènes
+- Une image non conforme au ratio 4:5 n’est pas considérée comme hero-ready
+
+### Objectif
+
+Cette convention évite les compensations CSS en front et permet un hero produit plus stable,
+plus lisible et plus premium sur desktop comme sur mobile.
+
+---
+
 ## Classification
 
 ### Catégorie documentaire

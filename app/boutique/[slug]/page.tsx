@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/notice";
@@ -11,6 +11,7 @@ import { type OfferVariant } from "@/features/storefront/catalog/product-offers-
 import { ProductPageTemplate } from "@/features/storefront/catalog/product-page-template";
 import { addToCartAction } from "@/features/cart";
 import { getOfferAvailabilityMessage } from "@/entities/product/product-public-presentation";
+import { buildSeoDescription, pickSeoText } from "@/entities/product/seo-text";
 
 export const dynamic = "force-dynamic";
 
@@ -54,9 +55,30 @@ function getCartErrorMessage(error: string | undefined): string | null {
 }
 
 function getProductMetadataDescription(product: ProductMetadataSource): string {
-  return (
-    product.seoDescription ?? product.shortDescription ?? product.description ?? "Produit Creatyss."
-  );
+  return buildSeoDescription({
+    candidates: [product.seoDescription, product.shortDescription, product.description],
+    defaultValue: "Produit Creatyss.",
+    maxLength: 170,
+  });
+}
+
+function getProductJsonLdDescription(product: ProductMetadataSource): string {
+  // JSON-LD can be longer than the meta description; we keep the same source/normalization,
+  // with a higher cap to avoid overly long rich-text bodies.
+  return buildSeoDescription({
+    candidates: [product.seoDescription, product.shortDescription, product.description],
+    defaultValue: "Produit Creatyss.",
+    maxLength: 500,
+  });
+}
+
+function toAbsoluteUrl(input: string, base: string): string {
+  // Base must be absolute (`https://...`). We accept relative paths ("/uploads/...") as input.
+  try {
+    return new URL(input, base).toString();
+  } catch {
+    return input;
+  }
 }
 
 type RobotsMetadata = {
@@ -97,23 +119,33 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   const robots = getRobotsFromIndexingMode(product.seoIndexingMode);
 
-  const canonicalPath = product.seoCanonicalPath ?? `/boutique/${product.slug}`;
+  const canonicalPath = pickSeoText(product.seoCanonicalPath) ?? `/boutique/${product.slug}`;
   const canonical = `${clientEnv.appUrl}${canonicalPath}`;
 
   const metaDescription = getProductMetadataDescription(product);
 
-  const ogTitle = product.seoOpenGraphTitle ?? product.seoTitle ?? product.name;
-  const ogDescription = product.seoOpenGraphDescription ?? metaDescription;
+  const metaTitle = pickSeoText(product.seoTitle, product.name) ?? product.name;
+
+  const ogTitle = pickSeoText(product.seoOpenGraphTitle, product.seoTitle, product.name) ?? metaTitle;
+  const ogDescription = buildSeoDescription({
+    candidates: [product.seoOpenGraphDescription, metaDescription],
+    defaultValue: metaDescription,
+    maxLength: 200,
+  });
   const ogImageUrl = product.seoOpenGraphImageUrl ?? product.images[0]?.src;
 
   const twitterTitle =
-    product.seoTwitterTitle ?? product.seoOpenGraphTitle ?? product.seoTitle ?? product.name;
-  const twitterDescription =
-    product.seoTwitterDescription ?? product.seoOpenGraphDescription ?? metaDescription;
+    pickSeoText(product.seoTwitterTitle, product.seoOpenGraphTitle, product.seoTitle, product.name) ??
+    metaTitle;
+  const twitterDescription = buildSeoDescription({
+    candidates: [product.seoTwitterDescription, product.seoOpenGraphDescription, metaDescription],
+    defaultValue: metaDescription,
+    maxLength: 200,
+  });
   const twitterImageUrl = product.seoTwitterImageUrl ?? product.seoOpenGraphImageUrl ?? ogImageUrl;
 
   return {
-    title: product.seoTitle ?? product.name,
+    title: metaTitle,
     description: metaDescription,
     ...(robots !== undefined && { robots }),
     alternates: {
@@ -142,6 +174,40 @@ type ProductJsonLd = {
   image?: string;
 };
 
+function formatWeight(weightGrams: number): string {
+  if (!Number.isFinite(weightGrams) || weightGrams <= 0) {
+    return "";
+  }
+
+  if (weightGrams >= 1000) {
+    const kg = weightGrams / 1000;
+    const formatted = kg % 1 === 0 ? kg.toFixed(0) : kg.toFixed(2);
+    return `${formatted} kg`;
+  }
+
+  return `${Math.round(weightGrams)} g`;
+}
+
+function formatDimensions(input: {
+  widthMm: number | null;
+  heightMm: number | null;
+  depthMm: number | null;
+}): string {
+  const { widthMm, heightMm, depthMm } = input;
+  const hasAll = widthMm !== null && heightMm !== null && depthMm !== null;
+
+  if (hasAll) {
+    return `${widthMm} × ${heightMm} × ${depthMm} mm`;
+  }
+
+  const parts: string[] = [];
+  if (widthMm !== null) parts.push(`L ${widthMm} mm`);
+  if (heightMm !== null) parts.push(`H ${heightMm} mm`);
+  if (depthMm !== null) parts.push(`P ${depthMm} mm`);
+
+  return parts.join(" · ");
+}
+
 export default async function ProductPage({ params, searchParams }: ProductPageProps) {
   const { slug } = await params;
   const resolvedSearchParams = await searchParams;
@@ -162,20 +228,10 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   const isSimpleProduct = product.productType === "simple";
   const singleOffer = isSimpleProduct && product.variants.length === 1 ? product.variants[0] : null;
   // Images déjà résolues (src, alt) dans la query — pas de résolution URL ici.
-  const primaryImage = product.images[0] ?? null;
-
-  const jsonLdCanonicalPath = product.seoCanonicalPath ?? `/boutique/${product.slug}`;
-  const jsonLdUrl = `${clientEnv.appUrl}${jsonLdCanonicalPath}`;
-  const jsonLdImageUrl = primaryImage?.src ?? null;
-
-  const productJsonLd: ProductJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    description: getProductMetadataDescription(product),
-    url: jsonLdUrl,
-    ...(jsonLdImageUrl !== null && { image: jsonLdImageUrl }),
-  };
+  const baseProductImages = product.images.map((image) => ({
+    src: image.src,
+    alt: image.alt ?? null,
+  }));
 
   const variantsNormalized: OfferVariant[] = product.variants.map((variant) => {
     const variantDisplayImage = variant.images[0] ?? null;
@@ -197,6 +253,98 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
         : null,
     };
   });
+
+  const defaultVariant = !isSimpleProduct
+    ? (product.variants.find((variant) => variant.isDefault) ?? product.variants[0] ?? null)
+    : null;
+  const heroVariantImage = defaultVariant?.images[0] ?? null;
+  const productImages = (() => {
+    if (heroVariantImage === null) {
+      return baseProductImages;
+    }
+
+    const prepended = [{ src: heroVariantImage.src, alt: heroVariantImage.alt ?? null }];
+    const merged = [...prepended, ...baseProductImages];
+    const seen = new Set<string>();
+
+    return merged.filter((image) => {
+      const key = image.src.trim();
+      if (key.length === 0) return false;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  })();
+
+  const variantSummary = !isSimpleProduct
+    ? {
+        total: product.variants.length,
+        available: product.variants.filter((variant) => variant.isAvailable).length,
+      }
+    : null;
+
+  const referenceVariant = (() => {
+    if (product.variants.length === 0) {
+      return null;
+    }
+
+    if (isSimpleProduct) {
+      return product.variants[0] ?? null;
+    }
+
+    return product.variants.find((variant) => variant.isDefault) ?? product.variants[0] ?? null;
+  })();
+
+  const technicalSpecs = (() => {
+    if (!referenceVariant) {
+      return [];
+    }
+
+    const specs: Array<{ label: string; value: string }> = [];
+
+    if (referenceVariant.sku.trim().length > 0) {
+      specs.push({ label: "Référence (SKU)", value: referenceVariant.sku });
+    }
+
+    if (referenceVariant.barcode && referenceVariant.barcode.trim().length > 0) {
+      specs.push({ label: "Code-barres", value: referenceVariant.barcode });
+    }
+
+    if (referenceVariant.externalReference && referenceVariant.externalReference.trim().length > 0) {
+      specs.push({ label: "Référence externe", value: referenceVariant.externalReference });
+    }
+
+    if (referenceVariant.weightGrams !== null) {
+      const weight = formatWeight(referenceVariant.weightGrams);
+      if (weight.length > 0) {
+        specs.push({ label: "Poids", value: weight });
+      }
+    }
+
+    const dims = formatDimensions({
+      widthMm: referenceVariant.widthMm,
+      heightMm: referenceVariant.heightMm,
+      depthMm: referenceVariant.depthMm,
+    });
+    if (dims.length > 0) {
+      specs.push({ label: "Dimensions", value: dims });
+    }
+
+    return specs;
+  })();
+
+  const jsonLdCanonicalPath = pickSeoText(product.seoCanonicalPath) ?? `/boutique/${product.slug}`;
+  const jsonLdUrl = toAbsoluteUrl(jsonLdCanonicalPath, clientEnv.appUrl);
+  const jsonLdImageUrl = productImages[0]?.src ?? null;
+
+  const productJsonLd: ProductJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: pickSeoText(product.name) ?? product.name,
+    description: getProductJsonLdDescription(product),
+    url: jsonLdUrl,
+    ...(jsonLdImageUrl !== null && { image: toAbsoluteUrl(jsonLdImageUrl, clientEnv.appUrl) }),
+  };
 
   const statusBanner =
     cartStatusMessage !== null || cartErrorMessage !== null ? (
@@ -229,13 +377,19 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
         description={product.description}
         productType={product.productType}
         isAvailable={product.isAvailable}
-        primaryImage={primaryImage}
+        images={productImages}
         variants={variantsNormalized}
         characteristics={product.characteristics}
+        technicalSpecs={technicalSpecs}
         relatedProductGroups={product.relatedProductGroups}
         statusBanner={statusBanner}
+        heroVariantSummary={variantSummary}
         heroCta={
-          isSimpleProduct && singleOffer != null && singleOffer.isAvailable ? (
+          !isSimpleProduct ? (
+            <CustomButton asChild fullWidth>
+              <a href="#offers">Choisir une déclinaison</a>
+            </CustomButton>
+          ) : isSimpleProduct && singleOffer != null && singleOffer.isAvailable ? (
             <form action={addToCartAction} className="grid gap-4">
               <input name="productSlug" type="hidden" value={product.slug} />
               <input name="variantId" type="hidden" value={singleOffer.id} />
@@ -252,20 +406,21 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                 />
               </div>
               <div className="flex flex-wrap gap-2">
-                <Button type="submit">Ajouter au panier</Button>
+                <CustomButton type="submit" loading={false}>
+                  Ajouter au panier
+                </CustomButton>
               </div>
             </form>
           ) : undefined
         }
         renderVariantCta={(variant) => (
           <>
-            <div className="grid gap-1">
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                Ajout au panier
-              </p>
+            <div className="grid gap-2">
               <p
                 className={
-                  variant.isAvailable ? "leading-relaxed" : "text-sm text-muted-foreground"
+                  variant.isAvailable
+                    ? "text-micro-copy reading-compact text-text-muted-strong"
+                    : "text-micro-copy reading-compact text-text-muted-soft"
                 }
               >
                 {getOfferAvailabilityMessage({
@@ -273,28 +428,32 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
                   isAvailable: variant.isAvailable,
                 })}
               </p>
+
+              {variant.isAvailable ? (
+                <form action={addToCartAction} className="flex flex-wrap items-end gap-2">
+                  <input name="productSlug" type="hidden" value={product.slug} />
+                  <input name="variantId" type="hidden" value={variant.id} />
+                  <div className="grid gap-1">
+                    <Label className="sr-only" htmlFor={`quantity-${variant.id}`}>
+                      Quantité
+                    </Label>
+                    <Input
+                      className="h-9 w-20 px-2 text-sm"
+                      defaultValue="1"
+                      id={`quantity-${variant.id}`}
+                      min="1"
+                      name="quantity"
+                      required
+                      step="1"
+                      type="number"
+                    />
+                  </div>
+                  <CustomButton size="sm" type="submit">
+                    Ajouter au panier
+                  </CustomButton>
+                </form>
+              ) : null}
             </div>
-            {variant.isAvailable ? (
-              <form action={addToCartAction} className="grid gap-4">
-                <input name="productSlug" type="hidden" value={product.slug} />
-                <input name="variantId" type="hidden" value={variant.id} />
-                <div className="grid max-w-40 gap-2">
-                  <Label htmlFor={`quantity-${variant.id}`}>Quantité</Label>
-                  <Input
-                    defaultValue="1"
-                    id={`quantity-${variant.id}`}
-                    min="1"
-                    name="quantity"
-                    required
-                    step="1"
-                    type="number"
-                  />
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button type="submit">Ajouter au panier</Button>
-                </div>
-              </form>
-            ) : null}
           </>
         )}
       />

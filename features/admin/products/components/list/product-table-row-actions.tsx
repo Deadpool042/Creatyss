@@ -68,9 +68,9 @@ export function ProductTableRowActions({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground data-[state=open]:bg-muted"
+            variant="outline"
+            size="icon-sm"
+            className="text-text-muted-strong data-[state=open]:border-control-border-strong data-[state=open]:bg-control-surface-selected data-[state=open]:text-foreground"
           >
             <MoreHorizontal className="h-4 w-4" />
             <span className="sr-only">Ouvrir les actions du produit {displayName}</span>
@@ -82,7 +82,7 @@ export function ProductTableRowActions({
             {productRowActions.map((action) => (
               <DropdownMenuItem key={action.label} asChild>
                 <Link href={action.href(slug)} className="flex items-center gap-2">
-                  <action.icon className="h-4 w-4 text-muted-foreground" />
+                  <action.icon className="h-4 w-4 text-text-muted-strong" />
                   <span>{action.label}</span>
                 </Link>
               </DropdownMenuItem>
@@ -188,7 +188,7 @@ export function ProductTableRowActions({
           confirmVariant: "destructive",
           onConfirm: lifecycleState.handlePermanentDelete,
           details: (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-3 text-sm text-destructive">
+            <div className="rounded-lg border border-feedback-error-border bg-feedback-error-surface px-3 py-3 text-sm text-destructive">
               Cette suppression est définitive et ne pourra pas être annulée.
             </div>
           ),

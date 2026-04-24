@@ -55,7 +55,10 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
     notFound();
   }
 
-  const primaryImage = product.images[0] ?? null;
+  const productImages = product.images.map((image) => ({
+    src: image.src,
+    alt: image.alt ?? null,
+  }));
   const isSimpleProduct = product.productType === "simple";
   const singleVariant =
     isSimpleProduct && product.variants.length === 1 ? product.variants[0] : null;
@@ -109,7 +112,7 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
         description={product.description}
         productType={product.productType}
         isAvailable={product.isAvailable}
-        primaryImage={primaryImage}
+        images={productImages}
         variants={variantsNormalized}
         // AdminProductPreviewRelatedProductGroup est structurellement identique à
         // ProductPageRelatedGroup — TypeScript les accepte par compatibilité de forme.

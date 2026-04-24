@@ -50,16 +50,28 @@ export type ProductPageTemplateProps = {
   productName: string;
   marketingHook?: string | null;
   shortDescription?: string | null;
+  /**
+   * Description rich-text (HTML) issue de l'admin.
+   *
+   * Contrat: la valeur est sanitizée/normalisée côté domaine à l'écriture
+   * (validateAdminProductInput) avant d'être stockée/relue.
+   * Le template peut donc l'injecter via dangerouslySetInnerHTML.
+   */
   description?: string | null;
   productType: "simple" | "variable";
   isAvailable: boolean;
-  primaryImage: ProductPageImage | null;
+  images: ProductPageImage[];
   variants: OfferVariant[];
   /**
    * Caractéristiques produit structurées (matière, dimensions, etc.).
    * Non affichées si absent ou vide.
    */
   characteristics?: { id: string; label: string; value: string }[];
+  /**
+   * Spécifications techniques (SKU, code-barres, poids, dimensions, etc.).
+   * Séparées des caractéristiques éditoriales.
+   */
+  technicalSpecs?: { label: string; value: string }[];
   /**
    * Groupes de produits liés.
    * Compatible structurellement avec CatalogRelatedProductGroup[] (storefront)
@@ -83,6 +95,11 @@ export type ProductPageTemplateProps = {
    * Admin    : bouton disabled « disponible en boutique ».
    */
   heroCta?: React.ReactNode;
+  /**
+   * Résumé des déclinaisons pour les produits variables (storefront uniquement en V1).
+   * Exemple: "4 déclinaisons · 3 disponibles".
+   */
+  heroVariantSummary?: { total: number; available: number } | null;
   /**
    * Contenu additionnel en bas de l'aside du hero.
    * Admin : bloc « Référence de page » (slug).
@@ -114,22 +131,27 @@ export function ProductPageTemplate({
   description,
   productType,
   isAvailable,
-  primaryImage,
+  images,
   variants,
   characteristics,
+  technicalSpecs,
   relatedProductGroups,
   statusBanner,
   heroCta,
+  heroVariantSummary,
   heroAsideExtra,
   offersSummaryContent,
   renderVariantCta,
 }: ProductPageTemplateProps) {
   const uploadsPublicPath = getUploadsPublicPath();
   const isSimpleProduct = productType === "simple";
+  const isVariableProduct = !isSimpleProduct;
   const singleOffer = isSimpleProduct && variants.length === 1 ? variants[0] : null;
   const heroVariant = singleOffer ?? variants[0] ?? null;
   const offerSectionPresentation = getProductOfferSectionPresentation(productType);
   const hasRelatedProducts = relatedProductGroups.some((g) => g.products.length > 0);
+  const resolvedTechnicalSpecs = technicalSpecs ?? [];
+  const hasTechnicalSpecs = resolvedTechnicalSpecs.length > 0;
 
   return (
     <div className="mx-auto max-w-6xl pb-6">
@@ -145,7 +167,6 @@ export function ProductPageTemplate({
             productName={productName}
             isSimpleProduct={isSimpleProduct}
             marketingHook={marketingHook ?? null}
-            shortDescription={shortDescription ?? null}
           />
 
           {/* ---------------------------------------------------------------- */}
@@ -155,8 +176,12 @@ export function ProductPageTemplate({
             productName={productName}
             isSimpleProduct={isSimpleProduct}
             isAvailable={isAvailable}
-            primaryImage={primaryImage}
+            images={images}
+            shortDescription={shortDescription ?? null}
             heroVariant={heroVariant}
+            variantSummary={!isSimpleProduct ? (heroVariantSummary ?? null) : null}
+            variablePriceLabel={!isSimpleProduct ? "Prix (selon déclinaison)" : null}
+            imageFit={!isSimpleProduct ? "cover" : "contain"}
             singleVariantSku={singleOffer?.sku ?? null}
             cta={heroCta}
             asideExtra={heroAsideExtra}
@@ -164,33 +189,70 @@ export function ProductPageTemplate({
         </div>
 
         {/* ------------------------------------------------------------------ */}
+        {/* Déclinaisons — point de décision prioritaire (variable uniquement)  */}
+        {/* ------------------------------------------------------------------ */}
+        {isVariableProduct ? (
+          <ProductOffersSection
+            id="offers"
+            productType={productType}
+            variants={variants}
+            presentation={offerSectionPresentation}
+            summaryContent={offersSummaryContent}
+            renderVariantCta={renderVariantCta}
+          />
+        ) : null}
+
+        {/* ------------------------------------------------------------------ */}
         {/* Description — section dédiée sous le hero                           */}
         {/* ------------------------------------------------------------------ */}
-        {description ? <ProductDescriptionSection description={description} /> : null}
+        {description ? <ProductDescriptionSection descriptionHtml={description} /> : null}
       </div>
 
-      <div className="mt-6 grid gap-6 min-[700px]:mt-8 min-[700px]:gap-10">
+      <div className="mt-6 grid gap-6 min-[700px]:mt-8 min-[700px]:gap-8">
         {/* ------------------------------------------------------------------ */}
         {/* Caractéristiques produit                                             */}
         {/* ------------------------------------------------------------------ */}
         {characteristics && characteristics.length > 0 ? (
-          <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
-            <div className="mb-6 grid gap-2">
-              <p className="text-sm font-bold uppercase tracking-widest text-brand">
-                Caractéristiques
-              </p>
-              <h2 className="m-0">Détails du produit</h2>
+          <section className="w-full rounded-xl border border-shell-border bg-surface-panel-soft p-5 shadow-soft [@media(max-height:480px)]:p-4 min-[700px]:p-8">
+            <div className="mb-5 grid gap-2 min-[700px]:mb-6">
+              <p className="text-eyebrow text-brand">Caractéristiques</p>
+              <h2 className="text-title-section">Détails du produit</h2>
             </div>
-            <dl className="divide-y divide-surface-border">
+            <dl className="grid gap-2.5 min-[700px]:gap-3 min-[900px]:grid-cols-2">
               {characteristics.map((c) => (
                 <div
                   key={c.id}
-                  className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3 first:pt-0 last:pb-0"
+                  className="grid gap-1.5 rounded-lg border border-surface-border-subtle bg-surface-panel px-3.5 py-3 min-[700px]:px-4"
                 >
-                  <dt className="shrink-0 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    {c.label}
-                  </dt>
-                  <dd className="min-w-0 wrap-break-word text-sm text-foreground">{c.value}</dd>
+                  <dt className="m-0 text-meta-label text-text-muted-soft">{c.label}</dt>
+                  <dd className="m-0 wrap-break-word text-secondary-copy reading-compact text-foreground">
+                    {c.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ) : null}
+
+        {/* ------------------------------------------------------------------ */}
+        {/* Spécifications techniques                                           */}
+        {/* ------------------------------------------------------------------ */}
+        {hasTechnicalSpecs ? (
+          <section className="w-full rounded-xl border border-shell-border bg-surface-panel-soft p-5 shadow-soft [@media(max-height:480px)]:p-4 min-[700px]:p-8">
+            <div className="mb-5 grid gap-2 min-[700px]:mb-6">
+              <p className="text-eyebrow text-brand">Spécifications</p>
+              <h2 className="m-0 text-title-section">Spécifications techniques</h2>
+            </div>
+            <dl className="grid gap-2.5 min-[700px]:gap-3 min-[900px]:grid-cols-2">
+              {resolvedTechnicalSpecs.map((spec) => (
+                <div
+                  key={spec.label}
+                  className="grid gap-1.5 rounded-lg border border-surface-border-subtle bg-surface-panel px-3.5 py-3 min-[700px]:px-4"
+                >
+                  <dt className="m-0 text-meta-label text-text-muted-soft">{spec.label}</dt>
+                  <dd className="m-0 wrap-break-word text-secondary-copy reading-compact text-foreground">
+                    {spec.value}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -200,24 +262,25 @@ export function ProductPageTemplate({
         {/* ------------------------------------------------------------------ */}
         {/* Offre / déclinaisons                                                */}
         {/* ------------------------------------------------------------------ */}
-        <ProductOffersSection
-          productType={productType}
-          variants={variants}
-          presentation={offerSectionPresentation}
-          summaryContent={offersSummaryContent}
-          renderVariantCta={renderVariantCta}
-        />
+        {isSimpleProduct ? (
+          <ProductOffersSection
+            id="offers"
+            productType={productType}
+            variants={variants}
+            presentation={offerSectionPresentation}
+            summaryContent={offersSummaryContent}
+            renderVariantCta={renderVariantCta}
+          />
+        ) : null}
 
         {/* ------------------------------------------------------------------ */}
         {/* Produits liés                                                        */}
         {/* ------------------------------------------------------------------ */}
         {hasRelatedProducts ? (
-          <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
-            <div className="mb-8 grid gap-2">
-              <p className="text-sm font-bold uppercase tracking-widest text-brand">
-                Produits liés
-              </p>
-              <h2 className="m-0">Produits associés</h2>
+          <section className="w-full rounded-xl border border-shell-border bg-surface-panel-soft p-5 shadow-soft [@media(max-height:480px)]:p-4 min-[700px]:p-8">
+            <div className="mb-5 grid gap-2 min-[700px]:mb-6">
+              <p className="text-eyebrow text-brand">Produits liés</p>
+              <h2 className="m-0 text-title-section">Produits associés</h2>
             </div>
             <ProductRelatedSection
               groups={relatedProductGroups}

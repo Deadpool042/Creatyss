@@ -1,6 +1,8 @@
 @theme {
   --animate-accordion-down: accordion-down 0.22s ease-out;
   --animate-accordion-up: accordion-up 0.18s ease-in;
+  --animate-premium-shimmer: premium-shimmer 7.2s linear infinite;
+  --animate-premium-shimmer-text: premium-shimmer-text 6.8s linear infinite;
 
   @keyframes accordion-down {
     from {
@@ -21,6 +23,24 @@
     to {
       height: 0;
       opacity: 0;
+    }
+  }
+
+  @keyframes premium-shimmer {
+    0% {
+      background-position: 140% 0;
+    }
+    100% {
+      background-position: -40% 0;
+    }
+  }
+
+  @keyframes premium-shimmer-text {
+    0% {
+      background-position: 130% 0;
+    }
+    100% {
+      background-position: -30% 0;
     }
   }
 }

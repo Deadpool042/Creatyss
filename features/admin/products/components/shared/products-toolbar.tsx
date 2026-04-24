@@ -1,10 +1,13 @@
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   buildProductsCreateHref,
   buildProductsFiltersHref,
   type ProductsPageParams,
 } from "@/features/admin/products/navigation";
+import { cn } from "@/lib/utils";
 import type { JSX } from "react";
 
 type ProductsToolbarProps = {
@@ -95,22 +98,19 @@ export function ProductsToolbar({ params }: ProductsToolbarProps): JSX.Element {
     params.category.length > 0;
 
   return (
-    <div className="space-y-4 border-b p-6">
+    <div className="space-y-4 border-b border-shell-border p-6">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h2 className="text-lg font-semibold">Catalogue produit</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-text-muted-strong">
             Statut : {getStatusLabel(params.status)} · Visibilité :{" "}
             {getFeaturedLabel(params.featured)}
           </p>
         </div>
 
-        <Link
-          href={buildProductsCreateHref(params)}
-          className="rounded-md border px-3 py-2 text-sm font-medium"
-        >
-          Nouveau
-        </Link>
+        <Button asChild variant="outline" size="sm">
+          <Link href={buildProductsCreateHref(params)}>Nouveau</Link>
+        </Button>
       </div>
 
       <form action="/admin/products" method="get" className="flex flex-col gap-3 lg:flex-row">
@@ -123,44 +123,41 @@ export function ProductsToolbar({ params }: ProductsToolbarProps): JSX.Element {
           <label htmlFor="products-search" className="sr-only">
             Rechercher un produit
           </label>
-          <input
+          <Input
             id="products-search"
             name="q"
             defaultValue={params.search}
             placeholder="Rechercher par nom, slug ou description courte"
-            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <button type="submit" className="rounded-md border px-3 py-2 text-sm font-medium">
+          <Button type="submit" variant="outline" size="sm">
             Rechercher
-          </button>
+          </Button>
 
           {hasActiveFilters ? (
-            <Link
-              href="/admin/products"
-              className="rounded-md border px-3 py-2 text-sm text-muted-foreground"
-            >
-              Réinitialiser
-            </Link>
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/admin/products">Réinitialiser</Link>
+            </Button>
           ) : null}
         </div>
       </form>
 
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-muted-foreground">Statut</span>
+          <span className="text-xs font-medium text-text-muted-strong">Statut</span>
 
           {statusLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className={
+              className={cn(
+                "rounded-full border px-3 py-1 text-xs transition-colors",
                 link.isActive
-                  ? "rounded-full border bg-muted px-3 py-1 text-xs font-medium"
-                  : "rounded-full border px-3 py-1 text-xs text-muted-foreground"
-              }
+                  ? "border-control-border-strong bg-control-surface-selected text-foreground"
+                  : "border-control-border bg-control-surface text-text-muted-strong hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
+              )}
             >
               {link.label}
             </Link>
@@ -168,17 +165,18 @@ export function ProductsToolbar({ params }: ProductsToolbarProps): JSX.Element {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-muted-foreground">Visibilité</span>
+          <span className="text-xs font-medium text-text-muted-strong">Visibilité</span>
 
           {featuredLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className={
+              className={cn(
+                "rounded-full border px-3 py-1 text-xs transition-colors",
                 link.isActive
-                  ? "rounded-full border bg-muted px-3 py-1 text-xs font-medium"
-                  : "rounded-full border px-3 py-1 text-xs text-muted-foreground"
-              }
+                  ? "border-control-border-strong bg-control-surface-selected text-foreground"
+                  : "border-control-border bg-control-surface text-text-muted-strong hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
+              )}
             >
               {link.label}
             </Link>

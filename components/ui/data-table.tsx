@@ -78,7 +78,7 @@ export function DataTable<TData, TValue>({
         </div>
       ) : null}
 
-      <div className="overflow-hidden rounded-lg border border-border/60">
+      <div className="overflow-hidden rounded-lg border border-surface-border-subtle bg-surface-panel-soft/35">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -108,7 +108,7 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-muted-foreground"
+                  className="h-24 text-center text-text-muted-soft"
                 >
                   Aucun résultat.
                 </TableCell>
@@ -119,7 +119,7 @@ export function DataTable<TData, TValue>({
       </div>
 
       {table.getPageCount() > 1 ? (
-        <div className="flex items-center justify-between gap-4 text-sm text-muted-foreground">
+        <div className="flex items-center justify-between gap-4 text-sm text-text-muted-strong">
           <span>
             Page {table.getState().pagination.pageIndex + 1} sur {table.getPageCount()}
           </span>

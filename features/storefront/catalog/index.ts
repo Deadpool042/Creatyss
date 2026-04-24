@@ -1,5 +1,6 @@
 import { db } from "@/core/db";
 import { getUploadsPublicPath } from "@/core/uploads";
+import { toSeoPlainTextOrNull } from "@/entities/product/seo-text";
 
 type CatalogImage = {
   src: string;
@@ -17,6 +18,12 @@ type CatalogVariant = {
   price: string;
   compareAtPrice: string | null;
   images: CatalogImage[];
+  barcode: string | null;
+  externalReference: string | null;
+  weightGrams: number | null;
+  widthMm: number | null;
+  heightMm: number | null;
+  depthMm: number | null;
 };
 
 export type CatalogProductCharacteristic = {
@@ -142,6 +149,21 @@ function mapImage(
     src: `${uploadsPublicPath}/${input.storageKey.replace(/^\/+/, "")}`,
     alt: input.altText,
   };
+}
+
+function dedupeImages(images: CatalogImage[]): CatalogImage[] {
+  const seen = new Set<string>();
+  const result: CatalogImage[] = [];
+
+  for (const image of images) {
+    if (seen.has(image.src)) {
+      continue;
+    }
+    seen.add(image.src);
+    result.push(image);
+  }
+
+  return result;
 }
 
 export async function getPublishedProductsForSitemap(): Promise<CatalogSitemapProduct[]> {
@@ -409,6 +431,12 @@ export async function getPublishedProductBySlug(
           sku: true,
           name: true,
           isDefault: true,
+          barcode: true,
+          externalReference: true,
+          weightGrams: true,
+          widthMm: true,
+          heightMm: true,
+          depthMm: true,
           primaryImage: {
             select: {
               storageKey: true,
@@ -487,34 +515,57 @@ export async function getPublishedProductBySlug(
     return null;
   }
 
-  const seoMetadata = await db.seoMetadata.findFirst({
-    where: {
-      storeId: product.storeId,
-      subjectType: "PRODUCT",
-      subjectId: product.id,
-      archivedAt: null,
-    },
-    select: {
-      metaTitle: true,
-      metaDescription: true,
-      indexingMode: true,
-      canonicalPath: true,
-      openGraphTitle: true,
-      openGraphDescription: true,
-      openGraphImage: {
-        select: {
-          storageKey: true,
+  const [seoMetadata, galleryImageReferences] = await Promise.all([
+    db.seoMetadata.findFirst({
+      where: {
+        storeId: product.storeId,
+        subjectType: "PRODUCT",
+        subjectId: product.id,
+        archivedAt: null,
+      },
+      select: {
+        metaTitle: true,
+        metaDescription: true,
+        indexingMode: true,
+        canonicalPath: true,
+        openGraphTitle: true,
+        openGraphDescription: true,
+        openGraphImage: {
+          select: {
+            storageKey: true,
+          },
+        },
+        twitterTitle: true,
+        twitterDescription: true,
+        twitterImage: {
+          select: {
+            storageKey: true,
+          },
         },
       },
-      twitterTitle: true,
-      twitterDescription: true,
-      twitterImage: {
-        select: {
-          storageKey: true,
+    }),
+    db.mediaReference.findMany({
+      where: {
+        subjectType: "PRODUCT",
+        subjectId: product.id,
+        role: "GALLERY",
+        isActive: true,
+        archivedAt: null,
+        asset: {
+          archivedAt: null,
         },
       },
-    },
-  });
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+      select: {
+        asset: {
+          select: {
+            storageKey: true,
+            altText: true,
+          },
+        },
+      },
+    }),
+  ]);
 
   const productLevelPrice = product.prices[0] ?? null;
   const uploadsPublicPath = getUploadsPublicPath();
@@ -540,10 +591,20 @@ export async function getPublishedProductBySlug(
       price: formatMoney(activePrice?.amount ?? null),
       compareAtPrice: formatMoney(compareAtAmount) || null,
       images: image,
+      barcode: variant.barcode ?? null,
+      externalReference: variant.externalReference ?? null,
+      weightGrams: variant.weightGrams ?? null,
+      widthMm: variant.widthMm ?? null,
+      heightMm: variant.heightMm ?? null,
+      depthMm: variant.depthMm ?? null,
     };
   });
 
-  const images = product.primaryImage ? [mapImage(product.primaryImage, uploadsPublicPath)] : [];
+  const primaryImage = product.primaryImage ? [mapImage(product.primaryImage, uploadsPublicPath)] : [];
+  const galleryImages = galleryImageReferences.map((reference) =>
+    mapImage(reference.asset, uploadsPublicPath)
+  );
+  const images = dedupeImages([...primaryImage, ...galleryImages]);
   const isAvailable = variants.some((variant) => variant.isAvailable);
 
   const ogImageStorageKey = seoMetadata?.openGraphImage?.storageKey ?? null;
@@ -594,17 +655,17 @@ export async function getPublishedProductBySlug(
     marketingHook: product.marketingHook,
     shortDescription: product.shortDescription,
     description: product.description,
-    seoTitle: seoMetadata?.metaTitle ?? null,
-    seoDescription: seoMetadata?.metaDescription ?? null,
+    seoTitle: toSeoPlainTextOrNull(seoMetadata?.metaTitle ?? null),
+    seoDescription: toSeoPlainTextOrNull(seoMetadata?.metaDescription ?? null),
     seoIndexingMode: seoMetadata?.indexingMode ?? null,
-    seoCanonicalPath: seoMetadata?.canonicalPath ?? null,
-    seoOpenGraphTitle: seoMetadata?.openGraphTitle ?? null,
-    seoOpenGraphDescription: seoMetadata?.openGraphDescription ?? null,
+    seoCanonicalPath: toSeoPlainTextOrNull(seoMetadata?.canonicalPath ?? null),
+    seoOpenGraphTitle: toSeoPlainTextOrNull(seoMetadata?.openGraphTitle ?? null),
+    seoOpenGraphDescription: toSeoPlainTextOrNull(seoMetadata?.openGraphDescription ?? null),
     seoOpenGraphImageUrl: ogImageStorageKey
       ? `${uploadsPublicPath}/${ogImageStorageKey.replace(/^\/+/, "")}`
       : null,
-    seoTwitterTitle: seoMetadata?.twitterTitle ?? null,
-    seoTwitterDescription: seoMetadata?.twitterDescription ?? null,
+    seoTwitterTitle: toSeoPlainTextOrNull(seoMetadata?.twitterTitle ?? null),
+    seoTwitterDescription: toSeoPlainTextOrNull(seoMetadata?.twitterDescription ?? null),
     seoTwitterImageUrl: twitterImageStorageKey
       ? `${uploadsPublicPath}/${twitterImageStorageKey.replace(/^\/+/, "")}`
       : null,

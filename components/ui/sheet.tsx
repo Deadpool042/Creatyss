@@ -57,7 +57,7 @@ function SheetContent({
         data-side={side}
         className={cn(
           [
-            "fixed z-50 bg-background bg-clip-padding text-sm shadow-overlay transition duration-200 ease-in-out",
+            "fixed z-50 border-border-floating bg-surface-floating bg-clip-padding text-sm shadow-floating transition duration-200 ease-in-out",
             "outline-none",
             "flex flex-col",
             "data-open:animate-in data-open:fade-in-0",
@@ -140,7 +140,7 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn("text-sm text-text-muted-soft", className)}
       {...props}
     />
   );

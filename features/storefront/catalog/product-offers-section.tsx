@@ -41,6 +41,7 @@ export type OfferVariant = {
 };
 
 type ProductOffersSectionProps = {
+  id?: string | undefined;
   productType: "simple" | "variable";
   variants: OfferVariant[];
   presentation: ProductPublicSectionPresentation;
@@ -64,6 +65,7 @@ type ProductOffersSectionProps = {
 // ---------------------------------------------------------------------------
 
 export function ProductOffersSection({
+  id,
   productType,
   variants,
   presentation,
@@ -72,14 +74,24 @@ export function ProductOffersSection({
 }: ProductOffersSectionProps) {
   const isSimpleProduct = productType === "simple";
   const singleVariant = isSimpleProduct && variants.length === 1 ? variants[0] : null;
+  const actionHint =
+    productType === "variable"
+      ? "Choisissez une déclinaison disponible, puis ajoutez-la au panier."
+      : null;
 
   return (
-    <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
-      <div className="mb-8 grid gap-2">
-        <p className="text-sm font-bold uppercase tracking-widest text-brand">
-          {presentation.eyebrow}
-        </p>
-        <h2 className="m-0">{presentation.title}</h2>
+    <section
+      id={id}
+      className="w-full rounded-xl border border-shell-border bg-surface-panel-soft p-5 shadow-soft [@media(max-height:480px)]:p-4 min-[700px]:p-8"
+    >
+      <div className="mb-5 grid gap-2 min-[700px]:mb-6">
+        <p className="text-eyebrow text-brand">{presentation.eyebrow}</p>
+        <h2 className="m-0 text-title-section">{presentation.title}</h2>
+        {actionHint ? (
+          <p className="max-w-2xl text-secondary-copy reading-relaxed text-text-muted-strong">
+            {actionHint}
+          </p>
+        ) : null}
       </div>
 
       {isSimpleProduct ? (
@@ -108,13 +120,34 @@ export function ProductOffersSection({
 // Sub-components (module-private)
 // ---------------------------------------------------------------------------
 
+function getVariantMetaText(variant: OfferVariant): string | null {
+  const parts: string[] = [];
+
+  if (variant.sku) {
+    parts.push(`Ref. ${variant.sku}`);
+  }
+
+  if (variant.colorName) {
+    parts.push(variant.colorHex ? `${variant.colorName} · ${variant.colorHex}` : variant.colorName);
+  } else if (variant.colorHex) {
+    parts.push(variant.colorHex);
+  }
+
+  const text = parts.join(" · ").trim();
+  return text.length > 0 ? text : null;
+}
+
 function SimpleOfferCard({ variant }: { variant: OfferVariant }) {
+  const metaText = getVariantMetaText(variant);
+
   return (
-    <article className="grid gap-5 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
+    <article className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-5 min-[700px]:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="grid gap-1">
-          <h3>{getSimpleOfferCardTitle()}</h3>
-          <p className="text-sm text-muted-foreground">{variant.name}</p>
+        <div className="grid min-w-0 gap-1">
+          <h3 className="m-0 text-title-compact">{getSimpleOfferCardTitle()}</h3>
+          <p className="m-0 text-secondary-copy reading-compact text-text-muted-strong">
+            {variant.name}
+          </p>
         </div>
         <Badge variant="outline">
           <span className={variant.isAvailable ? "text-emerald-700" : "text-destructive"}>
@@ -123,28 +156,17 @@ function SimpleOfferCard({ variant }: { variant: OfferVariant }) {
         </Badge>
       </div>
 
-      {(variant.sku ?? variant.colorName ?? variant.colorHex) ? (
-        <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
-          {variant.sku ? (
-            <div className="grid gap-1">
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                SKU
-              </p>
-              <p className="leading-relaxed">{variant.sku}</p>
-            </div>
-          ) : null}
-          {(variant.colorName ?? variant.colorHex) ? (
-            <div className="grid gap-1">
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                Couleur
-              </p>
-              <p className="leading-relaxed">
-                {variant.colorName}
-                {variant.colorHex ? ` · ${variant.colorHex}` : ""}
-              </p>
-            </div>
-          ) : null}
-        </div>
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <span className="text-price-compact">{variant.price || "—"}</span>
+        {variant.compareAtPrice ? (
+          <span className="text-secondary-copy reading-compact font-medium line-through text-text-muted-strong">
+            {variant.compareAtPrice}
+          </span>
+        ) : null}
+      </div>
+
+      {metaText ? (
+        <p className="m-0 text-micro-copy reading-compact text-text-muted-soft">{metaText}</p>
       ) : null}
     </article>
   );
@@ -158,17 +180,15 @@ function VariantOfferCard({
   renderCta?: ((variant: OfferVariant) => React.ReactNode) | undefined;
 }) {
   const defaultBadgeLabel = getVariantDefaultBadgeLabel(variant.isDefault);
+  const metaText = getVariantMetaText(variant);
 
   return (
-    <article className="grid gap-5 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
+    <article className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-5 min-[700px]:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="grid gap-1">
-          <h3 className="text-base font-semibold">{variant.name}</h3>
-          {(variant.colorName ?? variant.colorHex) ? (
-            <p className="text-sm text-muted-foreground">
-              {variant.colorName}
-              {variant.colorHex ? ` · ${variant.colorHex}` : ""}
-            </p>
+        <div className="grid min-w-0 gap-1">
+          <h3 className="m-0 text-title-compact">{variant.name}</h3>
+          {metaText ? (
+            <p className="m-0 text-micro-copy reading-compact text-text-muted-soft">{metaText}</p>
           ) : null}
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -181,42 +201,16 @@ function VariantOfferCard({
         </div>
       </div>
 
-      <div className="grid gap-4">
-        <div className="grid gap-1">
-          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Prix</p>
-          <p className="text-2xl font-bold leading-tight">{variant.price || "—"}</p>
-          {variant.compareAtPrice ? (
-            <p className="text-sm text-muted-foreground">
-              Prix avant réduction : {variant.compareAtPrice}
-            </p>
-          ) : null}
-        </div>
-        {renderCta ? renderCta(variant) : null}
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <span className="text-price-compact">{variant.price || "—"}</span>
+        {variant.compareAtPrice ? (
+          <span className="text-secondary-copy reading-compact font-medium line-through text-text-muted-strong">
+            {variant.compareAtPrice}
+          </span>
+        ) : null}
       </div>
 
-      {(variant.sku ?? variant.colorName ?? variant.colorHex) ? (
-        <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
-          {variant.sku ? (
-            <div className="grid gap-1">
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                SKU
-              </p>
-              <p className="leading-relaxed">{variant.sku}</p>
-            </div>
-          ) : null}
-          {(variant.colorName ?? variant.colorHex) ? (
-            <div className="grid gap-1">
-              <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                Couleur
-              </p>
-              <p className="leading-relaxed">
-                {variant.colorName}
-                {variant.colorHex ? ` · ${variant.colorHex}` : ""}
-              </p>
-            </div>
-          ) : null}
-        </div>
-      ) : null}
+      {renderCta ? <div className="pt-1">{renderCta(variant)}</div> : null}
     </article>
   );
 }
@@ -224,10 +218,8 @@ function VariantOfferCard({
 function OfferEmptyState({ presentation }: { presentation: ProductPublicSectionPresentation }) {
   return (
     <div className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
-      <p className="text-sm font-bold uppercase tracking-widest text-brand">
-        {presentation.emptyEyebrow}
-      </p>
-      <h2>{presentation.emptyTitle}</h2>
+      <p className="text-eyebrow text-brand">{presentation.emptyEyebrow}</p>
+      <h3 className="text-title-compact">{presentation.emptyTitle}</h3>
       <p className="leading-relaxed text-muted-foreground">{presentation.emptyDescription}</p>
     </div>
   );

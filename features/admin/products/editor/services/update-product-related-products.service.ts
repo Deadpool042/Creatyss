@@ -20,10 +20,11 @@ export async function updateProductRelatedProducts(
   input: UpdateProductRelatedProductsServiceInput
 ): Promise<{ productId: string }> {
   return withTransaction(async (tx) => {
-    await assertProductExists(tx, input.productId);
+    const product = await assertProductExists(tx, input.productId);
     await assertRelatedProductsExist(
       tx,
       input.productId,
+      product.storeId,
       input.relatedProducts.map((item) => item.targetProductId)
     );
 

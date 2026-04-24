@@ -134,7 +134,10 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
     editor.product.productTypeId
       ? readAdminProductTypeWithOptions(editor.product.productTypeId)
       : Promise.resolve([]),
-    listAdminRelatedProductOptions({ excludeProductId: editor.product.id }),
+    listAdminRelatedProductOptions({
+      storeId: editor.product.storeId,
+      excludeProductId: editor.product.id,
+    }),
     listAdminProductCategoryOptions(),
     readAdminPriceLists(),
     listAdminProductTypeOptions({ storeId: editor.product.storeId }),

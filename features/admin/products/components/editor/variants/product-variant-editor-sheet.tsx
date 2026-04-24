@@ -6,6 +6,7 @@ import { useAutoSlug } from "@/entities/shared/slug/hooks/use-auto-slug";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
+import { toast } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -136,9 +137,10 @@ export function ProductVariantEditorSheet({
 
   useEffect(() => {
     if (state.status === "success" && open) {
+      toast.success(state.message ?? (isEdit ? "Mise à jour effectuée." : "Création effectuée."));
       onOpenChange(false);
     }
-  }, [state.status, open, onOpenChange]);
+  }, [state.status, state.message, open, onOpenChange, isEdit]);
 
   useEffect(() => {
     resetAutoSlug({
@@ -178,8 +180,8 @@ export function ProductVariantEditorSheet({
           <div className="min-h-0 flex-1 overflow-y-auto">
             <div className="space-y-7 px-4 py-4 sm:px-6 sm:py-6">
               <AdminFormMessage
-                tone={state.status === "success" ? "success" : "error"}
-                message={state.status !== "idle" ? state.message : null}
+                tone="error"
+                message={state.status === "error" ? state.message : null}
               />
 
               {/* Identité */}
@@ -375,6 +377,9 @@ export function ProductVariantEditorSheet({
                   </div>
                 </CardHeader>
                 <CardContent className="px-5 py-5">
+                  {state.fieldErrors.primaryImageId ? (
+                    <p className="mb-4 text-sm text-destructive">{state.fieldErrors.primaryImageId}</p>
+                  ) : null}
                   {productImages.length > 0 ? (
                     <ProductVariantImagePicker
                       images={productImages}
@@ -427,7 +432,11 @@ export function ProductVariantEditorSheet({
                   </div>
                 </CardHeader>
                 <CardContent className="grid gap-4 px-5 py-5 md:grid-cols-2">
-                  <AdminFormField label="Poids (g)" htmlFor="variant-weight-grams">
+                  <AdminFormField
+                    label="Poids (g)"
+                    htmlFor="variant-weight-grams"
+                    {...(state.fieldErrors.weightGrams ? { error: state.fieldErrors.weightGrams } : {})}
+                  >
                     <Input
                       id="variant-weight-grams"
                       name="weightGrams"
@@ -435,15 +444,27 @@ export function ProductVariantEditorSheet({
                     />
                   </AdminFormField>
 
-                  <AdminFormField label="Largeur (mm)" htmlFor="variant-width-mm">
+                  <AdminFormField
+                    label="Largeur (mm)"
+                    htmlFor="variant-width-mm"
+                    {...(state.fieldErrors.widthMm ? { error: state.fieldErrors.widthMm } : {})}
+                  >
                     <Input id="variant-width-mm" name="widthMm" defaultValue={initialValues.widthMm} />
                   </AdminFormField>
 
-                  <AdminFormField label="Hauteur (mm)" htmlFor="variant-height-mm">
+                  <AdminFormField
+                    label="Hauteur (mm)"
+                    htmlFor="variant-height-mm"
+                    {...(state.fieldErrors.heightMm ? { error: state.fieldErrors.heightMm } : {})}
+                  >
                     <Input id="variant-height-mm" name="heightMm" defaultValue={initialValues.heightMm} />
                   </AdminFormField>
 
-                  <AdminFormField label="Profondeur (mm)" htmlFor="variant-depth-mm">
+                  <AdminFormField
+                    label="Profondeur (mm)"
+                    htmlFor="variant-depth-mm"
+                    {...(state.fieldErrors.depthMm ? { error: state.fieldErrors.depthMm } : {})}
+                  >
                     <Input id="variant-depth-mm" name="depthMm" defaultValue={initialValues.depthMm} />
                   </AdminFormField>
                 </CardContent>

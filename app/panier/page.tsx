@@ -142,7 +142,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                   <form action={updateCartItemQuantityAction} className="grid gap-4">
                     <input name="itemId" type="hidden" value={line.id} />
 
-                    <div className="grid gap-2 max-w-[10rem]">
+                    <div className="grid gap-2 max-w-40">
                       <Label htmlFor={`quantity-${line.id}`}>Quantité</Label>
                       <Input
                         defaultValue={String(line.quantity)}

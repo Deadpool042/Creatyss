@@ -15,6 +15,8 @@ type ProductImageSource = {
     altText: string | null;
     originalFilename: string | null;
     mimeType: string | null;
+    widthPx?: number | null;
+    heightPx?: number | null;
   };
 };
 
@@ -47,5 +49,7 @@ export function mapAdminProductImageItem(image: ProductImageSource): AdminProduc
     altText: image.asset.altText,
     originalName: image.asset.originalFilename,
     mimeType: image.asset.mimeType,
+    widthPx: image.asset.widthPx ?? null,
+    heightPx: image.asset.heightPx ?? null,
   };
 }

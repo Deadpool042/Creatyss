@@ -135,6 +135,8 @@ function mapAdminProductImages(
     altText: reference.asset.altText,
     originalName: reference.asset.originalFilename,
     mimeType: reference.asset.mimeType,
+    widthPx: reference.asset.widthPx ?? null,
+    heightPx: reference.asset.heightPx ?? null,
   }));
 }
 

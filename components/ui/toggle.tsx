@@ -7,12 +7,12 @@ import { Toggle as TogglePrimitive } from "radix-ui";
 import { cn } from "@/lib/utils";
 
 const toggleVariants = cva(
-  "group/toggle inline-flex items-center justify-center gap-1 rounded-lg text-sm font-medium whitespace-nowrap transition-all outline-none hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-pressed:bg-muted data-[state=on]:bg-muted dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/toggle inline-flex items-center justify-center gap-1 rounded-lg border border-control-border bg-control-surface text-sm font-medium whitespace-nowrap text-text-muted-strong shadow-control transition-all outline-none hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-[3px] focus-visible:ring-focus-ring/50 disabled:pointer-events-none disabled:border-control-border disabled:bg-interactive-disabled disabled:text-interactive-disabled-foreground disabled:opacity-100 aria-invalid:border-feedback-error-border aria-invalid:ring-feedback-error-surface aria-pressed:bg-control-surface-active aria-pressed:shadow-control-pressed data-[state=on]:border-control-border-strong data-[state=on]:bg-control-surface-selected data-[state=on]:text-foreground data-[state=on]:shadow-control-pressed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-transparent",
-        outline: "border border-input bg-transparent hover:bg-muted",
+        default: "",
+        outline: "border-control-border bg-control-surface",
       },
       size: {
         default: "h-8 min-w-8 px-2",

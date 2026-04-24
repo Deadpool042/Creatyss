@@ -9,11 +9,12 @@ import {
 
 import { db, withTransaction } from "@/core/db";
 import {
+  buildStorageKeyFromPublicUrl,
   buildProductUploadRelativeDirectory,
   ensureUploadsDirectory,
   saveUploadedImage,
+  type SavedImageResult,
 } from "@/core/uploads";
-import type { SavedImageResult } from "@/core/uploads";
 
 import { AdminProductEditorServiceError, assertProductExists } from "./shared";
 
@@ -100,7 +101,7 @@ export async function uploadProductImages(
             originalFilename: saved.originalFilename,
             mimeType: saved.mimeType,
             extension: "webp",
-            storageKey: saved.publicUrl.replace(/^\/+/, ""),
+            storageKey: buildStorageKeyFromPublicUrl(saved.publicUrl),
             publicUrl: saved.publicUrl,
             altText: altTextValue,
             widthPx: saved.width > 0 ? saved.width : null,

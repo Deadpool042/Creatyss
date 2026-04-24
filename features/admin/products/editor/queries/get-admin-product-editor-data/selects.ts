@@ -158,6 +158,8 @@ export const PRODUCT_EDITOR_MEDIA_REFERENCE_SELECT = {
       altText: true,
       originalFilename: true,
       mimeType: true,
+      widthPx: true,
+      heightPx: true,
     },
   },
 } satisfies Prisma.MediaReferenceSelect;

@@ -1,33 +1,20 @@
-import { db, withTransaction } from "@/core/db";
+import type { ValidatedAdminProductCharacteristicInput } from "@/entities/product";
+import { withTransaction } from "@/core/db";
 
-import { AdminProductEditorServiceError } from "./shared";
-
-type CharacteristicInput = {
-  id: string | null;
-  label: string;
-  value: string;
-  sortOrder: number;
-};
+import { assertProductExists } from "./shared";
 
 type UpdateProductCharacteristicsServiceInput = {
   productId: string;
-  characteristics: readonly CharacteristicInput[];
+  characteristics: readonly ValidatedAdminProductCharacteristicInput[];
 };
 
 export async function updateProductCharacteristics(
   input: UpdateProductCharacteristicsServiceInput
 ): Promise<void> {
-  const product = await db.product.findFirst({
-    where: { id: input.productId, archivedAt: null },
-    select: { id: true },
-  });
-
-  if (product === null) {
-    throw new AdminProductEditorServiceError("product_missing");
-  }
-
-  // Replace strategy: delete all existing, then create all incoming.
   await withTransaction(async (tx) => {
+    await assertProductExists(tx, input.productId);
+
+    // Replace strategy: delete all existing, then create all incoming.
     await tx.productCharacteristic.deleteMany({
       where: { productId: input.productId },
     });

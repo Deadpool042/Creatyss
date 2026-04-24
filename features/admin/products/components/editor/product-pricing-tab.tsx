@@ -81,12 +81,17 @@ function ProductPricingTabInner({
 }: ProductPricingTabInnerProps): JSX.Element {
   const router = useRouter();
   const [state, formAction, pending] = useActionState(action, productPricingFormInitialState);
+  const defaultPriceList = priceLists.find((priceList) => priceList.isDefault) ?? null;
+  const advancedPriceLists = priceLists.filter((priceList) => !priceList.isDefault);
 
   useEffect(() => {
     if (state.status === "success") {
       router.refresh();
     }
   }, [state.status, router]);
+
+  const storefrontPricingHint =
+    "La boutique affiche actuellement un prix simple. Les listes de prix et la planification de promotion ne pilotent pas encore l'affichage storefront (V1).";
 
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -100,121 +105,241 @@ function ProductPricingTabInner({
           />
 
           <AdminFormSection
-            title={isStandalone ? "Tarification" : "Prix produit"}
-            description={
-              isStandalone
-                ? "Définissez le prix du produit pour chaque liste de prix."
-                : "Définissez le prix de base du produit pour chaque liste de prix."
-            }
+            title="Prix boutique (principal)"
+            description="Définissez le prix affiché sur la boutique. Laisser vide désactive ce tarif."
           >
+            <p className="text-xs leading-5 text-muted-foreground">{storefrontPricingHint}</p>
+
             {priceLists.length === 0 ? (
               <p className="text-sm text-muted-foreground">Aucune liste de prix disponible.</p>
-            ) : (
-              priceLists.map((priceList) => {
-                const existing = findProductPrice(pricingData, priceList.id);
-                const startsAt = existing?.startsAt ?? null;
-                const endsAt = existing?.endsAt ?? null;
-                return (
-                  <div
-                    key={priceList.id}
-                    className="rounded-xl border border-border bg-background p-4 space-y-3"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">{priceList.name}</span>
-                      <span className="text-xs text-muted-foreground font-mono">
-                        {priceList.currencyCode}
-                      </span>
-                      {priceList.isDefault && (
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                          Par défaut
-                        </span>
-                      )}
-                    </div>
+            ) : defaultPriceList ? (
+              <div className="rounded-2xl border border-surface-border bg-card p-4 shadow-card space-y-3 md:p-5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-sm font-medium text-foreground">
+                    {defaultPriceList.name}
+                  </span>
+                  <span className="text-xs font-mono text-muted-foreground">
+                    {defaultPriceList.currencyCode}
+                  </span>
+                  <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                    Boutique
+                  </span>
+                </div>
 
-                    {/* costAmount est masqué de l'UI mais transporté en hidden pour ne pas écraser la valeur en base */}
-                    <input
-                      type="hidden"
-                      name={`costAmount:${priceList.id}`}
-                      value={existing?.costAmount ?? ""}
-                    />
+                {(() => {
+                  const existing = findProductPrice(pricingData, defaultPriceList.id);
+                  const startsAt = existing?.startsAt ?? null;
+                  const endsAt = existing?.endsAt ?? null;
 
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <AdminFormField
-                        label="Prix actuel"
-                        htmlFor={`amount-${priceList.id}`}
-                        error={state.fieldErrors[`amount:${priceList.id}`]}
-                      >
-                        <Input
-                          id={`amount-${priceList.id}`}
-                          name={`amount:${priceList.id}`}
-                          defaultValue={existing?.amount ?? ""}
-                          placeholder="0.00"
-                          className="text-sm font-mono"
-                        />
-                      </AdminFormField>
+                  return (
+                    <>
+                      {/* costAmount est masqué de l'UI mais transporté en hidden pour ne pas écraser la valeur en base */}
+                      <input
+                        type="hidden"
+                        name={`costAmount:${defaultPriceList.id}`}
+                        value={existing?.costAmount ?? ""}
+                      />
 
-                      <AdminFormField
-                        label="Prix barré"
-                        htmlFor={`compareAtAmount-${priceList.id}`}
-                        error={state.fieldErrors[`compareAtAmount:${priceList.id}`]}
-                        hint="Prix affiché barré sur la fiche produit pour indiquer une promotion."
-                      >
-                        <Input
-                          id={`compareAtAmount-${priceList.id}`}
-                          name={`compareAtAmount:${priceList.id}`}
-                          defaultValue={existing?.compareAtAmount ?? ""}
-                          placeholder="—"
-                          className="text-sm font-mono"
-                        />
-                      </AdminFormField>
-                    </div>
-
-                    <div className="border-t border-border pt-3 space-y-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-muted-foreground">
-                          Période de promotion
-                        </span>
-                        <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
-                      </div>
-                      <p className="text-xs text-muted-foreground leading-5">
-                        Facultatif. Ces dates définissent la période d&apos;activation du prix
-                        promotionnel.
-                      </p>
                       <div className="grid gap-3 sm:grid-cols-2">
                         <AdminFormField
-                          label="Début de promotion"
-                          htmlFor={`startsAt-${priceList.id}`}
-                          error={state.fieldErrors[`startsAt:${priceList.id}`]}
+                          label="Prix"
+                          htmlFor={`amount-${defaultPriceList.id}`}
+                          error={state.fieldErrors[`amount:${defaultPriceList.id}`]}
+                          hint="Montant affiché sur la fiche produit."
                         >
                           <Input
-                            id={`startsAt-${priceList.id}`}
-                            name={`startsAt:${priceList.id}`}
-                            type="date"
-                            defaultValue={startsAt ?? ""}
+                            id={`amount-${defaultPriceList.id}`}
+                            name={`amount:${defaultPriceList.id}`}
+                            defaultValue={existing?.amount ?? ""}
+                            placeholder="0.00"
                             className="text-sm font-mono"
                           />
                         </AdminFormField>
 
                         <AdminFormField
-                          label="Fin de promotion"
-                          htmlFor={`endsAt-${priceList.id}`}
-                          error={state.fieldErrors[`endsAt:${priceList.id}`]}
+                          label="Prix barré (optionnel)"
+                          htmlFor={`compareAtAmount-${defaultPriceList.id}`}
+                          error={state.fieldErrors[`compareAtAmount:${defaultPriceList.id}`]}
+                          hint="Affiché barré pour indiquer une promotion."
                         >
                           <Input
-                            id={`endsAt-${priceList.id}`}
-                            name={`endsAt:${priceList.id}`}
-                            type="date"
-                            defaultValue={endsAt ?? ""}
+                            id={`compareAtAmount-${defaultPriceList.id}`}
+                            name={`compareAtAmount:${defaultPriceList.id}`}
+                            defaultValue={existing?.compareAtAmount ?? ""}
+                            placeholder="—"
                             className="text-sm font-mono"
                           />
                         </AdminFormField>
                       </div>
-                    </div>
-                  </div>
-                );
-              })
+
+                      <details className="rounded-xl border border-border bg-background/50 px-4 py-3">
+                        <summary className="cursor-pointer list-none text-sm font-medium text-foreground">
+                          Options avancées (promotion)
+                        </summary>
+                        <div className="mt-3 space-y-3">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-xs font-medium text-muted-foreground">
+                              Période de promotion
+                            </span>
+                            <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
+                          </div>
+                          <p className="text-xs leading-5 text-muted-foreground">
+                            Ces dates sont enregistrées mais ne pilotent pas encore l&apos;affichage
+                            storefront en V1.
+                          </p>
+                          <div className="grid gap-3 sm:grid-cols-2">
+                            <AdminFormField
+                              label="Début"
+                              htmlFor={`startsAt-${defaultPriceList.id}`}
+                              error={state.fieldErrors[`startsAt:${defaultPriceList.id}`]}
+                            >
+                              <Input
+                                id={`startsAt-${defaultPriceList.id}`}
+                                name={`startsAt:${defaultPriceList.id}`}
+                                type="date"
+                                defaultValue={startsAt ?? ""}
+                                className="text-sm font-mono"
+                              />
+                            </AdminFormField>
+
+                            <AdminFormField
+                              label="Fin"
+                              htmlFor={`endsAt-${defaultPriceList.id}`}
+                              error={state.fieldErrors[`endsAt:${defaultPriceList.id}`]}
+                            >
+                              <Input
+                                id={`endsAt-${defaultPriceList.id}`}
+                                name={`endsAt:${defaultPriceList.id}`}
+                                type="date"
+                                defaultValue={endsAt ?? ""}
+                                className="text-sm font-mono"
+                              />
+                            </AdminFormField>
+                          </div>
+                        </div>
+                      </details>
+                    </>
+                  );
+                })()}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Aucune liste de prix n&apos;est marquée comme “par défaut”.
+              </p>
             )}
           </AdminFormSection>
+
+          {advancedPriceLists.length > 0 ? (
+            <AdminFormSection
+              title="Listes de prix (avancé)"
+              description="Pour des besoins spécifiques. La boutique V1 ne choisit pas encore une liste de prix."
+            >
+              <details className="rounded-2xl border border-surface-border bg-card p-4 shadow-card md:p-5">
+                <summary className="cursor-pointer list-none text-sm font-medium text-foreground">
+                  Afficher les autres listes de prix ({advancedPriceLists.length})
+                </summary>
+                <div className="mt-4 space-y-4">
+                  {advancedPriceLists.map((priceList) => {
+                    const existing = findProductPrice(pricingData, priceList.id);
+                    const startsAt = existing?.startsAt ?? null;
+                    const endsAt = existing?.endsAt ?? null;
+
+                    return (
+                      <div
+                        key={priceList.id}
+                        className="rounded-xl border border-border bg-background p-4 space-y-3"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium">{priceList.name}</span>
+                          <span className="text-xs text-muted-foreground font-mono">
+                            {priceList.currencyCode}
+                          </span>
+                        </div>
+
+                        {/* costAmount est masqué de l'UI mais transporté en hidden pour ne pas écraser la valeur en base */}
+                        <input
+                          type="hidden"
+                          name={`costAmount:${priceList.id}`}
+                          value={existing?.costAmount ?? ""}
+                        />
+
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          <AdminFormField
+                            label="Prix"
+                            htmlFor={`amount-${priceList.id}`}
+                            error={state.fieldErrors[`amount:${priceList.id}`]}
+                          >
+                            <Input
+                              id={`amount-${priceList.id}`}
+                              name={`amount:${priceList.id}`}
+                              defaultValue={existing?.amount ?? ""}
+                              placeholder="0.00"
+                              className="text-sm font-mono"
+                            />
+                          </AdminFormField>
+
+                          <AdminFormField
+                            label="Prix barré"
+                            htmlFor={`compareAtAmount-${priceList.id}`}
+                            error={state.fieldErrors[`compareAtAmount:${priceList.id}`]}
+                          >
+                            <Input
+                              id={`compareAtAmount-${priceList.id}`}
+                              name={`compareAtAmount:${priceList.id}`}
+                              defaultValue={existing?.compareAtAmount ?? ""}
+                              placeholder="—"
+                              className="text-sm font-mono"
+                            />
+                          </AdminFormField>
+                        </div>
+
+                        <details className="rounded-lg border border-border bg-background/40 px-3 py-2.5">
+                          <summary className="cursor-pointer list-none text-xs font-medium text-muted-foreground">
+                            Promotion (avancé)
+                            <span className="ml-2 align-middle">
+                              <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
+                            </span>
+                          </summary>
+                          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                            <AdminFormField
+                              label="Début"
+                              htmlFor={`startsAt-${priceList.id}`}
+                              error={state.fieldErrors[`startsAt:${priceList.id}`]}
+                            >
+                              <Input
+                                id={`startsAt-${priceList.id}`}
+                                name={`startsAt:${priceList.id}`}
+                                type="date"
+                                defaultValue={startsAt ?? ""}
+                                className="text-sm font-mono"
+                              />
+                            </AdminFormField>
+
+                            <AdminFormField
+                              label="Fin"
+                              htmlFor={`endsAt-${priceList.id}`}
+                              error={state.fieldErrors[`endsAt:${priceList.id}`]}
+                            >
+                              <Input
+                                id={`endsAt-${priceList.id}`}
+                                name={`endsAt:${priceList.id}`}
+                                type="date"
+                                defaultValue={endsAt ?? ""}
+                                className="text-sm font-mono"
+                              />
+                            </AdminFormField>
+                          </div>
+                          <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                            Stockage uniquement. Non consommé storefront V1.
+                          </p>
+                        </details>
+                      </div>
+                    );
+                  })}
+                </div>
+              </details>
+            </AdminFormSection>
+          ) : null}
 
           {pricingData.variantPrices.length > 0 && !isStandalone && (
             <AdminFormSection
@@ -222,8 +347,9 @@ function ProductPricingTabInner({
               description="Chaque variante peut avoir son propre prix. Si aucun prix n'est renseigné, le prix du produit est utilisé."
             >
               <p className="text-xs text-muted-foreground leading-5">
-                Ces prix sont en lecture seule. Pour modifier le prix d&apos;une variante, éditez-la
-                depuis la tab Variantes.
+                Lecture seule (V1). L&apos;édition des prix par variante n&apos;est pas encore
+                disponible dans l&apos;admin. La boutique applique: prix variante si présent, sinon
+                prix produit.
               </p>
               <div className="overflow-x-auto rounded-xl border border-border">
                 <table className="w-full text-sm">

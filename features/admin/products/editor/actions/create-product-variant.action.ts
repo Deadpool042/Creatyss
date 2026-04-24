@@ -7,9 +7,60 @@ import {
   type ProductVariantFormAction,
 } from "../types/product-variants.types";
 import { AdminProductEditorServiceError, createProductVariant } from "../services";
+import type { AdminProductVariantInputErrorCode } from "@/entities/product/admin-product-variant-input";
 
 function getField(formData: FormData, key: string): FormDataEntryValue | null {
   return formData.get(key);
+}
+
+function mapValidationError(code: AdminProductVariantInputErrorCode) {
+  switch (code) {
+    case "missing_sku":
+      return {
+        message: "Le SKU est requis.",
+        fieldErrors: { sku: "Renseignez un SKU." },
+      } as const;
+    case "invalid_slug":
+      return {
+        message: "Le slug est invalide.",
+        fieldErrors: { slug: "Renseignez un slug valide (ou laissez le champ vide)." },
+      } as const;
+    case "invalid_primary_image":
+      return {
+        message: "L'image principale est invalide.",
+        fieldErrors: { primaryImageId: "Sélectionnez une image valide, ou laissez vide." },
+      } as const;
+    case "invalid_status":
+      return {
+        message: "Le statut est invalide.",
+        fieldErrors: { status: "Sélectionnez un statut valide." },
+      } as const;
+    case "invalid_sort_order":
+      return {
+        message: "L'ordre est invalide.",
+        fieldErrors: { sortOrder: "Renseignez un ordre (nombre entier >= 0)." },
+      } as const;
+    case "invalid_weight_grams":
+      return {
+        message: "Le poids est invalide.",
+        fieldErrors: { weightGrams: "Renseignez un poids (nombre entier >= 0), ou laissez vide." },
+      } as const;
+    case "invalid_width_mm":
+      return {
+        message: "La largeur est invalide.",
+        fieldErrors: { widthMm: "Renseignez une largeur (nombre entier >= 0), ou laissez vide." },
+      } as const;
+    case "invalid_height_mm":
+      return {
+        message: "La hauteur est invalide.",
+        fieldErrors: { heightMm: "Renseignez une hauteur (nombre entier >= 0), ou laissez vide." },
+      } as const;
+    case "invalid_depth_mm":
+      return {
+        message: "La profondeur est invalide.",
+        fieldErrors: { depthMm: "Renseignez une profondeur (nombre entier >= 0), ou laissez vide." },
+      } as const;
+  }
 }
 
 export const createProductVariantAction: ProductVariantFormAction = async (
@@ -43,10 +94,12 @@ export const createProductVariantAction: ProductVariantFormAction = async (
   });
 
   if (!validated.ok) {
+    const mapped = mapValidationError(validated.code);
     return {
       ...productVariantFormInitialState,
       status: "error",
-      message: "Données invalides.",
+      message: mapped.message,
+      fieldErrors: mapped.fieldErrors,
     };
   }
 
@@ -98,6 +151,24 @@ export const createProductVariantAction: ProductVariantFormAction = async (
         };
       }
 
+      if (error.code === "variant_sku_taken") {
+        return {
+          ...productVariantFormInitialState,
+          status: "error",
+          message: "SKU déjà utilisé.",
+          fieldErrors: { sku: "Ce SKU est déjà utilisé par une autre variante de ce produit." },
+        };
+      }
+
+      if (error.code === "variant_slug_taken") {
+        return {
+          ...productVariantFormInitialState,
+          status: "error",
+          message: "Slug déjà utilisé.",
+          fieldErrors: { slug: "Ce slug est déjà utilisé par une autre variante de ce produit." },
+        };
+      }
+
       if (error.code === "option_values_invalid") {
         return {
           ...productVariantFormInitialState,
@@ -106,6 +177,18 @@ export const createProductVariantAction: ProductVariantFormAction = async (
           fieldErrors: {
             optionValues:
               "Les valeurs d'option sélectionnées sont invalides ou incohérentes avec ce produit.",
+          },
+        };
+      }
+
+      if (error.code === "duplicate_variant_option_combination") {
+        return {
+          ...productVariantFormInitialState,
+          status: "error",
+          message: "Combinaison déjà utilisée.",
+          fieldErrors: {
+            optionValues:
+              "Une autre variante utilise déjà exactement cette combinaison d'attributs.",
           },
         };
       }

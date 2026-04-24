@@ -4,7 +4,7 @@ import { useTransition, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Archive } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/shared";
 import { deleteProductAction } from "@/features/admin/products/editor/public";
 
 type DeleteProductButtonProps = {
@@ -45,9 +45,15 @@ export function DeleteProductButton({
   }
 
   return (
-    <Button type="button" variant="outline" size="sm" disabled={isPending} onClick={handleDelete}>
-      <Archive className="mr-2 h-4 w-4" />
+    <CustomButton
+      type="button"
+      variant="outline"
+      size="sm"
+      loading={isPending}
+      leadingIcon={<Archive className="h-4 w-4" />}
+      onClick={handleDelete}
+    >
       {isPending ? "Déplacement…" : "Mettre à la corbeille"}
-    </Button>
+    </CustomButton>
   );
 }

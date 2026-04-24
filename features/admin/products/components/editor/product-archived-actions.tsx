@@ -3,7 +3,7 @@
 import type { JSX } from "react";
 import { RotateCcw, Trash2 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/shared";
 import { useArchivedProductMutations } from "./hooks/use-archived-product-mutations";
 
 type ProductArchivedActionsProps = {
@@ -17,20 +17,24 @@ export function ProductArchivedActions({ productSlug }: ProductArchivedActionsPr
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <Button type="button" onClick={handleRestore} disabled={isPending}>
-        <RotateCcw className="mr-2 h-4 w-4" />
+      <CustomButton
+        type="button"
+        loading={isPending}
+        leadingIcon={<RotateCcw className="h-4 w-4" />}
+        onClick={handleRestore}
+      >
         {isPending ? "Traitement…" : "Restaurer"}
-      </Button>
+      </CustomButton>
 
-      <Button
+      <CustomButton
         type="button"
         variant="destructive"
+        loading={isPending}
+        leadingIcon={<Trash2 className="h-4 w-4" />}
         onClick={handlePermanentDelete}
-        disabled={isPending}
       >
-        <Trash2 className="mr-2 h-4 w-4" />
         {isPending ? "Suppression…" : "Supprimer définitivement"}
-      </Button>
+      </CustomButton>
     </div>
   );
 }

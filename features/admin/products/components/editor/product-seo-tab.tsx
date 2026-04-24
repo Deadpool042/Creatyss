@@ -8,9 +8,11 @@ import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { AdminCharCounter } from "@/components/admin/forms/admin-char-counter";
 import { Button } from "@/components/ui/button";
 import { clientEnv } from "@/core/config/env/client";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -18,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toSeoPlainText } from "@/entities/product/seo-text";
 import {
   productSeoFormInitialState,
   type AdminProductEditorData,
@@ -46,44 +49,8 @@ function buildSeoTitleTemplate(productName: string, siteName: string): string {
 }
 
 function buildSeoDescTemplate(shortDescription: string | null, description: string | null): string {
-  const source = shortDescription ?? description ?? "";
+  const source = toSeoPlainText(shortDescription ?? description ?? "");
   return source.length > SEO_DESC_RECOMMENDED ? source.slice(0, SEO_DESC_RECOMMENDED) : source;
-}
-
-function CharCounter({
-  value,
-  min,
-  max,
-}: {
-  value: string;
-  min: number;
-  max: number;
-}): JSX.Element {
-  const len = value.length;
-  const over = len > max;
-  const short = len < min;
-
-  const label = over ? "Trop long" : short ? "À compléter" : "Bonne longueur";
-  const color = over
-    ? "text-destructive"
-    : short
-      ? "text-amber-500 dark:text-amber-400"
-      : "text-emerald-600 dark:text-emerald-500";
-
-  return (
-    <span className="flex items-center gap-1.5">
-      <span className={["text-[10px]", color].join(" ")}>{label}</span>
-      <span className="text-[10px] text-muted-foreground/50">·</span>
-      <span
-        className={[
-          "text-[10px] tabular-nums",
-          over ? "text-destructive" : "text-muted-foreground",
-        ].join(" ")}
-      >
-        {len}/{max}
-      </span>
-    </span>
-  );
 }
 
 function SerpPreview({
@@ -193,9 +160,14 @@ type SeoCheckItem = {
   label: string;
   status: SeoCheckStatus;
   hint?: string;
+  nextStep?: string;
 };
 
 function SeoChecklist({ items }: { items: SeoCheckItem[] }): JSX.Element {
+  const sorted = [...items].sort((left, right) => {
+    const weight = (status: SeoCheckStatus) => (status === "error" ? 0 : status === "warn" ? 1 : 2);
+    return weight(left.status) - weight(right.status);
+  });
   const errorCount = items.filter((item) => item.status === "error").length;
   const warnCount = items.filter((item) => item.status === "warn").length;
 
@@ -230,7 +202,7 @@ function SeoChecklist({ items }: { items: SeoCheckItem[] }): JSX.Element {
         {headerText}
       </p>
       <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((item) => (
+        {sorted.map((item) => (
           <li key={item.label} className="flex flex-col gap-0.5">
             <div className="flex items-center gap-2">
               {item.status === "good" && (
@@ -253,6 +225,32 @@ function SeoChecklist({ items }: { items: SeoCheckItem[] }): JSX.Element {
             {item.hint ? (
               <p className="pl-5.5 text-[10px] leading-snug text-muted-foreground">{item.hint}</p>
             ) : null}
+            {item.nextStep ? (
+              <p className="pl-5.5 text-[10px] leading-snug text-foreground/70">
+                {item.nextStep}
+              </p>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function SeoNextSteps({ items }: { items: SeoCheckItem[] }): JSX.Element | null {
+  const actionable = items.filter((item) => item.status !== "good" && item.nextStep).slice(0, 3);
+  if (actionable.length === 0) return null;
+
+  return (
+    <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-4 py-3">
+      <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-text-muted-strong">
+        À faire en priorité
+      </p>
+      <ul className="grid gap-2">
+        {actionable.map((item) => (
+          <li key={item.label} className="grid gap-0.5">
+            <p className="text-[11px] font-medium leading-snug text-foreground">{item.label}</p>
+            <p className="text-[11px] leading-snug text-text-muted-strong">{item.nextStep}</p>
           </li>
         ))}
       </ul>
@@ -272,8 +270,11 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
 
   // Pre-fill: use saved value if non-empty, otherwise fallback to product data
   const initialTitle = product.seo.title.trim() || product.seo.fallbackTitle;
-  const initialDesc = product.seo.description.trim() || product.seo.fallbackDescription;
+  const initialDesc = toSeoPlainText(
+    product.seo.description.trim() || product.seo.fallbackDescription
+  );
   const previewUrl = product.seo.canonicalPath ?? product.seo.fallbackCanonicalPath;
+  const fallbackOpenGraphDescriptionPlain = toSeoPlainText(product.seo.fallbackOpenGraphDescription);
 
   const [titleValue, setTitleValue] = useState(initialTitle);
   const [descValue, setDescValue] = useState(initialDesc);
@@ -306,6 +307,112 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
   const effectiveSocialTitle = product.seo.openGraphTitle.trim() || titleValue;
   const effectiveSocialDesc = product.seo.openGraphDescription.trim() || descValue;
 
+  const titleLen = titleValue.trim().length;
+  const descLen = descValue.trim().length;
+  const titleStatus: SeoCheckStatus =
+    titleLen >= SEO_TITLE_MIN && titleLen <= SEO_TITLE_RECOMMENDED
+      ? "good"
+      : titleLen > SEO_TITLE_RECOMMENDED
+        ? "warn"
+        : "error";
+  const descStatus: SeoCheckStatus =
+    descLen >= SEO_DESC_MIN && descLen <= SEO_DESC_RECOMMENDED
+      ? "good"
+      : descLen > SEO_DESC_RECOMMENDED
+        ? "warn"
+        : "error";
+  const indexingStatus: SeoCheckStatus = product.seo.indexingMode.startsWith("INDEX")
+    ? "good"
+    : "error";
+  const sitemapStatus: SeoCheckStatus = product.seo.sitemapIncluded ? "good" : "error";
+  const socialImageStatus: SeoCheckStatus =
+    socialImageUrl === null ? "error" : socialImageId !== null ? "good" : "warn";
+  const canonicalStatus: SeoCheckStatus =
+    product.seo.canonicalPath != null && product.seo.canonicalPath.trim() !== "" ? "warn" : "good";
+  const socialOverridesStatus: SeoCheckStatus = hasOverrides ? "good" : "warn";
+
+  const checklistItems: SeoCheckItem[] = [
+    {
+      label: "Titre SEO",
+      status: titleStatus,
+      ...(titleStatus === "error"
+        ? { hint: "Trop court", nextStep: "Ajoutez un détail utile : matière, usage ou gamme." }
+        : titleStatus === "warn"
+          ? {
+              hint: "Trop long",
+              nextStep: "Gardez le nom du produit + 1 bénéfice, retirez le reste.",
+            }
+          : {
+              hint: "Bon",
+              nextStep: "Nom clair, longueur stable.",
+            }),
+    },
+    {
+      label: "Description SEO",
+      status: descStatus,
+      ...(descStatus === "error"
+        ? {
+            hint: "Trop courte",
+            nextStep: "Écrivez 1 phrase : ce que c'est + pour qui + un bénéfice.",
+          }
+        : descStatus === "warn"
+          ? {
+              hint: "Trop longue",
+              nextStep: "Gardez l'essentiel : produit + bénéfice + matière (optionnel).",
+            }
+          : {
+              hint: "Bon",
+              nextStep: "Résumé clair en 1 phrase.",
+            }),
+    },
+    {
+      label: "Visibilité Google",
+      status: indexingStatus,
+      ...(indexingStatus === "error"
+        ? {
+            hint: "Page masquée",
+            nextStep: "Remettez sur “Visible” si vous voulez la faire apparaître sur Google.",
+          }
+        : { hint: "Visible", nextStep: "OK." }),
+    },
+    {
+      label: "Plan du site",
+      status: sitemapStatus,
+      ...(sitemapStatus === "error"
+        ? { hint: "Exclue", nextStep: "Incluez la page sauf cas provisoire." }
+        : { hint: "Incluse", nextStep: "OK." }),
+    },
+    {
+      label: "Image de partage",
+      status: socialImageStatus,
+      ...(socialImageStatus === "error"
+        ? {
+            hint: "Aucune image",
+            nextStep: "Ajoutez une image produit, puis choisissez une image de partage.",
+          }
+        : socialImageStatus === "warn"
+          ? { hint: "Image produit", nextStep: "Optionnel : choisissez une image dédiée." }
+          : { hint: "Dédiée", nextStep: "OK." }),
+    },
+    {
+      label: "URL canonique",
+      status: canonicalStatus,
+      ...(canonicalStatus === "warn"
+        ? {
+            hint: "Personnalisée",
+            nextStep: "Ne remplissez que si ce produit a plusieurs URLs publiques.",
+          }
+        : { hint: "Standard", nextStep: "OK." }),
+    },
+    {
+      label: "Textes réseaux",
+      status: socialOverridesStatus,
+      ...(socialOverridesStatus === "warn"
+        ? { hint: "Par défaut", nextStep: "Optionnel : adaptez le ton pour le partage." }
+        : { hint: "Personnalisés", nextStep: "OK." }),
+    },
+  ];
+
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
       <input type="hidden" name="productId" value={product.product.id} />
@@ -317,114 +424,10 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
             message={state.status !== "idle" ? state.message : null}
           />
 
-          <SeoChecklist
-            items={(() => {
-              // Titre SEO
-              const titleLen = titleValue.trim().length;
-              const titleStatus: SeoCheckStatus =
-                titleLen >= SEO_TITLE_MIN && titleLen <= SEO_TITLE_RECOMMENDED
-                  ? "good"
-                  : titleLen > SEO_TITLE_RECOMMENDED
-                    ? "warn"
-                    : "error";
-
-              // Description SEO
-              const descLen = descValue.trim().length;
-              const descStatus: SeoCheckStatus =
-                descLen >= SEO_DESC_MIN && descLen <= SEO_DESC_RECOMMENDED
-                  ? "good"
-                  : descLen > SEO_DESC_RECOMMENDED
-                    ? "warn"
-                    : "error";
-
-              // Visibilité Google
-              const indexingStatus: SeoCheckStatus = product.seo.indexingMode.startsWith("INDEX")
-                ? "good"
-                : "error";
-
-              // Plan du site
-              const sitemapStatus: SeoCheckStatus = product.seo.sitemapIncluded ? "good" : "error";
-
-              // Image de partage
-              const socialImageStatus: SeoCheckStatus =
-                socialImageUrl === null ? "error" : socialImageId !== null ? "good" : "warn";
-
-              // Canonical
-              const canonicalStatus: SeoCheckStatus =
-                product.seo.canonicalPath != null && product.seo.canonicalPath.trim() !== ""
-                  ? "warn"
-                  : "good";
-
-              // Overrides sociaux
-              const socialOverridesStatus: SeoCheckStatus = hasOverrides ? "good" : "warn";
-
-              const items: SeoCheckItem[] = [
-                {
-                  label: "Titre SEO",
-                  status: titleStatus,
-                  ...(titleStatus === "error"
-                    ? { hint: "Trop court — au moins 20 caractères recommandés" }
-                    : titleStatus === "warn"
-                      ? { hint: "Trop long — Google peut le tronquer" }
-                      : {}),
-                },
-                {
-                  label: "Description SEO",
-                  status: descStatus,
-                  ...(descStatus === "error"
-                    ? { hint: "Trop courte — au moins 50 caractères recommandés" }
-                    : descStatus === "warn"
-                      ? { hint: "Trop longue — Google peut la tronquer" }
-                      : {}),
-                },
-                {
-                  label: "Visibilité Google",
-                  status: indexingStatus,
-                  ...(indexingStatus === "error"
-                    ? { hint: "Page masquée aux moteurs de recherche" }
-                    : {}),
-                },
-                {
-                  label: "Plan du site",
-                  status: sitemapStatus,
-                  ...(sitemapStatus === "error" ? { hint: "Page exclue du plan du site" } : {}),
-                },
-                {
-                  label: "Image de partage",
-                  status: socialImageStatus,
-                  ...(socialImageStatus === "error"
-                    ? {
-                        hint: "Aucune image — le partage sur les réseaux sera sans visuel",
-                      }
-                    : socialImageStatus === "warn"
-                      ? {
-                          hint: "Image produit utilisée — vous pouvez en définir une dédiée",
-                        }
-                      : {}),
-                },
-                {
-                  label: "URL canonique",
-                  status: canonicalStatus,
-                  ...(canonicalStatus === "warn"
-                    ? {
-                        hint: "URL canonique personnalisée — vérifiez qu'elle est correcte",
-                      }
-                    : {}),
-                },
-                {
-                  label: "Overrides sociaux",
-                  status: socialOverridesStatus,
-                  ...(socialOverridesStatus === "warn"
-                    ? {
-                        hint: "Titre/description par défaut utilisés pour le partage",
-                      }
-                    : {}),
-                },
-              ];
-
-              return items;
-            })()}
-          />
+          <div className="grid gap-3">
+            <SeoChecklist items={checklistItems} />
+            <SeoNextSteps items={checklistItems} />
+          </div>
 
           <AdminFormSection
             title="Référencement Google"
@@ -461,10 +464,15 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                         </button>
                       ) : (
                         <p className="text-[11px] text-muted-foreground leading-snug">
-                          Nommez clairement le produit avec ses mots-clés principaux.
+                          {titleStatus === "error"
+                            ? "Conseil : ajoutez 1 détail utile (matière, usage, gamme)."
+                            : titleStatus === "warn"
+                              ? "Conseil : retirez le superflu (gardez produit + 1 bénéfice)."
+                              : "Conseil : nom clair, sans jargon."
+                          }
                         </p>
                       )}
-                      <CharCounter
+                      <AdminCharCounter
                         value={titleValue}
                         min={SEO_TITLE_MIN}
                         max={SEO_TITLE_RECOMMENDED}
@@ -479,12 +487,12 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                   error={state.fieldErrors.description}
                 >
                   <div className="space-y-1.5">
-                    <Input
+                    <Textarea
                       id="seo-description"
                       name="description"
                       value={descValue}
                       onChange={(e) => setDescValue(e.target.value)}
-                      className="text-sm"
+                      className="min-h-24 resize-y text-sm leading-relaxed"
                     />
                     <div className="flex items-center justify-between gap-3">
                       {!hasSavedDesc ? (
@@ -504,10 +512,15 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                         </button>
                       ) : (
                         <p className="text-[11px] text-muted-foreground leading-snug">
-                          Expliquez en une phrase ce que le client trouvera sur cette page.
+                          {descStatus === "error"
+                            ? "Conseil : 1 phrase = ce que c'est + pour qui + bénéfice."
+                            : descStatus === "warn"
+                              ? "Conseil : gardez l'essentiel, supprimez les détails secondaires."
+                              : "Conseil : phrase simple, lisible, sans listes."
+                          }
                         </p>
                       )}
-                      <CharCounter
+                      <AdminCharCounter
                         value={descValue}
                         min={SEO_DESC_MIN}
                         max={SEO_DESC_RECOMMENDED}
@@ -570,6 +583,12 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                         Choisissez si cette page peut apparaître dans les résultats de recherche.
                         Laissez sur "Visible" sauf cas particulier.
                       </p>
+                      {indexingStatus === "error" ? (
+                        <p className="rounded-lg border border-feedback-warning-border bg-feedback-warning-surface px-3 py-2 text-[11px] leading-snug text-feedback-warning-foreground">
+                          Cette page est actuellement masquée aux moteurs. Remettez sur “Visible”
+                          si vous voulez qu’elle apparaisse sur Google.
+                        </p>
+                      ) : null}
                     </div>
                   </AdminFormField>
 
@@ -595,6 +614,12 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                         Le plan du site aide Google à découvrir vos pages. Incluez cette page sauf
                         si elle est masquée ou provisoire.
                       </p>
+                      {sitemapStatus === "error" ? (
+                        <p className="rounded-lg border border-feedback-warning-border bg-feedback-warning-surface px-3 py-2 text-[11px] leading-snug text-feedback-warning-foreground">
+                          Cette page est exclue du plan du site. Gardez “Inclus” sauf cas
+                          provisoire.
+                        </p>
+                      ) : null}
                     </div>
                   </AdminFormField>
                 </div>
@@ -658,7 +683,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                         id="seo-og-description"
                         name="openGraphDescription"
                         defaultValue={product.seo.openGraphDescription}
-                        placeholder={product.seo.fallbackOpenGraphDescription}
+                        placeholder={fallbackOpenGraphDescriptionPlain}
                         className="text-sm"
                       />
                     </AdminFormField>
@@ -688,7 +713,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                         id="seo-twitter-description"
                         name="twitterDescription"
                         defaultValue={product.seo.twitterDescription ?? ""}
-                        placeholder={product.seo.fallbackOpenGraphDescription}
+                        placeholder={fallbackOpenGraphDescriptionPlain}
                         className="text-sm"
                       />
                     </AdminFormField>

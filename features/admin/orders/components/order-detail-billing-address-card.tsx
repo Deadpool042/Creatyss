@@ -15,7 +15,7 @@ type OrderDetailBillingAddressCardProps = Readonly<{
 
 export function OrderDetailBillingAddressCard({ billing }: OrderDetailBillingAddressCardProps) {
   return (
-    <article className="grid gap-3 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+    <article className="grid gap-3 rounded-xl border border-surface-border bg-surface-panel p-5 text-card-foreground shadow-card">
       <SectionIntro className="grid gap-2" eyebrow="Facturation" title="Adresse de facturation" />
 
       {billing.sameAsShipping ? (
@@ -28,7 +28,7 @@ export function OrderDetailBillingAddressCard({ billing }: OrderDetailBillingAdd
             <p className="card-copy text-sm leading-6 text-foreground">{billing.fullName}</p>
           ) : null}
           {billing.phone ? (
-            <p className="card-meta text-sm leading-6 text-muted-foreground">{billing.phone}</p>
+            <p className="card-meta text-sm leading-6 text-text-muted-strong">{billing.phone}</p>
           ) : null}
           {billing.line1 ? (
             <p className="card-copy text-sm leading-6 text-foreground">{billing.line1}</p>
@@ -42,7 +42,7 @@ export function OrderDetailBillingAddressCard({ billing }: OrderDetailBillingAdd
             </p>
           ) : null}
           {billing.countryCode ? (
-            <p className="card-meta text-sm leading-6 text-muted-foreground">
+            <p className="card-meta text-sm leading-6 text-text-muted-strong">
               {billing.countryCode}
             </p>
           ) : null}

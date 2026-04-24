@@ -1,10 +1,12 @@
 "use client";
 
-import { useActionState, useMemo, useState, type JSX } from "react";
+import { useActionState, useEffect, useMemo, useState, type JSX } from "react";
 
 import { useAutoSlug } from "@/entities/shared/slug/hooks/use-auto-slug";
 import { getProductStructurePresentation } from "@/entities/product";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminCharCounter } from "@/components/admin/forms/admin-char-counter";
+import { toast } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -42,6 +44,11 @@ type ProductGeneralTabInnerProps = ProductGeneralTabProps & {
 
 type ProductStatusValue = "draft" | "active" | "inactive" | "archived";
 type IsFeaturedValue = "true" | "false";
+
+const MARKETING_HOOK_MIN = 40;
+const MARKETING_HOOK_MAX = 110;
+const SHORT_DESCRIPTION_MIN = 120;
+const SHORT_DESCRIPTION_MAX = 220;
 
 function getProductTypeLabel(option: { code: string; name: string; slug: string }): string {
   const normalizedCode = option.code.trim().toLowerCase();
@@ -128,6 +135,16 @@ function ProductGeneralTabInner({
     return "Une image principale est déjà définie.";
   }, [product.product.primaryImageAltText, product.product.primaryImageId]);
 
+  useEffect(() => {
+    if (state.status !== "success") {
+      return;
+    }
+
+    toast.success(state.message ?? "Mise à jour effectuée.");
+    // Reset local form state after success to avoid persistent inline success state.
+    onReset();
+  }, [state.status, state.message, onReset]);
+
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
@@ -137,10 +154,6 @@ function ProductGeneralTabInner({
           <AdminFormMessage
             tone="error"
             message={state.status === "error" ? state.message : null}
-          />
-          <AdminFormMessage
-            tone="success"
-            message={state.status === "success" ? state.message : null}
           />
 
           <Card className="rounded-[1.4rem] border border-surface-border-strong bg-surface-panel shadow-raised py-0">
@@ -257,20 +270,36 @@ function ProductGeneralTabInner({
                 hint="Phrase courte affichée en haut de la fiche produit pour mettre le produit en valeur."
                 error={state.fieldErrors.marketingHook}
               >
-                <Input
-                  id="edit-marketing-hook"
-                  name="marketingHook"
-                  value={marketingHook}
-                  onChange={(event) => setMarketingHook(event.target.value)}
-                  placeholder="Ex. Un sac artisanal pensé pour illuminer le quotidien."
-                  className="text-sm"
-                />
+                <div className="space-y-1.5">
+                  <Input
+                    id="edit-marketing-hook"
+                    name="marketingHook"
+                    value={marketingHook}
+                    onChange={(event) => setMarketingHook(event.target.value)}
+                    placeholder="Ex. Un sac artisanal pensé pour illuminer le quotidien."
+                    className="text-sm"
+                  />
+                  <div className="flex items-center justify-end">
+                    <AdminCharCounter
+                      value={marketingHook}
+                      min={MARKETING_HOOK_MIN}
+                      max={MARKETING_HOOK_MAX}
+                    />
+                  </div>
+                </div>
               </AdminFormField>
               <AdminRichTextEditor
                 name="shortDescription"
-                label="Résumé"
+                label="Description courte"
+                hint="Affichée en haut de la fiche produit. Visez une phrase courte, concrète et naturelle (idéalement 120 à 180 caractères, maximum 220)."
                 preset="full"
+                minHeightClassName="min-h-[140px]"
                 initialValue={product.product.shortDescription ?? ""}
+                counter={{
+                  min: SHORT_DESCRIPTION_MIN,
+                  max: SHORT_DESCRIPTION_MAX,
+                  visibleText: true,
+                }}
                 {...(state.fieldErrors.shortDescription
                   ? { error: state.fieldErrors.shortDescription }
                   : {})}
@@ -278,6 +307,7 @@ function ProductGeneralTabInner({
               <AdminRichTextEditor
                 name="description"
                 label="Description détaillée"
+                hint="Développez le produit : usage, praticité, matières, finitions, fabrication artisanale et informations utiles."
                 preset="full"
                 initialValue={product.product.description ?? ""}
                 {...(state.fieldErrors.description ? { error: state.fieldErrors.description } : {})}

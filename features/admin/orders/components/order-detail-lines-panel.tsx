@@ -8,56 +8,58 @@ type OrderDetailLinesPanelProps = Readonly<{
 
 export function OrderDetailLinesPanel({ lines, totalAmount }: OrderDetailLinesPanelProps) {
   return (
-    <aside className="grid gap-4 p-5 border shadow-sm rounded-xl border-border/70 bg-card text-card-foreground">
+    <aside className="grid gap-4 rounded-xl border border-surface-border bg-surface-panel p-5 text-card-foreground shadow-card">
       <div className="grid gap-2">
-        <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Récapitulatif</p>
+        <p className="text-meta-label text-brand">Récapitulatif</p>
         <h2>Lignes de commande</h2>
       </div>
 
       <div className="grid gap-3">
         {lines.map((line) => (
           <article
-            className="grid gap-3 p-4 border rounded-lg border-border/60 bg-muted/10"
+            className="grid gap-3 rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-4"
             key={line.id}
           >
             <div className="grid gap-1">
               <h3>{line.productName}</h3>
-              <p className="text-sm leading-6 text-muted-foreground">
+              <p className="text-secondary-copy reading-compact text-text-muted-strong">
                 {line.variantName} · {line.colorName}
                 {line.colorHex ? ` · ${line.colorHex}` : ""}
               </p>
             </div>
 
             <div className="grid gap-1">
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="text-meta-label text-text-muted-soft">
                 SKU
               </p>
-              <p className="text-sm font-medium leading-6 card-copy text-foreground">{line.sku}</p>
+              <p className="text-secondary-copy reading-compact card-copy font-medium text-foreground">
+                {line.sku}
+              </p>
             </div>
 
             <div className="grid gap-1">
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="text-meta-label text-text-muted-soft">
                 Quantité
               </p>
-              <p className="text-sm font-medium leading-6 card-copy text-foreground">
+              <p className="text-secondary-copy reading-compact card-copy font-medium text-foreground">
                 {line.quantity}
               </p>
             </div>
 
             <div className="grid gap-1">
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="text-meta-label text-text-muted-soft">
                 Prix unitaire figé
               </p>
-              <p className="text-sm font-medium leading-6 card-copy text-foreground">
+              <p className="text-secondary-copy reading-compact card-copy font-medium text-foreground">
                 {line.unitPrice}
               </p>
             </div>
 
             <div className="grid gap-1">
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="text-meta-label text-text-muted-soft">
                 Sous-total
               </p>
-              <p className="text-sm font-medium leading-6 card-copy text-foreground">
+              <p className="text-secondary-copy reading-compact card-copy font-medium text-foreground">
                 {line.lineTotal}
               </p>
             </div>
@@ -68,10 +70,10 @@ export function OrderDetailLinesPanel({ lines, totalAmount }: OrderDetailLinesPa
       <Separator />
 
       <div className="grid gap-1">
-        <p className="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="text-meta-label text-text-muted-soft">
           Total commande
         </p>
-        <p className="text-base font-semibold leading-6 card-copy text-foreground">{totalAmount}</p>
+        <p className="text-title-compact card-copy font-semibold text-foreground">{totalAmount}</p>
       </div>
     </aside>
   );

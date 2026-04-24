@@ -23,6 +23,29 @@ function hasRealImage(url: string | null): boolean {
   return typeof url === "string" && url.trim().length > 0;
 }
 
+function getRatioConformity(widthPx: number | null, heightPx: number | null): {
+  status: "conform" | "non_conform" | "unknown";
+  label: string;
+} {
+  if (
+    widthPx === null ||
+    heightPx === null ||
+    widthPx <= 0 ||
+    heightPx <= 0
+  ) {
+    return { status: "unknown", label: "Dimensions inconnues" };
+  }
+
+  // Tolérance légère pour absorber les écarts d'export.
+  const expectedRatio = 4 / 5;
+  const currentRatio = widthPx / heightPx;
+  const isConform = Math.abs(currentRatio - expectedRatio) <= 0.02;
+
+  return isConform
+    ? { status: "conform", label: "Conforme 4:5 (hero-ready)" }
+    : { status: "non_conform", label: "À recadrer (hors 4:5)" };
+}
+
 type ProductImageItemProps = {
   productId: string;
   image: AdminProductImageItem;
@@ -52,6 +75,7 @@ export function ProductImageItem({
   const [altText, setAltText] = useState(image.altText ?? "");
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const ratioConformity = getRatioConformity(image.widthPx, image.heightPx);
 
   async function handleSetPrimary(): Promise<void> {
     if (!onSetPrimary || image.isPrimary) {
@@ -266,6 +290,22 @@ export function ProductImageItem({
       <div className="space-y-3 p-3">
         <div className="space-y-1">
           <p className="text-xs text-muted-foreground">Ordre : {image.sortOrder}</p>
+          <p
+            className={`text-xs font-medium ${
+              ratioConformity.status === "conform"
+                ? "text-feedback-success-foreground"
+                : ratioConformity.status === "non_conform"
+                  ? "text-feedback-warning-foreground"
+                  : "text-muted-foreground"
+            }`}
+          >
+            {ratioConformity.label}
+          </p>
+          {image.widthPx !== null && image.heightPx !== null ? (
+            <p className="text-xs text-muted-foreground">
+              {image.widthPx} × {image.heightPx} px
+            </p>
+          ) : null}
 
           {!isEditingAltText ? (
             <>
