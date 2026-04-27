@@ -6,9 +6,10 @@ import { useEffect, useMemo, useState } from "react";
 import type { OfferVariant } from "./product-offers-section";
 import type { HeroImage } from "./product-hero-thumbnail-button";
 import type { ProductHeroResolvedProps } from "./product-hero-resolved-props";
+import { ProductHeroSectionDesktop } from "./desktop/product-hero-section-desktop";
+import { ProductHeroSectionTablet } from "./desktop/product-hero-section-tablet";
 import { ProductHeroSectionLandscape } from "./mobile/product-hero-section-landscape";
 import { ProductHeroSectionMobilePortrait } from "./mobile/product-hero-section-mobile-portrait";
-import { ProductHeroSectionDesktop } from "./product-hero-section-desktop";
 
 // ---------------------------------------------------------------------------
 // Props publiques (contrat d'entrée du hero)
@@ -63,7 +64,7 @@ function dedupeHeroImages(images: HeroImage[]): HeroImage[] {
  * Responsabilités :
  * 1. Résoudre les données (variant sélectionné, images, disponibilité)
  * 2. Construire les props résolues (ProductHeroResolvedProps)
- * 3. Rendre les 3 layouts via wrappers CSS-driven (aucune logique JS d'orientation)
+ * 3. Rendre les layouts via wrappers CSS-driven (aucune logique JS d'orientation)
  *
  * Les layouts sont purement présentationnels : aucun état, aucune logique.
  */
@@ -206,8 +207,13 @@ export function ProductHeroSection({
         <ProductHeroSectionMobilePortrait {...resolvedProps} />
       </div>
 
-      {/* Desktop / tablet — md+, hors landscape compact */}
-      <div className="hidden md:block [@media(max-height:600px)_and_(orientation:landscape)]:hidden">
+      {/* Tablet — md à < xl, hors landscape compact */}
+      <div className="hidden md:block xl:hidden [@media(max-height:600px)_and_(orientation:landscape)]:hidden">
+        <ProductHeroSectionTablet {...resolvedProps} />
+      </div>
+
+      {/* Desktop — xl+, hors landscape compact */}
+      <div className="hidden xl:block [@media(max-height:600px)_and_(orientation:landscape)]:hidden">
         <ProductHeroSectionDesktop {...resolvedProps} />
       </div>
     </>

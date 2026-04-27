@@ -39,15 +39,16 @@ export function ProductHeroSectionLandscape({
 }: ProductHeroResolvedProps) {
   const hasVisibleThumbnailRail = false;
   const shouldShowGalleryDots = !hasVisibleThumbnailRail && galleryImages.length > 1;
+  const shouldShowBuyNowPresentation = isSimpleProduct && Boolean(cta);
 
   return (
     <section className="w-full border-b border-shell-border">
       <div className="flex flex-row">
         {/* --- Image compacte (landscape) --- */}
-        <div className="min-w-0 w-[30%] shrink-0 p-2">
+        <div className="min-w-0 w-[28%] shrink-0 p-2">
           {selectedImage ? (
             <>
-              <div className="relative mx-auto h-[56vh] max-h-96 w-auto">
+              <div className="relative mx-auto h-[50vh] max-h-80 w-auto">
                 <Image
                   key={selectedImage.src}
                   src={selectedImage.src}
@@ -89,13 +90,14 @@ export function ProductHeroSectionLandscape({
         </div>
 
         {/* --- Aside dominant (landscape) --- */}
-        <aside className="flex flex-1 flex-col overflow-y-auto px-3 py-2">
-          <div className="flex h-full flex-col gap-2.5">
+        <aside className="flex flex-1 flex-col px-3 py-2">
+          <div className="flex h-full flex-col gap-2">
             <header className="grid gap-1">
               <p className="text-meta-label text-brand">
                 {isSimpleProduct ? "Pièce unique" : "Édition unique"}
               </p>
               <h1 className="text-title-page text-foreground">{productName}</h1>
+
               {marketingHook ? (
                 <p className="max-w-xl border-l-2 border-brand/35 pl-3 text-sm reading-relaxed text-foreground-muted">
                   {marketingHook}
@@ -142,13 +144,6 @@ export function ProductHeroSectionLandscape({
               </div>
             ) : null}
 
-            {shortDescription ? (
-              <div
-                className="prose prose-sm dark:prose-invert max-w-none text-foreground-muted [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
-                dangerouslySetInnerHTML={{ __html: shortDescription }}
-              />
-            ) : null}
-
             <section className="grid gap-2">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <p className="text-meta-label text-brand">Disponibilité</p>
@@ -181,9 +176,36 @@ export function ProductHeroSectionLandscape({
               ) : null}
             </section>
 
-            <div className="mt-auto grid gap-2">
-              {cta ? <div className="border-t border-surface-border pt-2">{cta}</div> : null}
+            <div className="grid gap-2">
+              {cta ? (
+                <div className="grid gap-1.5 border-t border-surface-border pt-2">
+                  {cta}
+
+                  {shouldShowBuyNowPresentation ? (
+                    <div className="grid gap-1">
+                      <button
+                        type="button"
+                        disabled
+                        aria-disabled="true"
+                        className="inline-flex w-auto items-center justify-center self-start justify-self-start rounded-lg border border-control-border bg-control-surface px-3 py-2 text-xs font-medium text-foreground-muted"
+                      >
+                        Achat immédiat
+                      </button>
+                      <p className="text-micro-copy reading-compact text-foreground-muted">
+                        Bientôt disponible
+                      </p>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
+
+            {shortDescription ? (
+              <div
+                className="prose prose-sm dark:prose-invert max-w-none border-t border-surface-border pt-2 text-foreground-muted [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                dangerouslySetInnerHTML={{ __html: shortDescription }}
+              />
+            ) : null}
 
             {asideExtra ? (
               <div className="border-t border-surface-border pt-2">{asideExtra}</div>

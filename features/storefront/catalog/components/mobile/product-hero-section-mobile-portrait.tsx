@@ -53,6 +53,7 @@ export function ProductHeroSectionMobilePortrait({
 }: ProductHeroResolvedProps) {
   const hasVisibleThumbnailRail = false;
   const shouldShowGalleryDots = !hasVisibleThumbnailRail && galleryImages.length > 1;
+  const shouldShowBuyNowPresentation = isSimpleProduct && Boolean(cta);
 
   return (
     <section className="w-full border-b border-shell-border">
@@ -78,7 +79,7 @@ export function ProductHeroSectionMobilePortrait({
               />
 
               {galleryImages.length > 1 ? (
-                <div className="absolute bottom-3 right-3 rounded-full bg-background/70 px-2.5 py-1 backdrop-blur-sm">
+                <div className="absolute bottom-2.5 right-2.5 rounded-full bg-background/70 px-2.5 py-1 backdrop-blur-sm">
                   <span className="text-micro-copy tabular-nums text-foreground">
                     {activeImageIndex + 1} / {galleryImages.length}
                   </span>
@@ -101,12 +102,13 @@ export function ProductHeroSectionMobilePortrait({
             </div>
           </div>
         )}
+
       </div>
 
       {/* --- Aside empilé (mobile portrait) --- */}
-      <aside className="flex flex-col px-6 py-8 sm:px-7">
-        <div className="flex flex-col gap-7">
-          <header className="grid gap-3">
+      <aside className="flex flex-col px-6 pb-7 pt-6 sm:px-7 sm:pt-7">
+        <div className="flex flex-col gap-6">
+          <header className="grid gap-2.5">
             <p className="text-meta-label text-brand">
               {isSimpleProduct ? "Pièce unique" : "Édition unique"}
             </p>
@@ -121,7 +123,7 @@ export function ProductHeroSectionMobilePortrait({
           </header>
 
           {resolvedHeroVariant ? (
-            <div className="grid gap-5">
+            <div className="grid gap-4">
               {resolvedHeroVariant.compareAtPrice ? (
                 <div className="flex items-baseline gap-2">
                   <span className="text-meta-label text-brand">Ancien prix</span>
@@ -159,15 +161,71 @@ export function ProductHeroSectionMobilePortrait({
             </div>
           ) : null}
 
+          <section className="grid gap-3">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <p className="text-meta-label text-brand">Disponibilité</p>
+              <span
+                className={[
+                  "flex items-center gap-1.5 text-sm font-medium",
+                  resolvedIsAvailable
+                    ? "text-feedback-success-foreground"
+                    : "text-feedback-error-foreground",
+                ].join(" ")}
+              >
+                <span
+                  aria-hidden="true"
+                  className={[
+                    "h-1.5 w-1.5 rounded-full",
+                    resolvedIsAvailable ? "bg-feedback-success" : "bg-feedback-error",
+                  ].join(" ")}
+                />
+                {getProductAvailabilityLabel(resolvedIsAvailable)}
+              </span>
+            </div>
+
+            {resolvedSingleVariantSku ? (
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <p className="text-meta-label text-brand">Référence</p>
+                <p className="font-mono text-sm text-foreground-muted">
+                  {resolvedSingleVariantSku}
+                </p>
+              </div>
+            ) : null}
+          </section>
+
+          <div className="mt-auto grid gap-4">
+            {cta ? (
+              <div className="grid gap-2.5 border-t border-surface-border pt-6">
+                {cta}
+
+                {shouldShowBuyNowPresentation ? (
+                  <div className="grid gap-1.5">
+                    <button
+                      type="button"
+                      disabled
+                      aria-disabled="true"
+                      className="inline-flex w-auto items-center justify-center self-start rounded-xl border border-control-border bg-control-surface px-4 py-3 text-sm font-medium text-foreground-muted"
+                    >
+                      Achat immédiat
+                    </button>
+                    <p className="text-micro-copy reading-compact text-foreground-muted">
+                      Bientôt disponible
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+
           {shortDescription ? (
             <div
-              className="prose prose-sm dark:prose-invert max-w-none text-foreground-muted [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+              className="prose prose-sm dark:prose-invert max-w-none border-t border-surface-border pt-4 text-foreground-muted [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
               dangerouslySetInnerHTML={{ __html: shortDescription }}
             />
           ) : null}
 
           {!isSimpleProduct && variableVariants && variableVariants.length > 1 ? (
-            <section className="grid gap-4">
+            <section className="grid gap-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="text-meta-label text-brand">Choix principal</p>
                 {selectedVariableVariant ? (
@@ -206,44 +264,8 @@ export function ProductHeroSectionMobilePortrait({
             </section>
           ) : null}
 
-          <section className="grid gap-4">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <p className="text-meta-label text-brand">Disponibilité</p>
-              <span
-                className={[
-                  "flex items-center gap-1.5 text-sm font-medium",
-                  resolvedIsAvailable
-                    ? "text-feedback-success-foreground"
-                    : "text-feedback-error-foreground",
-                ].join(" ")}
-              >
-                <span
-                  aria-hidden="true"
-                  className={[
-                    "h-1.5 w-1.5 rounded-full",
-                    resolvedIsAvailable ? "bg-feedback-success" : "bg-feedback-error",
-                  ].join(" ")}
-                />
-                {getProductAvailabilityLabel(resolvedIsAvailable)}
-              </span>
-            </div>
-
-            {resolvedSingleVariantSku ? (
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <p className="text-meta-label text-brand">Référence</p>
-                <p className="font-mono text-sm text-foreground-muted">
-                  {resolvedSingleVariantSku}
-                </p>
-              </div>
-            ) : null}
-          </section>
-
-          <div className="mt-auto grid gap-5">
-            {cta ? <div className="border-t border-surface-border pt-8">{cta}</div> : null}
-          </div>
-
           {asideExtra ? (
-            <div className="border-t border-surface-border pt-6">{asideExtra}</div>
+            <div className="border-t border-surface-border pt-5">{asideExtra}</div>
           ) : null}
         </div>
       </aside>
