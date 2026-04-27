@@ -1,8 +1,8 @@
-import { buildProductImages } from "@/features/storefront/catalog/model/build-product-images";
-import { buildTechnicalSpecs } from "@/features/storefront/catalog/model/build-technical-specs";
-import { buildVariantSummary } from "@/features/storefront/catalog/model/build-variant-summary";
-import { normalizeOfferVariants } from "@/features/storefront/catalog/model/normalize-offer-variants";
-import { resolveReferenceVariant } from "@/features/storefront/catalog/model/resolve-reference-variant";
+import { buildProductImages } from "@/features/storefront/catalog/product-page/model/build-product-images";
+import { buildTechnicalSpecs } from "@/features/storefront/catalog/product-page/model/build-technical-specs";
+import { buildVariantSummary } from "@/features/storefront/catalog/product-page/model/build-variant-summary";
+import { normalizeOfferVariants } from "@/features/storefront/catalog/product-page/model/normalize-offer-variants";
+import { resolveReferenceVariant } from "@/features/storefront/catalog/product-page/model/resolve-reference-variant";
 import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
 type ProductPageViewModelVariant = {

@@ -4,10 +4,10 @@ import { notFound } from "next/navigation";
 import { Notice } from "@/components/shared/notice";
 import { clientEnv } from "@/core/config/env";
 import { getPublishedProductBySlug } from "@/features/storefront/catalog";
-import { buildProductJsonLd } from "@/features/storefront/catalog/model/build-product-json-ld";
 import { ProductPageTemplate } from "@/features/storefront/catalog/product-page/components/product-page-template";
 import { buildProductPageViewModel } from "@/features/storefront/catalog/product-page/composition/build-product-page-view-model";
 import { buildStorefrontProductPageRendering } from "@/features/storefront/catalog/product-page/composition/build-storefront-product-page-rendering";
+import { buildProductJsonLd } from "@/features/storefront/catalog/product-page/model/build-product-json-ld";
 import { buildSeoDescription, pickSeoText } from "@/entities/product/seo-text";
 
 export const dynamic = "force-dynamic";
