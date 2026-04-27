@@ -12,8 +12,6 @@
  */
 import React from "react";
 
-import { Gem, MapPin, ShieldCheck } from "lucide-react";
-
 import { getUploadsPublicPath } from "@/core/uploads";
 import { getProductOfferSectionPresentation } from "@/entities/product/product-public-presentation";
 
@@ -23,6 +21,7 @@ import { ProductHeroSection } from "./product-hero-section";
 import { ProductOffersSection, type OfferVariant } from "./product-offers-section";
 // import { ProductPreHeaderSection } from "./product-preheader-section";
 import { ProductRelatedSection } from "./product-related-section";
+import { ProductTrust } from "./shared/product-trust";
 
 type ProductPageImage = {
   src: string;
@@ -114,20 +113,7 @@ export function ProductPageTemplate({
             asideExtra={heroAsideExtra}
           />
 
-          <div className="flex w-full flex-wrap items-center justify-center gap-x-8 gap-y-3 border-t border-shell-border/60 px-6 py-5">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="size-4 shrink-0 text-foreground/50" aria-hidden="true" />
-              <span className="text-micro-copy text-foreground-muted">Paiement sécurisé</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="size-4 shrink-0 text-foreground/50" aria-hidden="true" />
-              <span className="text-micro-copy text-foreground-muted">Fabrication locale</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Gem className="size-4 shrink-0 text-foreground/50" aria-hidden="true" />
-              <span className="text-micro-copy text-foreground-muted">Pièces uniques</span>
-            </div>
-          </div>
+          <ProductTrust />
         </div>
 
         {isVariableProduct ? (

@@ -19,35 +19,112 @@ type StorefrontProductPageRendering = {
   renderVariantCta: (variant: OfferVariant) => React.ReactNode;
 };
 
-export function buildStorefrontProductPageRendering(
-  input: BuildStorefrontProductPageRenderingInput
-): StorefrontProductPageRendering {
-  const { productSlug, isSimpleProduct, singleOffer, variantSummary } = input;
+function renderBuyNowPresentation(): React.ReactNode {
+  return (
+    <div className="grid justify-start gap-1">
+      <CustomButton
+        type="button"
+        variant="outline"
+        disabled
+        aria-disabled="true"
+        className="w-auto justify-self-start"
+      >
+        Achat immédiat
+      </CustomButton>
 
-  const heroCta =
-    singleOffer && singleOffer.isAvailable ? (
-      <form action={addToCartAction} className="flex flex-wrap items-center gap-3">
-        <input type="hidden" name="productSlug" value={productSlug} />
-        <input type="hidden" name="variantId" value={singleOffer.id} />
+      <p className="text-micro-copy reading-compact text-text-muted-strong">Bientôt disponible</p>
+    </div>
+  );
+}
 
-        <Label htmlFor="hero-quantity" className="sr-only">Quantité</Label>
+function renderHeroAddToCartForm(input: {
+  productSlug: string;
+  variantId: string;
+}): React.ReactNode {
+  return (
+    <form action={addToCartAction} className="flex flex-wrap items-center gap-3">
+      <input type="hidden" name="productSlug" value={input.productSlug} />
+      <input type="hidden" name="variantId" value={input.variantId} />
+
+      <Label htmlFor="hero-quantity" className="sr-only">
+        Quantité
+      </Label>
+      <Input
+        id="hero-quantity"
+        name="quantity"
+        type="number"
+        min={1}
+        step={1}
+        defaultValue={1}
+        className="h-10 w-20 rounded-xl px-3"
+      />
+
+      <CustomButton type="submit" className="w-auto">
+        Ajouter au panier
+      </CustomButton>
+    </form>
+  );
+}
+
+function renderVariantAddToCartForm(input: {
+  productSlug: string;
+  variantId: string;
+}): React.ReactNode {
+  return (
+    <form action={addToCartAction} className="flex flex-wrap items-end gap-2">
+      <input type="hidden" name="productSlug" value={input.productSlug} />
+      <input type="hidden" name="variantId" value={input.variantId} />
+
+      <div className="grid gap-1">
+        <Label htmlFor={`quantity-${input.variantId}`} className="sr-only">
+          Quantité
+        </Label>
         <Input
-          id="hero-quantity"
+          id={`quantity-${input.variantId}`}
           name="quantity"
           type="number"
           min={1}
           step={1}
           defaultValue={1}
-          className="h-11 w-20 rounded-xl px-3"
+          className="h-9 w-20"
         />
+      </div>
 
-        <CustomButton type="submit" className="flex-1 sm:flex-none">Ajouter au panier</CustomButton>
-      </form>
-    ) : !isSimpleProduct ? (
+      <CustomButton type="submit" className="w-auto" size="sm">
+        Ajouter au panier
+      </CustomButton>
+    </form>
+  );
+}
+
+export function buildStorefrontProductPageRendering(
+  input: BuildStorefrontProductPageRenderingInput
+): StorefrontProductPageRendering {
+  const { productSlug, isSimpleProduct, singleOffer, variantSummary } = input;
+
+  const canRenderHeroAddToCart = Boolean(singleOffer?.isAvailable);
+  const shouldShowHeroBuyNowPresentation = canRenderHeroAddToCart;
+  const shouldRenderVariantSelectionCta = !isSimpleProduct && !canRenderHeroAddToCart;
+
+  let heroCta: React.ReactNode = null;
+
+  if (canRenderHeroAddToCart && singleOffer) {
+    heroCta = (
+      <div className="grid justify-start gap-3">
+        {renderHeroAddToCartForm({
+          productSlug,
+          variantId: singleOffer.id,
+        })}
+        {shouldShowHeroBuyNowPresentation ? renderBuyNowPresentation() : null}
+      </div>
+    );
+  } else if (shouldRenderVariantSelectionCta) {
+    heroCta = (
       <CustomButton asChild>
         <Link href="#offers">Choisir une déclinaison</Link>
       </CustomButton>
-    ) : null;
+    );
+  }
 
   const offersSummaryContent =
     !isSimpleProduct && variantSummary ? (
@@ -71,33 +148,16 @@ export function buildStorefrontProductPageRendering(
     }
 
     return (
-      <div className="grid gap-2">
-        <p className="text-micro-copy reading-compact text-text-muted-strong">
-          Ajout au panier
-        </p>
-        <form action={addToCartAction} className="flex flex-wrap items-end gap-2">
-          <input type="hidden" name="productSlug" value={productSlug} />
-          <input type="hidden" name="variantId" value={variant.id} />
+      <div className="grid justify-start gap-2.5">
+        <div className="grid gap-2">
+          <p className="text-micro-copy reading-compact text-text-muted-strong">Ajout au panier</p>
+          {renderVariantAddToCartForm({
+            productSlug,
+            variantId: variant.id,
+          })}
+        </div>
 
-          <div className="grid gap-1">
-            <Label htmlFor={`quantity-${variant.id}`} className="sr-only">
-              Quantité
-            </Label>
-            <Input
-              id={`quantity-${variant.id}`}
-              name="quantity"
-              type="number"
-              min={1}
-              step={1}
-              defaultValue={1}
-              className="h-9 w-20"
-            />
-          </div>
-
-          <CustomButton type="submit" size="sm">
-            Ajouter au panier
-          </CustomButton>
-        </form>
+        {renderBuyNowPresentation()}
       </div>
     );
   };
