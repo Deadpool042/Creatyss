@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Archive, Eye, MoreHorizontal, Plus, RotateCcw, Trash2 } from "lucide-react";
+import { Archive, MoreHorizontal, Plus, RotateCcw, Trash2 } from "lucide-react";
 import type { JSX } from "react";
 
 import { DeleteProductButton } from "./delete-product-button";

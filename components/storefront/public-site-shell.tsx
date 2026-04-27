@@ -41,6 +41,7 @@ function isPublicLinkActive(pathname: string, href: string): boolean {
 export function PublicSiteShell({ children }: PublicSiteShellProps) {
   const pathname = usePathname();
   const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/");
+  const isPdpRoute = /^\/boutique\/.+/.test(pathname);
 
   if (isAdminRoute) {
     return children;
@@ -175,16 +176,16 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
 
       <nav
         aria-label="Navigation principale mobile"
-        className="site-header-blur fixed inset-x-0 bottom-0 z-30 border-t border-shell-border md:hidden [@media(max-height:430px)_and_(orientation:landscape)]:border-t"
+        className="site-header-blur fixed inset-x-0 bottom-0 z-30 border-t border-shell-border md:hidden [@media(max-height:430px)_and_(orientation:landscape)]:border-t p-1"
       >
-        <div className="mx-auto grid w-full max-w-430 grid-cols-3 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 [@media(max-height:430px)_and_(orientation:landscape)]:px-1.5 [@media(max-height:430px)_and_(orientation:landscape)]:pb-[max(0.2rem,env(safe-area-inset-bottom))] [@media(max-height:430px)_and_(orientation:landscape)]:pt-1">
+        <div className="mx-auto grid w-full max-w-430 grid-cols-3 gap-1 ">
           {publicLinksLeft.map((link) => {
             const Icon = link.icon;
             const isActive = isPublicLinkActive(pathname, link.href);
 
             return (
               <Link
-                className={`flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl px-2 py-2 text-[0.66rem] font-medium transition-colors [@media(max-height:430px)_and_(orientation:landscape)]:min-h-11 [@media(max-height:430px)_and_(orientation:landscape)]:gap-0.5 [@media(max-height:430px)_and_(orientation:landscape)]:rounded-xl [@media(max-height:430px)_and_(orientation:landscape)]:px-1.5 [@media(max-height:430px)_and_(orientation:landscape)]:py-1 [@media(max-height:430px)_and_(orientation:landscape)]:text-[0.56rem] ${
+                className={`flex min-h-fit flex-col items-center justify-center gap-1 rounded-2xl py-1 text-xs font-medium transition-colors  ${
                   isActive
                     ? "bg-surface-subtle text-foreground"
                     : "text-foreground/70 hover:bg-surface-subtle hover:text-foreground"
@@ -192,7 +193,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
                 href={link.href}
                 key={link.href}
               >
-                <Icon className="size-[1.05rem] [@media(max-height:430px)_and_(orientation:landscape)]:size-[0.86rem]" />
+                <Icon size="0.8rem" />
                 <span>{link.label}</span>
               </Link>
             );
@@ -200,7 +201,11 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
         </div>
       </nav>
 
-      <main className="mx-auto w-full max-w-full overflow-x-clip px-4 pb-28 pt-8 md:px-6 md:pb-20 xl:px-12">
+      <main
+        className={`mx-auto w-full max-w-full overflow-x-clip pb-28 md:pb-20 ${
+          isPdpRoute ? "pt-0" : "px-4 pt-8 md:px-6 xl:px-12"
+        }`}
+      >
         {children}
       </main>
     </div>

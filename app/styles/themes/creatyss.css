@@ -228,19 +228,7 @@
   --hero-border: rgb(201 190 176);
   --hero-vignette: rgb(20 12 6 / 0.1);
 
-  /* ==========================================================================
-     Band — always-dark editorial band (guarantees strip)
-     Always identical in :root and .dark since band-bg never changes.
-     ========================================================================== */
-
-  --band-bg: rgb(28 22 16);
-  --band-border: rgb(255 255 255 / 0.06);
-  --band-foreground: rgb(255 255 255 / 0.85);
-  --band-foreground-muted: rgb(255 255 255 / 0.55);
-  --band-icon: rgb(255 255 255 / 0.45);
-  --band-eyebrow: rgb(255 255 255 / 0.3);
-  --band-form-border: rgb(255 255 255 / 0.15);
-
+  /*
   /* ==========================================================================
      Media
      ========================================================================== */
@@ -378,8 +366,7 @@
   --shadow-floating: 0 14px 34px rgb(0 0 0 / 0.56);
   --shadow-control: 0 1px 3px rgb(0 0 0 / 0.42), 0 3px 8px rgb(0 0 0 / 0.38);
   --shadow-control-hover: 0 2px 5px rgb(0 0 0 / 0.46), 0 6px 14px rgb(0 0 0 / 0.42);
-  --shadow-control-pressed:
-    inset 0 1px 0 rgb(255 255 255 / 0.2), inset 0 2px 5px rgb(0 0 0 / 0.5);
+  --shadow-control-pressed: inset 0 1px 0 rgb(255 255 255 / 0.2), inset 0 2px 5px rgb(0 0 0 / 0.5);
   --shadow-overlay: 0 30px 104px rgb(0 0 0 / 0.56);
   --shadow-inset-soft: inset 0 1px 0 rgb(255 255 255 / 0.14);
 
@@ -443,14 +430,6 @@
   /* ==========================================================================
      Band — always-dark (same as :root — intentionally identical)
      ========================================================================== */
-
-  --band-bg: rgb(28 22 16);
-  --band-border: rgb(255 255 255 / 0.06);
-  --band-foreground: rgb(255 255 255 / 0.85);
-  --band-foreground-muted: rgb(255 255 255 / 0.55);
-  --band-icon: rgb(255 255 255 / 0.45);
-  --band-eyebrow: rgb(255 255 255 / 0.3);
-  --band-form-border: rgb(255 255 255 / 0.15);
 
   /* ==========================================================================
      Media

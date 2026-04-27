@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { getUploadsPublicPath } from "@/core/uploads";
 import { listCatalogFilterCategories, listPublishedProducts } from "@/features/storefront/catalog";
+import { catalogSearchParamsSchema } from "@/features/storefront/catalog/schemas/catalog-search-params.schema";
 import {
   CATALOG_AVAILABILITY_FILTER_VALUE,
   validateCatalogFilterInput,
@@ -22,14 +23,6 @@ type BoutiqueSearchParams = {
 type ProductsPageProps = Readonly<{
   searchParams: Promise<BoutiqueSearchParams>;
 }>;
-
-function getFirstSearchParamValue(value: string | string[] | undefined): string | null {
-  if (Array.isArray(value)) {
-    return value[0] ?? null;
-  }
-
-  return value ?? null;
-}
 
 function getBoutiqueMetadata(input: {
   searchQuery: string | null;
@@ -74,10 +67,15 @@ function getImageUrl(uploadsPublicPath: string, filePath: string): string {
 
 export async function generateMetadata({ searchParams }: ProductsPageProps): Promise<Metadata> {
   const resolvedSearchParams = await searchParams;
-  const searchQuery = validateCatalogSearchQuery(getFirstSearchParamValue(resolvedSearchParams.q));
+  const catalogSearchParams = catalogSearchParamsSchema.parse({
+    q: resolvedSearchParams.q,
+    category: resolvedSearchParams.category,
+    available: resolvedSearchParams.availability,
+  });
+  const searchQuery = validateCatalogSearchQuery(catalogSearchParams.q);
   const filters = validateCatalogFilterInput({
-    category: getFirstSearchParamValue(resolvedSearchParams.category),
-    availability: getFirstSearchParamValue(resolvedSearchParams.availability),
+    category: catalogSearchParams.category,
+    availability: catalogSearchParams.available ? CATALOG_AVAILABILITY_FILTER_VALUE : null,
   });
   const categories = filters.categorySlug === null ? [] : await listCatalogFilterCategories();
   const selectedCategory =
@@ -95,13 +93,15 @@ export async function generateMetadata({ searchParams }: ProductsPageProps): Pro
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const resolvedSearchParams = await searchParams;
-  const rawQuery = getFirstSearchParamValue(resolvedSearchParams.q);
-  const rawCategory = getFirstSearchParamValue(resolvedSearchParams.category);
-  const rawAvailability = getFirstSearchParamValue(resolvedSearchParams.availability);
-  const searchQuery = validateCatalogSearchQuery(rawQuery);
+  const catalogSearchParams = catalogSearchParamsSchema.parse({
+    q: resolvedSearchParams.q,
+    category: resolvedSearchParams.category,
+    available: resolvedSearchParams.availability,
+  });
+  const searchQuery = validateCatalogSearchQuery(catalogSearchParams.q);
   const filters = validateCatalogFilterInput({
-    category: rawCategory,
-    availability: rawAvailability,
+    category: catalogSearchParams.category,
+    availability: catalogSearchParams.available ? CATALOG_AVAILABILITY_FILTER_VALUE : null,
   });
   const [products, categories] = await Promise.all([
     listPublishedProducts({

@@ -17,6 +17,17 @@ import { getUploadsPublicPath } from "@/core/uploads";
 import { mapAdminProductStatus } from "@/features/admin/products/mappers";
 import type { AdminProductLifecycleStatus } from "@/features/admin/products/types";
 import type { SeoIndexingMode } from "@/entities/seo";
+import {
+  buildCatalogImageUrl,
+  dedupeCatalogImages,
+} from "@/features/storefront/catalog/helpers/catalog-images";
+import { formatCatalogMoney } from "@/features/storefront/catalog/helpers/catalog-pricing";
+import { getCatalogVariantAvailability } from "@/features/storefront/catalog/helpers/catalog-availability";
+import {
+  CATALOG_RELATED_TYPE_CONFIG,
+  CATALOG_RELATED_TYPE_ORDER,
+  type CatalogRelatedTypeKey,
+} from "@/features/storefront/catalog/helpers/related-product-groups";
 
 // ---------------------------------------------------------------------------
 // Types exportés — utilisés par PREV-2 (page preview)
@@ -86,80 +97,6 @@ export type AdminProductPreview = {
   seoTwitterDescription: string | null;
   seoTwitterImageUrl: string | null;
 };
-
-// ---------------------------------------------------------------------------
-// Helpers privés au module
-// Justification : formatMoney, mapVariantAvailability sont des helpers internes
-// au module storefront/catalog — non exportés, non partagés.
-// getUploadsPublicPath est importé depuis @/core/uploads (partagé).
-// ---------------------------------------------------------------------------
-
-function formatMoney(value: { toString(): string } | null): string {
-  if (value === null) {
-    return "";
-  }
-
-  const parsed = Number.parseFloat(value.toString());
-
-  if (!Number.isFinite(parsed)) {
-    return value.toString();
-  }
-
-  return `${parsed.toFixed(2)} €`;
-}
-
-function mapVariantAvailability(variant: {
-  inventoryItems: Array<{
-    onHandQuantity: number;
-    reservedQuantity: number;
-  }>;
-}): boolean {
-  return variant.inventoryItems.some((item) => item.onHandQuantity - item.reservedQuantity > 0);
-}
-
-function buildImageUrl(storageKey: string, uploadsPublicPath: string): string {
-  return `${uploadsPublicPath}/${storageKey.replace(/^\/+/, "")}`;
-}
-
-function dedupeImages(images: AdminProductPreviewImage[]): AdminProductPreviewImage[] {
-  const seen = new Set<string>();
-  const result: AdminProductPreviewImage[] = [];
-
-  for (const image of images) {
-    if (seen.has(image.src)) {
-      continue;
-    }
-    seen.add(image.src);
-    result.push(image);
-  }
-
-  return result;
-}
-
-// ---------------------------------------------------------------------------
-// Config groupes produits liés — miroir de getPublishedProductBySlug
-// ---------------------------------------------------------------------------
-
-type RelatedTypeKey = "RELATED" | "CROSS_SELL" | "UP_SELL" | "ACCESSORY" | "SIMILAR";
-
-const RELATED_TYPE_CONFIG: Record<
-  RelatedTypeKey,
-  { type: AdminProductPreviewRelatedProductGroup["type"]; label: string }
-> = {
-  RELATED: { type: "related", label: "À découvrir aussi" },
-  CROSS_SELL: { type: "cross_sell", label: "Compléter avec" },
-  UP_SELL: { type: "up_sell", label: "Version premium" },
-  ACCESSORY: { type: "accessory", label: "Accessoires conseillés" },
-  SIMILAR: { type: "similar", label: "Alternative similaire" },
-};
-
-const RELATED_TYPE_ORDER: RelatedTypeKey[] = [
-  "RELATED",
-  "CROSS_SELL",
-  "UP_SELL",
-  "ACCESSORY",
-  "SIMILAR",
-];
 
 // ---------------------------------------------------------------------------
 // Query principale
@@ -349,16 +286,16 @@ export async function getAdminProductPreviewBySlug(
   const primaryImage: AdminProductPreviewImage[] = product.primaryImage
     ? [
         {
-          src: buildImageUrl(product.primaryImage.storageKey, uploadsPublicPath),
+          src: buildCatalogImageUrl(product.primaryImage.storageKey, uploadsPublicPath),
           alt: product.primaryImage.altText,
         },
       ]
     : [];
   const galleryImages: AdminProductPreviewImage[] = galleryImageReferences.map((reference) => ({
-    src: buildImageUrl(reference.asset.storageKey, uploadsPublicPath),
+    src: buildCatalogImageUrl(reference.asset.storageKey, uploadsPublicPath),
     alt: reference.asset.altText,
   }));
-  const images = dedupeImages([...primaryImage, ...galleryImages]);
+  const images = dedupeCatalogImages([...primaryImage, ...galleryImages]);
 
   const productLevelPrice = product.prices[0] ?? null;
 
@@ -373,7 +310,7 @@ export async function getAdminProductPreviewBySlug(
     const variantImages: AdminProductPreviewImage[] = variant.primaryImage
       ? [
           {
-            src: buildImageUrl(variant.primaryImage.storageKey, uploadsPublicPath),
+            src: buildCatalogImageUrl(variant.primaryImage.storageKey, uploadsPublicPath),
             alt: variant.primaryImage.altText,
           },
         ]
@@ -386,20 +323,20 @@ export async function getAdminProductPreviewBySlug(
       colorName: null,
       colorHex: null,
       isDefault: variant.isDefault,
-      isAvailable: mapVariantAvailability(variant),
-      price: formatMoney(activePrice?.amount ?? null),
-      compareAtPrice: formatMoney(compareAtAmount) || null,
+      isAvailable: getCatalogVariantAvailability(variant),
+      price: formatCatalogMoney(activePrice?.amount ?? null),
+      compareAtPrice: formatCatalogMoney(compareAtAmount) || null,
       images: variantImages,
     };
   });
 
   const isAvailable = variants.some((variant) => variant.isAvailable);
 
-  const relatedGroupsMap = new Map<RelatedTypeKey, AdminProductPreviewRelatedProduct[]>();
+  const relatedGroupsMap = new Map<CatalogRelatedTypeKey, AdminProductPreviewRelatedProduct[]>();
 
   for (const rel of product.relatedFrom) {
-    const key = rel.type as RelatedTypeKey;
-    if (!(key in RELATED_TYPE_CONFIG)) continue;
+    const key = rel.type as CatalogRelatedTypeKey;
+    if (!(key in CATALOG_RELATED_TYPE_CONFIG)) continue;
     if (!relatedGroupsMap.has(key)) {
       relatedGroupsMap.set(key, []);
     }
@@ -413,11 +350,11 @@ export async function getAdminProductPreviewBySlug(
     });
   }
 
-  const relatedProductGroups: AdminProductPreviewRelatedProductGroup[] = RELATED_TYPE_ORDER.filter(
+  const relatedProductGroups: AdminProductPreviewRelatedProductGroup[] = CATALOG_RELATED_TYPE_ORDER.filter(
     (t) => relatedGroupsMap.has(t)
   ).map((t) => ({
-    type: RELATED_TYPE_CONFIG[t].type,
-    label: RELATED_TYPE_CONFIG[t].label,
+    type: CATALOG_RELATED_TYPE_CONFIG[t]!.type,
+    label: CATALOG_RELATED_TYPE_CONFIG[t]!.label,
     products: relatedGroupsMap.get(t)!,
   }));
 
@@ -449,12 +386,12 @@ export async function getAdminProductPreviewBySlug(
     seoOpenGraphTitle: seoMetadata?.openGraphTitle ?? null,
     seoOpenGraphDescription: seoMetadata?.openGraphDescription ?? null,
     seoOpenGraphImageUrl: ogImageStorageKey
-      ? buildImageUrl(ogImageStorageKey, uploadsPublicPath)
+      ? buildCatalogImageUrl(ogImageStorageKey, uploadsPublicPath)
       : null,
     seoTwitterTitle: seoMetadata?.twitterTitle ?? null,
     seoTwitterDescription: seoMetadata?.twitterDescription ?? null,
     seoTwitterImageUrl: twitterImageStorageKey
-      ? buildImageUrl(twitterImageStorageKey, uploadsPublicPath)
+      ? buildCatalogImageUrl(twitterImageStorageKey, uploadsPublicPath)
       : null,
   };
 }
