@@ -19,12 +19,11 @@ import {
   ProductOffersSection,
   type OfferVariant,
 } from "./sections/product-offers-section";
-// import { ProductPreHeaderSection } from "./sections/product-preheader-section";
 import { ProductRelatedSection } from "./sections/product-related-section";
 import { ProductHeroSection } from "./hero/product-hero-section";
 import { ProductDescriptionSection } from "./sections/product-description-section";
 import { ProductEditorialSection } from "./sections/product-editorial-section";
-import { ProductTrust } from "@/features/storefront/catalog/components/shared/product-trust";
+import { ProductTrust } from "./shared/product-trust";
 
 type ProductPageImage = {
   src: string;
