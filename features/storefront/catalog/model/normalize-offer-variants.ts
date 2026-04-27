@@ -1,4 +1,4 @@
-import type { OfferVariant } from "@/features/storefront/catalog/components/product-offers-section";
+import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
 type CatalogVariantSource = {
   id: string;

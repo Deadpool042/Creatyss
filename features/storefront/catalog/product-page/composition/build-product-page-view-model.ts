@@ -1,9 +1,9 @@
-import type { OfferVariant } from "@/features/storefront/catalog/components/product-offers-section";
 import { buildProductImages } from "@/features/storefront/catalog/model/build-product-images";
 import { buildTechnicalSpecs } from "@/features/storefront/catalog/model/build-technical-specs";
 import { buildVariantSummary } from "@/features/storefront/catalog/model/build-variant-summary";
 import { normalizeOfferVariants } from "@/features/storefront/catalog/model/normalize-offer-variants";
 import { resolveReferenceVariant } from "@/features/storefront/catalog/model/resolve-reference-variant";
+import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
 type ProductPageViewModelVariant = {
   id: string;

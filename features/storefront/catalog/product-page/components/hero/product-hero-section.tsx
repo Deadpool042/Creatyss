@@ -3,7 +3,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import type { OfferVariant } from "./product-offers-section";
+import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 import type { HeroImage } from "./product-hero-thumbnail-button";
 import type { ProductHeroResolvedProps } from "./product-hero-resolved-props";
 import { ProductHeroSectionDesktop } from "./desktop/product-hero-section-desktop";

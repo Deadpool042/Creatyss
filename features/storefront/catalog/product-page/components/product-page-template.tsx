@@ -15,13 +15,16 @@ import React from "react";
 import { getUploadsPublicPath } from "@/core/uploads";
 import { getProductOfferSectionPresentation } from "@/entities/product/product-public-presentation";
 
-import { ProductDescriptionSection } from "./product-description-section";
-import { ProductEditorialSection } from "./product-editorial-section";
-import { ProductHeroSection } from "./product-hero-section";
-import { ProductOffersSection, type OfferVariant } from "./product-offers-section";
-// import { ProductPreHeaderSection } from "./product-preheader-section";
-import { ProductRelatedSection } from "./product-related-section";
-import { ProductTrust } from "./shared/product-trust";
+import {
+  ProductOffersSection,
+  type OfferVariant,
+} from "./sections/product-offers-section";
+// import { ProductPreHeaderSection } from "./sections/product-preheader-section";
+import { ProductRelatedSection } from "./sections/product-related-section";
+import { ProductHeroSection } from "./hero/product-hero-section";
+import { ProductDescriptionSection } from "./sections/product-description-section";
+import { ProductEditorialSection } from "./sections/product-editorial-section";
+import { ProductTrust } from "@/features/storefront/catalog/components/shared/product-trust";
 
 type ProductPageImage = {
   src: string;

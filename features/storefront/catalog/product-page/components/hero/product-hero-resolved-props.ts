@@ -1,6 +1,6 @@
 // features/storefront/catalog/components/product-hero-resolved-props.ts
 
-import type { OfferVariant } from "./product-offers-section";
+import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 import type { HeroImage } from "./product-hero-thumbnail-button";
 
 /**

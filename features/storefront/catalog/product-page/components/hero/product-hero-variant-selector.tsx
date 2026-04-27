@@ -1,4 +1,4 @@
-import type { OfferVariant } from "./product-offers-section";
+import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
 type ProductHeroVariantSelectorProps = {
   variableVariants: OfferVariant[] | undefined;

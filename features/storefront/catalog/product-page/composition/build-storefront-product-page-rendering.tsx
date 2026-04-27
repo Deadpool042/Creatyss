@@ -4,7 +4,7 @@ import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { addToCartAction } from "@/features/cart";
-import type { OfferVariant } from "@/features/storefront/catalog/components/product-offers-section";
+import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
 type BuildStorefrontProductPageRenderingInput = {
   productSlug: string;

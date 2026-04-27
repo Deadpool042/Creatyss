@@ -17,3 +17,8 @@ export type {
   CatalogCategoryFilterItem,
   CatalogSitemapProduct,
 } from "./catalog-meta.types";
+
+export type {
+  OfferVariant,
+  OfferVariantOptionValue,
+} from "./product-offer-variant.types";

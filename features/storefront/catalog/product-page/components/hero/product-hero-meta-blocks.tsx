@@ -1,6 +1,6 @@
 import { getProductAvailabilityLabel } from "@/entities/product/product-public-presentation";
 
-import type { OfferVariant } from "./product-offers-section";
+import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
 type ProductHeroMetaDensity = "compact" | "cozy" | "default";
 

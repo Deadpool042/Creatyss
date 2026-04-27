@@ -17,9 +17,9 @@ import {
   getAdminProductPreviewBySlug,
   type AdminProductPreview,
 } from "@/features/admin/products/preview";
-import { buildProductPageViewModel } from "@/features/storefront/catalog/composition/build-product-page-view-model";
-import { type OfferVariant } from "@/features/storefront/catalog/components/product-offers-section";
-import { ProductPageTemplate } from "@/features/storefront/catalog/components/product-page-template";
+import { ProductPageTemplate } from "@/features/storefront/catalog/product-page/components/product-page-template";
+import { buildProductPageViewModel } from "@/features/storefront/catalog/product-page/composition/build-product-page-view-model";
+import { type OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
 type PreviewPageProps = Readonly<{
   params: Promise<{ slug: string }>;
