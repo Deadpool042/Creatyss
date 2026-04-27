@@ -46,6 +46,7 @@ export function ProductHeroSectionLandscape({
 }: ProductHeroResolvedProps) {
   const hasVisibleThumbnailRail = false;
   const shouldShowGalleryDots = !hasVisibleThumbnailRail && galleryImages.length > 1;
+  const shouldShowActionBlock = Boolean(cta);
 
   return (
     <section className="w-full border-b border-shell-border">
@@ -94,40 +95,47 @@ export function ProductHeroSectionLandscape({
         {/* --- Aside dominant (landscape) --- */}
         <aside className="flex flex-1 flex-col px-3 py-2">
           <div className="flex h-full flex-col gap-2">
-            <ProductHeroHeader
-              productName={productName}
-              marketingHook={marketingHook}
-              isSimpleProduct={isSimpleProduct}
-              density="compact"
-            />
-
-            {resolvedHeroVariant ? (
-              <ProductHeroPricingMeta
-                resolvedHeroVariant={resolvedHeroVariant}
+            <section className="grid gap-1.5">
+              <ProductHeroHeader
+                productName={productName}
+                marketingHook={marketingHook}
                 isSimpleProduct={isSimpleProduct}
-                variablePriceLabel={variablePriceLabel}
-                variableSummaryText={variableSummaryText}
                 density="compact"
               />
+            </section>
+
+            <section className="grid gap-2 border-t border-surface-border pt-2">
+              {resolvedHeroVariant ? (
+                <ProductHeroPricingMeta
+                  resolvedHeroVariant={resolvedHeroVariant}
+                  isSimpleProduct={isSimpleProduct}
+                  variablePriceLabel={variablePriceLabel}
+                  variableSummaryText={variableSummaryText}
+                  density="compact"
+                />
+              ) : null}
+
+              <ProductHeroAvailabilityMeta
+                resolvedIsAvailable={resolvedIsAvailable}
+                resolvedSingleVariantSku={resolvedSingleVariantSku}
+                density="compact"
+              />
+            </section>
+
+            {shouldShowActionBlock ? (
+              <section className="grid gap-2 border-t border-surface-border pt-2">
+                <div className="grid gap-1.5">{cta}</div>
+              </section>
             ) : null}
 
-            <ProductHeroAvailabilityMeta
-              resolvedIsAvailable={resolvedIsAvailable}
-              resolvedSingleVariantSku={resolvedSingleVariantSku}
-              density="compact"
-            />
-
-            <div className="grid gap-2">
-              {cta ? (
-                <div className="grid gap-1.5 border-t border-surface-border pt-2">{cta}</div>
-              ) : null}
-            </div>
-
             {shortDescription ? (
-              <div
-                className="prose prose-sm dark:prose-invert max-w-none border-t border-surface-border pt-2 text-foreground-muted [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
-                dangerouslySetInnerHTML={{ __html: shortDescription }}
-              />
+              <section className="grid gap-1.5 border-t border-surface-border pt-2">
+                <p className="text-meta-label text-brand">Description</p>
+                <div
+                  className="prose prose-sm dark:prose-invert max-w-none text-text-muted-strong [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                  dangerouslySetInnerHTML={{ __html: shortDescription }}
+                />
+              </section>
             ) : null}
 
             {asideExtra ? (

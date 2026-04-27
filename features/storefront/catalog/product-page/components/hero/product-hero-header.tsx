@@ -42,7 +42,7 @@ export function ProductHeroHeader({
       {marketingHook ? (
         <p
           className={[
-            "border-l-2 border-brand/35 reading-relaxed text-foreground-muted",
+            "border-l-2 border-brand/35 reading-relaxed text-text-muted-strong",
             getMarketingHookClass(density),
           ].join(" ")}
         >

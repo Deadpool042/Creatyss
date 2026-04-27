@@ -49,6 +49,7 @@ export function ProductHeroSectionMobilePortrait({
 }: ProductHeroResolvedProps) {
   const hasVisibleThumbnailRail = false;
   const shouldShowGalleryDots = !hasVisibleThumbnailRail && galleryImages.length > 1;
+  const shouldShowActionBlock = !isSimpleProduct || Boolean(cta);
 
   return (
     <section className="w-full border-b border-shell-border">
@@ -98,48 +99,55 @@ export function ProductHeroSectionMobilePortrait({
       {/* --- Aside empilé (mobile portrait) --- */}
       <aside className="flex flex-col px-6 pb-7 pt-6 sm:px-7 sm:pt-7">
         <div className="flex flex-col gap-6">
-          <ProductHeroHeader
-            productName={productName}
-            marketingHook={marketingHook}
-            isSimpleProduct={isSimpleProduct}
-            density="default"
-          />
-
-          {resolvedHeroVariant ? (
-            <ProductHeroPricingMeta
-              resolvedHeroVariant={resolvedHeroVariant}
+          <section className="grid gap-4">
+            <ProductHeroHeader
+              productName={productName}
+              marketingHook={marketingHook}
               isSimpleProduct={isSimpleProduct}
-              variablePriceLabel={variablePriceLabel}
-              variableSummaryText={variableSummaryText}
               density="default"
             />
-          ) : null}
+          </section>
 
-          <ProductHeroAvailabilityMeta
-            resolvedIsAvailable={resolvedIsAvailable}
-            resolvedSingleVariantSku={resolvedSingleVariantSku}
-            density="default"
-          />
-
-          <div className="mt-auto grid gap-4">
-            {cta ? (
-              <div className="grid gap-2.5 border-t border-surface-border pt-6">{cta}</div>
+          <section className="grid gap-5 border-t border-surface-border pt-5">
+            {resolvedHeroVariant ? (
+              <ProductHeroPricingMeta
+                resolvedHeroVariant={resolvedHeroVariant}
+                isSimpleProduct={isSimpleProduct}
+                variablePriceLabel={variablePriceLabel}
+                variableSummaryText={variableSummaryText}
+                density="default"
+              />
             ) : null}
-          </div>
+
+            <ProductHeroAvailabilityMeta
+              resolvedIsAvailable={resolvedIsAvailable}
+              resolvedSingleVariantSku={resolvedSingleVariantSku}
+              density="default"
+            />
+          </section>
+
+          {shouldShowActionBlock ? (
+            <section className="mt-auto grid gap-4 border-t border-surface-border pt-5">
+              {!isSimpleProduct ? (
+                <ProductHeroVariantSelector
+                  variableVariants={variableVariants}
+                  selectedVariableVariant={selectedVariableVariant}
+                  onSelectVariantId={onSelectVariantId}
+                />
+              ) : null}
+
+              {cta ? <div className="grid gap-2.5">{cta}</div> : null}
+            </section>
+          ) : null}
 
           {shortDescription ? (
-            <div
-              className="prose prose-sm dark:prose-invert max-w-none border-t border-surface-border pt-4 text-foreground-muted [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
-              dangerouslySetInnerHTML={{ __html: shortDescription }}
-            />
-          ) : null}
-
-          {!isSimpleProduct ? (
-            <ProductHeroVariantSelector
-              variableVariants={variableVariants}
-              selectedVariableVariant={selectedVariableVariant}
-              onSelectVariantId={onSelectVariantId}
-            />
+            <section className="grid gap-2 border-t border-surface-border pt-4">
+              <p className="text-meta-label text-brand">Description</p>
+              <div
+                className="prose prose-sm dark:prose-invert max-w-none text-text-muted-strong [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                dangerouslySetInnerHTML={{ __html: shortDescription }}
+              />
+            </section>
           ) : null}
 
           {asideExtra ? (
