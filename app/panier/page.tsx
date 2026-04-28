@@ -19,6 +19,10 @@ type CartPageProps = Readonly<{
 
 function getStatusMessage(status: string | undefined): string | null {
   switch (status) {
+    case "added":
+      return "Article ajouté au panier.";
+    case "buy_now_added":
+      return "Article ajouté. Vous pouvez finaliser votre panier.";
     case "updated":
       return "Quantité du panier mise à jour.";
     case "removed":

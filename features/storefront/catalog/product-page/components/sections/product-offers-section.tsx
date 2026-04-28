@@ -52,12 +52,12 @@ export function ProductOffersSection({
   const singleVariant = isSimpleProduct && variants.length === 1 ? variants[0] : null;
   const actionHint =
     productType === "variable"
-      ? "Retrouvez ici chaque déclinaison avec son état, puis confirmez votre choix pour l'ajout au panier."
+      ? "Retrouvez ci-dessous chaque déclinaison disponible et ajoutez celle de votre choix au panier."
       : null;
   const roleHint =
-    productType === "variable" ? "Validation d'achat" : presentation.eyebrow;
+    productType === "variable" ? "Déclinaisons disponibles" : presentation.eyebrow;
   const resolvedTitle =
-    productType === "variable" ? "Confirmer une déclinaison" : presentation.title;
+    productType === "variable" ? "Choisissez votre version" : presentation.title;
 
   return (
     <section
@@ -182,7 +182,7 @@ function VariantOfferCard({
     <article className="grid gap-4 rounded-xl border border-surface-border-subtle/80 bg-surface-panel/55 p-5 shadow-inset-soft min-[700px]:gap-4.5 min-[700px]:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="grid min-w-0 gap-1">
-          <p className="text-meta-label text-text-muted-soft">Déclinaison</p>
+          <p className="text-meta-label text-text-muted-soft">Version</p>
           <h3 className="m-0 text-title-compact">{variant.name}</h3>
           {metaText ? (
             <p className="m-0 text-micro-copy reading-compact text-text-muted-soft">{metaText}</p>

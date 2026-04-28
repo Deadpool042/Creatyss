@@ -11,7 +11,6 @@ import { notFound } from "next/navigation";
 
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { Notice } from "@/components/shared/notice";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   getAdminProductPreviewBySlug,
@@ -19,7 +18,6 @@ import {
 } from "@/features/admin/products/preview";
 import { ProductPageTemplate } from "@/features/storefront/catalog/product-page/components/product-page-template";
 import { buildProductPageViewModel } from "@/features/storefront/catalog/product-page/composition/build-product-page-view-model";
-import { type OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
 type PreviewPageProps = Readonly<{
   params: Promise<{ slug: string }>;
@@ -131,29 +129,6 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
             <p className="break-all font-mono text-sm text-muted-foreground">{product.slug}</p>
           </div>
         }
-        offersSummaryContent={
-          !viewModel.isSimpleProduct && viewModel.variantSummary ? (
-            <div className="mb-6 flex flex-wrap gap-3">
-              <Badge variant="secondary">
-                {viewModel.variantSummary.total} déclinaison
-                {viewModel.variantSummary.total > 1 ? "s" : ""}
-              </Badge>
-              <Badge variant="outline">
-                <span className={product.isAvailable ? "text-emerald-700" : "text-destructive"}>
-                  {viewModel.variantSummary.available} disponible
-                  {viewModel.variantSummary.available > 1 ? "s" : ""}
-                </span>
-              </Badge>
-            </div>
-          ) : undefined
-        }
-        renderVariantCta={(_variant: OfferVariant) => (
-          <div className="border-t border-surface-border pt-4">
-            <Button disabled variant="outline">
-              Ajouter au panier — disponible en boutique
-            </Button>
-          </div>
-        )}
       />
     </AdminPageShell>
   );

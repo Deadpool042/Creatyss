@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,30 +8,73 @@ type BuildStorefrontProductPageRenderingInput = {
   productSlug: string;
   isSimpleProduct: boolean;
   singleOffer: OfferVariant | null;
-  variantSummary: { total: number; available: number } | null;
 };
 
 type StorefrontProductPageRendering = {
   heroCta: React.ReactNode;
-  offersSummaryContent: React.ReactNode;
-  renderVariantCta: (variant: OfferVariant) => React.ReactNode;
 };
 
-function renderBuyNowPresentation(): React.ReactNode {
+type RenderCartActionFormInput = {
+  productSlug: string;
+  variantId: string;
+  quantityInputId: string;
+  quantityInputClassName: string;
+  formClassName: string;
+  primaryButtonSize?: React.ComponentProps<typeof CustomButton>["size"];
+  secondaryButtonSize?: React.ComponentProps<typeof CustomButton>["size"];
+  helperCopy: string;
+};
+
+function renderCartActionForm(input: RenderCartActionFormInput): React.ReactNode {
+  const buyNowHelpId = `${input.quantityInputId}-buy-now-help`;
+
   return (
-    <div className="grid justify-start gap-1">
+    <form action={addToCartAction} className={input.formClassName}>
+      <input type="hidden" name="productSlug" value={input.productSlug} />
+      <input type="hidden" name="variantId" value={input.variantId} />
+
+      <Label htmlFor={input.quantityInputId} className="sr-only">
+        Quantité
+      </Label>
+      <Input
+        id={input.quantityInputId}
+        name="quantity"
+        type="number"
+        min={1}
+        step={1}
+        defaultValue={1}
+        className={input.quantityInputClassName}
+      />
+
       <CustomButton
-        type="button"
+        type="submit"
+        name="intent"
+        value="add_to_cart"
+        size={input.primaryButtonSize}
+        className="w-auto"
+      >
+        Ajouter au panier
+      </CustomButton>
+
+      <CustomButton
+        type="submit"
+        name="intent"
+        value="buy_now"
         variant="outline"
-        disabled
-        aria-disabled="true"
-        className="w-auto justify-self-start"
+        size={input.secondaryButtonSize}
+        aria-describedby={buyNowHelpId}
+        className="w-auto border-control-border-strong"
       >
         Achat immédiat
       </CustomButton>
 
-      <p className="text-micro-copy reading-compact text-text-muted-strong">Bientôt disponible</p>
-    </div>
+      <p
+        id={buyNowHelpId}
+        className="basis-full text-micro-copy reading-compact text-text-muted-strong"
+      >
+        {input.helperCopy}
+      </p>
+    </form>
   );
 }
 
@@ -41,70 +82,22 @@ function renderHeroAddToCartForm(input: {
   productSlug: string;
   variantId: string;
 }): React.ReactNode {
-  return (
-    <form action={addToCartAction} className="flex flex-wrap items-center gap-3">
-      <input type="hidden" name="productSlug" value={input.productSlug} />
-      <input type="hidden" name="variantId" value={input.variantId} />
-
-      <Label htmlFor="hero-quantity" className="sr-only">
-        Quantité
-      </Label>
-      <Input
-        id="hero-quantity"
-        name="quantity"
-        type="number"
-        min={1}
-        step={1}
-        defaultValue={1}
-        className="h-10 w-20 rounded-xl px-3"
-      />
-
-      <CustomButton type="submit" className="w-auto">
-        Ajouter au panier
-      </CustomButton>
-    </form>
-  );
-}
-
-function renderVariantAddToCartForm(input: {
-  productSlug: string;
-  variantId: string;
-}): React.ReactNode {
-  return (
-    <form action={addToCartAction} className="flex flex-wrap items-end gap-2">
-      <input type="hidden" name="productSlug" value={input.productSlug} />
-      <input type="hidden" name="variantId" value={input.variantId} />
-
-      <div className="grid gap-1">
-        <Label htmlFor={`quantity-${input.variantId}`} className="sr-only">
-          Quantité
-        </Label>
-        <Input
-          id={`quantity-${input.variantId}`}
-          name="quantity"
-          type="number"
-          min={1}
-          step={1}
-          defaultValue={1}
-          className="h-9 w-20"
-        />
-      </div>
-
-      <CustomButton type="submit" className="w-auto" size="sm">
-        Ajouter au panier
-      </CustomButton>
-    </form>
-  );
+  return renderCartActionForm({
+    productSlug: input.productSlug,
+    variantId: input.variantId,
+    quantityInputId: "hero-quantity",
+    quantityInputClassName: "h-10 w-20 rounded-xl px-3",
+    formClassName: "flex flex-wrap items-center gap-3",
+    helperCopy: "Ajoutez l'article, puis consultez votre panier.",
+  });
 }
 
 export function buildStorefrontProductPageRendering(
   input: BuildStorefrontProductPageRenderingInput
 ): StorefrontProductPageRendering {
-  const { productSlug, isSimpleProduct, singleOffer, variantSummary } = input;
+  const { productSlug, singleOffer } = input;
 
   const canRenderHeroAddToCart = Boolean(singleOffer?.isAvailable);
-  const shouldShowHeroBuyNowPresentation = canRenderHeroAddToCart;
-  const shouldRenderVariantSelectionCta = !isSimpleProduct && !canRenderHeroAddToCart;
 
   let heroCta: React.ReactNode = null;
 
@@ -115,56 +108,11 @@ export function buildStorefrontProductPageRendering(
           productSlug,
           variantId: singleOffer.id,
         })}
-        {shouldShowHeroBuyNowPresentation ? renderBuyNowPresentation() : null}
       </div>
-    );
-  } else if (shouldRenderVariantSelectionCta) {
-    heroCta = (
-      <CustomButton asChild>
-        <Link href="#offers">Choisir une déclinaison</Link>
-      </CustomButton>
     );
   }
 
-  const offersSummaryContent =
-    !isSimpleProduct && variantSummary ? (
-      <div className="flex flex-wrap gap-2">
-        <span className="rounded-full border border-control-border bg-control-surface px-2.5 py-1 text-micro-copy font-medium text-text-muted-strong">
-          {variantSummary.total} déclinaison{variantSummary.total > 1 ? "s" : ""}
-        </span>
-        <span className="rounded-full border border-control-border bg-control-surface px-2.5 py-1 text-micro-copy font-medium text-text-muted-strong">
-          {variantSummary.available} disponible{variantSummary.available > 1 ? "s" : ""}
-        </span>
-      </div>
-    ) : undefined;
-
-  const renderVariantCta = (variant: OfferVariant) => {
-    if (!variant.isAvailable) {
-      return (
-        <p className="text-micro-copy reading-compact font-medium text-feedback-error-foreground">
-          Indisponible actuellement.
-        </p>
-      );
-    }
-
-    return (
-      <div className="grid justify-start gap-2.5">
-        <div className="grid gap-2">
-          <p className="text-micro-copy reading-compact text-text-muted-strong">Ajout au panier</p>
-          {renderVariantAddToCartForm({
-            productSlug,
-            variantId: variant.id,
-          })}
-        </div>
-
-        {renderBuyNowPresentation()}
-      </div>
-    );
-  };
-
   return {
     heroCta,
-    offersSummaryContent,
-    renderVariantCta,
   };
 }

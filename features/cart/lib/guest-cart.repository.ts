@@ -92,8 +92,8 @@ async function queryRows<T>(sql: string, params: unknown[] = []): Promise<T[]> {
   return db.$queryRawUnsafe<T[]>(sql, ...params);
 }
 
-function isValidNumericId(value: string): boolean {
-  return /^[0-9]+$/.test(value);
+function isValidEntityId(value: string): boolean {
+  return value.trim().length > 0;
 }
 
 function toIsoTimestamp(value: TimestampValue): string {
@@ -220,13 +220,13 @@ export async function createGuestCart(token: string): Promise<string> {
 export async function findGuestCartVariantById(
   variantId: string
 ): Promise<GuestCartVariant | null> {
-  if (!isValidNumericId(variantId)) return null;
+  if (!isValidEntityId(variantId)) return null;
   const row = await queryFirst<GuestCartVariantRow>(
     `select pv.id::text as id, pv.product_id::text as product_id, p.slug as product_slug,
       p.name as product_name, p.status as product_status, pv.name, pv.color_name, pv.color_hex,
       pv.sku, pv.price::text as price, pv.stock_quantity, pv.status
      from product_variants pv inner join products p on p.id = pv.product_id
-     where pv.id = $1::bigint limit 1`,
+     where pv.id::text = $1 limit 1`,
     [variantId]
   );
   return row ? mapGuestCartVariant(row) : null;
@@ -236,10 +236,10 @@ export async function findGuestCartItemByVariant(
   cartId: string,
   variantId: string
 ): Promise<GuestCartItemReference | null> {
-  if (!isValidNumericId(cartId) || !isValidNumericId(variantId)) return null;
+  if (!isValidEntityId(cartId) || !isValidEntityId(variantId)) return null;
   const row = await queryFirst<GuestCartItemReferenceRow>(
     `select id::text as id, product_variant_id::text as product_variant_id, quantity
-     from cart_items where cart_id = $1::bigint and product_variant_id = $2::bigint limit 1`,
+     from cart_items where cart_id::text = $1 and product_variant_id::text = $2 limit 1`,
     [cartId, variantId]
   );
   return row ? mapGuestCartItemReference(row) : null;
@@ -249,10 +249,10 @@ export async function findGuestCartItemById(
   cartId: string,
   itemId: string
 ): Promise<GuestCartItemReference | null> {
-  if (!isValidNumericId(cartId) || !isValidNumericId(itemId)) return null;
+  if (!isValidEntityId(cartId) || !isValidEntityId(itemId)) return null;
   const row = await queryFirst<GuestCartItemReferenceRow>(
     `select id::text as id, product_variant_id::text as product_variant_id, quantity
-     from cart_items where cart_id = $1::bigint and id = $2::bigint limit 1`,
+     from cart_items where cart_id::text = $1 and id::text = $2 limit 1`,
     [cartId, itemId]
   );
   return row ? mapGuestCartItemReference(row) : null;
@@ -265,7 +265,7 @@ export async function addGuestCartItemQuantity(input: {
 }): Promise<void> {
   await db.$executeRawUnsafe(
     `insert into cart_items (cart_id, product_variant_id, quantity)
-     values ($1::bigint, $2::bigint, $3)
+     values ($1, $2, $3)
      on conflict (cart_id, product_variant_id)
      do update set quantity = cart_items.quantity + excluded.quantity`,
     input.cartId,
@@ -281,7 +281,7 @@ export async function updateGuestCartItemQuantity(input: {
 }): Promise<boolean> {
   const row = await queryFirst<GuestCartIdRow>(
     `update cart_items set quantity = $3
-     where cart_id = $1::bigint and id = $2::bigint
+     where cart_id::text = $1 and id::text = $2
      returning id::text as id`,
     [input.cartId, input.itemId, input.quantity]
   );
@@ -293,7 +293,7 @@ export async function removeGuestCartItem(input: {
   itemId: string;
 }): Promise<boolean> {
   const row = await queryFirst<GuestCartIdRow>(
-    `delete from cart_items where cart_id = $1::bigint and id = $2::bigint
+    `delete from cart_items where cart_id::text = $1 and id::text = $2
      returning id::text as id`,
     [input.cartId, input.itemId]
   );
@@ -322,7 +322,7 @@ export async function readGuestCartByToken(token: string): Promise<GuestCart | n
 export async function readGuestCheckoutDetailsByCartId(
   cartId: string
 ): Promise<GuestCheckoutDetails | null> {
-  if (!isValidNumericId(cartId)) return null;
+  if (!isValidEntityId(cartId)) return null;
   const row = await queryFirst<GuestCartCheckoutDetailsRow>(
     `select id::text as id, cart_id::text as cart_id, customer_email,
       customer_first_name, customer_last_name, customer_phone,
@@ -331,7 +331,7 @@ export async function readGuestCheckoutDetailsByCartId(
       billing_first_name, billing_last_name, billing_phone,
       billing_address_line_1, billing_address_line_2, billing_postal_code,
       billing_city, billing_country_code, created_at, updated_at
-     from cart_checkout_details where cart_id = $1::bigint limit 1`,
+     from cart_checkout_details where cart_id::text = $1 limit 1`,
     [cartId]
   );
   return row ? mapGuestCheckoutDetails(row) : null;
@@ -365,7 +365,7 @@ export async function upsertGuestCheckoutDetails(input: {
       shipping_country_code, billing_same_as_shipping, billing_first_name, billing_last_name,
       billing_phone, billing_address_line_1, billing_address_line_2, billing_postal_code,
       billing_city, billing_country_code
-    ) values ($1::bigint,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
+    ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
     on conflict (cart_id) do update set
       customer_email = excluded.customer_email,
       customer_first_name = excluded.customer_first_name,

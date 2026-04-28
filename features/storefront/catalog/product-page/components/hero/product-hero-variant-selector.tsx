@@ -30,7 +30,7 @@ export function ProductHeroVariantSelector({
   return (
     <section className="grid gap-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-meta-label text-brand">Choix principal</p>
+        <p className="text-meta-label text-brand">Votre sélection</p>
         {selectedVariableVariant ? (
           <p className="text-micro-copy reading-compact text-foreground-muted">
             {getVariantSelectionLabel(selectedVariableVariant)}
@@ -39,7 +39,7 @@ export function ProductHeroVariantSelector({
       </div>
 
       <p className="max-w-2xl text-secondary-copy reading-relaxed text-foreground-muted">
-        Définissez ici la déclinaison à privilégier.
+        Choisissez la déclinaison qui vous convient.
       </p>
 
       <div className="flex flex-wrap gap-2.5">

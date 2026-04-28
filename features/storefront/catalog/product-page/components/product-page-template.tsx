@@ -13,12 +13,8 @@
 import React from "react";
 
 import { getUploadsPublicPath } from "@/core/uploads";
-import { getProductOfferSectionPresentation } from "@/entities/product/product-public-presentation";
+import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
-import {
-  ProductOffersSection,
-  type OfferVariant,
-} from "./sections/product-offers-section";
 import { ProductRelatedSection } from "./sections/product-related-section";
 import { ProductHeroSection } from "./hero/product-hero-section";
 import { ProductDescriptionSection } from "./sections/product-description-section";
@@ -61,8 +57,6 @@ export type ProductPageTemplateProps = {
   heroCta?: React.ReactNode;
   heroVariantSummary?: { total: number; available: number } | null;
   heroAsideExtra?: React.ReactNode;
-  offersSummaryContent?: React.ReactNode;
-  renderVariantCta?: (variant: OfferVariant) => React.ReactNode;
 };
 
 export function ProductPageTemplate({
@@ -81,14 +75,10 @@ export function ProductPageTemplate({
   heroCta,
   heroVariantSummary,
   heroAsideExtra,
-  offersSummaryContent,
-  renderVariantCta,
 }: ProductPageTemplateProps) {
   const uploadsPublicPath = getUploadsPublicPath();
   const isSimpleProduct = productType === "simple";
-  const isVariableProduct = !isSimpleProduct;
   const singleOffer = isSimpleProduct && variants.length === 1 ? (variants[0] ?? null) : null;
-  const offerSectionPresentation = getProductOfferSectionPresentation(productType);
   const hasRelatedProducts = relatedProductGroups.some((g) => g.products.length > 0);
   const resolvedTechnicalSpecs = technicalSpecs ?? [];
   const hasTechnicalSpecs = resolvedTechnicalSpecs.length > 0;
@@ -118,23 +108,12 @@ export function ProductPageTemplate({
           <ProductTrust />
         </div>
 
-        {isVariableProduct ? (
-          <ProductOffersSection
-            id="offers"
-            productType={productType}
-            variants={variants}
-            presentation={offerSectionPresentation}
-            summaryContent={offersSummaryContent}
-            {...(renderVariantCta ? { renderVariantCta } : {})}
-          />
-        ) : null}
-
         {description ? <ProductDescriptionSection descriptionHtml={description} /> : null}
       </div>
 
       <ProductEditorialSection />
 
-      <div className="mt-8 grid gap-7 min-[700px]:mt-10 min-[700px]:gap-9 min-[1200px]:mt-12 min-[1200px]:gap-10">
+      <div className="mt-8 grid gap-5 min-[700px]:mt-10 min-[700px]:gap-7 min-[1200px]:mt-12 min-[1200px]:gap-8">
         {characteristics && characteristics.length > 0 ? (
           <section className="w-full">
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
@@ -179,22 +158,11 @@ export function ProductPageTemplate({
           </section>
         ) : null}
 
-        {isSimpleProduct ? (
-          <ProductOffersSection
-            id="offers"
-            productType={productType}
-            variants={variants}
-            presentation={offerSectionPresentation}
-            summaryContent={offersSummaryContent}
-            {...(renderVariantCta ? { renderVariantCta } : {})}
-          />
-        ) : null}
-
         {hasRelatedProducts ? (
           <section className="w-full rounded-xl border border-shell-border/80 bg-linear-to-b from-surface-panel-soft/84 to-surface-subtle/56 p-5 shadow-soft [@media(max-height:480px)]:p-4 min-[700px]:p-8">
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
-              <p className="text-eyebrow text-brand">Produits liés</p>
-              <h2 className="m-0 text-title-section">Produits associés</h2>
+              <p className="text-eyebrow text-brand">À découvrir</p>
+              <h2 className="m-0 text-title-section">Vous aimerez aussi</h2>
             </div>
             <ProductRelatedSection
               groups={relatedProductGroups}

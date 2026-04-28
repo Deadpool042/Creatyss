@@ -35,14 +35,16 @@ export function ProductHeroHeader({
 }: ProductHeroHeaderProps) {
   return (
     <header className={["grid", getHeaderGapClass(density)].join(" ")}>
-      <p className="text-meta-label text-brand">{isSimpleProduct ? "Pièce unique" : "Édition unique"}</p>
+      <p className="text-meta-label text-brand">
+        {isSimpleProduct ? "Pièce unique" : "Déclinaisons disponibles"}
+      </p>
 
       <h1 className="text-title-page text-foreground">{productName}</h1>
 
       {marketingHook ? (
         <p
           className={[
-            "border-l-2 border-brand/35 reading-relaxed text-text-muted-strong",
+            "border-l-2 border-brand/35 reading-relaxed text-foreground-muted",
             getMarketingHookClass(density),
           ].join(" ")}
         >

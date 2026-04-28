@@ -32,17 +32,13 @@ function readTrimmedString(value: FormDataEntryValue | string | null | undefined
   return value.trim();
 }
 
-function normalizeNumericId(
+function normalizeVariantId(
   value: FormDataEntryValue | string | null | undefined
 ): string | null | undefined {
   const normalizedValue = readTrimmedString(value);
 
   if (normalizedValue === null || normalizedValue.length === 0) {
     return null;
-  }
-
-  if (!/^[0-9]+$/.test(normalizedValue)) {
-    return undefined;
   }
 
   return normalizedValue;
@@ -71,7 +67,7 @@ function normalizeQuantity(
 }
 
 export function validateCartItemInput(input: CartItemInputSource): CartItemInputValidationResult {
-  const variantId = normalizeNumericId(input.variantId);
+  const variantId = normalizeVariantId(input.variantId);
 
   if (variantId === null) {
     return {

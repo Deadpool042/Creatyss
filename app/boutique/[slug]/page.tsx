@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { Notice } from "@/components/shared/notice";
 import { clientEnv } from "@/core/config/env";
 import { getPublishedProductBySlug } from "@/features/storefront/catalog";
+import { ProductPageCartFeedbackToast } from "@/features/storefront/catalog/product-page/components/product-page-cart-feedback-toast";
 import { ProductPageTemplate } from "@/features/storefront/catalog/product-page/components/product-page-template";
 import { buildProductPageViewModel } from "@/features/storefront/catalog/product-page/composition/build-product-page-view-model";
 import { buildStorefrontProductPageRendering } from "@/features/storefront/catalog/product-page/composition/build-storefront-product-page-rendering";
@@ -16,40 +16,9 @@ type ProductPageProps = Readonly<{
   params: Promise<{
     slug: string;
   }>;
-  searchParams: Promise<{
-    cart_error?: string | string[];
-    cart_status?: string | string[];
-  }>;
 }>;
 
 type ProductMetadataSource = NonNullable<Awaited<ReturnType<typeof getPublishedProductBySlug>>>;
-
-function getCartStatusMessage(status: string | undefined): string | null {
-  switch (status) {
-    case "added":
-      return "Article ajouté au panier.";
-    default:
-      return null;
-  }
-}
-
-function getCartErrorMessage(error: string | undefined): string | null {
-  switch (error) {
-    case "missing_variant":
-      return "La déclinaison demandée est introuvable.";
-    case "missing_quantity":
-    case "invalid_quantity":
-      return "Renseignez une quantité entière supérieure ou égale à 1.";
-    case "variant_unavailable":
-      return "Cette déclinaison n'est pas disponible actuellement.";
-    case "insufficient_stock":
-      return "Le stock disponible est insuffisant pour cette quantité.";
-    case "save_failed":
-      return "Le panier n'a pas pu être mis à jour.";
-    default:
-      return null;
-  }
-}
 
 function getProductMetadataDescription(product: ProductMetadataSource): string {
   return buildSeoDescription({
@@ -148,17 +117,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   };
 }
 
-export default async function ProductPage({ params, searchParams }: ProductPageProps) {
+export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const resolvedSearchParams = await searchParams;
-  const cartStatusParam = Array.isArray(resolvedSearchParams.cart_status)
-    ? resolvedSearchParams.cart_status[0]
-    : resolvedSearchParams.cart_status;
-  const cartErrorParam = Array.isArray(resolvedSearchParams.cart_error)
-    ? resolvedSearchParams.cart_error[0]
-    : resolvedSearchParams.cart_error;
-  const cartStatusMessage = getCartStatusMessage(cartStatusParam);
-  const cartErrorMessage = getCartErrorMessage(cartErrorParam);
   const product = await getPublishedProductBySlug(slug);
 
   if (product === null) {
@@ -170,16 +130,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
     productSlug: product.slug,
     isSimpleProduct: viewModel.isSimpleProduct,
     singleOffer: viewModel.singleOffer,
-    variantSummary: viewModel.variantSummary,
   });
-
-  const statusBanner =
-    cartStatusMessage || cartErrorMessage ? (
-      <div className="mb-4 min-[700px]:mb-5">
-        {cartStatusMessage ? <Notice tone="success">{cartStatusMessage}</Notice> : null}
-        {cartErrorMessage ? <Notice tone="alert">{cartErrorMessage}</Notice> : null}
-      </div>
-    ) : undefined;
 
   const productJsonLd = buildProductJsonLd({
     product,
@@ -192,6 +143,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
       />
+      <ProductPageCartFeedbackToast />
 
       <ProductPageTemplate
         productName={product.name}
@@ -205,11 +157,8 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
         characteristics={product.characteristics}
         technicalSpecs={viewModel.technicalSpecs}
         relatedProductGroups={product.relatedProductGroups}
-        statusBanner={statusBanner}
         heroCta={rendering.heroCta}
         heroVariantSummary={viewModel.variantSummary}
-        offersSummaryContent={rendering.offersSummaryContent}
-        renderVariantCta={rendering.renderVariantCta}
       />
     </>
   );

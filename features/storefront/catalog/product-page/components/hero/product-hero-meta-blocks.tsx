@@ -67,22 +67,21 @@ export function ProductHeroPricingMeta({
         </p>
       ) : null}
 
-      <p className="font-serif text-price-display text-foreground">{resolvedHeroVariant.price || "—"}</p>
+      <p className="font-serif text-price-display text-foreground">
+        {resolvedHeroVariant.price || "—"}
+      </p>
 
       {!isSimpleProduct && variableSummaryText ? (
-        <p className="text-micro-copy reading-compact text-foreground-muted">{variableSummaryText}</p>
+        <p className="text-micro-copy reading-compact text-foreground-muted">
+          {variableSummaryText}
+        </p>
       ) : null}
 
       {includeShippingHint ? (
-        <p
-          className={[
-            "inline-flex items-center font-medium text-foreground",
-            isCompact ? "gap-1.5 text-sm reading-compact" : "gap-2 text-secondary-copy reading-compact",
-          ].join(" ")}
-        >
+        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-control-border bg-control-surface px-2.5 py-1 text-micro-copy font-medium text-text-muted-strong">
           <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-feedback-success" />
           <span>Livraison incluse</span>
-        </p>
+        </div>
       ) : null}
     </div>
   );
@@ -100,7 +99,9 @@ export function ProductHeroAvailabilityMeta({
         <span
           className={[
             "flex items-center gap-1.5 text-sm font-medium",
-            resolvedIsAvailable ? "text-feedback-success-foreground" : "text-feedback-error-foreground",
+            resolvedIsAvailable
+              ? "text-feedback-success-foreground"
+              : "text-feedback-error-foreground",
           ].join(" ")}
         >
           <span

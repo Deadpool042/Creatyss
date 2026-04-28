@@ -70,7 +70,7 @@ function RelatedProductCard({
 
       <div className="grid gap-1.5 px-0.5 pb-0.5">
         {typeLabel ? (
-          <p className="text-[10px] font-medium uppercase tracking-widest text-text-muted-soft [@media(max-height:480px)]:hidden">
+          <p className="text-meta-label text-text-muted-soft [@media(max-height:480px)]:hidden">
             {typeLabel}
           </p>
         ) : null}

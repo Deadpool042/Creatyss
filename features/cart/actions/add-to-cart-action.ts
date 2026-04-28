@@ -15,6 +15,8 @@ import {
 } from "@/features/cart/lib/guest-cart.repository";
 import { validateCartItemInput } from "@/entities/cart/cart-item-input";
 
+type AddToCartIntent = "add_to_cart" | "buy_now";
+
 function normalizeProductSlug(
   value: FormDataEntryValue | string | null | undefined
 ): string | null {
@@ -27,8 +29,17 @@ function normalizeProductSlug(
   return normalizedValue.length > 0 ? normalizedValue : null;
 }
 
+function normalizeAddToCartIntent(value: FormDataEntryValue | null): AddToCartIntent {
+  if (value === "buy_now") {
+    return "buy_now";
+  }
+
+  return "add_to_cart";
+}
+
 export async function addToCartAction(formData: FormData): Promise<void> {
   const productSlug = normalizeProductSlug(formData.get("productSlug"));
+  const intent = normalizeAddToCartIntent(formData.get("intent"));
 
   if (productSlug === null) {
     redirect("/boutique");
@@ -82,6 +93,10 @@ export async function addToCartAction(formData: FormData): Promise<void> {
   } catch (error) {
     console.error(error);
     redirect(`/boutique/${productSlug}?cart_error=save_failed`);
+  }
+
+  if (intent === "buy_now") {
+    redirect("/panier?status=buy_now_added");
   }
 
   redirect(`/boutique/${productSlug}?cart_status=added`);
