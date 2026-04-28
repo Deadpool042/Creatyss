@@ -42,6 +42,7 @@ export function ProductHeroSectionLandscape({
   isImageReady,
   onSelectImageIndex,
   onImageLoaded,
+  onOpenLightbox,
   imageFit,
   cta,
   asideExtra,
@@ -58,7 +59,12 @@ export function ProductHeroSectionLandscape({
         <div className="min-w-0 w-[28%] shrink-0 p-2.5">
           {selectedImage ? (
             <>
-              <div className="relative mx-auto h-[50vh] max-h-80 w-auto">
+              <button
+                type="button"
+                onClick={onOpenLightbox}
+                aria-label="Ouvrir l'image en plein écran"
+                className="relative mx-auto h-[50vh] max-h-80 w-auto text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+              >
                 <Image
                   key={selectedImage.src}
                   src={selectedImage.src}
@@ -80,7 +86,7 @@ export function ProductHeroSectionLandscape({
                   total={galleryImages.length}
                   className="bottom-2 right-2 px-2 py-0.5"
                 />
-              </div>
+              </button>
 
               {shouldShowGalleryDots ? (
                 <ProductHeroGalleryDots

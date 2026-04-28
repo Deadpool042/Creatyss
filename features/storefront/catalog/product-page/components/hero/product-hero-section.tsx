@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 import type { HeroImage } from "./product-hero-thumbnail-button";
+import { ProductHeroLightbox } from "./product-hero-lightbox";
 import type { ProductHeroResolvedProps } from "./product-hero-resolved-props";
 import { ProductHeroSectionDesktop } from "./desktop/product-hero-section-desktop";
 import { ProductHeroSectionTablet } from "./desktop/product-hero-section-tablet";
@@ -102,6 +103,7 @@ export function ProductHeroSection({
   );
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [loadedImageSrc, setLoadedImageSrc] = useState<string | null>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   useEffect(() => {
     setSelectedVariantId(initialSelectedVariantId);
@@ -189,6 +191,7 @@ export function ProductHeroSection({
     isImageReady,
     onSelectImageIndex: setSelectedImageIndex,
     onImageLoaded: setLoadedImageSrc,
+    onOpenLightbox: () => setLightboxOpen(true),
     imageFit,
     cta,
     asideExtra,
@@ -197,6 +200,16 @@ export function ProductHeroSection({
 
   return (
     <>
+      <ProductHeroLightbox
+        open={lightboxOpen}
+        onOpenChange={setLightboxOpen}
+        images={galleryImages}
+        activeImageIndex={activeImageIndex}
+        onSelectImageIndex={setSelectedImageIndex}
+        productName={productName}
+        imageFit={imageFit}
+      />
+
       {/* Landscape compact — petit viewport paysage uniquement */}
       <div className="hidden [@media(max-height:600px)_and_(orientation:landscape)]:block">
         <ProductHeroSectionLandscape {...resolvedProps} />

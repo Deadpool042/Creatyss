@@ -37,6 +37,7 @@ export type ProductHeroResolvedProps = {
   isImageReady: boolean;
   onSelectImageIndex: (index: number) => void;
   onImageLoaded: (src: string) => void;
+  onOpenLightbox: () => void;
 
   // --- Affichage image ---
   imageFit: "contain" | "cover";

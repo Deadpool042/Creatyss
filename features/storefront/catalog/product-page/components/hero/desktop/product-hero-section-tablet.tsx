@@ -38,6 +38,7 @@ export function ProductHeroSectionTablet({
   isImageReady,
   onSelectImageIndex,
   onImageLoaded,
+  onOpenLightbox,
   imageFit,
   cta,
   asideExtra,
@@ -53,7 +54,12 @@ export function ProductHeroSectionTablet({
         <div className="min-w-0 flex-1 p-3 lg:p-4">
           {selectedImage ? (
             <div className="flex flex-col gap-3">
-              <div className="relative mx-auto h-[56vh] max-h-128 w-full">
+              <button
+                type="button"
+                onClick={onOpenLightbox}
+                aria-label="Ouvrir l'image en plein écran"
+                className="relative mx-auto h-[56vh] max-h-128 w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+              >
                 <Image
                   key={selectedImage.src}
                   src={selectedImage.src}
@@ -75,7 +81,7 @@ export function ProductHeroSectionTablet({
                   total={galleryImages.length}
                   className="bottom-3 right-3 px-2.5 py-1"
                 />
-              </div>
+              </button>
 
               {hasVisibleThumbnailRail ? (
                 <div className="flex gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&>button]:min-w-16 [&>button]:w-16 lg:[&>button]:min-w-18 lg:[&>button]:w-18">

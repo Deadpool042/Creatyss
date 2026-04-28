@@ -125,7 +125,7 @@ export function ProductPageTemplate({
     <div className="mx-auto w-full max-w-6xl pb-8 min-[700px]:pb-10 min-[1200px]:pb-12">
       {statusBanner}
 
-      <div className="grid  gap-5 min-[700px]:gap-7 min-[1200px]:gap-8">
+      <div className="grid gap-4 min-[700px]:gap-7 min-[1200px]:gap-8">
         <ProductHeroSection
           productName={productName}
           productSlug={productSlug}
@@ -144,7 +144,7 @@ export function ProductPageTemplate({
         />
 
         {/* Zone informations produit */}
-        <div className="grid px-4 grid-cols-1 gap-5 min-[700px]:grid-cols-[5fr_7fr] min-[700px]:gap-7 min-[1200px]:gap-8">
+        <div className="grid grid-cols-1 gap-5 px-4 pt-1 min-[700px]:grid-cols-[5fr_7fr] min-[700px]:gap-7 min-[700px]:pt-0 min-[1200px]:gap-8">
           <ProductInfoAccordionSection
             detailsContent={
               detailsDescriptionHtml ? (

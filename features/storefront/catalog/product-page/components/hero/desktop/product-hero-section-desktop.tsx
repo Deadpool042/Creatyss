@@ -41,6 +41,7 @@ export function ProductHeroSectionDesktop({
   isImageReady,
   onSelectImageIndex,
   onImageLoaded,
+  onOpenLightbox,
   imageFit,
   cta,
   asideExtra,
@@ -74,7 +75,12 @@ export function ProductHeroSectionDesktop({
               ) : null}
 
               <div className="order-2">
-                <div className="relative mx-auto aspect-7/8 w-full">
+                <button
+                  type="button"
+                  onClick={onOpenLightbox}
+                  aria-label="Ouvrir l'image en plein écran"
+                  className="relative mx-auto aspect-7/8 w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+                >
                   <Image
                     key={selectedImage.src}
                     src={selectedImage.src}
@@ -96,7 +102,7 @@ export function ProductHeroSectionDesktop({
                     total={galleryImages.length}
                     className="bottom-3 right-3 px-2.5 py-1"
                   />
-                </div>
+                </button>
               </div>
             </div>
           ) : (

@@ -74,7 +74,7 @@ function RelatedProductCard({
           {product.name}
         </p>
         {shortDescription.length > 0 ? (
-          <p className="text-micro-copy reading-compact line-clamp-2 text-text-muted-strong [@media(max-height:480px)]:hidden">
+          <p className="text-micro-copy reading-compact line-clamp-1 text-text-muted-strong min-[480px]:line-clamp-2 [@media(max-height:560px)]:hidden">
             {shortDescription}
           </p>
         ) : null}

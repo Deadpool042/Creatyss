@@ -41,6 +41,7 @@ export function ProductHeroSectionMobilePortrait({
   isImageReady,
   onSelectImageIndex,
   onImageLoaded,
+  onOpenLightbox,
   imageFit,
   cta,
   asideExtra,
@@ -56,7 +57,12 @@ export function ProductHeroSectionMobilePortrait({
       <div>
         {selectedImage ? (
           <>
-            <div className="relative aspect-4/5 w-full overflow-hidden border border-hero-border shadow-raised h-[60vh]">
+            <button
+              type="button"
+              onClick={onOpenLightbox}
+              aria-label="Ouvrir l'image en plein écran"
+              className="relative aspect-4/5 h-[60vh] w-full overflow-hidden border border-hero-border text-left shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+            >
               <Image
                 key={selectedImage.src}
                 src={selectedImage.src}
@@ -78,7 +84,7 @@ export function ProductHeroSectionMobilePortrait({
                 total={galleryImages.length}
                 className="bottom-2.5 right-2.5 px-2.5 py-1"
               />
-            </div>
+            </button>
 
             {shouldShowGalleryDots ? (
               <ProductHeroGalleryDots
