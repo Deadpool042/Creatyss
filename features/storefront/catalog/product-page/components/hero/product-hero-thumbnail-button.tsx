@@ -28,7 +28,7 @@ export function HeroThumbnailButton({
       aria-pressed={isActive}
       onClick={() => onSelect(index)}
       className={[
-        "group relative w-14 min-w-14 overflow-hidden rounded-lg border p-px transition-all duration-200",
+        "group relative w-14 min-w-14 overflow-hidden rounded-xl border p-px transition-all duration-200",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/35",
         isActive
           ? "border-brand/60 bg-interactive-selected shadow-card"
@@ -42,7 +42,7 @@ export function HeroThumbnailButton({
         height={200}
         loading="lazy"
         sizes="(min-width: 1024px) 4vw, 12vw"
-        className="aspect-square w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+        className="aspect-square w-full rounded-xl object-cover transition-transform duration-300 group-hover:scale-[1.03]"
       />
     </button>
   );

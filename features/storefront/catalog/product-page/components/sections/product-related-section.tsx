@@ -49,12 +49,12 @@ function RelatedProductCard({
     <Link
       href={`/boutique/${product.slug}`}
       className={[
-        "group grid h-full content-start gap-2 rounded-xl border border-surface-border-subtle/75 bg-surface-panel/42 p-2 transition-colors",
+        "group grid h-full content-start gap-2 rounded-lg border border-surface-border-subtle/75 bg-surface-panel/42 p-1.5 transition-colors min-[700px]:rounded-xl min-[700px]:p-2",
         "hover:border-control-border-strong hover:bg-control-surface-hover/72 hover:shadow-inset-soft",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
       ].join(" ")}
     >
-      <div className="aspect-square overflow-hidden rounded-[0.95rem] bg-surface-subtle/72 sm:aspect-4/5 [@media(max-height:480px)]:aspect-3/2">
+      <div className="aspect-5/4 overflow-hidden rounded-[0.8rem] bg-surface-subtle/72 min-[700px]:rounded-[0.95rem] sm:aspect-4/5 [@media(max-height:480px)]:aspect-3/2">
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -141,16 +141,16 @@ export function ProductRelatedSection({ groups, uploadsPublicPath }: Props) {
   }
 
   return (
-    <div className="grid gap-4 min-[700px]:gap-5">
+    <div className="grid gap-3 min-[700px]:gap-5">
       <Carousel
         setApi={setCarouselApi}
         opts={{ align: "start", loop: true }}
         className="w-full"
         aria-label="Produits associés"
       >
-        <div className="flex min-w-0 justify-end">
+        <div className="flex min-w-0 justify-end ">
           {showNav ? (
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex shrink-0 items-center gap-2 pb-2">
               <p className="text-micro-copy text-text-muted-soft">
                 <span className="sm:hidden">Glissez pour voir plus</span>
                 <span className="hidden sm:inline">Faites défiler pour voir plus</span>
@@ -169,11 +169,11 @@ export function ProductRelatedSection({ groups, uploadsPublicPath }: Props) {
           ) : null}
         </div>
 
-        <CarouselContent className="ml-0 sm:-ml-3">
+        <CarouselContent className="-ml-2 sm:-ml-3">
           {flattenedProducts.map(({ product, typeLabel }) => (
             <CarouselItem
               key={product.id}
-              className="basis-full pl-0 sm:basis-[42%] sm:pl-3 md:basis-[30%] lg:basis-[22%] xl:basis-[18%] 2xl:basis-[15%]"
+              className="basis-full pl-2 min-[480px]:basis-[72%] sm:basis-[42%] sm:pl-3 md:basis-[30%] 2xl:basis-[28%] pb-2"
             >
               <RelatedProductCard
                 product={product}

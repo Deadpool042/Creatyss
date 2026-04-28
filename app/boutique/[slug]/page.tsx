@@ -147,6 +147,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       <ProductPageTemplate
         productName={product.name}
+        productSlug={product.slug}
         marketingHook={product.marketingHook}
         shortDescription={product.shortDescription}
         description={product.description}

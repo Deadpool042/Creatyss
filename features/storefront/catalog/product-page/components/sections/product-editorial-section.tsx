@@ -16,7 +16,7 @@ import { ArrowRight } from "lucide-react";
 
 export function ProductEditorialSection() {
   return (
-    <section className="w-full overflow-hidden rounded-xl bg-hero-bg px-8 py-10 min-[700px]:px-10 min-[700px]:py-12 min-[1200px]:px-12 min-[1200px]:py-14">
+    <section className="w-full px-1 py-2 min-[700px]:px-2 min-[1200px]:px-3">
       <div className="grid max-w-2xl gap-6">
         <p className="text-eyebrow text-brand">Savoir-faire</p>
 
@@ -32,10 +32,13 @@ export function ProductEditorialSection() {
 
         <Link
           href="/a-propos"
-          className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-brand"
+          className="group inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-brand"
         >
           Découvrir mon atelier
-          <ArrowRight className="size-4" aria-hidden="true" />
+          <ArrowRight
+            className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
         </Link>
       </div>
     </section>

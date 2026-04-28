@@ -15,7 +15,6 @@ type ProductHeroPricingMetaProps = {
 
 type ProductHeroAvailabilityMetaProps = {
   resolvedIsAvailable: boolean;
-  resolvedSingleVariantSku: string | null;
   density?: ProductHeroMetaDensity;
 };
 
@@ -41,7 +40,7 @@ export function ProductHeroPricingMeta({
   variablePriceLabel,
   variableSummaryText,
   density = "default",
-  includeShippingHint = true,
+  includeShippingHint = false,
 }: ProductHeroPricingMetaProps) {
   const isCompact = density === "compact";
 
@@ -89,7 +88,6 @@ export function ProductHeroPricingMeta({
 
 export function ProductHeroAvailabilityMeta({
   resolvedIsAvailable,
-  resolvedSingleVariantSku,
   density = "default",
 }: ProductHeroAvailabilityMetaProps) {
   return (
@@ -114,13 +112,6 @@ export function ProductHeroAvailabilityMeta({
           {getProductAvailabilityLabel(resolvedIsAvailable)}
         </span>
       </div>
-
-      {resolvedSingleVariantSku ? (
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-          <p className="text-meta-label text-brand">Référence</p>
-          <p className="font-mono text-sm text-foreground-muted">{resolvedSingleVariantSku}</p>
-        </div>
-      ) : null}
     </section>
   );
 }

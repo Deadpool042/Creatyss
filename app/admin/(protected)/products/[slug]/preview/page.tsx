@@ -121,6 +121,7 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
             </Button>
           ) : undefined
         }
+        disableCart={true}
         heroAsideExtra={
           <div className="grid gap-1 border-t border-surface-border pt-4">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">

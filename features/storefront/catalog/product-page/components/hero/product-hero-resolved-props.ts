@@ -12,6 +12,7 @@ import type { HeroImage } from "./product-hero-thumbnail-button";
 export type ProductHeroResolvedProps = {
   // --- Identité produit ---
   productName: string;
+  productSlug: string;
   marketingHook: string | null;
   isSimpleProduct: boolean;
   shortDescription: string | null;
@@ -19,7 +20,6 @@ export type ProductHeroResolvedProps = {
   // --- Variant résolu ---
   resolvedHeroVariant: OfferVariant | null;
   resolvedIsAvailable: boolean;
-  resolvedSingleVariantSku: string | null;
 
   // --- Label prix variable ---
   variablePriceLabel: string | null;
@@ -44,4 +44,7 @@ export type ProductHeroResolvedProps = {
   // --- Slots injectés ---
   cta: React.ReactNode | undefined;
   asideExtra: React.ReactNode | undefined;
+
+  // --- Guards de contexte ---
+  disableCart?: boolean;
 };

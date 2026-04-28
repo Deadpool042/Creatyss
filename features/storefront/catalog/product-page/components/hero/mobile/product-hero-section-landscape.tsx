@@ -9,11 +9,10 @@ import {
   ProductHeroImageCounterOverlay,
   ProductHeroMediaEmptyState,
 } from "../product-hero-media-elements";
-import {
-  ProductHeroAvailabilityMeta,
-  ProductHeroPricingMeta,
-} from "../product-hero-meta-blocks";
+import { ProductHeroAvailabilityMeta, ProductHeroPricingMeta } from "../product-hero-meta-blocks";
 import type { ProductHeroResolvedProps } from "../product-hero-resolved-props";
+import { ProductHeroVariableCartForm } from "../product-hero-variable-cart-form";
+import { ProductHeroVariantSelector } from "../product-hero-variant-selector";
 
 /**
  * Layout landscape compact du hero produit.
@@ -26,14 +25,17 @@ import type { ProductHeroResolvedProps } from "../product-hero-resolved-props";
  */
 export function ProductHeroSectionLandscape({
   productName,
+  productSlug,
   marketingHook,
   isSimpleProduct,
   shortDescription,
   resolvedHeroVariant,
   resolvedIsAvailable,
-  resolvedSingleVariantSku,
   variablePriceLabel,
   variableSummaryText,
+  variableVariants,
+  selectedVariableVariant,
+  onSelectVariantId,
   galleryImages,
   activeImageIndex,
   selectedImage,
@@ -43,16 +45,17 @@ export function ProductHeroSectionLandscape({
   imageFit,
   cta,
   asideExtra,
+  disableCart,
 }: ProductHeroResolvedProps) {
   const hasVisibleThumbnailRail = false;
   const shouldShowGalleryDots = !hasVisibleThumbnailRail && galleryImages.length > 1;
-  const shouldShowActionBlock = Boolean(cta);
+  const shouldShowActionBlock = Boolean(cta) || Boolean(variableVariants);
 
   return (
-    <section className="w-full border-b border-shell-border">
+    <section className="w-full border-b border-shell-border/80 pb-3">
       <div className="flex flex-row">
         {/* --- Image compacte (landscape) --- */}
-        <div className="min-w-0 w-[28%] shrink-0 p-2">
+        <div className="min-w-0 w-[28%] shrink-0 p-2.5">
           {selectedImage ? (
             <>
               <div className="relative mx-auto h-[50vh] max-h-80 w-auto">
@@ -66,7 +69,7 @@ export function ProductHeroSectionLandscape({
                   sizes="30vw"
                   onLoadingComplete={() => onImageLoaded(selectedImage.src)}
                   className={[
-                    "h-full w-full rounded-xl border border-hero-border object-center shadow-raised transition-opacity duration-300 motion-reduce:transition-none",
+                    "h-full w-full rounded-2xl border border-hero-border object-center shadow-raised transition-opacity duration-300 motion-reduce:transition-none",
                     isImageReady ? "opacity-100" : "opacity-0",
                     imageFit === "cover" ? "object-cover" : "object-contain",
                   ].join(" ")}
@@ -88,12 +91,12 @@ export function ProductHeroSectionLandscape({
               ) : null}
             </>
           ) : (
-            <ProductHeroMediaEmptyState className="h-[48vh] w-full rounded-xl" />
+            <ProductHeroMediaEmptyState className="h-[48vh] w-full rounded-2xl" />
           )}
         </div>
 
         {/* --- Aside dominant (landscape) --- */}
-        <aside className="flex flex-1 flex-col px-3 py-2">
+        <aside className="flex flex-1 flex-col border-l border-shell-border/70 px-3 py-2">
           <div className="flex h-full flex-col gap-2">
             <section className="grid gap-1.5">
               <ProductHeroHeader
@@ -117,14 +120,31 @@ export function ProductHeroSectionLandscape({
 
               <ProductHeroAvailabilityMeta
                 resolvedIsAvailable={resolvedIsAvailable}
-                resolvedSingleVariantSku={resolvedSingleVariantSku}
                 density="compact"
               />
             </section>
 
+            {variableVariants && variableVariants.length > 1 ? (
+              <section className="grid gap-2 border-t border-surface-border pt-2">
+                <ProductHeroVariantSelector
+                  variableVariants={variableVariants}
+                  selectedVariableVariant={selectedVariableVariant}
+                  onSelectVariantId={onSelectVariantId}
+                />
+              </section>
+            ) : null}
+
             {shouldShowActionBlock ? (
               <section className="grid gap-2 border-t border-surface-border pt-2">
-                <div className="grid gap-1.5">{cta}</div>
+                {cta ? (
+                  <div className="grid gap-1.5">{cta}</div>
+                ) : variableVariants ? (
+                  <ProductHeroVariableCartForm
+                    productSlug={productSlug}
+                    selectedVariant={selectedVariableVariant}
+                    disabled={disableCart}
+                  />
+                ) : null}
               </section>
             ) : null}
 

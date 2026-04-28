@@ -1,5 +1,5 @@
 ---
-name: architect-review
+name: docs-keeper
 description: Audit d’architecture, cadrage de lots, revue de boundaries, alignement doctrine/repo.
 tools: Read, Bash, Grep, Glob
 ---

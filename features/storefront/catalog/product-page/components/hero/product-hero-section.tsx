@@ -17,6 +17,7 @@ import { ProductHeroSectionMobilePortrait } from "./mobile/product-hero-section-
 
 export type ProductHeroSectionProps = {
   productName: string;
+  productSlug?: string;
   marketingHook?: string | null;
   isSimpleProduct: boolean;
   isAvailable: boolean;
@@ -27,9 +28,9 @@ export type ProductHeroSectionProps = {
   variantSummary?: { total: number; available: number } | null;
   variablePriceLabel?: string | null;
   imageFit?: "contain" | "cover";
-  singleVariantSku?: string | null;
   cta?: React.ReactNode | undefined;
   asideExtra?: React.ReactNode | undefined;
+  disableCart?: boolean;
 };
 
 // ---------------------------------------------------------------------------
@@ -70,6 +71,7 @@ function dedupeHeroImages(images: HeroImage[]): HeroImage[] {
  */
 export function ProductHeroSection({
   productName,
+  productSlug = "",
   marketingHook,
   isSimpleProduct,
   isAvailable,
@@ -80,9 +82,9 @@ export function ProductHeroSection({
   variantSummary,
   variablePriceLabel,
   imageFit = "cover",
-  singleVariantSku,
   cta,
   asideExtra,
+  disableCart,
 }: ProductHeroSectionProps) {
   // --- État variant sélectionné ---
   const initialSelectedVariantId = useMemo(() => {
@@ -124,9 +126,6 @@ export function ProductHeroSection({
 
   const resolvedIsAvailable =
     !isSimpleProduct && selectedVariableVariant ? selectedVariableVariant.isAvailable : isAvailable;
-
-  const resolvedSingleVariantSku =
-    !isSimpleProduct && selectedVariableVariant ? selectedVariableVariant.sku : singleVariantSku;
 
   // --- Résolution images ---
   const resolvedImages = useMemo(() => {
@@ -173,12 +172,12 @@ export function ProductHeroSection({
   // --- Props résolues pour les layouts ---
   const resolvedProps: ProductHeroResolvedProps = {
     productName,
+    productSlug,
     marketingHook: marketingHook ?? null,
     isSimpleProduct,
     shortDescription: shortDescription ?? null,
     resolvedHeroVariant,
     resolvedIsAvailable,
-    resolvedSingleVariantSku: resolvedSingleVariantSku ?? null,
     variablePriceLabel: variablePriceLabel ?? null,
     variableSummaryText,
     variableVariants,
@@ -193,6 +192,7 @@ export function ProductHeroSection({
     imageFit,
     cta,
     asideExtra,
+    ...(disableCart !== undefined ? { disableCart } : {}),
   };
 
   return (

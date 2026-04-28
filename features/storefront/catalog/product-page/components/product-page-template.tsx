@@ -1,7 +1,7 @@
 /**
  * Template de présentation partagé — fiche produit.
  *
- * Orchestrateur des blocs partagés : hero → description → offres → produits liés.
+ * Orchestrateur des blocs partagés : hero → informations produit → offres → produits liés.
  * Utilisé par la page storefront (app/boutique/[slug]/page.tsx) et
  * la page preview admin (app/admin/.../products/[slug]/preview/page.tsx).
  *
@@ -17,8 +17,8 @@ import type { OfferVariant } from "@/features/storefront/catalog/types/product-o
 
 import { ProductRelatedSection } from "./sections/product-related-section";
 import { ProductHeroSection } from "./hero/product-hero-section";
-import { ProductDescriptionSection } from "./sections/product-description-section";
 import { ProductEditorialSection } from "./sections/product-editorial-section";
+import { ProductInfoAccordionSection } from "./sections/product-info-accordion-section";
 import { ProductTrust } from "./shared/product-trust";
 
 type ProductPageImage = {
@@ -41,8 +41,22 @@ type ProductPageRelatedGroup = {
   products: ProductPageRelatedProduct[];
 };
 
+function normalizeCharacteristicLabel(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .trim()
+    .toLowerCase();
+}
+
+function isCareCharacteristicLabel(label: string): boolean {
+  const normalizedLabel = normalizeCharacteristicLabel(label);
+  return normalizedLabel === "entretien" || normalizedLabel === "conseils d entretien";
+}
+
 export type ProductPageTemplateProps = {
   productName: string;
+  productSlug?: string;
   marketingHook?: string | null;
   shortDescription?: string | null;
   description?: string | null;
@@ -57,10 +71,12 @@ export type ProductPageTemplateProps = {
   heroCta?: React.ReactNode;
   heroVariantSummary?: { total: number; available: number } | null;
   heroAsideExtra?: React.ReactNode;
+  disableCart?: boolean;
 };
 
 export function ProductPageTemplate({
   productName,
+  productSlug = "",
   marketingHook,
   shortDescription,
   description,
@@ -75,6 +91,7 @@ export function ProductPageTemplate({
   heroCta,
   heroVariantSummary,
   heroAsideExtra,
+  disableCart,
 }: ProductPageTemplateProps) {
   const uploadsPublicPath = getUploadsPublicPath();
   const isSimpleProduct = productType === "simple";
@@ -82,49 +99,75 @@ export function ProductPageTemplate({
   const hasRelatedProducts = relatedProductGroups.some((g) => g.products.length > 0);
   const resolvedTechnicalSpecs = technicalSpecs ?? [];
   const hasTechnicalSpecs = resolvedTechnicalSpecs.length > 0;
+  const detailsDescriptionHtml = description?.trim() ? description : null;
+  const careCharacteristicValue =
+    characteristics
+      ?.find(
+        (characteristic) =>
+          isCareCharacteristicLabel(characteristic.label) && characteristic.value.trim().length > 0
+      )
+      ?.value.trim() ?? null;
 
   return (
     <div className="mx-auto w-full max-w-6xl pb-8 min-[700px]:pb-10 min-[1200px]:pb-12">
       {statusBanner}
 
-      <div className="grid gap-5 min-[700px]:gap-7 min-[1200px]:gap-8">
-        <div className="grid gap-4 min-[700px]:gap-5 min-[1200px]:gap-6">
-          <ProductHeroSection
-            productName={productName}
-            marketingHook={marketingHook ?? null}
-            isSimpleProduct={isSimpleProduct}
-            isAvailable={isAvailable}
-            images={images}
-            shortDescription={shortDescription ?? null}
-            heroVariant={singleOffer ?? null}
-            variableVariants={!isSimpleProduct ? variants : undefined}
-            variantSummary={!isSimpleProduct ? (heroVariantSummary ?? null) : null}
-            variablePriceLabel={!isSimpleProduct ? "Prix (selon déclinaison)" : null}
-            singleVariantSku={singleOffer?.sku ?? null}
-            cta={heroCta}
-            asideExtra={heroAsideExtra}
-          />
+      <div className="grid  gap-5 min-[700px]:gap-7 min-[1200px]:gap-8">
+        <ProductHeroSection
+          productName={productName}
+          productSlug={productSlug}
+          marketingHook={marketingHook ?? null}
+          isSimpleProduct={isSimpleProduct}
+          isAvailable={isAvailable}
+          images={images}
+          shortDescription={shortDescription ?? null}
+          heroVariant={singleOffer ?? null}
+          variableVariants={!isSimpleProduct ? variants : undefined}
+          variantSummary={!isSimpleProduct ? (heroVariantSummary ?? null) : null}
+          variablePriceLabel={!isSimpleProduct ? "Prix (selon déclinaison)" : null}
+          cta={heroCta}
+          asideExtra={heroAsideExtra}
+          {...(disableCart !== undefined ? { disableCart } : {})}
+        />
 
-          <ProductTrust />
+        {/* Zone informations produit */}
+        <div className="grid px-4 grid-cols-1 gap-5 min-[700px]:grid-cols-[5fr_7fr] min-[700px]:gap-7 min-[1200px]:gap-8">
+          <ProductInfoAccordionSection
+            detailsContent={
+              detailsDescriptionHtml ? (
+                <div
+                  className="prose prose-sm dark:prose-invert max-w-[68ch] text-foreground min-[900px]:prose-base [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                  // Le contrat existant côté produit/admin est que `description`
+                  // a déjà été normalisée en amont avant affichage storefront.
+                  dangerouslySetInnerHTML={{ __html: detailsDescriptionHtml }}
+                />
+              ) : undefined
+            }
+            careContent={careCharacteristicValue ? <p>{careCharacteristicValue}</p> : undefined}
+          />
+          <ProductEditorialSection />
         </div>
 
-        {description ? <ProductDescriptionSection descriptionHtml={description} /> : null}
+        <div className="block min-[700px]:hidden">
+          <ProductTrust />
+        </div>
       </div>
 
-      <ProductEditorialSection />
-
-      <div className="mt-8 grid gap-5 min-[700px]:mt-10 min-[700px]:gap-7 min-[1200px]:mt-12 min-[1200px]:gap-8">
+      <div className="mt-8  grid gap-5 min-[700px]:mt-10 min-[700px]:gap-7 min-[1200px]:mt-12 min-[1200px]:gap-8">
         {characteristics && characteristics.length > 0 ? (
-          <section className="w-full">
+          <section className="w-full px-4 border-t border-shell-border/80  pt-5 min-[700px]:pt-6">
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
               <p className="text-eyebrow text-brand">Caractéristiques</p>
-              <h2 className="text-title-section">Détails du produit</h2>
+              <h2 className="text-title-section">Caractéristiques du produit</h2>
+              <p className="m-0 text-secondary-copy text-foreground-muted">
+                Attributs factuels renseignés pour ce produit.
+              </p>
             </div>
-            <dl className="grid gap-3 border-t border-surface-border-subtle/70 pt-4 min-[700px]:gap-3.5 min-[700px]:pt-5 min-[900px]:grid-cols-2">
+            <dl className="grid gap-3  pt-4 min-[700px]:gap-3.5 min-[700px]:pt-5 min-[900px]:grid-cols-2">
               {characteristics.map((c) => (
                 <div
                   key={c.id}
-                  className="grid gap-1.5 rounded-lg border border-surface-border-subtle/75 bg-surface-panel/50 px-3.5 py-3.5 shadow-inset-soft min-[700px]:gap-2 min-[700px]:px-4"
+                  className="grid gap-1.5 rounded-xl border border-surface-border-subtle/75 bg-surface-panel/44 px-3.5 py-3.5 shadow-inset-soft min-[700px]:gap-2 min-[700px]:px-4"
                 >
                   <dt className="m-0 text-meta-label text-text-muted-soft">{c.label}</dt>
                   <dd className="m-0 wrap-break-word text-secondary-copy reading-compact text-foreground">
@@ -137,19 +180,22 @@ export function ProductPageTemplate({
         ) : null}
 
         {hasTechnicalSpecs ? (
-          <section className="w-full">
+          <section className="w-full px-4 border-t border-shell-border/80 pt-5 min-[700px]:pt-6">
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
               <p className="text-eyebrow text-brand">Spécifications</p>
               <h2 className="m-0 text-title-section">Spécifications techniques</h2>
+              <p className="m-0 text-secondary-copy text-foreground-muted">
+                Données techniques dérivées de la variante de référence.
+              </p>
             </div>
-            <dl className="grid gap-3 border-t border-surface-border-subtle/70 pt-4 min-[700px]:gap-3.5 min-[700px]:pt-5 min-[900px]:grid-cols-2">
+            <dl className="border-t border-surface-border-subtle/70 pt-2 min-[700px]:pt-3">
               {resolvedTechnicalSpecs.map((spec) => (
                 <div
                   key={spec.label}
-                  className="grid gap-1.5 rounded-lg border border-surface-border-subtle/75 bg-surface-panel/50 px-3.5 py-3.5 shadow-inset-soft min-[700px]:gap-2 min-[700px]:px-4"
+                  className="grid grid-cols-1 gap-1.5 border-b border-surface-border-subtle/60 px-1 py-3 min-[700px]:grid-cols-[minmax(0,1fr)_auto] min-[700px]:items-start min-[700px]:gap-4 min-[700px]:px-2 min-[700px]:py-3.5"
                 >
                   <dt className="m-0 text-meta-label text-text-muted-soft">{spec.label}</dt>
-                  <dd className="m-0 wrap-break-word text-secondary-copy reading-compact text-foreground">
+                  <dd className="m-0 wrap-break-word text-secondary-copy reading-compact text-foreground min-[700px]:text-right min-[700px]:font-mono">
                     {spec.value}
                   </dd>
                 </div>
@@ -159,7 +205,7 @@ export function ProductPageTemplate({
         ) : null}
 
         {hasRelatedProducts ? (
-          <section className="w-full rounded-xl border border-shell-border/80 bg-linear-to-b from-surface-panel-soft/84 to-surface-subtle/56 p-5 shadow-soft [@media(max-height:480px)]:p-4 min-[700px]:p-8">
+          <section className="w-full px-4 border-shell-border/80 pt-5 min-[700px]:pt-6">
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
               <p className="text-eyebrow text-brand">À découvrir</p>
               <h2 className="m-0 text-title-section">Vous aimerez aussi</h2>
@@ -170,6 +216,10 @@ export function ProductPageTemplate({
             />
           </section>
         ) : null}
+      </div>
+
+      <div className="hidden min-[700px]:block">
+        <ProductTrust />
       </div>
     </div>
   );

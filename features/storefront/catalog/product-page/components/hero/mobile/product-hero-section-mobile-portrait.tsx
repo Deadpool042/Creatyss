@@ -9,11 +9,9 @@ import {
   ProductHeroImageCounterOverlay,
   ProductHeroMediaEmptyState,
 } from "../product-hero-media-elements";
-import {
-  ProductHeroAvailabilityMeta,
-  ProductHeroPricingMeta,
-} from "../product-hero-meta-blocks";
+import { ProductHeroAvailabilityMeta, ProductHeroPricingMeta } from "../product-hero-meta-blocks";
 import type { ProductHeroResolvedProps } from "../product-hero-resolved-props";
+import { ProductHeroVariableCartForm } from "../product-hero-variable-cart-form";
 import { ProductHeroVariantSelector } from "../product-hero-variant-selector";
 
 /**
@@ -26,12 +24,12 @@ import { ProductHeroVariantSelector } from "../product-hero-variant-selector";
  */
 export function ProductHeroSectionMobilePortrait({
   productName,
+  productSlug,
   marketingHook,
   isSimpleProduct,
   shortDescription,
   resolvedHeroVariant,
   resolvedIsAvailable,
-  resolvedSingleVariantSku,
   variablePriceLabel,
   variableSummaryText,
   variableVariants,
@@ -46,18 +44,19 @@ export function ProductHeroSectionMobilePortrait({
   imageFit,
   cta,
   asideExtra,
+  disableCart,
 }: ProductHeroResolvedProps) {
   const hasVisibleThumbnailRail = false;
   const shouldShowGalleryDots = !hasVisibleThumbnailRail && galleryImages.length > 1;
   const shouldShowActionBlock = !isSimpleProduct || Boolean(cta);
 
   return (
-    <section className="w-full border-b border-shell-border">
+    <section className="w-full border-b border-shell-border/80 pb-6">
       {/* --- Image full-bleed (mobile portrait) --- */}
       <div>
         {selectedImage ? (
           <>
-            <div className="relative aspect-4/5 w-full">
+            <div className="relative aspect-4/5 w-full overflow-hidden border border-hero-border shadow-raised h-[60vh]">
               <Image
                 key={selectedImage.src}
                 src={selectedImage.src}
@@ -91,13 +90,13 @@ export function ProductHeroSectionMobilePortrait({
           </>
         ) : (
           <div className="p-6 sm:p-8">
-            <ProductHeroMediaEmptyState className="aspect-4/3 w-full rounded-3xl" />
+            <ProductHeroMediaEmptyState className="aspect-4/3 w-full rounded-2xl" />
           </div>
         )}
       </div>
 
       {/* --- Aside empilé (mobile portrait) --- */}
-      <aside className="flex flex-col px-6 pb-7 pt-6 sm:px-7 sm:pt-7">
+      <aside className="flex flex-col px-6 pb-1 pt-6 sm:px-7 sm:pt-7">
         <div className="flex flex-col gap-6">
           <section className="grid gap-4">
             <ProductHeroHeader
@@ -121,13 +120,12 @@ export function ProductHeroSectionMobilePortrait({
 
             <ProductHeroAvailabilityMeta
               resolvedIsAvailable={resolvedIsAvailable}
-              resolvedSingleVariantSku={resolvedSingleVariantSku}
               density="default"
             />
           </section>
 
           {shouldShowActionBlock ? (
-            <section className="mt-auto grid gap-4 border-t border-surface-border pt-5">
+            <section className="grid gap-4 border-t border-surface-border pt-5">
               {!isSimpleProduct ? (
                 <ProductHeroVariantSelector
                   variableVariants={variableVariants}
@@ -136,12 +134,20 @@ export function ProductHeroSectionMobilePortrait({
                 />
               ) : null}
 
-              {cta ? <div className="grid gap-2.5">{cta}</div> : null}
+              {cta ? (
+                <div className="grid gap-2.5">{cta}</div>
+              ) : variableVariants ? (
+                <ProductHeroVariableCartForm
+                  productSlug={productSlug}
+                  selectedVariant={selectedVariableVariant}
+                  disabled={disableCart}
+                />
+              ) : null}
             </section>
           ) : null}
 
           {shortDescription ? (
-            <section className="grid gap-2 border-t border-surface-border pt-4">
+            <section className="grid gap-2 border-t border-surface-border pt-5">
               <p className="text-meta-label text-brand">Description</p>
               <div
                 className="prose prose-sm dark:prose-invert max-w-none text-text-muted-strong [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"

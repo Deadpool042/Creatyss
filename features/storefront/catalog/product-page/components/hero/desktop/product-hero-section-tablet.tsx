@@ -8,11 +8,9 @@ import {
   ProductHeroImageCounterOverlay,
   ProductHeroMediaEmptyState,
 } from "../product-hero-media-elements";
-import {
-  ProductHeroAvailabilityMeta,
-  ProductHeroPricingMeta,
-} from "../product-hero-meta-blocks";
+import { ProductHeroAvailabilityMeta, ProductHeroPricingMeta } from "../product-hero-meta-blocks";
 import { HeroThumbnailButton } from "../product-hero-thumbnail-button";
+import { ProductHeroVariableCartForm } from "../product-hero-variable-cart-form";
 import { ProductHeroVariantSelector } from "../product-hero-variant-selector";
 
 /**
@@ -23,12 +21,12 @@ import { ProductHeroVariantSelector } from "../product-hero-variant-selector";
  */
 export function ProductHeroSectionTablet({
   productName,
+  productSlug,
   marketingHook,
   isSimpleProduct,
   shortDescription,
   resolvedHeroVariant,
   resolvedIsAvailable,
-  resolvedSingleVariantSku,
   variablePriceLabel,
   variableSummaryText,
   variableVariants,
@@ -43,12 +41,13 @@ export function ProductHeroSectionTablet({
   imageFit,
   cta,
   asideExtra,
+  disableCart,
 }: ProductHeroResolvedProps) {
   const hasVisibleThumbnailRail = galleryImages.length > 1;
   const shouldShowActionBlock = !isSimpleProduct || Boolean(cta);
 
   return (
-    <section className="w-full">
+    <section className="w-full border-b border-shell-border/80 pb-5 lg:pb-6">
       <div className="flex flex-row">
         {/* --- Media : thumbnails + image (tablet) --- */}
         <div className="min-w-0 flex-1 p-3 lg:p-4">
@@ -101,7 +100,7 @@ export function ProductHeroSectionTablet({
         </div>
 
         {/* --- Aside latéral (tablet) --- */}
-        <aside className="flex w-84 shrink-0 flex-col px-4 py-4 lg:w-96 lg:px-5 lg:py-5">
+        <aside className="flex w-84 shrink-0 flex-col border-l border-shell-border/70 px-4 py-3 lg:w-96 lg:px-5 lg:py-4">
           <div className="flex h-full flex-col gap-3">
             <section className="grid gap-2">
               <ProductHeroHeader
@@ -125,13 +124,12 @@ export function ProductHeroSectionTablet({
 
               <ProductHeroAvailabilityMeta
                 resolvedIsAvailable={resolvedIsAvailable}
-                resolvedSingleVariantSku={resolvedSingleVariantSku}
                 density="cozy"
               />
             </section>
 
             {shouldShowActionBlock ? (
-              <section className="grid gap-3 border-t border-surface-border pt-4">
+              <section className="mt-auto grid gap-3 border-t border-surface-border pt-4">
                 {!isSimpleProduct ? (
                   <ProductHeroVariantSelector
                     variableVariants={variableVariants}
@@ -140,7 +138,15 @@ export function ProductHeroSectionTablet({
                   />
                 ) : null}
 
-                {cta ? <div className="grid gap-2">{cta}</div> : null}
+                {cta ? (
+                  <div className="grid gap-2.5">{cta}</div>
+                ) : variableVariants ? (
+                  <ProductHeroVariableCartForm
+                    productSlug={productSlug}
+                    selectedVariant={selectedVariableVariant}
+                    disabled={disableCart}
+                  />
+                ) : null}
               </section>
             ) : null}
 

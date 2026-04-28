@@ -43,7 +43,7 @@ function renderCartActionForm(input: RenderCartActionFormInput): React.ReactNode
         min={1}
         step={1}
         defaultValue={1}
-        className={input.quantityInputClassName}
+        className={`${input.quantityInputClassName} border-control-border bg-surface-panel/54 transition-[border-color,background-color,box-shadow,transform] hover:border-control-border-strong hover:bg-surface-panel/68 focus-visible:ring-2 focus-visible:ring-focus-ring/35 active:translate-y-px`}
       />
 
       <CustomButton
@@ -51,7 +51,7 @@ function renderCartActionForm(input: RenderCartActionFormInput): React.ReactNode
         name="intent"
         value="add_to_cart"
         size={input.primaryButtonSize}
-        className="w-auto"
+        className="w-auto shadow-control transition-[transform,box-shadow,filter] hover:shadow-control-hover active:translate-y-px active:shadow-control-pressed focus-visible:ring-2 focus-visible:ring-focus-ring/35"
       >
         Ajouter au panier
       </CustomButton>
@@ -63,7 +63,7 @@ function renderCartActionForm(input: RenderCartActionFormInput): React.ReactNode
         variant="outline"
         size={input.secondaryButtonSize}
         aria-describedby={buyNowHelpId}
-        className="w-auto border-control-border-strong"
+        className="w-auto border-control-border-strong bg-surface-panel/44 shadow-control transition-[background-color,transform,box-shadow] hover:bg-surface-panel/68 hover:shadow-control-hover active:translate-y-px active:shadow-control-pressed focus-visible:ring-2 focus-visible:ring-focus-ring/35"
       >
         Achat immédiat
       </CustomButton>
