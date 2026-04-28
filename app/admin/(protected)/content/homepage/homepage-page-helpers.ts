@@ -11,6 +11,7 @@ import {
   HOMEPAGE_FEATURED_PRODUCTS_MAX_COUNT,
   HOMEPAGE_HERO_TEXT_MAX_LENGTH,
   HOMEPAGE_HERO_TITLE_MAX_LENGTH,
+  HOMEPAGE_SHIPPING_RETURNS_POLICY_MAX_LENGTH,
 } from "@/entities/homepage/homepage-input";
 
 export type HomepageSearchParams = Record<string, string | string[] | undefined>;
@@ -47,6 +48,8 @@ export function getHomepageErrorMessage(error: string | undefined): string | nul
       return "Le média sélectionné pour l'image principale est introuvable.";
     case "hero_title_too_long":
       return `Le titre principal ne doit pas dépasser ${HOMEPAGE_HERO_TITLE_MAX_LENGTH} caractères.`;
+    case "shipping_returns_policy_too_long":
+      return `Le texte Livraison & retours ne doit pas dépasser ${HOMEPAGE_SHIPPING_RETURNS_POLICY_MAX_LENGTH} caractères.`;
     case "hero_text_too_long":
       return `Le texte principal ne doit pas dépasser ${HOMEPAGE_HERO_TEXT_MAX_LENGTH} caractères.`;
     case "editorial_title_too_long":

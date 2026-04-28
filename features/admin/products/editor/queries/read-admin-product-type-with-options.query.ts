@@ -25,6 +25,7 @@ export async function readAdminProductTypeWithOptions(
           code: true,
           value: true,
           label: true,
+          colorHex: true,
           sortOrder: true,
         },
       },
@@ -42,6 +43,7 @@ export async function readAdminProductTypeWithOptions(
       code: v.code,
       value: v.value,
       label: v.label,
+      colorHex: v.colorHex,
       sortOrder: v.sortOrder,
     })),
   }));

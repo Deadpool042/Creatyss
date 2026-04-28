@@ -85,6 +85,7 @@ model Product {
   marketingHook    String?
   shortDescription String?
   description      String?
+  careInstructions String?
 
   prices        ProductPrice[]
   cartLines     CartLine[]
@@ -219,6 +220,7 @@ model ProductOptionValue {
   code      String
   value     String
   label     String?
+  colorHex  String?
   sortOrder Int     @default(0)
   isActive  Boolean @default(true)
 

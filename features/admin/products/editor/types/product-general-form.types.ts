@@ -6,6 +6,7 @@ export type ProductGeneralFormValues = {
   marketingHook: string;
   shortDescription: string;
   description: string;
+  careInstructions: string;
   status: "draft" | "active" | "inactive" | "archived";
   isFeatured: boolean;
   productTypeId: string;
@@ -24,6 +25,7 @@ export type ProductGeneralFormState = {
       | "marketingHook"
       | "shortDescription"
       | "description"
+      | "careInstructions"
       | "status"
       | "isFeatured"
       | "productTypeId"

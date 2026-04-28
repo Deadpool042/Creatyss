@@ -95,6 +95,7 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
         <EditorialSection
           editorialText={homepage.editorialText}
           editorialTitle={homepage.editorialTitle}
+          shippingReturnsPolicy={homepage.shippingReturnsPolicy}
         />
 
         <FeaturedProductsSection

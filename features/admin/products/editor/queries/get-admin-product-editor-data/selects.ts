@@ -9,6 +9,7 @@ export const PRODUCT_EDITOR_CORE_SELECT = {
   skuRoot: true,
   shortDescription: true,
   description: true,
+  careInstructions: true,
   status: true,
   isFeatured: true,
   archivedAt: true,

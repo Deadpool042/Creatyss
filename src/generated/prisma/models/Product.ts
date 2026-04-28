@@ -35,6 +35,7 @@ export type ProductMinAggregateOutputType = {
   marketingHook: string | null
   shortDescription: string | null
   description: string | null
+  careInstructions: string | null
   status: $Enums.ProductStatus | null
   isFeatured: boolean | null
   isStandalone: boolean | null
@@ -55,6 +56,7 @@ export type ProductMaxAggregateOutputType = {
   marketingHook: string | null
   shortDescription: string | null
   description: string | null
+  careInstructions: string | null
   status: $Enums.ProductStatus | null
   isFeatured: boolean | null
   isStandalone: boolean | null
@@ -75,6 +77,7 @@ export type ProductCountAggregateOutputType = {
   marketingHook: number
   shortDescription: number
   description: number
+  careInstructions: number
   status: number
   isFeatured: number
   isStandalone: number
@@ -97,6 +100,7 @@ export type ProductMinAggregateInputType = {
   marketingHook?: true
   shortDescription?: true
   description?: true
+  careInstructions?: true
   status?: true
   isFeatured?: true
   isStandalone?: true
@@ -117,6 +121,7 @@ export type ProductMaxAggregateInputType = {
   marketingHook?: true
   shortDescription?: true
   description?: true
+  careInstructions?: true
   status?: true
   isFeatured?: true
   isStandalone?: true
@@ -137,6 +142,7 @@ export type ProductCountAggregateInputType = {
   marketingHook?: true
   shortDescription?: true
   description?: true
+  careInstructions?: true
   status?: true
   isFeatured?: true
   isStandalone?: true
@@ -230,6 +236,7 @@ export type ProductGroupByOutputType = {
   marketingHook: string | null
   shortDescription: string | null
   description: string | null
+  careInstructions: string | null
   status: $Enums.ProductStatus
   isFeatured: boolean
   isStandalone: boolean
@@ -271,6 +278,7 @@ export type ProductWhereInput = {
   marketingHook?: Prisma.StringNullableFilter<"Product"> | string | null
   shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
+  careInstructions?: Prisma.StringNullableFilter<"Product"> | string | null
   status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFilter<"Product"> | boolean
   isStandalone?: Prisma.BoolFilter<"Product"> | boolean
@@ -312,6 +320,7 @@ export type ProductOrderByWithRelationInput = {
   marketingHook?: Prisma.SortOrderInput | Prisma.SortOrder
   shortDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  careInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
   isStandalone?: Prisma.SortOrder
@@ -357,6 +366,7 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   marketingHook?: Prisma.StringNullableFilter<"Product"> | string | null
   shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
+  careInstructions?: Prisma.StringNullableFilter<"Product"> | string | null
   status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFilter<"Product"> | boolean
   isStandalone?: Prisma.BoolFilter<"Product"> | boolean
@@ -398,6 +408,7 @@ export type ProductOrderByWithAggregationInput = {
   marketingHook?: Prisma.SortOrderInput | Prisma.SortOrder
   shortDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  careInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
   isStandalone?: Prisma.SortOrder
@@ -424,6 +435,7 @@ export type ProductScalarWhereWithAggregatesInput = {
   marketingHook?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   shortDescription?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
+  careInstructions?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   status?: Prisma.EnumProductStatusWithAggregatesFilter<"Product"> | $Enums.ProductStatus
   isFeatured?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
   isStandalone?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
@@ -441,6 +453,7 @@ export type ProductCreateInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -482,6 +495,7 @@ export type ProductUncheckedCreateInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -517,6 +531,7 @@ export type ProductUpdateInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -558,6 +573,7 @@ export type ProductUncheckedUpdateInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -596,6 +612,7 @@ export type ProductCreateManyInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -613,6 +630,7 @@ export type ProductUpdateManyMutationInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -633,6 +651,7 @@ export type ProductUncheckedUpdateManyInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -673,6 +692,7 @@ export type ProductCountOrderByAggregateInput = {
   marketingHook?: Prisma.SortOrder
   shortDescription?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  careInstructions?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
   isStandalone?: Prisma.SortOrder
@@ -693,6 +713,7 @@ export type ProductMaxOrderByAggregateInput = {
   marketingHook?: Prisma.SortOrder
   shortDescription?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  careInstructions?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
   isStandalone?: Prisma.SortOrder
@@ -713,6 +734,7 @@ export type ProductMinOrderByAggregateInput = {
   marketingHook?: Prisma.SortOrder
   shortDescription?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  careInstructions?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
   isStandalone?: Prisma.SortOrder
@@ -1125,6 +1147,7 @@ export type ProductCreateWithoutProductCategoriesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1165,6 +1188,7 @@ export type ProductUncheckedCreateWithoutProductCategoriesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1215,6 +1239,7 @@ export type ProductUpdateWithoutProductCategoriesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1255,6 +1280,7 @@ export type ProductUncheckedUpdateWithoutProductCategoriesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1289,6 +1315,7 @@ export type ProductCreateWithoutPrimaryImageInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1328,6 +1355,7 @@ export type ProductUncheckedCreateWithoutPrimaryImageInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1395,6 +1423,7 @@ export type ProductScalarWhereInput = {
   marketingHook?: Prisma.StringNullableFilter<"Product"> | string | null
   shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
+  careInstructions?: Prisma.StringNullableFilter<"Product"> | string | null
   status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFilter<"Product"> | boolean
   isStandalone?: Prisma.BoolFilter<"Product"> | boolean
@@ -1412,6 +1441,7 @@ export type ProductCreateWithoutPricesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1452,6 +1482,7 @@ export type ProductUncheckedCreateWithoutPricesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1502,6 +1533,7 @@ export type ProductUpdateWithoutPricesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1542,6 +1574,7 @@ export type ProductUncheckedUpdateWithoutPricesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1576,6 +1609,7 @@ export type ProductCreateWithoutProductTypeInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1615,6 +1649,7 @@ export type ProductUncheckedCreateWithoutProductTypeInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1676,6 +1711,7 @@ export type ProductCreateWithoutCharacteristicsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1716,6 +1752,7 @@ export type ProductUncheckedCreateWithoutCharacteristicsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1766,6 +1803,7 @@ export type ProductUpdateWithoutCharacteristicsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1806,6 +1844,7 @@ export type ProductUncheckedUpdateWithoutCharacteristicsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1840,6 +1879,7 @@ export type ProductCreateWithoutVariantsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1880,6 +1920,7 @@ export type ProductUncheckedCreateWithoutVariantsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1930,6 +1971,7 @@ export type ProductUpdateWithoutVariantsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1970,6 +2012,7 @@ export type ProductUncheckedUpdateWithoutVariantsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2004,6 +2047,7 @@ export type ProductCreateWithoutRelatedFromInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2044,6 +2088,7 @@ export type ProductUncheckedCreateWithoutRelatedFromInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2083,6 +2128,7 @@ export type ProductCreateWithoutRelatedToInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2123,6 +2169,7 @@ export type ProductUncheckedCreateWithoutRelatedToInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2173,6 +2220,7 @@ export type ProductUpdateWithoutRelatedFromInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2213,6 +2261,7 @@ export type ProductUncheckedUpdateWithoutRelatedFromInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2258,6 +2307,7 @@ export type ProductUpdateWithoutRelatedToInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2298,6 +2348,7 @@ export type ProductUncheckedUpdateWithoutRelatedToInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2332,6 +2383,7 @@ export type ProductCreateWithoutCartLinesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2372,6 +2424,7 @@ export type ProductUncheckedCreateWithoutCartLinesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2422,6 +2475,7 @@ export type ProductUpdateWithoutCartLinesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2462,6 +2516,7 @@ export type ProductUncheckedUpdateWithoutCartLinesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2496,6 +2551,7 @@ export type ProductCreateWithoutCheckoutLinesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2536,6 +2592,7 @@ export type ProductUncheckedCreateWithoutCheckoutLinesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2586,6 +2643,7 @@ export type ProductUpdateWithoutCheckoutLinesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2626,6 +2684,7 @@ export type ProductUncheckedUpdateWithoutCheckoutLinesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2660,6 +2719,7 @@ export type ProductCreateWithoutOrderLinesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2700,6 +2760,7 @@ export type ProductUncheckedCreateWithoutOrderLinesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2750,6 +2811,7 @@ export type ProductUpdateWithoutOrderLinesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2790,6 +2852,7 @@ export type ProductUncheckedUpdateWithoutOrderLinesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2824,6 +2887,7 @@ export type ProductCreateWithoutHomepageFeaturedInInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2864,6 +2928,7 @@ export type ProductUncheckedCreateWithoutHomepageFeaturedInInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2914,6 +2979,7 @@ export type ProductUpdateWithoutHomepageFeaturedInInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2954,6 +3020,7 @@ export type ProductUncheckedUpdateWithoutHomepageFeaturedInInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2988,6 +3055,7 @@ export type ProductCreateWithoutStoreInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3027,6 +3095,7 @@ export type ProductUncheckedCreateWithoutStoreInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3088,6 +3157,7 @@ export type ProductCreateWithoutBundleItemsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3128,6 +3198,7 @@ export type ProductUncheckedCreateWithoutBundleItemsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3178,6 +3249,7 @@ export type ProductUpdateWithoutBundleItemsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3218,6 +3290,7 @@ export type ProductUncheckedUpdateWithoutBundleItemsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3252,6 +3325,7 @@ export type ProductCreateWithoutDiscountProductTargetsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3292,6 +3366,7 @@ export type ProductUncheckedCreateWithoutDiscountProductTargetsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3342,6 +3417,7 @@ export type ProductUpdateWithoutDiscountProductTargetsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3382,6 +3458,7 @@ export type ProductUncheckedUpdateWithoutDiscountProductTargetsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3416,6 +3493,7 @@ export type ProductCreateWithoutGiftRequestItemsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3456,6 +3534,7 @@ export type ProductUncheckedCreateWithoutGiftRequestItemsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3506,6 +3585,7 @@ export type ProductUpdateWithoutGiftRequestItemsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3546,6 +3626,7 @@ export type ProductUncheckedUpdateWithoutGiftRequestItemsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3580,6 +3661,7 @@ export type ProductCreateWithoutSalesPolicyProductTargetsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3620,6 +3702,7 @@ export type ProductUncheckedCreateWithoutSalesPolicyProductTargetsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3670,6 +3753,7 @@ export type ProductUpdateWithoutSalesPolicyProductTargetsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3710,6 +3794,7 @@ export type ProductUncheckedUpdateWithoutSalesPolicyProductTargetsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3744,6 +3829,7 @@ export type ProductCreateWithoutSubscriptionItemsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3784,6 +3870,7 @@ export type ProductUncheckedCreateWithoutSubscriptionItemsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3834,6 +3921,7 @@ export type ProductUpdateWithoutSubscriptionItemsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3874,6 +3962,7 @@ export type ProductUncheckedUpdateWithoutSubscriptionItemsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3908,6 +3997,7 @@ export type ProductCreateWithoutTaxRuleProductTargetsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3948,6 +4038,7 @@ export type ProductUncheckedCreateWithoutTaxRuleProductTargetsInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3998,6 +4089,7 @@ export type ProductUpdateWithoutTaxRuleProductTargetsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4038,6 +4130,7 @@ export type ProductUncheckedUpdateWithoutTaxRuleProductTargetsInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4072,6 +4165,7 @@ export type ProductCreateWithoutConversionFlowLinksInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4112,6 +4206,7 @@ export type ProductUncheckedCreateWithoutConversionFlowLinksInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4162,6 +4257,7 @@ export type ProductUpdateWithoutConversionFlowLinksInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4202,6 +4298,7 @@ export type ProductUncheckedUpdateWithoutConversionFlowLinksInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4236,6 +4333,7 @@ export type ProductCreateWithoutChannelStatusesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4276,6 +4374,7 @@ export type ProductUncheckedCreateWithoutChannelStatusesInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4326,6 +4425,7 @@ export type ProductUpdateWithoutChannelStatusesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4366,6 +4466,7 @@ export type ProductUncheckedUpdateWithoutChannelStatusesInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4402,6 +4503,7 @@ export type ProductCreateManyPrimaryImageInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4419,6 +4521,7 @@ export type ProductUpdateWithoutPrimaryImageInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4458,6 +4561,7 @@ export type ProductUncheckedUpdateWithoutPrimaryImageInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4495,6 +4599,7 @@ export type ProductUncheckedUpdateManyWithoutPrimaryImageInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4514,6 +4619,7 @@ export type ProductCreateManyProductTypeInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4531,6 +4637,7 @@ export type ProductUpdateWithoutProductTypeInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4570,6 +4677,7 @@ export type ProductUncheckedUpdateWithoutProductTypeInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4607,6 +4715,7 @@ export type ProductUncheckedUpdateManyWithoutProductTypeInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4626,6 +4735,7 @@ export type ProductCreateManyStoreInput = {
   marketingHook?: string | null
   shortDescription?: string | null
   description?: string | null
+  careInstructions?: string | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4643,6 +4753,7 @@ export type ProductUpdateWithoutStoreInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4682,6 +4793,7 @@ export type ProductUncheckedUpdateWithoutStoreInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4719,6 +4831,7 @@ export type ProductUncheckedUpdateManyWithoutStoreInput = {
   marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4923,6 +5036,7 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   marketingHook?: boolean
   shortDescription?: boolean
   description?: boolean
+  careInstructions?: boolean
   status?: boolean
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4965,6 +5079,7 @@ export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   marketingHook?: boolean
   shortDescription?: boolean
   description?: boolean
+  careInstructions?: boolean
   status?: boolean
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4988,6 +5103,7 @@ export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   marketingHook?: boolean
   shortDescription?: boolean
   description?: boolean
+  careInstructions?: boolean
   status?: boolean
   isFeatured?: boolean
   isStandalone?: boolean
@@ -5011,6 +5127,7 @@ export type ProductSelectScalar = {
   marketingHook?: boolean
   shortDescription?: boolean
   description?: boolean
+  careInstructions?: boolean
   status?: boolean
   isFeatured?: boolean
   isStandalone?: boolean
@@ -5020,7 +5137,7 @@ export type ProductSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "productTypeId" | "primaryImageId" | "skuRoot" | "slug" | "name" | "marketingHook" | "shortDescription" | "description" | "status" | "isFeatured" | "isStandalone" | "publishedAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "productTypeId" | "primaryImageId" | "skuRoot" | "slug" | "name" | "marketingHook" | "shortDescription" | "description" | "careInstructions" | "status" | "isFeatured" | "isStandalone" | "publishedAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prices?: boolean | Prisma.Product$pricesArgs<ExtArgs>
   cartLines?: boolean | Prisma.Product$cartLinesArgs<ExtArgs>
@@ -5092,6 +5209,7 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     marketingHook: string | null
     shortDescription: string | null
     description: string | null
+    careInstructions: string | null
     status: $Enums.ProductStatus
     isFeatured: boolean
     isStandalone: boolean
@@ -5553,6 +5671,7 @@ export interface ProductFieldRefs {
   readonly marketingHook: Prisma.FieldRef<"Product", 'String'>
   readonly shortDescription: Prisma.FieldRef<"Product", 'String'>
   readonly description: Prisma.FieldRef<"Product", 'String'>
+  readonly careInstructions: Prisma.FieldRef<"Product", 'String'>
   readonly status: Prisma.FieldRef<"Product", 'ProductStatus'>
   readonly isFeatured: Prisma.FieldRef<"Product", 'Boolean'>
   readonly isStandalone: Prisma.FieldRef<"Product", 'Boolean'>

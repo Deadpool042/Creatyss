@@ -6,6 +6,15 @@ type ProductHeroVariantSelectorProps = {
   onSelectVariantId: (id: string) => void;
 };
 
+function isValidColorHex(value: string | null): value is string {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  const normalized = value.trim();
+  return /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(normalized);
+}
+
 function getVariantSelectionLabel(variant: {
   name: string;
   optionValues: { valueLabel: string }[];
@@ -45,6 +54,7 @@ export function ProductHeroVariantSelector({
       <div className="flex flex-wrap gap-2.5">
         {variableVariants.map((variant) => {
           const isSelected = variant.id === selectedVariableVariant?.id;
+          const swatchHex = isValidColorHex(variant.colorHex) ? variant.colorHex : null;
 
           return (
             <button
@@ -59,7 +69,16 @@ export function ProductHeroVariantSelector({
                   : "border-control-border bg-transparent text-foreground-muted hover:bg-interactive-hover hover:text-foreground",
               ].join(" ")}
             >
-              {getVariantSelectionLabel(variant)}
+              <span className="inline-flex items-center gap-2">
+                {swatchHex ? (
+                  <span
+                    aria-hidden="true"
+                    className="h-2.5 w-2.5 rounded-full border border-control-border-strong/80"
+                    style={{ backgroundColor: swatchHex }}
+                  />
+                ) : null}
+                <span>{getVariantSelectionLabel(variant)}</span>
+              </span>
             </button>
           );
         })}

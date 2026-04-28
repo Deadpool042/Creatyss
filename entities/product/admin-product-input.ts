@@ -29,6 +29,7 @@ export type ValidatedAdminProductInput = {
   marketingHook: string | null;
   shortDescription: string | null;
   description: string | null;
+  careInstructions: string | null;
   productTypeId: string | null;
   primaryImageMediaAssetId: string | null;
   status: ProductLifecycleStatus;
@@ -78,6 +79,7 @@ type AdminProductInputSource = {
   marketingHook: RawInputValue;
   shortDescription: RawInputValue;
   description: RawInputValue;
+  careInstructions: RawInputValue;
   productTypeId: RawInputValue;
   primaryImageMediaAssetId: RawInputValue;
   status: RawInputValue;
@@ -612,6 +614,7 @@ export function validateAdminProductInput(
       marketingHook: normalizeOptionalText(input.marketingHook),
       shortDescription,
       description: normalizeOptionalRichTextHtml(input.description),
+      careInstructions: normalizeOptionalRichTextHtml(input.careInstructions),
       productTypeId,
       primaryImageMediaAssetId,
       status,

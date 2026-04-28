@@ -10,6 +10,7 @@ export type AdminHomepageFeaturedBlogPostSelection = HomepageFeaturedBlogPostSel
 
 export type AdminHomepageEditorState = {
   id: string;
+  shippingReturnsPolicy: string | null;
   heroTitle: string | null;
   heroText: string | null;
   heroImagePath: string | null;
@@ -47,6 +48,7 @@ export type AdminHomepageEditorData = {
 
 export type UpdateAdminHomepageInput = {
   id: string;
+  shippingReturnsPolicy: string | null;
   heroTitle: string | null;
   heroText: string | null;
   heroImagePath: string | null;

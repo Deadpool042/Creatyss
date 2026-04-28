@@ -55,6 +55,8 @@ export type CatalogProductDetail = {
   marketingHook: string | null;
   shortDescription: string | null;
   description: string | null;
+  careInstructions: string | null;
+  shippingReturnsPolicy: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
   seoIndexingMode: "INDEX_FOLLOW" | "INDEX_NOFOLLOW" | "NOINDEX_FOLLOW" | "NOINDEX_NOFOLLOW" | null;

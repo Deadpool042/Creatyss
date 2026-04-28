@@ -4,6 +4,8 @@ import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { Button } from "@/components/ui/button";
 import {
   attachProductImagesAction,
+  archiveProductOptionColorValueAction,
+  createProductOptionColorValueAction,
   createProductVariantAction,
   deleteProductAction,
   deleteProductImageAction,
@@ -29,6 +31,7 @@ import {
   updateProductPricesAction,
   updateProductRelatedProductsAction,
   updateProductCharacteristicsAction,
+  updateProductOptionColorValueAction,
   updateProductSeoAction,
   updateProductVariantAction,
   uploadProductImagesAction,
@@ -188,6 +191,9 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
         updateVariantAction={updateProductVariantAction}
         setDefaultVariantAction={setDefaultProductVariantAction}
         deleteVariantAction={deleteProductVariantAction}
+        createOptionColorValueAction={createProductOptionColorValueAction}
+        updateOptionColorValueAction={updateProductOptionColorValueAction}
+        archiveOptionColorValueAction={archiveProductOptionColorValueAction}
         setPrimaryImageAction={setProductPrimaryImageAction}
         deleteImageAction={deleteProductImageAction}
         updateAltTextAction={updateProductImageAltTextAction}

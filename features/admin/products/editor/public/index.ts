@@ -13,6 +13,14 @@ export { reorderProductImageAction } from "../actions/reorder-product-image.acti
 export { updateProductImageAltTextAction } from "../actions/update-product-image-alt-text.action";
 export { attachProductImagesAction } from "../actions/attach-product-images.action";
 export { uploadProductImagesAction } from "../actions/upload-product-images.action";
+export {
+  createProductOptionColorValueAction,
+  updateProductOptionColorValueAction,
+  archiveProductOptionColorValueAction,
+  type CreateProductOptionColorValueInput,
+  type UpdateProductOptionColorValueInput,
+  type ArchiveProductOptionColorValueInput,
+} from "../actions/update-product-option-color-hex.action";
 
 export type {
   AdminProductEditorData,

@@ -39,7 +39,6 @@ const SUGGESTED_CHARACTERISTIC_LABELS = [
   "Fermeture",
   "Porté",
   "Poches",
-  "Entretien",
 ] as const;
 
 function buildInitialRows(items: AdminProductCharacteristicItem[]): EditableCharacteristic[] {
@@ -165,7 +164,7 @@ function ProductCharacteristicsTabInner({
 
           <AdminFormSection
             title="Caractéristiques produit"
-            description="Renseignez les informations utiles pour la fiche produit : matière, dimensions, fermeture, composition, entretien, etc."
+            description="Renseignez les attributs factuels du produit : matière, dimensions, fermeture, composition, etc."
           >
             <div className="space-y-3 rounded-xl border border-surface-border bg-surface-panel-soft px-4 py-4">
               <div className="grid gap-1">
@@ -176,6 +175,10 @@ function ProductCharacteristicsTabInner({
                 </p>
                 <p className="text-xs leading-5 text-muted-foreground">
                   Vous pouvez aussi ajouter une ligne vide puis compléter dans la liste.
+                </p>
+                <p className="text-xs leading-5 text-muted-foreground">
+                  Pour l&apos;entretien, utilisez le champ dédié Entretien (PDP) dans l&apos;onglet
+                  Général afin d&apos;éviter les doublons.
                 </p>
               </div>
 

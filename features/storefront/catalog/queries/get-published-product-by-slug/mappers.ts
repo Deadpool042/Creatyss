@@ -23,6 +23,36 @@ import type {
   PublishedProductGalleryItem,
 } from "./types";
 
+function isValidColorHex(value: string | null): value is string {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  const normalized = value.trim();
+  return /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(normalized);
+}
+
+function resolveVariantColorPresentation(
+  optionValues: PublishedProductCoreRecord["variants"][number]["optionValues"]
+): { colorName: string | null; colorHex: string | null } {
+  const colorCandidate = optionValues.find((item) => {
+    const optionCode = item.optionValue.option.name.trim().toLowerCase();
+    return optionCode.includes("color") || optionCode.includes("couleur");
+  });
+
+  if (!colorCandidate) {
+    return { colorName: null, colorHex: null };
+  }
+
+  const colorName = (colorCandidate.optionValue.label ?? colorCandidate.optionValue.value).trim();
+  const normalizedHex = colorCandidate.optionValue.colorHex?.trim() ?? null;
+
+  return {
+    colorName: colorName.length > 0 ? colorName : null,
+    colorHex: isValidColorHex(normalizedHex) ? normalizedHex.toUpperCase() : null,
+  };
+}
+
 function mapVariants(
   variants: PublishedProductCoreRecord["variants"],
   productLevelPrice: PublishedProductCoreRecord["prices"][number] | null,
@@ -38,12 +68,14 @@ function mapVariants(
       ? [mapCatalogImage(variant.primaryImage, uploadsPublicPath)]
       : [];
 
+    const colorPresentation = resolveVariantColorPresentation(variant.optionValues);
+
     return {
       id: variant.id,
       sku: variant.sku,
       name: variant.name ?? productName,
-      colorName: null,
-      colorHex: null,
+      colorName: colorPresentation.colorName,
+      colorHex: colorPresentation.colorHex,
       isDefault: variant.isDefault,
       isAvailable: getCatalogVariantAvailability(variant),
       price: formatCatalogMoney(activePrice?.amount ?? null),
@@ -150,6 +182,8 @@ export function mapPublishedProductDetail(input: {
     marketingHook: product.marketingHook,
     shortDescription: product.shortDescription,
     description: product.description,
+    careInstructions: product.careInstructions,
+    shippingReturnsPolicy: product.store.shippingReturnsPolicy,
     seoTitle: toSeoPlainTextOrNull(seoMetadata?.metaTitle ?? null),
     seoDescription: toSeoPlainTextOrNull(seoMetadata?.metaDescription ?? null),
     seoIndexingMode: seoMetadata?.indexingMode ?? null,

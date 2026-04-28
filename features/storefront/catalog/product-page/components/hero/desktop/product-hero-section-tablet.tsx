@@ -101,7 +101,7 @@ export function ProductHeroSectionTablet({
 
         {/* --- Aside latéral (tablet) --- */}
         <aside className="flex w-84 shrink-0 flex-col border-l border-shell-border/70 px-4 py-3 lg:w-96 lg:px-5 lg:py-4">
-          <div className="flex h-full flex-col gap-3">
+          <div className="flex h-full flex-col gap-2.5">
             <section className="grid gap-2">
               <ProductHeroHeader
                 productName={productName}
@@ -111,7 +111,7 @@ export function ProductHeroSectionTablet({
               />
             </section>
 
-            <section className="grid gap-3 border-t border-surface-border pt-4">
+            <section className="grid gap-3 border-t border-surface-border pt-3.5">
               {resolvedHeroVariant ? (
                 <ProductHeroPricingMeta
                   resolvedHeroVariant={resolvedHeroVariant}
@@ -129,7 +129,7 @@ export function ProductHeroSectionTablet({
             </section>
 
             {shouldShowActionBlock ? (
-              <section className="mt-auto grid gap-3 border-t border-surface-border pt-4">
+              <section className="mt-auto grid gap-3 border-t border-surface-border pt-3.5">
                 {!isSimpleProduct ? (
                   <ProductHeroVariantSelector
                     variableVariants={variableVariants}
@@ -151,10 +151,12 @@ export function ProductHeroSectionTablet({
             ) : null}
 
             {shortDescription ? (
-              <section className="grid gap-2 border-t border-surface-border pt-4">
-                <p className="text-meta-label text-brand">Description</p>
+              <section className="grid gap-1.5 border-t border-surface-border pt-3.5">
+                <p className="text-micro-copy font-medium uppercase tracking-[0.08em] text-text-muted-soft">
+                  En bref
+                </p>
                 <div
-                  className="prose prose-sm dark:prose-invert max-w-none text-text-muted-strong [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                  className="prose prose-sm dark:prose-invert max-w-none text-foreground-muted [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
                   dangerouslySetInnerHTML={{ __html: shortDescription }}
                 />
               </section>

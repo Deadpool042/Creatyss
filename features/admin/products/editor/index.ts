@@ -28,6 +28,11 @@ export { updateProductCharacteristicsAction } from "./actions/update-product-cha
 export { updateProductSeoAction } from "./actions/update-product-seo.action";
 export { updateProductPricesAction } from "./actions/update-product-prices.action";
 export { updateProductVariantAction } from "./actions/update-product-variant.action";
+export {
+  createProductOptionColorValueAction,
+  updateProductOptionColorValueAction,
+  archiveProductOptionColorValueAction,
+} from "./actions/update-product-option-color-hex.action";
 export { uploadProductImagesAction } from "./actions/upload-product-images.action";
 
 export {

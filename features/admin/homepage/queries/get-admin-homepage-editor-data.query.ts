@@ -44,6 +44,11 @@ export async function getAdminHomepageEditorData(): Promise<AdminHomepageEditorD
       ],
       select: {
         id: true,
+        store: {
+          select: {
+            shippingReturnsPolicy: true,
+          },
+        },
         sections: {
           where: {
             archivedAt: null,

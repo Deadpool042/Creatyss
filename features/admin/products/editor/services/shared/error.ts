@@ -14,6 +14,8 @@ export class AdminProductEditorServiceError extends Error {
     | "default_variant_required"
     | "cannot_delete_default_variant"
     | "option_values_invalid"
+    | "option_value_in_use"
+    | "option_value_label_taken"
     | "inventory_invalid"
     | "product_not_variable"
     | "product_has_multiple_variants";

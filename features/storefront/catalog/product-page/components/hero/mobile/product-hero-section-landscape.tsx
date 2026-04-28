@@ -97,7 +97,7 @@ export function ProductHeroSectionLandscape({
 
         {/* --- Aside dominant (landscape) --- */}
         <aside className="flex flex-1 flex-col border-l border-shell-border/70 px-3 py-2">
-          <div className="flex h-full flex-col gap-2">
+          <div className="flex h-full flex-col gap-1.5">
             <section className="grid gap-1.5">
               <ProductHeroHeader
                 productName={productName}
@@ -107,7 +107,7 @@ export function ProductHeroSectionLandscape({
               />
             </section>
 
-            <section className="grid gap-2 border-t border-surface-border pt-2">
+            <section className="grid gap-2 border-t border-surface-border pt-1.5">
               {resolvedHeroVariant ? (
                 <ProductHeroPricingMeta
                   resolvedHeroVariant={resolvedHeroVariant}
@@ -125,7 +125,7 @@ export function ProductHeroSectionLandscape({
             </section>
 
             {variableVariants && variableVariants.length > 1 ? (
-              <section className="grid gap-2 border-t border-surface-border pt-2">
+              <section className="grid gap-2 border-t border-surface-border pt-1.5">
                 <ProductHeroVariantSelector
                   variableVariants={variableVariants}
                   selectedVariableVariant={selectedVariableVariant}
@@ -135,7 +135,7 @@ export function ProductHeroSectionLandscape({
             ) : null}
 
             {shouldShowActionBlock ? (
-              <section className="grid gap-2 border-t border-surface-border pt-2">
+              <section className="grid gap-2 border-t border-surface-border pt-1.5">
                 {cta ? (
                   <div className="grid gap-1.5">{cta}</div>
                 ) : variableVariants ? (
@@ -149,10 +149,12 @@ export function ProductHeroSectionLandscape({
             ) : null}
 
             {shortDescription ? (
-              <section className="grid gap-1.5 border-t border-surface-border pt-2">
-                <p className="text-meta-label text-brand">Description</p>
+              <section className="grid gap-1 border-t border-surface-border pt-1.5 [@media(max-height:520px)]:hidden">
+                <p className="text-micro-copy font-medium uppercase tracking-[0.08em] text-text-muted-soft">
+                  En bref
+                </p>
                 <div
-                  className="prose prose-sm dark:prose-invert max-w-none text-text-muted-strong [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                  className="prose prose-sm dark:prose-invert max-w-none text-foreground-muted [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
                   dangerouslySetInnerHTML={{ __html: shortDescription }}
                 />
               </section>

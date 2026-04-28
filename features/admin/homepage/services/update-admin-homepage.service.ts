@@ -252,6 +252,18 @@ export async function updateAdminHomepage(
       },
     });
 
+    await tx.store.update({
+      where: {
+        id: homepageRecord.storeId,
+      },
+      data: {
+        shippingReturnsPolicy: input.shippingReturnsPolicy,
+      },
+      select: {
+        id: true,
+      },
+    });
+
     await tx.homepageSection.update({
       where: {
         id: sections.heroSection.id,

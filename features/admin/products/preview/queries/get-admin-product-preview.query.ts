@@ -79,6 +79,8 @@ export type AdminProductPreview = {
   marketingHook: string | null;
   shortDescription: string | null;
   description: string | null;
+  careInstructions: string | null;
+  shippingReturnsPolicy: string | null;
   status: AdminProductLifecycleStatus;
   productType: "simple" | "variable";
   isAvailable: boolean;
@@ -97,6 +99,45 @@ export type AdminProductPreview = {
   seoTwitterDescription: string | null;
   seoTwitterImageUrl: string | null;
 };
+
+function isValidColorHex(value: string | null): value is string {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  const normalized = value.trim();
+  return /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(normalized);
+}
+
+function resolveVariantColorPresentation(
+  optionValues: Array<{
+    optionValue: {
+      value: string;
+      label: string | null;
+      colorHex: string | null;
+      option: {
+        name: string;
+      };
+    };
+  }>
+): { colorName: string | null; colorHex: string | null } {
+  const colorCandidate = optionValues.find((item) => {
+    const optionName = item.optionValue.option.name.trim().toLowerCase();
+    return optionName.includes("color") || optionName.includes("couleur");
+  });
+
+  if (!colorCandidate) {
+    return { colorName: null, colorHex: null };
+  }
+
+  const colorName = (colorCandidate.optionValue.label ?? colorCandidate.optionValue.value).trim();
+  const normalizedHex = colorCandidate.optionValue.colorHex?.trim() ?? null;
+
+  return {
+    colorName: colorName.length > 0 ? colorName : null,
+    colorHex: isValidColorHex(normalizedHex) ? normalizedHex.toUpperCase() : null,
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Query principale
@@ -119,6 +160,12 @@ export async function getAdminProductPreviewBySlug(
       marketingHook: true,
       shortDescription: true,
       description: true,
+      careInstructions: true,
+      store: {
+        select: {
+          shippingReturnsPolicy: true,
+        },
+      },
       status: true,
       isStandalone: true,
       primaryImage: {
@@ -184,8 +231,22 @@ export async function getAdminProductPreviewBySlug(
               compareAtAmount: true,
             },
           },
-          // optionValues non fetché en V1 — colorName/colorHex toujours null.
-          // À câbler quand les options de variante seront affichées.
+          optionValues: {
+            select: {
+              optionValue: {
+                select: {
+                  value: true,
+                  label: true,
+                  colorHex: true,
+                  option: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
       relatedFrom: {
@@ -316,12 +377,14 @@ export async function getAdminProductPreviewBySlug(
         ]
       : [];
 
+    const colorPresentation = resolveVariantColorPresentation(variant.optionValues);
+
     return {
       id: variant.id,
       sku: variant.sku,
       name: variant.name ?? product.name,
-      colorName: null,
-      colorHex: null,
+      colorName: colorPresentation.colorName,
+      colorHex: colorPresentation.colorHex,
       isDefault: variant.isDefault,
       isAvailable: getCatalogVariantAvailability(variant),
       price: formatCatalogMoney(activePrice?.amount ?? null),
@@ -368,6 +431,8 @@ export async function getAdminProductPreviewBySlug(
     marketingHook: product.marketingHook,
     shortDescription: product.shortDescription,
     description: product.description,
+    careInstructions: product.careInstructions,
+    shippingReturnsPolicy: product.store.shippingReturnsPolicy,
     status: mapAdminProductStatus(product.status),
     productType: product.isStandalone ? "simple" : "variable",
     isAvailable,

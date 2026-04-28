@@ -100,6 +100,8 @@ export default async function AdminProductPreviewPage({ params }: PreviewPagePro
         marketingHook={product.marketingHook}
         shortDescription={product.shortDescription}
         description={product.description}
+        careInstructions={product.careInstructions}
+        shippingReturnsPolicy={product.shippingReturnsPolicy}
         productType={product.productType}
         isAvailable={product.isAvailable}
         images={viewModel.productImages}

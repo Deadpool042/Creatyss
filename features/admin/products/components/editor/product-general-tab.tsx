@@ -307,10 +307,21 @@ function ProductGeneralTabInner({
               <AdminRichTextEditor
                 name="description"
                 label="Description détaillée"
-                hint="Développez le produit : usage, praticité, matières, finitions, fabrication artisanale et informations utiles."
+                hint="Développez le produit (usage, praticité, fabrication, finitions). Évitez de dupliquer les listes factuelles déjà saisies dans Caractéristiques."
                 preset="full"
                 initialValue={product.product.description ?? ""}
                 {...(state.fieldErrors.description ? { error: state.fieldErrors.description } : {})}
+              />
+              <AdminRichTextEditor
+                name="careInstructions"
+                label="Entretien (PDP)"
+                hint="Source dédiée de l'accordéon Entretien sur la PDP. Saisissez ici les conseils de soin et ne les dupliquez pas dans Caractéristiques."
+                preset="full"
+                minHeightClassName="min-h-[120px]"
+                initialValue={product.product.careInstructions ?? ""}
+                {...(state.fieldErrors.careInstructions
+                  ? { error: state.fieldErrors.careInstructions }
+                  : {})}
               />
             </CardContent>
           </Card>

@@ -167,18 +167,18 @@ export function ProductVariantItem({
               </Badge>
               <Badge variant={availabilityBadge.variant}>{availabilityBadge.label}</Badge>
               <Badge variant={stockBadge.variant}>{stockBadge.label}</Badge>
-              <Badge variant="outline" className="border-surface-border bg-transparent">
-                Position {position}/{total}
-              </Badge>
             </div>
 
-            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
               <span className="font-medium text-foreground">{optionValueSummary}</span>
               <span className="font-mono">SKU {variant.sku}</span>
+              <span>
+                Position {position}/{total}
+              </span>
             </div>
           </div>
 
-          <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <div className="flex shrink-0 flex-wrap items-center gap-1.5 sm:gap-2">
             <Button type="button" size="sm" onClick={() => onEdit(variant.id)}>
               <Pencil className="mr-2 h-4 w-4" />
               Modifier
@@ -192,8 +192,8 @@ export function ProductVariantItem({
                 disabled={isPending}
                 onClick={handleSetDefault}
               >
-                <Star className="mr-2 h-4 w-4" />
-                Définir par défaut
+                <Star className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Définir par défaut</span>
               </Button>
             ) : null}
 
@@ -205,8 +205,8 @@ export function ProductVariantItem({
                 disabled={isPending}
                 onClick={handleDelete}
               >
-                <Trash2 className="mr-2 h-4 w-4" />
-                Supprimer
+                <Trash2 className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Supprimer</span>
               </Button>
             ) : null}
           </div>
@@ -214,32 +214,7 @@ export function ProductVariantItem({
       </CardHeader>
 
       <CardContent className="grid gap-3.5 px-4 py-3.5 md:gap-4 md:px-5 md:py-5">
-        <div className="grid gap-3.5 md:gap-4 lg:grid-cols-[11rem_minmax(0,1fr)]">
-          <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-4 shadow-sm">
-            <SectionLabel>Image</SectionLabel>
-            <div className="mt-3 overflow-hidden rounded-xl border border-surface-border bg-muted">
-              <div className="relative aspect-square">
-                {variant.primaryImageUrl ? (
-                  <Image
-                    src={variant.primaryImageUrl}
-                    alt={variant.primaryImageAltText ?? displayName}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center px-4 text-center text-xs text-muted-foreground">
-                    Aucune image définie
-                  </div>
-                )}
-              </div>
-            </div>
-            <p className="mt-3 text-sm text-muted-foreground">
-              {variant.primaryImageUrl
-                ? "Image principale utilisée pour cette variante."
-                : "Sélectionnez une image existante depuis la galerie du produit."}
-            </p>
-          </div>
-
+        <div className="grid gap-3.5 md:gap-4 md:grid-cols-[minmax(0,1fr)_8.5rem] lg:grid-cols-[minmax(0,1fr)_10rem]">
           <div className="grid gap-3.5 md:gap-4">
             <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-4 shadow-sm">
               <SectionLabel>Attributs</SectionLabel>
@@ -317,6 +292,31 @@ export function ProductVariantItem({
                   </p>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-3 py-3">
+            <SectionLabel>Image</SectionLabel>
+            <div className="mt-2.5 flex items-start gap-3 md:flex-col md:items-center md:gap-2.5">
+              <div className="overflow-hidden rounded-lg border border-surface-border bg-muted">
+                <div className="relative h-20 w-20 md:h-24 md:w-24">
+                  {variant.primaryImageUrl ? (
+                    <Image
+                      src={variant.primaryImageUrl}
+                      alt={variant.primaryImageAltText ?? displayName}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center px-2 text-center text-[11px] text-muted-foreground">
+                      Aucune image
+                    </div>
+                  )}
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground md:text-center">
+                {variant.primaryImageUrl ? "Image principale." : "À choisir dans la galerie."}
+              </p>
             </div>
           </div>
         </div>

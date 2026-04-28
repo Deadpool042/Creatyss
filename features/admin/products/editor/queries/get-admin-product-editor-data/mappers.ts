@@ -180,6 +180,7 @@ export function mapProductEditorData(input: {
       marketingHook: input.product.marketingHook,
       shortDescription: input.product.shortDescription,
       description: input.product.description,
+      careInstructions: input.product.careInstructions,
       status: mapAdminProductStatus(input.product.status),
       isFeatured: input.product.isFeatured,
       archivedAt: input.product.archivedAt,

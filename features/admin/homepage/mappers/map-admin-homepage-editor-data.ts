@@ -26,6 +26,9 @@ type HomepageSectionRecord = {
 
 type HomepageRecord = {
   id: string;
+  store: {
+    shippingReturnsPolicy: string | null;
+  };
   sections: HomepageSectionRecord[];
 };
 
@@ -97,6 +100,7 @@ export function mapAdminHomepageEditorData(params: {
   return {
     homepage: {
       id: homepage.id,
+      shippingReturnsPolicy: homepage.store.shippingReturnsPolicy,
       heroTitle: heroSection?.title ?? null,
       heroText: heroSection?.body ?? null,
       heroImagePath: heroSection?.primaryImage?.storageKey ?? null,

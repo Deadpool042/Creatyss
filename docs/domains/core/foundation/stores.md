@@ -79,6 +79,15 @@ Le domaine `stores` est responsable de :
 - encadrer les mutations significatives d’une boutique ;
 - publier les événements significatifs liés à la vie de la boutique.
 
+Dans l'état actuel du repo, le domaine porte aussi un contenu storefront global utilisé par la PDP :
+
+- `Store.shippingReturnsPolicy` (`stores.shippingReturnsPolicy`)
+
+Rôle PDP :
+
+- source globale de l'accordéon **Livraison & retours** ;
+- éditée via la surface admin de contenu existante (homepage) dans le lot V2-1.
+
 Selon le périmètre exact du projet, le domaine peut également être responsable de :
 
 - la devise par défaut ;
@@ -337,6 +346,11 @@ Le domaine `stores` s’arrête :
 
 Le domaine porte la boutique comme contexte structurant.
 Il ne doit pas devenir un conteneur global de configuration non gouvernée.
+
+Note de frontière PDP :
+
+- `shippingReturnsPolicy` est un texte éditorial storefront global ;
+- il ne remplace pas `shipping` ni `returns`, qui restent la vérité opérationnelle post-commande.
 
 ---
 

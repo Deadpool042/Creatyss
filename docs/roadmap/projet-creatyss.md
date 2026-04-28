@@ -52,6 +52,12 @@ Périmètre :
 - admin simple et robuste pour les opérations courantes
 - SEO de base
 
+Mise à jour réalisée (V2-1 PDP, lot minimal) :
+
+- ajout de `Product.careInstructions` pour structurer **Entretien** côté PDP ;
+- ajout de `Store.shippingReturnsPolicy` pour structurer **Livraison & retours** global storefront ;
+- fallbacks transitoires conservés sur la PDP pour compatibilité avec les données V1.
+
 ## Phase 3 — V1 commerce transactionnel minimal
 
 Objectif : rendre la boutique exploitable de bout en bout sur son flux métier principal.

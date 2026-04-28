@@ -69,6 +69,7 @@ export type AdminProductEditorProduct = {
   marketingHook: string | null;
   shortDescription: string | null;
   description: string | null;
+  careInstructions: string | null;
   status: AdminProductEditorStatus;
   isFeatured: boolean;
   archivedAt: Date | null;

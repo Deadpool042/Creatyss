@@ -39,6 +39,7 @@ export type AdminProductOptionValueItem = {
   code: string;
   value: string;
   label: string | null;
+  colorHex: string | null;
   sortOrder: number;
 };
 

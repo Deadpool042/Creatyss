@@ -36,6 +36,8 @@ function collectSortOrdersByPrefix(
 
 function mapHomepageTextError(field: PropertyKey | undefined): string {
   switch (field) {
+    case "shippingReturnsPolicy":
+      return "shipping_returns_policy_too_long";
     case "heroTitle":
       return "hero_title_too_long";
     case "heroText":
@@ -51,6 +53,7 @@ function mapHomepageTextError(field: PropertyKey | undefined): string {
 
 export async function updateHomepageAction(formData: FormData): Promise<void> {
   const textParsed = HomepageFormSchema.safeParse({
+    shippingReturnsPolicy: formData.get("shippingReturnsPolicy"),
     heroTitle: formData.get("heroTitle"),
     heroText: formData.get("heroText"),
     editorialTitle: formData.get("editorialTitle"),
@@ -64,6 +67,7 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
 
   const validation = validateHomepageInput({
     homepageId: formData.get("homepageId"),
+    shippingReturnsPolicy: formData.get("shippingReturnsPolicy"),
     heroTitle: formData.get("heroTitle"),
     heroText: formData.get("heroText"),
     heroImageMediaAssetId: formData.get("heroImageMediaAssetId"),
@@ -99,6 +103,7 @@ export async function updateHomepageAction(formData: FormData): Promise<void> {
   try {
     await updateAdminHomepage({
       id: validation.data.homepageId,
+      shippingReturnsPolicy: textParsed.data.shippingReturnsPolicy,
       heroTitle: textParsed.data.heroTitle,
       heroText: textParsed.data.heroText,
       heroImagePath,

@@ -52,6 +52,12 @@ const noopVariantAction: ProductVariantFormAction = async () => {
   };
 };
 
+function isColorAxisOption(option: { code: string; name: string }): boolean {
+  const code = option.code.trim().toLowerCase();
+  const name = option.name.trim().toLowerCase();
+  return code.includes("color") || code.includes("couleur") || name.includes("color") || name.includes("couleur");
+}
+
 function SectionEyebrow({ children }: { children: string }): JSX.Element {
   return (
     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -122,6 +128,10 @@ export function ProductVariantEditorSheet({
   const variantAxisOptions = useMemo(
     () => productOptions.filter((o) => o.isVariantAxis),
     [productOptions]
+  );
+  const colorAxisOptions = useMemo(
+    () => variantAxisOptions.filter((option) => isColorAxisOption(option)),
+    [variantAxisOptions]
   );
 
   const {
@@ -266,34 +276,46 @@ export function ProductVariantEditorSheet({
                       Ce produit ne possède pas d&apos;axes d&apos;option configurés.
                     </p>
                   ) : (
-                    <div className="grid gap-4 md:grid-cols-2">
-                      {variantAxisOptions.map((option) => (
-                        <AdminFormField
-                          key={option.id}
-                          label={option.name}
-                          htmlFor={`variant-option-${option.id}`}
-                        >
-                          <Select
-                            name={`optionValue:${option.id}`}
-                            defaultValue={optionValuesByOptionId[option.id] ?? "__none__"}
+                    <div className="space-y-5">
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {variantAxisOptions.map((option) => (
+                          <AdminFormField
+                            key={option.id}
+                            label={option.name}
+                            htmlFor={`variant-option-${option.id}`}
                           >
-                            <SelectTrigger
-                              id={`variant-option-${option.id}`}
-                              className="text-sm"
+                            <Select
+                              name={`optionValue:${option.id}`}
+                              defaultValue={optionValuesByOptionId[option.id] ?? "__none__"}
                             >
-                              <SelectValue placeholder="— Aucune —" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="__none__">— Aucune —</SelectItem>
-                              {option.values.map((v) => (
-                                <SelectItem key={v.id} value={v.id}>
-                                  {v.label ?? v.value}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </AdminFormField>
-                      ))}
+                              <SelectTrigger
+                                id={`variant-option-${option.id}`}
+                                className="text-sm"
+                              >
+                                <SelectValue placeholder="— Aucune —" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="__none__">— Aucune —</SelectItem>
+                                {option.values.map((v) => (
+                                  <SelectItem key={v.id} value={v.id}>
+                                    {v.label ?? v.value}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </AdminFormField>
+                        ))}
+                      </div>
+
+                      {colorAxisOptions.length > 0 ? (
+                        <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-3">
+                          <p className="text-sm text-muted-foreground">
+                            Les codes couleur des valeurs partagées se gèrent dans le bloc{" "}
+                            <span className="font-medium text-foreground">Valeurs couleur</span> de
+                            l&apos;onglet Variantes.
+                          </p>
+                        </div>
+                      ) : null}
                     </div>
                   )}
                 </CardContent>

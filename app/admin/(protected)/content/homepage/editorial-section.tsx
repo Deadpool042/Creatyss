@@ -6,9 +6,14 @@ import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 type EditorialSectionProps = {
   editorialTitle: string | null;
   editorialText: string | null;
+  shippingReturnsPolicy: string | null;
 };
 
-export function EditorialSection({ editorialTitle, editorialText }: EditorialSectionProps) {
+export function EditorialSection({
+  editorialTitle,
+  editorialText,
+  shippingReturnsPolicy,
+}: EditorialSectionProps) {
   return (
     <AdminFormSection
       description="Complétez ensuite le texte éditorial affiché sous la bannière principale."
@@ -30,6 +35,19 @@ export function EditorialSection({ editorialTitle, editorialText }: EditorialSec
           id="homepage-editorial-text"
           name="editorialText"
           rows={5}
+        />
+      </AdminFormField>
+
+      <AdminFormField
+        htmlFor="homepage-shipping-returns-policy"
+        label="Livraison & retours (global PDP)"
+        hint="Texte global affiché dans l'accordéon Livraison & retours de toutes les PDP. Gardez une formulation générale, sans promesse spécifique à un produit."
+      >
+        <Textarea
+          defaultValue={shippingReturnsPolicy ?? ""}
+          id="homepage-shipping-returns-policy"
+          name="shippingReturnsPolicy"
+          rows={4}
         />
       </AdminFormField>
     </AdminFormSection>

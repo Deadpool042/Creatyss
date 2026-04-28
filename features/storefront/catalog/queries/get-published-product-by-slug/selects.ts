@@ -8,7 +8,13 @@ export const PUBLISHED_PRODUCT_CORE_SELECT = {
   marketingHook: true,
   shortDescription: true,
   description: true,
+  careInstructions: true,
   isStandalone: true,
+  store: {
+    select: {
+      shippingReturnsPolicy: true,
+    },
+  },
   primaryImage: {
     select: {
       storageKey: true,
@@ -78,6 +84,7 @@ export const PUBLISHED_PRODUCT_CORE_SELECT = {
               id: true,
               value: true,
               label: true,
+              colorHex: true,
               sortOrder: true,
               option: {
                 select: {

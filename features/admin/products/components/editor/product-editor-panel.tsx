@@ -32,6 +32,9 @@ import {
   type ProductSeoFormAction,
   type ProductVariantFormAction,
   type ProductCharacteristicsFormAction,
+  type createProductOptionColorValueAction,
+  type updateProductOptionColorValueAction,
+  type archiveProductOptionColorValueAction,
 } from "@/features/admin/products/editor/public";
 import { cn } from "@/lib/utils";
 import { ProductAvailabilityTab } from "./product-availability-tab";
@@ -56,6 +59,9 @@ type ReorderProductImageAction = typeof reorderProductImageAction;
 type AttachProductImagesAction = typeof attachProductImagesAction;
 type SetDefaultProductVariantAction = typeof setDefaultProductVariantAction;
 type DeleteProductVariantAction = typeof deleteProductVariantAction;
+type CreateProductOptionColorValueAction = typeof createProductOptionColorValueAction;
+type UpdateProductOptionColorValueAction = typeof updateProductOptionColorValueAction;
+type ArchiveProductOptionColorValueAction = typeof archiveProductOptionColorValueAction;
 
 type ProductEditorTabKey =
   | "general"
@@ -88,6 +94,9 @@ type ProductEditorPanelProps = {
   updateVariantAction?: ProductVariantFormAction;
   setDefaultVariantAction?: SetDefaultProductVariantAction;
   deleteVariantAction?: DeleteProductVariantAction;
+  createOptionColorValueAction?: CreateProductOptionColorValueAction;
+  updateOptionColorValueAction?: UpdateProductOptionColorValueAction;
+  archiveOptionColorValueAction?: ArchiveProductOptionColorValueAction;
   uploadImagesAction?: UploadProductImagesAction;
   availableCategories: ProductCategoryOption[];
   productTypeOptions?: Array<{
@@ -176,6 +185,9 @@ export function ProductEditorPanel({
   updateVariantAction,
   setDefaultVariantAction,
   deleteVariantAction,
+  createOptionColorValueAction,
+  updateOptionColorValueAction,
+  archiveOptionColorValueAction,
   setPrimaryImageAction,
   deleteImageAction,
   updateAltTextAction,
@@ -285,6 +297,15 @@ export function ProductEditorPanel({
               {...(updateVariantAction ? { updateAction: updateVariantAction } : {})}
               {...(setDefaultVariantAction ? { setDefaultAction: setDefaultVariantAction } : {})}
               {...(deleteVariantAction ? { deleteAction: deleteVariantAction } : {})}
+              {...(createOptionColorValueAction
+                ? { createOptionColorValueAction }
+                : {})}
+              {...(updateOptionColorValueAction
+                ? { updateOptionColorValueAction }
+                : {})}
+              {...(archiveOptionColorValueAction
+                ? { archiveOptionColorValueAction }
+                : {})}
             />
           </TabsContent>
         )}

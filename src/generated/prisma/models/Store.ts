@@ -33,6 +33,7 @@ export type StoreMinAggregateOutputType = {
   legalName: string | null
   supportEmail: string | null
   supportPhone: string | null
+  shippingReturnsPolicy: string | null
   defaultLocaleCode: string | null
   defaultCurrency: $Enums.CurrencyCode | null
   timezone: string | null
@@ -52,6 +53,7 @@ export type StoreMaxAggregateOutputType = {
   legalName: string | null
   supportEmail: string | null
   supportPhone: string | null
+  shippingReturnsPolicy: string | null
   defaultLocaleCode: string | null
   defaultCurrency: $Enums.CurrencyCode | null
   timezone: string | null
@@ -71,6 +73,7 @@ export type StoreCountAggregateOutputType = {
   legalName: number
   supportEmail: number
   supportPhone: number
+  shippingReturnsPolicy: number
   defaultLocaleCode: number
   defaultCurrency: number
   timezone: number
@@ -92,6 +95,7 @@ export type StoreMinAggregateInputType = {
   legalName?: true
   supportEmail?: true
   supportPhone?: true
+  shippingReturnsPolicy?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -111,6 +115,7 @@ export type StoreMaxAggregateInputType = {
   legalName?: true
   supportEmail?: true
   supportPhone?: true
+  shippingReturnsPolicy?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -130,6 +135,7 @@ export type StoreCountAggregateInputType = {
   legalName?: true
   supportEmail?: true
   supportPhone?: true
+  shippingReturnsPolicy?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -222,6 +228,7 @@ export type StoreGroupByOutputType = {
   legalName: string | null
   supportEmail: string | null
   supportPhone: string | null
+  shippingReturnsPolicy: string | null
   defaultLocaleCode: string
   defaultCurrency: $Enums.CurrencyCode
   timezone: string
@@ -262,6 +269,7 @@ export type StoreWhereInput = {
   legalName?: Prisma.StringNullableFilter<"Store"> | string | null
   supportEmail?: Prisma.StringNullableFilter<"Store"> | string | null
   supportPhone?: Prisma.StringNullableFilter<"Store"> | string | null
+  shippingReturnsPolicy?: Prisma.StringNullableFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringFilter<"Store"> | string
@@ -357,6 +365,7 @@ export type StoreOrderByWithRelationInput = {
   legalName?: Prisma.SortOrderInput | Prisma.SortOrder
   supportEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   supportPhone?: Prisma.SortOrderInput | Prisma.SortOrder
+  shippingReturnsPolicy?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -455,6 +464,7 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   legalName?: Prisma.StringNullableFilter<"Store"> | string | null
   supportEmail?: Prisma.StringNullableFilter<"Store"> | string | null
   supportPhone?: Prisma.StringNullableFilter<"Store"> | string | null
+  shippingReturnsPolicy?: Prisma.StringNullableFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringFilter<"Store"> | string
@@ -550,6 +560,7 @@ export type StoreOrderByWithAggregationInput = {
   legalName?: Prisma.SortOrderInput | Prisma.SortOrder
   supportEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   supportPhone?: Prisma.SortOrderInput | Prisma.SortOrder
+  shippingReturnsPolicy?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -575,6 +586,7 @@ export type StoreScalarWhereWithAggregatesInput = {
   legalName?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   supportEmail?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   supportPhone?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
+  shippingReturnsPolicy?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringWithAggregatesFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeWithAggregatesFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringWithAggregatesFilter<"Store"> | string
@@ -594,6 +606,7 @@ export type StoreCreateInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -689,6 +702,7 @@ export type StoreUncheckedCreateInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -784,6 +798,7 @@ export type StoreUpdateInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -879,6 +894,7 @@ export type StoreUncheckedUpdateInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -974,6 +990,7 @@ export type StoreCreateManyInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -993,6 +1010,7 @@ export type StoreUpdateManyMutationInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1012,6 +1030,7 @@ export type StoreUncheckedUpdateManyInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1041,6 +1060,7 @@ export type StoreCountOrderByAggregateInput = {
   legalName?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrder
   supportPhone?: Prisma.SortOrder
+  shippingReturnsPolicy?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -1060,6 +1080,7 @@ export type StoreMaxOrderByAggregateInput = {
   legalName?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrder
   supportPhone?: Prisma.SortOrder
+  shippingReturnsPolicy?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -1079,6 +1100,7 @@ export type StoreMinOrderByAggregateInput = {
   legalName?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrder
   supportPhone?: Prisma.SortOrder
+  shippingReturnsPolicy?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -2240,6 +2262,7 @@ export type StoreCreateWithoutAvailabilityRecordsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2334,6 +2357,7 @@ export type StoreUncheckedCreateWithoutAvailabilityRecordsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2444,6 +2468,7 @@ export type StoreUpdateWithoutAvailabilityRecordsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2538,6 +2563,7 @@ export type StoreUncheckedUpdateWithoutAvailabilityRecordsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2632,6 +2658,7 @@ export type StoreCreateWithoutCategoriesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2726,6 +2753,7 @@ export type StoreUncheckedCreateWithoutCategoriesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2836,6 +2864,7 @@ export type StoreUpdateWithoutCategoriesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2930,6 +2959,7 @@ export type StoreUncheckedUpdateWithoutCategoriesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3024,6 +3054,7 @@ export type StoreCreateWithoutMediaAssetsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3118,6 +3149,7 @@ export type StoreUncheckedCreateWithoutMediaAssetsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3228,6 +3260,7 @@ export type StoreUpdateWithoutMediaAssetsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3322,6 +3355,7 @@ export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3416,6 +3450,7 @@ export type StoreCreateWithoutPriceListsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3510,6 +3545,7 @@ export type StoreUncheckedCreateWithoutPriceListsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3620,6 +3656,7 @@ export type StoreUpdateWithoutPriceListsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3714,6 +3751,7 @@ export type StoreUncheckedUpdateWithoutPriceListsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3808,6 +3846,7 @@ export type StoreCreateWithoutProductTypesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3902,6 +3941,7 @@ export type StoreUncheckedCreateWithoutProductTypesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4012,6 +4052,7 @@ export type StoreUpdateWithoutProductTypesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4106,6 +4147,7 @@ export type StoreUncheckedUpdateWithoutProductTypesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4200,6 +4242,7 @@ export type StoreCreateWithoutProductsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4294,6 +4337,7 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4404,6 +4448,7 @@ export type StoreUpdateWithoutProductsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4498,6 +4543,7 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4592,6 +4638,7 @@ export type StoreCreateWithoutCartsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4686,6 +4733,7 @@ export type StoreUncheckedCreateWithoutCartsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4796,6 +4844,7 @@ export type StoreUpdateWithoutCartsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4890,6 +4939,7 @@ export type StoreUncheckedUpdateWithoutCartsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4984,6 +5034,7 @@ export type StoreCreateWithoutCheckoutsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5078,6 +5129,7 @@ export type StoreUncheckedCreateWithoutCheckoutsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5188,6 +5240,7 @@ export type StoreUpdateWithoutCheckoutsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5282,6 +5335,7 @@ export type StoreUncheckedUpdateWithoutCheckoutsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5376,6 +5430,7 @@ export type StoreCreateWithoutCustomersInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5470,6 +5525,7 @@ export type StoreUncheckedCreateWithoutCustomersInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5580,6 +5636,7 @@ export type StoreUpdateWithoutCustomersInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5674,6 +5731,7 @@ export type StoreUncheckedUpdateWithoutCustomersInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5768,6 +5826,7 @@ export type StoreCreateWithoutOrdersInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5862,6 +5921,7 @@ export type StoreUncheckedCreateWithoutOrdersInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5972,6 +6032,7 @@ export type StoreUpdateWithoutOrdersInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6066,6 +6127,7 @@ export type StoreUncheckedUpdateWithoutOrdersInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6160,6 +6222,7 @@ export type StoreCreateWithoutBlogCategoriesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6254,6 +6317,7 @@ export type StoreUncheckedCreateWithoutBlogCategoriesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6364,6 +6428,7 @@ export type StoreUpdateWithoutBlogCategoriesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6458,6 +6523,7 @@ export type StoreUncheckedUpdateWithoutBlogCategoriesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6552,6 +6618,7 @@ export type StoreCreateWithoutBlogPostsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6646,6 +6713,7 @@ export type StoreUncheckedCreateWithoutBlogPostsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6756,6 +6824,7 @@ export type StoreUpdateWithoutBlogPostsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6850,6 +6919,7 @@ export type StoreUncheckedUpdateWithoutBlogPostsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6944,6 +7014,7 @@ export type StoreCreateWithoutHomepagesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7038,6 +7109,7 @@ export type StoreUncheckedCreateWithoutHomepagesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7148,6 +7220,7 @@ export type StoreUpdateWithoutHomepagesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7242,6 +7315,7 @@ export type StoreUncheckedUpdateWithoutHomepagesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7336,6 +7410,7 @@ export type StoreCreateWithoutPagesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7430,6 +7505,7 @@ export type StoreUncheckedCreateWithoutPagesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7540,6 +7616,7 @@ export type StoreUpdateWithoutPagesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7634,6 +7711,7 @@ export type StoreUncheckedUpdateWithoutPagesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7728,6 +7806,7 @@ export type StoreCreateWithoutSeoMetadataInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7822,6 +7901,7 @@ export type StoreUncheckedCreateWithoutSeoMetadataInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7932,6 +8012,7 @@ export type StoreUpdateWithoutSeoMetadataInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8026,6 +8107,7 @@ export type StoreUncheckedUpdateWithoutSeoMetadataInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8120,6 +8202,7 @@ export type StoreCreateWithoutApiClientsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8214,6 +8297,7 @@ export type StoreUncheckedCreateWithoutApiClientsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8324,6 +8408,7 @@ export type StoreUpdateWithoutApiClientsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8418,6 +8503,7 @@ export type StoreUncheckedUpdateWithoutApiClientsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8512,6 +8598,7 @@ export type StoreCreateWithoutUsersInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8606,6 +8693,7 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8716,6 +8804,7 @@ export type StoreUpdateWithoutUsersInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8810,6 +8899,7 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8904,6 +8994,7 @@ export type StoreCreateWithoutDomainsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8998,6 +9089,7 @@ export type StoreUncheckedCreateWithoutDomainsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9108,6 +9200,7 @@ export type StoreUpdateWithoutDomainsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9202,6 +9295,7 @@ export type StoreUncheckedUpdateWithoutDomainsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9296,6 +9390,7 @@ export type StoreCreateWithoutAuditLogsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9390,6 +9485,7 @@ export type StoreUncheckedCreateWithoutAuditLogsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9500,6 +9596,7 @@ export type StoreUpdateWithoutAuditLogsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9594,6 +9691,7 @@ export type StoreUncheckedUpdateWithoutAuditLogsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9688,6 +9786,7 @@ export type StoreCreateWithoutDomainEventsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9782,6 +9881,7 @@ export type StoreUncheckedCreateWithoutDomainEventsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9892,6 +9992,7 @@ export type StoreUpdateWithoutDomainEventsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9986,6 +10087,7 @@ export type StoreUncheckedUpdateWithoutDomainEventsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10080,6 +10182,7 @@ export type StoreCreateWithoutFeatureFlagsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10174,6 +10277,7 @@ export type StoreUncheckedCreateWithoutFeatureFlagsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10284,6 +10388,7 @@ export type StoreUpdateWithoutFeatureFlagsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10378,6 +10483,7 @@ export type StoreUncheckedUpdateWithoutFeatureFlagsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10472,6 +10578,7 @@ export type StoreCreateWithoutJobsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10566,6 +10673,7 @@ export type StoreUncheckedCreateWithoutJobsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10676,6 +10784,7 @@ export type StoreUpdateWithoutJobsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10770,6 +10879,7 @@ export type StoreUncheckedUpdateWithoutJobsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10864,6 +10974,7 @@ export type StoreCreateWithoutMonitoringChecksInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10958,6 +11069,7 @@ export type StoreUncheckedCreateWithoutMonitoringChecksInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11068,6 +11180,7 @@ export type StoreUpdateWithoutMonitoringChecksInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11162,6 +11275,7 @@ export type StoreUncheckedUpdateWithoutMonitoringChecksInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11256,6 +11370,7 @@ export type StoreCreateWithoutObservabilitySignalsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11350,6 +11465,7 @@ export type StoreUncheckedCreateWithoutObservabilitySignalsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11460,6 +11576,7 @@ export type StoreUpdateWithoutObservabilitySignalsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11554,6 +11671,7 @@ export type StoreUncheckedUpdateWithoutObservabilitySignalsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11648,6 +11766,7 @@ export type StoreCreateWithoutAiProvidersInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11742,6 +11861,7 @@ export type StoreUncheckedCreateWithoutAiProvidersInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11852,6 +11972,7 @@ export type StoreUpdateWithoutAiProvidersInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11946,6 +12067,7 @@ export type StoreUncheckedUpdateWithoutAiProvidersInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12040,6 +12162,7 @@ export type StoreCreateWithoutAiTasksInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12134,6 +12257,7 @@ export type StoreUncheckedCreateWithoutAiTasksInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12244,6 +12368,7 @@ export type StoreUpdateWithoutAiTasksInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12338,6 +12463,7 @@ export type StoreUncheckedUpdateWithoutAiTasksInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12432,6 +12558,7 @@ export type StoreCreateWithoutBundlesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12526,6 +12653,7 @@ export type StoreUncheckedCreateWithoutBundlesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12636,6 +12764,7 @@ export type StoreUpdateWithoutBundlesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12730,6 +12859,7 @@ export type StoreUncheckedUpdateWithoutBundlesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12824,6 +12954,7 @@ export type StoreCreateWithoutDiscountsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12918,6 +13049,7 @@ export type StoreUncheckedCreateWithoutDiscountsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13028,6 +13160,7 @@ export type StoreUpdateWithoutDiscountsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13122,6 +13255,7 @@ export type StoreUncheckedUpdateWithoutDiscountsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13216,6 +13350,7 @@ export type StoreCreateWithoutDocumentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13310,6 +13445,7 @@ export type StoreUncheckedCreateWithoutDocumentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13420,6 +13556,7 @@ export type StoreUpdateWithoutDocumentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13514,6 +13651,7 @@ export type StoreUncheckedUpdateWithoutDocumentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13608,6 +13746,7 @@ export type StoreCreateWithoutFulfillmentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13702,6 +13841,7 @@ export type StoreUncheckedCreateWithoutFulfillmentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13812,6 +13952,7 @@ export type StoreUpdateWithoutFulfillmentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13906,6 +14047,7 @@ export type StoreUncheckedUpdateWithoutFulfillmentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14000,6 +14142,7 @@ export type StoreCreateWithoutGiftCardsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14094,6 +14237,7 @@ export type StoreUncheckedCreateWithoutGiftCardsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14204,6 +14348,7 @@ export type StoreUpdateWithoutGiftCardsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14298,6 +14443,7 @@ export type StoreUncheckedUpdateWithoutGiftCardsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14392,6 +14538,7 @@ export type StoreCreateWithoutGiftRequestsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14486,6 +14633,7 @@ export type StoreUncheckedCreateWithoutGiftRequestsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14596,6 +14744,7 @@ export type StoreUpdateWithoutGiftRequestsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14690,6 +14839,7 @@ export type StoreUncheckedUpdateWithoutGiftRequestsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14784,6 +14934,7 @@ export type StoreCreateWithoutInventoryItemsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14878,6 +15029,7 @@ export type StoreUncheckedCreateWithoutInventoryItemsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14988,6 +15140,7 @@ export type StoreUpdateWithoutInventoryItemsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15082,6 +15235,7 @@ export type StoreUncheckedUpdateWithoutInventoryItemsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15176,6 +15330,7 @@ export type StoreCreateWithoutLoyaltyAccountsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15270,6 +15425,7 @@ export type StoreUncheckedCreateWithoutLoyaltyAccountsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15380,6 +15536,7 @@ export type StoreUpdateWithoutLoyaltyAccountsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15474,6 +15631,7 @@ export type StoreUncheckedUpdateWithoutLoyaltyAccountsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15568,6 +15726,7 @@ export type StoreCreateWithoutPaymentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15662,6 +15821,7 @@ export type StoreUncheckedCreateWithoutPaymentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15772,6 +15932,7 @@ export type StoreUpdateWithoutPaymentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15866,6 +16027,7 @@ export type StoreUncheckedUpdateWithoutPaymentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15960,6 +16122,7 @@ export type StoreCreateWithoutReturnRequestsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16054,6 +16217,7 @@ export type StoreUncheckedCreateWithoutReturnRequestsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16164,6 +16328,7 @@ export type StoreUpdateWithoutReturnRequestsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16258,6 +16423,7 @@ export type StoreUncheckedUpdateWithoutReturnRequestsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16352,6 +16518,7 @@ export type StoreCreateWithoutSalesPoliciesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16446,6 +16613,7 @@ export type StoreUncheckedCreateWithoutSalesPoliciesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16556,6 +16724,7 @@ export type StoreUpdateWithoutSalesPoliciesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16650,6 +16819,7 @@ export type StoreUncheckedUpdateWithoutSalesPoliciesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16744,6 +16914,7 @@ export type StoreCreateWithoutSellabilityDecisionsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16838,6 +17009,7 @@ export type StoreUncheckedCreateWithoutSellabilityDecisionsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16948,6 +17120,7 @@ export type StoreUpdateWithoutSellabilityDecisionsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17042,6 +17215,7 @@ export type StoreUncheckedUpdateWithoutSellabilityDecisionsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17136,6 +17310,7 @@ export type StoreCreateWithoutShippingZonesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17230,6 +17405,7 @@ export type StoreUncheckedCreateWithoutShippingZonesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17340,6 +17516,7 @@ export type StoreUpdateWithoutShippingZonesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17434,6 +17611,7 @@ export type StoreUncheckedUpdateWithoutShippingZonesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17528,6 +17706,7 @@ export type StoreCreateWithoutShippingMethodsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17622,6 +17801,7 @@ export type StoreUncheckedCreateWithoutShippingMethodsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17732,6 +17912,7 @@ export type StoreUpdateWithoutShippingMethodsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17826,6 +18007,7 @@ export type StoreUncheckedUpdateWithoutShippingMethodsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17920,6 +18102,7 @@ export type StoreCreateWithoutShipmentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18014,6 +18197,7 @@ export type StoreUncheckedCreateWithoutShipmentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18124,6 +18308,7 @@ export type StoreUpdateWithoutShipmentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18218,6 +18403,7 @@ export type StoreUncheckedUpdateWithoutShipmentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18312,6 +18498,7 @@ export type StoreCreateWithoutSubscriptionsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18406,6 +18593,7 @@ export type StoreUncheckedCreateWithoutSubscriptionsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18516,6 +18704,7 @@ export type StoreUpdateWithoutSubscriptionsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18610,6 +18799,7 @@ export type StoreUncheckedUpdateWithoutSubscriptionsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18704,6 +18894,7 @@ export type StoreCreateWithoutTaxRulesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18798,6 +18989,7 @@ export type StoreUncheckedCreateWithoutTaxRulesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18908,6 +19100,7 @@ export type StoreUpdateWithoutTaxRulesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19002,6 +19195,7 @@ export type StoreUncheckedUpdateWithoutTaxRulesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19096,6 +19290,7 @@ export type StoreCreateWithoutAnalyticsMetricsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19190,6 +19385,7 @@ export type StoreUncheckedCreateWithoutAnalyticsMetricsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19300,6 +19496,7 @@ export type StoreUpdateWithoutAnalyticsMetricsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19394,6 +19591,7 @@ export type StoreUncheckedUpdateWithoutAnalyticsMetricsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19488,6 +19686,7 @@ export type StoreCreateWithoutAttributionModelsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19582,6 +19781,7 @@ export type StoreUncheckedCreateWithoutAttributionModelsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19692,6 +19892,7 @@ export type StoreUpdateWithoutAttributionModelsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19786,6 +19987,7 @@ export type StoreUncheckedUpdateWithoutAttributionModelsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19880,6 +20082,7 @@ export type StoreCreateWithoutBehaviorSegmentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19974,6 +20177,7 @@ export type StoreUncheckedCreateWithoutBehaviorSegmentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20084,6 +20288,7 @@ export type StoreUpdateWithoutBehaviorSegmentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20178,6 +20383,7 @@ export type StoreUncheckedUpdateWithoutBehaviorSegmentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20272,6 +20478,7 @@ export type StoreCreateWithoutBehaviorProfilesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20366,6 +20573,7 @@ export type StoreUncheckedCreateWithoutBehaviorProfilesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20476,6 +20684,7 @@ export type StoreUpdateWithoutBehaviorProfilesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20570,6 +20779,7 @@ export type StoreUncheckedUpdateWithoutBehaviorProfilesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20664,6 +20874,7 @@ export type StoreCreateWithoutConversionFlowsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20758,6 +20969,7 @@ export type StoreUncheckedCreateWithoutConversionFlowsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20868,6 +21080,7 @@ export type StoreUpdateWithoutConversionFlowsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20962,6 +21175,7 @@ export type StoreUncheckedUpdateWithoutConversionFlowsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21056,6 +21270,7 @@ export type StoreCreateWithoutCrmContactsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21150,6 +21365,7 @@ export type StoreUncheckedCreateWithoutCrmContactsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21260,6 +21476,7 @@ export type StoreUpdateWithoutCrmContactsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21354,6 +21571,7 @@ export type StoreUncheckedUpdateWithoutCrmContactsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21448,6 +21666,7 @@ export type StoreCreateWithoutCrmTagsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21542,6 +21761,7 @@ export type StoreUncheckedCreateWithoutCrmTagsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21652,6 +21872,7 @@ export type StoreUpdateWithoutCrmTagsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21746,6 +21967,7 @@ export type StoreUncheckedUpdateWithoutCrmTagsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21840,6 +22062,7 @@ export type StoreCreateWithoutNewsletterSubscribersInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21934,6 +22157,7 @@ export type StoreUncheckedCreateWithoutNewsletterSubscribersInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22044,6 +22268,7 @@ export type StoreUpdateWithoutNewsletterSubscribersInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22138,6 +22363,7 @@ export type StoreUncheckedUpdateWithoutNewsletterSubscribersInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22232,6 +22458,7 @@ export type StoreCreateWithoutNewsletterCampaignsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22326,6 +22553,7 @@ export type StoreUncheckedCreateWithoutNewsletterCampaignsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22436,6 +22664,7 @@ export type StoreUpdateWithoutNewsletterCampaignsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22530,6 +22759,7 @@ export type StoreUncheckedUpdateWithoutNewsletterCampaignsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22624,6 +22854,7 @@ export type StoreCreateWithoutPublicEventsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22718,6 +22949,7 @@ export type StoreUncheckedCreateWithoutPublicEventsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22828,6 +23060,7 @@ export type StoreUpdateWithoutPublicEventsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22922,6 +23155,7 @@ export type StoreUncheckedUpdateWithoutPublicEventsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23016,6 +23250,7 @@ export type StoreCreateWithoutRecommendationRulesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23110,6 +23345,7 @@ export type StoreUncheckedCreateWithoutRecommendationRulesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23220,6 +23456,7 @@ export type StoreUpdateWithoutRecommendationRulesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23314,6 +23551,7 @@ export type StoreUncheckedUpdateWithoutRecommendationRulesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23408,6 +23646,7 @@ export type StoreCreateWithoutSocialPublicationsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23502,6 +23741,7 @@ export type StoreUncheckedCreateWithoutSocialPublicationsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23612,6 +23852,7 @@ export type StoreUpdateWithoutSocialPublicationsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23706,6 +23947,7 @@ export type StoreUncheckedUpdateWithoutSocialPublicationsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23800,6 +24042,7 @@ export type StoreCreateWithoutSupportTicketsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23894,6 +24137,7 @@ export type StoreUncheckedCreateWithoutSupportTicketsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24004,6 +24248,7 @@ export type StoreUpdateWithoutSupportTicketsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24098,6 +24343,7 @@ export type StoreUncheckedUpdateWithoutSupportTicketsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24192,6 +24438,7 @@ export type StoreCreateWithoutApprovalRequestsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24286,6 +24533,7 @@ export type StoreUncheckedCreateWithoutApprovalRequestsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24396,6 +24644,7 @@ export type StoreUpdateWithoutApprovalRequestsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24490,6 +24739,7 @@ export type StoreUncheckedUpdateWithoutApprovalRequestsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24584,6 +24834,7 @@ export type StoreCreateWithoutConsentPurposesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24678,6 +24929,7 @@ export type StoreUncheckedCreateWithoutConsentPurposesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24788,6 +25040,7 @@ export type StoreUpdateWithoutConsentPurposesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24882,6 +25135,7 @@ export type StoreUncheckedUpdateWithoutConsentPurposesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24976,6 +25230,7 @@ export type StoreCreateWithoutConsentRecordsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25070,6 +25325,7 @@ export type StoreUncheckedCreateWithoutConsentRecordsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25180,6 +25436,7 @@ export type StoreUpdateWithoutConsentRecordsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25274,6 +25531,7 @@ export type StoreUncheckedUpdateWithoutConsentRecordsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25368,6 +25626,7 @@ export type StoreCreateWithoutEmailMessagesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25462,6 +25721,7 @@ export type StoreUncheckedCreateWithoutEmailMessagesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25572,6 +25832,7 @@ export type StoreUpdateWithoutEmailMessagesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25666,6 +25927,7 @@ export type StoreUncheckedUpdateWithoutEmailMessagesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25760,6 +26022,7 @@ export type StoreCreateWithoutExportDefinitionsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25854,6 +26117,7 @@ export type StoreUncheckedCreateWithoutExportDefinitionsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25964,6 +26228,7 @@ export type StoreUpdateWithoutExportDefinitionsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26058,6 +26323,7 @@ export type StoreUncheckedUpdateWithoutExportDefinitionsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26152,6 +26418,7 @@ export type StoreCreateWithoutExportRequestsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26246,6 +26513,7 @@ export type StoreUncheckedCreateWithoutExportRequestsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26356,6 +26624,7 @@ export type StoreUpdateWithoutExportRequestsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26450,6 +26719,7 @@ export type StoreUncheckedUpdateWithoutExportRequestsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26544,6 +26814,7 @@ export type StoreCreateWithoutFraudRiskAssessmentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26638,6 +26909,7 @@ export type StoreUncheckedCreateWithoutFraudRiskAssessmentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26748,6 +27020,7 @@ export type StoreUpdateWithoutFraudRiskAssessmentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26842,6 +27115,7 @@ export type StoreUncheckedUpdateWithoutFraudRiskAssessmentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26936,6 +27210,7 @@ export type StoreCreateWithoutImportDefinitionsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27030,6 +27305,7 @@ export type StoreUncheckedCreateWithoutImportDefinitionsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27140,6 +27416,7 @@ export type StoreUpdateWithoutImportDefinitionsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27234,6 +27511,7 @@ export type StoreUncheckedUpdateWithoutImportDefinitionsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27328,6 +27606,7 @@ export type StoreCreateWithoutImportRequestsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27422,6 +27701,7 @@ export type StoreUncheckedCreateWithoutImportRequestsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27532,6 +27812,7 @@ export type StoreUpdateWithoutImportRequestsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27626,6 +27907,7 @@ export type StoreUncheckedUpdateWithoutImportRequestsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27720,6 +28002,7 @@ export type StoreCreateWithoutIntegrationsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27814,6 +28097,7 @@ export type StoreUncheckedCreateWithoutIntegrationsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27924,6 +28208,7 @@ export type StoreUpdateWithoutIntegrationsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28018,6 +28303,7 @@ export type StoreUncheckedUpdateWithoutIntegrationsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28112,6 +28398,7 @@ export type StoreCreateWithoutLocalizationLocalesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28206,6 +28493,7 @@ export type StoreUncheckedCreateWithoutLocalizationLocalesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28316,6 +28604,7 @@ export type StoreUpdateWithoutLocalizationLocalesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28410,6 +28699,7 @@ export type StoreUncheckedUpdateWithoutLocalizationLocalesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28504,6 +28794,7 @@ export type StoreCreateWithoutLocalizedValuesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28598,6 +28889,7 @@ export type StoreUncheckedCreateWithoutLocalizedValuesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28708,6 +29000,7 @@ export type StoreUpdateWithoutLocalizedValuesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28802,6 +29095,7 @@ export type StoreUncheckedUpdateWithoutLocalizedValuesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28896,6 +29190,7 @@ export type StoreCreateWithoutNotificationsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28990,6 +29285,7 @@ export type StoreUncheckedCreateWithoutNotificationsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29100,6 +29396,7 @@ export type StoreUpdateWithoutNotificationsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29194,6 +29491,7 @@ export type StoreUncheckedUpdateWithoutNotificationsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29288,6 +29586,7 @@ export type StoreCreateWithoutNotificationPreferencesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29382,6 +29681,7 @@ export type StoreUncheckedCreateWithoutNotificationPreferencesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29492,6 +29792,7 @@ export type StoreUpdateWithoutNotificationPreferencesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29586,6 +29887,7 @@ export type StoreUncheckedUpdateWithoutNotificationPreferencesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29680,6 +29982,7 @@ export type StoreCreateWithoutSchedulePlansInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29774,6 +30077,7 @@ export type StoreUncheckedCreateWithoutSchedulePlansInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29884,6 +30188,7 @@ export type StoreUpdateWithoutSchedulePlansInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29978,6 +30283,7 @@ export type StoreUncheckedUpdateWithoutSchedulePlansInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30072,6 +30378,7 @@ export type StoreCreateWithoutWebhookEndpointsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30166,6 +30473,7 @@ export type StoreUncheckedCreateWithoutWebhookEndpointsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30276,6 +30584,7 @@ export type StoreUpdateWithoutWebhookEndpointsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30370,6 +30679,7 @@ export type StoreUncheckedUpdateWithoutWebhookEndpointsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30464,6 +30774,7 @@ export type StoreCreateWithoutWorkflowDefinitionsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30558,6 +30869,7 @@ export type StoreUncheckedCreateWithoutWorkflowDefinitionsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30668,6 +30980,7 @@ export type StoreUpdateWithoutWorkflowDefinitionsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30762,6 +31075,7 @@ export type StoreUncheckedUpdateWithoutWorkflowDefinitionsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30856,6 +31170,7 @@ export type StoreCreateWithoutWorkflowInstancesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30950,6 +31265,7 @@ export type StoreUncheckedCreateWithoutWorkflowInstancesInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31060,6 +31376,7 @@ export type StoreUpdateWithoutWorkflowInstancesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31154,6 +31471,7 @@ export type StoreUncheckedUpdateWithoutWorkflowInstancesInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31248,6 +31566,7 @@ export type StoreCreateWithoutChannelsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31342,6 +31661,7 @@ export type StoreUncheckedCreateWithoutChannelsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31452,6 +31772,7 @@ export type StoreUpdateWithoutChannelsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31546,6 +31867,7 @@ export type StoreUncheckedUpdateWithoutChannelsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31640,6 +31962,7 @@ export type StoreCreateWithoutSearchDocumentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31734,6 +32057,7 @@ export type StoreUncheckedCreateWithoutSearchDocumentsInput = {
   legalName?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31844,6 +32168,7 @@ export type StoreUpdateWithoutSearchDocumentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31938,6 +32263,7 @@ export type StoreUncheckedUpdateWithoutSearchDocumentsInput = {
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -32738,6 +33064,7 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   legalName?: boolean
   supportEmail?: boolean
   supportPhone?: boolean
+  shippingReturnsPolicy?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -32834,6 +33161,7 @@ export type StoreSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   legalName?: boolean
   supportEmail?: boolean
   supportPhone?: boolean
+  shippingReturnsPolicy?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -32853,6 +33181,7 @@ export type StoreSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   legalName?: boolean
   supportEmail?: boolean
   supportPhone?: boolean
+  shippingReturnsPolicy?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -32872,6 +33201,7 @@ export type StoreSelectScalar = {
   legalName?: boolean
   supportEmail?: boolean
   supportPhone?: boolean
+  shippingReturnsPolicy?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -32882,7 +33212,7 @@ export type StoreSelectScalar = {
   archivedAt?: boolean
 }
 
-export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "supportEmail" | "supportPhone" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
+export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
 export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domains?: boolean | Prisma.Store$domainsArgs<ExtArgs>
   users?: boolean | Prisma.Store$usersArgs<ExtArgs>
@@ -33054,6 +33384,7 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     legalName: string | null
     supportEmail: string | null
     supportPhone: string | null
+    shippingReturnsPolicy: string | null
     defaultLocaleCode: string
     defaultCurrency: $Enums.CurrencyCode
     timezone: string
@@ -33569,6 +33900,7 @@ export interface StoreFieldRefs {
   readonly legalName: Prisma.FieldRef<"Store", 'String'>
   readonly supportEmail: Prisma.FieldRef<"Store", 'String'>
   readonly supportPhone: Prisma.FieldRef<"Store", 'String'>
+  readonly shippingReturnsPolicy: Prisma.FieldRef<"Store", 'String'>
   readonly defaultLocaleCode: Prisma.FieldRef<"Store", 'String'>
   readonly defaultCurrency: Prisma.FieldRef<"Store", 'CurrencyCode'>
   readonly timezone: Prisma.FieldRef<"Store", 'String'>

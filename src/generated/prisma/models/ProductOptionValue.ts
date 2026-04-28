@@ -40,6 +40,7 @@ export type ProductOptionValueMinAggregateOutputType = {
   code: string | null
   value: string | null
   label: string | null
+  colorHex: string | null
   sortOrder: number | null
   isActive: boolean | null
   createdAt: Date | null
@@ -53,6 +54,7 @@ export type ProductOptionValueMaxAggregateOutputType = {
   code: string | null
   value: string | null
   label: string | null
+  colorHex: string | null
   sortOrder: number | null
   isActive: boolean | null
   createdAt: Date | null
@@ -66,6 +68,7 @@ export type ProductOptionValueCountAggregateOutputType = {
   code: number
   value: number
   label: number
+  colorHex: number
   sortOrder: number
   isActive: number
   createdAt: number
@@ -89,6 +92,7 @@ export type ProductOptionValueMinAggregateInputType = {
   code?: true
   value?: true
   label?: true
+  colorHex?: true
   sortOrder?: true
   isActive?: true
   createdAt?: true
@@ -102,6 +106,7 @@ export type ProductOptionValueMaxAggregateInputType = {
   code?: true
   value?: true
   label?: true
+  colorHex?: true
   sortOrder?: true
   isActive?: true
   createdAt?: true
@@ -115,6 +120,7 @@ export type ProductOptionValueCountAggregateInputType = {
   code?: true
   value?: true
   label?: true
+  colorHex?: true
   sortOrder?: true
   isActive?: true
   createdAt?: true
@@ -215,6 +221,7 @@ export type ProductOptionValueGroupByOutputType = {
   code: string
   value: string
   label: string | null
+  colorHex: string | null
   sortOrder: number
   isActive: boolean
   createdAt: Date
@@ -251,6 +258,7 @@ export type ProductOptionValueWhereInput = {
   code?: Prisma.StringFilter<"ProductOptionValue"> | string
   value?: Prisma.StringFilter<"ProductOptionValue"> | string
   label?: Prisma.StringNullableFilter<"ProductOptionValue"> | string | null
+  colorHex?: Prisma.StringNullableFilter<"ProductOptionValue"> | string | null
   sortOrder?: Prisma.IntFilter<"ProductOptionValue"> | number
   isActive?: Prisma.BoolFilter<"ProductOptionValue"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ProductOptionValue"> | Date | string
@@ -266,6 +274,7 @@ export type ProductOptionValueOrderByWithRelationInput = {
   code?: Prisma.SortOrder
   value?: Prisma.SortOrder
   label?: Prisma.SortOrderInput | Prisma.SortOrder
+  colorHex?: Prisma.SortOrderInput | Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -285,6 +294,7 @@ export type ProductOptionValueWhereUniqueInput = Prisma.AtLeast<{
   code?: Prisma.StringFilter<"ProductOptionValue"> | string
   value?: Prisma.StringFilter<"ProductOptionValue"> | string
   label?: Prisma.StringNullableFilter<"ProductOptionValue"> | string | null
+  colorHex?: Prisma.StringNullableFilter<"ProductOptionValue"> | string | null
   sortOrder?: Prisma.IntFilter<"ProductOptionValue"> | number
   isActive?: Prisma.BoolFilter<"ProductOptionValue"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ProductOptionValue"> | Date | string
@@ -300,6 +310,7 @@ export type ProductOptionValueOrderByWithAggregationInput = {
   code?: Prisma.SortOrder
   value?: Prisma.SortOrder
   label?: Prisma.SortOrderInput | Prisma.SortOrder
+  colorHex?: Prisma.SortOrderInput | Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -321,6 +332,7 @@ export type ProductOptionValueScalarWhereWithAggregatesInput = {
   code?: Prisma.StringWithAggregatesFilter<"ProductOptionValue"> | string
   value?: Prisma.StringWithAggregatesFilter<"ProductOptionValue"> | string
   label?: Prisma.StringNullableWithAggregatesFilter<"ProductOptionValue"> | string | null
+  colorHex?: Prisma.StringNullableWithAggregatesFilter<"ProductOptionValue"> | string | null
   sortOrder?: Prisma.IntWithAggregatesFilter<"ProductOptionValue"> | number
   isActive?: Prisma.BoolWithAggregatesFilter<"ProductOptionValue"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ProductOptionValue"> | Date | string
@@ -333,6 +345,7 @@ export type ProductOptionValueCreateInput = {
   code: string
   value: string
   label?: string | null
+  colorHex?: string | null
   sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
@@ -348,6 +361,7 @@ export type ProductOptionValueUncheckedCreateInput = {
   code: string
   value: string
   label?: string | null
+  colorHex?: string | null
   sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
@@ -361,6 +375,7 @@ export type ProductOptionValueUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -376,6 +391,7 @@ export type ProductOptionValueUncheckedUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -390,6 +406,7 @@ export type ProductOptionValueCreateManyInput = {
   code: string
   value: string
   label?: string | null
+  colorHex?: string | null
   sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
@@ -402,6 +419,7 @@ export type ProductOptionValueUpdateManyMutationInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -415,6 +433,7 @@ export type ProductOptionValueUncheckedUpdateManyInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -443,6 +462,7 @@ export type ProductOptionValueCountOrderByAggregateInput = {
   code?: Prisma.SortOrder
   value?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  colorHex?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -460,6 +480,7 @@ export type ProductOptionValueMaxOrderByAggregateInput = {
   code?: Prisma.SortOrder
   value?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  colorHex?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -473,6 +494,7 @@ export type ProductOptionValueMinOrderByAggregateInput = {
   code?: Prisma.SortOrder
   value?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  colorHex?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -550,6 +572,7 @@ export type ProductOptionValueCreateWithoutOptionInput = {
   code: string
   value: string
   label?: string | null
+  colorHex?: string | null
   sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
@@ -563,6 +586,7 @@ export type ProductOptionValueUncheckedCreateWithoutOptionInput = {
   code: string
   value: string
   label?: string | null
+  colorHex?: string | null
   sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
@@ -606,6 +630,7 @@ export type ProductOptionValueScalarWhereInput = {
   code?: Prisma.StringFilter<"ProductOptionValue"> | string
   value?: Prisma.StringFilter<"ProductOptionValue"> | string
   label?: Prisma.StringNullableFilter<"ProductOptionValue"> | string | null
+  colorHex?: Prisma.StringNullableFilter<"ProductOptionValue"> | string | null
   sortOrder?: Prisma.IntFilter<"ProductOptionValue"> | number
   isActive?: Prisma.BoolFilter<"ProductOptionValue"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ProductOptionValue"> | Date | string
@@ -618,6 +643,7 @@ export type ProductOptionValueCreateWithoutVariantLinksInput = {
   code: string
   value: string
   label?: string | null
+  colorHex?: string | null
   sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
@@ -632,6 +658,7 @@ export type ProductOptionValueUncheckedCreateWithoutVariantLinksInput = {
   code: string
   value: string
   label?: string | null
+  colorHex?: string | null
   sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
@@ -660,6 +687,7 @@ export type ProductOptionValueUpdateWithoutVariantLinksInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -674,6 +702,7 @@ export type ProductOptionValueUncheckedUpdateWithoutVariantLinksInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -686,6 +715,7 @@ export type ProductOptionValueCreateManyOptionInput = {
   code: string
   value: string
   label?: string | null
+  colorHex?: string | null
   sortOrder?: number
   isActive?: boolean
   createdAt?: Date | string
@@ -698,6 +728,7 @@ export type ProductOptionValueUpdateWithoutOptionInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -711,6 +742,7 @@ export type ProductOptionValueUncheckedUpdateWithoutOptionInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -724,6 +756,7 @@ export type ProductOptionValueUncheckedUpdateManyWithoutOptionInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -768,6 +801,7 @@ export type ProductOptionValueSelect<ExtArgs extends runtime.Types.Extensions.In
   code?: boolean
   value?: boolean
   label?: boolean
+  colorHex?: boolean
   sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -784,6 +818,7 @@ export type ProductOptionValueSelectCreateManyAndReturn<ExtArgs extends runtime.
   code?: boolean
   value?: boolean
   label?: boolean
+  colorHex?: boolean
   sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -798,6 +833,7 @@ export type ProductOptionValueSelectUpdateManyAndReturn<ExtArgs extends runtime.
   code?: boolean
   value?: boolean
   label?: boolean
+  colorHex?: boolean
   sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -812,6 +848,7 @@ export type ProductOptionValueSelectScalar = {
   code?: boolean
   value?: boolean
   label?: boolean
+  colorHex?: boolean
   sortOrder?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -819,7 +856,7 @@ export type ProductOptionValueSelectScalar = {
   archivedAt?: boolean
 }
 
-export type ProductOptionValueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "optionId" | "code" | "value" | "label" | "sortOrder" | "isActive" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["productOptionValue"]>
+export type ProductOptionValueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "optionId" | "code" | "value" | "label" | "colorHex" | "sortOrder" | "isActive" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["productOptionValue"]>
 export type ProductOptionValueInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   option?: boolean | Prisma.ProductOptionDefaultArgs<ExtArgs>
   variantLinks?: boolean | Prisma.ProductOptionValue$variantLinksArgs<ExtArgs>
@@ -844,6 +881,7 @@ export type $ProductOptionValuePayload<ExtArgs extends runtime.Types.Extensions.
     code: string
     value: string
     label: string | null
+    colorHex: string | null
     sortOrder: number
     isActive: boolean
     createdAt: Date
@@ -1279,6 +1317,7 @@ export interface ProductOptionValueFieldRefs {
   readonly code: Prisma.FieldRef<"ProductOptionValue", 'String'>
   readonly value: Prisma.FieldRef<"ProductOptionValue", 'String'>
   readonly label: Prisma.FieldRef<"ProductOptionValue", 'String'>
+  readonly colorHex: Prisma.FieldRef<"ProductOptionValue", 'String'>
   readonly sortOrder: Prisma.FieldRef<"ProductOptionValue", 'Int'>
   readonly isActive: Prisma.FieldRef<"ProductOptionValue", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"ProductOptionValue", 'DateTime'>

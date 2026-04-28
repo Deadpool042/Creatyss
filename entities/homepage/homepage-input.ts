@@ -14,6 +14,7 @@ export const HOMEPAGE_HERO_TITLE_MAX_LENGTH = 120;
 export const HOMEPAGE_HERO_TEXT_MAX_LENGTH = 500;
 export const HOMEPAGE_EDITORIAL_TITLE_MAX_LENGTH = 120;
 export const HOMEPAGE_EDITORIAL_TEXT_MAX_LENGTH = 1200;
+export const HOMEPAGE_SHIPPING_RETURNS_POLICY_MAX_LENGTH = 1200;
 
 export const HOMEPAGE_FEATURED_PRODUCTS_MAX_COUNT = 12;
 export const HOMEPAGE_FEATURED_CATEGORIES_MAX_COUNT = 8;
@@ -29,6 +30,7 @@ type HomepageHeroImageSelection =
 
 export type ValidatedHomepageInput = {
   homepageId: string;
+  shippingReturnsPolicy: string | null;
   heroTitle: string | null;
   heroText: string | null;
   heroImage: HomepageHeroImageSelection;
@@ -41,6 +43,7 @@ export type ValidatedHomepageInput = {
 
 export type HomepageInputErrorCode =
   | "missing_homepage"
+  | "shipping_returns_policy_too_long"
   | "invalid_hero_image"
   | "hero_title_too_long"
   | "hero_text_too_long"
@@ -61,6 +64,7 @@ export type HomepageInputErrorCode =
 
 type HomepageInputSource = {
   homepageId: RawInputValue;
+  shippingReturnsPolicy?: RawInputValue;
   heroTitle: RawInputValue;
   heroText: RawInputValue;
   heroImageMediaAssetId: RawInputValue;
@@ -218,6 +222,15 @@ export function validateHomepageInput(input: HomepageInputSource): HomepageInput
     return { ok: false, code: "missing_homepage" };
   }
 
+  const shippingReturnsPolicy = normalizeOptionalText(input.shippingReturnsPolicy);
+
+  if (
+    shippingReturnsPolicy !== null &&
+    shippingReturnsPolicy.length > HOMEPAGE_SHIPPING_RETURNS_POLICY_MAX_LENGTH
+  ) {
+    return { ok: false, code: "shipping_returns_policy_too_long" };
+  }
+
   const heroImage = validateHeroImageSelection(input.heroImageMediaAssetId);
 
   if (!heroImage.ok) {
@@ -303,6 +316,7 @@ export function validateHomepageInput(input: HomepageInputSource): HomepageInput
     ok: true,
     data: {
       homepageId,
+      shippingReturnsPolicy,
       heroTitle,
       heroText,
       heroImage: heroImage.data,

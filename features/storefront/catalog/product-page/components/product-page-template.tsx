@@ -41,6 +41,12 @@ type ProductPageRelatedGroup = {
   products: ProductPageRelatedProduct[];
 };
 
+function getRelatedSectionTitle(groups: ProductPageRelatedGroup[]): string {
+  const firstGroup = groups.find((group) => group.products.length > 0);
+  if (!firstGroup) return "À découvrir";
+  return "À découvrir";
+}
+
 function normalizeCharacteristicLabel(value: string): string {
   return value
     .normalize("NFD")
@@ -60,6 +66,8 @@ export type ProductPageTemplateProps = {
   marketingHook?: string | null;
   shortDescription?: string | null;
   description?: string | null;
+  careInstructions?: string | null;
+  shippingReturnsPolicy?: string | null;
   productType: "simple" | "variable";
   isAvailable: boolean;
   images: ProductPageImage[];
@@ -80,6 +88,8 @@ export function ProductPageTemplate({
   marketingHook,
   shortDescription,
   description,
+  careInstructions,
+  shippingReturnsPolicy,
   productType,
   isAvailable,
   images,
@@ -97,6 +107,7 @@ export function ProductPageTemplate({
   const isSimpleProduct = productType === "simple";
   const singleOffer = isSimpleProduct && variants.length === 1 ? (variants[0] ?? null) : null;
   const hasRelatedProducts = relatedProductGroups.some((g) => g.products.length > 0);
+  const relatedSectionTitle = getRelatedSectionTitle(relatedProductGroups);
   const resolvedTechnicalSpecs = technicalSpecs ?? [];
   const hasTechnicalSpecs = resolvedTechnicalSpecs.length > 0;
   const detailsDescriptionHtml = description?.trim() ? description : null;
@@ -107,6 +118,8 @@ export function ProductPageTemplate({
           isCareCharacteristicLabel(characteristic.label) && characteristic.value.trim().length > 0
       )
       ?.value.trim() ?? null;
+  const resolvedCareContent = careInstructions?.trim() || careCharacteristicValue;
+  const resolvedShippingContent = shippingReturnsPolicy?.trim() || null;
 
   return (
     <div className="mx-auto w-full max-w-6xl pb-8 min-[700px]:pb-10 min-[1200px]:pb-12">
@@ -143,7 +156,10 @@ export function ProductPageTemplate({
                 />
               ) : undefined
             }
-            careContent={careCharacteristicValue ? <p>{careCharacteristicValue}</p> : undefined}
+            shippingContent={
+              resolvedShippingContent ? <p>{resolvedShippingContent}</p> : undefined
+            }
+            careContent={resolvedCareContent ? <p>{resolvedCareContent}</p> : undefined}
           />
           <ProductEditorialSection />
         </div>
@@ -205,10 +221,10 @@ export function ProductPageTemplate({
         ) : null}
 
         {hasRelatedProducts ? (
-          <section className="w-full px-4 border-shell-border/80 pt-5 min-[700px]:pt-6">
+          <section className="w-full px-4 pb-5 pt-5 min-[700px]:pb-6 min-[700px]:pt-6">
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
               <p className="text-eyebrow text-brand">À découvrir</p>
-              <h2 className="m-0 text-title-section">Vous aimerez aussi</h2>
+              <h2 className="m-0 text-title-section">{relatedSectionTitle}</h2>
             </div>
             <ProductRelatedSection
               groups={relatedProductGroups}

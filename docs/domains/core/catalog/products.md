@@ -396,6 +396,26 @@ Rendu :
 - Admin preview : même template partagé
 - Admin éditeur : onglet "Caractéristiques" dans `features/admin/products/components/editor/product-characteristics-tab.tsx`
 
+### Mise à jour V2-1 PDP (état réel)
+
+Le lot V2-1 a introduit un champ produit dédié :
+
+- `Product.careInstructions` (`products.careInstructions`)
+
+Rôle PDP :
+
+- source prioritaire de l'accordéon **Entretien** sur la PDP storefront ;
+- édition via l'admin produit (onglet général).
+
+Fallback transitoire conservé :
+
+- si `careInstructions` est vide, la PDP lit encore une valeur issue de `ProductCharacteristic[]`
+  quand un libellé dédié Entretien est présent ;
+- sinon la section garde son fallback éditorial sobre.
+
+Ce fallback existe pour la transition des données V1 et n'enlève pas la source de vérité cible :
+`careInstructions` au niveau `Product`.
+
 ---
 
 ## Questions ouvertes

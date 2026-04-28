@@ -4,6 +4,7 @@ import {
   HOMEPAGE_EDITORIAL_TITLE_MAX_LENGTH,
   HOMEPAGE_HERO_TEXT_MAX_LENGTH,
   HOMEPAGE_HERO_TITLE_MAX_LENGTH,
+  HOMEPAGE_SHIPPING_RETURNS_POLICY_MAX_LENGTH,
 } from "@/entities/homepage/homepage-input";
 
 function formOptionalText(max?: number) {
@@ -24,6 +25,7 @@ function formOptionalText(max?: number) {
 }
 
 export const HomepageFormSchema = z.object({
+  shippingReturnsPolicy: formOptionalText(HOMEPAGE_SHIPPING_RETURNS_POLICY_MAX_LENGTH),
   heroTitle: formOptionalText(HOMEPAGE_HERO_TITLE_MAX_LENGTH),
   heroText: formOptionalText(HOMEPAGE_HERO_TEXT_MAX_LENGTH),
   editorialTitle: formOptionalText(HOMEPAGE_EDITORIAL_TITLE_MAX_LENGTH),

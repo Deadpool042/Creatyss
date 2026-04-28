@@ -25,3 +25,8 @@ export { updateProductImageAltText } from "./update-product-image-alt-text.servi
 export { updateProductPrices } from "./update-product-prices.service";
 export { updateProductInventory } from "./update-product-inventory.service";
 export { uploadProductImages } from "./upload-product-images.service";
+export {
+  updateProductOptionColorHex,
+  createProductOptionColorValue,
+  archiveProductOptionColorValue,
+} from "./update-product-option-color-hex.service";
