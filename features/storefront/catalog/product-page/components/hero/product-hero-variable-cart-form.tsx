@@ -12,6 +12,8 @@ type ProductHeroVariableCartFormProps = {
   productSlug: string;
   selectedVariant: OfferVariant | null;
   disabled?: boolean | undefined;
+  layout?: "inline" | "stacked";
+  showBuyNowHelper?: boolean;
 };
 
 /**
@@ -24,8 +26,12 @@ export function ProductHeroVariableCartForm({
   productSlug,
   selectedVariant,
   disabled = false,
+  layout = "inline",
+  showBuyNowHelper = true,
 }: ProductHeroVariableCartFormProps) {
   const [quantity, setQuantity] = useState(1);
+  const primaryCtaLabel =
+    selectedVariant?.availabilityStatus === "made-to-order" ? "Commander" : "Ajouter au panier";
 
   if (selectedVariant === null || !selectedVariant.isAvailable) {
     return (
@@ -36,10 +42,16 @@ export function ProductHeroVariableCartForm({
   }
 
   const buyNowHelpId = "hero-variable-buy-now-help";
+  const isStackedLayout = layout === "stacked";
 
   return (
-    <div className="grid justify-start gap-3">
-      <form action={addToCartAction} className="flex flex-wrap items-center gap-3">
+    <div className={isStackedLayout ? "grid gap-3" : "grid justify-start gap-3"}>
+      <form
+        action={addToCartAction}
+        className={
+          isStackedLayout ? "grid gap-2.5" : "flex flex-wrap items-center gap-3"
+        }
+      >
         <input type="hidden" name="productSlug" value={productSlug} />
         <input type="hidden" name="variantId" value={selectedVariant.id} />
 
@@ -54,7 +66,11 @@ export function ProductHeroVariableCartForm({
           step={1}
           value={quantity}
           onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))}
-          className="h-10 w-20 rounded-xl border-control-border bg-surface-panel/54 px-3 transition-[border-color,background-color,box-shadow,transform] hover:border-control-border-strong hover:bg-surface-panel/68 focus-visible:ring-2 focus-visible:ring-focus-ring/35 active:translate-y-px"
+          className={
+            isStackedLayout
+              ? "h-10 w-full rounded-xl border-control-border bg-surface-panel/54 px-3 transition-[border-color,background-color,box-shadow,transform] hover:border-control-border-strong hover:bg-surface-panel/68 focus-visible:ring-2 focus-visible:ring-focus-ring/35 active:translate-y-px"
+              : "h-10 w-20 rounded-xl border-control-border bg-surface-panel/54 px-3 transition-[border-color,background-color,box-shadow,transform] hover:border-control-border-strong hover:bg-surface-panel/68 focus-visible:ring-2 focus-visible:ring-focus-ring/35 active:translate-y-px"
+          }
           disabled={disabled}
         />
 
@@ -62,10 +78,14 @@ export function ProductHeroVariableCartForm({
           type="submit"
           name="intent"
           value="add_to_cart"
-          className="w-auto shadow-control transition-[transform,box-shadow,filter] hover:shadow-control-hover active:translate-y-px active:shadow-control-pressed focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+          className={
+            isStackedLayout
+              ? "w-full shadow-control transition-[transform,box-shadow,filter] hover:shadow-control-hover active:translate-y-px active:shadow-control-pressed focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+              : "w-auto shadow-control transition-[transform,box-shadow,filter] hover:shadow-control-hover active:translate-y-px active:shadow-control-pressed focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+          }
           disabled={disabled}
         >
-          Ajouter au panier
+          {primaryCtaLabel}
         </CustomButton>
 
         <CustomButton
@@ -74,18 +94,24 @@ export function ProductHeroVariableCartForm({
           value="buy_now"
           variant="outline"
           aria-describedby={buyNowHelpId}
-          className="w-auto border-control-border-strong bg-surface-panel/44 shadow-control transition-[background-color,transform,box-shadow] hover:bg-surface-panel/68 hover:shadow-control-hover active:translate-y-px active:shadow-control-pressed focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+          className={
+            isStackedLayout
+              ? "w-full border-control-border-strong bg-surface-panel/44 shadow-control transition-[background-color,transform,box-shadow] hover:bg-surface-panel/68 hover:shadow-control-hover active:translate-y-px active:shadow-control-pressed focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+              : "w-auto border-control-border-strong bg-surface-panel/44 shadow-control transition-[background-color,transform,box-shadow] hover:bg-surface-panel/68 hover:shadow-control-hover active:translate-y-px active:shadow-control-pressed focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+          }
           disabled={disabled}
         >
           Achat immédiat
         </CustomButton>
 
-        <p
-          id={buyNowHelpId}
-          className="basis-full text-micro-copy reading-compact text-text-muted-strong"
-        >
-          Ajoutez l&apos;article, puis consultez votre panier.
-        </p>
+        {showBuyNowHelper ? (
+          <p
+            id={buyNowHelpId}
+            className="basis-full text-micro-copy reading-compact text-text-muted-strong"
+          >
+            Ajoutez l&apos;article, puis consultez votre panier.
+          </p>
+        ) : null}
       </form>
     </div>
   );

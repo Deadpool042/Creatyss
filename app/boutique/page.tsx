@@ -1,23 +1,30 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
+
 import { getUploadsPublicPath } from "@/core/uploads";
-import { listCatalogFilterCategories, listPublishedProducts } from "@/features/storefront/catalog";
-import { catalogSearchParamsSchema } from "@/features/storefront/catalog/schemas/catalog-search-params.schema";
 import {
-  CATALOG_AVAILABILITY_FILTER_VALUE,
+  type CatalogAvailabilityFilterValue,
   validateCatalogFilterInput,
 } from "@/entities/catalog/catalog-filter-input";
 import { validateCatalogSearchQuery } from "@/entities/catalog/catalog-search-input";
+import {
+  listCatalogFilterCategories,
+  listPublishedProductsPage,
+  countPublishedProducts,
+} from "@/features/storefront/catalog";
+import { BoutiquePage } from "@/features/storefront/catalog/boutique-page/components/boutique-page";
+import { buildBoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/composition/build-boutique-page-view-model";
+import { catalogSearchParamsSchema } from "@/features/storefront/catalog/schemas/catalog-search-params.schema";
 
 export const dynamic = "force-dynamic";
+const BOUTIQUE_PRODUCTS_PAGE_SIZE = 12;
 
 type BoutiqueSearchParams = {
   q?: string | string[];
   category?: string | string[];
   availability?: string | string[];
+  minPrice?: string | string[];
+  maxPrice?: string | string[];
+  sort?: string | string[];
 };
 
 type ProductsPageProps = Readonly<{
@@ -27,7 +34,7 @@ type ProductsPageProps = Readonly<{
 function getBoutiqueMetadata(input: {
   searchQuery: string | null;
   categoryLabel: string | null;
-  onlyAvailable: boolean;
+  availabilityStatus: CatalogAvailabilityFilterValue | null;
 }): Metadata {
   const titleSegments: string[] = [];
   const descriptionSegments: string[] = [];
@@ -42,9 +49,19 @@ function getBoutiqueMetadata(input: {
     descriptionSegments.push(`Sélection de produits pour la catégorie ${input.categoryLabel}.`);
   }
 
-  if (input.onlyAvailable) {
-    titleSegments.push("Disponibles");
-    descriptionSegments.push("Produits actuellement disponibles à la commande.");
+  if (input.availabilityStatus === "in-stock") {
+    titleSegments.push("En stock");
+    descriptionSegments.push("Produits vendables immédiatement.");
+  }
+
+  if (input.availabilityStatus === "made-to-order") {
+    titleSegments.push("Sur commande");
+    descriptionSegments.push("Produits disponibles sur commande.");
+  }
+
+  if (input.availabilityStatus === "unavailable") {
+    titleSegments.push("Indisponibles");
+    descriptionSegments.push("Produits temporairement indisponibles.");
   }
 
   if (titleSegments.length === 0) {
@@ -61,21 +78,22 @@ function getBoutiqueMetadata(input: {
   };
 }
 
-function getImageUrl(uploadsPublicPath: string, filePath: string): string {
-  return `${uploadsPublicPath}/${filePath.replace(/^\/+/, "")}`;
-}
-
 export async function generateMetadata({ searchParams }: ProductsPageProps): Promise<Metadata> {
   const resolvedSearchParams = await searchParams;
   const catalogSearchParams = catalogSearchParamsSchema.parse({
     q: resolvedSearchParams.q,
     category: resolvedSearchParams.category,
-    available: resolvedSearchParams.availability,
+    availability: resolvedSearchParams.availability,
+    minPrice: resolvedSearchParams.minPrice,
+    maxPrice: resolvedSearchParams.maxPrice,
+    sort: resolvedSearchParams.sort,
   });
   const searchQuery = validateCatalogSearchQuery(catalogSearchParams.q);
   const filters = validateCatalogFilterInput({
     category: catalogSearchParams.category,
-    availability: catalogSearchParams.available ? CATALOG_AVAILABILITY_FILTER_VALUE : null,
+    availability: catalogSearchParams.availability,
+    minPrice: catalogSearchParams.minPrice,
+    maxPrice: catalogSearchParams.maxPrice,
   });
   const categories = filters.categorySlug === null ? [] : await listCatalogFilterCategories();
   const selectedCategory =
@@ -87,7 +105,7 @@ export async function generateMetadata({ searchParams }: ProductsPageProps): Pro
     searchQuery,
     categoryLabel:
       filters.categorySlug === null ? null : (selectedCategory?.name ?? filters.categorySlug),
-    onlyAvailable: filters.onlyAvailable,
+    availabilityStatus: filters.availabilityStatus,
   });
 }
 
@@ -96,219 +114,62 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const catalogSearchParams = catalogSearchParamsSchema.parse({
     q: resolvedSearchParams.q,
     category: resolvedSearchParams.category,
-    available: resolvedSearchParams.availability,
+    availability: resolvedSearchParams.availability,
+    minPrice: resolvedSearchParams.minPrice,
+    maxPrice: resolvedSearchParams.maxPrice,
+    sort: resolvedSearchParams.sort,
   });
   const searchQuery = validateCatalogSearchQuery(catalogSearchParams.q);
   const filters = validateCatalogFilterInput({
     category: catalogSearchParams.category,
-    availability: catalogSearchParams.available ? CATALOG_AVAILABILITY_FILTER_VALUE : null,
+    availability: catalogSearchParams.availability,
+    minPrice: catalogSearchParams.minPrice,
+    maxPrice: catalogSearchParams.maxPrice,
   });
-  const [products, categories] = await Promise.all([
-    listPublishedProducts({
+  const [productsPage, totalProductCount, categories] = await Promise.all([
+    listPublishedProductsPage({
       searchQuery,
       categorySlug: filters.categorySlug,
-      onlyAvailable: filters.onlyAvailable,
+      availabilityStatus: filters.availabilityStatus,
+      minPriceCents: filters.minPriceCents,
+      maxPriceCents: filters.maxPriceCents,
+      sort: catalogSearchParams.sort,
+      limit: BOUTIQUE_PRODUCTS_PAGE_SIZE,
+      cursor: null,
+    }),
+    countPublishedProducts({
+      searchQuery,
+      categorySlug: filters.categorySlug,
+      availabilityStatus: filters.availabilityStatus,
+      minPriceCents: filters.minPriceCents,
+      maxPriceCents: filters.maxPriceCents,
     }),
     listCatalogFilterCategories(),
   ]);
-  const uploadsPublicPath = getUploadsPublicPath();
+
   const selectedCategory =
     filters.categorySlug === null
       ? null
       : (categories.find((category) => category.slug === filters.categorySlug) ?? null);
-  const selectedCategoryLabel =
-    filters.categorySlug === null ? null : (selectedCategory?.name ?? filters.categorySlug);
-  const activeFilters: string[] = [];
+  const uploadsPublicPath = getUploadsPublicPath();
 
-  if (searchQuery !== null) {
-    activeFilters.push(`Recherche : ${searchQuery}`);
-  }
+  const model = buildBoutiquePageViewModel({
+    products: productsPage.items,
+    categories,
+    uploadsPublicPath,
+    searchQuery,
+    selectedCategorySlug: filters.categorySlug,
+    selectedCategoryLabel:
+      filters.categorySlug === null ? null : (selectedCategory?.name ?? filters.categorySlug),
+    selectedAvailabilityStatus: filters.availabilityStatus,
+    selectedMinPriceCents: filters.minPriceCents,
+    selectedMaxPriceCents: filters.maxPriceCents,
+    selectedSort: catalogSearchParams.sort,
+    totalProductCount,
+    nextCursor: productsPage.nextCursor,
+    hasMore: productsPage.hasMore,
+    pageSize: BOUTIQUE_PRODUCTS_PAGE_SIZE,
+  });
 
-  if (selectedCategoryLabel !== null) {
-    activeFilters.push(`Catégorie : ${selectedCategoryLabel}`);
-  }
-
-  if (filters.onlyAvailable) {
-    activeFilters.push("Disponibles uniquement");
-  }
-
-  const hasActiveFilters = activeFilters.length > 0;
-  const hasEditorialListing = !hasActiveFilters;
-
-  return (
-    <div className="grid gap-10">
-      {/* Header section */}
-      <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
-        <div className="grid gap-2">
-          <p className="text-sm font-bold uppercase tracking-widest text-brand">
-            {hasEditorialListing ? "Sélection" : "Boutique"}
-          </p>
-          <h1 className="m-0">
-            {hasEditorialListing ? "Produits à découvrir" : "Produits publiés"}
-          </h1>
-          {hasEditorialListing ? (
-            <p className="leading-relaxed text-muted-foreground">
-              Une sélection de produits déjà disponibles, avec les pièces mises en avant en premier.
-            </p>
-          ) : null}
-        </div>
-
-        {/* Compact filter bar */}
-        <form action="/boutique" className="mt-6 flex flex-wrap items-end gap-3" method="get">
-          <div className="min-w-40 flex-1">
-            <Input
-              defaultValue={searchQuery ?? ""}
-              name="q"
-              placeholder="Rechercher…"
-              type="search"
-            />
-          </div>
-
-          <div className="min-w-36 flex-1">
-            <select
-              className="h-9 w-full rounded-lg border border-control-border bg-control-surface px-3 py-1 text-sm text-foreground shadow-control outline-none transition-all hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50"
-              defaultValue={filters.categorySlug ?? ""}
-              name="category"
-            >
-              <option value="">Toutes les catégories</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.slug}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <label className="flex items-center gap-2 text-sm text-text-muted-strong">
-            <input
-              className="size-4 rounded-[6px] border border-control-border bg-control-surface shadow-control transition-all hover:border-control-border-strong hover:bg-control-surface-hover focus-visible:ring-3 focus-visible:ring-focus-ring/50"
-              defaultChecked={filters.onlyAvailable}
-              name="availability"
-              type="checkbox"
-              value={CATALOG_AVAILABILITY_FILTER_VALUE}
-            />
-            <span>Disponibles</span>
-          </label>
-
-          <Button size="sm" type="submit">
-            Filtrer
-          </Button>
-
-          {hasActiveFilters ? (
-            <Link
-              className="text-sm text-text-muted-strong underline-offset-4 transition-colors hover:text-foreground hover:underline"
-              href="/boutique"
-            >
-              Tout voir
-            </Link>
-          ) : null}
-        </form>
-
-        {hasActiveFilters ? (
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-text-muted-strong">
-            <span>Filtres :</span>
-            {activeFilters.map((filter) => (
-              <Badge key={filter} variant="secondary">
-                {filter}
-              </Badge>
-            ))}
-          </div>
-        ) : null}
-      </section>
-
-      {/* Product grid */}
-      {products.length > 0 ? (
-        <div className="grid gap-5 min-[500px]:grid-cols-2 min-[900px]:grid-cols-3">
-          {products.map((product) => (
-            <article
-              className="group grid grid-rows-[auto_1fr] overflow-hidden rounded-xl border border-surface-border bg-shell-surface shadow-card transition-shadow hover:shadow-soft"
-              key={product.id}
-            >
-              {/* Image zone */}
-              <Link className="block" href={`/boutique/${product.slug}`} tabIndex={-1}>
-                {product.primaryImage !== null ? (
-                  <figure className="relative aspect-4/3 overflow-hidden bg-media-surface">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      alt={product.primaryImage.altText ?? product.name}
-                      className="absolute inset-0 block h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                      src={getImageUrl(uploadsPublicPath, product.primaryImage.filePath)}
-                    />
-                  </figure>
-                ) : (
-                  <div className="flex aspect-4/3 items-center justify-center bg-media-surface text-media-foreground">
-                    <span className="text-xs font-medium uppercase tracking-widest opacity-60">
-                      {product.name}
-                    </span>
-                  </div>
-                )}
-              </Link>
-
-              {/* Text content */}
-              <div className="grid gap-3 p-5">
-                <div className="flex flex-wrap items-start justify-between gap-2">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-strong">
-                    {product.isFeatured ? "Pièce phare" : "Produit"}
-                  </p>
-                  <Badge variant="outline">
-                    <span
-                      className={
-                        product.isAvailable
-                          ? "text-feedback-success-foreground"
-                          : "text-destructive"
-                      }
-                    >
-                      {product.isAvailable ? "Disponible" : "Indisponible"}
-                    </span>
-                  </Badge>
-                </div>
-
-                <h3 className="m-0 text-base font-semibold leading-snug">
-                  <Link
-                    className="transition-colors hover:text-brand"
-                    href={`/boutique/${product.slug}`}
-                  >
-                    {product.name}
-                  </Link>
-                </h3>
-
-                {(product.shortDescription ?? product.description) ? (
-                  <p className="text-sm leading-relaxed text-text-muted-strong line-clamp-2">
-                    {product.shortDescription ?? product.description}
-                  </p>
-                ) : null}
-              </div>
-            </article>
-          ))}
-        </div>
-      ) : (
-        <section className="w-full rounded-xl border border-shell-border bg-shell-surface p-8 shadow-soft min-[700px]:p-10">
-          <div className="grid gap-4 rounded-lg border border-surface-border bg-surface-panel-soft p-6">
-            <p className="text-sm font-bold uppercase tracking-widest text-brand">
-              {hasActiveFilters ? "Aucun résultat" : "Catalogue vide"}
-            </p>
-            <h2>
-              {hasActiveFilters
-                ? "Aucun produit ne correspond à ces filtres"
-                : "Aucun produit publié"}
-            </h2>
-            <p className="leading-relaxed text-muted-foreground">
-              {hasActiveFilters
-                ? "Essayez une autre combinaison ou revenez à la liste complète."
-                : "Les produits publics apparaîtront ici dès qu'ils seront publiés."}
-            </p>
-            {hasActiveFilters ? (
-              <Link
-                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                href="/boutique"
-              >
-                Voir tous les produits
-              </Link>
-            ) : null}
-          </div>
-        </section>
-      )}
-    </div>
-  );
+  return <BoutiquePage model={model} />;
 }

@@ -27,7 +27,8 @@ export function ProductEditorialSection() {
 
         <p className="max-w-prose text-secondary-copy reading-relaxed text-foreground-muted">
           Chaque pièce est pensée, dessinée et fabriquée à la main dans mon atelier stéphanois. Je
-          travaille des matériaux nobles et sélectionne chaque cuir avec exigence.
+          sélectionne des matières choisies avec exigence et réalise des finitions soignées, pour
+          des pièces uniques ou en petite série.
         </p>
 
         <Link

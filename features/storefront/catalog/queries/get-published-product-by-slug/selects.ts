@@ -5,6 +5,9 @@ export const PUBLISHED_PRODUCT_CORE_SELECT = {
   storeId: true,
   slug: true,
   name: true,
+  catalogPriceCents: true,
+  catalogPriceCurrencyCode: true,
+  catalogPriceSource: true,
   marketingHook: true,
   shortDescription: true,
   description: true,
@@ -63,6 +66,15 @@ export const PUBLISHED_PRODUCT_CORE_SELECT = {
           reservedQuantity: true,
         },
       },
+      availabilityRecords: {
+        where: {
+          archivedAt: null,
+        },
+        select: {
+          status: true,
+          isSellable: true,
+        },
+      },
       prices: {
         where: {
           isActive: true,
@@ -114,11 +126,41 @@ export const PUBLISHED_PRODUCT_CORE_SELECT = {
           id: true,
           slug: true,
           name: true,
+          catalogPriceCents: true,
+          catalogPriceCurrencyCode: true,
+          catalogPriceSource: true,
           shortDescription: true,
           primaryImage: {
             select: {
               storageKey: true,
               altText: true,
+            },
+          },
+          variants: {
+            where: {
+              status: "ACTIVE",
+              archivedAt: null,
+            },
+            select: {
+              inventoryItems: {
+                where: {
+                  status: "ACTIVE",
+                  archivedAt: null,
+                },
+                select: {
+                  onHandQuantity: true,
+                  reservedQuantity: true,
+                },
+              },
+              availabilityRecords: {
+                where: {
+                  archivedAt: null,
+                },
+                select: {
+                  status: true,
+                  isSellable: true,
+                },
+              },
             },
           },
         },

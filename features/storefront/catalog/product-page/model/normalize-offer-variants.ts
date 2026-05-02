@@ -5,6 +5,7 @@ type CatalogVariantSource = {
   name: string;
   price: string;
   compareAtPrice: string | null;
+  availabilityStatus?: "in-stock" | "made-to-order" | "unavailable";
   isAvailable: boolean;
   isDefault: boolean;
   sku: string;
@@ -36,6 +37,8 @@ export function normalizeOfferVariants(
       name: variant.name,
       price: variant.price,
       compareAtPrice: variant.compareAtPrice,
+      availabilityStatus:
+        variant.availabilityStatus ?? (variant.isAvailable ? "in-stock" : "unavailable"),
       isAvailable: variant.isAvailable,
       isDefault: variant.isDefault,
       sku: variant.sku,

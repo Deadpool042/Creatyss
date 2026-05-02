@@ -13521,6 +13521,9 @@ export const ProductScalarFieldEnum = {
   shortDescription: 'shortDescription',
   description: 'description',
   careInstructions: 'careInstructions',
+  catalogPriceCents: 'catalogPriceCents',
+  catalogPriceCurrencyCode: 'catalogPriceCurrencyCode',
+  catalogPriceSource: 'catalogPriceSource',
   status: 'status',
   isFeatured: 'isFeatured',
   isStandalone: 'isStandalone',
@@ -16617,6 +16620,20 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Decimal[]'
  */
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PriceTargetType'
+ */
+export type EnumPriceTargetTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PriceTargetType'>
+    
+
+
+/**
+ * Reference to a field of type 'PriceTargetType[]'
+ */
+export type ListEnumPriceTargetTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PriceTargetType[]'>
     
 
 

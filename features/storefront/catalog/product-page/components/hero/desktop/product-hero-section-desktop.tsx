@@ -29,6 +29,7 @@ export function ProductHeroSectionDesktop({
   isSimpleProduct,
   shortDescription,
   resolvedHeroVariant,
+  resolvedAvailabilityStatus,
   resolvedIsAvailable,
   variablePriceLabel,
   variableSummaryText,
@@ -136,6 +137,7 @@ export function ProductHeroSectionDesktop({
               ) : null}
 
               <ProductHeroAvailabilityMeta
+                resolvedAvailabilityStatus={resolvedAvailabilityStatus}
                 resolvedIsAvailable={resolvedIsAvailable}
                 density="default"
               />

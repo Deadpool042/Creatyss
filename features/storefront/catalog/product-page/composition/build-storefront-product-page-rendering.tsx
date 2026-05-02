@@ -23,6 +23,7 @@ type RenderCartActionFormInput = {
   primaryButtonSize?: React.ComponentProps<typeof CustomButton>["size"];
   secondaryButtonSize?: React.ComponentProps<typeof CustomButton>["size"];
   helperCopy: string;
+  primaryButtonLabel: string;
 };
 
 function renderCartActionForm(input: RenderCartActionFormInput): React.ReactNode {
@@ -53,7 +54,7 @@ function renderCartActionForm(input: RenderCartActionFormInput): React.ReactNode
         size={input.primaryButtonSize}
         className="w-auto shadow-control transition-[transform,box-shadow,filter] hover:shadow-control-hover active:translate-y-px active:shadow-control-pressed focus-visible:ring-2 focus-visible:ring-focus-ring/35"
       >
-        Ajouter au panier
+        {input.primaryButtonLabel}
       </CustomButton>
 
       <CustomButton
@@ -81,6 +82,7 @@ function renderCartActionForm(input: RenderCartActionFormInput): React.ReactNode
 function renderHeroAddToCartForm(input: {
   productSlug: string;
   variantId: string;
+  primaryButtonLabel: string;
 }): React.ReactNode {
   return renderCartActionForm({
     productSlug: input.productSlug,
@@ -89,6 +91,7 @@ function renderHeroAddToCartForm(input: {
     quantityInputClassName: "h-10 w-20 rounded-xl px-3",
     formClassName: "flex flex-wrap items-center gap-3",
     helperCopy: "Ajoutez l'article, puis consultez votre panier.",
+    primaryButtonLabel: input.primaryButtonLabel,
   });
 }
 
@@ -107,6 +110,10 @@ export function buildStorefrontProductPageRendering(
         {renderHeroAddToCartForm({
           productSlug,
           variantId: singleOffer.id,
+          primaryButtonLabel:
+            singleOffer.availabilityStatus === "made-to-order"
+              ? "Commander"
+              : "Ajouter au panier",
         })}
       </div>
     );

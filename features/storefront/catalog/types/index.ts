@@ -6,6 +6,7 @@ export type {
   CatalogRelatedProductGroup,
   CatalogProductDetail,
   CatalogProductListItem,
+  CatalogProductListPage,
 } from "./catalog-product.types";
 
 export type {

@@ -2,6 +2,7 @@
 "use client";
 
 import Image from "next/image";
+import { CreditCard, MapPin, ShieldCheck } from "lucide-react";
 
 import { ProductHeroGalleryDots } from "../product-hero-gallery-dots";
 import { ProductHeroHeader } from "../product-hero-header";
@@ -28,8 +29,8 @@ export function ProductHeroSectionLandscape({
   productSlug,
   marketingHook,
   isSimpleProduct,
-  shortDescription,
   resolvedHeroVariant,
+  resolvedAvailabilityStatus,
   resolvedIsAvailable,
   variablePriceLabel,
   variableSummaryText,
@@ -45,25 +46,25 @@ export function ProductHeroSectionLandscape({
   onOpenLightbox,
   imageFit,
   cta,
-  asideExtra,
   disableCart,
 }: ProductHeroResolvedProps) {
   const hasVisibleThumbnailRail = false;
   const shouldShowGalleryDots = !hasVisibleThumbnailRail && galleryImages.length > 1;
   const shouldShowActionBlock = Boolean(cta) || Boolean(variableVariants);
+  const shouldShowCompactTrust = shouldShowActionBlock && resolvedIsAvailable;
 
   return (
-    <section className="w-full border-b border-shell-border/80 pb-3">
+    <section className="w-full border-b border-shell-border/80 pb-10">
       <div className="flex flex-row">
         {/* --- Image compacte (landscape) --- */}
-        <div className="min-w-0 w-[28%] shrink-0 p-2.5">
+        <div className="min-w-0 w-[45%] shrink-0 p-1.5">
           {selectedImage ? (
             <>
               <button
                 type="button"
                 onClick={onOpenLightbox}
                 aria-label="Ouvrir l'image en plein écran"
-                className="relative mx-auto h-[50vh] max-h-80 w-auto text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+                className="relative mx-auto h-[40vh] max-h-56 w-full overflow-hidden rounded-xl border border-hero-border text-left shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/35"
               >
                 <Image
                   key={selectedImage.src}
@@ -72,10 +73,10 @@ export function ProductHeroSectionLandscape({
                   width={1200}
                   height={1500}
                   loading="lazy"
-                  sizes="30vw"
+                  sizes="46vw"
                   onLoadingComplete={() => onImageLoaded(selectedImage.src)}
                   className={[
-                    "h-full w-full rounded-2xl border border-hero-border object-center shadow-raised transition-opacity duration-300 motion-reduce:transition-none",
+                    "h-full w-full object-center transition-opacity duration-300 motion-reduce:transition-none",
                     isImageReady ? "opacity-100" : "opacity-0",
                     imageFit === "cover" ? "object-cover" : "object-contain",
                   ].join(" ")}
@@ -84,7 +85,7 @@ export function ProductHeroSectionLandscape({
                 <ProductHeroImageCounterOverlay
                   activeIndex={activeImageIndex}
                   total={galleryImages.length}
-                  className="bottom-2 right-2 px-2 py-0.5"
+                  className="bottom-1 right-1 px-2 py-0.5"
                 />
               </button>
 
@@ -97,23 +98,33 @@ export function ProductHeroSectionLandscape({
               ) : null}
             </>
           ) : (
-            <ProductHeroMediaEmptyState className="h-[48vh] w-full rounded-2xl" />
+            <ProductHeroMediaEmptyState className="h-[40vh] max-h-56 w-full rounded-xl" />
           )}
         </div>
 
         {/* --- Aside dominant (landscape) --- */}
-        <aside className="flex flex-1 flex-col border-l border-shell-border/70 px-3 py-2">
-          <div className="flex h-full flex-col gap-1.5">
-            <section className="grid gap-1.5">
+        <aside className="flex min-w-0 flex-1 flex-col border-l border-shell-border/70 px-2 py-1.5">
+          <div className="flex h-full flex-col gap-1">
+            <section className="grid gap-1">
               <ProductHeroHeader
                 productName={productName}
                 marketingHook={marketingHook}
                 isSimpleProduct={isSimpleProduct}
                 density="compact"
               />
+
+              <div className="flex flex-wrap items-center gap-1.5 text-[0.65rem] leading-4 text-foreground-muted">
+                <span className="inline-flex items-center gap-1">
+                  <MapPin aria-hidden="true" className="size-3 text-brand/85" />
+                  <span>Fait main à Saint-Étienne</span>
+                </span>
+                <span className="rounded-full border border-surface-border-subtle px-1.5 py-0.5">
+                  Pièce unique
+                </span>
+              </div>
             </section>
 
-            <section className="grid gap-2 border-t border-surface-border pt-1.5">
+            <section className="grid gap-1 border-t border-surface-border pt-1">
               {resolvedHeroVariant ? (
                 <ProductHeroPricingMeta
                   resolvedHeroVariant={resolvedHeroVariant}
@@ -125,23 +136,25 @@ export function ProductHeroSectionLandscape({
               ) : null}
 
               <ProductHeroAvailabilityMeta
+                resolvedAvailabilityStatus={resolvedAvailabilityStatus}
                 resolvedIsAvailable={resolvedIsAvailable}
                 density="compact"
               />
             </section>
 
             {variableVariants && variableVariants.length > 1 ? (
-              <section className="grid gap-2 border-t border-surface-border pt-1.5">
+              <section className="grid gap-1 border-t border-surface-border pt-1">
                 <ProductHeroVariantSelector
                   variableVariants={variableVariants}
                   selectedVariableVariant={selectedVariableVariant}
                   onSelectVariantId={onSelectVariantId}
+                  density="compact"
                 />
               </section>
             ) : null}
 
             {shouldShowActionBlock ? (
-              <section className="grid gap-2 border-t border-surface-border pt-1.5">
+              <section className="grid gap-1 border-t border-surface-border pb-2 pt-1">
                 {cta ? (
                   <div className="grid gap-1.5">{cta}</div>
                 ) : variableVariants ? (
@@ -149,25 +162,27 @@ export function ProductHeroSectionLandscape({
                     productSlug={productSlug}
                     selectedVariant={selectedVariableVariant}
                     disabled={disableCart}
+                    layout="stacked"
+                    showBuyNowHelper={false}
                   />
                 ) : null}
-              </section>
-            ) : null}
 
-            {shortDescription ? (
-              <section className="grid gap-1 border-t border-surface-border pt-1.5 [@media(max-height:520px)]:hidden">
-                <p className="text-micro-copy font-medium uppercase tracking-[0.08em] text-text-muted-soft">
-                  En bref
-                </p>
-                <div
-                  className="prose prose-sm dark:prose-invert max-w-none text-foreground-muted [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
-                  dangerouslySetInnerHTML={{ __html: shortDescription }}
-                />
+                {shouldShowCompactTrust ? (
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.68rem] text-foreground-muted">
+                    <span className="inline-flex items-center gap-1 rounded-full border border-control-border px-2 py-0.5">
+                      <CreditCard aria-hidden="true" className="size-3" />
+                      <span>CB</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1 rounded-full border border-control-border px-2 py-0.5">
+                      <span className="font-semibold tracking-tight">PayPal</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1 rounded-full border border-control-border px-2 py-0.5">
+                      <ShieldCheck aria-hidden="true" className="size-3" />
+                      <span>Paiement sécurisé</span>
+                    </span>
+                  </div>
+                ) : null}
               </section>
-            ) : null}
-
-            {asideExtra ? (
-              <div className="border-t border-surface-border pt-2">{asideExtra}</div>
             ) : null}
           </div>
         </aside>

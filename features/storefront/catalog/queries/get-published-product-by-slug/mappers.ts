@@ -5,8 +5,15 @@ import {
   mapCatalogImage,
   type CatalogImage,
 } from "@/features/storefront/catalog/helpers/catalog-images";
-import { formatCatalogMoney } from "@/features/storefront/catalog/helpers/catalog-pricing";
-import { getCatalogVariantAvailability } from "@/features/storefront/catalog/helpers/catalog-availability";
+import {
+  formatCatalogMoney,
+  formatCatalogMoneyFromCents,
+} from "@/features/storefront/catalog/helpers/catalog-pricing";
+import {
+  getCatalogProductAvailabilityStatus,
+  getCatalogVariantAvailability,
+  getCatalogVariantAvailabilityStatus,
+} from "@/features/storefront/catalog/helpers/catalog-availability";
 import {
   CATALOG_RELATED_TYPE_CONFIG,
   CATALOG_RELATED_TYPE_ORDER,
@@ -77,6 +84,7 @@ function mapVariants(
       colorName: colorPresentation.colorName,
       colorHex: colorPresentation.colorHex,
       isDefault: variant.isDefault,
+      availabilityStatus: getCatalogVariantAvailabilityStatus(variant),
       isAvailable: getCatalogVariantAvailability(variant),
       price: formatCatalogMoney(activePrice?.amount ?? null),
       compareAtPrice: formatCatalogMoney(compareAtAmount) || null,
@@ -132,6 +140,21 @@ function mapRelatedGroups(
   relatedFrom: PublishedProductCoreRecord["relatedFrom"]
 ): CatalogRelatedProductGroup[] {
   const groupsMap = new Map<string, CatalogRelatedProduct[]>();
+  type RelatedAvailabilityLabel = "En stock" | "Sur commande" | "Indisponible";
+
+  const getAvailabilityLabel = (
+    availabilityStatus: "in-stock" | "made-to-order" | "unavailable"
+  ): RelatedAvailabilityLabel => {
+    if (availabilityStatus === "in-stock") {
+      return "En stock";
+    }
+
+    if (availabilityStatus === "made-to-order") {
+      return "Sur commande";
+    }
+
+    return "Indisponible";
+  };
 
   for (const rel of relatedFrom) {
     const config = CATALOG_RELATED_TYPE_CONFIG[rel.type];
@@ -139,10 +162,25 @@ function mapRelatedGroups(
     if (!groupsMap.has(rel.type)) {
       groupsMap.set(rel.type, []);
     }
+
+    const availabilityStatus = getCatalogProductAvailabilityStatus(rel.targetProduct.variants);
+    const isAvailable = rel.targetProduct.variants.some(getCatalogVariantAvailability);
+
     groupsMap.get(rel.type)!.push({
       id: rel.targetProduct.id,
       slug: rel.targetProduct.slug,
       name: rel.targetProduct.name,
+      catalogPriceCents: rel.targetProduct.catalogPriceCents,
+      catalogPriceCurrencyCode: rel.targetProduct.catalogPriceCurrencyCode,
+      catalogPriceSource: rel.targetProduct.catalogPriceSource,
+      price:
+        formatCatalogMoneyFromCents(
+          rel.targetProduct.catalogPriceCents,
+          rel.targetProduct.catalogPriceCurrencyCode
+        ) || null,
+      availabilityStatus,
+      availabilityLabel: getAvailabilityLabel(availabilityStatus),
+      isAvailable,
       shortDescription: rel.targetProduct.shortDescription,
       imageFilePath: rel.targetProduct.primaryImage?.storageKey ?? null,
       imageAltText: rel.targetProduct.primaryImage?.altText ?? null,
@@ -166,9 +204,29 @@ export function mapPublishedProductDetail(input: {
 }): CatalogProductDetail {
   const { product, seoMetadata, galleryReferences, uploadsPublicPath } = input;
 
+  const catalogPriceLabel = formatCatalogMoneyFromCents(
+    product.catalogPriceCents,
+    product.catalogPriceCurrencyCode
+  );
   const productLevelPrice = product.prices[0] ?? null;
-  const variants = mapVariants(product.variants, productLevelPrice, product.name, uploadsPublicPath);
+  const variantsFromRelations = mapVariants(
+    product.variants,
+    productLevelPrice,
+    product.name,
+    uploadsPublicPath
+  );
+  const variants =
+    product.isStandalone && catalogPriceLabel.length > 0 && variantsFromRelations.length > 0
+      ? variantsFromRelations.map((variant, index) =>
+          index === 0 ? { ...variant, price: catalogPriceLabel } : variant
+        )
+      : variantsFromRelations;
   const images = mapImages(product.primaryImage, galleryReferences, uploadsPublicPath);
+  const availabilityStatus = variants.some((variant) => variant.availabilityStatus === "in-stock")
+    ? "in-stock"
+    : variants.some((variant) => variant.availabilityStatus === "made-to-order")
+      ? "made-to-order"
+      : "unavailable";
   const isAvailable = variants.some((v) => v.isAvailable);
   const relatedProductGroups = mapRelatedGroups(product.relatedFrom);
 
@@ -179,6 +237,10 @@ export function mapPublishedProductDetail(input: {
     id: product.id,
     slug: product.slug,
     name: product.name,
+    catalogPriceCents: product.catalogPriceCents,
+    catalogPriceCurrencyCode: product.catalogPriceCurrencyCode,
+    catalogPriceSource: product.catalogPriceSource,
+    catalogPrice: catalogPriceLabel.length > 0 ? catalogPriceLabel : null,
     marketingHook: product.marketingHook,
     shortDescription: product.shortDescription,
     description: product.description,
@@ -199,6 +261,7 @@ export function mapPublishedProductDetail(input: {
       ? buildCatalogImageUrl(twitterImageStorageKey, uploadsPublicPath)
       : null,
     productType: product.isStandalone ? "simple" : "variable",
+    availabilityStatus,
     isAvailable,
     images,
     variants,

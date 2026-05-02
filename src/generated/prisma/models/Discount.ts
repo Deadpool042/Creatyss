@@ -843,10 +843,6 @@ export type EnumDiscountScopeTypeFieldUpdateOperationsInput = {
   set?: $Enums.DiscountScopeType
 }
 
-export type NullableEnumCurrencyCodeFieldUpdateOperationsInput = {
-  set?: $Enums.CurrencyCode | null
-}
-
 export type DiscountCreateNestedOneWithoutCodesInput = {
   create?: Prisma.XOR<Prisma.DiscountCreateWithoutCodesInput, Prisma.DiscountUncheckedCreateWithoutCodesInput>
   connectOrCreate?: Prisma.DiscountCreateOrConnectWithoutCodesInput

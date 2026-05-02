@@ -4,6 +4,7 @@ type ProductHeroVariantSelectorProps = {
   variableVariants: OfferVariant[] | undefined;
   selectedVariableVariant: OfferVariant | null;
   onSelectVariantId: (id: string) => void;
+  density?: "default" | "compact";
 };
 
 function isValidColorHex(value: string | null): value is string {
@@ -31,13 +32,16 @@ export function ProductHeroVariantSelector({
   variableVariants,
   selectedVariableVariant,
   onSelectVariantId,
+  density = "default",
 }: ProductHeroVariantSelectorProps) {
   if (!variableVariants || variableVariants.length <= 1) {
     return null;
   }
 
+  const isCompact = density === "compact";
+
   return (
-    <section className="grid gap-3">
+    <section className={isCompact ? "grid gap-2" : "grid gap-3"}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-meta-label text-brand">Votre sélection</p>
         {selectedVariableVariant ? (
@@ -47,11 +51,13 @@ export function ProductHeroVariantSelector({
         ) : null}
       </div>
 
-      <p className="max-w-2xl text-secondary-copy reading-relaxed text-foreground-muted">
-        Choisissez la déclinaison qui vous convient.
-      </p>
+      {!isCompact ? (
+        <p className="max-w-2xl text-secondary-copy reading-relaxed text-foreground-muted">
+          Choisissez la déclinaison qui vous convient.
+        </p>
+      ) : null}
 
-      <div className="flex flex-wrap gap-2.5">
+      <div className={isCompact ? "flex flex-wrap gap-2" : "flex flex-wrap gap-2.5"}>
         {variableVariants.map((variant) => {
           const isSelected = variant.id === selectedVariableVariant?.id;
           const swatchHex = isValidColorHex(variant.colorHex) ? variant.colorHex : null;
@@ -62,7 +68,9 @@ export function ProductHeroVariantSelector({
               type="button"
               onClick={() => onSelectVariantId(variant.id)}
               className={[
-                "rounded-full border px-4 py-2 text-sm transition-colors",
+                isCompact
+                  ? "rounded-full border px-3 py-1.5 text-xs transition-colors"
+                  : "rounded-full border px-4 py-2 text-sm transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/35",
                 isSelected
                   ? "border-control-border-strong bg-interactive-selected text-foreground"

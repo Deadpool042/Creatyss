@@ -1,4 +1,5 @@
 import { withTransaction } from "@/core/db";
+import { recomputeProductCatalogPriceSnapshot } from "@/features/catalog/shared";
 import { Prisma } from "@/prisma-generated/client";
 import {
   assertMediaAssetExists,
@@ -143,6 +144,7 @@ export async function updateProductVariant(
     }
 
     await ensureDefaultVariantExists(tx, { productId: input.productId });
+    await recomputeProductCatalogPriceSnapshot(tx, input.productId);
 
     return updated;
   });

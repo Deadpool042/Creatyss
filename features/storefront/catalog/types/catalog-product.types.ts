@@ -1,4 +1,6 @@
 import type { CatalogImage } from "@/features/storefront/catalog/helpers/catalog-images";
+import type { CatalogStorefrontAvailabilityStatus } from "@/features/storefront/catalog/helpers/catalog-availability";
+import type { CurrencyCode, PriceTargetType } from "@/prisma-generated/client";
 
 export type CatalogVariantOptionValue = {
   optionId: string;
@@ -14,6 +16,7 @@ export type CatalogVariant = {
   colorName: string | null;
   colorHex: string | null;
   isDefault: boolean;
+  availabilityStatus: CatalogStorefrontAvailabilityStatus;
   isAvailable: boolean;
   price: string;
   compareAtPrice: string | null;
@@ -37,6 +40,13 @@ export type CatalogRelatedProduct = {
   id: string;
   slug: string;
   name: string;
+  catalogPriceCents?: number | null;
+  catalogPriceCurrencyCode?: CurrencyCode | null;
+  catalogPriceSource?: PriceTargetType | null;
+  price?: string | null;
+  availabilityStatus?: CatalogStorefrontAvailabilityStatus;
+  availabilityLabel?: "En stock" | "Sur commande" | "Indisponible";
+  isAvailable?: boolean;
   shortDescription: string | null;
   imageFilePath: string | null;
   imageAltText: string | null;
@@ -52,6 +62,10 @@ export type CatalogProductDetail = {
   id: string;
   slug: string;
   name: string;
+  catalogPriceCents: number | null;
+  catalogPriceCurrencyCode: CurrencyCode | null;
+  catalogPriceSource: PriceTargetType | null;
+  catalogPrice: string | null;
   marketingHook: string | null;
   shortDescription: string | null;
   description: string | null;
@@ -68,6 +82,7 @@ export type CatalogProductDetail = {
   seoTwitterDescription: string | null;
   seoTwitterImageUrl: string | null;
   productType: "simple" | "variable";
+  availabilityStatus: CatalogStorefrontAvailabilityStatus;
   isAvailable: boolean;
   images: CatalogImage[];
   variants: CatalogVariant[];
@@ -83,8 +98,18 @@ export type CatalogProductListItem = {
   description: string | null;
   isFeatured: boolean;
   isAvailable: boolean;
+  availabilityStatus: CatalogStorefrontAvailabilityStatus;
+  price: string | null;
+  variantCount: number;
+  colorCount: number;
   primaryImage: {
     filePath: string;
     altText: string | null;
   } | null;
+};
+
+export type CatalogProductListPage = {
+  items: CatalogProductListItem[];
+  nextCursor: string | null;
+  hasMore: boolean;
 };

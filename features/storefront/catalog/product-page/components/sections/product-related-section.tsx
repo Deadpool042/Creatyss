@@ -78,6 +78,23 @@ function RelatedProductCard({
             {shortDescription}
           </p>
         ) : null}
+        {product.price != null ? (
+          <p className="text-sm font-semibold text-foreground">{product.price}</p>
+        ) : null}
+        {product.availabilityLabel != null ? (
+          <p
+            className={[
+              "text-micro-copy",
+              product.availabilityLabel === "En stock"
+                ? "text-feedback-success-foreground"
+                : product.availabilityLabel === "Sur commande"
+                  ? "text-text-muted-strong"
+                  : "text-text-muted-soft",
+            ].join(" ")}
+          >
+            {product.availabilityLabel}
+          </p>
+        ) : null}
       </div>
     </Link>
   );

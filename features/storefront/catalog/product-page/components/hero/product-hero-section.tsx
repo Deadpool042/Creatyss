@@ -126,6 +126,12 @@ export function ProductHeroSection({
   const resolvedHeroVariant =
     !isSimpleProduct && selectedVariableVariant ? selectedVariableVariant : (heroVariant ?? null);
 
+  const resolvedAvailabilityStatus =
+    !isSimpleProduct && selectedVariableVariant
+      ? selectedVariableVariant.availabilityStatus
+      : resolvedHeroVariant?.availabilityStatus ??
+        (isAvailable ? "in-stock" : "unavailable");
+
   const resolvedIsAvailable =
     !isSimpleProduct && selectedVariableVariant ? selectedVariableVariant.isAvailable : isAvailable;
 
@@ -179,6 +185,7 @@ export function ProductHeroSection({
     isSimpleProduct,
     shortDescription: shortDescription ?? null,
     resolvedHeroVariant,
+    resolvedAvailabilityStatus,
     resolvedIsAvailable,
     variablePriceLabel: variablePriceLabel ?? null,
     variableSummaryText,

@@ -1,5 +1,3 @@
-import { getProductAvailabilityLabel } from "@/entities/product/product-public-presentation";
-
 import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
 type ProductHeroMetaDensity = "compact" | "cozy" | "default";
@@ -14,9 +12,24 @@ type ProductHeroPricingMetaProps = {
 };
 
 type ProductHeroAvailabilityMetaProps = {
+  resolvedAvailabilityStatus: "in-stock" | "made-to-order" | "unavailable";
   resolvedIsAvailable: boolean;
   density?: ProductHeroMetaDensity;
 };
+
+function getStorefrontAvailabilityLabel(
+  availabilityStatus: "in-stock" | "made-to-order" | "unavailable"
+): string {
+  if (availabilityStatus === "in-stock") {
+    return "En stock";
+  }
+
+  if (availabilityStatus === "made-to-order") {
+    return "Sur commande";
+  }
+
+  return "Indisponible";
+}
 
 function getPricingGapClass(density: ProductHeroMetaDensity): string {
   if (density === "compact") {
@@ -87,9 +100,17 @@ export function ProductHeroPricingMeta({
 }
 
 export function ProductHeroAvailabilityMeta({
+  resolvedAvailabilityStatus,
   resolvedIsAvailable,
   density = "default",
 }: ProductHeroAvailabilityMetaProps) {
+  const isMadeToOrder = resolvedAvailabilityStatus === "made-to-order";
+  const availabilityTextClass = !resolvedIsAvailable
+    ? "text-feedback-error-foreground"
+    : isMadeToOrder
+      ? "text-brand"
+      : "text-feedback-success-foreground";
+
   return (
     <section className={["grid", getAvailabilityGapClass(density)].join(" ")}>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -97,21 +118,28 @@ export function ProductHeroAvailabilityMeta({
         <span
           className={[
             "flex items-center gap-1.5 text-sm font-medium",
-            resolvedIsAvailable
-              ? "text-feedback-success-foreground"
-              : "text-feedback-error-foreground",
+            availabilityTextClass,
           ].join(" ")}
         >
           <span
             aria-hidden="true"
             className={[
               "h-1.5 w-1.5 rounded-full",
-              resolvedIsAvailable ? "bg-feedback-success" : "bg-feedback-error",
+              resolvedIsAvailable
+                ? isMadeToOrder
+                  ? "bg-brand"
+                  : "bg-feedback-success"
+                : "bg-feedback-error",
             ].join(" ")}
           />
-          {getProductAvailabilityLabel(resolvedIsAvailable)}
+          {getStorefrontAvailabilityLabel(resolvedAvailabilityStatus)}
         </span>
       </div>
+      {isMadeToOrder ? (
+        <p className="text-micro-copy reading-compact text-foreground-muted">
+          Création ou préparation sur demande
+        </p>
+      ) : null}
     </section>
   );
 }

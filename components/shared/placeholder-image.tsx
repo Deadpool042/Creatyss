@@ -1,3 +1,4 @@
+//components/shared/placeholder-image.tsx
 import Image from "next/image";
 
 import { getMediaImagePlaceholderUrl } from "@/core/media";

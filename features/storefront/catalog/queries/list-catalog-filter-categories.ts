@@ -10,6 +10,7 @@ export async function listCatalogFilterCategories(): Promise<CatalogCategoryFilt
     orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
     select: {
       id: true,
+      parentId: true,
       slug: true,
       name: true,
     },
@@ -17,6 +18,7 @@ export async function listCatalogFilterCategories(): Promise<CatalogCategoryFilt
 
   return categories.map((category) => ({
     id: category.id,
+    parentId: category.parentId,
     slug: category.slug,
     name: category.name,
   }));

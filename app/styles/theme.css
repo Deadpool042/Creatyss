@@ -11,6 +11,20 @@
 
 @theme inline {
   /* ==========================================================================
+     Responsive breakpoints (Tailwind v4 aliases)
+     ==========================================================================
+
+     Alias métier additionnels pour les layouts storefront.
+     Les breakpoints standards Tailwind (sm/md/lg/xl/2xl) restent disponibles.
+  */
+  --breakpoint-laptop: 64rem; /* 1024px */
+  --breakpoint-desktop: 75rem; /* 1200px */
+  --breakpoint-wide: 90.0625rem; /* 1441px */
+  --breakpoint-ultrawide: 100rem; /* 1600px */
+  --breakpoint-2k: 120rem; /* 1920px */
+  --breakpoint-4k: 160rem; /* 2560px */
+
+  /* ==========================================================================
      Typography
      ========================================================================== */
 

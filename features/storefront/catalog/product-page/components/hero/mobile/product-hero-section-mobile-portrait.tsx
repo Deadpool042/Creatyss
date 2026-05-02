@@ -2,6 +2,7 @@
 "use client";
 
 import Image from "next/image";
+import { CreditCard, MapPin, ShieldCheck, Sparkles } from "lucide-react";
 
 import { ProductHeroGalleryDots } from "../product-hero-gallery-dots";
 import { ProductHeroHeader } from "../product-hero-header";
@@ -29,6 +30,7 @@ export function ProductHeroSectionMobilePortrait({
   isSimpleProduct,
   shortDescription,
   resolvedHeroVariant,
+  resolvedAvailabilityStatus,
   resolvedIsAvailable,
   variablePriceLabel,
   variableSummaryText,
@@ -61,7 +63,7 @@ export function ProductHeroSectionMobilePortrait({
               type="button"
               onClick={onOpenLightbox}
               aria-label="Ouvrir l'image en plein écran"
-              className="relative aspect-4/5 h-[60vh] w-full overflow-hidden border border-hero-border text-left shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/35"
+              className="relative aspect-4/5 h-[56vh] w-full overflow-hidden border border-hero-border text-left shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/35"
             >
               <Image
                 key={selectedImage.src}
@@ -102,8 +104,8 @@ export function ProductHeroSectionMobilePortrait({
       </div>
 
       {/* --- Aside empilé (mobile portrait) --- */}
-      <aside className="flex flex-col px-6 pb-1 pt-6 sm:px-7 sm:pt-7">
-        <div className="flex flex-col gap-6">
+      <aside className="flex flex-col px-5 pb-1 pt-5 sm:px-6 sm:pt-6">
+        <div className="flex flex-col gap-5">
           <section className="grid gap-4">
             <ProductHeroHeader
               productName={productName}
@@ -111,9 +113,18 @@ export function ProductHeroSectionMobilePortrait({
               isSimpleProduct={isSimpleProduct}
               density="default"
             />
+            <div className="flex flex-wrap items-center gap-2 text-micro-copy text-foreground-muted">
+              <span className="inline-flex items-center gap-1.5">
+                <MapPin aria-hidden="true" className="size-3.5 text-brand/85" />
+                <span>Fait main à Saint-Étienne</span>
+              </span>
+              <span className="rounded-full border border-surface-border-subtle px-2 py-0.5 text-[0.68rem] leading-5 text-foreground-muted">
+                Pièces uniques ou petites séries
+              </span>
+            </div>
           </section>
 
-          <section className="grid gap-5 border-t border-surface-border pt-5">
+          <section className="grid gap-4 border-t border-surface-border pt-4.5">
             {resolvedHeroVariant ? (
               <ProductHeroPricingMeta
                 resolvedHeroVariant={resolvedHeroVariant}
@@ -125,6 +136,7 @@ export function ProductHeroSectionMobilePortrait({
             ) : null}
 
             <ProductHeroAvailabilityMeta
+              resolvedAvailabilityStatus={resolvedAvailabilityStatus}
               resolvedIsAvailable={resolvedIsAvailable}
               density="default"
             />
@@ -147,8 +159,40 @@ export function ProductHeroSectionMobilePortrait({
                   productSlug={productSlug}
                   selectedVariant={selectedVariableVariant}
                   disabled={disableCart}
+                  layout="stacked"
                 />
               ) : null}
+
+              <div className="grid gap-3 border-t border-surface-border-subtle/80 pt-3">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.72rem] text-foreground-muted">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-control-border px-2 py-1">
+                    <CreditCard aria-hidden="true" className="size-3.5" />
+                    <span>CB</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-control-border px-2 py-1">
+                    <span className="font-semibold tracking-tight">PayPal</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-control-border px-2 py-1">
+                    <ShieldCheck aria-hidden="true" className="size-3.5" />
+                    <span>Paiement sécurisé</span>
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.72rem] text-foreground-muted">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Sparkles aria-hidden="true" className="size-3.5 text-brand/85" />
+                    <span>Fait main</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <ShieldCheck aria-hidden="true" className="size-3.5 text-brand/85" />
+                    <span>Pièce unique / petite série</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <MapPin aria-hidden="true" className="size-3.5 text-brand/85" />
+                    <span>Atelier local</span>
+                  </span>
+                </div>
+              </div>
             </section>
           ) : null}
 

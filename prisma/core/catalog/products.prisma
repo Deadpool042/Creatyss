@@ -86,6 +86,9 @@ model Product {
   shortDescription String?
   description      String?
   careInstructions String?
+  catalogPriceCents        Int?
+  catalogPriceCurrencyCode CurrencyCode?
+  catalogPriceSource       PriceTargetType?
 
   prices        ProductPrice[]
   cartLines     CartLine[]
@@ -128,6 +131,8 @@ model Product {
   @@index([primaryImageId])
   @@index([status])
   @@index([isFeatured])
+  @@index([catalogPriceCents])
+  @@index([status, archivedAt, catalogPriceCents])
   @@map("products")
 }
 

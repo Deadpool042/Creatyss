@@ -1,92 +1,48 @@
 import { db } from "@/core/db";
-import { getCatalogVariantAvailability } from "@/features/storefront/catalog/helpers/catalog-availability";
+import type { CatalogAvailabilityFilterValue } from "@/entities/catalog/catalog-filter-input";
+import {
+  getPublishedProductsOrderBy,
+  mapPublishedProductListingRecord,
+  publishedProductListingSelect,
+} from "@/features/storefront/catalog/queries/published-products-listing";
+import {
+  buildPublishedProductWhereInput,
+  matchesStorefrontAvailabilityFilter,
+} from "@/features/storefront/catalog/queries/published-products-filters";
 import type { CatalogProductListItem } from "@/features/storefront/catalog/types";
 
 export async function listPublishedProducts(input: {
   searchQuery: string | null;
   categorySlug: string | null;
-  onlyAvailable: boolean;
+  availabilityStatus: CatalogAvailabilityFilterValue | null;
+  minPriceCents: number | null;
+  maxPriceCents: number | null;
+  sort: "featured" | "newest" | "name" | "price-asc" | "price-desc";
 }): Promise<CatalogProductListItem[]> {
   const products = await db.product.findMany({
-    where: {
-      status: "ACTIVE",
-      archivedAt: null,
-      ...(input.searchQuery
-        ? {
-            OR: [
-              { name: { contains: input.searchQuery, mode: "insensitive" } },
-              { slug: { contains: input.searchQuery, mode: "insensitive" } },
-              { shortDescription: { contains: input.searchQuery, mode: "insensitive" } },
-              { description: { contains: input.searchQuery, mode: "insensitive" } },
-            ],
-          }
-        : {}),
-      ...(input.categorySlug
-        ? {
-            productCategories: {
-              some: {
-                category: {
-                  slug: input.categorySlug,
-                },
-              },
-            },
-          }
-        : {}),
-    },
-    orderBy: [{ isFeatured: "desc" }, { publishedAt: "desc" }, { updatedAt: "desc" }],
-    select: {
-      id: true,
-      slug: true,
-      name: true,
-      shortDescription: true,
-      description: true,
-      isFeatured: true,
-      primaryImage: {
-        select: {
-          storageKey: true,
-          altText: true,
-        },
-      },
-      variants: {
-        where: {
-          status: "ACTIVE",
-          archivedAt: null,
-        },
-        select: {
-          inventoryItems: {
-            where: {
-              status: "ACTIVE",
-              archivedAt: null,
-            },
-            select: {
-              onHandQuantity: true,
-              reservedQuantity: true,
-            },
-          },
-        },
-      },
-    },
+    where: buildPublishedProductWhereInput({
+      searchQuery: input.searchQuery,
+      categorySlug: input.categorySlug,
+      minPriceCents: input.minPriceCents,
+      maxPriceCents: input.maxPriceCents,
+    }),
+    orderBy: getPublishedProductsOrderBy(input.sort),
+    select: publishedProductListingSelect,
   });
 
-  const mapped = products.map((product) => {
-    const isAvailable = product.variants.some(getCatalogVariantAvailability);
+  const mapped: CatalogProductListItem[] = [];
 
-    return {
-      id: product.id,
-      slug: product.slug,
-      name: product.name,
-      shortDescription: product.shortDescription,
-      description: product.description,
-      isFeatured: product.isFeatured,
-      isAvailable,
-      primaryImage: product.primaryImage
-        ? {
-            filePath: product.primaryImage.storageKey,
-            altText: product.primaryImage.altText,
-          }
-        : null,
-    };
-  });
+  for (const product of products) {
+    const item = mapPublishedProductListingRecord(product);
+    const matchesAvailability = matchesStorefrontAvailabilityFilter(
+      item.availabilityStatus,
+      input.availabilityStatus
+    );
 
-  return input.onlyAvailable ? mapped.filter((product) => product.isAvailable) : mapped;
+    if (matchesAvailability) {
+      mapped.push(item);
+    }
+  }
+
+  return mapped;
 }

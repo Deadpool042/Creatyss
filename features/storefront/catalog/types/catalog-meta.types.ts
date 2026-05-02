@@ -1,5 +1,6 @@
 export type CatalogCategoryFilterItem = {
   id: string;
+  parentId: string | null;
   slug: string;
   name: string;
 };

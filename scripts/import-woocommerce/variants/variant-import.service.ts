@@ -1,4 +1,5 @@
 import type { ImportWooCommerceEnv } from "../env";
+import { recomputeProductCatalogPriceSnapshots } from "@/features/catalog/shared";
 import { importVariantPrimaryImage } from "../media/media-import.service";
 import { replaceVariantPrice } from "../pricing/price.repository";
 import type { PreparedWooProduct } from "../schemas";
@@ -57,6 +58,7 @@ export async function importVariants(
   let skippedImages = 0;
   let failedImages = 0;
   let importedVariantCount = 0;
+  const impactedProductIds = new Set<string>();
 
   for (const preparedProduct of input.preparedProducts) {
     const productExternalId = `woo_product:${preparedProduct.product.id}`;
@@ -85,6 +87,7 @@ export async function importVariants(
       product: preparedProduct.product,
       variations: preparedProduct.variations,
     });
+    impactedProductIds.add(productId);
 
     const preservedSkus: string[] = [];
 
@@ -162,6 +165,18 @@ export async function importVariants(
 
   if (totalVariantsToImport > 0) {
     endProgress(`Imported ${importedVariants.length} variants`);
+  }
+
+  const impactedProductIdsList = [...impactedProductIds];
+
+  if (impactedProductIdsList.length > 0) {
+    const recomputeResult = await recomputeProductCatalogPriceSnapshots(
+      prisma,
+      impactedProductIdsList
+    );
+    process.stdout.write(
+      `Recomputed catalog price snapshots for imported variant products: ${impactedProductIdsList.length} (updated: ${recomputeResult.updatedCount}, unchanged: ${recomputeResult.unchangedCount})\n`
+    );
   }
 
   return {

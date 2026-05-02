@@ -1,4 +1,5 @@
 import { withTransaction } from "@/core/db";
+import { recomputeProductCatalogPriceSnapshot } from "@/features/catalog/shared";
 import {
   ensureDefaultVariantExists,
   assertVariantExists,
@@ -30,6 +31,7 @@ export async function deleteProductVariant(
     });
 
     await ensureDefaultVariantExists(tx, { productId: input.productId });
+    await recomputeProductCatalogPriceSnapshot(tx, input.productId);
 
     return archived;
   });

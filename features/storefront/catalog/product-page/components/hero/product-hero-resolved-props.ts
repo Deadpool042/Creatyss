@@ -19,6 +19,7 @@ export type ProductHeroResolvedProps = {
 
   // --- Variant résolu ---
   resolvedHeroVariant: OfferVariant | null;
+  resolvedAvailabilityStatus: "in-stock" | "made-to-order" | "unavailable";
   resolvedIsAvailable: boolean;
 
   // --- Label prix variable ---

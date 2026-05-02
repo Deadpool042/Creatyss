@@ -10,6 +10,7 @@ type ProductPageViewModelVariant = {
   name: string;
   price: string;
   compareAtPrice: string | null;
+  availabilityStatus?: "in-stock" | "made-to-order" | "unavailable";
   isAvailable: boolean;
   isDefault: boolean;
   sku: string;

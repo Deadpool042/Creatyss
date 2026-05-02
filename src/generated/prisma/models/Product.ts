@@ -20,8 +20,18 @@ export type ProductModel = runtime.Types.Result.DefaultSelection<Prisma.$Product
 
 export type AggregateProduct = {
   _count: ProductCountAggregateOutputType | null
+  _avg: ProductAvgAggregateOutputType | null
+  _sum: ProductSumAggregateOutputType | null
   _min: ProductMinAggregateOutputType | null
   _max: ProductMaxAggregateOutputType | null
+}
+
+export type ProductAvgAggregateOutputType = {
+  catalogPriceCents: number | null
+}
+
+export type ProductSumAggregateOutputType = {
+  catalogPriceCents: number | null
 }
 
 export type ProductMinAggregateOutputType = {
@@ -36,6 +46,9 @@ export type ProductMinAggregateOutputType = {
   shortDescription: string | null
   description: string | null
   careInstructions: string | null
+  catalogPriceCents: number | null
+  catalogPriceCurrencyCode: $Enums.CurrencyCode | null
+  catalogPriceSource: $Enums.PriceTargetType | null
   status: $Enums.ProductStatus | null
   isFeatured: boolean | null
   isStandalone: boolean | null
@@ -57,6 +70,9 @@ export type ProductMaxAggregateOutputType = {
   shortDescription: string | null
   description: string | null
   careInstructions: string | null
+  catalogPriceCents: number | null
+  catalogPriceCurrencyCode: $Enums.CurrencyCode | null
+  catalogPriceSource: $Enums.PriceTargetType | null
   status: $Enums.ProductStatus | null
   isFeatured: boolean | null
   isStandalone: boolean | null
@@ -78,6 +94,9 @@ export type ProductCountAggregateOutputType = {
   shortDescription: number
   description: number
   careInstructions: number
+  catalogPriceCents: number
+  catalogPriceCurrencyCode: number
+  catalogPriceSource: number
   status: number
   isFeatured: number
   isStandalone: number
@@ -88,6 +107,14 @@ export type ProductCountAggregateOutputType = {
   _all: number
 }
 
+
+export type ProductAvgAggregateInputType = {
+  catalogPriceCents?: true
+}
+
+export type ProductSumAggregateInputType = {
+  catalogPriceCents?: true
+}
 
 export type ProductMinAggregateInputType = {
   id?: true
@@ -101,6 +128,9 @@ export type ProductMinAggregateInputType = {
   shortDescription?: true
   description?: true
   careInstructions?: true
+  catalogPriceCents?: true
+  catalogPriceCurrencyCode?: true
+  catalogPriceSource?: true
   status?: true
   isFeatured?: true
   isStandalone?: true
@@ -122,6 +152,9 @@ export type ProductMaxAggregateInputType = {
   shortDescription?: true
   description?: true
   careInstructions?: true
+  catalogPriceCents?: true
+  catalogPriceCurrencyCode?: true
+  catalogPriceSource?: true
   status?: true
   isFeatured?: true
   isStandalone?: true
@@ -143,6 +176,9 @@ export type ProductCountAggregateInputType = {
   shortDescription?: true
   description?: true
   careInstructions?: true
+  catalogPriceCents?: true
+  catalogPriceCurrencyCode?: true
+  catalogPriceSource?: true
   status?: true
   isFeatured?: true
   isStandalone?: true
@@ -191,6 +227,18 @@ export type ProductAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ProductAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ProductSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ProductMinAggregateInputType
@@ -221,6 +269,8 @@ export type ProductGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: ProductCountAggregateInputType | true
+  _avg?: ProductAvgAggregateInputType
+  _sum?: ProductSumAggregateInputType
   _min?: ProductMinAggregateInputType
   _max?: ProductMaxAggregateInputType
 }
@@ -237,6 +287,9 @@ export type ProductGroupByOutputType = {
   shortDescription: string | null
   description: string | null
   careInstructions: string | null
+  catalogPriceCents: number | null
+  catalogPriceCurrencyCode: $Enums.CurrencyCode | null
+  catalogPriceSource: $Enums.PriceTargetType | null
   status: $Enums.ProductStatus
   isFeatured: boolean
   isStandalone: boolean
@@ -245,6 +298,8 @@ export type ProductGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   _count: ProductCountAggregateOutputType | null
+  _avg: ProductAvgAggregateOutputType | null
+  _sum: ProductSumAggregateOutputType | null
   _min: ProductMinAggregateOutputType | null
   _max: ProductMaxAggregateOutputType | null
 }
@@ -279,6 +334,9 @@ export type ProductWhereInput = {
   shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
   careInstructions?: Prisma.StringNullableFilter<"Product"> | string | null
+  catalogPriceCents?: Prisma.IntNullableFilter<"Product"> | number | null
+  catalogPriceCurrencyCode?: Prisma.EnumCurrencyCodeNullableFilter<"Product"> | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.EnumPriceTargetTypeNullableFilter<"Product"> | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFilter<"Product"> | boolean
   isStandalone?: Prisma.BoolFilter<"Product"> | boolean
@@ -321,6 +379,9 @@ export type ProductOrderByWithRelationInput = {
   shortDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   careInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
+  catalogPriceCents?: Prisma.SortOrderInput | Prisma.SortOrder
+  catalogPriceCurrencyCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  catalogPriceSource?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
   isStandalone?: Prisma.SortOrder
@@ -367,6 +428,9 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
   careInstructions?: Prisma.StringNullableFilter<"Product"> | string | null
+  catalogPriceCents?: Prisma.IntNullableFilter<"Product"> | number | null
+  catalogPriceCurrencyCode?: Prisma.EnumCurrencyCodeNullableFilter<"Product"> | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.EnumPriceTargetTypeNullableFilter<"Product"> | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFilter<"Product"> | boolean
   isStandalone?: Prisma.BoolFilter<"Product"> | boolean
@@ -409,6 +473,9 @@ export type ProductOrderByWithAggregationInput = {
   shortDescription?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   careInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
+  catalogPriceCents?: Prisma.SortOrderInput | Prisma.SortOrder
+  catalogPriceCurrencyCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  catalogPriceSource?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
   isStandalone?: Prisma.SortOrder
@@ -417,8 +484,10 @@ export type ProductOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ProductCountOrderByAggregateInput
+  _avg?: Prisma.ProductAvgOrderByAggregateInput
   _max?: Prisma.ProductMaxOrderByAggregateInput
   _min?: Prisma.ProductMinOrderByAggregateInput
+  _sum?: Prisma.ProductSumOrderByAggregateInput
 }
 
 export type ProductScalarWhereWithAggregatesInput = {
@@ -436,6 +505,9 @@ export type ProductScalarWhereWithAggregatesInput = {
   shortDescription?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   careInstructions?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
+  catalogPriceCents?: Prisma.IntNullableWithAggregatesFilter<"Product"> | number | null
+  catalogPriceCurrencyCode?: Prisma.EnumCurrencyCodeNullableWithAggregatesFilter<"Product"> | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.EnumPriceTargetTypeNullableWithAggregatesFilter<"Product"> | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusWithAggregatesFilter<"Product"> | $Enums.ProductStatus
   isFeatured?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
   isStandalone?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
@@ -454,6 +526,9 @@ export type ProductCreateInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -496,6 +571,9 @@ export type ProductUncheckedCreateInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -532,6 +610,9 @@ export type ProductUpdateInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -574,6 +655,9 @@ export type ProductUncheckedUpdateInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -613,6 +697,9 @@ export type ProductCreateManyInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -631,6 +718,9 @@ export type ProductUpdateManyMutationInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -652,6 +742,9 @@ export type ProductUncheckedUpdateManyInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -693,6 +786,9 @@ export type ProductCountOrderByAggregateInput = {
   shortDescription?: Prisma.SortOrder
   description?: Prisma.SortOrder
   careInstructions?: Prisma.SortOrder
+  catalogPriceCents?: Prisma.SortOrder
+  catalogPriceCurrencyCode?: Prisma.SortOrder
+  catalogPriceSource?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
   isStandalone?: Prisma.SortOrder
@@ -700,6 +796,10 @@ export type ProductCountOrderByAggregateInput = {
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ProductAvgOrderByAggregateInput = {
+  catalogPriceCents?: Prisma.SortOrder
 }
 
 export type ProductMaxOrderByAggregateInput = {
@@ -714,6 +814,9 @@ export type ProductMaxOrderByAggregateInput = {
   shortDescription?: Prisma.SortOrder
   description?: Prisma.SortOrder
   careInstructions?: Prisma.SortOrder
+  catalogPriceCents?: Prisma.SortOrder
+  catalogPriceCurrencyCode?: Prisma.SortOrder
+  catalogPriceSource?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
   isStandalone?: Prisma.SortOrder
@@ -735,6 +838,9 @@ export type ProductMinOrderByAggregateInput = {
   shortDescription?: Prisma.SortOrder
   description?: Prisma.SortOrder
   careInstructions?: Prisma.SortOrder
+  catalogPriceCents?: Prisma.SortOrder
+  catalogPriceCurrencyCode?: Prisma.SortOrder
+  catalogPriceSource?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isFeatured?: Prisma.SortOrder
   isStandalone?: Prisma.SortOrder
@@ -742,6 +848,10 @@ export type ProductMinOrderByAggregateInput = {
   archivedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ProductSumOrderByAggregateInput = {
+  catalogPriceCents?: Prisma.SortOrder
 }
 
 export type ProductNullableScalarRelationFilter = {
@@ -873,6 +983,14 @@ export type ProductUpdateOneRequiredWithoutCharacteristicsNestedInput = {
   upsert?: Prisma.ProductUpsertWithoutCharacteristicsInput
   connect?: Prisma.ProductWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProductUpdateToOneWithWhereWithoutCharacteristicsInput, Prisma.ProductUpdateWithoutCharacteristicsInput>, Prisma.ProductUncheckedUpdateWithoutCharacteristicsInput>
+}
+
+export type NullableEnumCurrencyCodeFieldUpdateOperationsInput = {
+  set?: $Enums.CurrencyCode | null
+}
+
+export type NullableEnumPriceTargetTypeFieldUpdateOperationsInput = {
+  set?: $Enums.PriceTargetType | null
 }
 
 export type EnumProductStatusFieldUpdateOperationsInput = {
@@ -1148,6 +1266,9 @@ export type ProductCreateWithoutProductCategoriesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1189,6 +1310,9 @@ export type ProductUncheckedCreateWithoutProductCategoriesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1240,6 +1364,9 @@ export type ProductUpdateWithoutProductCategoriesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1281,6 +1408,9 @@ export type ProductUncheckedUpdateWithoutProductCategoriesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1316,6 +1446,9 @@ export type ProductCreateWithoutPrimaryImageInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1356,6 +1489,9 @@ export type ProductUncheckedCreateWithoutPrimaryImageInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1424,6 +1560,9 @@ export type ProductScalarWhereInput = {
   shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
   careInstructions?: Prisma.StringNullableFilter<"Product"> | string | null
+  catalogPriceCents?: Prisma.IntNullableFilter<"Product"> | number | null
+  catalogPriceCurrencyCode?: Prisma.EnumCurrencyCodeNullableFilter<"Product"> | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.EnumPriceTargetTypeNullableFilter<"Product"> | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFilter<"Product"> | boolean
   isStandalone?: Prisma.BoolFilter<"Product"> | boolean
@@ -1442,6 +1581,9 @@ export type ProductCreateWithoutPricesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1483,6 +1625,9 @@ export type ProductUncheckedCreateWithoutPricesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1534,6 +1679,9 @@ export type ProductUpdateWithoutPricesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1575,6 +1723,9 @@ export type ProductUncheckedUpdateWithoutPricesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1610,6 +1761,9 @@ export type ProductCreateWithoutProductTypeInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1650,6 +1804,9 @@ export type ProductUncheckedCreateWithoutProductTypeInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1712,6 +1869,9 @@ export type ProductCreateWithoutCharacteristicsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1753,6 +1913,9 @@ export type ProductUncheckedCreateWithoutCharacteristicsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1804,6 +1967,9 @@ export type ProductUpdateWithoutCharacteristicsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1845,6 +2011,9 @@ export type ProductUncheckedUpdateWithoutCharacteristicsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1880,6 +2049,9 @@ export type ProductCreateWithoutVariantsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1921,6 +2093,9 @@ export type ProductUncheckedCreateWithoutVariantsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -1972,6 +2147,9 @@ export type ProductUpdateWithoutVariantsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2013,6 +2191,9 @@ export type ProductUncheckedUpdateWithoutVariantsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2048,6 +2229,9 @@ export type ProductCreateWithoutRelatedFromInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2089,6 +2273,9 @@ export type ProductUncheckedCreateWithoutRelatedFromInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2129,6 +2316,9 @@ export type ProductCreateWithoutRelatedToInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2170,6 +2360,9 @@ export type ProductUncheckedCreateWithoutRelatedToInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2221,6 +2414,9 @@ export type ProductUpdateWithoutRelatedFromInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2262,6 +2458,9 @@ export type ProductUncheckedUpdateWithoutRelatedFromInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2308,6 +2507,9 @@ export type ProductUpdateWithoutRelatedToInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2349,6 +2551,9 @@ export type ProductUncheckedUpdateWithoutRelatedToInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2384,6 +2589,9 @@ export type ProductCreateWithoutCartLinesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2425,6 +2633,9 @@ export type ProductUncheckedCreateWithoutCartLinesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2476,6 +2687,9 @@ export type ProductUpdateWithoutCartLinesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2517,6 +2731,9 @@ export type ProductUncheckedUpdateWithoutCartLinesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2552,6 +2769,9 @@ export type ProductCreateWithoutCheckoutLinesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2593,6 +2813,9 @@ export type ProductUncheckedCreateWithoutCheckoutLinesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2644,6 +2867,9 @@ export type ProductUpdateWithoutCheckoutLinesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2685,6 +2911,9 @@ export type ProductUncheckedUpdateWithoutCheckoutLinesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2720,6 +2949,9 @@ export type ProductCreateWithoutOrderLinesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2761,6 +2993,9 @@ export type ProductUncheckedCreateWithoutOrderLinesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2812,6 +3047,9 @@ export type ProductUpdateWithoutOrderLinesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2853,6 +3091,9 @@ export type ProductUncheckedUpdateWithoutOrderLinesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2888,6 +3129,9 @@ export type ProductCreateWithoutHomepageFeaturedInInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2929,6 +3173,9 @@ export type ProductUncheckedCreateWithoutHomepageFeaturedInInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -2980,6 +3227,9 @@ export type ProductUpdateWithoutHomepageFeaturedInInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3021,6 +3271,9 @@ export type ProductUncheckedUpdateWithoutHomepageFeaturedInInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3056,6 +3309,9 @@ export type ProductCreateWithoutStoreInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3096,6 +3352,9 @@ export type ProductUncheckedCreateWithoutStoreInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3158,6 +3417,9 @@ export type ProductCreateWithoutBundleItemsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3199,6 +3461,9 @@ export type ProductUncheckedCreateWithoutBundleItemsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3250,6 +3515,9 @@ export type ProductUpdateWithoutBundleItemsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3291,6 +3559,9 @@ export type ProductUncheckedUpdateWithoutBundleItemsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3326,6 +3597,9 @@ export type ProductCreateWithoutDiscountProductTargetsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3367,6 +3641,9 @@ export type ProductUncheckedCreateWithoutDiscountProductTargetsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3418,6 +3695,9 @@ export type ProductUpdateWithoutDiscountProductTargetsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3459,6 +3739,9 @@ export type ProductUncheckedUpdateWithoutDiscountProductTargetsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3494,6 +3777,9 @@ export type ProductCreateWithoutGiftRequestItemsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3535,6 +3821,9 @@ export type ProductUncheckedCreateWithoutGiftRequestItemsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3586,6 +3875,9 @@ export type ProductUpdateWithoutGiftRequestItemsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3627,6 +3919,9 @@ export type ProductUncheckedUpdateWithoutGiftRequestItemsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3662,6 +3957,9 @@ export type ProductCreateWithoutSalesPolicyProductTargetsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3703,6 +4001,9 @@ export type ProductUncheckedCreateWithoutSalesPolicyProductTargetsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3754,6 +4055,9 @@ export type ProductUpdateWithoutSalesPolicyProductTargetsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3795,6 +4099,9 @@ export type ProductUncheckedUpdateWithoutSalesPolicyProductTargetsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3830,6 +4137,9 @@ export type ProductCreateWithoutSubscriptionItemsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3871,6 +4181,9 @@ export type ProductUncheckedCreateWithoutSubscriptionItemsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -3922,6 +4235,9 @@ export type ProductUpdateWithoutSubscriptionItemsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3963,6 +4279,9 @@ export type ProductUncheckedUpdateWithoutSubscriptionItemsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3998,6 +4317,9 @@ export type ProductCreateWithoutTaxRuleProductTargetsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4039,6 +4361,9 @@ export type ProductUncheckedCreateWithoutTaxRuleProductTargetsInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4090,6 +4415,9 @@ export type ProductUpdateWithoutTaxRuleProductTargetsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4131,6 +4459,9 @@ export type ProductUncheckedUpdateWithoutTaxRuleProductTargetsInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4166,6 +4497,9 @@ export type ProductCreateWithoutConversionFlowLinksInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4207,6 +4541,9 @@ export type ProductUncheckedCreateWithoutConversionFlowLinksInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4258,6 +4595,9 @@ export type ProductUpdateWithoutConversionFlowLinksInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4299,6 +4639,9 @@ export type ProductUncheckedUpdateWithoutConversionFlowLinksInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4334,6 +4677,9 @@ export type ProductCreateWithoutChannelStatusesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4375,6 +4721,9 @@ export type ProductUncheckedCreateWithoutChannelStatusesInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4426,6 +4775,9 @@ export type ProductUpdateWithoutChannelStatusesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4467,6 +4819,9 @@ export type ProductUncheckedUpdateWithoutChannelStatusesInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4504,6 +4859,9 @@ export type ProductCreateManyPrimaryImageInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4522,6 +4880,9 @@ export type ProductUpdateWithoutPrimaryImageInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4562,6 +4923,9 @@ export type ProductUncheckedUpdateWithoutPrimaryImageInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4600,6 +4964,9 @@ export type ProductUncheckedUpdateManyWithoutPrimaryImageInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4620,6 +4987,9 @@ export type ProductCreateManyProductTypeInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4638,6 +5008,9 @@ export type ProductUpdateWithoutProductTypeInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4678,6 +5051,9 @@ export type ProductUncheckedUpdateWithoutProductTypeInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4716,6 +5092,9 @@ export type ProductUncheckedUpdateManyWithoutProductTypeInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4736,6 +5115,9 @@ export type ProductCreateManyStoreInput = {
   shortDescription?: string | null
   description?: string | null
   careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
   status?: $Enums.ProductStatus
   isFeatured?: boolean
   isStandalone?: boolean
@@ -4754,6 +5136,9 @@ export type ProductUpdateWithoutStoreInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4794,6 +5179,9 @@ export type ProductUncheckedUpdateWithoutStoreInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4832,6 +5220,9 @@ export type ProductUncheckedUpdateManyWithoutStoreInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
   status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5037,6 +5428,9 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   shortDescription?: boolean
   description?: boolean
   careInstructions?: boolean
+  catalogPriceCents?: boolean
+  catalogPriceCurrencyCode?: boolean
+  catalogPriceSource?: boolean
   status?: boolean
   isFeatured?: boolean
   isStandalone?: boolean
@@ -5080,6 +5474,9 @@ export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   shortDescription?: boolean
   description?: boolean
   careInstructions?: boolean
+  catalogPriceCents?: boolean
+  catalogPriceCurrencyCode?: boolean
+  catalogPriceSource?: boolean
   status?: boolean
   isFeatured?: boolean
   isStandalone?: boolean
@@ -5104,6 +5501,9 @@ export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   shortDescription?: boolean
   description?: boolean
   careInstructions?: boolean
+  catalogPriceCents?: boolean
+  catalogPriceCurrencyCode?: boolean
+  catalogPriceSource?: boolean
   status?: boolean
   isFeatured?: boolean
   isStandalone?: boolean
@@ -5128,6 +5528,9 @@ export type ProductSelectScalar = {
   shortDescription?: boolean
   description?: boolean
   careInstructions?: boolean
+  catalogPriceCents?: boolean
+  catalogPriceCurrencyCode?: boolean
+  catalogPriceSource?: boolean
   status?: boolean
   isFeatured?: boolean
   isStandalone?: boolean
@@ -5137,7 +5540,7 @@ export type ProductSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "productTypeId" | "primaryImageId" | "skuRoot" | "slug" | "name" | "marketingHook" | "shortDescription" | "description" | "careInstructions" | "status" | "isFeatured" | "isStandalone" | "publishedAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "productTypeId" | "primaryImageId" | "skuRoot" | "slug" | "name" | "marketingHook" | "shortDescription" | "description" | "careInstructions" | "catalogPriceCents" | "catalogPriceCurrencyCode" | "catalogPriceSource" | "status" | "isFeatured" | "isStandalone" | "publishedAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   prices?: boolean | Prisma.Product$pricesArgs<ExtArgs>
   cartLines?: boolean | Prisma.Product$cartLinesArgs<ExtArgs>
@@ -5210,6 +5613,9 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     shortDescription: string | null
     description: string | null
     careInstructions: string | null
+    catalogPriceCents: number | null
+    catalogPriceCurrencyCode: $Enums.CurrencyCode | null
+    catalogPriceSource: $Enums.PriceTargetType | null
     status: $Enums.ProductStatus
     isFeatured: boolean
     isStandalone: boolean
@@ -5672,6 +6078,9 @@ export interface ProductFieldRefs {
   readonly shortDescription: Prisma.FieldRef<"Product", 'String'>
   readonly description: Prisma.FieldRef<"Product", 'String'>
   readonly careInstructions: Prisma.FieldRef<"Product", 'String'>
+  readonly catalogPriceCents: Prisma.FieldRef<"Product", 'Int'>
+  readonly catalogPriceCurrencyCode: Prisma.FieldRef<"Product", 'CurrencyCode'>
+  readonly catalogPriceSource: Prisma.FieldRef<"Product", 'PriceTargetType'>
   readonly status: Prisma.FieldRef<"Product", 'ProductStatus'>
   readonly isFeatured: Prisma.FieldRef<"Product", 'Boolean'>
   readonly isStandalone: Prisma.FieldRef<"Product", 'Boolean'>

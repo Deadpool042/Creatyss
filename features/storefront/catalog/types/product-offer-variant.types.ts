@@ -15,6 +15,7 @@ export type OfferVariant = {
   /** Prix formaté — peut être chaîne vide si non renseigné. */
   price: string;
   compareAtPrice: string | null;
+  availabilityStatus: "in-stock" | "made-to-order" | "unavailable";
   isAvailable: boolean;
   isDefault: boolean;
   sku: string | null;

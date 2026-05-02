@@ -1,4 +1,5 @@
 import { withTransaction } from "@/core/db";
+import { recomputeProductCatalogPriceSnapshot } from "@/features/catalog/shared";
 import { AdminProductEditorServiceError, assertProductExists } from "./shared";
 
 type PriceUpsertEntry = {
@@ -76,5 +77,7 @@ export async function updateProductPrices(input: UpdateProductPricesServiceInput
         data: { archivedAt: new Date() },
       });
     }
+
+    await recomputeProductCatalogPriceSnapshot(tx, input.productId);
   });
 }

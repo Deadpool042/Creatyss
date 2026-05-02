@@ -1,4 +1,5 @@
 import type { ImportWooCommerceEnv } from "../env";
+import { recomputeProductCatalogPriceSnapshots } from "@/features/catalog/shared";
 import { importProductImages } from "../media/media-import.service";
 import { normalizeMoneyToDecimalString, resolveCompareAtAmount } from "../normalizers/money";
 import { replaceProductPrice } from "../pricing/price.repository";
@@ -71,6 +72,7 @@ export async function importProducts(
   const productIdByExternalId = new Map<string, string>();
   const primaryImageIdByProductId = new Map<string, string | null>();
   const preservedSlugs: string[] = [];
+  const impactedProductIds = new Set<string>();
 
   let importedImages = 0;
   let reusedImages = 0;
@@ -86,6 +88,7 @@ export async function importProducts(
     );
 
     const savedProduct = await upsertImportedProduct(prisma, input.storeId, mappedProduct);
+    impactedProductIds.add(savedProduct.id);
     preservedSlugs.push(mappedProduct.slug);
 
     const categoryLinks = buildProductCategoryLinks(
@@ -155,6 +158,18 @@ export async function importProducts(
     productTypeId: null,
     preservedSlugs,
   });
+
+  const impactedProductIdsList = [...impactedProductIds];
+
+  if (impactedProductIdsList.length > 0) {
+    const recomputeResult = await recomputeProductCatalogPriceSnapshots(
+      prisma,
+      impactedProductIdsList
+    );
+    process.stdout.write(
+      `Recomputed catalog price snapshots for imported products: ${impactedProductIdsList.length} (updated: ${recomputeResult.updatedCount}, unchanged: ${recomputeResult.unchangedCount})\n`
+    );
+  }
 
   return {
     importedProducts,
