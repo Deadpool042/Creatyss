@@ -13,17 +13,17 @@ type BoutiqueFiltersContentProps = {
 
 export function BoutiqueFiltersContent({
   model,
-  className = "grid gap-4",
+  className = "grid gap-5",
   wrapLink,
 }: BoutiqueFiltersContentProps) {
   const withWrapper = (link: ReactElement, key: string) => (wrapLink ? wrapLink(link, key) : link);
 
   const filterLinkClassName = (isActive: boolean) =>
     [
-      "group flex items-center justify-between gap-2 rounded-lg border px-2.5 py-2 text-sm no-underline transition-colors hover:no-underline",
+      "group flex items-center justify-between gap-2 border-b px-0.5 py-2 text-sm no-underline transition-colors hover:no-underline",
       isActive
-        ? "border-brand/40 bg-surface-panel/62 text-foreground"
-        : "border-transparent text-text-muted-strong hover:border-control-border hover:bg-surface-panel/38 hover:text-foreground",
+        ? "border-shell-border text-foreground"
+        : "border-shell-border/50 text-text-muted-strong hover:border-shell-border hover:text-foreground",
     ].join(" ");
 
   const selectedCategoryLabel =
@@ -39,7 +39,7 @@ export function BoutiqueFiltersContent({
 
   return (
     <div className={className}>
-      <section className="grid gap-2.5">
+      <section className="grid gap-3">
         <div className="grid gap-0.5">
           <p className="m-0 text-xs font-semibold uppercase tracking-widest text-text-muted-strong">
             Catégories
@@ -49,7 +49,7 @@ export function BoutiqueFiltersContent({
           </p>
         </div>
 
-        <div className="grid gap-1">
+        <div className="grid gap-0.5">
           {withWrapper(
             <CustomLink
               href={buildBoutiqueUrl({
@@ -99,7 +99,7 @@ export function BoutiqueFiltersContent({
         </div>
       </section>
 
-      <section className="grid gap-2.5 border-t border-shell-border/70 pt-5">
+      <section className="grid gap-3 border-t border-shell-border/70 pt-5">
         <div className="grid gap-0.5">
           <p className="m-0 text-xs font-semibold uppercase tracking-widest text-text-muted-strong">
             Disponibilité
@@ -109,7 +109,7 @@ export function BoutiqueFiltersContent({
           </p>
         </div>
 
-        <div className="grid gap-1">
+        <div className="grid gap-0.5">
           {withWrapper(
             <CustomLink
               href={buildBoutiqueUrl({
