@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { clientEnv } from "@/core/config/env";
+import { readFavoriteProductIds } from "@/core/sessions/favorites";
 import { getPublishedProductBySlug } from "@/features/storefront/catalog";
+import { FavoriteButton } from "@/features/storefront/favorites";
 import { ProductPageCartFeedbackToast } from "@/features/storefront/catalog/product-page/components/product-page-cart-feedback-toast";
 import { ProductPageTemplate } from "@/features/storefront/catalog/product-page/components/product-page-template";
 import { buildProductPageViewModel } from "@/features/storefront/catalog/product-page/composition/build-product-page-view-model";
@@ -132,6 +134,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
     singleOffer: viewModel.singleOffer,
   });
 
+  const initialFavoriteProductIds = await readFavoriteProductIds();
+
+  const heroAsideExtra = (
+    <FavoriteButton
+      productId={product.id}
+      initialFavoriteProductIds={initialFavoriteProductIds}
+    />
+  );
+
   const productJsonLd = buildProductJsonLd({
     product,
     appUrl: clientEnv.appUrl,
@@ -162,6 +173,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         relatedProductGroups={product.relatedProductGroups}
         heroCta={rendering.heroCta}
         heroVariantSummary={viewModel.variantSummary}
+        heroAsideExtra={heroAsideExtra}
       />
     </>
   );

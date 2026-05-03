@@ -3,10 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { FavoriteButton } from "@/features/storefront/favorites";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
 
 type BoutiqueProductCardProps = {
   product: BoutiquePageViewModel["products"][number];
+  initialFavoriteProductIds: readonly string[];
 };
 
 function getAvailabilityLabel(
@@ -37,12 +39,12 @@ function getAvailabilityToneClass(
   return "text-text-muted-strong";
 }
 
-export function BoutiqueProductCard({ product }: BoutiqueProductCardProps) {
+export function BoutiqueProductCard({ product, initialFavoriteProductIds }: BoutiqueProductCardProps) {
   const availabilityLabel = getAvailabilityLabel(product.availabilityStatus);
   const availabilityToneClass = getAvailabilityToneClass(product.availabilityStatus);
 
   return (
-    <article className="group grid grid-rows-[auto_1fr] overflow-hidden rounded-xl border border-surface-border-subtle/70 bg-surface-panel/44 transition-all duration-300 hover:border-control-border hover:bg-surface-panel/58 sm:max-[899px]:landscape:rounded-lg desktop:rounded-xl">
+    <article className="relative group grid grid-rows-[auto_1fr] overflow-hidden rounded-xl border border-surface-border-subtle/70 bg-surface-panel/44 transition-all duration-300 hover:border-control-border hover:bg-surface-panel/58 sm:max-[899px]:landscape:rounded-lg desktop:rounded-xl">
       <Link className="block" href={`/boutique/${product.slug}`} tabIndex={-1}>
         {product.image ? (
           <figure className="relative aspect-10/9 overflow-hidden bg-media-surface sm:max-[899px]:landscape:aspect-video min-[900px]:max-[1199px]:landscape:aspect-16/10 desktop:aspect-square">
@@ -68,6 +70,13 @@ export function BoutiqueProductCard({ product }: BoutiqueProductCardProps) {
           </div>
         )}
       </Link>
+
+      <div className="absolute right-2 top-2 z-10">
+        <FavoriteButton
+          productId={product.id}
+          initialFavoriteProductIds={initialFavoriteProductIds}
+        />
+      </div>
 
       <div className="grid gap-1 p-2.5 min-[700px]:gap-1.5 min-[700px]:p-3 sm:max-[899px]:landscape:gap-0.5 sm:max-[899px]:landscape:p-1.5 min-[900px]:max-[1199px]:landscape:gap-1 min-[900px]:max-[1199px]:landscape:p-2.5 desktop:gap-1 desktop:p-2.5">
         <span className="text-[10px] font-semibold uppercase tracking-wide text-text-muted-strong sm:max-[899px]:landscape:text-[8px] min-[900px]:max-[1199px]:landscape:text-[9px] desktop:text-[9px] desktop:tracking-[0.06em]">

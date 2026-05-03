@@ -12,6 +12,7 @@ const serverEnvSchema = z.object({
 
   ADMIN_SESSION_SECRET: nonEmptyStringSchema,
   CART_SESSION_SECRET: nonEmptyStringSchema,
+  FAVORITES_SESSION_SECRET: nonEmptyStringSchema,
 
   STRIPE_SECRET_KEY: nonEmptyStringSchema.refine(
     (value) => value !== "sk_test_change_me",
@@ -50,6 +51,7 @@ export const serverEnv = {
   databaseUrl: parsedServerEnv.data.DATABASE_URL,
   adminSessionSecret: parsedServerEnv.data.ADMIN_SESSION_SECRET,
   cartSessionSecret: parsedServerEnv.data.CART_SESSION_SECRET,
+  favoritesSessionSecret: parsedServerEnv.data.FAVORITES_SESSION_SECRET,
   stripeSecretKey: parsedServerEnv.data.STRIPE_SECRET_KEY,
   stripeWebhookSecret: parsedServerEnv.data.STRIPE_WEBHOOK_SECRET,
   brevoApiKey: parsedServerEnv.data.BREVO_API_KEY,
