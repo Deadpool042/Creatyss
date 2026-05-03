@@ -318,7 +318,6 @@ export function buildBoutiquePageViewModel(
   const searchQuery = input.searchQuery ?? "";
   const resultCountLabel = `${input.totalProductCount} résultat${input.totalProductCount > 1 ? "s" : ""}`;
   const totalProductCount = input.totalProductCount;
-  const availableProductCount = input.products.filter((product) => product.isAvailable).length;
   const resetHref = "/boutique";
 
   const safePageSize = input.pageSize > 0 ? input.pageSize : 12;
@@ -374,7 +373,6 @@ export function buildBoutiquePageViewModel(
     selectedMaxPriceCents: input.selectedMaxPriceCents,
     selectedAvailabilityStatus: input.selectedAvailabilityStatus,
     totalProductCount,
-    availableProductCount,
     resetHref,
     activeFilterLabels,
     apiFilters: {

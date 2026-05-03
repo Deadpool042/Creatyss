@@ -68,7 +68,6 @@ export type BoutiquePageViewModel = {
   selectedMinPriceCents: number | null;
   selectedMaxPriceCents: number | null;
   totalProductCount: number;
-  availableProductCount: number;
   resetHref: string;
   activeFilterLabels: BoutiqueActiveFilterItem[];
   availabilityOptions: Array<{
