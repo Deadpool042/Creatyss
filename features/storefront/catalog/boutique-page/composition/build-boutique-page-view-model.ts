@@ -29,10 +29,54 @@ type BuildBoutiquePageViewModelInput = {
   selectedMinPriceCents: number | null;
   selectedMaxPriceCents: number | null;
   selectedSort: BoutiqueSortValue;
-  nextCursor: string | null;
-  hasMore: boolean;
   pageSize: number;
+  currentPage: number;
 };
+
+type PaginationItem = BoutiquePageViewModel["pagination"]["items"][number];
+
+function buildPaginationItems(input: {
+  currentPage: number;
+  totalPages: number;
+  buildHrefForPage: (pageNumber: number) => string;
+}): PaginationItem[] {
+  const { currentPage, totalPages, buildHrefForPage } = input;
+
+  if (totalPages <= 1) {
+    return [];
+  }
+
+  const pageNumbers = new Set<number>();
+  pageNumbers.add(1);
+  pageNumbers.add(totalPages);
+  for (let offset = -1; offset <= 1; offset += 1) {
+    const candidate = currentPage + offset;
+    if (candidate >= 1 && candidate <= totalPages) {
+      pageNumbers.add(candidate);
+    }
+  }
+
+  const sortedPageNumbers = Array.from(pageNumbers).sort((a, b) => a - b);
+  const items: PaginationItem[] = [];
+  let previousPageNumber: number | null = null;
+
+  for (const pageNumber of sortedPageNumbers) {
+    if (previousPageNumber !== null && pageNumber - previousPageNumber > 1) {
+      items.push({ kind: "ellipsis", key: `ellipsis-${previousPageNumber}-${pageNumber}` });
+    }
+
+    items.push({
+      kind: "page",
+      pageNumber,
+      href: buildHrefForPage(pageNumber),
+      isCurrent: pageNumber === currentPage,
+    });
+
+    previousPageNumber = pageNumber;
+  }
+
+  return items;
+}
 
 type CategoryWithOptionalCover = BoutiqueCategory & {
   coverImage?: {
@@ -106,7 +150,7 @@ function buildAvailabilityOptions(): Array<{
     },
     {
       id: "unavailable",
-      label: "Rupture",
+      label: "Indisponible",
       count: null,
     },
   ];
@@ -158,6 +202,7 @@ export function buildBoutiquePageViewModel(
 
   if (hasSearchQuery) {
     activeFilterLabels.push({
+      key: "q",
       label: `Recherche : ${input.searchQuery}`,
       clearHref: buildBoutiqueUrl({
         category: input.selectedCategorySlug,
@@ -171,6 +216,7 @@ export function buildBoutiquePageViewModel(
 
   if (input.selectedCategoryLabel !== null) {
     activeFilterLabels.push({
+      key: "category",
       label: `Catégorie : ${input.selectedCategoryLabel}`,
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
@@ -184,6 +230,7 @@ export function buildBoutiquePageViewModel(
 
   if (input.selectedAvailabilityStatus === "in-stock") {
     activeFilterLabels.push({
+      key: "availability",
       label: "En stock",
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
@@ -197,6 +244,7 @@ export function buildBoutiquePageViewModel(
 
   if (input.selectedAvailabilityStatus === "made-to-order") {
     activeFilterLabels.push({
+      key: "availability",
       label: "Sur commande",
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
@@ -210,7 +258,8 @@ export function buildBoutiquePageViewModel(
 
   if (input.selectedAvailabilityStatus === "unavailable") {
     activeFilterLabels.push({
-      label: "Rupture",
+      key: "availability",
+      label: "Indisponible",
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
         category: input.selectedCategorySlug,
@@ -233,6 +282,7 @@ export function buildBoutiquePageViewModel(
     }
 
     activeFilterLabels.push({
+      key: "priceRange",
       label,
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
@@ -245,6 +295,7 @@ export function buildBoutiquePageViewModel(
 
   if (input.selectedSort !== "featured") {
     activeFilterLabels.push({
+      key: "sort",
       label: `Tri : ${formatSortFilterLabel(input.selectedSort)}`,
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
@@ -269,6 +320,27 @@ export function buildBoutiquePageViewModel(
   const totalProductCount = input.totalProductCount;
   const availableProductCount = input.products.filter((product) => product.isAvailable).length;
   const resetHref = "/boutique";
+
+  const safePageSize = input.pageSize > 0 ? input.pageSize : 12;
+  const totalPages = Math.max(1, Math.ceil(totalProductCount / safePageSize));
+  const currentPage = Math.min(Math.max(1, input.currentPage), totalPages);
+  const buildHrefForPage = (pageNumber: number): string =>
+    buildBoutiqueUrl({
+      q: input.searchQuery,
+      category: input.selectedCategorySlug,
+      availability: input.selectedAvailabilityStatus,
+      minPrice: input.selectedMinPriceCents,
+      maxPrice: input.selectedMaxPriceCents,
+      sort: input.selectedSort,
+      page: pageNumber > 1 ? pageNumber : null,
+    });
+  const paginationItems = buildPaginationItems({
+    currentPage,
+    totalPages,
+    buildHrefForPage,
+  });
+  const previousHref = currentPage > 1 ? buildHrefForPage(currentPage - 1) : null;
+  const nextHref = currentPage < totalPages ? buildHrefForPage(currentPage + 1) : null;
 
   const categories = input.categories.map((category) => ({
     id: category.id,
@@ -314,9 +386,12 @@ export function buildBoutiquePageViewModel(
       sort: input.selectedSort,
     },
     pagination: {
-      nextCursor: input.nextCursor,
-      hasMore: input.hasMore,
-      pageSize: input.pageSize,
+      pageSize: safePageSize,
+      currentPage,
+      totalPages,
+      items: paginationItems,
+      previousHref,
+      nextHref,
     },
     availabilityOptions: buildAvailabilityOptions(),
     quickFilters: [

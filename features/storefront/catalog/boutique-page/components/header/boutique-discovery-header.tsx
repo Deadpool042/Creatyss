@@ -44,7 +44,7 @@ export function BoutiqueDiscoveryHeader({
         )}
       </div>
 
-      <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-background/94 via-background/86 to-background/40" />
+      {/* <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-background/94 via-background/86 to-background/40" /> */}
 
       <div className="relative z-10 grid min-h-44 max-w-[58%] content-center gap-2 px-3 py-6">
         <p className="m-0 text-[10px] uppercase tracking-[0.18em] text-brand/90">

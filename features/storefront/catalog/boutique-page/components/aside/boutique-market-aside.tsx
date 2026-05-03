@@ -8,7 +8,7 @@ type BoutiqueMarketAsideProps = {
 
 export function BoutiqueMarketAside({ href }: BoutiqueMarketAsideProps) {
   return (
-    <aside className="hidden laptop:grid laptop:content-start laptop:gap-3 laptop:rounded-xl laptop:border laptop:border-surface-border-subtle/70 laptop:bg-surface-panel/22 laptop:p-3 desktop:gap-3.5 desktop:p-3.5 wide:gap-4 wide:p-4 ultrawide:gap-4.5 ultrawide:p-5">
+    <aside className="hidden laptop:grid laptop:content-start laptop:gap-3 laptop:rounded-xl laptop:border laptop:border-surface-border-subtle/70 laptop:bg-surface-panel/22 laptop:p-3 laptop:sticky laptop:top-24 laptop:self-start desktop:gap-3.5 desktop:p-3.5 wide:gap-4 wide:p-4 ultrawide:gap-4.5 ultrawide:p-5">
       <div className="grid gap-1.5">
         <p className="m-0 text-[11px] font-semibold uppercase tracking-widest text-text-muted-strong">
           Les marchés

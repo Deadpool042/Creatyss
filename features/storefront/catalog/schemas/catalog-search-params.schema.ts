@@ -56,6 +56,28 @@ function normalizeSortSearchParam(
 
 const MAX_PRICE_FILTER_CENTS = 10_000_000;
 
+function normalizePageSearchParam(value: unknown): number {
+  const candidate = Array.isArray(value) ? value[0] : value;
+
+  if (typeof candidate !== "string") {
+    return 1;
+  }
+
+  const normalized = candidate.trim();
+
+  if (!/^\d+$/.test(normalized)) {
+    return 1;
+  }
+
+  const parsed = Number.parseInt(normalized, 10);
+
+  if (!Number.isSafeInteger(parsed) || parsed < 1) {
+    return 1;
+  }
+
+  return parsed;
+}
+
 function normalizePriceSearchParam(value: unknown): number | null {
   const candidate = Array.isArray(value) ? value[0] : value;
 
@@ -95,6 +117,7 @@ export const catalogSearchParamsSchema = z.object({
   ),
   minPrice: z.preprocess(normalizePriceSearchParam, z.number().int().nonnegative().nullable()),
   maxPrice: z.preprocess(normalizePriceSearchParam, z.number().int().nonnegative().nullable()),
+  page: z.preprocess(normalizePageSearchParam, z.number().int().min(1)),
 });
 
 export type CatalogSearchParams = z.infer<typeof catalogSearchParamsSchema>;

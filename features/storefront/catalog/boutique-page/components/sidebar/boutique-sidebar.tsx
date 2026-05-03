@@ -7,8 +7,8 @@ type BoutiqueSidebarProps = {
 
 export function BoutiqueSidebar({ model }: BoutiqueSidebarProps) {
   return (
-    <aside className="hidden wide:grid wide:h-full wide:min-h-0 wide:content-start wide:gap-4 wide:overflow-hidden">
-      <div className="min-h-0 rounded-xl border border-surface-border-subtle/70 bg-surface-panel/22 p-4 wide:h-full wide:overflow-y-auto wide:overscroll-contain">
+    <aside className="hidden wide:grid wide:content-start wide:gap-4 wide:sticky wide:top-24 wide:self-start">
+      <div className="rounded-xl border border-surface-border-subtle/70 bg-surface-panel/22 p-4 wide:max-h-[calc(100dvh-7rem)] wide:overflow-y-auto wide:overscroll-contain">
         <BoutiqueFiltersContent model={model} />
       </div>
     </aside>

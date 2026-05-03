@@ -1,18 +1,19 @@
 //features/storefront/catalog/boutique-page/components/boutique-page.tsx
 import { BoutiqueEmptyState } from "@/features/storefront/catalog/boutique-page/components/boutique-empty-state";
 import { BoutiqueMarketAside } from "@/features/storefront/catalog/boutique-page/components/aside/boutique-market-aside";
-import { BoutiqueMobileFilters } from "@/features/storefront/catalog/boutique-page/components/filters/boutique-mobile-filters";
 import { BoutiqueMobileCategoryGrid } from "@/features/storefront/catalog/boutique-page/components/header/boutique-mobile-category-grid";
 import { BoutiquePageHeader } from "@/features/storefront/catalog/boutique-page/components/header/boutique-page-header";
-import { BoutiqueProductsLoadMore } from "@/features/storefront/catalog/boutique-page/components/products/boutique-products-load-more";
+import { BoutiquePagination } from "@/features/storefront/catalog/boutique-page/components/products/boutique-pagination";
+import { BoutiqueProductGrid } from "@/features/storefront/catalog/boutique-page/components/products/boutique-product-grid";
 import { BoutiqueSidebar } from "@/features/storefront/catalog/boutique-page/components/sidebar/boutique-sidebar";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
 
 type BoutiquePageProps = {
   model: BoutiquePageViewModel;
+  initialFavoriteProductIds: readonly string[];
 };
 
-export function BoutiquePage({ model }: BoutiquePageProps) {
+export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageProps) {
   const hasActiveFilters = model.activeFilterLabels.length > 0;
   const isDiscoveryMode =
     model.activeFilterLabels.length === 0 && model.selectedSort === "featured";
@@ -20,7 +21,7 @@ export function BoutiquePage({ model }: BoutiquePageProps) {
   const productCountLabel = `${productCount} produit${productCount > 1 ? "s" : ""}`;
   const heroImage = model.heroImage;
   return (
-    <div className="grid gap-6  md:px-4 md:pt-4 sm:max-[899px]:landscape:gap-3 min-[700px]:gap-7 md:max-[1199px]:gap-5 desktop:box-border desktop:h-full desktop:min-h-0 desktop:grid-rows-[auto_minmax(0,1fr)] desktop:gap-6 desktop:overflow-hidden desktop:pt-5">
+    <div className="grid gap-5 sm:max-[899px]:landscape:gap-3 min-[700px]:gap-6 md:max-[1199px]:gap-4 desktop:gap-5">
       <BoutiquePageHeader
         model={model}
         productCountLabel={productCountLabel}
@@ -28,36 +29,27 @@ export function BoutiquePage({ model }: BoutiquePageProps) {
         heroImage={heroImage || null}
       />
 
-      <section className="grid gap-5 sm:max-[899px]:landscape:gap-2.5 md:max-[1199px]:gap-4 laptop:grid-cols-[minmax(0,1fr)_220px] desktop:h-full desktop:min-h-0 desktop:grid-cols-[minmax(0,1fr)_240px] desktop:items-start desktop:overflow-hidden wide:grid-cols-[240px_minmax(0,1fr)_250px] ultrawide:grid-cols-[260px_minmax(0,1fr)_280px]">
+      <section className="grid gap-4 sm:max-[899px]:landscape:gap-2.5 md:max-[1199px]:gap-3.5 laptop:grid-cols-[minmax(0,1fr)_220px] desktop:grid-cols-[minmax(0,1fr)_240px] desktop:items-start wide:grid-cols-[240px_minmax(0,1fr)_250px] ultrawide:grid-cols-[260px_minmax(0,1fr)_280px]">
         <BoutiqueSidebar model={model} />
 
-        <div className="grid gap-4 px-2 md:px-0 sm:max-[899px]:landscape:gap-2.5 min-[700px]:gap-5 md:max-[1199px]:gap-4 desktop:h-full desktop:min-h-0 desktop:overflow-y-auto desktop:pb-10 desktop:pr-2">
+        <div className="grid gap-4 px-2 md:px-0 sm:max-[899px]:landscape:gap-2.5 min-[700px]:gap-5 md:max-[1199px]:gap-4 desktop:pb-10">
           {isDiscoveryMode ? (
-            <>
-              <div className="sm:max-[1199px]:landscape:hidden">
-                <BoutiqueMobileCategoryGrid
-                  categories={model.categories}
-                  resetHref={model.resetHref}
-                />
-              </div>
-              <div className="sm:hidden ">
-                <BoutiqueMobileFilters
-                  model={model}
-                  label="Filtres et tri"
-                  className="inline-flex h-10 w-full items-center justify-center rounded-lg border border-control-border px-3 text-sm text-text-muted-strong transition-colors hover:border-control-border-strong hover:text-foreground"
-                />
-              </div>
-            </>
+            <div className="sm:max-[1199px]:landscape:hidden">
+              <BoutiqueMobileCategoryGrid
+                categories={model.categories}
+                resetHref={model.resetHref}
+              />
+            </div>
           ) : null}
 
           {model.products.length > 0 ? (
-            <BoutiqueProductsLoadMore
-              initialProducts={model.products}
-              initialNextCursor={model.pagination.nextCursor}
-              initialHasMore={model.pagination.hasMore}
-              pageSize={model.pagination.pageSize}
-              filters={model.apiFilters}
-            />
+            <>
+              <BoutiqueProductGrid
+                products={model.products}
+                initialFavoriteProductIds={initialFavoriteProductIds}
+              />
+              <BoutiquePagination pagination={model.pagination} />
+            </>
           ) : (
             <BoutiqueEmptyState hasActiveFilters={hasActiveFilters} resetHref={model.resetHref} />
           )}

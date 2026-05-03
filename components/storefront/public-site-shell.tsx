@@ -166,7 +166,6 @@ function MarketingHeader({ label, icon: Icon }: MarketingHeaderItem) {
 export function PublicSiteShell({ children }: PublicSiteShellProps) {
   const pathname = usePathname();
   const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/");
-  const isBoutiqueListingRoute = pathname === "/boutique";
   const isBoutiqueProductRoute = pathname.startsWith("/boutique/");
 
   if (isAdminRoute) {
@@ -174,13 +173,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
   }
 
   return (
-    <div
-      className={
-        isBoutiqueListingRoute
-          ? "min-h-screen min-[1200px]:grid min-[1200px]:h-dvh min-[1200px]:grid-rows-[auto_minmax(0,1fr)] min-[1200px]:overflow-hidden"
-          : "min-h-screen"
-      }
-    >
+    <div className="min-h-screen">
       <header className="site-header-blur sticky top-0 z-30 border-b border-shell-border">
         <div className="hidden border-b border-shell-border/60 py-1.5 lg:flex items-center justify-center gap-7 text-text-muted-strong">
           {MARKETING_HEADER_ITEMS.map((item) => (
@@ -287,17 +280,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
 
       <main
         className={`mx-auto w-full max-w-full overflow-x-clip pb-24 min-[560px]:max-[1199px]:landscape:pb-18 ${
-          isBoutiqueListingRoute
-            ? "min-[1200px]:h-[calc(100dvh-4.5rem)] min-[1200px]:overflow-hidden min-[1200px]:pb-0"
-            : ""
-        } ${
-          isBoutiqueProductRoute
-            ? "pt-0"
-            : isBoutiqueListingRoute
-              ? // ? "px-4 pt-8 sm:px-6 xl:px-12 min-[1200px]:pt-0"
-                // : "px-4 pt-8 sm:px-6 xl:px-12"
-                "min-[1200px]:h-full"
-              : ""
+          isBoutiqueProductRoute ? "pt-0" : ""
         }`}
       >
         {children}

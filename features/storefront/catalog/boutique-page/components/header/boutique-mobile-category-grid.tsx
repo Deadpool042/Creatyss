@@ -26,14 +26,14 @@ export function BoutiqueMobileCategoryGrid({
   categories,
   resetHref,
 }: BoutiqueMobileCategoryGridProps) {
-  const items = categories.slice(0, 6);
+  const items = categories.slice(0, 8);
 
   if (items.length === 0) {
     return null;
   }
 
   return (
-    <section className="grid gap-3 min-[560px]:hidden" aria-labelledby="boutique-categories-title">
+    <section className="grid gap-2.5 pt-0.5 min-[560px]:hidden" aria-labelledby="boutique-categories-title">
       <div className="flex items-center justify-between">
         <h2 id="boutique-categories-title" className="m-0 text-sm font-semibold text-brand">
           Catégories
@@ -49,7 +49,7 @@ export function BoutiqueMobileCategoryGrid({
         </CustomLink>
       </div>
 
-      <div className="grid grid-cols-3 gap-x-3 gap-y-4">
+      <div className="-mx-1 flex snap-x snap-mandatory gap-1.5 overflow-x-auto px-1 pb-1">
         {items.map((category) => {
           const visual = getCategoryVisual(category);
           const imageSrc = visual?.src ?? FALLBACK_CATEGORY_VISUAL_SRC;
@@ -59,11 +59,11 @@ export function BoutiqueMobileCategoryGrid({
               key={category.id}
               href={category.href}
               aria-current={category.isActive ? "page" : undefined}
-              className="group grid min-h-24 justify-items-center gap-2 rounded-2xl px-1.5 py-2 text-center outline-none transition-transform active:scale-[0.98] "
+              className="group inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-surface-border-subtle/75 bg-surface-panel/52 px-2.5 py-1.5 text-left outline-none transition-transform active:scale-[0.98]"
             >
               <span
                 className={[
-                  "relative grid size-16 place-items-center overflow-hidden rounded-full border shadow-sm transition-all duration-300",
+                  "relative grid size-8 place-items-center overflow-hidden rounded-full border shadow-sm transition-all duration-300",
                   "border-surface-border-subtle/70 bg-surface-panel/70 dark:bg-surface-panel/42",
                   "group-hover:border-control-border group-hover:bg-surface-panel/85 dark:group-hover:bg-surface-panel/55 group-hover:shadow-md group-hover:ring-1 group-hover:ring-primary",
                   "group-focus-visible:ring-2 group-focus-visible:ring-focus-ring",
@@ -76,11 +76,11 @@ export function BoutiqueMobileCategoryGrid({
                   alt=""
                   aria-hidden="true"
                   fill
-                  sizes="64px"
+                  sizes="32px"
                   className={
                     visual
                       ? "object-cover transition-transform duration-500 group-hover:scale-105"
-                      : "object-contain p-1.5 transition-transform duration-500 group-hover:scale-105"
+                      : "object-contain p-1 transition-transform duration-500 group-hover:scale-105"
                   }
                 />
 
@@ -89,7 +89,7 @@ export function BoutiqueMobileCategoryGrid({
 
               <span
                 className={[
-                  "line-clamp-2 max-w-20 rounded-full px-1.5 text-center text-xs leading-tight transition-colors",
+                  "line-clamp-1 max-w-24 rounded-full text-xs leading-tight transition-colors",
                   "text-text-muted-strong group-hover:text-foreground",
                   category.isActive ? "font-medium text-foreground" : "",
                 ].join(" ")}

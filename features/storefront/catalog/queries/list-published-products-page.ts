@@ -24,6 +24,7 @@ type ListPublishedProductsPageInput = {
   sort: CatalogListingSort;
   limit: number;
   cursor: string | null;
+  skip?: number;
 };
 
 const DEFAULT_FETCH_BATCH_SIZE = 24;
@@ -60,6 +61,11 @@ export async function listPublishedProductsPage(
   const orderBy = getPublishedProductsOrderBy(input.sort);
   const hasPostMappingFilters = input.availabilityStatus !== null;
 
+  const skipOffset =
+    typeof input.skip === "number" && Number.isSafeInteger(input.skip) && input.skip > 0
+      ? input.skip
+      : 0;
+
   if (!hasPostMappingFilters) {
     const cursorWhere = decodedCursor
       ? buildPublishedProductsCursorWhere(input.sort, decodedCursor)
@@ -69,6 +75,7 @@ export async function listPublishedProductsPage(
       where: cursorWhere ? { AND: [baseWhere, cursorWhere] } : baseWhere,
       orderBy,
       take: normalizedLimit + 1,
+      ...(skipOffset > 0 ? { skip: skipOffset } : {}),
       select: publishedProductListingSelect,
     });
 
@@ -86,7 +93,7 @@ export async function listPublishedProductsPage(
     };
   }
 
-  const targetSize = normalizedLimit + 1;
+  const targetSize = normalizedLimit + 1 + skipOffset;
   const mappedMatches: Array<{
     item: CatalogProductListItem;
     cursor: string;
@@ -156,8 +163,9 @@ export async function listPublishedProductsPage(
     }
   }
 
-  const hasMore = mappedMatches.length > normalizedLimit;
-  const visibleItems = hasMore ? mappedMatches.slice(0, normalizedLimit) : mappedMatches;
+  const skippedMatches = skipOffset > 0 ? mappedMatches.slice(skipOffset) : mappedMatches;
+  const hasMore = skippedMatches.length > normalizedLimit;
+  const visibleItems = hasMore ? skippedMatches.slice(0, normalizedLimit) : skippedMatches;
   const lastVisibleMatch = visibleItems.at(-1);
 
   return {

@@ -8,6 +8,7 @@ type BuildBoutiqueUrlInput = {
   minPrice?: number | null;
   maxPrice?: number | null;
   sort?: BoutiqueSortValue;
+  page?: number | null;
 };
 
 export function buildBoutiqueUrl(input: BuildBoutiqueUrlInput): string {
@@ -43,6 +44,14 @@ export function buildBoutiqueUrl(input: BuildBoutiqueUrlInput): string {
 
   if (input.sort && input.sort !== "featured") {
     params.set("sort", input.sort);
+  }
+
+  if (
+    typeof input.page === "number" &&
+    Number.isSafeInteger(input.page) &&
+    input.page > 1
+  ) {
+    params.set("page", String(input.page));
   }
 
   const query = params.toString();

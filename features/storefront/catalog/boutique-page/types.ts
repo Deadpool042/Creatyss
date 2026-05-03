@@ -27,8 +27,16 @@ export type BoutiqueQuickFilterItem = {
 };
 
 export type BoutiqueActiveFilterItem = {
+  key:
+    | "q"
+    | "category"
+    | "availability"
+    | "minPrice"
+    | "maxPrice"
+    | "priceRange"
+    | "sort";
   label: string;
-  clearHref: string | null;
+  clearHref: string;
 };
 
 export type BoutiqueProductCardItem = {
@@ -78,9 +86,15 @@ export type BoutiquePageViewModel = {
     sort: BoutiqueSortValue;
   };
   pagination: {
-    nextCursor: string | null;
-    hasMore: boolean;
     pageSize: number;
+    currentPage: number;
+    totalPages: number;
+    items: Array<
+      | { kind: "page"; pageNumber: number; href: string; isCurrent: boolean }
+      | { kind: "ellipsis"; key: string }
+    >;
+    previousHref: string | null;
+    nextHref: string | null;
   };
   quickFilters: BoutiqueQuickFilterItem[];
   categories: BoutiqueCategoryItem[];

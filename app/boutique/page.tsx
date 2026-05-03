@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { getUploadsPublicPath } from "@/core/uploads";
+import { readFavoriteProductIds } from "@/core/sessions/favorites";
 import {
   type CatalogAvailabilityFilterValue,
   validateCatalogFilterInput,
@@ -25,6 +26,7 @@ type BoutiqueSearchParams = {
   minPrice?: string | string[];
   maxPrice?: string | string[];
   sort?: string | string[];
+  page?: string | string[];
 };
 
 type ProductsPageProps = Readonly<{
@@ -87,6 +89,7 @@ export async function generateMetadata({ searchParams }: ProductsPageProps): Pro
     minPrice: resolvedSearchParams.minPrice,
     maxPrice: resolvedSearchParams.maxPrice,
     sort: resolvedSearchParams.sort,
+    page: resolvedSearchParams.page,
   });
   const searchQuery = validateCatalogSearchQuery(catalogSearchParams.q);
   const filters = validateCatalogFilterInput({
@@ -118,6 +121,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     minPrice: resolvedSearchParams.minPrice,
     maxPrice: resolvedSearchParams.maxPrice,
     sort: resolvedSearchParams.sort,
+    page: resolvedSearchParams.page,
   });
   const searchQuery = validateCatalogSearchQuery(catalogSearchParams.q);
   const filters = validateCatalogFilterInput({
@@ -126,7 +130,21 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     minPrice: catalogSearchParams.minPrice,
     maxPrice: catalogSearchParams.maxPrice,
   });
-  const [productsPage, totalProductCount, categories] = await Promise.all([
+  const totalProductCount = await countPublishedProducts({
+    searchQuery,
+    categorySlug: filters.categorySlug,
+    availabilityStatus: filters.availabilityStatus,
+    minPriceCents: filters.minPriceCents,
+    maxPriceCents: filters.maxPriceCents,
+  });
+  const totalPages = Math.max(
+    1,
+    Math.ceil(totalProductCount / BOUTIQUE_PRODUCTS_PAGE_SIZE)
+  );
+  const requestedPage = catalogSearchParams.page;
+  const currentPage = Math.min(Math.max(1, requestedPage), totalPages);
+  const skip = (currentPage - 1) * BOUTIQUE_PRODUCTS_PAGE_SIZE;
+  const [productsPage, categories, initialFavoriteProductIds] = await Promise.all([
     listPublishedProductsPage({
       searchQuery,
       categorySlug: filters.categorySlug,
@@ -136,15 +154,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       sort: catalogSearchParams.sort,
       limit: BOUTIQUE_PRODUCTS_PAGE_SIZE,
       cursor: null,
-    }),
-    countPublishedProducts({
-      searchQuery,
-      categorySlug: filters.categorySlug,
-      availabilityStatus: filters.availabilityStatus,
-      minPriceCents: filters.minPriceCents,
-      maxPriceCents: filters.maxPriceCents,
+      skip,
     }),
     listCatalogFilterCategories(),
+    readFavoriteProductIds(),
   ]);
 
   const selectedCategory =
@@ -166,10 +179,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     selectedMaxPriceCents: filters.maxPriceCents,
     selectedSort: catalogSearchParams.sort,
     totalProductCount,
-    nextCursor: productsPage.nextCursor,
-    hasMore: productsPage.hasMore,
     pageSize: BOUTIQUE_PRODUCTS_PAGE_SIZE,
+    currentPage,
   });
 
-  return <BoutiquePage model={model} />;
+  return <BoutiquePage model={model} initialFavoriteProductIds={initialFavoriteProductIds} />;
 }

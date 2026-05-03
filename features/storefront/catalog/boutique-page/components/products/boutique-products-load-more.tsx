@@ -12,6 +12,7 @@ type BoutiqueProductsLoadMoreProps = {
   initialHasMore: boolean;
   pageSize: number;
   filters: BoutiquePageViewModel["apiFilters"];
+  initialFavoriteProductIds: readonly string[];
 };
 
 type ProductsPagePayload = {
@@ -42,6 +43,7 @@ export function BoutiqueProductsLoadMore({
   initialHasMore,
   pageSize,
   filters,
+  initialFavoriteProductIds,
 }: BoutiqueProductsLoadMoreProps) {
   const [products, setProducts] = useState(initialProducts);
   const [nextCursor, setNextCursor] = useState(initialNextCursor);
@@ -253,7 +255,10 @@ export function BoutiqueProductsLoadMore({
 
   return (
     <div className="grid gap-4 min-[700px]:gap-5">
-      <BoutiqueProductGrid products={products} />
+      <BoutiqueProductGrid
+        products={products}
+        initialFavoriteProductIds={initialFavoriteProductIds}
+      />
 
       <div className="grid justify-items-center gap-2 pb-16 min-[560px]:max-[899px]:landscape:pb-8 min-[700px]:pb-4 min-[768px]:max-[1199px]:pb-10 min-[900px]:max-[1199px]:landscape:pb-7" aria-live="polite">
         {errorMessage ? <p className="m-0 text-sm text-text-muted-strong">{errorMessage}</p> : null}
