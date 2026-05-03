@@ -13,7 +13,7 @@ import {
   buildPublishedProductWhereInput,
   matchesStorefrontAvailabilityFilter,
 } from "@/features/storefront/catalog/queries/published-products-filters";
-import type { CatalogProductListItem, CatalogProductListPage } from "@/features/storefront/catalog/types";
+import type { CatalogProductListPage } from "@/features/storefront/catalog/types";
 
 type ListPublishedProductsPageInput = {
   searchQuery: string | null;
@@ -81,23 +81,15 @@ export async function listPublishedProductsPage(
 
     const hasMore = products.length > normalizedLimit;
     const sliced = hasMore ? products.slice(0, normalizedLimit) : products;
-    const lastVisibleItem = sliced.at(-1);
 
     return {
       items: sliced.map(mapPublishedProductListingRecord),
-      nextCursor:
-        hasMore && lastVisibleItem
-          ? encodePublishedProductsPageCursor(lastVisibleItem, input.sort)
-          : null,
       hasMore,
     };
   }
 
   const targetSize = normalizedLimit + 1 + skipOffset;
-  const mappedMatches: Array<{
-    item: CatalogProductListItem;
-    cursor: string;
-  }> = [];
+  const mappedMatches: CatalogProductListItem[] = [];
 
   let currentCursor = decodedCursor;
   let exhausted = false;
@@ -135,10 +127,7 @@ export async function listPublishedProductsPage(
       );
 
       if (matchesAvailability) {
-        mappedMatches.push({
-          item: mapped,
-          cursor: encodePublishedProductsPageCursor(product, input.sort),
-        });
+        mappedMatches.push(mapped);
 
         if (mappedMatches.length >= targetSize) {
           break;
@@ -166,11 +155,9 @@ export async function listPublishedProductsPage(
   const skippedMatches = skipOffset > 0 ? mappedMatches.slice(skipOffset) : mappedMatches;
   const hasMore = skippedMatches.length > normalizedLimit;
   const visibleItems = hasMore ? skippedMatches.slice(0, normalizedLimit) : skippedMatches;
-  const lastVisibleMatch = visibleItems.at(-1);
 
   return {
-    items: visibleItems.map((entry) => entry.item),
-    nextCursor: hasMore && lastVisibleMatch ? lastVisibleMatch.cursor : null,
+    items: visibleItems,
     hasMore,
   };
 }

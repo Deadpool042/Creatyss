@@ -110,6 +110,5 @@ export type CatalogProductListItem = {
 
 export type CatalogProductListPage = {
   items: CatalogProductListItem[];
-  nextCursor: string | null;
   hasMore: boolean;
 };
