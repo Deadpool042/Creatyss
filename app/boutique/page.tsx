@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 import { getUploadsPublicPath } from "@/core/uploads";
 import { readFavoriteProductIds } from "@/core/sessions/favorites";
@@ -32,6 +33,47 @@ type BoutiqueSearchParams = {
 type ProductsPageProps = Readonly<{
   searchParams: Promise<BoutiqueSearchParams>;
 }>;
+
+function getFirstSearchParamValue(value: string | string[] | undefined): string | null {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (Array.isArray(value) && value.length > 0 && typeof value[0] === "string") {
+    return value[0];
+  }
+
+  return null;
+}
+
+function buildCanonicalBoutiqueHref(
+  searchParams: BoutiqueSearchParams,
+  canonicalPage: number
+): string {
+  const params = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(searchParams)) {
+    if (key === "page") {
+      continue;
+    }
+
+    if (typeof value === "string") {
+      params.set(key, value);
+      continue;
+    }
+
+    if (Array.isArray(value) && value.length > 0) {
+      params.set(key, value[0] ?? "");
+    }
+  }
+
+  if (canonicalPage > 1) {
+    params.set("page", String(canonicalPage));
+  }
+
+  const query = params.toString();
+  return query.length > 0 ? `/boutique?${query}` : "/boutique";
+}
 
 function getBoutiqueMetadata(input: {
   searchQuery: string | null;
@@ -114,6 +156,11 @@ export async function generateMetadata({ searchParams }: ProductsPageProps): Pro
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const resolvedSearchParams = await searchParams;
+  const rawPageParam = getFirstSearchParamValue(resolvedSearchParams.page)?.trim() ?? null;
+  const hasPageParam = rawPageParam !== null;
+  const hasValidRawPageParam = rawPageParam !== null && /^\d+$/.test(rawPageParam);
+  const rawRequestedPage =
+    hasValidRawPageParam && rawPageParam !== null ? Number.parseInt(rawPageParam, 10) : null;
   const catalogSearchParams = catalogSearchParamsSchema.parse({
     q: resolvedSearchParams.q,
     category: resolvedSearchParams.category,
@@ -143,6 +190,19 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   );
   const requestedPage = catalogSearchParams.page;
   const currentPage = Math.min(Math.max(1, requestedPage), totalPages);
+  const shouldRedirectToCanonicalPage =
+    hasPageParam &&
+    (
+      rawRequestedPage === null ||
+      rawRequestedPage < 1 ||
+      rawRequestedPage === 1 ||
+      rawRequestedPage !== currentPage
+    );
+
+  if (shouldRedirectToCanonicalPage) {
+    redirect(buildCanonicalBoutiqueHref(resolvedSearchParams, currentPage));
+  }
+
   const skip = (currentPage - 1) * BOUTIQUE_PRODUCTS_PAGE_SIZE;
   const [productsPage, categories, initialFavoriteProductIds] = await Promise.all([
     listPublishedProductsPage({
