@@ -22,7 +22,7 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
   const heroImage = model.heroImage;
 
   return (
-    <section className="grid gap-4 laptop:grid-cols-[minmax(0,1fr)_220px] laptop:items-start desktop:grid-cols-[minmax(0,1fr)_240px] wide:grid-cols-[240px_minmax(0,1fr)_250px] ultrawide:grid-cols-[280px_minmax(0,1fr)_300px]">
+    <section className="grid gap-4 laptop:grid-cols-[minmax(0,1fr)_220px] laptop:items-start desktop:grid-cols-[minmax(0,1fr)_240px] wide:grid-cols-[240px_minmax(0,1fr)] ultrawide:grid-cols-[280px_minmax(0,1fr)_300px]">
       <BoutiqueSidebar model={model} />
 
       <div className="min-w-0 grid gap-4 laptop:gap-5 ">
@@ -52,7 +52,9 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
         )}
       </div>
 
-      <BoutiqueMarketAside href={model.resetHref} />
+      <div className="wide:hidden ultrawide:block">
+        <BoutiqueMarketAside href={model.resetHref} />
+      </div>
     </section>
   );
 }
