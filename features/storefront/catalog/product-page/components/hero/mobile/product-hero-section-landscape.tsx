@@ -46,6 +46,7 @@ export function ProductHeroSectionLandscape({
   onOpenLightbox,
   imageFit,
   cta,
+  asideExtra,
   disableCart,
 }: ProductHeroResolvedProps) {
   const hasVisibleThumbnailRail = false;
@@ -183,6 +184,10 @@ export function ProductHeroSectionLandscape({
                   </div>
                 ) : null}
               </section>
+            ) : null}
+
+            {asideExtra ? (
+              <div className="border-t border-surface-border pt-2">{asideExtra}</div>
             ) : null}
           </div>
         </aside>

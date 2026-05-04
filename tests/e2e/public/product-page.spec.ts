@@ -4,8 +4,10 @@ const PDP_VIEWPORTS = [
   { name: "mobile-portrait", width: 375, height: 667 },
   { name: "mobile-landscape", width: 667, height: 375 },
   { name: "tablet-portrait", width: 768, height: 1024 },
+  { name: "tablet-landscape", width: 1024, height: 768 },
   { name: "desktop", width: 1440, height: 900 },
   { name: "wide", width: 1728, height: 1117 },
+  { name: "ultra-wide", width: 2560, height: 1440 },
 ] as const;
 
 const EXCLUDED_PRODUCT_PATHS = new Set(["/boutique/produit-simple-de-test"]);
@@ -178,6 +180,126 @@ async function getVisibleBackToBoutiqueLinkCount(page: Page) {
   });
 }
 
+async function getVisibleFooterSnapshot(page: Page) {
+  return page.evaluate(() => {
+    const footer = document.querySelector("footer");
+    if (!(footer instanceof HTMLElement)) {
+      return { hasFooter: false, isVisible: false, notMaskedByBottomNav: false };
+    }
+
+    footer.scrollIntoView({ block: "end" });
+    const footerRect = footer.getBoundingClientRect();
+    const footerVisible = footerRect.width > 0 && footerRect.height > 0;
+
+    const contentRange = document.createRange();
+    contentRange.selectNodeContents(footer);
+    const contentRect = contentRange.getBoundingClientRect();
+    const contentBottom =
+      contentRect.width > 0 && contentRect.height > 0 ? contentRect.bottom : footerRect.bottom;
+
+    const touchNav = document.querySelector('nav[aria-label="Navigation tactile"]');
+    if (!(touchNav instanceof HTMLElement)) {
+      return {
+        hasFooter: true,
+        isVisible: footerVisible,
+        notMaskedByBottomNav: contentBottom <= window.innerHeight + 1,
+      };
+    }
+
+    const navStyle = window.getComputedStyle(touchNav);
+    const navRect = touchNav.getBoundingClientRect();
+    const navIsVisible =
+      navStyle.display !== "none" &&
+      navStyle.visibility !== "hidden" &&
+      navRect.width > 0 &&
+      navRect.height > 0;
+
+    if (!navIsVisible) {
+      return {
+        hasFooter: true,
+        isVisible: footerVisible,
+        notMaskedByBottomNav: contentBottom <= window.innerHeight + 1,
+      };
+    }
+
+    return {
+      hasFooter: true,
+      isVisible: footerVisible,
+      notMaskedByBottomNav: contentBottom <= navRect.top + 1,
+    };
+  });
+}
+
+async function hasVisibleCtaOrAlternative(page: Page) {
+  return page.evaluate(() => {
+    const visible = (element: Element | null) => {
+      if (!(element instanceof HTMLElement)) return false;
+      const style = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return (
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        style.opacity !== "0" &&
+        rect.width > 0 &&
+        rect.height > 0
+      );
+    };
+
+    const candidates = [
+      ...document.querySelectorAll("main button"),
+      ...document.querySelectorAll('main a[href*="contact"]'),
+      ...document.querySelectorAll('main a[href*="panier"]'),
+    ].filter((node) => visible(node));
+
+    const textBlob = candidates
+      .map((node) => {
+        const text = (node.textContent || "").trim();
+        const label = (node.getAttribute("aria-label") || "").trim();
+        return `${text} ${label}`.trim();
+      })
+      .join(" | ")
+      .toLowerCase();
+
+    return /(ajouter|panier|contacter|contact|indisponible|rupture|sur commande)/i.test(textBlob);
+  });
+}
+
+async function hasNoVisibleNamelessEnabledButton(page: Page) {
+  return page.evaluate(() => {
+    const visible = (element: Element | null) => {
+      if (!(element instanceof HTMLElement)) return false;
+      const style = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return (
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        style.opacity !== "0" &&
+        rect.width > 0 &&
+        rect.height > 0
+      );
+    };
+
+    const enabledVisibleButtons = [...document.querySelectorAll("button")].filter((button) => {
+      if (!visible(button)) {
+        return false;
+      }
+
+      const isDisabled =
+        button.hasAttribute("disabled") || button.getAttribute("aria-disabled") === "true";
+
+      return !isDisabled;
+    });
+
+    const namelessButtons = enabledVisibleButtons.filter((button) => {
+      const text = (button.textContent || "").trim();
+      const label = (button.getAttribute("aria-label") || "").trim();
+      return text.length === 0 && label.length === 0;
+    });
+
+    return namelessButtons.length === 0;
+  });
+}
+
 test.describe("public product page smoke", () => {
   test("covers pdp responsive baseline and shell behavior", async ({ page }) => {
     const productPath = await resolveMerchantProductPath(page);
@@ -207,6 +329,21 @@ test.describe("public product page smoke", () => {
       }
 
       expect(await getVisibleBackToBoutiqueLinkCount(page)).toBeGreaterThan(0);
+
+      const favoriteButtons = page.locator('button[aria-label*="favori" i]:visible');
+      await expect(favoriteButtons).toHaveCount(1);
+      const favoriteButton = favoriteButtons.first();
+      await expect(favoriteButton).toBeEnabled();
+      await favoriteButton.click({ trial: true });
+
+      expect(await hasVisibleCtaOrAlternative(page)).toBe(true);
+
+      const footerSnapshot = await getVisibleFooterSnapshot(page);
+      expect(footerSnapshot.hasFooter).toBe(true);
+      expect(footerSnapshot.isVisible).toBe(true);
+      expect(footerSnapshot.notMaskedByBottomNav).toBe(true);
+
+      expect(await hasNoVisibleNamelessEnabledButton(page)).toBe(true);
     }
 
     await page.setViewportSize({ width: 375, height: 667 });
