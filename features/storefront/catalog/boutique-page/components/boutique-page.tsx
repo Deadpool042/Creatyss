@@ -25,7 +25,7 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
     <section className="grid gap-4 laptop:grid-cols-[minmax(0,1fr)_220px] laptop:items-start desktop:grid-cols-[minmax(0,1fr)_240px] wide:grid-cols-[240px_minmax(0,1fr)] ultrawide:grid-cols-[280px_minmax(0,1fr)_300px]">
       <BoutiqueSidebar model={model} />
 
-      <div className="min-w-0 grid gap-4 laptop:gap-5 ">
+      <div className="min-w-0 grid gap-4 laptop:gap-5 max-[767px]:landscape:gap-2.5">
         <BoutiquePageHeader
           model={model}
           productCountLabel={productCountLabel}
@@ -34,7 +34,7 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
         />
 
         {isDiscoveryMode ? (
-          <div className="wide:hidden">
+          <div className="wide:hidden max-[767px]:landscape:hidden">
             <BoutiqueMobileCategoryGrid categories={model.categories} resetHref={model.resetHref} />
           </div>
         ) : null}
