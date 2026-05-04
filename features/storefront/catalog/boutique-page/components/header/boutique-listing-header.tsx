@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
 import { BoutiqueListingActionsBar } from "./boutique-listing-actions-bar";
 
@@ -7,14 +5,12 @@ type BoutiqueListingHeaderProps = {
   model: BoutiquePageViewModel;
   productCountLabel: string;
   isDiscoveryMode: boolean;
-  heroImage: BoutiquePageViewModel["heroImage"];
 };
 
 export function BoutiqueListingHeader({
   model,
   productCountLabel,
   isDiscoveryMode,
-  heroImage,
 }: BoutiqueListingHeaderProps) {
   return (
     <>
@@ -32,32 +28,6 @@ export function BoutiqueListingHeader({
       </div>
 
       <div className="relative isolate hidden overflow-hidden sm:grid sm:gap-2.5 md:gap-2 laptop:gap-2 desktop:gap-1.5 desktop:px-0 desktop:py-0">
-        {heroImage ? (
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-0 w-[42%] overflow-hidden desktop:w-[36%]">
-            <Image
-              alt=""
-              aria-hidden="true"
-              className="object-cover object-center opacity-34 saturate-[0.92] contrast-[0.98] dark:hidden"
-              fill
-              priority
-              sizes="(min-width: 1200px) 40vw, 45vw"
-              src={heroImage.lightSrc}
-            />
-
-            <Image
-              alt=""
-              aria-hidden="true"
-              className="hidden object-cover object-center opacity-34 saturate-[0.9] contrast-[0.96] dark:block"
-              fill
-              priority
-              sizes="(min-width: 1200px) 40vw, 45vw"
-              src={heroImage.darkSrc}
-            />
-          </div>
-        ) : null}
-
-        {/* <div className="pointer-events-none absolute inset-0 z-0 bg-linear-to-r from-background/88 via-background/76 to-background/50 dark:from-background/92 dark:via-background/82 dark:to-background/60" /> */}
-
         <div className="relative p-2 z-10 flex flex-wrap items-start justify-between gap-2 md:gap-2 laptop:gap-2 desktop:items-center desktop:gap-2">
           <div className="grid gap-1 py-1 sm:pl-0 laptop:gap-1 desktop:gap-0.5">
             <p className="m-0 text-[10px] uppercase tracking-[0.18em] text-brand/90">

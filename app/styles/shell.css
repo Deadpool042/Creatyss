@@ -83,3 +83,20 @@
   line-height: 1.45;
   letter-spacing: 0.01em;
 }
+
+@media (orientation: landscape) and (max-height: 480px) {
+  .boutique-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 0.5rem;
+    row-gap: 1.25rem;
+  }
+
+  .boutique-product-card-media {
+    aspect-ratio: 16 / 10;
+    border-radius: 0.875rem;
+  }
+
+  .boutique-product-card-content {
+    padding-top: 0.375rem;
+  }
+}

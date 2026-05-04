@@ -16,7 +16,7 @@ export function BoutiquePageHeader({
   heroImage,
 }: BoutiquePageHeaderProps) {
   return (
-    <section className="grid gap-4 border-b border-shell-border/70 sm:gap-3 md:gap-4 md:pb-4 laptop:gap-3 laptop:pb-4 desktop:gap-3 desktop:pb-3">
+    <section className="grid gap-4  sm:gap-3 md:gap-4 md:pb-4 laptop:gap-3 laptop:pb-4 desktop:gap-3 desktop:pb-3">
       {isDiscoveryMode ? (
         <>
           <BoutiqueDiscoveryHeader productCountLabel={productCountLabel} heroImage={heroImage} />
@@ -24,7 +24,6 @@ export function BoutiquePageHeader({
             model={model}
             productCountLabel={productCountLabel}
             isDiscoveryMode={isDiscoveryMode}
-            heroImage={heroImage}
           />
         </>
       ) : (
@@ -32,7 +31,6 @@ export function BoutiquePageHeader({
           model={model}
           productCountLabel={productCountLabel}
           isDiscoveryMode={isDiscoveryMode}
-          heroImage={heroImage}
         />
       )}
     </section>

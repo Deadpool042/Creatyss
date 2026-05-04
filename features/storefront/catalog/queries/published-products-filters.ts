@@ -34,7 +34,10 @@ export function buildPublishedProductWhereInput(input: BuildPublishedProductWher
           productCategories: {
             some: {
               category: {
-                slug: input.categorySlug,
+                OR: [
+                  { slug: input.categorySlug },
+                  { parent: { slug: input.categorySlug } },
+                ],
               },
             },
           },

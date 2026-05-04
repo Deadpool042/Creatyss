@@ -15,7 +15,7 @@ export function BoutiqueDiscoveryHeader({
   heroImage,
 }: BoutiqueDiscoveryHeaderProps) {
   return (
-    <div className="relative isolate min-h-44 overflow-hidden border-b border-shell-border/70 bg-transparent sm:hidden">
+    <div className="relative isolate min-h-44 overflow-hidden border-b border-shell-border/70 bg-transparent sm:hidden px-0">
       <div className="pointer-events-none absolute inset-y-0 right-0 w-full overflow-hidden">
         {heroImage ? (
           <>

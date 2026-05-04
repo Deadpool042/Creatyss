@@ -83,7 +83,7 @@ const MARKETING_HEADER_ITEMS = [
   },
 ] as const satisfies readonly MarketingHeaderItem[];
 
-type HeaderPublicProps = Readonly<{
+type TopbarPublicProps = Readonly<{
   pathname: string;
 }>;
 
@@ -158,7 +158,7 @@ function MarketingHeader({ label, icon: Icon }: MarketingHeaderItem) {
   );
 }
 
-export function HeaderPublic({ pathname }: HeaderPublicProps) {
+export function TopbarPublic({ pathname }: TopbarPublicProps) {
   return (
     <>
       <header className="site-header-blur sticky top-0 z-30 border-b border-shell-border">

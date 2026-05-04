@@ -45,11 +45,7 @@ export function BoutiquePriceFilterForm({
 
   return (
     <section className={className}>
-      <p className="m-0 text-xs font-semibold uppercase tracking-widest text-text-muted-strong">
-        Tarif
-      </p>
-
-      <form action="/boutique" method="get" className="grid min-w-0 w-full max-w-full gap-2.5">
+      <form action="/boutique" method="get" className="grid min-w-0 w-full max-w-full gap-2">
         <input type="hidden" name="q" value={searchQuery} />
         {selectedCategorySlug !== "" ? (
           <input type="hidden" name="category" value={selectedCategorySlug} />

@@ -2,15 +2,23 @@
 
 import { BoutiqueProductCard } from "@/features/storefront/catalog/boutique-page/components/products/boutique-product-card";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
+import { cn } from "@/lib/utils";
 
 type BoutiqueProductGridProps = {
   products: BoutiquePageViewModel["products"];
   initialFavoriteProductIds: readonly string[];
 };
 
-export function BoutiqueProductGrid({ products, initialFavoriteProductIds }: BoutiqueProductGridProps) {
+export function BoutiqueProductGrid({
+  products,
+  initialFavoriteProductIds,
+}: BoutiqueProductGridProps) {
   return (
-    <div className="grid grid-cols-2 gap-2 min-[560px]:gap-2.5 min-[560px]:max-[899px]:landscape:grid-cols-3 min-[560px]:max-[899px]:landscape:gap-1 min-[768px]:grid-cols-3 laptop:grid-cols-4 min-[900px]:max-[1199px]:landscape:grid-cols-3 min-[900px]:max-[1199px]:landscape:gap-1.5 min-[1100px]:max-[1199px]:landscape:grid-cols-4 desktop:grid-cols-4 desktop:gap-3 wide:grid-cols-4 ultrawide:grid-cols-5">
+    <div
+      className={cn(
+        "boutique-product-grid grid grid-cols-2 px-2 gap-x-3 gap-y-6 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-7"
+      )}
+    >
       {products.map((product) => (
         <BoutiqueProductCard
           key={product.id}

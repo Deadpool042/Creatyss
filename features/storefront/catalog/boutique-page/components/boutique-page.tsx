@@ -20,43 +20,39 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
   const productCount = model.totalProductCount;
   const productCountLabel = `${productCount} produit${productCount > 1 ? "s" : ""}`;
   const heroImage = model.heroImage;
+
   return (
-    <div className="grid gap-5 sm:max-[899px]:landscape:gap-3 min-[700px]:gap-6 md:max-[1199px]:gap-4 desktop:gap-5">
-      <BoutiquePageHeader
-        model={model}
-        productCountLabel={productCountLabel}
-        isDiscoveryMode={isDiscoveryMode}
-        heroImage={heroImage || null}
-      />
+    <section className="grid gap-4 laptop:grid-cols-[minmax(0,1fr)_220px] laptop:items-start desktop:grid-cols-[minmax(0,1fr)_240px] wide:grid-cols-[240px_minmax(0,1fr)_250px] ultrawide:grid-cols-[280px_minmax(0,1fr)_300px]">
+      <BoutiqueSidebar model={model} />
 
-      <section className="grid gap-4 sm:max-[899px]:landscape:gap-2.5 md:max-[1199px]:gap-3.5 laptop:grid-cols-[minmax(0,1fr)_220px] desktop:grid-cols-[minmax(0,1fr)_240px] desktop:items-start wide:grid-cols-[240px_minmax(0,1fr)_250px] ultrawide:grid-cols-[260px_minmax(0,1fr)_280px]">
-        <BoutiqueSidebar model={model} />
+      <div className="min-w-0 grid gap-4 laptop:gap-5 ">
+        <BoutiquePageHeader
+          model={model}
+          productCountLabel={productCountLabel}
+          isDiscoveryMode={isDiscoveryMode}
+          heroImage={heroImage || null}
+        />
 
-        <div className="grid gap-4 px-2 md:px-0 sm:max-[899px]:landscape:gap-2.5 min-[700px]:gap-5 md:max-[1199px]:gap-4 desktop:pb-10">
-          {isDiscoveryMode ? (
-            <div className="sm:max-[1199px]:landscape:hidden">
-              <BoutiqueMobileCategoryGrid
-                categories={model.categories}
-                resetHref={model.resetHref}
-              />
-            </div>
-          ) : null}
+        {isDiscoveryMode ? (
+          <div className="wide:hidden">
+            <BoutiqueMobileCategoryGrid categories={model.categories} resetHref={model.resetHref} />
+          </div>
+        ) : null}
 
-          {model.products.length > 0 ? (
-            <>
-              <BoutiqueProductGrid
-                products={model.products}
-                initialFavoriteProductIds={initialFavoriteProductIds}
-              />
-              <BoutiquePagination pagination={model.pagination} />
-            </>
-          ) : (
-            <BoutiqueEmptyState hasActiveFilters={hasActiveFilters} resetHref={model.resetHref} />
-          )}
-        </div>
+        {model.products.length > 0 ? (
+          <>
+            <BoutiqueProductGrid
+              products={model.products}
+              initialFavoriteProductIds={initialFavoriteProductIds}
+            />
+            <BoutiquePagination pagination={model.pagination} />
+          </>
+        ) : (
+          <BoutiqueEmptyState hasActiveFilters={hasActiveFilters} resetHref={model.resetHref} />
+        )}
+      </div>
 
-        <BoutiqueMarketAside href={model.resetHref} />
-      </section>
-    </div>
+      <BoutiqueMarketAside href={model.resetHref} />
+    </section>
   );
 }

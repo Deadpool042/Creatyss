@@ -1,10 +1,12 @@
+//features/storefront/catalog/boutique-page/components/products/boutique-product-card.tsx
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 
-import { FavoriteButton } from "@/features/storefront/favorites";
+import { PlaceholderImage } from "@/components/shared/placeholder-image";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
+import { FavoriteButton } from "@/features/storefront/favorites";
 
 type BoutiqueProductCardProps = {
   product: BoutiquePageViewModel["products"][number];
@@ -39,78 +41,97 @@ function getAvailabilityToneClass(
   return "text-text-muted-strong";
 }
 
-export function BoutiqueProductCard({ product, initialFavoriteProductIds }: BoutiqueProductCardProps) {
+export function BoutiqueProductCard({
+  product,
+  initialFavoriteProductIds,
+}: BoutiqueProductCardProps) {
   const availabilityLabel = getAvailabilityLabel(product.availabilityStatus);
   const availabilityToneClass = getAvailabilityToneClass(product.availabilityStatus);
+  const productHref = `/boutique/${product.slug}`;
+
+  const productKindLabel = product.variantCount > 1 ? "Variantes" : "Produit";
+  const variantLabel =
+    product.colorCount > 1
+      ? `${product.colorCount} coloris`
+      : product.variantCount > 1
+        ? `${product.variantCount} variantes`
+        : null;
 
   return (
-    <article className="relative group grid grid-rows-[auto_1fr] overflow-hidden rounded-xl border border-surface-border-subtle/70 bg-surface-panel/44 transition-all duration-300 hover:border-control-border hover:bg-surface-panel/58 sm:max-[899px]:landscape:rounded-lg desktop:rounded-xl">
-      <Link className="block" href={`/boutique/${product.slug}`} tabIndex={-1}>
-        {product.image ? (
-          <figure className="relative aspect-10/9 overflow-hidden bg-media-surface sm:max-[899px]:landscape:aspect-video min-[900px]:max-[1199px]:landscape:aspect-16/10 desktop:aspect-square">
+    <article className="group ">
+      <div className="relative ">
+        <Link
+          className="block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/70 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+          href={productHref}
+        >
+          <div className="boutique-product-card-media relative aspect-square overflow-hidden rounded-2xl bg-media-surface">
             {product.isFeatured ? (
-              <span className="absolute left-2 top-2 z-10 rounded-full border border-control-border-strong bg-surface-panel/82 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand backdrop-blur-sm sm:max-[899px]:landscape:left-1.5 sm:max-[899px]:landscape:top-1.5 sm:max-[899px]:landscape:px-1.5 sm:max-[899px]:landscape:text-[9px] min-[900px]:max-[1199px]:landscape:text-[9px] desktop:left-2.5 desktop:top-2.5 desktop:px-2.5 desktop:text-[9px]">
+              <span className="absolute left-3 top-3 z-10 rounded-full bg-surface-panel/85 px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-brand shadow-sm backdrop-blur">
                 Nouveau
               </span>
             ) : null}
-            <Image
-              alt={product.image.alt}
-              className="absolute inset-0 block h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-              loading="lazy"
-              src={product.image.src}
-              width={500}
-              height={500}
-            />
-          </figure>
-        ) : (
-          <div className="flex aspect-10/9 items-center justify-center bg-media-surface/80 text-media-foreground sm:max-[899px]:landscape:aspect-video min-[900px]:max-[1199px]:landscape:aspect-16/10 desktop:aspect-square">
-            <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-text-muted-strong/80 sm:max-[899px]:landscape:text-[10px]">
-              {product.name}
-            </span>
-          </div>
-        )}
-      </Link>
 
-      <div className="absolute right-2 top-2 z-10">
-        <FavoriteButton
-          productId={product.id}
-          initialFavoriteProductIds={initialFavoriteProductIds}
-        />
+            {product.image ? (
+              <Image
+                alt={product.image.alt}
+                className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.015]"
+                height={500}
+                loading="lazy"
+                sizes="(min-width: 1024px) 25vw, (min-width: 768px) 34vw, 50vw"
+                src={product.image.src}
+                width={500}
+              />
+            ) : (
+              <PlaceholderImage
+                alt=""
+                className="bg-media-surface"
+                imageClassName="opacity-20"
+                fit="contain"
+              />
+            )}
+          </div>
+        </Link>
+
+        <div className="absolute right-3 top-3 z-10">
+          <FavoriteButton
+            productId={product.id}
+            initialFavoriteProductIds={initialFavoriteProductIds}
+          />
+        </div>
       </div>
 
-      <div className="grid gap-1 p-2.5 min-[700px]:gap-1.5 min-[700px]:p-3 sm:max-[899px]:landscape:gap-0.5 sm:max-[899px]:landscape:p-1.5 min-[900px]:max-[1199px]:landscape:gap-1 min-[900px]:max-[1199px]:landscape:p-2.5 desktop:gap-1 desktop:p-2.5">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-text-muted-strong sm:max-[899px]:landscape:text-[8px] min-[900px]:max-[1199px]:landscape:text-[9px] desktop:text-[9px] desktop:tracking-[0.06em]">
-          {product.variantCount > 1 ? "Variantes" : "Produit"}
-        </span>
+      <div className="boutique-product-card-content pt-2.5">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p className="mb-0.5 text-[0.6rem] font-medium uppercase tracking-[0.12em] text-text-muted-strong">
+              {productKindLabel}
+            </p>
 
-        <h3 className="m-0 line-clamp-2 text-sm font-medium leading-snug min-[700px]:text-[0.92rem] sm:max-[899px]:landscape:line-clamp-1 sm:max-[899px]:landscape:text-[0.76rem] sm:max-[899px]:landscape:leading-tight min-[900px]:max-[1199px]:landscape:text-[0.84rem] desktop:text-[0.88rem]">
-          <Link
-            className="transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/60"
-            href={`/boutique/${product.slug}`}
-          >
-            {product.name}
-          </Link>
-        </h3>
+            <h3 className="m-0 line-clamp-2 text-[0.8rem] font-medium leading-snug text-foreground">
+              <Link
+                className="rounded-sm transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/60"
+                href={productHref}
+              >
+                {product.name}
+              </Link>
+            </h3>
+          </div>
 
-        {product.price ? (
-          <p className="m-0 text-sm font-semibold text-foreground sm:max-[899px]:landscape:text-[0.75rem] sm:max-[899px]:landscape:leading-tight min-[900px]:max-[1199px]:landscape:text-[0.8rem] desktop:text-[0.84rem]">
-            {product.price}
-          </p>
-        ) : null}
+          {product.price ? (
+            <p className="shrink-0 text-[0.8rem] font-semibold text-foreground">{product.price}</p>
+          ) : null}
+        </div>
 
-        <div className="grid gap-0.5">
-          <span
-            className={`text-xs sm:max-[899px]:landscape:text-[9px] sm:max-[899px]:landscape:leading-tight min-[900px]:max-[1199px]:landscape:text-[11px] desktop:text-[11px] ${availabilityToneClass}`}
-          >
-            {availabilityLabel}
-          </span>
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[0.7rem]">
+          <span className={availabilityToneClass}>{availabilityLabel}</span>
 
-          {product.variantCount > 1 || product.colorCount > 1 ? (
-            <span className="text-[11px] text-text-muted-strong sm:max-[899px]:landscape:text-[8px] sm:max-[899px]:landscape:leading-tight min-[900px]:max-[1199px]:landscape:text-[9px] desktop:text-[10px]">
-              {product.colorCount > 1
-                ? `${product.colorCount} coloris`
-                : `${product.variantCount} variantes`}
-            </span>
+          {variantLabel ? (
+            <>
+              <span className="text-text-muted-strong/50" aria-hidden="true">
+                ·
+              </span>
+              <span className="text-text-muted-strong">{variantLabel}</span>
+            </>
           ) : null}
         </div>
       </div>
