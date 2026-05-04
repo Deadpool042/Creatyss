@@ -1,14 +1,21 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type BoutiqueMarketAsideProps = {
   href: string;
+  className?: string;
 };
 
-export function BoutiqueMarketAside({ href }: BoutiqueMarketAsideProps) {
+export function BoutiqueMarketAside({ href, className }: BoutiqueMarketAsideProps) {
   return (
-    <aside className="hidden laptop:block laptop:self-stretch laptop:border-l laptop:p-3 desktop:p-3.5 wide:p-4 ultrawide:p-5  ">
+    <aside
+      className={cn(
+        "hidden laptop:block laptop:self-stretch laptop:border-l laptop:p-3 desktop:p-3.5 wide:p-4 ultrawide:p-5",
+        className
+      )}
+    >
       <div className="laptop:sticky laptop:top-32 laptop:z-20 laptop:grid laptop:content-start laptop:gap-3 desktop:gap-3.5 wide:gap-4 ultrawide:gap-4.5">
         <div className="grid gap-1.5">
           <p className="m-0 text-[11px] font-semibold uppercase tracking-widest text-text-muted-strong">

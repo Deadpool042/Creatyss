@@ -52,9 +52,7 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
         )}
       </div>
 
-      <div className="wide:hidden ultrawide:block">
-        <BoutiqueMarketAside href={model.resetHref} />
-      </div>
+      <BoutiqueMarketAside href={model.resetHref} className="wide:hidden ultrawide:block" />
     </section>
   );
 }
