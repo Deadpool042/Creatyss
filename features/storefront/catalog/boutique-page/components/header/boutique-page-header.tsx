@@ -17,7 +17,7 @@ export function BoutiquePageHeader({
   heroImage,
 }: BoutiquePageHeaderProps) {
   return (
-    <section className="grid gap-4 sm:gap-3 md:gap-4 md:pb-4 laptop:gap-3 laptop:pb-4 desktop:gap-3 desktop:pb-3 max-[767px]:landscape:gap-2 max-[767px]:landscape:pb-0">
+    <section className="grid gap-4 sm:gap-3 md:gap-4 md:pb-4 laptop:gap-3 laptop:pb-4 desktop:gap-3 desktop:pb-3 wide:gap-3.5 wide:pb-3.5 ultrawide:gap-4 ultrawide:pb-4 2k:gap-4.5 2k:pb-4.5 4k:gap-5 4k:pb-5 max-[767px]:landscape:gap-2 max-[767px]:landscape:pb-0">
       <div className="max-[767px]:landscape:hidden">
         {isDiscoveryMode ? (
           <>
