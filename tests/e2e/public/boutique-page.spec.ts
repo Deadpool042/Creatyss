@@ -130,6 +130,29 @@ async function getMarketStickySnapshot(page: Page) {
   });
 }
 
+async function isFocusInsideSelector(page: Page, containerSelector: string) {
+  return page.evaluate((selector) => {
+    const container = document.querySelector(selector);
+    const active = document.activeElement;
+    return !!container && !!active && container.contains(active);
+  }, containerSelector);
+}
+
+async function expectFocusInsideSelector(page: Page, containerSelector: string) {
+  await expect.poll(async () => isFocusInsideSelector(page, containerSelector)).toBe(true);
+}
+
+async function expectTabFocusStaysInsideSelector(
+  page: Page,
+  containerSelector: string,
+  tabCount: number
+) {
+  for (let i = 0; i < tabCount; i += 1) {
+    await page.keyboard.press("Tab");
+    await expectFocusInsideSelector(page, containerSelector);
+  }
+}
+
 test.describe("boutique page smoke", () => {
   test.describe("catalogue / counts", () => {
     for (const countCase of COUNT_CASES) {
@@ -213,6 +236,68 @@ test.describe("boutique page smoke", () => {
     await page.goto("/boutique");
 
     await expect(page.getByRole("button", { name: /ouvrir le menu principal/i })).toHaveCount(0);
+  });
+
+  test("keeps keyboard focus trapped in mobile topbar menu and restores trigger focus on close", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto("/boutique");
+
+    const menuTrigger = page.getByRole("button", { name: /ouvrir le menu principal/i });
+    const sheetContent = page.locator('[data-slot="sheet-content"]');
+
+    await expect(menuTrigger).toBeVisible();
+    await menuTrigger.focus();
+    await expect(menuTrigger).toBeFocused();
+
+    await page.keyboard.press("Enter");
+    await expect(sheetContent).toBeVisible();
+
+    await expectFocusInsideSelector(page, '[data-slot="sheet-content"]');
+    await expectTabFocusStaysInsideSelector(page, '[data-slot="sheet-content"]', 6);
+
+    await page.keyboard.press("Escape");
+    await expect(sheetContent).toBeHidden();
+    await expect(menuTrigger).toBeFocused();
+  });
+
+  test("keeps keyboard focus trapped in mobile filters drawer and restores trigger focus on close", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto("/boutique");
+
+    const drawerTrigger = page.getByRole("button", { name: "Filtres", exact: true }).first();
+    const drawerContent = page.locator('[data-slot="drawer-content"]');
+
+    await expect(drawerTrigger).toBeVisible();
+    await drawerTrigger.focus();
+    await expect(drawerTrigger).toBeFocused();
+
+    await page.keyboard.press("Enter");
+    await expect(drawerContent).toBeVisible();
+
+    expect
+      .soft(
+        await isFocusInsideSelector(page, '[data-slot="drawer-content"]'),
+        "Le focus devrait entrer dans le drawer après Enter"
+      )
+      .toBe(true);
+
+    for (let i = 0; i < 6; i += 1) {
+      await page.keyboard.press("Tab");
+      expect
+        .soft(
+          await isFocusInsideSelector(page, '[data-slot="drawer-content"]'),
+          `Le focus devrait rester dans le drawer après Tab #${i + 1}`
+        )
+        .toBe(true);
+    }
+
+    await page.keyboard.press("Escape");
+    await expect(drawerContent).toBeHidden();
+    await expect.soft(drawerTrigger).toBeFocused();
   });
 
   test("keeps the expected layout around the 1440/1441 transition and on 4k", async ({ page }) => {

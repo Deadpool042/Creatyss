@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { XIcon } from "lucide-react";
 
@@ -137,6 +137,7 @@ export function BoutiqueMobileFilters({
   label = "Filtres",
   className,
 }: BoutiqueMobileFiltersProps) {
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const searchParams = useSearchParams();
   const [selectedCategorySlug, setSelectedCategorySlug] = useState(model.selectedCategorySlug);
   const [selectedAvailability, setSelectedAvailability] = useState<
@@ -167,14 +168,20 @@ export function BoutiqueMobileFilters({
     : `Voir ${resultCount} résultat${resultCount > 1 ? "s" : ""}`;
 
   return (
-    <Drawer direction="bottom">
+    <Drawer direction="bottom" modal>
       <DrawerTrigger asChild>
         <button type="button" className={className}>
           {label}
         </button>
       </DrawerTrigger>
 
-      <DrawerContent className="max-h-[86dvh] rounded-t-[1.75rem] border-shell-border/70 bg-surface-floating/92 px-0 pb-0 pt-0 shadow-floating backdrop-blur-xl">
+      <DrawerContent
+        onOpenAutoFocus={(event) => {
+          event.preventDefault();
+          closeButtonRef.current?.focus();
+        }}
+        className="max-h-[86dvh] rounded-t-[1.75rem] border-shell-border/70 bg-surface-floating/92 px-0 pb-0 pt-0 shadow-floating backdrop-blur-xl"
+      >
         <DrawerHeader className="flex-row items-center justify-between border-b border-shell-border/70 px-4 py-3">
           <div className="grid gap-0.5">
             <DrawerTitle>Filtres</DrawerTitle>
@@ -184,7 +191,13 @@ export function BoutiqueMobileFilters({
           </div>
 
           <DrawerClose asChild>
-            <Button aria-label="Fermer les filtres" size="icon-sm" type="button" variant="ghost">
+            <Button
+              ref={closeButtonRef}
+              aria-label="Fermer les filtres"
+              size="icon-sm"
+              type="button"
+              variant="ghost"
+            >
               <XIcon />
             </Button>
           </DrawerClose>
