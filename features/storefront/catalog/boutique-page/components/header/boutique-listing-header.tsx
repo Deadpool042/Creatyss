@@ -39,9 +39,7 @@ export function BoutiqueListingHeader({
               Des pièces uniques faites main, pensées pour durer et sublimer vos looks du quotidien.
             </p>
 
-            <p className="m-0 text-xs text-text-muted-strong">
-              {productCountLabel}
-            </p>
+            <p className="m-0 text-xs text-text-muted-strong">{productCountLabel}</p>
           </div>
         </div>
       </div>

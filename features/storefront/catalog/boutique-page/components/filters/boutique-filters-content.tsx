@@ -39,10 +39,7 @@ function buildCategoryGroups(categories: BoutiqueCategoryItem[]): CategoryGroup[
   }));
 }
 
-function buildCategoryHref(
-  categorySlug: string | null,
-  model: BoutiquePageViewModel
-): string {
+function buildCategoryHref(categorySlug: string | null, model: BoutiquePageViewModel): string {
   return buildBoutiqueUrl({
     q: model.searchQuery,
     category: categorySlug,
@@ -108,9 +105,9 @@ function FilterOption({
             ? "border-brand bg-brand"
             : containsActiveChild
               ? "border-brand/35 bg-brand/8"
-            : isIncluded
-              ? "border-brand/40 bg-brand/15"
-              : "border-control-border/60"
+              : isIncluded
+                ? "border-brand/40 bg-brand/15"
+                : "border-control-border/60"
         )}
       >
         {isActive ? <Check className="size-2.5 stroke-3 text-white" /> : null}
