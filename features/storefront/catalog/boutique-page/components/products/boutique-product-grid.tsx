@@ -16,7 +16,7 @@ export function BoutiqueProductGrid({
   return (
     <div
       className={cn(
-        "boutique-product-grid grid grid-cols-2 px-2 gap-x-3 gap-y-6 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-4 lg:gap-y-7"
+        "boutique-product-grid grid grid-cols-2 gap-x-3 gap-y-6 px-2 md:grid-cols-3 laptop:grid-cols-4 laptop:gap-x-4 laptop:gap-y-7 wide:grid-cols-5 4k:grid-cols-6"
       )}
     >
       {products.map((product) => (
