@@ -60,13 +60,16 @@ export async function listPublishedProductsPage(
 
   const orderBy = getPublishedProductsOrderBy(input.sort);
   const hasPostMappingFilters = input.availabilityStatus !== null;
+  const hasCategoryFilter = input.categorySlug !== null;
 
   const skipOffset =
     typeof input.skip === "number" && Number.isSafeInteger(input.skip) && input.skip > 0
       ? input.skip
       : 0;
 
-  if (!hasPostMappingFilters) {
+  // Fast path : sans filtre catégorie ni disponibilité, Prisma ne génère pas de JOIN
+  // sur la relation parent → pas de risque de doublons, take=N+1 est fiable.
+  if (!hasPostMappingFilters && !hasCategoryFilter) {
     const cursorWhere = decodedCursor
       ? buildPublishedProductsCursorWhere(input.sort, decodedCursor)
       : null;
@@ -90,6 +93,7 @@ export async function listPublishedProductsPage(
 
   const targetSize = normalizedLimit + 1 + skipOffset;
   const mappedMatches: CatalogProductListItem[] = [];
+  const seenIds = new Set<string>();
 
   let currentCursor = decodedCursor;
   let exhausted = false;
@@ -120,6 +124,9 @@ export async function listPublishedProductsPage(
     }
 
     for (const product of batch) {
+      if (seenIds.has(product.id)) continue;
+      seenIds.add(product.id);
+
       const mapped = mapPublishedProductListingRecord(product);
       const matchesAvailability = matchesStorefrontAvailabilityFilter(
         mapped.availabilityStatus,
