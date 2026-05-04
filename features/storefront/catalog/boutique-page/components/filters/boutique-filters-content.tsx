@@ -117,7 +117,7 @@ function FilterOption({
       </span>
       <span className="min-w-0 flex-1 truncate">{label}</span>
       {count != null ? (
-        <span className="shrink-0 text-[0.65rem] tabular-nums text-text-muted-strong/70">
+        <span className="shrink-0 text-[0.68rem] tabular-nums text-text-muted-strong/70">
           {count}
         </span>
       ) : null}
@@ -138,13 +138,13 @@ export function BoutiqueFiltersContent({
   return (
     <div className={className}>
       <div className="flex items-center justify-between py-1">
-        <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-text-muted-strong">
+        <p className="m-0 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-text-muted-strong">
           Filtres
         </p>
         {hasActiveFilters ? (
           <CustomLink
             href={model.resetHref}
-            className="text-[0.65rem] text-text-muted-strong no-underline transition-colors hover:text-foreground"
+            className="text-[0.68rem] text-text-muted-strong no-underline transition-colors hover:text-foreground"
           >
             Réinitialiser
           </CustomLink>

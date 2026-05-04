@@ -66,7 +66,7 @@ export function BoutiqueProductCard({
         >
           <div className="boutique-product-card-media relative aspect-square overflow-hidden rounded-2xl bg-media-surface">
             {product.isFeatured ? (
-              <span className="absolute left-3 top-3 z-10 rounded-full bg-surface-panel/85 px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-brand shadow-sm backdrop-blur">
+              <span className="absolute left-3 top-3 z-10 rounded-full bg-surface-panel/85 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-brand shadow-sm backdrop-blur">
                 Nouveau
               </span>
             ) : null}
@@ -103,7 +103,7 @@ export function BoutiqueProductCard({
       <div className="boutique-product-card-content pt-2.5">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <p className="mb-0.5 text-[0.6rem] font-medium uppercase tracking-[0.12em] text-text-muted-strong">
+            <p className="mb-0.5 text-[0.68rem] font-medium uppercase tracking-[0.12em] text-text-muted-strong">
               {productKindLabel}
             </p>
 
@@ -122,7 +122,7 @@ export function BoutiqueProductCard({
           ) : null}
         </div>
 
-        <div className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[0.7rem]">
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs">
           <span className={availabilityToneClass}>{availabilityLabel}</span>
 
           {variantLabel ? (
