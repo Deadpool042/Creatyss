@@ -7,6 +7,7 @@ import {
   CreditCardIcon,
   GemIcon,
   Grid2X2Icon,
+  HeartIcon,
   HouseIcon,
   MailIcon,
   MapPinIcon,
@@ -22,6 +23,15 @@ import {
 
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { CustomLink } from "@/components/shared";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 type PublicNavIcon = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -62,6 +72,14 @@ const HEADER_ACTIONS = [
 
 const TOUCH_HEADER_ACTIONS = [
   { href: "/panier", label: "Panier", icon: ShoppingCartIcon },
+] as const satisfies readonly PublicNavItem[];
+
+const MOBILE_MENU_ITEMS = [
+  { href: "/", label: "Accueil", icon: HouseIcon },
+  { href: "/boutique", label: "Boutique", icon: ShoppingBagIcon },
+  { href: "/blog", label: "Blog", icon: NewspaperIcon },
+  { href: "/favoris", label: "Favoris", icon: HeartIcon },
+  { href: "/contact", label: "Contact", icon: MailIcon },
 ] as const satisfies readonly PublicNavItem[];
 
 const MARKETING_HEADER_ITEMS = [
@@ -158,6 +176,68 @@ function MarketingHeader({ label, icon: Icon }: MarketingHeaderItem) {
   );
 }
 
+function MobileMenuLink({
+  href,
+  label,
+  icon: Icon,
+  pathname,
+}: PublicNavItem & { pathname: string }) {
+  const isActive = isPublicLinkActive(pathname, href);
+
+  return (
+    <SheetClose asChild>
+      <Link
+        href={href}
+        aria-current={isActive ? "page" : undefined}
+        className={[
+          "flex items-center gap-3 rounded-lg border px-3 py-2.5 text-sm transition-colors",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/70",
+          isActive
+            ? "border-brand/35 bg-surface-subtle text-foreground"
+            : "border-transparent text-text-muted-strong hover:border-control-border hover:bg-surface-subtle hover:text-foreground",
+        ].join(" ")}
+      >
+        <Icon className="size-4" aria-hidden="true" />
+        <span>{label}</span>
+      </Link>
+    </SheetClose>
+  );
+}
+
+function MobileTopbarMenu({ pathname }: { pathname: string }) {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <button
+          type="button"
+          aria-label="Ouvrir le menu principal"
+          className="inline-flex h-9 w-9 items-center justify-center justify-self-start rounded-full text-foreground/72 transition-colors hover:bg-surface-subtle hover:text-foreground min-[560px]:max-[1199px]:landscape:h-8 min-[560px]:max-[1199px]:landscape:w-8"
+        >
+          <MenuIcon className="size-4 min-[560px]:max-[1199px]:landscape:size-3.25" />
+        </button>
+      </SheetTrigger>
+
+      <SheetContent
+        side="left"
+        className="w-80 max-w-[86vw] border-surface-border-subtle/70 bg-surface-floating/96 p-0 backdrop-blur-xl"
+      >
+        <SheetHeader className="border-b border-shell-border/70 px-4 py-3">
+          <SheetTitle>Menu</SheetTitle>
+          <SheetDescription className="sr-only">
+            Navigation principale du site Creatyss.
+          </SheetDescription>
+        </SheetHeader>
+
+        <nav aria-label="Menu mobile" className="grid gap-1 p-3">
+          {MOBILE_MENU_ITEMS.map((link) => (
+            <MobileMenuLink key={link.href} {...link} pathname={pathname} />
+          ))}
+        </nav>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
 export function TopbarPublic({ pathname }: TopbarPublicProps) {
   return (
     <>
@@ -169,13 +249,7 @@ export function TopbarPublic({ pathname }: TopbarPublicProps) {
         </div>
         <div className="mx-auto min-h-18 w-full max-w-430 px-4 sm:px-6 xl:px-12 min-[560px]:max-[1199px]:landscape:min-h-13">
           <div className="grid min-h-16 grid-cols-[5.5rem_minmax(0,1fr)_5.5rem] items-center min-[1200px]:hidden min-[560px]:max-[1199px]:landscape:min-h-11 min-[560px]:max-[1199px]:landscape:grid-cols-[4.5rem_minmax(0,1fr)_4.5rem]">
-            <button
-              type="button"
-              aria-label="Ouvrir le menu"
-              className="inline-flex h-9 w-9 items-center justify-center justify-self-start rounded-full text-foreground/72 transition-colors hover:bg-surface-subtle hover:text-foreground min-[560px]:max-[1199px]:landscape:h-8 min-[560px]:max-[1199px]:landscape:w-8"
-            >
-              <MenuIcon className="size-4 min-[560px]:max-[1199px]:landscape:size-3.25" />
-            </button>
+            <MobileTopbarMenu pathname={pathname} />
 
             <div className="justify-self-center">
               <PublicTouchLogo />
