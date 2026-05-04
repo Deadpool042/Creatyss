@@ -1,172 +1,283 @@
-import type { ReactElement } from "react";
+"use client";
 
+import type { ReactElement } from "react";
+import { Check } from "lucide-react";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { BoutiquePriceFilterForm } from "@/features/storefront/catalog/boutique-page/components/filters/boutique-price-filter-form";
 import { buildBoutiqueUrl } from "@/features/storefront/catalog/boutique-page/model/build-boutique-url";
-import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
+import type {
+  BoutiqueCategoryItem,
+  BoutiquePageViewModel,
+} from "@/features/storefront/catalog/boutique-page/types";
 import { CustomLink } from "@/components/shared";
+import { cn } from "@/lib/utils";
+
+type WrapLinkFn = (link: ReactElement, key: string) => ReactElement;
+
+type CategoryGroup = {
+  parent: BoutiqueCategoryItem;
+  children: BoutiqueCategoryItem[];
+};
+
+type CategoryVisualState = {
+  isActive: boolean;
+  isIncluded: boolean;
+  containsActiveChild: boolean;
+};
+
+function buildCategoryGroups(categories: BoutiqueCategoryItem[]): CategoryGroup[] {
+  const roots = categories.filter((c) => c.parentId === null);
+  return roots.map((parent) => ({
+    parent,
+    children: categories.filter((c) => c.parentId === parent.id),
+  }));
+}
+
+function buildCategoryHref(
+  categorySlug: string | null,
+  model: BoutiquePageViewModel
+): string {
+  return buildBoutiqueUrl({
+    q: model.searchQuery,
+    category: categorySlug,
+    availability: model.selectedAvailabilityStatus,
+    minPrice: model.selectedMinPriceCents,
+    maxPrice: model.selectedMaxPriceCents,
+    sort: model.selectedSort,
+  });
+}
+
+function buildCategoryToggleHref(
+  category: BoutiqueCategoryItem,
+  model: BoutiquePageViewModel
+): string {
+  return buildCategoryHref(category.isActive ? null : category.slug, model);
+}
 
 type BoutiqueFiltersContentProps = {
   model: BoutiquePageViewModel;
-  className?: string;
-  wrapLink?: (link: ReactElement, key: string) => ReactElement;
+  className?: string | undefined;
+  wrapLink?: WrapLinkFn | undefined;
 };
+
+type FilterOptionProps = {
+  href: string;
+  isActive: boolean;
+  isIncluded?: boolean | undefined;
+  containsActiveChild?: boolean | undefined;
+  label: string;
+  count?: number | null | undefined;
+  wrapLink?: WrapLinkFn | undefined;
+  linkKey: string;
+};
+
+function FilterOption({
+  href,
+  isActive,
+  isIncluded,
+  containsActiveChild,
+  label,
+  count,
+  wrapLink,
+  linkKey,
+}: FilterOptionProps) {
+  const link = (
+    <CustomLink
+      href={href}
+      aria-current={isActive ? "page" : undefined}
+      className={cn(
+        "flex items-center gap-2 rounded py-1.5 pr-0.5 text-[0.8rem] no-underline transition-colors hover:no-underline",
+        isActive
+          ? "text-foreground"
+          : containsActiveChild
+            ? "text-foreground/88"
+            : "text-text-muted-strong hover:text-foreground"
+      )}
+    >
+      <span
+        aria-hidden="true"
+        className={cn(
+          "flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-[3px] border transition-colors",
+          isActive
+            ? "border-brand bg-brand"
+            : containsActiveChild
+              ? "border-brand/35 bg-brand/8"
+            : isIncluded
+              ? "border-brand/40 bg-brand/15"
+              : "border-control-border/60"
+        )}
+      >
+        {isActive ? <Check className="size-2.5 stroke-3 text-white" /> : null}
+      </span>
+      <span className="min-w-0 flex-1 truncate">{label}</span>
+      {count != null ? (
+        <span className="shrink-0 text-[0.65rem] tabular-nums text-text-muted-strong/70">
+          {count}
+        </span>
+      ) : null}
+    </CustomLink>
+  );
+
+  return wrapLink ? wrapLink(link, linkKey) : link;
+}
 
 export function BoutiqueFiltersContent({
   model,
-  className = "grid gap-5",
+  className = "grid gap-1",
   wrapLink,
 }: BoutiqueFiltersContentProps) {
-  const withWrapper = (link: ReactElement, key: string) => (wrapLink ? wrapLink(link, key) : link);
-
-  const filterLinkClassName = (isActive: boolean) =>
-    [
-      "group flex items-center justify-between gap-2 border-b px-0.5 py-2 text-sm no-underline transition-colors hover:no-underline",
-      isActive
-        ? "border-shell-border text-foreground"
-        : "border-shell-border/50 text-text-muted-strong hover:border-shell-border hover:text-foreground",
-    ].join(" ");
-
-  const selectedCategoryLabel =
-    model.selectedCategorySlug === ""
-      ? "Tous les produits"
-      : (model.filterCategories.find((category) => category.isActive)?.name ?? "Tous les produits");
-
-  const selectedAvailabilityLabel =
-    model.selectedAvailabilityStatus === null
-      ? "Toutes les disponibilités"
-      : (model.availabilityOptions.find((option) => option.id === model.selectedAvailabilityStatus)
-          ?.label ?? "Toutes les disponibilités");
+  const hasActiveFilters = model.activeFilterLabels.length > 0;
+  const categoryGroups = buildCategoryGroups(model.categories);
 
   return (
     <div className={className}>
-      <section className="grid gap-3">
-        <div className="grid gap-0.5">
-          <p className="m-0 text-xs font-semibold uppercase tracking-widest text-text-muted-strong">
+      <div className="flex items-center justify-between py-1">
+        <p className="m-0 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-text-muted-strong">
+          Filtres
+        </p>
+        {hasActiveFilters ? (
+          <CustomLink
+            href={model.resetHref}
+            className="text-[0.65rem] text-text-muted-strong no-underline transition-colors hover:text-foreground"
+          >
+            Réinitialiser
+          </CustomLink>
+        ) : null}
+      </div>
+
+      <Accordion
+        type="multiple"
+        defaultValue={["categories", "availability", "price"]}
+        className="w-full "
+      >
+        <AccordionItem value="categories">
+          <AccordionTrigger className="py-2 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-text-muted-strong hover:text-foreground hover:no-underline">
             Catégories
-          </p>
-          <p className="m-0 text-[10px] tracking-wide text-text-muted-strong/60">
-            {selectedCategoryLabel}
-          </p>
-        </div>
-
-        <div className="grid gap-0.5">
-          {withWrapper(
-            <CustomLink
-              href={buildBoutiqueUrl({
-                q: model.searchQuery,
-                availability: model.selectedAvailabilityStatus,
-                minPrice: model.selectedMinPriceCents,
-                maxPrice: model.selectedMaxPriceCents,
-                sort: model.selectedSort,
-              })}
-              aria-current={model.selectedCategorySlug === "" ? "page" : undefined}
-              className={filterLinkClassName(model.selectedCategorySlug === "")}
-            >
-              <span className="truncate">Tous les produits</span>
-              <span
-                aria-hidden="true"
-                className={
-                  model.selectedCategorySlug === ""
-                    ? "h-1.5 w-1.5 rounded-full bg-brand"
-                    : "h-1.5 w-1.5 rounded-full bg-transparent"
-                }
+          </AccordionTrigger>
+          <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline overflow-x-auto">
+            <div className="grid pb-1">
+              <FilterOption
+                href={buildCategoryHref(null, model)}
+                isActive={model.selectedCategorySlug === ""}
+                label="Tous les produits"
+                wrapLink={wrapLink}
+                linkKey="category-all"
               />
-            </CustomLink>,
-            "category-all"
-          )}
+              {categoryGroups.map(({ parent, children }) => {
+                const visualState: CategoryVisualState = {
+                  isActive: parent.isActive,
+                  isIncluded: false,
+                  containsActiveChild: children.some((child) => child.isActive),
+                };
 
-          {model.filterCategories.map((category) =>
-            withWrapper(
-              <CustomLink
-                key={category.id}
-                href={category.href}
-                aria-current={category.isActive ? "page" : undefined}
-                className={filterLinkClassName(category.isActive)}
-              >
-                <span className="truncate">{category.name}</span>
-                <span
-                  aria-hidden="true"
-                  className={
-                    category.isActive
-                      ? "h-1.5 w-1.5 rounded-full bg-brand"
-                      : "h-1.5 w-1.5 rounded-full bg-transparent"
-                  }
-                />
-              </CustomLink>,
-              `category-${category.id}`
-            )
-          )}
-        </div>
-      </section>
+                return (
+                  <div key={parent.id} className="grid">
+                    <FilterOption
+                      href={buildCategoryToggleHref(parent, model)}
+                      isActive={visualState.isActive}
+                      isIncluded={visualState.isIncluded}
+                      containsActiveChild={visualState.containsActiveChild}
+                      label={parent.name}
+                      wrapLink={wrapLink}
+                      linkKey={`category-${parent.id}`}
+                    />
+                    {children.length > 0 ? (
+                      <div className="grid pl-4">
+                        {children.map((child) => {
+                          const childVisualState: CategoryVisualState = {
+                            isActive: child.isActive,
+                            isIncluded: !child.isActive && parent.isActive,
+                            containsActiveChild: false,
+                          };
 
-      <section className="grid gap-3 border-t border-shell-border/70 pt-5">
-        <div className="grid gap-0.5">
-          <p className="m-0 text-xs font-semibold uppercase tracking-widest text-text-muted-strong">
-            Disponibilité
-          </p>
-          <p className="m-0 text-[10px] tracking-wide text-text-muted-strong/60">
-            {selectedAvailabilityLabel}
-          </p>
-        </div>
-
-        <div className="grid gap-0.5">
-          {withWrapper(
-            <CustomLink
-              href={buildBoutiqueUrl({
-                q: model.searchQuery,
-                category: model.selectedCategorySlug,
-                availability: null,
-                minPrice: model.selectedMinPriceCents,
-                maxPrice: model.selectedMaxPriceCents,
-                sort: model.selectedSort,
+                          return (
+                            <FilterOption
+                              key={child.id}
+                              href={buildCategoryToggleHref(child, model)}
+                              isActive={childVisualState.isActive}
+                              isIncluded={childVisualState.isIncluded}
+                              containsActiveChild={childVisualState.containsActiveChild}
+                              label={child.name}
+                              wrapLink={wrapLink}
+                              linkKey={`category-${child.id}`}
+                            />
+                          );
+                        })}
+                      </div>
+                    ) : null}
+                  </div>
+                );
               })}
-              aria-current={model.selectedAvailabilityStatus === null ? "page" : undefined}
-              className={filterLinkClassName(model.selectedAvailabilityStatus === null)}
-            >
-              <span className="truncate">Toutes les disponibilités</span>
-              <span className="rounded-full border border-control-border/70 bg-surface-panel/30 px-1.5 py-0.5 font-medium tabular-nums text-[10px] text-text-muted-strong">
-                {model.totalProductCount}
-              </span>
-            </CustomLink>,
-            "availability-all"
-          )}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
 
-          {model.availabilityOptions.map((option) =>
-            withWrapper(
-              <CustomLink
-                key={option.id}
+        <AccordionItem value="availability">
+          <AccordionTrigger className="py-2 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-text-muted-strong hover:text-foreground hover:no-underline">
+            Disponibilité
+          </AccordionTrigger>
+          <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline">
+            <div className="grid pb-1">
+              <FilterOption
                 href={buildBoutiqueUrl({
                   q: model.searchQuery,
                   category: model.selectedCategorySlug,
-                  availability: option.id,
+                  availability: null,
                   minPrice: model.selectedMinPriceCents,
                   maxPrice: model.selectedMaxPriceCents,
                   sort: model.selectedSort,
                 })}
-                aria-current={model.selectedAvailabilityStatus === option.id ? "page" : undefined}
-                className={filterLinkClassName(model.selectedAvailabilityStatus === option.id)}
-              >
-                <span className="truncate">{option.label}</span>
-                {option.count !== null ? (
-                  <span className="rounded-full border border-control-border/70 bg-surface-panel/30 px-1.5 py-0.5 font-medium tabular-nums text-[10px] text-text-muted-strong">
-                    {option.count}
-                  </span>
-                ) : null}
-              </CustomLink>,
-              `availability-${option.id}`
-            )
-          )}
-        </div>
-      </section>
+                isActive={model.selectedAvailabilityStatus === null}
+                label="Toutes les disponibilités"
+                count={model.totalProductCount}
+                wrapLink={wrapLink}
+                linkKey="availability-all"
+              />
+              {model.availabilityOptions.map((option) => (
+                <FilterOption
+                  key={`availability-${option.id}`}
+                  href={buildBoutiqueUrl({
+                    q: model.searchQuery,
+                    category: model.selectedCategorySlug,
+                    availability: option.id,
+                    minPrice: model.selectedMinPriceCents,
+                    maxPrice: model.selectedMaxPriceCents,
+                    sort: model.selectedSort,
+                  })}
+                  isActive={model.selectedAvailabilityStatus === option.id}
+                  label={option.label}
+                  count={option.count}
+                  wrapLink={wrapLink}
+                  linkKey={`availability-${option.id}`}
+                />
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
 
-      <BoutiquePriceFilterForm
-        searchQuery={model.searchQuery}
-        selectedCategorySlug={model.selectedCategorySlug}
-        selectedAvailabilityStatus={model.selectedAvailabilityStatus}
-        selectedSort={model.selectedSort}
-        selectedMinPriceCents={model.selectedMinPriceCents}
-        selectedMaxPriceCents={model.selectedMaxPriceCents}
-      />
+        <AccordionItem value="price" className="border-b-0">
+          <AccordionTrigger className="py-2 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-text-muted-strong hover:text-foreground hover:no-underline">
+            Prix
+          </AccordionTrigger>
+          <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline">
+            <BoutiquePriceFilterForm
+              searchQuery={model.searchQuery}
+              selectedCategorySlug={model.selectedCategorySlug}
+              selectedAvailabilityStatus={model.selectedAvailabilityStatus}
+              selectedSort={model.selectedSort}
+              selectedMinPriceCents={model.selectedMinPriceCents}
+              selectedMaxPriceCents={model.selectedMaxPriceCents}
+              className="grid gap-2 pb-1"
+            />
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }
