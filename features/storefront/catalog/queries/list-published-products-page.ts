@@ -92,7 +92,7 @@ export async function listPublishedProductsPage(
   }
 
   const targetSize = normalizedLimit + 1 + skipOffset;
-  const mappedMatches: CatalogProductListItem[] = [];
+  const mappedMatches: CatalogProductListPage["items"] = [];
   const seenIds = new Set<string>();
 
   let currentCursor = decodedCursor;
@@ -106,10 +106,7 @@ export async function listPublishedProductsPage(
       ? buildPublishedProductsCursorWhere(input.sort, currentCursor)
       : null;
 
-    const fetchBatchSize = Math.max(
-      DEFAULT_FETCH_BATCH_SIZE,
-      Math.min(96, targetSize * 3)
-    );
+    const fetchBatchSize = Math.max(DEFAULT_FETCH_BATCH_SIZE, Math.min(96, targetSize * 3));
 
     const batch = await db.product.findMany({
       where: cursorWhere ? { AND: [baseWhere, cursorWhere] } : baseWhere,
