@@ -33,7 +33,10 @@ export function BoutiqueMobileCategoryGrid({
   }
 
   return (
-    <section className="grid gap-2.5 pt-0.5 min-[560px]:hidden" aria-labelledby="boutique-categories-title">
+    <section
+      className="grid gap-2.5 pt-0.5 min-[560px]:hidden"
+      aria-labelledby="boutique-categories-title"
+    >
       <div className="flex items-center justify-between">
         <h2 id="boutique-categories-title" className="m-0 text-sm font-semibold text-brand">
           Catégories
@@ -49,7 +52,7 @@ export function BoutiqueMobileCategoryGrid({
         </CustomLink>
       </div>
 
-      <div className="-mx-1 flex snap-x snap-mandatory gap-1.5 overflow-x-auto px-1 pb-1">
+      <div className="flex snap-x snap-mandatory gap-1.5 overflow-x-auto px-1 pb-1">
         {items.map((category) => {
           const visual = getCategoryVisual(category);
           const imageSrc = visual?.src ?? FALLBACK_CATEGORY_VISUAL_SRC;

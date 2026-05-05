@@ -171,6 +171,21 @@ async function getHorizontalOverflowPx(page: Page) {
   });
 }
 
+async function getLocalCategoryRailMetrics(page: Page) {
+  return page.evaluate(() => {
+    const rail = document.querySelector("div.snap-x.snap-mandatory.overflow-x-auto");
+    if (!(rail instanceof HTMLElement)) {
+      return null;
+    }
+
+    return {
+      scrollWidth: rail.scrollWidth,
+      clientWidth: rail.clientWidth,
+      hasLocalOverflow: rail.scrollWidth - rail.clientWidth > 1,
+    };
+  });
+}
+
 async function expectNoVisibleInertInteractive(page: Page) {
   await expect
     .poll(async () =>
@@ -351,6 +366,35 @@ test.describe("boutique page smoke", () => {
     await expect.soft(drawerTrigger).toBeFocused();
   });
 
+  test("keeps global reflow stable on required boutique urls and narrow viewports", async ({
+    page,
+  }) => {
+    for (const viewport of [
+      { width: 320, height: 667 },
+      { width: 375, height: 667 },
+      { width: 667, height: 375 },
+      { width: 768, height: 1024 },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+
+      for (const url of ["/boutique", "/boutique?category=sacs", "/boutique?category=mini-sacs"]) {
+        await page.goto(url);
+
+        const globalOverflowPx = await getHorizontalOverflowPx(page);
+        expect(
+          globalOverflowPx,
+          `Global overflow should stay <= 1 on ${url} at ${viewport.width}x${viewport.height}`
+        ).toBeLessThanOrEqual(1);
+
+        if (url === "/boutique" && viewport.width <= 375) {
+          const rail = await getLocalCategoryRailMetrics(page);
+          expect(rail).not.toBeNull();
+          expect(rail?.hasLocalOverflow).toBe(true);
+        }
+      }
+    }
+  });
+
   test("keeps mobile filters drawer accessible and functional across required mobile viewports", async ({
     page,
   }) => {
@@ -403,7 +447,9 @@ test.describe("boutique page smoke", () => {
       await drawerContent.getByRole("button", { name: "Réinitialiser", exact: true }).click();
       await expect(page).toHaveURL(/\/boutique(?:\?.*)?$/);
       await expect(page).not.toHaveURL(/[?&](category|availability|minPrice|maxPrice)=/);
-      await expect(drawerContent).toBeHidden();
+      await expect
+        .poll(async () => page.locator('[data-slot="drawer-content"]:visible').count())
+        .toBe(0);
 
       const finalOverflowPx = await getHorizontalOverflowPx(page);
       expect(finalOverflowPx).toBeLessThanOrEqual(baselineOverflowPx);
