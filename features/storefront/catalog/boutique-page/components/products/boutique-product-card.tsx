@@ -103,7 +103,7 @@ export function BoutiqueProductCard({
       <div className="boutique-product-card-content pt-2.5">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <p className="mb-0.5 text-[0.75rem] font-medium uppercase tracking-[0.1em] text-text-muted-strong">
+            <p className="mb-0.5 text-[0.75rem] font-medium uppercase tracking-widest text-text-muted-strong">
               {productKindLabel}
             </p>
 

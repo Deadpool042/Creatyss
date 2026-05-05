@@ -135,7 +135,7 @@ export function BoutiqueFiltersContent({
   return (
     <div className={className}>
       <div className="flex items-center justify-between py-1">
-        <p className="m-0 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-text-muted-strong">
+        <p className="m-0 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong">
           Filtres
         </p>
         {hasActiveFilters ? (
@@ -154,7 +154,7 @@ export function BoutiqueFiltersContent({
         className="w-full "
       >
         <AccordionItem value="categories">
-          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-text-muted-strong hover:text-foreground hover:no-underline">
+          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline">
             Catégories
           </AccordionTrigger>
           <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline overflow-x-auto">
@@ -216,7 +216,7 @@ export function BoutiqueFiltersContent({
         </AccordionItem>
 
         <AccordionItem value="availability">
-          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-text-muted-strong hover:text-foreground hover:no-underline">
+          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline">
             Disponibilité
           </AccordionTrigger>
           <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline">
@@ -259,7 +259,7 @@ export function BoutiqueFiltersContent({
         </AccordionItem>
 
         <AccordionItem value="price" className="border-b-0">
-          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-text-muted-strong hover:text-foreground hover:no-underline">
+          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline">
             Prix
           </AccordionTrigger>
           <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline">
