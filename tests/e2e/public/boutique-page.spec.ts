@@ -188,9 +188,7 @@ async function expectNoVisibleInertInteractive(page: Page) {
           );
         };
 
-        const nodes = [...document.querySelectorAll("button, a")].filter((node) =>
-          visible(node)
-        );
+        const nodes = [...document.querySelectorAll("button, a")].filter((node) => visible(node));
 
         return nodes.every((node) => {
           if (node.tagName.toLowerCase() === "a") {
