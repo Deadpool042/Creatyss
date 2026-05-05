@@ -114,7 +114,7 @@ export function ProductHeroSectionLandscape({
                 density="compact"
               />
 
-              <div className="flex flex-wrap items-center gap-1.5 text-[0.65rem] leading-4 text-foreground-muted">
+              <div className="flex flex-wrap items-center gap-1.5 text-[0.75rem] leading-4 text-foreground-muted">
                 <span className="inline-flex items-center gap-1">
                   <MapPin aria-hidden="true" className="size-3 text-brand/85" />
                   <span>Fait main à Saint-Étienne</span>
@@ -169,7 +169,7 @@ export function ProductHeroSectionLandscape({
                 ) : null}
 
                 {shouldShowCompactTrust ? (
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.68rem] text-foreground-muted">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.75rem] text-foreground-muted">
                     <span className="inline-flex items-center gap-1 rounded-full border border-control-border px-2 py-0.5">
                       <CreditCard aria-hidden="true" className="size-3" />
                       <span>CB</span>

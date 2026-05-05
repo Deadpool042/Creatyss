@@ -300,6 +300,55 @@ async function hasNoVisibleNamelessEnabledButton(page: Page) {
   });
 }
 
+async function getMinVisibleFontSizeForText(page: Page, textNeedle: string) {
+  return page.evaluate((needle) => {
+    const normalize = (value: string) =>
+      value
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .toLowerCase()
+        .trim();
+
+    const visible = (element: Element | null) => {
+      if (!(element instanceof HTMLElement)) return false;
+      const style = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return (
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        style.opacity !== "0" &&
+        rect.width > 0 &&
+        rect.height > 0
+      );
+    };
+
+    const normalizedNeedle = normalize(needle);
+    const fontSizes: number[] = [];
+
+    for (const element of document.querySelectorAll("main *")) {
+      if (!visible(element)) {
+        continue;
+      }
+
+      const text = normalize((element.textContent || "").replace(/\s+/g, " "));
+      if (!text.includes(normalizedNeedle)) {
+        continue;
+      }
+
+      const fontSize = Number.parseFloat(window.getComputedStyle(element).fontSize || "0");
+      if (Number.isFinite(fontSize) && fontSize > 0) {
+        fontSizes.push(fontSize);
+      }
+    }
+
+    if (fontSizes.length === 0) {
+      return null;
+    }
+
+    return Math.min(...fontSizes);
+  }, textNeedle);
+}
+
 test.describe("public product page smoke", () => {
   test("covers pdp responsive baseline and shell behavior", async ({ page }) => {
     const productPath = await resolveMerchantProductPath(page);
@@ -335,6 +384,24 @@ test.describe("public product page smoke", () => {
       const favoriteButton = favoriteButtons.first();
       await expect(favoriteButton).toBeEnabled();
       await favoriteButton.click({ trial: true });
+
+      if (viewport.name === "mobile-portrait" || viewport.name === "mobile-landscape") {
+        const originFontSize = await getMinVisibleFontSizeForText(
+          page,
+          "Fait main à Saint-Etienne"
+        );
+        expect(originFontSize).not.toBeNull();
+        expect(originFontSize ?? 0).toBeGreaterThanOrEqual(12);
+
+        if (viewport.name === "mobile-portrait") {
+          const badgeFontSize = await getMinVisibleFontSizeForText(
+            page,
+            "Pièces uniques ou petites séries"
+          );
+          expect(badgeFontSize).not.toBeNull();
+          expect(badgeFontSize ?? 0).toBeGreaterThanOrEqual(12);
+        }
+      }
 
       expect(await hasVisibleCtaOrAlternative(page)).toBe(true);
 
