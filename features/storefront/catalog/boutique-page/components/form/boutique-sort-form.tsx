@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
 
@@ -18,12 +21,10 @@ export function BoutiqueSortForm({
   selectedMaxPriceCents,
   selectedSort,
 }: BoutiqueSortFormProps) {
+  const formRef = useRef<HTMLFormElement>(null);
+
   return (
-    <form
-      action="/boutique"
-      method="get"
-      className="flex items-center gap-1.5 sm:max-[899px]:landscape:gap-1 min-[900px]:max-[1199px]:gap-1.5 desktop:gap-2"
-    >
+    <form ref={formRef} action="/boutique" method="get" className="flex min-w-0 items-center gap-2">
       <input type="hidden" name="q" value={searchQuery} />
       <input type="hidden" name="category" value={selectedCategorySlug} />
 
@@ -39,12 +40,13 @@ export function BoutiqueSortForm({
         <input type="hidden" name="maxPrice" value={String(selectedMaxPriceCents)} />
       ) : null}
 
-      <span className="text-xs text-text-muted-strong max-[1199px]:hidden">Trier</span>
+      <span className="hidden text-xs text-text-muted-strong xl:inline">Trier</span>
 
       <select
-        className="h-8 w-33 rounded-lg border border-control-border bg-control-surface px-2.5 py-1 text-xs text-foreground shadow-control outline-none transition-all hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50 sm:max-[899px]:landscape:h-7 sm:max-[899px]:landscape:w-31 sm:max-[899px]:landscape:px-2 sm:max-[899px]:landscape:text-[11px] md:w-36.5 min-[900px]:max-[1199px]:h-8 min-[900px]:max-[1199px]:w-35 min-[900px]:max-[1199px]:px-2.5 min-[900px]:max-[1199px]:text-xs desktop:h-9 desktop:w-auto desktop:px-3 desktop:text-sm"
+        className="h-8 min-w-0 max-w-40 rounded-md border border-control-border bg-control-surface px-2 text-xs text-text-muted-strong transition-colors hover:border-brand hover:text-brand sm:max-w-44 md:max-w-48"
         defaultValue={selectedSort}
         name="sort"
+        onChange={() => formRef.current?.requestSubmit()}
       >
         <option value="featured">Mise en avant</option>
         <option value="newest">Nouveautés</option>
@@ -57,7 +59,7 @@ export function BoutiqueSortForm({
         size="sm"
         type="submit"
         aria-label="Appliquer le tri"
-        className="h-8 px-2.5 text-xs sm:max-[899px]:landscape:h-7 sm:max-[899px]:landscape:px-2 sm:max-[899px]:landscape:text-[11px] min-[900px]:max-[1199px]:h-8 min-[900px]:max-[1199px]:px-2.5 desktop:h-9 desktop:px-3"
+        className="hidden h-8 rounded-md px-2.5 laptop:inline-flex"
       >
         <span className="desktop:hidden">OK</span>
         <span className="hidden desktop:inline">Appliquer</span>

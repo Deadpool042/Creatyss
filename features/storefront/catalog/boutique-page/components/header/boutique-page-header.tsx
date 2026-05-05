@@ -6,44 +6,34 @@ import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutiq
 type BoutiquePageHeaderProps = {
   model: BoutiquePageViewModel;
   productCountLabel: string;
-  isDiscoveryMode: boolean;
+  activeCategoryName: string | null;
   heroImage: BoutiquePageViewModel["heroImage"];
 };
 
 export function BoutiquePageHeader({
   model,
   productCountLabel,
-  isDiscoveryMode,
+  activeCategoryName,
   heroImage,
 }: BoutiquePageHeaderProps) {
   return (
-    <section className="grid gap-4 sm:gap-3 md:gap-4 md:pb-4 laptop:gap-3 laptop:pb-4 desktop:gap-3 desktop:pb-3 wide:gap-3.5 wide:pb-3.5 ultrawide:gap-4 ultrawide:pb-4 2k:gap-4.5 2k:pb-4.5 4k:gap-5 4k:pb-5 max-[767px]:landscape:gap-2 max-[767px]:landscape:pb-0">
-      <div className="max-[767px]:landscape:hidden">
-        {isDiscoveryMode ? (
-          <>
-            <BoutiqueDiscoveryHeader productCountLabel={productCountLabel} heroImage={heroImage} />
-            <BoutiqueListingHeader
-              model={model}
-              productCountLabel={productCountLabel}
-              isDiscoveryMode={isDiscoveryMode}
-            />
-          </>
-        ) : (
-          <BoutiqueListingHeader
-            model={model}
-            productCountLabel={productCountLabel}
-            isDiscoveryMode={isDiscoveryMode}
-          />
-        )}
+    <section className="boutique-page-header-shell md:pb-4 desktop:pb-3 wide:pb-4">
+      <div className="boutique-mobile-portrait">
+        <BoutiqueDiscoveryHeader
+          productCountLabel={productCountLabel}
+          activeCategoryName={activeCategoryName}
+          heroImage={heroImage}
+        />
+        <BoutiqueListingHeader model={model} productCountLabel={productCountLabel} />
       </div>
 
-      <div className="hidden max-[767px]:landscape:grid max-[767px]:landscape:gap-1.5">
-        <div className="grid gap-0.5 px-2">
-          <p className="m-0 text-[10px] uppercase tracking-[0.16em] text-brand/90">
+      <div className="boutique-mobile-landscape">
+        <div className="grid gap-1 px-2">
+          <p className="m-0 text-xs font-medium uppercase tracking-wide text-brand/90">
             Collection Creatyss
           </p>
           <div className="flex items-baseline justify-between gap-2">
-            <h1 className="m-0 text-[1.2rem] leading-tight">Boutique</h1>
+            <h1 className="m-0 text-2xl leading-tight">Boutique</h1>
             <p className="m-0 text-xs text-text-muted-strong">{productCountLabel}</p>
           </div>
         </div>

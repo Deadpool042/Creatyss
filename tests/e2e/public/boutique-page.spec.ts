@@ -567,4 +567,158 @@ test.describe("boutique page smoke", () => {
       ).toBeLessThanOrEqual(1);
     }
   });
+
+  test("keeps mobile toolbar controls and category rail UX correct across narrow viewports", async ({
+    page,
+  }) => {
+    for (const viewport of [
+      { width: 320, height: 667 },
+      { width: 375, height: 667 },
+      { width: 667, height: 375 },
+      { width: 768, height: 1024 },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto("/boutique");
+
+      // Sort select visible on mobile
+      // There may be 2 sort selects in the DOM (dual-layout portrait/landscape) — check a visible one exists
+      const visibleSortCount = await page.evaluate(() => {
+        return [...document.querySelectorAll('select[name="sort"]')].filter((el) => {
+          const htmlEl = el as HTMLElement;
+          const style = window.getComputedStyle(htmlEl);
+          const rect = htmlEl.getBoundingClientRect();
+          return (
+            style.display !== "none" &&
+            style.visibility !== "hidden" &&
+            style.opacity !== "0" &&
+            rect.width > 0 &&
+            rect.height > 0
+          );
+        }).length;
+      });
+      expect(
+        visibleSortCount,
+        `At least one visible sort select expected at ${viewport.width}x${viewport.height}`
+      ).toBeGreaterThan(0);
+
+      // ViewToggle visible (grille/liste)
+      const viewToggle = page.getByRole("group", { name: /changer la vue/i });
+      await expect(viewToggle).toBeVisible();
+
+      // OK button hidden on mobile (auto-submit via onChange handles it)
+      const okButton = page.getByRole("button", { name: "Appliquer le tri" });
+      if (viewport.width < 700) {
+        await expect(okButton).toBeHidden();
+      }
+
+      // Category rail section visible at portrait mobile widths (hidden from sm and above)
+      if (viewport.width < 640) {
+        const categorySection = page.getByRole("region", { name: /explorer les cr/i });
+        await expect(categorySection).toBeVisible();
+
+        // "Voir tout" rendered at >= 12px (0.75rem)
+        const voirTout = categorySection.getByRole("link", { name: /voir tout/i });
+        await expect(voirTout).toBeVisible();
+        const fontSize = await voirTout.evaluate((el) =>
+          parseFloat(window.getComputedStyle(el).fontSize)
+        );
+        expect(
+          fontSize,
+          `"Voir tout" font-size should be >= 12px at ${viewport.width}x${viewport.height}`
+        ).toBeGreaterThanOrEqual(12);
+      }
+
+      // No global horizontal overflow
+      const globalOverflowPx = await getHorizontalOverflowPx(page);
+      expect(
+        globalOverflowPx,
+        `Global overflow should stay <= 1 at ${viewport.width}x${viewport.height}`
+      ).toBeLessThanOrEqual(1);
+    }
+  });
+
+  test("keeps mobile hero ambience stable between discovery and category routes", async ({
+    page,
+  }) => {
+    for (const viewport of [
+      { width: 320, height: 667 },
+      { width: 375, height: 667 },
+      { width: 667, height: 375 },
+      { width: 768, height: 1024 },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+
+      for (const routeCase of [
+        { url: "/boutique", hasActiveCategory: false },
+        { url: "/boutique?category=pochettes", hasActiveCategory: true },
+        { url: "/boutique?category=sacs", hasActiveCategory: true },
+      ]) {
+        await page.goto(routeCase.url);
+
+        // Hero ambiance remains visible in portrait mobile, including filtered category pages
+        if (viewport.width < 640) {
+          const hero = page.getByTestId("boutique-mobile-hero");
+          await expect(hero).toBeVisible();
+          await expect(hero.getByRole("heading", { level: 1, name: "Boutique" })).toBeVisible();
+
+          const heroVisualCount = await hero.locator("img").count();
+          expect(heroVisualCount).toBeGreaterThan(0);
+        }
+
+        // Toolbar controls remain stable
+        await expect(
+          page.getByRole("button", { name: "Filtres", exact: true }).first()
+        ).toBeVisible();
+        await expect(page.getByRole("group", { name: /changer la vue/i })).toBeVisible();
+
+        // Discovery rail appears only in pure discovery (no active filters) on portrait mobile widths
+        const discoveryRail = page.getByTestId("boutique-mobile-discovery");
+        if (viewport.width < 640 && !routeCase.hasActiveCategory) {
+          await expect(discoveryRail).toBeVisible();
+        } else if (viewport.width < 640 && routeCase.hasActiveCategory) {
+          await expect(discoveryRail).toHaveCount(0);
+        } else {
+          await expect(discoveryRail).toBeHidden();
+        }
+
+        // Active filters are visible when a category is active
+        if (routeCase.hasActiveCategory) {
+          const visibleActiveFiltersLabelCount = await page.evaluate(() => {
+            return [...document.querySelectorAll("span")].filter((node) => {
+              if (!(node instanceof HTMLElement)) {
+                return false;
+              }
+
+              if ((node.textContent || "").trim() !== "Filtres :") {
+                return false;
+              }
+
+              const style = window.getComputedStyle(node);
+              const rect = node.getBoundingClientRect();
+
+              return (
+                style.display !== "none" &&
+                style.visibility !== "hidden" &&
+                style.opacity !== "0" &&
+                rect.width > 0 &&
+                rect.height > 0
+              );
+            }).length;
+          });
+
+          expect(visibleActiveFiltersLabelCount).toBeGreaterThan(0);
+        }
+
+        // Product grid stays visible
+        await expect(page.locator(".boutique-product-grid article").first()).toBeVisible();
+
+        // No global overflow
+        const globalOverflowPx = await getHorizontalOverflowPx(page);
+        expect(
+          globalOverflowPx,
+          `Global overflow should stay <= 1 on ${routeCase.url} at ${viewport.width}x${viewport.height}`
+        ).toBeLessThanOrEqual(1);
+      }
+    }
+  });
 });

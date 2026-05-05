@@ -15,26 +15,34 @@ type BoutiquePageProps = {
 
 export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageProps) {
   const hasActiveFilters = model.activeFilterLabels.length > 0;
-  const isDiscoveryMode =
-    model.activeFilterLabels.length === 0 && model.selectedSort === "featured";
+  const hasDiscoveryBlockingFilter =
+    model.searchQuery.trim().length > 0 ||
+    model.selectedCategorySlug.trim().length > 0 ||
+    model.selectedAvailabilityStatus !== null ||
+    model.selectedMinPriceCents !== null ||
+    model.selectedMaxPriceCents !== null ||
+    model.selectedSort !== "featured";
+  const isDiscoveryMode = !hasDiscoveryBlockingFilter;
+  const shouldShowMobileCategoryDiscovery = isDiscoveryMode && model.categories.length > 0;
+  const activeCategoryName = model.categories.find((category) => category.isActive)?.name ?? null;
   const productCount = model.totalProductCount;
   const productCountLabel = `${productCount} produit${productCount > 1 ? "s" : ""}`;
   const heroImage = model.heroImage;
 
   return (
-    <section className="grid gap-4 laptop:grid-cols-[minmax(0,1fr)_220px] laptop:items-start desktop:grid-cols-[minmax(0,1fr)_240px] wide:grid-cols-[240px_minmax(0,1fr)] ultrawide:grid-cols-[280px_minmax(0,1fr)_300px]">
+    <section className="boutique-page-layout">
       <BoutiqueSidebar model={model} />
 
-      <div className="min-w-0 grid gap-4 laptop:gap-5 max-[767px]:landscape:gap-2.5">
+      <div className="boutique-page-main">
         <BoutiquePageHeader
           model={model}
           productCountLabel={productCountLabel}
-          isDiscoveryMode={isDiscoveryMode}
+          activeCategoryName={activeCategoryName}
           heroImage={heroImage || null}
         />
 
-        {isDiscoveryMode ? (
-          <div className="wide:hidden max-[767px]:landscape:hidden">
+        {shouldShowMobileCategoryDiscovery ? (
+          <div className="boutique-mobile-discovery-shell wide:hidden">
             <BoutiqueMobileCategoryGrid categories={model.categories} resetHref={model.resetHref} />
           </div>
         ) : null}

@@ -37,13 +37,13 @@ export function BoutiqueActiveFilters({ labels, resetHref }: BoutiqueActiveFilte
   }
 
   return (
-    <div className="grid gap-1.5 px-0.5 pb-0.5 text-xs text-text-muted-strong min-[700px]:flex min-[700px]:items-center min-[700px]:gap-2">
-      <div className="flex items-center gap-1.5 overflow-x-auto min-[700px]:flex-wrap min-[700px]:gap-2 min-[700px]:overflow-visible">
+    <div className="grid gap-2 px-1 pb-1 text-xs text-text-muted-strong md:flex md:items-center md:gap-2">
+      <div className="flex items-center gap-1.5 overflow-x-auto md:flex-wrap md:gap-2 md:overflow-visible">
         <span className="shrink-0 text-text-muted-soft">Filtres :</span>
 
         {labels.map((item, index) => (
           <div key={`${item.key}-${index}`} className="inline-flex shrink-0 items-center gap-1">
-            <Badge variant="secondary" className="max-w-52 truncate min-[700px]:max-w-55">
+            <Badge variant="secondary" className="max-w-52 truncate md:max-w-56">
               {item.label}
             </Badge>
             <CustomLink
@@ -53,14 +53,14 @@ export function BoutiqueActiveFilters({ labels, resetHref }: BoutiqueActiveFilte
               title={getClearActionLabel(item)}
               className="underline-offset-4 transition-colors hover:text-foreground hover:underline"
             >
-              <span className="min-[560px]:hidden">Effacer</span>
-              <span className="hidden min-[560px]:inline">{getClearActionLabel(item)}</span>
+              <span className="sm:hidden">Effacer</span>
+              <span className="hidden sm:inline">{getClearActionLabel(item)}</span>
             </CustomLink>
           </div>
         ))}
 
         <CustomLink
-          className="ml-0.5 hidden shrink-0 underline-offset-4 transition-colors hover:text-foreground hover:underline min-[700px]:inline"
+          className="ml-0.5 hidden shrink-0 underline-offset-4 transition-colors hover:text-foreground hover:underline md:inline"
           href={resetHref}
           variant="muted"
           aria-label="Reinitialiser tous les filtres"
@@ -70,7 +70,7 @@ export function BoutiqueActiveFilters({ labels, resetHref }: BoutiqueActiveFilte
       </div>
 
       <CustomLink
-        className="inline-flex w-fit items-center justify-center rounded-md border border-control-border/70 px-2 py-1 text-[11px] text-text-muted-strong underline-offset-4 transition-colors hover:border-control-border-strong hover:text-foreground hover:underline min-[700px]:hidden"
+        className="inline-flex w-fit items-center justify-center rounded-md border border-control-border/70 px-2 py-1 text-xs text-text-muted-strong underline-offset-4 transition-colors hover:border-control-border-strong hover:text-foreground hover:underline md:hidden"
         href={resetHref}
         variant="muted"
         aria-label="Reinitialiser tous les filtres"

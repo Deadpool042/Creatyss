@@ -8,7 +8,7 @@ export function BoutiqueViewToggle({ className }: BoutiqueViewToggleProps) {
   return (
     <div
       className={[
-        "inline-flex items-center gap-1 rounded-lg border border-control-border bg-control-surface p-0.5",
+        "inline-flex items-center gap-1 rounded-sm border border-control-border bg-control-surface p-0.5",
         className,
       ]
         .filter(Boolean)
@@ -20,10 +20,10 @@ export function BoutiqueViewToggle({ className }: BoutiqueViewToggleProps) {
         type="button"
         aria-pressed="true"
         aria-label="Vue grille"
-        className="inline-flex h-7 items-center gap-1 rounded-md bg-surface-panel px-2 text-xs font-medium text-foreground shadow-control min-[700px]:gap-1.5 min-[700px]:px-2.5"
+        className="inline-flex h-7 items-center gap-1 rounded-sm bg-surface-panel px-2 text-xs font-medium text-foreground shadow-control md:gap-1.5 md:px-2.5 data-active:text-brand"
       >
         <LayoutGrid aria-hidden="true" className="size-3.5" />
-        <span className="hidden min-[700px]:inline">Grille</span>
+        <span className="hidden md:inline">Grille</span>
       </button>
 
       <button
@@ -32,11 +32,10 @@ export function BoutiqueViewToggle({ className }: BoutiqueViewToggleProps) {
         aria-label="Vue liste bientôt disponible"
         aria-disabled="true"
         title="Vue liste bientôt disponible"
-        disabled
-        className="inline-flex h-7 items-center gap-1 rounded-md px-2 text-xs text-text-muted-strong opacity-70 min-[700px]:gap-1.5 min-[700px]:px-2.5"
+        className="inline-flex h-7 items-center gap-1 rounded-sm px-2 text-xs text-text-muted-strong opacity-70 md:gap-1.5 md:px-2.5"
       >
         <List aria-hidden="true" className="size-3.5" />
-        <span className="hidden min-[700px]:inline">Liste</span>
+        <span className="hidden md:inline">Liste</span>
       </button>
     </div>
   );

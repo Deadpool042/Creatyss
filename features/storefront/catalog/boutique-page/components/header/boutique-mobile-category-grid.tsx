@@ -34,25 +34,35 @@ export function BoutiqueMobileCategoryGrid({
 
   return (
     <section
-      className="grid gap-2.5 pt-0.5 min-[560px]:hidden"
+      className="mx-4 grid gap-3 py-4 sm:hidden"
       aria-labelledby="boutique-categories-title"
+      data-testid="boutique-mobile-discovery"
     >
-      <div className="flex items-center justify-between">
-        <h2 id="boutique-categories-title" className="m-0 text-sm font-semibold text-brand">
-          Catégories
-        </h2>
+      <div className="grid gap-1">
+        <div className="flex items-start justify-between gap-2">
+          <h2
+            id="boutique-categories-title"
+            className="m-0 text-base font-semibold leading-tight text-foreground"
+          >
+            Explorer les créations
+          </h2>
 
-        <CustomLink
-          href={resetHref}
-          className="capitalize px-1.5 py-2 text-[0.68rem]"
-          size="sm"
-          variant="navUnderline"
-        >
-          Voir tout
-        </CustomLink>
+          <CustomLink
+            href={resetHref}
+            className="shrink-0 px-1 py-1 text-xs"
+            size="sm"
+            variant="navUnderline"
+          >
+            Voir tout →
+          </CustomLink>
+        </div>
+
+        <p className="m-0 text-sm leading-snug text-text-muted-strong">
+          Parcourez les univers de sacs et accessoires.
+        </p>
       </div>
 
-      <div className="flex snap-x snap-mandatory gap-1.5 overflow-x-auto px-1 pb-1">
+      <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1">
         {items.map((category) => {
           const visual = getCategoryVisual(category);
           const imageSrc = visual?.src ?? FALLBACK_CATEGORY_VISUAL_SRC;
@@ -62,16 +72,16 @@ export function BoutiqueMobileCategoryGrid({
               key={category.id}
               href={category.href}
               aria-current={category.isActive ? "page" : undefined}
-              className="group inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-surface-border-subtle/75 bg-surface-panel/52 px-2.5 py-1.5 text-left outline-none transition-transform active:scale-[0.98]"
+              className="group inline-flex shrink-0 snap-start items-center gap-2 rounded-full border border-surface-border-subtle/75 bg-surface-panel/52 px-3 py-2 text-left outline-none transition-all active:scale-95"
             >
               <span
                 className={[
-                  "relative grid size-8 place-items-center overflow-hidden rounded-full border shadow-sm transition-all duration-300",
+                  "relative grid size-9 place-items-center overflow-hidden rounded-full border shadow-sm transition-all duration-300",
                   "border-surface-border-subtle/70 bg-surface-panel/70 dark:bg-surface-panel/42",
                   "group-hover:border-control-border group-hover:bg-surface-panel/85 dark:group-hover:bg-surface-panel/55 group-hover:shadow-md group-hover:ring-1 group-hover:ring-primary",
                   "group-focus-visible:ring-2 group-focus-visible:ring-focus-ring",
-                  "group-active:scale-[0.96]",
-                  category.isActive ? "border-brand/40 bg-surface-panel/62" : "",
+                  "group-active:scale-95",
+                  category.isActive ? "border-brand/70 bg-brand/10 ring-1 ring-brand/25" : "",
                 ].join(" ")}
               >
                 <Image
@@ -79,7 +89,7 @@ export function BoutiqueMobileCategoryGrid({
                   alt=""
                   aria-hidden="true"
                   fill
-                  sizes="32px"
+                  sizes="36px"
                   className={
                     visual
                       ? "object-cover transition-transform duration-500 group-hover:scale-105"
