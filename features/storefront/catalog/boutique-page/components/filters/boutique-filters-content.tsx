@@ -89,7 +89,7 @@ function FilterOption({
       href={href}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "flex items-center gap-2 rounded py-1.5 pr-0.5 text-[0.8rem] no-underline transition-colors hover:no-underline",
+        "flex items-center gap-2 rounded py-1.5 pr-0.5 text-[0.875rem] no-underline transition-colors hover:no-underline",
         isActive
           ? "text-foreground"
           : containsActiveChild
@@ -114,7 +114,7 @@ function FilterOption({
       </span>
       <span className="min-w-0 flex-1 truncate">{label}</span>
       {count != null ? (
-        <span className="shrink-0 text-[0.68rem] tabular-nums text-text-muted-strong/70">
+        <span className="shrink-0 text-[0.8125rem] tabular-nums text-text-muted-strong/70">
           {count}
         </span>
       ) : null}
@@ -135,13 +135,13 @@ export function BoutiqueFiltersContent({
   return (
     <div className={className}>
       <div className="flex items-center justify-between py-1">
-        <p className="m-0 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-text-muted-strong">
+        <p className="m-0 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-text-muted-strong">
           Filtres
         </p>
         {hasActiveFilters ? (
           <CustomLink
             href={model.resetHref}
-            className="text-[0.68rem] text-text-muted-strong no-underline transition-colors hover:text-foreground"
+            className="text-[0.8125rem] text-text-muted-strong no-underline transition-colors hover:text-foreground"
           >
             Réinitialiser
           </CustomLink>
@@ -154,7 +154,7 @@ export function BoutiqueFiltersContent({
         className="w-full "
       >
         <AccordionItem value="categories">
-          <AccordionTrigger className="py-2 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-text-muted-strong hover:text-foreground hover:no-underline">
+          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-text-muted-strong hover:text-foreground hover:no-underline">
             Catégories
           </AccordionTrigger>
           <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline overflow-x-auto">
@@ -216,7 +216,7 @@ export function BoutiqueFiltersContent({
         </AccordionItem>
 
         <AccordionItem value="availability">
-          <AccordionTrigger className="py-2 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-text-muted-strong hover:text-foreground hover:no-underline">
+          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-text-muted-strong hover:text-foreground hover:no-underline">
             Disponibilité
           </AccordionTrigger>
           <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline">
@@ -259,7 +259,7 @@ export function BoutiqueFiltersContent({
         </AccordionItem>
 
         <AccordionItem value="price" className="border-b-0">
-          <AccordionTrigger className="py-2 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-text-muted-strong hover:text-foreground hover:no-underline">
+          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-text-muted-strong hover:text-foreground hover:no-underline">
             Prix
           </AccordionTrigger>
           <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline">

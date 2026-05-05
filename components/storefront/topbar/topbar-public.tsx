@@ -137,7 +137,7 @@ function PublicTouchLogo() {
       <span className="text-[0.95rem] font-medium uppercase tracking-[0.3em] min-[560px]:max-[1199px]:landscape:text-[0.83rem] min-[560px]:max-[1199px]:landscape:tracking-[0.24em]">
         Creatyss
       </span>
-      <span className="text-[0.55rem] uppercase tracking-[0.14em] text-text-muted-strong min-[560px]:max-[1199px]:landscape:text-[0.48rem] min-[560px]:max-[1199px]:landscape:tracking-[0.11em]">
+      <span className="text-[0.75rem] uppercase tracking-[0.12em] text-text-muted-strong min-[560px]:max-[1199px]:landscape:hidden">
         Artisan des Métiers d’Art
       </span>
     </Link>
@@ -171,7 +171,7 @@ function MarketingHeader({ label, icon: Icon }: MarketingHeaderItem) {
   return (
     <div className="inline-flex items-center gap-2 text-text-muted-strong">
       <Icon className="size-[0.82rem] text-brand/80" aria-hidden="true" />
-      <span className="text-[0.68rem] font-medium tracking-[0.08em]">{label}</span>
+      <span className="text-[0.75rem] font-medium tracking-[0.08em]">{label}</span>
     </div>
   );
 }
@@ -288,7 +288,7 @@ export function TopbarPublic({ pathname }: TopbarPublicProps) {
                     key={link.href}
                     size="sm"
                     variant="navUnderline"
-                    className="px-1.5 py-2 text-[0.68rem]"
+                    className="px-1.5 py-2 text-[0.75rem]"
                   >
                     {link.label}
                   </CustomLink>
@@ -323,7 +323,7 @@ export function TopbarPublic({ pathname }: TopbarPublicProps) {
 
             return (
               <Link
-                className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-2xl px-1 py-1.5 text-[0.68rem] font-medium transition-colors min-[560px]:max-[1199px]:landscape:min-h-10 min-[560px]:max-[1199px]:landscape:gap-0.5 min-[560px]:max-[1199px]:landscape:rounded-xl min-[560px]:max-[1199px]:landscape:py-0.5 min-[560px]:max-[1199px]:landscape:text-[0.56rem] ${
+                className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-2xl px-1 py-1.5 text-[0.75rem] font-medium transition-colors min-[560px]:max-[1199px]:landscape:min-h-10 min-[560px]:max-[1199px]:landscape:gap-0.5 min-[560px]:max-[1199px]:landscape:rounded-xl min-[560px]:max-[1199px]:landscape:py-0.5 min-[560px]:max-[1199px]:landscape:text-[0.75rem] ${
                   isActive
                     ? " text-brand"
                     : "text-foreground/70 hover:bg-surface-subtle hover:text-brand "

@@ -355,6 +355,7 @@ test.describe("boutique page smoke", () => {
     page,
   }) => {
     for (const viewport of [
+      { width: 320, height: 667 },
       { width: 375, height: 667 },
       { width: 667, height: 375 },
       { width: 768, height: 1024 },
@@ -406,6 +407,43 @@ test.describe("boutique page smoke", () => {
 
       const finalOverflowPx = await getHorizontalOverflowPx(page);
       expect(finalOverflowPx).toBeLessThanOrEqual(baselineOverflowPx);
+      await expectNoVisibleInertInteractive(page);
+    }
+  });
+
+  test("keeps typography and key controls usable with zoom-equivalent 200%", async ({ page }) => {
+    for (const viewport of [
+      { width: 320, height: 667 },
+      { width: 375, height: 667 },
+      { width: 667, height: 375 },
+      { width: 768, height: 1024 },
+      { width: 1440, height: 900 },
+      { width: 1728, height: 1117 },
+      { width: 2560, height: 1440 },
+    ]) {
+      const zoomEquivalentViewport = {
+        width: Math.max(320, Math.floor(viewport.width / 2)),
+        height: Math.max(320, Math.floor(viewport.height / 2)),
+      };
+
+      await page.setViewportSize(zoomEquivalentViewport);
+      await page.goto("/boutique");
+      const baselineOverflowPx = await getHorizontalOverflowPx(page);
+
+      await expect(page.getByRole("heading", { level: 1, name: "Boutique" }).first()).toBeVisible();
+      await expect(page.getByRole("link", { name: /boutique/i }).first()).toBeVisible();
+      await expect(page.locator(".boutique-product-grid article").first()).toBeVisible();
+      await expect(page.getByRole("navigation", { name: "Pagination" })).toBeVisible();
+
+      const filtersTrigger = page.getByRole("button", { name: "Filtres", exact: true }).first();
+      if (await filtersTrigger.count()) {
+        await filtersTrigger.click();
+        await expect(page.locator('[data-slot="drawer-content"]')).toBeVisible();
+        await page.keyboard.press("Escape");
+      }
+
+      const overflowPx = await getHorizontalOverflowPx(page);
+      expect(overflowPx).toBeLessThanOrEqual(baselineOverflowPx + 1);
       await expectNoVisibleInertInteractive(page);
     }
   });

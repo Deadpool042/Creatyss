@@ -66,7 +66,7 @@ export function BoutiqueProductCard({
         >
           <div className="boutique-product-card-media relative aspect-square overflow-hidden rounded-2xl bg-media-surface">
             {product.isFeatured ? (
-              <span className="absolute left-3 top-3 z-10 rounded-full bg-surface-panel/85 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-brand shadow-sm backdrop-blur">
+              <span className="absolute left-3 top-3 z-10 rounded-full bg-surface-panel/85 px-2.5 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-brand shadow-sm backdrop-blur">
                 Nouveau
               </span>
             ) : null}
@@ -103,11 +103,11 @@ export function BoutiqueProductCard({
       <div className="boutique-product-card-content pt-2.5">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <p className="mb-0.5 text-[0.68rem] font-medium uppercase tracking-[0.12em] text-text-muted-strong">
+            <p className="mb-0.5 text-[0.75rem] font-medium uppercase tracking-[0.1em] text-text-muted-strong">
               {productKindLabel}
             </p>
 
-            <h3 className="m-0 line-clamp-2 text-[0.8rem] font-medium leading-snug text-foreground">
+            <h3 className="m-0 line-clamp-2 text-[0.875rem] font-medium leading-snug text-foreground">
               <Link
                 className="rounded-sm transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/60"
                 href={productHref}
@@ -118,11 +118,13 @@ export function BoutiqueProductCard({
           </div>
 
           {product.price ? (
-            <p className="shrink-0 text-[0.8rem] font-semibold text-foreground">{product.price}</p>
+            <p className="shrink-0 text-[0.875rem] font-semibold text-foreground">
+              {product.price}
+            </p>
           ) : null}
         </div>
 
-        <div className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs">
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[0.8125rem]">
           <span className={availabilityToneClass}>{availabilityLabel}</span>
 
           {variantLabel ? (
