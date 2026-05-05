@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { XIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import {
   centsToEurosInputValue,
   eurosInputToCents,
 } from "@/features/storefront/catalog/boutique-page/model/price-input-utils";
+import { buildBoutiqueUrl } from "@/features/storefront/catalog/boutique-page/model/build-boutique-url";
 import {
   Drawer,
   DrawerClose,
@@ -90,6 +91,12 @@ function BoutiqueFilterOption({
         className="sr-only"
         name={name}
         onChange={onChange}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            onChange();
+          }
+        }}
         type={type}
         value={value}
       />
@@ -137,8 +144,10 @@ export function BoutiqueMobileFilters({
   label = "Filtres",
   className,
 }: BoutiqueMobileFiltersProps) {
+  const router = useRouter();
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const searchParams = useSearchParams();
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedCategorySlug, setSelectedCategorySlug] = useState(model.selectedCategorySlug);
   const [selectedAvailability, setSelectedAvailability] = useState<
     "" | BoutiquePageViewModel["availabilityOptions"][number]["id"]
@@ -167,8 +176,36 @@ export function BoutiqueMobileFilters({
     ? "Voir les résultats"
     : `Voir ${resultCount} résultat${resultCount > 1 ? "s" : ""}`;
 
+  const applyFilters = (params: {
+    categorySlug: string;
+    availability: "" | BoutiquePageViewModel["availabilityOptions"][number]["id"];
+    minPriceEuros: string;
+    maxPriceEuros: string;
+  }) => {
+    const nextUrl = buildBoutiqueUrl({
+      q: model.searchQuery,
+      category: params.categorySlug,
+      availability: params.availability === "" ? null : params.availability,
+      minPrice: eurosInputToCents(params.minPriceEuros),
+      maxPrice: eurosInputToCents(params.maxPriceEuros),
+      sort: model.selectedSort,
+    });
+
+    setIsOpen(false);
+    router.push(nextUrl);
+  };
+
+  const submitCurrentFilters = () => {
+    applyFilters({
+      categorySlug: selectedCategorySlug,
+      availability: selectedAvailability,
+      minPriceEuros: selectedMinPriceEuros,
+      maxPriceEuros: selectedMaxPriceEuros,
+    });
+  };
+
   return (
-    <Drawer direction="bottom" modal>
+    <Drawer direction="bottom" modal open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
         <button type="button" className={className}>
           {label}
@@ -203,7 +240,15 @@ export function BoutiqueMobileFilters({
           </DrawerClose>
         </DrawerHeader>
 
-        <form action="/boutique" method="get" className="grid gap-3.5 overflow-y-auto px-4 py-3">
+        <form
+          action="/boutique"
+          method="get"
+          onSubmit={(event) => {
+            event.preventDefault();
+            submitCurrentFilters();
+          }}
+          className="grid gap-3.5 overflow-y-auto px-4 py-3"
+        >
           <input type="hidden" name="q" value={model.searchQuery} />
           <input type="hidden" name="sort" value={model.selectedSort} />
 
@@ -219,7 +264,18 @@ export function BoutiqueMobileFilters({
                 value=""
                 label="Tous les produits"
                 checked={selectedCategorySlug === ""}
-                onChange={() => setSelectedCategorySlug("")}
+                onChange={() => {
+                  const nextCategory = "";
+                  setSelectedCategorySlug(nextCategory);
+                  requestAnimationFrame(() => {
+                    applyFilters({
+                      categorySlug: nextCategory,
+                      availability: selectedAvailability,
+                      minPriceEuros: selectedMinPriceEuros,
+                      maxPriceEuros: selectedMaxPriceEuros,
+                    });
+                  });
+                }}
                 type="radio"
                 indicator="dot"
               />
@@ -232,7 +288,18 @@ export function BoutiqueMobileFilters({
                   value={category.slug}
                   label={category.name}
                   checked={selectedCategorySlug === category.slug}
-                  onChange={() => setSelectedCategorySlug(category.slug)}
+                  onChange={() => {
+                    const nextCategory = category.slug;
+                    setSelectedCategorySlug(nextCategory);
+                    requestAnimationFrame(() => {
+                      applyFilters({
+                        categorySlug: nextCategory,
+                        availability: selectedAvailability,
+                        minPriceEuros: selectedMinPriceEuros,
+                        maxPriceEuros: selectedMaxPriceEuros,
+                      });
+                    });
+                  }}
                   type="radio"
                   indicator="dot"
                 />
@@ -345,10 +412,24 @@ export function BoutiqueMobileFilters({
             <button
               type="button"
               onClick={() => {
-                setSelectedCategorySlug("");
-                setSelectedAvailability("");
-                setSelectedMinPriceEuros("");
-                setSelectedMaxPriceEuros("");
+                const nextCategory = "";
+                const nextAvailability = "";
+                const nextMinPrice = "";
+                const nextMaxPrice = "";
+
+                setSelectedCategorySlug(nextCategory);
+                setSelectedAvailability(nextAvailability);
+                setSelectedMinPriceEuros(nextMinPrice);
+                setSelectedMaxPriceEuros(nextMaxPrice);
+
+                requestAnimationFrame(() => {
+                  applyFilters({
+                    categorySlug: nextCategory,
+                    availability: nextAvailability,
+                    minPriceEuros: nextMinPrice,
+                    maxPriceEuros: nextMaxPrice,
+                  });
+                });
               }}
               className="inline-flex h-8 items-center justify-center text-xs text-text-muted-strong underline-offset-4 transition-colors hover:text-foreground hover:underline"
             >

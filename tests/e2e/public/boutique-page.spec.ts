@@ -153,6 +153,59 @@ async function expectTabFocusStaysInsideSelector(
   }
 }
 
+async function expectNoHorizontalOverflow(page: Page) {
+  await expect
+    .poll(async () =>
+      page.evaluate(() => {
+        const root = document.documentElement;
+        return root.scrollWidth - root.clientWidth <= 1;
+      })
+    )
+    .toBe(true);
+}
+
+async function getHorizontalOverflowPx(page: Page) {
+  return page.evaluate(() => {
+    const root = document.documentElement;
+    return root.scrollWidth - root.clientWidth;
+  });
+}
+
+async function expectNoVisibleInertInteractive(page: Page) {
+  await expect
+    .poll(async () =>
+      page.evaluate(() => {
+        const visible = (element: Element | null) => {
+          if (!(element instanceof HTMLElement)) return false;
+          const style = window.getComputedStyle(element);
+          const rect = element.getBoundingClientRect();
+          return (
+            style.display !== "none" &&
+            style.visibility !== "hidden" &&
+            style.opacity !== "0" &&
+            rect.width > 0 &&
+            rect.height > 0
+          );
+        };
+
+        const nodes = [...document.querySelectorAll("button, a")].filter((node) =>
+          visible(node)
+        );
+
+        return nodes.every((node) => {
+          if (node.tagName.toLowerCase() === "a") {
+            return ((node as HTMLAnchorElement).getAttribute("href") || "").trim().length > 0;
+          }
+
+          const text = (node.textContent || "").trim();
+          const label = (node.getAttribute("aria-label") || "").trim();
+          return text.length > 0 || label.length > 0;
+        });
+      })
+    )
+    .toBe(true);
+}
+
 test.describe("boutique page smoke", () => {
   test.describe("catalogue / counts", () => {
     for (const countCase of COUNT_CASES) {
@@ -298,6 +351,89 @@ test.describe("boutique page smoke", () => {
     await page.keyboard.press("Escape");
     await expect(drawerContent).toBeHidden();
     await expect.soft(drawerTrigger).toBeFocused();
+  });
+
+  test("keeps mobile filters drawer accessible and functional across required mobile viewports", async ({
+    page,
+  }) => {
+    for (const viewport of [
+      { width: 375, height: 667 },
+      { width: 667, height: 375 },
+      { width: 768, height: 1024 },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+
+      await page.goto("/boutique");
+      const baselineOverflowPx = await getHorizontalOverflowPx(page);
+      const drawerTrigger = page.getByRole("button", { name: "Filtres", exact: true }).first();
+      const drawerContent = page.locator('[data-slot="drawer-content"]');
+
+      await expect(drawerTrigger).toBeVisible();
+      await drawerTrigger.focus();
+      await expect(drawerTrigger).toBeFocused();
+
+      await page.keyboard.press("Enter");
+      await expect(drawerContent).toBeVisible();
+      await expectFocusInsideSelector(page, '[data-slot="drawer-content"]');
+      await expectTabFocusStaysInsideSelector(page, '[data-slot="drawer-content"]', 6);
+
+      await page.keyboard.press("Escape");
+      await expect(drawerContent).toBeHidden();
+      await expect(drawerTrigger).toBeFocused();
+
+      await drawerTrigger.click();
+      await expect(drawerContent).toBeVisible();
+      await drawerContent.locator("label", { hasText: "Sacs" }).first().click();
+      await page.waitForURL(/\/boutique\?.*category=sacs/);
+      await expect(drawerContent).toBeHidden();
+
+      await page.goto("/boutique");
+      const enterTrigger = page.getByRole("button", { name: "Filtres", exact: true }).first();
+      await enterTrigger.click();
+      await expect(drawerContent).toBeVisible();
+      const categoryRadio = drawerContent.locator("#boutique-filter-category-sacs");
+      await categoryRadio.focus();
+      await page.keyboard.press("Enter");
+      await page.waitForURL(/\/boutique\?.*category=sacs/);
+      await expect(drawerContent).toBeHidden();
+
+      await page.goto("/boutique?category=sacs&availability=in-stock");
+      const resetTrigger = page.getByRole("button", { name: "Filtres", exact: true }).first();
+      await resetTrigger.click();
+      await expect(drawerContent).toBeVisible();
+      await drawerContent.getByRole("button", { name: "Réinitialiser", exact: true }).click();
+      await expect(page).toHaveURL(/\/boutique(?:\?.*)?$/);
+      await expect(page).not.toHaveURL(/[?&](category|availability|minPrice|maxPrice)=/);
+      await expect(drawerContent).toBeHidden();
+
+      const finalOverflowPx = await getHorizontalOverflowPx(page);
+      expect(finalOverflowPx).toBeLessThanOrEqual(baselineOverflowPx);
+      await expectNoVisibleInertInteractive(page);
+    }
+  });
+
+  test("keeps desktop and large-tablet boutique layout stable around drawer breakpoints", async ({
+    page,
+  }) => {
+    for (const viewport of [
+      { width: 1200, height: 900, triggerVisible: true },
+      { width: 1441, height: 900, triggerVisible: false },
+      { width: 1728, height: 1117, triggerVisible: false },
+    ]) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto("/boutique");
+
+      const drawerTrigger = page.getByRole("button", { name: "Filtres", exact: true }).first();
+
+      if (viewport.triggerVisible) {
+        await expect(drawerTrigger).toBeVisible();
+      } else {
+        await expect(drawerTrigger).toHaveCount(0);
+      }
+
+      await expectNoHorizontalOverflow(page);
+      await expectNoVisibleInertInteractive(page);
+    }
   });
 
   test("keeps the expected layout around the 1440/1441 transition and on 4k", async ({ page }) => {
