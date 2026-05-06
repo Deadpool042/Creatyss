@@ -385,10 +385,6 @@
    ========================================================================== */
 
 @media (min-width: 64rem) {
-  .boutique-shop-layout {
-    grid-template-columns: minmax(0, 1fr) 240px;
-  }
-
   .boutique-hero-card-compact {
     height: 180px;
     border-radius: 0;
@@ -405,17 +401,38 @@
     width: min(54%, 36rem);
     padding: 1.1rem 1.25rem;
   }
+}
 
-  .boutique-market-shell {
+/* ==========================================================================
+   Desktop boutique 1200+
+   ========================================================================== */
+
+@media (min-width: 75rem) {
+  .boutique-shop-layout {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+
+  .boutique-sidebar-shell {
     display: block;
     align-self: stretch;
   }
 
-  .boutique-market-sticky {
+  .boutique-sidebar-sticky {
     position: sticky;
     top: 8rem;
     z-index: 20;
-    align-content: start;
+    max-height: calc(100dvh - 10rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* A 1200px, on privilégie lisibilité sidebar + catalogue. */
+  .boutique-market-shell {
+    display: none;
+  }
+
+  .boutique-mobile-discovery-shell {
+    display: none;
   }
 }
 
@@ -444,22 +461,16 @@
     padding: 1.35rem 2rem;
   }
 
-  .boutique-sidebar-shell {
+  .boutique-market-shell {
     display: block;
     align-self: stretch;
   }
 
-  .boutique-sidebar-sticky {
+  .boutique-market-sticky {
     position: sticky;
     top: 8rem;
     z-index: 20;
-    max-height: calc(100dvh - 10rem);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-  }
-
-  .boutique-mobile-discovery-shell {
-    display: none;
+    align-content: start;
   }
 }
 

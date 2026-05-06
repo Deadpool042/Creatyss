@@ -14,6 +14,7 @@
 .boutique-listing-actions {
   display: grid;
   gap: 0.5rem;
+  padding: 0 0.5rem;
 }
 
 .boutique-listing-actions-row {
@@ -80,12 +81,20 @@
   transform: translateY(1px);
 }
 
-.boutique-control-button-desktop {
+.boutique-filter-trigger-mobile {
+  display: inline-flex;
+}
+
+.boutique-filter-trigger-tablet {
   display: none;
 }
 
-@media (min-width: 64rem) {
-  .boutique-control-button-desktop {
+@media (min-width: 48rem) {
+  .boutique-filter-trigger-mobile {
+    display: none;
+  }
+
+  .boutique-filter-trigger-tablet {
     display: inline-flex;
     height: 2.25rem;
     border-radius: var(--radius-lg);
@@ -94,8 +103,8 @@
   }
 }
 
-@media (min-width: 90.0625rem) {
-  .boutique-control-button-desktop {
+@media (min-width: 75rem) {
+  .boutique-filter-trigger-tablet {
     display: none;
   }
 }

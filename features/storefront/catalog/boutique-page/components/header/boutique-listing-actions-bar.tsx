@@ -17,13 +17,13 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
           <BoutiqueMobileFilters
             model={model}
             label="Filtres"
-            className="boutique-control-button laptop:hidden"
+            className="boutique-control-button boutique-filter-trigger-mobile"
           />
 
           <BoutiqueFiltersDrawer
             model={model}
             label="Filtres"
-            className="boutique-control-button-desktop"
+            className="boutique-control-button boutique-filter-trigger-tablet"
           />
 
           <BoutiqueSortForm
