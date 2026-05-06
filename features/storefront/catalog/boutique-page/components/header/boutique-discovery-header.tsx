@@ -27,7 +27,7 @@ export function BoutiqueDiscoveryHeader({
             <Image
               alt=""
               aria-hidden="true"
-              className="object-cover object-center opacity-80 dark:hidden"
+              className="object-contain object-center opacity-80 dark:hidden"
               fill
               priority
               sizes="320px"
@@ -37,7 +37,7 @@ export function BoutiqueDiscoveryHeader({
             <Image
               alt=""
               aria-hidden="true"
-              className="hidden object-cover object-center opacity-80 dark:block"
+              className="hidden object-contain object-center opacity-80 dark:block"
               fill
               priority
               sizes="320px"

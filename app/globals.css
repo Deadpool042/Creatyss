@@ -4,5 +4,10 @@
 @import "./styles/theme.css";
 @import "./styles/base.css";
 @import "./styles/shell.css";
+@import "./styles/motion.css";
+
+@import "./styles/boutique/boutique.css";
+@import "./styles/boutique/boutique-controls.css";
+@import "./styles/boutique/boutique-products.css";
 
 @import "./styles/animation.css";

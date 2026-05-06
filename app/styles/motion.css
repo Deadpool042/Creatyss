@@ -1,0 +1,34 @@
+/* =============================================================================
+   Motion tokens — transitions storefront
+   Responsabilité :
+   - durées / easing centralisés
+   - presets de transition réutilisables
+   ============================================================================= */
+
+:root {
+  --motion-duration-fast: 160ms;
+  --motion-duration-base: 220ms;
+  --motion-duration-slow: 500ms;
+
+  --motion-ease-standard: ease;
+  --motion-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  --motion-transition-control:
+    border-color var(--motion-duration-fast) var(--motion-ease-standard),
+    background-color var(--motion-duration-fast) var(--motion-ease-standard),
+    color var(--motion-duration-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+    transform var(--motion-duration-fast) var(--motion-ease-standard);
+
+  --motion-transition-control-soft:
+    background-color var(--motion-duration-fast) var(--motion-ease-standard),
+    color var(--motion-duration-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+    opacity var(--motion-duration-fast) var(--motion-ease-standard);
+
+  --motion-transition-link: color var(--motion-duration-fast) var(--motion-ease-standard);
+
+  --motion-transition-media:
+    transform var(--motion-duration-slow) var(--motion-ease-emphasized),
+    filter var(--motion-duration-slow) var(--motion-ease-standard);
+}

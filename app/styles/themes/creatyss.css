@@ -292,7 +292,14 @@
   --page-foreground: oklch(0.94 0.008 72);
 
   --body-background:
-    radial-gradient(circle at top, oklch(0.5 0.08 45 / 0.18), transparent 32rem), var(--page-bg);
+    radial-gradient(circle at 72% 0%, rgb(145 86 48 / 0.16), transparent 34rem),
+    radial-gradient(circle at 38% 10%, rgb(80 54 34 / 0.22), transparent 32rem),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--page-bg) 82%, rgb(42 28 18)) 0%,
+      var(--page-bg) 38%,
+      color-mix(in srgb, var(--page-bg) 88%, black) 100%
+    );
 
   /* ==========================================================================
      Overlay and interaction

@@ -1,4 +1,3 @@
-//features/storefront/catalog/boutique-page/components/products/boutique-product-card.tsx
 "use client";
 
 import Image from "next/image";
@@ -12,6 +11,8 @@ type BoutiqueProductCardProps = {
   product: BoutiquePageViewModel["products"][number];
   initialFavoriteProductIds: readonly string[];
 };
+
+type AvailabilityTone = "available" | "made-to-order" | "unavailable";
 
 function getAvailabilityLabel(
   availabilityStatus: BoutiquePageViewModel["products"][number]["availabilityStatus"]
@@ -27,18 +28,18 @@ function getAvailabilityLabel(
   return "Indisponible";
 }
 
-function getAvailabilityToneClass(
+function getAvailabilityTone(
   availabilityStatus: BoutiquePageViewModel["products"][number]["availabilityStatus"]
-): string {
+): AvailabilityTone {
   if (availabilityStatus === "in-stock") {
-    return "text-feedback-success-foreground";
+    return "available";
   }
 
   if (availabilityStatus === "made-to-order") {
-    return "text-brand";
+    return "made-to-order";
   }
 
-  return "text-text-muted-strong";
+  return "unavailable";
 }
 
 export function BoutiqueProductCard({
@@ -46,7 +47,7 @@ export function BoutiqueProductCard({
   initialFavoriteProductIds,
 }: BoutiqueProductCardProps) {
   const availabilityLabel = getAvailabilityLabel(product.availabilityStatus);
-  const availabilityToneClass = getAvailabilityToneClass(product.availabilityStatus);
+  const availabilityTone = getAvailabilityTone(product.availabilityStatus);
   const productHref = `/boutique/${product.slug}`;
 
   const productKindLabel = product.variantCount > 1 ? "Variantes" : "Produit";
@@ -58,41 +59,36 @@ export function BoutiqueProductCard({
         : null;
 
   return (
-    <article className="group ">
-      <div className="relative ">
-        <Link
-          className="block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/70 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
-          href={productHref}
-        >
-          <div className="boutique-product-card-media relative aspect-square overflow-hidden rounded-2xl bg-media-surface">
+    <article className="boutique-product-card group">
+      <div className="boutique-product-card-inner">
+        <Link className="boutique-product-card-link" href={productHref}>
+          <div className="boutique-product-card-media">
             {product.isFeatured ? (
-              <span className="absolute left-3 top-3 z-10 rounded-full bg-surface-panel/85 px-2.5 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-brand shadow-sm backdrop-blur">
-                Nouveau
-              </span>
+              <span className="boutique-product-card-badge">Nouveau</span>
             ) : null}
 
             {product.image ? (
               <Image
                 alt={product.image.alt}
-                className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.015]"
+                className="boutique-product-card-image"
                 height={500}
                 loading="lazy"
-                sizes="(min-width: 1024px) 25vw, (min-width: 768px) 34vw, 50vw"
+                sizes="(min-width: 1441px) 22vw, (min-width: 1024px) 28vw, (min-width: 640px) 30vw, 50vw"
                 src={product.image.src}
                 width={500}
               />
             ) : (
               <PlaceholderImage
                 alt=""
-                className="bg-media-surface"
-                imageClassName="opacity-20"
+                className="boutique-product-card-placeholder"
+                imageClassName="boutique-product-card-placeholder-image"
                 fit="contain"
               />
             )}
           </div>
         </Link>
 
-        <div className="absolute right-3 top-3 z-10">
+        <div className="boutique-product-card-favorite">
           <FavoriteButton
             productId={product.id}
             initialFavoriteProductIds={initialFavoriteProductIds}
@@ -100,39 +96,32 @@ export function BoutiqueProductCard({
         </div>
       </div>
 
-      <div className="boutique-product-card-content pt-2.5">
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <p className="mb-0.5 text-[0.75rem] font-medium uppercase tracking-widest text-text-muted-strong">
-              {productKindLabel}
-            </p>
+      <div className="boutique-product-card-content">
+        <div className="boutique-product-card-main">
+          <div className="boutique-product-card-copy">
+            <p className="boutique-product-card-kind">{productKindLabel}</p>
 
-            <h3 className="m-0 line-clamp-2 text-[0.875rem] font-medium leading-snug text-foreground">
-              <Link
-                className="rounded-sm transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/60"
-                href={productHref}
-              >
+            <h3 className="boutique-product-card-title">
+              <Link className="boutique-product-card-title-link" href={productHref}>
                 {product.name}
               </Link>
             </h3>
           </div>
 
-          {product.price ? (
-            <p className="shrink-0 text-[0.875rem] font-semibold text-foreground">
-              {product.price}
-            </p>
-          ) : null}
+          {product.price ? <p className="boutique-product-card-price">{product.price}</p> : null}
         </div>
 
-        <div className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[0.8125rem]">
-          <span className={availabilityToneClass}>{availabilityLabel}</span>
+        <div className="boutique-product-card-meta">
+          <span className="boutique-product-card-availability" data-tone={availabilityTone}>
+            {availabilityLabel}
+          </span>
 
           {variantLabel ? (
             <>
-              <span className="text-text-muted-strong/50" aria-hidden="true">
+              <span className="boutique-product-card-separator" aria-hidden="true">
                 ·
               </span>
-              <span className="text-text-muted-strong">{variantLabel}</span>
+              <span className="boutique-product-card-variant">{variantLabel}</span>
             </>
           ) : null}
         </div>

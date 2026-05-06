@@ -1,44 +1,48 @@
-import { BoutiqueDiscoveryHeader } from "@/features/storefront/catalog/boutique-page/components/header/boutique-discovery-header";
-import { BoutiqueListingHeader } from "@/features/storefront/catalog/boutique-page/components/header/boutique-listing-header";
-import { BoutiqueListingActionsBar } from "@/features/storefront/catalog/boutique-page/components/header/boutique-listing-actions-bar";
-import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
+// features/storefront/catalog/boutique-page/components/header/boutique-page-header.tsx
 
 type BoutiquePageHeaderProps = {
-  model: BoutiquePageViewModel;
   productCountLabel: string;
   activeCategoryName: string | null;
-  heroImage: BoutiquePageViewModel["heroImage"];
 };
 
 export function BoutiquePageHeader({
-  model,
   productCountLabel,
   activeCategoryName,
-  heroImage,
 }: BoutiquePageHeaderProps) {
-  return (
-    <section className="boutique-page-header-shell md:pb-4 desktop:pb-3 wide:pb-4">
-      <div className="boutique-mobile-portrait">
-        <BoutiqueDiscoveryHeader
-          productCountLabel={productCountLabel}
-          activeCategoryName={activeCategoryName}
-          heroImage={heroImage}
-        />
-        <BoutiqueListingHeader model={model} productCountLabel={productCountLabel} />
-      </div>
+  const description = activeCategoryName
+    ? `Catégorie active : ${activeCategoryName}`
+    : "Découvrez nos créations faites main avec passion.";
 
-      <div className="boutique-mobile-landscape">
-        <div className="grid gap-1 px-2">
-          <p className="m-0 text-xs font-medium uppercase tracking-wide text-brand/90">
-            Collection Creatyss
-          </p>
-          <div className="flex items-baseline justify-between gap-2">
-            <h1 className="m-0 text-2xl leading-tight">Boutique</h1>
+  return (
+    <section className="boutique-page-header-shell">
+      <div className="boutique-mobile-portrait">
+        <div
+          className="boutique-hero-card boutique-hero-card-compact"
+          data-testid="boutique-mobile-hero"
+        >
+          <div className="boutique-hero-content">
+            <p className="m-0 text-xs font-medium uppercase tracking-wide text-brand/90">
+              Collection Creatyss
+            </p>
+            <h1 className="m-0">Boutique</h1>
+            <p className="m-0 text-sm leading-relaxed text-text-muted-strong">{description}</p>
             <p className="m-0 text-xs text-text-muted-strong">{productCountLabel}</p>
           </div>
         </div>
+      </div>
 
-        <BoutiqueListingActionsBar model={model} />
+      <div className="boutique-mobile-landscape">
+        <div className="boutique-landscape-context-bar" data-testid="boutique-landscape-hero">
+          <div className="relative z-10 flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="m-0 text-xs font-medium uppercase tracking-wide text-brand/90">
+                Collection Creatyss
+              </p>
+              <h1 className="m-0 text-xl leading-tight">Boutique</h1>
+            </div>
+            <p className="m-0 shrink-0 text-xs text-text-muted-strong">{productCountLabel}</p>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,0 +1,323 @@
+/* =============================================================================
+   Boutique products — product grid and product cards
+   Responsabilité :
+   - grille produits boutique
+   - carte produit listing
+   - media produit
+   - badges produit
+   - meta produit
+   ============================================================================= */
+
+/* ==========================================================================
+   Product grid
+   ========================================================================== */
+
+.boutique-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 0.75rem;
+  row-gap: 1.75rem;
+  padding-inline: 0.5rem;
+}
+
+@media (min-width: 40rem) {
+  .boutique-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 0.875rem;
+    row-gap: 2rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .boutique-product-grid {
+    column-gap: 1rem;
+    row-gap: 2.25rem;
+    padding-inline: 0.75rem;
+  }
+}
+
+@media (min-width: 90.0625rem) {
+  .boutique-product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 1rem;
+    row-gap: 2.35rem;
+  }
+}
+
+/* Landscape mobile : product-first, compact et lisible */
+@media (orientation: landscape) and (max-height: 480px) {
+  .boutique-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 0.5rem;
+    row-gap: 1.25rem;
+    padding-inline: 0;
+  }
+}
+
+/* ==========================================================================
+   Product card
+   ========================================================================== */
+
+.boutique-product-card {
+  min-width: 0;
+}
+
+.boutique-product-card-inner {
+  position: relative;
+  min-width: 0;
+}
+
+.boutique-product-card-link {
+  display: block;
+  border-radius: var(--radius-xl);
+  outline: none;
+}
+
+.boutique-product-card-link:focus-visible {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--focus-ring) 70%, transparent),
+    0 0 0 5px var(--background);
+}
+
+.boutique-product-card-media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--brand) 7%, var(--media-surface)) 0%,
+    var(--media-surface) 100%
+  );
+}
+
+.boutique-product-card-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--motion-transition-media);
+}
+
+.boutique-product-card:hover .boutique-product-card-image {
+  transform: scale(1.018);
+}
+
+.boutique-product-card-placeholder {
+  background: var(--media-surface);
+}
+
+.boutique-product-card-placeholder-image {
+  opacity: 0.2;
+}
+
+/* ==========================================================================
+   Product card badge / favorite
+   ========================================================================== */
+
+.boutique-product-card-badge {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.45rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--brand) 12%, var(--surface-panel)) 0%,
+    color-mix(in srgb, var(--surface-panel) 88%, transparent) 100%
+  );
+  box-shadow: var(--shadow-control);
+  color: var(--brand);
+  padding-inline: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+.boutique-product-card-favorite {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 10;
+}
+
+/* ==========================================================================
+   Product card content
+   ========================================================================== */
+
+.boutique-product-card-content {
+  display: grid;
+  gap: 0.35rem;
+  padding-top: 0.65rem;
+}
+
+.boutique-product-card-main {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.boutique-product-card-copy {
+  min-width: 0;
+}
+
+.boutique-product-card-kind {
+  margin: 0 0 0.15rem;
+  color: var(--text-muted-strong);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.boutique-product-card-title {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.boutique-product-card-title-link {
+  display: inline;
+  border-radius: var(--radius-xs);
+  color: inherit;
+  outline: none;
+  transition: var(--motion-transition-link);
+}
+
+.boutique-product-card-title-link:hover {
+  color: var(--brand);
+}
+
+.boutique-product-card-title-link:focus-visible {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--focus-ring) 60%, transparent);
+}
+
+.boutique-product-card-price {
+  flex-shrink: 0;
+  margin: 0;
+  color: var(--foreground);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.boutique-product-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.375rem;
+  row-gap: 0.125rem;
+  color: var(--text-muted-strong);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.boutique-product-card-availability {
+  color: var(--text-muted-strong);
+}
+
+.boutique-product-card-availability[data-tone="available"] {
+  color: var(--feedback-success-foreground);
+}
+
+.boutique-product-card-availability[data-tone="made-to-order"] {
+  color: var(--brand);
+}
+
+.boutique-product-card-separator {
+  color: color-mix(in srgb, var(--text-muted-strong) 50%, transparent);
+}
+
+.boutique-product-card-variant {
+  color: var(--text-muted-strong);
+}
+
+/* ==========================================================================
+   Mobile dark listing tuning
+   ========================================================================== */
+
+@media (max-width: 47.99rem) {
+  .boutique-product-grid {
+    column-gap: 0.85rem;
+    row-gap: 1.85rem;
+  }
+
+  .boutique-product-card-media {
+    border-radius: 1.25rem;
+  }
+
+  .boutique-product-card-content {
+    padding-top: 0.6rem;
+  }
+
+  .boutique-product-card-kind {
+    font-size: 0.7rem;
+  }
+
+  .boutique-product-card-title {
+    font-size: 0.875rem;
+  }
+
+  .boutique-product-card-price {
+    font-size: 0.875rem;
+  }
+}
+
+/* ==========================================================================
+   Mobile landscape compact
+   ========================================================================== */
+
+@media (orientation: landscape) and (max-height: 480px) {
+  .boutique-product-card-media {
+    aspect-ratio: 16 / 10;
+    border-radius: 0.875rem;
+  }
+
+  .boutique-product-card-content {
+    gap: 0.25rem;
+    padding-top: 0.375rem;
+  }
+
+  .boutique-product-card-kind {
+    margin-bottom: 0.1rem;
+    font-size: 0.65rem;
+  }
+
+  .boutique-product-card-title {
+    font-size: 0.78rem;
+    line-height: 1.2;
+  }
+
+  .boutique-product-card-price {
+    font-size: 0.78rem;
+  }
+
+  .boutique-product-card-meta {
+    font-size: 0.72rem;
+  }
+
+  .boutique-product-card-badge {
+    top: 0.45rem;
+    left: 0.45rem;
+    min-height: 1.25rem;
+    padding-inline: 0.45rem;
+    font-size: 0.62rem;
+  }
+
+  .boutique-product-card-favorite {
+    top: 0.45rem;
+    right: 0.45rem;
+  }
+}

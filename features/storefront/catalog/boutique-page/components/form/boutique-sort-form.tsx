@@ -1,17 +1,24 @@
 "use client";
-
-import { useRef } from "react";
-import { Button } from "@/components/ui/button";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
 
 type BoutiqueSortFormProps = {
-  searchQuery: BoutiquePageViewModel["searchQuery"];
-  selectedCategorySlug: BoutiquePageViewModel["selectedCategorySlug"];
+  searchQuery: string;
+  selectedCategorySlug: string;
   selectedAvailabilityStatus: BoutiquePageViewModel["selectedAvailabilityStatus"];
-  selectedMinPriceCents: BoutiquePageViewModel["selectedMinPriceCents"];
-  selectedMaxPriceCents: BoutiquePageViewModel["selectedMaxPriceCents"];
+  selectedMinPriceCents: number | null;
+  selectedMaxPriceCents: number | null;
   selectedSort: BoutiquePageViewModel["selectedSort"];
 };
+
+const SORT_OPTIONS: ReadonlyArray<{
+  value: BoutiquePageViewModel["selectedSort"];
+  label: string;
+}> = [
+  { value: "featured", label: "Mise en avant" },
+  { value: "newest", label: "Nouveautés" },
+  { value: "price-asc", label: "Prix croissant" },
+  { value: "price-desc", label: "Prix décroissant" },
+];
 
 export function BoutiqueSortForm({
   searchQuery,
@@ -21,10 +28,8 @@ export function BoutiqueSortForm({
   selectedMaxPriceCents,
   selectedSort,
 }: BoutiqueSortFormProps) {
-  const formRef = useRef<HTMLFormElement>(null);
-
   return (
-    <form ref={formRef} action="/boutique" method="get" className="flex min-w-0 items-center gap-2">
+    <form action="/boutique" method="get" className="boutique-sort-form">
       <input type="hidden" name="q" value={searchQuery} />
       <input type="hidden" name="category" value={selectedCategorySlug} />
 
@@ -40,30 +45,28 @@ export function BoutiqueSortForm({
         <input type="hidden" name="maxPrice" value={String(selectedMaxPriceCents)} />
       ) : null}
 
-      <span className="hidden text-xs text-text-muted-strong xl:inline">Trier</span>
+      <label className="sr-only" htmlFor="boutique-sort">
+        Trier les produits
+      </label>
 
-      <select
-        className="h-8 min-w-0 max-w-40 rounded-md border border-control-border bg-control-surface px-2 text-xs text-text-muted-strong transition-colors hover:border-brand hover:text-brand sm:max-w-44 md:max-w-48"
-        defaultValue={selectedSort}
-        name="sort"
-        onChange={() => formRef.current?.requestSubmit()}
-      >
-        <option value="featured">Mise en avant</option>
-        <option value="newest">Nouveautés</option>
-        <option value="name">Nom</option>
-        <option value="price-asc">Prix croissant</option>
-        <option value="price-desc">Prix décroissant</option>
-      </select>
-
-      <Button
-        size="sm"
-        type="submit"
-        aria-label="Appliquer le tri"
-        className="hidden h-8 rounded-md px-2.5 laptop:inline-flex"
-      >
-        <span className="desktop:hidden">OK</span>
-        <span className="hidden desktop:inline">Appliquer</span>
-      </Button>
+      <div className="boutique-sort-control">
+        <select
+          id="boutique-sort"
+          name="sort"
+          className="boutique-sort-select"
+          defaultValue={selectedSort}
+          aria-label="Trier les produits"
+          onChange={(event) => {
+            event.currentTarget.form?.requestSubmit();
+          }}
+        >
+          {SORT_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
     </form>
   );
 }

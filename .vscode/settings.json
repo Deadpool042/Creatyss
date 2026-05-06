@@ -89,6 +89,8 @@
     "docker exec": true,
     "pnpm": true,
     "docker compose": true,
-    "uniq": true
+    "uniq": true,
+    "git restore": true,
+    "true": true
   }
 }

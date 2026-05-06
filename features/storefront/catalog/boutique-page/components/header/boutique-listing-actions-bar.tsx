@@ -11,24 +11,19 @@ type BoutiqueListingActionsBarProps = {
 
 export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarProps) {
   return (
-    <div className="grid gap-2 md:gap-3 md:px-0 md:pt-3">
-      <div
-        className={[
-          "mx-4 flex items-center justify-between gap-2",
-          "rounded-xl border border-surface-border-subtle bg-surface-panel/55 px-3 py-2.5 shadow-sm",
-          "md:mx-0 md:rounded-none md:border-0 md:bg-transparent md:px-2 md:py-0 md:shadow-none",
-        ].join(" ")}
-      >
-        <div className="flex min-w-0 flex-1 items-center gap-2">
+    <div className="boutique-listing-actions">
+      <div className="boutique-listing-actions-row">
+        <div className="boutique-listing-actions-primary">
           <BoutiqueMobileFilters
             model={model}
             label="Filtres"
-            className="inline-flex h-8 items-center rounded-md border border-control-border bg-control-surface px-2.5 text-xs text-text-muted-strong transition-colors hover:border-brand hover:text-brand laptop:hidden"
+            className="boutique-control-button laptop:hidden"
           />
+
           <BoutiqueFiltersDrawer
             model={model}
             label="Filtres"
-            className="hidden laptop:inline-flex laptop:h-9 laptop:items-center laptop:rounded-lg laptop:border laptop:border-control-border laptop:bg-control-surface laptop:px-3 laptop:text-sm laptop:text-text-muted-strong laptop:transition-colors laptop:hover:border-control-border-strong laptop:hover:text-foreground wide:hidden"
+            className="boutique-control-button-desktop"
           />
 
           <BoutiqueSortForm

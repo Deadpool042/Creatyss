@@ -25,7 +25,10 @@ async function getVisibleHeaderCountLabel(page: Page) {
       );
     };
 
-    const header = document.querySelector("main section > div > section");
+    const header =
+      document.querySelector("[data-testid='boutique-mobile-hero']") ??
+      document.querySelector("main section > section") ??
+      document.querySelector("main section > div > section");
     const candidates = header
       ? [...header.querySelectorAll("p")]
           .filter(
@@ -84,7 +87,7 @@ async function getLayoutSnapshot(page: Page) {
 
     const asides = [...document.querySelectorAll("aside")].filter((element) => isVisible(element));
     const marketAside =
-      asides.find((element) => /Les marchés/i.test(element.textContent || "")) ?? null;
+      asides.find((element) => /atelier creatyss/i.test(element.textContent || "")) ?? null;
     const sidebarAside =
       asides.find((element) => /Filtres/i.test(element.textContent || "")) ?? null;
     const cards = [...document.querySelectorAll(".boutique-product-grid > *")].filter((element) =>
@@ -118,7 +121,7 @@ async function getMarketStickySnapshot(page: Page) {
     };
 
     const aside = [...document.querySelectorAll("aside")].find((element) =>
-      /Les marchés/i.test(element.textContent || "")
+      /atelier creatyss/i.test(element.textContent || "")
     );
     const sticky = aside?.querySelector("div") ?? null;
 
@@ -225,7 +228,7 @@ test.describe("boutique page smoke", () => {
       test(`shows expected total and pagination state for ${countCase.url}`, async ({ page }) => {
         await page.goto(countCase.url);
 
-        await expect(page.getByRole("heading", { level: 1, name: "Boutique" })).toBeVisible();
+        await expect(page.getByRole("heading", { level: 1, name: "Boutique" }).first()).toBeVisible();
         await expect
           .poll(async () => getVisibleHeaderCountLabel(page))
           .toBe(countCase.expectedCountLabel);
@@ -520,11 +523,11 @@ test.describe("boutique page smoke", () => {
 
   test("keeps the expected layout around the 1440/1441 transition and on 4k", async ({ page }) => {
     for (const viewportCase of [
-      { width: 1280, height: 800, expectedColumns: 4, sidebarVisible: false, marketVisible: true },
-      { width: 1440, height: 900, expectedColumns: 4, sidebarVisible: false, marketVisible: true },
-      { width: 1441, height: 900, expectedColumns: 5, sidebarVisible: true, marketVisible: false },
-      { width: 1728, height: 1117, expectedColumns: 5, sidebarVisible: true, marketVisible: true },
-      { width: 2560, height: 1440, expectedColumns: 6, sidebarVisible: true, marketVisible: true },
+      { width: 1280, height: 800, expectedColumns: 3, sidebarVisible: false, marketVisible: true },
+      { width: 1440, height: 900, expectedColumns: 3, sidebarVisible: false, marketVisible: true },
+      { width: 1441, height: 900, expectedColumns: 4, sidebarVisible: true, marketVisible: true },
+      { width: 1728, height: 1117, expectedColumns: 4, sidebarVisible: true, marketVisible: true },
+      { width: 2560, height: 1440, expectedColumns: 4, sidebarVisible: true, marketVisible: true },
     ]) {
       await page.setViewportSize({ width: viewportCase.width, height: viewportCase.height });
       await page.goto("/boutique");
@@ -541,30 +544,40 @@ test.describe("boutique page smoke", () => {
     for (const viewportCase of [
       { width: 1280, height: 800, marketVisible: true },
       { width: 1728, height: 1117, marketVisible: true },
-      { width: 1441, height: 900, marketVisible: false },
+      { width: 1441, height: 900, marketVisible: true },
     ]) {
       await page.setViewportSize({ width: viewportCase.width, height: viewportCase.height });
       await page.goto("/boutique");
 
-      const beforeScroll = await getMarketStickySnapshot(page);
+      const initialSnapshot = await getMarketStickySnapshot(page);
 
       if (!viewportCase.marketVisible) {
-        expect(beforeScroll.asideVisible).toBe(false);
+        expect(initialSnapshot.asideVisible).toBe(false);
         continue;
       }
 
-      expect(beforeScroll.asideVisible).toBe(true);
-      expect(beforeScroll.stickyTop).not.toBeNull();
+      expect(initialSnapshot.asideVisible).toBe(true);
+      expect(initialSnapshot.stickyTop).not.toBeNull();
 
-      await page.mouse.wheel(0, 700);
-      await page.waitForTimeout(120);
+      // Scroll suffisant pour dépasser le seuil sticky (top: 8rem = 128px)
+      // L'aside démarre à ~320-384px du haut de page ; 300px suffit à l'activer
+      await page.mouse.wheel(0, 300);
+      await page.waitForTimeout(150);
 
       const afterScroll = await getMarketStickySnapshot(page);
       expect(afterScroll.asideVisible).toBe(true);
       expect(afterScroll.stickyTop).not.toBeNull();
+
+      // L'élément doit être accroché près de top: 8rem = 128px (±24px de tolérance)
+      const STICKY_TOP_PX = 8 * 16;
       expect(
-        Math.abs((afterScroll.stickyTop ?? 0) - (beforeScroll.stickyTop ?? 0))
-      ).toBeLessThanOrEqual(1);
+        afterScroll.stickyTop,
+        `[${viewportCase.width}x${viewportCase.height}] market-sticky should be near top:8rem after scroll`
+      ).toBeGreaterThanOrEqual(STICKY_TOP_PX - 24);
+      expect(
+        afterScroll.stickyTop,
+        `[${viewportCase.width}x${viewportCase.height}] market-sticky should be near top:8rem after scroll`
+      ).toBeLessThanOrEqual(STICKY_TOP_PX + 24);
     }
   });
 
@@ -634,6 +647,254 @@ test.describe("boutique page smoke", () => {
         globalOverflowPx,
         `Global overflow should stay <= 1 at ${viewport.width}x${viewport.height}`
       ).toBeLessThanOrEqual(1);
+    }
+  });
+
+  test("keeps hero above shop layout and column order stable across desktop breakpoints", async ({
+    page,
+  }) => {
+    async function getStructuralBoxes(p: typeof page) {
+      return p.evaluate(() => {
+        const getBBox = (
+          selector: string
+        ): { x: number; y: number; width: number; height: number } | null => {
+          const el = document.querySelector(selector);
+          if (!(el instanceof HTMLElement)) return null;
+          const rect = el.getBoundingClientRect();
+          if (rect.width === 0 && rect.height === 0) return null;
+          return {
+            x: Math.round(rect.x),
+            y: Math.round(rect.y),
+            width: Math.round(rect.width),
+            height: Math.round(rect.height),
+          };
+        };
+        return {
+          hero: getBBox(".boutique-page-header-shell"),
+          catalog: getBBox('[data-testid="boutique-catalog-panel"]'),
+          sidebar: getBBox(".boutique-sidebar-shell"),
+          aside: getBBox(".boutique-market-shell"),
+        };
+      });
+    }
+
+    for (const routeUrl of [
+      "/boutique",
+      "/boutique?category=pochettes",
+      "/boutique?category=sacs",
+    ]) {
+      // 1728x1117 — 3 colonnes : sidebar | catalogue | aside
+      await page.setViewportSize({ width: 1728, height: 1117 });
+      await page.goto(routeUrl);
+
+      const boxes1728 = await getStructuralBoxes(page);
+      expect(boxes1728.hero, `hero should be visible at 1728 on ${routeUrl}`).not.toBeNull();
+      expect(boxes1728.catalog, `catalog should be visible at 1728 on ${routeUrl}`).not.toBeNull();
+      expect(boxes1728.sidebar, `sidebar should be visible at 1728 on ${routeUrl}`).not.toBeNull();
+      expect(boxes1728.aside, `aside should be visible at 1728 on ${routeUrl}`).not.toBeNull();
+
+      const h = boxes1728.hero!;
+      const c = boxes1728.catalog!;
+      const s = boxes1728.sidebar!;
+      const a = boxes1728.aside!;
+
+      expect(h.y, "hero above sidebar").toBeLessThan(s.y);
+      expect(h.y, "hero above catalog").toBeLessThan(c.y);
+      expect(h.y, "hero above aside").toBeLessThan(a.y);
+      expect(s.x, "sidebar left of catalog").toBeLessThan(c.x);
+      expect(c.x, "catalog left of aside").toBeLessThan(a.x);
+      expect(c.width, "catalog wider than sidebar").toBeGreaterThan(s.width);
+      expect(c.width, "catalog wider than aside").toBeGreaterThan(a.width);
+
+      const overflow1728 = await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+      );
+      expect(overflow1728, `overflow <= 1 at 1728 on ${routeUrl}`).toBeLessThanOrEqual(1);
+
+      // 1024x768 — 2 colonnes : catalogue | aside, sidebar masquée
+      await page.setViewportSize({ width: 1024, height: 768 });
+      await page.goto(routeUrl);
+
+      const boxes1024 = await getStructuralBoxes(page);
+      expect(boxes1024.hero, `hero visible at 1024 on ${routeUrl}`).not.toBeNull();
+      expect(boxes1024.catalog, `catalog visible at 1024 on ${routeUrl}`).not.toBeNull();
+      expect(boxes1024.aside, `aside visible at 1024 on ${routeUrl}`).not.toBeNull();
+      expect(boxes1024.sidebar, `sidebar hidden at 1024 on ${routeUrl}`).toBeNull();
+
+      expect(boxes1024.hero!.y, "hero above catalog at 1024").toBeLessThan(boxes1024.catalog!.y);
+      expect(boxes1024.catalog!.x, "catalog left of aside at 1024").toBeLessThan(
+        boxes1024.aside!.x
+      );
+
+      const overflow1024 = await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+      );
+      expect(overflow1024, `overflow <= 1 at 1024 on ${routeUrl}`).toBeLessThanOrEqual(1);
+
+      // 667x375 — mobile landscape : un seul hero, toolbar et grille visibles
+      await page.setViewportSize({ width: 667, height: 375 });
+      await page.goto(routeUrl);
+
+      const portraitHero = page.locator(".boutique-mobile-portrait");
+      const landscapeHero = page.locator(".boutique-mobile-landscape");
+      await expect(landscapeHero, `landscape hero visible at 667x375 on ${routeUrl}`).toBeVisible();
+      await expect(portraitHero, `portrait hero hidden at 667x375 on ${routeUrl}`).toBeHidden();
+
+      await expect(
+        page.getByRole("group", { name: /changer la vue/i }),
+        `toolbar visible at 667x375 on ${routeUrl}`
+      ).toBeVisible();
+      await expect(
+        page.locator(".boutique-product-grid article").first(),
+        `grid visible at 667x375 on ${routeUrl}`
+      ).toBeVisible();
+
+      const overflowLandscape = await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+      );
+      expect(overflowLandscape, `overflow <= 1 at 667x375 on ${routeUrl}`).toBeLessThanOrEqual(1);
+    }
+  });
+
+  test("keeps boutique mobile landscape header compact and product-first", async ({ page }) => {
+    await page.setViewportSize({ width: 667, height: 375 });
+
+    for (const url of ["/boutique", "/boutique?category=pochettes", "/boutique?category=sacs"]) {
+      await page.goto(url);
+
+      // 1. No global overflow
+      const overflowPx = await getHorizontalOverflowPx(page);
+      expect(overflowPx, `overflow <= 1 on ${url}`).toBeLessThanOrEqual(1);
+
+      // 2. Landscape context bar visible
+      await expect(
+        page.getByTestId("boutique-landscape-hero"),
+        `landscape context bar should be visible on ${url}`
+      ).toBeVisible();
+
+      // 3. Portrait hero hidden
+      await expect(
+        page.locator(".boutique-mobile-portrait"),
+        `portrait hero should be hidden on ${url}`
+      ).toBeHidden();
+
+      // 4. Un seul h1 visible
+      const visibleH1Count = await page.evaluate(
+        () =>
+          [...document.querySelectorAll("h1")].filter((el) => {
+            const style = window.getComputedStyle(el);
+            const rect = el.getBoundingClientRect();
+            return (
+              style.display !== "none" &&
+              style.visibility !== "hidden" &&
+              style.opacity !== "0" &&
+              rect.width > 0 &&
+              rect.height > 0
+            );
+          }).length
+      );
+      expect(visibleH1Count, `exactly 1 h1 visible on ${url}`).toBe(1);
+
+      // 5. Hero context bar height <= 64px
+      const heroHeight = await page
+        .getByTestId("boutique-landscape-hero")
+        .evaluate((el) => Math.round(el.getBoundingClientRect().height));
+      expect(
+        heroHeight,
+        `landscape context bar height should be <= 64px on ${url}`
+      ).toBeLessThanOrEqual(64);
+
+      // 6. View toggle visible
+      const viewToggle = page.getByRole("group", { name: /changer la vue/i });
+      await expect(viewToggle, `view toggle should be visible on ${url}`).toBeVisible();
+
+      // 7. Toolbar height <= 56px (view toggle row as proxy for toolbar row)
+      const toggleHeight = await viewToggle.evaluate((el) =>
+        Math.round(el.getBoundingClientRect().height)
+      );
+      expect(
+        toggleHeight,
+        `toolbar view toggle height should be <= 56px on ${url}`
+      ).toBeLessThanOrEqual(56);
+
+      // 8. Filtres button visible
+      await expect(
+        page.getByRole("button", { name: "Filtres", exact: true }).first(),
+        `Filtres button should be visible on ${url}`
+      ).toBeVisible();
+
+      // 9. Sort select visible (at least one)
+      const visibleSortCount = await page.evaluate(
+        () =>
+          [...document.querySelectorAll('select[name="sort"]')].filter((el) => {
+            const htmlEl = el as HTMLElement;
+            const style = window.getComputedStyle(htmlEl);
+            const rect = htmlEl.getBoundingClientRect();
+            return (
+              style.display !== "none" &&
+              style.visibility !== "hidden" &&
+              style.opacity !== "0" &&
+              rect.width > 0 &&
+              rect.height > 0
+            );
+          }).length
+      );
+      expect(
+        visibleSortCount,
+        `at least one sort select should be visible on ${url}`
+      ).toBeGreaterThan(0);
+
+      // 10. Discovery rail not visible
+      await expect(
+        page.getByTestId("boutique-mobile-discovery"),
+        `discovery rail should not be visible in landscape on ${url}`
+      ).toBeHidden();
+
+      // 11. Sidebar not visible
+      const sidebarVisible = await page.evaluate(() => {
+        const el = document.querySelector(".boutique-sidebar-shell");
+        if (!(el instanceof HTMLElement)) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return (
+          style.display !== "none" &&
+          style.visibility !== "hidden" &&
+          rect.width > 0 &&
+          rect.height > 0
+        );
+      });
+      expect(sidebarVisible, `sidebar should not be visible on ${url}`).toBe(false);
+
+      // 12. Market aside not visible
+      const marketVisible = await page.evaluate(() => {
+        const el = document.querySelector(".boutique-market-shell");
+        if (!(el instanceof HTMLElement)) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return (
+          style.display !== "none" &&
+          style.visibility !== "hidden" &&
+          rect.width > 0 &&
+          rect.height > 0
+        );
+      });
+      expect(marketVisible, `market aside should not be visible on ${url}`).toBe(false);
+
+      // 13. At least 2 product cards visible in viewport
+      const cardsInViewport = await page.evaluate(
+        () =>
+          [...document.querySelectorAll(".boutique-product-grid article")].filter((el) => {
+            if (!(el instanceof HTMLElement)) return false;
+            const rect = el.getBoundingClientRect();
+            return (
+              rect.width > 0 && rect.height > 0 && rect.top < window.innerHeight && rect.bottom > 0
+            );
+          }).length
+      );
+      expect(
+        cardsInViewport,
+        `at least 2 product cards should be visible on ${url}`
+      ).toBeGreaterThanOrEqual(2);
     }
   });
 
@@ -719,6 +980,320 @@ test.describe("boutique page smoke", () => {
           `Global overflow should stay <= 1 on ${routeCase.url} at ${viewport.width}x${viewport.height}`
         ).toBeLessThanOrEqual(1);
       }
+    }
+  });
+
+  test("keeps boutique layout full-width at 1440, 1728 and 2560", async ({ page }) => {
+    for (const viewportCase of [
+      {
+        width: 1440,
+        height: 900,
+        expectedColumns: 3,
+        sidebarVisible: false,
+        minLayoutWidthRatio: 0.88,
+      },
+      {
+        width: 1728,
+        height: 1117,
+        expectedColumns: 4,
+        sidebarVisible: true,
+        minLayoutWidthRatio: 0.88,
+      },
+      {
+        width: 2560,
+        height: 1440,
+        expectedColumns: 4,
+        sidebarVisible: true,
+        minLayoutWidthRatio: 0.88,
+      },
+    ]) {
+      await page.setViewportSize({ width: viewportCase.width, height: viewportCase.height });
+      await page.goto("/boutique");
+
+      const layoutBox = await page.locator(".boutique-page-layout").boundingBox();
+      expect(
+        layoutBox,
+        `layout bounding box visible at ${viewportCase.width}x${viewportCase.height}`
+      ).not.toBeNull();
+
+      const minExpectedWidth = Math.floor(viewportCase.width * viewportCase.minLayoutWidthRatio);
+      expect(
+        layoutBox!.width,
+        `layout width should be >= ${minExpectedWidth}px (88% of ${viewportCase.width}px viewport) at ${viewportCase.width}x${viewportCase.height}`
+      ).toBeGreaterThanOrEqual(minExpectedWidth);
+
+      // Hero visible and large
+      const heroBox = await page.locator(".boutique-page-header-shell").boundingBox();
+      expect(
+        heroBox,
+        `hero visible at ${viewportCase.width}x${viewportCase.height}`
+      ).not.toBeNull();
+      expect(
+        heroBox!.width,
+        `hero should be >= ${minExpectedWidth}px at ${viewportCase.width}x${viewportCase.height}`
+      ).toBeGreaterThanOrEqual(minExpectedWidth);
+
+      // Shop layout uses available width
+      const shopBox = await page.locator(".boutique-shop-layout").boundingBox();
+      expect(
+        shopBox,
+        `shop layout visible at ${viewportCase.width}x${viewportCase.height}`
+      ).not.toBeNull();
+
+      // Catalog panel visible
+      await expect(
+        page.locator('[data-testid="boutique-catalog-panel"]'),
+        `catalog panel visible at ${viewportCase.width}x${viewportCase.height}`
+      ).toBeVisible();
+
+      // Market aside visible
+      const asideVisible = await page.evaluate(() => {
+        const el = document.querySelector(".boutique-market-shell");
+        if (!(el instanceof HTMLElement)) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return style.display !== "none" && rect.width > 0 && rect.height > 0;
+      });
+      expect(
+        asideVisible,
+        `market aside visible at ${viewportCase.width}x${viewportCase.height}`
+      ).toBe(true);
+
+      // Sidebar visibility
+      const sidebarVisible = await page.evaluate(() => {
+        const el = document.querySelector(".boutique-sidebar-shell");
+        if (!(el instanceof HTMLElement)) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return style.display !== "none" && rect.width > 0 && rect.height > 0;
+      });
+      expect(
+        sidebarVisible,
+        `sidebar visibility should be ${viewportCase.sidebarVisible} at ${viewportCase.width}x${viewportCase.height}`
+      ).toBe(viewportCase.sidebarVisible);
+
+      // Column count: expected columns, never 5
+      const columns = await page.evaluate(() => {
+        const cards = [...document.querySelectorAll(".boutique-product-grid > *")];
+        return new Set(
+          cards.map((el) => Math.round((el as HTMLElement).getBoundingClientRect().left))
+        ).size;
+      });
+      expect(
+        columns,
+        `columns should be ${viewportCase.expectedColumns} at ${viewportCase.width}x${viewportCase.height}`
+      ).toBe(viewportCase.expectedColumns);
+      expect(
+        columns,
+        `never 5 columns at ${viewportCase.width}x${viewportCase.height}`
+      ).toBeLessThanOrEqual(4);
+
+      // No horizontal overflow
+      const overflowPx = await getHorizontalOverflowPx(page);
+      expect(
+        overflowPx,
+        `overflow should be <= 1 at ${viewportCase.width}x${viewportCase.height}`
+      ).toBeLessThanOrEqual(1);
+    }
+  });
+
+  test("keeps desktop 1440x900 boutique layout correct", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+
+    for (const url of ["/boutique", "/boutique?category=sacs"]) {
+      await page.goto(url);
+
+      // Hero card visible
+      await expect(page.getByTestId("boutique-mobile-hero")).toBeVisible();
+
+      // Shop layout positioned below hero
+      const heroBox = await page.locator(".boutique-page-header-shell").boundingBox();
+      const shopBox = await page.locator(".boutique-shop-layout").boundingBox();
+      expect(heroBox, `hero bounding box visible at 1440 on ${url}`).not.toBeNull();
+      expect(shopBox, `shop layout bounding box visible at 1440 on ${url}`).not.toBeNull();
+      expect(heroBox!.y, `hero above shop layout at 1440 on ${url}`).toBeLessThan(shopBox!.y);
+
+      // Catalog panel visible
+      await expect(
+        page.locator('[data-testid="boutique-catalog-panel"]'),
+        `catalog panel visible at 1440 on ${url}`
+      ).toBeVisible();
+
+      // Market aside visible (laptop+ breakpoint)
+      const asideVisible = await page.evaluate(() => {
+        const el = document.querySelector(".boutique-market-shell");
+        if (!(el instanceof HTMLElement)) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return style.display !== "none" && rect.width > 0 && rect.height > 0;
+      });
+      expect(asideVisible, `market aside visible at 1440 on ${url}`).toBe(true);
+
+      // At least 2 product columns (target: 3)
+      const columns = await page.evaluate(() => {
+        const cards = [...document.querySelectorAll(".boutique-product-grid > *")];
+        return new Set(
+          cards.map((el) => Math.round((el as HTMLElement).getBoundingClientRect().left))
+        ).size;
+      });
+      expect(columns, `at least 2 product columns at 1440 on ${url}`).toBeGreaterThanOrEqual(2);
+
+      // No horizontal overflow
+      await expectNoHorizontalOverflow(page);
+    }
+  });
+
+  test("keeps mobile portrait 375x667 boutique layout correct", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto("/boutique");
+
+    // Portrait hero visible
+    await expect(
+      page.getByTestId("boutique-mobile-hero"),
+      "portrait hero visible at 375x667"
+    ).toBeVisible();
+
+    // Toolbar (view toggle) visible
+    await expect(
+      page.getByRole("group", { name: /changer la vue/i }),
+      "view toggle visible at 375x667"
+    ).toBeVisible();
+
+    // Discovery rail visible when no filter active
+    await expect(
+      page.getByTestId("boutique-mobile-discovery"),
+      "discovery rail visible at 375x667 with no active filter"
+    ).toBeVisible();
+
+    // Sidebar hidden on mobile
+    const sidebarVisible = await page.evaluate(() => {
+      const el = document.querySelector(".boutique-sidebar-shell");
+      if (!(el instanceof HTMLElement)) return false;
+      const style = window.getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      return style.display !== "none" && rect.width > 0 && rect.height > 0;
+    });
+    expect(sidebarVisible, "sidebar hidden at 375x667").toBe(false);
+
+    // Market aside hidden on mobile
+    const asideVisible = await page.evaluate(() => {
+      const el = document.querySelector(".boutique-market-shell");
+      if (!(el instanceof HTMLElement)) return false;
+      const style = window.getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      return style.display !== "none" && rect.width > 0 && rect.height > 0;
+    });
+    expect(asideVisible, "market aside hidden at 375x667").toBe(false);
+
+    // Product grid visible with at least 2 cards
+    await expect(
+      page.locator(".boutique-product-grid article").first(),
+      "product grid visible at 375x667"
+    ).toBeVisible();
+
+    // Exactly 2 columns on mobile portrait
+    const columns = await page.evaluate(() => {
+      const cards = [...document.querySelectorAll(".boutique-product-grid > *")];
+      return new Set(
+        cards.map((el) => Math.round((el as HTMLElement).getBoundingClientRect().left))
+      ).size;
+    });
+    expect(columns, "2 product columns at 375x667").toBe(2);
+
+    // No horizontal overflow
+    await expectNoHorizontalOverflow(page);
+  });
+
+  test("keeps hero image rendering stable across key viewports", async ({ page }) => {
+    const heroViewports = [
+      // Ultrawide extrême — hero doit être visible, pas déformé, overflow = 0
+      { width: 3740, height: 673, expectLandscapeHero: false, maxHeroPx: 280 },
+      // 4K / 2K large
+      { width: 2560, height: 1440, expectLandscapeHero: false, maxHeroPx: 280 },
+      // Desktop standard
+      { width: 1440, height: 900, expectLandscapeHero: false, maxHeroPx: 280 },
+      // Tablet portrait
+      { width: 768, height: 1024, expectLandscapeHero: false, maxHeroPx: null },
+      // Mobile portrait
+      { width: 375, height: 667, expectLandscapeHero: false, maxHeroPx: null },
+      // Mobile landscape
+      { width: 667, height: 375, expectLandscapeHero: true, maxHeroPx: 64 },
+    ] as const;
+
+    for (const vp of heroViewports) {
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await page.goto("/boutique");
+
+      // No horizontal overflow
+      const overflowPx = await getHorizontalOverflowPx(page);
+      expect(
+        overflowPx,
+        `overflow <= 1 at ${vp.width}x${vp.height}`
+      ).toBeLessThanOrEqual(1);
+
+      if (vp.expectLandscapeHero) {
+        // Mobile landscape : landscape context bar visible, portrait hero hidden
+        await expect(
+          page.getByTestId("boutique-landscape-hero"),
+          `landscape hero visible at ${vp.width}x${vp.height}`
+        ).toBeVisible();
+        await expect(
+          page.locator(".boutique-mobile-portrait"),
+          `portrait hero hidden at ${vp.width}x${vp.height}`
+        ).toBeHidden();
+
+        if (vp.maxHeroPx !== null) {
+          const heroHeight = await page
+            .getByTestId("boutique-landscape-hero")
+            .evaluate((el) => Math.round(el.getBoundingClientRect().height));
+          expect(
+            heroHeight,
+            `landscape hero height <= ${vp.maxHeroPx}px at ${vp.width}x${vp.height}`
+          ).toBeLessThanOrEqual(vp.maxHeroPx);
+        }
+      } else {
+        // Portrait/tablet/desktop : hero card visible
+        const heroCard = page.getByTestId("boutique-mobile-hero");
+        await expect(
+          heroCard,
+          `hero card visible at ${vp.width}x${vp.height}`
+        ).toBeVisible();
+
+        // At least one img inside the hero
+        const imgCount = await heroCard.locator("img").count();
+        expect(
+          imgCount,
+          `hero card has at least 1 img at ${vp.width}x${vp.height}`
+        ).toBeGreaterThan(0);
+
+        if (vp.maxHeroPx !== null) {
+          const heroHeight = await heroCard.evaluate((el) =>
+            Math.round(el.getBoundingClientRect().height)
+          );
+          expect(
+            heroHeight,
+            `hero card height <= ${vp.maxHeroPx}px at ${vp.width}x${vp.height}`
+          ).toBeLessThanOrEqual(vp.maxHeroPx);
+        }
+
+        // Shop layout visible below hero on desktop+
+        if (vp.width >= 768) {
+          const heroBox = await page.locator(".boutique-page-header-shell").boundingBox();
+          const shopBox = await page.locator(".boutique-shop-layout").boundingBox();
+          expect(heroBox, `hero shell visible at ${vp.width}x${vp.height}`).not.toBeNull();
+          expect(shopBox, `shop layout visible at ${vp.width}x${vp.height}`).not.toBeNull();
+          expect(
+            heroBox!.y,
+            `hero above shop layout at ${vp.width}x${vp.height}`
+          ).toBeLessThan(shopBox!.y);
+        }
+      }
+
+      // h1 heading visible
+      await expect(
+        page.getByRole("heading", { level: 1, name: "Boutique" }).first(),
+        `h1 visible at ${vp.width}x${vp.height}`
+      ).toBeVisible();
     }
   });
 });

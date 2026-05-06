@@ -7,12 +7,7 @@ type BoutiqueViewToggleProps = {
 export function BoutiqueViewToggle({ className }: BoutiqueViewToggleProps) {
   return (
     <div
-      className={[
-        "inline-flex items-center gap-1 rounded-sm border border-control-border bg-control-surface p-0.5",
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      className={["boutique-view-toggle", className].filter(Boolean).join(" ")}
       role="group"
       aria-label="Changer la vue des produits"
     >
@@ -20,22 +15,23 @@ export function BoutiqueViewToggle({ className }: BoutiqueViewToggleProps) {
         type="button"
         aria-pressed="true"
         aria-label="Vue grille"
-        className="inline-flex h-7 items-center gap-1 rounded-sm bg-surface-panel px-2 text-xs font-medium text-foreground shadow-control md:gap-1.5 md:px-2.5 data-active:text-brand"
+        data-state="active"
+        className="boutique-view-toggle-button"
       >
-        <LayoutGrid aria-hidden="true" className="size-3.5" />
-        <span className="hidden md:inline">Grille</span>
+        <LayoutGrid aria-hidden="true" />
+        <span className="boutique-view-toggle-label">Grille</span>
       </button>
 
       <button
         type="button"
         aria-pressed="false"
-        aria-label="Vue liste bientôt disponible"
         aria-disabled="true"
+        aria-label="Vue liste bientôt disponible"
         title="Vue liste bientôt disponible"
-        className="inline-flex h-7 items-center gap-1 rounded-sm px-2 text-xs text-text-muted-strong opacity-70 md:gap-1.5 md:px-2.5"
+        className="boutique-view-toggle-button"
       >
-        <List aria-hidden="true" className="size-3.5" />
-        <span className="hidden md:inline">Liste</span>
+        <List aria-hidden="true" />
+        <span className="boutique-view-toggle-label">Liste</span>
       </button>
     </div>
   );

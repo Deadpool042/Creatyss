@@ -1,4 +1,5 @@
 "use client";
+
 import { XIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -33,8 +34,8 @@ export function BoutiqueFiltersDrawer({
         </button>
       </DrawerTrigger>
 
-      <DrawerContent className="w-76 max-w-[82vw] border-surface-border-subtle/70 bg-overlay-scrim p-0 shadow-overlay backdrop-blur-2xl">
-        <DrawerHeader className="flex-row items-center justify-between border-b border-surface-border-subtle/70 px-4 py-3">
+      <DrawerContent className="boutique-filters-drawer">
+        <DrawerHeader className="boutique-filters-drawer-header">
           <div className="grid gap-0.5">
             <DrawerTitle>Filtres</DrawerTitle>
             <DrawerDescription className="sr-only">
@@ -49,7 +50,7 @@ export function BoutiqueFiltersDrawer({
           </DrawerClose>
         </DrawerHeader>
 
-        <div className="overflow-y-auto px-4 py-5">
+        <div className="boutique-filters-drawer-content">
           <BoutiqueFiltersContent
             model={model}
             wrapLink={(link, key) => (

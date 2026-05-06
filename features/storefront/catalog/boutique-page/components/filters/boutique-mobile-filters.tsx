@@ -2,15 +2,9 @@
 
 import { useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { XIcon } from "lucide-react";
+import { Settings2Icon, XIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { useBoutiqueFilterCount } from "@/features/storefront/catalog/boutique-page/hooks/use-boutique-filter-count";
-import {
-  centsToEurosInputValue,
-  eurosInputToCents,
-} from "@/features/storefront/catalog/boutique-page/model/price-input-utils";
-import { buildBoutiqueUrl } from "@/features/storefront/catalog/boutique-page/model/build-boutique-url";
 import {
   Drawer,
   DrawerClose,
@@ -20,6 +14,12 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { useBoutiqueFilterCount } from "@/features/storefront/catalog/boutique-page/hooks/use-boutique-filter-count";
+import { buildBoutiqueUrl } from "@/features/storefront/catalog/boutique-page/model/build-boutique-url";
+import {
+  centsToEurosInputValue,
+  eurosInputToCents,
+} from "@/features/storefront/catalog/boutique-page/model/price-input-utils";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
 
 type BoutiqueMobileFiltersProps = {
@@ -78,12 +78,8 @@ function BoutiqueFilterOption({
   return (
     <label
       htmlFor={inputId}
-      className={[
-        "group grid w-full cursor-pointer grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-0.5 rounded-lg px-1.5 py-1.5 text-sm transition-colors",
-        "hover:bg-surface-panel/20 active:bg-surface-panel/30",
-        "focus-within:bg-surface-panel/20 focus-within:outline-none",
-        checked ? "text-foreground" : "text-text-muted-strong hover:text-foreground",
-      ].join(" ")}
+      className="boutique-filter-option"
+      data-checked={checked ? "true" : "false"}
     >
       <input
         id={inputId}
@@ -104,37 +100,22 @@ function BoutiqueFilterOption({
       <span
         aria-hidden="true"
         className={[
-          "mt-0.5 grid shrink-0 place-items-center border transition-colors",
-          "group-focus-within:ring-2 group-focus-within:ring-focus-ring/50",
-          indicator === "square" ? "size-4 rounded-[5px]" : "size-4 rounded-full",
-          checked
-            ? "border-brand"
-            : "border-control-border/70 bg-transparent group-hover:border-control-border-strong",
+          "boutique-filter-option-indicator",
+          indicator === "square"
+            ? "boutique-filter-option-indicator-square"
+            : "boutique-filter-option-indicator-dot",
         ].join(" ")}
       >
-        {checked && indicator === "dot" ? (
-          <span className="size-1.5 rounded-full bg-brand" />
-        ) : null}
+        {checked && indicator === "dot" ? <span className="boutique-filter-option-dot" /> : null}
 
         {checked && indicator === "square" ? (
-          <span className="text-[0.62rem] leading-none text-brand">✓</span>
+          <span className="boutique-filter-option-check">✓</span>
         ) : null}
       </span>
 
-      <span
-        className={[
-          "line-clamp-2 whitespace-normal wrap-break-word pr-1 text-sm",
-          checked ? "font-medium text-foreground" : "font-normal text-text-muted-strong",
-        ].join(" ")}
-      >
-        {label}
-      </span>
+      <span className="boutique-filter-option-label">{label}</span>
 
-      {helperText ? (
-        <span className="col-start-2 m-0 text-[11px] leading-snug text-text-muted-strong">
-          {helperText}
-        </span>
-      ) : null}
+      {helperText ? <span className="boutique-filter-option-helper">{helperText}</span> : null}
     </label>
   );
 }
@@ -147,6 +128,7 @@ export function BoutiqueMobileFilters({
   const router = useRouter();
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const searchParams = useSearchParams();
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategorySlug, setSelectedCategorySlug] = useState(model.selectedCategorySlug);
   const [selectedAvailability, setSelectedAvailability] = useState<
@@ -208,6 +190,7 @@ export function BoutiqueMobileFilters({
     <Drawer direction="bottom" modal open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
         <button type="button" className={className}>
+          <Settings2Icon aria-hidden="true" />
           {label}
         </button>
       </DrawerTrigger>
@@ -217,13 +200,13 @@ export function BoutiqueMobileFilters({
           event.preventDefault();
           closeButtonRef.current?.focus();
         }}
-        className="max-h-[86dvh] rounded-t-[1.75rem] border-shell-border/70 bg-surface-floating/92 px-0 pb-0 pt-0 shadow-floating backdrop-blur-xl"
+        className="boutique-mobile-filters-drawer"
       >
-        <DrawerHeader className="flex-row items-center justify-between border-b border-shell-border/70 px-4 py-3">
+        <DrawerHeader className="boutique-mobile-filters-header">
           <div className="grid gap-0.5">
             <DrawerTitle>Filtres</DrawerTitle>
             <DrawerDescription className="sr-only">
-              Filtrez les produits par catégorie et disponibilité.
+              Filtrez les produits par catégorie, disponibilité et tarif.
             </DrawerDescription>
           </div>
 
@@ -235,7 +218,7 @@ export function BoutiqueMobileFilters({
               type="button"
               variant="ghost"
             >
-              <XIcon />
+              <XIcon className="size-4" aria-hidden="true" />
             </Button>
           </DrawerClose>
         </DrawerHeader>
@@ -247,17 +230,15 @@ export function BoutiqueMobileFilters({
             event.preventDefault();
             submitCurrentFilters();
           }}
-          className="grid gap-3.5 overflow-y-auto px-4 py-3"
+          className="boutique-mobile-filters-form"
         >
           <input type="hidden" name="q" value={model.searchQuery} />
           <input type="hidden" name="sort" value={model.selectedSort} />
 
-          <section className="grid gap-2">
-            <p className="m-0 text-xs font-semibold uppercase tracking-wide text-text-muted-strong">
-              Catégories
-            </p>
+          <section className="boutique-mobile-filters-section">
+            <p className="boutique-mobile-filters-section-title">Catégories</p>
 
-            <div className="grid max-h-[30dvh] grid-cols-1 gap-0.5 overflow-y-auto pr-1">
+            <div className="boutique-mobile-filters-scroll-list">
               <BoutiqueFilterOption
                 inputId="boutique-filter-category-all"
                 name="category"
@@ -267,6 +248,7 @@ export function BoutiqueMobileFilters({
                 onChange={() => {
                   const nextCategory = "";
                   setSelectedCategorySlug(nextCategory);
+
                   requestAnimationFrame(() => {
                     applyFilters({
                       categorySlug: nextCategory,
@@ -291,6 +273,7 @@ export function BoutiqueMobileFilters({
                   onChange={() => {
                     const nextCategory = category.slug;
                     setSelectedCategorySlug(nextCategory);
+
                     requestAnimationFrame(() => {
                       applyFilters({
                         categorySlug: nextCategory,
@@ -307,13 +290,11 @@ export function BoutiqueMobileFilters({
             </div>
           </section>
 
-          <fieldset className="grid gap-2 border-t border-shell-border/60 pt-3">
-            <legend className="m-0 text-xs font-semibold uppercase tracking-wide text-text-muted-strong">
-              Disponibilité
-            </legend>
+          <fieldset className="boutique-mobile-filters-section boutique-mobile-filters-section-bordered">
+            <legend className="boutique-mobile-filters-section-title">Disponibilité</legend>
 
-            <p className="m-0 text-[11px] text-text-muted-strong">
-              Choisissez un seul statut de disponibilité
+            <p className="boutique-mobile-filters-helper">
+              Choisissez un seul statut de disponibilité.
             </p>
 
             <div role="radiogroup" aria-label="Disponibilité" className="grid gap-0.5">
@@ -344,14 +325,12 @@ export function BoutiqueMobileFilters({
             </div>
           </fieldset>
 
-          <section className="grid gap-2 border-t border-shell-border/60 pt-3">
-            <p className="m-0 text-xs font-semibold uppercase tracking-wide text-text-muted-strong">
-              Tarif
-            </p>
+          <section className="boutique-mobile-filters-section boutique-mobile-filters-section-bordered">
+            <p className="boutique-mobile-filters-section-title">Tarif</p>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="boutique-mobile-filters-price-grid">
               <label
-                className="grid gap-1 text-xs text-text-muted-strong"
+                className="boutique-mobile-filters-price-label"
                 htmlFor="boutique-filter-min-price"
               >
                 Prix minimum
@@ -362,12 +341,12 @@ export function BoutiqueMobileFilters({
                   placeholder="Min"
                   value={selectedMinPriceEuros}
                   onChange={(event) => setSelectedMinPriceEuros(event.currentTarget.value)}
-                  className="h-9 rounded-lg border border-control-border bg-control-surface px-2.5 text-sm text-foreground shadow-control outline-none transition-all hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50"
+                  className="boutique-mobile-filters-price-input"
                 />
               </label>
 
               <label
-                className="grid gap-1 text-xs text-text-muted-strong"
+                className="boutique-mobile-filters-price-label"
                 htmlFor="boutique-filter-max-price"
               >
                 Prix maximum
@@ -378,7 +357,7 @@ export function BoutiqueMobileFilters({
                   placeholder="Max"
                   value={selectedMaxPriceEuros}
                   onChange={(event) => setSelectedMaxPriceEuros(event.currentTarget.value)}
-                  className="h-9 rounded-lg border border-control-border bg-control-surface px-2.5 text-sm text-foreground shadow-control outline-none transition-all hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50"
+                  className="boutique-mobile-filters-price-input"
                 />
               </label>
             </div>
@@ -404,7 +383,7 @@ export function BoutiqueMobileFilters({
             />
           ) : null}
 
-          <div className="sticky bottom-0 z-10 grid gap-1.5 border-t border-shell-border/70 bg-surface-floating/96 pb-3 pt-2 backdrop-blur-md">
+          <div className="boutique-mobile-filters-footer">
             <Button type="submit" className="h-10" aria-live="polite">
               {resultLabel}
             </Button>
@@ -431,7 +410,7 @@ export function BoutiqueMobileFilters({
                   });
                 });
               }}
-              className="inline-flex h-8 items-center justify-center text-xs text-text-muted-strong underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              className="boutique-mobile-filters-reset"
             >
               Réinitialiser
             </button>
