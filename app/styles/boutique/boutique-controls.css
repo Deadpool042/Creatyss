@@ -103,7 +103,7 @@
   }
 }
 
-@media (min-width: 75rem) {
+@media (min-width: 108rem) {
   .boutique-filter-trigger-tablet {
     display: none;
   }

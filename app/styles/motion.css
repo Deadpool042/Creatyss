@@ -15,12 +15,14 @@
 
   --motion-transition-control:
     border-color var(--motion-duration-fast) var(--motion-ease-standard),
+    background var(--motion-duration-fast) var(--motion-ease-standard),
     background-color var(--motion-duration-fast) var(--motion-ease-standard),
     color var(--motion-duration-fast) var(--motion-ease-standard),
     box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
     transform var(--motion-duration-fast) var(--motion-ease-standard);
 
   --motion-transition-control-soft:
+    background var(--motion-duration-fast) var(--motion-ease-standard),
     background-color var(--motion-duration-fast) var(--motion-ease-standard),
     color var(--motion-duration-fast) var(--motion-ease-standard),
     box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
@@ -31,4 +33,46 @@
   --motion-transition-media:
     transform var(--motion-duration-slow) var(--motion-ease-emphasized),
     filter var(--motion-duration-slow) var(--motion-ease-standard);
+
+  --motion-transition-theme:
+    background var(--motion-duration-slow) var(--motion-ease-standard),
+    background-color var(--motion-duration-slow) var(--motion-ease-standard),
+    color var(--motion-duration-slow) var(--motion-ease-standard),
+    border-color var(--motion-duration-slow) var(--motion-ease-standard),
+    box-shadow var(--motion-duration-slow) var(--motion-ease-standard),
+    outline-color var(--motion-duration-slow) var(--motion-ease-standard);
+}
+
+/* =============================================================================
+   Theme transition — light/dark mode
+   ============================================================================= */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-transition,
+  html.theme-transition body,
+  html.theme-transition header,
+  html.theme-transition nav,
+  html.theme-transition main,
+  html.theme-transition footer,
+  html.theme-transition .site-header-blur,
+  html.theme-transition .site-header-drawer,
+  html.theme-transition .boutique-page-layout,
+  html.theme-transition .boutique-catalog-panel,
+  html.theme-transition .boutique-sidebar-panel,
+  html.theme-transition .boutique-market-panel,
+  html.theme-transition .boutique-control-button,
+  html.theme-transition .boutique-sort-select,
+  html.theme-transition .boutique-view-toggle,
+  html.theme-transition .boutique-view-toggle-button,
+  html.theme-transition .boutique-active-filters,
+  html.theme-transition .boutique-filter-option,
+  html.theme-transition .boutique-mobile-category-chip,
+  html.theme-transition .boutique-mobile-category-image,
+  html.theme-transition .boutique-product-card,
+  html.theme-transition .boutique-product-card-media,
+  html.theme-transition .boutique-product-card-content,
+  html.theme-transition .boutique-mobile-filters-drawer,
+  html.theme-transition .boutique-filters-drawer {
+    transition: var(--motion-transition-theme);
+  }
 }

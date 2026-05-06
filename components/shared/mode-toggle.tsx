@@ -1,54 +1,56 @@
 "use client";
 
-import * as React from "react";
-import { Moon, Sun } from "lucide-react";
+import { MoonIcon, SunIcon } from "lucide-react";
+import { useRef, type RefObject } from "react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
-type ModeToggleProps = {
-  size?: "default" | "compact";
-};
+const THEME_TRANSITION_DURATION_MS = 600;
 
-export function ModeToggle({ size = "default" }: ModeToggleProps) {
-  const { setTheme } = useTheme();
-  const isCompact = size === "compact";
+function enableThemeTransition(timeoutRef: RefObject<number | null>): void {
+  const root = document.documentElement;
+
+  root.classList.add("theme-transition");
+
+  if (timeoutRef.current !== null) {
+    window.clearTimeout(timeoutRef.current);
+  }
+
+  timeoutRef.current = window.setTimeout(() => {
+    root.classList.remove("theme-transition");
+    timeoutRef.current = null;
+  }, THEME_TRANSITION_DURATION_MS);
+}
+
+export function ModeToggle() {
+  const timeoutRef = useRef<number | null>(null);
+  const { resolvedTheme, setTheme } = useTheme();
+
+  const currentTheme = resolvedTheme === "dark" ? "dark" : "light";
+  const nextTheme = currentTheme === "dark" ? "light" : "dark";
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className={isCompact ? "h-8 w-8 p-0 shadow-none" : undefined}
-        >
-          <Sun
-            className={[
-              isCompact ? "h-4 w-4" : "h-[1.2rem] w-[1.2rem]",
-              "scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90",
-            ].join(" ")}
-          />
-          <Moon
-            className={[
-              "absolute",
-              isCompact ? "h-4 w-4" : "h-[1.2rem] w-[1.2rem]",
-              "scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0",
-            ].join(" ")}
-          />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button
+      type="button"
+      size="icon-sm"
+      variant="ghost"
+      aria-label={nextTheme === "dark" ? "Activer le mode sombre" : "Activer le mode clair"}
+      onClick={() => {
+        enableThemeTransition(timeoutRef);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setTheme(nextTheme);
+          });
+        });
+      }}
+    >
+      {currentTheme === "dark" ? (
+        <SunIcon aria-hidden="true" className="size-4" />
+      ) : (
+        <MoonIcon aria-hidden="true" className="size-4" />
+      )}
+    </Button>
   );
 }

@@ -44,7 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
+          disableTransitionOnChange={false}
         >
           <TooltipProvider>
             <PublicSiteShell>{children}</PublicSiteShell>

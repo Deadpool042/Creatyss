@@ -409,7 +409,59 @@
 
 @media (min-width: 75rem) {
   .boutique-shop-layout {
-    grid-template-columns: 240px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 260px;
+  }
+
+  .boutique-sidebar-shell {
+    display: none;
+  }
+
+  .boutique-market-shell {
+    display: block;
+    align-self: stretch;
+  }
+
+  .boutique-market-sticky {
+    position: sticky;
+    top: 8rem;
+    z-index: 20;
+    align-content: start;
+  }
+
+  .boutique-mobile-discovery-shell {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Wide 1441+
+   ========================================================================== */
+
+@media (min-width: 90.0625rem) {
+  .boutique-hero-card-compact {
+    height: 200px;
+  }
+
+  .boutique-hero-card::before {
+    left: 30%;
+    right: 0;
+    background-size: auto 100%;
+    background-position: right center;
+  }
+
+  .boutique-hero-content {
+    width: min(42%, 34rem);
+    padding: 1.35rem 2rem;
+  }
+}
+
+/* ==========================================================================
+   Ultrawide 1728+
+   ========================================================================== */
+
+@media (min-width: 108rem) {
+  .boutique-shop-layout {
+    grid-template-columns: 240px minmax(0, 1fr) 280px;
   }
 
   .boutique-sidebar-shell {
@@ -426,63 +478,6 @@
     overscroll-behavior: contain;
   }
 
-  /* A 1200px, on privilégie lisibilité sidebar + catalogue. */
-  .boutique-market-shell {
-    display: none;
-  }
-
-  .boutique-mobile-discovery-shell {
-    display: none;
-  }
-}
-
-/* ==========================================================================
-   Wide 1441+
-   ========================================================================== */
-
-@media (min-width: 90.0625rem) {
-  .boutique-shop-layout {
-    grid-template-columns: 240px minmax(0, 1fr) 260px;
-  }
-
-  .boutique-hero-card-compact {
-    height: 200px;
-  }
-
-  .boutique-hero-card::before {
-    left: 30%;
-    right: 0;
-    background-size: auto 100%;
-    background-position: right center;
-  }
-
-  .boutique-hero-content {
-    width: min(42%, 34rem);
-    padding: 1.35rem 2rem;
-  }
-
-  .boutique-market-shell {
-    display: block;
-    align-self: stretch;
-  }
-
-  .boutique-market-sticky {
-    position: sticky;
-    top: 8rem;
-    z-index: 20;
-    align-content: start;
-  }
-}
-
-/* ==========================================================================
-   Ultrawide 1728+
-   ========================================================================== */
-
-@media (min-width: 108rem) {
-  .boutique-shop-layout {
-    grid-template-columns: 280px minmax(0, 1fr) 300px;
-  }
-
   .boutique-hero-card-compact {
     height: 220px;
   }
@@ -492,5 +487,9 @@
     right: 0;
     background-size: auto 100%;
     background-position: right center;
+  }
+
+  .boutique-mobile-discovery-shell {
+    display: none;
   }
 }
