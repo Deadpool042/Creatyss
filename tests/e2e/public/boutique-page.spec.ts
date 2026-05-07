@@ -665,9 +665,9 @@ test.describe("boutique page smoke", () => {
         const sidebar = page.locator(".boutique-sidebar-shell");
         await expect(sidebar.getByText("Filtres", { exact: true })).toBeVisible();
         await expect(sidebar.getByText("Réinitialiser", { exact: true })).toBeVisible();
-        await expect(sidebar.getByText("Couleurs", { exact: true })).toHaveCount(0);
+        await expect(sidebar.getByText("Couleurs", { exact: true })).toBeVisible();
         await expect(sidebar.getByText("Fait main", { exact: true })).toHaveCount(0);
-        await expect(sidebar.getByText("Matières", { exact: true })).toHaveCount(0);
+        await expect(sidebar.getByText("Matières", { exact: true })).toBeVisible();
       }
 
       await expectNoHorizontalOverflow(page);

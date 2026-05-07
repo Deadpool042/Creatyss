@@ -31,6 +31,17 @@ type CategoryVisualState = {
   containsActiveChild: boolean;
 };
 
+const MOCK_COLORS = [
+  { name: "Ivoire", token: "ivory" },
+  { name: "Safran", token: "saffron" },
+  { name: "Mandarin", token: "mandarin" },
+  { name: "Olive", token: "olive" },
+  { name: "Saphyre", token: "sapphire" },
+  { name: "Aubergine", token: "aubergine" },
+] as const;
+
+const MOCK_MATERIALS = ["Textile", "Tissu épais", "Finitions", "Doublure"] as const;
+
 function buildCategoryGroups(categories: BoutiqueCategoryItem[]): CategoryGroup[] {
   const roots = categories.filter((c) => c.parentId === null);
   return roots.map((parent) => ({
@@ -386,6 +397,46 @@ export function BoutiqueFiltersContent({
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+
+      <div className={cn("boutique-filter-preview", isSidebar && "boutique-sidebar-filter-preview")}>
+        <section className="boutique-filter-preview-section" aria-labelledby="boutique-preview-colors">
+          <p id="boutique-preview-colors" className="boutique-filter-preview-title">
+            Couleurs
+          </p>
+          <ul className="boutique-filter-preview-color-list" aria-label="Palette indicative">
+            {MOCK_COLORS.map((color) => (
+              <li key={color.name} className="boutique-filter-preview-color-item">
+                <span
+                  aria-hidden="true"
+                  className="boutique-filter-preview-color-dot"
+                  data-color={color.token}
+                />
+                <span>{color.name}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section
+          className="boutique-filter-preview-section"
+          aria-labelledby="boutique-preview-materials"
+        >
+          <p id="boutique-preview-materials" className="boutique-filter-preview-title">
+            Matières
+          </p>
+          <ul className="boutique-filter-preview-material-list" aria-label="Matières indicatives">
+            {MOCK_MATERIALS.map((material) => (
+              <li key={material} className="boutique-filter-preview-material-item">
+                {material}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <p className="boutique-filter-preview-note">
+          Indication visuelle. Ces éléments n&apos;activent pas de filtre.
+        </p>
+      </div>
 
     </div>
   );
