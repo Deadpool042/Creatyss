@@ -13,6 +13,7 @@ type BoutiqueProductCardProps = {
 };
 
 type AvailabilityTone = "available" | "made-to-order" | "unavailable";
+type ProductBadgeTone = "new" | "promo" | "discount";
 
 function getAvailabilityLabel(
   availabilityStatus: BoutiquePageViewModel["products"][number]["availabilityStatus"]
@@ -42,6 +43,34 @@ function getAvailabilityTone(
   return "unavailable";
 }
 
+function getProductBadge(product: BoutiquePageViewModel["products"][number]): {
+  label: string;
+  tone: ProductBadgeTone;
+} | null {
+  if (product.discountLabel) {
+    return {
+      label: product.discountLabel,
+      tone: "discount",
+    };
+  }
+
+  if (product.promoLabel) {
+    return {
+      label: product.promoLabel,
+      tone: "promo",
+    };
+  }
+
+  if (product.isFeatured) {
+    return {
+      label: "Nouveau",
+      tone: "new",
+    };
+  }
+
+  return null;
+}
+
 export function BoutiqueProductCard({
   product,
   initialFavoriteProductIds,
@@ -49,6 +78,7 @@ export function BoutiqueProductCard({
   const availabilityLabel = getAvailabilityLabel(product.availabilityStatus);
   const availabilityTone = getAvailabilityTone(product.availabilityStatus);
   const productHref = `/boutique/${product.slug}`;
+  const productBadge = getProductBadge(product);
 
   const productKindLabel = product.variantCount > 1 ? "Variantes" : "Produit";
   const variantLabel =
@@ -63,8 +93,10 @@ export function BoutiqueProductCard({
       <div className="boutique-product-card-inner">
         <Link className="boutique-product-card-link" href={productHref}>
           <div className="boutique-product-card-media">
-            {product.isFeatured ? (
-              <span className="boutique-product-card-badge">Nouveau</span>
+            {productBadge ? (
+              <span className="boutique-product-card-badge" data-tone={productBadge.tone}>
+                {productBadge.label}
+              </span>
             ) : null}
 
             {product.image ? (
@@ -108,7 +140,15 @@ export function BoutiqueProductCard({
             </h3>
           </div>
 
-          {product.price ? <p className="boutique-product-card-price">{product.price}</p> : null}
+          <div className="boutique-product-card-pricing">
+            {product.compareAtPrice ? (
+              <p className="boutique-product-card-price-compare">
+                <del>{product.compareAtPrice}</del>
+              </p>
+            ) : null}
+
+            {product.price ? <p className="boutique-product-card-price">{product.price}</p> : null}
+          </div>
         </div>
 
         <div className="boutique-product-card-meta">

@@ -1,9 +1,4 @@
-export type BoutiqueSortValue =
-  | "featured"
-  | "newest"
-  | "name"
-  | "price-asc"
-  | "price-desc";
+export type BoutiqueSortValue = "featured" | "newest" | "name" | "price-asc" | "price-desc";
 export type BoutiqueAvailabilityValue = "in-stock" | "made-to-order" | "unavailable";
 
 export type BoutiqueCategoryItem = {
@@ -27,14 +22,7 @@ export type BoutiqueQuickFilterItem = {
 };
 
 export type BoutiqueActiveFilterItem = {
-  key:
-    | "q"
-    | "category"
-    | "availability"
-    | "minPrice"
-    | "maxPrice"
-    | "priceRange"
-    | "sort";
+  key: "q" | "category" | "availability" | "minPrice" | "maxPrice" | "priceRange" | "sort";
   label: string;
   clearHref: string;
 };
@@ -44,6 +32,9 @@ export type BoutiqueProductCardItem = {
   slug: string;
   name: string;
   price: string | null;
+  compareAtPrice: string | null;
+  promoLabel: string | null;
+  discountLabel: string | null;
   isAvailable: boolean;
   isFeatured: boolean;
   availabilityStatus: BoutiqueAvailabilityValue;
