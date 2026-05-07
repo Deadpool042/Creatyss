@@ -1,14 +1,12 @@
 import type { Prisma } from "@/prisma-generated/client";
-import { getCatalogProductAvailabilityStatus, getCatalogVariantAvailability } from "@/features/storefront/catalog/helpers/catalog-availability";
+import {
+  getCatalogProductAvailabilityStatus,
+  getCatalogVariantAvailability,
+} from "@/features/storefront/catalog/helpers/catalog-availability";
 import { formatCatalogMoney } from "@/features/storefront/catalog/helpers/catalog-pricing";
 import type { CatalogProductListItem } from "@/features/storefront/catalog/types";
 
-export type CatalogListingSort =
-  | "featured"
-  | "newest"
-  | "name"
-  | "price-asc"
-  | "price-desc";
+export type CatalogListingSort = "featured" | "newest" | "name" | "price-asc" | "price-desc";
 
 export const publishedProductListingSelect = {
   id: true,
@@ -31,6 +29,7 @@ export const publishedProductListingSelect = {
     take: 1,
     select: {
       amount: true,
+      compareAtAmount: true,
     },
   },
   primaryImage: {
@@ -56,6 +55,7 @@ export const publishedProductListingSelect = {
         take: 1,
         select: {
           amount: true,
+          compareAtAmount: true,
         },
       },
       optionValues: {
@@ -141,6 +141,46 @@ export function getPublishedProductDisplayPriceAmount(
   return product.prices[0]?.amount ?? product.variants[0]?.prices[0]?.amount ?? null;
 }
 
+export function getPublishedProductDisplayCompareAtAmount(
+  product: PublishedProductListingRecord
+): { toString(): string } | null {
+  const productLevelPrice = product.prices[0];
+
+  if (productLevelPrice) {
+    const displayPriceCents = decimalAmountToCents(productLevelPrice.amount);
+    const compareAtCents = decimalAmountToCents(productLevelPrice.compareAtAmount);
+
+    if (
+      displayPriceCents === null ||
+      compareAtCents === null ||
+      compareAtCents <= displayPriceCents
+    ) {
+      return null;
+    }
+
+    return productLevelPrice.compareAtAmount;
+  }
+
+  const variantLevelPrice = product.variants[0]?.prices[0];
+
+  if (!variantLevelPrice) {
+    return null;
+  }
+
+  const displayPriceCents = decimalAmountToCents(variantLevelPrice.amount);
+  const compareAtCents = decimalAmountToCents(variantLevelPrice.compareAtAmount);
+
+  if (
+    displayPriceCents === null ||
+    compareAtCents === null ||
+    compareAtCents <= displayPriceCents
+  ) {
+    return null;
+  }
+
+  return variantLevelPrice.compareAtAmount;
+}
+
 export function getPublishedProductDisplayPriceCents(
   product: PublishedProductListingRecord
 ): number | null {
@@ -151,17 +191,11 @@ export function getPublishedProductsOrderBy(
   sort: CatalogListingSort
 ): Prisma.ProductOrderByWithRelationInput[] {
   if (sort === "price-asc") {
-    return [
-      { catalogPriceCents: { sort: "asc", nulls: "last" } },
-      { id: "asc" },
-    ];
+    return [{ catalogPriceCents: { sort: "asc", nulls: "last" } }, { id: "asc" }];
   }
 
   if (sort === "price-desc") {
-    return [
-      { catalogPriceCents: { sort: "desc", nulls: "last" } },
-      { id: "desc" },
-    ];
+    return [{ catalogPriceCents: { sort: "desc", nulls: "last" } }, { id: "desc" }];
   }
 
   if (sort === "name") {
@@ -172,11 +206,7 @@ export function getPublishedProductsOrderBy(
     return [{ updatedAt: "desc" }, { id: "desc" }];
   }
 
-  return [
-    { isFeatured: "desc" },
-    { updatedAt: "desc" },
-    { id: "desc" },
-  ];
+  return [{ isFeatured: "desc" }, { updatedAt: "desc" }, { id: "desc" }];
 }
 
 export function mapPublishedProductListingRecord(
@@ -199,6 +229,7 @@ export function mapPublishedProductListingRecord(
   }
 
   const primaryPrice = getPublishedProductDisplayPriceAmount(product);
+  const compareAtPrice = getPublishedProductDisplayCompareAtAmount(product);
 
   return {
     id: product.id,
@@ -210,6 +241,7 @@ export function mapPublishedProductListingRecord(
     isAvailable,
     availabilityStatus,
     price: primaryPrice === null ? null : formatCatalogMoney(primaryPrice),
+    compareAtPrice: compareAtPrice === null ? null : formatCatalogMoney(compareAtPrice),
     variantCount,
     colorCount: colorValueIds.size,
     primaryImage: product.primaryImage

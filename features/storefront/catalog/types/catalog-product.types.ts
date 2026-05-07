@@ -100,6 +100,7 @@ export type CatalogProductListItem = {
   isAvailable: boolean;
   availabilityStatus: CatalogStorefrontAvailabilityStatus;
   price: string | null;
+  compareAtPrice: string | null;
   variantCount: number;
   colorCount: number;
   primaryImage: {
