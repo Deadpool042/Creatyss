@@ -21,39 +21,39 @@
      Core semantic tokens
      ========================================================================== */
 
-  /* Fond UI principal : presque blanc chaud pour dialogs / popovers */
-  --background: oklch(0.988 0.006 70);
+  /* Fond UI principal : ivoire net, distinct du fond de page lin */
+  --background: oklch(0.982 0.01 78);
   --foreground: oklch(0.22 0.02 55);
 
-  --card: oklch(0.993 0.004 70);
+  --card: oklch(0.992 0.006 80);
   --card-foreground: oklch(0.22 0.02 55);
 
-  --popover: oklch(0.995 0.003 70);
+  --popover: oklch(0.995 0.005 82);
   --popover-foreground: oklch(0.22 0.02 55);
 
-  /* CTA principal : brun profond, plus noble et plus stable que prune */
-  --primary: oklch(0.28 0.03 55);
+  /* CTA principal : cacao argile, stable et premium */
+  --primary: oklch(0.34 0.05 48);
   --primary-foreground: oklch(0.97 0.004 70);
 
-  /* Secondaire : ivoire chaud visible, pas gris technique */
-  --secondary: oklch(0.962 0.012 72);
+  /* Secondaire : sable chaud visible, pas gris technique */
+  --secondary: oklch(0.948 0.02 76);
   --secondary-foreground: oklch(0.3 0.03 55);
 
-  --muted: oklch(0.955 0.01 72);
-  --muted-foreground: oklch(0.5 0.018 55);
-  --text-muted-strong: oklch(0.4 0.017 55);
-  --text-muted-soft: oklch(0.58 0.013 55);
+  --muted: oklch(0.942 0.016 76);
+  --muted-foreground: oklch(0.48 0.024 52);
+  --text-muted-strong: oklch(0.37 0.028 50);
+  --text-muted-soft: oklch(0.56 0.02 54);
 
-  /* Accent UI discret : rosé chaud très léger */
-  --accent: oklch(0.958 0.016 45);
-  --accent-foreground: oklch(0.34 0.055 45);
+  /* Accent secondaire : saphyre discret pour contrepoint premium */
+  --accent: oklch(0.942 0.02 245);
+  --accent-foreground: oklch(0.35 0.065 250);
 
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0.003 70);
 
-  --border: oklch(0.89 0.012 70);
-  --input: oklch(0.89 0.012 70);
-  --ring: oklch(0.58 0.09 45);
+  --border: oklch(0.875 0.024 68);
+  --input: oklch(0.875 0.024 68);
+  --ring: oklch(0.6 0.09 255);
 
   /* ==========================================================================
      Geometry
@@ -65,20 +65,21 @@
      Brand — terracotta / argile chaude
      ========================================================================== */
 
-  /* Signature de marque inspirée de la DA Claude */
-  --brand: oklch(0.62 0.13 45);
+  /* Signature de marque : mandarin safran plus incarné mais encore lisible */
+  --brand: oklch(0.58 0.15 50);
   --brand-foreground: oklch(0.985 0.003 70);
 
   /* ==========================================================================
      Document / page identity
      ========================================================================== */
 
-  /* Fond global clairement chaud, visible mais sobre */
-  --page-bg: oklch(0.955 0.014 72);
+  /* Fond global lin ivoire : plus chaud et plus distinct du background */
+  --page-bg: oklch(0.947 0.02 78);
   --page-foreground: oklch(0.22 0.02 55);
 
   --body-background:
-    radial-gradient(circle at top, oklch(0.83 0.05 45 / 0.22), transparent 36rem), var(--page-bg);
+    radial-gradient(circle at top, oklch(0.8 0.06 52 / 0.24), transparent 34rem),
+    radial-gradient(circle at 82% 8%, oklch(0.9 0.03 70 / 0.42), transparent 28rem), var(--page-bg);
 
   /* ==========================================================================
      Overlay and interaction
@@ -88,13 +89,13 @@
 
   --overlay-scrim-strong: rgb(28 22 16 / 0.32);
 
-  --interactive-hover: rgb(120 90 60 / 0.06);
-  --interactive-hover-strong: rgb(120 90 60 / 0.1);
-  --interactive-selected: rgb(120 90 60 / 0.14);
-  --interactive-selected-hover: rgb(120 90 60 / 0.22);
-  --interactive-pressed: rgb(120 90 60 / 0.28);
+  --interactive-hover: rgb(166 108 60 / 0.08);
+  --interactive-hover-strong: rgb(166 108 60 / 0.13);
+  --interactive-selected: rgb(166 108 60 / 0.17);
+  --interactive-selected-hover: rgb(166 108 60 / 0.24);
+  --interactive-pressed: rgb(166 108 60 / 0.3);
   --interactive-selected-foreground: oklch(0.22 0.02 55);
-  --interactive-disabled: rgb(120 90 60 / 0.04);
+  --interactive-disabled: rgb(120 90 60 / 0.05);
   --interactive-disabled-foreground: oklch(0.62 0.014 55);
 
   /* ==========================================================================
@@ -129,28 +130,28 @@
      Shared surfaces
      ========================================================================== */
 
-  /* Panneaux intérieurs : blancs chauds, nets sur le fond ivoire */
-  --surface-panel: rgb(255 252 249 / 0.96);
-  --surface-panel-soft: rgb(255 252 249 / 0.88);
-  --surface-floating: rgb(255 251 247 / 0.985);
-  --surface-floating-strong: rgb(255 251 247 / 1);
-  --surface-subtle: rgb(196 118 74 / 0.06);
-  --surface-border-subtle: rgb(120 90 60 / 0.11);
-  --border-floating: rgb(120 90 60 / 0.3);
+  /* Panneaux intérieurs : crème net sur fond lin, avec plus de relief */
+  --surface-panel: rgb(255 251 246 / 0.985);
+  --surface-panel-soft: rgb(251 244 236 / 0.92);
+  --surface-floating: rgb(255 249 242 / 0.995);
+  --surface-floating-strong: rgb(255 250 244 / 1);
+  --surface-subtle: rgb(214 137 78 / 0.09);
+  --surface-border-subtle: rgb(148 102 66 / 0.16);
+  --border-floating: rgb(148 102 66 / 0.36);
 
   /* --surface-border    : séparateurs INTERNES — dividers et bordures inter-blocs à l'intérieur d'une surface (ex: séparation prix / dispo dans hero) */
   /* --surface-border-strong : idem, avec plus de contraste (ex: tableaux, lignes de focus) */
-  --surface-border: rgb(120 90 60 / 0.14);
-  --surface-border-strong: rgb(120 90 60 / 0.22);
+  --surface-border: rgb(148 102 66 / 0.2);
+  --surface-border-strong: rgb(148 102 66 / 0.3);
 
   /* Contrôles (boutons, tabs, items interactifs) :
      surfaces dédiées pour éviter de détourner les tokens de panels. */
-  --control-surface: rgb(255 252 249 / 0.96);
-  --control-surface-hover: rgb(255 253 250 / 0.99);
-  --control-surface-active: rgb(250 241 233 / 0.99);
-  --control-surface-selected: rgb(196 118 74 / 0.2);
-  --control-border: rgb(120 90 60 / 0.2);
-  --control-border-strong: rgb(120 90 60 / 0.34);
+  --control-surface: rgb(252 244 236 / 0.96);
+  --control-surface-hover: rgb(255 248 240 / 0.99);
+  --control-surface-active: rgb(246 231 218 / 0.99);
+  --control-surface-selected: rgb(214 137 78 / 0.22);
+  --control-border: rgb(148 102 66 / 0.24);
+  --control-border-strong: rgb(148 102 66 / 0.38);
 
   /* Échelle d'élévation — du plus doux au plus fort :
      shadow-soft    : sections/pages entières (grande, très diffuse, non directive)
@@ -158,10 +159,10 @@
      shadow-raised  : éléments flottants dans une surface (ex: image produit dans hero)
      shadow-overlay : modals / drawers / overlays critiques
      shadow-inset-soft : séparateurs ou reliefs intérieurs subtils */
-  --shadow-soft: 0 20px 60px rgb(70 45 25 / 0.1);
-  --shadow-card: 0 16px 40px rgb(70 45 25 / 0.08);
-  --shadow-raised: 0 12px 32px rgb(70 45 25 / 0.14);
-  --shadow-floating: 0 14px 36px rgb(45 28 14 / 0.16);
+  --shadow-soft: 0 20px 60px rgb(82 50 24 / 0.12);
+  --shadow-card: 0 16px 40px rgb(82 50 24 / 0.1);
+  --shadow-raised: 0 12px 32px rgb(82 50 24 / 0.16);
+  --shadow-floating: 0 14px 36px rgb(54 33 17 / 0.18);
   --shadow-control: 0 1px 3px rgb(70 45 25 / 0.16), 0 3px 8px rgb(70 45 25 / 0.14);
   --shadow-control-hover: 0 2px 5px rgb(70 45 25 / 0.18), 0 6px 14px rgb(70 45 25 / 0.16);
   --shadow-control-pressed:
@@ -176,20 +177,32 @@
   /* --shell-surface  : fond des sections/cards de premier niveau (fond de page → shell → surface-panel)
      --shell-border   : bordure EXTERNE des sections/cards (plus légère que surface-border — juste visible)
      Règle : utiliser shell-border pour le contour d'un conteneur entier, surface-border pour ses dividers internes. */
-  /* Sections : blanc cassé rosé, plus clair que le fond de page */
-  --shell-surface: rgb(253 249 245 / 0.97);
-  --shell-surface-blur: rgb(253 249 245 / 0.78);
-  --shell-drawer: rgb(255 251 248 / 0.98);
-  --shell-drawer-blur: rgb(255 251 248 / 0.86);
-  --shell-border: rgb(120 90 60 / 0.12);
-  --shell-border-strong: rgb(120 90 60 / 0.24);
+  /* Sections : lin chaud plus incarné que le fond de page */
+  --shell-surface: rgb(252 246 239 / 0.98);
+  --shell-surface-blur: rgb(252 246 239 / 0.84);
+  --shell-drawer: rgb(255 249 243 / 0.985);
+  --shell-drawer-blur: rgb(255 249 243 / 0.88);
+  --shell-border: rgb(148 102 66 / 0.15);
+  --shell-border-strong: rgb(148 102 66 / 0.28);
 
   /* ==========================================================================
      Media / decorative blocks
      ========================================================================== */
 
-  --media-surface: rgb(196 118 74 / 0.08);
-  --media-foreground: rgb(110 80 55 / 0.52);
+  --media-surface: rgb(225 162 92 / 0.14);
+  --media-foreground: rgb(102 72 48 / 0.58);
+
+  /* ==========================================================================
+     Band — dark editorial strip reused across themes
+     ========================================================================== */
+
+  --band-bg: rgb(31 22 16);
+  --band-border: rgb(168 122 83 / 0.28);
+  --band-foreground: rgb(247 240 232);
+  --band-foreground-muted: rgb(219 202 186 / 0.82);
+  --band-icon: rgb(236 164 84);
+  --band-eyebrow: rgb(244 190 96);
+  --band-form-border: rgb(168 122 83 / 0.38);
 
   /* ==========================================================================
      Sidebar admin
@@ -211,9 +224,9 @@
      Charts
      ========================================================================== */
 
-  --chart-1: oklch(0.62 0.13 45);
+  --chart-1: oklch(0.58 0.15 50);
   --chart-2: oklch(0.58 0.05 145);
-  --chart-3: oklch(0.55 0.05 250);
+  --chart-3: oklch(0.52 0.08 250);
   --chart-4: oklch(0.7 0.04 70);
   --chart-5: oklch(0.45 0.03 20);
 
@@ -221,15 +234,14 @@
      Hero editorial — fond crème, encre chaude, terracotta
      ========================================================================== */
 
-  --hero-bg: rgb(248 244 239);
-  --hero-bg-media: rgb(240 234 225);
+  --hero-bg: rgb(248 242 235);
+  --hero-bg-media: rgb(239 230 218);
   --hero-ink: rgb(28 22 16);
-  --hero-ink-soft: rgb(90 74 60);
-  --hero-ink-muted: rgb(155 140 126);
-  --hero-border: rgb(201 190 176);
+  --hero-ink-soft: rgb(84 66 52);
+  --hero-ink-muted: rgb(145 126 110);
+  --hero-border: rgb(193 175 155);
   --hero-vignette: rgb(20 12 6 / 0.1);
 
-  /*
   /* ==========================================================================
      Media
      ========================================================================== */
@@ -266,7 +278,7 @@
   --text-muted-strong: oklch(0.86 0.012 72);
   --text-muted-soft: oklch(0.7 0.01 72);
 
-  --accent: oklch(0.32 0.02 45);
+  --accent: oklch(0.34 0.03 255);
   --accent-foreground: oklch(0.94 0.008 72);
 
   --destructive: oklch(0.704 0.191 22.216);
@@ -274,7 +286,7 @@
 
   --border: rgb(225 200 180 / 0.22);
   --input: rgb(225 200 180 / 0.22);
-  --ring: oklch(0.72 0.09 45);
+  --ring: oklch(0.74 0.07 250);
 
   /* ==========================================================================
      Brand
@@ -351,8 +363,8 @@
 
   --surface-panel: rgb(255 248 242 / 0.12);
   --surface-panel-soft: rgb(255 248 242 / 0.085);
-  --surface-floating: rgb(52 40 32 / 0.97);
-  --surface-floating-strong: rgb(52 40 32 / 0.99);
+  --surface-floating: rgb(56 43 35 / 0.97);
+  --surface-floating-strong: rgb(56 43 35 / 0.99);
   --surface-subtle: rgb(255 255 255 / 0.065);
   --surface-border-subtle: rgb(225 200 180 / 0.18);
   --border-floating: rgb(225 200 180 / 0.38);
@@ -383,8 +395,8 @@
      ========================================================================== */
 
   /* Sections brun cacao visibles sur le fond sombre */
-  --shell-surface: rgb(58 45 36 / 0.94);
-  --shell-surface-blur: rgb(54 42 34 / 0.58);
+  --shell-surface: rgb(60 46 38 / 0.94);
+  --shell-surface-blur: rgb(56 43 35 / 0.58);
   --shell-drawer: rgb(46 36 30 / 0.94);
   --shell-drawer-blur: rgb(46 36 30 / 0.68);
   --shell-border: rgb(225 200 180 / 0.14);
@@ -438,6 +450,14 @@
   /* ==========================================================================
      Band — always-dark (same as :root — intentionally identical)
      ========================================================================== */
+
+  --band-bg: rgb(31 22 16);
+  --band-border: rgb(168 122 83 / 0.3);
+  --band-foreground: rgb(247 240 232);
+  --band-foreground-muted: rgb(219 202 186 / 0.82);
+  --band-icon: rgb(236 164 84);
+  --band-eyebrow: rgb(244 190 96);
+  --band-form-border: rgb(168 122 83 / 0.42);
 
   /* ==========================================================================
      Media
