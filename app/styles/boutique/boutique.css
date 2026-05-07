@@ -18,6 +18,12 @@
   --boutique-hero-dark-bg: rgb(18 12 8);
   --boutique-hero-dark-text: rgb(255 248 242);
   --boutique-hero-dark-text-muted: rgb(236 220 204 / 0.86);
+  --boutique-hero-shadow: rgb(0 0 0 / 0.24);
+  --boutique-hero-mask-soft: rgb(0 0 0 / 0.08);
+  --boutique-hero-mask-mid: rgb(0 0 0 / 0.28);
+  --boutique-hero-mask-strong: rgb(0 0 0 / 0.66);
+  --boutique-hero-mask-mobile-soft: rgb(0 0 0 / 0.16);
+  --boutique-hero-mask-mobile-mid: rgb(0 0 0 / 0.5);
 }
 
 .boutique-mobile-portrait {
@@ -54,17 +60,17 @@
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,
-    rgb(0 0 0 / 0.08) 8%,
-    rgb(0 0 0 / 0.28) 18%,
-    rgb(0 0 0 / 0.66) 34%,
+    var(--boutique-hero-mask-soft) 8%,
+    var(--boutique-hero-mask-mid) 18%,
+    var(--boutique-hero-mask-strong) 34%,
     black 52%
   );
   mask-image: linear-gradient(
     90deg,
     transparent 0%,
-    rgb(0 0 0 / 0.08) 8%,
-    rgb(0 0 0 / 0.28) 18%,
-    rgb(0 0 0 / 0.66) 34%,
+    var(--boutique-hero-mask-soft) 8%,
+    var(--boutique-hero-mask-mid) 18%,
+    var(--boutique-hero-mask-strong) 34%,
     black 52%
   );
 }
@@ -104,7 +110,7 @@
 
 .boutique-hero-content h1 {
   color: var(--boutique-hero-dark-text);
-  text-shadow: 0 1px 18px rgb(0 0 0 / 0.24);
+  text-shadow: 0 1px 18px var(--boutique-hero-shadow);
 }
 
 .boutique-hero-content p {
@@ -135,15 +141,15 @@
     -webkit-mask-image: linear-gradient(
       90deg,
       transparent 0%,
-      rgb(0 0 0 / 0.16) 26%,
-      rgb(0 0 0 / 0.5) 48%,
+      var(--boutique-hero-mask-mobile-soft) 26%,
+      var(--boutique-hero-mask-mobile-mid) 48%,
       black 72%
     );
     mask-image: linear-gradient(
       90deg,
       transparent 0%,
-      rgb(0 0 0 / 0.16) 26%,
-      rgb(0 0 0 / 0.5) 48%,
+      var(--boutique-hero-mask-mobile-soft) 26%,
+      var(--boutique-hero-mask-mobile-mid) 48%,
       black 72%
     );
   }
@@ -313,16 +319,16 @@
 }
 
 .boutique-sidebar-panel {
-  border: 1px solid color-mix(in srgb, var(--brand) 10%, var(--surface-border-subtle));
+  border: 1px solid color-mix(in srgb, var(--brand) 20%, var(--surface-border-subtle));
   border-radius: var(--radius-2xl);
   background:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--background) 72%, var(--surface-panel)) 0%,
-      color-mix(in srgb, var(--background) 82%, var(--surface-panel)) 100%
+      color-mix(in srgb, var(--surface-panel) 70%, var(--background)) 0%,
+      color-mix(in srgb, var(--surface-panel-soft) 78%, var(--background)) 100%
     ),
-    color-mix(in srgb, var(--background) 62%, transparent);
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--background) 32%, transparent);
+    color-mix(in srgb, var(--surface-panel) 28%, transparent);
+  box-shadow: var(--shadow-card);
   padding: 0.85rem 0.8rem 0.9rem;
   backdrop-filter: blur(8px);
 }
