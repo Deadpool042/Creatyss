@@ -363,15 +363,27 @@
   color: var(--text-muted-strong);
 }
 
-.boutique-product-card-availability-dot {
-  width: 0.5rem;
-  height: 0.5rem;
+.boutique-product-card-availability::before {
+  content: "";
+  width: 0.58rem;
+  height: 0.58rem;
   flex-shrink: 0;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--text-muted-strong) 62%, transparent);
+  background: color-mix(in srgb, var(--text-muted-strong) 72%, transparent);
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--background) 46%, transparent),
-    0 0 0 0.1rem color-mix(in srgb, var(--text-muted-strong) 10%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--background) 58%, transparent),
+    0 0 0 0.13rem color-mix(in srgb, var(--text-muted-strong) 12%, transparent);
+}
+
+.boutique-product-card-availability-dot {
+  width: 0.58rem;
+  height: 0.58rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-muted-strong) 72%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--background) 58%, transparent),
+    0 0 0 0.13rem color-mix(in srgb, var(--text-muted-strong) 12%, transparent);
 }
 
 .boutique-product-card-availability[data-tone="available"] {
@@ -381,8 +393,15 @@
 .boutique-product-card-availability[data-tone="available"] .boutique-product-card-availability-dot {
   background: var(--feedback-success);
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--feedback-success) 34%, var(--background)),
-    0 0 0 0.1rem color-mix(in srgb, var(--feedback-success) 16%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--feedback-success) 46%, var(--background)),
+    0 0 0 0.13rem color-mix(in srgb, var(--feedback-success) 22%, transparent);
+}
+
+.boutique-product-card-availability[data-tone="available"]::before {
+  background: var(--feedback-success);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--feedback-success) 46%, var(--background)),
+    0 0 0 0.13rem color-mix(in srgb, var(--feedback-success) 22%, transparent);
 }
 
 .boutique-product-card-availability[data-tone="made-to-order"] {
@@ -390,10 +409,17 @@
 }
 
 .boutique-product-card-availability[data-tone="made-to-order"] .boutique-product-card-availability-dot {
-  background: color-mix(in srgb, var(--brand) 72%, var(--feedback-warning));
+  background: color-mix(in srgb, var(--brand) 82%, var(--feedback-warning));
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--brand) 36%, var(--background)),
-    0 0 0 0.1rem color-mix(in srgb, var(--brand) 18%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--brand) 48%, var(--background)),
+    0 0 0 0.13rem color-mix(in srgb, var(--brand) 24%, transparent);
+}
+
+.boutique-product-card-availability[data-tone="made-to-order"]::before {
+  background: color-mix(in srgb, var(--brand) 82%, var(--feedback-warning));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--brand) 48%, var(--background)),
+    0 0 0 0.13rem color-mix(in srgb, var(--brand) 24%, transparent);
 }
 
 .boutique-product-card-availability[data-tone="unavailable"] {
@@ -403,8 +429,15 @@
 .boutique-product-card-availability[data-tone="unavailable"] .boutique-product-card-availability-dot {
   background: var(--feedback-error);
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--feedback-error) 34%, var(--background)),
-    0 0 0 0.1rem color-mix(in srgb, var(--feedback-error) 16%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--feedback-error) 46%, var(--background)),
+    0 0 0 0.13rem color-mix(in srgb, var(--feedback-error) 22%, transparent);
+}
+
+.boutique-product-card-availability[data-tone="unavailable"]::before {
+  background: var(--feedback-error);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--feedback-error) 46%, var(--background)),
+    0 0 0 0.13rem color-mix(in srgb, var(--feedback-error) 22%, transparent);
 }
 
 .boutique-product-card-separator {
