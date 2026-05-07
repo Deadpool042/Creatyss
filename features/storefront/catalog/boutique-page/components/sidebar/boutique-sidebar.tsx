@@ -10,7 +10,11 @@ export function BoutiqueSidebar({ model }: BoutiqueSidebarProps) {
     <aside className="boutique-sidebar-shell">
       <div className="boutique-sidebar-sticky">
         <div className="boutique-sidebar-panel">
-          <BoutiqueFiltersContent model={model} className="h-fit" />
+          <BoutiqueFiltersContent
+            model={model}
+            className="boutique-sidebar-filters h-fit"
+            variant="sidebar"
+          />
         </div>
       </div>
     </aside>

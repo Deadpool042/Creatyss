@@ -57,10 +57,33 @@ function buildCategoryToggleHref(
   return buildCategoryHref(category.isActive ? null : category.slug, model);
 }
 
+function buildSidebarCategories(categoryGroups: CategoryGroup[]): BoutiqueCategoryItem[] {
+  return categoryGroups.flatMap(({ parent, children }) => {
+    if (children.length === 0) {
+      return [parent];
+    }
+
+    if (parent.isActive) {
+      return [parent, ...children];
+    }
+
+    return children;
+  });
+}
+
+function formatPriceLabel(valueInCents: number | null, fallback: string): string {
+  if (valueInCents === null) {
+    return fallback;
+  }
+
+  return `${(valueInCents / 100).toLocaleString("fr-FR")} €`;
+}
+
 type BoutiqueFiltersContentProps = {
   model: BoutiquePageViewModel;
   className?: string | undefined;
   wrapLink?: WrapLinkFn | undefined;
+  variant?: "default" | "sidebar";
 };
 
 type FilterOptionProps = {
@@ -128,20 +151,40 @@ export function BoutiqueFiltersContent({
   model,
   className = "grid gap-1",
   wrapLink,
+  variant = "default",
 }: BoutiqueFiltersContentProps) {
   const hasActiveFilters = model.activeFilterLabels.length > 0;
   const categoryGroups = buildCategoryGroups(model.categories);
+  const sidebarCategories = buildSidebarCategories(categoryGroups);
+  const isSidebar = variant === "sidebar";
+  const sidebarMinPriceLabel = formatPriceLabel(model.selectedMinPriceCents, "25 €");
+  const sidebarMaxPriceLabel = formatPriceLabel(model.selectedMaxPriceCents, "350 €+");
+  const shouldShowReset = isSidebar || hasActiveFilters;
 
   return (
-    <div className={className}>
-      <div className="flex items-center justify-between py-1">
-        <p className="m-0 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong">
+    <div className={cn(className, isSidebar && "boutique-sidebar-filters-content")}>
+      <div
+        className={cn(
+          "flex items-center justify-between py-1",
+          isSidebar && "boutique-sidebar-filters-header"
+        )}
+      >
+        <p
+          className={cn(
+            "m-0 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong",
+            isSidebar && "boutique-sidebar-filters-title"
+          )}
+        >
           Filtres
         </p>
-        {hasActiveFilters ? (
+        {shouldShowReset ? (
           <CustomLink
             href={model.resetHref}
-            className="text-[0.8125rem] text-text-muted-strong no-underline transition-colors hover:text-foreground"
+            className={cn(
+              "text-[0.8125rem] text-text-muted-strong no-underline transition-colors hover:text-foreground",
+              isSidebar && "boutique-sidebar-filters-reset"
+            )}
+            data-inactive={!hasActiveFilters ? "true" : undefined}
           >
             Réinitialiser
           </CustomLink>
@@ -151,13 +194,26 @@ export function BoutiqueFiltersContent({
       <Accordion
         type="multiple"
         defaultValue={["categories", "availability", "price"]}
-        className="w-full "
+        className={cn("w-full", isSidebar && "boutique-sidebar-filter-list")}
       >
-        <AccordionItem value="categories">
-          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline">
+        <AccordionItem
+          className={cn(isSidebar && "boutique-sidebar-filter-section")}
+          value="categories"
+        >
+          <AccordionTrigger
+            className={cn(
+              "py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
+              isSidebar && "boutique-sidebar-filter-section-title"
+            )}
+          >
             Catégories
           </AccordionTrigger>
-          <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline overflow-x-auto">
+          <AccordionContent
+            className={cn(
+              "[&_a]:no-underline [&_a]:hover:no-underline overflow-x-auto",
+              isSidebar && "boutique-sidebar-filter-section-content boutique-sidebar-category-list"
+            )}
+          >
             <div className="grid pb-1">
               <FilterOption
                 href={buildCategoryHref(null, model)}
@@ -166,7 +222,18 @@ export function BoutiqueFiltersContent({
                 wrapLink={wrapLink}
                 linkKey="category-all"
               />
-              {categoryGroups.map(({ parent, children }) => {
+              {isSidebar
+                ? sidebarCategories.map((category) => (
+                    <FilterOption
+                      key={category.id}
+                      href={buildCategoryToggleHref(category, model)}
+                      isActive={category.isActive}
+                      label={category.name}
+                      wrapLink={wrapLink}
+                      linkKey={`sidebar-category-${category.id}`}
+                    />
+                  ))
+                : categoryGroups.map(({ parent, children }) => {
                 const visualState: CategoryVisualState = {
                   isActive: parent.isActive,
                   isIncluded: false,
@@ -210,16 +277,29 @@ export function BoutiqueFiltersContent({
                     ) : null}
                   </div>
                 );
-              })}
+                })}
             </div>
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="availability">
-          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline">
+        <AccordionItem
+          className={cn(isSidebar && "boutique-sidebar-filter-section")}
+          value="availability"
+        >
+          <AccordionTrigger
+            className={cn(
+              "py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
+              isSidebar && "boutique-sidebar-filter-section-title"
+            )}
+          >
             Disponibilité
           </AccordionTrigger>
-          <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline">
+          <AccordionContent
+            className={cn(
+              "[&_a]:no-underline [&_a]:hover:no-underline",
+              isSidebar && "boutique-sidebar-filter-section-content"
+            )}
+          >
             <div className="grid pb-1">
               <FilterOption
                 href={buildBoutiqueUrl({
@@ -258,11 +338,39 @@ export function BoutiqueFiltersContent({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="price" className="border-b-0">
-          <AccordionTrigger className="py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline">
-            Prix
+        <AccordionItem
+          value="price"
+          className={cn("border-b-0", isSidebar && "boutique-sidebar-filter-section")}
+        >
+          <AccordionTrigger
+            className={cn(
+              "py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
+              isSidebar && "boutique-sidebar-filter-section-title"
+            )}
+          >
+            Gamme de prix
           </AccordionTrigger>
-          <AccordionContent className="[&_a]:no-underline [&_a]:hover:no-underline">
+          <AccordionContent
+            className={cn(
+              "[&_a]:no-underline [&_a]:hover:no-underline",
+              isSidebar && "boutique-sidebar-filter-section-content"
+            )}
+          >
+            {isSidebar ? (
+              <div className="boutique-sidebar-price-range" aria-label="Repère visuel des prix">
+                <div className="boutique-sidebar-price-range-track" aria-hidden="true">
+                  <span className="boutique-sidebar-price-range-fill" />
+                  <span className="boutique-sidebar-price-range-thumb" />
+                </div>
+                <div className="boutique-sidebar-price-range-values">
+                  <span>{sidebarMinPriceLabel}</span>
+                  <span>{sidebarMaxPriceLabel}</span>
+                </div>
+                <p className="boutique-sidebar-filter-note">
+                  Repère visuel. Le filtrage réel reste piloté par les montants ci-dessous.
+                </p>
+              </div>
+            ) : null}
             <BoutiquePriceFilterForm
               searchQuery={model.searchQuery}
               selectedCategorySlug={model.selectedCategorySlug}
@@ -270,11 +378,15 @@ export function BoutiqueFiltersContent({
               selectedSort={model.selectedSort}
               selectedMinPriceCents={model.selectedMinPriceCents}
               selectedMaxPriceCents={model.selectedMaxPriceCents}
-              className="grid gap-2 pb-1"
+              className={cn(
+                "grid gap-2 pb-1",
+                isSidebar && "boutique-sidebar-price-section"
+              )}
             />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+
     </div>
   );
 }

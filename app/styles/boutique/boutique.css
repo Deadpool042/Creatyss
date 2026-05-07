@@ -77,12 +77,12 @@
   background:
     linear-gradient(
       90deg,
-      rgb(18 12 8 / 0.9) 0%,
-      rgb(18 12 8 / 0.74) 24%,
-      rgb(18 12 8 / 0.36) 48%,
-      transparent 74%
+      rgb(18 12 8 / 0.78) 0%,
+      rgb(18 12 8 / 0.58) 24%,
+      rgb(18 12 8 / 0.24) 48%,
+      transparent 76%
     ),
-    linear-gradient(180deg, rgb(0 0 0 / 0.12) 0%, transparent 48%, rgb(0 0 0 / 0.14) 100%);
+    linear-gradient(180deg, rgb(0 0 0 / 0.06) 0%, transparent 50%, rgb(0 0 0 / 0.08) 100%);
   pointer-events: none;
 }
 
@@ -152,12 +152,12 @@
     background:
       linear-gradient(
         90deg,
-        rgb(18 12 8 / 0.86) 0%,
-        rgb(18 12 8 / 0.64) 45%,
-        rgb(18 12 8 / 0.1) 72%,
+        rgb(18 12 8 / 0.74) 0%,
+        rgb(18 12 8 / 0.52) 45%,
+        rgb(18 12 8 / 0.08) 72%,
         transparent 100%
       ),
-      linear-gradient(180deg, rgb(0 0 0 / 0.08) 0%, rgb(0 0 0 / 0.1) 100%);
+      linear-gradient(180deg, rgb(0 0 0 / 0.04) 0%, rgb(0 0 0 / 0.06) 100%);
   }
 
   .boutique-hero-card-compact {
@@ -178,12 +178,6 @@
     line-height: 1.35;
   }
 
-  /*
-    Sheet mobile sous le hero :
-    - c'est le catalogue qui est arrondi
-    - il chevauche légèrement le header
-    - le hero reste droit
-  */
   .boutique-catalog-panel {
     position: relative;
     z-index: 3;
@@ -246,8 +240,8 @@
     z-index: 1;
     background: linear-gradient(
       90deg,
-      rgb(18 12 8 / 0.88) 0%,
-      rgb(18 12 8 / 0.56) 54%,
+      rgb(18 12 8 / 0.78) 0%,
+      rgb(18 12 8 / 0.46) 54%,
       transparent 100%
     );
     pointer-events: none;
@@ -319,11 +313,18 @@
 }
 
 .boutique-sidebar-panel {
-  border: 1px solid color-mix(in srgb, var(--surface-border-subtle) 82%, transparent);
-  border-radius: var(--radius-xl);
-  background: color-mix(in srgb, var(--surface-panel) 66%, transparent);
-  box-shadow: var(--shadow-soft);
-  padding: 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--brand) 10%, var(--surface-border-subtle));
+  border-radius: var(--radius-2xl);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--background) 72%, var(--surface-panel)) 0%,
+      color-mix(in srgb, var(--background) 82%, var(--surface-panel)) 100%
+    ),
+    color-mix(in srgb, var(--background) 62%, transparent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--background) 32%, transparent);
+  padding: 0.85rem 0.8rem 0.9rem;
+  backdrop-filter: blur(8px);
 }
 
 .boutique-market-shell {
@@ -350,6 +351,10 @@
    ========================================================================== */
 
 @media (min-width: 48rem) {
+  .boutique-shop-layout {
+    grid-template-columns: minmax(0, 1fr) 210px;
+  }
+
   .boutique-page-header-shell {
     gap: 0;
   }
@@ -378,6 +383,12 @@
   .boutique-catalog-panel {
     gap: 1rem;
   }
+
+  .boutique-market-shell {
+    display: block;
+    align-self: stretch;
+  }
+
 }
 
 /* ==========================================================================
@@ -385,6 +396,12 @@
    ========================================================================== */
 
 @media (min-width: 64rem) {
+  .boutique-shop-layout {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    width: min(100% - 2rem, 82rem);
+    margin-inline: auto;
+  }
+
   .boutique-hero-card-compact {
     height: 180px;
     border-radius: 0;
@@ -401,6 +418,13 @@
     width: min(54%, 36rem);
     padding: 1.1rem 1.25rem;
   }
+
+  .boutique-market-sticky {
+    position: sticky;
+    top: 8rem;
+    z-index: 20;
+    align-content: start;
+  }
 }
 
 /* ==========================================================================
@@ -416,28 +440,46 @@
     display: none;
   }
 
-  .boutique-market-shell {
-    display: block;
-    align-self: stretch;
-  }
-
-  .boutique-market-sticky {
-    position: sticky;
-    top: 8rem;
-    z-index: 20;
-    align-content: start;
-  }
-
   .boutique-mobile-discovery-shell {
     display: none;
   }
 }
 
 /* ==========================================================================
-   Wide 1441+
+   Wide 1440+
    ========================================================================== */
 
-@media (min-width: 90.0625rem) {
+@media (min-width: 90rem) {
+  .boutique-shop-layout {
+    grid-template-columns: 220px minmax(0, 1fr) 260px;
+    gap: 1.15rem;
+  }
+
+  .boutique-sidebar-shell {
+    display: block;
+    align-self: stretch;
+  }
+
+  .boutique-sidebar-sticky {
+    position: sticky;
+    top: 8rem;
+    z-index: 20;
+    max-height: calc(100dvh - 8rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 0.2rem;
+    scrollbar-width: thin;
+  }
+
+  .boutique-sidebar-sticky::-webkit-scrollbar {
+    width: 0.3rem;
+  }
+
+  .boutique-sidebar-sticky::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--brand) 10%, var(--foreground));
+  }
+
   .boutique-hero-card-compact {
     height: 200px;
   }
@@ -461,21 +503,9 @@
 
 @media (min-width: 108rem) {
   .boutique-shop-layout {
-    grid-template-columns: 240px minmax(0, 1fr) 280px;
-  }
-
-  .boutique-sidebar-shell {
-    display: block;
-    align-self: stretch;
-  }
-
-  .boutique-sidebar-sticky {
-    position: sticky;
-    top: 8rem;
-    z-index: 20;
-    max-height: calc(100dvh - 10rem);
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    width: min(100% - 4rem, 106rem);
+    margin-inline: auto;
+    padding-bottom: 0.75rem;
   }
 
   .boutique-hero-card-compact {

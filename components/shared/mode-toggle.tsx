@@ -1,14 +1,22 @@
 "use client";
 
 import { MoonIcon, SunIcon } from "lucide-react";
-import { useRef, type RefObject } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 
 const THEME_TRANSITION_DURATION_MS = 600;
 
-function enableThemeTransition(timeoutRef: RefObject<number | null>): void {
+type WritableRef<T> = {
+  current: T;
+};
+
+type ModeToggleProps = {
+  size?: "default" | "compact";
+};
+
+function enableThemeTransition(timeoutRef: WritableRef<number | null>): void {
   const root = document.documentElement;
 
   root.classList.add("theme-transition");
@@ -23,20 +31,46 @@ function enableThemeTransition(timeoutRef: RefObject<number | null>): void {
   }, THEME_TRANSITION_DURATION_MS);
 }
 
-export function ModeToggle() {
+export function ModeToggle({ size = "default" }: ModeToggleProps) {
   const timeoutRef = useRef<number | null>(null);
   const { resolvedTheme, setTheme } = useTheme();
+  const mounted = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false
+  );
+
+  useEffect(() => {
+    return () => {
+      document.documentElement.classList.remove("theme-transition");
+
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, []);
 
   const currentTheme = resolvedTheme === "dark" ? "dark" : "light";
   const nextTheme = currentTheme === "dark" ? "light" : "dark";
+  const ariaLabel = !mounted
+    ? "Changer le thème"
+    : nextTheme === "dark"
+      ? "Activer le mode sombre"
+      : "Activer le mode clair";
+  const buttonSize = size === "compact" ? "icon-xs" : "icon-sm";
 
   return (
     <Button
       type="button"
-      size="icon-sm"
+      size={buttonSize}
       variant="ghost"
-      aria-label={nextTheme === "dark" ? "Activer le mode sombre" : "Activer le mode clair"}
+      aria-label={ariaLabel}
       onClick={() => {
+        if (!mounted) {
+          return;
+        }
+
         enableThemeTransition(timeoutRef);
 
         requestAnimationFrame(() => {
@@ -46,7 +80,9 @@ export function ModeToggle() {
         });
       }}
     >
-      {currentTheme === "dark" ? (
+      {!mounted ? (
+        <span aria-hidden="true" className="size-4" />
+      ) : currentTheme === "dark" ? (
         <SunIcon aria-hidden="true" className="size-4" />
       ) : (
         <MoonIcon aria-hidden="true" className="size-4" />
