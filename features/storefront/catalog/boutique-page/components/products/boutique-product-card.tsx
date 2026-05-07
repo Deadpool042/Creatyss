@@ -6,6 +6,7 @@ import Link from "next/link";
 import { PlaceholderImage } from "@/components/shared/placeholder-image";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
 import { FavoriteButton } from "@/features/storefront/favorites";
+import { cn } from "@/lib/utils";
 
 type BoutiqueProductCardProps = {
   product: BoutiquePageViewModel["products"][number];
@@ -80,7 +81,6 @@ export function BoutiqueProductCard({
   const productHref = `/boutique/${product.slug}`;
   const productBadge = getProductBadge(product);
 
-  const productKindLabel = product.variantCount > 1 ? "Variantes" : "Produit";
   const variantLabel =
     product.colorCount > 1
       ? `${product.colorCount} coloris`
@@ -131,8 +131,6 @@ export function BoutiqueProductCard({
       <div className="boutique-product-card-content">
         <div className="boutique-product-card-main">
           <div className="boutique-product-card-copy">
-            <p className="boutique-product-card-kind">{productKindLabel}</p>
-
             <h3 className="boutique-product-card-title">
               <Link className="boutique-product-card-title-link" href={productHref}>
                 {product.name}
@@ -141,13 +139,22 @@ export function BoutiqueProductCard({
           </div>
 
           <div className="boutique-product-card-pricing">
+            {product.price ? (
+              <p
+                className={cn(
+                  "boutique-product-card-price",
+                  product.compareAtPrice && "boutique-product-card-price-has-compare-at-price"
+                )}
+              >
+                {product.price}
+              </p>
+            ) : null}
+
             {product.compareAtPrice ? (
               <p className="boutique-product-card-price-compare">
                 <del>{product.compareAtPrice}</del>
               </p>
             ) : null}
-
-            {product.price ? <p className="boutique-product-card-price">{product.price}</p> : null}
           </div>
         </div>
 
@@ -158,9 +165,6 @@ export function BoutiqueProductCard({
 
           {variantLabel ? (
             <>
-              <span className="boutique-product-card-separator" aria-hidden="true">
-                ·
-              </span>
               <span className="boutique-product-card-variant">{variantLabel}</span>
             </>
           ) : null}
