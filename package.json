@@ -36,6 +36,8 @@
     "import:woo:sync": "tsx scripts/import-woocommerce/index.ts --no-reset",
     "import:woo:sync:skip-images": "tsx scripts/import-woocommerce/index.ts --no-reset --skip-images",
     "import:woo:normalize-product-types": "tsx scripts/import-woocommerce/normalize/normalize-imported-product-types.ts",
+    "media:repair-legacy-storage-keys": "tsx scripts/repair-legacy-product-media-storage-keys.ts",
+    "media:repair-legacy-storage-keys:apply": "tsx scripts/repair-legacy-product-media-storage-keys.ts --apply",
     "diagnostics:import": "tsx scripts/import-woocommerce/diagnostics/catalog-diagnostics.ts",
     "catalog:backfill-price-snapshots": "tsx scripts/backfill-product-catalog-price-snapshots.ts"
   },
