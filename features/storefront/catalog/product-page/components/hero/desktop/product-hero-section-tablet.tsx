@@ -69,7 +69,7 @@ export function ProductHeroSectionTablet({
                   height={1500}
                   loading="lazy"
                   sizes="(min-width: 1024px) 44vw, 56vw"
-                  onLoadingComplete={() => onImageLoaded(selectedImage.src)}
+                  onLoad={() => onImageLoaded(selectedImage.src)}
                   className={[
                     "h-full w-full rounded-2xl border border-hero-border object-center shadow-raised transition-opacity duration-300 motion-reduce:transition-none",
                     isImageReady ? "opacity-100" : "opacity-0",

@@ -73,7 +73,7 @@ export function ProductHeroSectionMobilePortrait({
                 height={1500}
                 loading="lazy"
                 sizes="100vw"
-                onLoadingComplete={() => onImageLoaded(selectedImage.src)}
+                onLoad={() => onImageLoaded(selectedImage.src)}
                 className={[
                   "h-full w-full object-center transition-opacity duration-300 motion-reduce:transition-none",
                   isImageReady ? "opacity-100" : "opacity-0",
