@@ -780,6 +780,15 @@
   overflow-x: visible;
 }
 
+.boutique-sidebar-category-group {
+  gap: 0.02rem;
+}
+
+.boutique-sidebar-category-children {
+  gap: 0;
+  padding-left: 0.75rem;
+}
+
 .boutique-sidebar-filters .boutique-filter-option {
   column-gap: 0.55rem;
   border-radius: var(--radius-sm);
@@ -833,14 +842,6 @@
 
 .boutique-sidebar-filters .boutique-filter-option-helper {
   font-size: 0.625rem;
-}
-
-.boutique-sidebar-filters .boutique-sidebar-filter-section-content > div > div {
-  gap: 0;
-}
-
-.boutique-sidebar-filters .boutique-sidebar-filter-section-content > div > div > div {
-  padding-left: 0.55rem;
 }
 
 .boutique-sidebar-price-section {

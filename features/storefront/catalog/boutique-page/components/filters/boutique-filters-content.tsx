@@ -68,20 +68,6 @@ function buildCategoryToggleHref(
   return buildCategoryHref(category.isActive ? null : category.slug, model);
 }
 
-function buildSidebarCategories(categoryGroups: CategoryGroup[]): BoutiqueCategoryItem[] {
-  return categoryGroups.flatMap(({ parent, children }) => {
-    if (children.length === 0) {
-      return [parent];
-    }
-
-    if (parent.isActive) {
-      return [parent, ...children];
-    }
-
-    return children;
-  });
-}
-
 function formatPriceLabel(valueInCents: number | null, fallback: string): string {
   if (valueInCents === null) {
     return fallback;
@@ -166,14 +152,20 @@ export function BoutiqueFiltersContent({
 }: BoutiqueFiltersContentProps) {
   const hasActiveFilters = model.activeFilterLabels.length > 0;
   const categoryGroups = buildCategoryGroups(model.categories);
-  const sidebarCategories = buildSidebarCategories(categoryGroups);
   const isSidebar = variant === "sidebar";
+  const isDrawer = !isSidebar && typeof wrapLink === "function";
   const sidebarMinPriceLabel = formatPriceLabel(model.selectedMinPriceCents, "25 €");
   const sidebarMaxPriceLabel = formatPriceLabel(model.selectedMaxPriceCents, "350 €+");
-  const shouldShowReset = isSidebar || hasActiveFilters;
+  const shouldShowReset = isSidebar || isDrawer || hasActiveFilters;
 
   return (
-    <div className={cn(className, isSidebar && "boutique-sidebar-filters-content")}>
+    <div
+      className={cn(
+        className,
+        isSidebar && "boutique-sidebar-filters-content",
+        isDrawer && "boutique-drawer-filters-content"
+      )}
+    >
       <div
         className={cn(
           "flex items-center justify-between py-1",
@@ -193,7 +185,8 @@ export function BoutiqueFiltersContent({
             href={model.resetHref}
             className={cn(
               "text-[0.8125rem] text-text-muted-strong no-underline transition-colors hover:text-foreground",
-              isSidebar && "boutique-sidebar-filters-reset"
+              isSidebar && "boutique-sidebar-filters-reset",
+              isDrawer && "boutique-drawer-filters-reset"
             )}
             data-inactive={!hasActiveFilters ? "true" : undefined}
           >
@@ -233,18 +226,7 @@ export function BoutiqueFiltersContent({
                 wrapLink={wrapLink}
                 linkKey="category-all"
               />
-              {isSidebar
-                ? sidebarCategories.map((category) => (
-                    <FilterOption
-                      key={category.id}
-                      href={buildCategoryToggleHref(category, model)}
-                      isActive={category.isActive}
-                      label={category.name}
-                      wrapLink={wrapLink}
-                      linkKey={`sidebar-category-${category.id}`}
-                    />
-                  ))
-                : categoryGroups.map(({ parent, children }) => {
+              {categoryGroups.map(({ parent, children }) => {
                 const visualState: CategoryVisualState = {
                   isActive: parent.isActive,
                   isIncluded: false,
@@ -252,7 +234,10 @@ export function BoutiqueFiltersContent({
                 };
 
                 return (
-                  <div key={parent.id} className="grid">
+                  <div
+                    key={parent.id}
+                    className={cn("grid", isSidebar && "boutique-sidebar-category-group")}
+                  >
                     <FilterOption
                       href={buildCategoryToggleHref(parent, model)}
                       isActive={visualState.isActive}
@@ -263,7 +248,12 @@ export function BoutiqueFiltersContent({
                       linkKey={`category-${parent.id}`}
                     />
                     {children.length > 0 ? (
-                      <div className="grid pl-4">
+                      <div
+                        className={cn(
+                          "grid pl-4",
+                          isSidebar && "boutique-sidebar-category-children"
+                        )}
+                      >
                         {children.map((child) => {
                           const childVisualState: CategoryVisualState = {
                             isActive: child.isActive,
@@ -288,7 +278,7 @@ export function BoutiqueFiltersContent({
                     ) : null}
                   </div>
                 );
-                })}
+              })}
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -398,7 +388,13 @@ export function BoutiqueFiltersContent({
         </AccordionItem>
       </Accordion>
 
-      <div className={cn("boutique-filter-preview", isSidebar && "boutique-sidebar-filter-preview")}>
+      <div
+        className={cn(
+          "boutique-filter-preview",
+          isSidebar && "boutique-sidebar-filter-preview",
+          isDrawer && "boutique-drawer-filter-preview"
+        )}
+      >
         <section className="boutique-filter-preview-section" aria-labelledby="boutique-preview-colors">
           <p id="boutique-preview-colors" className="boutique-filter-preview-title">
             Couleurs

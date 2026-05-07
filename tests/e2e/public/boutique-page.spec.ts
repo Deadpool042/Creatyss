@@ -345,9 +345,9 @@ test.describe("boutique page smoke", () => {
     await expect(
       filtersAside.getByRole("link", { name: "Porte-cartes", exact: true })
     ).toBeVisible();
-    await expect(filtersAside.getByRole("link", { name: "Accessoires", exact: true })).toHaveCount(
-      0
-    );
+    await expect(
+      filtersAside.getByRole("link", { name: "Accessoires", exact: true })
+    ).toBeVisible();
 
     await filtersAside.getByRole("link", { name: "Sacs", exact: true }).click();
 
