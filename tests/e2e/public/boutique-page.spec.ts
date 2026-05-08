@@ -1538,4 +1538,30 @@ test.describe("boutique page smoke", () => {
       ).toBeVisible();
     }
   });
+
+  test("footer — structure et accessibilité", async ({ page }) => {
+    await page.goto("/boutique");
+
+    const footer = page.getByRole("contentinfo");
+    await expect(footer).toBeVisible();
+
+    // Texte marque visible (exact pour éviter la collision avec le copyright)
+    await expect(footer.getByText("Creatyss", { exact: true })).toBeVisible();
+
+    // Lien /boutique présent
+    await expect(footer.getByRole("link", { name: "Toute la boutique" })).toBeVisible();
+
+    // Lien /blog présent
+    await expect(footer.getByRole("link", { name: "Blog" })).toBeVisible();
+
+    // Lien /favoris présent
+    await expect(footer.getByRole("link", { name: "Favoris" })).toBeVisible();
+
+    // Pas de champ newsletter actif
+    await expect(footer.getByRole("textbox")).toHaveCount(0);
+    await expect(footer.getByRole("button", { name: /newsletter|s'abonner|abonnez/i })).toHaveCount(0);
+
+    // Copyright présent
+    await expect(footer.getByText(/Tous droits réservés/)).toBeVisible();
+  });
 });
