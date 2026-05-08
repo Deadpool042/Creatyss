@@ -316,6 +316,10 @@ test.describe("boutique page smoke", () => {
         const pagination = page.getByRole("navigation", { name: "Pagination" });
         if (countCase.hasPagination) {
           await expect(pagination).toBeVisible();
+          await expect(
+            pagination.getByRole("link", { name: "Voir plus de créations", exact: true })
+          ).toBeVisible();
+          await expect(pagination.getByText(/Page \d+ sur \d+/)).toBeVisible();
         } else {
           await expect(pagination).toHaveCount(0);
         }

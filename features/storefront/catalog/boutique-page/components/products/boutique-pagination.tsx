@@ -15,28 +15,39 @@ export function BoutiquePagination({ pagination }: BoutiquePaginationProps) {
   return (
     <nav
       aria-label="Pagination"
-      className="grid justify-items-center gap-2 pb-12 pt-4 min-[700px]:pb-6"
+      className="grid justify-items-center gap-2.5 pb-12 pt-5 min-[700px]:pb-6"
     >
-      <ul className="flex flex-wrap items-center justify-center gap-1.5">
-        <li>
-          {pagination.previousHref ? (
+      {pagination.nextHref ? (
+        <Link
+          href={pagination.nextHref}
+          rel="next"
+          aria-label="Voir plus de créations"
+          className="inline-flex min-h-10 min-w-56 items-center justify-center rounded-full border border-brand/55 bg-transparent px-6 text-xs font-semibold uppercase tracking-[0.16em] text-brand no-underline transition-colors hover:border-brand hover:bg-brand/8 hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          Voir plus de créations
+        </Link>
+      ) : null}
+
+      <p className="m-0 text-[11px] text-text-muted-strong">
+        Page {pagination.currentPage} sur {pagination.totalPages}
+      </p>
+
+      <ul
+        className="flex flex-wrap items-center justify-center gap-1.5"
+        aria-label="Pages boutique"
+      >
+        {pagination.previousHref ? (
+          <li>
             <Link
               href={pagination.previousHref}
               rel="prev"
               aria-label="Page précédente"
-              className="inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-control-border bg-control-surface px-3 text-xs text-text-muted-strong transition-colors hover:border-control-border-strong hover:text-foreground"
+              className="inline-flex h-8 min-w-8 items-center justify-center rounded-full border border-control-border/70 bg-transparent px-3 text-xs text-text-muted-strong no-underline transition-colors hover:border-control-border-strong hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Précédent
             </Link>
-          ) : (
-            <span
-              aria-hidden="true"
-              className="inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-control-border/40 bg-control-surface/40 px-3 text-xs text-text-muted-strong/50"
-            >
-              Précédent
-            </span>
-          )}
-        </li>
+          </li>
+        ) : null}
 
         {pagination.items.map((item) => {
           if (item.kind === "ellipsis") {
@@ -44,7 +55,7 @@ export function BoutiquePagination({ pagination }: BoutiquePaginationProps) {
               <li
                 key={item.key}
                 aria-hidden="true"
-                className="inline-flex h-9 min-w-9 items-center justify-center px-2 text-xs text-text-muted-strong"
+                className="inline-flex h-8 min-w-8 items-center justify-center px-2 text-xs text-text-muted-strong"
               >
                 …
               </li>
@@ -57,7 +68,7 @@ export function BoutiquePagination({ pagination }: BoutiquePaginationProps) {
                 <span
                   aria-current="page"
                   aria-label={`Page ${item.pageNumber}, page courante`}
-                  className="inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-brand bg-brand px-3 text-xs font-medium text-brand-foreground"
+                  className="inline-flex h-8 min-w-8 items-center justify-center rounded-full border border-brand bg-brand px-3 text-xs font-medium text-brand-foreground"
                 >
                   {item.pageNumber}
                 </span>
@@ -65,7 +76,7 @@ export function BoutiquePagination({ pagination }: BoutiquePaginationProps) {
                 <Link
                   href={item.href}
                   aria-label={`Page ${item.pageNumber}`}
-                  className="inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-control-border bg-control-surface px-3 text-xs text-text-muted-strong transition-colors hover:border-control-border-strong hover:text-foreground"
+                  className="inline-flex h-8 min-w-8 items-center justify-center rounded-full border border-control-border/70 bg-transparent px-3 text-xs text-text-muted-strong no-underline transition-colors hover:border-control-border-strong hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {item.pageNumber}
                 </Link>
@@ -74,30 +85,19 @@ export function BoutiquePagination({ pagination }: BoutiquePaginationProps) {
           );
         })}
 
-        <li>
-          {pagination.nextHref ? (
+        {pagination.nextHref ? (
+          <li>
             <Link
               href={pagination.nextHref}
               rel="next"
               aria-label="Page suivante"
-              className="inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-control-border bg-control-surface px-3 text-xs text-text-muted-strong transition-colors hover:border-control-border-strong hover:text-foreground"
+              className="inline-flex h-8 min-w-8 items-center justify-center rounded-full border border-control-border/70 bg-transparent px-3 text-xs text-text-muted-strong no-underline transition-colors hover:border-control-border-strong hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Suivant
             </Link>
-          ) : (
-            <span
-              aria-hidden="true"
-              className="inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-control-border/40 bg-control-surface/40 px-3 text-xs text-text-muted-strong/50"
-            >
-              Suivant
-            </span>
-          )}
-        </li>
+          </li>
+        ) : null}
       </ul>
-
-      <p className="m-0 text-[11px] text-text-muted-strong">
-        Page {pagination.currentPage} sur {pagination.totalPages}
-      </p>
     </nav>
   );
 }
