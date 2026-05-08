@@ -380,6 +380,41 @@ test.describe("boutique page smoke", () => {
     await expect(page.getByRole("button", { name: /ouvrir le menu principal/i })).toHaveCount(0);
   });
 
+  test("keeps the boutique desktop header compact without the reassurance bar", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      window.localStorage.setItem("theme", "light");
+    });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/boutique");
+
+    await expect(page.getByRole("navigation", { name: "Navigation principale" })).toBeVisible();
+    const visibleLogoCount = await page
+      .locator("header")
+      .getByRole("link", { name: /creatyss/i })
+      .evaluateAll((links) => {
+        return links.filter((link) => {
+          const element = link as HTMLElement;
+          const style = window.getComputedStyle(element);
+          const rect = element.getBoundingClientRect();
+          return style.display !== "none" && rect.width > 0 && rect.height > 0;
+        }).length;
+      });
+    expect(visibleLogoCount, "visible boutique logo links").toBeGreaterThan(0);
+    await expect(page.getByTestId("public-reassurance-bar")).toHaveCount(0);
+
+    const headerHeight = await page.locator("header").first().evaluate((element) => {
+      return Math.round(element.getBoundingClientRect().height);
+    });
+    expect(headerHeight, "boutique desktop header height").toBeLessThanOrEqual(72);
+
+    const heroBackgroundImage = await page.getByTestId("boutique-mobile-hero").evaluate((element) =>
+      window.getComputedStyle(element, "::before").backgroundImage
+    );
+    expect(heroBackgroundImage).toContain("bg-light-hero");
+  });
+
   test("keeps keyboard focus trapped in mobile topbar menu and restores trigger focus on close", async ({
     page,
   }) => {
@@ -673,6 +708,15 @@ test.describe("boutique page smoke", () => {
       expect(layoutSnapshot.marketVisible).toBe(viewport.marketVisible);
       expect(marketPlacementSnapshot.inlineVisible).toBe(viewport.marketInlineVisible);
       expect(marketPlacementSnapshot.columnVisible).toBe(viewport.marketColumnVisible);
+
+      if (viewport.marketVisible) {
+        const marketAside = page.locator(".boutique-shop-layout > .boutique-market-shell");
+        await expect(marketAside.getByText("Prochains marchés", { exact: true })).toBeVisible();
+        await expect(
+          marketAside.getByRole("link", { name: "Voir les marchés", exact: true })
+        ).toHaveAttribute("href", "/les-marches");
+        await expect(marketAside.getByText("Voir la boutique", { exact: true })).toHaveCount(0);
+      }
 
       if (viewport.sidebarVisible) {
         const sidebar = page.locator(".boutique-sidebar-shell");
