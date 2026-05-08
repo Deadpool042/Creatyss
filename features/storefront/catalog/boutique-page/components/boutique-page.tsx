@@ -15,6 +15,13 @@ type BoutiquePageProps = {
   initialFavoriteProductIds: readonly string[];
 };
 
+const BOUTIQUE_REASSURANCE_ITEMS = [
+  "Fait main à Saint-Étienne",
+  "Matières responsables et sans cuir",
+  "Pièces uniques en petites séries",
+  "Sur-mesure sur demande",
+] as const;
+
 export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageProps) {
   const hasActiveFilters = model.activeFilterLabels.length > 0;
 
@@ -67,6 +74,19 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
           ) : (
             <BoutiqueEmptyState hasActiveFilters={hasActiveFilters} resetHref={model.resetHref} />
           )}
+
+          <section className="boutique-reassurance-band" aria-label="Engagements Creatyss">
+            <ul className="boutique-reassurance-band-list">
+              {BOUTIQUE_REASSURANCE_ITEMS.map((item) => (
+                <li key={item} className="boutique-reassurance-band-item">
+                  <span className="boutique-reassurance-band-icon" aria-hidden="true">
+                    ✦
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
         </main>
 
         <BoutiqueMarketAside href={model.resetHref} />

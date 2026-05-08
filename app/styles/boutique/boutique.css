@@ -321,6 +321,63 @@ html:not(.dark) .boutique-landscape-context-bar::before {
   gap: 1rem;
 }
 
+.boutique-reassurance-band {
+  border: 1px solid var(--band-border);
+  border-radius: var(--radius-2xl);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--band-bg) 92%, var(--background)) 0%,
+      var(--band-bg) 100%
+    );
+  color: var(--band-foreground);
+  margin-top: 0.25rem;
+  padding: 0.9rem 1rem;
+}
+
+.boutique-reassurance-band-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.boutique-reassurance-band-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  color: var(--band-foreground-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.boutique-reassurance-band-icon {
+  color: var(--band-icon);
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+@media (min-width: 48rem) {
+  .boutique-reassurance-band {
+    padding: 1rem 1.15rem;
+  }
+
+  .boutique-reassurance-band-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem 1.25rem;
+  }
+}
+
+@media (min-width: 75rem) {
+  .boutique-reassurance-band-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 /* ==========================================================================
    Panels latéraux
    ========================================================================== */

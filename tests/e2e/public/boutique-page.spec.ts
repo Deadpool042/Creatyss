@@ -324,6 +324,13 @@ test.describe("boutique page smoke", () => {
           await expect(pagination).toHaveCount(0);
         }
 
+        const reassuranceBand = page.getByRole("region", { name: "Engagements Creatyss" });
+        await expect(reassuranceBand).toBeVisible();
+        await expect(reassuranceBand.getByText("Fait main à Saint-Étienne")).toBeVisible();
+        await expect(reassuranceBand.getByText("Matières responsables et sans cuir")).toBeVisible();
+        await expect(reassuranceBand.getByText("Pièces uniques en petites séries")).toBeVisible();
+        await expect(reassuranceBand.getByText("Sur-mesure sur demande")).toBeVisible();
+
         await expectNoVisibleDuplicateProducts(page);
       });
     }
