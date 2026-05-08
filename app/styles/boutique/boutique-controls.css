@@ -103,7 +103,7 @@
   }
 }
 
-@media (min-width: 90rem) {
+@media (min-width: 108rem) {
   .boutique-filter-trigger-tablet {
     display: none;
   }
@@ -407,19 +407,19 @@
 
 .boutique-mobile-filters-form {
   display: grid;
-  gap: 0.875rem;
+  gap: 0.75rem;
   overflow-y: auto;
-  padding: 0.75rem 1rem;
+  padding: 0.65rem 1rem 0.75rem;
 }
 
 .boutique-mobile-filters-section {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .boutique-mobile-filters-section-bordered {
   border-top: 1px solid color-mix(in srgb, var(--shell-border) 60%, transparent);
-  padding-top: 0.75rem;
+  padding-top: 0.65rem;
 }
 
 .boutique-mobile-filters-section-title {
@@ -440,11 +440,29 @@
 
 .boutique-mobile-filters-scroll-list {
   display: grid;
-  max-height: 30dvh;
+  max-height: clamp(7.25rem, 24dvh, 11rem);
   grid-template-columns: minmax(0, 1fr);
   gap: 0.125rem;
   overflow-y: auto;
   padding-right: 0.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--brand) 20%, var(--text-muted-strong)) transparent;
+}
+
+.boutique-mobile-filters-scroll-list::-webkit-scrollbar {
+  width: 0.32rem;
+}
+
+.boutique-mobile-filters-scroll-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand) 18%, var(--text-muted-strong));
+}
+
+.boutique-mobile-filters-scroll-hint {
+  margin: -0.05rem 0 0;
+  color: color-mix(in srgb, var(--text-muted-strong) 76%, transparent);
+  font-size: 0.6875rem;
+  line-height: 1.3;
 }
 
 .boutique-mobile-filters-price-grid {
@@ -547,11 +565,11 @@
 
 .boutique-filters-drawer-content {
   display: grid;
-  gap: 0.65rem;
+  gap: 0.55rem;
   max-height: min(100dvh - 5.5rem, 42rem);
   overflow-y: auto;
   scrollbar-width: thin;
-  padding: 1.25rem 1rem;
+  padding: 1rem 1rem 1.15rem;
 }
 
 .boutique-filters-drawer-content::-webkit-scrollbar {
@@ -564,7 +582,7 @@
 }
 
 .boutique-drawer-filters-content {
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .boutique-drawer-filters-reset {
@@ -582,6 +600,48 @@
   gap: 0.45rem;
   border-top: 1px dashed color-mix(in srgb, var(--surface-border-subtle) 72%, transparent);
   padding-top: 0.6rem;
+}
+
+.boutique-drawer-filter-list {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.boutique-drawer-filter-section {
+  border-bottom-color: color-mix(in srgb, var(--surface-border-subtle) 72%, transparent);
+}
+
+.boutique-drawer-filter-section-title {
+  padding-block: 0.45rem;
+}
+
+.boutique-drawer-filter-section-content {
+  padding-bottom: 0.15rem;
+}
+
+.boutique-drawer-category-list {
+  max-height: min(13.5rem, 34dvh);
+  overflow-y: auto;
+  padding-right: 0.2rem;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--brand) 18%, var(--text-muted-strong)) transparent;
+}
+
+.boutique-drawer-category-list::-webkit-scrollbar {
+  width: 0.32rem;
+}
+
+.boutique-drawer-category-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand) 18%, var(--text-muted-strong));
+}
+
+.boutique-drawer-price-section {
+  border-bottom: 0;
+}
+
+.boutique-drawer-price-title {
+  color: color-mix(in srgb, var(--brand) 44%, var(--text-muted-strong));
 }
 
 .boutique-drawer-filter-preview .boutique-filter-preview-title {
@@ -699,11 +759,11 @@
    ========================================================================== */
 
 .boutique-sidebar-filters {
-  gap: 0.45rem;
+  gap: 0.38rem;
 }
 
 .boutique-sidebar-filters-content {
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .boutique-sidebar-filters-header {
@@ -744,12 +804,12 @@
 
 .boutique-sidebar-filter-list {
   display: grid;
-  gap: 0.05rem;
+  gap: 0;
 }
 
 .boutique-sidebar-filter-section {
   border-bottom: 1px solid color-mix(in srgb, var(--brand) 7%, var(--surface-border-subtle));
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.18rem;
 }
 
 .boutique-sidebar-filter-section:last-child {
@@ -786,13 +846,13 @@
 
 .boutique-sidebar-category-children {
   gap: 0;
-  padding-left: 0.75rem;
+  padding-left: 0.65rem;
 }
 
 .boutique-sidebar-filters .boutique-filter-option {
   column-gap: 0.55rem;
   border-radius: var(--radius-sm);
-  padding: 0.24rem 0.15rem;
+  padding: 0.22rem 0.15rem;
   color: color-mix(in srgb, var(--foreground) 90%, var(--text-muted-strong));
 }
 
@@ -865,9 +925,9 @@
 
 .boutique-sidebar-price-range-track {
   position: relative;
-  height: 0.125rem;
+  height: 0.0625rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--background) 44%, var(--surface-panel));
+  background: color-mix(in srgb, var(--surface-border-subtle) 68%, var(--surface-panel));
 }
 
 .boutique-sidebar-price-range-fill {
@@ -875,22 +935,9 @@
   top: 50%;
   left: 0;
   width: 58%;
-  height: 0.125rem;
+  height: 0.0625rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--brand) 64%, var(--foreground));
-  transform: translateY(-50%);
-}
-
-.boutique-sidebar-price-range-thumb {
-  position: absolute;
-  top: 50%;
-  left: calc(58% - 0.34rem);
-  width: 0.68rem;
-  height: 0.68rem;
-  border: 1px solid color-mix(in srgb, var(--brand) 24%, var(--surface-border-subtle));
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--background) 48%, var(--surface-panel));
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--background) 72%, transparent);
+  background: color-mix(in srgb, var(--brand) 40%, var(--foreground));
   transform: translateY(-50%);
 }
 
@@ -928,23 +975,12 @@
   background: color-mix(in srgb, var(--background) 18%, var(--surface-panel));
 }
 
-.boutique-sidebar-price-range .boutique-sidebar-filter-note {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 .boutique-sidebar-filter-note {
-  margin: 0.1rem 0 0;
-  color: color-mix(in srgb, var(--foreground) 34%, var(--text-muted-strong));
-  font-size: 0.65625rem;
-  line-height: 1.45;
+  margin: 0.12rem 0 0;
+  color: color-mix(in srgb, var(--foreground) 40%, var(--text-muted-strong));
+  font-size: 0.625rem;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
 }
 
 /* ==========================================================================
@@ -1045,31 +1081,7 @@
 }
 
 .boutique-sidebar-filter-preview {
-  gap: 0.45rem;
-  padding-top: 0.4rem;
-}
-
-.boutique-sidebar-filter-preview .boutique-filter-preview-title {
-  color: color-mix(in srgb, var(--brand) 34%, var(--text-muted-strong));
-  font-size: 0.65625rem;
-}
-
-.boutique-sidebar-filter-preview .boutique-filter-preview-color-list {
-  gap: 0.28rem 0.5rem;
-}
-
-.boutique-sidebar-filter-preview .boutique-filter-preview-color-item,
-.boutique-sidebar-filter-preview .boutique-filter-preview-material-item {
-  font-size: 0.71875rem;
-}
-
-.boutique-sidebar-filter-preview .boutique-filter-preview-color-dot {
-  width: 0.52rem;
-  height: 0.52rem;
-}
-
-.boutique-sidebar-filter-preview .boutique-filter-preview-note {
-  font-size: 0.625rem;
+  display: none;
 }
 
 /* ==========================================================================

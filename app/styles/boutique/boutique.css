@@ -460,46 +460,7 @@
 
 @media (min-width: 90rem) {
   .boutique-shop-layout {
-    grid-template-columns: 250px minmax(0, 1fr) 260px;
     gap: 1.15rem;
-  }
-
-  .boutique-sidebar-shell {
-    display: block;
-    align-self: stretch;
-  }
-
-  .boutique-sidebar-sticky {
-    position: sticky;
-    top: 8rem;
-    z-index: 20;
-    max-height: calc(100dvh - 8rem);
-    overflow: hidden;
-    align-content: start;
-  }
-
-  .boutique-sidebar-panel {
-    max-height: calc(100dvh - 8rem);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding-right: 0.35rem;
-    scrollbar-width: thin;
-    scrollbar-color:
-      color-mix(in srgb, var(--brand) 14%, var(--foreground))
-      color-mix(in srgb, var(--surface-panel) 84%, transparent);
-  }
-
-  .boutique-sidebar-panel::-webkit-scrollbar {
-    width: 0.3rem;
-  }
-
-  .boutique-sidebar-panel::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--brand) 14%, var(--foreground));
-  }
-
-  .boutique-sidebar-panel::-webkit-scrollbar-track {
-    background: color-mix(in srgb, var(--surface-panel) 84%, transparent);
   }
 
   .boutique-hero-card-compact {
@@ -525,9 +486,48 @@
 
 @media (min-width: 108rem) {
   .boutique-shop-layout {
+    grid-template-columns: 250px minmax(0, 1fr) 260px;
     width: min(100% - 4rem, 106rem);
     margin-inline: auto;
     padding-bottom: 0.75rem;
+  }
+
+  .boutique-sidebar-shell {
+    display: block;
+    align-self: stretch;
+  }
+
+  .boutique-sidebar-sticky {
+    position: sticky;
+    top: 8rem;
+    z-index: 20;
+    max-height: calc(100dvh - 8rem);
+    overflow: hidden;
+    align-content: start;
+  }
+
+  .boutique-sidebar-panel {
+    max-height: calc(100dvh - 8rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 0.55rem;
+    scrollbar-width: thin;
+    scrollbar-color:
+      color-mix(in srgb, var(--brand) 14%, var(--foreground))
+      color-mix(in srgb, var(--surface-panel) 84%, transparent);
+  }
+
+  .boutique-sidebar-panel::-webkit-scrollbar {
+    width: 0.3rem;
+  }
+
+  .boutique-sidebar-panel::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--brand) 14%, var(--foreground));
+  }
+
+  .boutique-sidebar-panel::-webkit-scrollbar-track {
+    background: color-mix(in srgb, var(--surface-panel) 84%, transparent);
   }
 
   .boutique-hero-card-compact {

@@ -321,7 +321,7 @@ test.describe("boutique page smoke", () => {
     }
   });
 
-  test("shows category tree and toggles an active category back to boutique while preserving other filters", async ({
+  test("keeps compact sidebar shortcuts and toggles an active category while preserving other filters", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1728, height: 1117 });
@@ -332,22 +332,19 @@ test.describe("boutique page smoke", () => {
 
     await expect(filtersAside.getByRole("link", { name: "Sacs", exact: true })).toBeVisible();
     await expect(
-      filtersAside.getByRole("link", { name: "Sacs à main", exact: true })
+      filtersAside.getByRole("link", { name: "Tous les produits", exact: true })
     ).toBeVisible();
+    await expect(
+      filtersAside.getByRole("link", { name: "Sacs à main", exact: true })
+    ).toHaveCount(0);
     await expect(
       filtersAside.getByRole("link", { name: "Sacs à bandoulière", exact: true })
-    ).toBeVisible();
-    await expect(filtersAside.getByRole("link", { name: "Mini sacs", exact: true })).toBeVisible();
-    await expect(filtersAside.getByRole("link", { name: "Cabas", exact: true })).toBeVisible();
-    await expect(filtersAside.getByRole("link", { name: "Sacs à dos", exact: true })).toBeVisible();
-    await expect(filtersAside.getByRole("link", { name: "Pochettes", exact: true })).toBeVisible();
-    await expect(filtersAside.getByRole("link", { name: "Trousses", exact: true })).toBeVisible();
+    ).toHaveCount(0);
+    await expect(filtersAside.getByText("Couleurs", { exact: true })).toHaveCount(0);
+    await expect(filtersAside.getByText("Matières", { exact: true })).toHaveCount(0);
     await expect(
       filtersAside.getByRole("link", { name: "Porte-cartes", exact: true })
-    ).toBeVisible();
-    await expect(
-      filtersAside.getByRole("link", { name: "Accessoires", exact: true })
-    ).toBeVisible();
+    ).toHaveCount(0);
 
     await filtersAside.getByRole("link", { name: "Sacs", exact: true }).click();
 
@@ -505,6 +502,9 @@ test.describe("boutique page smoke", () => {
       await drawerTrigger.click();
       await expect(drawerContent).toBeVisible();
       await drawerContent.locator("label", { hasText: "Sacs" }).first().click();
+      await expect(drawerContent).toBeVisible();
+      await expect(page).toHaveURL(/\/boutique$/);
+      await drawerContent.getByRole("button", { name: /Voir .*résultat/i }).click();
       await page.waitForURL(/\/boutique\?.*category=sacs/);
       await expect(drawerContent).toBeHidden();
 
@@ -515,6 +515,9 @@ test.describe("boutique page smoke", () => {
       const categoryRadio = drawerContent.locator("#boutique-filter-category-sacs");
       await categoryRadio.focus();
       await page.keyboard.press("Enter");
+      await expect(drawerContent).toBeVisible();
+      await expect(page).toHaveURL(/\/boutique$/);
+      await drawerContent.getByRole("button", { name: /Voir .*résultat/i }).click();
       await page.waitForURL(/\/boutique\?.*category=sacs/);
       await expect(drawerContent).toBeHidden();
 
@@ -630,8 +633,18 @@ test.describe("boutique page smoke", () => {
         width: 1440,
         height: 900,
         mobileTriggerVisible: false,
-        tabletTriggerVisible: false,
-        sidebarVisible: true,
+        tabletTriggerVisible: true,
+        sidebarVisible: false,
+        marketVisible: true,
+        marketInlineVisible: false,
+        marketColumnVisible: true,
+      },
+      {
+        width: 1536,
+        height: 960,
+        mobileTriggerVisible: false,
+        tabletTriggerVisible: true,
+        sidebarVisible: false,
         marketVisible: true,
         marketInlineVisible: false,
         marketColumnVisible: true,
@@ -665,14 +678,23 @@ test.describe("boutique page smoke", () => {
         const sidebar = page.locator(".boutique-sidebar-shell");
         await expect(sidebar.getByText("Filtres", { exact: true })).toBeVisible();
         await expect(sidebar.getByText("Réinitialiser", { exact: true })).toBeVisible();
-        await expect(sidebar.getByText("Couleurs", { exact: true })).toBeVisible();
+        await expect(sidebar.getByText("Couleurs", { exact: true })).toHaveCount(0);
         await expect(sidebar.getByText("Fait main", { exact: true })).toHaveCount(0);
-        await expect(sidebar.getByText("Matières", { exact: true })).toBeVisible();
+        await expect(sidebar.getByText("Matières", { exact: true })).toHaveCount(0);
       }
 
       await expectNoHorizontalOverflow(page);
       await expectNoVisibleInertInteractive(page);
     }
+
+    await page.setViewportSize({ width: 1200, height: 854 });
+    await page.goto("/boutique");
+    await page.getByRole("button", { name: "Filtres", exact: true }).first().click();
+    const drawerContent = page.locator('[data-slot="drawer-content"]');
+    await expect(drawerContent).toBeVisible();
+    await expect(drawerContent.getByText("Couleurs", { exact: true })).toBeVisible();
+    await expect(drawerContent.getByText("Matières", { exact: true })).toBeVisible();
+    await page.keyboard.press("Escape");
   });
 
   test("keeps the expected layout from 640px to ultrawide", async ({ page }) => {
@@ -683,8 +705,8 @@ test.describe("boutique page smoke", () => {
       { width: 1199, height: 854, expectedColumns: 4, sidebarVisible: false, marketVisible: true },
       { width: 1200, height: 854, expectedColumns: 4, sidebarVisible: false, marketVisible: true },
       { width: 1366, height: 900, expectedColumns: 4, sidebarVisible: false, marketVisible: true },
-      { width: 1440, height: 900, expectedColumns: 4, sidebarVisible: true, marketVisible: true },
-      { width: 1536, height: 960, expectedColumns: 4, sidebarVisible: true, marketVisible: true },
+      { width: 1440, height: 900, expectedColumns: 4, sidebarVisible: false, marketVisible: true },
+      { width: 1536, height: 960, expectedColumns: 4, sidebarVisible: false, marketVisible: true },
       { width: 1728, height: 1117, expectedColumns: 4, sidebarVisible: true, marketVisible: true },
       { width: 2560, height: 1440, expectedColumns: 4, sidebarVisible: true, marketVisible: true },
     ]) {
@@ -1141,7 +1163,7 @@ test.describe("boutique page smoke", () => {
         width: 1440,
         height: 900,
         expectedColumns: 4,
-        sidebarVisible: true,
+        sidebarVisible: false,
         minLayoutWidthRatio: 0.88,
       },
       {
@@ -1272,6 +1294,20 @@ test.describe("boutique page smoke", () => {
         return style.display !== "none" && rect.width > 0 && rect.height > 0;
       });
       expect(asideVisible, `market aside visible at 1440 on ${url}`).toBe(true);
+
+      const sidebarVisible = await page.evaluate(() => {
+        const el = document.querySelector(".boutique-sidebar-shell");
+        if (!(el instanceof HTMLElement)) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return style.display !== "none" && rect.width > 0 && rect.height > 0;
+      });
+      expect(sidebarVisible, `sidebar hidden at 1440 on ${url}`).toBe(false);
+
+      await expect(
+        page.getByRole("button", { name: "Filtres", exact: true }).first(),
+        `drawer trigger visible at 1440 on ${url}`
+      ).toBeVisible();
 
       // Exactly 4 product columns at 1440
       const columns = await page.evaluate(() => {
