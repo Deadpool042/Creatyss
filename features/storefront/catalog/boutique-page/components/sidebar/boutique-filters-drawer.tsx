@@ -38,8 +38,8 @@ export function BoutiqueFiltersDrawer({
         <DrawerHeader className="boutique-filters-drawer-header">
           <div className="grid gap-0.5">
             <DrawerTitle>Filtres</DrawerTitle>
-            <DrawerDescription className="sr-only">
-              Filtrez les produits par catégorie et disponibilité.
+            <DrawerDescription className="boutique-filters-drawer-description">
+              Affinez la sélection boutique.
             </DrawerDescription>
           </div>
 
@@ -53,6 +53,7 @@ export function BoutiqueFiltersDrawer({
         <div className="boutique-filters-drawer-content">
           <BoutiqueFiltersContent
             model={model}
+            className="grid gap-1 boutique-drawer-filters-content"
             wrapLink={(link, key) => (
               <DrawerClose asChild key={key}>
                 {link}

@@ -123,6 +123,7 @@ async function getFilterTriggerSnapshot(page: Page) {
     return {
       mobileVisible: isVisible(document.querySelector(".boutique-filter-trigger-mobile")),
       tabletVisible: isVisible(document.querySelector(".boutique-filter-trigger-tablet")),
+      shortcutVisible: isVisible(document.querySelector(".boutique-filter-shortcut")),
     };
   });
 }
@@ -308,6 +309,9 @@ test.describe("boutique page smoke", () => {
         await expect
           .poll(async () => getVisibleHeaderCountLabel(page))
           .toBe(countCase.expectedCountLabel);
+        await expect(page.locator(".boutique-listing-actions-count")).toHaveText(
+          countCase.expectedCountLabel.replace("produits", "créations").replace("produit", "création")
+        );
 
         const pagination = page.getByRole("navigation", { name: "Pagination" });
         if (countCase.hasPagination) {
@@ -619,6 +623,7 @@ test.describe("boutique page smoke", () => {
         height: 667,
         mobileTriggerVisible: true,
         tabletTriggerVisible: false,
+        shortcutVisible: false,
         sidebarVisible: false,
         marketVisible: false,
         marketInlineVisible: false,
@@ -629,6 +634,7 @@ test.describe("boutique page smoke", () => {
         height: 854,
         mobileTriggerVisible: false,
         tabletTriggerVisible: true,
+        shortcutVisible: true,
         sidebarVisible: false,
         marketVisible: true,
         marketInlineVisible: false,
@@ -639,6 +645,7 @@ test.describe("boutique page smoke", () => {
         height: 899,
         mobileTriggerVisible: false,
         tabletTriggerVisible: true,
+        shortcutVisible: true,
         sidebarVisible: false,
         marketVisible: true,
         marketInlineVisible: false,
@@ -649,6 +656,7 @@ test.describe("boutique page smoke", () => {
         height: 854,
         mobileTriggerVisible: false,
         tabletTriggerVisible: true,
+        shortcutVisible: true,
         sidebarVisible: false,
         marketVisible: true,
         marketInlineVisible: false,
@@ -659,6 +667,7 @@ test.describe("boutique page smoke", () => {
         height: 854,
         mobileTriggerVisible: false,
         tabletTriggerVisible: true,
+        shortcutVisible: true,
         sidebarVisible: false,
         marketVisible: true,
         marketInlineVisible: false,
@@ -669,6 +678,7 @@ test.describe("boutique page smoke", () => {
         height: 900,
         mobileTriggerVisible: false,
         tabletTriggerVisible: true,
+        shortcutVisible: true,
         sidebarVisible: false,
         marketVisible: true,
         marketInlineVisible: false,
@@ -679,6 +689,7 @@ test.describe("boutique page smoke", () => {
         height: 960,
         mobileTriggerVisible: false,
         tabletTriggerVisible: true,
+        shortcutVisible: true,
         sidebarVisible: false,
         marketVisible: true,
         marketInlineVisible: false,
@@ -689,6 +700,7 @@ test.describe("boutique page smoke", () => {
         height: 1117,
         mobileTriggerVisible: false,
         tabletTriggerVisible: false,
+        shortcutVisible: false,
         sidebarVisible: true,
         marketVisible: true,
         marketInlineVisible: false,
@@ -704,10 +716,19 @@ test.describe("boutique page smoke", () => {
 
       expect(triggerSnapshot.mobileVisible).toBe(viewport.mobileTriggerVisible);
       expect(triggerSnapshot.tabletVisible).toBe(viewport.tabletTriggerVisible);
+      expect(triggerSnapshot.shortcutVisible).toBe(viewport.shortcutVisible);
       expect(layoutSnapshot.sidebarVisible).toBe(viewport.sidebarVisible);
       expect(layoutSnapshot.marketVisible).toBe(viewport.marketVisible);
       expect(marketPlacementSnapshot.inlineVisible).toBe(viewport.marketInlineVisible);
       expect(marketPlacementSnapshot.columnVisible).toBe(viewport.marketColumnVisible);
+
+      if (viewport.shortcutVisible) {
+        await expect(page.getByRole("button", { name: "Catégories", exact: true })).toBeVisible();
+        await expect(
+          page.getByRole("button", { name: "Disponibilité", exact: true })
+        ).toBeVisible();
+        await expect(page.getByRole("button", { name: "Prix", exact: true })).toBeVisible();
+      }
 
       if (viewport.marketVisible) {
         const marketAside = page.locator(".boutique-shop-layout > .boutique-market-shell");

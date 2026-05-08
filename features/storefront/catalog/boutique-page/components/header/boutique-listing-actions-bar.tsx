@@ -10,6 +10,10 @@ type BoutiqueListingActionsBarProps = {
 };
 
 export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarProps) {
+  const creationCountLabel = `${model.totalProductCount} création${
+    model.totalProductCount > 1 ? "s" : ""
+  }`;
+
   return (
     <div className="boutique-listing-actions">
       <div className="boutique-listing-actions-row">
@@ -26,17 +30,38 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
             className="boutique-control-button boutique-filter-trigger-tablet"
           />
 
-          <BoutiqueSortForm
-            searchQuery={model.searchQuery}
-            selectedCategorySlug={model.selectedCategorySlug}
-            selectedAvailabilityStatus={model.selectedAvailabilityStatus}
-            selectedMinPriceCents={model.selectedMinPriceCents}
-            selectedMaxPriceCents={model.selectedMaxPriceCents}
-            selectedSort={model.selectedSort}
-          />
+          <span className="boutique-listing-actions-count">{creationCountLabel}</span>
+
+          <div className="boutique-filter-shortcuts" aria-label="Accès rapides aux filtres">
+            <BoutiqueFiltersDrawer
+              model={model}
+              label="Catégories"
+              className="boutique-filter-shortcut"
+            />
+            <BoutiqueFiltersDrawer
+              model={model}
+              label="Disponibilité"
+              className="boutique-filter-shortcut"
+            />
+            <BoutiqueFiltersDrawer model={model} label="Prix" className="boutique-filter-shortcut" />
+          </div>
         </div>
 
-        <BoutiqueViewToggle />
+        <div className="boutique-listing-actions-secondary">
+          <div className="boutique-sort-cluster">
+            <span className="boutique-sort-label">Trier par :</span>
+            <BoutiqueSortForm
+              searchQuery={model.searchQuery}
+              selectedCategorySlug={model.selectedCategorySlug}
+              selectedAvailabilityStatus={model.selectedAvailabilityStatus}
+              selectedMinPriceCents={model.selectedMinPriceCents}
+              selectedMaxPriceCents={model.selectedMaxPriceCents}
+              selectedSort={model.selectedSort}
+            />
+          </div>
+
+          <BoutiqueViewToggle />
+        </div>
       </div>
 
       <BoutiqueActiveFilters labels={model.activeFilterLabels} resetHref={model.resetHref} />

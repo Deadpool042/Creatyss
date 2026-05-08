@@ -12,7 +12,7 @@ export function BoutiqueSidebar({ model }: BoutiqueSidebarProps) {
         <div className="boutique-sidebar-panel">
           <BoutiqueFiltersContent
             model={model}
-            className="boutique-sidebar-filters h-fit"
+            className="boutique-sidebar-filters"
             variant="sidebar"
           />
         </div>

@@ -13,24 +13,52 @@
 
 .boutique-listing-actions {
   display: grid;
-  gap: 0.5rem;
-  padding: 0 0.5rem;
+  gap: 0.35rem;
+  padding: 0.1rem 0.5rem 0;
 }
 
 .boutique-listing-actions-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.65rem;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.75rem;
   min-width: 0;
 }
 
 .boutique-listing-actions-primary {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.5rem;
   min-width: 0;
   flex: 1;
+  flex-wrap: wrap;
+}
+
+.boutique-listing-actions-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  min-width: 0;
+  margin-left: auto;
+}
+
+.boutique-listing-actions-count {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  color: var(--text-muted-strong);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.boutique-filter-shortcuts {
+  display: none;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
 }
 
 /* ==========================================================================
@@ -47,11 +75,11 @@
   border-radius: var(--radius-md);
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--brand) 14%, var(--control-surface)) 0%,
+    color-mix(in srgb, var(--brand) 8%, var(--control-surface)) 0%,
     var(--control-surface) 100%
   );
-  color: color-mix(in srgb, var(--brand) 64%, var(--text-muted-strong));
-  box-shadow: var(--shadow-control);
+  color: color-mix(in srgb, var(--brand) 46%, var(--text-muted-strong));
+  box-shadow: none;
   padding-inline: 0.625rem;
   font-size: 0.75rem;
   font-weight: 500;
@@ -70,11 +98,11 @@
   border-color: color-mix(in srgb, var(--brand) 70%, var(--control-border-strong));
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--brand) 14%, var(--control-surface-hover)) 0%,
+    color-mix(in srgb, var(--brand) 10%, var(--control-surface-hover)) 0%,
     var(--control-surface-hover) 100%
   );
   color: var(--foreground);
-  box-shadow: var(--shadow-control-hover);
+  box-shadow: var(--shadow-control);
 }
 
 .boutique-control-button:active {
@@ -101,10 +129,38 @@
     padding-inline: 0.75rem;
     font-size: 0.875rem;
   }
+
+  .boutique-filter-shortcuts {
+    display: inline-flex;
+  }
+
+  .boutique-filter-shortcut {
+    display: inline-flex;
+    height: 2.25rem;
+    border: 1px solid color-mix(in srgb, var(--control-border) 82%, transparent);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--control-surface) 86%, transparent);
+    color: var(--text-muted-strong);
+    box-shadow: none;
+    padding-inline: 0.8rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  .boutique-filter-shortcut:hover {
+    border-color: color-mix(in srgb, var(--brand) 46%, var(--control-border-strong));
+    background: color-mix(in srgb, var(--brand) 7%, var(--control-surface-hover));
+    color: var(--foreground);
+    box-shadow: none;
+  }
 }
 
 @media (min-width: 108rem) {
   .boutique-filter-trigger-tablet {
+    display: none;
+  }
+
+  .boutique-filter-shortcuts {
     display: none;
   }
 }
@@ -115,6 +171,21 @@
 
 .boutique-sort-form {
   min-width: 0;
+}
+
+.boutique-sort-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.boutique-sort-label {
+  display: none;
+  color: var(--text-muted-strong);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .boutique-sort-control {
@@ -132,11 +203,11 @@
   border-radius: var(--radius-md);
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--brand) 12%, var(--control-surface)) 0%,
+    color-mix(in srgb, var(--brand) 7%, var(--control-surface)) 0%,
     var(--control-surface) 100%
   );
   color: var(--foreground);
-  box-shadow: var(--shadow-control);
+  box-shadow: none;
   padding: 0 2rem 0 0.75rem;
   font-size: 0.75rem;
   font-weight: 500;
@@ -152,10 +223,10 @@
   border-color: color-mix(in srgb, var(--brand) 62%, var(--control-border-strong));
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--brand) 12%, var(--control-surface-hover)) 0%,
+    color-mix(in srgb, var(--brand) 9%, var(--control-surface-hover)) 0%,
     var(--control-surface-hover) 100%
   );
-  box-shadow: var(--shadow-control-hover);
+  box-shadow: var(--shadow-control);
 }
 
 .boutique-sort-select:focus-visible {
@@ -183,6 +254,10 @@
     max-width: 12rem;
     font-size: 0.8125rem;
   }
+
+  .boutique-sort-label {
+    display: inline;
+  }
 }
 
 /* ==========================================================================
@@ -197,10 +272,10 @@
   border-radius: var(--radius-md);
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--brand) 12%, var(--control-surface)) 0%,
+    color-mix(in srgb, var(--brand) 7%, var(--control-surface)) 0%,
     var(--control-surface) 100%
   );
-  box-shadow: var(--shadow-control);
+  box-shadow: none;
   padding: 0.25rem;
 }
 
@@ -230,11 +305,11 @@
 .boutique-view-toggle-button[data-state="active"] {
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--brand) 22%, var(--control-surface-selected)) 0%,
-    color-mix(in srgb, var(--control-surface-selected) 72%, var(--control-surface)) 100%
+    color-mix(in srgb, var(--brand) 18%, var(--control-surface-selected)) 0%,
+    color-mix(in srgb, var(--control-surface-selected) 62%, var(--control-surface)) 100%
   );
   color: var(--foreground);
-  box-shadow: var(--shadow-control);
+  box-shadow: none;
 }
 
 .boutique-view-toggle-button[data-state="active"] svg {
@@ -266,9 +341,9 @@
 
 .boutique-active-filters {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.35rem;
   padding-inline: 0.25rem;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.1rem;
   font-size: 0.75rem;
   color: var(--text-muted-strong);
 }
@@ -300,6 +375,9 @@
 
 .boutique-active-filter-badge {
   max-width: 13rem;
+  border-color: color-mix(in srgb, var(--control-border) 70%, transparent);
+  background: color-mix(in srgb, var(--surface-panel) 72%, transparent);
+  font-weight: 500;
 }
 
 .boutique-active-filter-link {

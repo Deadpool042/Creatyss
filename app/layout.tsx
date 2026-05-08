@@ -8,6 +8,7 @@ import { PublicSiteShell } from "@/components/storefront/public-site-shell";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { clientEnv } from "@/core/config/env";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -24,6 +25,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(clientEnv.appUrl),
   title: "Creatyss",
   description: "Boutique publique minimale de Creatyss.",
 };

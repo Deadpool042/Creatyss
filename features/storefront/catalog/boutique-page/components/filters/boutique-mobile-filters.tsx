@@ -245,19 +245,7 @@ export function BoutiqueMobileFilters({
                 value=""
                 label="Tous les produits"
                 checked={selectedCategorySlug === ""}
-                onChange={() => {
-                  const nextCategory = "";
-                  setSelectedCategorySlug(nextCategory);
-
-                  requestAnimationFrame(() => {
-                    applyFilters({
-                      categorySlug: nextCategory,
-                      availability: selectedAvailability,
-                      minPriceEuros: selectedMinPriceEuros,
-                      maxPriceEuros: selectedMaxPriceEuros,
-                    });
-                  });
-                }}
+                onChange={() => setSelectedCategorySlug("")}
                 type="radio"
                 indicator="dot"
               />
@@ -270,24 +258,16 @@ export function BoutiqueMobileFilters({
                   value={category.slug}
                   label={category.name}
                   checked={selectedCategorySlug === category.slug}
-                  onChange={() => {
-                    const nextCategory = category.slug;
-                    setSelectedCategorySlug(nextCategory);
-
-                    requestAnimationFrame(() => {
-                      applyFilters({
-                        categorySlug: nextCategory,
-                        availability: selectedAvailability,
-                        minPriceEuros: selectedMinPriceEuros,
-                        maxPriceEuros: selectedMaxPriceEuros,
-                      });
-                    });
-                  }}
+                  onChange={() => setSelectedCategorySlug(category.slug)}
                   type="radio"
                   indicator="dot"
                 />
               ))}
             </div>
+
+            <p className="boutique-mobile-filters-scroll-hint">
+              Disponibilité et prix se règlent plus bas.
+            </p>
           </section>
 
           <fieldset className="boutique-mobile-filters-section boutique-mobile-filters-section-bordered">
@@ -326,7 +306,7 @@ export function BoutiqueMobileFilters({
           </fieldset>
 
           <section className="boutique-mobile-filters-section boutique-mobile-filters-section-bordered">
-            <p className="boutique-mobile-filters-section-title">Tarif</p>
+            <p className="boutique-mobile-filters-section-title">Prix</p>
 
             <div className="boutique-mobile-filters-price-grid">
               <label

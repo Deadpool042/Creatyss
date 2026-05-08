@@ -50,6 +50,13 @@ function buildCategoryGroups(categories: BoutiqueCategoryItem[]): CategoryGroup[
   }));
 }
 
+function buildSidebarCategoryGroups(categories: BoutiqueCategoryItem[]): CategoryGroup[] {
+  return buildCategoryGroups(categories).map(({ parent, children }) => ({
+    parent,
+    children: children.filter((child) => child.isActive),
+  }));
+}
+
 function buildCategoryHref(categorySlug: string | null, model: BoutiquePageViewModel): string {
   return buildBoutiqueUrl({
     q: model.searchQuery,
@@ -154,6 +161,9 @@ export function BoutiqueFiltersContent({
   const categoryGroups = buildCategoryGroups(model.categories);
   const isSidebar = variant === "sidebar";
   const isDrawer = !isSidebar && typeof wrapLink === "function";
+  const visibleCategoryGroups = isSidebar
+    ? buildSidebarCategoryGroups(model.categories)
+    : categoryGroups;
   const sidebarMinPriceLabel = formatPriceLabel(model.selectedMinPriceCents, "25 €");
   const sidebarMaxPriceLabel = formatPriceLabel(model.selectedMaxPriceCents, "350 €+");
   const shouldShowReset = isSidebar || isDrawer || hasActiveFilters;
@@ -198,16 +208,24 @@ export function BoutiqueFiltersContent({
       <Accordion
         type="multiple"
         defaultValue={["categories", "availability", "price"]}
-        className={cn("w-full", isSidebar && "boutique-sidebar-filter-list")}
+        className={cn(
+          "w-full",
+          isSidebar && "boutique-sidebar-filter-list",
+          isDrawer && "boutique-drawer-filter-list"
+        )}
       >
         <AccordionItem
-          className={cn(isSidebar && "boutique-sidebar-filter-section")}
+          className={cn(
+            isSidebar && "boutique-sidebar-filter-section",
+            isDrawer && "boutique-drawer-filter-section"
+          )}
           value="categories"
         >
           <AccordionTrigger
             className={cn(
               "py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
-              isSidebar && "boutique-sidebar-filter-section-title"
+              isSidebar && "boutique-sidebar-filter-section-title",
+              isDrawer && "boutique-drawer-filter-section-title"
             )}
           >
             Catégories
@@ -215,7 +233,8 @@ export function BoutiqueFiltersContent({
           <AccordionContent
             className={cn(
               "[&_a]:no-underline [&_a]:hover:no-underline overflow-x-auto",
-              isSidebar && "boutique-sidebar-filter-section-content boutique-sidebar-category-list"
+              isSidebar && "boutique-sidebar-filter-section-content boutique-sidebar-category-list",
+              isDrawer && "boutique-drawer-filter-section-content boutique-drawer-category-list"
             )}
           >
             <div className="grid pb-1">
@@ -226,7 +245,7 @@ export function BoutiqueFiltersContent({
                 wrapLink={wrapLink}
                 linkKey="category-all"
               />
-              {categoryGroups.map(({ parent, children }) => {
+              {visibleCategoryGroups.map(({ parent, children }) => {
                 const visualState: CategoryVisualState = {
                   isActive: parent.isActive,
                   isIncluded: false,
@@ -284,13 +303,17 @@ export function BoutiqueFiltersContent({
         </AccordionItem>
 
         <AccordionItem
-          className={cn(isSidebar && "boutique-sidebar-filter-section")}
+          className={cn(
+            isSidebar && "boutique-sidebar-filter-section",
+            isDrawer && "boutique-drawer-filter-section"
+          )}
           value="availability"
         >
           <AccordionTrigger
             className={cn(
               "py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
-              isSidebar && "boutique-sidebar-filter-section-title"
+              isSidebar && "boutique-sidebar-filter-section-title",
+              isDrawer && "boutique-drawer-filter-section-title"
             )}
           >
             Disponibilité
@@ -298,7 +321,8 @@ export function BoutiqueFiltersContent({
           <AccordionContent
             className={cn(
               "[&_a]:no-underline [&_a]:hover:no-underline",
-              isSidebar && "boutique-sidebar-filter-section-content"
+              isSidebar && "boutique-sidebar-filter-section-content",
+              isDrawer && "boutique-drawer-filter-section-content"
             )}
           >
             <div className="grid pb-1">
@@ -341,15 +365,20 @@ export function BoutiqueFiltersContent({
 
         <AccordionItem
           value="price"
-          className={cn("border-b-0", isSidebar && "boutique-sidebar-filter-section")}
+          className={cn(
+            "border-b-0",
+            isSidebar && "boutique-sidebar-filter-section",
+            isDrawer && "boutique-drawer-filter-section boutique-drawer-price-section"
+          )}
         >
           <AccordionTrigger
             className={cn(
               "py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
-              isSidebar && "boutique-sidebar-filter-section-title"
+              isSidebar && "boutique-sidebar-filter-section-title",
+              isDrawer && "boutique-drawer-filter-section-title boutique-drawer-price-title"
             )}
           >
-            Gamme de prix
+            Prix
           </AccordionTrigger>
           <AccordionContent
             className={cn(
@@ -358,18 +387,15 @@ export function BoutiqueFiltersContent({
             )}
           >
             {isSidebar ? (
-              <div className="boutique-sidebar-price-range" aria-label="Repère visuel des prix">
+              <div className="boutique-sidebar-price-range" aria-label="Repère indicatif des prix">
                 <div className="boutique-sidebar-price-range-track" aria-hidden="true">
                   <span className="boutique-sidebar-price-range-fill" />
-                  <span className="boutique-sidebar-price-range-thumb" />
                 </div>
                 <div className="boutique-sidebar-price-range-values">
                   <span>{sidebarMinPriceLabel}</span>
                   <span>{sidebarMaxPriceLabel}</span>
                 </div>
-                <p className="boutique-sidebar-filter-note">
-                  Repère visuel. Le filtrage réel reste piloté par les montants ci-dessous.
-                </p>
+                <p className="boutique-sidebar-filter-note">Repère indicatif.</p>
               </div>
             ) : null}
             <BoutiquePriceFilterForm
@@ -388,51 +414,55 @@ export function BoutiqueFiltersContent({
         </AccordionItem>
       </Accordion>
 
-      <div
-        className={cn(
-          "boutique-filter-preview",
-          isSidebar && "boutique-sidebar-filter-preview",
-          isDrawer && "boutique-drawer-filter-preview"
-        )}
-      >
-        <section className="boutique-filter-preview-section" aria-labelledby="boutique-preview-colors">
-          <p id="boutique-preview-colors" className="boutique-filter-preview-title">
-            Couleurs
-          </p>
-          <ul className="boutique-filter-preview-color-list" aria-label="Palette indicative">
-            {MOCK_COLORS.map((color) => (
-              <li key={color.name} className="boutique-filter-preview-color-item">
-                <span
-                  aria-hidden="true"
-                  className="boutique-filter-preview-color-dot"
-                  data-color={color.token}
-                />
-                <span>{color.name}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section
-          className="boutique-filter-preview-section"
-          aria-labelledby="boutique-preview-materials"
+      {!isSidebar ? (
+        <div
+          className={cn(
+            "boutique-filter-preview",
+            isDrawer && "boutique-drawer-filter-preview"
+          )}
         >
-          <p id="boutique-preview-materials" className="boutique-filter-preview-title">
-            Matières
-          </p>
-          <ul className="boutique-filter-preview-material-list" aria-label="Matières indicatives">
-            {MOCK_MATERIALS.map((material) => (
-              <li key={material} className="boutique-filter-preview-material-item">
-                {material}
-              </li>
-            ))}
-          </ul>
-        </section>
+          <section
+            className="boutique-filter-preview-section"
+            aria-labelledby="boutique-preview-colors"
+          >
+            <p id="boutique-preview-colors" className="boutique-filter-preview-title">
+              Couleurs
+            </p>
+            <ul className="boutique-filter-preview-color-list" aria-label="Palette indicative">
+              {MOCK_COLORS.map((color) => (
+                <li key={color.name} className="boutique-filter-preview-color-item">
+                  <span
+                    aria-hidden="true"
+                    className="boutique-filter-preview-color-dot"
+                    data-color={color.token}
+                  />
+                  <span>{color.name}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
 
-        <p className="boutique-filter-preview-note">
-          Indication visuelle. Ces éléments n&apos;activent pas de filtre.
-        </p>
-      </div>
+          <section
+            className="boutique-filter-preview-section"
+            aria-labelledby="boutique-preview-materials"
+          >
+            <p id="boutique-preview-materials" className="boutique-filter-preview-title">
+              Matières
+            </p>
+            <ul className="boutique-filter-preview-material-list" aria-label="Matières indicatives">
+              {MOCK_MATERIALS.map((material) => (
+                <li key={material} className="boutique-filter-preview-material-item">
+                  {material}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <p className="boutique-filter-preview-note">
+            Indication visuelle. Ces éléments n&apos;activent pas de filtre.
+          </p>
+        </div>
+      ) : null}
 
     </div>
   );

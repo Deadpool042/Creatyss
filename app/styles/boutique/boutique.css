@@ -75,6 +75,14 @@
   );
 }
 
+html:not(.dark) .boutique-hero-card::before {
+  background-image: url("/images/storefront/boutique/hero/bg-light-hero.webp");
+}
+
+.dark .boutique-hero-card::before {
+  background-image: url("/images/storefront/boutique/hero/bg-dark-hero.webp");
+}
+
 .boutique-hero-card::after {
   content: "";
   position: absolute;
@@ -266,6 +274,14 @@
   .boutique-mobile-discovery-shell {
     display: none;
   }
+}
+
+html:not(.dark) .boutique-landscape-context-bar::before {
+  background-image: url("/images/storefront/boutique/hero/bg-light-hero.webp");
+}
+
+.dark .boutique-landscape-context-bar::before {
+  background-image: url("/images/storefront/boutique/hero/bg-dark-hero.webp");
 }
 
 /* ==========================================================================

@@ -113,7 +113,7 @@ function isPublicLinkActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-function PublicLogo() {
+function PublicLogo({ prominent = false }: { prominent?: boolean }) {
   return (
     <Link className="flex min-w-0 items-center gap-2.5 text-foreground" href="/">
       <Image
@@ -122,9 +122,19 @@ function PublicLogo() {
         aria-hidden="true"
         width={36}
         height={36}
-        className="h-7 w-auto shrink-0 object-contain opacity-90"
+        className={[
+          "w-auto shrink-0 object-contain",
+          prominent ? "h-8 opacity-100" : "h-7 opacity-90",
+        ].join(" ")}
       />
-      <span className="truncate text-[1.05rem] font-medium uppercase tracking-[0.36em]">
+      <span
+        className={[
+          "truncate font-medium uppercase",
+          prominent
+            ? "text-[1.1rem] tracking-[0.38em]"
+            : "text-[1.05rem] tracking-[0.36em]",
+        ].join(" ")}
+      >
         Creatyss
       </span>
     </Link>
@@ -239,15 +249,27 @@ function MobileTopbarMenu({ pathname }: { pathname: string }) {
 }
 
 export function TopbarPublic({ pathname }: TopbarPublicProps) {
+  const isBoutiqueRoute = pathname === "/boutique" || pathname.startsWith("/boutique/");
+
   return (
     <>
       <header className="site-header-blur sticky top-0 z-30 border-b border-shell-border">
-        <div className="hidden border-b border-shell-border/60 py-1.5 lg:flex items-center justify-center gap-7 text-text-muted-strong">
-          {MARKETING_HEADER_ITEMS.map((item) => (
-            <MarketingHeader key={item.label} {...item} />
-          ))}
-        </div>
-        <div className="mx-auto min-h-18 w-full max-w-430 px-4 sm:px-6 xl:px-12 min-[560px]:max-[1199px]:landscape:min-h-13">
+        {!isBoutiqueRoute ? (
+          <div
+            className="hidden items-center justify-center gap-7 border-b border-shell-border/60 py-1.5 text-text-muted-strong lg:flex"
+            data-testid="public-reassurance-bar"
+          >
+            {MARKETING_HEADER_ITEMS.map((item) => (
+              <MarketingHeader key={item.label} {...item} />
+            ))}
+          </div>
+        ) : null}
+        <div
+          className={[
+            "mx-auto w-full max-w-430 px-4 sm:px-6 xl:px-12 min-[560px]:max-[1199px]:landscape:min-h-13",
+            isBoutiqueRoute ? "min-h-18 min-[1200px]:min-h-16" : "min-h-18",
+          ].join(" ")}
+        >
           <div className="grid min-h-16 grid-cols-[5.5rem_minmax(0,1fr)_5.5rem] items-center min-[1200px]:hidden min-[560px]:max-[1199px]:landscape:min-h-11 min-[560px]:max-[1199px]:landscape:grid-cols-[4.5rem_minmax(0,1fr)_4.5rem]">
             <MobileTopbarMenu pathname={pathname} />
 
@@ -269,9 +291,14 @@ export function TopbarPublic({ pathname }: TopbarPublicProps) {
             </div>
           </div>
 
-          <div className="hidden min-h-18 items-center justify-between gap-4 min-[1200px]:flex">
+          <div
+            className={[
+              "hidden items-center justify-between gap-4 min-[1200px]:flex",
+              isBoutiqueRoute ? "min-h-16" : "min-h-18",
+            ].join(" ")}
+          >
             <div className="flex min-w-0 items-center gap-3">
-              <PublicLogo />
+              <PublicLogo prominent={isBoutiqueRoute} />
             </div>
 
             <nav

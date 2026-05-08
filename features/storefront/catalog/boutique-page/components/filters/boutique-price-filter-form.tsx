@@ -58,7 +58,7 @@ export function BoutiquePriceFilterForm({
           <input type="hidden" name="sort" value={selectedSort} />
         ) : null}
 
-        <p className="m-0 text-xs text-text-muted-strong">Montants entiers en euros</p>
+        <p className="m-0 text-xs text-text-muted-strong">Montants en euros</p>
 
         <div className="grid min-w-0 grid-cols-1 gap-2 min-[360px]:grid-cols-2">
           <label
@@ -109,7 +109,7 @@ export function BoutiquePriceFilterForm({
             href={clearPriceHref}
             className="inline-flex h-8 w-full min-w-0 items-center justify-center rounded-md border border-control-border px-2 text-xs text-text-muted-strong transition-colors hover:border-control-border-strong hover:text-foreground"
           >
-            Effacer le tarif
+            Effacer le prix
           </Link>
         </div>
       </form>
