@@ -99,16 +99,6 @@
   }
 }
 
-/* Landscape mobile : product-first, compact et lisible */
-@media (orientation: landscape) and (max-height: 480px) {
-  .boutique-product-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: 0.5rem;
-    row-gap: 1.25rem;
-    padding-inline: 0;
-  }
-}
-
 /* ==========================================================================
    Product card
    ========================================================================== */
@@ -483,49 +473,3 @@
   }
 }
 
-@media (orientation: landscape) and (max-height: 480px) {
-  .boutique-product-card-media {
-    aspect-ratio: 16 / 10;
-    border-radius: 0;
-  }
-
-  .boutique-product-card-content {
-    gap: 0.25rem;
-    padding: 0.42rem 0.5rem 0.5rem;
-  }
-
-  .boutique-product-card-kind {
-    margin-bottom: 0.1rem;
-    font-size: 0.65rem;
-  }
-
-  .boutique-product-card-title {
-    font-size: 0.78rem;
-    line-height: 1.2;
-  }
-
-  .boutique-product-card-price {
-    font-size: 0.78rem;
-  }
-
-  .boutique-product-card-price-compare {
-    font-size: 0.69rem;
-  }
-
-  .boutique-product-card-meta {
-    font-size: 0.72rem;
-  }
-
-  .boutique-product-card-badge {
-    top: 0.45rem;
-    left: 0.45rem;
-    min-height: 1.25rem;
-    padding-inline: 0.45rem;
-    font-size: 0.62rem;
-  }
-
-  .boutique-product-card-favorite {
-    top: 0.8rem;
-    right: 0.8rem;
-  }
-}

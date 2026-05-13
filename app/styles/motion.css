@@ -56,23 +56,13 @@
   html.theme-transition footer,
   html.theme-transition .site-header-blur,
   html.theme-transition .site-header-drawer,
-  html.theme-transition .boutique-page-layout,
-  html.theme-transition .boutique-catalog-panel,
-  html.theme-transition .boutique-sidebar-panel,
-  html.theme-transition .boutique-market-panel,
-  html.theme-transition .boutique-control-button,
-  html.theme-transition .boutique-sort-select,
-  html.theme-transition .boutique-view-toggle,
-  html.theme-transition .boutique-view-toggle-button,
-  html.theme-transition .boutique-active-filters,
-  html.theme-transition .boutique-filter-option,
-  html.theme-transition .boutique-mobile-category-chip,
-  html.theme-transition .boutique-mobile-category-image,
+  html.theme-transition [data-motion-surface="page-layout"],
+  html.theme-transition [data-motion-surface="catalog-panel"],
+  html.theme-transition [data-motion-surface="sidebar-panel"],
+  html.theme-transition [data-motion-surface="market-aside"],
   html.theme-transition .boutique-product-card,
   html.theme-transition .boutique-product-card-media,
-  html.theme-transition .boutique-product-card-content,
-  html.theme-transition .boutique-mobile-filters-drawer,
-  html.theme-transition .boutique-filters-drawer {
+  html.theme-transition .boutique-product-card-content {
     transition: var(--motion-transition-theme);
   }
 }

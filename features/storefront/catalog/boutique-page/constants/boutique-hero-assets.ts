@@ -3,7 +3,6 @@ export type BoutiqueHeroTheme = "light" | "dark";
 
 export type BoutiqueHeroVariant =
   | "mobilePortrait"
-  | "mobileLandscape"
   | "tablet"
   | "desktop"
   | "ultrawide"
@@ -24,11 +23,6 @@ export const BOUTIQUE_HERO_ASSETS: Readonly<Record<BoutiqueHeroTheme, BoutiqueHe
       src: "/images/storefront/boutique/hero/boutique-hero-light-mobile-portrait-1200x1600.webp",
       width: 1200,
       height: 1600,
-    },
-    mobileLandscape: {
-      src: "/images/storefront/boutique/hero/boutique-hero-light-mobile-landscape-1600x900.webp",
-      width: 1600,
-      height: 900,
     },
     tablet: {
       src: "/images/storefront/boutique/hero/boutique-hero-light-tablet-1800x1000.webp",
@@ -61,11 +55,6 @@ export const BOUTIQUE_HERO_ASSETS: Readonly<Record<BoutiqueHeroTheme, BoutiqueHe
       src: "/images/storefront/boutique/hero/boutique-hero-dark-mobile-portrait-1200x1600.webp",
       width: 1200,
       height: 1600,
-    },
-    mobileLandscape: {
-      src: "/images/storefront/boutique/hero/boutique-hero-dark-mobile-landscape-1600x900.webp",
-      width: 1600,
-      height: 900,
     },
     tablet: {
       src: "/images/storefront/boutique/hero/boutique-hero-dark-tablet-1800x1000.webp",

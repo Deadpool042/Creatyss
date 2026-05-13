@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const BOUTIQUE_LINKS = [
@@ -11,9 +12,19 @@ const INFO_LINKS = [
   { href: "/blog", label: "Blog" },
   { href: "/favoris", label: "Favoris" },
   { href: "/panier", label: "Panier" },
+  { href: "/a-propos", label: "À propos" },
+  { href: "/contact", label: "Contact" },
+  { href: "/faq", label: "FAQ" },
 ] as const;
 
-const ATELIER_ITEMS = ["Saint-Étienne", "Fait main", "Sans cuir", "Pièces uniques"] as const;
+const ATELIER_ITEMS = [
+  "Saint-Étienne",
+  "Fait main",
+  "Sans cuir",
+  "Pièces uniques",
+  "Les marchés",
+  "Sur-mesure",
+] as const;
 
 const FOOTER_LINK_CLASS =
   "rounded text-[0.82rem] text-text-muted-strong transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/70";
@@ -30,21 +41,31 @@ export function FooterPublic() {
   return (
     <footer
       aria-label="Pied de page"
-      className="border-t border-shell-border bg-background/50 px-4 py-10 pb-28 text-sm min-[560px]:max-[1199px]:landscape:pb-20 min-[1200px]:pb-10"
+      className="border-t border-surface-border-subtle bg-background-secondary pt-8 pb-28 text-sm md:pt-10 md:pb-10 min-[560px]:max-[1199px]:landscape:pb-20"
     >
-      <div className="mx-auto grid max-w-430 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto grid max-w-430 gap-8 px-4 sm:grid-cols-2 sm:px-6 desktop:grid-cols-5 xl:px-12 md:gap-10">
         {/* Colonne marque */}
         <div className="flex flex-col gap-3">
-          <span className="text-[0.88rem] font-semibold uppercase tracking-[0.2em] text-foreground">
-            Creatyss
-          </span>
+          <Link href="/" className="inline-flex items-center gap-2 text-foreground">
+            <Image
+              src="/uploads/logo.svg"
+              alt=""
+              aria-hidden="true"
+              width={24}
+              height={24}
+              className="h-6 w-auto shrink-0 opacity-85"
+            />
+            <span className="text-[0.88rem] font-semibold uppercase tracking-[0.2em]">
+              Creatyss
+            </span>
+          </Link>
           <p className="text-[0.82rem] leading-relaxed text-text-muted-strong">
             Sacs et accessoires artisanaux conçus et cousus à la main à Saint‑Étienne, sans cuir.
           </p>
         </div>
 
         {/* Colonne boutique */}
-        <div className="flex flex-col gap-3">
+        <nav aria-label="Navigation boutique" className="flex flex-col gap-3">
           <FooterColumnTitle>Boutique</FooterColumnTitle>
           <ul className="flex flex-col gap-2">
             {BOUTIQUE_LINKS.map(({ href, label }) => (
@@ -55,10 +76,10 @@ export function FooterPublic() {
               </li>
             ))}
           </ul>
-        </div>
+        </nav>
 
         {/* Colonne informations */}
-        <div className="flex flex-col gap-3">
+        <nav aria-label="Navigation informations" className="flex flex-col gap-3">
           <FooterColumnTitle>Informations</FooterColumnTitle>
           <ul className="flex flex-col gap-2">
             {INFO_LINKS.map(({ href, label }) => (
@@ -69,7 +90,7 @@ export function FooterPublic() {
               </li>
             ))}
           </ul>
-        </div>
+        </nav>
 
         {/* Colonne atelier — mentions éditoriales non cliquables */}
         <div className="flex flex-col gap-3">
@@ -82,9 +103,20 @@ export function FooterPublic() {
             ))}
           </ul>
         </div>
+
+        {/* Colonne newsletter — éditoriale, inscription bientôt disponible */}
+        <div className="flex flex-col gap-3 sm:col-span-2 desktop:col-span-1">
+          <FooterColumnTitle>Newsletter</FooterColumnTitle>
+          <p className="text-[0.82rem] leading-relaxed text-text-muted-strong">
+            Recevez nos nouveautés et pièces disponibles en avant-première.
+          </p>
+          <p className="text-[0.75rem] italic text-text-muted-strong/70">
+            Inscription bientôt disponible.
+          </p>
+        </div>
       </div>
 
-      <div className="mx-auto mt-10 flex max-w-430 flex-col items-center gap-1 border-t border-shell-border pt-6 text-center min-[560px]:flex-row min-[560px]:justify-between">
+      <div className="mx-auto mt-8 flex max-w-430 flex-col items-center gap-1 border-t border-surface-border-subtle px-4 pt-5 text-center sm:px-6 min-[560px]:flex-row min-[560px]:justify-between xl:px-12">
         <span className="text-[0.78rem] text-text-muted-strong">
           © {new Date().getFullYear()} Creatyss. Tous droits réservés.
         </span>

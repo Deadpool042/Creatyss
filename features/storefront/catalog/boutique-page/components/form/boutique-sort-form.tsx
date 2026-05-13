@@ -29,7 +29,7 @@ export function BoutiqueSortForm({
   selectedSort,
 }: BoutiqueSortFormProps) {
   return (
-    <form action="/boutique" method="get" className="boutique-sort-form">
+    <form action="/boutique" method="get" className="min-w-0">
       <input type="hidden" name="q" value={searchQuery} />
       <input type="hidden" name="category" value={selectedCategorySlug} />
 
@@ -49,11 +49,11 @@ export function BoutiqueSortForm({
         Trier les produits
       </label>
 
-      <div className="boutique-sort-control">
+      <div className="relative inline-flex min-w-0 items-center">
         <select
           id="boutique-sort"
           name="sort"
-          className="boutique-sort-select"
+          className="h-8 max-w-[9.25rem] appearance-none rounded-md border border-control-border bg-control-surface py-0 pl-3 pr-8 text-xs font-medium leading-none text-foreground outline-none transition-colors hover:border-control-border-strong hover:bg-control-surface-hover focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-focus-ring/60 md:h-9 md:max-w-48 md:text-[0.8125rem]"
           defaultValue={selectedSort}
           aria-label="Trier les produits"
           onChange={(event) => {
@@ -66,6 +66,10 @@ export function BoutiqueSortForm({
             </option>
           ))}
         </select>
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-3 top-1/2 size-1.5 -translate-y-1/2 rotate-45 border-b border-r border-text-muted-strong"
+        />
       </div>
     </form>
   );

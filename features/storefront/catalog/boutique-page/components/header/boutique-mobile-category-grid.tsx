@@ -34,24 +34,27 @@ export function BoutiqueMobileCategoryGrid({
 
   return (
     <section
-      className="boutique-mobile-category-discovery"
+      className="grid gap-[0.875rem] py-4 md:hidden"
       aria-labelledby="boutique-categories-title"
       data-testid="boutique-mobile-discovery"
     >
-      <div className="boutique-mobile-category-header">
-        <div className="boutique-mobile-category-heading">
-          <h2 id="boutique-categories-title" className="boutique-mobile-category-title">
+      <div className="flex min-w-0 items-start justify-between gap-3">
+        <div className="grid min-w-0 gap-1">
+          <h2
+            id="boutique-categories-title"
+            className="m-0 text-base font-[650] leading-[1.15] text-foreground"
+          >
             Explorer les créations
           </h2>
 
-          <p className="boutique-mobile-category-description">
+          <p className="m-0 text-sm leading-[1.35] text-text-muted-strong">
             Parcourez les univers de sacs et accessoires.
           </p>
         </div>
 
         <CustomLink
           href={resetHref}
-          className="boutique-mobile-category-reset"
+          className="shrink-0 py-1 px-0.5 text-[0.6875rem] font-[650] tracking-[0.16em] uppercase text-brand"
           size="sm"
           variant="navUnderline"
         >
@@ -59,7 +62,11 @@ export function BoutiqueMobileCategoryGrid({
         </CustomLink>
       </div>
 
-      <div className="boutique-mobile-category-rail" aria-label="Catégories">
+      <div
+        data-testid="boutique-mobile-category-rail"
+        className="flex gap-2 overflow-x-auto pb-1 [scroll-snap-type:x_mandatory] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        aria-label="Catégories"
+      >
         {items.map((category) => {
           const visual = getCategoryVisual(category);
           const imageSrc = visual?.src ?? FALLBACK_CATEGORY_VISUAL_SRC;
@@ -69,10 +76,10 @@ export function BoutiqueMobileCategoryGrid({
               key={category.id}
               href={category.href}
               aria-current={category.isActive ? "page" : undefined}
-              className="boutique-mobile-category-chip group"
+              className="group inline-flex shrink-0 items-center gap-2 min-h-[3rem] rounded-full border border-surface-border-subtle bg-surface-panel py-1.5 pl-1.5 pr-3 text-text-muted-strong outline-none [scroll-snap-align:start] transition-colors hover:border-control-border-strong hover:text-foreground active:scale-[0.97] focus-visible:ring-[3px] focus-visible:ring-focus-ring/42 data-[active=true]:border-brand/72 data-[active=true]:bg-brand/8 data-[active=true]:text-foreground"
               data-active={category.isActive ? "true" : "false"}
             >
-              <span className="boutique-mobile-category-image">
+              <span className="relative grid shrink-0 size-9 place-items-center overflow-hidden rounded-full border border-surface-border-subtle bg-surface-panel/78 group-data-[active=true]:border-brand/70 group-data-[active=true]:bg-brand/[0.14]">
                 <Image
                   src={imageSrc}
                   alt=""
@@ -81,15 +88,17 @@ export function BoutiqueMobileCategoryGrid({
                   sizes="36px"
                   className={
                     visual
-                      ? "boutique-mobile-category-image-media object-cover group-hover:scale-105"
-                      : "boutique-mobile-category-image-media object-contain p-1 group-hover:scale-105"
+                      ? "transition-transform object-cover group-hover:scale-105"
+                      : "transition-transform object-contain p-1 group-hover:scale-105"
                   }
                 />
 
-                <span className="boutique-mobile-category-image-overlay" />
+                <span className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-background/16" />
               </span>
 
-              <span className="boutique-mobile-category-label">{category.name}</span>
+              <span className="max-w-[6.5rem] truncate text-xs font-medium leading-[1.1] group-data-[active=true]:font-[650]">
+                {category.name}
+              </span>
             </Link>
           );
         })}

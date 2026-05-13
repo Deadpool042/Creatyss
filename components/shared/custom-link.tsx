@@ -16,9 +16,10 @@ import { cn } from "@/lib/utils";
  *
  * Lorsque `isActive` est activé, seules les variantes de navigation
  * (`nav` et `navUnderline`) reçoivent un style actif dédié.
- * @typedef {("default" | "nav" | "navUnderline" | "muted" | "brand")} CustomLinkVariant
  */
 type CustomLinkVariant = "default" | "nav" | "navUnderline" | "muted" | "brand";
+
+type CustomLinkActiveVariant = Extract<CustomLinkVariant, "nav" | "navUnderline">;
 
 /**
  * Tailles typographiques disponibles pour le composant CustomLink.
@@ -36,6 +37,7 @@ type CustomLinkSize = "sm" | "md";
  * (elles peuvent donc surcharger les classes par défaut).
  * @property {boolean} [isActive=false] Active un style "courant" pour les liens
  * de navigation; sans effet spécifique pour `default`, `muted` et `brand`.
+ * Les variantes actives sont typées via `CustomLinkActiveVariant`.
  * @property {CustomLinkVariant} [variant="default"] Variante visuelle appliquée
  * depuis `variantClasses`.
  * @property {CustomLinkSize} [size="md"] Taille typographique appliquée depuis
@@ -64,7 +66,7 @@ const baseClasses =
  * 2. définir sa classe ici;
  * 3. si besoin d'un état actif, compléter `activeVariantClasses`.
  */
-const variantClasses: Record<CustomLinkVariant, string> = {
+const variantClasses = {
   default: "text-foreground underline-offset-4 hover:text-brand hover:underline",
 
   muted: "text-text-muted-strong underline-offset-4 hover:text-foreground hover:underline",
@@ -84,13 +86,26 @@ const variantClasses: Record<CustomLinkVariant, string> = {
 
     "hover:after:scale-x-100 focus-visible:text-brand focus-visible:after:scale-x-100",
   ].join(" "),
-};
+} satisfies Record<CustomLinkVariant, string>;
 
-const activeVariantClasses: Partial<Record<CustomLinkVariant, string>> = {
+const activeVariantClasses = {
   nav: "text-brand",
 
   navUnderline: "text-brand after:scale-x-100",
-};
+} satisfies Record<CustomLinkActiveVariant, string>;
+
+function getActiveVariantClassName(variant: CustomLinkVariant): string | null {
+  switch (variant) {
+    case "nav":
+    case "navUnderline":
+      return activeVariantClasses[variant];
+
+    case "default":
+    case "muted":
+    case "brand":
+      return null;
+  }
+}
 
 /**
  * Mapping des tailles typographiques du lien.
@@ -131,6 +146,8 @@ export function CustomLink({
 
   ...props
 }: CustomLinkProps) {
+  const activeClassName = isActive ? getActiveVariantClassName(variant) : null;
+
   return (
     <Link
       className={cn(
@@ -140,7 +157,7 @@ export function CustomLink({
 
         variantClasses[variant],
 
-        isActive ? activeVariantClasses[variant] : null,
+        activeClassName,
 
         className
       )}

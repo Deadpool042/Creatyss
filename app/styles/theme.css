@@ -7,7 +7,9 @@
    Le fichier importé doit implémenter le contrat de thème complet.
    Voir : docs/architecture/90-reference/design-system.md
    ─────────────────────────────────────────────────────────────────────────── */
-@import "./themes/creatyss.css";
+@import "./themes/creatyss.core.css";
+@import "./themes/creatyss.light.css";
+@import "./themes/creatyss.dark.css";
 
 @theme inline {
   /* ==========================================================================
@@ -19,7 +21,7 @@
   */
   --breakpoint-laptop: 64rem; /* 1024px */
   --breakpoint-desktop: 75rem; /* 1200px */
-  --breakpoint-wide: 90.0625rem; /* 1441px */
+  --breakpoint-wide: 90rem; /* 1440px */
   --breakpoint-ultrawide: 100rem; /* 1600px */
   --breakpoint-2k: 120rem; /* 1920px */
   --breakpoint-4k: 160rem; /* 2560px */
@@ -42,6 +44,7 @@
   --color-page-foreground: var(--page-foreground);
 
   --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
   --color-foreground: var(--foreground);
 
   --color-card: var(--card);
@@ -84,9 +87,7 @@
      ========================================================================== */
 
   --color-interactive-hover: var(--interactive-hover);
-  --color-interactive-hover-strong: var(--interactive-hover-strong);
   --color-interactive-selected: var(--interactive-selected);
-  --color-interactive-selected-hover: var(--interactive-selected-hover);
   --color-interactive-pressed: var(--interactive-pressed);
   --color-interactive-selected-foreground: var(--interactive-selected-foreground);
   --color-interactive-disabled: var(--interactive-disabled);
@@ -175,7 +176,6 @@
   --color-surface-panel: var(--surface-panel);
   --color-surface-panel-soft: var(--surface-panel-soft);
   --color-surface-floating: var(--surface-floating);
-  --color-surface-floating-strong: var(--surface-floating-strong);
   --color-surface-subtle: var(--surface-subtle);
   --color-border-floating: var(--border-floating);
   --color-surface-border-subtle: var(--surface-border-subtle);
@@ -212,12 +212,10 @@
      ========================================================================== */
 
   --color-hero-bg: var(--hero-bg);
-  --color-hero-bg-media: var(--hero-bg-media);
   --color-hero-ink: var(--hero-ink);
   --color-hero-ink-soft: var(--hero-ink-soft);
   --color-hero-ink-muted: var(--hero-ink-muted);
   --color-hero-border: var(--hero-border);
-  --color-hero-vignette: var(--hero-vignette);
 
   /* ==========================================================================
      Band

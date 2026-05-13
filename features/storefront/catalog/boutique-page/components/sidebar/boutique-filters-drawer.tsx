@@ -19,26 +19,28 @@ type BoutiqueFiltersDrawerProps = {
   model: BoutiquePageViewModel;
   label?: string;
   className?: string;
+  triggerTestId?: string;
 };
 
 export function BoutiqueFiltersDrawer({
   model,
   label = "Filtres",
   className,
+  triggerTestId,
 }: BoutiqueFiltersDrawerProps) {
   return (
     <Drawer direction="left">
       <DrawerTrigger asChild>
-        <button type="button" className={className}>
+        <button type="button" className={className} data-testid={triggerTestId}>
           {label}
         </button>
       </DrawerTrigger>
 
-      <DrawerContent className="boutique-filters-drawer">
-        <DrawerHeader className="boutique-filters-drawer-header">
+      <DrawerContent className="w-[19rem] max-w-[82vw] border-surface-border-subtle/70 bg-surface-floating/94 shadow-overlay p-0 backdrop-blur-[24px]">
+        <DrawerHeader className="flex items-center justify-between border-b border-surface-border-subtle/70 px-4 pt-3 pb-[0.7rem]">
           <div className="grid gap-0.5">
             <DrawerTitle>Filtres</DrawerTitle>
-            <DrawerDescription className="boutique-filters-drawer-description">
+            <DrawerDescription className="m-0 text-xs leading-[1.3] text-text-muted-strong/82">
               Affinez la sélection boutique.
             </DrawerDescription>
           </div>
@@ -50,10 +52,10 @@ export function BoutiqueFiltersDrawer({
           </DrawerClose>
         </DrawerHeader>
 
-        <div className="boutique-filters-drawer-content">
+        <div className="grid gap-2 max-h-[min(calc(100dvh-5.5rem),42rem)] overflow-y-auto p-4 pb-[1.15rem]">
           <BoutiqueFiltersContent
             model={model}
-            className="grid gap-1 boutique-drawer-filters-content"
+            className="grid gap-2"
             wrapLink={(link, key) => (
               <DrawerClose asChild key={key}>
                 {link}

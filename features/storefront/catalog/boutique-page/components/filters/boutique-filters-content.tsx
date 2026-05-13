@@ -31,6 +31,16 @@ type CategoryVisualState = {
   containsActiveChild: boolean;
 };
 
+const COLOR_DOT_BG: Record<string, string> = {
+  default: "color-mix(in srgb, var(--brand) 22%, var(--surface-panel))",
+  ivory: "color-mix(in srgb, var(--surface-panel) 86%, var(--brand))",
+  saffron: "color-mix(in srgb, var(--feedback-warning) 68%, var(--brand))",
+  mandarin: "color-mix(in srgb, var(--brand) 74%, var(--feedback-warning))",
+  olive: "color-mix(in srgb, var(--feedback-success) 62%, var(--brand))",
+  sapphire: "color-mix(in srgb, var(--accent) 78%, var(--brand))",
+  aubergine: "color-mix(in srgb, var(--destructive) 42%, var(--accent))",
+};
+
 const MOCK_COLORS = [
   { name: "Ivoire", token: "ivory" },
   { name: "Safran", token: "saffron" },
@@ -116,9 +126,9 @@ function FilterOption({
       href={href}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "flex items-center gap-2 rounded py-1.5 pr-0.5 text-[0.875rem] no-underline transition-colors hover:no-underline",
+        "flex items-center gap-2 rounded px-1 py-1 text-[0.875rem] no-underline transition-colors hover:bg-brand/[0.04] hover:no-underline",
         isActive
-          ? "text-foreground"
+          ? "bg-brand/[0.04] font-medium text-foreground"
           : containsActiveChild
             ? "text-foreground/88"
             : "text-text-muted-strong hover:text-foreground"
@@ -170,22 +180,18 @@ export function BoutiqueFiltersContent({
 
   return (
     <div
-      className={cn(
-        className,
-        isSidebar && "boutique-sidebar-filters-content",
-        isDrawer && "boutique-drawer-filters-content"
-      )}
+      className={className}
     >
       <div
         className={cn(
           "flex items-center justify-between py-1",
-          isSidebar && "boutique-sidebar-filters-header"
+          isSidebar && "pt-[0.05rem] pb-2 border-b border-surface-border-subtle"
         )}
       >
         <p
           className={cn(
             "m-0 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong",
-            isSidebar && "boutique-sidebar-filters-title"
+            isSidebar && "text-foreground tracking-[0.22em]"
           )}
         >
           Filtres
@@ -195,8 +201,8 @@ export function BoutiqueFiltersContent({
             href={model.resetHref}
             className={cn(
               "text-[0.8125rem] text-text-muted-strong no-underline transition-colors hover:text-foreground",
-              isSidebar && "boutique-sidebar-filters-reset",
-              isDrawer && "boutique-drawer-filters-reset"
+              isSidebar && "text-[0.6875rem] text-text-muted-soft underline-offset-4 data-[inactive=true]:text-text-muted-soft/50 data-[inactive=true]:pointer-events-none",
+              isDrawer && "text-xs text-brand underline-offset-1 data-[inactive=true]:text-text-muted-strong/74 data-[inactive=true]:pointer-events-none"
             )}
             data-inactive={!hasActiveFilters ? "true" : undefined}
           >
@@ -210,22 +216,22 @@ export function BoutiqueFiltersContent({
         defaultValue={["categories", "availability", "price"]}
         className={cn(
           "w-full",
-          isSidebar && "boutique-sidebar-filter-list",
-          isDrawer && "boutique-drawer-filter-list"
+          isSidebar && "grid",
+          isDrawer && "grid gap-0.5"
         )}
       >
         <AccordionItem
           className={cn(
-            isSidebar && "boutique-sidebar-filter-section",
-            isDrawer && "boutique-drawer-filter-section"
+            isSidebar && "border-b border-surface-border-subtle pb-[0.35rem] last:border-b-0 last:pb-0",
+            isDrawer && "border-b-surface-border-subtle/72"
           )}
           value="categories"
         >
           <AccordionTrigger
             className={cn(
-              "py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
-              isSidebar && "boutique-sidebar-filter-section-title",
-              isDrawer && "boutique-drawer-filter-section-title"
+              isSidebar ? "py-1.5" : "py-2", "text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
+              isSidebar && "tracking-[0.16em]",
+              isDrawer && "py-[0.45rem]"
             )}
           >
             Catégories
@@ -233,8 +239,8 @@ export function BoutiqueFiltersContent({
           <AccordionContent
             className={cn(
               "[&_a]:no-underline [&_a]:hover:no-underline overflow-x-auto",
-              isSidebar && "boutique-sidebar-filter-section-content boutique-sidebar-category-list",
-              isDrawer && "boutique-drawer-filter-section-content boutique-drawer-category-list"
+              isSidebar && "pb-[0.2rem] overflow-x-visible",
+              isDrawer && "pb-0.5 max-h-[min(13.5rem,34dvh)] overflow-y-auto pr-1"
             )}
           >
             <div className="grid pb-1">
@@ -255,7 +261,7 @@ export function BoutiqueFiltersContent({
                 return (
                   <div
                     key={parent.id}
-                    className={cn("grid", isSidebar && "boutique-sidebar-category-group")}
+                    className={cn("grid", isSidebar && "gap-[0.02rem]")}
                   >
                     <FilterOption
                       href={buildCategoryToggleHref(parent, model)}
@@ -270,7 +276,7 @@ export function BoutiqueFiltersContent({
                       <div
                         className={cn(
                           "grid pl-4",
-                          isSidebar && "boutique-sidebar-category-children"
+                          isSidebar && "gap-0 pl-[0.65rem]"
                         )}
                       >
                         {children.map((child) => {
@@ -304,16 +310,16 @@ export function BoutiqueFiltersContent({
 
         <AccordionItem
           className={cn(
-            isSidebar && "boutique-sidebar-filter-section",
-            isDrawer && "boutique-drawer-filter-section"
+            isSidebar && "border-b border-surface-border-subtle pb-[0.35rem] last:border-b-0 last:pb-0",
+            isDrawer && "border-b-surface-border-subtle/72"
           )}
           value="availability"
         >
           <AccordionTrigger
             className={cn(
-              "py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
-              isSidebar && "boutique-sidebar-filter-section-title",
-              isDrawer && "boutique-drawer-filter-section-title"
+              isSidebar ? "py-1.5" : "py-2", "text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
+              isSidebar && "tracking-[0.16em]",
+              isDrawer && "py-[0.45rem]"
             )}
           >
             Disponibilité
@@ -321,8 +327,8 @@ export function BoutiqueFiltersContent({
           <AccordionContent
             className={cn(
               "[&_a]:no-underline [&_a]:hover:no-underline",
-              isSidebar && "boutique-sidebar-filter-section-content",
-              isDrawer && "boutique-drawer-filter-section-content"
+              isSidebar && "pb-[0.2rem]",
+              isDrawer && "pb-0.5"
             )}
           >
             <div className="grid pb-1">
@@ -367,15 +373,15 @@ export function BoutiqueFiltersContent({
           value="price"
           className={cn(
             "border-b-0",
-            isSidebar && "boutique-sidebar-filter-section",
-            isDrawer && "boutique-drawer-filter-section boutique-drawer-price-section"
+            isSidebar && "border-b border-surface-border-subtle pb-[0.35rem] last:border-b-0 last:pb-0",
+            isDrawer && "border-b-0"
           )}
         >
           <AccordionTrigger
             className={cn(
-              "py-2 text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
-              isSidebar && "boutique-sidebar-filter-section-title",
-              isDrawer && "boutique-drawer-filter-section-title boutique-drawer-price-title"
+              isSidebar ? "py-1.5" : "py-2", "text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted-strong hover:text-foreground hover:no-underline",
+              isSidebar && "tracking-[0.16em]",
+              isDrawer && "py-[0.45rem]"
             )}
           >
             Prix
@@ -383,19 +389,19 @@ export function BoutiqueFiltersContent({
           <AccordionContent
             className={cn(
               "[&_a]:no-underline [&_a]:hover:no-underline",
-              isSidebar && "boutique-sidebar-filter-section-content"
+              isSidebar && "pb-[0.2rem]"
             )}
           >
             {isSidebar ? (
-              <div className="boutique-sidebar-price-range" aria-label="Repère indicatif des prix">
-                <div className="boutique-sidebar-price-range-track" aria-hidden="true">
-                  <span className="boutique-sidebar-price-range-fill" />
+              <div className="grid gap-1.5 pb-[0.05rem]" aria-label="Repère indicatif des prix">
+                <div className="relative h-[0.0625rem] rounded-full bg-surface-border-subtle" aria-hidden="true">
+                  <span className="absolute top-1/2 left-0 h-[0.0625rem] w-[58%] -translate-y-1/2 rounded-full bg-brand" />
                 </div>
-                <div className="boutique-sidebar-price-range-values">
+                <div className="flex items-center justify-between gap-2 text-[0.71875rem] leading-[1.2] text-foreground">
                   <span>{sidebarMinPriceLabel}</span>
                   <span>{sidebarMaxPriceLabel}</span>
                 </div>
-                <p className="boutique-sidebar-filter-note">Repère indicatif.</p>
+                <p className="mt-[0.12rem] text-[0.625rem] leading-[1.35] tracking-[0.02em] text-text-muted-strong">Repère indicatif.</p>
               </div>
             ) : null}
             <BoutiquePriceFilterForm
@@ -407,7 +413,7 @@ export function BoutiqueFiltersContent({
               selectedMaxPriceCents={model.selectedMaxPriceCents}
               className={cn(
                 "grid gap-2 pb-1",
-                isSidebar && "boutique-sidebar-price-section"
+                isSidebar && "gap-1.5 border-t-0 pb-[0.05rem]"
               )}
             />
           </AccordionContent>
@@ -417,24 +423,24 @@ export function BoutiqueFiltersContent({
       {!isSidebar ? (
         <div
           className={cn(
-            "boutique-filter-preview",
-            isDrawer && "boutique-drawer-filter-preview"
+            "grid gap-[0.55rem] border-t border-surface-border-subtle/62 pt-[0.55rem]",
+            isDrawer && "gap-1.5 border-t border-dashed border-surface-border-subtle/72 pt-[0.6rem]"
           )}
         >
           <section
-            className="boutique-filter-preview-section"
+            className="grid gap-[0.3rem]"
             aria-labelledby="boutique-preview-colors"
           >
-            <p id="boutique-preview-colors" className="boutique-filter-preview-title">
+            <p id="boutique-preview-colors" className="m-0 text-[0.6875rem] font-semibold tracking-[0.14em] uppercase text-text-muted-strong">
               Couleurs
             </p>
-            <ul className="boutique-filter-preview-color-list" aria-label="Palette indicative">
+            <ul className="grid grid-cols-2 gap-x-[0.6rem] gap-y-[0.35rem] m-0 p-0 list-none" aria-label="Palette indicative">
               {MOCK_COLORS.map((color) => (
-                <li key={color.name} className="boutique-filter-preview-color-item">
+                <li key={color.name} className="inline-flex items-center gap-[0.4rem] text-xs leading-[1.2] text-text-muted-strong">
                   <span
                     aria-hidden="true"
-                    className="boutique-filter-preview-color-dot"
-                    data-color={color.token}
+                    className="size-[0.6rem] shrink-0 rounded-full border border-surface-border-subtle/72"
+                    style={{ background: COLOR_DOT_BG[color.token] ?? COLOR_DOT_BG.default }}
                   />
                   <span>{color.name}</span>
                 </li>
@@ -443,22 +449,22 @@ export function BoutiqueFiltersContent({
           </section>
 
           <section
-            className="boutique-filter-preview-section"
+            className="grid gap-[0.3rem]"
             aria-labelledby="boutique-preview-materials"
           >
-            <p id="boutique-preview-materials" className="boutique-filter-preview-title">
+            <p id="boutique-preview-materials" className="m-0 text-[0.6875rem] font-semibold tracking-[0.14em] uppercase text-text-muted-strong">
               Matières
             </p>
-            <ul className="boutique-filter-preview-material-list" aria-label="Matières indicatives">
+            <ul className="grid gap-[0.2rem] m-0 p-0 list-none" aria-label="Matières indicatives">
               {MOCK_MATERIALS.map((material) => (
-                <li key={material} className="boutique-filter-preview-material-item">
+                <li key={material} className="text-xs leading-[1.25] text-text-muted-strong">
                   {material}
                 </li>
               ))}
             </ul>
           </section>
 
-          <p className="boutique-filter-preview-note">
+          <p className="m-0 text-[0.67rem] leading-[1.3] text-text-muted-strong/74">
             Indication visuelle. Ces éléments n&apos;activent pas de filtre.
           </p>
         </div>

@@ -1,0 +1,170 @@
+/* Dark mode — Creatyss warm dark cacao */
+
+.dark {
+  color-scheme: dark;
+
+  /* ── Core shadcn/ui ─────────────────────────────────────────────────────── */
+
+  --background: oklch(0.12 0.012 54);
+  --background-secondary: oklch(0.96 0.022 80 / 0.13);
+  --foreground: oklch(0.94 0.008 72);
+
+  --card: oklch(0.22 0.016 54);
+  --card-foreground: oklch(0.94 0.008 72);
+
+  --popover: oklch(0.22 0.016 54);
+  --popover-foreground: oklch(0.94 0.008 72);
+
+  --primary: oklch(0.77 0.130 74);
+  --primary-foreground: oklch(0.22 0.020 54);
+
+  --secondary: oklch(0.28 0.012 56);
+  --secondary-foreground: oklch(0.94 0.008 72);
+
+  --muted: oklch(0.26 0.010 56);
+  --muted-foreground: oklch(0.72 0.012 72);
+
+  --accent: oklch(0.66 0.100 78);
+  --accent-foreground: oklch(0.22 0.028 52);
+
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0.003 70);
+
+  --border: oklch(0.94 0.008 72 / 0.20);
+  --input: oklch(0.94 0.008 72 / 0.20);
+  --ring: oklch(0.80 0.100 78);
+
+  /* ── Brand ──────────────────────────────────────────────────────────────── */
+
+  --brand: oklch(0.79 0.140 76);
+  --brand-foreground: oklch(0.22 0.020 54);
+
+  /* ── Page / document ────────────────────────────────────────────────────── */
+
+  --page-bg: oklch(0.16 0.014 54);
+  --page-foreground: oklch(0.94 0.008 72);
+  --body-background:
+    radial-gradient(circle at 70% 0%, oklch(0.46 0.08 58 / 0.18), transparent 32rem),
+    var(--page-bg);
+
+  /* ── Overlay ────────────────────────────────────────────────────────────── */
+
+  --overlay-scrim: oklch(0 0 0 / 0.36);
+  --overlay-scrim-strong: oklch(0 0 0 / 0.56);
+
+  /* ── Interactive states ─────────────────────────────────────────────────── */
+
+  --interactive-hover: oklch(0.96 0.006 72 / 0.10);
+  --interactive-selected: oklch(0.96 0.006 72 / 0.18);
+  --interactive-pressed: oklch(0.96 0.006 72 / 0.30);
+  --interactive-selected-foreground: oklch(0.94 0.008 72);
+  --interactive-disabled: oklch(0.96 0.006 72 / 0.04);
+  --interactive-disabled-foreground: oklch(0.66 0.010 72);
+
+  /* ── Feedback ───────────────────────────────────────────────────────────── */
+
+  --feedback-info: oklch(0.78 0.015 250);
+  --feedback-info-foreground: oklch(0.92 0.008 250);
+  --feedback-info-surface: oklch(0.78 0.015 250 / 0.16);
+  --feedback-info-border: oklch(0.78 0.015 250 / 0.28);
+
+  --feedback-success: oklch(0.76 0.100 155);
+  --feedback-success-foreground: oklch(0.94 0.020 155);
+  --feedback-success-surface: oklch(0.76 0.100 155 / 0.18);
+  --feedback-success-border: oklch(0.76 0.100 155 / 0.30);
+
+  --feedback-warning: oklch(0.82 0.110 75);
+  --feedback-warning-foreground: oklch(0.96 0.015 75);
+  --feedback-warning-surface: oklch(0.82 0.110 75 / 0.18);
+  --feedback-warning-border: oklch(0.82 0.110 75 / 0.30);
+
+  --feedback-error: var(--destructive);
+  --feedback-error-foreground: oklch(0.95 0.015 27);
+  --feedback-error-surface: oklch(0.704 0.191 22.216 / 0.18);
+  --feedback-error-surface-strong: oklch(0.704 0.191 22.216 / 0.26);
+  --feedback-error-border: oklch(0.704 0.191 22.216 / 0.30);
+
+  /* ── Focus ──────────────────────────────────────────────────────────────── */
+
+  --focus-ring: oklch(0.80 0.100 78);
+  --focus-ring-offset-surface: var(--background);
+
+  /* ── Text hierarchy ─────────────────────────────────────────────────────── */
+
+  --text-muted-strong: oklch(0.86 0.012 72);
+  --text-muted-soft: oklch(0.70 0.010 72);
+
+  /* ── Surfaces ───────────────────────────────────────────────────────────── */
+
+  --surface-panel: oklch(0.96 0.006 72 / 0.13);
+  --surface-panel-soft: oklch(0.96 0.006 72 / 0.10);
+  --surface-floating: oklch(0.24 0.018 54 / 0.97);
+  --surface-subtle: oklch(0.80 0.080 72 / 0.12);
+  --surface-border-subtle: oklch(0.90 0.008 72 / 0.16);
+  --border-floating: oklch(0.90 0.008 72 / 0.36);
+  --surface-border: oklch(0.90 0.008 72 / 0.18);
+  --surface-border-strong: oklch(0.90 0.008 72 / 0.30);
+
+  /* ── Controls ───────────────────────────────────────────────────────────── */
+
+  --control-surface: oklch(0.96 0.006 72 / 0.18);
+  --control-surface-hover: oklch(0.96 0.006 72 / 0.24);
+  --control-surface-active: oklch(0.96 0.006 72 / 0.28);
+  --control-surface-selected: oklch(0.80 0.100 72 / 0.32);
+  --control-border: oklch(0.90 0.008 72 / 0.28);
+  --control-border-strong: oklch(0.90 0.008 72 / 0.40);
+
+  /* ── Shell public ───────────────────────────────────────────────────────── */
+
+  --shell-surface: oklch(0.26 0.018 56 / 0.94);
+  --shell-surface-blur: oklch(0.24 0.018 54 / 0.58);
+  --shell-drawer: oklch(0.22 0.016 54 / 0.94);
+  --shell-drawer-blur: oklch(0.22 0.016 54 / 0.68);
+  --shell-border: oklch(0.90 0.008 72 / 0.14);
+  --shell-border-strong: oklch(0.90 0.008 72 / 0.28);
+
+  /* ── Hero éditorial ─────────────────────────────────────────────────────── */
+
+  --hero-bg: oklch(0.15 0.016 52);
+  --hero-ink: oklch(0.94 0.008 72);
+  --hero-ink-soft: oklch(0.76 0.012 72);
+  --hero-ink-muted: oklch(0.56 0.010 72);
+  --hero-border: oklch(0.26 0.022 52);
+
+  /* ── Media ──────────────────────────────────────────────────────────────── */
+
+  --media-surface: oklch(0.80 0.090 72 / 0.14);
+  --media-foreground: oklch(0.90 0.010 72 / 0.58);
+  --media-overlay: oklch(0 0 0 / 0.66);
+
+  /* ── Elevation ──────────────────────────────────────────────────────────── */
+
+  --shadow-soft: 0 8px 20px oklch(0 0 0 / 0.32);
+  --shadow-card: 0 10px 24px oklch(0 0 0 / 0.38);
+  --shadow-raised: 0 6px 14px oklch(0 0 0 / 0.44);
+  --shadow-floating: 0 14px 34px oklch(0 0 0 / 0.54);
+  --shadow-control: 0 1px 3px oklch(0 0 0 / 0.40), 0 3px 8px oklch(0 0 0 / 0.36);
+  --shadow-control-hover: 0 2px 5px oklch(0 0 0 / 0.44), 0 6px 14px oklch(0 0 0 / 0.40);
+  --shadow-control-pressed: inset 0 1px 0 oklch(1 0 0 / 0.16), inset 0 2px 5px oklch(0 0 0 / 0.48);
+  --shadow-overlay: 0 28px 96px oklch(0 0 0 / 0.54);
+  --shadow-inset-soft: inset 0 1px 0 oklch(1 0 0 / 0.14);
+
+  /* ── Sidebar admin ──────────────────────────────────────────────────────── */
+
+  --sidebar: oklch(0.185 0.012 56);
+  --sidebar-foreground: oklch(0.94 0.008 72);
+  --sidebar-primary: oklch(0.79 0.140 76);
+  --sidebar-primary-foreground: oklch(0.22 0.020 54);
+  --sidebar-accent: oklch(0.26 0.010 56);
+  --sidebar-accent-foreground: oklch(0.94 0.008 72);
+  --sidebar-border: oklch(0.90 0.008 72 / 0.12);
+  --sidebar-ring: oklch(0.72 0.090 46);
+
+  /* ── Charts ─────────────────────────────────────────────────────────────── */
+
+  --chart-1: oklch(0.74 0.110 45);
+  --chart-2: oklch(0.68 0.040 145);
+  --chart-3: oklch(0.70 0.040 250);
+  --chart-4: oklch(0.76 0.030 70);
+  --chart-5: oklch(0.62 0.030 20);
+}

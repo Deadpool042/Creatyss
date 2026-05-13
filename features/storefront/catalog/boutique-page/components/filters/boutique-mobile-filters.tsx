@@ -21,11 +21,13 @@ import {
   eurosInputToCents,
 } from "@/features/storefront/catalog/boutique-page/model/price-input-utils";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
+import { cn } from "@/lib/utils";
 
 type BoutiqueMobileFiltersProps = {
   model: BoutiquePageViewModel;
   label?: string;
   className?: string;
+  triggerTestId?: string;
 };
 
 type BoutiqueFilterOptionProps = {
@@ -78,7 +80,7 @@ function BoutiqueFilterOption({
   return (
     <label
       htmlFor={inputId}
-      className="boutique-filter-option"
+      className="group grid w-full cursor-pointer grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-0.5 rounded-lg p-1.5 text-sm text-text-muted-strong transition-colors hover:bg-surface-panel/20 hover:text-foreground active:bg-surface-panel/30 focus-within:bg-surface-panel/20 focus-within:outline-none data-[checked=true]:text-foreground"
       data-checked={checked ? "true" : "false"}
     >
       <input
@@ -99,23 +101,21 @@ function BoutiqueFilterOption({
 
       <span
         aria-hidden="true"
-        className={[
-          "boutique-filter-option-indicator",
-          indicator === "square"
-            ? "boutique-filter-option-indicator-square"
-            : "boutique-filter-option-indicator-dot",
-        ].join(" ")}
+        className={cn(
+          "grid size-4 shrink-0 mt-0.5 place-items-center border border-control-border/70 bg-transparent transition-colors group-focus-within:ring-[2px] group-focus-within:ring-focus-ring/50 group-data-[checked=true]:border-brand",
+          indicator === "square" ? "rounded-sm" : "rounded-full"
+        )}
       >
-        {checked && indicator === "dot" ? <span className="boutique-filter-option-dot" /> : null}
+        {checked && indicator === "dot" ? <span className="size-1.5 rounded-full bg-brand" /> : null}
 
         {checked && indicator === "square" ? (
-          <span className="boutique-filter-option-check">✓</span>
+          <span className="text-brand text-[0.625rem] leading-none">✓</span>
         ) : null}
       </span>
 
-      <span className="boutique-filter-option-label">{label}</span>
+      <span className="pr-1 text-sm leading-[1.35] group-data-[checked=true]:font-medium">{label}</span>
 
-      {helperText ? <span className="boutique-filter-option-helper">{helperText}</span> : null}
+      {helperText ? <span className="col-start-2 m-0 text-[0.6875rem] leading-[1.35] text-text-muted-strong">{helperText}</span> : null}
     </label>
   );
 }
@@ -124,6 +124,7 @@ export function BoutiqueMobileFilters({
   model,
   label = "Filtres",
   className,
+  triggerTestId,
 }: BoutiqueMobileFiltersProps) {
   const router = useRouter();
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -189,7 +190,7 @@ export function BoutiqueMobileFilters({
   return (
     <Drawer direction="bottom" modal open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-        <button type="button" className={className}>
+        <button type="button" className={className} data-testid={triggerTestId}>
           <Settings2Icon aria-hidden="true" />
           {label}
         </button>
@@ -200,9 +201,9 @@ export function BoutiqueMobileFilters({
           event.preventDefault();
           closeButtonRef.current?.focus();
         }}
-        className="boutique-mobile-filters-drawer"
+        className="max-h-[86dvh] rounded-t-2xl border-shell-border/70 bg-surface-floating/92 shadow-floating p-0 backdrop-blur-[20px]"
       >
-        <DrawerHeader className="boutique-mobile-filters-header">
+        <DrawerHeader className="flex items-center justify-between border-b border-shell-border/70 px-4 py-3">
           <div className="grid gap-0.5">
             <DrawerTitle>Filtres</DrawerTitle>
             <DrawerDescription className="sr-only">
@@ -230,15 +231,17 @@ export function BoutiqueMobileFilters({
             event.preventDefault();
             submitCurrentFilters();
           }}
-          className="boutique-mobile-filters-form"
+          className="grid gap-3 overflow-y-auto px-4 pt-[0.65rem] pb-3"
         >
           <input type="hidden" name="q" value={model.searchQuery} />
           <input type="hidden" name="sort" value={model.selectedSort} />
 
-          <section className="boutique-mobile-filters-section">
-            <p className="boutique-mobile-filters-section-title">Catégories</p>
+          <section className="grid gap-1.5">
+            <p className="m-0 text-xs font-semibold tracking-[0.08em] uppercase text-text-muted-strong">
+              Catégories
+            </p>
 
-            <div className="boutique-mobile-filters-scroll-list">
+            <div className="grid max-h-[clamp(7.25rem,24dvh,11rem)] grid-cols-1 gap-0.5 overflow-y-auto pr-1">
               <BoutiqueFilterOption
                 inputId="boutique-filter-category-all"
                 name="category"
@@ -265,15 +268,17 @@ export function BoutiqueMobileFilters({
               ))}
             </div>
 
-            <p className="boutique-mobile-filters-scroll-hint">
+            <p className="-mt-[0.05rem] text-[0.6875rem] leading-[1.3] text-text-muted-strong/76">
               Disponibilité et prix se règlent plus bas.
             </p>
           </section>
 
-          <fieldset className="boutique-mobile-filters-section boutique-mobile-filters-section-bordered">
-            <legend className="boutique-mobile-filters-section-title">Disponibilité</legend>
+          <fieldset className="grid gap-1.5 border-t border-shell-border/60 pt-[0.65rem]">
+            <legend className="m-0 text-xs font-semibold tracking-[0.08em] uppercase text-text-muted-strong">
+              Disponibilité
+            </legend>
 
-            <p className="boutique-mobile-filters-helper">
+            <p className="m-0 text-[0.6875rem] leading-[1.35] text-text-muted-strong">
               Choisissez un seul statut de disponibilité.
             </p>
 
@@ -305,12 +310,14 @@ export function BoutiqueMobileFilters({
             </div>
           </fieldset>
 
-          <section className="boutique-mobile-filters-section boutique-mobile-filters-section-bordered">
-            <p className="boutique-mobile-filters-section-title">Prix</p>
+          <section className="grid gap-1.5 border-t border-shell-border/60 pt-[0.65rem]">
+            <p className="m-0 text-xs font-semibold tracking-[0.08em] uppercase text-text-muted-strong">
+              Prix
+            </p>
 
-            <div className="boutique-mobile-filters-price-grid">
+            <div className="grid grid-cols-2 gap-2">
               <label
-                className="boutique-mobile-filters-price-label"
+                className="grid gap-1 text-xs text-text-muted-strong"
                 htmlFor="boutique-filter-min-price"
               >
                 Prix minimum
@@ -321,12 +328,12 @@ export function BoutiqueMobileFilters({
                   placeholder="Min"
                   value={selectedMinPriceEuros}
                   onChange={(event) => setSelectedMinPriceEuros(event.currentTarget.value)}
-                  className="boutique-mobile-filters-price-input"
+                  className="h-9 rounded-lg border border-control-border bg-control-surface px-[0.625rem] text-sm text-foreground outline-none transition-colors hover:border-control-border-strong hover:bg-control-surface-hover focus-visible:border-focus-ring focus-visible:ring-2 focus-visible:ring-focus-ring/50"
                 />
               </label>
 
               <label
-                className="boutique-mobile-filters-price-label"
+                className="grid gap-1 text-xs text-text-muted-strong"
                 htmlFor="boutique-filter-max-price"
               >
                 Prix maximum
@@ -337,7 +344,7 @@ export function BoutiqueMobileFilters({
                   placeholder="Max"
                   value={selectedMaxPriceEuros}
                   onChange={(event) => setSelectedMaxPriceEuros(event.currentTarget.value)}
-                  className="boutique-mobile-filters-price-input"
+                  className="h-9 rounded-lg border border-control-border bg-control-surface px-[0.625rem] text-sm text-foreground outline-none transition-colors hover:border-control-border-strong hover:bg-control-surface-hover focus-visible:border-focus-ring focus-visible:ring-2 focus-visible:ring-focus-ring/50"
                 />
               </label>
             </div>
@@ -363,7 +370,7 @@ export function BoutiqueMobileFilters({
             />
           ) : null}
 
-          <div className="boutique-mobile-filters-footer">
+          <div className="sticky bottom-0 z-10 grid gap-1.5 border-t border-shell-border/70 bg-surface-floating/96 pt-2 pb-3 backdrop-blur-[12px]">
             <Button type="submit" className="h-10" aria-live="polite">
               {resultLabel}
             </Button>
@@ -390,7 +397,7 @@ export function BoutiqueMobileFilters({
                   });
                 });
               }}
-              className="boutique-mobile-filters-reset"
+              className="inline-flex h-8 items-center justify-center text-xs text-text-muted-strong underline-offset-4 transition-colors hover:text-foreground hover:underline"
             >
               Réinitialiser
             </button>
