@@ -12,9 +12,9 @@ Le design system est maintenant stabilisé autour de :
 - la taxonomie tokens V2 (surfaces, borders, controls, interactifs, shadows) ;
 - la famille floating/overlay dédiée (`surface-floating`, `border-floating`, `shadow-floating`) ;
 - les primitives UI principales alignées sur cette hiérarchie (contrôles, overlays, surfaces standards) ;
-- le mini-système typo V2-T (`text-title-*`, `text-price-*`, `text-meta-label`, `text-secondary-copy`, `text-micro-copy`, `reading-*`).
+- ~~le mini-système typo V2-T (`text-title-*`, `text-price-*`, `text-meta-label`, `text-secondary-copy`, `text-micro-copy`, `reading-*`)~~ — **supprimé** avec `typography.css` ; remplacé par des compositions Tailwind inline (voir section *Patterns typographiques recommandés*).
 
-Conséquence : la base par défaut est V2 + V2-T.
+Conséquence : la base par défaut est V2. Le mini-système typo V2-T a été supprimé lors de la migration Tailwind.
 Les évolutions restantes doivent être traitées par micro-lots locaux, sans relancer une refonte large.
 
 ---
@@ -27,13 +27,15 @@ Les évolutions restantes doivent être traitées par micro-lots locaux, sans re
 app/globals.css
   → tailwindcss
   → shadcn/tailwind.css
+  → @plugin "@tailwindcss/typography"
   → app/styles/theme.css          ← importe les 3 splits du thème actif + définit @theme inline
   → app/styles/base.css
-  → app/styles/typography.css
   → app/styles/shell.css
   → app/styles/motion.css
   → app/styles/animation.css
 ```
+
+> `typography.css` a été supprimé. Le plugin `@tailwindcss/typography` est activé via `@plugin` dans `globals.css` et consommé via les classes `prose` dans les composants.
 
 ### Rôle de chaque fichier
 
@@ -45,10 +47,19 @@ app/globals.css
 | `themes/novamart.css`      | Thème alternatif de référence (cool, corporate, indigo) — non actif, non importé (template client fictif)                                                                                            | Thème CSS pur   |
 | `theme.css`                | Point d'activation du thème : importe les 3 splits Creatyss + mapping Tailwind (`@theme inline`) + `@custom-variant dark`                                                                           | Config Tailwind |
 | `base.css`                 | Reset CSS global (box-sizing, body background) + `@layer base` Tailwind (html, body, headings)                                                                                                      | Reset + base    |
-| `typography.css`           | Styles typographiques globaux                                                                                                                                                                        | CSS classes     |
 | `shell.css`                | Primitive `.site-header-blur` uniquement — backdrop-filter avec fallback opaque, consomme `--shell-surface` et `--shell-surface-blur` (avec `@supports` et vendor prefix)                             | CSS classes     |
 | `motion.css`               | Animations et transitions globales                                                                                                                                                                   | CSS classes     |
 | `animation.css`            | Keyframes accordéon via `@theme {}`                                                                                                                                                                  | Keyframes       |
+
+**Fichiers supprimés (ne pas réintroduire) :**
+
+| Fichier supprimé              | Remplacé par                                                                              |
+| ----------------------------- | ----------------------------------------------------------------------------------------- |
+| `typography.css`              | Tailwind natif inline dans les composants + plugin `@tailwindcss/typography` (`prose`)    |
+| `boutique.css`                | Classes Tailwind inline dans les composants boutique                                      |
+| `boutique-controls.css`       | Classes Tailwind inline                                                                   |
+| `boutique-products.css`       | Classes Tailwind inline                                                                   |
+| `creatyss.css` (monolithique) | Splits `creatyss.core.css` / `creatyss.light.css` / `creatyss.dark.css`                  |
 
 ---
 
@@ -315,49 +326,31 @@ Tokens `feedback-{info,success,warning,error}` × `{foreground,surface,border}` 
 
 ## Utilitaires composites disponibles
 
-### Mini-système typographique global (V2-T1)
+### Mini-système typographique global (V2-T1) — OBSOLÈTE
 
-Ces classes fournissent une hiérarchie typo sémantique minimale, réutilisable,
-sans dépendre de tailles arbitraires locales.
+> **Ces classes n'existent plus.** `typography.css` a été supprimé. Ne pas les recréer.
+> Les utiliser dans un composant constitue une erreur — elles ne produiront aucun style.
+>
+> Remplacements : voir la section **Patterns typographiques recommandés** ci-dessous.
 
-| Classe                 | Rôle                                                        |
-| ---------------------- | ----------------------------------------------------------- |
-| `.text-title-page`     | titre de page/zone majeure (hors `h1` natif quand utile)    |
-| `.text-title-section`  | titre de section                                            |
-| `.text-title-compact`  | titre compact (cartes, panneaux denses)                     |
-| `.text-price-display`  | prix principal                                              |
-| `.text-price-compact`  | prix compact                                                |
-| `.text-meta-label`     | alias sémantique de `.text-eyebrow` pour labels/meta courts |
-| `.text-secondary-copy` | texte secondaire lisible (copy de support)                  |
-| `.text-micro-copy`     | micro-copy discrète (hints compacts, petites légendes)      |
-| `.reading-compact`     | rythme de lecture compact (défini dans `base.css`)          |
-| `.reading-relaxed`     | rythme de lecture détendu (défini dans `base.css`)          |
+<details>
+<summary>Référence historique (V2-T1, supprimée)</summary>
 
-Règles :
+| Classe supprimée       | Pattern de remplacement inline                                              |
+| ---------------------- | --------------------------------------------------------------------------- |
+| `.text-title-page`     | Séquence Tailwind native selon contexte                                     |
+| `.text-title-section`  | Séquence Tailwind native selon contexte                                     |
+| `.text-title-compact`  | Séquence Tailwind native selon contexte                                     |
+| `.text-price-display`  | `text-3xl md:text-4xl font-bold leading-none tracking-tight tabular-nums`   |
+| `.text-price-compact`  | `text-2xl md:text-3xl font-bold leading-tight tracking-tight tabular-nums`  |
+| `.text-meta-label`     | `text-xs font-semibold uppercase tracking-widest leading-snug`              |
+| `.text-secondary-copy` | Tailwind natif selon contexte                                               |
+| `.text-micro-copy`     | Tailwind natif selon contexte                                               |
+| `.reading-compact`     | Tailwind natif selon contexte                                               |
+| `.reading-relaxed`     | Tailwind natif selon contexte                                               |
+| `.text-eyebrow`        | `text-xs font-semibold uppercase tracking-widest leading-snug`              |
 
-- ces classes portent la forme typographique (taille/poids/interligne) ;
-- la couleur reste contextuelle (tokens `text-*` appliqués côté composant) ;
-- ne pas cumuler ces classes avec des `text-[...]` arbitraires sur le même nœud.
-
-### `.text-eyebrow` (`shell.css`)
-
-Pattern typographique pour overlines et labels de section.
-
-```css
-font-size: 0.6875rem;
-font-weight: 600;
-text-transform: uppercase;
-letter-spacing: 0.1em;
-```
-
-Usage :
-
-```tsx
-<p className="text-eyebrow text-muted-foreground">Disponibilité</p>
-<p className="text-eyebrow text-brand">Description</p>
-```
-
-**Ne pas inclure la couleur dans la classe** — elle est toujours contextuelle.
+</details>
 
 ### `.site-header-blur` (`shell.css`)
 
@@ -369,8 +362,8 @@ Surface avec backdrop-filter pour le header public. Ne pas reproduire le pattern
 
 ### Principes d'usage post-stabilisation
 
-- préférer les primitives UI déjà alignées V2 plutôt qu'une surcharge locale ad hoc ;
-- préférer les classes typo sémantiques V2-T quand elles couvrent le besoin ;
+- préférer les primitives UI déjà alignées V2 plutôt qu’une surcharge locale ad hoc ;
+- utiliser les compositions Tailwind inline recommandées pour la typographie (les classes V2-T sont supprimées) ;
 - éviter de recréer localement relief/profondeur si les tokens ou primitives V2 le couvrent déjà ;
 - traiter les écarts résiduels au fil de l’eau par micro-corrections ciblées.
 
@@ -413,7 +406,7 @@ Uniquement si :
 | `text-muted-foreground` utilisé partout      | `text-text-muted-strong` / `text-text-muted-soft` quand un niveau V2 explicite existe                     |
 | Valeurs arbitraires shadow (`shadow-[...]`)  | `shadow-{soft,card,raised,overlay}`                                                                       |
 | Valeurs arbitraires radius (`rounded-[...]`) | steps du radius scale                                                                                     |
-| Valeurs arbitraires texte (`text-[11px]`)    | `.text-eyebrow` / `.text-meta-label` / classes typo V2-T1                                                 |
+| Valeurs arbitraires texte (`text-[11px]`)    | Compositions Tailwind inline recommandées (voir section *Patterns typographiques recommandés*)             |
 
 ---
 
@@ -429,7 +422,7 @@ Exception : les tokens `--band-*` sont always-dark par design — intentionnelle
 ## Interdits absolus
 
 - Hardcodes inline arbitraires (`shadow-[0_18px_45px_rgba(...)]`, `rounded-[1.75rem]`, `text-[9px]`)
-- Duplication d'un pattern déjà couvert par une classe utilitaire (`text-eyebrow`)
+- Duplication d'un pattern déjà couvert par une classe utilitaire
 - Surcouches locales de relief/profondeur quand les tokens V2 couvrent déjà le besoin
 - Token de couleur utilisé comme shadow
 - Création de token sans besoin systémique documenté
@@ -437,9 +430,106 @@ Exception : les tokens `--band-*` sont always-dark par design — intentionnelle
 - Modification du thème actif sans couvrir les deux modes light + dark
 - Valeurs concrètes dans `theme.css` — ce fichier mappe, il ne définit pas
 - Directives Tailwind (`@apply`, `@theme`) dans un fichier `themes/*.css`
+- Recréer `typography.css` ou tout fichier CSS dédié à la typographie
+- Créer des fichiers CSS par feature (`boutique.css`, `product-card.css`, `checkout.css`, etc.)
+- Utiliser les classes V2-T supprimées (`.text-title-*`, `.text-price-*`, `.text-eyebrow`, etc.)
+- Ajouter des tokens typo custom (`--text-eyebrow`, `--leading-price`, `--font-eyebrow`, etc.) sans décision explicite
+- Utiliser `dark:prose-invert` — les tokens du design system gèrent le dark mode automatiquement
+- Disperser `color-mix(...)` dans les composants si un token existant suffit
+- Utiliser des valeurs arbitraires (`text-[11px]`, `tracking-[0.1em]`) si une scale Tailwind standard couvre le besoin
+- Supprimer les tokens `--chart-*` tant que `recharts` est dans les dépendances
+- Modifier `novamart.css` sans demande explicite
 
 ## Règle de maintenance
 
 - ne plus lancer de lot design system large sans problème transversal démontré ;
 - privilégier les micro-corrections locales quand un écran justifie un ajustement ;
-- pour toute nouvelle feature, partir par défaut des primitives V2 et des classes typo V2-T.
+- pour toute nouvelle feature, partir par défaut des primitives V2 et des tokens du design system — les classes V2-T sont supprimées, utiliser Tailwind natif.
+
+---
+
+## Doctrine CSS pour agents IA
+
+Règles courtes et actionnables. Un agent IA doit les appliquer sans interprétation.
+
+- Ne pas créer de fichier CSS feature sans justification forte et validation explicite.
+- Ne pas réintroduire `typography.css` ou tout équivalent.
+- Ne pas créer de classes CSS globales comme `.eyebrow`, `.price`, `.product-card` si Tailwind natif suffit.
+- Utiliser Tailwind inline pour tous les composants UI.
+- Utiliser `prose` uniquement pour contenu riche éditorial ou CMS (descriptions produit, articles, blocs markdown).
+- Utiliser `theme.css` uniquement pour exposer des tokens via `@theme inline` — pas pour créer une échelle typo maison, pas de valeurs concrètes.
+- Utiliser les fichiers `themes/creatyss.*.css` pour toutes les valeurs de thème (couleurs, radius, shadows).
+- Ne pas modifier `novamart.css` sans demande explicite.
+
+---
+
+## Choisir le bon endroit
+
+Tableau décisionnel avant toute intervention sur les styles.
+
+| Besoin                                            | Fichier / Approche                                                              |
+| ------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Couleur / surface / radius / shadow / breakpoint  | `themes/creatyss.*.css` + mapping `theme.css` si utility Tailwind nécessaire   |
+| Reset HTML global                                 | `base.css`                                                                      |
+| Contenu éditorial riche (CMS, markdown, articles) | `prose` via `@tailwindcss/typography` — dans le TSX du composant               |
+| Composants UI                                     | Classes Tailwind dans le TSX                                                    |
+| Backdrop/blur shell (header public)               | `shell.css` — utiliser `.site-header-blur`, ne pas reproduire le pattern        |
+| Motion globale                                    | `motion.css`                                                                    |
+| Keyframes                                         | `animation.css`                                                                 |
+| Nouvelle classe CSS globale                       | Refuser sauf besoin démontré non couvrable par Tailwind                         |
+
+---
+
+## Patterns typographiques recommandés
+
+Ces patterns sont des **compositions Tailwind inline** à utiliser dans les composants.
+Ce ne sont pas des classes globales — elles n'existent dans aucun fichier CSS.
+
+**Eyebrow / overline :**
+
+```tsx
+className="text-xs font-semibold uppercase tracking-widest leading-snug"
+```
+
+Toujours associé à un token de couleur contextuel (`text-brand`, `text-text-muted-soft`, `text-band-eyebrow`, etc.).
+
+**Prix hero :**
+
+```tsx
+className="text-3xl md:text-4xl font-bold leading-none tracking-tight tabular-nums"
+```
+
+**Prix compact :**
+
+```tsx
+className="text-2xl md:text-3xl font-bold leading-tight tracking-tight tabular-nums"
+```
+
+**Contenu riche (CMS, descriptions produit, markdown) :**
+
+```tsx
+className="prose prose-sm max-w-none text-foreground [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+```
+
+Utiliser `max-w-[68ch]` pour les descriptions longues.
+Ne pas utiliser `dark:prose-invert` — les tokens du design system gèrent le dark mode automatiquement.
+
+---
+
+## Checklist avant validation CSS
+
+Commandes à exécuter depuis la racine du repo avant de valider un lot CSS.
+
+```bash
+# Vérifier qu'aucun fichier supprimé n'a été réintroduit
+rg "typography\.css|boutique-controls|boutique-products|creatyss\.css" app docs --no-ignore
+
+# Vérifier l'absence de classes CSS custom réintroduites
+rg "text-eyebrow|text-price|tracking-eyebrow|leading-eyebrow|\.eyebrow|\.price\b" app components features docs --no-ignore
+
+# Build statique
+pnpm exec tsc --noEmit
+pnpm lint
+```
+
+Vérification visuelle obligatoire si un changement impacte des composants storefront ou admin.

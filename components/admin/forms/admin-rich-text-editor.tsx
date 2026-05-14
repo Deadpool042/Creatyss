@@ -90,7 +90,7 @@ export function AdminRichTextEditor({
     editorProps: {
       attributes: {
         class: cn(
-          "prose prose-sm dark:prose-invert max-w-none px-4 py-3 outline-none",
+          "prose prose-sm max-w-none px-4 py-3 text-foreground outline-none",
           "prose-p:my-2 prose-headings:mb-2 prose-headings:mt-4 prose-ul:my-2 prose-ol:my-2",
           minHeightClassName,
           editorClassName

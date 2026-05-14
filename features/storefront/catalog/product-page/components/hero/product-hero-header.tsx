@@ -24,7 +24,7 @@ function getMarketingHookClass(density: ProductHeroHeaderDensity): string {
     return "max-w-xl pl-3 text-sm";
   }
 
-  return "max-w-2xl pl-4 text-secondary-copy";
+  return "max-w-2xl pl-4 text-sm";
 }
 
 export function ProductHeroHeader({
@@ -35,16 +35,16 @@ export function ProductHeroHeader({
 }: ProductHeroHeaderProps) {
   return (
     <header className={["grid", getHeaderGapClass(density)].join(" ")}>
-      <p className="text-meta-label text-brand">
+      <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">
         {isSimpleProduct ? "Pièce unique" : "Déclinaisons disponibles"}
       </p>
 
-      <h1 className="text-title-page text-foreground">{productName}</h1>
+      <h1 className="text-foreground prose">{productName}</h1>
 
       {marketingHook ? (
         <p
           className={[
-            "border-l-2 border-brand/35 reading-relaxed text-foreground-muted",
+            "border-l-2 border-brand/35 leading-relaxed text-foreground-muted",
             getMarketingHookClass(density),
           ].join(" ")}
         >

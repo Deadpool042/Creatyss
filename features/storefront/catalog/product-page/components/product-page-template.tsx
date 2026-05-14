@@ -149,7 +149,7 @@ export function ProductPageTemplate({
             detailsContent={
               detailsDescriptionHtml ? (
                 <div
-                  className="prose prose-sm dark:prose-invert max-w-[68ch] text-foreground min-[900px]:prose-base [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                  className="prose prose-sm max-w-[68ch] text-foreground min-[900px]:prose-base [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
                   // Le contrat existant côté produit/admin est que `description`
                   // a déjà été normalisée en amont avant affichage storefront.
                   dangerouslySetInnerHTML={{ __html: detailsDescriptionHtml }}
@@ -173,9 +173,9 @@ export function ProductPageTemplate({
         {characteristics && characteristics.length > 0 ? (
           <section className="w-full px-4 border-t border-shell-border/80  pt-5 min-[700px]:pt-6">
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
-              <p className="text-eyebrow text-brand">Caractéristiques</p>
-              <h2 className="text-title-section">Caractéristiques du produit</h2>
-              <p className="m-0 text-secondary-copy text-foreground-muted">
+              <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Caractéristiques</p>
+              <h2>Caractéristiques du produit</h2>
+              <p className="m-0 text-foreground-muted">
                 Attributs factuels renseignés pour ce produit.
               </p>
             </div>
@@ -185,8 +185,8 @@ export function ProductPageTemplate({
                   key={c.id}
                   className="grid gap-1.5 rounded-xl border border-surface-border-subtle/75 bg-surface-panel/44 px-3.5 py-3.5 shadow-inset-soft min-[700px]:gap-2 min-[700px]:px-4"
                 >
-                  <dt className="m-0 text-meta-label text-text-muted-soft">{c.label}</dt>
-                  <dd className="m-0 wrap-break-word text-secondary-copy reading-compact text-foreground">
+                  <dt className="m-0 text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">{c.label}</dt>
+                  <dd className="m-0 wrap-break-word text-xs leading-snug text-foreground">
                     {c.value}
                   </dd>
                 </div>
@@ -198,9 +198,9 @@ export function ProductPageTemplate({
         {hasTechnicalSpecs ? (
           <section className="w-full px-4 border-t border-shell-border/80 pt-5 min-[700px]:pt-6">
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
-              <p className="text-eyebrow text-brand">Spécifications</p>
-              <h2 className="m-0 text-title-section">Spécifications techniques</h2>
-              <p className="m-0 text-secondary-copy text-foreground-muted">
+              <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Spécifications</p>
+              <h2 className="m-0">Spécifications techniques</h2>
+              <p className="m-0 text-foreground-muted">
                 Données techniques dérivées de la variante de référence.
               </p>
             </div>
@@ -210,8 +210,8 @@ export function ProductPageTemplate({
                   key={spec.label}
                   className="grid grid-cols-1 gap-1.5 border-b border-surface-border-subtle/60 px-1 py-3 min-[700px]:grid-cols-[minmax(0,1fr)_auto] min-[700px]:items-start min-[700px]:gap-4 min-[700px]:px-2 min-[700px]:py-3.5"
                 >
-                  <dt className="m-0 text-meta-label text-text-muted-soft">{spec.label}</dt>
-                  <dd className="m-0 wrap-break-word text-secondary-copy reading-compact text-foreground min-[700px]:text-right min-[700px]:font-mono">
+                  <dt className="m-0 text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">{spec.label}</dt>
+                  <dd className="m-0 wrap-break-word text-xs leading-snug text-foreground min-[700px]:text-right min-[700px]:font-mono">
                     {spec.value}
                   </dd>
                 </div>
@@ -223,8 +223,8 @@ export function ProductPageTemplate({
         {hasRelatedProducts ? (
           <section className="w-full px-4 pb-5 pt-5 min-[700px]:pb-6 min-[700px]:pt-6">
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
-              <p className="text-eyebrow text-brand">À découvrir</p>
-              <h2 className="m-0 text-title-section">{relatedSectionTitle}</h2>
+              <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">À découvrir</p>
+              <h2 className="m-0">{relatedSectionTitle}</h2>
             </div>
             <ProductRelatedSection
               groups={relatedProductGroups}

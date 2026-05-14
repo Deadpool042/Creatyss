@@ -43,16 +43,16 @@ export function ProductHeroVariantSelector({
   return (
     <section className={isCompact ? "grid gap-2" : "grid gap-3"}>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-meta-label text-brand">Votre sélection</p>
+        <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Votre sélection</p>
         {selectedVariableVariant ? (
-          <p className="text-micro-copy reading-compact text-foreground-muted">
+          <p className="text-xs leading-snug text-foreground-muted">
             {getVariantSelectionLabel(selectedVariableVariant)}
           </p>
         ) : null}
       </div>
 
       {!isCompact ? (
-        <p className="max-w-2xl text-secondary-copy reading-relaxed text-foreground-muted">
+        <p className="max-w-2xl leading-relaxed text-foreground-muted">
           Choisissez la déclinaison qui vous convient.
         </p>
       ) : null}

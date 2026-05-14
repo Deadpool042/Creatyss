@@ -35,7 +35,7 @@ export function ProductHeroVariableCartForm({
 
   if (selectedVariant === null || !selectedVariant.isAvailable) {
     return (
-      <p className="text-secondary-copy reading-compact text-text-muted-strong">
+      <p className="text-text-muted-strong">
         Cette déclinaison n&apos;est pas disponible.
       </p>
     );
@@ -107,7 +107,7 @@ export function ProductHeroVariableCartForm({
         {showBuyNowHelper ? (
           <p
             id={buyNowHelpId}
-            className="basis-full text-micro-copy reading-compact text-text-muted-strong"
+            className="basis-full text-xs leading-snug text-text-muted-strong"
           >
             Ajoutez l&apos;article, puis consultez votre panier.
           </p>

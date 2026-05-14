@@ -113,7 +113,7 @@ export function ProductHeroSectionMobilePortrait({
               isSimpleProduct={isSimpleProduct}
               density="default"
             />
-            <div className="flex flex-wrap items-center gap-2 text-micro-copy text-foreground-muted">
+            <div className="flex flex-wrap items-center gap-2 text-xs leading-snug text-foreground-muted">
               <span className="inline-flex items-center gap-1.5">
                 <MapPin aria-hidden="true" className="size-3.5 text-brand/85" />
                 <span>Fait main à Saint-Étienne</span>
@@ -198,9 +198,9 @@ export function ProductHeroSectionMobilePortrait({
 
           {shortDescription ? (
             <section className="grid gap-2 border-t border-surface-border pt-5">
-              <p className="text-meta-label text-brand">Description</p>
+              <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Description</p>
               <div
-                className="prose prose-sm dark:prose-invert max-w-none text-text-muted-strong [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                className="prose prose-sm max-w-none text-foreground [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
                 dangerouslySetInnerHTML={{ __html: shortDescription }}
               />
             </section>

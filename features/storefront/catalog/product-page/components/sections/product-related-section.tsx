@@ -69,12 +69,12 @@ function RelatedProductCard({
       </div>
 
       <div className="grid gap-1.5 px-0.5 pb-0.5">
-        <p className="text-meta-label text-text-muted-soft">{relationEyebrow}</p>
+        <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">{relationEyebrow}</p>
         <p className="line-clamp-2 text-sm font-medium leading-snug text-foreground underline-offset-4 group-hover:underline">
           {product.name}
         </p>
         {shortDescription.length > 0 ? (
-          <p className="text-micro-copy reading-compact line-clamp-1 text-text-muted-strong min-[480px]:line-clamp-2 [@media(max-height:560px)]:hidden">
+          <p className="text-xs leading-snug line-clamp-1 text-text-muted-strong min-[480px]:line-clamp-2 [@media(max-height:560px)]:hidden">
             {shortDescription}
           </p>
         ) : null}
@@ -84,7 +84,7 @@ function RelatedProductCard({
         {product.availabilityLabel != null ? (
           <p
             className={[
-              "text-micro-copy",
+              "text-xs leading-snug",
               product.availabilityLabel === "En stock"
                 ? "text-feedback-success-foreground"
                 : product.availabilityLabel === "Sur commande"

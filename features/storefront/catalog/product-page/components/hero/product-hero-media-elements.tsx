@@ -19,7 +19,7 @@ export function ProductHeroImageCounterOverlay({
 
   return (
     <div className={["absolute rounded-full bg-background/70 backdrop-blur-sm", className].join(" ")}>
-      <span className="text-micro-copy tabular-nums text-foreground">
+      <span className="text-xs leading-snug tabular-nums text-foreground">
         {activeIndex + 1} / {total}
       </span>
     </div>

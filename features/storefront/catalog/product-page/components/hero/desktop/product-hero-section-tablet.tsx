@@ -160,11 +160,11 @@ export function ProductHeroSectionTablet({
 
             {shortDescription ? (
               <section className="grid gap-1.5 border-t border-surface-border pt-3.5">
-                <p className="text-micro-copy font-medium uppercase tracking-[0.08em] text-text-muted-soft">
+                <p className="text-xs leading-snug font-medium uppercase tracking-[0.08em] text-text-muted-soft">
                   En bref
                 </p>
                 <div
-                  className="prose prose-sm dark:prose-invert max-w-none text-foreground-muted [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                  className="prose prose-sm max-w-none text-foreground [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
                   dangerouslySetInnerHTML={{ __html: shortDescription }}
                 />
               </section>

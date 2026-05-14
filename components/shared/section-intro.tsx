@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { cn } from "@/lib/utils";
 
 type SectionIntroProps = Readonly<{
   eyebrow?: ReactNode;
@@ -21,15 +20,15 @@ export function SectionIntro({
   return (
     <div className={className}>
       {eyebrow ? (
-        <p className="mb-3 text-meta-label text-muted-foreground">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest leading-snug text-muted-foreground">
           {eyebrow}
         </p>
       ) : null}
-      <TitleTag className={cn(titleAs === "h2" ? "text-title-section" : "text-title-compact")}>
+      <TitleTag>
         {title}
       </TitleTag>
       {description ? (
-        <p className="text-secondary-copy reading-relaxed text-muted-foreground">{description}</p>
+        <p className="leading-relaxed text-muted-foreground">{description}</p>
       ) : null}
     </div>
   );

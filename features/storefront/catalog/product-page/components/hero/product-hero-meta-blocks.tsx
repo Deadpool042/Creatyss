@@ -61,11 +61,11 @@ export function ProductHeroPricingMeta({
     <div className={["grid", getPricingGapClass(density)].join(" ")}>
       {resolvedHeroVariant.compareAtPrice ? (
         <div className="flex items-baseline gap-2">
-          <span className="text-meta-label text-brand">Ancien prix</span>
+          <span className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Ancien prix</span>
           <span
             className={[
-              "reading-compact font-medium line-through text-foreground-muted",
-              isCompact ? "text-sm" : "text-secondary-copy",
+              "leading-snug font-medium line-through text-foreground-muted",
+              isCompact ? "text-sm" : "text-sm",
             ].join(" ")}
           >
             {resolvedHeroVariant.compareAtPrice}
@@ -74,23 +74,23 @@ export function ProductHeroPricingMeta({
       ) : null}
 
       {!isSimpleProduct ? (
-        <p className="text-meta-label text-brand">
+        <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">
           {variablePriceLabel && variablePriceLabel.trim().length > 0 ? variablePriceLabel : "Prix"}
         </p>
       ) : null}
 
-      <p className="font-serif text-price-display text-foreground">
+      <p className="font-serif text-3xl md:text-4xl font-bold leading-none tracking-tight tabular-nums text-foreground">
         {resolvedHeroVariant.price || "—"}
       </p>
 
       {!isSimpleProduct && variableSummaryText ? (
-        <p className="text-micro-copy reading-compact text-foreground-muted">
+        <p className="text-xs leading-snug text-foreground-muted">
           {variableSummaryText}
         </p>
       ) : null}
 
       {includeShippingHint ? (
-        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-control-border bg-control-surface px-2.5 py-1 text-micro-copy font-medium text-text-muted-strong">
+        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-control-border bg-control-surface px-2.5 py-1 text-xs leading-snug font-medium text-text-muted-strong">
           <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-feedback-success" />
           <span>Livraison incluse</span>
         </div>
@@ -114,7 +114,7 @@ export function ProductHeroAvailabilityMeta({
   return (
     <section className={["grid", getAvailabilityGapClass(density)].join(" ")}>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <p className="text-meta-label text-brand">Disponibilité</p>
+        <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Disponibilité</p>
         <span
           className={[
             "flex items-center gap-1.5 text-sm font-medium",
@@ -136,7 +136,7 @@ export function ProductHeroAvailabilityMeta({
         </span>
       </div>
       {isMadeToOrder ? (
-        <p className="text-micro-copy reading-compact text-foreground-muted">
+        <p className="text-xs leading-snug text-foreground-muted">
           Création ou préparation sur demande
         </p>
       ) : null}

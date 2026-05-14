@@ -16,16 +16,16 @@ import { ArrowRight } from "lucide-react";
 
 export function ProductEditorialSection() {
   return (
-    <section className="w-full px-1 py-2 min-[700px]:px-2 min-[1200px]:px-3">
+    <section className="w-full px-1 py-2 min-[700px]:px-2 min-[1200px]:px-3 ">
       <div className="grid max-w-2xl gap-6">
-        <p className="text-eyebrow text-brand">Savoir-faire</p>
+        <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Savoir-faire</p>
 
-        <h2 className="text-title-section">
+        <h2 className="">
           Fabriqué à la main
           <br />à Saint-Étienne
         </h2>
 
-        <p className="max-w-prose text-secondary-copy reading-relaxed text-foreground-muted">
+        <p className="leading-relaxed text-foreground-muted">
           Chaque pièce est pensée, dessinée et fabriquée à la main dans mon atelier stéphanois. Je
           sélectionne des matières choisies avec exigence et réalise des finitions soignées, pour
           des pièces uniques ou en petite série.

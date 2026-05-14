@@ -65,10 +65,10 @@ export function ProductOffersSection({
       className="w-full rounded-xl border border-shell-border/80 bg-linear-to-b from-surface-panel-soft/92 to-surface-subtle/68 p-5 shadow-soft [@media(max-height:480px)]:p-4 min-[700px]:p-8"
     >
       <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
-        <p className="text-eyebrow text-brand">{roleHint}</p>
-        <h2 className="m-0 text-title-section">{resolvedTitle}</h2>
+        <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">{roleHint}</p>
+        <h2 className="m-0">{resolvedTitle}</h2>
         {actionHint ? (
-          <p className="max-w-2xl text-secondary-copy reading-relaxed text-text-muted-strong">
+          <p className="max-w-2xl leading-relaxed text-text-muted-strong">
             {actionHint}
           </p>
         ) : null}
@@ -133,8 +133,8 @@ function SimpleOfferCard({
     <article className="grid gap-4 rounded-xl border border-surface-border-subtle/80 bg-surface-panel/55 p-5 shadow-inset-soft min-[700px]:gap-4.5 min-[700px]:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="grid min-w-0 gap-1">
-          <h3 className="m-0 text-title-compact">{getSimpleOfferCardTitle()}</h3>
-          <p className="m-0 text-secondary-copy reading-compact text-text-muted-strong">
+          <h3 className="m-0">{getSimpleOfferCardTitle()}</h3>
+          <p className="m-0 text-text-muted-strong">
             {variant.name}
           </p>
         </div>
@@ -149,19 +149,19 @@ function SimpleOfferCard({
       </div>
 
       <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-        <span className="text-price-compact">{variant.price || "—"}</span>
+        <span className="text-2xl md:text-3xl font-bold leading-tight tracking-tight tabular-nums">{variant.price || "—"}</span>
         {variant.compareAtPrice ? (
-          <span className="text-secondary-copy reading-compact font-medium line-through text-text-muted-strong">
+          <span className="leading-snug font-medium line-through text-text-muted-strong">
             {variant.compareAtPrice}
           </span>
         ) : null}
       </div>
 
       {metaText ? (
-        <p className="m-0 text-micro-copy reading-compact text-text-muted-soft">{metaText}</p>
+        <p className="m-0 text-xs leading-snug text-text-muted-soft">{metaText}</p>
       ) : null}
 
-      <p className="m-0 border-t border-surface-border-subtle/70 pt-3 text-secondary-copy reading-compact text-text-muted-strong">
+      <p className="m-0 border-t border-surface-border-subtle/70 pt-3 text-text-muted-strong">
         {presentation.description}
       </p>
     </article>
@@ -182,10 +182,10 @@ function VariantOfferCard({
     <article className="grid gap-4 rounded-xl border border-surface-border-subtle/80 bg-surface-panel/55 p-5 shadow-inset-soft min-[700px]:gap-4.5 min-[700px]:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="grid min-w-0 gap-1">
-          <p className="text-meta-label text-text-muted-soft">Version</p>
-          <h3 className="m-0 text-title-compact">{variant.name}</h3>
+          <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">Version</p>
+          <h3 className="m-0">{variant.name}</h3>
           {metaText ? (
-            <p className="m-0 text-micro-copy reading-compact text-text-muted-soft">{metaText}</p>
+            <p className="m-0 text-xs leading-snug text-text-muted-soft">{metaText}</p>
           ) : null}
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -202,9 +202,9 @@ function VariantOfferCard({
       </div>
 
       <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-        <span className="text-price-compact">{variant.price || "—"}</span>
+        <span className="text-2xl md:text-3xl font-bold leading-tight tracking-tight tabular-nums">{variant.price || "—"}</span>
         {variant.compareAtPrice ? (
-          <span className="text-secondary-copy reading-compact font-medium line-through text-text-muted-strong">
+          <span className="leading-snug font-medium line-through text-text-muted-strong">
             {variant.compareAtPrice}
           </span>
         ) : null}
@@ -220,8 +220,8 @@ function VariantOfferCard({
 function OfferEmptyState({ presentation }: { presentation: ProductPublicSectionPresentation }) {
   return (
     <div className="grid gap-4 rounded-xl border border-surface-border-subtle/80 bg-surface-panel/55 p-6 shadow-inset-soft">
-      <p className="text-eyebrow text-brand">{presentation.emptyEyebrow}</p>
-      <h3 className="text-title-compact">{presentation.emptyTitle}</h3>
+      <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">{presentation.emptyEyebrow}</p>
+      <h3>{presentation.emptyTitle}</h3>
       <p className="leading-relaxed text-muted-foreground">{presentation.emptyDescription}</p>
     </div>
   );

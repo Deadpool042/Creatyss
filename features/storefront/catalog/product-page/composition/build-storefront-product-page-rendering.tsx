@@ -71,7 +71,7 @@ function renderCartActionForm(input: RenderCartActionFormInput): React.ReactNode
 
       <p
         id={buyNowHelpId}
-        className="basis-full text-micro-copy reading-compact text-text-muted-strong"
+        className="basis-full text-xs leading-snug text-text-muted-strong"
       >
         {input.helperCopy}
       </p>

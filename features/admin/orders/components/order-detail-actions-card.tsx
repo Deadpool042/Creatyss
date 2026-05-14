@@ -13,9 +13,9 @@ import { getOrderTransitionLabel } from "@/features/admin/orders/mappers/order-d
 const detailCardClassName =
   "grid gap-1 rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3";
 
-const detailLabelClassName = "text-meta-label text-text-muted-soft";
+const detailLabelClassName = "text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft";
 
-const detailValueClassName = "text-secondary-copy reading-compact font-medium text-foreground";
+const detailValueClassName = "leading-snug font-medium text-foreground";
 
 type OrderDetailActionsCardProps = Readonly<{
   order: {

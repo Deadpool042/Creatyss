@@ -167,9 +167,9 @@ export function ProductHeroSectionDesktop({
 
             {shortDescription ? (
               <section className="grid gap-2 border-t border-surface-border-strong pt-5">
-                <p className="text-meta-label text-brand">Description</p>
+                <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Description</p>
                 <div
-                  className="prose prose-sm dark:prose-invert max-w-none text-text-muted-strong [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                  className="prose prose-sm max-w-none text-foreground [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
                   dangerouslySetInnerHTML={{ __html: shortDescription }}
                 />
               </section>

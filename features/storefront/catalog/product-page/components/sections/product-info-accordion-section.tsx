@@ -34,7 +34,7 @@ export function ProductInfoAccordionSection({
         <AccordionTrigger className="rounded-xl px-3 py-4 text-base font-medium text-foreground transition-[background-color,color,box-shadow,transform] hover:bg-surface-panel/38 active:translate-y-px active:bg-surface-panel/52 focus-visible:ring-2 focus-visible:ring-focus-ring/35 data-[state=open]:bg-surface-panel/32 data-[state=open]:shadow-inset-soft">
           Détails
         </AccordionTrigger>
-        <AccordionContent className="px-3 text-secondary-copy reading-compact text-foreground-muted h-fit">
+        <AccordionContent className="px-3 leading-snug text-foreground-muted h-fit">
           {detailsContent ?? (
             <p>Les caractéristiques détaillées de ce produit seront disponibles prochainement.</p>
           )}
@@ -45,7 +45,7 @@ export function ProductInfoAccordionSection({
         <AccordionTrigger className="rounded-xl px-3 py-4 text-base font-medium text-foreground transition-[background-color,color,box-shadow,transform] hover:bg-surface-panel/38 active:translate-y-px active:bg-surface-panel/52 focus-visible:ring-2 focus-visible:ring-focus-ring/35 data-[state=open]:bg-surface-panel/32 data-[state=open]:shadow-inset-soft">
           Livraison &amp; retours
         </AccordionTrigger>
-        <AccordionContent className="px-3 text-secondary-copy reading-compact text-foreground-muted">
+        <AccordionContent className="px-3 leading-snug text-foreground-muted">
           {shippingContent ?? (
             <p>
               Les modalités de livraison et de retour sont confirmées au moment de la commande,
@@ -59,7 +59,7 @@ export function ProductInfoAccordionSection({
         <AccordionTrigger className="rounded-xl px-3 py-4 text-base font-medium text-foreground transition-[background-color,color,box-shadow,transform] hover:bg-surface-panel/38 active:translate-y-px active:bg-surface-panel/52 focus-visible:ring-2 focus-visible:ring-focus-ring/35 data-[state=open]:bg-surface-panel/32 data-[state=open]:shadow-inset-soft">
           Entretien
         </AccordionTrigger>
-        <AccordionContent className="px-3 text-secondary-copy reading-compact text-foreground-muted">
+        <AccordionContent className="px-3 leading-snug text-foreground-muted">
           {careContent ?? (
             <p>
               Pour préserver la qualité de ce produit, suivez les instructions d&apos;entretien

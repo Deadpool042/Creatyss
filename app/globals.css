@@ -1,6 +1,7 @@
 /* ─── Layer 1 — Tailwind core + shadcn compatibility ─────────────────────── */
 @import "tailwindcss";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 /* ─── Layer 2 — Design tokens + Tailwind v4 @theme mapping ───────────────── */
 /* theme.css importe core/light/dark puis expose tous les tokens via @theme inline.
@@ -9,9 +10,6 @@
 
 /* ─── Layer 3 — Reset global + règles base document ─────────────────────── */
 @import "./styles/base.css";
-
-/* ─── Layer 4 — Classes typo sémantiques (text-title-*, text-price-*, ...) ─ */
-@import "./styles/typography.css";
 
 /* ─── Layer 5 — Primitives visuelles du shell (header blur) ──────────────── */
 @import "./styles/shell.css";

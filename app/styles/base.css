@@ -79,38 +79,4 @@ body,
   html {
     @apply font-sans;
   }
-
-  h1 {
-    margin: 0;
-    font-size: clamp(2rem, 5vw, 3rem);
-    line-height: 1.05;
-  }
-
-  h2,
-  h3 {
-    margin: 0;
-  }
-
-  h2 {
-    font-size: clamp(1.5rem, 2.8vw, 2.1rem);
-  }
-
-  h3 {
-    font-size: clamp(1.12rem, 1.2vw, 1.2rem);
-  }
-
-  p {
-    line-height: 1.6;
-  }
-
-  /* Rythmes de lecture globaux (V2-T1).
-     Utiliser ces classes pour densifier ou détendre un bloc texte
-     sans introduire de taille arbitraire locale. */
-  .reading-compact {
-    line-height: 1.45;
-  }
-
-  .reading-relaxed {
-    line-height: 1.72;
-  }
 }
