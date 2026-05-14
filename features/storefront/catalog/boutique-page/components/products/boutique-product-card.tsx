@@ -89,12 +89,19 @@ export function BoutiqueProductCard({
         : null;
 
   return (
-    <article className="boutique-product-card group">
-      <div className="boutique-product-card-inner">
-        <Link className="boutique-product-card-link" href={productHref}>
-          <div className="boutique-product-card-media">
+    <article className="group/card min-w-0 grid grid-rows-[auto_1fr] overflow-hidden rounded-[var(--radius-xl)] border border-surface-border-subtle bg-surface-panel shadow-card transition-all hover:border-brand/42 hover:-translate-y-px hover:shadow-raised">
+      <div className="relative grid min-w-0">
+        <Link className="block rounded-[inherit] outline-none focus-visible:ring-[2px] focus-visible:ring-inset focus-visible:ring-focus-ring/72" href={productHref}>
+          <div className="relative aspect-square overflow-hidden bg-media-surface border-b border-brand/26">
             {productBadge ? (
-              <span className="boutique-product-card-badge" data-tone={productBadge.tone}>
+              <span
+                className={cn(
+                  "absolute top-[0.55rem] left-[0.55rem] z-10 inline-flex min-h-5 items-center rounded-full px-[0.52rem] text-[0.64rem] font-bold leading-none tracking-[0.1em] uppercase backdrop-blur-[8px]",
+                  productBadge.tone === "new" && "bg-brand/[0.12] text-brand",
+                  productBadge.tone === "promo" && "bg-feedback-warning-foreground/[0.12] text-feedback-warning-foreground",
+                  productBadge.tone === "discount" && "bg-feedback-success-foreground/[0.12] text-feedback-success-foreground"
+                )}
+              >
                 {productBadge.label}
               </span>
             ) : null}
@@ -102,7 +109,7 @@ export function BoutiqueProductCard({
             {product.image ? (
               <Image
                 alt={product.image.alt}
-                className="boutique-product-card-image"
+                className="absolute inset-0 size-full object-cover transition-transform group-hover/card:scale-[1.014]"
                 height={500}
                 loading="lazy"
                 sizes="(min-width: 1441px) 22vw, (min-width: 1024px) 28vw, (min-width: 640px) 30vw, 50vw"
@@ -112,15 +119,15 @@ export function BoutiqueProductCard({
             ) : (
               <PlaceholderImage
                 alt=""
-                className="boutique-product-card-placeholder"
-                imageClassName="boutique-product-card-placeholder-image"
+                className="bg-media-surface"
+                imageClassName="opacity-20"
                 fit="contain"
               />
             )}
           </div>
         </Link>
 
-        <div className="boutique-product-card-favorite">
+        <div className="absolute top-[0.9rem] right-[0.9rem] z-10 inline-flex items-center justify-center rounded-full bg-surface-floating/70 backdrop-blur-[10px]">
           <FavoriteButton
             productId={product.id}
             initialFavoriteProductIds={initialFavoriteProductIds}
@@ -128,22 +135,22 @@ export function BoutiqueProductCard({
         </div>
       </div>
 
-      <div className="boutique-product-card-content">
-        <div className="boutique-product-card-main">
-          <div className="boutique-product-card-copy">
-            <h3 className="boutique-product-card-title">
-              <Link className="boutique-product-card-title-link" href={productHref}>
+      <div className="grid gap-[0.4rem] border-t border-brand/20 bg-surface-panel px-[0.72rem] pt-[0.72rem] pb-[0.78rem] min-[48rem]:max-[63.99rem]:gap-[0.35rem] min-[48rem]:max-[63.99rem]:px-[0.6rem] min-[48rem]:max-[63.99rem]:pt-[0.55rem] min-[48rem]:max-[63.99rem]:pb-[0.65rem] max-[47.99rem]:px-[0.62rem] max-[47.99rem]:pt-[0.62rem] max-[47.99rem]:pb-[0.7rem]">
+        <div className="flex min-w-0 flex-col items-start justify-between gap-2">
+          <div className="min-w-0">
+            <h3 className="m-0 text-sm font-semibold leading-tight text-foreground">
+              <Link className="inline rounded-sm text-inherit no-underline outline-none transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring/50" href={productHref}>
                 {product.name}
               </Link>
             </h3>
           </div>
 
-          <div className="boutique-product-card-pricing">
+          <div className="flex min-w-max items-end justify-end gap-4">
             {product.price ? (
               <p
                 className={cn(
-                  "boutique-product-card-price",
-                  product.compareAtPrice && "boutique-product-card-price-has-compare-at-price"
+                  "m-0 shrink-0 text-right text-[0.91rem] font-bold leading-tight text-brand",
+                  product.compareAtPrice && "text-feedback-success"
                 )}
               >
                 {product.price}
@@ -151,21 +158,30 @@ export function BoutiqueProductCard({
             ) : null}
 
             {product.compareAtPrice ? (
-              <p className="boutique-product-card-price-compare">
+              <p className="m-0 text-[0.74rem] font-medium leading-[1.2] text-[var(--text-muted)]">
                 <del>{product.compareAtPrice}</del>
               </p>
             ) : null}
           </div>
         </div>
 
-        <div className="boutique-product-card-meta">
-          <span className="boutique-product-card-availability" data-tone={availabilityTone}>
+        <div className="flex flex-col gap-1 text-[0.76rem] leading-[1.35] text-text-muted-strong">
+          <span className="inline-flex items-center gap-[0.35rem] text-text-muted-strong">
+            <span
+              aria-hidden="true"
+              className={cn(
+                "size-[0.58rem] shrink-0 rounded-full bg-text-muted-strong/72",
+                availabilityTone === "available" && "bg-feedback-success",
+                availabilityTone === "made-to-order" && "bg-brand",
+                availabilityTone === "unavailable" && "bg-feedback-error"
+              )}
+            />
             {availabilityLabel}
           </span>
 
           {variantLabel ? (
             <>
-              <span className="boutique-product-card-variant">{variantLabel}</span>
+              <span className="text-text-muted-strong">{variantLabel}</span>
             </>
           ) : null}
         </div>

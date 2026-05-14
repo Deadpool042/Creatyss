@@ -55,14 +55,10 @@
   html.theme-transition main,
   html.theme-transition footer,
   html.theme-transition .site-header-blur,
-  html.theme-transition .site-header-drawer,
   html.theme-transition [data-motion-surface="page-layout"],
   html.theme-transition [data-motion-surface="catalog-panel"],
   html.theme-transition [data-motion-surface="sidebar-panel"],
-  html.theme-transition [data-motion-surface="market-aside"],
-  html.theme-transition .boutique-product-card,
-  html.theme-transition .boutique-product-card-media,
-  html.theme-transition .boutique-product-card-content {
+  html.theme-transition [data-motion-surface="market-aside"] {
     transition: var(--motion-transition-theme);
   }
 }

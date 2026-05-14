@@ -51,7 +51,7 @@ async function resolveMerchantProductPath(page: Page): Promise<string> {
   await page.goto("/boutique", { waitUntil: "domcontentloaded" });
 
   const candidatePaths = await page
-    .locator(".boutique-product-grid h3 a")
+    .locator('[data-testid="boutique-product-grid"] h3 a')
     .evaluateAll((anchors) => {
       const hrefs = anchors
         .map((anchor) => anchor.getAttribute("href"))

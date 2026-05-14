@@ -43,7 +43,7 @@ async function getVisibleHeaderCountLabel(page: Page) {
 }
 
 async function getVisibleProductHrefs(page: Page) {
-  return page.locator(".boutique-product-grid h3 a").evaluateAll((links) => {
+  return page.locator('[data-testid="boutique-product-grid"] h3 a').evaluateAll((links) => {
     const visible = (element: Element) => {
       const node = element as HTMLElement;
       const style = window.getComputedStyle(node);
@@ -609,7 +609,7 @@ test.describe("boutique page smoke", () => {
 
       await expect(page.getByRole("heading", { level: 1, name: "Boutique" }).first()).toBeVisible();
       await expect(page.getByRole("link", { name: /boutique/i }).first()).toBeVisible();
-      await expect(page.locator(".boutique-product-grid article").first()).toBeVisible();
+      await expect(page.locator('[data-testid="boutique-product-grid"] article').first()).toBeVisible();
       await expect(page.getByRole("navigation", { name: "Pagination" })).toBeVisible();
 
       const filtersTrigger = page.getByRole("button", { name: "Filtres", exact: true }).first();
@@ -1061,7 +1061,7 @@ test.describe("boutique page smoke", () => {
         }
 
         // Product grid stays visible
-        await expect(page.locator(".boutique-product-grid article").first()).toBeVisible();
+        await expect(page.locator('[data-testid="boutique-product-grid"] article').first()).toBeVisible();
 
         // No global overflow
         const globalOverflowPx = await getHorizontalOverflowPx(page);
@@ -1283,7 +1283,7 @@ test.describe("boutique page smoke", () => {
 
     // Product grid visible with at least 2 cards
     await expect(
-      page.locator(".boutique-product-grid article").first(),
+      page.locator('[data-testid="boutique-product-grid"] article').first(),
       "product grid visible at 375x667"
     ).toBeVisible();
 

@@ -27,33 +27,44 @@ Les évolutions restantes doivent être traitées par micro-lots locaux, sans re
 app/globals.css
   → tailwindcss
   → shadcn/tailwind.css
-  → app/styles/theme.css          ← importe aussi ./themes/creatyss.css
+  → app/styles/theme.css          ← importe les 3 splits du thème actif + définit @theme inline
   → app/styles/base.css
+  → app/styles/typography.css
   → app/styles/shell.css
+  → app/styles/motion.css
   → app/styles/animation.css
 ```
 
 ### Rôle de chaque fichier
 
-| Fichier               | Rôle                                                                                                                                                                                                 | Nature          |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| `themes/creatyss.css` | Source de vérité du thème actif — toutes les CSS custom properties (`:root` + `.dark`)                                                                                                               | Thème CSS pur   |
-| `themes/novamart.css` | Thème alternatif de référence (cool, corporate, indigo) — non actif, non importé                                                                                                                     | Thème CSS pur   |
-| `theme.css`           | Point d'activation du thème + mapping Tailwind (`@theme inline`) + `@custom-variant dark`                                                                                                            | Config Tailwind |
-| `base.css`            | Reset CSS global (box-sizing, body background) + `@layer base` Tailwind (html, body, headings)                                                                                                       | Reset + base    |
-| `shell.css`           | Primitives CSS globales non triviales : `.site-header-blur`, `.shell-drawer` (backdrop-filter + `@supports`), utilitaires typo sémantiques (`.text-eyebrow`, `.text-title-*`, `.text-price-*`, etc.) | CSS classes     |
-| `animation.css`       | Keyframes accordéon via `@theme {}`                                                                                                                                                                  | Keyframes       |
+| Fichier                    | Rôle                                                                                                                                                                                                 | Nature          |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| `themes/creatyss.core.css` | Tokens structurels partagés, indépendants du mode (`:root`) : `--radius`, tokens `--band-*` always-dark                                                                                             | Thème CSS pur   |
+| `themes/creatyss.light.css`| Valeurs light mode (`:root`) — palette warm, ivoire, terracotta                                                                                                                                      | Thème CSS pur   |
+| `themes/creatyss.dark.css` | Valeurs dark mode (`.dark`) — palette warm dark cacao                                                                                                                                                | Thème CSS pur   |
+| `themes/novamart.css`      | Thème alternatif de référence (cool, corporate, indigo) — non actif, non importé (template client fictif)                                                                                            | Thème CSS pur   |
+| `theme.css`                | Point d'activation du thème : importe les 3 splits Creatyss + mapping Tailwind (`@theme inline`) + `@custom-variant dark`                                                                           | Config Tailwind |
+| `base.css`                 | Reset CSS global (box-sizing, body background) + `@layer base` Tailwind (html, body, headings)                                                                                                      | Reset + base    |
+| `typography.css`           | Styles typographiques globaux                                                                                                                                                                        | CSS classes     |
+| `shell.css`                | Primitive `.site-header-blur` uniquement — backdrop-filter avec fallback opaque, consomme `--shell-surface` et `--shell-surface-blur` (avec `@supports` et vendor prefix)                             | CSS classes     |
+| `motion.css`               | Animations et transitions globales                                                                                                                                                                   | CSS classes     |
+| `animation.css`            | Keyframes accordéon via `@theme {}`                                                                                                                                                                  | Keyframes       |
 
 ---
 
 ## Source de vérité thème vs mapping
 
-**`themes/creatyss.css`** = source de vérité du thème.
-Il définit les valeurs concrètes des CSS custom properties (`oklch(...)`, `rgb(...)`).
-C'est la seule chose à changer pour modifier l'identité visuelle du projet.
+**`themes/creatyss.core.css`** + **`themes/creatyss.light.css`** + **`themes/creatyss.dark.css`** = source de vérité du thème actif.
+Ces trois fichiers définissent ensemble toutes les valeurs concrètes des CSS custom properties (`oklch(...)`, `rgb(...)`).
+
+- `creatyss.core.css` : tokens structurels partagés entre les deux modes (`:root`) — `--radius`, tokens `--band-*` always-dark.
+- `creatyss.light.css` : toutes les valeurs light mode (`:root`).
+- `creatyss.dark.css` : toutes les valeurs dark mode (`.dark`).
+
+C'est dans ces trois fichiers qu'il faut intervenir pour modifier l'identité visuelle du projet.
 
 **`theme.css`** = point d'activation et mapping.
-Il importe le thème actif, expose ses variables au système Tailwind via `@theme inline`, et définit `@custom-variant dark`.
+Il importe les trois splits du thème actif, expose leurs variables au système Tailwind via `@theme inline`, et définit `@custom-variant dark`.
 Il ne définit aucune valeur concrète — seulement des `var(--foo)` pointant vers le thème.
 
 **Règle :** ne jamais mettre de valeur concrète dans `theme.css`.
@@ -92,18 +103,20 @@ Un fichier de thème valide doit impérativement définir les familles de tokens
 
 ## Workflow — activer un thème
 
-Le thème actif est sélectionné dans `app/styles/theme.css`, ligne `@import` en haut du fichier.
+Le thème actif est sélectionné dans `app/styles/theme.css` via les lignes `@import` en haut du fichier.
 
 **Pour switcher de thème :**
 
 1. Ouvrir `app/styles/theme.css`
-2. Remplacer la ligne d'import :
+2. Remplacer les trois imports du thème actif par les imports du nouveau thème (ou par un import unique si le thème alternatif est monolithique) :
 
    ```css
-   /* Avant */
-   @import "./themes/creatyss.css";
+   /* Avant — thème Creatyss splitté */
+   @import "./themes/creatyss.core.css";
+   @import "./themes/creatyss.light.css";
+   @import "./themes/creatyss.dark.css";
 
-   /* Après */
+   /* Après — exemple avec un thème monolithique */
    @import "./themes/novamart.css";
    ```
 
@@ -113,22 +126,24 @@ Le thème actif est sélectionné dans `app/styles/theme.css`, ligne `@import` e
 
 **Thèmes disponibles :**
 
-| Fichier               | Statut                   | Identité                                      |
-| --------------------- | ------------------------ | --------------------------------------------- |
-| `themes/creatyss.css` | ✅ Actif par défaut      | Artisanal, chaud, ivoire, terracotta, premium |
-| `themes/novamart.css` | 📦 Disponible, non actif | Cool, corporate, indigo, sidebar sombre       |
+| Fichier(s)                                                                | Statut                   | Identité                                      |
+| ------------------------------------------------------------------------- | ------------------------ | --------------------------------------------- |
+| `themes/creatyss.core.css` + `themes/creatyss.light.css` + `themes/creatyss.dark.css` | Actif par défaut | Artisanal, chaud, ivoire, terracotta, premium |
+| `themes/novamart.css`                                                     | Disponible, non importé  | Cool, corporate, indigo, sidebar sombre (template client fictif) |
 
 ---
 
 ## Workflow — créer un nouveau thème
 
-1. **Dupliquer** `app/styles/themes/creatyss.css` vers `app/styles/themes/{nom}.css`
-2. **Conserver** exactement les mêmes noms de CSS custom properties (le contrat est fixe)
-3. **Remplacer uniquement** les valeurs concrètes (`oklch(...)`, `rgb(...)`, `rem`)
-4. **Couvrir impérativement** toutes les familles du contrat de thème ci-dessus
-5. **Couvrir les deux modes** — `:root` (light) et `.dark`
-6. **Documenter** l'identité visuelle dans le header du fichier CSS
-7. **Activer** en suivant le workflow ci-dessus
+1. **Créer** trois fichiers dans `app/styles/themes/` : `{nom}.core.css`, `{nom}.light.css`, `{nom}.dark.css`
+   (ou un fichier unique `{nom}.css` si le thème ne nécessite pas de split, en conservant `:root` + `.dark`)
+2. **S'inspirer** des splits Creatyss comme référence structurelle
+3. **Conserver** exactement les mêmes noms de CSS custom properties (le contrat est fixe)
+4. **Remplacer uniquement** les valeurs concrètes (`oklch(...)`, `rgb(...)`, `rem`)
+5. **Couvrir impérativement** toutes les familles du contrat de thème ci-dessus
+6. **Couvrir les deux modes** — `:root` (light) et `.dark`
+7. **Documenter** l'identité visuelle dans le header du ou des fichiers CSS
+8. **Activer** en suivant le workflow ci-dessus
 
 **Ce qu'un thème peut varier :**
 
@@ -151,11 +166,11 @@ Le thème actif est sélectionné dans `app/styles/theme.css`, ligne `@import` e
 
 Avant de toucher un fichier de styles :
 
-1. Le token existe-t-il déjà dans `themes/creatyss.css` ? → l'utiliser
+1. Le token existe-t-il déjà dans les fichiers de thème (`themes/creatyss.core.css`, `themes/creatyss.light.css`, `themes/creatyss.dark.css`) ? → l'utiliser
 2. La classe utilitaire existe-t-elle dans `shell.css` ? → l'utiliser
 3. La composition est triviale (≤ 3 classes Tailwind token-driven) ? → l'écrire inline dans le composant
 4. Besoin global non trivial (backdrop-filter, vendor prefix, `@supports`, taille hors-Tailwind) ? → ajouter dans `shell.css`
-5. Nouveau token systémique ? → ajouter dans `themes/creatyss.css` + mapper dans `theme.css`
+5. Nouveau token systémique ? → ajouter dans le fichier de thème approprié (`creatyss.core.css` si partagé entre modes, `creatyss.light.css` et `creatyss.dark.css` si différencié) + mapper dans `theme.css`
 
 **Frontière CSS custom vs Tailwind inline :**
 
@@ -164,7 +179,7 @@ Avant de toucher un fichier de styles :
 | `themes/*.css`  | Valeurs concrètes des CSS custom properties (source de vérité)                                                                                                                                                                 |
 | `theme.css`     | Mapping Tailwind + activation du thème — aucune valeur concrète                                                                                                                                                                |
 | `base.css`      | Reset global, fondations HTML/body                                                                                                                                                                                             |
-| `shell.css`     | Uniquement ce que Tailwind ne peut pas exprimer proprement : vendor prefixes, `@supports`, valeurs hors-scale (`0.6875rem`), patterns cross-cutting répétés ≥ 3× avec sémantique claire (incluant le mini-système typo global) |
+| `shell.css`     | Uniquement ce que Tailwind ne peut pas exprimer proprement : vendor prefixes, `@supports`, valeurs hors-scale — actuellement limité à `.site-header-blur`                                                                      |
 | Tailwind inline | Toute composition locale simple : surfaces, bordures, radius, shadows, gaps, paddings — tant que les tokens du design system sont utilisés                                                                                     |
 
 **Interdit : valeurs arbitraires inline (`shadow-[...]`, `rounded-[...]`, `text-[11px]`) quand un token ou utilitaire existe.**
@@ -344,9 +359,9 @@ Usage :
 
 **Ne pas inclure la couleur dans la classe** — elle est toujours contextuelle.
 
-### `.site-header-blur` / `.shell-drawer` (`shell.css`)
+### `.site-header-blur` (`shell.css`)
 
-Surfaces avec backdrop-filter pour header et drawer. Ne pas reproduire le pattern `backdrop-blur` manuellement — utiliser ces classes.
+Surface avec backdrop-filter pour le header public. Ne pas reproduire le pattern `backdrop-blur` manuellement — utiliser cette classe.
 
 ---
 

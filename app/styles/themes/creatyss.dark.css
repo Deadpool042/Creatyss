@@ -130,6 +130,7 @@
   --hero-ink-soft: oklch(0.76 0.012 72);
   --hero-ink-muted: oklch(0.56 0.010 72);
   --hero-border: oklch(0.26 0.022 52);
+  --hero-vignette: oklch(0 0 0 / 0.18);
 
   /* ── Media ──────────────────────────────────────────────────────────────── */
 

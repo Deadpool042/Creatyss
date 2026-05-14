@@ -1,12 +1,23 @@
+/* ─── Layer 1 — Tailwind core + shadcn compatibility ─────────────────────── */
 @import "tailwindcss";
 @import "shadcn/tailwind.css";
 
+/* ─── Layer 2 — Design tokens + Tailwind v4 @theme mapping ───────────────── */
+/* theme.css importe core/light/dark puis expose tous les tokens via @theme inline.
+   Les fichiers suivants sont des consommateurs — ils ne redéfinissent pas de tokens métier. */
 @import "./styles/theme.css";
+
+/* ─── Layer 3 — Reset global + règles base document ─────────────────────── */
 @import "./styles/base.css";
+
+/* ─── Layer 4 — Classes typo sémantiques (text-title-*, text-price-*, ...) ─ */
+@import "./styles/typography.css";
+
+/* ─── Layer 5 — Primitives visuelles du shell (header blur) ──────────────── */
 @import "./styles/shell.css";
+
+/* ─── Layer 6 — Tokens de motion + comportement de transition de thème ───── */
 @import "./styles/motion.css";
 
-@import "./styles/boutique/boutique.css";
-@import "./styles/boutique/boutique-products.css";
-
+/* ─── Layer 7 — Tokens d'animation Tailwind + keyframes ──────────────────── */
 @import "./styles/animation.css";
