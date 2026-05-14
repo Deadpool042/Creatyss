@@ -68,7 +68,7 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
     <section
       data-testid="boutique-page"
       data-motion-surface="page-layout"
-      className="flex w-full flex-col gap-0 md:gap-6 laptop:gap-8 desktop:gap-9"
+      className="flex w-full flex-col gap-0 tablet:gap-6 laptop:gap-8 desktop:gap-9 bg-background"
     >
       <BoutiquePageHeader
         productCountLabel={productCountLabel}
@@ -77,14 +77,14 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
 
       <div
         data-testid="boutique-shop-layout"
-        className="grid grid-cols-1 items-start gap-4 w-full md:grid-cols-[minmax(0,1fr)_210px] laptop:grid-cols-[minmax(0,1fr)_240px] laptop:gap-6 laptop:w-[min(100%-2rem,82rem)] laptop:mx-auto desktop:grid-cols-[minmax(0,1fr)_260px] desktop:gap-7 wide:grid-cols-[250px_minmax(0,1fr)_260px] wide:gap-8 wide:w-[min(100%-4rem,106rem)] wide:pb-3"
+        className="grid grid-cols-1 items-start gap-4 w-full tablet:grid-cols-[minmax(0,1fr)_210px] laptop:grid-cols-[minmax(0,1fr)_240px] laptop:gap-6 laptop:w-[min(100%-2rem,82rem)] laptop:mx-auto desktop:grid-cols-[minmax(0,1fr)_260px] desktop:gap-7 wide:grid-cols-[250px_minmax(0,1fr)_260px] wide:gap-8 wide:w-[min(100%-4rem,106rem)] wide:pb-3"
       >
         <BoutiqueSidebar model={model} />
 
         <main
           data-testid="boutique-catalog-panel"
           data-motion-surface="catalog-panel"
-          className="relative z-[3] -mt-4 rounded-t-xl bg-background px-3 pt-3 grid min-w-0 gap-3.5 md:static md:z-auto md:mt-0 md:rounded-none md:bg-transparent md:px-0 md:pt-0 md:gap-4 laptop:gap-4 desktop:gap-5"
+          className="relative z-3 -mt-4 rounded-t-xl  px-3 pt-3 grid min-w-0 gap-3.5 tablet:static tablet:z-auto tablet:mt-0 tablet:rounded-none tablet:bg-transparent tablet:px-0 tablet:pt-0 tablet:gap-4 laptop:gap-4 desktop:gap-5"
         >
           <BoutiqueListingActionsBar model={model} />
 
@@ -116,9 +116,9 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
 
       <section
         aria-label="Engagements Creatyss"
-        className="border-y border-surface-border-subtle bg-background-secondary py-3 md:py-3.5"
+        className="border-y border-surface-border-subtle bg-background-secondary py-3 tablet:py-3.5"
       >
-        <ul className="m-0 list-none p-0 px-4 md:px-6 laptop:px-0 laptop:w-[min(100%-2rem,82rem)] laptop:mx-auto wide:w-[min(100%-4rem,106rem)] grid grid-cols-1 md:grid-cols-2 desktop:grid-cols-4 gap-4 desktop:gap-0 desktop:divide-x desktop:divide-surface-border-subtle desktop:[&>*]:px-4 desktop:[&>*:first-child]:pl-0 desktop:[&>*:last-child]:pr-0">
+        <ul className="m-0 list-none p-0 px-4 tablet:px-6 laptop:px-0 laptop:w-[min(100%-2rem,82rem)] laptop:mx-auto wide:w-[min(100%-4rem,106rem)] grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-4 desktop:gap-0 desktop:divide-x desktop:divide-surface-border-subtle desktop:*:px-4 desktop:[&>*:first-child]:pl-0 desktop:[&>*:last-child]:pr-0">
           {BOUTIQUE_REASSURANCE_ITEMS.map((item) => {
             const { Icon } = item;
             return (

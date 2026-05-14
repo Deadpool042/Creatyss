@@ -25,7 +25,7 @@ export function BoutiqueProductGrid({
   initialFavoriteProductIds,
 }: BoutiqueProductGridProps) {
   return (
-    <div className={`${PRODUCT_GRID_CLASS} boutique-product-grid`} data-testid="boutique-product-grid">
+    <div className={PRODUCT_GRID_CLASS} data-testid="boutique-product-grid">
       {products.map((product) => (
         <BoutiqueProductCard
           key={product.id}

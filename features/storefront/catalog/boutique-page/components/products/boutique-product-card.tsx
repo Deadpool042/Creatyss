@@ -158,7 +158,7 @@ export function BoutiqueProductCard({
             ) : null}
 
             {product.compareAtPrice ? (
-              <p className="m-0 text-[0.74rem] font-medium leading-[1.2] text-[var(--text-muted)]">
+              <p className="m-0 text-[0.74rem] font-medium leading-[1.2] text-text-muted-strong">
                 <del>{product.compareAtPrice}</del>
               </p>
             ) : null}

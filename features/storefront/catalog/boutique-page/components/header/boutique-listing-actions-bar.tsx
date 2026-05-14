@@ -4,7 +4,6 @@ import { BoutiqueMobileFilters } from "@/features/storefront/catalog/boutique-pa
 import { BoutiqueSortForm } from "@/features/storefront/catalog/boutique-page/components/form/boutique-sort-form";
 import { BoutiqueFiltersDrawer } from "@/features/storefront/catalog/boutique-page/components/sidebar/boutique-filters-drawer";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
-import { BoutiqueViewToggle } from "./boutique-view-toggle";
 
 const FILTER_TRIGGER_BUTTON_CLASS =
   "inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-surface-border-subtle bg-control-surface px-2.5 text-xs font-medium leading-none text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground active:translate-y-px [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-brand";
@@ -25,7 +24,7 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
           <BoutiqueMobileFilters
             model={model}
             label="Filtres"
-            className={cn(FILTER_TRIGGER_BUTTON_CLASS, "md:hidden")}
+            className={cn(FILTER_TRIGGER_BUTTON_CLASS, "tablet:hidden")}
             triggerTestId="boutique-filter-trigger-mobile"
           />
 
@@ -34,7 +33,7 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
             label="Filtres"
             className={cn(
               FILTER_TRIGGER_BUTTON_CLASS,
-              "hidden md:inline-flex md:h-9 md:rounded-lg md:px-3 md:text-sm wide:hidden"
+              "hidden tablet:inline-flex tablet:h-9 tablet:rounded-lg tablet:px-3 tablet:text-sm wide:hidden"
             )}
             triggerTestId="boutique-filter-trigger-tablet"
           />
@@ -42,37 +41,41 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
           <span
             data-testid="boutique-listing-actions-count"
             className="inline-flex items-center min-h-8 text-[0.8125rem] font-medium whitespace-nowrap text-text-muted-strong"
-          >{creationCountLabel}</span>
+          >
+            {creationCountLabel}
+          </span>
 
           <div
             data-testid="boutique-filter-shortcuts"
             aria-label="Accès rapides aux filtres"
-            className="hidden min-w-0 items-center gap-2 md:inline-flex wide:hidden"
+            className="hidden min-w-0 items-center gap-2 tablet:inline-flex wide:hidden"
           >
             <BoutiqueFiltersDrawer
               model={model}
               label="Catégories"
               className="inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-3 text-sm font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
-              triggerTestId="boutique-filter-shortcut"
+              triggerTestId="boutique-filter-shortcut-category"
             />
             <BoutiqueFiltersDrawer
               model={model}
               label="Disponibilité"
               className="inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-3 text-sm font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
-              triggerTestId="boutique-filter-shortcut"
+              triggerTestId="boutique-filter-shortcut-availability"
             />
             <BoutiqueFiltersDrawer
               model={model}
               label="Prix"
               className="inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-3 text-sm font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
-              triggerTestId="boutique-filter-shortcut"
+              triggerTestId="boutique-filter-shortcut-price"
             />
           </div>
         </div>
 
         <div className="ml-auto flex min-w-0 items-center justify-end gap-2">
           <div className="inline-flex min-w-0 items-center gap-1.5">
-            <span className="hidden md:inline text-[0.8125rem] font-medium whitespace-nowrap text-text-muted-strong">Trier par :</span>
+            <span className="hidden tablet:inline text-[0.8125rem] font-medium whitespace-nowrap text-text-muted-strong">
+              Trier par :
+            </span>
             <BoutiqueSortForm
               searchQuery={model.searchQuery}
               selectedCategorySlug={model.selectedCategorySlug}
@@ -82,8 +85,6 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
               selectedSort={model.selectedSort}
             />
           </div>
-
-          <BoutiqueViewToggle />
         </div>
       </div>
 

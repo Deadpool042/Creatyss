@@ -90,7 +90,7 @@ async function getLayoutSnapshot(page: Page) {
       asides.find((element) => /atelier creatyss/i.test(element.textContent || "")) ?? null;
     const sidebarAside =
       asides.find((element) => /Filtres/i.test(element.textContent || "")) ?? null;
-    const cards = [...document.querySelectorAll(".boutique-product-grid > *")].filter((element) =>
+    const cards = [...document.querySelectorAll('[data-testid="boutique-product-grid"] > *')].filter((element) =>
       isVisible(element)
     );
     const columns = new Set(
@@ -123,7 +123,7 @@ async function getFilterTriggerSnapshot(page: Page) {
     return {
       mobileVisible: isVisible(document.querySelector('[data-testid="boutique-filter-trigger-mobile"]')),
       tabletVisible: isVisible(document.querySelector('[data-testid="boutique-filter-trigger-tablet"]')),
-      shortcutVisible: isVisible(document.querySelector('[data-testid="boutique-filter-shortcut"]')),
+      shortcutVisible: isVisible(document.querySelector('[data-testid="boutique-filter-shortcuts"]')),
     };
   });
 }
@@ -1156,7 +1156,7 @@ test.describe("boutique page smoke", () => {
 
       // Column count: expected columns, never 5
       const columns = await page.evaluate(() => {
-        const cards = [...document.querySelectorAll(".boutique-product-grid > *")];
+        const cards = [...document.querySelectorAll('[data-testid="boutique-product-grid"] > *')];
         return new Set(
           cards.map((el) => Math.round((el as HTMLElement).getBoundingClientRect().left))
         ).size;
@@ -1227,7 +1227,7 @@ test.describe("boutique page smoke", () => {
 
       // Exactly 4 product columns at 1440
       const columns = await page.evaluate(() => {
-        const cards = [...document.querySelectorAll(".boutique-product-grid > *")];
+        const cards = [...document.querySelectorAll('[data-testid="boutique-product-grid"] > *')];
         return new Set(
           cards.map((el) => Math.round((el as HTMLElement).getBoundingClientRect().left))
         ).size;
@@ -1289,7 +1289,7 @@ test.describe("boutique page smoke", () => {
 
     // Exactly 2 columns on mobile portrait
     const columns = await page.evaluate(() => {
-      const cards = [...document.querySelectorAll(".boutique-product-grid > *")];
+      const cards = [...document.querySelectorAll('[data-testid="boutique-product-grid"] > *')];
       return new Set(
         cards.map((el) => Math.round((el as HTMLElement).getBoundingClientRect().left))
       ).size;

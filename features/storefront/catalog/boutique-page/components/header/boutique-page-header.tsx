@@ -7,55 +7,61 @@ type BoutiquePageHeaderProps = {
 
 export function BoutiquePageHeader({
   productCountLabel,
-  activeCategoryName: _activeCategoryName,
+  activeCategoryName,
 }: BoutiquePageHeaderProps) {
   return (
     <section className="w-full" data-testid="boutique-page-header">
       {/* Portrait / desktop — hero light éditorial */}
-      <div className="">
-        <div
-          className="relative left-1/2 isolate w-screen -translate-x-1/2 overflow-hidden bg-background-secondary dark:bg-background"
-          data-testid="boutique-mobile-hero"
-        >
-          <div className="relative h-64 w-full sm:h-72 lg:h-80">
-            {/* Image de fond light */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 -right-5/12 bg-[url('/images/storefront/boutique/hero/bg-hero-light-v3.webp')] bg-cover bg-right bg-no-repeat opacity-100 transition-opacity duration-500 ease-out md:right-0 md:bg-size-[auto_100%] dark:opacity-0"
-            />
+      <div
+        className="relative left-1/2 isolate w-full -translate-x-1/2 overflow-hidden bg-background-secondary dark:bg-background "
+        data-testid="boutique-mobile-hero"
+      >
+        <div className="relative h-56 w-full xs:h-60 mobile:h-64 tablet:h-68 laptop:h-68">
+          {/* Image de fond light */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[url('/images/storefront/boutique/hero/bg-hero-light-v3.webp')] bg-cover bg-no-repeat bg-position-[80%_center] opacity-100 transition-opacity duration-500 ease-out xs:bg-position-[76%_center] mobile:bg-position-[72%_center] tablet:bg-position-[right_center] tablet:bg-size-[auto_100%] dark:opacity-0"
+          />
 
-            {/* Image de fond dark */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 -right-5/12 bg-[url('/images/storefront/boutique/hero/bg-hero-dark.webp')] bg-cover bg-right bg-no-repeat opacity-0 transition-opacity duration-500 ease-out md:right-0 md:bg-size-[auto_100%] dark:opacity-100"
-            />
+          {/* Image de fond dark */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[url('/images/storefront/boutique/hero/bg-hero-dark.webp')] bg-cover bg-no-repeat bg-position-[84%_center] opacity-0 transition-opacity duration-500 ease-out xs:bg-position-[80%_center] mobile:bg-position-[76%_center] tablet:bg-position-[right_center] tablet:bg-size-[auto_100%] dark:opacity-100"
+          />
 
-            {/* Dégradé — couvre la gauche sur mobile, s'efface vers la droite */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-linear-to-r from-background-secondary via-background-secondary via-50% to-transparent transition-none md:via-10% dark:from-background dark:via-background/70 dark:to-transparent"
-            />
+          {/* Dégradé light */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-linear-to-r from-background-secondary via-background-secondary via-35% to-transparent transition-none xs:via-30% mobile:via-28% tablet:via-20% laptop:via-18% dark:opacity-0"
+          />
 
-            {/* Contenu */}
-            <div className="relative z-10 mx-auto flex h-full max-w-430 items-center px-4 sm:px-6 lg:px-10">
-              <div className="flex w-full md:max-w-md flex-col gap-2.5 py-6 lg:gap-3">
-                <p className="m-0 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-brand">
-                  Créations uniques, faites main à Saint-Étienne
-                </p>
+          {/* Dégradé dark — transition progressive, évite le bloc noir brutal */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-linear-to-r from-background via-background/92 via-42% to-transparent opacity-0 transition-none xs:via-38% mobile:via-34% tablet:via-26% laptop:via-30% dark:opacity-100"
+          />
 
-                <h1 className="m-0 font-serif text-3xl font-medium leading-[1.05] tracking-[0.02em] text-foreground/80  sm:text-4xl lg:text-5xl">
-                  Des sacs artisanaux faits main.
-                </h1>
+          {/* Contenu */}
+          <div className="relative z-10 mx-auto flex h-full w-full max-w-430 items-center px-4 tablet:px-6 laptop:px-10">
+            <div className="flex w-full flex-col gap-2 py-6 max-w-56 xs:max-w-[16rem] mobile:max-w-[18rem] tablet:max-w-md laptop:gap-3">
+              <p className="m-0 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-brand">
+                {activeCategoryName
+                  ? `Sélection ${activeCategoryName}`
+                  : "Créations uniques, faites main à Saint-Étienne"}
+              </p>
 
-                <Separator className=" border border-brand max-w-15" />
+              <h1 className="m-0 font-serif text-3xl font-medium leading-[1.05] tracking-[0.02em] text-foreground/80 tablet:text-4xl laptop:text-5xl">
+                Des sacs artisanaux faits main.
+              </h1>
 
-                <p className="m-0 text-sm italic leading-relaxed text-hero-ink-soft line-clamp-2 lg:line-clamp-none">
-                  Chaque pièce est imaginée et cousue à la main dans mon atelier stéphanois avec
-                  passion, exigence et engagement.
-                </p>
+              <Separator className="max-w-15 border border-brand" />
 
-                <p className="m-0 text-xs text-muted-foreground">{productCountLabel}</p>
-              </div>
+              <p className="m-0 text-xs italic leading-relaxed text-hero-ink-soft line-clamp-2 tablet:text-sm laptop:line-clamp-none">
+                Chaque pièce est imaginée et cousue à la main dans mon atelier stéphanois avec
+                passion, exigence et engagement.
+              </p>
+
+              <p className="m-0 text-xs text-muted-foreground">{productCountLabel}</p>
             </div>
           </div>
         </div>

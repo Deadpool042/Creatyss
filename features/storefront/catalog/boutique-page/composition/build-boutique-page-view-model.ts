@@ -12,11 +12,6 @@ import type { CatalogProductListItem } from "@/features/storefront/catalog/types
 
 type BoutiqueProduct = CatalogProductListItem;
 type BoutiqueCategory = Awaited<ReturnType<typeof listCatalogFilterCategories>>[number];
-const BOUTIQUE_HERO_IMAGE = {
-  lightSrc: "/uploads/boutique-hero-light.webp",
-  darkSrc: "/uploads/boutique-hero-dark.webp",
-} as const;
-
 type BuildBoutiquePageViewModelInput = {
   products: BoutiqueProduct[];
   categories: BoutiqueCategory[];
@@ -363,7 +358,6 @@ export function buildBoutiquePageViewModel(
     headingEyebrow: heading.headingEyebrow,
     headingTitle: heading.headingTitle,
     headingDescription: heading.headingDescription,
-    heroImage: BOUTIQUE_HERO_IMAGE,
     resultCountLabel,
     selectedSort: input.selectedSort,
     selectedCategorySlug,
@@ -375,14 +369,6 @@ export function buildBoutiquePageViewModel(
     totalProductCount,
     resetHref,
     activeFilterLabels,
-    apiFilters: {
-      q: input.searchQuery,
-      category: input.selectedCategorySlug,
-      availability: input.selectedAvailabilityStatus,
-      minPrice: input.selectedMinPriceCents,
-      maxPrice: input.selectedMaxPriceCents,
-      sort: input.selectedSort,
-    },
     pagination: {
       pageSize: safePageSize,
       currentPage,

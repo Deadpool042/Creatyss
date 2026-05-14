@@ -67,14 +67,6 @@ export type BoutiquePageViewModel = {
     count: number | null;
   }>;
   selectedAvailabilityStatus: BoutiqueAvailabilityValue | null;
-  apiFilters: {
-    q: string | null;
-    category: string | null;
-    availability: BoutiqueAvailabilityValue | null;
-    minPrice: number | null;
-    maxPrice: number | null;
-    sort: BoutiqueSortValue;
-  };
   pagination: {
     pageSize: number;
     currentPage: number;
@@ -90,8 +82,4 @@ export type BoutiquePageViewModel = {
   categories: BoutiqueCategoryItem[];
   filterCategories: BoutiqueCategoryItem[];
   products: BoutiqueProductCardItem[];
-  heroImage: {
-    lightSrc: string;
-    darkSrc: string;
-  } | null;
 };

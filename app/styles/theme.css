@@ -19,6 +19,9 @@
      Alias métier additionnels pour les layouts storefront.
      Les breakpoints standards Tailwind (sm/md/lg/xl/2xl) restent disponibles.
   */
+  --breakpoint-xs: 23.4375rem; /* 375px */
+  --breakpoint-mobile: 30rem; /* 480px */
+  --breakpoint-tablet: 48rem; /* 768px */
   --breakpoint-laptop: 64rem; /* 1024px */
   --breakpoint-desktop: 75rem; /* 1200px */
   --breakpoint-wide: 90rem; /* 1440px */
