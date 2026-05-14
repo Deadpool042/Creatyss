@@ -1,7 +1,5 @@
 // features/storefront/catalog/boutique-page/components/boutique-page.tsx
 
-import { type LucideIcon, Gem, HandHeart, Leaf, Ruler } from "lucide-react";
-
 import { BoutiqueEmptyState } from "./boutique-empty-state";
 import { BoutiqueMarketAside } from "./aside/boutique-market-aside";
 import { BoutiqueListingActionsBar } from "./header/boutique-listing-actions-bar";
@@ -10,41 +8,13 @@ import { BoutiquePageHeader } from "./header/boutique-page-header";
 import { BoutiquePagination } from "./products/boutique-pagination";
 import { BoutiqueProductGrid } from "./products/boutique-product-grid";
 import { BoutiqueSidebar } from "./sidebar/boutique-sidebar";
+import { BOUTIQUE_REASSURANCE_ITEMS } from "../data/boutique-reassurance-items";
 import type { BoutiquePageViewModel } from "../types";
 
 type BoutiquePageProps = {
   model: BoutiquePageViewModel;
   initialFavoriteProductIds: readonly string[];
 };
-
-type ReassuranceItem = {
-  readonly title: string;
-  readonly description: string;
-  readonly Icon: LucideIcon;
-};
-
-const BOUTIQUE_REASSURANCE_ITEMS: readonly ReassuranceItem[] = [
-  {
-    title: "Fait main à Saint-Étienne",
-    description: "Chaque pièce est cousue à la main dans notre atelier stéphanois.",
-    Icon: HandHeart,
-  },
-  {
-    title: "Matières responsables et sans cuir",
-    description: "Textiles naturels et éthiques, sélectionnés avec soin.",
-    Icon: Leaf,
-  },
-  {
-    title: "Pièces uniques en petites séries",
-    description: "Jamais produit en masse. Chaque création est un original.",
-    Icon: Gem,
-  },
-  {
-    title: "Sur-mesure sur demande",
-    description: "Adaptations et personnalisations selon vos souhaits.",
-    Icon: Ruler,
-  },
-];
 
 export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageProps) {
   const hasActiveFilters = model.activeFilterLabels.length > 0;

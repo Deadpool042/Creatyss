@@ -12,7 +12,7 @@ export function BoutiqueMarketAside({ href: _href }: BoutiqueMarketAsideProps) {
     <aside
       aria-label="Informations atelier Creatyss"
       data-testid="boutique-market-aside"
-      className="hidden md:block md:self-stretch"
+      className="hidden tablet:block tablet:self-stretch"
     >
       <div className="grid gap-3 desktop:sticky desktop:top-[9rem] desktop:z-20 desktop:content-start">
         <div
