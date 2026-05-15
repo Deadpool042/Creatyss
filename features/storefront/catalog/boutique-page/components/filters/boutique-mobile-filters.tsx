@@ -15,6 +15,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useBoutiqueFilterCount } from "@/features/storefront/catalog/boutique-page/hooks/use-boutique-filter-count";
+import { normalizeAvailabilityParam } from "@/features/storefront/catalog/boutique-page/model/availability-filter.utils";
 import { buildBoutiqueUrl } from "@/features/storefront/catalog/boutique-page/model/build-boutique-url";
 import {
   centsToEurosInputValue,
@@ -42,29 +43,6 @@ type BoutiqueFilterOptionProps = {
   helperText?: string;
 };
 
-function normalizeAvailabilityParam(
-  value: string | null
-): "" | BoutiquePageViewModel["availabilityOptions"][number]["id"] {
-  if (value === null) {
-    return "";
-  }
-
-  const normalized = value.trim().toLowerCase();
-
-  if (normalized === "available" || normalized === "in-stock") {
-    return "in-stock";
-  }
-
-  if (normalized === "made-to-order") {
-    return "made-to-order";
-  }
-
-  if (normalized === "unavailable") {
-    return "unavailable";
-  }
-
-  return "";
-}
 
 function BoutiqueFilterOption({
   inputId,

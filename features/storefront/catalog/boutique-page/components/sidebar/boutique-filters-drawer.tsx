@@ -56,6 +56,7 @@ export function BoutiqueFiltersDrawer({
           <BoutiqueFiltersContent
             model={model}
             className="grid gap-2"
+            variant="drawer"
             wrapLink={(link, key) => (
               <DrawerClose asChild key={key}>
                 {link}

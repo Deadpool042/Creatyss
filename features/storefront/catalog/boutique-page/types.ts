@@ -14,13 +14,6 @@ export type BoutiqueCategoryItem = {
   } | null;
 };
 
-export type BoutiqueQuickFilterItem = {
-  id: "all" | "newest" | "available" | "featured";
-  label: string;
-  href: string;
-  isActive: boolean;
-};
-
 export type BoutiqueActiveFilterItem = {
   key: "q" | "category" | "availability" | "minPrice" | "maxPrice" | "priceRange" | "sort";
   label: string;
@@ -78,7 +71,6 @@ export type BoutiquePageViewModel = {
     previousHref: string | null;
     nextHref: string | null;
   };
-  quickFilters: BoutiqueQuickFilterItem[];
   categories: BoutiqueCategoryItem[];
   filterCategories: BoutiqueCategoryItem[];
   products: BoutiqueProductCardItem[];

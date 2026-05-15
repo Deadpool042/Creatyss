@@ -37,8 +37,8 @@ export function BoutiqueActiveFilters({ labels, resetHref }: BoutiqueActiveFilte
   }
 
   return (
-    <div className="grid gap-2 text-text-muted-strong md:flex md:items-center md:gap-2">
-      <div className="flex min-w-0 gap-1.5 overflow-x-auto md:flex-wrap md:overflow-visible">
+    <div className="grid gap-2 text-text-muted-strong tablet:flex tablet:items-center tablet:gap-2">
+      <div className="flex min-w-0 gap-1.5 overflow-x-auto tablet:flex-wrap tablet:overflow-visible">
         <span className="shrink-0 text-text-muted-soft">Filtres :</span>
 
         {labels.map((item, index) => (
@@ -54,8 +54,8 @@ export function BoutiqueActiveFilters({ labels, resetHref }: BoutiqueActiveFilte
               title={getClearActionLabel(item)}
               className="text-text-muted-strong underline-offset-4 transition-colors hover:text-foreground hover:underline"
             >
-              <span className="md:hidden">Effacer</span>
-              <span className="hidden md:inline">
+              <span className="tablet:hidden">Effacer</span>
+              <span className="hidden tablet:inline">
                 {getClearActionLabel(item)}
               </span>
             </CustomLink>
@@ -63,7 +63,7 @@ export function BoutiqueActiveFilters({ labels, resetHref }: BoutiqueActiveFilte
         ))}
 
         <CustomLink
-          className="hidden shrink-0 text-text-muted-strong underline-offset-4 transition-colors hover:text-foreground hover:underline md:inline"
+          className="hidden shrink-0 text-text-muted-strong underline-offset-4 transition-colors hover:text-foreground hover:underline tablet:inline"
           href={resetHref}
           variant="muted"
           aria-label="Réinitialiser tous les filtres"
@@ -73,7 +73,7 @@ export function BoutiqueActiveFilters({ labels, resetHref }: BoutiqueActiveFilte
       </div>
 
       <CustomLink
-        className="inline-flex w-fit items-center justify-center rounded-md border border-control-border/70 px-2 py-1 text-xs text-text-muted-strong underline-offset-4 transition-colors hover:border-control-border-strong hover:text-foreground hover:underline md:hidden"
+        className="inline-flex w-fit items-center justify-center rounded-md border border-control-border/70 px-2 py-1 text-xs text-text-muted-strong underline-offset-4 transition-colors hover:border-control-border-strong hover:text-foreground hover:underline tablet:hidden"
         href={resetHref}
         variant="muted"
         aria-label="Réinitialiser tous les filtres"

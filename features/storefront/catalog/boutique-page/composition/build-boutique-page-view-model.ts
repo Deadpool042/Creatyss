@@ -4,7 +4,6 @@ import type {
   BoutiquePageViewModel,
   BoutiqueSortValue,
 } from "@/features/storefront/catalog/boutique-page/types";
-import { CATALOG_AVAILABILITY_FILTER_VALUE } from "@/entities/catalog/catalog-filter-input";
 import { buildBoutiqueUrl } from "@/features/storefront/catalog/boutique-page/model/build-boutique-url";
 import { mapBoutiqueProductCardItem } from "@/features/storefront/catalog/boutique-page/composition/map-boutique-product-card-item";
 import type { listCatalogFilterCategories } from "@/features/storefront/catalog";
@@ -184,17 +183,8 @@ export function buildBoutiquePageViewModel(
   const activeFilterLabels: BoutiqueActiveFilterItem[] = [];
 
   const hasSearchQuery = input.searchQuery !== null && input.searchQuery.trim().length > 0;
-  const hasCategoryFilter = input.selectedCategorySlug !== null;
-  const hasAvailabilityFilter = input.selectedAvailabilityStatus !== null;
   const hasPriceFilter =
     input.selectedMinPriceCents !== null || input.selectedMaxPriceCents !== null;
-  const isDefaultQuickFilterState =
-    !hasSearchQuery &&
-    !hasCategoryFilter &&
-    !hasAvailabilityFilter &&
-    !hasPriceFilter &&
-    input.selectedSort === "featured";
-
   if (hasSearchQuery) {
     activeFilterLabels.push({
       key: "q",
@@ -378,53 +368,6 @@ export function buildBoutiquePageViewModel(
       nextHref,
     },
     availabilityOptions: buildAvailabilityOptions(),
-    quickFilters: [
-      {
-        id: "all",
-        label: "Tout voir",
-        href: buildBoutiqueUrl({ sort: "featured" }),
-        isActive: isDefaultQuickFilterState,
-      },
-      {
-        id: "newest",
-        label: "Tri : Nouveautes",
-        href: buildBoutiqueUrl({
-          q: input.searchQuery,
-          category: input.selectedCategorySlug,
-          availability: input.selectedAvailabilityStatus,
-          minPrice: input.selectedMinPriceCents,
-          maxPrice: input.selectedMaxPriceCents,
-          sort: "newest",
-        }),
-        isActive: input.selectedSort === "newest",
-      },
-      {
-        id: "available",
-        label: "Disponibilite : En stock",
-        href: buildBoutiqueUrl({
-          q: input.searchQuery,
-          category: input.selectedCategorySlug,
-          availability: CATALOG_AVAILABILITY_FILTER_VALUE,
-          minPrice: input.selectedMinPriceCents,
-          maxPrice: input.selectedMaxPriceCents,
-          sort: input.selectedSort,
-        }),
-        isActive: input.selectedAvailabilityStatus === "in-stock",
-      },
-      {
-        id: "featured",
-        label: "Tri : Selection",
-        href: buildBoutiqueUrl({
-          q: input.searchQuery,
-          category: input.selectedCategorySlug,
-          availability: input.selectedAvailabilityStatus,
-          minPrice: input.selectedMinPriceCents,
-          maxPrice: input.selectedMaxPriceCents,
-          sort: "featured",
-        }),
-        isActive: input.selectedSort === "featured" && !isDefaultQuickFilterState,
-      },
-    ],
     categories,
     filterCategories,
     products: input.products.map((product) =>

@@ -8,6 +8,11 @@ import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutiq
 const FILTER_TRIGGER_BUTTON_CLASS =
   "inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-surface-border-subtle bg-control-surface px-2.5 text-xs font-medium leading-none text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground active:translate-y-px [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-brand";
 
+// Shortcuts : ouvrent le drawer général (même contenu que "Filtres").
+// Amélioration future possible : initialSection ciblée par shortcut.
+const SHORTCUT_BUTTON_CLASS =
+  "inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-3 text-sm font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground";
+
 type BoutiqueListingActionsBarProps = {
   model: BoutiquePageViewModel;
 };
@@ -47,25 +52,26 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
 
           <div
             data-testid="boutique-filter-shortcuts"
+            role="group"
             aria-label="Accès rapides aux filtres"
             className="hidden min-w-0 items-center gap-2 tablet:inline-flex wide:hidden"
           >
             <BoutiqueFiltersDrawer
               model={model}
               label="Catégories"
-              className="inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-3 text-sm font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
+              className={SHORTCUT_BUTTON_CLASS}
               triggerTestId="boutique-filter-shortcut-category"
             />
             <BoutiqueFiltersDrawer
               model={model}
               label="Disponibilité"
-              className="inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-3 text-sm font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
+              className={SHORTCUT_BUTTON_CLASS}
               triggerTestId="boutique-filter-shortcut-availability"
             />
             <BoutiqueFiltersDrawer
               model={model}
               label="Prix"
-              className="inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-3 text-sm font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
+              className={SHORTCUT_BUTTON_CLASS}
               triggerTestId="boutique-filter-shortcut-price"
             />
           </div>

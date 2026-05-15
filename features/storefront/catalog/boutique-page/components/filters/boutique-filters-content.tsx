@@ -31,26 +31,11 @@ type CategoryVisualState = {
   containsActiveChild: boolean;
 };
 
-const COLOR_DOT_BG: Record<string, string> = {
-  default: "color-mix(in srgb, var(--brand) 22%, var(--surface-panel))",
-  ivory: "color-mix(in srgb, var(--surface-panel) 86%, var(--brand))",
-  saffron: "color-mix(in srgb, var(--feedback-warning) 68%, var(--brand))",
-  mandarin: "color-mix(in srgb, var(--brand) 74%, var(--feedback-warning))",
-  olive: "color-mix(in srgb, var(--feedback-success) 62%, var(--brand))",
-  sapphire: "color-mix(in srgb, var(--accent) 78%, var(--brand))",
-  aubergine: "color-mix(in srgb, var(--destructive) 42%, var(--accent))",
-};
-
-const MOCK_COLORS = [
-  { name: "Ivoire", token: "ivory" },
-  { name: "Safran", token: "saffron" },
-  { name: "Mandarin", token: "mandarin" },
-  { name: "Olive", token: "olive" },
-  { name: "Saphyre", token: "sapphire" },
-  { name: "Aubergine", token: "aubergine" },
-] as const;
-
-const MOCK_MATERIALS = ["Textile", "Tissu épais", "Finitions", "Doublure"] as const;
+import {
+  COLOR_DOT_BG,
+  FILTER_PREVIEW_COLORS,
+  FILTER_PREVIEW_MATERIALS,
+} from "./boutique-filter-preview.constants";
 
 function buildCategoryGroups(categories: BoutiqueCategoryItem[]): CategoryGroup[] {
   const roots = categories.filter((c) => c.parentId === null);
@@ -97,7 +82,7 @@ type BoutiqueFiltersContentProps = {
   model: BoutiquePageViewModel;
   className?: string | undefined;
   wrapLink?: WrapLinkFn | undefined;
-  variant?: "default" | "sidebar";
+  variant: "sidebar" | "drawer";
 };
 
 type FilterOptionProps = {
@@ -165,12 +150,12 @@ export function BoutiqueFiltersContent({
   model,
   className = "grid gap-1",
   wrapLink,
-  variant = "default",
+  variant,
 }: BoutiqueFiltersContentProps) {
   const hasActiveFilters = model.activeFilterLabels.length > 0;
   const categoryGroups = buildCategoryGroups(model.categories);
   const isSidebar = variant === "sidebar";
-  const isDrawer = !isSidebar && typeof wrapLink === "function";
+  const isDrawer = variant === "drawer";
   const visibleCategoryGroups = isSidebar
     ? buildSidebarCategoryGroups(model.categories)
     : categoryGroups;
@@ -393,7 +378,7 @@ export function BoutiqueFiltersContent({
             )}
           >
             {isSidebar ? (
-              <div className="grid gap-1.5 pb-[0.05rem]" aria-label="Repère indicatif des prix">
+              <div className="grid gap-1.5 pb-[0.05rem]">
                 <div className="relative h-[0.0625rem] rounded-full bg-surface-border-subtle" aria-hidden="true">
                   <span className="absolute top-1/2 left-0 h-[0.0625rem] w-[58%] -translate-y-1/2 rounded-full bg-brand" />
                 </div>
@@ -435,7 +420,7 @@ export function BoutiqueFiltersContent({
               Couleurs
             </p>
             <ul className="grid grid-cols-2 gap-x-[0.6rem] gap-y-[0.35rem] m-0 p-0 list-none" aria-label="Palette indicative">
-              {MOCK_COLORS.map((color) => (
+              {FILTER_PREVIEW_COLORS.map((color) => (
                 <li key={color.name} className="inline-flex items-center gap-[0.4rem] text-xs leading-[1.2] text-text-muted-strong">
                   <span
                     aria-hidden="true"
@@ -456,7 +441,7 @@ export function BoutiqueFiltersContent({
               Matières
             </p>
             <ul className="grid gap-[0.2rem] m-0 p-0 list-none" aria-label="Matières indicatives">
-              {MOCK_MATERIALS.map((material) => (
+              {FILTER_PREVIEW_MATERIALS.map((material) => (
                 <li key={material} className="text-xs leading-[1.25] text-text-muted-strong">
                   {material}
                 </li>
