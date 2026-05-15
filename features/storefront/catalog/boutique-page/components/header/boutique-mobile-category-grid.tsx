@@ -34,7 +34,7 @@ export function BoutiqueMobileCategoryGrid({
 
   return (
     <section
-      className="grid gap-[0.875rem] py-4 md:hidden"
+      className="grid gap-[0.875rem] py-4 tablet:hidden"
       aria-labelledby="boutique-categories-title"
       data-testid="boutique-mobile-discovery"
     >
