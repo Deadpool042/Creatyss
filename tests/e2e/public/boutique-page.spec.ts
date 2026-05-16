@@ -336,7 +336,7 @@ test.describe("boutique page smoke", () => {
     }
   });
 
-  test("keeps compact sidebar shortcuts and toggles an active category while preserving other filters", async ({
+  test("sidebar shows full category hierarchy and toggles an active category while preserving other filters", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1728, height: 1117 });
@@ -345,26 +345,45 @@ test.describe("boutique page smoke", () => {
     const filtersAside = page.getByRole("complementary").filter({ hasText: "Filtres" });
     await expect(filtersAside).toBeVisible();
 
+    // Sidebar shows all categories including children (unified logic with drawer)
     await expect(filtersAside.getByRole("link", { name: "Sacs", exact: true })).toBeVisible();
     await expect(
       filtersAside.getByRole("link", { name: "Tous les produits", exact: true })
     ).toBeVisible();
     await expect(
       filtersAside.getByRole("link", { name: "Sacs à main", exact: true })
-    ).toHaveCount(0);
+    ).toBeVisible();
     await expect(
       filtersAside.getByRole("link", { name: "Sacs à bandoulière", exact: true })
-    ).toHaveCount(0);
-    await expect(filtersAside.getByText("Couleurs", { exact: true })).toHaveCount(0);
-    await expect(filtersAside.getByText("Matières", { exact: true })).toHaveCount(0);
-    await expect(
-      filtersAside.getByRole("link", { name: "Porte-cartes", exact: true })
-    ).toHaveCount(0);
+    ).toBeVisible();
 
+    // Preview nuancier is shown in sidebar
+    await expect(filtersAside.getByText("Couleurs", { exact: true })).toBeVisible();
+    await expect(filtersAside.getByText("Matières", { exact: true })).toBeVisible();
+
+    // Toggle: clicking active parent category removes it and preserves other filters
     await filtersAside.getByRole("link", { name: "Sacs", exact: true }).click();
 
     await expect(page).toHaveURL(/\/boutique\?availability=in-stock$/);
     await expect(page.getByRole("region", { name: "Disponibilité" })).toBeVisible();
+  });
+
+  test("multi-select categories produces correct URL with multiple category params", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1728, height: 1117 });
+    await page.goto("/boutique?category=sacs");
+
+    const filtersAside = page.getByRole("complementary").filter({ hasText: "Filtres" });
+    await expect(filtersAside).toBeVisible();
+
+    // Selecting a second root category adds it to the URL
+    const accessoiresLink = filtersAside.getByRole("link", { name: "Accessoires", exact: true });
+    if (await accessoiresLink.count() > 0) {
+      await accessoiresLink.click();
+      await expect(page).toHaveURL(/category=sacs/);
+      await expect(page).toHaveURL(/category=accessoires/);
+    }
   });
 
   test("opens and closes the mobile topbar menu", async ({ page }) => {
@@ -1379,6 +1398,79 @@ test.describe("boutique page smoke", () => {
 
     // Copyright présent
     await expect(footer.getByText(/Tous droits réservés/)).toBeVisible();
+  });
+
+  test("empty state — affichage conditionnel selon les filtres actifs", async ({ page }) => {
+    // Cas 1 : filtre actif sans résultat — recherche improbable
+    await page.goto("/boutique?q=xyzimpossible123");
+    const grid = page.getByTestId("boutique-product-grid");
+
+    // Si aucun produit → empty state visible
+    const hasProducts = await grid.count();
+    if (!hasProducts) {
+      // Texte "Aucun résultat" ou heading visible
+      await expect(page.getByRole("heading", { level: 2, name: /Aucun produit ne correspond/i })).toBeVisible();
+
+      // Lien reset visible avec aria-label explicite
+      const resetLink = page.getByRole("link", { name: /Réinitialiser les filtres/i });
+      await expect(resetLink).toBeVisible();
+      await expect(resetLink).toHaveAttribute("href");
+    }
+
+    // Cas 2 : pas de filtre actif — catalogue publié non vide normalement
+    await page.goto("/boutique");
+    // Le grid produit doit être visible (not empty state)
+    await expect(page.locator('[data-testid="boutique-product-grid"] article').first()).toBeVisible();
+    // Aucun h2 "Aucun produit publié"
+    await expect(page.getByRole("heading", { level: 2, name: /Aucun produit publié/i })).toHaveCount(0);
+  });
+
+  test("product card — contenu métier et accessibilité", async ({ page }) => {
+    await page.setViewportSize({ width: 1200, height: 900 });
+    await page.goto("/boutique");
+
+    const firstCard = page.locator('[data-testid="boutique-product-grid"] article').first();
+    await expect(firstCard).toBeVisible();
+
+    // article a un aria-label (nom du produit)
+    const articleLabel = await firstCard.getAttribute("aria-label");
+    expect(articleLabel, "article should have aria-label with product name").toBeTruthy();
+
+    // titre h3 visible et non vide
+    const title = firstCard.locator("h3");
+    await expect(title).toBeVisible();
+    const titleText = await title.textContent();
+    expect(titleText?.trim().length, "h3 title should not be empty").toBeGreaterThan(0);
+
+    // aria-label du h3 est cohérent avec l'aria-label de l'article
+    expect(titleText?.trim()).toBe(articleLabel);
+
+    // disponibilité visible : "En stock", "Sur commande" ou "Indisponible"
+    const availabilityText = await firstCard.evaluate((el) => {
+      const spans = [...el.querySelectorAll("span")];
+      return spans.find((s) =>
+        ["En stock", "Sur commande", "Indisponible"].includes((s.textContent ?? "").trim())
+      )?.textContent?.trim() ?? null;
+    });
+    expect(availabilityText, "availability text should be visible in card").toBeTruthy();
+
+    // bouton favori accessible
+    const favoriteBtn = firstCard.getByRole("button", { name: /favoris/i });
+    await expect(favoriteBtn).toBeVisible();
+    const favLabel = await favoriteBtn.getAttribute("aria-label");
+    expect(favLabel, "favorite button should have aria-label").toBeTruthy();
+
+    // si prix barré présent → sr-only "Ancien prix" doit exister
+    const hasDel = await firstCard.locator("del").count();
+    if (hasDel > 0) {
+      const srOnly = await firstCard.evaluate((el) => {
+        const del = el.querySelector("del");
+        if (!del) return null;
+        const sr = del.querySelector(".sr-only");
+        return sr?.textContent?.trim() ?? null;
+      });
+      expect(srOnly, "sr-only ancien prix label should be present in <del>").toMatch(/Ancien prix/i);
+    }
   });
 });
 

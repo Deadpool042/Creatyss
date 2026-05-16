@@ -5,7 +5,7 @@ import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutiq
 
 type BoutiqueAvailabilityFormProps = {
   searchQuery: BoutiquePageViewModel["searchQuery"];
-  selectedCategorySlug: BoutiquePageViewModel["selectedCategorySlug"];
+  selectedCategorySlugs: BoutiquePageViewModel["selectedCategorySlugs"];
   selectedSort: BoutiquePageViewModel["selectedSort"];
   selectedAvailabilityStatus: BoutiquePageViewModel["selectedAvailabilityStatus"];
   availabilityOptions: BoutiquePageViewModel["availabilityOptions"];
@@ -13,7 +13,7 @@ type BoutiqueAvailabilityFormProps = {
 
 export function BoutiqueAvailabilityForm({
   searchQuery,
-  selectedCategorySlug,
+  selectedCategorySlugs,
   selectedSort,
   selectedAvailabilityStatus,
   availabilityOptions,
@@ -23,7 +23,7 @@ export function BoutiqueAvailabilityForm({
       <Link
         href={buildBoutiqueUrl({
           q: searchQuery,
-          category: selectedCategorySlug,
+          categories: selectedCategorySlugs,
           availability: null,
           sort: selectedSort,
         })}
@@ -43,7 +43,7 @@ export function BoutiqueAvailabilityForm({
           key={option.id}
           href={buildBoutiqueUrl({
             q: searchQuery,
-            category: selectedCategorySlug,
+            categories: selectedCategorySlugs,
             availability: option.id,
             sort: selectedSort,
           })}

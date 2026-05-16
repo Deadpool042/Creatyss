@@ -24,7 +24,7 @@ export function PublicSiteShell({ children }: PublicSiteShellProps) {
       <OrientationGuard />
       <TopbarPublic pathname={pathname} />
 
-      <main className="mx-auto w-full max-w-full flex-1  ">{children}</main>
+      <main id="main-content" className="mx-auto w-full max-w-full flex-1">{children}</main>
 
       <FooterPublic />
     </div>

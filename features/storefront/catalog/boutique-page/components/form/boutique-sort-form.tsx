@@ -3,7 +3,7 @@ import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutiq
 
 type BoutiqueSortFormProps = {
   searchQuery: string;
-  selectedCategorySlug: string;
+  selectedCategorySlugs: string[];
   selectedAvailabilityStatus: BoutiquePageViewModel["selectedAvailabilityStatus"];
   selectedMinPriceCents: number | null;
   selectedMaxPriceCents: number | null;
@@ -22,7 +22,7 @@ const SORT_OPTIONS: ReadonlyArray<{
 
 export function BoutiqueSortForm({
   searchQuery,
-  selectedCategorySlug,
+  selectedCategorySlugs,
   selectedAvailabilityStatus,
   selectedMinPriceCents,
   selectedMaxPriceCents,
@@ -31,7 +31,9 @@ export function BoutiqueSortForm({
   return (
     <form action="/boutique" method="get" className="min-w-0">
       <input type="hidden" name="q" value={searchQuery} />
-      <input type="hidden" name="category" value={selectedCategorySlug} />
+      {selectedCategorySlugs.map((slug) => (
+        <input key={slug} type="hidden" name="category" value={slug} />
+      ))}
 
       {selectedAvailabilityStatus ? (
         <input type="hidden" name="availability" value={selectedAvailabilityStatus} />
@@ -53,7 +55,7 @@ export function BoutiqueSortForm({
         <select
           id="boutique-sort"
           name="sort"
-          className="h-8 max-w-[9.25rem] appearance-none rounded-md border border-control-border bg-control-surface py-0 pl-3 pr-8 text-xs font-medium leading-none text-foreground outline-none transition-colors hover:border-control-border-strong hover:bg-control-surface-hover focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-focus-ring/60 tablet:h-9 tablet:max-w-48 tablet:text-[0.8125rem]"
+          className="h-8 max-w-37 appearance-none rounded-md border border-control-border bg-control-surface py-0 pl-3 pr-8 text-xs font-medium leading-none text-foreground outline-none transition-colors hover:border-control-border-strong hover:bg-control-surface-hover focus-visible:border-brand focus-visible:ring-2 focus-visible:ring-focus-ring/60 tablet:h-9 tablet:max-w-48 tablet:text-[0.8125rem]"
           defaultValue={selectedSort}
           aria-label="Trier les produits"
           onChange={(event) => {

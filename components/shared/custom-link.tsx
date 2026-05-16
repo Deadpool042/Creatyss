@@ -56,7 +56,7 @@ type CustomLinkProps = Omit<ComponentPropsWithoutRef<typeof Link>, "className"> 
 };
 
 const baseClasses =
-  "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+  "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus-ring";
 
 /**
  * Mapping des styles par variante.

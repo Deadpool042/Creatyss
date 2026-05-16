@@ -1,3 +1,5 @@
+export { BlogImagePickerField } from "./components/blog-image-picker-field";
+
 export {
   createBlogPostAction,
   deleteBlogPostAction,

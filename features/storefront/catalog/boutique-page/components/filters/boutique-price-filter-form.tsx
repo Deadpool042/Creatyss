@@ -10,25 +10,30 @@ import {
   eurosInputToCents,
 } from "@/features/storefront/catalog/boutique-page/model/price-input-utils";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
+import { cn } from "@/lib/utils";
 
 type BoutiquePriceFilterFormProps = {
   searchQuery: BoutiquePageViewModel["searchQuery"];
-  selectedCategorySlug: BoutiquePageViewModel["selectedCategorySlug"];
+  selectedCategorySlugs: BoutiquePageViewModel["selectedCategorySlugs"];
   selectedAvailabilityStatus: BoutiquePageViewModel["selectedAvailabilityStatus"];
   selectedSort: BoutiquePageViewModel["selectedSort"];
   selectedMinPriceCents: BoutiquePageViewModel["selectedMinPriceCents"];
   selectedMaxPriceCents: BoutiquePageViewModel["selectedMaxPriceCents"];
   className?: string;
+  onMinChange?: (value: string) => void;
+  onMaxChange?: (value: string) => void;
 };
 
 export function BoutiquePriceFilterForm({
   searchQuery,
-  selectedCategorySlug,
+  selectedCategorySlugs,
   selectedAvailabilityStatus,
   selectedSort,
   selectedMinPriceCents,
   selectedMaxPriceCents,
   className = "grid gap-2 border-t border-shell-border/70 pt-4",
+  onMinChange,
+  onMaxChange,
 }: BoutiquePriceFilterFormProps) {
   const [minPriceEuros, setMinPriceEuros] = useState(centsToEurosInputValue(selectedMinPriceCents));
   const [maxPriceEuros, setMaxPriceEuros] = useState(centsToEurosInputValue(selectedMaxPriceCents));
@@ -36,73 +41,103 @@ export function BoutiquePriceFilterForm({
   const minPriceCents = useMemo(() => eurosInputToCents(minPriceEuros), [minPriceEuros]);
   const maxPriceCents = useMemo(() => eurosInputToCents(maxPriceEuros), [maxPriceEuros]);
 
+  const isMinInvalid = minPriceEuros.trim().length > 0 && minPriceCents === null;
+  const isMaxInvalid = maxPriceEuros.trim().length > 0 && maxPriceCents === null;
+  const isRangeInvalid =
+    minPriceCents !== null && maxPriceCents !== null && minPriceCents > maxPriceCents;
+
   const clearPriceHref = buildBoutiqueUrl({
     q: searchQuery,
-    category: selectedCategorySlug,
+    categories: selectedCategorySlugs,
     availability: selectedAvailabilityStatus,
     sort: selectedSort,
   });
+
+  const inputBase =
+    "h-9 w-full min-w-0 rounded-lg border bg-control-surface px-2.5 text-sm text-foreground shadow-control outline-none transition-all hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:ring-3 focus-visible:ring-focus-ring/50";
+  const inputDefault = "border-control-border hover:border-control-border-strong focus-visible:border-focus-ring";
+  const inputError = "border-feedback-error focus-visible:border-feedback-error";
 
   return (
     <section className={className}>
       <form action="/boutique" method="get" className="grid min-w-0 w-full max-w-full gap-2">
         <input type="hidden" name="q" value={searchQuery} />
-        {selectedCategorySlug !== "" ? (
-          <input type="hidden" name="category" value={selectedCategorySlug} />
-        ) : null}
+        {selectedCategorySlugs.map((slug) => (
+          <input key={slug} type="hidden" name="category" value={slug} />
+        ))}
         {selectedAvailabilityStatus ? (
           <input type="hidden" name="availability" value={selectedAvailabilityStatus} />
         ) : null}
-
         {selectedSort !== "featured" ? (
           <input type="hidden" name="sort" value={selectedSort} />
         ) : null}
 
-        <p className="m-0 text-xs text-text-muted-strong">Montants en euros</p>
+        <p className="m-0 text-xs text-text-muted-strong">Montants en euros (entiers)</p>
 
         <div className="grid min-w-0 grid-cols-1 gap-2 min-[360px]:grid-cols-2">
-          <label
-            className="grid min-w-0 gap-1 text-xs text-text-muted-strong"
-            htmlFor="boutique-price-min"
-          >
+          <label className="grid min-w-0 gap-1 text-xs text-text-muted-strong" htmlFor="boutique-price-min">
             Prix minimum
             <input
               id="boutique-price-min"
               type="text"
               inputMode="numeric"
-              placeholder="Min"
+              placeholder="Ex : 50"
               value={minPriceEuros}
-              onChange={(event) => setMinPriceEuros(event.currentTarget.value)}
-              className="h-9 w-full min-w-0 rounded-lg border border-control-border bg-control-surface px-2.5 text-sm text-foreground shadow-control outline-none transition-all hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50"
+              aria-invalid={isMinInvalid ? "true" : undefined}
+              aria-describedby={isMinInvalid || isRangeInvalid ? "boutique-price-error" : undefined}
+              onChange={(event) => {
+                const v = event.currentTarget.value;
+                setMinPriceEuros(v);
+                onMinChange?.(v);
+              }}
+              className={cn(inputBase, isMinInvalid ? inputError : inputDefault)}
             />
           </label>
 
-          <label
-            className="grid min-w-0 gap-1 text-xs text-text-muted-strong"
-            htmlFor="boutique-price-max"
-          >
+          <label className="grid min-w-0 gap-1 text-xs text-text-muted-strong" htmlFor="boutique-price-max">
             Prix maximum
             <input
               id="boutique-price-max"
               type="text"
               inputMode="numeric"
-              placeholder="Max"
+              placeholder="Ex : 200"
               value={maxPriceEuros}
-              onChange={(event) => setMaxPriceEuros(event.currentTarget.value)}
-              className="h-9 w-full min-w-0 rounded-lg border border-control-border bg-control-surface px-2.5 text-sm text-foreground shadow-control outline-none transition-all hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50"
+              aria-invalid={isMaxInvalid ? "true" : undefined}
+              aria-describedby={isMaxInvalid || isRangeInvalid ? "boutique-price-error" : undefined}
+              onChange={(event) => {
+                const v = event.currentTarget.value;
+                setMaxPriceEuros(v);
+                onMaxChange?.(v);
+              }}
+              className={cn(inputBase, isMaxInvalid ? inputError : inputDefault)}
             />
           </label>
         </div>
 
-        {minPriceCents !== null ? (
+        {(isMinInvalid || isMaxInvalid) ? (
+          <p id="boutique-price-error" role="alert" className="m-0 text-[0.6875rem] leading-snug text-feedback-error">
+            Valeur invalide — saisissez un nombre entier.
+          </p>
+        ) : isRangeInvalid ? (
+          <p id="boutique-price-error" role="alert" className="m-0 text-[0.6875rem] leading-snug text-feedback-error">
+            Le minimum doit être inférieur au maximum.
+          </p>
+        ) : null}
+
+        {minPriceCents !== null && !isRangeInvalid ? (
           <input type="hidden" name="minPrice" value={String(minPriceCents)} />
         ) : null}
-        {maxPriceCents !== null ? (
+        {maxPriceCents !== null && !isRangeInvalid ? (
           <input type="hidden" name="maxPrice" value={String(maxPriceCents)} />
         ) : null}
 
         <div className="grid min-w-0 grid-cols-1 gap-2">
-          <Button type="submit" size="sm" className="h-8 w-full min-w-0 px-3 text-xs">
+          <Button
+            type="submit"
+            size="sm"
+            className="h-8 w-full min-w-0 px-3 text-xs"
+            disabled={isMinInvalid || isMaxInvalid || isRangeInvalid}
+          >
             Appliquer
           </Button>
           <Link

@@ -3,7 +3,7 @@ import type { CatalogAvailabilityFilterValue } from "@/entities/catalog/catalog-
 
 type BuildBoutiqueUrlInput = {
   q?: string | null;
-  category?: string | null;
+  categories?: string[] | null;
   availability?: CatalogAvailabilityFilterValue | null;
   minPrice?: number | null;
   maxPrice?: number | null;
@@ -18,8 +18,13 @@ export function buildBoutiqueUrl(input: BuildBoutiqueUrlInput): string {
     params.set("q", input.q.trim());
   }
 
-  if (input.category && input.category.trim().length > 0) {
-    params.set("category", input.category.trim());
+  if (Array.isArray(input.categories) && input.categories.length > 0) {
+    for (const slug of input.categories) {
+      const trimmed = slug.trim();
+      if (trimmed.length > 0) {
+        params.append("category", trimmed);
+      }
+    }
   }
 
   if (input.availability) {

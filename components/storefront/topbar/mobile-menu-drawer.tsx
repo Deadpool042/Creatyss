@@ -75,14 +75,14 @@ type DrawerLinkGroupProps = Readonly<{
 const BOTTOM_NAV_TRIGGER_CLS = [
   "flex min-h-14 w-full flex-col items-center justify-center gap-1 py-2",
   "text-[0.65rem] font-medium tracking-[0.02em] transition-colors",
-  "text-foreground/65 hover:text-brand",
+  "text-text-muted-strong hover:text-brand",
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 ].join(" ");
 
 const TOPBAR_TRIGGER_CLS = [
-  "inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors",
-  "text-foreground/70 hover:bg-surface-subtle hover:text-brand",
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+  "inline-flex size-8 items-center justify-center rounded-full transition-all duration-200 ease-out",
+  "text-text-muted-strong hover:bg-interactive-hover hover:text-foreground",
+  "focus-visible:outline-none focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50",
 ].join(" ");
 
 const GROUP_CLS = [

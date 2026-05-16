@@ -1,4 +1,4 @@
-import { Prisma } from "@/prisma-generated/client";
+import { Prisma, SeoSubjectType } from "@/prisma-generated/client";
 import { withTransaction } from "@/core/db";
 import { toPrismaBlogPostStatus } from "../mappers";
 import {
@@ -52,8 +52,10 @@ export async function updateAdminBlogPost(
             },
           });
 
+    let updatedPost: { id: string };
+
     try {
-      return await tx.blogPost.update({
+      updatedPost = await tx.blogPost.update({
         where: {
           id: input.id,
         },
@@ -79,5 +81,28 @@ export async function updateAdminBlogPost(
 
       throw error;
     }
+
+    await tx.seoMetadata.upsert({
+      where: {
+        storeId_subjectType_subjectId: {
+          storeId: existing.storeId,
+          subjectType: SeoSubjectType.BLOG_POST,
+          subjectId: input.id,
+        },
+      },
+      create: {
+        storeId: existing.storeId,
+        subjectType: SeoSubjectType.BLOG_POST,
+        subjectId: input.id,
+        metaTitle: input.seoTitle ?? null,
+        metaDescription: input.seoDescription ?? null,
+      },
+      update: {
+        metaTitle: input.seoTitle ?? null,
+        metaDescription: input.seoDescription ?? null,
+      },
+    });
+
+    return updatedPost;
   });
 }

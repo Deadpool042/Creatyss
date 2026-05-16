@@ -10,7 +10,7 @@ export const TOPBAR_NAV_ITEM_CLASS_NAME = cn(
   "font-medium uppercase leading-none",
   "text-[0.72rem] wide:text-[0.78rem]",
   "tracking-[0.18em] wide:tracking-[0.2em]",
-  "text-foreground/72 hover:text-brand focus-visible:text-brand",
+  "text-text-muted-strong hover:text-brand focus-visible:text-brand",
   "bg-transparent hover:bg-transparent focus-visible:bg-transparent",
   "rounded-none outline-none transition-colors",
   "after:absolute after:bottom-1 after:left-0 after:h-px after:w-full",

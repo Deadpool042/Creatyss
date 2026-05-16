@@ -28,11 +28,11 @@
   --breakpoint-ultrawide: 100rem; /* 1600px */
   --breakpoint-2k: 120rem; /* 1920px */
   --breakpoint-4k: 160rem; /* 2560px */
+  --breakpoint-8k: 200rem; /* 3840px */
 
   /* ==========================================================================
      Typography
      ========================================================================== */
-
   /* --font-sans et --font-serif sont injectés par Next.js depuis app/layout.tsx
      via la prop `variable` des fonctions next/font. Leur valeur concrète vient
      du layout, pas du thème. Ce mapping les expose uniquement au système Tailwind. */

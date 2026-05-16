@@ -1,6 +1,6 @@
 /// Feature: content.homepage
-/// Category: core
-/// Level: core
+/// Category: optional
+/// Level: L2
 /// DependsOn: foundation.store, catalog.products, content.pages
 
 enum HomepageStatus {

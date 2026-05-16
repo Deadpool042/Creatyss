@@ -63,7 +63,9 @@ function buildCanonicalBoutiqueHref(
     }
 
     if (Array.isArray(value) && value.length > 0) {
-      params.set(key, value[0] ?? "");
+      for (const v of value) {
+        params.append(key, v);
+      }
     }
   }
 
@@ -135,21 +137,23 @@ export async function generateMetadata({ searchParams }: ProductsPageProps): Pro
   });
   const searchQuery = validateCatalogSearchQuery(catalogSearchParams.q);
   const filters = validateCatalogFilterInput({
-    category: catalogSearchParams.category,
+    categories: catalogSearchParams.category,
     availability: catalogSearchParams.availability,
     minPrice: catalogSearchParams.minPrice,
     maxPrice: catalogSearchParams.maxPrice,
   });
-  const categories = filters.categorySlug === null ? [] : await listCatalogFilterCategories();
-  const selectedCategory =
-    filters.categorySlug === null
+  const categories = filters.categorySlugs.length === 0 ? [] : await listCatalogFilterCategories();
+  const firstSlug = filters.categorySlugs[0] ?? null;
+  const selectedCategoryLabel: string | null =
+    filters.categorySlugs.length === 0
       ? null
-      : (categories.find((category) => category.slug === filters.categorySlug) ?? null);
+      : filters.categorySlugs.length === 1 && firstSlug !== null
+        ? (categories.find((c) => c.slug === firstSlug)?.name ?? firstSlug)
+        : `${filters.categorySlugs.length} catégories`;
 
   return getBoutiqueMetadata({
     searchQuery,
-    categoryLabel:
-      filters.categorySlug === null ? null : (selectedCategory?.name ?? filters.categorySlug),
+    categoryLabel: selectedCategoryLabel,
     availabilityStatus: filters.availabilityStatus,
   });
 }
@@ -172,14 +176,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   });
   const searchQuery = validateCatalogSearchQuery(catalogSearchParams.q);
   const filters = validateCatalogFilterInput({
-    category: catalogSearchParams.category,
+    categories: catalogSearchParams.category,
     availability: catalogSearchParams.availability,
     minPrice: catalogSearchParams.minPrice,
     maxPrice: catalogSearchParams.maxPrice,
   });
   const totalProductCount = await countPublishedProducts({
     searchQuery,
-    categorySlug: filters.categorySlug,
+    categorySlugs: filters.categorySlugs,
     availabilityStatus: filters.availabilityStatus,
     minPriceCents: filters.minPriceCents,
     maxPriceCents: filters.maxPriceCents,
@@ -204,10 +208,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   }
 
   const skip = (currentPage - 1) * BOUTIQUE_PRODUCTS_PAGE_SIZE;
-  const [productsPage, categories, initialFavoriteProductIds] = await Promise.all([
+  const [productsPage, categories, initialFavoriteProductIds, inStockCount, madeToOrderCount, unavailableCount] = await Promise.all([
     listPublishedProductsPage({
       searchQuery,
-      categorySlug: filters.categorySlug,
+      categorySlugs: filters.categorySlugs,
       availabilityStatus: filters.availabilityStatus,
       minPriceCents: filters.minPriceCents,
       maxPriceCents: filters.maxPriceCents,
@@ -218,12 +222,36 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     }),
     listCatalogFilterCategories(),
     readFavoriteProductIds(),
+    countPublishedProducts({
+      searchQuery,
+      categorySlugs: filters.categorySlugs,
+      availabilityStatus: "in-stock",
+      minPriceCents: filters.minPriceCents,
+      maxPriceCents: filters.maxPriceCents,
+    }),
+    countPublishedProducts({
+      searchQuery,
+      categorySlugs: filters.categorySlugs,
+      availabilityStatus: "made-to-order",
+      minPriceCents: filters.minPriceCents,
+      maxPriceCents: filters.maxPriceCents,
+    }),
+    countPublishedProducts({
+      searchQuery,
+      categorySlugs: filters.categorySlugs,
+      availabilityStatus: "unavailable",
+      minPriceCents: filters.minPriceCents,
+      maxPriceCents: filters.maxPriceCents,
+    }),
   ]);
 
-  const selectedCategory =
-    filters.categorySlug === null
+  const firstCategorySlug = filters.categorySlugs[0] ?? null;
+  const selectedCategoryLabel: string | null =
+    filters.categorySlugs.length === 0
       ? null
-      : (categories.find((category) => category.slug === filters.categorySlug) ?? null);
+      : filters.categorySlugs.length === 1 && firstCategorySlug !== null
+        ? (categories.find((c) => c.slug === firstCategorySlug)?.name ?? firstCategorySlug)
+        : `${filters.categorySlugs.length} catégories`;
   const uploadsPublicPath = getUploadsPublicPath();
 
   const model = buildBoutiquePageViewModel({
@@ -231,9 +259,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     categories,
     uploadsPublicPath,
     searchQuery,
-    selectedCategorySlug: filters.categorySlug,
-    selectedCategoryLabel:
-      filters.categorySlug === null ? null : (selectedCategory?.name ?? filters.categorySlug),
+    selectedCategorySlugs: filters.categorySlugs,
+    selectedCategoryLabel,
     selectedAvailabilityStatus: filters.availabilityStatus,
     selectedMinPriceCents: filters.minPriceCents,
     selectedMaxPriceCents: filters.maxPriceCents,
@@ -241,6 +268,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     totalProductCount,
     pageSize: BOUTIQUE_PRODUCTS_PAGE_SIZE,
     currentPage,
+    availabilityCounts: {
+      "in-stock": inStockCount,
+      "made-to-order": madeToOrderCount,
+      "unavailable": unavailableCount,
+    },
   });
 
   return <BoutiquePage model={model} initialFavoriteProductIds={initialFavoriteProductIds} />;

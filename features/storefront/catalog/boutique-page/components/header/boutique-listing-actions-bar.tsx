@@ -6,12 +6,8 @@ import { BoutiqueFiltersDrawer } from "@/features/storefront/catalog/boutique-pa
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
 
 const FILTER_TRIGGER_BUTTON_CLASS =
-  "inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-surface-border-subtle bg-control-surface px-2.5 text-xs font-medium leading-none text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground active:translate-y-px [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-brand";
+  "inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-surface-border-subtle bg-control-surface px-2.5 text-xs font-medium leading-none text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground active:translate-y-px [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-brand ";
 
-// Shortcuts : ouvrent le drawer général (même contenu que "Filtres").
-// Amélioration future possible : initialSection ciblée par shortcut.
-const SHORTCUT_BUTTON_CLASS =
-  "inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-3 text-sm font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground";
 
 type BoutiqueListingActionsBarProps = {
   model: BoutiquePageViewModel;
@@ -23,7 +19,7 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
   }`;
 
   return (
-    <div className="grid gap-1.5 px-2 pt-0.5">
+    <div className="grid gap-1.5  p-2 pt-0.5 ">
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 min-w-0">
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
           <BoutiqueMobileFilters
@@ -50,31 +46,6 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
             {creationCountLabel}
           </span>
 
-          <div
-            data-testid="boutique-filter-shortcuts"
-            role="group"
-            aria-label="Accès rapides aux filtres"
-            className="hidden min-w-0 items-center gap-2 tablet:inline-flex wide:hidden"
-          >
-            <BoutiqueFiltersDrawer
-              model={model}
-              label="Catégories"
-              className={SHORTCUT_BUTTON_CLASS}
-              triggerTestId="boutique-filter-shortcut-category"
-            />
-            <BoutiqueFiltersDrawer
-              model={model}
-              label="Disponibilité"
-              className={SHORTCUT_BUTTON_CLASS}
-              triggerTestId="boutique-filter-shortcut-availability"
-            />
-            <BoutiqueFiltersDrawer
-              model={model}
-              label="Prix"
-              className={SHORTCUT_BUTTON_CLASS}
-              triggerTestId="boutique-filter-shortcut-price"
-            />
-          </div>
         </div>
 
         <div className="ml-auto flex min-w-0 items-center justify-end gap-2">
@@ -84,7 +55,7 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
             </span>
             <BoutiqueSortForm
               searchQuery={model.searchQuery}
-              selectedCategorySlug={model.selectedCategorySlug}
+              selectedCategorySlugs={model.selectedCategorySlugs}
               selectedAvailabilityStatus={model.selectedAvailabilityStatus}
               selectedMinPriceCents={model.selectedMinPriceCents}
               selectedMaxPriceCents={model.selectedMaxPriceCents}

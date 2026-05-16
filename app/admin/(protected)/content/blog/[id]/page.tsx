@@ -7,8 +7,11 @@ import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { getAdminBlogPostDetail } from "@/features/admin/blog/queries/get-admin-blog-post-detail.query";
+import { getUploadsPublicPath } from "@/core/uploads";
+import { BlogImagePickerField } from "@/features/admin/blog";
 import { updateBlogPostAction } from "@/features/admin/blog/actions/update-blog-post-action";
+import { getAdminBlogPostDetail } from "@/features/admin/blog/queries/get-admin-blog-post-detail.query";
+import { listAdminMediaAssets } from "@/features/admin/media";
 
 async function handleUpdateBlogPost(formData: FormData): Promise<void> {
   "use server";
@@ -23,7 +26,11 @@ export default async function EditAdminBlogPostPage({
   params,
 }: EditAdminBlogPostPageProps) {
   const { id } = await params;
-  const post = await getAdminBlogPostDetail({ postId: id });
+  const [post, assets, uploadsPublicPath] = await Promise.all([
+    getAdminBlogPostDetail({ postId: id }),
+    listAdminMediaAssets(),
+    Promise.resolve(getUploadsPublicPath()),
+  ]);
 
   if (post === null) {
     notFound();
@@ -32,9 +39,9 @@ export default async function EditAdminBlogPostPage({
   return (
     <AdminPageShell
       pageTitleNavigation={{ label: "Retour", href: "/admin/content/blog" }}
-      description="Modification d’un article de blog."
+      description="Modification d'un article de blog."
       eyebrow="Blog"
-      title="Modifier l’article"
+      title="Modifier l'article"
     >
       <AdminFormSection>
         <form action={handleUpdateBlogPost} className="grid gap-4">
@@ -75,15 +82,21 @@ export default async function EditAdminBlogPostPage({
           </AdminFormField>
 
           <input type="hidden" name="status" value={post.status} />
-          <input
-            type="hidden"
-            name="primaryImageMediaAssetId"
-            value={post.primaryImageMediaAssetId ?? ""}
+
+          <BlogImagePickerField
+            name="primaryImagePath"
+            label="Image principale"
+            defaultValue={post.primaryImagePath ?? null}
+            assets={assets}
+            uploadsPublicPath={uploadsPublicPath}
           />
-          <input
-            type="hidden"
-            name="coverImageMediaAssetId"
-            value={post.coverImageMediaAssetId ?? ""}
+
+          <BlogImagePickerField
+            name="coverImagePath"
+            label="Image de couverture"
+            defaultValue={post.coverImagePath ?? null}
+            assets={assets}
+            uploadsPublicPath={uploadsPublicPath}
           />
 
           <AdminFormActions>

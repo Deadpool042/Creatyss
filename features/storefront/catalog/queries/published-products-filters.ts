@@ -2,7 +2,7 @@ import type { CatalogAvailabilityFilterValue } from "@/entities/catalog/catalog-
 
 type BuildPublishedProductWhereInput = {
   searchQuery: string | null;
-  categorySlug: string | null;
+  categorySlugs: string[];
   minPriceCents: number | null;
   maxPriceCents: number | null;
 };
@@ -29,15 +29,15 @@ export function buildPublishedProductWhereInput(input: BuildPublishedProductWher
           ],
         }
       : {}),
-    ...(input.categorySlug
+    ...(input.categorySlugs.length > 0
       ? {
           productCategories: {
             some: {
               category: {
-                OR: [
-                  { slug: input.categorySlug },
-                  { parent: { slug: input.categorySlug } },
-                ],
+                OR: input.categorySlugs.flatMap((slug) => [
+                  { slug },
+                  { parent: { slug } },
+                ]),
               },
             },
           },

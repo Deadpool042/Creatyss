@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Settings2Icon, XIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Check, Settings2Icon, XIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,13 +14,9 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { useBoutiqueFilterCount } from "@/features/storefront/catalog/boutique-page/hooks/use-boutique-filter-count";
-import { normalizeAvailabilityParam } from "@/features/storefront/catalog/boutique-page/model/availability-filter.utils";
-import { buildBoutiqueUrl } from "@/features/storefront/catalog/boutique-page/model/build-boutique-url";
-import {
-  centsToEurosInputValue,
-  eurosInputToCents,
-} from "@/features/storefront/catalog/boutique-page/model/price-input-utils";
+import { useBoutiqueFilterState } from "@/features/storefront/catalog/boutique-page/hooks/use-boutique-filter-state";
+import { buildCategoryGroups } from "@/features/storefront/catalog/boutique-page/model/category-group.utils";
+import { eurosInputToCents } from "@/features/storefront/catalog/boutique-page/model/price-input-utils";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
 import { cn } from "@/lib/utils";
 
@@ -38,11 +34,10 @@ type BoutiqueFilterOptionProps = {
   label: string;
   checked: boolean;
   onChange: () => void;
-  type: "radio";
+  type: "radio" | "checkbox";
   indicator?: "dot" | "square";
   helperText?: string;
 };
-
 
 function BoutiqueFilterOption({
   inputId,
@@ -80,20 +75,32 @@ function BoutiqueFilterOption({
       <span
         aria-hidden="true"
         className={cn(
-          "grid size-4 shrink-0 mt-0.5 place-items-center border border-control-border/70 bg-transparent transition-colors group-focus-within:ring-[2px] group-focus-within:ring-focus-ring/50 group-data-[checked=true]:border-brand",
-          indicator === "square" ? "rounded-sm" : "rounded-full"
+          "flex h-3.5 w-3.5 shrink-0 mt-0.5 items-center justify-center border shadow-control transition group-focus-within:ring-2 group-focus-within:ring-focus-ring/50",
+          indicator === "square" ? "rounded-sm" : "rounded-full",
+          checked
+            ? indicator === "square"
+              ? "border-brand bg-brand"
+              : "border-brand"
+            : "border-control-border"
         )}
       >
-        {checked && indicator === "dot" ? <span className="size-1.5 rounded-full bg-brand" /> : null}
-
+        {checked && indicator === "dot" ? (
+          <span className="size-1.5 rounded-full bg-brand" />
+        ) : null}
         {checked && indicator === "square" ? (
-          <span className="text-brand text-[0.625rem] leading-none">✓</span>
+          <Check className="size-2.5 stroke-3 text-white" />
         ) : null}
       </span>
 
-      <span className="pr-1 text-sm leading-[1.35] group-data-[checked=true]:font-medium">{label}</span>
+      <span className={cn("pr-1 text-sm leading-[1.35]", checked ? "font-medium text-foreground" : "text-text-muted-strong")}>
+        {label}
+      </span>
 
-      {helperText ? <span className="col-start-2 m-0 text-[0.6875rem] leading-[1.35] text-text-muted-strong">{helperText}</span> : null}
+      {helperText ? (
+        <span className="col-start-2 m-0 text-[0.6875rem] leading-[1.35] text-text-muted-strong">
+          {helperText}
+        </span>
+      ) : null}
     </label>
   );
 }
@@ -106,63 +113,31 @@ export function BoutiqueMobileFilters({
 }: BoutiqueMobileFiltersProps) {
   const router = useRouter();
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-  const searchParams = useSearchParams();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategorySlug, setSelectedCategorySlug] = useState(model.selectedCategorySlug);
-  const [selectedAvailability, setSelectedAvailability] = useState<
-    "" | BoutiquePageViewModel["availabilityOptions"][number]["id"]
-  >(
-    normalizeAvailabilityParam(searchParams.get("availability")) ||
-      (model.onlyAvailable ? "in-stock" : "")
-  );
-  const [selectedMinPriceEuros, setSelectedMinPriceEuros] = useState(
-    centsToEurosInputValue(model.selectedMinPriceCents)
-  );
-  const [selectedMaxPriceEuros, setSelectedMaxPriceEuros] = useState(
-    centsToEurosInputValue(model.selectedMaxPriceCents)
-  );
 
-  const { count: resultCount, countFetchFailed } = useBoutiqueFilterCount({
-    searchQuery: model.searchQuery,
-    selectedSort: model.selectedSort,
-    selectedCategorySlug,
+  const {
+    selectedCategorySlugs,
     selectedAvailability,
     selectedMinPriceEuros,
     selectedMaxPriceEuros,
-    initialCount: model.totalProductCount,
-  });
+    toggleCategory,
+    setSelectedAvailability,
+    setSelectedMinPriceEuros,
+    setSelectedMaxPriceEuros,
+    resultCount,
+    countFetchFailed,
+    buildApplyHref,
+    resetState,
+  } = useBoutiqueFilterState({ model });
 
   const resultLabel = countFetchFailed
     ? "Voir les résultats"
     : `Voir ${resultCount} résultat${resultCount > 1 ? "s" : ""}`;
 
-  const applyFilters = (params: {
-    categorySlug: string;
-    availability: "" | BoutiquePageViewModel["availabilityOptions"][number]["id"];
-    minPriceEuros: string;
-    maxPriceEuros: string;
-  }) => {
-    const nextUrl = buildBoutiqueUrl({
-      q: model.searchQuery,
-      category: params.categorySlug,
-      availability: params.availability === "" ? null : params.availability,
-      minPrice: eurosInputToCents(params.minPriceEuros),
-      maxPrice: eurosInputToCents(params.maxPriceEuros),
-      sort: model.selectedSort,
-    });
-
-    setIsOpen(false);
-    router.push(nextUrl);
-  };
-
   const submitCurrentFilters = () => {
-    applyFilters({
-      categorySlug: selectedCategorySlug,
-      availability: selectedAvailability,
-      minPriceEuros: selectedMinPriceEuros,
-      maxPriceEuros: selectedMaxPriceEuros,
-    });
+    setIsOpen(false);
+    router.push(buildApplyHref());
   };
 
   return (
@@ -179,7 +154,7 @@ export function BoutiqueMobileFilters({
           event.preventDefault();
           closeButtonRef.current?.focus();
         }}
-        className="max-h-[86dvh] rounded-t-2xl border-shell-border/70 bg-surface-floating/92 shadow-floating p-0 backdrop-blur-[20px]"
+        className="h-full rounded-t-2xl border-brand bg-surface-floating/92 shadow-floating p-0 backdrop-blur-xl"
       >
         <DrawerHeader className="flex items-center justify-between border-b border-shell-border/70 px-4 py-3">
           <div className="grid gap-0.5">
@@ -214,42 +189,65 @@ export function BoutiqueMobileFilters({
           <input type="hidden" name="q" value={model.searchQuery} />
           <input type="hidden" name="sort" value={model.selectedSort} />
 
-          <section className="grid gap-1.5">
-            <p className="m-0 text-xs font-semibold tracking-[0.08em] uppercase text-text-muted-strong">
+          <fieldset className="grid gap-1.5">
+            <legend className="m-0 text-xs font-semibold tracking-[0.08em] uppercase text-text-muted-strong">
               Catégories
-            </p>
+            </legend>
 
-            <div className="grid max-h-[clamp(7.25rem,24dvh,11rem)] grid-cols-1 gap-0.5 overflow-y-auto pr-1">
+            <div className="grid max-h-[clamp(7.25rem,24dvh,11rem)] grid-cols-1 gap-0.5 overflow-y-auto px-1 py-0.5">
               <BoutiqueFilterOption
                 inputId="boutique-filter-category-all"
-                name="category"
+                name="category-all"
                 value=""
                 label="Tous les produits"
-                checked={selectedCategorySlug === ""}
-                onChange={() => setSelectedCategorySlug("")}
+                checked={selectedCategorySlugs.length === 0}
+                onChange={() => toggleCategory("", [])}
                 type="radio"
                 indicator="dot"
               />
 
-              {model.filterCategories.map((category) => (
-                <BoutiqueFilterOption
-                  key={category.id}
-                  inputId={`boutique-filter-category-${category.slug}`}
-                  name="category"
-                  value={category.slug}
-                  label={category.name}
-                  checked={selectedCategorySlug === category.slug}
-                  onChange={() => setSelectedCategorySlug(category.slug)}
-                  type="radio"
-                  indicator="dot"
-                />
+              {buildCategoryGroups(model.filterCategories).map(({ parent, children }) => (
+                <div key={parent.id}>
+                  <BoutiqueFilterOption
+                    inputId={`boutique-filter-category-${parent.slug}`}
+                    name="category"
+                    value={parent.slug}
+                    label={parent.name}
+                    checked={selectedCategorySlugs.includes(parent.slug)}
+                    onChange={() =>
+                      toggleCategory(
+                        parent.slug,
+                        children.map((c) => c.slug)
+                      )
+                    }
+                    type="checkbox"
+                    indicator="square"
+                  />
+                  {children.length > 0 ? (
+                    <div className="pl-5">
+                      {children.map((child) => (
+                        <BoutiqueFilterOption
+                          key={child.id}
+                          inputId={`boutique-filter-category-${child.slug}`}
+                          name="category"
+                          value={child.slug}
+                          label={child.name}
+                          checked={selectedCategorySlugs.includes(child.slug)}
+                          onChange={() => toggleCategory(child.slug, [], parent.slug)}
+                          type="checkbox"
+                          indicator="square"
+                        />
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
               ))}
             </div>
 
-            <p className="-mt-[0.05rem] text-[0.6875rem] leading-[1.3] text-text-muted-strong/76">
+            <p className="-mt-[0.05rem] text-[0.6875rem] leading-[1.3] text-text-muted-strong">
               Disponibilité et prix se règlent plus bas.
             </p>
-          </section>
+          </fieldset>
 
           <fieldset className="grid gap-1.5 border-t border-shell-border/60 pt-[0.65rem]">
             <legend className="m-0 text-xs font-semibold tracking-[0.08em] uppercase text-text-muted-strong">
@@ -292,6 +290,9 @@ export function BoutiqueMobileFilters({
             <p className="m-0 text-xs font-semibold tracking-[0.08em] uppercase text-text-muted-strong">
               Prix
             </p>
+            <p className="m-0 text-[0.6875rem] leading-[1.35] text-text-muted-strong">
+              Montants en euros (entiers)
+            </p>
 
             <div className="grid grid-cols-2 gap-2">
               <label
@@ -303,10 +304,10 @@ export function BoutiqueMobileFilters({
                   id="boutique-filter-min-price"
                   type="text"
                   inputMode="numeric"
-                  placeholder="Min"
+                  placeholder="Ex : 50"
                   value={selectedMinPriceEuros}
                   onChange={(event) => setSelectedMinPriceEuros(event.currentTarget.value)}
-                  className="h-9 rounded-lg border border-control-border bg-control-surface px-[0.625rem] text-sm text-foreground outline-none transition-colors hover:border-control-border-strong hover:bg-control-surface-hover focus-visible:border-focus-ring focus-visible:ring-2 focus-visible:ring-focus-ring/50"
+                  className="h-9 rounded-lg border border-control-border bg-control-surface px-2.5 text-sm text-foreground shadow-control outline-none transition-all hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50"
                 />
               </label>
 
@@ -319,60 +320,55 @@ export function BoutiqueMobileFilters({
                   id="boutique-filter-max-price"
                   type="text"
                   inputMode="numeric"
-                  placeholder="Max"
+                  placeholder="Ex : 200"
                   value={selectedMaxPriceEuros}
                   onChange={(event) => setSelectedMaxPriceEuros(event.currentTarget.value)}
-                  className="h-9 rounded-lg border border-control-border bg-control-surface px-[0.625rem] text-sm text-foreground outline-none transition-colors hover:border-control-border-strong hover:bg-control-surface-hover focus-visible:border-focus-ring focus-visible:ring-2 focus-visible:ring-focus-ring/50"
+                  className="h-9 rounded-lg border border-control-border bg-control-surface px-2.5 text-sm text-foreground shadow-control outline-none transition-all hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50"
                 />
               </label>
             </div>
+
+            {(selectedMinPriceEuros.trim() !== "" || selectedMaxPriceEuros.trim() !== "") ? (
+              <button
+                type="button"
+                onClick={() => { setSelectedMinPriceEuros(""); setSelectedMaxPriceEuros(""); }}
+                className="w-fit text-[0.6875rem] text-text-muted-soft underline-offset-2 transition-colors hover:text-foreground hover:underline"
+              >
+                Effacer le prix
+              </button>
+            ) : null}
           </section>
 
           {selectedAvailability !== "" ? (
             <input type="hidden" name="availability" value={selectedAvailability} />
           ) : null}
 
-          {eurosInputToCents(selectedMinPriceEuros) !== null ? (
-            <input
-              type="hidden"
-              name="minPrice"
-              value={String(eurosInputToCents(selectedMinPriceEuros))}
-            />
-          ) : null}
+          {(() => {
+            const minCents = eurosInputToCents(selectedMinPriceEuros);
+            const maxCents = eurosInputToCents(selectedMaxPriceEuros);
+            const safeMin = minCents !== null && maxCents !== null && minCents > maxCents ? maxCents : minCents;
+            const safeMax = minCents !== null && maxCents !== null && minCents > maxCents ? minCents : maxCents;
+            return (
+              <>
+                {safeMin !== null ? <input type="hidden" name="minPrice" value={String(safeMin)} /> : null}
+                {safeMax !== null ? <input type="hidden" name="maxPrice" value={String(safeMax)} /> : null}
+              </>
+            );
+          })()}
 
-          {eurosInputToCents(selectedMaxPriceEuros) !== null ? (
-            <input
-              type="hidden"
-              name="maxPrice"
-              value={String(eurosInputToCents(selectedMaxPriceEuros))}
-            />
-          ) : null}
-
-          <div className="sticky bottom-0 z-10 grid gap-1.5 border-t border-shell-border/70 bg-surface-floating/96 pt-2 pb-3 backdrop-blur-[12px]">
-            <Button type="submit" className="h-10" aria-live="polite">
+          <div className="sticky bottom-0 z-10 grid gap-1.5 border-t border-shell-border/70 bg-surface-floating/96 pt-2 pb-3 backdrop-blur-md">
+            <span aria-live="polite" aria-atomic="true" className="sr-only">{resultLabel}</span>
+            <Button type="submit" className="h-10">
               {resultLabel}
             </Button>
 
             <button
               type="button"
               onClick={() => {
-                const nextCategory = "";
-                const nextAvailability = "";
-                const nextMinPrice = "";
-                const nextMaxPrice = "";
-
-                setSelectedCategorySlug(nextCategory);
-                setSelectedAvailability(nextAvailability);
-                setSelectedMinPriceEuros(nextMinPrice);
-                setSelectedMaxPriceEuros(nextMaxPrice);
-
+                resetState();
                 requestAnimationFrame(() => {
-                  applyFilters({
-                    categorySlug: nextCategory,
-                    availability: nextAvailability,
-                    minPriceEuros: nextMinPrice,
-                    maxPriceEuros: nextMaxPrice,
-                  });
+                  setIsOpen(false);
+                  router.push(model.resetHref);
                 });
               }}
               className="inline-flex h-8 items-center justify-center text-xs text-text-muted-strong underline-offset-4 transition-colors hover:text-foreground hover:underline"

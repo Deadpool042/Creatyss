@@ -34,7 +34,7 @@ export function BoutiqueMobileCategoryGrid({
 
   return (
     <section
-      className="grid gap-[0.875rem] py-4 tablet:hidden"
+      className="grid gap-3.5ablet:hidden"
       aria-labelledby="boutique-categories-title"
       data-testid="boutique-mobile-discovery"
     >
@@ -62,7 +62,7 @@ export function BoutiqueMobileCategoryGrid({
         </CustomLink>
       </div>
 
-      <div
+      <nav
         data-testid="boutique-mobile-category-rail"
         className="flex gap-2 overflow-x-auto pb-1 [scroll-snap-type:x_mandatory] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         aria-label="Catégories"
@@ -76,7 +76,7 @@ export function BoutiqueMobileCategoryGrid({
               key={category.id}
               href={category.href}
               aria-current={category.isActive ? "page" : undefined}
-              className="group inline-flex shrink-0 items-center gap-2 min-h-[3rem] rounded-full border border-surface-border-subtle bg-surface-panel py-1.5 pl-1.5 pr-3 text-text-muted-strong outline-none [scroll-snap-align:start] transition-colors hover:border-control-border-strong hover:text-foreground active:scale-[0.97] focus-visible:ring-[3px] focus-visible:ring-focus-ring/42 data-[active=true]:border-brand/72 data-[active=true]:bg-brand/8 data-[active=true]:text-foreground"
+              className="group inline-flex shrink-0 items-center gap-2 min-h-12 rounded-full border border-surface-border-subtle bg-surface-panel py-1.5 pl-1.5 pr-3 text-text-muted-strong outline-none snap-start transition-colors hover:border-control-border-strong hover:text-foreground active:scale-[0.97] focus-visible:ring-[3px] focus-visible:ring-focus-ring/42 data-[active=true]:border-brand/72 data-[active=true]:bg-brand/8 data-[active=true]:text-foreground"
               data-active={category.isActive ? "true" : "false"}
             >
               <span className="relative grid shrink-0 size-9 place-items-center overflow-hidden rounded-full border border-surface-border-subtle bg-surface-panel/78 group-data-[active=true]:border-brand/70 group-data-[active=true]:bg-brand/[0.14]">
@@ -93,16 +93,16 @@ export function BoutiqueMobileCategoryGrid({
                   }
                 />
 
-                <span className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-background/16" />
+                <span className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-background/16" />
               </span>
 
-              <span className="max-w-[6.5rem] truncate text-xs font-medium leading-[1.1] group-data-[active=true]:font-[650]">
+              <span className="max-w-26 truncate text-xs font-medium leading-[1.1] group-data-[active=true]:font-[650]">
                 {category.name}
               </span>
             </Link>
           );
         })}
-      </div>
+      </nav>
     </section>
   );
 }

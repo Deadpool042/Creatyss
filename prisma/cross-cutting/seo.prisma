@@ -1,6 +1,6 @@
 /// Feature: content.seo
-/// Category: core
-/// Level: core
+/// Category: cross-cutting
+/// Level: L1
 /// DependsOn: foundation.store
 
 enum SeoStatus {

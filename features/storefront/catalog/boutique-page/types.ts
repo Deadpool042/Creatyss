@@ -46,7 +46,7 @@ export type BoutiquePageViewModel = {
   headingDescription: string | null;
   resultCountLabel: string;
   selectedSort: BoutiqueSortValue;
-  selectedCategorySlug: string;
+  selectedCategorySlugs: string[];
   searchQuery: string;
   onlyAvailable: boolean;
   selectedMinPriceCents: number | null;

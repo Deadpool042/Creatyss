@@ -5,51 +5,73 @@ import {
 } from "@/entities/catalog/catalog-filter-input";
 
 describe("validateCatalogFilterInput", () => {
-  it("normalise un slug de categorie simple", () => {
+  it("normalise un tableau de slugs de categorie", () => {
     expect(
       validateCatalogFilterInput({
-        category: "  Edition-Atelier  ",
+        categories: ["  Edition-Atelier  ", "CAPSULE"],
         availability: null,
       })
     ).toEqual({
-      categorySlug: "edition-atelier",
-      onlyAvailable: false,
+      categorySlugs: ["edition-atelier", "capsule"],
+      availabilityStatus: null,
+      minPriceCents: null,
+      maxPriceCents: null,
     });
   });
 
-  it("convertit une categorie vide en null", () => {
+  it("filtre les slugs vides", () => {
     expect(
       validateCatalogFilterInput({
-        category: "   ",
+        categories: ["   ", "", "capsule"],
         availability: null,
       })
     ).toEqual({
-      categorySlug: null,
-      onlyAvailable: false,
+      categorySlugs: ["capsule"],
+      availabilityStatus: null,
+      minPriceCents: null,
+      maxPriceCents: null,
+    });
+  });
+
+  it("retourne un tableau vide pour des categories toutes vides", () => {
+    expect(
+      validateCatalogFilterInput({
+        categories: ["   ", ""],
+        availability: null,
+      })
+    ).toEqual({
+      categorySlugs: [],
+      availabilityStatus: null,
+      minPriceCents: null,
+      maxPriceCents: null,
     });
   });
 
   it("active le filtre disponibilite uniquement pour la valeur attendue", () => {
     expect(
       validateCatalogFilterInput({
-        category: null,
+        categories: [],
         availability: CATALOG_AVAILABILITY_FILTER_VALUE,
       })
     ).toEqual({
-      categorySlug: null,
-      onlyAvailable: true,
+      categorySlugs: [],
+      availabilityStatus: "in-stock",
+      minPriceCents: null,
+      maxPriceCents: null,
     });
   });
 
   it("ignore une valeur de disponibilite inconnue", () => {
     expect(
       validateCatalogFilterInput({
-        category: null,
+        categories: [],
         availability: "yes",
       })
     ).toEqual({
-      categorySlug: null,
-      onlyAvailable: false,
+      categorySlugs: [],
+      availabilityStatus: null,
+      minPriceCents: null,
+      maxPriceCents: null,
     });
   });
 });

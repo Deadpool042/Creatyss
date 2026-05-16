@@ -34,28 +34,14 @@ function normalizeCatalogAvailabilityStatus(
 }
 
 export type CatalogFilterInput = {
-  categorySlug: string | null;
+  categorySlugs: string[];
   availabilityStatus: CatalogAvailabilityFilterValue | null;
   minPriceCents: number | null;
   maxPriceCents: number | null;
 };
 
-function normalizeCatalogCategorySlug(value: string | null): string | null {
-  if (value === null) {
-    return null;
-  }
-
-  const normalizedValue = value.trim().toLowerCase();
-
-  if (normalizedValue.length === 0) {
-    return null;
-  }
-
-  return normalizedValue;
-}
-
 export function validateCatalogFilterInput(input: {
-  category: string | null;
+  categories: string[];
   availability: string | null;
   minPrice?: number | null;
   maxPrice?: number | null;
@@ -77,7 +63,9 @@ export function validateCatalogFilterInput(input: {
       : null;
 
   return {
-    categorySlug: normalizeCatalogCategorySlug(input.category),
+    categorySlugs: input.categories
+      .map((v) => v.trim().toLowerCase())
+      .filter((v) => v.length > 0),
     availabilityStatus: normalizeCatalogAvailabilityStatus(input.availability),
     minPriceCents,
     maxPriceCents:

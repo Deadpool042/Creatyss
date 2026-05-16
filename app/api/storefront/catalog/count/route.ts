@@ -41,7 +41,7 @@ export async function GET(request: Request) {
 
     const searchQuery = validateCatalogSearchQuery(parsedSearchParams.q);
     const filters = validateCatalogFilterInput({
-      category: parsedSearchParams.category,
+      categories: parsedSearchParams.category,
       availability: parsedSearchParams.availability,
       minPrice: parsedSearchParams.minPrice,
       maxPrice: parsedSearchParams.maxPrice,
@@ -49,7 +49,7 @@ export async function GET(request: Request) {
 
     const count = await countPublishedProducts({
       searchQuery,
-      categorySlug: filters.categorySlug,
+      categorySlugs: filters.categorySlugs,
       availabilityStatus: filters.availabilityStatus,
       minPriceCents: filters.minPriceCents,
       maxPriceCents: filters.maxPriceCents,

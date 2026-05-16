@@ -1,4 +1,5 @@
 import { db } from "@/core/db";
+import { SeoSubjectType } from "@/prisma-generated/client";
 import type { CatalogBlogDetail } from "@/features/storefront/catalog/types";
 
 export async function getPublishedBlogPostBySlug(slug: string): Promise<CatalogBlogDetail | null> {
@@ -10,6 +11,7 @@ export async function getPublishedBlogPostBySlug(slug: string): Promise<CatalogB
     },
     select: {
       id: true,
+      storeId: true,
       slug: true,
       title: true,
       excerpt: true,
@@ -27,14 +29,28 @@ export async function getPublishedBlogPostBySlug(slug: string): Promise<CatalogB
     return null;
   }
 
+  const seo = await db.seoMetadata.findUnique({
+    where: {
+      storeId_subjectType_subjectId: {
+        storeId: post.storeId,
+        subjectType: SeoSubjectType.BLOG_POST,
+        subjectId: post.id,
+      },
+    },
+    select: {
+      metaTitle: true,
+      metaDescription: true,
+    },
+  });
+
   return {
     id: post.id,
     slug: post.slug,
     title: post.title,
     excerpt: post.excerpt,
     content: post.body,
-    seoTitle: null,
-    seoDescription: null,
+    seoTitle: seo?.metaTitle ?? null,
+    seoDescription: seo?.metaDescription ?? null,
     publishedAt: post.publishedAt ? post.publishedAt.toISOString() : null,
     coverImagePath: post.coverImage?.storageKey ?? null,
   };

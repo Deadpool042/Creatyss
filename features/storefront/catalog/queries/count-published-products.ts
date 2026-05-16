@@ -11,7 +11,7 @@ import {
 
 type CountPublishedProductsInput = {
   searchQuery: string | null;
-  categorySlug: string | null;
+  categorySlugs: string[];
   availabilityStatus: CatalogAvailabilityFilterValue | null;
   minPriceCents: number | null;
   maxPriceCents: number | null;
@@ -22,7 +22,7 @@ export async function countPublishedProducts(
 ): Promise<number> {
   const where = buildPublishedProductWhereInput({
     searchQuery: input.searchQuery,
-    categorySlug: input.categorySlug,
+    categorySlugs: input.categorySlugs,
     minPriceCents: input.minPriceCents,
     maxPriceCents: input.maxPriceCents,
   });

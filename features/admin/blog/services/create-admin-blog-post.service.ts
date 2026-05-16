@@ -1,4 +1,4 @@
-import { Prisma } from "@/prisma-generated/client";
+import { Prisma, SeoSubjectType } from "@/prisma-generated/client";
 import { withTransaction } from "@/core/db";
 import { toPrismaBlogPostStatus } from "../mappers";
 import {
@@ -56,8 +56,10 @@ export async function createAdminBlogPost(
             },
           });
 
+    let createdPost: { id: string };
+
     try {
-      return await tx.blogPost.create({
+      createdPost = await tx.blogPost.create({
         data: {
           storeId,
           title: input.title,
@@ -80,5 +82,19 @@ export async function createAdminBlogPost(
 
       throw error;
     }
+
+    if (input.seoTitle !== null || input.seoDescription !== null) {
+      await tx.seoMetadata.create({
+        data: {
+          storeId,
+          subjectType: SeoSubjectType.BLOG_POST,
+          subjectId: createdPost.id,
+          metaTitle: input.seoTitle ?? null,
+          metaDescription: input.seoDescription ?? null,
+        },
+      });
+    }
+
+    return createdPost;
   });
 }

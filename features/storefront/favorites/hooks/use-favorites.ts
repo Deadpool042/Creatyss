@@ -7,7 +7,7 @@ import { toggleFavoriteAction } from "@/features/storefront/favorites/actions/to
 export function useFavorites(initialProductIds: string[]) {
   const [favoriteProductIds, setFavoriteProductIds] = useState<string[]>(initialProductIds);
   const [pendingProductId, setPendingProductId] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   function isFavorite(productId: string): boolean {
     return favoriteProductIds.includes(productId);
@@ -40,6 +40,5 @@ export function useFavorites(initialProductIds: string[]) {
     isFavorite,
     toggleFavorite,
     pendingProductId,
-    isPending,
   };
 }

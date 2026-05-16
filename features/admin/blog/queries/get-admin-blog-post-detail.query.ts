@@ -1,6 +1,11 @@
 import { db } from "@/core/db";
+import { SeoSubjectType } from "@/prisma-generated/client";
+import { mapAdminBlogPostDetail } from "../mappers";
+import type { AdminBlogPostDetail } from "../types";
 
-export async function getAdminBlogPostDetail(input: { postId: string }) {
+export async function getAdminBlogPostDetail(
+  input: { postId: string },
+): Promise<AdminBlogPostDetail | null> {
   const post = await db.blogPost.findFirst({
     where: {
       id: input.postId,
@@ -8,12 +13,23 @@ export async function getAdminBlogPostDetail(input: { postId: string }) {
     },
     select: {
       id: true,
+      storeId: true,
       title: true,
       slug: true,
       excerpt: true,
+      body: true,
       status: true,
-      primaryImageId: true,
-      coverImageId: true,
+      publishedAt: true,
+      primaryImage: {
+        select: {
+          storageKey: true,
+        },
+      },
+      coverImage: {
+        select: {
+          storageKey: true,
+        },
+      },
     },
   });
 
@@ -21,16 +37,19 @@ export async function getAdminBlogPostDetail(input: { postId: string }) {
     return null;
   }
 
-  return {
-    id: post.id,
-    title: post.title,
-    slug: post.slug,
-    excerpt: post.excerpt,
-    content: null,
-    status: post.status,
-    primaryImageMediaAssetId: post.primaryImageId,
-    coverImageMediaAssetId: post.coverImageId,
-    seoTitle: null,
-    seoDescription: null,
-  };
+  const seo = await db.seoMetadata.findUnique({
+    where: {
+      storeId_subjectType_subjectId: {
+        storeId: post.storeId,
+        subjectType: SeoSubjectType.BLOG_POST,
+        subjectId: post.id,
+      },
+    },
+    select: {
+      metaTitle: true,
+      metaDescription: true,
+    },
+  });
+
+  return mapAdminBlogPostDetail(post, seo);
 }

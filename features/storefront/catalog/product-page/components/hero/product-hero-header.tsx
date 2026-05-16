@@ -39,7 +39,7 @@ export function ProductHeroHeader({
         {isSimpleProduct ? "Pièce unique" : "Déclinaisons disponibles"}
       </p>
 
-      <h1 className="text-foreground prose">{productName}</h1>
+      <h1 className="text-foreground">{productName}</h1>
 
       {marketingHook ? (
         <p

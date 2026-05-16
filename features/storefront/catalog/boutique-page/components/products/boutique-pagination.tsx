@@ -15,7 +15,7 @@ export function BoutiquePagination({ pagination }: BoutiquePaginationProps) {
   return (
     <nav
       aria-label="Pagination"
-      className="grid justify-items-center gap-2.5 pb-12 pt-5 min-[700px]:pb-6"
+      className="grid justify-items-center gap-2.5 pb-12 pt-5 tablet:pb-6"
     >
       {pagination.nextHref ? (
         <Link
@@ -89,7 +89,6 @@ export function BoutiquePagination({ pagination }: BoutiquePaginationProps) {
           <li>
             <Link
               href={pagination.nextHref}
-              rel="next"
               aria-label="Page suivante"
               className="inline-flex h-8 min-w-8 items-center justify-center rounded-full border border-control-border/70 bg-transparent px-3 text-xs text-text-muted-strong no-underline transition-colors hover:border-control-border-strong hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >

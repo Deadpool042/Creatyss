@@ -17,7 +17,7 @@ import type { CatalogProductListPage } from "@/features/storefront/catalog/types
 
 type ListPublishedProductsPageInput = {
   searchQuery: string | null;
-  categorySlug: string | null;
+  categorySlugs: string[];
   availabilityStatus: CatalogAvailabilityFilterValue | null;
   minPriceCents: number | null;
   maxPriceCents: number | null;
@@ -53,14 +53,14 @@ export async function listPublishedProductsPage(
 
   const baseWhere = buildPublishedProductWhereInput({
     searchQuery: input.searchQuery,
-    categorySlug: input.categorySlug,
+    categorySlugs: input.categorySlugs,
     minPriceCents: input.minPriceCents,
     maxPriceCents: input.maxPriceCents,
   });
 
   const orderBy = getPublishedProductsOrderBy(input.sort);
   const hasPostMappingFilters = input.availabilityStatus !== null;
-  const hasCategoryFilter = input.categorySlug !== null;
+  const hasCategoryFilter = input.categorySlugs.length > 0;
 
   const skipOffset =
     typeof input.skip === "number" && Number.isSafeInteger(input.skip) && input.skip > 0

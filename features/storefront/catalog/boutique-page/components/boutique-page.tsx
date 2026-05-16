@@ -21,7 +21,7 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
 
   const hasDiscoveryBlockingFilter =
     model.searchQuery.trim().length > 0 ||
-    model.selectedCategorySlug.trim().length > 0 ||
+    model.selectedCategorySlugs.length > 0 ||
     model.selectedAvailabilityStatus !== null ||
     model.selectedMaxPriceCents !== null ||
     model.selectedMinPriceCents !== null ||
@@ -38,7 +38,7 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
     <section
       data-testid="boutique-page"
       data-motion-surface="page-layout"
-      className="flex w-full flex-col gap-0 tablet:gap-6 laptop:gap-8 desktop:gap-9 bg-background"
+      className="flex w-full flex-col   bg-background"
     >
       <BoutiquePageHeader
         productCountLabel={productCountLabel}
@@ -47,14 +47,14 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
 
       <div
         data-testid="boutique-shop-layout"
-        className="grid grid-cols-1 items-start gap-4 w-full tablet:grid-cols-[minmax(0,1fr)_210px] laptop:grid-cols-[minmax(0,1fr)_240px] laptop:gap-6 laptop:w-[min(100%-2rem,82rem)] laptop:mx-auto desktop:grid-cols-[minmax(0,1fr)_260px] desktop:gap-7 wide:grid-cols-[250px_minmax(0,1fr)_260px] wide:gap-8 wide:w-[min(100%-4rem,106rem)] wide:pb-3"
+        className="grid grid-cols-1 items-start py-4 gap-4 w-full tablet:grid-cols-[minmax(0,1fr)_210px] laptop:grid-cols-[minmax(0,1fr)_240px] laptop:gap-6 laptop:w-[min(100%-2rem,82rem)] laptop:mx-auto desktop:grid-cols-[minmax(0,1fr)_260px] desktop:gap-7 wide:grid-cols-[250px_minmax(0,1fr)_260px] wide:gap-8 wide:w-[min(100%-4rem,106rem)] wide:pb-3 tablet:px-3 wide:px-0"
       >
         <BoutiqueSidebar model={model} />
 
         <main
           data-testid="boutique-catalog-panel"
           data-motion-surface="catalog-panel"
-          className="relative z-3 -mt-4 rounded-t-xl  px-3 pt-3 grid min-w-0 gap-3.5 tablet:static tablet:z-auto tablet:mt-0 tablet:rounded-none tablet:bg-transparent tablet:px-0 tablet:pt-0 tablet:gap-4 laptop:gap-4 desktop:gap-5"
+          className="relative z-10 -mt-4 rounded-t-xl bg-background  pt-3 grid min-w-0 gap-3.5 tablet:static tablet:z-auto tablet:mt-0 tablet:rounded-none   tablet:pt-0 tablet:gap-4 laptop:gap-4 desktop:gap-5"
         >
           <BoutiqueListingActionsBar model={model} />
 
@@ -68,7 +68,7 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
           ) : null}
 
           {model.products.length > 0 ? (
-            <div className="grid min-w-0 gap-4">
+            <div className="grid min-w-0 gap-4 ">
               <BoutiqueProductGrid
                 products={model.products}
                 initialFavoriteProductIds={initialFavoriteProductIds}
@@ -81,7 +81,7 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
           )}
         </main>
 
-        <BoutiqueMarketAside href={model.resetHref} />
+        <BoutiqueMarketAside />
       </div>
 
       <section

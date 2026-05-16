@@ -29,7 +29,9 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
+import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/shared/mode-toggle";
+import { cn } from "@/lib/utils";
 
 import { MobileMenuDrawer } from "./mobile-menu-drawer";
 import { TopbarNavLink, TopbarNavTrigger } from "./nav-primitives";
@@ -172,19 +174,20 @@ function HeaderIconLink({
   const isActive = isPublicLinkActive(pathname, href);
 
   return (
-    <Link
-      aria-label={label}
-      className={[
-        "inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors lg:h-9 lg:w-9",
-
-        isActive
-          ? "bg-surface-subtle text-brand"
-          : "text-foreground/70 hover:bg-surface-subtle hover:text-brand",
-      ].join(" ")}
-      href={href}
+    <Button
+      asChild
+      variant="ghost"
+      size="icon"
+      className={cn("rounded-full", isActive && "bg-surface-subtle text-brand")}
     >
-      {Icon && <Icon className="size-3.5 lg:size-4" />}
-    </Link>
+      <Link
+        href={href}
+        aria-label={label}
+        aria-current={isActive ? "page" : undefined}
+      >
+        {Icon && <Icon className="size-4" aria-hidden="true" />}
+      </Link>
+    </Button>
   );
 }
 
@@ -238,6 +241,7 @@ function BoutiqueReassuranceItem({ label, icon: Icon }: MarketingHeaderItem) {
 function BoutiqueReassuranceBar() {
   return (
     <div
+      aria-hidden="true"
       className="hidden items-center justify-center gap-4 bg-background-secondary py-1.5 md:flex lg:gap-7"
       data-testid="public-reassurance-bar"
     >
@@ -265,8 +269,8 @@ function MobileTopbar({ pathname }: { pathname: string }) {
 
 function DesktopNavigation({ pathname }: { pathname: string }) {
   return (
-    <NavigationMenu className="hidden desktop:flex">
-      <NavigationMenuList aria-label="Navigation principale" className="gap-3 lg:gap-4">
+    <NavigationMenu className="hidden desktop:flex" aria-label="Navigation principale">
+      <NavigationMenuList className="gap-3 lg:gap-4">
         {DESKTOP_NAV_ITEMS.map((link) => {
           const isCategories = link.href === "/categories";
           const isActive = isPublicLinkActive(pathname, link.href);
@@ -363,17 +367,19 @@ function TouchNavItem({ href, label, icon: Icon, pathname }: PublicNavItem & { p
   return (
     <Link
       href={href}
+      aria-current={isActive ? "page" : undefined}
       className={[
         "flex min-h-14 flex-col items-center justify-center gap-1 py-2 text-[0.62rem] font-medium tracking-[0.01em] transition-colors min-[390px]:text-[0.65rem]",
-
-        isActive ? "text-brand" : "text-foreground/65 hover:text-brand",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-inset",
+        isActive ? "text-brand" : "text-text-muted-strong hover:text-brand",
       ].join(" ")}
     >
       {Icon && (
         <Icon
+          aria-hidden="true"
           className={[
             "size-5 min-[390px]:size-6",
-            isActive ? "stroke-[1.75]" : "stroke-[1.5]",
+            isActive ? "stroke-2" : "stroke-[1.5]",
           ].join(" ")}
         />
       )}

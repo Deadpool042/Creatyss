@@ -1,6 +1,6 @@
 /// Feature: catalog.media
-/// Category: core
-/// Level: core
+/// Category: satellites
+/// Level: L1
 /// DependsOn: foundation.store
 
 enum MediaAssetStatus {

@@ -13,6 +13,14 @@ function normalizeTextSearchParam(value: unknown): string | null {
   return normalizedValue.length > 0 ? normalizedValue : null;
 }
 
+function normalizeArrayTextSearchParam(value: unknown): string[] {
+  const candidates = Array.isArray(value) ? value : [value];
+  return candidates
+    .filter((v): v is string => typeof v === "string")
+    .map((v) => v.trim())
+    .filter((v) => v.length > 0);
+}
+
 function normalizeAvailabilitySearchParam(value: unknown): CatalogAvailabilityFilterValue | null {
   const candidate = Array.isArray(value) ? value[0] : value;
 
@@ -106,7 +114,7 @@ function normalizePriceSearchParam(value: unknown): number | null {
 
 export const catalogSearchParamsSchema = z.object({
   q: z.preprocess(normalizeTextSearchParam, z.string().nullable()),
-  category: z.preprocess(normalizeTextSearchParam, z.string().nullable()),
+  category: z.preprocess(normalizeArrayTextSearchParam, z.array(z.string())),
   availability: z.preprocess(
     normalizeAvailabilitySearchParam,
     z.enum(["in-stock", "made-to-order", "unavailable"]).nullable()

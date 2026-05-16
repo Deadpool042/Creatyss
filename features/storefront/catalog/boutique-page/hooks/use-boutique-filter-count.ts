@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 
 import { eurosInputToCents } from "@/features/storefront/catalog/boutique-page/model/price-input-utils";
@@ -6,7 +8,7 @@ import type { BoutiqueSortValue } from "@/features/storefront/catalog/boutique-p
 type UseBoutiqueFilterCountParams = {
   searchQuery: string;
   selectedSort: BoutiqueSortValue;
-  selectedCategorySlug: string;
+  selectedCategorySlugs: string[];
   selectedAvailability: string;
   selectedMinPriceEuros: string;
   selectedMaxPriceEuros: string;
@@ -24,7 +26,7 @@ type UseBoutiqueFilterCountResult = {
 export function useBoutiqueFilterCount({
   searchQuery,
   selectedSort,
-  selectedCategorySlug,
+  selectedCategorySlugs,
   selectedAvailability,
   selectedMinPriceEuros,
   selectedMaxPriceEuros,
@@ -43,8 +45,10 @@ export function useBoutiqueFilterCount({
           params.set("q", searchQuery.trim());
         }
 
-        if (selectedCategorySlug.trim().length > 0) {
-          params.set("category", selectedCategorySlug.trim());
+        for (const slug of selectedCategorySlugs) {
+          if (slug.trim().length > 0) {
+            params.append("category", slug.trim());
+          }
         }
 
         if (selectedAvailability !== "") {
@@ -113,7 +117,7 @@ export function useBoutiqueFilterCount({
     searchQuery,
     selectedSort,
     selectedAvailability,
-    selectedCategorySlug,
+    selectedCategorySlugs,
     selectedMinPriceEuros,
     selectedMaxPriceEuros,
   ]);

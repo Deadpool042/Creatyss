@@ -17,7 +17,7 @@ type BuildBoutiquePageViewModelInput = {
   uploadsPublicPath: string;
   totalProductCount: number;
   searchQuery: string | null;
-  selectedCategorySlug: string | null;
+  selectedCategorySlugs: string[];
   selectedCategoryLabel: string | null;
   selectedAvailabilityStatus: BoutiqueAvailabilityValue | null;
   selectedMinPriceCents: number | null;
@@ -25,6 +25,11 @@ type BuildBoutiquePageViewModelInput = {
   selectedSort: BoutiqueSortValue;
   pageSize: number;
   currentPage: number;
+  availabilityCounts?: {
+    "in-stock": number;
+    "made-to-order": number;
+    "unavailable": number;
+  } | undefined;
 };
 
 type PaginationItem = BoutiquePageViewModel["pagination"]["items"][number];
@@ -126,27 +131,17 @@ function mapCategoryVisual(
   };
 }
 
-function buildAvailabilityOptions(): Array<{
+function buildAvailabilityOptions(
+  counts?: { "in-stock": number; "made-to-order": number; "unavailable": number }
+): Array<{
   id: BoutiqueAvailabilityValue;
   label: string;
   count: number | null;
 }> {
   return [
-    {
-      id: "in-stock",
-      label: "En stock",
-      count: null,
-    },
-    {
-      id: "made-to-order",
-      label: "Sur commande",
-      count: null,
-    },
-    {
-      id: "unavailable",
-      label: "Indisponible",
-      count: null,
-    },
+    { id: "in-stock" as const, label: "En stock", count: counts?.["in-stock"] ?? null },
+    { id: "made-to-order" as const, label: "Sur commande", count: counts?.["made-to-order"] ?? null },
+    { id: "unavailable" as const, label: "Indisponible", count: counts?.["unavailable"] ?? null },
   ];
 }
 
@@ -180,6 +175,10 @@ function formatSortFilterLabel(sort: BoutiqueSortValue): string {
 export function buildBoutiquePageViewModel(
   input: BuildBoutiquePageViewModelInput
 ): BoutiquePageViewModel {
+  const selectedCategorySlugs = input.selectedCategorySlugs.filter((slug) =>
+    input.categories.some((c) => c.slug === slug)
+  );
+
   const activeFilterLabels: BoutiqueActiveFilterItem[] = [];
 
   const hasSearchQuery = input.searchQuery !== null && input.searchQuery.trim().length > 0;
@@ -190,7 +189,7 @@ export function buildBoutiquePageViewModel(
       key: "q",
       label: `Recherche : ${input.searchQuery}`,
       clearHref: buildBoutiqueUrl({
-        category: input.selectedCategorySlug,
+        categories: input.selectedCategorySlugs,
         availability: input.selectedAvailabilityStatus,
         minPrice: input.selectedMinPriceCents,
         maxPrice: input.selectedMaxPriceCents,
@@ -199,12 +198,18 @@ export function buildBoutiquePageViewModel(
     });
   }
 
-  if (input.selectedCategoryLabel !== null) {
+  for (const slug of selectedCategorySlugs) {
+    const found = input.categories.find((c) => c.slug === slug);
+    const childSlugs = input.categories
+      .filter((c) => c.parentId === found?.id)
+      .map((c) => c.slug);
+    const toRemove = new Set([slug, ...childSlugs]);
     activeFilterLabels.push({
       key: "category",
-      label: `Catégorie : ${input.selectedCategoryLabel}`,
+      label: found?.name ?? slug,
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
+        categories: selectedCategorySlugs.filter((s) => !toRemove.has(s)),
         availability: input.selectedAvailabilityStatus,
         minPrice: input.selectedMinPriceCents,
         maxPrice: input.selectedMaxPriceCents,
@@ -219,7 +224,7 @@ export function buildBoutiquePageViewModel(
       label: "En stock",
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
-        category: input.selectedCategorySlug,
+        categories: input.selectedCategorySlugs,
         minPrice: input.selectedMinPriceCents,
         maxPrice: input.selectedMaxPriceCents,
         sort: input.selectedSort,
@@ -233,7 +238,7 @@ export function buildBoutiquePageViewModel(
       label: "Sur commande",
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
-        category: input.selectedCategorySlug,
+        categories: input.selectedCategorySlugs,
         minPrice: input.selectedMinPriceCents,
         maxPrice: input.selectedMaxPriceCents,
         sort: input.selectedSort,
@@ -247,7 +252,7 @@ export function buildBoutiquePageViewModel(
       label: "Indisponible",
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
-        category: input.selectedCategorySlug,
+        categories: input.selectedCategorySlugs,
         minPrice: input.selectedMinPriceCents,
         maxPrice: input.selectedMaxPriceCents,
         sort: input.selectedSort,
@@ -271,7 +276,7 @@ export function buildBoutiquePageViewModel(
       label,
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
-        category: input.selectedCategorySlug,
+        categories: input.selectedCategorySlugs,
         availability: input.selectedAvailabilityStatus,
         sort: input.selectedSort,
       }),
@@ -284,7 +289,7 @@ export function buildBoutiquePageViewModel(
       label: `Tri : ${formatSortFilterLabel(input.selectedSort)}`,
       clearHref: buildBoutiqueUrl({
         q: input.searchQuery,
-        category: input.selectedCategorySlug,
+        categories: input.selectedCategorySlugs,
         availability: input.selectedAvailabilityStatus,
         minPrice: input.selectedMinPriceCents,
         maxPrice: input.selectedMaxPriceCents,
@@ -299,7 +304,6 @@ export function buildBoutiquePageViewModel(
     selectedAvailabilityStatus: input.selectedAvailabilityStatus,
   });
 
-  const selectedCategorySlug = input.selectedCategorySlug ?? "";
   const searchQuery = input.searchQuery ?? "";
   const resultCountLabel = `${input.totalProductCount} résultat${input.totalProductCount > 1 ? "s" : ""}`;
   const totalProductCount = input.totalProductCount;
@@ -311,7 +315,7 @@ export function buildBoutiquePageViewModel(
   const buildHrefForPage = (pageNumber: number): string =>
     buildBoutiqueUrl({
       q: input.searchQuery,
-      category: input.selectedCategorySlug,
+      categories: input.selectedCategorySlugs,
       availability: input.selectedAvailabilityStatus,
       minPrice: input.selectedMinPriceCents,
       maxPrice: input.selectedMaxPriceCents,
@@ -333,16 +337,16 @@ export function buildBoutiquePageViewModel(
     name: category.name,
     href: buildBoutiqueUrl({
       q: input.searchQuery,
-      category: category.slug,
+      categories: [category.slug],
       availability: input.selectedAvailabilityStatus,
       minPrice: input.selectedMinPriceCents,
       maxPrice: input.selectedMaxPriceCents,
       sort: input.selectedSort,
     }),
-    isActive: category.slug === input.selectedCategorySlug,
+    isActive: input.selectedCategorySlugs.includes(category.slug),
     visual: mapCategoryVisual(category, input.uploadsPublicPath),
   }));
-  const filterCategories = categories.filter((category) => category.parentId === null);
+  const filterCategories = categories;
 
   return {
     headingEyebrow: heading.headingEyebrow,
@@ -350,7 +354,7 @@ export function buildBoutiquePageViewModel(
     headingDescription: heading.headingDescription,
     resultCountLabel,
     selectedSort: input.selectedSort,
-    selectedCategorySlug,
+    selectedCategorySlugs,
     searchQuery,
     onlyAvailable: input.selectedAvailabilityStatus === "in-stock",
     selectedMinPriceCents: input.selectedMinPriceCents,
@@ -367,7 +371,7 @@ export function buildBoutiquePageViewModel(
       previousHref,
       nextHref,
     },
-    availabilityOptions: buildAvailabilityOptions(),
+    availabilityOptions: buildAvailabilityOptions(input.availabilityCounts),
     categories,
     filterCategories,
     products: input.products.map((product) =>

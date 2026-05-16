@@ -13,7 +13,7 @@ import type { CatalogProductListItem } from "@/features/storefront/catalog/types
 
 export async function listPublishedProducts(input: {
   searchQuery: string | null;
-  categorySlug: string | null;
+  categorySlugs: string[];
   availabilityStatus: CatalogAvailabilityFilterValue | null;
   minPriceCents: number | null;
   maxPriceCents: number | null;
@@ -22,7 +22,7 @@ export async function listPublishedProducts(input: {
   const products = await db.product.findMany({
     where: buildPublishedProductWhereInput({
       searchQuery: input.searchQuery,
-      categorySlug: input.categorySlug,
+      categorySlugs: input.categorySlugs,
       minPriceCents: input.minPriceCents,
       maxPriceCents: input.maxPriceCents,
     }),

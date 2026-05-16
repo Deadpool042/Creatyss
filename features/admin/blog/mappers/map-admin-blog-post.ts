@@ -39,6 +39,11 @@ type BlogPostDetailRecord = {
   } | null;
 };
 
+type SeoRecord = {
+  metaTitle: string | null;
+  metaDescription: string | null;
+} | null;
+
 export function mapAdminBlogPostSummary(post: BlogPostSummaryRecord): AdminBlogPostSummary {
   return {
     id: post.id,
@@ -51,15 +56,18 @@ export function mapAdminBlogPostSummary(post: BlogPostSummaryRecord): AdminBlogP
   };
 }
 
-export function mapAdminBlogPostDetail(post: BlogPostDetailRecord): AdminBlogPostDetail {
+export function mapAdminBlogPostDetail(
+  post: BlogPostDetailRecord,
+  seo?: SeoRecord,
+): AdminBlogPostDetail {
   return {
     id: post.id,
     title: post.title,
     slug: post.slug,
     excerpt: post.excerpt,
     content: post.body,
-    seoTitle: null,
-    seoDescription: null,
+    seoTitle: seo?.metaTitle ?? null,
+    seoDescription: seo?.metaDescription ?? null,
     primaryImagePath: post.primaryImage?.storageKey ?? null,
     coverImagePath: post.coverImage?.storageKey ?? null,
     status: toAdminBlogPostStatus(post.status),

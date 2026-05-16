@@ -17,6 +17,8 @@ type ModeToggleProps = {
 };
 
 function enableThemeTransition(timeoutRef: WritableRef<number | null>): void {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
   const root = document.documentElement;
 
   root.classList.add("theme-transition");
@@ -58,14 +60,16 @@ export function ModeToggle({ size = "default" }: ModeToggleProps) {
     : nextTheme === "dark"
       ? "Activer le mode sombre"
       : "Activer le mode clair";
-  const buttonSize = size === "compact" ? "icon-xs" : "icon-sm";
+  const buttonSize = size === "compact" ? "icon-xs" : "icon";
 
   return (
     <Button
       type="button"
       size={buttonSize}
       variant="ghost"
+      className="rounded-full"
       aria-label={ariaLabel}
+      aria-disabled={!mounted ? "true" : undefined}
       onClick={() => {
         if (!mounted) {
           return;

@@ -1,6 +1,6 @@
 /// Feature: content.blog
-/// Category: core
-/// Level: core
+/// Category: optional
+/// Level: L2
 /// DependsOn: foundation.store, content.seo
 
 enum BlogPostStatus {

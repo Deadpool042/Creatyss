@@ -1,3 +1,7 @@
+// Queries
+export { getStorefrontHomepage } from "./queries/get-storefront-homepage.query";
+export type { StorefrontHomepageData } from "./queries/get-storefront-homepage.query";
+
 // Components
 export { HomepageAboutSection } from "./components/homepage-about-section";
 export { HomepageFeaturedProductsSection } from "./components/homepage-featured-products-section";

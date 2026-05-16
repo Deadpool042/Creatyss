@@ -7,21 +7,12 @@ type BoutiqueSidebarProps = {
 
 export function BoutiqueSidebar({ model }: BoutiqueSidebarProps) {
   return (
-    <aside
-      data-testid="boutique-sidebar-shell"
-      className="hidden wide:block wide:self-stretch"
-    >
-      <div className="wide:sticky wide:top-[9rem] wide:z-20 wide:max-h-[calc(100dvh-9rem)] wide:overflow-hidden wide:content-start">
-        <div
-          data-motion-surface="sidebar-panel"
-          className="grid min-h-0 content-start rounded-lg border border-surface-border-subtle bg-background-secondary p-3.5 wide:max-h-[calc(100dvh-9rem)] wide:overflow-y-auto wide:overscroll-contain wide:pr-[0.55rem]"
-        >
-          <BoutiqueFiltersContent
-            model={model}
-            className="grid gap-2"
-            variant="sidebar"
-          />
-        </div>
+    <aside data-testid="boutique-sidebar-shell" className="hidden wide:block w-full">
+      <div
+        data-motion-surface="sidebar-panel"
+        className="wide:sticky wide:top-20 wide:z-20 border-r border-surface-border-subtle px-3 py-2 grid content-start overflow-x-visible "
+      >
+        <BoutiqueFiltersContent model={model} className="grid gap-2" variant="sidebar" />
       </div>
     </aside>
   );
