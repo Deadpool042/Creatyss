@@ -54,7 +54,7 @@ function RelatedProductCard({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
       ].join(" ")}
     >
-      <div className="aspect-5/4 overflow-hidden rounded-[0.8rem] bg-surface-subtle/72 min-[700px]:rounded-[0.95rem] sm:aspect-4/5 [@media(max-height:480px)]:aspect-3/2">
+      <div className="aspect-3/4 overflow-hidden rounded-[0.8rem] bg-surface-subtle/72 min-[700px]:rounded-[0.95rem] sm:aspect-4/5 [@media(max-height:480px)]:aspect-3/2">
         {imageUrl ? (
           <Image
             src={imageUrl}

@@ -123,6 +123,12 @@ export function ProductHeroSectionDesktop({
                 isSimpleProduct={isSimpleProduct}
                 density="default"
               />
+              {shortDescription ? (
+                <div
+                  className="prose prose-sm max-w-none text-foreground line-clamp-3 [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+                  dangerouslySetInnerHTML={{ __html: shortDescription }}
+                />
+              ) : null}
             </section>
 
             <section className="grid gap-5 border-t border-surface-border-strong pt-5">
@@ -162,16 +168,6 @@ export function ProductHeroSectionDesktop({
                     disabled={disableCart}
                   />
                 ) : null}
-              </section>
-            ) : null}
-
-            {shortDescription ? (
-              <section className="grid gap-2 border-t border-surface-border-strong pt-5">
-                <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Description</p>
-                <div
-                  className="prose prose-sm max-w-none text-foreground [&_p]:my-0 [&_p]:leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
-                  dangerouslySetInnerHTML={{ __html: shortDescription }}
-                />
               </section>
             ) : null}
 

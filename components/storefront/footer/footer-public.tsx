@@ -43,7 +43,7 @@ export function FooterPublic() {
   return (
     <footer
       aria-label="Pied de page"
-      className="border-t border-surface-border-subtle bg-background-secondary pt-8 pb-28 text-sm md:pt-10 md:pb-10 min-[560px]:max-[1199px]:landscape:pb-20"
+      className="border-t border-surface-border-subtle bg-background-secondary pt-8 pb-[calc(3.5rem+env(safe-area-inset-bottom,0px)+1.5rem)] text-sm md:pt-10 md:pb-10 min-[560px]:max-[1199px]:landscape:pb-20"
     >
       <div className="mx-auto grid max-w-430 gap-8 px-4 sm:grid-cols-2 sm:px-6 desktop:grid-cols-5 xl:px-12 md:gap-10">
         {/* Colonne marque */}
