@@ -22,7 +22,8 @@ Creatyss est un socle e-commerce custom.
 
 Le projet est conçu pour être :
 
-- local-first via Docker Compose ;
+- local-first via développement natif `pnpm dev` ;
+- compatible avec Docker Compose pour les vérifications prod-like locales ;
 - maintenable ;
 - lisible ;
 - strictement typé ;
@@ -47,8 +48,30 @@ Creatyss n’est pas, à ce stade :
 - Next.js App Router
 - TypeScript strict
 - PostgreSQL
-- Docker / Docker Compose
-- Makefile
+- Prisma
+- pnpm pour le développement local courant
+- Docker Compose pour les vérifications prod-like locales
+- Makefile pour les commandes prod-like et utilitaires si conservé
+- déploiement futur sur VPS OVH
+
+---
+
+## Modes d’exécution
+
+Le développement courant n’est plus Docker-first.
+
+Par défaut :
+
+- utiliser `pnpm dev` pour lancer l’application en local ;
+- utiliser les scripts `pnpm run ...` pour les vérifications courantes ;
+- réserver Docker Compose aux validations prod-like locales, aux vérifications d’intégration et à la préparation au déploiement ;
+- ne pas remplacer le flux local natif par Docker sauf demande explicite.
+
+Le projet distingue trois modes :
+
+1. développement local natif via `pnpm dev` ;
+2. prod-like local via Docker Compose ;
+3. production future sur VPS OVH.
 
 ---
 
@@ -367,11 +390,12 @@ Pendant le lot :
 
 Après le lot :
 
-- exécuter les vérifications pertinentes :
+- exécuter les vérifications pertinentes en local natif :
   - `pnpm run typecheck`
   - `pnpm run lint`
-  - tests ciblés si pertinent
+  - `pnpm run test` ou tests ciblés si pertinent
   - e2e ciblés si le lot touche l’UI ou un parcours critique
+- utiliser Docker Compose uniquement si le lot nécessite une validation prod-like ou une vérification d’intégration conteneurisée
 - rendre un compte-rendu précis :
   - fichiers modifiés ;
   - ce qui a changé ;

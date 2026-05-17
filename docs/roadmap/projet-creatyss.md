@@ -1,3 +1,5 @@
+<!-- docs/roadmap/projet-creatyss.md -->
+
 # Roadmap projet — Creatyss
 
 ## Cadre
@@ -8,7 +10,8 @@ Elle cadre la trajectoire du projet sans décrire une architecture future non va
 ## Invariants
 
 - boutique artisanale premium
-- local-first (Docker / Docker Compose)
+- local-first via développement natif `pnpm dev`
+- Docker Compose disponible pour les vérifications prod-like locales
 - Next.js App Router + TypeScript strict
 - PostgreSQL / Prisma
 - admin simple pour non-tech
@@ -20,7 +23,8 @@ Elle cadre la trajectoire du projet sans décrire une architecture future non va
 Le projet dispose déjà d’un socle exploitable pour avancer proprement :
 
 - doctrine centralisée (`AGENTS.md`, `docs/architecture/`, `docs/domains/`)
-- environnement local Docker
+- environnement local natif via `pnpm dev`
+- mode Docker Compose disponible pour les validations prod-like
 - base front/admin existante
 - modèle initial catalogue / contenu / admin
 - base documentaire de pilotage

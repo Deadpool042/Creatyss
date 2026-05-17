@@ -35,44 +35,46 @@ export default async function HomePage() {
   const featuredCategories = data?.featuredCategories ?? [];
 
   return (
-    <>
+    <div className="px-4 md:px-6 xl:px-12">
       <HomepageHeroSection
         heroTitle={data?.hero?.title ?? null}
         heroText={data?.hero?.text ?? null}
         heroImagePath={heroImagePath}
       />
 
-      {featuredProducts.length > 0 && (
-        <HomepageFeaturedProductsSection
-          products={featuredProducts}
-          uploadsPublicPath={uploadsPublicPath}
+      <div className="flex flex-col gap-20 py-20 md:gap-24 md:py-24">
+        {featuredProducts.length > 0 && (
+          <HomepageFeaturedProductsSection
+            products={featuredProducts}
+            uploadsPublicPath={uploadsPublicPath}
+          />
+        )}
+
+        {featuredCategories.length > 0 && (
+          <HomepageCollectionsSection
+            categories={featuredCategories}
+            uploadsPublicPath={uploadsPublicPath}
+          />
+        )}
+
+        <HomepageEditorialSection
+          editorialTitle={data?.editorial?.title ?? null}
+          editorialText={data?.editorial?.text ?? null}
         />
-      )}
 
-      {featuredCategories.length > 0 && (
-        <HomepageCollectionsSection
-          categories={featuredCategories}
-          uploadsPublicPath={uploadsPublicPath}
+        <HomepageSavoirFaireSection
+          editorialTitle={data?.editorial?.title ?? null}
+          editorialText={data?.editorial?.text ?? null}
         />
-      )}
 
-      <HomepageEditorialSection
-        editorialTitle={data?.editorial?.title ?? null}
-        editorialText={data?.editorial?.text ?? null}
-      />
+        <HomepageGuaranteesSection />
 
-      <HomepageSavoirFaireSection
-        editorialTitle={data?.editorial?.title ?? null}
-        editorialText={data?.editorial?.text ?? null}
-      />
+        <HomepageJournalSection featuredPost={data?.featuredPost ?? null} />
 
-      <HomepageGuaranteesSection />
+        <HomepageAboutSection />
 
-      <HomepageJournalSection featuredPost={data?.featuredPost ?? null} />
-
-      <HomepageAboutSection />
-
-      <HomepageNewsletterSection />
-    </>
+        <HomepageNewsletterSection />
+      </div>
+    </div>
   );
 }

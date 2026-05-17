@@ -2,7 +2,7 @@
 
 Socle e-commerce custom pour Creatyss, conçu pour être **local-first**, maintenable, modulaire et déployable ensuite sur un VPS OVH.
 
-Le dépôt documente désormais le projet à partir d’une doctrine explicite d’architecture, de domaines et de validation.
+Le dépôt documente le projet à partir d’une doctrine explicite d’architecture, de domaines et de validation.
 
 La doctrine actuelle est structurée autour de :
 
@@ -15,19 +15,59 @@ La doctrine actuelle est structurée autour de :
 
 Creatyss est une base e-commerce pensée pour :
 
-- fonctionner d’abord en local via Docker Compose
+- fonctionner d’abord en développement local natif via `pnpm dev`
+- conserver Docker Compose pour les vérifications prod-like locales et la préparation au déploiement
 - rester lisible et strictement typée
 - éviter les dépendances inutiles
 - séparer clairement domaine métier, logique serveur, accès aux données, intégrations et UI
 - permettre une évolution progressive sans dissoudre les frontières métier
 - rester réutilisable pour d’autres projets e-commerce au-delà du seul cas Creatyss
 
+## Modes d’exécution
+
+Le projet distingue trois modes.
+
+### 1. Développement local natif
+
+Mode utilisé au quotidien.
+
+```bash
+pnpm dev
+```
+
+Ce mode privilégie la rapidité d’itération, la lisibilité des erreurs et l’intégration directe avec l’éditeur.
+
+### 2. Prod-like local via Docker Compose
+
+Mode utilisé pour vérifier le comportement dans un environnement conteneurisé proche production.
+
+```bash
+docker compose --env-file .env.local up -d --build
+```
+
+Ce mode ne remplace pas le développement courant.
+
+### 3. Production VPS OVH
+
+Mode cible futur.
+
+Le projet doit rester compatible avec un déploiement VPS classique :
+
+- reverse proxy
+- process Node.js contrôlé
+- PostgreSQL
+- variables d’environnement serveur
+- stockage média local ou volume dédié
+- sauvegardes base + uploads
+
 ## Stack cible
 
 - Next.js App Router
 - TypeScript strict
 - PostgreSQL
-- Docker Compose en local
+- Prisma
+- pnpm pour le développement local courant
+- Docker Compose pour les vérifications prod-like locales
 - déploiement futur sur VPS OVH
 
 ## Doctrine documentaire actuelle
@@ -103,29 +143,71 @@ Le dépôt couvre actuellement une base locale exploitable pour Creatyss avec :
 
 ## Démarrage local
 
-Le projet est piloté via `make`.
+Le développement courant se fait en local natif avec `pnpm`.
 
 Commande d’entrée principale :
 
 ```bash
-make up
+pnpm dev
 ```
+
+### Flux local recommandé
+
+```bash
+pnpm install
+pnpm run db:schema
+pnpm run db:seed:dev
+pnpm dev
+```
+
+Pour repartir proprement avec schéma + seed :
+
+```bash
+pnpm run db:reset:dev
+pnpm dev
+```
+
+### Mode prod-like local
+
+Docker Compose reste disponible pour les vérifications d’intégration ou les scénarios proches production :
+
+```bash
+docker compose --env-file .env.local up -d --build
+```
+
+Si les cibles `make` sont utilisées :
+
+```bash
+ENV_FILE=.env.local make up
+```
+
+## Variables d’environnement
 
 ### Variables disponibles
 
 - `.env.example`
 
 `.env.example` est uniquement un fichier de placeholders versionné.
-Les vraies valeurs locales doivent vivre dans `.env` ou `.env.local`, qui restent non versionnés.
 
-Le `Makefile` utilise `ENV_FILE=.env.local` par défaut.
-Pour lancer explicitement le projet avec vos secrets locaux :
+Les vraies valeurs locales doivent vivre dans :
+
+- `.env.local` pour le développement local natif
+- `.env` uniquement si nécessaire pour certains outils ou scripts
+- jamais dans un fichier versionné
+
+Le développement courant charge les variables nécessaires depuis `.env.local`.
+
+Le mode Docker Compose peut aussi utiliser `.env.local` explicitement :
+
+```bash
+docker compose --env-file .env.local up -d --build
+```
+
+Si les cibles `make` sont utilisées, le `Makefile` peut conserver `ENV_FILE=.env.local` par défaut :
 
 ```bash
 ENV_FILE=.env.local make up
 ```
-
-Le même principe s’applique à `make build`, `make db-reset-dev`, `make test-e2e` et aux autres cibles `make`.
 
 ### Variables sensibles ou locales notables
 
@@ -141,6 +223,31 @@ Le même principe s’applique à `make build`, `make db-reset-dev`, `make test-
 
 ## Commandes principales
 
+### Développement local natif
+
+```bash
+pnpm install
+pnpm dev
+pnpm run build
+pnpm run typecheck
+pnpm run test
+pnpm run test:unit
+pnpm run test:e2e
+pnpm run test:e2e-ui
+pnpm run test-e2e-headed
+pnpm run test-select
+```
+
+### Base de données locale
+
+```bash
+pnpm run db:schema
+pnpm run db:seed:dev
+pnpm run db:reset:dev
+```
+
+### Mode prod-like local via Docker Compose
+
 ```bash
 make up
 make down
@@ -148,10 +255,8 @@ make restart
 make logs
 make ps
 make sh
-make dev
 make build
 make db-schema
-make typecheck
 make db-seed-dev
 make db-reset-dev
 make test
@@ -162,7 +267,11 @@ make test-e2e-headed
 make test-select
 ```
 
+Le mode `make` / Docker Compose est réservé aux vérifications prod-like, aux resets contrôlés et aux validations d’intégration.
+
 ## Tests
+
+Les tests se lancent prioritairement en local natif avec `pnpm`.
 
 Commandes disponibles :
 
@@ -182,7 +291,7 @@ pnpm run test-select
 - `pnpm run test-e2e-headed` : lance les tests Playwright en mode headed
 - `pnpm run test-select` : lance Playwright Test Select pour choisir les tests à exécuter via une interface interactive
 
-Via `make` :
+Via Docker Compose / `make`, les commandes restent disponibles pour validation prod-like :
 
 ```bash
 make test
@@ -193,20 +302,28 @@ make test-e2e-headed
 make test-select
 ```
 
-- `make test` et `make test-unit` s’exécutent dans le conteneur `app`
-- `make test-e2e` s’exécute sur l’hôte
-- `make test-e2e-ui`, `make test-e2e-headed` et `make test-select` sont aussi disponibles pour Playwright
+### Prérequis pour les tests E2E
 
-### Prérequis pour `make test-e2e`
+1. l’application doit être démarrée
+2. PostgreSQL doit être accessible
+3. le schéma et le seed doivent déjà être appliqués
+4. les dépendances Node locales doivent déjà être installées (`pnpm install`)
+5. Chromium Playwright doit être installé localement une fois
+6. si les flux Stripe doivent être testés réellement, de vraies clés de test doivent être définies dans `.env.local`
+7. si les emails transactionnels doivent être testés réellement, `BREVO_API_KEY` et `EMAIL_FROM` doivent aussi être définis dans `.env.local`
 
-1. l’application et PostgreSQL doivent déjà être démarrés
-2. le schéma et le seed doivent déjà être appliqués
-3. les dépendances Node locales doivent déjà être installées sur l’hôte (`pnpm install`)
-4. Chromium Playwright doit être installé localement une fois
-5. si les flux Stripe doivent être testés réellement, de vraies clés de test doivent être définies dans `.env` ou `.env.local`
-6. si les emails transactionnels doivent être testés réellement, `BREVO_API_KEY` et `EMAIL_FROM` doivent aussi être définis dans `.env` ou `.env.local`
+Flux local natif minimal :
 
-Flux local minimal :
+```bash
+pnpm install
+pnpm run db:schema
+pnpm run db:seed:dev
+pnpm exec playwright install chromium
+pnpm dev
+pnpm run test:e2e
+```
+
+Flux prod-like Docker Compose :
 
 ```bash
 pnpm install
@@ -220,40 +337,84 @@ make test-e2e
 ## Base de données
 
 Le schéma PostgreSQL est défini par les fichiers Prisma répartis sous `prisma/`, organisés en sous-dossiers par domaine.
-L’historique SQL est archivé sous `db/migrations/_archive/` et la baseline active unique vit sous `db/migrations/active/001_baseline.sql`.
 
-Application locale :
+L’historique SQL est archivé sous `db/migrations/_archive/`.
+
+La baseline active unique vit sous :
+
+- `db/migrations/active/001_baseline.sql`
+
+### Application locale native
 
 ```bash
-make up
+pnpm run db:schema
+```
+
+Pour repartir proprement avec schéma + seed :
+
+```bash
+pnpm run db:reset:dev
+```
+
+### Application prod-like via Docker Compose
+
+```bash
 make db-schema
 ```
 
 `make db-schema` régénère le client Prisma puis applique la baseline SQL active via `prisma db execute` sur une base fraîche.
-Pour une reconstruction locale complète, la commande de référence reste `make db-reset-dev`.
 
-Pour repartir proprement avec schéma + seed :
+Pour une reconstruction Docker complète :
 
 ```bash
 make db-reset-dev
 ```
 
-Vérifications locales exactes :
+### Vérifications locales natives
+
+```bash
+pnpm run typecheck
+pnpm run build
+```
+
+Pour inspecter la base PostgreSQL locale, utiliser `psql` avec la valeur de `DATABASE_URL` déclarée dans `.env.local`.
+
+Exemples :
+
+```bash
+psql "$DATABASE_URL" -c "select table_name from information_schema.tables where table_schema = 'public' order by table_name;"
+psql "$DATABASE_URL" -c "select indexname from pg_indexes where schemaname = 'public' order by tablename, indexname;"
+```
+
+### Vérifications prod-like Docker Compose
 
 ```bash
 docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' order by table_name;"
 docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select indexname from pg_indexes where schemaname = 'public' order by tablename, indexname;"
-pnpm run typecheck
+docker compose --env-file .env.local exec app pnpm run typecheck
 ```
 
 ## Seed dev
 
 Le seed de développement reconstruit un socle local minimal.
+
 Il peut aussi hydrater le catalogue via un import historique ponctuel depuis le WooCommerce Creatyss d’origine.
 
-Il est destiné uniquement au développement local.
+Il est destiné uniquement au développement local et aux resets contrôlés.
 
-Application locale :
+### Application locale native
+
+```bash
+pnpm run db:seed:dev
+```
+
+Reset complet + seed :
+
+```bash
+pnpm run db:reset:dev
+```
+
+### Application prod-like Docker Compose
 
 ```bash
 make db-seed-dev
@@ -312,15 +473,44 @@ L’auth admin repose sur `users`, `auth_identities` et `auth_password_credentia
 - `admin@creatyss.local` / `AdminDev123!` / actif
 - `inactive-admin@creatyss.local` / `AdminDev123!` / inactif
 
-Le seed de développement crée automatiquement ces comptes sur base neuve via `make db-seed-dev` ou `make db-reset-dev`.
+Le seed de développement crée automatiquement ces comptes sur base neuve via `pnpm run db:seed:dev`, `pnpm run db:reset:dev`, `make db-seed-dev` ou `make db-reset-dev`.
 
 ### Pour créer un admin supplémentaire manuellement
+
+En local natif :
+
+```bash
+printf '%s' 'SuperLongPassword123!' | node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
+```
+
+En mode Docker Compose :
 
 ```bash
 printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.local exec -T app node --experimental-strip-types scripts/create-admin-user.ts --email admin@example.com --display-name "Admin Creatyss" --password-stdin
 ```
 
-### Vérification locale exacte
+### Vérification locale native
+
+```bash
+pnpm run db:reset:dev
+pnpm run typecheck
+pnpm run build
+pnpm dev
+```
+
+Puis vérifier :
+
+```bash
+curl -I http://localhost:3000/admin
+```
+
+Pour inspecter les comptes admin en base :
+
+```bash
+psql "$DATABASE_URL" -c "select u.email, u.display_name, u.status, ai.status as identity_status from users u left join auth_identities ai on ai.user_id = u.id order by u.email;"
+```
+
+### Vérification prod-like Docker Compose
 
 ```bash
 docker compose --env-file .env.local down -v
@@ -353,16 +543,13 @@ Le système media admin accepte actuellement uniquement :
 - `image/webp`
 - `image/avif`
 
-### Vérification locale exacte
+### Vérification locale native
 
 ```bash
-docker compose --env-file .env.local down -v
-docker compose --env-file .env.local up -d --build
-make db-schema
-make db-seed-dev
-docker compose --env-file .env.local exec app pnpm run typecheck
-docker compose --env-file .env.local exec app pnpm run build
-docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' and table_name = 'media_assets';"
+pnpm run db:reset:dev
+pnpm run typecheck
+pnpm run build
+pnpm dev
 ```
 
 Puis :
@@ -373,8 +560,20 @@ Puis :
 4. vérifiez la ligne créée en base :
 
 ```bash
-docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select id, storage_path, original_filename, mime_type, file_size_bytes, width, height from media_assets order by created_at desc;"
+psql "$DATABASE_URL" -c "select id, storage_path, original_filename, mime_type, file_size_bytes, width, height from media_assets order by created_at desc;"
 find public/uploads -type f | sort
+```
+
+### Vérification prod-like Docker Compose
+
+```bash
+docker compose --env-file .env.local down -v
+docker compose --env-file .env.local up -d --build
+make db-schema
+make db-seed-dev
+docker compose --env-file .env.local exec app pnpm run typecheck
+docker compose --env-file .env.local exec app pnpm run build
+docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' and table_name = 'media_assets';"
 ```
 
 Pour vérifier le fallback listing, supprimez un fichier local déjà importé puis rechargez `/admin/media` :
@@ -394,6 +593,15 @@ Pour la trajectoire projet :
 
 ## Contraintes importantes
 
+Le développement courant n’est plus Docker-first.
+
+Par défaut :
+
+- utiliser `pnpm dev`
+- utiliser les scripts `pnpm run ...`
+- ne proposer Docker Compose que pour les validations prod-like ou les scénarios de déploiement local proche production
+- ne pas remplacer le flux local natif par Docker sauf demande explicite
+
 Le projet n’utilise pas en runtime :
 
 - WordPress
@@ -402,7 +610,7 @@ Le projet n’utilise pas en runtime :
 - Supabase
 - Vercel
 
-Un import historique ponctuel depuis WooCommerce est possible uniquement pour l’alimentation de données (seed local, migration), sans dépendance runtime.
+Un import historique ponctuel depuis WooCommerce est possible uniquement pour l’alimentation de données en développement, seed local ou migration, sans dépendance runtime.
 
 ## État actuel du projet
 
