@@ -8,6 +8,13 @@ import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutiq
 import { FavoriteButton } from "@/features/storefront/favorites";
 import { cn } from "@/lib/utils";
 
+function toPlainText(value: string): string {
+  return value
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 type BoutiqueProductCardProps = {
   product: BoutiquePageViewModel["products"][number];
   initialFavoriteProductIds: readonly string[];
@@ -133,7 +140,7 @@ export function BoutiqueProductCard({
 
           {product.summary !== null ? (
             <p className="m-0 line-clamp-2 text-xs leading-relaxed text-text-muted-strong">
-              {product.summary}
+              {toPlainText(product.summary)}
             </p>
           ) : null}
         </div>
