@@ -8,14 +8,16 @@ const BOUTIQUE_LINKS = [
   { href: "/boutique?category=accessoires", label: "Accessoires" },
 ] as const;
 
-const INFO_LINKS = [
+type FooterInfoLink = { href: string; label: string; status?: "active" | "comingSoon" };
+
+const INFO_LINKS: readonly FooterInfoLink[] = [
   { href: "/blog", label: "Blog" },
   { href: "/favoris", label: "Favoris" },
   { href: "/panier", label: "Panier" },
-  { href: "/a-propos", label: "À propos" },
-  { href: "/contact", label: "Contact" },
-  { href: "/faq", label: "FAQ" },
-] as const;
+  { href: "/a-propos", label: "À propos", status: "comingSoon" },
+  { href: "/contact", label: "Contact", status: "comingSoon" },
+  { href: "/faq", label: "FAQ", status: "comingSoon" },
+];
 
 const ATELIER_ITEMS = [
   "Saint-Étienne",
@@ -82,11 +84,23 @@ export function FooterPublic() {
         <nav aria-label="Navigation informations" className="flex flex-col gap-3">
           <FooterColumnTitle>Informations</FooterColumnTitle>
           <ul className="flex flex-col gap-2">
-            {INFO_LINKS.map(({ href, label }) => (
+            {INFO_LINKS.map(({ href, label, status }) => (
               <li key={href}>
-                <Link href={href} className={FOOTER_LINK_CLASS}>
-                  {label}
-                </Link>
+                {status === "comingSoon" ? (
+                  <span
+                    aria-disabled="true"
+                    className="cursor-default text-[0.82rem] text-text-muted-strong/40"
+                  >
+                    {label}
+                    <span className="ml-1.5 text-[0.6rem] font-medium uppercase tracking-[0.06em]">
+                      Bientôt
+                    </span>
+                  </span>
+                ) : (
+                  <Link href={href} className={FOOTER_LINK_CLASS}>
+                    {label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

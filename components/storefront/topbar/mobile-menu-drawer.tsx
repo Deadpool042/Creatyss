@@ -35,20 +35,20 @@ import { cn } from "@/lib/utils";
 const DRAWER_PRIMARY_LINKS = [
   { href: "/", label: "Accueil", icon: HomeIcon },
   { href: "/boutique", label: "Boutique", icon: ShoppingBagIcon },
-  { href: "/categories", label: "Catégories", icon: Grid2X2Icon },
-  { href: "/les-marches", label: "Les marchés", icon: StoreIcon },
-] as const;
+  { href: "/categories", label: "Catégories", icon: Grid2X2Icon, status: "comingSoon" as const },
+  { href: "/les-marches", label: "Les marchés", icon: StoreIcon, status: "comingSoon" as const },
+] satisfies readonly DrawerNavItem[];
 
 const DRAWER_SECONDARY_LINKS = [
   { href: "/blog", label: "Blog", icon: NewspaperIcon },
-  { href: "/a-propos", label: "À propos", icon: BookOpenTextIcon },
-  { href: "/contact", label: "Contact", icon: MailIcon },
-] as const;
+  { href: "/a-propos", label: "À propos", icon: BookOpenTextIcon, status: "comingSoon" as const },
+  { href: "/contact", label: "Contact", icon: MailIcon, status: "comingSoon" as const },
+] satisfies readonly DrawerNavItem[];
 
 const DRAWER_SPACE_LINKS = [
   { href: "/favoris", label: "Favoris", icon: HeartIcon, className: "" },
-  { href: "/compte", label: "Mon compte", icon: UserIcon, className: "min-[390px]:hidden" },
-] as const;
+  { href: "/compte", label: "Mon compte", icon: UserIcon, className: "min-[390px]:hidden", status: "comingSoon" as const },
+] satisfies readonly DrawerNavItem[];
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -63,6 +63,7 @@ type DrawerNavItem = Readonly<{
   label: string;
   icon: ComponentType<SVGProps<SVGSVGElement>>;
   className?: string;
+  status?: "active" | "comingSoon";
 }>;
 
 type DrawerLinkGroupProps = Readonly<{
@@ -108,17 +109,38 @@ function DrawerLinkGroup({ label, items }: DrawerLinkGroupProps) {
     <div className="flex flex-col">
       {label !== undefined && <p className={SECTION_LABEL_CLS}>{label}</p>}
       <div className={GROUP_CLS}>
-        {items.map(({ href, label: itemLabel, icon: Icon, className }) => (
-          <DrawerClose key={href} asChild>
-            <Link href={href} className={cn(GROUP_ITEM_CLS, className)}>
-              <Icon
-                className="size-4 shrink-0 text-brand/65 transition-colors group-hover:text-brand"
-                aria-hidden="true"
-              />
-              {itemLabel}
-            </Link>
-          </DrawerClose>
-        ))}
+        {items.map(({ href, label: itemLabel, icon: Icon, className, status }) => {
+          if (status === "comingSoon") {
+            return (
+              <span
+                key={href}
+                aria-disabled="true"
+                className={cn(GROUP_ITEM_CLS, className, "cursor-default opacity-40")}
+              >
+                <Icon
+                  className="size-4 shrink-0 text-brand/65"
+                  aria-hidden="true"
+                />
+                {itemLabel}
+                <span className="ml-auto text-[0.58rem] font-medium uppercase tracking-[0.06em]">
+                  Bientôt
+                </span>
+              </span>
+            );
+          }
+
+          return (
+            <DrawerClose key={href} asChild>
+              <Link href={href} className={cn(GROUP_ITEM_CLS, className)}>
+                <Icon
+                  className="size-4 shrink-0 text-brand/65 transition-colors group-hover:text-brand"
+                  aria-hidden="true"
+                />
+                {itemLabel}
+              </Link>
+            </DrawerClose>
+          );
+        })}
       </div>
     </div>
   );

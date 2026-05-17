@@ -45,6 +45,7 @@ type PublicNavItem = Readonly<{
 
   icon?: PublicNavIcon;
   description?: string;
+  status?: "active" | "comingSoon";
 }>;
 
 type MarketingHeaderItem = Readonly<{
@@ -60,16 +61,16 @@ type TopbarPublicProps = Readonly<{
 const DESKTOP_NAV_ITEMS = [
   { href: "/boutique", label: "Boutique", icon: ShoppingBagIcon },
 
-  { href: "/categories", label: "Catégories", icon: Grid2X2Icon },
+  { href: "/categories", label: "Catégories", icon: Grid2X2Icon, status: "comingSoon" },
 
-  { href: "/les-marches", label: "Les marchés", icon: StoreIcon },
+  { href: "/les-marches", label: "Les marchés", icon: StoreIcon, status: "comingSoon" },
 
-  { href: "/a-propos", label: "À propos", icon: BookOpenTextIcon },
+  { href: "/a-propos", label: "À propos", icon: BookOpenTextIcon, status: "comingSoon" },
 
   { href: "/blog", label: "Blog", icon: NewspaperIcon },
 
-  { href: "/contact", label: "Contact", icon: MailIcon },
-] as const satisfies readonly PublicNavItem[];
+  { href: "/contact", label: "Contact", icon: MailIcon, status: "comingSoon" },
+] satisfies readonly PublicNavItem[];
 
 const DESKTOP_CATEGORY_LINKS = [
   { href: "/boutique?category=sacs", label: "Sacs", description: "Sacs artisanaux faits main." },
@@ -78,30 +79,30 @@ const DESKTOP_CATEGORY_LINKS = [
     label: "Accessoires",
     description: "Petites créations et pièces utiles.",
   },
-] as const satisfies readonly PublicNavItem[];
+] satisfies readonly PublicNavItem[];
 
 const TOUCH_NAV_ITEMS = [
   { href: "/", label: "Accueil", icon: HomeIcon },
 
   { href: "/boutique", label: "Boutique", icon: ShoppingBagIcon },
 
-  { href: "/categories", label: "Catégories", icon: Grid2X2Icon },
+  { href: "/categories", label: "Catégories", icon: Grid2X2Icon, status: "comingSoon" },
 
-  { href: "/les-marches", label: "Marchés", icon: StoreIcon },
-] as const satisfies readonly PublicNavItem[];
+  { href: "/les-marches", label: "Marchés", icon: StoreIcon, status: "comingSoon" },
+] satisfies readonly PublicNavItem[];
 
 const MOBILE_COMPACT_HEADER_ACTIONS = [
-  { href: "/recherche", label: "Rechercher", icon: SearchIcon },
+  { href: "/recherche", label: "Rechercher", icon: SearchIcon, status: "comingSoon" },
   { href: "/panier", label: "Panier", icon: ShoppingCartIcon },
-] as const satisfies readonly PublicNavItem[];
+] satisfies readonly PublicNavItem[];
 
 const TOUCH_LARGE_HEADER_ACTIONS = [
-  { href: "/recherche", label: "Rechercher", icon: SearchIcon },
+  { href: "/recherche", label: "Rechercher", icon: SearchIcon, status: "comingSoon" },
 
-  { href: "/compte", label: "Mon compte", icon: UserIcon },
+  { href: "/compte", label: "Mon compte", icon: UserIcon, status: "comingSoon" },
 
   { href: "/panier", label: "Panier", icon: ShoppingCartIcon },
-] as const satisfies readonly PublicNavItem[];
+] satisfies readonly PublicNavItem[];
 
 const BOUTIQUE_REASSURANCE_ITEMS = [
   { label: "Artisan des Métiers d'Art", icon: BadgeCheckIcon },
@@ -170,7 +171,21 @@ function HeaderIconLink({
   icon: Icon,
 
   pathname,
+
+  status,
 }: PublicNavItem & { pathname: string }) {
+  if (status === "comingSoon") {
+    return (
+      <span
+        aria-disabled="true"
+        aria-label={label}
+        className="inline-flex size-9 cursor-default items-center justify-center rounded-full opacity-35"
+      >
+        {Icon && <Icon className="size-4" aria-hidden="true" />}
+      </span>
+    );
+  }
+
   const isActive = isPublicLinkActive(pathname, href);
 
   return (
@@ -272,8 +287,25 @@ function DesktopNavigation({ pathname }: { pathname: string }) {
     <NavigationMenu className="hidden desktop:flex" aria-label="Navigation principale">
       <NavigationMenuList className="gap-3 lg:gap-4">
         {DESKTOP_NAV_ITEMS.map((link) => {
+          const isComingSoon = link.status === "comingSoon";
           const isCategories = link.href === "/categories";
           const isActive = isPublicLinkActive(pathname, link.href);
+
+          if (isComingSoon) {
+            return (
+              <NavigationMenuItem key={link.href}>
+                <span
+                  aria-disabled="true"
+                  className="cursor-default select-none px-1 text-sm font-medium text-text-muted-strong/50"
+                >
+                  {link.label}
+                  <span className="ml-1.5 text-[0.58rem] font-medium uppercase tracking-[0.06em] opacity-80">
+                    Bientôt
+                  </span>
+                </span>
+              </NavigationMenuItem>
+            );
+          }
 
           if (isCategories) {
             return (
@@ -361,7 +393,24 @@ function DesktopTopbar({
   );
 }
 
-function TouchNavItem({ href, label, icon: Icon, pathname }: PublicNavItem & { pathname: string }) {
+function TouchNavItem({ href, label, icon: Icon, pathname, status }: PublicNavItem & { pathname: string }) {
+  if (status === "comingSoon") {
+    return (
+      <span
+        aria-disabled="true"
+        className="flex min-h-14 cursor-default flex-col items-center justify-center gap-1 py-2 text-[0.62rem] font-medium tracking-[0.01em] text-text-muted-strong/35 min-[390px]:text-[0.65rem]"
+      >
+        {Icon && (
+          <Icon
+            aria-hidden="true"
+            className="size-5 stroke-[1.5] min-[390px]:size-6"
+          />
+        )}
+        <span className="max-w-full truncate">{label}</span>
+      </span>
+    );
+  }
+
   const isActive = isPublicLinkActive(pathname, href);
 
   return (
