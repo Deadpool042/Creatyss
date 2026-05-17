@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getUploadsPublicPath } from "@/core/uploads";
 import { getPublishedBlogPostBySlug } from "@/features/storefront/catalog";
@@ -75,21 +76,34 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     : null;
 
   return (
-    <div className="grid gap-8">
-      <article className="w-full border border-shell-border rounded-lg bg-shell-surface shadow-soft p-7 grid gap-3 max-w-208">
-        <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Blog</p>
-        <h1 className="m-0">{post.title}</h1>
+    <div className="mx-auto flex max-w-3xl flex-col gap-8 px-4 py-12 md:px-6 md:py-16 xl:px-12">
+      <Link
+        href="/blog"
+        className="text-[0.72rem] font-medium uppercase tracking-[0.1em] text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+      >
+        ← Journal de l&apos;atelier
+      </Link>
 
-        {post.publishedAt ? (
-          <p className="text-[0.95rem] text-foreground/68">
-            {blogDateFormatter.format(new Date(post.publishedAt))}
+      <article className="flex flex-col gap-6">
+        <header className="flex flex-col gap-3">
+          <p className="text-[0.62rem] font-medium uppercase tracking-[0.32em] text-brand">
+            Blog
           </p>
-        ) : null}
-
-        {post.excerpt ? <p className="mt-4 leading-relaxed">{post.excerpt}</p> : null}
+          <h1 className="font-serif text-3xl font-normal tracking-tight text-foreground min-[700px]:text-[2.4rem]">
+            {post.title}
+          </h1>
+          {post.publishedAt ? (
+            <p className="text-[0.68rem] font-medium uppercase tracking-[0.08em] text-muted-foreground">
+              {blogDateFormatter.format(new Date(post.publishedAt))}
+            </p>
+          ) : null}
+          {post.excerpt ? (
+            <p className="text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p>
+          ) : null}
+        </header>
 
         {coverImagePath ? (
-          <figure className="overflow-hidden rounded-lg bg-media-surface min-h-56">
+          <figure className="overflow-hidden rounded-lg bg-media-surface">
             <Image
               alt={post.title}
               src={coverImagePath}
@@ -98,13 +112,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               className="block w-full h-full object-cover"
             />
           </figure>
-        ) : (
-          <div className="grid place-items-center min-h-64 rounded-lg bg-media-surface p-4 text-media-foreground text-center">
-            Aucun visuel de couverture.
-          </div>
-        )}
+        ) : null}
 
-        <div className="leading-[1.65] whitespace-pre-wrap">
+        <div className="leading-[1.75] whitespace-pre-wrap text-foreground/85">
           {post.content ?? "Cet article ne contient pas encore de contenu."}
         </div>
       </article>

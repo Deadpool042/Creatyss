@@ -6,6 +6,7 @@ import {
 } from "../scripts/helpers/admin-bootstrap";
 import { createScriptPrismaClient } from "../scripts/helpers/prisma-client";
 import { seedAdminNavigationAccess } from "./seed/admin-navigation-access.seed";
+import { seedBlogPosts } from "./seed/blog-posts.seed";
 
 const prisma = createScriptPrismaClient();
 
@@ -18,6 +19,7 @@ async function main(): Promise<void> {
   }
 
   await seedAdminNavigationAccess(prisma);
+  await seedBlogPosts(prisma, store.id);
 }
 
 main()
