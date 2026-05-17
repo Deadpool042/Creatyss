@@ -104,7 +104,7 @@ const TOUCH_LARGE_HEADER_ACTIONS = [
   { href: "/panier", label: "Panier", icon: ShoppingCartIcon },
 ] satisfies readonly PublicNavItem[];
 
-const BOUTIQUE_REASSURANCE_ITEMS = [
+const PUBLIC_REASSURANCE_ITEMS = [
   { label: "Artisan des Métiers d'Art", icon: BadgeCheckIcon },
 
   { label: "Fabrication française", icon: MapPinIcon },
@@ -195,11 +195,7 @@ function HeaderIconLink({
       size="icon"
       className={cn("rounded-full", isActive && "bg-surface-subtle text-brand")}
     >
-      <Link
-        href={href}
-        aria-label={label}
-        aria-current={isActive ? "page" : undefined}
-      >
+      <Link href={href} aria-label={label} aria-current={isActive ? "page" : undefined}>
         {Icon && <Icon className="size-4" aria-hidden="true" />}
       </Link>
     </Button>
@@ -241,7 +237,7 @@ function HeaderActions({
   );
 }
 
-function BoutiqueReassuranceItem({ label, icon: Icon }: MarketingHeaderItem) {
+function PublicReassuranceItem({ label, icon: Icon }: MarketingHeaderItem) {
   return (
     <div className="inline-flex shrink-0 items-center gap-1.5 text-text-muted-strong">
       <Icon className="size-[0.78rem] shrink-0 text-brand/80" aria-hidden="true" />
@@ -253,15 +249,15 @@ function BoutiqueReassuranceItem({ label, icon: Icon }: MarketingHeaderItem) {
   );
 }
 
-function BoutiqueReassuranceBar() {
+function PublicReassuranceBar() {
   return (
     <div
       aria-hidden="true"
       className="hidden items-center justify-center gap-4 bg-background-secondary py-1.5 md:flex lg:gap-7"
       data-testid="public-reassurance-bar"
     >
-      {BOUTIQUE_REASSURANCE_ITEMS.map((item) => (
-        <BoutiqueReassuranceItem key={item.label} {...item} />
+      {PUBLIC_REASSURANCE_ITEMS.map((item) => (
+        <PublicReassuranceItem key={item.label} {...item} />
       ))}
     </div>
   );
@@ -393,19 +389,20 @@ function DesktopTopbar({
   );
 }
 
-function TouchNavItem({ href, label, icon: Icon, pathname, status }: PublicNavItem & { pathname: string }) {
+function TouchNavItem({
+  href,
+  label,
+  icon: Icon,
+  pathname,
+  status,
+}: PublicNavItem & { pathname: string }) {
   if (status === "comingSoon") {
     return (
       <span
         aria-disabled="true"
         className="flex min-h-14 cursor-default flex-col items-center justify-center gap-1 py-2 text-[0.62rem] font-medium tracking-[0.01em] text-text-muted-strong/35 min-[390px]:text-[0.65rem]"
       >
-        {Icon && (
-          <Icon
-            aria-hidden="true"
-            className="size-5 stroke-[1.5] min-[390px]:size-6"
-          />
-        )}
+        {Icon && <Icon aria-hidden="true" className="size-5 stroke-[1.5] min-[390px]:size-6" />}
         <span className="max-w-full truncate">{label}</span>
       </span>
     );
@@ -426,10 +423,9 @@ function TouchNavItem({ href, label, icon: Icon, pathname, status }: PublicNavIt
       {Icon && (
         <Icon
           aria-hidden="true"
-          className={[
-            "size-5 min-[390px]:size-6",
-            isActive ? "stroke-2" : "stroke-[1.5]",
-          ].join(" ")}
+          className={["size-5 min-[390px]:size-6", isActive ? "stroke-2" : "stroke-[1.5]"].join(
+            " "
+          )}
         />
       )}
 
@@ -460,7 +456,7 @@ export function TopbarPublic({ pathname }: TopbarPublicProps) {
   return (
     <>
       <header className="sticky top-0 z-30 border-b border-shell-border bg-background/35 backdrop-blur-md backdrop-saturate-150">
-        {isBoutiqueRoute ? <BoutiqueReassuranceBar /> : null}
+        <PublicReassuranceBar />
 
         <div className="mx-auto w-full max-w-430 px-4 sm:px-6 xl:px-12">
           <MobileTopbar pathname={pathname} />
