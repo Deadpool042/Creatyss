@@ -175,7 +175,7 @@ export function ProductPageTemplate({
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
               <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Caractéristiques</p>
               <h2>Caractéristiques du produit</h2>
-              <p className="m-0 text-foreground-muted">
+              <p className="m-0 text-muted-foreground">
                 Attributs factuels renseignés pour ce produit.
               </p>
             </div>
@@ -200,7 +200,7 @@ export function ProductPageTemplate({
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
               <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Spécifications</p>
               <h2 className="m-0">Spécifications techniques</h2>
-              <p className="m-0 text-foreground-muted">
+              <p className="m-0 text-muted-foreground">
                 Données techniques dérivées de la variante de référence.
               </p>
             </div>
