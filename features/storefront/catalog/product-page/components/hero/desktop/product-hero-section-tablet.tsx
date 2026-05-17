@@ -164,7 +164,7 @@ export function ProductHeroSectionTablet({
                 ) : null}
 
                 <div className="grid gap-3 border-t border-surface-border-subtle/80 pt-3">
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.8125rem] text-foreground-muted">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.8125rem] text-muted-foreground">
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-control-border px-2 py-1">
                       <CreditCard aria-hidden="true" className="size-3.5" />
                       <span>CB</span>
