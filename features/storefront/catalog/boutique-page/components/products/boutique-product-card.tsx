@@ -72,7 +72,7 @@ export function BoutiqueProductCard({
           href={productHref}
           tabIndex={0}
         >
-          <div className="relative aspect-square overflow-hidden rounded-t-xl bg-media-surface">
+          <div className="relative aspect-3/4 overflow-hidden rounded-t-xl bg-media-surface">
             {product.image ? (
               <Image
                 alt={product.image.alt}
