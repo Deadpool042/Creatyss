@@ -1,3 +1,5 @@
+<!-- docs/architecture/README.md -->
+
 # Architecture
 
 ## Objectif
