@@ -27,8 +27,6 @@ type AdminPageShellProps = {
   topbarAction?: ReactNode;
   pageTitleNavigation?: AdminPageShellLinkAction;
   pageTitleAction?: AdminPageShellLinkAction;
-  mode?: "viewport";
-  variant?: "tool";
   contentWidth?: "standard" | "full";
   headerDensity?: "default" | "compact";
 
@@ -56,8 +54,6 @@ export function AdminPageShell({
   topbarAction,
   pageTitleNavigation,
   pageTitleAction,
-  mode,
-  variant,
   contentWidth = "standard",
   headerDensity = "default",
   headerVisibility = "all",
@@ -84,9 +80,6 @@ export function AdminPageShell({
         </Link>
       </Button>
     ) : undefined);
-
-  void mode;
-  void variant;
 
   const widthClass = contentWidth === "full" ? undefined : "mx-auto w-full max-w-screen-2xl";
 
