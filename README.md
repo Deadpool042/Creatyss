@@ -153,17 +153,22 @@ pnpm dev
 
 ### Flux local recommandé
 
+Prérequis : PostgreSQL local accessible sur `localhost:5434`, variables dans `.env.local`.
+
 ```bash
 pnpm install
-pnpm run db:schema
-pnpm run db:seed:dev
+pnpm run db:generate   # génère le client Prisma
+pnpm run db:validate   # vérifie la cohérence du schéma
+pnpm run db:push       # applique le schéma à la base locale
+pnpm run db:seed       # bootstrap store + articles blog de développement
 pnpm dev
 ```
 
-Pour repartir proprement avec schéma + seed :
+Pour repartir proprement :
 
 ```bash
-pnpm run db:reset:dev
+pnpm run db:push-reset  # reset schéma (DESTRUCTIF)
+pnpm run db:seed
 pnpm dev
 ```
 
@@ -241,9 +246,13 @@ pnpm run test-select
 ### Base de données locale
 
 ```bash
-pnpm run db:schema
-pnpm run db:seed:dev
-pnpm run db:reset:dev
+pnpm run db:generate    # génère le client Prisma
+pnpm run db:validate    # valide le schéma
+pnpm run db:push        # applique le schéma (sans reset)
+pnpm run db:push-reset  # reset + applique le schéma (DESTRUCTIF)
+pnpm run db:seed        # seed minimal dev
+pnpm run db:studio      # Prisma Studio local (port 5555)
+pnpm run db:format      # formate le schéma Prisma
 ```
 
 ### Mode prod-like local via Docker Compose
@@ -316,8 +325,8 @@ Flux local natif minimal :
 
 ```bash
 pnpm install
-pnpm run db:schema
-pnpm run db:seed:dev
+pnpm run db:push
+pnpm run db:seed
 pnpm exec playwright install chromium
 pnpm dev
 pnpm run test:e2e
@@ -347,13 +356,16 @@ La baseline active unique vit sous :
 ### Application locale native
 
 ```bash
-pnpm run db:schema
+pnpm run db:generate    # génère le client Prisma local
+pnpm run db:push        # applique le schéma à la base locale
+pnpm run db:seed        # seed minimal de développement
 ```
 
-Pour repartir proprement avec schéma + seed :
+Pour repartir proprement :
 
 ```bash
-pnpm run db:reset:dev
+pnpm run db:push-reset  # reset schéma (DESTRUCTIF)
+pnpm run db:seed
 ```
 
 ### Application prod-like via Docker Compose
@@ -362,7 +374,7 @@ pnpm run db:reset:dev
 make db-schema
 ```
 
-`make db-schema` régénère le client Prisma puis applique la baseline SQL active via `prisma db execute` sur une base fraîche.
+`make db-schema` régénère le client Prisma puis applique la baseline SQL active sur une base fraîche dans les conteneurs.
 
 Pour une reconstruction Docker complète :
 
@@ -398,49 +410,47 @@ docker compose --env-file .env.local exec app pnpm run typecheck
 
 Le seed de développement reconstruit un socle local minimal.
 
-Il peut aussi hydrater le catalogue via un import historique ponctuel depuis le WooCommerce Creatyss d’origine.
-
 Il est destiné uniquement au développement local et aux resets contrôlés.
 
-### Application locale native
+### Application locale native — seed minimal
 
 ```bash
-pnpm run db:seed:dev
+pnpm run db:seed
 ```
 
-Reset complet + seed :
+Reset schéma + seed :
 
 ```bash
-pnpm run db:reset:dev
+pnpm run db:push-reset
+pnpm run db:seed
 ```
 
-### Application prod-like Docker Compose
-
-```bash
-make db-seed-dev
-```
-
-Reset complet + seed :
-
-```bash
-make db-reset-dev
-```
-
-Le seed de développement couvre :
+Le seed minimal couvre :
 
 - une boutique locale `creatyss`
-- une liste de prix par défaut
 - des comptes admin de développement
-- les catégories WooCommerce
-- les produits et déclinaisons WooCommerce
-- les prix catalogue WooCommerce
-- les médias produits WooCommerce si l’import images est activé
+- des articles blog de développement
 
-### Variables requises pour l’hydratation catalogue
+### Hydratation catalogue WooCommerce (optionnel)
+
+Le catalogue peut être alimenté ponctuellement depuis les données historiques WooCommerce :
+
+```bash
+pnpm run seed:dev
+```
+
+Cette commande est distincte du seed minimal. Elle nécessite les variables :
 
 - `WC_BASE_URL`
 - `WC_CONSUMER_KEY`
 - `WC_CONSUMER_SECRET`
+
+### Application prod-like Docker Compose
+
+```bash
+make db-seed-dev   # seed complet WooCommerce dans les conteneurs
+make db-reset-dev  # reset complet + seed dans les conteneurs
+```
 
 ## Fonctionnalités disponibles
 
@@ -473,7 +483,7 @@ L’auth admin repose sur `users`, `auth_identities` et `auth_password_credentia
 - `admin@creatyss.local` / `AdminDev123!` / actif
 - `inactive-admin@creatyss.local` / `AdminDev123!` / inactif
 
-Le seed de développement crée automatiquement ces comptes sur base neuve via `pnpm run db:seed:dev`, `pnpm run db:reset:dev`, `make db-seed-dev` ou `make db-reset-dev`.
+Le seed de développement crée automatiquement ces comptes sur base neuve via `pnpm run db:seed`, `make db-seed-dev` ou `make db-reset-dev`.
 
 ### Pour créer un admin supplémentaire manuellement
 
@@ -492,7 +502,8 @@ printf '%s' 'SuperLongPassword123!' | docker compose --env-file .env.local exec 
 ### Vérification locale native
 
 ```bash
-pnpm run db:reset:dev
+pnpm run db:push-reset
+pnpm run db:seed
 pnpm run typecheck
 pnpm run build
 pnpm dev
@@ -546,7 +557,8 @@ Le système media admin accepte actuellement uniquement :
 ### Vérification locale native
 
 ```bash
-pnpm run db:reset:dev
+pnpm run db:push-reset
+pnpm run db:seed
 pnpm run typecheck
 pnpm run build
 pnpm dev
