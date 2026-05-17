@@ -6,10 +6,7 @@ import { CreditCard, MapPin, ShieldCheck, Sparkles } from "lucide-react";
 
 import { ProductHeroGalleryDots } from "../product-hero-gallery-dots";
 import { ProductHeroHeader } from "../product-hero-header";
-import {
-  ProductHeroImageCounterOverlay,
-  ProductHeroMediaEmptyState,
-} from "../product-hero-media-elements";
+import { ProductHeroMediaEmptyState } from "../product-hero-media-elements";
 import { ProductHeroAvailabilityMeta, ProductHeroPricingMeta } from "../product-hero-meta-blocks";
 import type { ProductHeroResolvedProps } from "../product-hero-resolved-props";
 import { ProductHeroVariableCartForm } from "../product-hero-variable-cart-form";
@@ -81,11 +78,6 @@ export function ProductHeroSectionMobilePortrait({
                 ].join(" ")}
               />
 
-              <ProductHeroImageCounterOverlay
-                activeIndex={activeImageIndex}
-                total={galleryImages.length}
-                className="bottom-2.5 right-2.5 px-2.5 py-1"
-              />
             </button>
 
             {shouldShowGalleryDots ? (
