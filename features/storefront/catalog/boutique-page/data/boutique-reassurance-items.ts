@@ -18,7 +18,7 @@ export const BOUTIQUE_REASSURANCE_ITEMS: readonly ReassuranceItem[] = [
     Icon: Leaf,
   },
   {
-    title: "Pièces uniques en petites séries",
+    title: "Pièces uniques",
     description: "Jamais produit en masse. Chaque création est un original.",
     Icon: Gem,
   },

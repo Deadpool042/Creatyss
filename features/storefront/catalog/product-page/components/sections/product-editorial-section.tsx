@@ -28,7 +28,7 @@ export function ProductEditorialSection() {
         <p className="leading-relaxed text-foreground-muted">
           Chaque pièce est pensée, dessinée et fabriquée à la main dans mon atelier stéphanois. Je
           sélectionne des matières choisies avec exigence et réalise des finitions soignées, pour
-          des pièces uniques ou en petite série.
+          des pièces uniques, pensées pour durer.
         </p>
 
         <Link
