@@ -63,8 +63,8 @@ export default async function HomePage() {
         />
 
         <HomepageSavoirFaireSection
-          editorialTitle={data?.editorial?.title ?? null}
-          editorialText={data?.editorial?.text ?? null}
+          editorialTitle={null}
+          editorialText={null}
         />
 
         <HomepageGuaranteesSection />
