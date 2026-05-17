@@ -131,13 +131,11 @@ export function BoutiqueProductCard({
             </Link>
           </h3>
 
-          {/* TODO(human): afficher product.summary si présent */}
-          {/* Décommenter et ajuster quand le contenu éditorial est stable :
-          {product.summary ? (
+          {product.summary !== null ? (
             <p className="m-0 line-clamp-2 text-xs leading-relaxed text-text-muted-strong">
               {product.summary}
             </p>
-          ) : null} */}
+          ) : null}
         </div>
 
         <div className="flex min-w-0 items-baseline gap-2">
