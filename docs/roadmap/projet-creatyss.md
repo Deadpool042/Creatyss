@@ -62,6 +62,36 @@ Mise à jour réalisée (V2-1 PDP, lot minimal) :
 - ajout de `Store.shippingReturnsPolicy` pour structurer **Livraison & retours** global storefront ;
 - fallbacks transitoires conservés sur la PDP pour compatibilité avec les données V1.
 
+## Phase 2B — Consolidation UI/UX storefront et admin
+
+Objectif : améliorer la qualité perçue, la lisibilité et la fluidité des parcours sans modifier le périmètre métier de la V1.
+
+Périmètre :
+
+- clarification de la direction visuelle storefront ;
+- amélioration progressive des pages publiques clés : homepage, boutique, fiche produit, blog ;
+- consolidation de l’expérience admin pour une utilisatrice non technique ;
+- homogénéisation des composants, espacements, états vides, messages d’erreur et feedbacks ;
+- amélioration de la navigation mobile et desktop ;
+- accessibilité pragmatique : structure sémantique, focus, contrastes, libellés ;
+- cohérence responsive mobile, tablette et desktop.
+
+Hors périmètre :
+
+- changement de modèle métier ;
+- refonte complète non incrémentale ;
+- design system complexe ;
+- animation ou effet visuel non nécessaire ;
+- dépendance UI ajoutée sans besoin explicite.
+
+Invariants :
+
+- préserver la séparation domaine / orchestration / UI ;
+- ne pas déplacer de logique métier dans les composants de présentation ;
+- garder des lots courts, vérifiables et réversibles ;
+- privilégier une finition premium sobre, artisanale et locale ;
+- préserver l’admin comme interface simple pour non-tech.
+
 ## Phase 3 — V1 commerce transactionnel minimal
 
 Objectif : rendre la boutique exploitable de bout en bout sur son flux métier principal.
