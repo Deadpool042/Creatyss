@@ -105,12 +105,12 @@ export function ProductHeroSectionMobilePortrait({
               isSimpleProduct={isSimpleProduct}
               density="default"
             />
-            <div className="flex flex-wrap items-center gap-2 text-xs leading-snug text-foreground-muted">
+            <div className="flex flex-wrap items-center gap-2 text-xs leading-snug text-muted-foreground">
               <span className="inline-flex items-center gap-1.5">
                 <MapPin aria-hidden="true" className="size-3.5 text-brand/85" />
                 <span>Fait main à Saint-Étienne</span>
               </span>
-              <span className="rounded-full border border-surface-border-subtle px-2 py-0.5 text-[0.75rem] leading-5 text-foreground-muted">
+              <span className="rounded-full border border-surface-border-subtle px-2 py-0.5 text-[0.75rem] leading-5 text-muted-foreground">
                 Chaque sac est unique
               </span>
             </div>
@@ -162,7 +162,7 @@ export function ProductHeroSectionMobilePortrait({
               ) : null}
 
               <div className="grid gap-3 border-t border-surface-border-subtle/80 pt-3">
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.8125rem] text-foreground-muted">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.8125rem] text-muted-foreground">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-control-border px-2 py-1">
                     <CreditCard aria-hidden="true" className="size-3.5" />
                     <span>CB</span>
