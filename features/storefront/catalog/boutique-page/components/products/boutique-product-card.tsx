@@ -94,8 +94,8 @@ export function BoutiqueProductCard({
               <PlaceholderImage
                 alt=""
                 className="bg-media-surface"
-                imageClassName="opacity-20"
-                fit="contain"
+                imageClassName="opacity-10"
+                fit="cover"
               />
             )}
           </div>
