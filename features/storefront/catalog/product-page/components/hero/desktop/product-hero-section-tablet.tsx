@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { CreditCard, ShieldCheck } from "lucide-react";
 
 import type { ProductHeroResolvedProps } from "../product-hero-resolved-props";
 import { ProductHeroHeader } from "../product-hero-header";
@@ -161,6 +162,22 @@ export function ProductHeroSectionTablet({
                     disabled={disableCart}
                   />
                 ) : null}
+
+                <div className="grid gap-3 border-t border-surface-border-subtle/80 pt-3">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.8125rem] text-foreground-muted">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-control-border px-2 py-1">
+                      <CreditCard aria-hidden="true" className="size-3.5" />
+                      <span>CB</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-control-border px-2 py-1">
+                      <span className="font-semibold tracking-tight">PayPal</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-control-border px-2 py-1">
+                      <ShieldCheck aria-hidden="true" className="size-3.5" />
+                      <span>Paiement sécurisé</span>
+                    </span>
+                  </div>
+                </div>
               </section>
             ) : null}
 
