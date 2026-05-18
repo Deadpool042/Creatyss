@@ -1,6 +1,7 @@
 import { HomepageSectionType, HomepageStatus } from "@/prisma-generated/client";
 
 import { db } from "@/core/db";
+import { localUploadExists } from "@/core/uploads/check-local-upload";
 
 export type StorefrontHomepageData = {
   hero: { title: string | null; text: string | null; imageStorageKey: string | null } | null;
@@ -143,13 +144,12 @@ export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | 
           name: fp.product.name,
           slug: fp.product.slug,
           shortDescription: fp.product.shortDescription ?? null,
-          primaryImage:
-            fp.product.primaryImage !== null
-              ? {
-                  filePath: fp.product.primaryImage.storageKey,
-                  altText: fp.product.primaryImage.altText ?? null,
-                }
-              : null,
+          primaryImage: (() => {
+              const key = fp.product.primaryImage?.storageKey ?? null;
+              return key !== null && localUploadExists(key)
+                ? { filePath: key, altText: fp.product.primaryImage?.altText ?? null }
+                : null;
+            })(),
         });
       }
     }
@@ -163,13 +163,12 @@ export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | 
           id: fc.category.id,
           name: fc.category.name,
           slug: fc.category.slug,
-          representativeImage:
-            fc.category.primaryImage !== null
-              ? {
-                  filePath: fc.category.primaryImage.storageKey,
-                  altText: fc.category.primaryImage.altText ?? null,
-                }
-              : null,
+          representativeImage: (() => {
+              const key = fc.category.primaryImage?.storageKey ?? null;
+              return key !== null && localUploadExists(key)
+                ? { filePath: key, altText: fc.category.primaryImage?.altText ?? null }
+                : null;
+            })(),
         });
       }
     }
