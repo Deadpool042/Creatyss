@@ -89,8 +89,8 @@ L'IA peut proposer et vérifier ; elle ne valide pas à la place de l'humain.
 - [ ] Admin médias utilisable avec archivage
 - [ ] Admin blog créer / modifier / publier opérationnel
 - [ ] Erreurs principales visibles et compréhensibles
-- [ ] `pnpm run typecheck` passe
-- [ ] `pnpm run lint` passe
+- [x] `pnpm run typecheck` passe
+- [x] `pnpm run lint` passe
 
 ---
 
