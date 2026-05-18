@@ -35,9 +35,6 @@ export default async function BlogPage() {
         <div className="grid grid-cols-1 gap-8 min-[700px]:grid-cols-2 min-[1000px]:grid-cols-3">
           {posts.map((post) => (
             <article key={post.id} className="group flex flex-col gap-3">
-              {/* Image placeholder */}
-              <div className="aspect-video overflow-hidden rounded-lg bg-surface-subtle" />
-
               {/* Date */}
               {post.publishedAt !== null ? (
                 <p className="text-[0.68rem] font-medium uppercase tracking-[0.08em] text-muted-foreground">

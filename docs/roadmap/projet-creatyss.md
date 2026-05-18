@@ -80,10 +80,10 @@ L'IA peut proposer et vérifier ; elle ne valide pas à la place de l'humain.
 
 **Validation :**
 
-- [ ] Catalogue public lisible sur mobile, tablette, desktop
-- [ ] Fiche produit claire et cohérente sur mobile, tablette, desktop
-- [ ] Blog public lisible avec listing et détail
-- [ ] Homepage éditable sans intervention développeur
+- [x] Catalogue public lisible sur mobile, tablette, desktop
+- [x] Fiche produit claire et cohérente sur mobile, tablette, desktop
+- [x] Blog public lisible avec listing et détail
+- [x] Homepage éditable sans intervention développeur
 - [ ] Admin produits utilisable par une non-technicienne
 - [ ] Admin catégories utilisable
 - [ ] Admin médias utilisable avec archivage
