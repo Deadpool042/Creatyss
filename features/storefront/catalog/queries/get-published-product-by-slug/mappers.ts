@@ -128,12 +128,12 @@ function mapImages(
   galleryReferences: PublishedProductGalleryItem[],
   uploadsPublicPath: string
 ): CatalogImage[] {
-  const primary = primaryImage
+  const primary = primaryImage && localUploadExists(primaryImage.storageKey)
     ? [mapCatalogImage(primaryImage, uploadsPublicPath)]
     : [];
-  const gallery = galleryReferences.map((ref) =>
-    mapCatalogImage(ref.asset, uploadsPublicPath)
-  );
+  const gallery = galleryReferences
+    .filter((ref) => localUploadExists(ref.asset.storageKey))
+    .map((ref) => mapCatalogImage(ref.asset, uploadsPublicPath));
   return dedupeCatalogImages([...primary, ...gallery]);
 }
 
