@@ -1,31 +1,52 @@
 "use server";
 
-type ImageSelection =
-  | { kind: "keep" }
-  | { kind: "clear" }
-  | { kind: "select"; mediaAssetId: string };
+import { redirect } from "next/navigation";
 
-function getMediaAssetId(selection: ImageSelection): string | null | undefined {
-  if (selection.kind === "select") {
-    return selection.mediaAssetId;
+import { updateAdminBlogPost } from "../services/update-admin-blog-post.service";
+import { BlogPostFormSchema } from "../schemas/blog-post-form-schema";
+import { AdminBlogServiceError } from "../types";
+
+export async function updateBlogPostAction(formData: FormData): Promise<void> {
+  const raw = formData.get("postId");
+
+  if (typeof raw !== "string" || !raw.trim()) {
+    redirect("/admin/content/blog?error=missing_blog_post");
   }
 
-  if (selection.kind === "clear") {
-    return null;
+  const id = raw.trim();
+
+  const parsed = BlogPostFormSchema.safeParse(Object.fromEntries(formData.entries()));
+
+  if (!parsed.success) {
+    redirect(`/admin/content/blog/${id}?error=validation`);
   }
 
-  return undefined;
-}
+  const data = parsed.data;
 
-export async function updateBlogPostAction(_formData: FormData) {
-  const primaryImageSelection: ImageSelection = { kind: "keep" };
-  const coverImageSelection: ImageSelection = { kind: "keep" };
+  try {
+    const result = await updateAdminBlogPost({
+      id,
+      title: data.title,
+      slug: data.slug,
+      excerpt: data.excerpt,
+      content: data.content,
+      seoTitle: data.seoTitle,
+      seoDescription: data.seoDescription,
+      primaryImagePath: data.primaryImagePath,
+      coverImagePath: data.coverImagePath,
+      status: data.status,
+    });
 
-  void getMediaAssetId(primaryImageSelection);
-  void getMediaAssetId(coverImageSelection);
+    if (result === null) {
+      redirect("/admin/content/blog?error=missing_blog_post");
+    }
 
-  return {
-    status: "success" as const,
-    message: "Mise à jour effectuée.",
-  };
+    redirect(`/admin/content/blog/${id}`);
+  } catch (error) {
+    if (error instanceof AdminBlogServiceError && error.code === "slug_taken") {
+      redirect(`/admin/content/blog/${id}?error=slug_taken`);
+    }
+
+    throw error;
+  }
 }
