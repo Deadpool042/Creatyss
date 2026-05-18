@@ -16,6 +16,7 @@ import {
   MediaUploadError,
   type AdminMediaListItem,
 } from "@/features/admin/media";
+import { archiveAdminMedia } from "@/features/admin/media/services/archive-admin-media.service";
 
 export const dynamic = "force-dynamic";
 
@@ -74,6 +75,19 @@ function formatDimensions(asset: Pick<AdminMediaListItem, "imageWidth" | "imageH
     : "Indisponibles";
 }
 
+async function archiveMediaAction(formData: FormData) {
+  "use server";
+
+  await requireAuthenticatedAdmin();
+
+  const assetId = formData.get("assetId");
+  if (typeof assetId === "string" && assetId.trim().length > 0) {
+    await archiveAdminMedia({ assetId: assetId.trim() });
+  }
+
+  redirect("/admin/media?status=archived");
+}
+
 async function uploadMediaAction(formData: FormData) {
   "use server";
 
@@ -100,7 +114,12 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
   const errorParam = Array.isArray(resolvedSearchParams.error)
     ? resolvedSearchParams.error[0]
     : resolvedSearchParams.error;
-  const successMessage = statusParam === "uploaded" ? "Média importé avec succès." : null;
+  const successMessage =
+    statusParam === "uploaded"
+      ? "Média importé avec succès."
+      : statusParam === "archived"
+        ? "Média archivé. Il n'apparaît plus dans la bibliothèque."
+        : null;
   const errorMessage = getErrorMessage(errorParam);
   const assets = await listAdminMediaAssets();
 
@@ -192,18 +211,31 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
           {assets.length > 0 ? (
             <div className="admin-media-grid grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
               {assets.map((asset) => (
-                <AdminMediaAssetCard
-                  key={asset.id}
-                  asset={{
-                    originalName: asset.originalName,
-                    previewUrl: asset.previewUrl,
-                    createdAtLabel: mediaDateFormatter.format(new Date(asset.createdAt)),
-                    byteSizeLabel: formatByteSize(asset.byteSize),
-                    dimensionsLabel: formatDimensions(asset),
-                    mimeType: asset.mimeType,
-                    filePath: asset.filePath,
-                  }}
-                />
+                <div key={asset.id} className="relative">
+                  <AdminMediaAssetCard
+                    asset={{
+                      originalName: asset.originalName,
+                      previewUrl: asset.previewUrl,
+                      createdAtLabel: mediaDateFormatter.format(new Date(asset.createdAt)),
+                      byteSizeLabel: formatByteSize(asset.byteSize),
+                      dimensionsLabel: formatDimensions(asset),
+                      mimeType: asset.mimeType,
+                      filePath: asset.filePath,
+                    }}
+                  />
+                  <form
+                    action={archiveMediaAction}
+                    className="absolute bottom-4 right-4 z-10"
+                  >
+                    <input type="hidden" name="assetId" value={asset.id} />
+                    <button
+                      className="rounded-lg border border-surface-border bg-card/90 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:border-destructive/50 hover:text-destructive"
+                      type="submit"
+                    >
+                      Archiver
+                    </button>
+                  </form>
+                </div>
               ))}
             </div>
           ) : (

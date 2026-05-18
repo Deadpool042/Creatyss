@@ -8,6 +8,7 @@ export async function listAdminMediaAssets(): Promise<AdminMediaListItem[]> {
   const assets = await db.mediaAsset.findMany({
     where: {
       kind: MediaAssetKind.IMAGE,
+      archivedAt: null,
     },
     select: {
       id: true,
