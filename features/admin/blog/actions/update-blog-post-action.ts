@@ -2,11 +2,13 @@
 
 import { redirect } from "next/navigation";
 
+import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { updateAdminBlogPost } from "../services/update-admin-blog-post.service";
 import { BlogPostFormSchema } from "../schemas/blog-post-form-schema";
 import { AdminBlogServiceError } from "../types";
 
 export async function updateBlogPostAction(formData: FormData): Promise<void> {
+  await requireAuthenticatedAdmin();
   const raw = formData.get("postId");
 
   if (typeof raw !== "string" || !raw.trim()) {

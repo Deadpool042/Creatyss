@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { deleteAdminBlogPost } from "../services";
 import { getAdminBlogPostById } from "../queries";
 
@@ -14,6 +15,8 @@ function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
 }
 
 export async function deleteBlogPostAction(formData: FormData): Promise<void> {
+  await requireAuthenticatedAdmin();
+
   const blogPostId = normalizeBlogPostId(formData.get("blogPostId"));
 
   if (blogPostId === null) {

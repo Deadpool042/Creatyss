@@ -2,11 +2,13 @@
 
 import { redirect } from "next/navigation";
 
+import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { createAdminBlogPost } from "../services/create-admin-blog-post.service";
 import { BlogPostFormSchema } from "../schemas/blog-post-form-schema";
 import { AdminBlogServiceError } from "../types";
 
 export async function createBlogPostAction(formData: FormData): Promise<void> {
+  await requireAuthenticatedAdmin();
   const parsed = BlogPostFormSchema.safeParse(Object.fromEntries(formData.entries()));
 
   if (!parsed.success) {

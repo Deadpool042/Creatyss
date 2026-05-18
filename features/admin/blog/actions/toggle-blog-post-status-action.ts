@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { getAdminBlogPostById } from "../queries";
 import { toggleAdminBlogPostStatus } from "../services";
 import { getBlogPostPublishability } from "@/entities/blog/blog-post-publishability";
@@ -15,6 +16,8 @@ function normalizeBlogPostId(value: FormDataEntryValue | null): string | null {
 }
 
 export async function toggleBlogPostStatusAction(formData: FormData): Promise<void> {
+  await requireAuthenticatedAdmin();
+
   const postId = normalizeBlogPostId(formData.get("postId"));
 
   if (postId === null) {

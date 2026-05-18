@@ -4,6 +4,7 @@ import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { Notice } from "@/components/shared/notice";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,14 +19,26 @@ async function handleUpdateBlogPost(formData: FormData): Promise<void> {
   await updateBlogPostAction(formData);
 }
 
+const ERROR_MESSAGES: Record<string, string> = {
+  validation: "Les données saisies sont invalides. Vérifiez les champs et réessayez.",
+  slug_taken: "Cette adresse d'article est déjà utilisée. Choisissez une adresse différente.",
+};
+
 type EditAdminBlogPostPageProps = Readonly<{
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string | string[] }>;
 }>;
 
 export default async function EditAdminBlogPostPage({
   params,
+  searchParams,
 }: EditAdminBlogPostPageProps) {
-  const { id } = await params;
+  const [{ id }, resolvedSearchParams] = await Promise.all([params, searchParams]);
+  const errorCode = Array.isArray(resolvedSearchParams.error)
+    ? resolvedSearchParams.error[0]
+    : resolvedSearchParams.error;
+  const errorMessage = errorCode !== undefined ? (ERROR_MESSAGES[errorCode] ?? null) : null;
+
   const [post, assets, uploadsPublicPath] = await Promise.all([
     getAdminBlogPostDetail({ postId: id }),
     listAdminMediaAssets(),
@@ -44,6 +57,9 @@ export default async function EditAdminBlogPostPage({
       eyebrow="Blog"
       title="Modifier l'article"
     >
+      {errorMessage !== null && (
+        <Notice tone="alert">{errorMessage}</Notice>
+      )}
       <AdminFormSection>
         <form action={handleUpdateBlogPost} className="grid gap-4">
           <input type="hidden" name="postId" value={post.id} />
@@ -52,8 +68,19 @@ export default async function EditAdminBlogPostPage({
             <Input id="blog-title" name="title" required type="text" defaultValue={post.title} />
           </AdminFormField>
 
-          <AdminFormField htmlFor="blog-slug" label="Adresse de l'article">
-            <Input id="blog-slug" name="slug" required type="text" defaultValue={post.slug} />
+          <AdminFormField
+            htmlFor="blog-slug"
+            label="Adresse de l'article"
+            description="Visible dans l'URL. Utilisez des lettres minuscules, des chiffres et des tirets."
+          >
+            <Input
+              id="blog-slug"
+              name="slug"
+              required
+              type="text"
+              defaultValue={post.slug}
+              placeholder="naissance-d-un-sac-unique"
+            />
           </AdminFormField>
 
           <AdminFormField htmlFor="blog-excerpt" label="Extrait">

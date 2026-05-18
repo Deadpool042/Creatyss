@@ -2,6 +2,7 @@ import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { Notice } from "@/components/shared/notice";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +16,22 @@ async function handleCreateBlogPost(formData: FormData): Promise<void> {
   await createBlogPostAction(formData);
 }
 
-export default async function NewAdminBlogPostPage() {
+const ERROR_MESSAGES: Record<string, string> = {
+  validation: "Les données saisies sont invalides. Vérifiez les champs et réessayez.",
+  slug_taken: "Cette adresse d'article est déjà utilisée. Choisissez une adresse différente.",
+};
+
+type NewAdminBlogPostPageProps = Readonly<{
+  searchParams: Promise<{ error?: string | string[] }>;
+}>;
+
+export default async function NewAdminBlogPostPage({ searchParams }: NewAdminBlogPostPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const errorCode = Array.isArray(resolvedSearchParams.error)
+    ? resolvedSearchParams.error[0]
+    : resolvedSearchParams.error;
+  const errorMessage = errorCode !== undefined ? (ERROR_MESSAGES[errorCode] ?? null) : null;
+
   const [assets, uploadsPublicPath] = await Promise.all([
     listAdminMediaAssets(),
     Promise.resolve(getUploadsPublicPath()),
@@ -29,6 +45,9 @@ export default async function NewAdminBlogPostPage() {
       eyebrow="Blog"
       title="Nouvel article"
     >
+      {errorMessage !== null && (
+        <Notice tone="alert">{errorMessage}</Notice>
+      )}
       <AdminFormSection>
         <form action={handleCreateBlogPost} className="grid gap-4">
           <AdminFormField htmlFor="blog-title" label="Titre">
