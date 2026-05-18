@@ -2,16 +2,13 @@
 
 import Link from "next/link";
 import type { JSX } from "react";
-import { Eye, MoreHorizontal, Pencil, RotateCcw, Trash2 } from "lucide-react";
+import { Eye, Pencil, RotateCcw, Trash2 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { AdminRowActionsMenu } from "@/components/admin/tables/admin-row-actions-menu";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useProductLifecycleActionState } from "./hooks/use-product-lifecycle-action-state";
 import { ProductLifecycleActionDialogs } from "./product-lifecycle-action-dialogs";
@@ -65,71 +62,61 @@ export function ProductTableRowActions({
 
   return (
     <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon-sm"
-            className="text-text-muted-strong data-[state=open]:border-control-border-strong data-[state=open]:bg-control-surface-selected data-[state=open]:text-foreground"
-          >
-            <MoreHorizontal className="h-4 w-4" />
-            <span className="sr-only">Ouvrir les actions du produit {displayName}</span>
-          </Button>
-        </DropdownMenuTrigger>
+      <AdminRowActionsMenu
+        label={`Ouvrir les actions du produit ${displayName}`}
+        contentClassName="w-56"
+      >
+        <DropdownMenuGroup>
+          {productRowActions.map((action) => (
+            <DropdownMenuItem key={action.label} asChild>
+              <Link href={action.href(slug)} className="flex items-center gap-2">
+                <action.icon className="h-4 w-4 text-text-muted-strong" />
+                <span>{action.label}</span>
+              </Link>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
 
-        <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuSeparator />
+
+        {view === "active" ? (
           <DropdownMenuGroup>
-            {productRowActions.map((action) => (
-              <DropdownMenuItem key={action.label} asChild>
-                <Link href={action.href(slug)} className="flex items-center gap-2">
-                  <action.icon className="h-4 w-4 text-text-muted-strong" />
-                  <span>{action.label}</span>
-                </Link>
-              </DropdownMenuItem>
-            ))}
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive"
+              onSelect={(event) => {
+                event.preventDefault();
+                lifecycleState.setArchiveDialogOpen(true);
+              }}
+            >
+              <Trash2 className="h-4 w-4" />
+              <span>Mettre à la corbeille</span>
+            </DropdownMenuItem>
           </DropdownMenuGroup>
+        ) : (
+          <DropdownMenuGroup>
+            <DropdownMenuItem
+              onSelect={(event) => {
+                event.preventDefault();
+                lifecycleState.setRestoreDialogOpen(true);
+              }}
+            >
+              <RotateCcw className="h-4 w-4" />
+              <span>Restaurer</span>
+            </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
-
-          {view === "active" ? (
-            <DropdownMenuGroup>
-              <DropdownMenuItem
-                className="text-destructive focus:text-destructive"
-                onSelect={(event) => {
-                  event.preventDefault();
-                  lifecycleState.setArchiveDialogOpen(true);
-                }}
-              >
-                <Trash2 className="h-4 w-4" />
-                <span>Mettre à la corbeille</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          ) : (
-            <DropdownMenuGroup>
-              <DropdownMenuItem
-                onSelect={(event) => {
-                  event.preventDefault();
-                  lifecycleState.setRestoreDialogOpen(true);
-                }}
-              >
-                <RotateCcw className="h-4 w-4" />
-                <span>Restaurer</span>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem
-                className="text-destructive focus:text-destructive"
-                onSelect={(event) => {
-                  event.preventDefault();
-                  lifecycleState.setPermanentDeleteDialogOpen(true);
-                }}
-              >
-                <Trash2 className="h-4 w-4" />
-                <span>Supprimer définitivement</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive"
+              onSelect={(event) => {
+                event.preventDefault();
+                lifecycleState.setPermanentDeleteDialogOpen(true);
+              }}
+            >
+              <Trash2 className="h-4 w-4" />
+              <span>Supprimer définitivement</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        )}
+      </AdminRowActionsMenu>
 
       <ProductLifecycleActionDialogs
         isSubmitting={lifecycleState.isSubmitting}

@@ -1,5 +1,4 @@
-import Image from "next/image";
-
+import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import {
   AdminTable,
   AdminTableBody,
@@ -8,9 +7,7 @@ import {
   AdminTableHeader,
   AdminTableRow,
 } from "@/components/admin/tables/admin-table";
-import { PlaceholderImage } from "@/components/shared/placeholder-image";
 import { TableRow } from "@/components/ui/table";
-import { hasRealImage } from "@/core/media";
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 import { cn } from "@/lib/utils";
 import { CategoryTableRowActions } from "./category-table-row-actions";
@@ -61,23 +58,12 @@ export function CategoryTableDesktop({ categories }: CategoryTableDesktopProps) 
             <AdminTableRow key={category.id}>
               {/* Image */}
               <AdminTableCell className="px-3 py-2.5">
-                <div className="relative h-11 w-11 overflow-hidden rounded-md border border-surface-border bg-surface-panel-soft">
-                  {hasRealImage(category.primaryImageUrl) ? (
-                    <Image
-                      src={category.primaryImageUrl!}
-                      alt={category.primaryImageAlt ?? category.name}
-                      fill
-                      className="object-cover"
-                      sizes="44px"
-                    />
-                  ) : (
-                    <PlaceholderImage
-                      alt={category.primaryImageAlt ?? category.name}
-                      className="bg-muted"
-                      imageClassName="opacity-15"
-                    />
-                  )}
-                </div>
+                <AdminThumbnail
+                  src={category.primaryImageUrl}
+                  alt={category.primaryImageAlt ?? category.name}
+                  className="h-11 w-11 rounded-md border border-surface-border bg-surface-panel-soft"
+                  fallbackLabel={`Aucun visuel pour ${category.name}`}
+                />
               </AdminTableCell>
 
               {/* Catégorie */}

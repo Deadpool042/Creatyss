@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import type { JSX } from "react";
 
-import { PlaceholderImage } from "@/components/shared/placeholder-image";
+import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import { Checkbox } from "@/components/ui/checkbox";
-import { hasRealImage } from "@/core/media";
 import { toggleProductFeaturedAction } from "@/features/admin/products/list/actions/toggle-product-featured.action";
 import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
 import { ProductStatusBadge } from "@/features/admin/products/components/shared/product-status-badge";
@@ -55,23 +53,13 @@ export function ProductTableDesktopRow({
       </td>
 
       <td className="px-3 py-2.5 align-middle">
-        <div className="relative h-9 w-9 overflow-hidden rounded-md border border-surface-border/40 bg-surface-subtle/50">
-          {hasRealImage(product.primaryImageUrl) ? (
-            <Image
-              src={product.primaryImageUrl!}
-              alt={product.primaryImageAlt ?? product.name}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="44px"
-            />
-          ) : (
-            <PlaceholderImage
-              alt={product.primaryImageAlt ?? product.name}
-              className="bg-muted"
-              imageClassName="opacity-15"
-            />
-          )}
-        </div>
+        <AdminThumbnail
+          src={product.primaryImageUrl}
+          alt={product.primaryImageAlt ?? product.name}
+          className="h-9 w-9 rounded-md border border-surface-border/40 bg-surface-subtle/50"
+          imageClassName="transition-transform duration-300 group-hover:scale-105"
+          fallbackLabel={`Aucun visuel pour ${product.name}`}
+        />
       </td>
 
       <td className="px-4 py-2.5 align-middle">

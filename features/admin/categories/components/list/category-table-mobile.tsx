@@ -1,9 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { PlaceholderImage } from "@/components/shared/placeholder-image";
-import { hasRealImage } from "@/core/media";
+import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 import { cn } from "@/lib/utils";
 import { CategoryTableRowActions } from "./category-table-row-actions";
@@ -68,23 +66,12 @@ function CategoryMobileVisual({
   category,
 }: Readonly<{ category: AdminCategoryCardItem }>) {
   return (
-    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-surface-border bg-surface-panel-soft sm:h-11 sm:w-11">
-      {hasRealImage(category.primaryImageUrl) ? (
-        <Image
-          src={category.primaryImageUrl!}
-          alt={category.primaryImageAlt ?? category.name}
-          fill
-          className="object-cover"
-          sizes="48px"
-        />
-      ) : (
-        <PlaceholderImage
-          alt={category.primaryImageAlt ?? category.name}
-          className="bg-muted"
-          imageClassName="opacity-15"
-        />
-      )}
-    </div>
+    <AdminThumbnail
+      src={category.primaryImageUrl}
+      alt={category.primaryImageAlt ?? category.name}
+      className="h-12 w-12 shrink-0 rounded-xl border border-surface-border bg-surface-panel-soft sm:h-11 sm:w-11"
+      fallbackLabel={`Aucun visuel pour ${category.name}`}
+    />
   );
 }
 
