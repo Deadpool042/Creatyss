@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function AdminContentOverviewPage() {
-  return <div>Vue d’ensemble contenu</div>;
+  redirect("/admin/content/blog");
 }
