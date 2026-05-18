@@ -47,10 +47,10 @@ Creatyss n’est pas, à ce stade :
 
 - Next.js App Router
 - TypeScript strict
-- PostgreSQL
-- Prisma
+- PostgreSQL — local natif sur `localhost:5434`, variables dans `.env.local`
+- Prisma — scripts locaux via `pnpm run db:*`
 - pnpm pour le développement local courant
-- Docker Compose pour les vérifications prod-like locales
+- Docker Compose pour les vérifications prod-like locales uniquement
 - Makefile pour les commandes prod-like et utilitaires si conservé
 - déploiement futur sur VPS OVH
 
@@ -58,12 +58,14 @@ Creatyss n’est pas, à ce stade :
 
 ## Modes d’exécution
 
-Le développement courant n’est plus Docker-first.
+Le développement courant est local natif.
 
 Par défaut :
 
 - utiliser `pnpm dev` pour lancer l’application en local ;
-- utiliser les scripts `pnpm run ...` pour les vérifications courantes ;
+- utiliser PostgreSQL local sur `localhost:5434` comme base de données de développement ;
+- utiliser les scripts `pnpm run db:*` pour les opérations Prisma et le seed local ;
+- utiliser les scripts `pnpm run ...` pour les vérifications courantes (typecheck, lint, test) ;
 - réserver Docker Compose aux validations prod-like locales, aux vérifications d’intégration et à la préparation au déploiement ;
 - ne pas remplacer le flux local natif par Docker sauf demande explicite.
 
@@ -250,7 +252,7 @@ Après tout déplacement structurel dans `prisma/**` :
 - vérifier les relations ;
 - vérifier les enums ;
 - vérifier les références croisées ;
-- exécuter `pnpm prisma validate`.
+- exécuter `pnpm run db:validate`.
 
 ### Fichiers vides
 
