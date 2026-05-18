@@ -77,7 +77,6 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
             <TableHeader>
               <TableRow>
                 <TableHead>Titre</TableHead>
-                <TableHead>Slug</TableHead>
                 <TableHead>Statut</TableHead>
                 <TableHead>Publié le</TableHead>
                 <TableHead>Actions</TableHead>
@@ -94,7 +93,6 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
                       {post.title}
                     </Link>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{post.slug}</TableCell>
                   <TableCell>
                     <Badge variant={post.status === "published" ? "secondary" : "outline"}>
                       {post.status === "published" ? "Publié" : "Brouillon"}
@@ -121,6 +119,11 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
                         >
                           {post.status === "published" ? "Passer en brouillon" : "Publier"}
                         </button>
+                        {post.status === "draft" && !post.hasContent ? (
+                          <p className="mt-0.5 text-xs text-muted-foreground">
+                            Ajoutez du contenu pour pouvoir publier.
+                          </p>
+                        ) : null}
                       </form>
                     </div>
                   </TableCell>
