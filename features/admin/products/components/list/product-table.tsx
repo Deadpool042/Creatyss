@@ -2,6 +2,7 @@
 
 import type { JSX } from "react";
 
+import { AdminTablePagination } from "@/components/admin/tables/admin-table-pagination";
 import type {
   ProductFilterCategoryOption,
   ProductTableItem,
@@ -9,7 +10,6 @@ import type {
 import { ProductTableProvider, useProductTableContext } from "./product-table-context";
 import { ProductTableDesktop } from "./product-table-desktop";
 import { ProductTableMobile } from "./product-table-mobile";
-import { ProductTablePagination } from "./product-table-pagination";
 import { ProductTableToolbar } from "./product-table-toolbar";
 import type { ProductListView } from "./toolbar/product-table-toolbar-types";
 
@@ -49,12 +49,12 @@ function ProductTableDesktopView(): JSX.Element {
         />
       </div>
 
-      <ProductTablePagination
+      <AdminTablePagination
         currentPage={state.currentPage}
         totalPages={state.totalPages}
-        filteredCount={state.filteredCount}
         onPrevious={state.goPrevious}
         onNext={state.goNext}
+        countLabel={`${state.filteredCount} produit${state.filteredCount !== 1 ? "s" : ""}`}
       />
     </div>
   );

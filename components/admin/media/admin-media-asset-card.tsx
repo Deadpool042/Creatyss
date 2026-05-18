@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
+import type { FormEvent, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -15,7 +18,22 @@ type AdminMediaAssetCardItem = {
 
 type AdminMediaAssetCardProps = {
   asset: AdminMediaAssetCardItem;
+  assetId: string;
+  archiveAction: (formData: FormData) => void | Promise<void>;
 };
+
+function getFormatLabel(mimeType: string): string {
+  switch (mimeType.trim().toLowerCase()) {
+    case "image/jpeg":
+      return "JPEG";
+    case "image/png":
+      return "PNG";
+    case "image/webp":
+      return "WebP";
+    default:
+      return mimeType;
+  }
+}
 
 function InfoTile({
   label,
@@ -41,7 +59,45 @@ function InfoTile({
   );
 }
 
-export function AdminMediaAssetCard({ asset }: AdminMediaAssetCardProps) {
+function ArchiveMediaButton({
+  assetId,
+  assetName,
+  archiveAction,
+}: Readonly<{
+  assetId: string;
+  assetName: string;
+  archiveAction: (formData: FormData) => void | Promise<void>;
+}>): JSX.Element {
+  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+    const confirmed = window.confirm(
+      `Archiver le média "${assetName}" ? Il disparaîtra de la bibliothèque active.`
+    );
+
+    if (!confirmed) {
+      event.preventDefault();
+    }
+  }
+
+  return (
+    <form action={archiveAction} onSubmit={handleSubmit}>
+      <input type="hidden" name="assetId" value={assetId} />
+      <button
+        className="rounded-lg border border-surface-border bg-card/90 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:border-destructive/50 hover:text-destructive"
+        type="submit"
+      >
+        Archiver
+      </button>
+    </form>
+  );
+}
+
+export function AdminMediaAssetCard({
+  asset,
+  assetId,
+  archiveAction,
+}: AdminMediaAssetCardProps) {
+  const formatLabel = getFormatLabel(asset.mimeType);
+
   return (
     <article className="flex h-full flex-col gap-4 rounded-4xl border border-surface-border bg-card p-4 shadow-card transition-colors duration-200 hover:border-surface-border-strong">
       <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-media-surface">
@@ -64,27 +120,35 @@ export function AdminMediaAssetCard({ asset }: AdminMediaAssetCardProps) {
 
       <div className="flex flex-1 flex-col gap-4">
         <div className="space-y-3">
-          <div className="flex flex-wrap gap-2">
-            {asset.previewUrl ? (
-              <span className="inline-flex h-7 items-center rounded-full border border-surface-border-strong bg-interactive-selected px-3 text-xs font-medium text-foreground">
-                Aperçu disponible
-              </span>
-            ) : (
-              <span className="inline-flex h-7 items-center rounded-full border border-feedback-warning-border bg-feedback-warning-surface px-3 text-xs font-medium text-feedback-warning-foreground">
-                Aperçu indisponible
-              </span>
-            )}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap gap-2">
+              {asset.previewUrl ? (
+                <span className="inline-flex h-7 items-center rounded-full border border-surface-border-strong bg-interactive-selected px-3 text-xs font-medium text-foreground">
+                  Aperçu disponible
+                </span>
+              ) : (
+                <span className="inline-flex h-7 items-center rounded-full border border-feedback-warning-border bg-feedback-warning-surface px-3 text-xs font-medium text-feedback-warning-foreground">
+                  Aperçu indisponible
+                </span>
+              )}
 
-            <span className="inline-flex h-7 items-center rounded-full border border-surface-border bg-surface-panel-soft px-3 text-xs font-medium text-muted-foreground">
-              {asset.byteSizeLabel}
-            </span>
+              <span className="inline-flex h-7 items-center rounded-full border border-surface-border bg-surface-panel-soft px-3 text-xs font-medium text-muted-foreground">
+                {asset.byteSizeLabel}
+              </span>
+            </div>
+
+            <ArchiveMediaButton
+              assetId={assetId}
+              assetName={asset.originalName}
+              archiveAction={archiveAction}
+            />
           </div>
 
           <div className="space-y-2">
             <h3 className="line-clamp-2 text-lg font-semibold tracking-tight text-foreground">
               {asset.originalName}
             </h3>
-            <p className="text-sm leading-6 text-muted-foreground">{asset.mimeType}</p>
+            <p className="text-sm leading-6 text-muted-foreground">Format · {formatLabel}</p>
           </div>
         </div>
 
@@ -94,7 +158,11 @@ export function AdminMediaAssetCard({ asset }: AdminMediaAssetCardProps) {
             <InfoTile label="Dimensions" value={asset.dimensionsLabel} />
           </div>
 
-          <InfoTile label="Chemin" value={asset.filePath} valueClassName="break-all" />
+          <InfoTile
+            label="Emplacement interne"
+            value={asset.filePath}
+            valueClassName="break-all text-xs leading-5 text-muted-foreground"
+          />
         </div>
       </div>
     </article>

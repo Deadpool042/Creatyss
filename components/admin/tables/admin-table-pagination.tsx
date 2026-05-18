@@ -4,30 +4,26 @@ import type { JSX } from "react";
 
 import { Button } from "@/components/ui/button";
 
-type ProductTablePaginationProps = {
+type AdminTablePaginationProps = Readonly<{
   currentPage: number;
   totalPages: number;
-  filteredCount: number;
   onPrevious: () => void;
   onNext: () => void;
-};
+  countLabel?: string;
+}>;
 
-export function ProductTablePagination({
+export function AdminTablePagination({
   currentPage,
   totalPages,
-  filteredCount,
   onPrevious,
   onNext,
-}: ProductTablePaginationProps): JSX.Element {
+  countLabel,
+}: AdminTablePaginationProps): JSX.Element {
   return (
     <div className="shrink-0 flex items-center justify-between border-t border-surface-border/40 pt-2.5">
       <p className="text-xs text-muted-foreground/70">
         Page {currentPage} sur {totalPages}
-        {totalPages > 1 ? (
-          <span className="ml-1.5 opacity-70">
-            · {filteredCount} produit{filteredCount !== 1 ? "s" : ""}
-          </span>
-        ) : null}
+        {countLabel && totalPages > 1 ? <span className="ml-1.5 opacity-70">· {countLabel}</span> : null}
       </p>
 
       <div className="flex items-center gap-1">
