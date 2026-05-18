@@ -23,10 +23,8 @@ export const BlogPostFormSchema = z.object({
   seoTitle: formOptionalText(),
   seoDescription: formOptionalText(),
   status: formEnum(["draft", "published"] as const),
-  primaryImageMediaAssetId: formOptionalText(),
-  currentPrimaryImagePath: formOptionalText(),
-  coverImageMediaAssetId: formOptionalText(),
-  currentCoverImagePath: formOptionalText(),
+  primaryImagePath: formOptionalText(),
+  coverImagePath: formOptionalText(),
 });
 
 export type BlogPostFormInput = z.infer<typeof BlogPostFormSchema>;

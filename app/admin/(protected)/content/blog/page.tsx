@@ -59,6 +59,7 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
 
   return (
     <AdminPageShell
+      scrollMode="area"
       actions={
         <Button asChild size="sm" variant="outline">
           <Link href="/admin/content/blog/new">Nouvel article</Link>

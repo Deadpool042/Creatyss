@@ -10,7 +10,7 @@ export default function AdminContentSeoPage() {
       title="SEO"
       description="Référencement et visibilité de la boutique sur les moteurs de recherche."
     >
-      <Notice tone="info">
+      <Notice tone="note">
         Le SEO de base est déjà actif. Les titres, descriptions et URLs canoniques sont générés
         automatiquement pour chaque fiche produit et chaque article de blog publié.
       </Notice>

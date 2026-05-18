@@ -23,6 +23,7 @@ export default async function NewAdminBlogPostPage() {
 
   return (
     <AdminPageShell
+      scrollMode="area"
       pageTitleNavigation={{ label: "Retour", href: "/admin/content/blog" }}
       description="Création d'un article de blog."
       eyebrow="Blog"

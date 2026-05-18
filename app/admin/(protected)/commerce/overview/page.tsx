@@ -8,7 +8,7 @@ export default function AdminCommerceOverviewPage() {
       title="Vue d'ensemble"
       description="Suivi des ventes, des commandes et des clients."
     >
-      <Notice tone="info">
+      <Notice tone="note">
         Les outils commerce sont en cours d&apos;activation progressive. Les commandes, les clients
         et les paiements seront accessibles depuis cette section au fur et à mesure de leur mise en
         service.

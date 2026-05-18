@@ -38,6 +38,7 @@ export default async function EditAdminBlogPostPage({
 
   return (
     <AdminPageShell
+      scrollMode="area"
       pageTitleNavigation={{ label: "Retour", href: "/admin/content/blog" }}
       description="Modification d'un article de blog."
       eyebrow="Blog"
