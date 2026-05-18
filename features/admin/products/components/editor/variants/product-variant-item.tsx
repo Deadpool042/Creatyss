@@ -171,7 +171,7 @@ export function ProductVariantItem({
 
             <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
               <span className="font-medium text-foreground">{optionValueSummary}</span>
-              <span className="font-mono">SKU {variant.sku}</span>
+              <span className="font-mono">Réf. interne {variant.sku}</span>
               <span>
                 Position {position}/{total}
               </span>
@@ -239,7 +239,9 @@ export function ProductVariantItem({
               <SectionLabel>Repères techniques</SectionLabel>
               <div className="mt-3 grid gap-x-5 gap-y-3 sm:grid-cols-2">
                 <div className="space-y-1">
-                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Slug</p>
+                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                    Adresse
+                  </p>
                   <p className="text-sm text-foreground">
                     {variant.slug && variant.slug.trim().length > 0 ? `/${variant.slug}` : "—"}
                   </p>

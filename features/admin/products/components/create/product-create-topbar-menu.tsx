@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,9 @@ export function ProductCreateTopbarMenu({ productId: _productId }: ProductCreate
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>Créer un produit</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/admin/products/new">Créer un produit</Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

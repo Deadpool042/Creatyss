@@ -176,7 +176,7 @@ function SeoChecklist({ items }: { items: SeoCheckItem[] }): JSX.Element {
       ? "Points à corriger"
       : warnCount > 0
         ? "Quelques points à surveiller"
-        : "SEO en bon état";
+        : "Référencement en bon état";
 
   const headerColor =
     errorCount > 0
@@ -333,7 +333,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
 
   const checklistItems: SeoCheckItem[] = [
     {
-      label: "Titre SEO",
+      label: "Titre pour Google",
       status: titleStatus,
       ...(titleStatus === "error"
         ? { hint: "Trop court", nextStep: "Ajoutez un détail utile : matière, usage ou gamme." }
@@ -348,7 +348,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
             }),
     },
     {
-      label: "Description SEO",
+      label: "Description pour Google",
       status: descStatus,
       ...(descStatus === "error"
         ? {
@@ -439,7 +439,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
 
               <div className="space-y-4">
                 <AdminFormField
-                  label="Titre SEO"
+                  label="Titre pour Google"
                   htmlFor="seo-title"
                   error={state.fieldErrors.title}
                 >
@@ -482,7 +482,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                 </AdminFormField>
 
                 <AdminFormField
-                  label="Description SEO"
+                  label="Description pour Google"
                   htmlFor="seo-description"
                   error={state.fieldErrors.description}
                 >

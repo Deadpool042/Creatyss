@@ -223,9 +223,10 @@ export function ProductVariantEditorSheet({
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <AdminFormField
-                      label="SKU"
+                      label="Référence interne"
                       htmlFor="variant-sku"
                       required
+                      description="Optionnelle si déjà fournie automatiquement, utile pour retrouver une variante."
                       {...(state.fieldErrors.sku ? { error: state.fieldErrors.sku } : {})}
                     >
                       <Input
@@ -237,9 +238,9 @@ export function ProductVariantEditorSheet({
                     </AdminFormField>
 
                     <AdminFormField
-                      label="Slug"
+                      label="Adresse de la variante"
                       htmlFor="variant-slug"
-                      description="Généré automatiquement depuis le nom. Valeur modifiable."
+                      description="Visible dans l'URL de la variante. Générée automatiquement depuis le nom, valeur modifiable."
                       {...(state.fieldErrors.slug ? { error: state.fieldErrors.slug } : {})}
                     >
                       <Input

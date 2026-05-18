@@ -184,10 +184,10 @@ function ProductGeneralTabInner({
               </AdminFormField>
 
               <AdminFormField
-                label="Slug"
+                label="Adresse du produit"
                 htmlFor="edit-slug"
                 required
-                hint="Généré automatiquement depuis le nom. Vous pouvez le modifier."
+                hint="Visible dans l'URL du produit. Générée automatiquement depuis le nom, vous pouvez la modifier."
                 error={state.fieldErrors.slug}
               >
                 <Input
@@ -201,9 +201,9 @@ function ProductGeneralTabInner({
 
               <div className="grid gap-4 md:grid-cols-2">
                 <AdminFormField
-                  label="Référence produit (SKU)"
+                  label="Référence interne"
                   htmlFor="edit-sku-root"
-                  hint="Identifiant interne utilisé pour gérer les stocks. Pour un produit à variantes, chaque déclinaison génère automatiquement son propre code à partir de cette base."
+                  hint="Optionnelle, utile pour retrouver un produit. Pour un produit à variantes, chaque déclinaison reprend cette base pour générer sa propre référence."
                   error={state.fieldErrors.skuRoot}
                 >
                   <Input
@@ -314,8 +314,8 @@ function ProductGeneralTabInner({
               />
               <AdminRichTextEditor
                 name="careInstructions"
-                label="Entretien (PDP)"
-                hint="Source dédiée de l'accordéon Entretien sur la PDP. Saisissez ici les conseils de soin et ne les dupliquez pas dans Caractéristiques."
+                label="Conseils d'entretien"
+                hint="Champ dédié aux conseils de soin affichés sur la fiche produit. Saisissez-les ici et évitez de les dupliquer dans Caractéristiques."
                 preset="full"
                 minHeightClassName="min-h-[120px]"
                 initialValue={product.product.careInstructions ?? ""}

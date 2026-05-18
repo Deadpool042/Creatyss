@@ -177,8 +177,8 @@ function ProductCharacteristicsTabInner({
                   Vous pouvez aussi ajouter une ligne vide puis compléter dans la liste.
                 </p>
                 <p className="text-xs leading-5 text-muted-foreground">
-                  Pour l&apos;entretien, utilisez le champ dédié Entretien (PDP) dans l&apos;onglet
-                  Général afin d&apos;éviter les doublons.
+                  Pour l&apos;entretien, utilisez le champ dédié Conseils d&apos;entretien dans
+                  l&apos;onglet Général afin d&apos;éviter les doublons.
                 </p>
               </div>
 

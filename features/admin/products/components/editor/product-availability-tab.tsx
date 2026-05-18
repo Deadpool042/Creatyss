@@ -233,7 +233,7 @@ export function ProductAvailabilityTab({
                 <>
                   {standaloneVariant.sku !== null && (
                     <p className="text-xs text-muted-foreground -mt-2 mb-2">
-                      <span className="font-medium">SKU :</span>{" "}
+                      <span className="font-medium">Référence interne :</span>{" "}
                       <span className="font-mono">{standaloneVariant.sku}</span>
                     </p>
                   )}

@@ -162,7 +162,7 @@ function ProductEditorTabs({ isStandalone }: { isStandalone: boolean }): JSX.Ele
               Caractéristiques
             </TabsTrigger>
             <TabsTrigger className={defaultClassNameTabTrigger} value="seo">
-              SEO
+              Référencement
             </TabsTrigger>
           </TabsList>
         </div>

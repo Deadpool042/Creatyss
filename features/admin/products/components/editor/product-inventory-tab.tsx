@@ -145,7 +145,7 @@ export function ProductInventoryTab({
                 >
                   {standaloneVariant.sku && (
                     <p className="text-xs text-muted-foreground">
-                      <span className="font-medium">SKU :</span>{" "}
+                      <span className="font-medium">Référence interne :</span>{" "}
                       <span className="font-mono">{standaloneVariant.sku}</span>
                     </p>
                   )}
