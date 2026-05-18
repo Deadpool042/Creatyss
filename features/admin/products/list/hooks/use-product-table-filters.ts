@@ -250,7 +250,7 @@ export function useProductTableFilters({
     sort,
     setSort,
 
-    categoryOptions: filteredCategoryOptions.sort(sortCategories),
+    categoryOptions: [...filteredCategoryOptions].sort(sortCategories),
     allFilteredProducts: filtered,
     paginated,
     currentPage: safeCurrentPage,
