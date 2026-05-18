@@ -1,3 +1,4 @@
+import { localUploadExists } from "@/core/uploads/check-local-upload";
 import { toSeoPlainTextOrNull } from "@/entities/product/seo-text";
 import {
   buildCatalogImageUrl,
@@ -182,7 +183,10 @@ function mapRelatedGroups(
       availabilityLabel: getAvailabilityLabel(availabilityStatus),
       isAvailable,
       shortDescription: rel.targetProduct.shortDescription,
-      imageFilePath: rel.targetProduct.primaryImage?.storageKey ?? null,
+      imageFilePath: (() => {
+        const key = rel.targetProduct.primaryImage?.storageKey ?? null;
+        return key !== null && localUploadExists(key) ? key : null;
+      })(),
       imageAltText: rel.targetProduct.primaryImage?.altText ?? null,
     });
   }
