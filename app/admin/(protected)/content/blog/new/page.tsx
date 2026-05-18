@@ -35,8 +35,18 @@ export default async function NewAdminBlogPostPage() {
             <Input id="blog-title" name="title" required type="text" />
           </AdminFormField>
 
-          <AdminFormField htmlFor="blog-slug" label="Slug">
-            <Input id="blog-slug" name="slug" required type="text" />
+          <AdminFormField
+            htmlFor="blog-slug"
+            label="Adresse de l'article"
+            description="Visible dans l'URL. Utilisez des lettres minuscules, des chiffres et des tirets."
+          >
+            <Input
+              id="blog-slug"
+              name="slug"
+              required
+              type="text"
+              placeholder="naissance-d-un-sac-unique"
+            />
           </AdminFormField>
 
           <AdminFormField htmlFor="blog-excerpt" label="Extrait">

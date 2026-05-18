@@ -52,7 +52,7 @@ export default async function EditAdminBlogPostPage({
             <Input id="blog-title" name="title" required type="text" defaultValue={post.title} />
           </AdminFormField>
 
-          <AdminFormField htmlFor="blog-slug" label="Slug">
+          <AdminFormField htmlFor="blog-slug" label="Adresse de l'article">
             <Input id="blog-slug" name="slug" required type="text" defaultValue={post.slug} />
           </AdminFormField>
 
