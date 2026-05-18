@@ -1,20 +1,18 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { validateAdminCategoryInput } from "@/entities/category";
+import { AdminCategoryServiceError } from "../types";
 import { updateAdminCategory } from "../services";
 
-export async function updateCategoryAction(formData: FormData): Promise<{
-  status: "success" | "error";
-  message: string;
-}> {
+export async function updateCategoryAction(formData: FormData): Promise<void> {
   const categoryId = formData.get("categoryId");
 
   if (typeof categoryId !== "string" || categoryId.trim().length === 0) {
-    return {
-      status: "error",
-      message: "Catégorie introuvable.",
-    };
+    redirect("/admin/categories?error=missing_category");
   }
+
+  const normalizedCategoryId = categoryId.trim();
 
   const validated = validateAdminCategoryInput({
     name: formData.get("name"),
@@ -27,26 +25,25 @@ export async function updateCategoryAction(formData: FormData): Promise<{
   });
 
   if (!validated.ok) {
-    return {
-      status: "error",
-      message: "Données invalides.",
-    };
+    redirect(`/admin/categories/${normalizedCategoryId}?error=${validated.code}`);
   }
 
   try {
     await updateAdminCategory({
-      categoryId: categoryId.trim(),
+      categoryId: normalizedCategoryId,
       ...validated.data,
     });
+  } catch (error: unknown) {
+    if (error instanceof AdminCategoryServiceError && error.code === "category_missing") {
+      redirect("/admin/categories?error=missing_category");
+    }
 
-    return {
-      status: "success",
-      message: "Mise à jour effectuée.",
-    };
-  } catch {
-    return {
-      status: "error",
-      message: "Mise à jour impossible.",
-    };
+    if (error instanceof AdminCategoryServiceError) {
+      redirect(`/admin/categories/${normalizedCategoryId}?error=${error.code}`);
+    }
+
+    redirect(`/admin/categories/${normalizedCategoryId}?error=save_failed`);
   }
+
+  redirect(`/admin/categories/${normalizedCategoryId}?status=updated`);
 }

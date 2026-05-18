@@ -1,12 +1,11 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { validateAdminCategoryInput } from "@/entities/category";
+import { AdminCategoryServiceError } from "../types";
 import { createAdminCategory } from "../services";
 
-export async function createCategoryAction(formData: FormData): Promise<{
-  status: "success" | "error";
-  message: string;
-}> {
+export async function createCategoryAction(formData: FormData): Promise<void> {
   const validated = validateAdminCategoryInput({
     name: formData.get("name"),
     slug: formData.get("slug"),
@@ -18,23 +17,18 @@ export async function createCategoryAction(formData: FormData): Promise<{
   });
 
   if (!validated.ok) {
-    return {
-      status: "error",
-      message: "Données invalides.",
-    };
+    redirect(`/admin/categories/new?error=${validated.code}`);
   }
 
   try {
     await createAdminCategory(validated.data);
+  } catch (error: unknown) {
+    if (error instanceof AdminCategoryServiceError) {
+      redirect(`/admin/categories/new?error=${error.code}`);
+    }
 
-    return {
-      status: "success",
-      message: "Création effectuée.",
-    };
-  } catch {
-    return {
-      status: "error",
-      message: "Création impossible.",
-    };
+    redirect("/admin/categories/new?error=save_failed");
   }
+
+  redirect("/admin/categories?status=created");
 }

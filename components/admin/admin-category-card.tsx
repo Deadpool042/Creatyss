@@ -24,33 +24,10 @@ const statusConfig = {
   },
   archived: {
     label: "Archivée",
-    className: "border-feedback-error-border bg-feedback-error-surface text-feedback-error-foreground",
+    className:
+      "border-feedback-error-border bg-feedback-error-surface text-feedback-error-foreground",
   },
 } satisfies Record<AdminCategoryCardItem["status"], { label: string; className: string }>;
-
-function InfoTile({
-  label,
-  value,
-  className,
-  valueClassName,
-}: {
-  label: string;
-  value: string;
-  className?: string;
-  valueClassName?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "rounded-2xl border border-surface-border bg-surface-panel-soft p-4",
-        className
-      )}
-    >
-      <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
-      <p className={cn("mt-2 text-sm leading-6 text-foreground", valueClassName)}>{value}</p>
-    </div>
-  );
-}
 
 export function AdminCategoryCard({ category }: AdminCategoryCardProps) {
   const status = statusConfig[category.status];
@@ -59,11 +36,11 @@ export function AdminCategoryCard({ category }: AdminCategoryCardProps) {
   return (
     <Link
       aria-label={`Ouvrir la catégorie ${category.name}`}
-      className="group block h-full rounded-4xl focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-focus-ring/50"
+      className="group block h-full min-w-0 rounded-2xl focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-focus-ring/50"
       href={`/admin/categories/${category.id}`}
     >
-      <article className="flex h-full flex-col gap-4 rounded-4xl border border-surface-border bg-card p-4 shadow-card transition-colors duration-200 group-hover:border-surface-border-strong">
-        <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-surface-panel-soft">
+      <article className="flex h-full min-w-0 flex-col gap-2.5 rounded-2xl border border-surface-border bg-card p-3 shadow-sm transition-[border-color,box-shadow] duration-200 group-hover:border-surface-border-strong group-hover:shadow-md sm:gap-3 sm:p-3.5">
+        <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl bg-surface-panel-soft sm:aspect-8/5">
           {category.primaryImageUrl ? (
             <Image
               alt={imageAlt}
@@ -79,8 +56,8 @@ export function AdminCategoryCard({ category }: AdminCategoryCardProps) {
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-4">
-          <div className="space-y-3">
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
+          <div className="space-y-1.5 sm:space-y-2">
             <div className="flex flex-wrap items-center gap-2">
               <span
                 className={cn(
@@ -99,24 +76,32 @@ export function AdminCategoryCard({ category }: AdminCategoryCardProps) {
               ) : null}
             </div>
 
-            <h2 className="line-clamp-2 text-lg font-semibold tracking-tight text-foreground">
+            <h2 className="line-clamp-2 text-[15px] font-semibold tracking-tight text-foreground sm:text-base">
               {category.name}
             </h2>
-          </div>
-
-          <div className="grid gap-3">
-            <InfoTile label="Slug" value={category.slug} valueClassName="truncate" />
 
             {category.description ? (
-              <div className="rounded-2xl border border-surface-border bg-surface-panel-soft p-4">
-                <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-                  Description
-                </p>
-                <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">
-                  {category.description}
-                </p>
-              </div>
-            ) : null}
+              <p className="line-clamp-1 text-sm leading-5 text-muted-foreground sm:line-clamp-2">
+                {category.description}
+              </p>
+            ) : (
+              <p className="text-sm leading-5 text-muted-foreground">
+                Aucune description renseignée pour le moment.
+              </p>
+            )}
+          </div>
+
+          <div className="mt-auto flex min-w-0 items-end justify-between gap-2 pt-0.5">
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                Adresse
+              </p>
+              <p className="truncate text-sm font-medium text-foreground">{category.slug}</p>
+            </div>
+
+            <span className="shrink-0 text-xs font-medium text-muted-foreground transition-colors duration-200 group-hover:text-foreground">
+              Modifier
+            </span>
           </div>
         </div>
       </article>

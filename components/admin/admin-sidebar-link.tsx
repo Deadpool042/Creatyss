@@ -28,7 +28,12 @@ export function AdminSidebarLink({
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild tooltip={tooltip} isActive={isActive} className="h-9 rounded-xl">
+      <SidebarMenuButton
+        asChild
+        tooltip={tooltip}
+        isActive={isActive}
+        className="h-8 rounded-lg desktop:h-9 desktop:rounded-xl"
+      >
         <Link href={href}>
           {iconContent ? (
             <span className={cn("shrink-0", isActive && "text-brand")}>{iconContent}</span>

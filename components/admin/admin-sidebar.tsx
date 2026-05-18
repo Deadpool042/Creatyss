@@ -14,7 +14,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from "@/components/ui/sidebar";
 
 type AdminSidebarProps = {
@@ -26,20 +25,24 @@ type AdminSidebarProps = {
 
 export function AdminSidebar({ displayName, email, rootItems, groups }: AdminSidebarProps) {
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
-      <SidebarHeader className="border-b border-sidebar-border p-2 group-data-[collapsible=icon]:hidden">
+    <Sidebar collapsible="offcanvas" className="border-r border-sidebar-border bg-sidebar">
+      <SidebarHeader className="border-b border-sidebar-border p-1.5 desktop:p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild className="rounded-xl">
+            <SidebarMenuButton
+              size="lg"
+              asChild
+              className="rounded-lg px-2 laptop:h-11 desktop:h-12 desktop:rounded-xl"
+            >
               <Link href="/admin" aria-label="Administration Creatyss">
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-accent text-brand">
+                <div className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-accent text-brand desktop:size-8">
                   <LayoutDashboard className="size-4" />
                 </div>
                 <div className="grid min-w-0 flex-1 text-left leading-tight">
                   <span className="truncate text-sm font-semibold text-sidebar-foreground">
                     Creatyss
                   </span>
-                  <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-brand">
+                  <span className="hidden text-[11px] font-medium uppercase tracking-[0.14em] text-brand desktop:block">
                     Administration
                   </span>
                 </div>
@@ -49,22 +52,27 @@ export function AdminSidebar({ displayName, email, rootItems, groups }: AdminSid
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="px-2 py-2">
+      <SidebarContent className="px-2 py-2 desktop:px-2">
         <AdminSidebarNav rootItems={rootItems} groups={groups} />
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border p-2">
+      <SidebarFooter className="border-t border-sidebar-border p-1.5 desktop:p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" className="rounded-xl">
-              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-accent text-sm font-semibold text-sidebar-foreground">
+            <SidebarMenuButton
+              size="lg"
+              className="rounded-lg px-2 laptop:h-11 desktop:h-12 desktop:rounded-xl"
+            >
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-accent text-sm font-semibold text-sidebar-foreground desktop:size-8">
                 {displayName.charAt(0).toUpperCase()}
               </div>
               <div className="grid min-w-0 flex-1 text-left leading-tight">
                 <span className="truncate text-sm font-medium text-sidebar-foreground">
                   {displayName}
                 </span>
-                <span className="truncate text-xs text-sidebar-foreground/70">{email}</span>
+                <span className="hidden truncate text-xs text-sidebar-foreground/70 desktop:block">
+                  {email}
+                </span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -74,8 +82,6 @@ export function AdminSidebar({ displayName, email, rootItems, groups }: AdminSid
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-
-      <SidebarRail />
     </Sidebar>
   );
 }

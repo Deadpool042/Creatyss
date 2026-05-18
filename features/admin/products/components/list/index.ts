@@ -4,6 +4,7 @@ export { AdminProductsPriceCell } from "./admin-products-price-cell";
 export { ProductMobileCard } from "./product-mobile-card";
 export { ProductStockBadge } from "./product-stock-badge";
 export { ProductTable } from "./product-table";
+export { ProductTableProvider, useProductTableContext } from "./product-table-context";
 export { ProductTableDesktop } from "./product-table-desktop";
 export { ProductTableFiltersForm } from "./product-table-filters-form";
 export { ProductTableMobile } from "./product-table-mobile";

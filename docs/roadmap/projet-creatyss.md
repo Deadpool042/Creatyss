@@ -84,7 +84,7 @@ L'IA peut proposer et vérifier ; elle ne valide pas à la place de l'humain.
 - [x] Fiche produit claire et cohérente sur mobile, tablette, desktop
 - [x] Blog public lisible avec listing et détail
 - [x] Homepage éditable sans intervention développeur
-- [ ] Admin produits utilisable par une non-technicienne
+- [x] Admin produits utilisable par une non-technicienne
 - [ ] Admin catégories utilisable
 - [ ] Admin médias utilisable avec archivage
 - [ ] Admin blog créer / modifier / publier opérationnel

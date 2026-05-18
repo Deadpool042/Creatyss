@@ -35,8 +35,25 @@ type SecondaryFiltersProps = {
   triggerClassName?: string;
 };
 
+type AdvancedFilterFieldProps = {
+  label: string;
+  children: JSX.Element;
+};
+
 const MOBILE_SELECT_TRIGGER_CLASS_NAME =
   "h-10 rounded-xl bg-card text-sm [@media(max-height:480px)]:h-9";
+
+const ADVANCED_FILTER_LABEL_CLASS_NAME =
+  "text-[0.62rem] uppercase tracking-[0.1em] text-muted-foreground/60";
+
+function AdvancedFilterField({ label, children }: AdvancedFilterFieldProps): JSX.Element {
+  return (
+    <div className="grid gap-1.5">
+      <label className={ADVANCED_FILTER_LABEL_CLASS_NAME}>{label}</label>
+      {children}
+    </div>
+  );
+}
 
 function MobileFilterSectionTitle({ children }: { children: string }): JSX.Element {
   return (
@@ -101,61 +118,69 @@ function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.El
 function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): JSX.Element {
   return (
     <>
-      <Select
-        value={state.featured}
-        onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
-      >
-        <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-          <SelectValue placeholder="Mise en avant" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Tous les produits</SelectItem>
-          <SelectItem value="featured">Mis en avant</SelectItem>
-          <SelectItem value="standard">Standard</SelectItem>
-        </SelectContent>
-      </Select>
+      <AdvancedFilterField label="Mise en avant">
+        <Select
+          value={state.featured}
+          onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
+        >
+          <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
+            <SelectValue placeholder="Mise en avant" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tous les produits</SelectItem>
+            <SelectItem value="featured">Mis en avant</SelectItem>
+            <SelectItem value="standard">Standard</SelectItem>
+          </SelectContent>
+        </Select>
+      </AdvancedFilterField>
 
-      <Select
-        value={state.image}
-        onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
-      >
-        <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-          <SelectValue placeholder="Images" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Toutes les images</SelectItem>
-          <SelectItem value="with-image">Avec image</SelectItem>
-          <SelectItem value="without-image">Sans image</SelectItem>
-        </SelectContent>
-      </Select>
+      <AdvancedFilterField label="Images">
+        <Select
+          value={state.image}
+          onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
+        >
+          <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
+            <SelectValue placeholder="Images" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Toutes les images</SelectItem>
+            <SelectItem value="with-image">Avec image</SelectItem>
+            <SelectItem value="without-image">Sans image</SelectItem>
+          </SelectContent>
+        </Select>
+      </AdvancedFilterField>
 
-      <Select
-        value={state.variant}
-        onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
-      >
-        <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-          <SelectValue placeholder="Variantes" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Tous les produits</SelectItem>
-          <SelectItem value="single">Simple</SelectItem>
-          <SelectItem value="multiple">Multi-variantes</SelectItem>
-        </SelectContent>
-      </Select>
+      <AdvancedFilterField label="Variantes">
+        <Select
+          value={state.variant}
+          onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
+        >
+          <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
+            <SelectValue placeholder="Variantes" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tous les produits</SelectItem>
+            <SelectItem value="single">Simple</SelectItem>
+            <SelectItem value="multiple">Multi-variantes</SelectItem>
+          </SelectContent>
+        </Select>
+      </AdvancedFilterField>
 
-      <Select
-        value={state.stock}
-        onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
-      >
-        <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-          <SelectValue placeholder="Disponibilité" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">Toutes les disponibilités</SelectItem>
-          <SelectItem value="in-stock">En stock</SelectItem>
-          <SelectItem value="out-of-stock">Rupture</SelectItem>
-        </SelectContent>
-      </Select>
+      <AdvancedFilterField label="Disponibilité">
+        <Select
+          value={state.stock}
+          onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
+        >
+          <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
+            <SelectValue placeholder="Disponibilité" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Toutes les disponibilités</SelectItem>
+            <SelectItem value="in-stock">En stock</SelectItem>
+            <SelectItem value="out-of-stock">Rupture</SelectItem>
+          </SelectContent>
+        </Select>
+      </AdvancedFilterField>
     </>
   );
 }

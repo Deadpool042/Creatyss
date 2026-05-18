@@ -24,6 +24,14 @@ function getErrorMessage(error: string | undefined): string | null {
       return "Slug requis.";
     case "invalid_slug":
       return "Slug invalide.";
+    case "category_slug_taken":
+      return "Une catégorie utilise déjà cette adresse.";
+    case "parent_category_missing":
+      return "La catégorie parente sélectionnée est introuvable.";
+    case "media_asset_missing":
+      return "Le média sélectionné est introuvable.";
+    case "save_failed":
+      return "La catégorie n'a pas pu être créée.";
     default:
       return null;
   }
@@ -44,19 +52,29 @@ export default async function NewAdminCategoryPage({ searchParams }: NewAdminCat
   return (
     <AdminPageShell
       pageTitleNavigation={{ label: "Retour", href: "/admin/categories" }}
-      description="Création d’une catégorie de catalogue."
+      description="Créez une catégorie simple pour structurer le catalogue."
       eyebrow="Catégories"
       title="Nouvelle catégorie"
+      scrollMode="area"
     >
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
-      <AdminFormSection>
-        <form action={handleCreateCategory} className="grid gap-4">
+      <AdminFormSection
+        eyebrow="Informations"
+        title="Informations principales"
+        description="Renseignez les éléments visibles dans le catalogue. Vous pourrez compléter le visuel et le référencement ensuite."
+        contentClassName="rounded-3xl border border-surface-border bg-card p-5 shadow-card sm:p-6"
+      >
+        <form action={handleCreateCategory} className="grid gap-5">
           <AdminFormField htmlFor="cat-name" label="Nom">
             <Input id="cat-name" name="name" required type="text" />
           </AdminFormField>
 
-          <AdminFormField htmlFor="cat-slug" label="Slug">
+          <AdminFormField
+            htmlFor="cat-slug"
+            label="Adresse de la catégorie"
+            hint="Visible dans l’URL. Utilisez des lettres minuscules, des chiffres et des tirets."
+          >
             <Input id="cat-slug" name="slug" required type="text" />
           </AdminFormField>
 
@@ -74,7 +92,7 @@ export default async function NewAdminCategoryPage({ searchParams }: NewAdminCat
           <input type="hidden" name="primaryImageId" value="" />
 
           <AdminFormActions>
-            <Button type="submit">Créer</Button>
+            <Button type="submit">Créer la catégorie</Button>
           </AdminFormActions>
         </form>
       </AdminFormSection>

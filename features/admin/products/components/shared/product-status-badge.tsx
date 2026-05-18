@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 
 type ProductStatusBadgeProps = {
   status: "draft" | "active" | "inactive" | "archived";
@@ -19,23 +18,32 @@ function getStatusLabel(status: ProductStatusBadgeProps["status"]): string {
   }
 }
 
-function getStatusVariant(status: ProductStatusBadgeProps["status"]) {
+function getStatusDotClassName(status: ProductStatusBadgeProps["status"]): string {
   switch (status) {
     case "active":
-      return "secondary" as const;
+      return "bg-feedback-success";
     case "draft":
-      return "outline" as const;
+      return "bg-muted-foreground/45";
     case "inactive":
-      return "outline" as const;
+      return "bg-feedback-warning";
     case "archived":
-      return "outline" as const;
+      return "bg-muted-foreground/35";
   }
 }
 
 export function ProductStatusBadge({ status, className }: ProductStatusBadgeProps) {
   return (
-    <Badge variant={getStatusVariant(status)} className={cn(className)}>
-      {getStatusLabel(status)}
-    </Badge>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 text-xs font-medium text-foreground",
+        className
+      )}
+    >
+      <span
+        aria-hidden="true"
+        className={cn("h-1.5 w-1.5 rounded-full", getStatusDotClassName(status))}
+      />
+      <span>{getStatusLabel(status)}</span>
+    </span>
   );
 }
