@@ -1,3 +1,4 @@
+import { localUploadExists } from "@/core/uploads/check-local-upload";
 import type { BoutiqueProductCardItem } from "@/features/storefront/catalog/boutique-page/types";
 import type { CatalogProductListItem } from "@/features/storefront/catalog/types";
 
@@ -27,11 +28,13 @@ export function mapBoutiqueProductCardItem(
     variantCount: input.product.variantCount,
     colorCount: input.product.colorCount,
     summary: input.product.shortDescription ?? input.product.description,
-    image: input.product.primaryImage
-      ? {
-          src: buildImageUrl(input.uploadsPublicPath, input.product.primaryImage.filePath),
-          alt: input.product.primaryImage.altText ?? input.product.name,
-        }
-      : null,
+    image:
+      input.product.primaryImage !== null &&
+      localUploadExists(input.product.primaryImage.filePath)
+        ? {
+            src: buildImageUrl(input.uploadsPublicPath, input.product.primaryImage.filePath),
+            alt: input.product.primaryImage.altText ?? input.product.name,
+          }
+        : null,
   };
 }
