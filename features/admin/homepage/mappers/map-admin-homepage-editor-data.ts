@@ -1,4 +1,4 @@
-import { HomepageSectionType } from "@/prisma-generated/client";
+import { HomepageSectionType, type HomepageStatus } from "@/prisma-generated/client";
 import type { AdminHomepageEditorData } from "../types";
 
 type HomepageSectionRecord = {
@@ -26,6 +26,8 @@ type HomepageSectionRecord = {
 
 type HomepageRecord = {
   id: string;
+  status: HomepageStatus;
+  publishedAt: Date | null;
   store: {
     shippingReturnsPolicy: string | null;
   };
@@ -100,6 +102,8 @@ export function mapAdminHomepageEditorData(params: {
   return {
     homepage: {
       id: homepage.id,
+      status: homepage.status,
+      publishedAt: homepage.publishedAt,
       shippingReturnsPolicy: homepage.store.shippingReturnsPolicy,
       heroTitle: heroSection?.title ?? null,
       heroText: heroSection?.body ?? null,

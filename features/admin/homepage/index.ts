@@ -1,4 +1,4 @@
-export { updateHomepageAction } from "./actions";
+export { createHomepageAction, publishHomepageAction, updateHomepageAction } from "./actions";
 export { mapAdminHomepageEditorData } from "./mappers";
 export {
   getAdminHomepageCurrentHeroImagePath,
@@ -8,7 +8,7 @@ export {
   HomepageFormSchema,
   type HomepageFormInput,
 } from "./schemas";
-export { updateAdminHomepage } from "./services";
+export { createAdminHomepage, publishAdminHomepage, updateAdminHomepage } from "./services";
 export {
   AdminHomepageServiceError,
   type AdminHomepageBlogPostOption,

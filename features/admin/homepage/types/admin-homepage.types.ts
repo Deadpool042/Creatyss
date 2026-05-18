@@ -3,6 +3,7 @@ import type {
   HomepageFeaturedCategorySelection,
   HomepageFeaturedProductSelection,
 } from "@/entities/homepage/homepage-input";
+import type { HomepageStatus } from "@/prisma-generated/client";
 
 export type AdminHomepageFeaturedProductSelection = HomepageFeaturedProductSelection;
 export type AdminHomepageFeaturedCategorySelection = HomepageFeaturedCategorySelection;
@@ -10,6 +11,8 @@ export type AdminHomepageFeaturedBlogPostSelection = HomepageFeaturedBlogPostSel
 
 export type AdminHomepageEditorState = {
   id: string;
+  status: HomepageStatus;
+  publishedAt: Date | null;
   shippingReturnsPolicy: string | null;
   heroTitle: string | null;
   heroText: string | null;

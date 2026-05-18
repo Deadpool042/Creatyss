@@ -1,5 +1,7 @@
-
 personality = "pragmatic"
+
+[mcp_servers.lean-ctx]
+command = "lean-ctx"
 
 [mcp_servers.playwright]
 args = ["@playwright/mcp@latest"]
@@ -7,6 +9,9 @@ command = "npx"
 enabled = false
 
 [mcp_servers.shadcn]
+args = [
+    "shadcn@latest",
+    "mcp",
+]
 command = "npx"
-args = ["shadcn@latest", "mcp"]
 enabled = false

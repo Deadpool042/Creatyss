@@ -9,10 +9,12 @@ import { db } from "@/core/db";
 import { mapAdminHomepageEditorData } from "../mappers";
 import type { AdminHomepageEditorData } from "../types";
 
-async function getDefaultStoreId(): Promise<string | null> {
-  const store = await db.store.findFirst({
-    orderBy: {
-      createdAt: "asc",
+const CANONICAL_STORE_CODE = "creatyss";
+
+async function getCanonicalStoreId(): Promise<string | null> {
+  const store = await db.store.findUnique({
+    where: {
+      code: CANONICAL_STORE_CODE,
     },
     select: {
       id: true,
@@ -23,7 +25,7 @@ async function getDefaultStoreId(): Promise<string | null> {
 }
 
 export async function getAdminHomepageEditorData(): Promise<AdminHomepageEditorData | null> {
-  const storeId = await getDefaultStoreId();
+  const storeId = await getCanonicalStoreId();
 
   if (storeId === null) {
     return null;
@@ -44,6 +46,8 @@ export async function getAdminHomepageEditorData(): Promise<AdminHomepageEditorD
       ],
       select: {
         id: true,
+        status: true,
+        publishedAt: true,
         store: {
           select: {
             shippingReturnsPolicy: true,

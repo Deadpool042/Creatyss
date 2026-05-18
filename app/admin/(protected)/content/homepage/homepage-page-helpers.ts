@@ -31,6 +31,10 @@ export function readHomepageSearchParam(
 
 export function getHomepageStatusMessage(status: string | undefined): string | null {
   switch (status) {
+    case "created":
+      return "Page d'accueil créée avec succès.";
+    case "published":
+      return "Page d'accueil publiée avec succès.";
     case "updated":
       return "Page d'accueil enregistrée avec succès.";
     default:
