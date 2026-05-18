@@ -1,4 +1,5 @@
 import type { Prisma } from "@/prisma-generated/client";
+import { localUploadExists } from "@/core/uploads/check-local-upload";
 import {
   getCatalogProductAvailabilityStatus,
   getCatalogVariantAvailability,
@@ -244,12 +245,12 @@ export function mapPublishedProductListingRecord(
     compareAtPrice: compareAtPrice === null ? null : formatCatalogMoney(compareAtPrice),
     variantCount,
     colorCount: colorValueIds.size,
-    primaryImage: product.primaryImage
-      ? {
-          filePath: product.primaryImage.storageKey,
-          altText: product.primaryImage.altText,
-        }
-      : null,
+    primaryImage: (() => {
+      const key = product.primaryImage?.storageKey ?? null;
+      return key !== null && localUploadExists(key)
+        ? { filePath: key, altText: product.primaryImage?.altText ?? null }
+        : null;
+    })(),
   };
 }
 

@@ -17,7 +17,16 @@ export default async function AdminOrdersPage({ searchParams }: AdminOrdersPageP
   const errorParam = Array.isArray(resolvedSearchParams.error)
     ? resolvedSearchParams.error[0]
     : resolvedSearchParams.error;
-  const orders = await listAdminOrders();
+
+  let orders: Awaited<ReturnType<typeof listAdminOrders>> = [];
+  let moduleUnavailable = false;
+  try {
+    orders = await listAdminOrders();
+  } catch (err) {
+    console.error("[orders] listAdminOrders failed:", err);
+    moduleUnavailable = true;
+  }
+
   const errorMessage =
     errorParam === "missing_order"
       ? "La commande demandée est introuvable."
@@ -31,16 +40,24 @@ export default async function AdminOrdersPage({ searchParams }: AdminOrdersPageP
       eyebrow="Commandes"
       title="Commandes"
     >
-      {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
-
-      {orders.length > 0 ? (
-        <OrdersListTable orders={orders} />
+      {moduleUnavailable ? (
+        <Notice tone="note">
+          Le module commandes est en préparation. Les commandes seront disponibles avec le commerce transactionnel.
+        </Notice>
       ) : (
-        <AdminEmptyState
-          description="Les commandes créées sur la boutique apparaîtront ici."
-          eyebrow="Aucune commande"
-          title="Aucune commande n'a encore été créée"
-        />
+        <>
+          {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
+
+          {orders.length > 0 ? (
+            <OrdersListTable orders={orders} />
+          ) : (
+            <AdminEmptyState
+              description="Les commandes créées sur la boutique apparaîtront ici."
+              eyebrow="Aucune commande"
+              title="Aucune commande n'a encore été créée"
+            />
+          )}
+        </>
       )}
     </AdminPageShell>
   );

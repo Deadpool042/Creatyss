@@ -4,6 +4,7 @@ import type {
   BoutiquePageViewModel,
   BoutiqueSortValue,
 } from "@/features/storefront/catalog/boutique-page/types";
+import { localUploadExists } from "@/core/uploads/check-local-upload";
 import { buildBoutiqueUrl } from "@/features/storefront/catalog/boutique-page/model/build-boutique-url";
 import { mapBoutiqueProductCardItem } from "@/features/storefront/catalog/boutique-page/composition/map-boutique-product-card-item";
 import type { listCatalogFilterCategories } from "@/features/storefront/catalog";
@@ -121,7 +122,7 @@ function mapCategoryVisual(
   const withCover = category as CategoryWithOptionalCover;
   const cover = withCover.coverImage;
 
-  if (!cover?.filePath) {
+  if (!cover?.filePath || !localUploadExists(cover.filePath)) {
     return null;
   }
 
