@@ -2,151 +2,188 @@
 
 # Roadmap projet — Creatyss
 
-## Cadre
+## Intention produit
 
-Cette roadmap est une vue canonique de haut niveau.
-Elle cadre la trajectoire du projet sans décrire une architecture future non validée.
+Creatyss est la boutique en ligne d'une créatrice de sacs artisanaux uniques.
 
-## Invariants
+L'objectif n'est pas de construire une plateforme.
+C'est de livrer un outil sobre, fiable et premium, taillé pour une seule boutique, exploitable par une seule personne non technique.
 
-- boutique artisanale premium
-- local-first via développement natif `pnpm dev`
-- Docker Compose disponible pour les vérifications prod-like locales
-- Next.js App Router + TypeScript strict
-- PostgreSQL / Prisma
-- admin simple pour non-tech
-- séparation claire domaine / orchestration / UI
-- pas de dérive vers une plateforme générique ou une site-factory
+Chaque décision technique se justifie par rapport à cet objectif.
 
-## Socle actuel
+---
 
-Le projet dispose déjà d’un socle exploitable pour avancer proprement :
+## Principes de trajectoire
 
-- doctrine centralisée (`AGENTS.md`, `docs/architecture/`, `docs/domains/`)
-- environnement local natif via `pnpm dev`
-- mode Docker Compose disponible pour les validations prod-like
-- base front/admin existante
-- modèle initial catalogue / contenu / admin
-- base documentaire de pilotage
-- seed local avec import historique ponctuel possible
+- Livrer de la valeur visible avant d'optimiser l'invisible.
+- Avancer par horizons courts, vérifiables et réversibles.
+- Consolider avant d'étendre.
+- Ne pas ouvrir un horizon sans avoir stabilisé le précédent.
+- Rester dans le périmètre d'une boutique artisanale — pas d'une plateforme.
 
-## Phase 1 — Stabilisation du socle
+**Direction d'interface :** discipline inspirée Apple — respiration, hiérarchie, précision, fluidité.
+Cette inspiration ne doit pas produire une esthétique froide, technologique ou gadget.
+Le rendu reste artisanal, chaleureux et premium.
 
-Objectif : fiabiliser la base avant extension fonctionnelle.
+---
 
-Priorités :
+## État actuel du socle
 
-- corriger les incohérences documentaires et structurelles bloquantes
-- consolider les frontières des domaines coeur et transverses critiques
-- réduire la dette de maintenabilité la plus risquée
-- stabiliser la gouvernance doc / architecture / repo
+### Stable
 
-## Phase 2 — V1 catalogue, contenu et admin
+- Architecture doctrine + domaines + frontières documentée (`AGENTS.md`, `docs/architecture/`, `docs/domains/`)
+- Environnement local natif reproductible (`pnpm dev`, PostgreSQL `localhost:5434`)
+- Schéma Prisma multi-fichiers cohérent avec la doctrine
+- Catalogue : produits, variantes, options, images, catégories, prix
+- Storefront : boutique, fiche produit, blog, homepage éditable
+- Admin : blog complet (création, édition, publication, suppression), bibliothèque médias avec archivage
+- Server Actions sécurisées sur les flux admin critiques
+- Fallback images locales absentes côté serveur (`localUploadExists`)
 
-Objectif : garantir le coeur éditorial et catalogue de la boutique.
+### En consolidation
 
-Périmètre :
+- SEO storefront (balises, canonicals, sitemap — socle posé, affinement ouvert)
+- Liens de navigation storefront "Bientôt" (périmètre commerce non encore ouvert)
+- Tests automatisés : infrastructure présente, couverture à renforcer sur les flux critiques
 
-- produits
-- variantes
-- images
-- catégories
-- homepage éditable
-- blog éditable
-- admin simple et robuste pour les opérations courantes
-- SEO de base
+---
 
-Mise à jour réalisée (V2-1 PDP, lot minimal) :
+## Check-list de validation
 
-- ajout de `Product.careInstructions` pour structurer **Entretien** côté PDP ;
-- ajout de `Store.shippingReturnsPolicy` pour structurer **Livraison & retours** global storefront ;
-- fallbacks transitoires conservés sur la PDP pour compatibilité avec les données V1.
+Les cases ne sont cochées qu'après vérification réelle.
+Une case non vérifiée reste ouverte — pas d'auto-validation.
 
-## Phase 2B — Consolidation UI/UX storefront et admin
+La validation finale est factuelle : `typecheck`, `lint`, test manuel, capture ou revue humaine.
+L'IA peut proposer et vérifier ; elle ne valide pas à la place de l'humain.
 
-Objectif : améliorer la qualité perçue, la lisibilité et la fluidité des parcours sans modifier le périmètre métier de la V1.
+---
 
-Périmètre :
+## Horizon 1 — V1 éditoriale et catalogue exploitable
 
-- clarification de la direction visuelle storefront ;
-- amélioration progressive des pages publiques clés : homepage, boutique, fiche produit, blog ;
-- consolidation de l’expérience admin pour une utilisatrice non technique ;
-- homogénéisation des composants, espacements, états vides, messages d’erreur et feedbacks ;
-- amélioration de la navigation mobile et desktop ;
-- accessibilité pragmatique : structure sémantique, focus, contrastes, libellés ;
-- cohérence responsive mobile, tablette et desktop.
+**Objectif :** la boutique peut être mise en ligne avec un catalogue réel, un blog actif et un admin utilisable au quotidien.
 
-Hors périmètre :
+**Périmètre :**
 
-- changement de modèle métier ;
-- refonte complète non incrémentale ;
-- design system complexe ;
-- animation ou effet visuel non nécessaire ;
-- dépendance UI ajoutée sans besoin explicite.
+- Catalogue complet : produits publiés, variantes, galerie, SEO produit
+- Homepage éditable : hero, produits mis en avant, catégories, article en vedette
+- Blog : articles publiés avec image principale et couverture
+- Admin : gestion produits, images, blog, paramètres boutique de base
+- SEO : titres, descriptions, sitemap, robots
+- Responsive mobile / tablette / desktop soigné
 
-Invariants :
+**Critères de sortie :**
 
-- préserver la séparation domaine / orchestration / UI ;
-- ne pas déplacer de logique métier dans les composants de présentation ;
-- garder des lots courts, vérifiables et réversibles ;
-- privilégier une finition premium sobre, artisanale et locale ;
-- préserver l’admin comme interface simple pour non-tech.
+- Une utilisatrice non technique peut gérer le catalogue et le blog sans intervention technique.
+- Le storefront est publiquement navigable sans erreur visible.
+- Aucune image manquante ne produit une erreur réseau côté client.
+- Le typecheck et le lint passent sans erreur.
 
-## Phase 3 — V1 commerce transactionnel minimal
+**Validation :**
 
-Objectif : rendre la boutique exploitable de bout en bout sur son flux métier principal.
+- [ ] Catalogue public lisible sur mobile, tablette, desktop
+- [ ] Fiche produit claire et cohérente sur mobile, tablette, desktop
+- [ ] Blog public lisible avec listing et détail
+- [ ] Homepage éditable sans intervention développeur
+- [ ] Admin produits utilisable par une non-technicienne
+- [ ] Admin catégories utilisable
+- [ ] Admin médias utilisable avec archivage
+- [ ] Admin blog créer / modifier / publier opérationnel
+- [ ] Erreurs principales visibles et compréhensibles
+- [ ] `pnpm run typecheck` passe
+- [ ] `pnpm run lint` passe
 
-Périmètre :
+---
 
-- panier
-- checkout
-- commandes
-- clients
-- prix
-- disponibilité
-- validations métier minimales sur les flux critiques
+## Horizon 2 — Commerce minimal
 
-## Phase 4 — Robustesse, qualité et exploitation
+**Objectif :** une cliente peut commander un produit de bout en bout.
 
-Objectif : rendre le socle plus fiable au quotidien.
+**Périmètre :**
 
-Périmètre :
+- Panier persistant
+- Checkout avec adresse de livraison
+- Commandes enregistrées côté admin
+- Gestion minimale clients (historique commande)
+- Prix et disponibilité cohérents avec le catalogue
+- Validations métier sur les flux critiques (stock, statut produit)
 
-- typecheck, lint et validations ciblées
-- non-régression sur les flux critiques
-- exploitation locale reproductible
-- sécurité admin et durcissement des flux sensibles
-- maintenance plus prévisible
+**Hors périmètre pour cet horizon :**
 
-## Phase 5 — Commerce étendu (plus tard)
+- Paiement en ligne (intégration à confirmer selon contraintes réelles)
+- Retours et remboursements
+- Taxes complexes
 
-À ouvrir uniquement sur besoin explicite :
+**Critères de sortie :**
 
-- retours
-- cartes cadeaux
-- fidélité
-- expédition avancée
-- taxation plus riche
-- extensions de paiement non indispensables au socle
+- Une commande peut être passée, reçue côté admin et suivie jusqu'à son traitement.
+- Le flux panier → commande ne contient aucun état incohérent.
+- L'admin peut voir, filtrer et mettre à jour les commandes.
 
-## Phase 6 — Capacités optionnelles (plus tard)
+**Validation :**
 
-À ouvrir uniquement si elles restent bornées et sans contamination du coeur :
+- [ ] Panier fonctionnel
+- [ ] Checkout minimal fonctionnel
+- [ ] Commande créée et consultable en admin
+- [ ] Disponibilité produit respectée
+- [ ] Emails ou confirmations minimales cadrées
+- [ ] Parcours testé de bout en bout
 
-- recommandations
-- enrichissements marketing avancés
-- intégrations additionnelles non bloquantes pour la V1
-- optimisations UX non critiques
+---
+
+## Horizon 3 — Exploitation VPS
+
+**Objectif :** le projet tourne en production sur un VPS simple, de façon stable et maintenable.
+
+**Périmètre :**
+
+- Déploiement Docker Compose production (`docker-compose.prod.yml`)
+- Configuration HTTPS, reverse proxy (Nginx ou Caddy)
+- Variables d'environnement et secrets externalisés
+- Sauvegardes base de données
+- Logs applicatifs lisibles
+- Procédure de mise à jour documentée
+
+**Critères de sortie :**
+
+- Le projet peut être redéployé depuis zéro en moins d'une heure.
+- Un incident courant (crash, redémarrage) se résout sans intervention code.
+- Les sauvegardes sont testées et restaurables.
+
+**Validation :**
+
+- [ ] Build production validé
+- [ ] Variables d'environnement documentées
+- [ ] Sauvegarde DB documentée
+- [ ] Médias persistants documentés
+- [ ] Déploiement VPS répétable
+- [ ] Procédure rollback minimale documentée
+
+---
+
+## Plus tard — uniquement sur besoin validé
+
+À ouvrir uniquement si un besoin réel et explicite l'impose :
+
+- Retours et échanges
+- Cartes cadeaux
+- Programme fidélité
+- Expédition avancée (transporteurs, suivi)
+- Taxation plus riche
+- Extensions de paiement supplémentaires
+- Recommandations produits
+- Enrichissements marketing (codes promo, bundles)
+
+---
 
 ## Hors périmètre assumé
 
-Sans validation explicite, cette roadmap exclut :
+Sans validation explicite et contrary à l'intention produit :
 
-- multi-tenant
-- site-factory
-- microservices
+- Multi-tenant ou site-factory
+- Microservices
 - IA produit
-- analytics complexes
-- multi-langue
-- multi-devise
-- moteur de règles complexe
+- Analytics complexes
+- Multi-langue
+- Multi-devise
+- Moteur de règles complexe
+- Migration vers Shopify, WordPress ou toute plateforme externe
