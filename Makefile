@@ -55,11 +55,25 @@ endef
 	lint-local lint lint-fix lint-watch \
 	format format-check format-check-local \
 	test test-unit test-e2e test-e2e-ui test-e2e-headed test-select \
-	db-diagnostics-import
+	db-diagnostics-import \
+	local-dev local-generate local-push local-push-reset local-seed local-studio local-validate local-format-db
 
 help:
 	@printf "$(COLOR_BOLD)Usage:$(COLOR_RESET) make [target]\n\n"
-	@printf "$(COLOR_CYAN)Infrastructure$(COLOR_RESET)\n"
+	@printf "$(COLOR_CYAN)Developpement local natif$(COLOR_RESET) (PostgreSQL local, pnpm, .env.local)\n"
+	@printf "  $(COLOR_BOLD)local-dev$(COLOR_RESET)                    Lance pnpm dev en local natif\n"
+	@printf "  $(COLOR_BOLD)local-generate$(COLOR_RESET)               Genere le client Prisma en local\n"
+	@printf "  $(COLOR_BOLD)local-push$(COLOR_RESET)                   Applique le schema Prisma en local\n"
+	@printf "  $(COLOR_BOLD)local-push-reset$(COLOR_RESET)             Reset + applique le schema en local (DESTRUCTIF)\n"
+	@printf "  $(COLOR_BOLD)local-seed$(COLOR_RESET)                   Lance le seed dev minimal en local\n"
+	@printf "  $(COLOR_BOLD)local-studio$(COLOR_RESET)                 Lance Prisma Studio en local (port 5555)\n"
+	@printf "  $(COLOR_BOLD)local-validate$(COLOR_RESET)               Valide le schema Prisma en local\n"
+	@printf "  $(COLOR_BOLD)local-format-db$(COLOR_RESET)              Formate le schema Prisma en local\n"
+	@printf "  $(COLOR_BOLD)typecheck-local$(COLOR_RESET)              Verifie les types TypeScript en local\n"
+	@printf "  $(COLOR_BOLD)lint-local$(COLOR_RESET)                   Lance ESLint en local\n"
+	@printf "  $(COLOR_BOLD)format$(COLOR_RESET)                       Lance Prettier --write en local\n\n"
+
+	@printf "$(COLOR_CYAN)Infrastructure$(COLOR_RESET) (Docker / prod-like local)\n"
 	@printf "  $(COLOR_BOLD)up$(COLOR_RESET)                           Demarre app + db\n"
 	@printf "  $(COLOR_BOLD)up-proxy$(COLOR_RESET)                     Demarre app + db + traefik\n"
 	@printf "  $(COLOR_BOLD)down$(COLOR_RESET)                         Stoppe les services\n"
@@ -70,7 +84,7 @@ help:
 	@printf "  $(COLOR_BOLD)logs$(COLOR_RESET)                         Suit les logs\n"
 	@printf "  $(COLOR_BOLD)ps$(COLOR_RESET)                           Liste les conteneurs\n"
 	@printf "  $(COLOR_BOLD)sh$(COLOR_RESET)                           Ouvre un shell dans l'app\n"
-	@printf "  $(COLOR_BOLD)dev$(COLOR_RESET)                          Lance le serveur de dev\n"
+	@printf "  $(COLOR_BOLD)dev$(COLOR_RESET)                          Lance le serveur de dev dans le conteneur (Docker)\n"
 	@printf "  $(COLOR_BOLD)stripe-dev$(COLOR_RESET)                   Lance le forward Stripe\n"
 	@printf "  $(COLOR_BOLD)certs$(COLOR_RESET)                        Genere les certs TLS locaux via mkcert\n"
 	@printf "  $(COLOR_BOLD)hosts-setup$(COLOR_RESET)                  Ajoute les entrees /etc/hosts\n\n"
@@ -390,3 +404,43 @@ test-e2e-headed:
 test-select:
 	$(call log_info,Lancement des tests selectionnes)
 	pnpm run test-select
+
+# ─── Développement local natif ────────────────────────────────────────────────
+
+local-dev:
+	$(call log_info,Lancement de pnpm dev en local natif)
+	pnpm run dev
+
+local-generate:
+	$(call log_info,Generation du client Prisma en local)
+	pnpm run db:generate
+	$(call log_success,Client Prisma regenere)
+
+local-push:
+	$(call log_info,Application du schema Prisma en local)
+	pnpm run db:push
+	$(call log_success,Schema applique)
+
+local-push-reset:
+	$(call log_warn,Reset + application du schema Prisma en local)
+	pnpm run db:push-reset
+	$(call log_success,Schema reinitialise)
+
+local-seed:
+	$(call log_info,Seed dev minimal en local)
+	pnpm run db:seed
+	$(call log_success,Seed local termine)
+
+local-studio:
+	$(call log_info,Lancement de Prisma Studio en local)
+	pnpm run db:studio
+
+local-validate:
+	$(call log_info,Validation du schema Prisma en local)
+	pnpm run db:validate
+	$(call log_success,Schema Prisma valide)
+
+local-format-db:
+	$(call log_info,Formatage du schema Prisma en local)
+	pnpm run db:format
+	$(call log_success,Schema formate)
