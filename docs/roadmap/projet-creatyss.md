@@ -86,7 +86,7 @@ L'IA peut proposer et vérifier ; elle ne valide pas à la place de l'humain.
 - [x] Homepage éditable sans intervention développeur
 - [x] Admin produits utilisable par une non-technicienne
 - [ ] Admin catégories utilisable
-- [ ] Admin médias utilisable avec archivage
+- [x] Admin médias utilisable avec archivage
 - [ ] Admin blog créer / modifier / publier opérationnel
 - [ ] Erreurs principales visibles et compréhensibles
 - [x] `pnpm run typecheck` passe
