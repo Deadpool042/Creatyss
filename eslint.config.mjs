@@ -506,6 +506,7 @@ export default defineConfig([
     "dist/**",
     "node_modules/**",
     "public/**",
+    ".claude/**",
     ".trash/**",
     "src/generated/**",
     "prisma-generated/**",
