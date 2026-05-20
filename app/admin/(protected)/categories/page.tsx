@@ -1,12 +1,12 @@
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { CategorieCreateTopbarMenu } from "@/features/admin/categories/components/create/categorie-create-topbar-menu";
 import { CategoryTable } from "@/features/admin/categories/components";
-import { CategoryListToolbar } from "@/features/admin/categories/components/list/category-list-toolbar";
+import { CategoriesTableProvider } from "@/features/admin/categories/context/categories-data-provider";
 import {
   listAdminCategories,
   type CategoryFeaturedFilter,
   type CategorySortOption,
 } from "@/features/admin/categories/list/queries/list-admin-categories.query";
-import { CategorieCreateTopbarMenu } from "@/features/admin/categories/components/create/categorie-create-topbar-menu";
 import type { AdminCategoryStatus } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 
 export const dynamic = "force-dynamic";
@@ -65,12 +65,12 @@ export default async function AdminCategoriesPage({
   return (
     <AdminPageShell
       headerVisibility="desktop"
-      headerDensity="default"
+      headerDensity="compact"
       eyebrow="Catégories"
       title="Catégories"
       description="Structurez les collections visibles dans la boutique."
-      hideDescriptionOnMobile
-      scrollMode="nested"
+      // hideDescriptionOnMobile
+      // scrollMode="nested"
       topbarAction={<CategorieCreateTopbarMenu />}
       navigation={{ label: "Accueil", href: "/admin" }}
       breadcrumbs={[
@@ -80,10 +80,9 @@ export default async function AdminCategoriesPage({
       viewportClassName="!h-full"
       contentClassName="min-h-0 flex-1 overflow-hidden px-3 pt-14 pb-0 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 [@media(max-height:480px)]:pb-0 lg:h-full lg:!min-h-0 lg:px-6 lg:pb-4 lg:pt-0"
     >
-      <div className="flex flex-col gap-4">
-        <CategoryListToolbar total={total} totalPages={totalPages} />
-        <CategoryTable categories={items} />
-      </div>
+      <CategoriesTableProvider categories={items} total={total} totalPages={totalPages}>
+        <CategoryTable />
+      </CategoriesTableProvider>
     </AdminPageShell>
   );
 }

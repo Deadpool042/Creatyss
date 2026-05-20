@@ -3,17 +3,15 @@
 import { Star } from "lucide-react";
 import { useState } from "react";
 
-import { AdminToolbar } from "@/components/admin/shared/admin-toolbar";
-import type { AdminToolbarTab } from "@/components/admin/shared/admin-toolbar";
+import { AdminToolbar, type AdminToolbarTab } from "@/components/admin/shared/admin-toolbar";
 import { AdminDataTablePagination } from "@/components/admin/tables/admin-data-table-pagination";
 import { CategoryFilterPanel } from "@/features/admin/categories/components/list/category-filter-panel";
-import { useCategoryFilters } from "@/features/admin/categories/list/hooks/use-category-filters";
-import type { CategoryStatusFilter } from "@/features/admin/categories/list/hooks/use-category-filters";
+import { useCategoriesTableContext } from "@/features/admin/categories/context/categories-data-provider";
+import {
+  useCategoryFilters,
+  type CategoryStatusFilter,
+} from "@/features/admin/categories/list/hooks/use-category-filters";
 
-type CategoryListToolbarProps = {
-  total: number;
-  totalPages: number;
-};
 
 const STATUS_TABS: AdminToolbarTab<CategoryStatusFilter>[] = [
   { key: "all", label: "Toutes" },
@@ -33,7 +31,8 @@ const FEATURED_TAB: AdminToolbarTab<"featured"> = {
   icon: <Star className="h-3 w-3 fill-amber-400 text-amber-400" />,
 };
 
-export function CategoryListToolbar({ total, totalPages }: CategoryListToolbarProps) {
+export function CategoryListToolbar() {
+  const { total, totalPages } = useCategoriesTableContext();
   const filters = useCategoryFilters();
   const [filtersOpen, setFiltersOpen] = useState(false);
 

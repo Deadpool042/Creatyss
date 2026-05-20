@@ -1,15 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 import { cn } from "@/lib/utils";
+
+import { useCategoriesTableContext } from "../../context/categories-data-provider";
 import { categoryStatusConfig } from "./category-status-config";
 import { CategoryTableRowActions } from "./category-table-row-actions";
-
-type CategoryTableMobileProps = {
-  categories: AdminCategoryCardItem[];
-};
 
 function CategoryMobileBadge({
   className,
@@ -41,7 +41,11 @@ function CategoryMobileInfoBox({
   );
 }
 
-function CategoryMobileVisual({ category }: Readonly<{ category: AdminCategoryCardItem }>) {
+function CategoryMobileVisual({
+  category,
+}: Readonly<{
+  category: AdminCategoryCardItem;
+}>) {
   return (
     <AdminThumbnail
       src={category.primaryImageUrl}
@@ -52,7 +56,9 @@ function CategoryMobileVisual({ category }: Readonly<{ category: AdminCategoryCa
   );
 }
 
-function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCardItem }>) {
+function CategoryMobileCard({
+  category,
+}: Readonly<{ category: AdminCategoryCardItem }>) {
   const status = categoryStatusConfig[category.status];
 
   return (
@@ -104,7 +110,9 @@ function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCard
   );
 }
 
-export function CategoryTableMobile({ categories }: CategoryTableMobileProps) {
+export function CategoryTableMobile() {
+  const { categories } = useCategoriesTableContext();
+
   return (
     <div className="grid min-w-0 grid-cols-1 gap-2.5 overflow-x-hidden pb-[calc(4.5rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:gap-2 [@media(max-height:480px)]:pb-[calc(4rem+env(safe-area-inset-bottom))] md:grid-cols-2 md:gap-3 lg:hidden">
       {categories.map((category) => (

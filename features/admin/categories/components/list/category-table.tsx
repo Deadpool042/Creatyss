@@ -1,15 +1,16 @@
+"use client";
+
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { CustomLink } from "@/components/shared";
-import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 
+import { useCategoriesTableContext } from "../../context/categories-data-provider";
+import { CategoryListToolbar } from "./category-list-toolbar";
 import { CategoryTableDesktop } from "./category-table-desktop";
 import { CategoryTableMobile } from "./category-table-mobile";
 
-type CategoryTableProps = Readonly<{
-  categories: AdminCategoryCardItem[];
-}>;
+export function CategoryTable() {
+  const { categories } = useCategoriesTableContext();
 
-export function CategoryTable({ categories }: CategoryTableProps) {
   if (categories.length === 0) {
     return (
       <AdminEmptyState
@@ -26,11 +27,15 @@ export function CategoryTable({ categories }: CategoryTableProps) {
   }
 
   return (
-    <div className="min-h-0 flex-1 flex-col gap-3">
-      <div className="hidden min-h-0 flex-1 overflow-hidden lg:flex lg:flex-col">
-        <CategoryTableDesktop categories={categories} />
+    <div className="hidden min-h-0 flex-1 flex-col gap-3 lg:flex">
+      <CategoryListToolbar />
+
+      <div className="flex min-h-0 flex-1 flex-col gap-3 lg:gap-0">
+        <div className="hidden min-h-0 flex-1 overflow-hidden lg:flex lg:flex-col">
+          <CategoryTableDesktop />
+        </div>
+        <CategoryTableMobile />
       </div>
-      <CategoryTableMobile categories={categories} />
     </div>
   );
 }

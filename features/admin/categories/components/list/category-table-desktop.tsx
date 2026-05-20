@@ -1,3 +1,5 @@
+"use client";
+
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import {
   AdminTable,
@@ -8,16 +10,15 @@ import {
   AdminTableRow,
 } from "@/components/admin/tables/admin-table";
 import { TableRow } from "@/components/ui/table";
-import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 import { cn } from "@/lib/utils";
+
+import { useCategoriesTableContext } from "../../context/categories-data-provider";
 import { categoryStatusConfig } from "./category-status-config";
 import { CategoryTableRowActions } from "./category-table-row-actions";
 
-type CategoryTableDesktopProps = Readonly<{
-  categories: AdminCategoryCardItem[];
-}>;
+export function CategoryTableDesktop() {
+  const { categories } = useCategoriesTableContext();
 
-export function CategoryTableDesktop({ categories }: CategoryTableDesktopProps) {
   return (
     <AdminTable wrapperClassName="min-h-0 flex-1">
       <AdminTableHeader>
