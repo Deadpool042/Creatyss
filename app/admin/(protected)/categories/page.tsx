@@ -50,9 +50,7 @@ export default async function AdminCategoriesPage({
   const featured = parseFeatured(params.featured);
   const sort = parseSort(params.sort);
   const page = Math.max(1, Number(params.page) || 1);
-  const perPage = [10, 25, 50].includes(Number(params.perPage))
-    ? Number(params.perPage)
-    : 10;
+  const perPage = [10, 25, 50].includes(Number(params.perPage)) ? Number(params.perPage) : 10;
 
   const { items, total, totalPages } = await listAdminCategories({
     search: params.search ?? "",
@@ -70,7 +68,6 @@ export default async function AdminCategoriesPage({
       eyebrow="Catégories"
       title="Catégories"
       description="Structurez les collections visibles dans la boutique."
-      // hideDescriptionOnMobile
       scrollMode="area"
       topbarAction={<CategorieCreateTopbarMenu />}
       navigation={{ label: "Accueil", href: "/admin" }}
