@@ -91,12 +91,13 @@ export function AdminToolbar<T extends string = string>({
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       {/*
-       * Portrait  → search + filters on row 1, tabs on row 2
-       * Landscape → search + tabs (flex-1) + filters all on one row
+       * < lg  → Row 1: search + filter button | Row 2: tabs
+       * ≥ lg  → Single row: search + tabs (flex-1)
+       *         Filter button hidden on desktop — tabs cover primary filters
        */}
 
-      {/* Portrait only: row 1 (search + filters) */}
-      <div className="flex items-center gap-2 landscape:hidden">
+      {/* Mobile only: row 1 (search + filter button) */}
+      <div className="flex items-center gap-2 lg:hidden">
         <AdminSearchInput
           value={search}
           onChange={onSearchChange}
@@ -106,11 +107,11 @@ export function AdminToolbar<T extends string = string>({
         {filtersButton}
       </div>
 
-      {/* Portrait only: row 2 (tabs) */}
-      {tabPills ? <div className="landscape:hidden">{tabPills}</div> : null}
+      {/* Mobile only: row 2 (tabs) */}
+      {tabPills ? <div className="lg:hidden">{tabPills}</div> : null}
 
-      {/* Landscape only: single row */}
-      <div className="hidden items-center gap-2 landscape:flex">
+      {/* Desktop only: single row */}
+      <div className="hidden items-center gap-2 lg:flex">
         <AdminSearchInput
           value={search}
           onChange={onSearchChange}
