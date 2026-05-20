@@ -56,7 +56,7 @@ type CustomLinkProps = Omit<ComponentPropsWithoutRef<typeof Link>, "className"> 
 };
 
 const baseClasses =
-  "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus-ring";
+  "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus-ring py-1 px-0.5";
 
 /**
  * Mapping des styles par variante.
@@ -71,7 +71,7 @@ const variantClasses = {
 
   muted: "text-text-muted-strong underline-offset-4 hover:text-foreground hover:underline",
 
-  brand: "text-brand underline-offset-4 hover:underline",
+  brand: "text-brand underline-offset-4 ",
 
   nav: "font-medium uppercase tracking-[0.22em] text-foreground/72 hover:text-brand",
 

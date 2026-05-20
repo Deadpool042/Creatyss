@@ -1,16 +1,35 @@
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { FolderXIcon } from "lucide-react";
 
 type AdminEmptyStateProps = {
   eyebrow: string;
   title: string;
   description: string;
+  className?: string;
+  actionNode?: React.ReactNode;
 };
 
-export function AdminEmptyState({ eyebrow, title, description }: AdminEmptyStateProps) {
+export function AdminEmptyState({
+  eyebrow,
+  title,
+  description,
+  className,
+  actionNode,
+}: AdminEmptyStateProps) {
   return (
-    <Empty className="empty-state flex! items-start! justify-start! gap-3! rounded-xl! border! border-solid! border-surface-border! bg-card! p-5! text-left! text-card-foreground! shadow-card">
+    <Empty className={`${className}`}>
       <EmptyHeader className="items-start gap-1 text-left">
-        <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+        <EmptyMedia variant="icon">
+          <FolderXIcon className="h-6 w-6 text-muted-foreground " />
+        </EmptyMedia>
+        <p className="text-xs font-medium uppercase tracking-tight text-muted-foreground">
           {eyebrow}
         </p>
         <EmptyTitle
@@ -24,6 +43,11 @@ export function AdminEmptyState({ eyebrow, title, description }: AdminEmptyState
           {description}
         </EmptyDescription>
       </EmptyHeader>
+      <EmptyContent>
+        {actionNode}
+        {/* <Image src="/assets/empty-states/category-empty-state.png" alt="" width={162} height={162} /> */}
+        {/* TODO: ajouter une image d'empty state pour les catégories */}
+      </EmptyContent>
     </Empty>
   );
 }

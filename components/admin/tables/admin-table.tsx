@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 // wrapperClassName : classes de positionnement appliquées au wrapper outer
 //   (ex : "flex-1 min-h-0 flex flex-col" dans un contexte flex)
 // className : classes appliquées à l'élément <table> natif
+// viewportClassName : classes appliquées au conteneur de scroll interne
 //
 // Note : AdminTable utilise un <table> natif (pas le composant Table shadcn)
 // pour éviter le double conteneur overflow-auto. Le seul scroll container
@@ -24,10 +25,13 @@ import { cn } from "@/lib/utils";
 type AdminTableProps = ComponentProps<"table"> & {
   /** Classes appliquées au wrapper outer (positionnement, layout) */
   wrapperClassName?: string;
+  /** Classes appliquées au viewport scroll interne */
+  viewportClassName?: string;
 };
 
 export function AdminTable({
   wrapperClassName,
+  viewportClassName,
   className,
   children,
   ...props
@@ -35,11 +39,11 @@ export function AdminTable({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-xl border border-surface-border bg-card shadow-card",
+        "flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-surface-border bg-card shadow-card",
         wrapperClassName,
       )}
     >
-      <div className="min-h-0 flex-1 overflow-auto overscroll-contain">
+      <div className={cn("min-h-0 flex-1 overflow-auto overscroll-contain", viewportClassName)}>
         <table
           data-slot="table"
           className={cn("w-full caption-bottom text-sm", className)}

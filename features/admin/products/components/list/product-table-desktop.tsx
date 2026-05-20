@@ -33,7 +33,7 @@ export function ProductTableDesktop({
   onConfirmPermanentDelete,
 }: ProductTableDesktopProps): JSX.Element {
   return (
-    <div className="hidden h-full min-h-0 lg:flex lg:flex-col overflow-hidden rounded-lg border border-surface-border/60 bg-card">
+    <div className="hidden h-full min-h-0 lg:flex lg:flex-col overflow-hidden rounded-xl border border-surface-border bg-card shadow-card">
       {/* Zone de scroll interne — flex-1 + min-h-0 pour que le conteneur parent contrôle la hauteur */}
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
         <table className="w-full caption-bottom text-sm">

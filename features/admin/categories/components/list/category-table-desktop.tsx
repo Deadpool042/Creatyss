@@ -38,7 +38,7 @@ const statusConfig = {
 
 export function CategoryTableDesktop({ categories }: CategoryTableDesktopProps) {
   return (
-    <AdminTable wrapperClassName="hidden min-h-0 flex-1 lg:flex lg:flex-col">
+    <AdminTable wrapperClassName="min-h-0 flex-1">
       <AdminTableHeader>
         <TableRow>
           <AdminTableHead className="w-16">Image</AdminTableHead>

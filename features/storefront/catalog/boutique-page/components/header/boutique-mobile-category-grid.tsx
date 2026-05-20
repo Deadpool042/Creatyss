@@ -54,7 +54,7 @@ export function BoutiqueMobileCategoryGrid({
 
         <CustomLink
           href={resetHref}
-          className="shrink-0 py-1 px-0.5 text-[0.6875rem] font-[650] tracking-[0.16em] uppercase text-brand"
+          className="shrink-0 font-bold  uppercase text-brand"
           size="sm"
           variant="navUnderline"
         >

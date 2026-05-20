@@ -16,3 +16,5 @@ export {
 } from "./navigation";
 
 export type { AdminSidebarNavGroup, AdminSidebarNavItem } from "./navigation";
+
+export { AdminToolbar } from "./shared/admin-toolbar";
