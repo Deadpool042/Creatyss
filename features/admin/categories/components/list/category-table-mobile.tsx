@@ -1,31 +1,15 @@
 "use client";
 
+import { Star } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
-import { cn } from "@/lib/utils";
 
 import { useCategoriesTableContext } from "../../context/categories-data-provider";
-import { categoryStatusConfig } from "./category-status-config";
+import { CategoryStatusBadge } from "../shared/category-status-badge";
 import { CategoryTableRowActions } from "./category-table-row-actions";
-
-function CategoryMobileBadge({
-  className,
-  children,
-}: Readonly<{ className: string; children: ReactNode }>) {
-  return (
-    <span
-      className={cn(
-        "inline-flex h-6 items-center rounded-full border px-2 text-[11px] font-medium",
-        className
-      )}
-    >
-      {children}
-    </span>
-  );
-}
 
 function CategoryMobileInfoBox({
   label,
@@ -59,8 +43,6 @@ function CategoryMobileVisual({
 function CategoryMobileCard({
   category,
 }: Readonly<{ category: AdminCategoryCardItem }>) {
-  const status = categoryStatusConfig[category.status];
-
   return (
     <article className="flex h-full flex-col rounded-2xl border border-surface-border bg-card p-3 shadow-card">
       <div className="mb-2 flex items-center justify-end">
@@ -81,13 +63,14 @@ function CategoryMobileCard({
             Adresse · <span className="font-medium text-foreground">{category.slug}</span>
           </p>
 
-          <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-            <CategoryMobileBadge className={status.className}>{status.label}</CategoryMobileBadge>
+          <div className="mt-1.5 flex flex-wrap items-center gap-2">
+            <CategoryStatusBadge status={category.status} />
 
             {category.isFeatured ? (
-              <CategoryMobileBadge className="border-surface-border-strong bg-interactive-selected text-foreground">
-                Mis en avant
-              </CategoryMobileBadge>
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-foreground">
+                <Star aria-hidden="true" className="h-3 w-3 fill-amber-400 text-amber-400" />
+                <span>Mise en avant</span>
+              </span>
             ) : null}
           </div>
         </div>
@@ -101,9 +84,14 @@ function CategoryMobileCard({
         </CategoryMobileInfoBox>
 
         <CategoryMobileInfoBox label="Mise en avant">
-          <p className="text-[13px] font-medium leading-5 text-foreground">
-            {category.isFeatured ? "Oui" : "Non"}
-          </p>
+          {category.isFeatured ? (
+            <span className="inline-flex items-center gap-1 text-[13px] font-medium text-foreground">
+              <Star aria-hidden="true" className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+              <span>Oui</span>
+            </span>
+          ) : (
+            <p className="text-[13px] font-medium leading-5 text-muted-foreground">Non</p>
+          )}
         </CategoryMobileInfoBox>
       </div>
     </article>

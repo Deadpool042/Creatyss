@@ -11,7 +11,7 @@ import { CategoryTableDesktop } from "./category-table-desktop";
 import { CategoryTableMobile } from "./category-table-mobile";
 
 export function CategoryTable() {
-  const { categories, total, totalPages } = useCategoriesTableContext();
+  const { categories, totalPages } = useCategoriesTableContext();
   const filters = useCategoryFilters();
 
   if (categories.length === 0) {

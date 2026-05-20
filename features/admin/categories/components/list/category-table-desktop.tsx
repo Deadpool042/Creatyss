@@ -1,5 +1,7 @@
 "use client";
 
+import { Star } from "lucide-react";
+
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import {
   AdminTable,
@@ -10,10 +12,9 @@ import {
   AdminTableRow,
 } from "@/components/admin/tables/admin-table";
 import { TableRow } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 
 import { useCategoriesTableContext } from "../../context/categories-data-provider";
-import { categoryStatusConfig } from "./category-status-config";
+import { CategoryStatusBadge } from "../shared/category-status-badge";
 import { CategoryTableRowActions } from "./category-table-row-actions";
 
 export function CategoryTableDesktop() {
@@ -33,73 +34,68 @@ export function CategoryTableDesktop() {
       </AdminTableHeader>
 
       <AdminTableBody>
-        {categories.map((category) => {
-          const status = categoryStatusConfig[category.status];
+        {categories.map((category) => (
+          <AdminTableRow key={category.id}>
+            {/* Image */}
+            <AdminTableCell className="px-3 py-2.5">
+              <AdminThumbnail
+                src={category.primaryImageUrl}
+                alt={category.primaryImageAlt ?? category.name}
+                className="h-10 w-10 rounded-lg border border-surface-border/40 bg-surface-subtle/50"
+                imageClassName="transition-transform duration-300 group-hover:scale-105"
+                fallbackLabel={`Aucun visuel pour ${category.name}`}
+              />
+            </AdminTableCell>
 
-          return (
-            <AdminTableRow key={category.id}>
-              {/* Image */}
-              <AdminTableCell className="px-3 py-2.5">
-                <AdminThumbnail
-                  src={category.primaryImageUrl}
-                  alt={category.primaryImageAlt ?? category.name}
-                  className="h-11 w-11 rounded-md border border-surface-border bg-surface-panel-soft"
-                  fallbackLabel={`Aucun visuel pour ${category.name}`}
-                />
-              </AdminTableCell>
+            {/* Catégorie */}
+            <AdminTableCell>
+              <div className="min-w-0">
+                <p className="font-medium leading-snug text-foreground">{category.name}</p>
+                <p className="mt-0.5 truncate text-[0.72rem] text-muted-foreground/70">
+                  {category.slug}
+                </p>
+              </div>
+            </AdminTableCell>
 
-              {/* Catégorie */}
-              <AdminTableCell>
-                <div className="min-w-0">
-                  <p className="font-medium leading-snug text-foreground">{category.name}</p>
-                  <p className="mt-0.5 truncate text-[0.72rem] text-muted-foreground">
-                    {category.slug}
-                  </p>
-                </div>
-              </AdminTableCell>
-
-              {/* Mise en avant */}
-              <AdminTableCell>
-                {category.isFeatured ? (
-                  <span className="inline-flex h-6 items-center rounded-full border border-surface-border-strong bg-interactive-selected px-2.5 text-xs font-medium text-foreground">
-                    Oui
-                  </span>
-                ) : (
-                  <span className="text-sm text-muted-foreground">Non</span>
-                )}
-              </AdminTableCell>
-
-              {/* Statut */}
-              <AdminTableCell>
-                <span
-                  className={cn(
-                    "inline-flex h-6 items-center rounded-full border px-2.5 text-xs font-medium",
-                    status.className
-                  )}
-                >
-                  {status.label}
+            {/* Mise en avant */}
+            <AdminTableCell>
+              {category.isFeatured ? (
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground">
+                  <Star
+                    aria-hidden="true"
+                    className="h-3 w-3 fill-amber-400 text-amber-400"
+                  />
+                  <span>Oui</span>
                 </span>
-              </AdminTableCell>
+              ) : (
+                <span className="text-xs text-muted-foreground/60">—</span>
+              )}
+            </AdminTableCell>
 
-              {/* Description */}
-              <AdminTableCell>
-                {category.description ? (
-                  <p className="line-clamp-2 text-sm leading-5 text-muted-foreground">
-                    {category.description}
-                  </p>
-                ) : (
-                  <p className="text-sm text-muted-foreground/50">Aucune description</p>
-                )}
-              </AdminTableCell>
+            {/* Statut */}
+            <AdminTableCell>
+              <CategoryStatusBadge status={category.status} />
+            </AdminTableCell>
 
-              {/* Actions */}
-              <AdminTableCell className="px-2 py-2 text-right">
-                <CategoryTableRowActions categoryId={category.id} categoryName={category.name} />
-              </AdminTableCell>
-            </AdminTableRow>
-          );
-        })}
+            {/* Description */}
+            <AdminTableCell>
+              {category.description ? (
+                <p className="line-clamp-2 text-sm leading-5 text-muted-foreground">
+                  {category.description}
+                </p>
+              ) : (
+                <p className="text-xs text-muted-foreground/40">—</p>
+              )}
+            </AdminTableCell>
+
+            {/* Actions */}
+            <AdminTableCell className="px-2 py-2 text-right">
+              <CategoryTableRowActions categoryId={category.id} categoryName={category.name} />
+            </AdminTableCell>
+          </AdminTableRow>
+        ))}
       </AdminTableBody>
     </AdminTable>
   );
 }
+
