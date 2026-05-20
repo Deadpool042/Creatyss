@@ -70,6 +70,7 @@ export default async function AdminCategoriesPage({
       title="Catégories"
       description="Structurez les collections visibles dans la boutique."
       hideDescriptionOnMobile
+      scrollMode="nested"
       topbarAction={<CategorieCreateTopbarMenu />}
       navigation={{ label: "Accueil", href: "/admin" }}
       breadcrumbs={[

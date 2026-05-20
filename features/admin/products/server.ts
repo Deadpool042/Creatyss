@@ -10,13 +10,6 @@ export {
   deleteProductAction,
   deleteProductImageAction,
   deleteProductVariantAction,
-  getAdminProductEditorData,
-  listAdminProductTypeOptions,
-  listAttachableMediaAssets,
-  readAdminPriceLists,
-  readAdminProductEditorBySlug,
-  readAdminProductImages,
-  readAdminProductVariants,
   reorderProductImageAction,
   setDefaultProductVariantAction,
   setProductPrimaryImageAction,
@@ -27,6 +20,16 @@ export {
   updateProductVariantAction,
   uploadProductImagesAction,
 } from "./editor";
+
+export {
+  getAdminProductEditorData,
+  listAdminProductTypeOptions,
+  listAttachableMediaAssets,
+  readAdminPriceLists,
+  readAdminProductEditorBySlug,
+  readAdminProductImages,
+  readAdminProductVariants,
+} from "./editor/queries";
 
 export {
   getAdminProductsFeedPage,

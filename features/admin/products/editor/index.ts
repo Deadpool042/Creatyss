@@ -1,15 +1,3 @@
-export { getAdminProductEditorData } from "./queries/get-admin-product-editor-data.query";
-export { listAdminProductCategoryOptions } from "./queries/list-admin-product-category-options.query";
-export { listAdminProductTypeOptions } from "./queries/list-admin-product-type-options.query";
-export { listAdminRelatedProductOptions } from "./queries/list-admin-related-product-options.query";
-export { listAttachableMediaAssets } from "./queries/list-attachable-media-assets.query";
-export { readAdminPriceLists } from "./queries/read-admin-price-lists.query";
-export { readAdminProductPrices } from "./queries/read-admin-product-prices.query";
-export { readAdminProductEditorBySlug } from "./queries/read-admin-product-editor-by-slug.query";
-export { readAdminProductImages } from "./queries/read-admin-product-images.query";
-export { readAdminProductVariants } from "./queries/read-admin-product-variants.query";
-export { readAdminProductTypeWithOptions } from "./queries/read-admin-product-type-with-options.query";
-
 export { attachProductImagesAction } from "./actions/attach-product-images.action";
 export { createProductVariantAction } from "./actions/create-product-variant.action";
 export { deleteProductAction } from "./actions/delete-product.action";
