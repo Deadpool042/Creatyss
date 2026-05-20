@@ -1,13 +1,13 @@
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { CategoryTable } from "@/features/admin/categories/components";
 import { CategoryListToolbar } from "@/features/admin/categories/components/list/category-list-toolbar";
-import { listAdminCategories } from "@/features/admin/categories/list/queries/list-admin-categories.query";
+import {
+  listAdminCategories,
+  type CategoryFeaturedFilter,
+  type CategorySortOption,
+} from "@/features/admin/categories/list/queries/list-admin-categories.query";
 import { CategorieCreateTopbarMenu } from "@/features/admin/categories/components/create/categorie-create-topbar-menu";
 import type { AdminCategoryStatus } from "@/features/admin/categories/list/types/admin-category-card-item.types";
-import type {
-  CategoryFeaturedFilter,
-  CategorySortOption,
-} from "@/features/admin/categories/list/queries/list-admin-categories.query";
 
 export const dynamic = "force-dynamic";
 

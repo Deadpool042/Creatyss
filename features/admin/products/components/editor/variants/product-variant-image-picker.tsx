@@ -6,7 +6,7 @@ import type { JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { AdminProductImageItem } from "@/features/admin/products/editor";
+import type { AdminProductImageItem } from "@/features/admin/products/editor/client";
 
 type ProductVariantImagePickerProps = {
   images: AdminProductImageItem[];

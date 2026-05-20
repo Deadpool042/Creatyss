@@ -23,7 +23,7 @@ import {
   type AdminProductOptionItem,
   type AdminProductVariantListItem,
   type ProductVariantFormAction,
-} from "@/features/admin/products/editor";
+} from "@/features/admin/products/editor/client";
 import { ProductVariantEditorSheet } from "./variants/product-variant-editor-sheet";
 import { ProductVariantList } from "./variants/product-variant-list";
 

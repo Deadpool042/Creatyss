@@ -12,7 +12,7 @@ import type {
   setProductPrimaryImageAction,
   updateProductImageAltTextAction,
   uploadProductImagesAction,
-} from "@/features/admin/products/editor";
+} from "@/features/admin/products/editor/client";
 import type {
   AdminProductImageItem,
   AttachableMediaAssetItem,
