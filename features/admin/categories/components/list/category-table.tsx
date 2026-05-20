@@ -44,8 +44,7 @@ export function CategoryTable() {
           perPage={filters.perPage}
           onPageChange={filters.setPage}
           onPerPageChange={(n) => {
-            filters.setPerPage(n);
-            filters.setPage(1);
+            filters.applyFilters({ perPage: n, page: 1 });
           }}
         />
       </div>

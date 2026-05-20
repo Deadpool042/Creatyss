@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
-const PER_PAGE_OPTIONS = [5, 10, 25, 50] as const;
+const PER_PAGE_OPTIONS = [10, 25, 50] as const;
 
 type AdminPaginationBarProps = {
   currentPage: number;
