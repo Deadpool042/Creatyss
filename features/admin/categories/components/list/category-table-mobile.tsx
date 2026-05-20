@@ -4,33 +4,12 @@ import type { ReactNode } from "react";
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 import { cn } from "@/lib/utils";
+import { categoryStatusConfig } from "./category-status-config";
 import { CategoryTableRowActions } from "./category-table-row-actions";
 
 type CategoryTableMobileProps = {
   categories: AdminCategoryCardItem[];
 };
-
-const statusConfig = {
-  active: {
-    label: "Active",
-    className: "border-surface-border-strong bg-interactive-selected text-foreground",
-  },
-  draft: {
-    label: "Brouillon",
-    className: "border-surface-border bg-surface-panel-soft text-muted-foreground",
-  },
-  inactive: {
-    label: "Inactive",
-    className: "border-surface-border bg-surface-panel-soft text-muted-foreground",
-  },
-  archived: {
-    label: "Archivée",
-    className: "border-feedback-error-border bg-feedback-error-surface text-feedback-error-foreground",
-  },
-} satisfies Record<
-  AdminCategoryCardItem["status"],
-  { label: string; className: string }
->;
 
 function CategoryMobileBadge({
   className,
@@ -62,9 +41,7 @@ function CategoryMobileInfoBox({
   );
 }
 
-function CategoryMobileVisual({
-  category,
-}: Readonly<{ category: AdminCategoryCardItem }>) {
+function CategoryMobileVisual({ category }: Readonly<{ category: AdminCategoryCardItem }>) {
   return (
     <AdminThumbnail
       src={category.primaryImageUrl}
@@ -75,10 +52,8 @@ function CategoryMobileVisual({
   );
 }
 
-function CategoryMobileCard({
-  category,
-}: Readonly<{ category: AdminCategoryCardItem }>) {
-  const status = statusConfig[category.status];
+function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCardItem }>) {
+  const status = categoryStatusConfig[category.status];
 
   return (
     <article className="flex h-full flex-col rounded-2xl border border-surface-border bg-card p-3 shadow-card">
@@ -101,9 +76,7 @@ function CategoryMobileCard({
           </p>
 
           <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-            <CategoryMobileBadge className={status.className}>
-              {status.label}
-            </CategoryMobileBadge>
+            <CategoryMobileBadge className={status.className}>{status.label}</CategoryMobileBadge>
 
             {category.isFeatured ? (
               <CategoryMobileBadge className="border-surface-border-strong bg-interactive-selected text-foreground">

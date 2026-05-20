@@ -10,31 +10,12 @@ import {
 import { TableRow } from "@/components/ui/table";
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 import { cn } from "@/lib/utils";
+import { categoryStatusConfig } from "./category-status-config";
 import { CategoryTableRowActions } from "./category-table-row-actions";
 
 type CategoryTableDesktopProps = Readonly<{
   categories: AdminCategoryCardItem[];
 }>;
-
-const statusConfig = {
-  active: {
-    label: "Active",
-    className: "border-surface-border-strong bg-interactive-selected text-foreground",
-  },
-  draft: {
-    label: "Brouillon",
-    className: "border-surface-border bg-surface-panel-soft text-muted-foreground",
-  },
-  inactive: {
-    label: "Inactive",
-    className: "border-surface-border bg-surface-panel-soft text-muted-foreground",
-  },
-  archived: {
-    label: "Archivée",
-    className:
-      "border-feedback-error-border bg-feedback-error-surface text-feedback-error-foreground",
-  },
-} satisfies Record<AdminCategoryCardItem["status"], { label: string; className: string }>;
 
 export function CategoryTableDesktop({ categories }: CategoryTableDesktopProps) {
   return (
@@ -52,7 +33,7 @@ export function CategoryTableDesktop({ categories }: CategoryTableDesktopProps) 
 
       <AdminTableBody>
         {categories.map((category) => {
-          const status = statusConfig[category.status];
+          const status = categoryStatusConfig[category.status];
 
           return (
             <AdminTableRow key={category.id}>
@@ -112,10 +93,7 @@ export function CategoryTableDesktop({ categories }: CategoryTableDesktopProps) 
 
               {/* Actions */}
               <AdminTableCell className="px-2 py-2 text-right">
-                <CategoryTableRowActions
-                  categoryId={category.id}
-                  categoryName={category.name}
-                />
+                <CategoryTableRowActions categoryId={category.id} categoryName={category.name} />
               </AdminTableCell>
             </AdminTableRow>
           );

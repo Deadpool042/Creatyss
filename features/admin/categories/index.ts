@@ -7,6 +7,12 @@ export {
   CategorieCreateTopbarMenu,
 } from "./components";
 
+// Context
+export {
+  CategoriesTableProvider,
+  useCategoriesTableContext,
+} from "./context/categories-data-provider";
+
 // Queries
 export { getAdminCategoryDetail, listAdminCategories } from "./queries";
 
