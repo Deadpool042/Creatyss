@@ -20,7 +20,7 @@ import {
   type AdminProductVariantAvailability,
   type AdminProductVariantListItem,
   type ProductAvailabilityFormAction,
-} from "@/features/admin/products/editor/public";
+} from "@/features/admin/products/editor";
 
 type ProductAvailabilityTabProps = {
   action: ProductAvailabilityFormAction;

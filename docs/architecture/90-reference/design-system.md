@@ -12,7 +12,7 @@ Le design system est maintenant stabilisé autour de :
 - la taxonomie tokens V2 (surfaces, borders, controls, interactifs, shadows) ;
 - la famille floating/overlay dédiée (`surface-floating`, `border-floating`, `shadow-floating`) ;
 - les primitives UI principales alignées sur cette hiérarchie (contrôles, overlays, surfaces standards) ;
-- ~~le mini-système typo V2-T (`text-title-*`, `text-price-*`, `text-meta-label`, `text-secondary-copy`, `text-micro-copy`, `reading-*`)~~ — **supprimé** avec `typography.css` ; remplacé par des compositions Tailwind inline (voir section *Patterns typographiques recommandés*).
+- ~~le mini-système typo V2-T (`text-title-*`, `text-price-*`, `text-meta-label`, `text-secondary-copy`, `text-micro-copy`, `reading-*`)~~ — **supprimé** avec `typography.css` ; remplacé par des compositions Tailwind inline (voir section _Patterns typographiques recommandés_).
 
 Conséquence : la base par défaut est V2. Le mini-système typo V2-T a été supprimé lors de la migration Tailwind.
 Les évolutions restantes doivent être traitées par micro-lots locaux, sans relancer une refonte large.
@@ -39,27 +39,27 @@ app/globals.css
 
 ### Rôle de chaque fichier
 
-| Fichier                    | Rôle                                                                                                                                                                                                 | Nature          |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| `themes/creatyss.core.css` | Tokens structurels partagés, indépendants du mode (`:root`) : `--radius`, tokens `--band-*` always-dark                                                                                             | Thème CSS pur   |
-| `themes/creatyss.light.css`| Valeurs light mode (`:root`) — palette warm, ivoire, terracotta                                                                                                                                      | Thème CSS pur   |
-| `themes/creatyss.dark.css` | Valeurs dark mode (`.dark`) — palette warm dark cacao                                                                                                                                                | Thème CSS pur   |
-| `themes/novamart.css`      | Thème alternatif de référence (cool, corporate, indigo) — non actif, non importé (template client fictif)                                                                                            | Thème CSS pur   |
-| `theme.css`                | Point d'activation du thème : importe les 3 splits Creatyss + mapping Tailwind (`@theme inline`) + `@custom-variant dark`                                                                           | Config Tailwind |
-| `base.css`                 | Reset CSS global (box-sizing, body background) + `@layer base` Tailwind (html, body, headings)                                                                                                      | Reset + base    |
-| `shell.css`                | Primitive `.site-header-blur` uniquement — backdrop-filter avec fallback opaque, consomme `--shell-surface` et `--shell-surface-blur` (avec `@supports` et vendor prefix)                             | CSS classes     |
-| `motion.css`               | Animations et transitions globales                                                                                                                                                                   | CSS classes     |
-| `animation.css`            | Keyframes accordéon via `@theme {}`                                                                                                                                                                  | Keyframes       |
+| Fichier                     | Rôle                                                                                                                                                                      | Nature          |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| `themes/creatyss.core.css`  | Tokens structurels partagés, indépendants du mode (`:root`) : `--radius`, tokens `--band-*` always-dark                                                                   | Thème CSS pur   |
+| `themes/creatyss.light.css` | Valeurs light mode (`:root`) — palette warm, ivoire, terracotta                                                                                                           | Thème CSS pur   |
+| `themes/creatyss.dark.css`  | Valeurs dark mode (`.dark`) — palette warm dark cacao                                                                                                                     | Thème CSS pur   |
+| `themes/novamart.css`       | Thème alternatif de référence (cool, corporate, indigo) — non actif, non importé (template client fictif)                                                                 | Thème CSS pur   |
+| `theme.css`                 | Point d'activation du thème : importe les 3 splits Creatyss + mapping Tailwind (`@theme inline`) + `@custom-variant dark`                                                 | Config Tailwind |
+| `base.css`                  | Reset CSS global (box-sizing, body background) + `@layer base` Tailwind (html, body, headings)                                                                            | Reset + base    |
+| `shell.css`                 | Primitive `.site-header-blur` uniquement — backdrop-filter avec fallback opaque, consomme `--shell-surface` et `--shell-surface-blur` (avec `@supports` et vendor prefix) | CSS classes     |
+| `motion.css`                | Animations et transitions globales                                                                                                                                        | CSS classes     |
+| `animation.css`             | Keyframes accordéon via `@theme {}`                                                                                                                                       | Keyframes       |
 
 **Fichiers supprimés (ne pas réintroduire) :**
 
-| Fichier supprimé              | Remplacé par                                                                              |
-| ----------------------------- | ----------------------------------------------------------------------------------------- |
-| `typography.css`              | Tailwind natif inline dans les composants + plugin `@tailwindcss/typography` (`prose`)    |
-| `boutique.css`                | Classes Tailwind inline dans les composants boutique                                      |
-| `boutique-controls.css`       | Classes Tailwind inline                                                                   |
-| `boutique-products.css`       | Classes Tailwind inline                                                                   |
-| `creatyss.css` (monolithique) | Splits `creatyss.core.css` / `creatyss.light.css` / `creatyss.dark.css`                  |
+| Fichier supprimé              | Remplacé par                                                                           |
+| ----------------------------- | -------------------------------------------------------------------------------------- |
+| `typography.css`              | Tailwind natif inline dans les composants + plugin `@tailwindcss/typography` (`prose`) |
+| `boutique.css`                | Classes Tailwind inline dans les composants boutique                                   |
+| `boutique-controls.css`       | Classes Tailwind inline                                                                |
+| `boutique-products.css`       | Classes Tailwind inline                                                                |
+| `creatyss.css` (monolithique) | Splits `creatyss.core.css` / `creatyss.light.css` / `creatyss.dark.css`                |
 
 ---
 
@@ -137,10 +137,10 @@ Le thème actif est sélectionné dans `app/styles/theme.css` via les lignes `@i
 
 **Thèmes disponibles :**
 
-| Fichier(s)                                                                | Statut                   | Identité                                      |
-| ------------------------------------------------------------------------- | ------------------------ | --------------------------------------------- |
-| `themes/creatyss.core.css` + `themes/creatyss.light.css` + `themes/creatyss.dark.css` | Actif par défaut | Artisanal, chaud, ivoire, terracotta, premium |
-| `themes/novamart.css`                                                     | Disponible, non importé  | Cool, corporate, indigo, sidebar sombre (template client fictif) |
+| Fichier(s)                                                                            | Statut                  | Identité                                                         |
+| ------------------------------------------------------------------------------------- | ----------------------- | ---------------------------------------------------------------- |
+| `themes/creatyss.core.css` + `themes/creatyss.light.css` + `themes/creatyss.dark.css` | Actif par défaut        | Artisanal, chaud, ivoire, terracotta, premium                    |
+| `themes/novamart.css`                                                                 | Disponible, non importé | Cool, corporate, indigo, sidebar sombre (template client fictif) |
 
 ---
 
@@ -185,13 +185,13 @@ Avant de toucher un fichier de styles :
 
 **Frontière CSS custom vs Tailwind inline :**
 
-| Couche          | Ce qui y vit                                                                                                                                                                                                                   |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `themes/*.css`  | Valeurs concrètes des CSS custom properties (source de vérité)                                                                                                                                                                 |
-| `theme.css`     | Mapping Tailwind + activation du thème — aucune valeur concrète                                                                                                                                                                |
-| `base.css`      | Reset global, fondations HTML/body                                                                                                                                                                                             |
-| `shell.css`     | Uniquement ce que Tailwind ne peut pas exprimer proprement : vendor prefixes, `@supports`, valeurs hors-scale — actuellement limité à `.site-header-blur`                                                                      |
-| Tailwind inline | Toute composition locale simple : surfaces, bordures, radius, shadows, gaps, paddings — tant que les tokens du design system sont utilisés                                                                                     |
+| Couche          | Ce qui y vit                                                                                                                                              |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `themes/*.css`  | Valeurs concrètes des CSS custom properties (source de vérité)                                                                                            |
+| `theme.css`     | Mapping Tailwind + activation du thème — aucune valeur concrète                                                                                           |
+| `base.css`      | Reset global, fondations HTML/body                                                                                                                        |
+| `shell.css`     | Uniquement ce que Tailwind ne peut pas exprimer proprement : vendor prefixes, `@supports`, valeurs hors-scale — actuellement limité à `.site-header-blur` |
+| Tailwind inline | Toute composition locale simple : surfaces, bordures, radius, shadows, gaps, paddings — tant que les tokens du design system sont utilisés                |
 
 **Interdit : valeurs arbitraires inline (`shadow-[...]`, `rounded-[...]`, `text-[11px]`) quand un token ou utilitaire existe.**
 
@@ -336,19 +336,19 @@ Tokens `feedback-{info,success,warning,error}` × `{foreground,surface,border}` 
 <details>
 <summary>Référence historique (V2-T1, supprimée)</summary>
 
-| Classe supprimée       | Pattern de remplacement inline                                              |
-| ---------------------- | --------------------------------------------------------------------------- |
-| `.text-title-page`     | Séquence Tailwind native selon contexte                                     |
-| `.text-title-section`  | Séquence Tailwind native selon contexte                                     |
-| `.text-title-compact`  | Séquence Tailwind native selon contexte                                     |
-| `.text-price-display`  | `text-3xl md:text-4xl font-bold leading-none tracking-tight tabular-nums`   |
-| `.text-price-compact`  | `text-2xl md:text-3xl font-bold leading-tight tracking-tight tabular-nums`  |
-| `.text-meta-label`     | `text-xs font-semibold uppercase tracking-widest leading-snug`              |
-| `.text-secondary-copy` | Tailwind natif selon contexte                                               |
-| `.text-micro-copy`     | Tailwind natif selon contexte                                               |
-| `.reading-compact`     | Tailwind natif selon contexte                                               |
-| `.reading-relaxed`     | Tailwind natif selon contexte                                               |
-| `.text-eyebrow`        | `text-xs font-semibold uppercase tracking-widest leading-snug`              |
+| Classe supprimée       | Pattern de remplacement inline                                             |
+| ---------------------- | -------------------------------------------------------------------------- |
+| `.text-title-page`     | Séquence Tailwind native selon contexte                                    |
+| `.text-title-section`  | Séquence Tailwind native selon contexte                                    |
+| `.text-title-compact`  | Séquence Tailwind native selon contexte                                    |
+| `.text-price-display`  | `text-3xl md:text-4xl font-bold leading-none tracking-tight tabular-nums`  |
+| `.text-price-compact`  | `text-2xl md:text-3xl font-bold leading-tight tracking-tight tabular-nums` |
+| `.text-meta-label`     | `text-xs font-semibold uppercase tracking-widest leading-snug`             |
+| `.text-secondary-copy` | Tailwind natif selon contexte                                              |
+| `.text-micro-copy`     | Tailwind natif selon contexte                                              |
+| `.reading-compact`     | Tailwind natif selon contexte                                              |
+| `.reading-relaxed`     | Tailwind natif selon contexte                                              |
+| `.text-eyebrow`        | `text-xs font-semibold uppercase tracking-widest leading-snug`             |
 
 </details>
 
@@ -406,7 +406,7 @@ Uniquement si :
 | `text-muted-foreground` utilisé partout      | `text-text-muted-strong` / `text-text-muted-soft` quand un niveau V2 explicite existe                     |
 | Valeurs arbitraires shadow (`shadow-[...]`)  | `shadow-{soft,card,raised,overlay}`                                                                       |
 | Valeurs arbitraires radius (`rounded-[...]`) | steps du radius scale                                                                                     |
-| Valeurs arbitraires texte (`text-[11px]`)    | Compositions Tailwind inline recommandées (voir section *Patterns typographiques recommandés*)             |
+| Valeurs arbitraires texte (`text-[11px]`)    | Compositions Tailwind inline recommandées (voir section _Patterns typographiques recommandés_)            |
 
 ---
 
@@ -467,16 +467,16 @@ Règles courtes et actionnables. Un agent IA doit les appliquer sans interpréta
 
 Tableau décisionnel avant toute intervention sur les styles.
 
-| Besoin                                            | Fichier / Approche                                                              |
-| ------------------------------------------------- | ------------------------------------------------------------------------------- |
-| Couleur / surface / radius / shadow / breakpoint  | `themes/creatyss.*.css` + mapping `theme.css` si utility Tailwind nécessaire   |
-| Reset HTML global                                 | `base.css`                                                                      |
-| Contenu éditorial riche (CMS, markdown, articles) | `prose` via `@tailwindcss/typography` — dans le TSX du composant               |
-| Composants UI                                     | Classes Tailwind dans le TSX                                                    |
-| Backdrop/blur shell (header public)               | `shell.css` — utiliser `.site-header-blur`, ne pas reproduire le pattern        |
-| Motion globale                                    | `motion.css`                                                                    |
-| Keyframes                                         | `animation.css`                                                                 |
-| Nouvelle classe CSS globale                       | Refuser sauf besoin démontré non couvrable par Tailwind                         |
+| Besoin                                            | Fichier / Approche                                                           |
+| ------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Couleur / surface / radius / shadow / breakpoint  | `themes/creatyss.*.css` + mapping `theme.css` si utility Tailwind nécessaire |
+| Reset HTML global                                 | `base.css`                                                                   |
+| Contenu éditorial riche (CMS, markdown, articles) | `prose` via `@tailwindcss/typography` — dans le TSX du composant             |
+| Composants UI                                     | Classes Tailwind dans le TSX                                                 |
+| Backdrop/blur shell (header public)               | `shell.css` — utiliser `.site-header-blur`, ne pas reproduire le pattern     |
+| Motion globale                                    | `motion.css`                                                                 |
+| Keyframes                                         | `animation.css`                                                              |
+| Nouvelle classe CSS globale                       | Refuser sauf besoin démontré non couvrable par Tailwind                      |
 
 ---
 
@@ -488,7 +488,7 @@ Ce ne sont pas des classes globales — elles n'existent dans aucun fichier CSS.
 **Eyebrow / overline :**
 
 ```tsx
-className="text-xs font-semibold uppercase tracking-widest leading-snug"
+className = "text-xs font-semibold uppercase tracking-widest leading-snug";
 ```
 
 Toujours associé à un token de couleur contextuel (`text-brand`, `text-text-muted-soft`, `text-band-eyebrow`, etc.).
@@ -496,19 +496,20 @@ Toujours associé à un token de couleur contextuel (`text-brand`, `text-text-mu
 **Prix hero :**
 
 ```tsx
-className="text-3xl md:text-4xl font-bold leading-none tracking-tight tabular-nums"
+className = "text-3xl md:text-4xl font-bold leading-none tracking-tight tabular-nums";
 ```
 
 **Prix compact :**
 
 ```tsx
-className="text-2xl md:text-3xl font-bold leading-tight tracking-tight tabular-nums"
+className = "text-2xl md:text-3xl font-bold leading-tight tracking-tight tabular-nums";
 ```
 
 **Contenu riche (CMS, descriptions produit, markdown) :**
 
 ```tsx
-className="prose prose-sm max-w-none text-foreground [&_p:first-child]:mt-0 [&_p:last-child]:mb-0"
+className =
+  "prose prose-sm max-w-none text-foreground [&_p:first-child]:mt-0 [&_p:last-child]:mb-0";
 ```
 
 Utiliser `max-w-[68ch]` pour les descriptions longues.

@@ -35,7 +35,7 @@ import {
   type createProductOptionColorValueAction,
   type updateProductOptionColorValueAction,
   type archiveProductOptionColorValueAction,
-} from "@/features/admin/products/editor/public";
+} from "@/features/admin/products/editor";
 import { cn } from "@/lib/utils";
 import { ProductAvailabilityTab } from "./product-availability-tab";
 import { ProductCategoriesTab, type ProductCategoryOption } from "./product-categories-tab";

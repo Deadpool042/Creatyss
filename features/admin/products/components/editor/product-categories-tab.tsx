@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import type {
   AdminProductEditorCategoryLink,
   AdminProductEditorData,
-} from "@/features/admin/products/editor/public";
+} from "@/features/admin/products/editor";
 import { useProductCategoriesManager } from "@/features/admin/products/editor/hooks";
 import type { ProductCategoryOption } from "@/features/admin/products/editor/types/product-categories.types";
 import {
