@@ -22,7 +22,7 @@ export function CategoryTableDesktop() {
   const { categories } = useCategoriesTableContext();
 
   return (
-    <AdminTable wrapperClassName="h-auto" viewportClassName="overflow-visible flex-none">
+    <AdminTable wrapperClassName="min-h-0 flex-1">
       <AdminTableHeader>
         <TableRow>
           <AdminTableHead className="w-16">Image</AdminTableHead>
@@ -62,10 +62,7 @@ export function CategoryTableDesktop() {
             <AdminTableCell>
               {category.isFeatured ? (
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground">
-                  <Star
-                    aria-hidden="true"
-                    className="h-3 w-3 fill-amber-400 text-amber-400"
-                  />
+                  <Star aria-hidden="true" className="h-3 w-3 fill-amber-400 text-amber-400" />
                   <span>Oui</span>
                 </span>
               ) : (
@@ -109,4 +106,3 @@ export function CategoryTableDesktop() {
     </AdminTable>
   );
 }
-

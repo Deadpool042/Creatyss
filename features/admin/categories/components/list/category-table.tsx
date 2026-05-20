@@ -35,9 +35,11 @@ export function CategoryTable() {
   return (
     <>
       {/* Desktop */}
-      <div className="hidden flex-col gap-3 lg:flex">
+      <div className="hidden min-h-0 flex-1 flex-col gap-3 lg:flex">
         <CategoryListToolbar />
-        <CategoryTableDesktop />
+        <div className="min-h-0 flex-1 overflow-hidden">
+          <CategoryTableDesktop />
+        </div>
         <AdminDataTablePagination
           currentPage={filters.page}
           totalPages={totalPages}
@@ -49,9 +51,14 @@ export function CategoryTable() {
       </div>
 
       {/* Mobile */}
-      <div className="flex flex-col gap-3 lg:hidden">
+      <div className="flex min-h-0 flex-1 flex-col lg:hidden">
         <CategoryListToolbar />
-        <CategoryTableMobile />
+        <div
+          data-scroll-root="true"
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"
+        >
+          <CategoryTableMobile />
+        </div>
         <AdminDataTablePagination
           currentPage={filters.page}
           totalPages={totalPages}
