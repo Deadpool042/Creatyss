@@ -13,16 +13,16 @@ import {
 
 const STATUS_TABS: Omit<AdminToolbarTab<CategoryStatusFilter>, "count">[] = [
   { key: "all", label: "Toutes" },
-  { key: "active", label: "Actives", dot: "bg-green-500" },
-  { key: "draft", label: "Brouillons", dot: "bg-amber-400" },
+  { key: "active", label: "Actives", dot: "bg-feedback-success" },
+  { key: "draft", label: "Brouillons", dot: "bg-feedback-warning" },
   { key: "inactive", label: "Inactives", dot: "bg-muted-foreground" },
-  { key: "archived", label: "Archivées", dot: "bg-destructive" },
+  { key: "archived", label: "Archivées", dot: "bg-feedback-error" },
 ];
 
 const FEATURED_TAB: AdminToolbarTab<"featured"> = {
   key: "featured",
   label: "Mises en avant",
-  icon: <Star className="h-3 w-3 fill-amber-400 text-amber-400" />,
+  icon: <Star className="h-3 w-3 fill-brand text-brand" />,
 };
 
 export function CategoryListToolbar() {
@@ -63,7 +63,6 @@ export function CategoryListToolbar() {
         onTabChange={handleTabChange}
         filterCount={filters.activeFilterCount}
         onFiltersOpen={() => setFiltersOpen(true)}
-        tabsInline
       />
 
       {total > 0 ? (
@@ -71,7 +70,7 @@ export function CategoryListToolbar() {
           {total} {total === 1 ? "catégorie trouvée" : "catégories trouvées"}
         </p>
       ) : null}
-
+      {/* <div className="h-px bg-border" /> */}
       <CategoryFilterPanel open={filtersOpen} onOpenChange={setFiltersOpen} filters={filters} />
     </div>
   );

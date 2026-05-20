@@ -25,8 +25,6 @@ type AdminToolbarProps<T extends string = string> = {
   onTabChange?: (key: T) => void;
   filterCount?: number;
   onFiltersOpen?: () => void;
-  /** On lg+ screens, render search + tabs + filters button all on one row */
-  tabsInline?: boolean;
   className?: string;
 };
 
@@ -39,7 +37,6 @@ export function AdminToolbar<T extends string = string>({
   onTabChange,
   filterCount = 0,
   onFiltersOpen,
-  tabsInline = false,
   className,
 }: AdminToolbarProps<T>): JSX.Element {
   const tabPills =
@@ -47,7 +44,6 @@ export function AdminToolbar<T extends string = string>({
       <div className="flex flex-wrap items-center gap-1.5">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.key;
-
           return (
             <button
               key={tab.key}
@@ -92,51 +88,39 @@ export function AdminToolbar<T extends string = string>({
     </Button>
   ) : null;
 
-  if (tabsInline) {
-    return (
-      <div className={cn("flex flex-col gap-2", className)}>
-        {/* Mobile: 2 rows */}
-        <div className="flex items-center gap-2 lg:hidden">
-          <AdminSearchInput
-            value={search}
-            onChange={onSearchChange}
-            placeholder={placeholder}
-            className="min-w-0 flex-1"
-          />
-          {filtersButton}
-        </div>
-        {tabPills ? <div className="lg:hidden">{tabPills}</div> : null}
-
-        {/* Desktop: all on one row */}
-        <div className="hidden items-center gap-2 lg:flex">
-          <AdminSearchInput
-            value={search}
-            onChange={onSearchChange}
-            placeholder={placeholder}
-            className="min-w-0 shrink-0 md:max-w-xs"
-          />
-          <div className="min-w-0 flex-1">{tabPills}</div>
-          {filtersButton}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      {/* Row 1: search + filters button */}
-      <div className="flex items-center gap-2">
+      {/*
+       * Portrait  → search + filters on row 1, tabs on row 2
+       * Landscape → search + tabs (flex-1) + filters all on one row
+       */}
+
+      {/* Portrait only: row 1 (search + filters) */}
+      <div className="flex items-center gap-2 landscape:hidden">
         <AdminSearchInput
           value={search}
           onChange={onSearchChange}
           placeholder={placeholder}
-          className="min-w-0 flex-1 md:max-w-xs"
+          className="min-w-0 flex-1"
         />
         {filtersButton}
       </div>
 
-      {/* Row 2: status tabs */}
-      {tabPills}
+      {/* Portrait only: row 2 (tabs) */}
+      {tabPills ? <div className="landscape:hidden">{tabPills}</div> : null}
+
+      {/* Landscape only: single row */}
+      <div className="hidden items-center gap-2 landscape:flex">
+        <AdminSearchInput
+          value={search}
+          onChange={onSearchChange}
+          placeholder={placeholder}
+          className="min-w-0 shrink-0 max-w-xs"
+        />
+        {tabPills ? <div className="min-w-0 flex-1">{tabPills}</div> : null}
+        {filtersButton}
+      </div>
     </div>
   );
 }
+
