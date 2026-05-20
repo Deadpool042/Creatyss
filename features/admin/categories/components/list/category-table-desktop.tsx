@@ -22,7 +22,9 @@ export function CategoryTableDesktop() {
   const { categories } = useCategoriesTableContext();
 
   return (
-    <AdminTable wrapperClassName="min-h-0 flex-1">
+    <AdminTable
+      wrapperClassName="h-auto max-h-[calc(100svh-24rem)] supports-[height:100dvh]:max-h-[calc(100dvh-24rem)]"
+    >
       <AdminTableHeader>
         <TableRow>
           <AdminTableHead className="w-16">Image</AdminTableHead>

@@ -35,11 +35,9 @@ export function CategoryTable() {
   return (
     <>
       {/* Desktop */}
-      <div className="hidden min-h-0 flex-1 flex-col gap-3 lg:flex">
+      <div className="hidden flex-col gap-3 lg:flex">
         <CategoryListToolbar />
-        <div className="min-h-0 flex-1 overflow-hidden">
-          <CategoryTableDesktop />
-        </div>
+        <CategoryTableDesktop />
         <AdminDataTablePagination
           currentPage={filters.page}
           totalPages={totalPages}
