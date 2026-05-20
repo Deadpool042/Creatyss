@@ -1,10 +1,9 @@
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { CustomLink } from "@/components/shared";
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
+
 import { CategoryTableDesktop } from "./category-table-desktop";
 import { CategoryTableMobile } from "./category-table-mobile";
-import { CustomLink } from "@/components/shared";
-import { FilterIcon } from "lucide-react";
-import { AdminToolbar } from "@/components/admin";
 
 type CategoryTableProps = Readonly<{
   categories: AdminCategoryCardItem[];
@@ -27,17 +26,11 @@ export function CategoryTable({ categories }: CategoryTableProps) {
   }
 
   return (
-    <div className="hidden min-h-0 flex-1 flex-col gap-3 lg:flex">
-      <div className="space-y-2">
-        <AdminToolbar />
+    <div className="min-h-0 flex-1 flex-col gap-3">
+      <div className="hidden min-h-0 flex-1 overflow-hidden lg:flex lg:flex-col">
+        <CategoryTableDesktop categories={categories} />
       </div>
-
-      <div className="flex min-h-0 flex-1 flex-col gap-3 lg:gap-0">
-        <div className="hidden min-h-0 flex-1 overflow-hidden lg:flex lg:flex-col">
-          <CategoryTableDesktop categories={categories} />
-        </div>
-        <CategoryTableMobile categories={categories} />
-      </div>
+      <CategoryTableMobile categories={categories} />
     </div>
   );
 }
