@@ -11,14 +11,14 @@ import type { AdminCategoryStatus } from "@/features/admin/categories/list/types
 
 export const dynamic = "force-dynamic";
 
-type SearchParams = {
+type SearchParams = Promise<{
   search?: string;
   status?: string;
   featured?: string;
   sort?: string;
   page?: string;
   perPage?: string;
-};
+}>;
 
 const VALID_STATUSES = ["all", "draft", "active", "inactive", "archived"] as const;
 const VALID_SORTS = ["name-asc", "name-desc", "updated-asc", "updated-desc"] as const;
@@ -45,16 +45,17 @@ export default async function AdminCategoriesPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const status = parseStatus(searchParams.status);
-  const featured = parseFeatured(searchParams.featured);
-  const sort = parseSort(searchParams.sort);
-  const page = Math.max(1, Number(searchParams.page) || 1);
-  const perPage = [10, 25, 50].includes(Number(searchParams.perPage))
-    ? Number(searchParams.perPage)
+  const params = await searchParams;
+  const status = parseStatus(params.status);
+  const featured = parseFeatured(params.featured);
+  const sort = parseSort(params.sort);
+  const page = Math.max(1, Number(params.page) || 1);
+  const perPage = [10, 25, 50].includes(Number(params.perPage))
+    ? Number(params.perPage)
     : 10;
 
   const { items, total, totalPages } = await listAdminCategories({
-    search: searchParams.search ?? "",
+    search: params.search ?? "",
     status: status === "all" ? "all" : status,
     featured,
     sort,
