@@ -1,7 +1,7 @@
 "use client";
 
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
-import { AdminDataTablePagination } from "@/components/admin/tables/admin-data-table-pagination";
+import { AdminPaginationBar } from "@/components/admin/tables/admin-pagination-bar";
 import { CustomLink } from "@/components/shared";
 import { useCategoryFilters } from "@/features/admin/categories/list/hooks/use-category-filters";
 
@@ -38,17 +38,19 @@ export function CategoryTable() {
       <div className="hidden flex-col gap-3 lg:flex">
         <CategoryListToolbar />
         <CategoryTableDesktop />
-        <AdminDataTablePagination
+        <AdminPaginationBar
           currentPage={filters.page}
           totalPages={totalPages}
-          onPrevious={() => filters.setPage(filters.page - 1)}
-          onNext={() => filters.setPage(filters.page + 1)}
-          previousDisabled={filters.page <= 1}
-          nextDisabled={filters.page >= totalPages}
+          perPage={filters.perPage}
+          onPageChange={filters.setPage}
+          onPerPageChange={(n) => {
+            filters.setPerPage(n);
+            filters.setPage(1);
+          }}
         />
       </div>
 
-      {/* Mobile */}
+      {/* Mobile — infinite scroll, no pagination */}
       <div className="flex min-h-0 flex-1 flex-col lg:hidden">
         <CategoryListToolbar />
         <div
@@ -57,15 +59,8 @@ export function CategoryTable() {
         >
           <CategoryTableMobile />
         </div>
-        <AdminDataTablePagination
-          currentPage={filters.page}
-          totalPages={totalPages}
-          onPrevious={() => filters.setPage(filters.page - 1)}
-          onNext={() => filters.setPage(filters.page + 1)}
-          previousDisabled={filters.page <= 1}
-          nextDisabled={filters.page >= totalPages}
-        />
       </div>
     </>
   );
 }
+

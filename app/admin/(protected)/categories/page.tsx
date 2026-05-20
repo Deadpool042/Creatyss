@@ -52,7 +52,7 @@ export default async function AdminCategoriesPage({
   const page = Math.max(1, Number(params.page) || 1);
   const perPage = [10, 25, 50].includes(Number(params.perPage)) ? Number(params.perPage) : 10;
 
-  const { items, total, totalPages } = await listAdminCategories({
+  const { items, total, totalPages, statusCounts } = await listAdminCategories({
     search: params.search ?? "",
     status: status === "all" ? "all" : status,
     featured,
@@ -78,7 +78,7 @@ export default async function AdminCategoriesPage({
       viewportClassName="!h-full"
       contentClassName="min-h-0 flex-1 overflow-hidden px-3 pt-14 pb-0 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 [@media(max-height:480px)]:pb-0 lg:px-6 lg:pb-4 lg:pt-0"
     >
-      <CategoriesTableProvider categories={items} total={total} totalPages={totalPages}>
+      <CategoriesTableProvider categories={items} total={total} totalPages={totalPages} statusCounts={statusCounts}>
         <CategoryTable />
       </CategoriesTableProvider>
     </AdminPageShell>

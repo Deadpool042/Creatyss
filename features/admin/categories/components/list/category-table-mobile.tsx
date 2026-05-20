@@ -2,14 +2,17 @@
 
 import { Star } from "lucide-react";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 
+import { AdminFeedSentinel } from "@/components/admin/shared/admin-feed-sentinel";
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 
 import { useCategoriesTableContext } from "../../context/categories-data-provider";
 import { CategoryTableRowActions } from "./category-table-row-actions";
+
+const MOBILE_PAGE_SIZE = 12;
 
 function CategoryMobileInfoBox({
   label,
@@ -40,9 +43,7 @@ function CategoryMobileVisual({
   );
 }
 
-function CategoryMobileCard({
-  category,
-}: Readonly<{ category: AdminCategoryCardItem }>) {
+function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCardItem }>) {
   return (
     <article className="flex h-full flex-col rounded-2xl border border-surface-border bg-card p-3 shadow-card">
       <div className="mb-2 flex items-center justify-end">
@@ -67,9 +68,12 @@ function CategoryMobileCard({
             <AdminStatusBadge
               status={category.status}
               label={
-                { active: "Active", draft: "Brouillon", inactive: "Inactive", archived: "Archivée" }[
-                  category.status
-                ]
+                {
+                  active: "Active",
+                  draft: "Brouillon",
+                  inactive: "Inactive",
+                  archived: "Archivée",
+                }[category.status]
               }
             />
 
@@ -107,12 +111,51 @@ function CategoryMobileCard({
 
 export function CategoryTableMobile() {
   const { categories } = useCategoriesTableContext();
+  const [visibleCount, setVisibleCount] = useState(MOBILE_PAGE_SIZE);
+
+  // Reset when the categories list changes (filter/search change)
+  const filterKey = useMemo(() => {
+    const first = categories[0]?.id ?? "";
+    const last = categories[categories.length - 1]?.id ?? "";
+    return `${categories.length}::${first}::${last}`;
+  }, [categories]);
+
+  const [prevFilterKey, setPrevFilterKey] = useState(filterKey);
+  if (prevFilterKey !== filterKey) {
+    setPrevFilterKey(filterKey);
+    setVisibleCount(MOBILE_PAGE_SIZE);
+  }
+
+  const hasMore = visibleCount < categories.length;
+
+  const loadMore = useCallback(() => {
+    setVisibleCount((prev) => Math.min(prev + MOBILE_PAGE_SIZE, categories.length));
+  }, [categories.length]);
+
+  const visibleItems = categories.slice(0, visibleCount);
+
+  if (categories.length === 0) {
+    return null;
+  }
 
   return (
-    <div className="grid min-w-0 grid-cols-1 gap-2.5 overflow-x-hidden pb-[calc(4.5rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:gap-2 [@media(max-height:480px)]:pb-[calc(4rem+env(safe-area-inset-bottom))] md:grid-cols-2 md:gap-3 lg:hidden">
-      {categories.map((category) => (
-        <CategoryMobileCard key={category.id} category={category} />
-      ))}
+    <div className="space-y-2.5 pb-[calc(4.5rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(4rem+env(safe-area-inset-bottom))]">
+      <div className="grid grid-cols-1 gap-2.5 [@media(max-height:480px)]:gap-2 md:grid-cols-2 md:gap-3">
+        {visibleItems.map((category) => (
+          <CategoryMobileCard key={category.id} category={category} />
+        ))}
+      </div>
+
+      {hasMore ? (
+        <AdminFeedSentinel onIntersect={loadMore} />
+      ) : (
+        <div className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-3 py-2.5 text-center [@media(max-height:480px)]:py-2">
+          <p className="text-xs font-medium text-muted-foreground">Fin de la liste</p>
+          <p className="mt-1 text-[11px] text-muted-foreground/85">
+            {categories.length} catégorie{categories.length !== 1 ? "s" : ""}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

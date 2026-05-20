@@ -11,7 +11,7 @@ import {
   type CategoryStatusFilter,
 } from "@/features/admin/categories/list/hooks/use-category-filters";
 
-const STATUS_TABS: AdminToolbarTab<CategoryStatusFilter>[] = [
+const STATUS_TABS: Omit<AdminToolbarTab<CategoryStatusFilter>, "count">[] = [
   { key: "all", label: "Toutes" },
   { key: "active", label: "Actives", dot: "bg-green-500" },
   { key: "draft", label: "Brouillons", dot: "bg-amber-400" },
@@ -26,15 +26,22 @@ const FEATURED_TAB: AdminToolbarTab<"featured"> = {
 };
 
 export function CategoryListToolbar() {
-  const { total } = useCategoriesTableContext();
+  const { total, statusCounts } = useCategoriesTableContext();
   const filters = useCategoryFilters();
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const activeFeaturedTab = filters.featured === "featured" ? "featured" : undefined;
   const activeStatusTab = filters.featured === "featured" ? undefined : filters.status;
-  const allTabs = [...STATUS_TABS, FEATURED_TAB] as AdminToolbarTab<
-    CategoryStatusFilter | "featured"
-  >[];
+
+  const allTabs: AdminToolbarTab<CategoryStatusFilter | "featured">[] = [
+    ...STATUS_TABS.map((tab) => {
+      const count =
+        tab.key !== "all" ? statusCounts[tab.key as keyof typeof statusCounts] : undefined;
+      return count !== undefined ? { ...tab, count } : { ...tab };
+    }),
+    FEATURED_TAB,
+  ];
+
   const activeTab = activeFeaturedTab ?? activeStatusTab ?? "all";
 
   function handleTabChange(key: CategoryStatusFilter | "featured") {
@@ -56,6 +63,7 @@ export function CategoryListToolbar() {
         onTabChange={handleTabChange}
         filterCount={filters.activeFilterCount}
         onFiltersOpen={() => setFiltersOpen(true)}
+        tabsInline
       />
 
       {total > 0 ? (

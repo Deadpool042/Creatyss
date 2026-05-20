@@ -26,11 +26,14 @@ export type CategoryListFilters = {
   perPage?: number;
 };
 
+export type CategoryStatusCounts = Partial<Record<AdminCategoryStatus, number>>;
+
 export type CategoryListResult = {
   items: AdminCategoryCardItem[];
   total: number;
   totalPages: number;
   currentPage: number;
+  statusCounts: CategoryStatusCounts;
 };
 
 const DEFAULT_PER_PAGE = 10;
@@ -81,7 +84,21 @@ export async function listAdminCategories(
   const safePerPage = Math.max(1, Math.min(100, perPage));
   const skip = (safePage - 1) * safePerPage;
 
-  const [rawCategories, total] = await Promise.all([
+  // `whereWithoutStatus` for per-status counts (respects search + featured but not status filter)
+  const whereWithoutStatus = {
+    ...(normalizedSearch.length > 0
+      ? {
+          OR: [
+            { name: { contains: normalizedSearch, mode: "insensitive" as const } },
+            { slug: { contains: normalizedSearch, mode: "insensitive" as const } },
+          ],
+        }
+      : {}),
+    ...(featured === "featured" ? { isFeatured: true } : {}),
+    ...(featured === "not-featured" ? { isFeatured: false } : {}),
+  };
+
+  const [rawCategories, total, rawStatusCounts] = await Promise.all([
     db.category.findMany({
       where,
       orderBy,
@@ -103,14 +120,34 @@ export async function listAdminCategories(
       },
     }),
     db.category.count({ where }),
+    db.category.groupBy({
+      by: ["status"],
+      where: whereWithoutStatus,
+      _count: { id: true },
+    }),
   ]);
 
   const totalPages = Math.max(1, Math.ceil(total / safePerPage));
+
+  // Reverse-map Prisma enum → AdminCategoryStatus for the counts
+  const REVERSE_STATUS_MAP: Record<CategoryStatus, AdminCategoryStatus> = {
+    [CategoryStatus.DRAFT]: "draft",
+    [CategoryStatus.ACTIVE]: "active",
+    [CategoryStatus.INACTIVE]: "inactive",
+    [CategoryStatus.ARCHIVED]: "archived",
+  };
+
+  const statusCounts: CategoryStatusCounts = {};
+  for (const row of rawStatusCounts) {
+    const key = REVERSE_STATUS_MAP[row.status];
+    if (key) statusCounts[key] = row._count.id;
+  }
 
   return {
     items: rawCategories.map(mapCategoryListItem),
     total,
     totalPages,
     currentPage: Math.min(safePage, totalPages),
+    statusCounts,
   };
 }
