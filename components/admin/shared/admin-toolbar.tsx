@@ -118,7 +118,6 @@ export function AdminToolbar<T extends string = string>({
           className="min-w-0 shrink-0 max-w-xs"
         />
         {tabPills ? <div className="min-w-0 flex-1">{tabPills}</div> : null}
-        {filtersButton}
       </div>
     </div>
   );
