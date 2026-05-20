@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Pencil, Trash2 } from "lucide-react";
 
@@ -18,10 +20,7 @@ export function CategoryTableRowActions({
   categoryId,
   categoryName,
 }: CategoryTableRowActionsProps) {
-  async function handleDeleteCategory(): Promise<void> {
-    "use server";
-    await deleteCategoryAction({ categoryId });
-  }
+  const deleteAction = deleteCategoryAction.bind(null, { categoryId });
 
   return (
     <AdminRowActionsMenu
@@ -39,7 +38,7 @@ export function CategoryTableRowActions({
 
       <DropdownMenuSeparator />
 
-      <form action={handleDeleteCategory}>
+      <form action={deleteAction}>
         <button
           type="submit"
           className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-destructive outline-none transition-colors hover:bg-accent hover:text-destructive focus:bg-accent focus:text-destructive"
