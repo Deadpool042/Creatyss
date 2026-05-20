@@ -4,7 +4,6 @@ import { Star } from "lucide-react";
 import { useState } from "react";
 
 import { AdminToolbar, type AdminToolbarTab } from "@/components/admin/shared/admin-toolbar";
-import { AdminDataTablePagination } from "@/components/admin/tables/admin-data-table-pagination";
 import { CategoryFilterPanel } from "@/features/admin/categories/components/list/category-filter-panel";
 import { useCategoriesTableContext } from "@/features/admin/categories/context/categories-data-provider";
 import {
@@ -12,17 +11,12 @@ import {
   type CategoryStatusFilter,
 } from "@/features/admin/categories/list/hooks/use-category-filters";
 
-
 const STATUS_TABS: AdminToolbarTab<CategoryStatusFilter>[] = [
   { key: "all", label: "Toutes" },
   { key: "active", label: "Actives", dot: "bg-green-500" },
   { key: "draft", label: "Brouillons", dot: "bg-amber-400" },
   { key: "inactive", label: "Inactives", dot: "bg-muted-foreground" },
-  {
-    key: "archived",
-    label: "Archivées",
-    dot: "bg-destructive",
-  },
+  { key: "archived", label: "Archivées", dot: "bg-destructive" },
 ];
 
 const FEATURED_TAB: AdminToolbarTab<"featured"> = {
@@ -32,13 +26,16 @@ const FEATURED_TAB: AdminToolbarTab<"featured"> = {
 };
 
 export function CategoryListToolbar() {
-  const { total, totalPages } = useCategoriesTableContext();
+  const { total } = useCategoriesTableContext();
   const filters = useCategoryFilters();
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  // Build tabs: status tabs + featured tab
   const activeFeaturedTab = filters.featured === "featured" ? "featured" : undefined;
   const activeStatusTab = filters.featured === "featured" ? undefined : filters.status;
+  const allTabs = [...STATUS_TABS, FEATURED_TAB] as AdminToolbarTab<
+    CategoryStatusFilter | "featured"
+  >[];
+  const activeTab = activeFeaturedTab ?? activeStatusTab ?? "all";
 
   function handleTabChange(key: CategoryStatusFilter | "featured") {
     if (key === "featured") {
@@ -48,14 +45,8 @@ export function CategoryListToolbar() {
     }
   }
 
-  const allTabs = [...STATUS_TABS, FEATURED_TAB] as AdminToolbarTab<
-    CategoryStatusFilter | "featured"
-  >[];
-
-  const activeTab = activeFeaturedTab ?? activeStatusTab ?? "all";
-
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <AdminToolbar
         search={filters.search}
         onSearchChange={filters.setSearch}
@@ -68,21 +59,12 @@ export function CategoryListToolbar() {
       />
 
       {total > 0 ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {total} {total === 1 ? "catégorie trouvée" : "catégories trouvées"}
         </p>
       ) : null}
 
       <CategoryFilterPanel open={filtersOpen} onOpenChange={setFiltersOpen} filters={filters} />
-
-      <AdminDataTablePagination
-        currentPage={filters.page}
-        totalPages={totalPages}
-        onPrevious={() => filters.setPage(filters.page - 1)}
-        onNext={() => filters.setPage(filters.page + 1)}
-        previousDisabled={filters.page <= 1}
-        nextDisabled={filters.page >= totalPages}
-      />
     </div>
   );
 }
