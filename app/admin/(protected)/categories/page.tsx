@@ -71,15 +71,14 @@ export default async function AdminCategoriesPage({
       title="Catégories"
       description="Structurez les collections visibles dans la boutique."
       // hideDescriptionOnMobile
-      // scrollMode="nested"
+      scrollMode="area"
       topbarAction={<CategorieCreateTopbarMenu />}
       navigation={{ label: "Accueil", href: "/admin" }}
       breadcrumbs={[
         { label: "Accueil", href: "/admin" },
         { label: "Catégories", href: "/admin/categories" },
       ]}
-      viewportClassName="!h-full"
-      contentClassName="min-h-0 flex-1 overflow-hidden px-3 pt-14 pb-0 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 [@media(max-height:480px)]:pb-0 lg:h-full lg:!min-h-0 lg:px-6 lg:pb-4 lg:pt-0"
+      contentClassName="px-3 pt-14 pb-4 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 lg:px-6 lg:pb-6 lg:pt-0"
     >
       <CategoriesTableProvider categories={items} total={total} totalPages={totalPages}>
         <CategoryTable />

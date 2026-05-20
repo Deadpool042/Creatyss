@@ -5,10 +5,10 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
+import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 
 import { useCategoriesTableContext } from "../../context/categories-data-provider";
-import { CategoryStatusBadge } from "../shared/category-status-badge";
 import { CategoryTableRowActions } from "./category-table-row-actions";
 
 function CategoryMobileInfoBox({
@@ -64,7 +64,14 @@ function CategoryMobileCard({
           </p>
 
           <div className="mt-1.5 flex flex-wrap items-center gap-2">
-            <CategoryStatusBadge status={category.status} />
+            <AdminStatusBadge
+              status={category.status}
+              label={
+                { active: "Active", draft: "Brouillon", inactive: "Inactive", archived: "Archivée" }[
+                  category.status
+                ]
+              }
+            />
 
             {category.isFeatured ? (
               <span className="inline-flex items-center gap-1 text-[11px] font-medium text-foreground">

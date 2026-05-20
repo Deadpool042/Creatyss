@@ -35,6 +35,5 @@ export { ProductSearchSheet } from "./list";
 
 // Shared components
 export { ProductSection } from "./shared";
-export { ProductStatusBadge } from "./shared";
 export { ProductsShell } from "./shared";
 export { ProductsToolbar } from "./shared";

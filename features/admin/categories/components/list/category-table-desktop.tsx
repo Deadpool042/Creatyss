@@ -13,15 +13,16 @@ import {
 } from "@/components/admin/tables/admin-table";
 import { TableRow } from "@/components/ui/table";
 
+import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
+
 import { useCategoriesTableContext } from "../../context/categories-data-provider";
-import { CategoryStatusBadge } from "../shared/category-status-badge";
 import { CategoryTableRowActions } from "./category-table-row-actions";
 
 export function CategoryTableDesktop() {
   const { categories } = useCategoriesTableContext();
 
   return (
-    <AdminTable wrapperClassName="min-h-0 flex-1">
+    <AdminTable wrapperClassName="h-auto" viewportClassName="overflow-visible flex-none">
       <AdminTableHeader>
         <TableRow>
           <AdminTableHead className="w-16">Image</AdminTableHead>
@@ -74,7 +75,17 @@ export function CategoryTableDesktop() {
 
             {/* Statut */}
             <AdminTableCell>
-              <CategoryStatusBadge status={category.status} />
+              <AdminStatusBadge
+                status={category.status}
+                label={
+                  {
+                    active: "Active",
+                    draft: "Brouillon",
+                    inactive: "Inactive",
+                    archived: "Archivée",
+                  }[category.status]
+                }
+              />
             </AdminTableCell>
 
             {/* Description */}

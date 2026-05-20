@@ -7,7 +7,7 @@ import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toggleProductFeaturedAction } from "@/features/admin/products/list/actions/toggle-product-featured.action";
 import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
-import { ProductStatusBadge } from "@/features/admin/products/components/shared/product-status-badge";
+import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";
 import { AdminProductsPriceCell } from "./admin-products-price-cell";
 import { ProductFeaturedToggle } from "./product-featured-toggle";
@@ -93,7 +93,7 @@ export function ProductTableDesktopRow({
       </td>
 
       <td className="px-4 py-2.5 align-middle">
-        <ProductStatusBadge status={product.status} />
+        <AdminStatusBadge status={product.status} />
       </td>
 
       <td className="px-4 py-2.5 align-middle">

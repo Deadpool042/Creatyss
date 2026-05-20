@@ -2,7 +2,7 @@
 
 import type { JSX } from "react";
 
-import { ProductStatusBadge } from "@/features/admin/products/components/shared";
+import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
 import type { ProductTableItem } from "@/features/admin/products/list/types";
 import { cn } from "@/lib/utils";
 import { ProductStockBadge } from "../../product-stock-badge";
@@ -37,7 +37,7 @@ export function ProductCardBadges({
 }: ProductCardBadgesProps): JSX.Element {
   return (
     <div className={cn("flex min-w-0 flex-wrap items-center gap-1.5", className)}>
-      <ProductStatusBadge
+      <AdminStatusBadge
         status={product.status}
         {...(statusClassName ? { className: statusClassName } : {})}
       />
