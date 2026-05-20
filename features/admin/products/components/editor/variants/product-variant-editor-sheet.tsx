@@ -30,7 +30,7 @@ import {
   type AdminProductOptionItem,
   type AdminProductVariantListItem,
   type ProductVariantFormAction,
-} from "@/features/admin/products/editor/client";
+} from "@/features/admin/products/editor";
 import { ProductVariantImagePicker } from "./product-variant-image-picker";
 
 type ProductVariantEditorSheetProps = {

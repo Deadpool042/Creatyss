@@ -7,7 +7,7 @@ import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
-import type { uploadProductImagesAction } from "@/features/admin/products/editor/client";
+import type { uploadProductImagesAction } from "@/features/admin/products/editor";
 import {
   uploadProductImagesFormInitialState,
   type UploadProductImagesFormState,

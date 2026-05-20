@@ -12,7 +12,7 @@ import {
   productInventoryFormInitialState,
   type AdminProductVariantListItem,
   type ProductInventoryFormAction,
-} from "@/features/admin/products/editor/client";
+} from "@/features/admin/products/editor";
 
 // ─── Internal components ──────────────────────────────────────────────────────
 
