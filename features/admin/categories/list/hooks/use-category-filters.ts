@@ -90,8 +90,6 @@ export function useCategoryFilters(): CategoryFiltersState {
   const page = parsePage(searchParams.get("page"));
 
   const activeFilterCount = [
-    status !== "all",
-    featured !== "all",
     sort !== "name-asc",
     perPage !== 10,
   ].filter(Boolean).length;

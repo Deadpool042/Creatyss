@@ -25,6 +25,7 @@ type AdminToolbarProps<T extends string = string> = {
   onTabChange?: (key: T) => void;
   filterCount?: number;
   onFiltersOpen?: () => void;
+  filtersLabel?: string;
   className?: string;
 };
 
@@ -37,6 +38,7 @@ export function AdminToolbar<T extends string = string>({
   onTabChange,
   filterCount = 0,
   onFiltersOpen,
+  filtersLabel = "Filtres",
   className,
 }: AdminToolbarProps<T>): JSX.Element {
   const tabPills =
@@ -79,7 +81,7 @@ export function AdminToolbar<T extends string = string>({
       className="relative shrink-0 gap-1.5"
     >
       <SlidersHorizontal className="h-3.5 w-3.5" />
-      <span className="hidden sm:inline">Filtres</span>
+      <span className="hidden sm:inline">{filtersLabel}</span>
       {filterCount > 0 ? (
         <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
           {filterCount}

@@ -63,6 +63,7 @@ export function CategoryListToolbar() {
         onTabChange={handleTabChange}
         filterCount={filters.activeFilterCount}
         onFiltersOpen={() => setFiltersOpen(true)}
+        filtersLabel="Trier"
       />
 
       {total > 0 ? (
