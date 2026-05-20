@@ -47,7 +47,7 @@ export type CategoryFiltersState = {
 const VALID_STATUSES: CategoryStatusFilter[] = ["all", "draft", "active", "inactive", "archived"];
 const VALID_FEATURED: CategoryFeaturedFilter[] = ["all", "featured", "not-featured"];
 const VALID_SORTS: CategorySortOption[] = ["name-asc", "name-desc", "updated-asc", "updated-desc"];
-const VALID_PER_PAGE = [10, 25, 50];
+const VALID_PER_PAGE = [5, 10, 25, 50];
 
 function parseStatus(value: string | null): CategoryStatusFilter {
   return VALID_STATUSES.includes(value as CategoryStatusFilter)

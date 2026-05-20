@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
-const PER_PAGE_OPTIONS = [10, 25, 50] as const;
+const PER_PAGE_OPTIONS = [5, 10, 25, 50] as const;
 
 type AdminPaginationBarProps = {
   currentPage: number;
@@ -65,7 +65,7 @@ export function AdminPaginationBar({
       <div className="flex items-center gap-2">
         <span className="text-xs text-muted-foreground">Afficher</span>
         <Select value={String(perPage)} onValueChange={(v) => onPerPageChange(Number(v))}>
-          <SelectTrigger className="h-7 w-[70px] rounded-lg border-surface-border text-xs">
+          <SelectTrigger className="h-7 w-17.5 rounded-lg border-surface-border text-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

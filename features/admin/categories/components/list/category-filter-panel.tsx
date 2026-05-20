@@ -53,6 +53,7 @@ const SORT_OPTIONS: { value: CategorySortOption; label: string }[] = [
 ];
 
 const PER_PAGE_OPTIONS = [
+  { value: 5, label: "5 par page" },
   { value: 10, label: "10 par page" },
   { value: 25, label: "25 par page" },
   { value: 50, label: "50 par page" },
