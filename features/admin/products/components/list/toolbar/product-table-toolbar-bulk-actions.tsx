@@ -4,6 +4,7 @@ import type { JSX } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { PRODUCT_BULK_ACTIONS_COPY } from "@/features/admin/products/config";
 import type { ProductListView } from "./product-table-toolbar-types";
 
 type ProductTableToolbarBulkActionButtonProps = {
@@ -66,7 +67,7 @@ export function ProductTableToolbarBulkActions({
       <div className="flex gap-2 overflow-x-auto pb-1">
         {onBulkRestore ? (
           <ProductTableToolbarBulkActionButton onClick={onBulkRestore} disabled={isBulkPending}>
-            Restaurer
+            {PRODUCT_BULK_ACTIONS_COPY.restore}
           </ProductTableToolbarBulkActionButton>
         ) : null}
 
@@ -76,7 +77,7 @@ export function ProductTableToolbarBulkActions({
             disabled={isBulkPending}
             danger
           >
-            Supprimer définitivement
+            {PRODUCT_BULK_ACTIONS_COPY.hardDelete}
           </ProductTableToolbarBulkActionButton>
         ) : null}
       </div>
@@ -87,25 +88,25 @@ export function ProductTableToolbarBulkActions({
     <div className="flex gap-2 overflow-x-auto pb-1">
       {onBulkSetDraft ? (
         <ProductTableToolbarBulkActionButton onClick={onBulkSetDraft} disabled={isBulkPending}>
-          Brouillon
+          {PRODUCT_BULK_ACTIONS_COPY.setDraft}
         </ProductTableToolbarBulkActionButton>
       ) : null}
 
       {onBulkSetActive ? (
         <ProductTableToolbarBulkActionButton onClick={onBulkSetActive} disabled={isBulkPending}>
-          Activer
+          {PRODUCT_BULK_ACTIONS_COPY.setActive}
         </ProductTableToolbarBulkActionButton>
       ) : null}
 
       {onBulkSetInactive ? (
         <ProductTableToolbarBulkActionButton onClick={onBulkSetInactive} disabled={isBulkPending}>
-          Désactiver
+          {PRODUCT_BULK_ACTIONS_COPY.setInactive}
         </ProductTableToolbarBulkActionButton>
       ) : null}
 
       {onBulkSetFeatured ? (
         <ProductTableToolbarBulkActionButton onClick={onBulkSetFeatured} disabled={isBulkPending}>
-          Mettre en avant
+          {PRODUCT_BULK_ACTIONS_COPY.setFeatured}
         </ProductTableToolbarBulkActionButton>
       ) : null}
 
@@ -114,13 +115,13 @@ export function ProductTableToolbarBulkActions({
           onClick={onBulkUnsetFeatured}
           disabled={isBulkPending}
         >
-          Retirer la mise en avant
+          {PRODUCT_BULK_ACTIONS_COPY.unsetFeatured}
         </ProductTableToolbarBulkActionButton>
       ) : null}
 
       {onBulkArchive ? (
         <ProductTableToolbarBulkActionButton onClick={onBulkArchive} disabled={isBulkPending} danger>
-          Corbeille
+          {PRODUCT_BULK_ACTIONS_COPY.archive}
         </ProductTableToolbarBulkActionButton>
       ) : null}
     </div>

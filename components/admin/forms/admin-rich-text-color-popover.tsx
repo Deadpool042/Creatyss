@@ -3,7 +3,7 @@
 import type { Editor } from "@tiptap/react";
 import { Highlighter, PaintBucket, RotateCcw } from "lucide-react";
 
-import type { AdminRichTextColorOption } from "@/components/admin/forms/admin-rich-text-colors";
+import type { AdminRichTextColorOption } from "./admin-rich-text-colors";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 

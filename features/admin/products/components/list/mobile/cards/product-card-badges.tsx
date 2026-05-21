@@ -4,6 +4,7 @@ import type { JSX } from "react";
 
 import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
 import type { ProductTableItem } from "@/features/admin/products/list/types";
+import { PRODUCT_CARD_BADGES_COPY } from "@/features/admin/products/config";
 import { cn } from "@/lib/utils";
 import { ProductStockBadge } from "../../product-stock-badge";
 
@@ -21,10 +22,12 @@ type ProductCardBadgesProps = {
 
 function getVariantLabel(variantCount: number, compact: boolean): string {
   if (variantCount <= 1) {
-    return "Simple";
+    return PRODUCT_CARD_BADGES_COPY.variantSingle;
   }
 
-  return compact ? `${variantCount} var.` : `${variantCount} variantes`;
+  return compact
+    ? PRODUCT_CARD_BADGES_COPY.variantCountShort(variantCount)
+    : PRODUCT_CARD_BADGES_COPY.variantCountFull(variantCount);
 }
 
 export function ProductCardBadges({

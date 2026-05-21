@@ -2,7 +2,7 @@
 
 import { useActionState, useMemo, useState, type JSX } from "react";
 
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { AdminFormFooter, AdminFormMessage, AdminFormSection } from "@/components/admin/forms";
 import { Button } from "@/components/ui/button";
 import type {
   AdminProductEditorCategoryLink,
@@ -20,8 +20,6 @@ import {
   ProductCategoriesPrimaryFields,
   ProductCategoriesSummary,
 } from "./categories";
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
-import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
 
 type ProductCategoriesTabProps = {
   action: ProductCategoriesFormAction;

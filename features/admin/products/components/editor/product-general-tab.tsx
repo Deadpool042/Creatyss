@@ -4,8 +4,13 @@ import { useActionState, useEffect, useMemo, useState, type JSX } from "react";
 
 import { useAutoSlug } from "@/entities/shared/slug/hooks/use-auto-slug";
 import { getProductStructurePresentation } from "@/entities/product";
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminCharCounter } from "@/components/admin/forms/admin-char-counter";
+import {
+  AdminCharCounter,
+  AdminFormField,
+  AdminFormFooter,
+  AdminFormMessage,
+  AdminRichTextEditor,
+} from "@/components/admin/forms";
 import { toast } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,9 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AdminRichTextEditor } from "@/components/admin/forms/admin-rich-text-editor";
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
-import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
 import {
   type AdminProductEditorData,
   productGeneralFormInitialState,

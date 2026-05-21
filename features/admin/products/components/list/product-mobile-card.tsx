@@ -4,15 +4,18 @@ import Link from "next/link";
 import type { JSX } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { PRODUCT_CARD_COPY } from "@/features/admin/products/config";
 import type { ProductTableItem } from "@/features/admin/products/list/types";
 import { stripHtml } from "@/features/admin/products/list/utils";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";
 import { AdminProductsPriceCell } from "./admin-products-price-cell";
-import { ProductCardActionMenu } from "./mobile/cards/product-card-action-menu";
-import { ProductCardBadges } from "./mobile/cards/product-card-badges";
-import { ProductCardFeaturedControl } from "./mobile/cards/product-card-featured-control";
-import { ProductCardImage } from "./mobile/cards/product-card-image";
-import { ProductCardInfoTile } from "./mobile/cards/product-card-info-tile";
+import {
+  ProductCardActionMenu,
+  ProductCardBadges,
+  ProductCardFeaturedControl,
+  ProductCardImage,
+  ProductCardInfoTile,
+} from "./mobile/cards";
 
 type ProductListView = "active" | "trash";
 
@@ -79,7 +82,7 @@ export function ProductMobileCard({
         <ProductCardBadges product={product} />
 
         <div className="grid grid-cols-1 gap-2">
-          <ProductCardInfoTile label="Prix">
+          <ProductCardInfoTile label={PRODUCT_CARD_COPY.priceTileLabel}>
             <AdminProductsPriceCell
               priceLabel={product.priceLabel}
               compareAtPriceLabel={product.compareAtPriceLabel}
@@ -87,7 +90,7 @@ export function ProductMobileCard({
             />
           </ProductCardInfoTile>
 
-          <ProductCardInfoTile label="Catégorie">
+          <ProductCardInfoTile label={PRODUCT_CARD_COPY.categoryTileLabel}>
             <AdminProductsCategoryCell label={product.categoryPathLabel} />
           </ProductCardInfoTile>
         </div>

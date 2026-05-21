@@ -3,8 +3,7 @@
 import { useActionState, useMemo, useState, type ChangeEvent, type JSX } from "react";
 import { ImagePlus } from "lucide-react";
 
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
+import { AdminFormField, AdminFormMessage } from "@/components/admin/forms";
 import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
 import type { uploadProductImagesAction } from "@/features/admin/products/editor";

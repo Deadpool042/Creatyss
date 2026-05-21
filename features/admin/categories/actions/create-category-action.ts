@@ -4,6 +4,10 @@ import { redirect } from "next/navigation";
 import { validateAdminCategoryInput } from "@/entities/category";
 import { AdminCategoryServiceError } from "../types";
 import { createAdminCategory } from "../services";
+import {
+  ADMIN_CATEGORIES_LIST_PATH,
+  ADMIN_CATEGORIES_NEW_PATH,
+} from "../shared/admin-categories-routes";
 
 export async function createCategoryAction(formData: FormData): Promise<void> {
   const validated = validateAdminCategoryInput({
@@ -17,18 +21,18 @@ export async function createCategoryAction(formData: FormData): Promise<void> {
   });
 
   if (!validated.ok) {
-    redirect(`/admin/categories/new?error=${validated.code}`);
+    redirect(`${ADMIN_CATEGORIES_NEW_PATH}?error=${validated.code}`);
   }
 
   try {
     await createAdminCategory(validated.data);
   } catch (error: unknown) {
     if (error instanceof AdminCategoryServiceError) {
-      redirect(`/admin/categories/new?error=${error.code}`);
+      redirect(`${ADMIN_CATEGORIES_NEW_PATH}?error=${error.code}`);
     }
 
-    redirect("/admin/categories/new?error=save_failed");
+    redirect(`${ADMIN_CATEGORIES_NEW_PATH}?error=save_failed`);
   }
 
-  redirect("/admin/categories?status=created");
+  redirect(`${ADMIN_CATEGORIES_LIST_PATH}?status=created`);
 }

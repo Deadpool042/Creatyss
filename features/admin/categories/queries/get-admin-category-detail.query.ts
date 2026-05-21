@@ -2,7 +2,6 @@ import { db } from "@/core/db";
 import type { AdminCategoryDetail } from "../types";
 
 type GetAdminCategoryDetailInput = {
-  categoryId: string;
   slug: string; // Optional slug for potential future use, currently not used in the query
 };
 
@@ -11,7 +10,6 @@ export async function getAdminCategoryDetail(
 ): Promise<AdminCategoryDetail | null> {
   const category = await db.category.findFirst({
     where: {
-      id: input.categoryId,
       slug: input.slug,
       archivedAt: null,
     },
@@ -47,7 +45,7 @@ export async function getAdminCategoryDetail(
     where: {
       storeId: category.storeId,
       subjectType: "CATEGORY",
-      subjectId: input.categoryId,
+      subjectId: category.id,
       archivedAt: null,
     },
     select: {

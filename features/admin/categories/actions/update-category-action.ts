@@ -4,15 +4,22 @@ import { redirect } from "next/navigation";
 import { validateAdminCategoryInput } from "@/entities/category";
 import { AdminCategoryServiceError } from "../types";
 import { updateAdminCategory } from "../services";
+import {
+  ADMIN_CATEGORIES_LIST_PATH,
+  getAdminCategoryDetailPath,
+} from "../shared/admin-categories-routes";
 
 export async function updateCategoryAction(formData: FormData): Promise<void> {
   const categoryId = formData.get("categoryId");
+  const routeSlug = formData.get("routeSlug");
 
   if (typeof categoryId !== "string" || categoryId.trim().length === 0) {
-    redirect("/admin/categories?error=missing_category");
+    redirect(`${ADMIN_CATEGORIES_LIST_PATH}?error=missing_category`);
   }
 
   const normalizedCategoryId = categoryId.trim();
+  const normalizedRouteSlug =
+    typeof routeSlug === "string" && routeSlug.trim().length > 0 ? routeSlug.trim() : null;
 
   const validated = validateAdminCategoryInput({
     name: formData.get("name"),
@@ -25,7 +32,11 @@ export async function updateCategoryAction(formData: FormData): Promise<void> {
   });
 
   if (!validated.ok) {
-    redirect(`/admin/categories/${normalizedCategoryId}?error=${validated.code}`);
+    if (normalizedRouteSlug !== null) {
+      redirect(`${getAdminCategoryDetailPath(normalizedRouteSlug)}?error=${validated.code}`);
+    }
+
+    redirect(`${ADMIN_CATEGORIES_LIST_PATH}?error=${validated.code}`);
   }
 
   try {
@@ -35,15 +46,19 @@ export async function updateCategoryAction(formData: FormData): Promise<void> {
     });
   } catch (error: unknown) {
     if (error instanceof AdminCategoryServiceError && error.code === "category_missing") {
-      redirect("/admin/categories?error=missing_category");
+      redirect(`${ADMIN_CATEGORIES_LIST_PATH}?error=missing_category`);
     }
 
     if (error instanceof AdminCategoryServiceError) {
-      redirect(`/admin/categories/${normalizedCategoryId}?error=${error.code}`);
+      redirect(
+        `${getAdminCategoryDetailPath(normalizedRouteSlug ?? validated.data.slug)}?error=${error.code}`
+      );
     }
 
-    redirect(`/admin/categories/${normalizedCategoryId}?error=save_failed`);
+    redirect(
+      `${getAdminCategoryDetailPath(normalizedRouteSlug ?? validated.data.slug)}?error=save_failed`
+    );
   }
 
-  redirect(`/admin/categories/${normalizedCategoryId}?status=updated`);
+  redirect(`${getAdminCategoryDetailPath(validated.data.slug)}?status=updated`);
 }

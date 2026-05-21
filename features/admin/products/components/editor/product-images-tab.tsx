@@ -3,8 +3,7 @@
 import { useMemo, useState, type JSX } from "react";
 import { Images, Upload } from "lucide-react";
 
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { AdminFormMessage, AdminFormSection } from "@/components/admin/forms";
 import type {
   attachProductImagesAction,
   deleteProductImageAction,

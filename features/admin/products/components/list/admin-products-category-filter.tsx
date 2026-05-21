@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import type { ProductFilterCategoryOption } from "@/features/admin/products/list/types/product-table.types";
 import { cn } from "@/lib/utils";
+import { PRODUCT_LIST_COPY } from "@/features/admin/products/config";
 
 type AdminProductsCategoryFilterProps = {
   categories: ProductFilterCategoryOption[];
@@ -65,10 +66,10 @@ export function AdminProductsCategoryFilter({
         }}
       >
         <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
-          <SelectValue placeholder="Toutes les catégories" />
+          <SelectValue placeholder={PRODUCT_LIST_COPY.filterCategoryAllLabel} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Toutes les catégories</SelectItem>
+          <SelectItem value="all">{PRODUCT_LIST_COPY.filterCategoryAllLabel}</SelectItem>
           {parentCategories.map((category) => (
             <SelectItem key={category.id} value={category.id}>
               {category.name}
@@ -80,10 +81,10 @@ export function AdminProductsCategoryFilter({
       {hasChildCategories ? (
         <Select value={selectedCategoryId} onValueChange={onCategoryChange}>
           <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
-            <SelectValue placeholder="Toutes les sous-catégories" />
+            <SelectValue placeholder={PRODUCT_LIST_COPY.filterSubcategoryAllLabel} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Toutes les sous-catégories</SelectItem>
+            <SelectItem value="all">{PRODUCT_LIST_COPY.filterSubcategoryAllLabel}</SelectItem>
             {childCategories.map((category) => (
               <SelectItem key={category.id} value={category.id}>
                 {category.name}

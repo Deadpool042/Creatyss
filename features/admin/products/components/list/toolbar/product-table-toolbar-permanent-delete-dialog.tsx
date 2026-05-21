@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PRODUCT_BULK_DELETE_DIALOG_COPY } from "@/features/admin/products/config";
 
 type ProductTableToolbarPermanentDeleteDialogProps = {
   open: boolean;
@@ -29,15 +30,12 @@ export function ProductTableToolbarPermanentDeleteDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Supprimer définitivement la sélection ?</DialogTitle>
-          <DialogDescription>
-            Cette action est irréversible. Les produits sélectionnés seront supprimés
-            définitivement du catalogue.
-          </DialogDescription>
+          <DialogTitle>{PRODUCT_BULK_DELETE_DIALOG_COPY.title}</DialogTitle>
+          <DialogDescription>{PRODUCT_BULK_DELETE_DIALOG_COPY.description}</DialogDescription>
         </DialogHeader>
 
         <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-3 text-sm text-destructive">
-          Cette suppression est définitive et ne pourra pas être annulée.
+          {PRODUCT_BULK_DELETE_DIALOG_COPY.warning}
         </div>
 
         <DialogFooter>
@@ -47,7 +45,7 @@ export function ProductTableToolbarPermanentDeleteDialog({
             onClick={() => onOpenChange(false)}
             disabled={isBulkPending}
           >
-            Annuler
+            {PRODUCT_BULK_DELETE_DIALOG_COPY.cancel}
           </Button>
 
           <Button
@@ -56,7 +54,7 @@ export function ProductTableToolbarPermanentDeleteDialog({
             onClick={() => void onConfirm()}
             disabled={isBulkPending}
           >
-            {isBulkPending ? "Suppression…" : "Supprimer définitivement"}
+            {isBulkPending ? PRODUCT_BULK_DELETE_DIALOG_COPY.pending : PRODUCT_BULK_DELETE_DIALOG_COPY.confirm}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -3,10 +3,7 @@
 import { Fragment, useActionState, useMemo, useState, type JSX } from "react";
 import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
 
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { AdminFormField, AdminFormFooter, AdminFormMessage, AdminFormSection } from "@/components/admin/forms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

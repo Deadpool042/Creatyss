@@ -1,19 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { Images, MoreHorizontal, Plus, Trash2, Upload } from "lucide-react";
+import { Images, Plus, Trash2, Upload } from "lucide-react";
 import type { JSX } from "react";
 
 import { DeleteProductButton } from "./delete-product-button";
-import { Button } from "@/components/ui/button";
+import { AdminTopbarOverflowMenu } from "@/components/admin/shared/admin-topbar-overflow-menu";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TopbarMenuActionItem } from "./topbar-menu-action-item";
+import { PRODUCT_EDITOR_MENUS_COPY } from "@/features/admin/products/config";
 
 type ProductMediaTopbarMenuProps = {
   productId: string;
@@ -27,27 +25,16 @@ export function ProductMediaTopbarMenu({
   onOpenUpload,
 }: ProductMediaTopbarMenuProps): JSX.Element {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          aria-label="Ouvrir les actions des images"
-          className="h-9 w-9 rounded-full"
-        >
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent align="end" className="w-56">
+    <AdminTopbarOverflowMenu ariaLabel={PRODUCT_EDITOR_MENUS_COPY.mediaMenuAriaLabel}>
         <DropdownMenuItem
           onSelect={(event) => {
             event.preventDefault();
             onOpenLibrary();
           }}
         >
-          <TopbarMenuActionItem icon={Images}>Associer depuis la bibliothèque</TopbarMenuActionItem>
+          <TopbarMenuActionItem icon={Images}>
+            {PRODUCT_EDITOR_MENUS_COPY.attachFromLibraryLabel}
+          </TopbarMenuActionItem>
         </DropdownMenuItem>
 
         <DropdownMenuItem
@@ -56,14 +43,14 @@ export function ProductMediaTopbarMenu({
             onOpenUpload();
           }}
         >
-          <TopbarMenuActionItem icon={Upload}>Importer une image</TopbarMenuActionItem>
+          <TopbarMenuActionItem icon={Upload}>{PRODUCT_EDITOR_MENUS_COPY.uploadImageLabel}</TopbarMenuActionItem>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
           <Link href="/admin/products/new">
-            <TopbarMenuActionItem icon={Plus}>Nouveau produit</TopbarMenuActionItem>
+            <TopbarMenuActionItem icon={Plus}>{PRODUCT_EDITOR_MENUS_COPY.newProductLabel}</TopbarMenuActionItem>
           </Link>
         </DropdownMenuItem>
 
@@ -78,12 +65,11 @@ export function ProductMediaTopbarMenu({
               }}
             >
               <TopbarMenuActionItem icon={Trash2} destructive>
-                Supprimer le produit
+                {PRODUCT_EDITOR_MENUS_COPY.deleteProductLabel}
               </TopbarMenuActionItem>
             </DropdownMenuItem>
           }
         />
-      </DropdownMenuContent>
-    </DropdownMenu>
+    </AdminTopbarOverflowMenu>
   );
 }

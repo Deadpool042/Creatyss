@@ -4,12 +4,13 @@ import Link from "next/link";
 import type { JSX } from "react";
 import { Eye, Pencil, RotateCcw, Trash2 } from "lucide-react";
 
-import { AdminRowActionsMenu } from "@/components/admin/tables/admin-row-actions-menu";
+import { AdminRowActionsMenu } from "@/components/admin/tables";
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { PRODUCT_ROW_ACTIONS_COPY } from "@/features/admin/products/config";
 import { useProductLifecycleActionState } from "./hooks/use-product-lifecycle-action-state";
 import { ProductLifecycleActionDialogs } from "./product-lifecycle-action-dialogs";
 
@@ -32,12 +33,12 @@ type ProductRowAction = {
 
 const productRowActions: ProductRowAction[] = [
   {
-    label: "Modifier",
+    label: PRODUCT_ROW_ACTIONS_COPY.edit,
     icon: Pencil,
     href: (slug: string) => `/admin/products/${slug}/edit`,
   },
   {
-    label: "Voir la fiche",
+    label: PRODUCT_ROW_ACTIONS_COPY.preview,
     icon: Eye,
     href: (slug: string) => `/admin/products/${slug}/preview`,
   },
@@ -63,7 +64,7 @@ export function ProductTableRowActions({
   return (
     <>
       <AdminRowActionsMenu
-        label={`Ouvrir les actions du produit ${displayName}`}
+        label={PRODUCT_ROW_ACTIONS_COPY.menuAriaLabel(displayName)}
         contentClassName="w-56"
       >
         <DropdownMenuGroup>
@@ -89,7 +90,7 @@ export function ProductTableRowActions({
               }}
             >
               <Trash2 className="h-4 w-4" />
-              <span>Mettre à la corbeille</span>
+              <span>{PRODUCT_ROW_ACTIONS_COPY.archive}</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         ) : (
@@ -101,7 +102,7 @@ export function ProductTableRowActions({
               }}
             >
               <RotateCcw className="h-4 w-4" />
-              <span>Restaurer</span>
+              <span>{PRODUCT_ROW_ACTIONS_COPY.restore}</span>
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -112,7 +113,7 @@ export function ProductTableRowActions({
               }}
             >
               <Trash2 className="h-4 w-4" />
-              <span>Supprimer définitivement</span>
+              <span>{PRODUCT_ROW_ACTIONS_COPY.permanentDelete}</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         )}
@@ -123,60 +124,67 @@ export function ProductTableRowActions({
         archiveDialog={{
           open: lifecycleState.archiveDialogOpen,
           onOpenChange: lifecycleState.setArchiveDialogOpen,
-          title: "Mettre ce produit à la corbeille ?",
+          title: PRODUCT_ROW_ACTIONS_COPY.archiveTitle,
           description: (
             <>
-              Cette action retirera <strong>{displayName}</strong> du catalogue actif.
+              {PRODUCT_ROW_ACTIONS_COPY.archiveDescriptionPrefix}{" "}
+              <strong>{displayName}</strong>{" "}
+              {PRODUCT_ROW_ACTIONS_COPY.archiveDescriptionSuffix}
             </>
           ),
-          cancelLabel: "Annuler",
-          confirmLabel: "Mettre à la corbeille",
-          pendingLabel: "Déplacement…",
+          cancelLabel: PRODUCT_ROW_ACTIONS_COPY.cancel,
+          confirmLabel: PRODUCT_ROW_ACTIONS_COPY.archive,
+          pendingLabel: PRODUCT_ROW_ACTIONS_COPY.archivePending,
           confirmVariant: "destructive",
           onConfirm: lifecycleState.handleArchive,
           details: (
             <div className="rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-3 text-sm text-muted-foreground">
-              Produit concerné : <span className="font-medium text-foreground">{displayName}</span>
+              {PRODUCT_ROW_ACTIONS_COPY.productLabel}{" "}
+              <span className="font-medium text-foreground">{displayName}</span>
             </div>
           ),
         }}
         restoreDialog={{
           open: lifecycleState.restoreDialogOpen,
           onOpenChange: lifecycleState.setRestoreDialogOpen,
-          title: "Restaurer ce produit ?",
+          title: PRODUCT_ROW_ACTIONS_COPY.restoreTitle,
           description: (
             <>
-              Cette action replacera <strong>{displayName}</strong> dans le catalogue actif.
+              {PRODUCT_ROW_ACTIONS_COPY.restoreDescriptionPrefix}{" "}
+              <strong>{displayName}</strong>{" "}
+              {PRODUCT_ROW_ACTIONS_COPY.restoreDescriptionSuffix}
             </>
           ),
-          cancelLabel: "Annuler",
-          confirmLabel: "Restaurer",
-          pendingLabel: "Restauration…",
+          cancelLabel: PRODUCT_ROW_ACTIONS_COPY.cancel,
+          confirmLabel: PRODUCT_ROW_ACTIONS_COPY.restore,
+          pendingLabel: PRODUCT_ROW_ACTIONS_COPY.restorePending,
           onConfirm: lifecycleState.handleRestore,
           details: (
             <div className="rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-3 text-sm text-muted-foreground">
-              Produit concerné : <span className="font-medium text-foreground">{displayName}</span>
+              {PRODUCT_ROW_ACTIONS_COPY.productLabel}{" "}
+              <span className="font-medium text-foreground">{displayName}</span>
             </div>
           ),
         }}
         permanentDeleteDialog={{
           open: lifecycleState.permanentDeleteDialogOpen,
           onOpenChange: lifecycleState.setPermanentDeleteDialogOpen,
-          title: "Supprimer définitivement ce produit ?",
+          title: PRODUCT_ROW_ACTIONS_COPY.permanentDeleteTitle,
           description: (
             <>
-              Cette action est irréversible. <strong>{displayName}</strong> sera supprimé
-              définitivement du catalogue.
+              {PRODUCT_ROW_ACTIONS_COPY.permanentDeleteDescriptionPrefix}{" "}
+              <strong>{displayName}</strong>{" "}
+              {PRODUCT_ROW_ACTIONS_COPY.permanentDeleteDescriptionSuffix}
             </>
           ),
-          cancelLabel: "Annuler",
-          confirmLabel: "Supprimer définitivement",
-          pendingLabel: "Suppression…",
+          cancelLabel: PRODUCT_ROW_ACTIONS_COPY.cancel,
+          confirmLabel: PRODUCT_ROW_ACTIONS_COPY.permanentDelete,
+          pendingLabel: PRODUCT_ROW_ACTIONS_COPY.permanentDeletePending,
           confirmVariant: "destructive",
           onConfirm: lifecycleState.handlePermanentDelete,
           details: (
             <div className="rounded-lg border border-feedback-error-border bg-feedback-error-surface px-3 py-3 text-sm text-destructive">
-              Cette suppression est définitive et ne pourra pas être annulée.
+              {PRODUCT_ROW_ACTIONS_COPY.permanentDeleteWarning}
             </div>
           ),
         }}

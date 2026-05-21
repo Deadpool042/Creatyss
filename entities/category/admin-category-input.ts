@@ -1,14 +1,12 @@
+import {
+  adminCategoryInputSchema,
+  normalizeCategorySlug,
+  type AdminCategoryInputSchema,
+} from "./category-input.schema";
+
 type RawInputValue = FormDataEntryValue | string | null | undefined;
 
-export type ValidatedAdminCategoryInput = {
-  name: string;
-  slug: string;
-  description: string | null;
-  parentId: string | null;
-  primaryImageId: string | null;
-  isFeatured: boolean;
-  sortOrder: number;
-};
+export type ValidatedAdminCategoryInput = AdminCategoryInputSchema;
 
 export type AdminCategoryInputErrorCode =
   | "missing_name"
@@ -22,57 +20,7 @@ export type AdminCategoryInputValidationResult =
   | { ok: true; data: ValidatedAdminCategoryInput }
   | { ok: false; code: AdminCategoryInputErrorCode };
 
-function readTrimmedString(value: RawInputValue): string | null {
-  if (typeof value !== "string") {
-    return null;
-  }
-
-  const normalizedValue = value.trim();
-  return normalizedValue.length > 0 ? normalizedValue : null;
-}
-
-function normalizeOptionalText(value: RawInputValue): string | null {
-  return readTrimmedString(value);
-}
-
-function normalizeOptionalId(value: RawInputValue): string | null | undefined {
-  if (value === undefined) {
-    return undefined;
-  }
-
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null) {
-    return null;
-  }
-
-  return normalizedValue;
-}
-
-function normalizeBoolean(value: RawInputValue): boolean {
-  return value === "on" || value === "true" || value === "1";
-}
-
-function parseNonNegativeInteger(value: RawInputValue): number | null {
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null || !/^\d+$/.test(normalizedValue)) {
-    return null;
-  }
-
-  return Number(normalizedValue);
-}
-
-export function normalizeCategorySlug(value: string): string {
-  return value
-    .trim()
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/-{2,}/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+export { normalizeCategorySlug };
 
 export function validateAdminCategoryInput(input: {
   name: RawInputValue;
@@ -83,49 +31,35 @@ export function validateAdminCategoryInput(input: {
   isFeatured: RawInputValue;
   sortOrder: RawInputValue;
 }): AdminCategoryInputValidationResult {
-  const name = readTrimmedString(input.name);
+  const parsed = adminCategoryInputSchema.safeParse(input);
 
-  if (name === null) {
-    return { ok: false, code: "missing_name" };
-  }
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    const issuePath = issue?.path[0];
+    const issueMessage = issue?.message;
 
-  const rawSlug = readTrimmedString(input.slug);
+    let code: AdminCategoryInputErrorCode = "invalid_slug";
 
-  if (rawSlug === null) {
-    return { ok: false, code: "missing_slug" };
-  }
+    if (issuePath === "name") {
+      code = "missing_name";
+    } else if (issuePath === "slug") {
+      code = issueMessage === "invalid_slug" ? "invalid_slug" : "missing_slug";
+    } else if (issuePath === "parentId") {
+      code = "invalid_parent_id";
+    } else if (issuePath === "primaryImageId") {
+      code = "invalid_primary_image";
+    } else if (issuePath === "sortOrder") {
+      code = "invalid_sort_order";
+    }
 
-  const slug = normalizeCategorySlug(rawSlug);
-
-  if (slug.length === 0) {
-    return { ok: false, code: "invalid_slug" };
-  }
-
-  const parentId = normalizeOptionalId(input.parentId);
-  if (parentId === undefined) {
-    return { ok: false, code: "invalid_parent_id" };
-  }
-
-  const primaryImageId = normalizeOptionalId(input.primaryImageId);
-  if (primaryImageId === undefined) {
-    return { ok: false, code: "invalid_primary_image" };
-  }
-
-  const sortOrder = parseNonNegativeInteger(input.sortOrder);
-  if (sortOrder === null) {
-    return { ok: false, code: "invalid_sort_order" };
+    return {
+      ok: false,
+      code,
+    };
   }
 
   return {
     ok: true,
-    data: {
-      name,
-      slug,
-      description: normalizeOptionalText(input.description),
-      parentId,
-      primaryImageId,
-      isFeatured: normalizeBoolean(input.isFeatured),
-      sortOrder,
-    },
+    data: parsed.data,
   };
 }

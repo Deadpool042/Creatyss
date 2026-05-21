@@ -4,11 +4,13 @@ import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState, type JSX } from "react";
 
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
-import { AdminCharCounter } from "@/components/admin/forms/admin-char-counter";
+import {
+  AdminCharCounter,
+  AdminFormField,
+  AdminFormFooter,
+  AdminFormMessage,
+  AdminFormSection,
+} from "@/components/admin/forms";
 import { Button } from "@/components/ui/button";
 import { clientEnv } from "@/core/config/env/client";
 import { Input } from "@/components/ui/input";

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { restoreAdminCategory } from "../services";
+import { ADMIN_CATEGORIES_LIST_PATH } from "../shared/admin-categories-routes";
 
 type RestoreCategoryActionResult =
   | { success: true }
@@ -18,7 +19,7 @@ export async function restoreCategoryAction(input: {
 
   try {
     await restoreAdminCategory({ categoryId });
-    revalidatePath("/admin/catalog/categories");
+    revalidatePath(ADMIN_CATEGORIES_LIST_PATH);
     return { success: true };
   } catch {
     return { success: false, error: "restore_failed" };

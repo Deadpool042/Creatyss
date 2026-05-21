@@ -1,9 +1,10 @@
-export type ValidatedCategoryInput = {
-  name: string;
-  slug: string;
-  description: string | null;
-  isFeatured: boolean;
-};
+import {
+  categoryInputSchema,
+  normalizeCategorySlug,
+  type CategoryInputSchema,
+} from "./category-input.schema";
+
+export type ValidatedCategoryInput = CategoryInputSchema;
 
 export type CategoryInputErrorCode = "missing_name" | "missing_slug" | "invalid_slug";
 
@@ -24,65 +25,32 @@ export type CategoryInputValidationResult =
       code: CategoryInputErrorCode;
     };
 
-function readTrimmedString(value: FormDataEntryValue | string | null | undefined): string | null {
-  if (typeof value !== "string") {
-    return null;
-  }
-
-  return value.trim();
-}
-
-export function normalizeCategorySlug(value: string): string {
-  return value
-    .trim()
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/-{2,}/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+export { normalizeCategorySlug };
 
 export function validateCategoryInput(input: CategoryInputSource): CategoryInputValidationResult {
-  const name = readTrimmedString(input.name);
+  const parsed = categoryInputSchema.safeParse(input);
 
-  if (name === null || name.length === 0) {
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    const issuePath = issue?.path[0];
+    const issueMessage = issue?.message;
+
+    let code: CategoryInputErrorCode = "invalid_slug";
+
+    if (issuePath === "name") {
+      code = "missing_name";
+    } else if (issuePath === "slug") {
+      code = issueMessage === "invalid_slug" ? "invalid_slug" : "missing_slug";
+    }
+
     return {
       ok: false,
-      code: "missing_name",
+      code,
     };
   }
-
-  const rawSlug = readTrimmedString(input.slug);
-
-  if (rawSlug === null || rawSlug.length === 0) {
-    return {
-      ok: false,
-      code: "missing_slug",
-    };
-  }
-
-  const normalizedSlug = normalizeCategorySlug(rawSlug);
-
-  if (normalizedSlug.length === 0) {
-    return {
-      ok: false,
-      code: "invalid_slug",
-    };
-  }
-
-  const descriptionValue = readTrimmedString(input.description);
-  const isFeaturedValue =
-    input.isFeatured === "on" || input.isFeatured === "true" || input.isFeatured === "1";
 
   return {
     ok: true,
-    data: {
-      name,
-      slug: normalizedSlug,
-      description:
-        descriptionValue === null || descriptionValue.length === 0 ? null : descriptionValue,
-      isFeatured: isFeaturedValue,
-    },
+    data: parsed.data,
   };
 }

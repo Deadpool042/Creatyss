@@ -12,6 +12,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
+import {
+  PRODUCT_CARD_ACTIONS_COPY,
+  PRODUCT_ROW_ACTIONS_COPY,
+} from "@/features/admin/products/config";
 import { cn } from "@/lib/utils";
 import { useProductLifecycleActionState } from "../../hooks/use-product-lifecycle-action-state";
 import { ProductLifecycleActionDialogs } from "../../product-lifecycle-action-dialogs";
@@ -59,7 +63,7 @@ export function ProductCardActionMenu({
               ].join(" "),
               triggerClassName
             )}
-            aria-label={`Actions pour ${product.name}`}
+            aria-label={PRODUCT_CARD_ACTIONS_COPY.menuAriaLabel(product.name)}
           >
             <MoreHorizontal className="h-4 w-4" />
           </Button>
@@ -73,14 +77,14 @@ export function ProductCardActionMenu({
           <DropdownMenuItem asChild>
             <Link href={`/products/${product.slug}`} target="_blank" rel="noreferrer">
               <Eye className="mr-2 h-4 w-4" />
-              Aperçu
+              {PRODUCT_CARD_ACTIONS_COPY.preview}
             </Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
             <Link href={`/admin/products/${product.slug}/edit`}>
               <Pencil className="mr-2 h-4 w-4" />
-              Modifier
+              {PRODUCT_CARD_ACTIONS_COPY.edit}
             </Link>
           </DropdownMenuItem>
 
@@ -93,7 +97,7 @@ export function ProductCardActionMenu({
               }}
             >
               <Trash2 className="mr-2 h-4 w-4" />
-              Mettre à la corbeille
+              {PRODUCT_ROW_ACTIONS_COPY.archive}
             </DropdownMenuItem>
           ) : (
             <>
@@ -104,7 +108,7 @@ export function ProductCardActionMenu({
                 }}
               >
                 <RotateCcw className="mr-2 h-4 w-4" />
-                Restaurer
+                {PRODUCT_ROW_ACTIONS_COPY.restore}
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -115,7 +119,7 @@ export function ProductCardActionMenu({
                 }}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
-                Supprimer définitivement
+                {PRODUCT_ROW_ACTIONS_COPY.permanentDelete}
               </DropdownMenuItem>
             </>
           )}
@@ -127,45 +131,50 @@ export function ProductCardActionMenu({
         archiveDialog={{
           open: lifecycleState.archiveDialogOpen,
           onOpenChange: lifecycleState.setArchiveDialogOpen,
-          title: "Mettre ce produit à la corbeille ?",
+          title: PRODUCT_ROW_ACTIONS_COPY.archiveTitle,
           description: (
             <>
-              Cette action retirera <strong>{product.name}</strong> du catalogue actif.
+              {PRODUCT_ROW_ACTIONS_COPY.archiveDescriptionPrefix}{" "}
+              <strong>{product.name}</strong>{" "}
+              {PRODUCT_ROW_ACTIONS_COPY.archiveDescriptionSuffix}
             </>
           ),
-          cancelLabel: "Annuler",
-          confirmLabel: "Mettre à la corbeille",
-          pendingLabel: "Déplacement…",
+          cancelLabel: PRODUCT_ROW_ACTIONS_COPY.cancel,
+          confirmLabel: PRODUCT_ROW_ACTIONS_COPY.archive,
+          pendingLabel: PRODUCT_ROW_ACTIONS_COPY.archivePending,
           confirmVariant: "destructive",
           onConfirm: lifecycleState.handleArchive,
         }}
         restoreDialog={{
           open: lifecycleState.restoreDialogOpen,
           onOpenChange: lifecycleState.setRestoreDialogOpen,
-          title: "Restaurer ce produit ?",
+          title: PRODUCT_ROW_ACTIONS_COPY.restoreTitle,
           description: (
             <>
-              Cette action replacera <strong>{product.name}</strong> dans le catalogue actif.
+              {PRODUCT_ROW_ACTIONS_COPY.restoreDescriptionPrefix}{" "}
+              <strong>{product.name}</strong>{" "}
+              {PRODUCT_ROW_ACTIONS_COPY.restoreDescriptionSuffix}
             </>
           ),
-          cancelLabel: "Annuler",
-          confirmLabel: "Restaurer",
-          pendingLabel: "Restauration…",
+          cancelLabel: PRODUCT_ROW_ACTIONS_COPY.cancel,
+          confirmLabel: PRODUCT_ROW_ACTIONS_COPY.restore,
+          pendingLabel: PRODUCT_ROW_ACTIONS_COPY.restorePending,
           onConfirm: lifecycleState.handleRestore,
         }}
         permanentDeleteDialog={{
           open: lifecycleState.permanentDeleteDialogOpen,
           onOpenChange: lifecycleState.setPermanentDeleteDialogOpen,
-          title: "Supprimer définitivement ce produit ?",
+          title: PRODUCT_ROW_ACTIONS_COPY.permanentDeleteTitle,
           description: (
             <>
-              Cette action est irréversible. <strong>{product.name}</strong> sera supprimé
-              définitivement du catalogue.
+              {PRODUCT_ROW_ACTIONS_COPY.permanentDeleteDescriptionPrefix}{" "}
+              <strong>{product.name}</strong>{" "}
+              {PRODUCT_ROW_ACTIONS_COPY.permanentDeleteDescriptionSuffix}
             </>
           ),
-          cancelLabel: "Annuler",
-          confirmLabel: "Supprimer définitivement",
-          pendingLabel: "Suppression…",
+          cancelLabel: PRODUCT_ROW_ACTIONS_COPY.cancel,
+          confirmLabel: PRODUCT_ROW_ACTIONS_COPY.permanentDelete,
+          pendingLabel: PRODUCT_ROW_ACTIONS_COPY.permanentDeletePending,
           confirmVariant: "destructive",
           onConfirm: lifecycleState.handlePermanentDelete,
         }}

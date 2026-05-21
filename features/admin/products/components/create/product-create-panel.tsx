@@ -3,9 +3,7 @@
 import { type JSX, useActionState, useState } from "react";
 
 import { useAutoSlug } from "@/entities/shared/slug/hooks/use-auto-slug";
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormShell } from "@/components/admin/forms/admin-form-shell";
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
+import { AdminFormField, AdminFormMessage, AdminFormShell } from "@/components/admin/forms";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

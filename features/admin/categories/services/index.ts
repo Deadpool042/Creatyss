@@ -1,8 +1,8 @@
 export { createAdminCategory } from "./create-admin-category.service";
 export { updateAdminCategory } from "./update-admin-category.service";
 export { updateCategorySeo } from "./update-category-seo.service";
-export { deleteAdminCategory } from "./delete-admin-category.service";
-export { bulkDeleteAdminCategories } from "./bulk-delete-admin-categories.service";
+export { archiveAdminCategory } from "./archive-admin-category.service";
+export { archiveAdminCategories } from "./archive-admin-categories.service";
 export { restoreAdminCategory } from "./restore-admin-category.service";
 export { hardDeleteAdminCategory } from "./hard-delete-admin-category.service";
 export { setAdminCategoryImage } from "./set-admin-category-image.service";

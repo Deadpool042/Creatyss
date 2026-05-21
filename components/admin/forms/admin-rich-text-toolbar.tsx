@@ -21,9 +21,9 @@ import {
 import {
   ADMIN_RICH_TEXT_HIGHLIGHT_COLORS,
   ADMIN_RICH_TEXT_TEXT_COLORS,
-} from "@/components/admin/forms/admin-rich-text-colors";
-import { AdminRichTextColorPopover } from "@/components/admin/forms/admin-rich-text-color-popover";
-import { AdminRichTextStyleDropdown } from "@/components/admin/forms/admin-rich-text-style-dropdown";
+} from "./admin-rich-text-colors";
+import { AdminRichTextColorPopover } from "./admin-rich-text-color-popover";
+import { AdminRichTextStyleDropdown } from "./admin-rich-text-style-dropdown";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

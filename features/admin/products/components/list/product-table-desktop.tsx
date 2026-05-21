@@ -2,8 +2,10 @@
 
 import type { JSX } from "react";
 
-import { AdminDataTableEmptyState } from "@/components/admin/tables/admin-data-table-empty-state";
+import { AdminDataTableEmptyState } from "@/components/admin/tables";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Star } from "lucide-react";
+import { PRODUCT_SELECTION_COPY, PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
 import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
 import { ProductTableDesktopRow } from "./product-table-desktop-row";
 
@@ -45,7 +47,7 @@ export function ProductTableDesktop({
                   <Checkbox
                     checked={areAllCurrentPageSelected}
                     onCheckedChange={() => onToggleSelectAllCurrentPage()}
-                    aria-label="Sélectionner les produits de la page"
+                    aria-label={PRODUCT_SELECTION_COPY.selectPageAriaLabel}
                   />
                 </div>
               </th>
@@ -55,32 +57,35 @@ export function ProductTableDesktop({
 
               {/* Produit */}
               <th className="h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase min-w-52">
-                Produit
+                {PRODUCT_TABLE_COPY.columns.product}
               </th>
 
               {/* Mise en avant */}
-              <th className="h-9 px-4 text-center align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-12">
-                ★
+              <th
+                className="h-9 px-4 text-center align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-12"
+                aria-label={PRODUCT_TABLE_COPY.columns.featuredAria}
+              >
+                <Star className="mx-auto h-3.5 w-3.5 text-muted-foreground" aria-hidden />
               </th>
 
               {/* Statut */}
               <th className="h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-28">
-                Statut
+                {PRODUCT_TABLE_COPY.columns.status}
               </th>
 
               {/* Disponibilité */}
               <th className="h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-32">
-                Disponibilité
+                {PRODUCT_TABLE_COPY.columns.stock}
               </th>
 
               {/* Prix — masqué à lg, visible à xl */}
               <th className="hidden xl:table-cell h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-36">
-                Prix
+                {PRODUCT_TABLE_COPY.columns.price}
               </th>
 
               {/* Catégorie — masquée à lg, visible à xl */}
               <th className="hidden xl:table-cell h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-44">
-                Catégorie
+                {PRODUCT_TABLE_COPY.columns.category}
               </th>
 
               {/* Actions */}
@@ -95,8 +100,8 @@ export function ProductTableDesktop({
                   <AdminDataTableEmptyState
                     message={
                       view === "trash"
-                        ? "Aucun produit dans la corbeille."
-                        : "Aucun produit trouvé."
+                        ? PRODUCT_TABLE_COPY.emptyTrash
+                        : PRODUCT_TABLE_COPY.emptyFiltered
                     }
                   />
                 </td>

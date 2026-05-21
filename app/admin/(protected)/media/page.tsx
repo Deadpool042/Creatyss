@@ -1,13 +1,15 @@
 import { redirect } from "next/navigation";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { AdminCollectionSection } from "@/components/admin/admin-collection-section";
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
+import {
+  AdminFormActions,
+  AdminFormField,
+  AdminFormMessage,
+  AdminFormSection,
+} from "@/components/admin/forms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminMediaAssetCard } from "@/components/admin/media/admin-media-asset-card";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import {

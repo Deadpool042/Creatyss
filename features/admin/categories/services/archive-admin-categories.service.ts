@@ -2,17 +2,17 @@ import { CategoryStatus } from "@/prisma-generated/client";
 
 import { withTransaction } from "@/core/db";
 
-type BulkDeleteAdminCategoriesInput = {
+type ArchiveAdminCategoriesInput = {
   categoryIds: string[];
 };
 
-type BulkDeleteAdminCategoriesResult = {
+type ArchiveAdminCategoriesResult = {
   count: number;
 };
 
-export async function bulkDeleteAdminCategories(
-  input: BulkDeleteAdminCategoriesInput
-): Promise<BulkDeleteAdminCategoriesResult> {
+export async function archiveAdminCategories(
+  input: ArchiveAdminCategoriesInput
+): Promise<ArchiveAdminCategoriesResult> {
   if (input.categoryIds.length === 0) return { count: 0 };
 
   return withTransaction(async (tx) => {

@@ -2,7 +2,7 @@
 
 import type { JSX } from "react";
 
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormField } from "@/components/admin/forms";
 import {
   Select,
   SelectContent,

@@ -2,18 +2,33 @@
 
 import { deleteAdminCategoryImage } from "../services";
 
-export async function deleteCategoryImageAction(input: {
-  categoryId: string;
-}): Promise<{ status: "success" | "error"; message: string }> {
+type CategoryImageDeleteActionState = {
+  status: "idle" | "success" | "error";
+  message: string;
+};
+
+const initialCategoryImageDeleteActionState: CategoryImageDeleteActionState = {
+  status: "idle",
+  message: "",
+};
+
+export async function deleteCategoryImageAction(
+  _previousState: CategoryImageDeleteActionState,
+  formData: FormData
+): Promise<CategoryImageDeleteActionState> {
+  const categoryId = String(formData.get("categoryId") ?? "").trim();
+
   try {
-    await deleteAdminCategoryImage(input);
+    await deleteAdminCategoryImage({ categoryId });
 
     return {
+      ...initialCategoryImageDeleteActionState,
       status: "success",
       message: "Suppression effectuée.",
     };
   } catch {
     return {
+      ...initialCategoryImageDeleteActionState,
       status: "error",
       message: "Suppression impossible.",
     };

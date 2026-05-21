@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { hardDeleteAdminCategory } from "../services";
+import { ADMIN_CATEGORIES_LIST_PATH } from "../shared/admin-categories-routes";
 
 type HardDeleteCategoryActionResult =
   | { success: true }
@@ -18,7 +19,7 @@ export async function hardDeleteCategoryAction(input: {
 
   try {
     await hardDeleteAdminCategory({ categoryId });
-    revalidatePath("/admin/catalog/categories");
+    revalidatePath(ADMIN_CATEGORIES_LIST_PATH);
     return { success: true };
   } catch {
     return { success: false, error: "delete_failed" };

@@ -9,12 +9,12 @@ import TextAlign from "@tiptap/extension-text-align";
 import { Color, TextStyle } from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 
-import { AdminCharCounter } from "@/components/admin/forms/admin-char-counter";
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminCharCounter } from "./admin-char-counter";
+import { AdminFormField } from "./admin-form-field";
 import {
   AdminRichTextToolbar,
   type AdminRichTextToolbarPreset,
-} from "@/components/admin/forms/admin-rich-text-toolbar";
+} from "./admin-rich-text-toolbar";
 import { cn } from "@/lib/utils";
 
 export type AdminRichTextEditorPreset = AdminRichTextToolbarPreset;

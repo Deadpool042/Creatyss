@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type JSX } from "react";
 
 import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
+import { PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
 import { PRODUCT_CARD_TWO_COLUMN_CLASS_NAME } from "./mobile/product-card-layout";
 import { ProductCollectionCard } from "./product-collection-card";
 
@@ -109,7 +110,7 @@ export function ProductTableMobile({
     return (
       <div className="rounded-2xl border border-surface-border bg-card p-8 text-center">
         <p className="text-sm text-muted-foreground">
-          {view === "trash" ? "Aucun produit dans la corbeille." : "Aucun produit trouvé."}
+          {view === "trash" ? PRODUCT_TABLE_COPY.emptyTrash : PRODUCT_TABLE_COPY.emptyFiltered}
         </p>
       </div>
     );
@@ -152,7 +153,7 @@ export function ProductTableMobile({
         </div>
       ) : (
         <div className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-3 py-2.5 text-center [@media(max-height:480px)]:py-2">
-          <p className="text-xs font-medium text-muted-foreground">Fin de la liste</p>
+          <p className="text-xs font-medium text-muted-foreground">{PRODUCT_TABLE_COPY.mobileEndOfList}</p>
           <p className="mt-1 text-[11px] text-muted-foreground/85">
             {products.length} produit{products.length !== 1 ? "s" : ""}
           </p>

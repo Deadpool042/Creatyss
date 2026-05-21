@@ -3,9 +3,7 @@
 import { useActionState, useEffect, useMemo, type JSX } from "react";
 
 import { useAutoSlug } from "@/entities/shared/slug/hooks/use-auto-slug";
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
+import { AdminFormField, AdminFormFooter, AdminFormMessage } from "@/components/admin/forms";
 import { toast } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";

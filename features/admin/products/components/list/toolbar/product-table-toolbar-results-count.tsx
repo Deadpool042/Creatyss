@@ -3,6 +3,7 @@
 import type { JSX } from "react";
 
 import { cn } from "@/lib/utils";
+import { PRODUCT_RESULTS_COUNT_COPY } from "@/features/admin/products/config";
 
 type ProductTableToolbarResultsCountProps = {
   filteredCount: number;
@@ -21,9 +22,9 @@ export function ProductTableToolbarResultsCount({
       )}
     >
       <span className="[@media(max-height:480px)]:hidden">
-        {filteredCount} résultat{filteredCount !== 1 ? "s" : ""}
+        {PRODUCT_RESULTS_COUNT_COPY.results(filteredCount)}
       </span>
-      <span className="hidden [@media(max-height:480px)]:inline">{filteredCount} res.</span>
+      <span className="hidden [@media(max-height:480px)]:inline">{PRODUCT_RESULTS_COUNT_COPY.resultsShort(filteredCount)}</span>
     </span>
   );
 }

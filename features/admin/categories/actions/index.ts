@@ -1,8 +1,9 @@
 export { createCategoryAction } from "./create-category-action";
 export { updateCategoryAction } from "./update-category-action";
 export { updateCategorySeoAction } from "./update-category-seo-action";
-export { deleteCategoryAction } from "./delete-category-action";
-export { bulkDeleteCategoriesAction } from "./bulk-delete-categories-action";
+export { archiveCategoryRedirectAction } from "./archive-category-redirect-action";
+export { archiveCategoryAction } from "./archive-category-action";
+export { bulkArchiveCategoriesAction } from "./bulk-archive-categories-action";
 export { restoreCategoryAction } from "./restore-category-action";
 export { hardDeleteCategoryAction } from "./hard-delete-category-action";
 export { setCategoryImageAction } from "./set-category-image-action";

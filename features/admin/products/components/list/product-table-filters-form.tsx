@@ -1,7 +1,6 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
-import { useMemo, useState, type JSX } from "react";
+import { useMemo, type JSX } from "react";
 
 import {
   Select,
@@ -10,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AdminCollapsibleFilterSection, AdminFilterSection } from "@/components/admin/tables/filters";
 import type { ProductTableFiltersState } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type {
   ProductFilterCategoryOption,
@@ -20,6 +20,15 @@ import type {
   ProductSortOption,
   ProductTableStatusFilter,
 } from "@/features/admin/products/list/types/product-table.types";
+import {
+  PRODUCT_FEATURED_OPTIONS,
+  PRODUCT_FILTERS_FORM_COPY,
+  PRODUCT_IMAGE_OPTIONS,
+  PRODUCT_SORT_OPTIONS,
+  PRODUCT_STATUS_OPTIONS,
+  PRODUCT_STOCK_OPTIONS,
+  PRODUCT_VARIANT_OPTIONS,
+} from "@/features/admin/products/config";
 import { cn } from "@/lib/utils";
 import { AdminProductsCategoryFilter } from "./admin-products-category-filter";
 
@@ -55,14 +64,6 @@ function AdvancedFilterField({ label, children }: AdvancedFilterFieldProps): JSX
   );
 }
 
-function MobileFilterSectionTitle({ children }: { children: string }): JSX.Element {
-  return (
-    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-      {children}
-    </p>
-  );
-}
-
 function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.Element {
   return (
     <div className="grid grid-cols-[10rem_minmax(0,1fr)_10rem] gap-2">
@@ -72,14 +73,14 @@ function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.El
           onValueChange={(value) => state.setStatus(value as ProductTableStatusFilter)}
         >
           <SelectTrigger className="h-8 w-full text-xs">
-            <SelectValue placeholder="Statut" />
+            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.statusPlaceholder} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Tous les statuts</SelectItem>
-            <SelectItem value="active">Actif</SelectItem>
-            <SelectItem value="inactive">Inactif</SelectItem>
-            <SelectItem value="draft">Brouillon</SelectItem>
-            <SelectItem value="archived">Archivé</SelectItem>
+            {PRODUCT_STATUS_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -102,13 +103,14 @@ function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.El
           onValueChange={(value) => state.setSort(value as ProductSortOption)}
         >
           <SelectTrigger className="h-8 w-full text-xs">
-            <SelectValue placeholder="Tri" />
+            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.sortPlaceholder} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="updated-desc">Plus récents</SelectItem>
-            <SelectItem value="updated-asc">Plus anciens</SelectItem>
-            <SelectItem value="name-asc">Nom A → Z</SelectItem>
-            <SelectItem value="name-desc">Nom Z → A</SelectItem>
+            {PRODUCT_SORT_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -118,66 +120,74 @@ function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.El
 function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): JSX.Element {
   return (
     <>
-      <AdvancedFilterField label="Mise en avant">
+      <AdvancedFilterField label={PRODUCT_FILTERS_FORM_COPY.featuredLabel}>
         <Select
           value={state.featured}
           onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
         >
           <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-            <SelectValue placeholder="Mise en avant" />
+            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.featuredPlaceholder} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Tous les produits</SelectItem>
-            <SelectItem value="featured">Mis en avant</SelectItem>
-            <SelectItem value="standard">Standard</SelectItem>
+            {PRODUCT_FEATURED_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </AdvancedFilterField>
 
-      <AdvancedFilterField label="Images">
+      <AdvancedFilterField label={PRODUCT_FILTERS_FORM_COPY.imagesLabel}>
         <Select
           value={state.image}
           onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
         >
           <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-            <SelectValue placeholder="Images" />
+            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.imagesPlaceholder} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Toutes les images</SelectItem>
-            <SelectItem value="with-image">Avec image</SelectItem>
-            <SelectItem value="without-image">Sans image</SelectItem>
+            {PRODUCT_IMAGE_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </AdvancedFilterField>
 
-      <AdvancedFilterField label="Variantes">
+      <AdvancedFilterField label={PRODUCT_FILTERS_FORM_COPY.variantsLabel}>
         <Select
           value={state.variant}
           onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
         >
           <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-            <SelectValue placeholder="Variantes" />
+            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.variantsPlaceholder} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Tous les produits</SelectItem>
-            <SelectItem value="single">Simple</SelectItem>
-            <SelectItem value="multiple">Multi-variantes</SelectItem>
+            {PRODUCT_VARIANT_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </AdvancedFilterField>
 
-      <AdvancedFilterField label="Disponibilité">
+      <AdvancedFilterField label={PRODUCT_FILTERS_FORM_COPY.stockLabel}>
         <Select
           value={state.stock}
           onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
         >
           <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-            <SelectValue placeholder="Disponibilité" />
+            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.stockPlaceholder} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Toutes les disponibilités</SelectItem>
-            <SelectItem value="in-stock">En stock</SelectItem>
-            <SelectItem value="out-of-stock">Rupture</SelectItem>
+            {PRODUCT_STOCK_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </AdvancedFilterField>
@@ -188,52 +198,53 @@ function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): J
 function MobilePrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.Element {
   return (
     <section className="space-y-2.5 rounded-xl border border-surface-border bg-surface-panel-soft p-3 [@media(max-height:480px)]:space-y-2">
-      <MobileFilterSectionTitle>Principaux</MobileFilterSectionTitle>
+      <AdminFilterSection title={PRODUCT_FILTERS_FORM_COPY.primarySectionTitle}>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Select
+            value={state.status}
+            onValueChange={(value) => state.setStatus(value as ProductTableStatusFilter)}
+          >
+            <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
+              <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.statusPlaceholder} />
+            </SelectTrigger>
+            <SelectContent>
+              {PRODUCT_STATUS_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-      <div className="grid gap-2 sm:grid-cols-2">
-        <Select
-          value={state.status}
-          onValueChange={(value) => state.setStatus(value as ProductTableStatusFilter)}
-        >
-          <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-            <SelectValue placeholder="Statut" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous les statuts</SelectItem>
-            <SelectItem value="active">Actif</SelectItem>
-            <SelectItem value="inactive">Inactif</SelectItem>
-            <SelectItem value="draft">Brouillon</SelectItem>
-            <SelectItem value="archived">Archivé</SelectItem>
-          </SelectContent>
-        </Select>
+          <Select
+            value={state.sort}
+            onValueChange={(value) => state.setSort(value as ProductSortOption)}
+          >
+            <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
+              <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.sortPlaceholder} />
+            </SelectTrigger>
+            <SelectContent>
+              {PRODUCT_SORT_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select
-          value={state.sort}
-          onValueChange={(value) => state.setSort(value as ProductSortOption)}
-        >
-          <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-            <SelectValue placeholder="Tri" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="updated-desc">Plus récents</SelectItem>
-            <SelectItem value="updated-asc">Plus anciens</SelectItem>
-            <SelectItem value="name-asc">Nom A → Z</SelectItem>
-            <SelectItem value="name-desc">Nom Z → A</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <div className="sm:col-span-2">
-          <AdminProductsCategoryFilter
-            categories={categoryOptions}
-            selectedParentCategoryId={state.parentCategoryId}
-            selectedCategoryId={state.categoryId}
-            onParentCategoryChange={state.setParentCategoryId}
-            onCategoryChange={state.setCategoryId}
-            className="gap-2"
-            triggerClassName={MOBILE_SELECT_TRIGGER_CLASS_NAME}
-          />
+          <div className="sm:col-span-2">
+            <AdminProductsCategoryFilter
+              categories={categoryOptions}
+              selectedParentCategoryId={state.parentCategoryId}
+              selectedCategoryId={state.categoryId}
+              onParentCategoryChange={state.setParentCategoryId}
+              onCategoryChange={state.setCategoryId}
+              className="gap-2"
+              triggerClassName={MOBILE_SELECT_TRIGGER_CLASS_NAME}
+            />
+          </div>
         </div>
-      </div>
+      </AdminFilterSection>
     </section>
   );
 }
@@ -246,12 +257,14 @@ function MobileAdvancedFiltersFields({ state }: { state: ProductTableFiltersStat
         onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
       >
         <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-          <SelectValue placeholder="Mise en avant" />
+          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.featuredPlaceholder} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Tous les produits</SelectItem>
-          <SelectItem value="featured">Mis en avant</SelectItem>
-          <SelectItem value="standard">Standard</SelectItem>
+          {PRODUCT_FEATURED_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
 
@@ -260,12 +273,14 @@ function MobileAdvancedFiltersFields({ state }: { state: ProductTableFiltersStat
         onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
       >
         <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-          <SelectValue placeholder="Images" />
+          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.imagesPlaceholder} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Toutes les images</SelectItem>
-          <SelectItem value="with-image">Avec image</SelectItem>
-          <SelectItem value="without-image">Sans image</SelectItem>
+          {PRODUCT_IMAGE_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
 
@@ -274,12 +289,14 @@ function MobileAdvancedFiltersFields({ state }: { state: ProductTableFiltersStat
         onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
       >
         <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-          <SelectValue placeholder="Variantes" />
+          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.variantsPlaceholder} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Tous les produits</SelectItem>
-          <SelectItem value="single">Simple</SelectItem>
-          <SelectItem value="multiple">Multi-variantes</SelectItem>
+          {PRODUCT_VARIANT_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
 
@@ -288,12 +305,14 @@ function MobileAdvancedFiltersFields({ state }: { state: ProductTableFiltersStat
         onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
       >
         <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-          <SelectValue placeholder="Disponibilité" />
+          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.stockPlaceholder} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Toutes les disponibilités</SelectItem>
-          <SelectItem value="in-stock">En stock</SelectItem>
-          <SelectItem value="out-of-stock">Rupture</SelectItem>
+          {PRODUCT_STOCK_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </>
@@ -301,8 +320,6 @@ function MobileAdvancedFiltersFields({ state }: { state: ProductTableFiltersStat
 }
 
 function MobileAdvancedFilters({ state }: SecondaryFiltersProps): JSX.Element {
-  const [open, setOpen] = useState(false);
-
   const activeAdvancedFiltersCount = useMemo(
     () =>
       [
@@ -316,45 +333,19 @@ function MobileAdvancedFilters({ state }: SecondaryFiltersProps): JSX.Element {
 
   const summaryLabel =
     activeAdvancedFiltersCount > 0
-      ? `${activeAdvancedFiltersCount} actif${activeAdvancedFiltersCount > 1 ? "s" : ""}`
-      : open
-        ? "Masquer"
-        : "Afficher";
+        ? PRODUCT_FILTERS_FORM_COPY.advancedSummaryActive(activeAdvancedFiltersCount)
+      : PRODUCT_FILTERS_FORM_COPY.advancedSummaryShow;
 
   return (
-    <section className="overflow-hidden rounded-xl border border-surface-border bg-surface-panel-soft">
-      <button
-        type="button"
-        onClick={() => setOpen((current) => !current)}
-        className="flex w-full items-center justify-between gap-3 px-3 py-3 text-left transition-colors hover:bg-interactive-hover"
-        aria-expanded={open}
-      >
-        <div className="space-y-0.5">
-          <MobileFilterSectionTitle>Avancés</MobileFilterSectionTitle>
-          <p className="text-xs text-foreground">Mise en avant, images, variantes, stock</p>
-        </div>
-
-        <div className="flex shrink-0 items-center gap-2">
-          <span className="rounded-full border border-surface-border bg-card px-2 py-1 text-[11px] font-medium text-muted-foreground">
-            {summaryLabel}
-          </span>
-          <ChevronDown
-            className={cn(
-              "h-4 w-4 text-muted-foreground transition-transform",
-              open && "rotate-180"
-            )}
-          />
-        </div>
-      </button>
-
-      {open ? (
-        <div className="border-t border-surface-border px-3 py-3">
-          <div className="grid gap-2 sm:grid-cols-2">
-            <MobileAdvancedFiltersFields state={state} />
-          </div>
-        </div>
-      ) : null}
-    </section>
+    <AdminCollapsibleFilterSection
+      title={PRODUCT_FILTERS_FORM_COPY.advancedSectionTitle}
+      description={PRODUCT_FILTERS_FORM_COPY.advancedSectionDescription}
+      summary={summaryLabel}
+    >
+      <div className="grid gap-2 sm:grid-cols-2">
+        <MobileAdvancedFiltersFields state={state} />
+      </div>
+    </AdminCollapsibleFilterSection>
   );
 }
 

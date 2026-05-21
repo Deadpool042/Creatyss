@@ -3,11 +3,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/feedback";
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
-
-const nativeSelectClassName =
-  "flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";
+import { AdminFormField, AdminFormSection, AdminSelectField } from "@/components/admin/forms";
 
 type MediaAsset = {
   id: string;
@@ -71,8 +67,7 @@ export function HeroSection({
       </AdminFormField>
 
       <AdminFormField htmlFor="homepage-hero-image" label="Image principale">
-        <select
-          className={nativeSelectClassName}
+        <AdminSelectField
           defaultValue={heroImageSelectValue}
           id="homepage-hero-image"
           name="heroImageMediaAssetId"
@@ -88,7 +83,7 @@ export function HeroSection({
               {mediaAsset.originalName} · {mediaAsset.mimeType}
             </option>
           ))}
-        </select>
+        </AdminSelectField>
       </AdminFormField>
 
       {mediaAssets.length === 0 ? (

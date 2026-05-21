@@ -1,20 +1,28 @@
 "use client";
 
-import { useState, type JSX } from "react";
+import { type JSX } from "react";
 
 import { Filter } from "lucide-react";
 
-import { AdminDataTableActiveFilters } from "@/components/admin/tables/admin-data-table-active-filters";
-import { AdminDataTableFiltersSheet } from "@/components/admin/tables/admin-data-table-filters-sheet";
+import {
+  AdminDataTableActiveFilters,
+  AdminDataTableFiltersSheet,
+  AdminSearchInput,
+} from "@/components/admin/tables";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
+import {
+  PRODUCT_LIST_COPY,
+  PRODUCT_SELECTION_COPY,
+} from "@/features/admin/products/config";
 import { useProductTableContext } from "./product-table-context";
-import { ProductSearchSheet } from "./product-search-sheet";
 import { ProductTableFiltersForm } from "./product-table-filters-form";
-import { ProductTableToolbarBulkActions } from "./toolbar/product-table-toolbar-bulk-actions";
-import { ProductTableToolbarResultsCount } from "./toolbar/product-table-toolbar-results-count";
-import { ProductTableToolbarViewSwitch } from "./toolbar/product-table-toolbar-view-switch";
+import {
+  ProductTableToolbarBulkActions,
+  ProductTableToolbarResultsCount,
+  ProductTableToolbarViewSwitch,
+} from "./toolbar";
 
 const MOBILE_STICKY_TOOLBAR_HEIGHT_CLASS_NAME = "h-13 [@media(max-height:480px)]:h-11";
 const MOBILE_BULK_BAR_BOTTOM_CLASS_NAME =
@@ -28,7 +36,6 @@ export function ProductTableToolbarMobile({
   onOpenPermanentDeleteDialog,
 }: ProductTableToolbarMobileProps): JSX.Element {
   const { state, actions, view, mobileVisibleSelection } = useProductTableContext();
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const selectedCount = actions.selectedCount;
   const bulkMessage = actions.bulkMessage;
@@ -40,10 +47,6 @@ export function ProductTableToolbarMobile({
   const activeFiltersCount = state.activeFilters.length;
   const hasActiveFilters = activeFiltersCount > 0;
   const hasSelection = selectedCount > 0;
-  const mobileFiltersLabel = hasActiveFilters ? `Filtres · ${activeFiltersCount}` : "Filtres";
-  const mobileFiltersDescription = hasActiveFilters
-    ? `${activeFiltersCount} filtre${activeFiltersCount > 1 ? "s" : ""} actif${activeFiltersCount > 1 ? "s" : ""}.`
-    : "Affiner la liste.";
 
   return (
     <>
@@ -65,7 +68,7 @@ export function ProductTableToolbarMobile({
             <div className="-mx-3 site-header-blur flex h-full items-center border-b border-shell-border px-3 shadow-card [@media(max-height:480px)]:-mx-2.5 [@media(max-height:480px)]:px-2.5">
               <div className="flex w-full items-center justify-between gap-2">
                 <p className="truncate text-sm font-medium text-foreground">
-                  {selectedCount} sélectionné{selectedCount > 1 ? "s" : ""}
+                  {PRODUCT_SELECTION_COPY.selectedDesktop(selectedCount)}
                 </p>
 
                 <Button
@@ -75,7 +78,7 @@ export function ProductTableToolbarMobile({
                   onClick={actions.clearSelection}
                   className="h-8 shrink-0 rounded-full px-3 text-xs"
                 >
-                  Effacer
+                  {PRODUCT_SELECTION_COPY.clearSelectionMobile}
                 </Button>
               </div>
             </div>
@@ -111,12 +114,11 @@ export function ProductTableToolbarMobile({
             <div className="-mx-3 site-header-blur flex h-full items-center border-b border-shell-border px-3 shadow-card [@media(max-height:480px)]:-mx-2.5 [@media(max-height:480px)]:px-2.5">
               <div className="flex w-full items-center gap-2 [@media(max-height:480px)]:gap-1.5">
                 <div className="flex min-w-0 flex-1 items-center gap-2 [@media(max-height:480px)]:gap-1.5">
-                  <ProductSearchSheet
-                    open={mobileSearchOpen}
-                    onOpenChange={setMobileSearchOpen}
+                  <AdminSearchInput
                     value={state.search}
                     onChange={state.handleSearchChange}
-                    triggerClassName="shrink-0"
+                    placeholder={PRODUCT_LIST_COPY.searchPlaceholderMobile}
+                    className="min-w-0 flex-1"
                   />
 
                   <Button
@@ -131,12 +133,12 @@ export function ProductTableToolbarMobile({
                     )}
                     aria-label={
                       hasActiveFilters
-                        ? `${activeFiltersCount} filtres actifs`
-                        : "Ouvrir les filtres"
+                        ? PRODUCT_LIST_COPY.mobileFiltersAriaActive(activeFiltersCount)
+                        : PRODUCT_LIST_COPY.mobileFiltersAriaOpen
                     }
                   >
                     <Filter className="h-4 w-4" />
-                    <span>{mobileFiltersLabel}</span>
+                    <span>{hasActiveFilters ? PRODUCT_LIST_COPY.mobileFiltersActiveLabel(activeFiltersCount) : PRODUCT_LIST_COPY.mobileFiltersLabel}</span>
                   </Button>
                 </div>
 
@@ -154,7 +156,7 @@ export function ProductTableToolbarMobile({
             <label className="flex shrink-0 items-center gap-2 rounded-full border border-surface-border bg-surface-panel-soft px-3 py-2 text-xs font-medium text-foreground">
               <Checkbox
                 checked={mobileAllVisibleSelected}
-                aria-label="Sélectionner les produits affichés"
+                aria-label={PRODUCT_SELECTION_COPY.selectVisibleAriaLabel}
                 {...(mobileVisibleSelection !== null
                   ? { onCheckedChange: () => actions.toggleSelectAllMobileVisible() }
                   : {})}
@@ -169,9 +171,11 @@ export function ProductTableToolbarMobile({
             open={state.mobileFiltersOpen}
             onOpenChange={state.setMobileFiltersOpen}
             title={
-              hasActiveFilters ? `Filtres produits · ${activeFiltersCount}` : "Filtres produits"
+              hasActiveFilters
+                ? PRODUCT_LIST_COPY.mobileFiltersTitleActive(activeFiltersCount)
+                : PRODUCT_LIST_COPY.mobileFiltersTitle
             }
-            description={mobileFiltersDescription}
+            description={hasActiveFilters ? PRODUCT_LIST_COPY.mobileFiltersDescription(activeFiltersCount) : PRODUCT_LIST_COPY.mobileFiltersDescriptionEmpty}
             footer={
               <div className="flex items-center justify-between gap-3">
                 <Button
@@ -181,7 +185,7 @@ export function ProductTableToolbarMobile({
                   className="h-9 rounded-full px-3 text-muted-foreground [@media(max-height:480px)]:h-8"
                   disabled={!hasActiveFilters}
                 >
-                  Réinitialiser
+                  {PRODUCT_LIST_COPY.mobileFiltersReset}
                 </Button>
 
                 <Button
@@ -189,7 +193,7 @@ export function ProductTableToolbarMobile({
                   onClick={() => state.setMobileFiltersOpen(false)}
                   className="h-9 rounded-full px-4 [@media(max-height:480px)]:h-8"
                 >
-                  Appliquer
+                  {PRODUCT_LIST_COPY.mobileFiltersApply}
                 </Button>
               </div>
             }
@@ -199,7 +203,7 @@ export function ProductTableToolbarMobile({
                 <div className="rounded-xl border border-surface-border bg-surface-panel-soft p-3">
                   <div className="mb-2 flex items-center justify-between gap-3">
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                      Filtres actifs
+                      {PRODUCT_LIST_COPY.mobileFiltersActiveSection}
                     </p>
 
                     <span className="rounded-full border border-surface-border bg-card px-2 py-0.5 text-[11px] font-medium text-muted-foreground">

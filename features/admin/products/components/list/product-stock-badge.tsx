@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { PRODUCT_STOCK_BADGE_COPY } from "@/features/admin/products/config";
 import { cn } from "@/lib/utils";
 
 type ProductStockBadgeProps = {
@@ -20,11 +21,11 @@ function getStockConfig(state: string, quantity: number | null, compact: boolean
         label:
           typeof quantity === "number" && quantity > 0
             ? compact
-              ? `Stock ${quantity}`
-              : `En stock · ${quantity}`
+              ? PRODUCT_STOCK_BADGE_COPY.withQuantityShort(PRODUCT_STOCK_BADGE_COPY.inStockShort, quantity)
+              : PRODUCT_STOCK_BADGE_COPY.withQuantityFull(PRODUCT_STOCK_BADGE_COPY.inStockLabel, quantity)
             : compact
-              ? "Stock"
-              : "En stock",
+              ? PRODUCT_STOCK_BADGE_COPY.inStockShort
+              : PRODUCT_STOCK_BADGE_COPY.inStockLabel,
         className:
           "border-feedback-success-border bg-feedback-success-surface text-feedback-success-foreground",
       };
@@ -34,25 +35,25 @@ function getStockConfig(state: string, quantity: number | null, compact: boolean
         label:
           typeof quantity === "number" && quantity >= 0
             ? compact
-              ? `Faible ${quantity}`
-              : `Stock faible · ${quantity}`
+              ? PRODUCT_STOCK_BADGE_COPY.withQuantityShort(PRODUCT_STOCK_BADGE_COPY.lowStockShort, quantity)
+              : PRODUCT_STOCK_BADGE_COPY.withQuantityFull(PRODUCT_STOCK_BADGE_COPY.lowStockLabel, quantity)
             : compact
-              ? "Faible"
-              : "Stock faible",
+              ? PRODUCT_STOCK_BADGE_COPY.lowStockShort
+              : PRODUCT_STOCK_BADGE_COPY.lowStockLabel,
         className:
           "border-feedback-warning-border bg-feedback-warning-surface text-feedback-warning-foreground",
       };
 
     case "out-of-stock":
       return {
-        label: "Rupture",
+        label: PRODUCT_STOCK_BADGE_COPY.outOfStock,
         className:
           "border-feedback-error-border bg-feedback-error-surface text-feedback-error-foreground",
       };
 
     default:
       return {
-        label: "Stock inconnu",
+        label: PRODUCT_STOCK_BADGE_COPY.unknown,
         className: "border-surface-border bg-surface-panel-soft text-muted-foreground",
       };
   }

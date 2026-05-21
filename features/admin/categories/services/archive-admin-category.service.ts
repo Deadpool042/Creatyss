@@ -3,11 +3,13 @@ import { CategoryStatus } from "@/prisma-generated/client";
 import { withTransaction } from "@/core/db";
 import { assertCategoryExists } from "./shared";
 
-type DeleteAdminCategoryServiceInput = {
+type ArchiveAdminCategoryServiceInput = {
   categoryId: string;
 };
 
-export async function deleteAdminCategory(input: DeleteAdminCategoryServiceInput): Promise<{ id: string }> {
+export async function archiveAdminCategory(
+  input: ArchiveAdminCategoryServiceInput
+): Promise<{ id: string }> {
   return withTransaction(async (tx) => {
     await assertCategoryExists(tx, input.categoryId);
 

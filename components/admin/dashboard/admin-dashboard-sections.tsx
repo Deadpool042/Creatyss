@@ -5,6 +5,7 @@ import { FileText, FolderTree, Globe, ImageIcon, Package, ShoppingBag } from "lu
 import { StatsCard } from "@/components/shared/display";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { AdminDashboardStats } from "@/features/admin/dashboard";
+import { ADMIN_CATEGORIES_LIST_PATH } from "@/features/admin/categories/shared/admin-categories-routes";
 
 type AdminQuickLink = {
   href: string;
@@ -21,7 +22,7 @@ const quickLinks: AdminQuickLink[] = [
     icon: Package,
   },
   {
-    href: "/admin/categories",
+    href: ADMIN_CATEGORIES_LIST_PATH,
     title: "Catégories",
     description: "Organiser les produits dans une structure claire et maintenable.",
     icon: FolderTree,

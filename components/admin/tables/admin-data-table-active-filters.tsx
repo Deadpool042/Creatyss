@@ -11,11 +11,13 @@ export type AdminDataTableActiveFilterItem = {
 type AdminDataTableActiveFiltersProps = {
   items: AdminDataTableActiveFilterItem[];
   onClearAll?: () => void;
+  clearLabel?: string;
 };
 
 export function AdminDataTableActiveFilters({
   items,
   onClearAll,
+  clearLabel = "Tout effacer",
 }: AdminDataTableActiveFiltersProps) {
   if (items.length === 0) {
     return null;
@@ -43,7 +45,7 @@ export function AdminDataTableActiveFilters({
           onClick={onClearAll}
           className="h-8 rounded-full px-3 text-xs text-muted-foreground"
         >
-          Tout effacer
+          {clearLabel}
         </Button>
       ) : null}
     </div>

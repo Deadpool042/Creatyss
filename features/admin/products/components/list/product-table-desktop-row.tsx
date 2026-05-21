@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toggleProductFeaturedAction } from "@/features/admin/products/list/actions/toggle-product-featured.action";
 import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
 import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
+import { PRODUCT_CARD_BADGES_COPY, PRODUCT_CARD_COPY } from "@/features/admin/products/config";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";
 import { AdminProductsPriceCell } from "./admin-products-price-cell";
 import { ProductFeaturedToggle } from "./product-featured-toggle";
@@ -27,8 +28,8 @@ type ProductTableDesktopRowProps = Readonly<{
 }>;
 
 function getVariantLabel(variantCount: number): string {
-  if (variantCount <= 1) return "Simple";
-  return `${variantCount} variantes`;
+  if (variantCount <= 1) return PRODUCT_CARD_BADGES_COPY.variantSingle;
+  return PRODUCT_CARD_BADGES_COPY.variantCountFull(variantCount);
 }
 
 export function ProductTableDesktopRow({
@@ -47,7 +48,7 @@ export function ProductTableDesktopRow({
           <Checkbox
             checked={isSelected}
             onCheckedChange={() => onToggleProductSelection(product.id)}
-            aria-label={`Sélectionner ${product.name}`}
+            aria-label={PRODUCT_CARD_COPY.selectionAriaLabel(product.name)}
           />
         </div>
       </td>
@@ -58,7 +59,7 @@ export function ProductTableDesktopRow({
           alt={product.primaryImageAlt ?? product.name}
           className="h-9 w-9 rounded-md border border-surface-border/40 bg-surface-subtle/50"
           imageClassName="transition-transform duration-300 group-hover:scale-105"
-          fallbackLabel={`Aucun visuel pour ${product.name}`}
+          fallbackLabel={PRODUCT_CARD_COPY.imageFallbackLabel(product.name)}
         />
       </td>
 

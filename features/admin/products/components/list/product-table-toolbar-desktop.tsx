@@ -2,21 +2,158 @@
 
 import type { JSX } from "react";
 
-import { ChevronDown, SlidersHorizontal } from "lucide-react";
-
-import { AdminDataTableActiveFilters } from "@/components/admin/tables/admin-data-table-active-filters";
-import { AdminSearchInput } from "@/components/admin/tables/admin-search-input";
+import { AdminFilterPopover } from "@/components/admin/shared/admin-filter-popover";
+import { AdminToolbar } from "@/components/admin/shared/admin-toolbar";
+import { AdminDataTableActiveFilters } from "@/components/admin/tables";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import {
+  PRODUCT_FEATURED_OPTIONS,
+  PRODUCT_IMAGE_OPTIONS,
+  PRODUCT_LIST_COPY,
+  PRODUCT_SELECTION_COPY,
+  PRODUCT_SORT_OPTIONS,
+  PRODUCT_STATUS_OPTIONS,
+  PRODUCT_STOCK_OPTIONS,
+  PRODUCT_VARIANT_OPTIONS,
+} from "@/features/admin/products/config";
+import type { ProductTableFiltersState } from "@/features/admin/products/list/hooks/use-product-table-filters";
+import type {
+  ProductFilterFeaturedOption,
+  ProductFilterImageOption,
+  ProductFilterStockOption,
+  ProductFilterVariantOption,
+  ProductSortOption,
+} from "@/features/admin/products/list/types/product-table.types";
+import { AdminProductsCategoryFilter } from "./admin-products-category-filter";
 import { useProductTableContext } from "./product-table-context";
-import { ProductTableFiltersForm } from "./product-table-filters-form";
-import { ProductTableToolbarBulkActions } from "./toolbar/product-table-toolbar-bulk-actions";
-import { ProductTableToolbarResultsCount } from "./toolbar/product-table-toolbar-results-count";
-import { ProductTableToolbarViewSwitch } from "./toolbar/product-table-toolbar-view-switch";
+import {
+  ProductTableToolbarBulkActions,
+  ProductTableToolbarResultsCount,
+  ProductTableToolbarViewSwitch,
+} from "./toolbar";
 
 type ProductTableToolbarDesktopProps = {
   onOpenPermanentDeleteDialog: () => void;
 };
+
+function StatusFilterList({ state }: { state: ProductTableFiltersState }) {
+  return (
+    <div className="flex flex-col gap-0.5">
+      {PRODUCT_STATUS_OPTIONS.map((opt) => (
+        <button
+          key={opt.value}
+          type="button"
+          onClick={() => state.setStatus(opt.value)}
+          className={cn(
+            "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-muted",
+            state.status === opt.value ? "font-medium text-foreground" : "text-muted-foreground"
+          )}
+        >
+          <span
+            className={cn(
+              "h-1.5 w-1.5 shrink-0 rounded-full",
+              state.status === opt.value ? "bg-foreground" : "bg-transparent"
+            )}
+          />
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+const ADVANCED_LABEL_CLASS =
+  "text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60";
+
+function AdvancedFiltersContent({ state }: { state: ProductTableFiltersState }) {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="grid gap-1.5">
+        <p className={ADVANCED_LABEL_CLASS}>{PRODUCT_LIST_COPY.filterAdvancedFeaturedLabel}</p>
+        <Select
+          value={state.featured}
+          onValueChange={(v) => state.setFeatured(v as ProductFilterFeaturedOption)}
+        >
+          <SelectTrigger className="h-8 text-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {PRODUCT_FEATURED_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="grid gap-1.5">
+        <p className={ADVANCED_LABEL_CLASS}>{PRODUCT_LIST_COPY.filterAdvancedImagesLabel}</p>
+        <Select
+          value={state.image}
+          onValueChange={(v) => state.setImage(v as ProductFilterImageOption)}
+        >
+          <SelectTrigger className="h-8 text-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {PRODUCT_IMAGE_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="grid gap-1.5">
+        <p className={ADVANCED_LABEL_CLASS}>{PRODUCT_LIST_COPY.filterAdvancedVariantsLabel}</p>
+        <Select
+          value={state.variant}
+          onValueChange={(v) => state.setVariant(v as ProductFilterVariantOption)}
+        >
+          <SelectTrigger className="h-8 text-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {PRODUCT_VARIANT_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="grid gap-1.5">
+        <p className={ADVANCED_LABEL_CLASS}>{PRODUCT_LIST_COPY.filterAdvancedStockLabel}</p>
+        <Select
+          value={state.stock}
+          onValueChange={(v) => state.setStock(v as ProductFilterStockOption)}
+        >
+          <SelectTrigger className="h-8 text-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {PRODUCT_STOCK_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+}
 
 export function ProductTableToolbarDesktop({
   onOpenPermanentDeleteDialog,
@@ -27,9 +164,17 @@ export function ProductTableToolbarDesktop({
   const bulkMessage = actions.bulkMessage;
   const bulkError = actions.bulkError;
   const isBulkPending = actions.isBulkPending;
-  const activeFiltersCount = state.activeFilters.length;
-  const hasActiveFilters = activeFiltersCount > 0;
+  const hasActiveFilters = state.activeFilters.length > 0;
   const hasSelection = selectedCount > 0;
+
+  const statusCount = state.status !== "all" ? 1 : 0;
+  const categoryCount = state.categoryId !== "all" ? 1 : 0;
+  const advancedCount = [
+    state.featured !== "all",
+    state.image !== "all",
+    state.variant !== "all",
+    state.stock !== "all",
+  ].filter(Boolean).length;
 
   return (
     <div className="space-y-2">
@@ -37,8 +182,7 @@ export function ProductTableToolbarDesktop({
         <div className="rounded-xl border border-surface-border-strong bg-interactive-selected px-3 py-3 shadow-card">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm font-medium text-foreground">
-              {selectedCount} produit{selectedCount > 1 ? "s" : ""} sélectionné
-              {selectedCount > 1 ? "s" : ""}
+              {PRODUCT_SELECTION_COPY.selectedDesktop(selectedCount)}
             </p>
 
             <Button
@@ -48,7 +192,7 @@ export function ProductTableToolbarDesktop({
               onClick={actions.clearSelection}
               className="h-8 rounded-full px-3 text-xs"
             >
-              Effacer la sélection
+              {PRODUCT_SELECTION_COPY.clearSelectionDesktop}
             </Button>
           </div>
 
@@ -63,9 +207,7 @@ export function ProductTableToolbarDesktop({
               onBulkUnsetFeatured={() => void actions.handleBulkFeaturedChange(false)}
               onBulkArchive={() => void actions.handleBulkArchive()}
               onBulkRestore={() => void actions.handleBulkRestore()}
-              {...(view === "trash"
-                ? { onOpenPermanentDeleteDialog }
-                : {})}
+              {...(view === "trash" ? { onOpenPermanentDeleteDialog } : {})}
             />
           </div>
         </div>
@@ -84,66 +226,61 @@ export function ProductTableToolbarDesktop({
       ) : null}
 
       <div className="border-b border-surface-border/40 pb-3">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="min-w-0 flex-1 max-w-120 xl:max-w-136 2xl:max-w-152">
-            <AdminSearchInput
-              value={state.search}
-              onChange={state.handleSearchChange}
-              placeholder="Rechercher un produit…"
-              className="relative w-full"
-            />
-          </div>
+        <AdminToolbar
+          search={state.search}
+          onSearchChange={state.handleSearchChange}
+          placeholder={PRODUCT_LIST_COPY.searchPlaceholder}
+          className="mt-0"
+          extraControls={
+            <div className="flex shrink-0 items-center gap-2">
+              <AdminFilterPopover label={PRODUCT_LIST_COPY.filterStatutLabel} count={statusCount}>
+                <StatusFilterList state={state} />
+              </AdminFilterPopover>
 
-          <div className="flex shrink-0 items-center gap-2">
-            <ProductTableToolbarViewSwitch view={view} />
+              <AdminFilterPopover
+                label={PRODUCT_LIST_COPY.filterCategoryLabel}
+                count={categoryCount}
+                contentClassName="w-72 p-3"
+              >
+                <AdminProductsCategoryFilter
+                  categories={state.categoryOptions}
+                  selectedParentCategoryId={state.parentCategoryId}
+                  selectedCategoryId={state.categoryId}
+                  onParentCategoryChange={state.setParentCategoryId}
+                  onCategoryChange={state.setCategoryId}
+                  triggerClassName="h-8 text-xs"
+                />
+              </AdminFilterPopover>
 
-            <ProductTableToolbarResultsCount
-              filteredCount={state.filteredCount}
-              className="whitespace-nowrap"
-            />
+              <AdminFilterPopover label={PRODUCT_LIST_COPY.filterAdvancedLabel} count={advancedCount}>
+                <AdvancedFiltersContent state={state} />
+              </AdminFilterPopover>
 
-            <Button
-              variant="outline"
-              size="sm"
-              type="button"
-              onClick={() => state.setShowAdvancedFilters(!state.showAdvancedFilters)}
-              className={cn(
-                "inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs",
-                hasActiveFilters
-                  ? "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-              aria-expanded={state.showAdvancedFilters}
-            >
-              <SlidersHorizontal className="h-3.5 w-3.5" />
-              {hasActiveFilters ? `Filtres · ${activeFiltersCount}` : "Filtres"}
-              <ChevronDown
-                className={cn(
-                  "h-3 w-3 transition-transform duration-200",
-                  state.showAdvancedFilters && "rotate-180"
-                )}
+              <Select
+                value={state.sort}
+                onValueChange={(v) => state.setSort(v as ProductSortOption)}
+              >
+                <SelectTrigger className="h-9 w-36 text-sm text-muted-foreground">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {PRODUCT_SORT_OPTIONS.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <ProductTableToolbarViewSwitch view={view} />
+
+              <ProductTableToolbarResultsCount
+                filteredCount={state.filteredCount}
+                className="whitespace-nowrap"
               />
-            </Button>
-          </div>
-        </div>
-
-        <div className="mt-3 min-w-0">
-          <ProductTableFiltersForm
-            categoryOptions={state.categoryOptions}
-            state={state}
-            mode="primary"
-          />
-        </div>
-
-        {state.showAdvancedFilters ? (
-          <div className="mt-2.5 grid gap-2 lg:grid-cols-2 xl:grid-cols-4">
-            <ProductTableFiltersForm
-              categoryOptions={state.categoryOptions}
-              state={state}
-              mode="secondary"
-            />
-          </div>
-        ) : null}
+            </div>
+          }
+        />
       </div>
 
       {hasActiveFilters ? (

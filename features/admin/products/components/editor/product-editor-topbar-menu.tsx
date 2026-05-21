@@ -1,20 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { Archive, MoreHorizontal, Plus, RotateCcw, Trash2 } from "lucide-react";
+import { Archive, Plus, RotateCcw, Trash2 } from "lucide-react";
 import type { JSX } from "react";
 
 import { DeleteProductButton } from "./delete-product-button";
-import { Button } from "@/components/ui/button";
+import { AdminTopbarOverflowMenu } from "@/components/admin/shared/admin-topbar-overflow-menu";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TopbarMenuActionItem } from "./topbar-menu-action-item";
 import { useArchivedProductMutations } from "./hooks/use-archived-product-mutations";
+import { PRODUCT_EDITOR_MENUS_COPY } from "@/features/admin/products/config";
 
 type ProductEditorTopbarMenuProps = {
   productId: string;
@@ -32,24 +30,13 @@ export function ProductEditorTopbarMenu({
   });
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          aria-label="Ouvrir les actions du produit"
-          className="h-9 w-9 rounded-full"
-          disabled={isPending}
-        >
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent align="end" className="w-56">
+    <AdminTopbarOverflowMenu
+      ariaLabel={PRODUCT_EDITOR_MENUS_COPY.editorMenuAriaLabel}
+      disabled={isPending}
+    >
         <DropdownMenuItem asChild>
           <Link href="/admin/products/new">
-            <TopbarMenuActionItem icon={Plus}>Nouveau produit</TopbarMenuActionItem>
+            <TopbarMenuActionItem icon={Plus}>{PRODUCT_EDITOR_MENUS_COPY.newProductLabel}</TopbarMenuActionItem>
           </Link>
         </DropdownMenuItem>
 
@@ -63,7 +50,7 @@ export function ProductEditorTopbarMenu({
                 handleRestore();
               }}
             >
-              <TopbarMenuActionItem icon={RotateCcw}>Restaurer</TopbarMenuActionItem>
+              <TopbarMenuActionItem icon={RotateCcw}>{PRODUCT_EDITOR_MENUS_COPY.restoreLabel}</TopbarMenuActionItem>
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -73,7 +60,7 @@ export function ProductEditorTopbarMenu({
               }}
             >
               <TopbarMenuActionItem icon={Trash2} destructive>
-                Supprimer définitivement
+                {PRODUCT_EDITOR_MENUS_COPY.permanentDeleteLabel}
               </TopbarMenuActionItem>
             </DropdownMenuItem>
           </>
@@ -87,13 +74,12 @@ export function ProductEditorTopbarMenu({
                 }}
               >
                 <TopbarMenuActionItem icon={Archive} destructive>
-                  Mettre à la corbeille
+                  {PRODUCT_EDITOR_MENUS_COPY.archiveLabel}
                 </TopbarMenuActionItem>
               </DropdownMenuItem>
             }
           />
         )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    </AdminTopbarOverflowMenu>
   );
 }

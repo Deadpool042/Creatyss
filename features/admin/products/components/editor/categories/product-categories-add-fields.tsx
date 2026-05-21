@@ -3,7 +3,7 @@
 import type { JSX } from "react";
 import { Plus } from "lucide-react";
 
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormField } from "@/components/admin/forms";
 import { Button } from "@/components/ui/button";
 import {
   Select,

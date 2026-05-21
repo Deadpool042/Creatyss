@@ -3,6 +3,11 @@ import { CategorieCreateTopbarMenu } from "@/features/admin/categories/component
 import { CategoryTable } from "@/features/admin/categories/components";
 import { CategoriesTableProvider } from "@/features/admin/categories/context/categories-data-provider";
 import {
+  CATEGORY_LIST_PAGE_COPY,
+  CATEGORY_NAVIGATION_COPY,
+} from "@/features/admin/categories/config";
+import { ADMIN_CATEGORIES_LIST_PATH } from "@/features/admin/categories/shared/admin-categories-routes";
+import {
   listAdminCategories,
   listCategoriesForPicker,
   type CategoryFeaturedFilter,
@@ -72,15 +77,15 @@ export default async function AdminCategoriesPage({
     <AdminPageShell
       headerVisibility="desktop"
       headerDensity="compact"
-      eyebrow="Catégories"
-      title="Catégories de produits"
-      description="Structurez les collections visibles dans la boutique."
+      eyebrow={CATEGORY_LIST_PAGE_COPY.eyebrow}
+      title={CATEGORY_LIST_PAGE_COPY.title}
+      description={CATEGORY_LIST_PAGE_COPY.description}
       scrollMode="nested"
       topbarAction={<CategorieCreateTopbarMenu />}
-      navigation={{ label: "Accueil", href: "/admin" }}
+      navigation={{ label: CATEGORY_NAVIGATION_COPY.homeLabel, href: "/admin" }}
       breadcrumbs={[
-        { label: "Accueil", href: "/admin" },
-        { label: "Catégories", href: "/admin/categories" },
+        { label: CATEGORY_NAVIGATION_COPY.homeLabel, href: "/admin" },
+        { label: CATEGORY_NAVIGATION_COPY.categoriesLabel, href: ADMIN_CATEGORIES_LIST_PATH },
       ]}
       viewportClassName="!h-full"
       contentClassName="min-h-0 flex-1 overflow-hidden px-3 pt-14 pb-4 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 lg:px-6 lg:pb-6 lg:pt-0"

@@ -4,15 +4,18 @@ import Link from "next/link";
 import type { JSX } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
+import { PRODUCT_CARD_COPY, PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
 import type { ProductTableItem } from "@/features/admin/products/list/types";
 import { cn } from "@/lib/utils";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";
 import { AdminProductsPriceCell } from "./admin-products-price-cell";
-import { ProductCardActionMenu } from "./mobile/cards/product-card-action-menu";
-import { ProductCardBadges } from "./mobile/cards/product-card-badges";
-import { ProductCardFeaturedControl } from "./mobile/cards/product-card-featured-control";
-import { ProductCardImage } from "./mobile/cards/product-card-image";
-import { ProductCardInfoTile } from "./mobile/cards/product-card-info-tile";
+import {
+  ProductCardActionMenu,
+  ProductCardBadges,
+  ProductCardFeaturedControl,
+  ProductCardImage,
+  ProductCardInfoTile,
+} from "./mobile/cards";
 
 type ProductListView = "active" | "trash";
 
@@ -48,9 +51,9 @@ export function ProductCollectionCard({
           <Checkbox
             checked={isSelected}
             onCheckedChange={() => onToggleSelection(product.id)}
-            aria-label={`Sélectionner ${product.name}`}
+            aria-label={PRODUCT_CARD_COPY.selectionAriaLabel(product.name)}
           />
-          <span className="truncate">Sélectionner</span>
+          <span className="truncate">{PRODUCT_CARD_COPY.selectionLabel}</span>
         </label>
 
         <div className="flex shrink-0 items-center gap-1">
@@ -102,7 +105,7 @@ export function ProductCollectionCard({
 
       <div className="mt-2 grid grid-cols-2 gap-1.5 [@media(max-height:480px)]:mt-1.5">
         <ProductCardInfoTile
-          label="Prix"
+          label={PRODUCT_TABLE_COPY.columns.price}
           className="px-2.5 py-2 [@media(max-height:480px)]:px-2 [@media(max-height:480px)]:py-1.5"
           labelClassName="mb-1 block text-[9px]"
           bodyClassName="min-h-0 text-[13px] leading-5 [@media(max-height:480px)]:text-xs [@media(max-height:480px)]:leading-4"
@@ -116,7 +119,7 @@ export function ProductCollectionCard({
         </ProductCardInfoTile>
 
         <ProductCardInfoTile
-          label="Catégorie"
+          label={PRODUCT_TABLE_COPY.columns.category}
           className="px-2.5 py-2 [@media(max-height:480px)]:px-2 [@media(max-height:480px)]:py-1.5"
           labelClassName="mb-1 block text-[9px]"
           bodyClassName="min-h-0 text-[13px] leading-5 [@media(max-height:480px)]:text-xs [@media(max-height:480px)]:leading-4"

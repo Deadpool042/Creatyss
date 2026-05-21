@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
+import { AdminFormActions } from "./admin-form-actions";
 import { cn } from "@/lib/utils";
 
 type AdminFormFooterProps = Readonly<{

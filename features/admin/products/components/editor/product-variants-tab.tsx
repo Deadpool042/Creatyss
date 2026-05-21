@@ -3,7 +3,7 @@
 import { Plus, Trash2 } from "lucide-react";
 import { useMemo, useState, useTransition, type JSX } from "react";
 
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
+import { AdminFormMessage } from "@/components/admin/forms";
 import {
   Accordion,
   AccordionContent,

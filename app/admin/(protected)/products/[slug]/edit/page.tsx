@@ -45,6 +45,11 @@ import {
   ProductEditorTopbarMenu,
 } from "@/features/admin/products/components";
 import { DeleteProductButton } from "@/features/admin/products/components/editor";
+import {
+  PRODUCT_CREATE_PAGE_COPY,
+  PRODUCT_EDITOR_NAV_COPY,
+  PRODUCT_EDITOR_PAGE_COPY,
+} from "@/features/admin/products/config";
 
 export default async function ProductEditorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -54,10 +59,10 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
   if (!editor) {
     return (
       <div className="rounded-2xl border border-border bg-card p-6 text-sm text-muted-foreground">
-        Produit introuvable.
+        {PRODUCT_EDITOR_PAGE_COPY.notFoundMessage}
         <Button variant="outline" size="sm" className="mt-4" asChild>
           <Link className="inline-flex items-center gap-2" href="/admin/products">
-            Retour à la liste des produits
+            {PRODUCT_EDITOR_PAGE_COPY.notFoundBack}
           </Link>
         </Button>
       </div>
@@ -68,13 +73,13 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
     return (
       <AdminPageShell
         title={editor.product.name}
-        eyebrow="Produits"
-        description="Produit archivé."
+        eyebrow={PRODUCT_EDITOR_NAV_COPY.eyebrow}
+        description={PRODUCT_EDITOR_PAGE_COPY.archivedDescription}
         viewportClassName="!h-full"
-        navigation={{ label: "Produits", href: "/admin/products" }}
+        navigation={{ label: PRODUCT_EDITOR_NAV_COPY.navLabel, href: "/admin/products" }}
         breadcrumbs={[
-          { label: "Accueil", href: "/admin" },
-          { label: "Produits", href: "/admin/products" },
+          { label: PRODUCT_EDITOR_NAV_COPY.breadcrumbHome, href: "/admin" },
+          { label: PRODUCT_EDITOR_NAV_COPY.breadcrumbProducts, href: "/admin/products" },
           { label: editor.product.name },
         ]}
         topbarAction={
@@ -104,15 +109,15 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
 
           <div className="rounded-2xl border border-surface-border bg-card p-4 shadow-card">
             <p className="text-sm font-medium text-foreground">
-              Ce produit est actuellement dans la corbeille.
+              {PRODUCT_EDITOR_PAGE_COPY.archivedBodyTitle}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Restaurez-le pour reprendre son édition, ou supprimez-le définitivement.
+              {PRODUCT_EDITOR_PAGE_COPY.archivedBodySubtitle}
             </p>
 
             <div className="mt-4">
               <Button asChild variant="outline" size="sm">
-                <Link href="/admin/products?view=trash">Retour à la corbeille</Link>
+                <Link href="/admin/products?view=trash">{PRODUCT_EDITOR_PAGE_COPY.archivedBackToTrash}</Link>
               </Button>
             </div>
           </div>
@@ -151,13 +156,13 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
   return (
     <AdminPageShell
       title={editor.product.name}
-      eyebrow="Produits"
-      description="Édition du produit, de ses variantes, de ses médias, de ses catégories et de son SEO."
+      eyebrow={PRODUCT_EDITOR_NAV_COPY.eyebrow}
+      description={PRODUCT_EDITOR_PAGE_COPY.description}
       viewportClassName="!h-full"
-      navigation={{ label: "Produits", href: "/admin/products" }}
+      navigation={{ label: PRODUCT_EDITOR_NAV_COPY.navLabel, href: "/admin/products" }}
       breadcrumbs={[
-        { label: "Accueil", href: "/admin" },
-        { label: "Produits", href: "/admin/products" },
+        { label: PRODUCT_EDITOR_NAV_COPY.breadcrumbHome, href: "/admin" },
+        { label: PRODUCT_EDITOR_NAV_COPY.breadcrumbProducts, href: "/admin/products" },
         { label: editor.product.name },
       ]}
       topbarAction={
@@ -169,7 +174,7 @@ export default async function ProductEditorPage({ params }: { params: Promise<{ 
           <div className="hidden lg:flex lg:items-center lg:gap-2">
             <DeleteProductButton productId={editor.product.id} onDelete={deleteProductAction} />
             <Button asChild size="sm" className="lg:min-w-40">
-              <Link href="/admin/products/new">Nouveau produit</Link>
+              <Link href="/admin/products/new">{PRODUCT_CREATE_PAGE_COPY.newProductButton}</Link>
             </Button>
           </div>
         </div>

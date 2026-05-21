@@ -2,7 +2,7 @@
 
 import type { JSX } from "react";
 
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormField } from "@/components/admin/forms";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SeoFieldAutoReset } from "./seo-field-auto-reset";

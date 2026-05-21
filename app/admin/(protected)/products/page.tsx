@@ -7,6 +7,7 @@ import {
   type AdminProductsListView,
 } from "@/features/admin/products/list/queries/list-admin-products.query";
 import { listProductFilterCategories } from "@/features/admin/products/list/queries/list-product-filter-categories.query";
+import { PRODUCT_LIST_PAGE_COPY } from "@/features/admin/products/config";
 
 type AdminProductsPageProps = {
   searchParams?: Promise<{
@@ -33,18 +34,19 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
     <AdminPageShell
       headerVisibility="desktop"
       headerDensity="compact"
-      eyebrow="Catalogue"
-      title={view === "trash" ? "Corbeille produits" : "Produits"}
+      eyebrow={PRODUCT_LIST_PAGE_COPY.eyebrow}
+      title={view === "trash" ? PRODUCT_LIST_PAGE_COPY.titleTrash : PRODUCT_LIST_PAGE_COPY.title}
       description={
-        view === "trash" ? "Produits archivés, restaurables plus tard." : "Pilotage du catalogue."
+        view === "trash" ? PRODUCT_LIST_PAGE_COPY.descriptionTrash : PRODUCT_LIST_PAGE_COPY.description
       }
       topbarAction={view === "active" ? <ProductCreateTopbarMenu productId="" /> : undefined}
-      navigation={{ label: "Accueil", href: "/admin" }}
+      navigation={{ label: PRODUCT_LIST_PAGE_COPY.navHomeLabel, href: "/admin" }}
       breadcrumbs={[
-        { label: "Accueil", href: "/admin" },
-        { label: "Produits", href: "/admin/products" },
+        { label: PRODUCT_LIST_PAGE_COPY.navHomeLabel, href: "/admin" },
+        { label: PRODUCT_LIST_PAGE_COPY.navProductsLabel, href: "/admin/products" },
       ]}
       viewportClassName="!h-full"
+      scrollMode="nested"
       contentClassName="min-h-0 flex-1 overflow-hidden px-3 pt-14 pb-0 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 [@media(max-height:480px)]:pb-0 lg:px-6 lg:pb-4 lg:pt-0"
     >
       <ProductTable products={products} categoryOptions={categoryOptions} view={view} />

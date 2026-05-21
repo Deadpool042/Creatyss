@@ -3,10 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState, type JSX } from "react";
 
-import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
-import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormField, AdminFormFooter, AdminFormMessage, AdminFormSection } from "@/components/admin/forms";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

@@ -13,24 +13,23 @@ import {
   AdminTableHead,
   AdminTableHeader,
   AdminTableRow,
-} from "@/components/admin/tables/admin-table";
+} from "@/components/admin/tables";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
+import {
+  CATEGORY_LIST_COPY,
+  CATEGORY_STATUS_LABELS,
+  CATEGORY_TABLE_COPY,
+} from "@/features/admin/categories/config";
+import { getAdminCategoryDetailPath } from "@/features/admin/categories/shared/admin-categories-routes";
 
 import { useCategoriesTableContext } from "../../context/categories-data-provider";
 import { CategoryTableRowActions } from "./category-table-row-actions";
 import { useCategoryFilters } from "@/features/admin/categories/list/hooks/use-category-filters";
 import type { CategorySortOption } from "@/features/admin/categories/list/queries/list-admin-categories.query";
-
-const STATUS_LABELS: Record<string, string> = {
-  active: "Publiée",
-  draft: "Brouillon",
-  inactive: "Inactive",
-  archived: "Archivée",
-};
 
 function formatDate(date: Date): string {
   return new Intl.DateTimeFormat("fr-FR", {
@@ -42,7 +41,7 @@ function formatDate(date: Date): string {
 
 function CountCell({ value }: { value: number }) {
   return (
-    <span className={value === 0 ? "text-muted-foreground/30" : ""}>
+    <span className={cn("inline-block min-w-4 text-right tabular-nums", value === 0 ? "text-muted-foreground/35" : "text-foreground/90")}>
       {value === 0 ? "—" : value}
     </span>
   );
@@ -124,17 +123,17 @@ export function CategoryTableDesktop({
   const someSelected = categories.some((c) => selectedIds.has(c.id));
 
   return (
-    <AdminTable aria-label="Liste des catégories" role="grid">
+    <AdminTable aria-label={CATEGORY_LIST_COPY.tableAriaLabel} role="grid">
       <AdminTableHeader>
         <TableRow className="bg-shell-drawer-blur backdrop-blur-md">
           <AdminTableHead className="w-10 px-3">
             <Checkbox
               checked={allSelected ? true : someSelected ? "indeterminate" : false}
               onCheckedChange={onToggleAll}
-              aria-label="Tout sélectionner"
+              aria-label={CATEGORY_LIST_COPY.selectAllAriaLabel}
             />
           </AdminTableHead>
-          <AdminTableHead className="w-12">Image</AdminTableHead>
+          <AdminTableHead className="w-12">{CATEGORY_TABLE_COPY.columns.image}</AdminTableHead>
           <SortableHead
             className="min-w-48"
             asc="name-asc"
@@ -142,15 +141,24 @@ export function CategoryTableDesktop({
             currentSort={filters.sort}
             onSort={filters.setSort}
           >
-            Catégorie
+            {CATEGORY_TABLE_COPY.columns.category}
           </SortableHead>
-          <AdminTableHead className="w-24">Statut</AdminTableHead>
-          <AdminTableHead className="w-10 text-center" aria-label="Mise en avant">
+          <AdminTableHead className="w-24">{CATEGORY_TABLE_COPY.columns.status}</AdminTableHead>
+          <AdminTableHead
+            className="w-10 text-center"
+            aria-label={CATEGORY_TABLE_COPY.columns.featuredAria}
+          >
             <Star className="mx-auto h-3.5 w-3.5 text-muted-foreground" aria-hidden />
           </AdminTableHead>
-          <AdminTableHead className="w-20 text-right">Produits</AdminTableHead>
-          <AdminTableHead className="w-24 text-right">Sous-cat.</AdminTableHead>
-          <AdminTableHead className="w-16 text-right">Ordre</AdminTableHead>
+          <AdminTableHead className="w-20 text-right">
+            {CATEGORY_TABLE_COPY.columns.products}
+          </AdminTableHead>
+          <AdminTableHead className="w-24 text-right">
+            {CATEGORY_TABLE_COPY.columns.children}
+          </AdminTableHead>
+          <AdminTableHead className="w-16 text-right">
+            {CATEGORY_TABLE_COPY.columns.sortOrder}
+          </AdminTableHead>
           <SortableHead
             className="w-28"
             asc="updated-asc"
@@ -158,7 +166,7 @@ export function CategoryTableDesktop({
             currentSort={filters.sort}
             onSort={filters.setSort}
           >
-            Créée le
+            {CATEGORY_TABLE_COPY.columns.createdAt}
           </SortableHead>
         </TableRow>
       </AdminTableHeader>
@@ -166,7 +174,7 @@ export function CategoryTableDesktop({
       <AdminTableBody>
         {categories.map((category) => {
           const isSelected = selectedIds.has(category.id);
-          const href = `/admin/catalog/categories/${category.slug}`;
+          const href = getAdminCategoryDetailPath(category.slug);
           return (
             <AdminTableRow
               key={category.id}
@@ -185,16 +193,16 @@ export function CategoryTableDesktop({
               }}
             >
               {/* Checkbox */}
-              <AdminTableCell className="px-3 py-2" onClick={(e) => e.stopPropagation()}>
+              <AdminTableCell className="px-3 py-2.5" onClick={(e) => e.stopPropagation()}>
                 <Checkbox
                   checked={isSelected}
                   onCheckedChange={() => onToggleOne(category.id)}
-                  aria-label={`Sélectionner ${category.name}`}
+                  aria-label={`${CATEGORY_LIST_COPY.rowSelectAriaPrefix} ${category.name}`}
                 />
               </AdminTableCell>
 
               {/* Image */}
-              <AdminTableCell className="px-3 py-2">
+              <AdminTableCell className="px-3 py-2.5">
                 <AdminThumbnail
                   src={category.primaryImageUrl}
                   alt={category.primaryImageAlt ?? category.name}
@@ -205,32 +213,32 @@ export function CategoryTableDesktop({
               </AdminTableCell>
 
               {/* Catégorie */}
-              <AdminTableCell className="py-2">
+              <AdminTableCell className="py-2.5">
                 <div className="min-w-0">
                   {category.parentName ? (
-                    <p className="mb-0.5 truncate text-[0.65rem] font-medium text-brand/70">
+                    <p className="mb-0.5 truncate text-[0.65rem] font-medium text-brand/75">
                       {category.parentName} <span className="text-muted-foreground/40">›</span>
                     </p>
                   ) : null}
-                  <span className="block truncate font-medium leading-snug text-foreground">
+                  <span className="block truncate text-[0.95rem] font-semibold leading-snug text-foreground">
                     {category.name}
                   </span>
-                  <p className="mt-0.5 truncate text-[0.7rem] text-muted-foreground/60">
+                  <p className="mt-0.5 truncate text-[0.72rem] text-muted-foreground/70">
                     {category.slug}
                   </p>
                 </div>
               </AdminTableCell>
 
               {/* Statut */}
-              <AdminTableCell className="py-2">
+              <AdminTableCell className="py-2.5">
                 <AdminStatusBadge
                   status={category.status}
-                  label={STATUS_LABELS[category.status] ?? category.status}
+                  label={CATEGORY_STATUS_LABELS[category.status] ?? category.status}
                 />
               </AdminTableCell>
 
               {/* Mise en avant */}
-              <AdminTableCell className="py-2 text-center">
+              <AdminTableCell className="py-2.5 text-center">
                 {category.isFeatured ? (
                   <Star className="mx-auto h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                 ) : (
@@ -239,23 +247,23 @@ export function CategoryTableDesktop({
               </AdminTableCell>
 
               {/* Produits */}
-              <AdminTableCell className="py-2 text-right text-sm tabular-nums text-muted-foreground">
+              <AdminTableCell className="py-2.5 text-right text-sm">
                 <CountCell value={category.productCount} />
               </AdminTableCell>
 
               {/* Sous-catégories */}
-              <AdminTableCell className="py-2 text-right text-sm tabular-nums text-muted-foreground">
+              <AdminTableCell className="py-2.5 text-right text-sm">
                 <CountCell value={category.childrenCount} />
               </AdminTableCell>
 
               {/* Ordre */}
-              <AdminTableCell className="py-2 text-right text-sm tabular-nums text-muted-foreground">
+              <AdminTableCell className="py-2.5 text-right text-sm">
                 <CountCell value={category.sortOrder} />
               </AdminTableCell>
 
               {/* Créée le — contient aussi les actions flottantes */}
               <AdminTableCell
-                className="relative py-2 text-sm text-muted-foreground overflow-visible"
+                className="relative overflow-visible py-2.5 text-sm text-muted-foreground"
                 onClick={(e) => e.stopPropagation()}
               >
                 <span className="group-hover:opacity-0 group-focus-within:opacity-0 transition-opacity">
@@ -274,7 +282,7 @@ export function CategoryTableDesktop({
                     size="icon-sm"
                     asChild
                     className="text-muted-foreground hover:text-foreground"
-                    aria-label={`Modifier ${category.name}`}
+                    aria-label={`${CATEGORY_LIST_COPY.rowEditAriaPrefix} ${category.name}`}
                   >
                     <Link href={href}>
                       <Pencil className="h-3.5 w-3.5" />

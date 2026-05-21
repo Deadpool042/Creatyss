@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ImageIcon, Star } from "lucide-react";
 
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
+import { getAdminCategoryDetailPath } from "@/features/admin/categories/shared/admin-categories-routes";
 import { cn } from "@/lib/utils";
 
 interface AdminCategoryCardProps {
@@ -37,7 +38,7 @@ export function AdminCategoryCard({ category }: AdminCategoryCardProps) {
     <Link
       aria-label={`Ouvrir la catégorie ${category.name}`}
       className="group block h-full min-w-0 rounded-2xl focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-focus-ring/50"
-      href={`/admin/categories/${category.id}`}
+      href={getAdminCategoryDetailPath(category.slug)}
     >
       <article className="flex h-full min-w-0 flex-col gap-2.5 rounded-2xl border border-surface-border bg-card p-3 shadow-sm transition-[border-color,box-shadow] duration-200 group-hover:border-surface-border-strong group-hover:shadow-md sm:gap-3 sm:p-3.5">
         <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl bg-surface-panel-soft sm:aspect-8/5">

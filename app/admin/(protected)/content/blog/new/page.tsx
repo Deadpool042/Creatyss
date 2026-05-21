@@ -1,7 +1,5 @@
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
-import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { AdminFormActions, AdminFormField, AdminFormSection } from "@/components/admin/forms";
 import { Notice } from "@/components/shared/feedback";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

@@ -5,10 +5,20 @@ import type { SeoIndexingMode } from "@/prisma-generated/client";
 import { categorySeoFormSchema } from "../schemas/category-seo-form.schema";
 import { updateCategorySeo } from "../services/update-category-seo.service";
 
-export async function updateCategorySeoAction(formData: FormData): Promise<{
-  status: "success" | "error";
+type CategorySeoActionState = {
+  status: "idle" | "success" | "error";
   message: string;
-}> {
+};
+
+const initialCategorySeoActionState: CategorySeoActionState = {
+  status: "idle",
+  message: "",
+};
+
+export async function updateCategorySeoAction(
+  _previousState: CategorySeoActionState,
+  formData: FormData
+): Promise<CategorySeoActionState> {
   const parsed = categorySeoFormSchema.safeParse({
     categoryId: formData.get("categoryId"),
     title: formData.get("title"),
@@ -24,6 +34,7 @@ export async function updateCategorySeoAction(formData: FormData): Promise<{
 
   if (!parsed.success) {
     return {
+      ...initialCategorySeoActionState,
       status: "error",
       message: "Données invalides.",
     };
@@ -44,12 +55,14 @@ export async function updateCategorySeoAction(formData: FormData): Promise<{
     });
   } catch {
     return {
+      ...initialCategorySeoActionState,
       status: "error",
       message: "Impossible de mettre à jour les paramètres SEO.",
     };
   }
 
   return {
+    ...initialCategorySeoActionState,
     status: "success",
     message: "Paramètres SEO mis à jour.",
   };

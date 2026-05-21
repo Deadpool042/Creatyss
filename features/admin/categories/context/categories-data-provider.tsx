@@ -8,10 +8,6 @@ import type {
   CategoryStatusCounts,
 } from "@/features/admin/categories/list/queries/list-admin-categories.query";
 
-import { useCategoriesTableActions } from "./hooks/use-categories-table-actions";
-
-type CategoriesTableActions = ReturnType<typeof useCategoriesTableActions>;
-
 type CategoriesTableContextValue = {
   categories: AdminCategoryCardItem[];
   categoriesForPicker: CategoryPickerItem[];
@@ -20,7 +16,6 @@ type CategoriesTableContextValue = {
   currentPage: number;
   perPage: number;
   statusCounts: CategoryStatusCounts;
-  actions: CategoriesTableActions;
 };
 
 type CategoriesTableProviderProps = PropsWithChildren<{
@@ -45,8 +40,6 @@ export function CategoriesTableProvider({
   statusCounts,
   children,
 }: CategoriesTableProviderProps): ReactNode {
-  const actions = useCategoriesTableActions();
-
   const value = useMemo<CategoriesTableContextValue>(
     () => ({
       categories,
@@ -56,9 +49,8 @@ export function CategoriesTableProvider({
       currentPage,
       perPage,
       statusCounts,
-      actions,
     }),
-    [categories, categoriesForPicker, total, totalPages, currentPage, perPage, statusCounts, actions]
+    [categories, categoriesForPicker, total, totalPages, currentPage, perPage, statusCounts]
   );
 
   return (

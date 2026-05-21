@@ -1,31 +1,13 @@
-"use client";
-
-import Link from "next/link";
-import { Plus } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { AdminCreateTopbarMenu } from "@/components/admin/shared/admin-create-topbar-menu";
+import { CATEGORY_CREATE_MENU_COPY } from "@/features/admin/categories/config";
+import { ADMIN_CATEGORIES_NEW_PATH } from "@/features/admin/categories/shared/admin-categories-routes";
 
 export function CategorieCreateTopbarMenu() {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size="sm">
-          <Plus className="sm:mr-2 sm:h-4 sm:w-4" />
-          <span className="hidden sm:inline">Nouveau</span>
-        </Button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem asChild>
-          <Link href="/admin/categories/new">Créer une catégorie</Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <AdminCreateTopbarMenu
+      triggerLabel={CATEGORY_CREATE_MENU_COPY.triggerLabel}
+      createLabel={CATEGORY_CREATE_MENU_COPY.createCategoryLabel}
+      createHref={ADMIN_CATEGORIES_NEW_PATH}
+    />
   );
 }

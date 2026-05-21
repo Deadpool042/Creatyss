@@ -5,7 +5,7 @@ import { useState, type JSX } from "react";
 import { useProductTableContext } from "./product-table-context";
 import { ProductTableToolbarDesktop } from "./product-table-toolbar-desktop";
 import { ProductTableToolbarMobile } from "./product-table-toolbar-mobile";
-import { ProductTableToolbarPermanentDeleteDialog } from "./toolbar/product-table-toolbar-permanent-delete-dialog";
+import { ProductTableToolbarPermanentDeleteDialog } from "./toolbar";
 
 type ProductTableToolbarProps = {
   mode: "desktop" | "mobile";

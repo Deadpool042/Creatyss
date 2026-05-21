@@ -3,9 +3,10 @@
 import { Search } from "lucide-react";
 import type { JSX } from "react";
 
-import { AdminSearchInput } from "@/components/admin/tables/admin-search-input";
+import { AdminSearchInput } from "@/components/admin/tables";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { PRODUCT_SEARCH_SHEET_COPY } from "@/features/admin/products/config";
 import { cn } from "@/lib/utils";
 
 type ProductSearchSheetProps = {
@@ -38,11 +39,11 @@ export function ProductSearchSheet({
             "border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected",
           triggerClassName
         )}
-        aria-label="Rechercher un produit"
+        aria-label={PRODUCT_SEARCH_SHEET_COPY.triggerAriaLabel}
       >
         <Search className="h-4 w-4" />
-        <span className="[@media(max-height:480px)]:hidden">Recherche</span>
-        <span className="hidden [@media(max-height:480px)]:inline">Rech.</span>
+        <span className="[@media(max-height:480px)]:hidden">{PRODUCT_SEARCH_SHEET_COPY.triggerLabel}</span>
+        <span className="hidden [@media(max-height:480px)]:inline">{PRODUCT_SEARCH_SHEET_COPY.triggerCompactLabel}</span>
       </Button>
 
       <Sheet open={open} onOpenChange={onOpenChange}>
@@ -51,14 +52,14 @@ export function ProductSearchSheet({
           className="flex max-h-[72svh] flex-col gap-3 border-b p-0 sm:max-w-none [@media(max-height:480px)]:max-h-[82svh]"
         >
           <SheetHeader className="border-b px-4 py-3 text-left [@media(max-height:480px)]:py-2.5">
-            <SheetTitle>Rechercher un produit</SheetTitle>
+            <SheetTitle>{PRODUCT_SEARCH_SHEET_COPY.title}</SheetTitle>
           </SheetHeader>
 
           <div className="px-4 pb-4">
             <AdminSearchInput
               value={value}
               onChange={onChange}
-              placeholder="Rechercher un produit…"
+              placeholder={PRODUCT_SEARCH_SHEET_COPY.placeholder}
             />
           </div>
         </SheetContent>
