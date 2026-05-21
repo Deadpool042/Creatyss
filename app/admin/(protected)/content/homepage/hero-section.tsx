@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Notice } from "@/components/shared/notice";
+import { Notice } from "@/components/shared/feedback";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 

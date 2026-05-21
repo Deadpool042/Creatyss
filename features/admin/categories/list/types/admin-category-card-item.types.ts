@@ -7,6 +7,11 @@ export type AdminCategoryCardItem = {
   description: string | null;
   isFeatured: boolean;
   status: AdminCategoryStatus;
+  parentName: string | null;
   primaryImageUrl: string | null;
   primaryImageAlt: string | null;
+  productCount: number;
+  childrenCount: number;
+  sortOrder: number;
+  createdAt: Date;
 };

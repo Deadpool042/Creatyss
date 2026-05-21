@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { Notice } from "@/components/shared/notice";
+import { Notice } from "@/components/shared/feedback";
 import { Button } from "@/components/ui/button";
 
 export default function AdminContentSeoPage() {

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { PlaceholderImage } from "@/components/shared/placeholder-image";
+import { PlaceholderImage } from "@/components/shared/media";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
 import { FavoriteButton } from "@/features/storefront/favorites";
 import { cn } from "@/lib/utils";

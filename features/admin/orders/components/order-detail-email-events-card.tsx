@@ -1,5 +1,5 @@
 import type { AdminOrderDetail } from "@/features/admin/orders/types/order-detail-types";
-import { SectionIntro } from "@/components/shared/section-intro";
+import { SectionIntro } from "@/components/shared/display";
 import {
   formatOrderDateTime,
   getEmailEventLabel,

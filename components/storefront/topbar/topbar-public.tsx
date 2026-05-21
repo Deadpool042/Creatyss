@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/navigation-menu";
 
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/shared/mode-toggle";
+import { ModeToggle } from "@/components/shared/theme";
 import { cn } from "@/lib/utils";
 
 import { MobileMenuDrawer } from "./mobile-menu-drawer";

@@ -7,7 +7,7 @@ import {
 export const adminNavigationGroupDefinitions: ReadonlyArray<AdminNavigationGroupDefinition> = [
   {
     key: "main",
-    label: "Général",
+    label: "Tableau de bord",
     defaultOpen: true,
   },
   {
@@ -61,6 +61,18 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
       mobilePrimary: true,
     },
   },
+  {
+    key: "dashboard-catalog",
+    label: "Vue d’ensemble",
+    href: "/admin/catalog/overview",
+    iconKey: "search",
+    group: "catalog",
+    order: 10,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+  },
 
   {
     key: "products",
@@ -68,7 +80,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     href: "/admin/products",
     iconKey: "package",
     group: "catalog",
-    order: 10,
+    order: 20,
     visibility: {
       sidebar: true,
       mobilePrimary: true,
@@ -77,10 +89,10 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   {
     key: "categories",
     label: "Catégories",
-    href: "/admin/categories",
+    href: "/admin/catalog/categories",
     iconKey: "folderTree",
     group: "catalog",
-    order: 20,
+    order: 30,
     visibility: {
       sidebar: true,
       mobilePrimary: true,
@@ -92,7 +104,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     href: "/admin/media",
     iconKey: "imageIcon",
     group: "catalog",
-    order: 30,
+    order: 340,
     visibility: {
       sidebar: true,
       mobilePrimary: true,

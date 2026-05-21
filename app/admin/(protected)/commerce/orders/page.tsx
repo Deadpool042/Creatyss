@@ -1,4 +1,4 @@
-import { Notice } from "@/components/shared/notice";
+import { Notice } from "@/components/shared/feedback";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { listAdminOrders } from "@/features/orders/lib/order.repository";

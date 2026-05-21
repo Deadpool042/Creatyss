@@ -83,14 +83,16 @@ Le domaine `categories` est responsable de :
 - encadrer les mutations significatives de catégories ;
 - publier les événements significatifs liés à la vie des catégories.
 
-Selon le périmètre exact du projet, le domaine peut également être responsable de :
+Le domaine porte également les responsabilités suivantes, actives dans le périmètre courant :
 
 - slug canonique de catégorie ;
 - ordre d’affichage ;
 - rattachement à une boutique ou un canal si cela est explicitement porté ici ;
-- certains attributs SEO de base liés à la catégorie ;
+- attributs SEO de base liés à la catégorie (`metaTitle`, `metaDescription`, `metaKeywords`) via le service `update-category-seo` ;
 - état de publication de catégorie ;
-- relation produit ↔ catégorie quand cette responsabilité n’est pas ailleurs.
+- relation produit ↔ catégorie quand cette responsabilité n’est pas ailleurs ;
+- `isFeatured` : attribut structurant de premier niveau contrôlant la mise en avant des catégories dans le merchandising ; distinct du contenu éditorial et traité comme un filtre de premier niveau dans les lectures admin ;
+- image principale (`primaryImage` avec `publicUrl` et `altText`) via les services `set-admin-category-image` et `delete-admin-category-image`.
 
 ---
 
@@ -127,6 +129,18 @@ Les invariants minimaux du domaine sont les suivants :
 - une catégorie inactive ne doit pas être traitée comme active sans règle explicite ;
 - deux catégories distinctes ne doivent pas être indiscernables sans justification explicite ;
 - un rattachement produit ↔ catégorie ne doit pas rendre la taxonomie contradictoire sans visibilité.
+
+Le domaine distingue deux niveaux de suppression, qui forment un invariant structurant :
+
+- **Archivage (soft delete)** : passage à `status = ARCHIVED` avec `archivedAt = now()`. Seule opération de suppression disponible depuis la liste admin standard. L'opération bulk (`bulkDeleteAdminCategories`) applique la même sémantique à un ensemble d'IDs, conditionnée à `archivedAt: null` (une catégorie déjà archivée n'est pas ré-archivée).
+- **Suppression physique (hard delete)** : `db.category.delete()` conditionné à `archivedAt IS NOT NULL`. Ne peut s'appliquer qu'à une catégorie préalablement archivée. Action irréversible exposée uniquement dans la vue archives.
+- **Restauration** : depuis `ARCHIVED` uniquement (`archivedAt IS NOT NULL`), retour au statut `DRAFT`. La catégorie doit être republiée manuellement.
+
+On ne peut pas supprimer physiquement une catégorie sans l'avoir archivée au préalable.
+
+Sans filtre de statut explicite, `listAdminCategories` exclut automatiquement les catégories `ARCHIVED`. Ce comportement est une règle métier : les catégories archivées sont traitées comme supprimées du point de vue des lectures standard.
+
+`productCount` (via `_count.productLinks`) et `childrenCount` (via `_count.children`) sont des projections de lecture agrégées calculées à la volée par la query. Ils ne constituent pas des états portés par le domaine et ne font pas l'objet d'un maintien en cohérence transactionnel.
 
 Le domaine protège la cohérence du classement, pas uniquement une liste de labels.
 
@@ -204,19 +218,16 @@ Les noms exacts doivent rester dans le langage interne du système.
 
 Le domaine `categories` possède un cycle de vie structurel.
 
-Le cycle exact dépend du projet, mais il doit au minimum distinguer :
+Les quatre statuts canoniques sont stabilisés et exhaustifs : `draft`, `active`, `inactive`, `archived`. Aucun autre statut n'existe. Le mapping vers l'enum Prisma `CategoryStatus` est 1:1.
 
-- créée ;
-- active ;
-- inactive ;
-- archivée.
+Les transitions principales sont les suivantes :
 
-Des états supplémentaires peuvent exister :
-
-- brouillon ;
-- publiée ;
-- masquée ;
-- en attente de synchronisation.
+- **Création** : statut initial `draft`.
+- **Publication** : `draft` → `active` ou `inactive` selon décision éditoriale.
+- **Désactivation** : `active` → `inactive`.
+- **Archivage (soft delete)** : tout statut non archivé → `archived` (`archivedAt = now()`). Seule opération de suppression disponible depuis la liste admin standard.
+- **Restauration** : `archived` → `draft`. La catégorie doit être republiée manuellement après restauration. `draft` est le statut de sortie systématique après une restauration.
+- **Suppression physique (hard delete)** : conditionné à `archived` uniquement (`archivedAt IS NOT NULL`). Action irréversible exposée uniquement dans la vue archives.
 
 Les transitions doivent être explicites et traçables.
 
@@ -236,6 +247,11 @@ Le domaine `categories` expose principalement :
 - des lectures du référentiel de catégories ;
 - des lectures de hiérarchie ou d’arbre taxonomique ;
 - des événements significatifs liés à la vie des catégories.
+
+Le domaine expose deux interfaces de lecture distinctes :
+
+- **Liste paginée admin** (`listAdminCategories`) : paginée, filtrée, triée. Exclut les catégories `ARCHIVED` par défaut. Options de tri supportées : `name-asc`, `name-desc`, `updated-asc`, `updated-desc`. Valeurs `perPage` supportées : 5, 10, 25, 50 (défaut : 10). Ces contrats sont sérialisés en query params URL et constituent une interface publique stable entre le Server Component et l’état client.
+- **Picker hiérarchique** (`listCategoriesForPicker`) : interface de sélection dédiée, distincte de la liste paginée. Retourne `{ id, name, slug, parentId }` pour toutes les catégories, sans pagination, triées par `parentId` puis `name`. La sélection filtrée utilise le `slug` comme clé (pas l’`id`), sérialisé en query param `?categories=slug1,slug2`. Ce choix garantit des URLs stables et lisibles indépendamment des IDs de base de données.
 
 Le domaine reçoit principalement :
 
@@ -348,10 +364,13 @@ Il ne doit pas devenir un conteneur global de merchandising ou de structure prod
 - la frontière exacte entre `categories` et `search` ;
 - la responsabilité exacte du rattachement produit ↔ catégorie ;
 - la hiérarchie entre taxonomie interne et référentiel externe ;
-- la gestion multi-boutiques ou multi-langues ;
-- la part SEO réellement portée par `categories`.
+- la gestion multi-boutiques ou multi-langues.
 
-Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+Points tranchés et intégrés dans cette fiche :
+
+- la part SEO portée par `categories` : attributs `metaTitle`, `metaDescription`, `metaKeywords` via `update-category-seo`, dans le périmètre courant actif.
+
+Si d'autres points listés ci-dessus sont tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 
 ---
 

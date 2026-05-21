@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Notice } from "@/components/shared/notice";
+import { Notice } from "@/components/shared/feedback";
 import { readCartSessionToken } from "@/core/sessions/cart";
 import { readGuestCheckoutContextByToken } from "@/features/cart/lib/guest-cart.repository";
 import type { GuestCheckoutContext } from "@/features/cart/lib/guest-cart.types";

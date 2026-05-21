@@ -1,3 +1,5 @@
+import { CategoryStatus } from "@/prisma-generated/client";
+
 import { withTransaction } from "@/core/db";
 import { assertCategoryExists } from "./shared";
 
@@ -14,6 +16,7 @@ export async function deleteAdminCategory(input: DeleteAdminCategoryServiceInput
         id: input.categoryId,
       },
       data: {
+        status: CategoryStatus.ARCHIVED,
         archivedAt: new Date(),
       },
       select: {

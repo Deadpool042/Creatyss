@@ -13,14 +13,19 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { cn } from "@/lib/utils";
 
 type ConfirmDestructiveDialogProps = {
   trigger: ReactNode;
   title: string;
-  description: string;
+  description: string | ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
+  pendingLabel?: string;
   pending?: boolean;
+  /** Contrôle l'ouverture depuis le parent (mode contrôlé). */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   onConfirm: () => Promise<boolean> | boolean;
 };
 
@@ -30,27 +35,37 @@ export function ConfirmDestructiveDialog({
   description,
   confirmLabel = "Confirmer la suppression",
   cancelLabel = "Annuler",
+  pendingLabel = "Suppression…",
   pending = false,
+  open,
+  onOpenChange,
   onConfirm,
 }: ConfirmDestructiveDialogProps): JSX.Element {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+
+  const isControlled = open !== undefined;
+  const isOpen = isControlled ? open : internalOpen;
+
+  function handleOpenChange(next: boolean) {
+    if (!isControlled) setInternalOpen(next);
+    onOpenChange?.(next);
+  }
 
   async function handleConfirm(): Promise<void> {
     const shouldClose = await onConfirm();
-
-    if (shouldClose) {
-      setOpen(false);
-    }
+    if (shouldClose) handleOpenChange(false);
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
+    <AlertDialog open={isOpen} onOpenChange={handleOpenChange}>
       <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          <AlertDialogDescription asChild={typeof description !== "string"}>
+            {description}
+          </AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
@@ -61,8 +76,14 @@ export function ConfirmDestructiveDialog({
               void handleConfirm();
             }}
             disabled={pending}
+            className={cn(
+              "bg-feedback-error text-white",
+              "hover:bg-feedback-error/90",
+              "focus-visible:ring-feedback-error/50",
+              "disabled:bg-feedback-error/50"
+            )}
           >
-            {pending ? "Suppression…" : confirmLabel}
+            {pending ? pendingLabel : confirmLabel}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

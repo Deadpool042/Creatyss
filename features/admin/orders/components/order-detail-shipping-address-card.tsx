@@ -1,4 +1,4 @@
-import { SectionIntro } from "@/components/shared/section-intro";
+import { SectionIntro } from "@/components/shared/display";
 
 type OrderDetailShippingAddressCardProps = Readonly<{
   address: {

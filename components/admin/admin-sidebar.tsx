@@ -32,10 +32,10 @@ export function AdminSidebar({ displayName, email, rootItems, groups }: AdminSid
             <SidebarMenuButton
               size="lg"
               asChild
-              className="rounded-lg px-2 laptop:h-11 desktop:h-12 desktop:rounded-xl"
+              className="rounded px-2 laptop:h-11 desktop:h-12"
             >
               <Link href="/admin" aria-label="Administration Creatyss">
-                <div className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-accent text-brand desktop:size-8">
+                <div className="flex size-7 shrink-0 items-center justify-center rounded border border-sidebar-border bg-sidebar-accent text-brand desktop:size-8">
                   <LayoutDashboard className="size-4" />
                 </div>
                 <div className="grid min-w-0 flex-1 text-left leading-tight">
@@ -52,7 +52,7 @@ export function AdminSidebar({ displayName, email, rootItems, groups }: AdminSid
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="px-2 py-2 desktop:px-2">
+      <SidebarContent className="px-2 py-2 desktop:px-2 ">
         <AdminSidebarNav rootItems={rootItems} groups={groups} />
       </SidebarContent>
 
@@ -61,9 +61,9 @@ export function AdminSidebar({ displayName, email, rootItems, groups }: AdminSid
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
-              className="rounded-lg px-2 laptop:h-11 desktop:h-12 desktop:rounded-xl"
+              className="rounded px-2 laptop:h-11 desktop:h-12"
             >
-              <div className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-accent text-sm font-semibold text-sidebar-foreground desktop:size-8">
+              <div className="flex size-7 shrink-0 items-center justify-center rounded border border-sidebar-border bg-sidebar-accent text-sm font-semibold text-sidebar-foreground desktop:size-8">
                 {displayName.charAt(0).toUpperCase()}
               </div>
               <div className="grid min-w-0 flex-1 text-left leading-tight">

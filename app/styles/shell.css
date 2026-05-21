@@ -7,9 +7,9 @@
 
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .site-header-blur {
-    background: color-mix(in srgb, var(--shell-surface-blur) 46%, transparent);
-    -webkit-backdrop-filter: saturate(170%) blur(20px);
-    backdrop-filter: saturate(170%) blur(20px);
+    background: color-mix(in srgb, var(--shell-surface-blur) 74%, transparent);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
   }
 }
 

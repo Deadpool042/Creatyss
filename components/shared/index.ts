@@ -1,14 +1,21 @@
-export { ConfirmDestructiveDialog } from "./confirm-desctructive-dialog";
-export { CustomButton } from "./custom-button";
-export { CustomLink } from "./custom-link";
-export { PlaceholderImage } from "./placeholder-image";
-export { EmptyState } from "./empty-state";
-export { ModeToggle } from "./mode-toggle";
-export { SectionIntro } from "./section-intro";
-export { StatsCard } from "./stats-card";
-export { ThemeProvider } from "./theme-provider";
-export { ViewportScrollArea } from "./viewport-scroll-area";
-export { AppBreadcrumbs } from "./breadcrumbs";
+export { ConfirmDestructiveDialog } from "./feedback";
+export { EmptyState } from "./feedback";
+export { Notice } from "./feedback";
+export { toast } from "./feedback";
 
+export { SectionIntro } from "./display";
+export { StatsCard } from "./display";
+
+export { PlaceholderImage } from "./media";
+
+export { CustomButton } from "./actions";
+
+export { CustomLink } from "./navigation";
+
+export { ModeToggle } from "./theme";
+export { ThemeProvider } from "./theme";
+
+export { FullWidthPageFrame, FullWidthStack, ViewportScrollArea } from "./layout";
+
+export { AppBreadcrumbs } from "./breadcrumbs";
 export type { AppBreadcrumbItem } from "./breadcrumbs";
-export { toast } from "./toast";

@@ -1,7 +1,7 @@
 import type { HomepageStatus } from "@/prisma-generated/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Notice } from "@/components/shared/notice";
+import { Notice } from "@/components/shared/feedback";
 import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { getUploadsPublicPath } from "@/core/uploads";

@@ -1,12 +1,14 @@
 "use client";
 
-import { Star } from "lucide-react";
+import { Pencil, Star } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { AdminFeedSentinel } from "@/components/admin/shared/admin-feed-sentinel";
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 
 import { useCategoriesTableContext } from "../../context/categories-data-provider";
@@ -14,16 +16,22 @@ import { CategoryTableRowActions } from "./category-table-row-actions";
 
 const MOBILE_PAGE_SIZE = 12;
 
-function CategoryMobileInfoBox({
-  label,
-  children,
-}: Readonly<{ label: string; children: ReactNode }>) {
+const STATUS_LABELS: Record<string, string> = {
+  active: "Publiée",
+  draft: "Brouillon",
+  inactive: "Inactive",
+  archived: "Archivée",
+};
+
+function MobileCountBox({ label, value }: Readonly<{ label: string; value: number }>) {
   return (
-    <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-2.5 py-2">
+    <div className="rounded-lg border border-surface-border bg-surface-panel-soft px-2.5 py-2">
       <p className="mb-1 text-[9px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
         {label}
       </p>
-      <div className="min-h-0 text-[13px] leading-5 text-foreground">{children}</div>
+      <p className={`text-[13px] font-medium leading-5 ${value === 0 ? "text-muted-foreground/40" : "text-foreground"}`}>
+        {value === 0 ? "—" : value}
+      </p>
     </div>
   );
 }
@@ -37,7 +45,7 @@ function CategoryMobileVisual({
     <AdminThumbnail
       src={category.primaryImageUrl}
       alt={category.primaryImageAlt ?? category.name}
-      className="h-12 w-12 shrink-0 rounded-xl border border-surface-border bg-surface-panel-soft sm:h-11 sm:w-11"
+      className="h-12 w-12 shrink-0 rounded-md border border-surface-border bg-surface-panel-soft sm:h-11 sm:w-11"
       fallbackLabel={`Aucun visuel pour ${category.name}`}
     />
   );
@@ -45,65 +53,74 @@ function CategoryMobileVisual({
 
 function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCardItem }>) {
   return (
-    <article className="flex h-full flex-col rounded-2xl border border-surface-border bg-card p-3 shadow-card">
-      <div className="mb-2 flex items-center justify-end">
-        <CategoryTableRowActions categoryId={category.id} categoryName={category.name} />
-      </div>
+    <article className={cn(
+      "relative flex h-full flex-col rounded-lg border bg-card p-3 shadow-card",
+      category.isFeatured
+        ? "border-brand/30"
+        : "border-surface-border"
+    )}>
+      {/* Lien couvrant toute la carte (sauf les boutons d'action) */}
+      <Link
+        href={`/admin/catalog/categories/${category.slug}`}
+        className="absolute inset-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
+        aria-label={`Modifier ${category.name}`}
+      />
 
-      <div className="flex items-start gap-2.5">
-        <CategoryMobileVisual category={category} />
-
-        <div className="min-w-0 flex-1">
-          <Link href={`/admin/categories/${category.id}`} className="block">
-            <h3 className="line-clamp-2 text-base font-semibold leading-5 tracking-tight text-foreground sm:line-clamp-1">
-              {category.name}
-            </h3>
-          </Link>
-
-          <p className="mt-1 truncate text-xs text-muted-foreground">
-            Adresse · <span className="font-medium text-foreground">{category.slug}</span>
-          </p>
-
-          <div className="mt-1.5 flex flex-wrap items-center gap-2">
-            <AdminStatusBadge
-              status={category.status}
-              label={
-                {
-                  active: "Active",
-                  draft: "Brouillon",
-                  inactive: "Inactive",
-                  archived: "Archivée",
-                }[category.status]
-              }
-            />
-
-            {category.isFeatured ? (
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-foreground">
-                <Star aria-hidden="true" className="h-3 w-3 fill-amber-400 text-amber-400" />
-                <span>Mise en avant</span>
-              </span>
-            ) : null}
+      {/* Header: badge statut + actions (z-10 pour passer au-dessus du lien) */}
+      <div className="relative z-10 mb-2 flex items-center justify-between gap-2">
+        <AdminStatusBadge
+          status={category.status}
+          label={STATUS_LABELS[category.status] ?? category.status}
+        />
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            asChild
+            className="text-muted-foreground hover:text-foreground"
+            aria-label={`Modifier ${category.name}`}
+          >
+            <Link href={`/admin/catalog/categories/${category.slug}`}>
+              <Pencil className="h-3.5 w-3.5" />
+            </Link>
+          </Button>
+          <div className="relative z-10">
+            <CategoryTableRowActions categoryId={category.id} categoryName={category.name} categorySlug={category.slug} status={category.status} />
           </div>
         </div>
       </div>
 
-      <div className="mt-2 grid grid-cols-2 gap-1.5">
-        <CategoryMobileInfoBox label="Description">
-          <p className="line-clamp-2 text-[13px] leading-5 text-muted-foreground">
-            {category.description ?? "—"}
-          </p>
-        </CategoryMobileInfoBox>
+      {/* Body: image + nom + slug */}
+      <div className="flex items-start gap-2.5">
+        <CategoryMobileVisual category={category} />
 
-        <CategoryMobileInfoBox label="Mise en avant">
+        <div className="min-w-0 flex-1">
+          {category.parentName ? (
+            <p className="mb-0.5 truncate text-[0.65rem] font-medium text-brand/70">
+              {category.parentName} <span className="text-muted-foreground/40">›</span>
+            </p>
+          ) : null}
+          <h3 className="line-clamp-2 text-base font-semibold leading-5 tracking-tight text-foreground sm:line-clamp-1">
+            {category.name}
+          </h3>
+
+          <p className="mt-0.5 truncate text-xs text-muted-foreground/60">
+            {category.slug}
+          </p>
+
           {category.isFeatured ? (
-            <span className="inline-flex items-center gap-1 text-[13px] font-medium text-foreground">
-              <Star aria-hidden="true" className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-              <span>Oui</span>
+            <span className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-brand">
+              <Star aria-hidden="true" className="h-3 w-3 fill-brand text-brand" />
+              <span>Mise en avant</span>
             </span>
-          ) : (
-            <p className="text-[13px] font-medium leading-5 text-muted-foreground">Non</p>
-          )}
-        </CategoryMobileInfoBox>
+          ) : null}
+        </div>
+      </div>
+
+      {/* Counts */}
+      <div className="mt-2.5 grid grid-cols-2 gap-1.5">
+        <MobileCountBox label="Produits" value={category.productCount} />
+        <MobileCountBox label="Sous-catégories" value={category.childrenCount} />
       </div>
     </article>
   );
@@ -149,7 +166,7 @@ export function CategoryTableMobile() {
       {hasMore ? (
         <AdminFeedSentinel onIntersect={loadMore} />
       ) : (
-        <div className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-3 py-2.5 text-center [@media(max-height:480px)]:py-2">
+        <div className="rounded-lg border border-dashed border-surface-border bg-surface-panel-soft px-3 py-2.5 text-center [@media(max-height:480px)]:py-2">
           <p className="text-xs font-medium text-muted-foreground">Fin de la liste</p>
           <p className="mt-1 text-[11px] text-muted-foreground/85">
             {categories.length} catégorie{categories.length !== 1 ? "s" : ""}

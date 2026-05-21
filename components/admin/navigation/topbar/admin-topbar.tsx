@@ -6,7 +6,7 @@ import { ChevronLeft } from "lucide-react";
 import type { JSX } from "react";
 
 import { useAdminPageTitle } from "@/components/admin/admin-page-title-context";
-import { ModeToggle } from "@/components/shared/mode-toggle";
+import { ModeToggle } from "@/components/shared/theme";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 

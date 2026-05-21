@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
@@ -16,13 +17,13 @@ export function AdminSearchInput({
   className,
 }: AdminSearchInputProps) {
   return (
-    <div className={className ?? "relative w-full md:max-w-sm"}>
-      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+    <div className={cn("relative w-full", className)}>
+      <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         placeholder={placeholder}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="pl-8 text-sm"
+        className="h-9 pl-8"
       />
     </div>
   );

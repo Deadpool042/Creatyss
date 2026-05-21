@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/shared/notice";
+import { Notice } from "@/components/shared/feedback";
 import { AdminEmptyState } from "@/components/admin/admin-empty-state";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { Badge } from "@/components/ui/badge";

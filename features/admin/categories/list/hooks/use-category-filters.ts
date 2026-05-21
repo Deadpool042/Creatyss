@@ -9,56 +9,39 @@ import type {
   CategorySortOption,
 } from "@/features/admin/categories/list/queries/list-admin-categories.query";
 
-export type CategoryStatusFilter = AdminCategoryStatus | "all";
-
 export type CategoryFiltersState = {
   search: string;
-  status: CategoryStatusFilter;
-  featured: CategoryFeaturedFilter;
+  status: AdminCategoryStatus[];
+  featured: CategoryFeaturedFilter[];
+  categorySlugs: string[];
   sort: CategorySortOption;
   page: number;
   perPage: number;
   activeFilterCount: number;
   setSearch: (value: string) => void;
-  setStatus: (value: CategoryStatusFilter) => void;
-  setFeatured: (value: CategoryFeaturedFilter) => void;
+  setStatus: (value: AdminCategoryStatus[]) => void;
+  setFeatured: (value: CategoryFeaturedFilter[]) => void;
+  setCategorySlugs: (value: string[]) => void;
   setSort: (value: CategorySortOption) => void;
   setPage: (value: number) => void;
   setPerPage: (value: number) => void;
-  applyFilters: (
-    partial: Partial<
-      Omit<
-        CategoryFiltersState,
-        | "setSearch"
-        | "setStatus"
-        | "setFeatured"
-        | "setSort"
-        | "setPage"
-        | "setPerPage"
-        | "applyFilters"
-        | "reset"
-        | "activeFilterCount"
-      >
-    >
-  ) => void;
+  resetFilters: () => void;
   reset: () => void;
 };
 
-const VALID_STATUSES: CategoryStatusFilter[] = ["all", "draft", "active", "inactive", "archived"];
-const VALID_FEATURED: CategoryFeaturedFilter[] = ["all", "featured", "not-featured"];
+const VALID_STATUSES: AdminCategoryStatus[] = ["draft", "active", "inactive", "archived"];
+const VALID_FEATURED: CategoryFeaturedFilter[] = ["featured", "not-featured"];
 const VALID_SORTS: CategorySortOption[] = ["name-asc", "name-desc", "updated-asc", "updated-desc"];
 const VALID_PER_PAGE = [5, 10, 25, 50];
 
-function parseStatus(value: string | null): CategoryStatusFilter {
-  return VALID_STATUSES.includes(value as CategoryStatusFilter)
-    ? (value as CategoryStatusFilter)
-    : "all";
+function parseArray<T extends string>(value: string | null, valid: T[]): T[] {
+  if (!value) return [];
+  return value.split(",").filter((v): v is T => valid.includes(v as T));
 }
 
-function parseFeatured(value: string | null): CategoryFeaturedFilter {
-  return VALID_FEATURED.includes(value as CategoryFeaturedFilter)
-    ? (value as CategoryFeaturedFilter)
-    : "all";
+function parseCategoryIds(value: string | null): string[] {
+  if (!value) return [];
+  return value.split(",").filter(Boolean);
 }
 
 function parseSort(value: string | null): CategorySortOption {
@@ -83,8 +66,9 @@ export function useCategoryFilters(): CategoryFiltersState {
   const searchParams = useSearchParams();
 
   const search = searchParams.get("search") ?? "";
-  const status = parseStatus(searchParams.get("status"));
-  const featured = parseFeatured(searchParams.get("featured"));
+  const status = parseArray(searchParams.get("status"), VALID_STATUSES);
+  const featured = parseArray(searchParams.get("featured"), VALID_FEATURED);
+  const categorySlugs = parseCategoryIds(searchParams.get("categories"));
   const sort = parseSort(searchParams.get("sort"));
   const perPage = parsePerPage(searchParams.get("perPage"));
   const page = parsePage(searchParams.get("page"));
@@ -92,6 +76,9 @@ export function useCategoryFilters(): CategoryFiltersState {
   const activeFilterCount = [
     sort !== "name-asc",
     perPage !== 10,
+    status.length > 0,
+    featured.length > 0,
+    categorySlugs.length > 0,
   ].filter(Boolean).length;
 
   const pushParams = useCallback(
@@ -106,7 +93,6 @@ export function useCategoryFilters(): CategoryFiltersState {
         }
       }
 
-      // Reset page when filters change (not when page itself changes)
       if (!("page" in updates)) {
         params.delete("page");
       }
@@ -122,12 +108,20 @@ export function useCategoryFilters(): CategoryFiltersState {
   );
 
   const setStatus = useCallback(
-    (value: CategoryStatusFilter) => pushParams({ status: value === "all" ? null : value }),
+    (values: AdminCategoryStatus[]) =>
+      pushParams({ status: values.length > 0 ? values.join(",") : null }),
     [pushParams]
   );
 
   const setFeatured = useCallback(
-    (value: CategoryFeaturedFilter) => pushParams({ featured: value === "all" ? null : value }),
+    (values: CategoryFeaturedFilter[]) =>
+      pushParams({ featured: values.length > 0 ? values.join(",") : null }),
+    [pushParams]
+  );
+
+  const setCategorySlugs = useCallback(
+    (values: string[]) =>
+      pushParams({ categories: values.length > 0 ? values.join(",") : null }),
     [pushParams]
   );
 
@@ -146,30 +140,8 @@ export function useCategoryFilters(): CategoryFiltersState {
     [pushParams]
   );
 
-  const applyFilters = useCallback(
-    (
-      partial: Partial<{
-        search: string;
-        status: CategoryStatusFilter;
-        featured: CategoryFeaturedFilter;
-        sort: CategorySortOption;
-        page: number;
-        perPage: number;
-      }>
-    ) => {
-      const updates: Record<string, string | null> = {};
-      if ("search" in partial) updates.search = partial.search || null;
-      if ("status" in partial)
-        updates.status = partial.status === "all" ? null : (partial.status ?? null);
-      if ("featured" in partial)
-        updates.featured = partial.featured === "all" ? null : (partial.featured ?? null);
-      if ("sort" in partial)
-        updates.sort = partial.sort === "name-asc" ? null : (partial.sort ?? null);
-      if ("perPage" in partial)
-        updates.perPage = partial.perPage === 10 ? null : String(partial.perPage);
-      if ("page" in partial) updates.page = partial.page === 1 ? null : String(partial.page);
-      pushParams(updates);
-    },
+  const resetFilters = useCallback(
+    () => pushParams({ status: null, featured: null, categories: null }),
     [pushParams]
   );
 
@@ -181,6 +153,7 @@ export function useCategoryFilters(): CategoryFiltersState {
     search,
     status,
     featured,
+    categorySlugs,
     sort,
     page,
     perPage,
@@ -188,10 +161,11 @@ export function useCategoryFilters(): CategoryFiltersState {
     setSearch,
     setStatus,
     setFeatured,
+    setCategorySlugs,
     setSort,
     setPage,
     setPerPage,
-    applyFilters,
+    resetFilters,
     reset,
   };
 }

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { toast } from "@/components/shared/toast";
+import { toast } from "@/components/shared/feedback";
 
 function getCartStatusMessage(status: string | null): string | null {
   switch (status) {

@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminPageTitle } from "@/components/admin/admin-page-title";
 import type { AppBreadcrumbItem } from "@/components/shared/breadcrumbs";
-import { ViewportScrollArea } from "@/components/shared/viewport-scroll-area";
+import { ViewportScrollArea } from "@/components/shared/layout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

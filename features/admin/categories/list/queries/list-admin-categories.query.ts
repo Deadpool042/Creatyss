@@ -15,12 +15,20 @@ const STATUS_MAP: Record<AdminCategoryStatus, CategoryStatus> = {
 };
 
 export type CategorySortOption = "name-asc" | "name-desc" | "updated-asc" | "updated-desc";
-export type CategoryFeaturedFilter = "all" | "featured" | "not-featured";
+export type CategoryFeaturedFilter = "featured" | "not-featured";
+
+export type CategoryPickerItem = {
+  id: string;
+  name: string;
+  slug: string;
+  parentId: string | null;
+};
 
 export type CategoryListFilters = {
   search?: string;
-  status?: AdminCategoryStatus | "all";
-  featured?: CategoryFeaturedFilter;
+  status?: AdminCategoryStatus[];
+  featured?: CategoryFeaturedFilter[];
+  categorySlugs?: string[];
   sort?: CategorySortOption;
   page?: number;
   perPage?: number;
@@ -38,19 +46,32 @@ export type CategoryListResult = {
 
 const DEFAULT_PER_PAGE = 10;
 
+export async function listCategoriesForPicker(): Promise<CategoryPickerItem[]> {
+  return db.category.findMany({
+    select: { id: true, name: true, slug: true, parentId: true },
+    orderBy: [{ parentId: "asc" }, { name: "asc" }],
+  });
+}
+
 export async function listAdminCategories(
   filters: CategoryListFilters = {}
 ): Promise<CategoryListResult> {
   const {
     search = "",
-    status = "all",
-    featured = "all",
+    status = [],
+    featured = [],
+    categorySlugs = [],
     sort = "name-asc",
     page = 1,
     perPage = DEFAULT_PER_PAGE,
   } = filters;
 
   const normalizedSearch = search.trim();
+
+  const featuredWhere =
+    featured.length === 1
+      ? { isFeatured: featured[0] === "featured" }
+      : {};
 
   const where = {
     ...(normalizedSearch.length > 0
@@ -61,9 +82,11 @@ export async function listAdminCategories(
           ],
         }
       : {}),
-    ...(status !== "all" ? { status: STATUS_MAP[status] } : {}),
-    ...(featured === "featured" ? { isFeatured: true } : {}),
-    ...(featured === "not-featured" ? { isFeatured: false } : {}),
+    ...(status.length > 0
+      ? { status: { in: status.map((s) => STATUS_MAP[s]) } }
+      : { status: { not: CategoryStatus.ARCHIVED } }),
+    ...featuredWhere,
+    ...(categorySlugs.length > 0 ? { slug: { in: categorySlugs } } : {}),
   };
 
   const orderBy = (() => {
@@ -84,7 +107,6 @@ export async function listAdminCategories(
   const safePerPage = Math.max(1, Math.min(100, perPage));
   const skip = (safePage - 1) * safePerPage;
 
-  // `whereWithoutStatus` for per-status counts (respects search + featured but not status filter)
   const whereWithoutStatus = {
     ...(normalizedSearch.length > 0
       ? {
@@ -94,8 +116,8 @@ export async function listAdminCategories(
           ],
         }
       : {}),
-    ...(featured === "featured" ? { isFeatured: true } : {}),
-    ...(featured === "not-featured" ? { isFeatured: false } : {}),
+    ...featuredWhere,
+    ...(categorySlugs.length > 0 ? { slug: { in: categorySlugs } } : {}),
   };
 
   const [rawCategories, total, rawStatusCounts] = await Promise.all([
@@ -111,10 +133,21 @@ export async function listAdminCategories(
         description: true,
         isFeatured: true,
         status: true,
+        sortOrder: true,
+        createdAt: true,
+        parent: {
+          select: { name: true },
+        },
         primaryImage: {
           select: {
             publicUrl: true,
             altText: true,
+          },
+        },
+        _count: {
+          select: {
+            productLinks: true,
+            children: true,
           },
         },
       },
@@ -129,7 +162,6 @@ export async function listAdminCategories(
 
   const totalPages = Math.max(1, Math.ceil(total / safePerPage));
 
-  // Reverse-map Prisma enum → AdminCategoryStatus for the counts
   const REVERSE_STATUS_MAP: Record<CategoryStatus, AdminCategoryStatus> = {
     [CategoryStatus.DRAFT]: "draft",
     [CategoryStatus.ACTIVE]: "active",

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { SectionIntro } from "@/components/shared/section-intro";
+import { SectionIntro } from "@/components/shared/display";
 import { cn } from "@/lib/utils";
 
 type AdminCollectionSectionProps = Readonly<{

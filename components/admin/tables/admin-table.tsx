@@ -1,12 +1,6 @@
 import type { ComponentProps } from "react";
 
-import {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
 // ---------------------------------------------------------------------------
@@ -40,10 +34,15 @@ export function AdminTable({
     <div
       className={cn(
         "flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-surface-border bg-card shadow-card",
-        wrapperClassName,
+        wrapperClassName
       )}
     >
-      <div className={cn("min-h-0 flex-1 overflow-auto overscroll-contain", viewportClassName)}>
+      <div
+        className={cn(
+          "min-h-0 flex-1 overflow-auto overscroll-contain [scrollbar-gutter:stable]",
+          viewportClassName
+        )}
+      >
         <table
           data-slot="table"
           className={cn("w-full caption-bottom text-sm", className)}
@@ -66,10 +65,7 @@ type AdminTableHeaderProps = ComponentProps<typeof TableHeader> & {
 
 export function AdminTableHeader({ className, ...props }: Readonly<AdminTableHeaderProps>) {
   return (
-    <TableHeader
-      className={cn("sticky top-0 z-10 bg-surface-panel-soft", className)}
-      {...props}
-    />
+    <TableHeader className={cn("sticky top-0 z-10 bg-surface-panel-soft", className)} {...props} />
   );
 }
 
@@ -98,7 +94,7 @@ export function AdminTableHead({ className, ...props }: Readonly<AdminTableHeadP
     <TableHead
       className={cn(
         "text-[0.65rem] font-medium tracking-wide text-muted-foreground uppercase",
-        className,
+        className
       )}
       {...props}
     />

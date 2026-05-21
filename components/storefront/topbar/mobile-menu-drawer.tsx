@@ -17,7 +17,7 @@ import {
   XIcon,
 } from "lucide-react";
 
-import { ModeToggle } from "@/components/shared/mode-toggle";
+import { ModeToggle } from "@/components/shared/theme";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,

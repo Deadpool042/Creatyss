@@ -19,6 +19,7 @@ type AdminPaginationBarProps = {
   currentPage: number;
   totalPages: number;
   perPage: number;
+  totalItems?: number;
   onPageChange: (page: number) => void;
   onPerPageChange: (perPage: number) => void;
   className?: string;
@@ -46,6 +47,7 @@ export function AdminPaginationBar({
   currentPage,
   totalPages,
   perPage,
+  totalItems,
   onPageChange,
   onPerPageChange,
   className,
@@ -53,6 +55,9 @@ export function AdminPaginationBar({
   if (totalPages <= 0) return null;
 
   const pages = buildPageNumbers(currentPage, totalPages);
+
+  const from = totalItems !== undefined ? (currentPage - 1) * perPage + 1 : undefined;
+  const to = totalItems !== undefined ? Math.min(currentPage * perPage, totalItems) : undefined;
 
   return (
     <div
@@ -77,6 +82,11 @@ export function AdminPaginationBar({
           </SelectContent>
         </Select>
         <span className="text-xs text-muted-foreground">par page</span>
+        {from !== undefined && to !== undefined && totalItems !== undefined && (
+          <span className="hidden text-xs text-muted-foreground/60 sm:inline">
+            · {from}–{to} sur {totalItems}
+          </span>
+        )}
       </div>
 
       {/* Right: page number buttons */}

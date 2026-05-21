@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { JSX } from "react";
 
-import { PlaceholderImage } from "@/components/shared/placeholder-image";
+import { PlaceholderImage } from "@/components/shared/media";
 import { hasRealImage } from "@/core/media";
 import { cn } from "@/lib/utils";
 

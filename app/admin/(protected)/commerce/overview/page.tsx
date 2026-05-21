@@ -1,5 +1,5 @@
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { Notice } from "@/components/shared/notice";
+import { Notice } from "@/components/shared/feedback";
 
 export default function AdminCommerceOverviewPage() {
   return (

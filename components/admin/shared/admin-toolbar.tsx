@@ -26,6 +26,8 @@ type AdminToolbarProps<T extends string = string> = {
   filterCount?: number;
   onFiltersOpen?: () => void;
   filtersLabel?: string;
+  /** Slot pour des contrôles additionnels (ex : dropdown de tri) — visible mobile et desktop */
+  extraControls?: ReactNode;
   className?: string;
 };
 
@@ -39,6 +41,7 @@ export function AdminToolbar<T extends string = string>({
   filterCount = 0,
   onFiltersOpen,
   filtersLabel = "Filtres",
+  extraControls,
   className,
 }: AdminToolbarProps<T>): JSX.Element {
   const tabPills =
@@ -91,21 +94,23 @@ export function AdminToolbar<T extends string = string>({
   ) : null;
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
+    <div className={cn("flex flex-col gap-2 mt-2", className)}>
       {/*
-       * < lg  → Row 1: search + filter button | Row 2: tabs
-       * ≥ lg  → Single row: search + tabs (flex-1)
-       *         Filter button hidden on desktop — tabs cover primary filters
+       * < lg  → Row 1: search + extraControls + filter button | Row 2: tabs
+       * ≥ lg  → Single row: search | tabs (flex-1) | extraControls + filter button
        */}
 
-      {/* Mobile only: row 1 (search + filter button) */}
-      <div className="flex items-center gap-2 lg:hidden">
+      {/* Mobile only: row 1 (search + extraControls + filter button) */}
+      <div className="flex items-center justify-between gap-2 lg:hidden ">
         <AdminSearchInput
           value={search}
           onChange={onSearchChange}
           placeholder={placeholder}
-          className="min-w-0 flex-1"
+          className="min-w-0 max-w-sm flex-1"
         />
+        {extraControls ? (
+          <div className="flex shrink-0 items-center gap-2">{extraControls}</div>
+        ) : null}
         {filtersButton}
       </div>
 
@@ -113,16 +118,19 @@ export function AdminToolbar<T extends string = string>({
       {tabPills ? <div className="lg:hidden">{tabPills}</div> : null}
 
       {/* Desktop only: single row */}
-      <div className="hidden items-center gap-2 lg:flex">
+      <div className="hidden items-center gap-2 lg:flex lg:justify-between">
         <AdminSearchInput
           value={search}
           onChange={onSearchChange}
           placeholder={placeholder}
-          className="min-w-0 shrink-0 max-w-xs"
+          className="min-w-0 max-w-sm flex-1"
         />
         {tabPills ? <div className="min-w-0 flex-1">{tabPills}</div> : null}
+        {extraControls ? (
+          <div className="flex shrink-0 items-center gap-2">{extraControls}</div>
+        ) : null}
+        {filtersButton}
       </div>
     </div>
   );
 }
-

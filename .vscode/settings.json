@@ -92,5 +92,6 @@
     "uniq": true,
     "git restore": true,
     "true": true
-  }
+  },
+  "github.copilot.chat.workspace.codeSearchExternalIngest.enabled": true
 }

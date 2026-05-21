@@ -5,14 +5,14 @@
 
   /* ── Core shadcn/ui ─────────────────────────────────────────────────────── */
 
-  /* Blanc quasi-pur, micro-chaleur : fond UI neutre pour laisser les produits respirer */
-  --background: oklch(0.999 0.002 82);
-  /* Gris chaud très subtil : fond hero, sections secondaires, reassurance */
-  --background-secondary: oklch(0.972 0.003 80);
+  /* Blanc légèrement warm — moins agressif pour les yeux */
+  --background: oklch(0.982 0.006 80);
+  /* Gris chaud subtil : fond hero, sections secondaires */
+  --background-secondary: oklch(0.965 0.006 78);
   /* Encre chaude très sombre — pas de noir froid */
   --foreground: oklch(0.15 0.024 50);
 
-  --card: oklch(1 0 0);
+  --card: oklch(0.992 0.005 78);
   --card-foreground: oklch(0.15 0.024 50);
 
   --popover: oklch(0.998 0.003 80);
@@ -117,12 +117,13 @@
 
   /* ── Shell public ───────────────────────────────────────────────────────── */
 
-  --shell-surface: oklch(0.972 0.009 78 / 0.98);
-  --shell-surface-blur: oklch(0.972 0.009 78 / 0.88);
-  --shell-drawer: oklch(0.994 0.004 80 / 0.99);
-  --shell-drawer-blur: oklch(0.994 0.004 80 / 0.92);
-  --shell-border: oklch(0.56 0.044 54 / 0.14);
-  --shell-border-strong: oklch(0.5 0.05 52 / 0.26);
+  /* Plus warm et plus distinct du background : évite le blur "fade" en light mode */
+  --shell-surface: oklch(0.952 0.018 74 / 0.96);
+  --shell-surface-blur: oklch(0.948 0.017 74 / 0.84);
+  --shell-drawer: oklch(0.978 0.008 76 / 0.99);
+  --shell-drawer-blur: oklch(0.976 0.008 76 / 0.92);
+  --shell-border: oklch(0.52 0.046 54 / 0.22);
+  --shell-border-strong: oklch(0.46 0.052 52 / 0.34);
 
   /* ── Hero éditorial ─────────────────────────────────────────────────────── */
 
@@ -155,13 +156,15 @@
 
   /* ── Sidebar admin ──────────────────────────────────────────────────────── */
 
-  --sidebar: oklch(0.982 0.006 72);
+  /* Fond sidebar warm distinctif */
+  --sidebar: oklch(0.955 0.014 70);
   --sidebar-foreground: oklch(0.22 0.022 54);
   --sidebar-primary: oklch(0.28 0.032 54);
   --sidebar-primary-foreground: oklch(0.97 0.004 70);
-  --sidebar-accent: oklch(0.955 0.01 72);
-  --sidebar-accent-foreground: oklch(0.3 0.03 54);
-  --sidebar-border: oklch(0.89 0.012 70);
+  /* Hover/active : contraste nettement plus marqué */
+  --sidebar-accent: oklch(0.910 0.026 68);
+  --sidebar-accent-foreground: oklch(0.2 0.03 52);
+  --sidebar-border: oklch(0.78 0.022 66);
   --sidebar-ring: oklch(0.6 0.12 70);
 
   /* ── Charts ─────────────────────────────────────────────────────────────── */

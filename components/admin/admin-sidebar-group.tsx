@@ -16,12 +16,38 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 
 import { AdminSidebarLink } from "./admin-sidebar-link";
 
-type AdminSidebarGroupProps = {
+const GROUP_CLASSNAMES = {
+  root: "group/collapsible",
+  sidebarGroup: "p-0",
+  label: "p-0",
+  content:
+    "ml-2 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up",
+  groupContent: "pt-1",
+  menu: "gap-px desktop:gap-0.5",
+  icon: "size-4 shrink-0",
+} as const;
+
+const TRIGGER_CLASSNAMES = {
+  base: "flex w-full items-center gap-2 rounded-l-none rounded-r-sm px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors focus-visible:outline-none focus-visible:ring-2",
+  desktop: "desktop:py-2 desktop:text-[11px] desktop:tracking-[0.18em]",
+  inactive:
+    "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+  open: "data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground data-[state=open]:shadow-raised data-[state=open]:border-l-4 data-[state=open]:border-brand",
+  focus: "focus-visible:ring-sidebar-ring",
+} as const;
+
+const CHEVRON_CLASSNAMES = {
+  base: "size-4 shrink-0 transition-transform duration-200 ease-out",
+  open: "group-data-[state=open]/collapsible:rotate-90",
+} as const;
+
+type AdminSidebarGroupProps = Readonly<{
   group: AdminSidebarNavGroup;
-};
+}>;
 
 export function AdminSidebarGroup({ group }: AdminSidebarGroupProps) {
   const pathname = usePathname();
@@ -35,19 +61,27 @@ export function AdminSidebarGroup({ group }: AdminSidebarGroupProps) {
     <Collapsible
       open={isGroupActive || isOpen}
       onOpenChange={setIsOpen}
-      className="group/collapsible"
+      className={GROUP_CLASSNAMES.root}
     >
-      <SidebarGroup className="p-0">
-        <SidebarGroupLabel asChild className="p-0">
-          <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring desktop:rounded-xl desktop:py-2 desktop:text-[11px] desktop:tracking-[0.18em] data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-            <ChevronRight className="size-4 shrink-0 transition-transform duration-200 ease-out group-data-[state=open]/collapsible:rotate-90" />
+      <SidebarGroup className={GROUP_CLASSNAMES.sidebarGroup}>
+        <SidebarGroupLabel asChild className={GROUP_CLASSNAMES.label}>
+          <CollapsibleTrigger
+            className={cn(
+              TRIGGER_CLASSNAMES.base,
+              TRIGGER_CLASSNAMES.desktop,
+              TRIGGER_CLASSNAMES.inactive,
+              TRIGGER_CLASSNAMES.open,
+              TRIGGER_CLASSNAMES.focus
+            )}
+          >
+            <ChevronRight className={cn(CHEVRON_CLASSNAMES.base, CHEVRON_CLASSNAMES.open)} />
             <span>{group.label}</span>
           </CollapsibleTrigger>
         </SidebarGroupLabel>
 
-        <CollapsibleContent className="ml-2 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-          <SidebarGroupContent className="pt-1">
-            <SidebarMenu className="gap-0.5 desktop:gap-1">
+        <CollapsibleContent className={GROUP_CLASSNAMES.content}>
+          <SidebarGroupContent className={GROUP_CLASSNAMES.groupContent}>
+            <SidebarMenu className={GROUP_CLASSNAMES.menu}>
               {group.items.map((item) => (
                 <AdminSidebarLink
                   key={item.key}
@@ -55,7 +89,7 @@ export function AdminSidebarGroup({ group }: AdminSidebarGroupProps) {
                   tooltip={item.label}
                   {...(item.exact !== undefined ? { exact: item.exact } : {})}
                   iconContent={renderAdminNavigationIcon(item.iconKey, {
-                    className: "size-4 shrink-0",
+                    className: GROUP_CLASSNAMES.icon,
                   })}
                 >
                   {item.label}

@@ -2,7 +2,7 @@ import type { ComponentType, JSX } from "react";
 import Link from "next/link";
 import { FileText, FolderTree, Globe, ImageIcon, Package, ShoppingBag } from "lucide-react";
 
-import { StatsCard } from "@/components/shared/stats-card";
+import { StatsCard } from "@/components/shared/display";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { AdminDashboardStats } from "@/features/admin/dashboard";
 

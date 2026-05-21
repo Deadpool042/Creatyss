@@ -32,7 +32,7 @@ export function AdminSidebarLink({
         asChild
         tooltip={tooltip}
         isActive={isActive}
-        className="h-8 rounded-lg desktop:h-9 desktop:rounded-xl"
+        className="h-8 rounded desktop:h-9"
       >
         <Link href={href}>
           {iconContent ? (

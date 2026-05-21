@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PLACEHOLDER_FILENAME } from "@/core/media";
-import { PlaceholderImage } from "@/components/shared/placeholder-image";
+import { PlaceholderImage } from "@/components/shared/media";
 
 type FeaturedProductImage = {
   filePath: string;
