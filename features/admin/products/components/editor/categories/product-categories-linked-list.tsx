@@ -4,8 +4,8 @@ import type { JSX } from "react";
 import { Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import type { CategoryNode } from "@/features/admin/products/editor/types/product-categories.types";
-import { buildCategoryPath } from "@/features/admin/products/editor/hooks/use-product-categories-manager";
+import type { CategoryNode } from "@/features/admin/products/editor/types";
+import { buildCategoryPath } from "@/features/admin/products/editor/hooks";
 
 type ProductCategoriesLinkedListProps = {
   linkedCategories: CategoryNode[];

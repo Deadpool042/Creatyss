@@ -1,153 +1,255 @@
 //features/admin/products/list/queries/list-admin-products.query.ts
+import { ProductStatus } from "@/prisma-generated/client";
+
 import { db } from "@/core/db";
-import { mapAdminProductStatus } from "@/features/admin/products/mappers";
-import type { AdminProductFeedItem } from "../types";
+import { mapAdminProductFeedItem } from "@/features/admin/products/list/mappers/server";
+import type { AdminProductFeedItem } from "@/features/admin/products/list/types/product-feed.types";
+import type {
+  ProductSortOption,
+  ProductStatusCounts,
+  ProductTableStatus,
+} from "@/features/admin/products/list/types/product-table.types";
 
 export type AdminProductsListView = "active" | "trash";
 
-function formatMoney(value: { toString(): string } | null): string {
-  if (value === null) {
-    return "—";
-  }
+export type ProductFeaturedFilter = "all" | "featured" | "standard";
 
-  const parsed = Number.parseFloat(value.toString());
+export type ProductListFilters = {
+  view?: AdminProductsListView;
+  search?: string;
+  status?: ProductTableStatus[];
+  sort?: ProductSortOption;
+  page?: number;
+  perPage?: number;
+  categoryId?: string;
+  featured?: ProductFeaturedFilter;
+};
 
-  if (!Number.isFinite(parsed)) {
-    return "—";
-  }
+export type ProductListResult = {
+  items: AdminProductFeedItem[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  statusCounts: ProductStatusCounts;
+};
 
-  return `${parsed.toFixed(2)} €`;
-}
+const STATUS_MAP: Record<ProductTableStatus, ProductStatus> = {
+  draft: ProductStatus.DRAFT,
+  active: ProductStatus.ACTIVE,
+  inactive: ProductStatus.INACTIVE,
+  archived: ProductStatus.ARCHIVED,
+};
 
-export async function listAdminProducts(
-  view: AdminProductsListView = "active"
-): Promise<AdminProductFeedItem[]> {
-  const products = await db.product.findMany({
-    where: view === "trash" ? { archivedAt: { not: null } } : { archivedAt: null },
-    orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+const DEFAULT_PER_PAGE = 24;
+
+const PRODUCT_SELECT = {
+  id: true,
+  slug: true,
+  name: true,
+  shortDescription: true,
+  description: true,
+  status: true,
+  isFeatured: true,
+  updatedAt: true,
+  primaryImage: {
     select: {
-      id: true,
-      slug: true,
+      publicUrl: true,
+      altText: true,
+    },
+  },
+  productType: {
+    select: {
       name: true,
-      shortDescription: true,
-      status: true,
-      isFeatured: true,
-      updatedAt: true,
-      primaryImage: {
+    },
+  },
+  variants: {
+    where: {
+      archivedAt: null as null,
+    },
+    select: {
+      inventoryItems: {
+        where: {
+          archivedAt: null as null,
+          status: "ACTIVE" as const,
+        },
         select: {
-          publicUrl: true,
-          altText: true,
+          onHandQuantity: true,
+          reservedQuantity: true,
         },
       },
-      productType: {
+      prices: {
+        where: {
+          archivedAt: null as null,
+          isActive: true,
+        },
+        orderBy: [{ createdAt: "asc" as const }],
+        take: 1,
         select: {
+          amount: true,
+          compareAtAmount: true,
+        },
+      },
+    },
+  },
+  _count: {
+    select: {
+      variants: true,
+    },
+  },
+  productCategories: {
+    orderBy: [{ sortOrder: "asc" as const }],
+    select: {
+      category: {
+        select: {
+          id: true,
+          slug: true,
           name: true,
-        },
-      },
-      productCategories: {
-        orderBy: [{ isPrimary: "desc" }, { sortOrder: "asc" }],
-        select: {
-          category: {
+          parent: {
             select: {
               name: true,
             },
           },
         },
       },
-      variants: {
-        where: {
-          archivedAt: null,
-        },
-        orderBy: [{ isDefault: "desc" }, { sortOrder: "asc" }, { createdAt: "asc" }],
-        select: {
-          id: true,
-          inventoryItems: {
-            where: {
-              archivedAt: null,
-              status: "ACTIVE",
-            },
-            select: {
-              onHandQuantity: true,
-              reservedQuantity: true,
-            },
-          },
-          prices: {
-            where: {
-              archivedAt: null,
-              isActive: true,
-            },
-            orderBy: [{ createdAt: "asc" }],
-            take: 1,
-            select: {
-              amount: true,
-              compareAtAmount: true,
-            },
-          },
-        },
-      },
     },
-  });
+  },
+};
 
-  return products.map((product) => {
-    const categoryNames = product.productCategories.map((link) => link.category.name);
+export async function listAdminProducts(
+  filters: ProductListFilters = {}
+): Promise<ProductListResult> {
+  const {
+    view = "active",
+    search = "",
+    status = [],
+    sort = "updated-desc",
+    page = 1,
+    perPage = DEFAULT_PER_PAGE,
+    categoryId,
+    featured = "all",
+  } = filters;
 
-    const stockQuantity = product.variants.reduce((productTotal, variant) => {
-      const variantTotal = variant.inventoryItems.reduce((sum, inventoryItem) => {
-        return sum + inventoryItem.onHandQuantity - inventoryItem.reservedQuantity;
-      }, 0);
+  const normalizedSearch = search.trim();
 
-      return productTotal + variantTotal;
-    }, 0);
+  // Base where for view (archived vs active)
+  const viewWhere =
+    view === "trash"
+      ? { archivedAt: { not: null } }
+      : { archivedAt: null };
 
-    const activePrices = product.variants
-      .map((variant) => variant.prices[0] ?? null)
-      .filter((price): price is NonNullable<typeof price> => price !== null);
+  // Status filter — in trash view we ignore status filter
+  const statusWhere =
+    view === "trash"
+      ? {}
+      : status.length > 0
+        ? { status: { in: status.map((s) => STATUS_MAP[s]) } }
+        : { status: { not: ProductStatus.ARCHIVED } };
 
-    let minAmount: { toString(): string } | null = null;
-    let minCompareAtAmount: { toString(): string } | null = null;
-    let hasPromotion = false;
+  // Search filter
+  const searchWhere =
+    normalizedSearch.length > 0
+      ? {
+          OR: [
+            { name: { contains: normalizedSearch, mode: "insensitive" as const } },
+            { slug: { contains: normalizedSearch, mode: "insensitive" as const } },
+          ],
+        }
+      : {};
 
-    for (const price of activePrices) {
-      const amountValue = Number.parseFloat(price.amount.toString());
-      const compareAtValue =
-        price.compareAtAmount === null ? null : Number.parseFloat(price.compareAtAmount.toString());
+  // Featured filter
+  const featuredWhere =
+    featured === "featured"
+      ? { isFeatured: true }
+      : featured === "standard"
+        ? { isFeatured: false }
+        : {};
 
-      if (minAmount === null || amountValue < Number.parseFloat(minAmount.toString())) {
-        minAmount = price.amount;
-      }
+  // Category filter
+  const categoryWhere =
+    categoryId !== undefined && categoryId !== "" && categoryId !== "all"
+      ? {
+          productCategories: {
+            some: {
+              category: { id: categoryId },
+            },
+          },
+        }
+      : {};
 
-      if (
-        price.compareAtAmount !== null &&
-        (minCompareAtAmount === null ||
-          compareAtValue! < Number.parseFloat(minCompareAtAmount.toString()))
-      ) {
-        minCompareAtAmount = price.compareAtAmount;
-      }
+  const where = {
+    ...viewWhere,
+    ...statusWhere,
+    ...searchWhere,
+    ...featuredWhere,
+    ...categoryWhere,
+  };
 
-      if (compareAtValue !== null && compareAtValue > amountValue) {
-        hasPromotion = true;
-      }
+  // For status counts: same filters but without the status constraint
+  const whereWithoutStatus = {
+    ...viewWhere,
+    ...searchWhere,
+    ...featuredWhere,
+    ...categoryWhere,
+  };
+
+  const orderBy = (() => {
+    switch (sort) {
+      case "name-asc":
+        return [{ name: "asc" as const }, { id: "asc" as const }];
+      case "name-desc":
+        return [{ name: "desc" as const }, { id: "desc" as const }];
+      case "updated-asc":
+        return [{ updatedAt: "asc" as const }, { id: "asc" as const }];
+      case "updated-desc":
+      default:
+        return [{ updatedAt: "desc" as const }, { id: "desc" as const }];
     }
+  })();
 
-    return {
-      id: product.id,
-      slug: product.slug,
-      name: product.name,
-      shortDescription: product.shortDescription,
-      status: mapAdminProductStatus(product.status),
-      isFeatured: product.isFeatured,
-      primaryImageUrl: product.primaryImage?.publicUrl ?? null,
-      primaryImageAlt: product.primaryImage?.altText ?? null,
-      categoryNames,
-      categoryPathLabel: categoryNames.length > 0 ? categoryNames.join(" / ") : "",
-      productTypeName: product.productType?.name ?? null,
-      variantCount: product.variants.length,
-      stockState: stockQuantity > 0 ? "in-stock" : "out-of-stock",
-      stockQuantity,
-      priceLabel: formatMoney(minAmount),
-      compareAtPriceLabel: hasPromotion ? formatMoney(minCompareAtAmount) : "",
-      hasPromotion,
-      updatedAt: product.updatedAt.toISOString(),
-    };
-  });
+  const safePage = Math.max(1, page);
+  const safePerPage = Math.max(1, Math.min(200, perPage));
+  const skip = (safePage - 1) * safePerPage;
+
+  const [rawProducts, total, rawStatusCounts] = await Promise.all([
+    db.product.findMany({
+      where,
+      orderBy,
+      skip,
+      take: safePerPage,
+      select: PRODUCT_SELECT,
+    }),
+    db.product.count({ where }),
+    view === "trash"
+      ? Promise.resolve([] as { status: ProductStatus; _count: { id: number } }[])
+      : db.product.groupBy({
+          by: ["status"],
+          where: whereWithoutStatus,
+          _count: { id: true },
+        }),
+  ]);
+
+  const totalPages = Math.max(1, Math.ceil(total / safePerPage));
+
+  const statusCounts: ProductStatusCounts = {
+    all: 0,
+    active: 0,
+    draft: 0,
+    inactive: 0,
+  };
+
+  for (const row of rawStatusCounts) {
+    if (row.status === ProductStatus.ACTIVE) statusCounts.active = row._count.id;
+    else if (row.status === ProductStatus.DRAFT) statusCounts.draft = row._count.id;
+    else if (row.status === ProductStatus.INACTIVE) statusCounts.inactive = row._count.id;
+  }
+
+  statusCounts.all = statusCounts.active + statusCounts.draft + statusCounts.inactive;
+
+  return {
+    items: rawProducts.map(mapAdminProductFeedItem),
+    total,
+    totalPages,
+    currentPage: Math.min(safePage, totalPages),
+    statusCounts,
+  };
 }

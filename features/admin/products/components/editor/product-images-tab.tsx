@@ -11,7 +11,7 @@ import type {
   setProductPrimaryImageAction,
   updateProductImageAltTextAction,
   uploadProductImagesAction,
-} from "@/features/admin/products/editor";
+} from "@/features/admin/products/editor/actions";
 import type {
   AdminProductImageItem,
   AttachableMediaAssetItem,

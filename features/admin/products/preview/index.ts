@@ -1,3 +1,5 @@
+import "server-only";
+
 export { getAdminProductPreviewBySlug } from "./queries/get-admin-product-preview.query";
 export type {
   AdminProductPreview,

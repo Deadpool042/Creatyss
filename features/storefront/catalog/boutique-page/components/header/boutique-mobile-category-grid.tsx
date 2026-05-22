@@ -34,7 +34,7 @@ export function BoutiqueMobileCategoryGrid({
 
   return (
     <section
-      className="grid gap-3.5ablet:hidden"
+      className="grid gap-3.5 tablet:hidden"
       aria-labelledby="boutique-categories-title"
       data-testid="boutique-mobile-discovery"
     >
@@ -76,7 +76,7 @@ export function BoutiqueMobileCategoryGrid({
               key={category.id}
               href={category.href}
               aria-current={category.isActive ? "page" : undefined}
-              className="group inline-flex shrink-0 items-center gap-2 min-h-12 rounded-full border border-surface-border-subtle bg-surface-panel py-1.5 pl-1.5 pr-3 text-text-muted-strong outline-none snap-start transition-colors hover:border-control-border-strong hover:text-foreground active:scale-[0.97] focus-visible:ring-[3px] focus-visible:ring-focus-ring/42 data-[active=true]:border-brand/72 data-[active=true]:bg-brand/8 data-[active=true]:text-foreground"
+              className="group inline-flex min-w-[9rem] shrink-0 items-center gap-2 min-h-12 rounded-full border border-surface-border-subtle bg-surface-panel py-1.5 pl-1.5 pr-3 text-text-muted-strong outline-none snap-start transition-colors hover:border-control-border-strong hover:text-foreground active:scale-[0.97] focus-visible:ring-[3px] focus-visible:ring-focus-ring/42 data-[active=true]:border-brand/72 data-[active=true]:bg-brand/8 data-[active=true]:text-foreground"
               data-active={category.isActive ? "true" : "false"}
             >
               <span className="relative grid shrink-0 size-9 place-items-center overflow-hidden rounded-full border border-surface-border-subtle bg-surface-panel/78 group-data-[active=true]:border-brand/70 group-data-[active=true]:bg-brand/[0.14]">

@@ -31,7 +31,6 @@ export { ProductTableMobile } from "./list";
 export { ProductTableToolbar } from "./list";
 export { ProductFeaturedToggle } from "./list";
 export { ProductCollectionCard } from "./list";
-export { ProductSearchSheet } from "./list";
 
 // Shared components
 export { ProductSection } from "./shared";

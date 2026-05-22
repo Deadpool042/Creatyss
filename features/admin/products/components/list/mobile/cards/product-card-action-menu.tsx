@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
+import type { ProductTableItem } from "@/features/admin/products/list/types";
 import {
   PRODUCT_CARD_ACTIONS_COPY,
   PRODUCT_ROW_ACTIONS_COPY,

@@ -1,4 +1,4 @@
-export { useProductTableFilters } from "./hooks/use-product-table-filters";
+import "server-only";
 
 export { toggleProductFeaturedAction } from "./actions/toggle-product-featured.action";
 export { bulkUpdateProductStatusAction } from "./actions/bulk-update-product-status.action";
@@ -63,7 +63,6 @@ export type {
   ProductTableActiveFilter,
   ProductTableFeaturedFilter,
   ProductTableFiltersInput,
-  ProductTableFiltersState,
   ProductTableFiltersValues,
   ProductTableImageFilter,
   ProductTableItem,

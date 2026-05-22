@@ -1,4 +1,14 @@
-type RawInputValue = FormDataEntryValue | string | null | undefined;
+import { z } from "zod";
+
+import {
+  normalizeBoolean,
+  normalizeOptionalId,
+  normalizeOptionalText,
+  normalizeProductSlug,
+  parseNonNegativeInteger,
+  readTrimmedString,
+  type RawInputValue,
+} from "./shared-input";
 
 export type ProductLifecycleStatus = "draft" | "active" | "inactive" | "archived";
 
@@ -106,19 +116,6 @@ type AdminProductCharacteristicInputSource = {
 export type AdminProductInputValidationResult =
   | { ok: true; data: ValidatedAdminProductInput }
   | { ok: false; code: AdminProductInputErrorCode };
-
-function readTrimmedString(value: RawInputValue): string | null {
-  if (typeof value !== "string") {
-    return null;
-  }
-
-  const normalizedValue = value.trim();
-  return normalizedValue.length > 0 ? normalizedValue : null;
-}
-
-function normalizeOptionalText(value: RawInputValue): string | null {
-  return readTrimmedString(value);
-}
 
 /**
  * Sanitizer minimal et volontairement conservateur pour le HTML issu de l'éditeur admin (TipTap).
@@ -229,7 +226,7 @@ function sanitizeAdminRichTextHtml(input: string): string {
   return html.trim();
 }
 
-function normalizeOptionalRichTextHtml(value: RawInputValue): string | null {
+function normalizeOptionalRichTextHtml(value: unknown): string | null {
   const trimmed = readTrimmedString(value);
   if (trimmed === null) {
     return null;
@@ -247,52 +244,7 @@ function getVisibleTextLength(html: string): number {
     .trim().length;
 }
 
-export function normalizeProductSlug(value: string): string {
-  return value
-    .trim()
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/-{2,}/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-function normalizeOptionalId(value: RawInputValue): string | null | undefined {
-  if (value === undefined) {
-    return undefined;
-  }
-
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null) {
-    return null;
-  }
-
-  return normalizedValue;
-}
-
-function normalizeBoolean(value: RawInputValue): boolean {
-  return value === "on" || value === "true" || value === "1";
-}
-
-function parseNonNegativeInteger(value: RawInputValue): number | null {
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null) {
-    return null;
-  }
-
-  if (!/^\d+$/.test(normalizedValue)) {
-    return null;
-  }
-
-  return Number(normalizedValue);
-}
-
-function isProductLifecycleStatus(value: string | null): value is ProductLifecycleStatus {
-  return value === "draft" || value === "active" || value === "inactive" || value === "archived";
-}
+export { normalizeProductSlug };
 
 function isRelatedProductLinkType(value: string | null): value is RelatedProductLinkType {
   return (
@@ -325,6 +277,38 @@ function normalizeDistinctIds(values: readonly RawInputValue[] | undefined): str
 
   return normalizedIds;
 }
+
+const productLifecycleStatusSchema = z.enum(["draft", "active", "inactive", "archived"]);
+
+const adminProductTopLevelSchema = z.object({
+  name: z.preprocess((value) => readTrimmedString(value), z.string().min(1)),
+  slug: z
+    .preprocess((value) => readTrimmedString(value), z.string().min(1))
+    .transform((value) => normalizeProductSlug(value))
+    .refine((value) => value.length > 0),
+  skuRoot: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  marketingHook: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  shortDescription: z.preprocess(
+    (value) => normalizeOptionalRichTextHtml(value),
+    z.string().nullable()
+  ),
+  description: z.preprocess(
+    (value) => normalizeOptionalRichTextHtml(value),
+    z.string().nullable()
+  ),
+  careInstructions: z.preprocess(
+    (value) => normalizeOptionalRichTextHtml(value),
+    z.string().nullable()
+  ),
+  productTypeId: z.preprocess((value) => normalizeOptionalId(value), z.string().nullable()),
+  primaryImageMediaAssetId: z.preprocess(
+    (value) => normalizeOptionalId(value),
+    z.string().nullable()
+  ),
+  status: z.preprocess((value) => readTrimmedString(value), productLifecycleStatusSchema),
+  isFeatured: z.preprocess((value) => normalizeBoolean(value), z.boolean()),
+  isStandalone: z.preprocess((value) => normalizeBoolean(value), z.boolean()),
+});
 
 function validateCategoryLinks(input: {
   categoryIds: readonly RawInputValue[] | undefined;
@@ -360,7 +344,7 @@ function validateCategoryLinks(input: {
 
     const sortOrder = parseNonNegativeInteger(input.categorySortOrders[categoryId]);
 
-    if (sortOrder === null) {
+    if (sortOrder === undefined) {
       return { ok: false, code: "invalid_category_sort_order" };
     }
 
@@ -417,7 +401,7 @@ function validateRelatedProducts(input: {
 
     const sortOrder = parseNonNegativeInteger(input.relatedProductSortOrders[targetProductId]);
 
-    if (sortOrder === null) {
+    if (sortOrder === undefined) {
       return { ok: false, code: "invalid_related_product_sort_order" };
     }
 
@@ -540,49 +524,36 @@ export function validateAdminProductCharacteristics(input: {
 export function validateAdminProductInput(
   input: AdminProductInputSource
 ): AdminProductInputValidationResult {
-  const name = readTrimmedString(input.name);
+  const parsed = adminProductTopLevelSchema.safeParse(input);
 
-  if (name === null) {
-    return { ok: false, code: "missing_name" };
+  if (!parsed.success) {
+    const issuePath = parsed.error.issues[0]?.path[0];
+    const receivedSlug = readTrimmedString(input.slug);
+
+    switch (issuePath) {
+      case "name":
+        return { ok: false, code: "missing_name" };
+      case "slug":
+        if (receivedSlug === null) {
+          return { ok: false, code: "missing_slug" };
+        }
+        return { ok: false, code: "invalid_slug" };
+      case "status":
+        return { ok: false, code: "invalid_status" };
+      case "productTypeId":
+        return { ok: false, code: "invalid_product_type_id" };
+      case "primaryImageMediaAssetId":
+        return { ok: false, code: "invalid_primary_image" };
+      default:
+        return { ok: false, code: "invalid_status" };
+    }
   }
-
-  const rawSlug = readTrimmedString(input.slug);
-
-  if (rawSlug === null) {
-    return { ok: false, code: "missing_slug" };
-  }
-
-  const slug = normalizeProductSlug(rawSlug);
-
-  if (slug.length === 0) {
-    return { ok: false, code: "invalid_slug" };
-  }
-
-  const shortDescription = normalizeOptionalRichTextHtml(input.shortDescription);
 
   if (
-    shortDescription !== null &&
-    getVisibleTextLength(shortDescription) > SHORT_DESCRIPTION_MAX_LENGTH
+    parsed.data.shortDescription !== null &&
+    getVisibleTextLength(parsed.data.shortDescription) > SHORT_DESCRIPTION_MAX_LENGTH
   ) {
     return { ok: false, code: "short_description_too_long" };
-  }
-
-  const status = readTrimmedString(input.status);
-
-  if (!isProductLifecycleStatus(status)) {
-    return { ok: false, code: "invalid_status" };
-  }
-
-  const productTypeId = normalizeOptionalId(input.productTypeId);
-
-  if (productTypeId === undefined) {
-    return { ok: false, code: "invalid_product_type_id" };
-  }
-
-  const primaryImageMediaAssetId = normalizeOptionalId(input.primaryImageMediaAssetId);
-
-  if (primaryImageMediaAssetId === undefined) {
-    return { ok: false, code: "invalid_primary_image" };
   }
 
   const categoryLinks = validateCategoryLinks({
@@ -608,18 +579,18 @@ export function validateAdminProductInput(
   return {
     ok: true,
     data: {
-      name,
-      slug,
-      skuRoot: normalizeOptionalText(input.skuRoot),
-      marketingHook: normalizeOptionalText(input.marketingHook),
-      shortDescription,
-      description: normalizeOptionalRichTextHtml(input.description),
-      careInstructions: normalizeOptionalRichTextHtml(input.careInstructions),
-      productTypeId,
-      primaryImageMediaAssetId,
-      status,
-      isFeatured: normalizeBoolean(input.isFeatured),
-      isStandalone: normalizeBoolean(input.isStandalone),
+      name: parsed.data.name,
+      slug: parsed.data.slug,
+      skuRoot: parsed.data.skuRoot,
+      marketingHook: parsed.data.marketingHook,
+      shortDescription: parsed.data.shortDescription,
+      description: parsed.data.description,
+      careInstructions: parsed.data.careInstructions,
+      productTypeId: parsed.data.productTypeId,
+      primaryImageMediaAssetId: parsed.data.primaryImageMediaAssetId,
+      status: parsed.data.status,
+      isFeatured: parsed.data.isFeatured,
+      isStandalone: parsed.data.isStandalone,
       categoryLinks: categoryLinks.data,
       relatedProducts: relatedProducts.data,
     },

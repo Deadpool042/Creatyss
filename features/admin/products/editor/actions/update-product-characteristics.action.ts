@@ -8,7 +8,7 @@ import { updateProductCharacteristics } from "../services/update-product-charact
 import {
   productCharacteristicsFormInitialState,
   type ProductCharacteristicsFormAction,
-} from "../types/product-characteristics-form.types";
+} from "../types";
 
 function collectCharacteristicIndexes(formData: FormData): number[] {
   const indexes = new Set<number>();

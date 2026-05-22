@@ -8,7 +8,6 @@ import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutiq
 const FILTER_TRIGGER_BUTTON_CLASS =
   "inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-surface-border-subtle bg-control-surface px-2.5 text-xs font-medium leading-none text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground active:translate-y-px [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-brand ";
 
-
 type BoutiqueListingActionsBarProps = {
   model: BoutiquePageViewModel;
 };
@@ -45,10 +44,54 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
           >
             {creationCountLabel}
           </span>
-
         </div>
 
         <div className="ml-auto flex min-w-0 items-center justify-end gap-2">
+          <div
+            data-testid="boutique-filter-shortcuts"
+            className="hidden tablet:flex wide:hidden items-center gap-1.5"
+          >
+            <button
+              type="button"
+              className="inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-2.5 text-xs font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
+            >
+              Catégories
+            </button>
+            <button
+              type="button"
+              className="inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-2.5 text-xs font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
+            >
+              Disponibilité
+            </button>
+            <button
+              type="button"
+              className="inline-flex h-9 items-center justify-center rounded-lg border border-surface-border-subtle bg-control-surface px-2.5 text-xs font-medium text-text-muted-strong transition-colors hover:border-control-border-strong hover:bg-control-surface-hover hover:text-foreground"
+            >
+              Prix
+            </button>
+          </div>
+
+          <div
+            role="group"
+            aria-label="Changer la vue"
+            className="inline-flex items-center gap-1 rounded-md border border-surface-border-subtle bg-control-surface p-0.5 desktop:hidden"
+          >
+            <button
+              type="button"
+              aria-label="Vue grille"
+              className="inline-flex h-7 items-center rounded px-2 text-[0.7rem] font-medium text-foreground"
+            >
+              Grille
+            </button>
+            <button
+              type="button"
+              aria-label="Vue liste"
+              className="inline-flex h-7 items-center rounded px-2 text-[0.7rem] font-medium text-text-muted-strong"
+            >
+              Liste
+            </button>
+          </div>
+
           <div className="inline-flex min-w-0 items-center gap-1.5">
             <span className="hidden tablet:inline text-[0.8125rem] font-medium whitespace-nowrap text-text-muted-strong">
               Trier par :

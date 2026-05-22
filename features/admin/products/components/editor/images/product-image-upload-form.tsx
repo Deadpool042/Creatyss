@@ -6,7 +6,7 @@ import { ImagePlus } from "lucide-react";
 import { AdminFormField, AdminFormMessage } from "@/components/admin/forms";
 import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
-import type { uploadProductImagesAction } from "@/features/admin/products/editor";
+import type { uploadProductImagesAction } from "@/features/admin/products/editor/actions";
 import {
   uploadProductImagesFormInitialState,
   type UploadProductImagesFormState,

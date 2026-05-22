@@ -1,3 +1,13 @@
+import { z } from "zod";
+
+import {
+  normalizeBoolean,
+  normalizeNonNegativeIntegerOrZero,
+  normalizeOptionalId,
+  normalizeOptionalText,
+  readTrimmedString,
+} from "./shared-input";
+
 export type ValidatedCreateProductImageInput = {
   mediaAssetId: string;
   variantId: string | null;
@@ -32,6 +42,26 @@ type UpdateProductImageInputSource = {
   isPrimary: FormDataEntryValue | string | null | undefined;
 };
 
+const createProductImageInputSchema = z.object({
+  mediaAssetId: z.preprocess((value) => readTrimmedString(value), z.string().min(1)),
+  variantId: z.preprocess((value) => normalizeOptionalId(value), z.string().nullable()),
+  altText: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  sortOrder: z.preprocess(
+    (value) => normalizeNonNegativeIntegerOrZero(value),
+    z.number().int().nonnegative()
+  ),
+  isPrimary: z.preprocess((value) => normalizeBoolean(value), z.boolean()),
+});
+
+const updateProductImageInputSchema = z.object({
+  altText: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  sortOrder: z.preprocess(
+    (value) => normalizeNonNegativeIntegerOrZero(value),
+    z.number().int().nonnegative()
+  ),
+  isPrimary: z.preprocess((value) => normalizeBoolean(value), z.boolean()),
+});
+
 export type CreateProductImageValidationResult =
   | {
       ok: true;
@@ -52,100 +82,38 @@ export type UpdateProductImageValidationResult =
       code: ProductImageInputErrorCode;
     };
 
-function readTrimmedString(value: FormDataEntryValue | string | null | undefined): string | null {
-  if (typeof value !== "string") {
-    return null;
-  }
-
-  return value.trim();
-}
-
-function normalizeOptionalText(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null || normalizedValue.length === 0) {
-    return null;
-  }
-
-  return normalizedValue;
-}
-
-function normalizeSortOrder(value: FormDataEntryValue | string | null | undefined): number | null {
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null || normalizedValue.length === 0) {
-    return 0;
-  }
-
-  if (!/^\d+$/.test(normalizedValue)) {
-    return null;
-  }
-
-  return Number(normalizedValue);
-}
-
-function normalizeOptionalVariantId(
-  value: FormDataEntryValue | string | null | undefined
-): string | null | undefined {
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null || normalizedValue.length === 0) {
-    return null;
-  }
-
-  return normalizedValue;
-}
-
 export function validateCreateProductImageInput(
   input: CreateProductImageInputSource
 ): CreateProductImageValidationResult {
-  const mediaAssetId = readTrimmedString(input.mediaAssetId);
+  const parsed = createProductImageInputSchema.safeParse(input);
 
-  if (mediaAssetId === null || mediaAssetId.length === 0) {
-    return {
-      ok: false,
-      code: "missing_media_asset",
-    };
-  }
+  if (!parsed.success) {
+    const issuePath = parsed.error.issues[0]?.path[0];
 
-  const variantId = normalizeOptionalVariantId(input.variantId);
-
-  if (variantId === undefined) {
-    return {
-      ok: false,
-      code: "invalid_variant",
-    };
-  }
-
-  const sortOrder = normalizeSortOrder(input.sortOrder);
-
-  if (sortOrder === null) {
-    return {
-      ok: false,
-      code: "invalid_sort_order",
-    };
+    switch (issuePath) {
+      case "mediaAssetId":
+        return { ok: false, code: "missing_media_asset" };
+      case "variantId":
+        return { ok: false, code: "invalid_variant" };
+      case "sortOrder":
+        return { ok: false, code: "invalid_sort_order" };
+      default:
+        return { ok: false, code: "invalid_media_asset" };
+    }
   }
 
   return {
     ok: true,
-    data: {
-      mediaAssetId,
-      variantId,
-      altText: normalizeOptionalText(input.altText),
-      sortOrder,
-      isPrimary: input.isPrimary === "on" || input.isPrimary === "true" || input.isPrimary === "1",
-    },
+    data: parsed.data,
   };
 }
 
 export function validateUpdateProductImageInput(
   input: UpdateProductImageInputSource
 ): UpdateProductImageValidationResult {
-  const sortOrder = normalizeSortOrder(input.sortOrder);
+  const parsed = updateProductImageInputSchema.safeParse(input);
 
-  if (sortOrder === null) {
+  if (!parsed.success) {
     return {
       ok: false,
       code: "invalid_sort_order",
@@ -154,10 +122,6 @@ export function validateUpdateProductImageInput(
 
   return {
     ok: true,
-    data: {
-      altText: normalizeOptionalText(input.altText),
-      sortOrder,
-      isPrimary: input.isPrimary === "on" || input.isPrimary === "true" || input.isPrimary === "1",
-    },
+    data: parsed.data,
   };
 }

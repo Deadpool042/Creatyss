@@ -1,3 +1,5 @@
+import "server-only";
+
 export { ProductCreateTopbarMenu, ProductEditorPanel } from "./components";
 
 export {
@@ -31,7 +33,7 @@ export {
   readAdminProductEditorBySlug,
   readAdminProductImages,
   readAdminProductVariants,
-} from "./editor/queries";
+} from "./editor";
 
 export {
   getAdminProductsFeedPage,
@@ -39,7 +41,6 @@ export {
   listProductFilterCategories,
   mapProductFilterCategoryOption,
   mapProductTableItem,
-  useProductTableFilters,
   getFeaturedLabel,
   getImageLabel,
   getSortLabel,
@@ -63,7 +64,6 @@ export {
   type ProductStockState,
   type ProductTableFeaturedFilter,
   type ProductTableFiltersInput,
-  type ProductTableFiltersState,
   type ProductTableFiltersValues,
   type ProductTableImageFilter,
   type ProductTableItem,

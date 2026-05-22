@@ -12,10 +12,85 @@ import {
 import { useProductTableFilters } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type {
   ProductFilterCategoryOption,
+  ProductStatusCounts,
   ProductTableItem,
 } from "@/features/admin/products/list/types/product-table.types";
 import { useProductTableActions } from "./hooks/use-product-table-actions";
 import type { ProductListView } from "./toolbar/product-table-toolbar-types";
+
+// ---------------------------------------------------------------------------
+// ProductTableDataContext — données serveur injectées depuis la page (data bridge)
+// Aligné sur CategoriesTableProvider : aucun hook, pure transmission de données.
+// ---------------------------------------------------------------------------
+
+type ProductTableDataContextValue = {
+  products: ProductTableItem[];
+  categoryOptions: ProductFilterCategoryOption[];
+  view: ProductListView;
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  perPage: number;
+  statusCounts: ProductStatusCounts;
+};
+
+type ProductTableProviderProps = PropsWithChildren<{
+  products: ProductTableItem[];
+  categoryOptions: ProductFilterCategoryOption[];
+  view: ProductListView;
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  perPage: number;
+  statusCounts: ProductStatusCounts;
+}>;
+
+const ProductTableDataContext = createContext<ProductTableDataContextValue | null>(null);
+
+export function ProductTableProvider({
+  products,
+  categoryOptions,
+  view,
+  total,
+  totalPages,
+  currentPage,
+  perPage,
+  statusCounts,
+  children,
+}: ProductTableProviderProps): ReactNode {
+  const value = useMemo<ProductTableDataContextValue>(
+    () => ({
+      products,
+      categoryOptions,
+      view,
+      total,
+      totalPages,
+      currentPage,
+      perPage,
+      statusCounts,
+    }),
+    [products, categoryOptions, view, total, totalPages, currentPage, perPage, statusCounts]
+  );
+
+  return (
+    <ProductTableDataContext.Provider value={value}>{children}</ProductTableDataContext.Provider>
+  );
+}
+
+export function useProductTableData(): ProductTableDataContextValue {
+  const context = useContext(ProductTableDataContext);
+
+  if (context === null) {
+    throw new Error("useProductTableData must be used within ProductTableProvider.");
+  }
+
+  return context;
+}
+
+// ---------------------------------------------------------------------------
+// ProductTableStateContext — état client dérivé des hooks (interne à ProductTable)
+// Reçoit les données du DataContext, calcule l'état de filtrage, sélection, etc.
+// ---------------------------------------------------------------------------
 
 type MobileVisibleSelectionState = {
   visibleCount: number;
@@ -26,7 +101,7 @@ type MobileVisibleSelectionState = {
 type ProductTableState = ReturnType<typeof useProductTableFilters>;
 type ProductTableActions = ReturnType<typeof useProductTableActions>;
 
-type ProductTableContextValue = {
+type ProductTableStateContextValue = {
   state: ProductTableState;
   actions: ProductTableActions;
   view: ProductListView;
@@ -34,41 +109,37 @@ type ProductTableContextValue = {
   onMobileVisibleSelectionChange: (next: MobileVisibleSelectionState) => void;
 };
 
-type ProductTableProviderProps = PropsWithChildren<{
-  products: ProductTableItem[];
-  categoryOptions: ProductFilterCategoryOption[];
-  view: ProductListView;
-}>;
+const ProductTableStateContext = createContext<ProductTableStateContextValue | null>(null);
 
-const ProductTableContext = createContext<ProductTableContextValue | null>(null);
-
-export function ProductTableProvider({
-  products,
-  categoryOptions,
-  view,
+export function ProductTableStateProvider({
   children,
-}: ProductTableProviderProps): ReactNode {
-  const state = useProductTableFilters({ products, categoryOptions });
+}: Readonly<{ children: ReactNode }>): ReactNode {
+  const { products, categoryOptions, view, total, totalPages, currentPage } = useProductTableData();
+
+  const state = useProductTableFilters({
+    products,
+    categoryOptions,
+    total,
+    totalPages,
+    currentPage,
+  });
   const [mobileVisibleSelection, setMobileVisibleSelection] =
     useState<MobileVisibleSelectionState | null>(null);
 
-  const currentPageProductIds = useMemo(() => {
-    return state.paginated.map((product) => product.id);
-  }, [state.paginated]);
+  const currentPageProductIds = useMemo(
+    () => state.paginated.map((product) => product.id),
+    [state.paginated]
+  );
 
   const mobileVisibleProductIds = useMemo(() => {
     const visibleCount = mobileVisibleSelection?.visibleCount ?? 0;
-
     return state.allFilteredProducts.slice(0, visibleCount).map((product) => product.id);
   }, [mobileVisibleSelection?.visibleCount, state.allFilteredProducts]);
 
-  const actions = useProductTableActions({
-    currentPageProductIds,
-    mobileVisibleProductIds,
-  });
+  const actions = useProductTableActions({ currentPageProductIds, mobileVisibleProductIds });
 
-  const value = useMemo<ProductTableContextValue>(() => {
-    return {
+  const value = useMemo<ProductTableStateContextValue>(
+    () => ({
       state,
       actions,
       view,
@@ -83,21 +154,23 @@ export function ProductTableProvider({
           ) {
             return current;
           }
-
           return next;
         });
       },
-    };
-  }, [actions, mobileVisibleSelection, state, view]);
+    }),
+    [actions, mobileVisibleSelection, state, view]
+  );
 
-  return <ProductTableContext.Provider value={value}>{children}</ProductTableContext.Provider>;
+  return (
+    <ProductTableStateContext.Provider value={value}>{children}</ProductTableStateContext.Provider>
+  );
 }
 
-export function useProductTableContext(): ProductTableContextValue {
-  const context = useContext(ProductTableContext);
+export function useProductTableContext(): ProductTableStateContextValue {
+  const context = useContext(ProductTableStateContext);
 
   if (context === null) {
-    throw new Error("useProductTableContext must be used within ProductTableProvider.");
+    throw new Error("useProductTableContext must be used within ProductTableStateProvider.");
   }
 
   return context;

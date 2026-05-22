@@ -18,7 +18,7 @@ export function BoutiquePageHeader({
           Pas de overflow-hidden : les background-image CSS sont clippées à leur div.
           Le double gradient couvre les deux bords sans overflow-hidden. */}
       <div
-        className="relative mx-auto h-56 w-full max-w-424 xs:h-60 mobile:h-64 tablet:h-68 laptop:h-68"
+        className="relative mx-auto h-56 w-full max-w-424 before:pointer-events-none before:absolute before:inset-0 before:bg-[url('/images/storefront/boutique/hero/bg-light-hero.webp')] before:bg-cover before:bg-no-repeat before:opacity-0 before:content-[''] xs:h-60 mobile:h-64 tablet:h-68 laptop:h-68"
         data-testid="boutique-mobile-hero"
       >
         {/* Image de fond light */}
@@ -70,7 +70,7 @@ export function BoutiquePageHeader({
             </p>
 
             <h1 className="m-0 font-serif text-3xl font-medium leading-[1.05] tracking-[0.02em] text-foreground/80 tablet:text-4xl laptop:text-5xl">
-              Des sacs artisanaux faits main.
+              Boutique
             </h1>
 
             <Separator className="max-w-15 border border-brand" />

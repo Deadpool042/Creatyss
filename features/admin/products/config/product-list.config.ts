@@ -8,6 +8,16 @@ import type {
   ProductTableStatusFilter,
 } from "@/features/admin/products/list/types/product-table.types";
 
+// ─── Server-side filter valid values ─────────────────────────────────────────
+
+export const PRODUCT_FILTER_VALID_VALUES = {
+  statuses: ["active", "draft", "inactive"] satisfies ProductTableStatus[],
+  featured: ["all", "featured", "standard"] satisfies ProductFilterFeaturedOption[],
+  sorts: ["updated-desc", "updated-asc", "name-asc", "name-desc"] satisfies ProductSortOption[],
+  perPage: [12, 24, 48, 96],
+  perPageDefault: 24,
+} as const;
+
 // ─── Filter options ──────────────────────────────────────────────────────────
 
 export const PRODUCT_STATUS_OPTIONS: { value: ProductTableStatusFilter; label: string }[] = [
@@ -238,12 +248,4 @@ export const PRODUCT_CARD_COPY = {
   priceTileLabel: "Prix",
   categoryTileLabel: "Catégorie",
   imageFallbackLabel: (name: string) => `Aucun visuel pour ${name}`,
-} as const;
-
-export const PRODUCT_SEARCH_SHEET_COPY = {
-  triggerAriaLabel: "Rechercher un produit",
-  triggerLabel: "Recherche",
-  triggerCompactLabel: "Rech.",
-  title: "Rechercher un produit",
-  placeholder: "Rechercher un produit…",
 } as const;

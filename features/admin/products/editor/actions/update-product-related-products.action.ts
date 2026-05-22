@@ -9,7 +9,7 @@ import { AdminProductEditorServiceError, updateProductRelatedProducts } from "..
 import {
   productRelatedProductsFormInitialState,
   type ProductRelatedProductsFormAction,
-} from "../types/product-related-products-form.types";
+} from "../types";
 
 function getString(formData: FormData, key: string): FormDataEntryValue | null {
   return formData.get(key);

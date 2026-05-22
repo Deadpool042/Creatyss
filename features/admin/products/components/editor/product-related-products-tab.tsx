@@ -19,7 +19,7 @@ import {
   type AdminProductEditorData,
   type AdminRelatedProductEditorType,
   type ProductRelatedProductsFormAction,
-} from "@/features/admin/products/editor";
+} from "@/features/admin/products/editor/types";
 
 export type RelatedProductOption = {
   id: string;

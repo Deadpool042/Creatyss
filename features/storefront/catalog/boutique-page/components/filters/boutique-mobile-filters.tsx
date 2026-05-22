@@ -50,14 +50,28 @@ function BoutiqueFilterOption({
   indicator = "dot",
   helperText,
 }: BoutiqueFilterOptionProps) {
+  const inputFieldId = `${inputId}-field`;
+
   return (
     <label
-      htmlFor={inputId}
+      id={inputId}
+      htmlFor={inputFieldId}
+      tabIndex={0}
+      onClick={(event) => {
+        event.preventDefault();
+        onChange();
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onChange();
+        }
+      }}
       className="group grid w-full cursor-pointer grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-0.5 rounded-lg p-1.5 text-sm text-text-muted-strong transition-colors hover:bg-surface-panel/20 hover:text-foreground active:bg-surface-panel/30 focus-within:bg-surface-panel/20 focus-within:outline-none data-[checked=true]:text-foreground"
       data-checked={checked ? "true" : "false"}
     >
       <input
-        id={inputId}
+        id={inputFieldId}
         checked={checked}
         className="sr-only"
         name={name}
@@ -92,7 +106,12 @@ function BoutiqueFilterOption({
         ) : null}
       </span>
 
-      <span className={cn("pr-1 text-sm leading-[1.35]", checked ? "font-medium text-foreground" : "text-text-muted-strong")}>
+      <span
+        className={cn(
+          "pr-1 text-sm leading-[1.35]",
+          checked ? "font-medium text-foreground" : "text-text-muted-strong"
+        )}
+      >
         {label}
       </span>
 
@@ -328,10 +347,13 @@ export function BoutiqueMobileFilters({
               </label>
             </div>
 
-            {(selectedMinPriceEuros.trim() !== "" || selectedMaxPriceEuros.trim() !== "") ? (
+            {selectedMinPriceEuros.trim() !== "" || selectedMaxPriceEuros.trim() !== "" ? (
               <button
                 type="button"
-                onClick={() => { setSelectedMinPriceEuros(""); setSelectedMaxPriceEuros(""); }}
+                onClick={() => {
+                  setSelectedMinPriceEuros("");
+                  setSelectedMaxPriceEuros("");
+                }}
                 className="w-fit text-[0.6875rem] text-text-muted-soft underline-offset-2 transition-colors hover:text-foreground hover:underline"
               >
                 Effacer le prix
@@ -346,18 +368,26 @@ export function BoutiqueMobileFilters({
           {(() => {
             const minCents = eurosInputToCents(selectedMinPriceEuros);
             const maxCents = eurosInputToCents(selectedMaxPriceEuros);
-            const safeMin = minCents !== null && maxCents !== null && minCents > maxCents ? maxCents : minCents;
-            const safeMax = minCents !== null && maxCents !== null && minCents > maxCents ? minCents : maxCents;
+            const safeMin =
+              minCents !== null && maxCents !== null && minCents > maxCents ? maxCents : minCents;
+            const safeMax =
+              minCents !== null && maxCents !== null && minCents > maxCents ? minCents : maxCents;
             return (
               <>
-                {safeMin !== null ? <input type="hidden" name="minPrice" value={String(safeMin)} /> : null}
-                {safeMax !== null ? <input type="hidden" name="maxPrice" value={String(safeMax)} /> : null}
+                {safeMin !== null ? (
+                  <input type="hidden" name="minPrice" value={String(safeMin)} />
+                ) : null}
+                {safeMax !== null ? (
+                  <input type="hidden" name="maxPrice" value={String(safeMax)} />
+                ) : null}
               </>
             );
           })()}
 
           <div className="sticky bottom-0 z-10 grid gap-1.5 border-t border-shell-border/70 bg-surface-floating/96 pt-2 pb-3 backdrop-blur-md">
-            <span aria-live="polite" aria-atomic="true" className="sr-only">{resultLabel}</span>
+            <span aria-live="polite" aria-atomic="true" className="sr-only">
+              {resultLabel}
+            </span>
             <Button type="submit" className="h-10">
               {resultLabel}
             </Button>

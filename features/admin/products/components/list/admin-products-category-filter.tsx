@@ -3,16 +3,10 @@
 
 import { useMemo, type JSX } from "react";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import type { ProductFilterCategoryOption } from "@/features/admin/products/list/types/product-table.types";
-import { cn } from "@/lib/utils";
+import { AdminHierarchicalSelectFilter } from "@/components/admin/tables/filters";
 import { PRODUCT_LIST_COPY } from "@/features/admin/products/config";
+import { buildAdminProductsCategorySelectOptions } from "@/features/admin/products/list/utils";
+import type { ProductFilterCategoryOption } from "@/features/admin/products/list/types";
 
 type AdminProductsCategoryFilterProps = {
   categories: ProductFilterCategoryOption[];
@@ -24,13 +18,6 @@ type AdminProductsCategoryFilterProps = {
   triggerClassName?: string;
 };
 
-function sortCategories(
-  left: ProductFilterCategoryOption,
-  right: ProductFilterCategoryOption
-): number {
-  return left.name.localeCompare(right.name, "fr");
-}
-
 export function AdminProductsCategoryFilter({
   categories,
   selectedParentCategoryId,
@@ -40,61 +27,36 @@ export function AdminProductsCategoryFilter({
   className,
   triggerClassName,
 }: AdminProductsCategoryFilterProps): JSX.Element {
-  const parentCategories = useMemo(() => {
-    return categories.filter((category) => category.parentId === null).sort(sortCategories);
-  }, [categories]);
-
-  const childCategories = useMemo(() => {
-    if (!selectedParentCategoryId || selectedParentCategoryId === "all") {
-      return [];
-    }
-
-    return categories
-      .filter((category) => category.parentId === selectedParentCategoryId)
-      .sort(sortCategories);
-  }, [categories, selectedParentCategoryId]);
-
-  const hasChildCategories = childCategories.length > 0;
+  const { parentCategories, childCategories } = useMemo(
+    () =>
+      buildAdminProductsCategorySelectOptions({
+        categories,
+        selectedParentCategoryId,
+      }),
+    [categories, selectedParentCategoryId]
+  );
 
   return (
-    <div className={cn("grid gap-3 xl:grid-cols-2", className)}>
-      <Select
-        value={selectedParentCategoryId}
-        onValueChange={(value) => {
-          onParentCategoryChange(value);
-          onCategoryChange("all");
-        }}
-      >
-        <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
-          <SelectValue placeholder={PRODUCT_LIST_COPY.filterCategoryAllLabel} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">{PRODUCT_LIST_COPY.filterCategoryAllLabel}</SelectItem>
-          {parentCategories.map((category) => (
-            <SelectItem key={category.id} value={category.id}>
-              {category.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      {hasChildCategories ? (
-        <Select value={selectedCategoryId} onValueChange={onCategoryChange}>
-          <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
-            <SelectValue placeholder={PRODUCT_LIST_COPY.filterSubcategoryAllLabel} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">{PRODUCT_LIST_COPY.filterSubcategoryAllLabel}</SelectItem>
-            {childCategories.map((category) => (
-              <SelectItem key={category.id} value={category.id}>
-                {category.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      ) : (
-        <div className="hidden xl:block" />
-      )}
-    </div>
+    <AdminHierarchicalSelectFilter
+      parentOptions={parentCategories.map((category) => ({
+        value: category.id,
+        label: category.name,
+      }))}
+      childOptions={childCategories.map((category) => ({
+        value: category.id,
+        label: category.name,
+      }))}
+      selectedParentValue={selectedParentCategoryId}
+      selectedChildValue={selectedCategoryId}
+      parentAllLabel={PRODUCT_LIST_COPY.filterCategoryAllLabel}
+      childAllLabel={PRODUCT_LIST_COPY.filterSubcategoryAllLabel}
+      onParentChange={(value) => {
+        onParentCategoryChange(value);
+        onCategoryChange("all");
+      }}
+      onChildChange={onCategoryChange}
+      {...(className ? { className } : {})}
+      {...(triggerClassName ? { triggerClassName } : {})}
+    />
   );
 }

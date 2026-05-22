@@ -1,22 +1,17 @@
-type RawInputValue = FormDataEntryValue | string | null | undefined;
+import { z } from "zod";
+
+import {
+  normalizeBoolean,
+  normalizeOptionalId,
+  normalizeOptionalNonNegativeInteger,
+  normalizeOptionalSlug,
+  normalizeOptionalText,
+  parseNonNegativeInteger,
+  readTrimmedString,
+  type RawInputValue,
+} from "./shared-input";
 
 export type ProductVariantLifecycleStatus = "draft" | "active" | "inactive" | "archived";
-
-export type ValidatedAdminProductVariantInput = {
-  sku: string;
-  slug: string | null;
-  name: string | null;
-  primaryImageMediaAssetId: string | null;
-  status: ProductVariantLifecycleStatus;
-  isDefault: boolean;
-  sortOrder: number;
-  barcode: string | null;
-  externalReference: string | null;
-  weightGrams: number | null;
-  widthMm: number | null;
-  heightMm: number | null;
-  depthMm: number | null;
-};
 
 export type AdminProductVariantInputErrorCode =
   | "missing_sku"
@@ -45,172 +40,82 @@ type AdminProductVariantInputSource = {
   depthMm: RawInputValue;
 };
 
+const productVariantLifecycleStatusSchema = z.enum(["draft", "active", "inactive", "archived"]);
+
+const adminProductVariantInputSchema = z.object({
+  sku: z.preprocess((value) => readTrimmedString(value), z.string().min(1)),
+  slug: z.preprocess((value) => normalizeOptionalSlug(value), z.string().nullable()),
+  name: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  primaryImageMediaAssetId: z.preprocess(
+    (value) => normalizeOptionalId(value),
+    z.string().nullable()
+  ),
+  status: z.preprocess(
+    (value) => readTrimmedString(value),
+    productVariantLifecycleStatusSchema
+  ),
+  isDefault: z.preprocess((value) => normalizeBoolean(value), z.boolean()),
+  sortOrder: z.preprocess((value) => parseNonNegativeInteger(value), z.number().int().nonnegative()),
+  barcode: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  externalReference: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  weightGrams: z.preprocess(
+    (value) => normalizeOptionalNonNegativeInteger(value),
+    z.number().int().nonnegative().nullable()
+  ),
+  widthMm: z.preprocess(
+    (value) => normalizeOptionalNonNegativeInteger(value),
+    z.number().int().nonnegative().nullable()
+  ),
+  heightMm: z.preprocess(
+    (value) => normalizeOptionalNonNegativeInteger(value),
+    z.number().int().nonnegative().nullable()
+  ),
+  depthMm: z.preprocess(
+    (value) => normalizeOptionalNonNegativeInteger(value),
+    z.number().int().nonnegative().nullable()
+  ),
+});
+
+export type ValidatedAdminProductVariantInput = z.infer<typeof adminProductVariantInputSchema>;
+
 export type AdminProductVariantInputValidationResult =
   | { ok: true; data: ValidatedAdminProductVariantInput }
   | { ok: false; code: AdminProductVariantInputErrorCode };
 
-function readTrimmedString(value: RawInputValue): string | null {
-  if (typeof value !== "string") {
-    return null;
-  }
-
-  const normalizedValue = value.trim();
-  return normalizedValue.length > 0 ? normalizedValue : null;
-}
-
-function normalizeOptionalText(value: RawInputValue): string | null {
-  return readTrimmedString(value);
-}
-
-function normalizeOptionalId(value: RawInputValue): string | null | undefined {
-  if (value === undefined) {
-    return undefined;
-  }
-
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null) {
-    return null;
-  }
-
-  return normalizedValue;
-}
-
-function parseNonNegativeInteger(value: RawInputValue): number | null {
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null) {
-    return null;
-  }
-
-  if (!/^\d+$/.test(normalizedValue)) {
-    return null;
-  }
-
-  return Number(normalizedValue);
-}
-
-function normalizeOptionalInteger(value: RawInputValue): number | null | undefined {
-  if (value === undefined) {
-    return undefined;
-  }
-
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null) {
-    return null;
-  }
-
-  if (!/^\d+$/.test(normalizedValue)) {
-    return undefined;
-  }
-
-  return Number(normalizedValue);
-}
-
-function normalizeOptionalSlug(value: RawInputValue): string | null | undefined {
-  if (value === undefined) {
-    return undefined;
-  }
-
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null) {
-    return null;
-  }
-
-  const slug = normalizedValue
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/-{2,}/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-  if (slug.length === 0) {
-    return undefined;
-  }
-
-  return slug;
-}
-
-function normalizeBoolean(value: RawInputValue): boolean {
-  return value === "on" || value === "true" || value === "1";
-}
-
-function isVariantLifecycleStatus(value: string | null): value is ProductVariantLifecycleStatus {
-  return value === "draft" || value === "active" || value === "inactive" || value === "archived";
-}
-
 export function validateAdminProductVariantInput(
   input: AdminProductVariantInputSource
 ): AdminProductVariantInputValidationResult {
-  const sku = readTrimmedString(input.sku);
+  const parsed = adminProductVariantInputSchema.safeParse(input);
 
-  if (sku === null) {
-    return { ok: false, code: "missing_sku" };
-  }
+  if (!parsed.success) {
+    const issuePath = parsed.error.issues[0]?.path[0];
 
-  const slug = normalizeOptionalSlug(input.slug);
-
-  if (slug === undefined) {
-    return { ok: false, code: "invalid_slug" };
-  }
-
-  const primaryImageMediaAssetId = normalizeOptionalId(input.primaryImageMediaAssetId);
-
-  if (primaryImageMediaAssetId === undefined) {
-    return { ok: false, code: "invalid_primary_image" };
-  }
-
-  const status = readTrimmedString(input.status);
-
-  if (!isVariantLifecycleStatus(status)) {
-    return { ok: false, code: "invalid_status" };
-  }
-
-  const sortOrder = parseNonNegativeInteger(input.sortOrder);
-
-  if (sortOrder === null) {
-    return { ok: false, code: "invalid_sort_order" };
-  }
-
-  const weightGrams = normalizeOptionalInteger(input.weightGrams);
-  if (weightGrams === undefined) {
-    return { ok: false, code: "invalid_weight_grams" };
-  }
-
-  const widthMm = normalizeOptionalInteger(input.widthMm);
-  if (widthMm === undefined) {
-    return { ok: false, code: "invalid_width_mm" };
-  }
-
-  const heightMm = normalizeOptionalInteger(input.heightMm);
-  if (heightMm === undefined) {
-    return { ok: false, code: "invalid_height_mm" };
-  }
-
-  const depthMm = normalizeOptionalInteger(input.depthMm);
-  if (depthMm === undefined) {
-    return { ok: false, code: "invalid_depth_mm" };
+    switch (issuePath) {
+      case "sku":
+        return { ok: false, code: "missing_sku" };
+      case "slug":
+        return { ok: false, code: "invalid_slug" };
+      case "primaryImageMediaAssetId":
+        return { ok: false, code: "invalid_primary_image" };
+      case "status":
+        return { ok: false, code: "invalid_status" };
+      case "sortOrder":
+        return { ok: false, code: "invalid_sort_order" };
+      case "weightGrams":
+        return { ok: false, code: "invalid_weight_grams" };
+      case "widthMm":
+        return { ok: false, code: "invalid_width_mm" };
+      case "heightMm":
+        return { ok: false, code: "invalid_height_mm" };
+      case "depthMm":
+        return { ok: false, code: "invalid_depth_mm" };
+      default:
+        return { ok: false, code: "invalid_status" };
+    }
   }
 
   return {
     ok: true,
-    data: {
-      sku,
-      slug,
-      name: normalizeOptionalText(input.name),
-      primaryImageMediaAssetId,
-      status,
-      isDefault: normalizeBoolean(input.isDefault),
-      sortOrder,
-      barcode: normalizeOptionalText(input.barcode),
-      externalReference: normalizeOptionalText(input.externalReference),
-      weightGrams,
-      widthMm,
-      heightMm,
-      depthMm,
-    },
+    data: parsed.data,
   };
 }

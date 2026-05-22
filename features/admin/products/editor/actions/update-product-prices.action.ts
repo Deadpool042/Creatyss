@@ -3,7 +3,7 @@
 import {
   productPricingFormInitialState,
   type ProductPricingFormAction,
-} from "../types/product-pricing-form.types";
+} from "../types";
 import { AdminProductEditorServiceError, updateProductPrices } from "../services";
 import { priceEntrySchema } from "../schemas";
 

@@ -2,10 +2,20 @@ import type { SeoIndexingMode } from "@/prisma-generated/client";
 import type {
   AdminProductVariantListItem,
   AdminProductVariantStatus,
-} from "./product-variants.types";
+} from "./product-variant.types";
 export type { AdminProductVariantListItem, AdminProductVariantStatus };
-import type { AdminProductImageItem } from "./product-images.types";
+import type { AdminProductImageItem } from "./product-image.types";
 export type { AdminProductImageItem };
+
+export type ProductCategoryOption = {
+  id: string;
+  name: string;
+  slug: string;
+  parentId: string | null;
+  parentName: string | null;
+};
+
+export type CategoryNode = ProductCategoryOption;
 
 export type AdminProductEditorStatus = "draft" | "active" | "inactive" | "archived";
 
@@ -92,3 +102,11 @@ export type AdminProductEditorData = {
   images: AdminProductImageItem[];
   seo: AdminProductEditorSeo;
 };
+
+import type { AdminProductActionResult } from "@/features/admin/products/types";
+
+export type DeleteProductInput = {
+  productId: string;
+};
+
+export type DeleteProductResult = AdminProductActionResult;

@@ -1,4 +1,3 @@
-//features/admin/products/editor/types/product-delete.types.ts
 import { z } from "zod";
 
 export const deleteProductSchema = z.object({

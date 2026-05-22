@@ -6,7 +6,7 @@ import { validateAdminProductCategoryLinks } from "@/entities/product";
 import {
   productCategoriesFormInitialState,
   type ProductCategoriesFormAction,
-} from "../types/product-categories-form.types";
+} from "../types";
 import { AdminProductEditorServiceError, updateProductCategories } from "../services";
 
 function getString(formData: FormData, key: string): FormDataEntryValue | null {

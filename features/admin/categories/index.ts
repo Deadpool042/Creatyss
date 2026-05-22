@@ -1,3 +1,5 @@
+import "server-only";
+
 // Components
 export {
   CategoryTable,
@@ -28,13 +30,15 @@ export {
   getAdminCategoryDetail,
   listAdminCategories,
   listCategoriesForPicker,
-  type CategoryFeaturedFilter,
-  type CategoryListFilters,
-  type CategoryListResult,
-  type CategoryPickerItem,
-  type CategorySortOption,
-  type CategoryStatusCounts,
 } from "./queries";
+export type {
+  CategoryFeaturedFilter,
+  CategoryListFilters,
+  CategoryListResult,
+  CategoryPickerItem,
+  CategorySortOption,
+  CategoryStatusCounts,
+} from "./list";
 
 // Services
 export {

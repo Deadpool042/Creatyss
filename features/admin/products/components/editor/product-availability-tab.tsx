@@ -17,7 +17,7 @@ import {
   type AdminProductVariantAvailability,
   type AdminProductVariantListItem,
   type ProductAvailabilityFormAction,
-} from "@/features/admin/products/editor";
+} from "@/features/admin/products/editor/types";
 
 type ProductAvailabilityTabProps = {
   action: ProductAvailabilityFormAction;

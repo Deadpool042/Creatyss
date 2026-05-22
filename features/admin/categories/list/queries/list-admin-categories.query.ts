@@ -2,46 +2,19 @@ import { CategoryStatus } from "@/prisma-generated/client";
 
 import { db } from "@/core/db";
 import { mapCategoryListItem } from "@/features/admin/categories/list/mappers/map-category-list-item";
+import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import type {
-  AdminCategoryCardItem,
-  AdminCategoryStatus,
-} from "@/features/admin/categories/types";
+  CategoryListFilters,
+  CategoryListResult,
+  CategoryPickerItem,
+  CategoryStatusCounts,
+} from "../types";
 
 const STATUS_MAP: Record<AdminCategoryStatus, CategoryStatus> = {
   draft: CategoryStatus.DRAFT,
   active: CategoryStatus.ACTIVE,
   inactive: CategoryStatus.INACTIVE,
   archived: CategoryStatus.ARCHIVED,
-};
-
-export type CategorySortOption = "name-asc" | "name-desc" | "updated-asc" | "updated-desc";
-export type CategoryFeaturedFilter = "featured" | "not-featured";
-
-export type CategoryPickerItem = {
-  id: string;
-  name: string;
-  slug: string;
-  parentId: string | null;
-};
-
-export type CategoryListFilters = {
-  search?: string;
-  status?: AdminCategoryStatus[];
-  featured?: CategoryFeaturedFilter[];
-  categorySlugs?: string[];
-  sort?: CategorySortOption;
-  page?: number;
-  perPage?: number;
-};
-
-export type CategoryStatusCounts = Partial<Record<AdminCategoryStatus, number>>;
-
-export type CategoryListResult = {
-  items: AdminCategoryCardItem[];
-  total: number;
-  totalPages: number;
-  currentPage: number;
-  statusCounts: CategoryStatusCounts;
 };
 
 const DEFAULT_PER_PAGE = 10;

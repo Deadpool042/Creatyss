@@ -10,7 +10,7 @@ import {
   productCharacteristicsFormInitialState,
   type AdminProductCharacteristicItem,
   type ProductCharacteristicsFormAction,
-} from "@/features/admin/products/editor/types/product-characteristics-form.types";
+} from "@/features/admin/products/editor/types";
 
 type EditableCharacteristic = {
   key: string;

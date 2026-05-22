@@ -1,6 +1,13 @@
 // features/admin/products/list/types/product-table.types.ts
 export type ProductTableStatus = "draft" | "active" | "inactive" | "archived";
 
+export type ProductStatusCounts = {
+  all: number;
+  active: number;
+  draft: number;
+  inactive: number;
+};
+
 export type ProductStockState = "in-stock" | "out-of-stock";
 
 export type ProductFilterFeaturedOption = "all" | "featured" | "standard";

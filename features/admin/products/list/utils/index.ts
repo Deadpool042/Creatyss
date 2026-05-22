@@ -1,4 +1,5 @@
 export { buildAdminProductsCategoryFilter } from "./build-admin-products-category-filter";
+export { buildAdminProductsCategorySelectOptions } from "./build-admin-products-category-select-options";
 export {
   getFeaturedLabel,
   getImageLabel,

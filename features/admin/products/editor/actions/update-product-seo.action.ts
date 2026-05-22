@@ -1,10 +1,13 @@
 "use server";
 
 import { productSeoFormSchema } from "../schemas";
-import { productSeoFormInitialState, type ProductSeoFormAction } from "../types";
+import {
+  productSeoFormInitialState,
+  type ProductSeoFormAction,
+  type ProductSeoFormState,
+} from "../types";
 import { updateProductSeo } from "../services/update-product-seo.service";
 import type { SeoIndexingMode } from "@/prisma-generated/client";
-import type { ProductSeoFormState } from "../types/product-seo-form.types";
 import { AdminProductEditorServiceError } from "../services";
 
 function mapZodFieldErrors(

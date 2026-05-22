@@ -5,7 +5,7 @@ import { validateAdminProductVariantInput } from "@/entities/product";
 import {
   productVariantFormInitialState,
   type ProductVariantFormAction,
-} from "../types/product-variants.types";
+} from "../types";
 import { AdminProductEditorServiceError, createProductVariant } from "../services";
 import type { AdminProductVariantInputErrorCode } from "@/entities/product/admin-product-variant-input";
 

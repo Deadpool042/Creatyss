@@ -10,7 +10,7 @@ import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import type {
   CategoryFeaturedFilter,
   CategoryPickerItem,
-} from "@/features/admin/categories/queries";
+} from "@/features/admin/categories/list";
 import {
   CategoryFeaturedFilterControl,
   CategoryHierarchyFilter,

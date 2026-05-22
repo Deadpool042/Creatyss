@@ -5,4 +5,10 @@ export {
 export type {
   AdminCategoryCardItem,
   AdminCategoryStatus,
-} from "./types/admin-category-card-item.types";
+  CategoryFeaturedFilter,
+  CategoryListFilters,
+  CategoryListResult,
+  CategoryPickerItem,
+  CategorySortOption,
+  CategoryStatusCounts,
+} from "./types";

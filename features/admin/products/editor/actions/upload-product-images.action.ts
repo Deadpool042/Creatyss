@@ -1,7 +1,7 @@
 "use server";
 
 import { uploadProductImagesFormInitialState, type UploadProductImagesFormState } from "../types";
-import { uploadProductImagesSchema } from "../schemas/upload-product-images.schema";
+import { uploadProductImagesSchema } from "../schemas";
 import { AdminProductEditorServiceError, uploadProductImages } from "../services";
 import { isSupportedImageMimeType } from "@/core/uploads";
 

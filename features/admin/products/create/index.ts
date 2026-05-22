@@ -1,3 +1,5 @@
+import "server-only";
+
 export { createProductAction } from "./actions";
 export { listAdminCreatableProductTypeOptions } from "./queries/list-admin-creatable-product-type-options.query";
 export {

@@ -77,6 +77,7 @@ type BoutiqueFiltersContentProps = {
 };
 
 type FilterOptionProps = {
+  id?: string | undefined;
   href: string;
   isActive: boolean;
   isIncluded?: boolean | undefined;
@@ -89,6 +90,7 @@ type FilterOptionProps = {
 };
 
 function FilterOption({
+  id,
   href,
   isActive,
   isIncluded,
@@ -137,6 +139,7 @@ function FilterOption({
 
   const link = (
     <CustomLink
+      id={id}
       href={href}
       aria-current={isActive ? "page" : undefined}
       className={cn(
@@ -151,7 +154,10 @@ function FilterOption({
       {indicator}
       <span className="min-w-0 flex-1 truncate">{label}</span>
       {count != null ? (
-        <span className="shrink-0 text-[0.8125rem] tabular-nums text-text-muted-strong/70">
+        <span
+          aria-hidden="true"
+          className="shrink-0 text-[0.8125rem] tabular-nums text-text-muted-strong/70"
+        >
           {count}
         </span>
       ) : null}
@@ -268,6 +274,7 @@ export function BoutiqueFiltersContent({
   const categoryGroups = buildCategoryGroups(model.categories);
   const isSidebar = variant === "sidebar";
   const isDrawer = variant === "drawer";
+  const showPreview = isDrawer || model.selectedCategorySlugs.length > 0;
   const shouldShowReset = isSidebar || isDrawer || hasActiveFilters;
 
   return (
@@ -344,6 +351,7 @@ export function BoutiqueFiltersContent({
           >
             <div className="grid pb-1">
               <FilterOption
+                id="boutique-filter-category-all"
                 href={buildCategoryHref([], model)}
                 isActive={model.selectedCategorySlugs.length === 0}
                 label="Tous les produits"
@@ -360,6 +368,7 @@ export function BoutiqueFiltersContent({
                 return (
                   <div key={parent.id} className={cn("grid", isSidebar && "gap-[0.02rem]")}>
                     <FilterOption
+                      id={`boutique-filter-category-${parent.slug}`}
                       href={buildCategoryToggleHref(
                         parent,
                         model,
@@ -384,6 +393,7 @@ export function BoutiqueFiltersContent({
                           return (
                             <FilterOption
                               key={child.id}
+                              id={`boutique-filter-category-${child.slug}`}
                               href={buildCategoryToggleHref(child, model, [], parent.slug)}
                               isActive={childVisualState.isActive}
                               isIncluded={childVisualState.isIncluded}
@@ -522,43 +532,45 @@ export function BoutiqueFiltersContent({
         </AccordionItem>
       </Accordion>
 
-      <div
-        className={cn(
-          "grid gap-[0.55rem] border-t border-surface-border-subtle/62 pt-[0.55rem]",
-          isSidebar && "gap-1.5 border-t border-surface-border-subtle pt-2",
-          isDrawer && "gap-1.5 border-t border-dashed border-surface-border-subtle/72 pt-[0.6rem]"
-        )}
-      >
-        <section className="grid gap-[0.3rem]" aria-labelledby="boutique-preview-colors">
-          <p
-            id="boutique-preview-colors"
-            className="m-0 text-[0.6875rem] font-semibold tracking-[0.14em] uppercase text-text-muted-strong"
-          >
-            Couleurs
-          </p>
-          <ColorSwatches />
-        </section>
+      {showPreview ? (
+        <div
+          className={cn(
+            "grid gap-[0.55rem] border-t border-surface-border-subtle/62 pt-[0.55rem]",
+            isSidebar && "gap-1.5 border-t border-surface-border-subtle pt-2",
+            isDrawer && "gap-1.5 border-t border-dashed border-surface-border-subtle/72 pt-[0.6rem]"
+          )}
+        >
+          <section className="grid gap-[0.3rem]" aria-labelledby="boutique-preview-colors">
+            <p
+              id="boutique-preview-colors"
+              className="m-0 text-[0.6875rem] font-semibold tracking-[0.14em] uppercase text-text-muted-strong"
+            >
+              Couleurs
+            </p>
+            <ColorSwatches />
+          </section>
 
-        <section className="grid gap-[0.3rem]" aria-labelledby="boutique-preview-materials">
-          <p
-            id="boutique-preview-materials"
-            className="m-0 text-[0.6875rem] font-semibold tracking-[0.14em] uppercase text-text-muted-strong"
-          >
-            Matières
-          </p>
-          <ul className="grid gap-[0.2rem] m-0 p-0 list-none" aria-label="Matières indicatives">
-            {FILTER_PREVIEW_MATERIALS.map((material) => (
-              <li key={material} className="text-xs leading-tight text-text-muted-strong">
-                {material}
-              </li>
-            ))}
-          </ul>
-        </section>
+          <section className="grid gap-[0.3rem]" aria-labelledby="boutique-preview-materials">
+            <p
+              id="boutique-preview-materials"
+              className="m-0 text-[0.6875rem] font-semibold tracking-[0.14em] uppercase text-text-muted-strong"
+            >
+              Matières
+            </p>
+            <ul className="grid gap-[0.2rem] m-0 p-0 list-none" aria-label="Matières indicatives">
+              {FILTER_PREVIEW_MATERIALS.map((material) => (
+                <li key={material} className="text-xs leading-tight text-text-muted-strong">
+                  {material}
+                </li>
+              ))}
+            </ul>
+          </section>
 
-        <p className="m-0 text-[0.6875rem] leading-[1.3] text-text-muted-soft">
-          Nuancier Sylvertex indicatif — ces éléments n&apos;activent pas de filtre.
-        </p>
-      </div>
+          <p className="m-0 text-[0.6875rem] leading-[1.3] text-text-muted-soft">
+            Nuancier Sylvertex indicatif — ces éléments n&apos;activent pas de filtre.
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }

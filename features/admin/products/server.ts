@@ -50,7 +50,6 @@ export {
   type ProductStockState,
   type ProductTableFeaturedFilter,
   type ProductTableFiltersInput,
-  type ProductTableFiltersState,
   type ProductTableFiltersValues,
   type ProductTableImageFilter,
   type ProductTableItem,

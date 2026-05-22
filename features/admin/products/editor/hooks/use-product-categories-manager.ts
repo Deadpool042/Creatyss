@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import type {
   CategoryNode,
   ProductCategoryOption,
-} from "@/features/admin/products/editor/types/product-categories.types";
+} from "@/features/admin/products/editor/types/product-editor.types";
 
 const ROOT_CATEGORY_SENTINEL = "__root__";
 

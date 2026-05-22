@@ -1,3 +1,12 @@
+import { z } from "zod";
+
+import {
+  normalizeBoolean,
+  normalizeOptionalText,
+  normalizeProductSlug,
+  readTrimmedString,
+} from "./shared-input";
+
 export type ProductStatus = "draft" | "published";
 export type ProductType = "simple" | "variable";
 
@@ -45,36 +54,7 @@ export type ProductInputValidationResult =
       code: ProductInputErrorCode;
     };
 
-function readTrimmedString(value: FormDataEntryValue | string | null | undefined): string | null {
-  if (typeof value !== "string") {
-    return null;
-  }
-
-  return value.trim();
-}
-
-function normalizeOptionalText(
-  value: FormDataEntryValue | string | null | undefined
-): string | null {
-  const normalizedValue = readTrimmedString(value);
-
-  if (normalizedValue === null || normalizedValue.length === 0) {
-    return null;
-  }
-
-  return normalizedValue;
-}
-
-export function normalizeProductSlug(value: string): string {
-  return value
-    .trim()
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/-{2,}/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+export { normalizeProductSlug };
 
 function normalizeCategoryIds(
   values: readonly FormDataEntryValue[] | readonly string[] | undefined
@@ -92,7 +72,7 @@ function normalizeCategoryIds(
 
     const normalizedValue = value.trim();
 
-    if (normalizedValue.length === 0) {
+    if (normalizedValue.length === 0 || !/^\d+$/.test(normalizedValue)) {
       return null;
     }
 
@@ -104,83 +84,54 @@ function normalizeCategoryIds(
   return normalizedIds;
 }
 
-function isProductStatus(value: string | null): value is ProductStatus {
-  return value === "draft" || value === "published";
-}
+const productStatusSchema = z.enum(["draft", "published"]);
+const productTypeSchema = z.enum(["simple", "variable"]);
 
-function isProductType(value: string | null): value is ProductType {
-  return value === "simple" || value === "variable";
-}
+const productInputSchema = z.object({
+  name: z.preprocess((value) => readTrimmedString(value), z.string().min(1)),
+  slug: z
+    .preprocess((value) => readTrimmedString(value), z.string().min(1))
+    .transform((value) => normalizeProductSlug(value))
+    .refine((value) => value.length > 0),
+  shortDescription: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  description: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  seoTitle: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  seoDescription: z.preprocess((value) => normalizeOptionalText(value), z.string().nullable()),
+  status: z.preprocess((value) => readTrimmedString(value), productStatusSchema),
+  productType: z.preprocess((value) => readTrimmedString(value), productTypeSchema),
+  isFeatured: z.preprocess((value) => normalizeBoolean(value), z.boolean()),
+  categoryIds: z.preprocess((value) => normalizeCategoryIds(value as ProductInputSource["categoryIds"]), z.array(z.string())),
+});
 
 export function validateProductInput(input: ProductInputSource): ProductInputValidationResult {
-  const name = readTrimmedString(input.name);
+  const parsed = productInputSchema.safeParse(input);
 
-  if (name === null || name.length === 0) {
-    return {
-      ok: false,
-      code: "missing_name",
-    };
-  }
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    const issuePath = issue?.path[0];
+    const receivedSlug = readTrimmedString(input.slug);
 
-  const rawSlug = readTrimmedString(input.slug);
-
-  if (rawSlug === null || rawSlug.length === 0) {
-    return {
-      ok: false,
-      code: "missing_slug",
-    };
-  }
-
-  const normalizedSlug = normalizeProductSlug(rawSlug);
-
-  if (normalizedSlug.length === 0) {
-    return {
-      ok: false,
-      code: "invalid_slug",
-    };
-  }
-
-  const status = readTrimmedString(input.status);
-
-  if (!isProductStatus(status)) {
-    return {
-      ok: false,
-      code: "invalid_status",
-    };
-  }
-
-  const productType = readTrimmedString(input.productType);
-
-  if (!isProductType(productType)) {
-    return {
-      ok: false,
-      code: "invalid_product_type",
-    };
-  }
-
-  const categoryIds = normalizeCategoryIds(input.categoryIds);
-
-  if (categoryIds === null) {
-    return {
-      ok: false,
-      code: "invalid_category_ids",
-    };
+    switch (issuePath) {
+      case "name":
+        return { ok: false, code: "missing_name" };
+      case "slug":
+        if (receivedSlug === null) {
+          return { ok: false, code: "missing_slug" };
+        }
+        return { ok: false, code: "invalid_slug" };
+      case "status":
+        return { ok: false, code: "invalid_status" };
+      case "productType":
+        return { ok: false, code: "invalid_product_type" };
+      case "categoryIds":
+        return { ok: false, code: "invalid_category_ids" };
+      default:
+        return { ok: false, code: "invalid_category_ids" };
+    }
   }
 
   return {
     ok: true,
-    data: {
-      name,
-      slug: normalizedSlug,
-      shortDescription: normalizeOptionalText(input.shortDescription),
-      description: normalizeOptionalText(input.description),
-      seoTitle: normalizeOptionalText(input.seoTitle),
-      seoDescription: normalizeOptionalText(input.seoDescription),
-      status,
-      productType,
-      isFeatured:
-        input.isFeatured === "on" || input.isFeatured === "true" || input.isFeatured === "1",
-      categoryIds,
-    },
+    data: parsed.data,
   };
 }

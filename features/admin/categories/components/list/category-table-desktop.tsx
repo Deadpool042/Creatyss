@@ -24,8 +24,7 @@ import {
   CATEGORY_STATUS_LABELS,
   CATEGORY_TABLE_COPY,
 } from "@/features/admin/categories/config";
-import { useCategoryFilters } from "@/features/admin/categories/list";
-import type { CategorySortOption } from "@/features/admin/categories/queries";
+import { useCategoryFilters, type CategorySortOption } from "@/features/admin/categories/list";
 import { getAdminCategoryDetailPath } from "../../shared";
 
 import { useCategoriesTableContext } from "../../context/categories-data-provider";

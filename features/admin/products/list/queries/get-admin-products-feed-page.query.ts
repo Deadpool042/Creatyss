@@ -4,7 +4,11 @@ import { listAdminProducts } from "./list-admin-products.query";
 export async function getAdminProductsFeedPage(
   input: GetAdminProductsFeedPageInput
 ): Promise<GetAdminProductsFeedPageResult> {
-  const products = await listAdminProducts();
+  const { items: products } = await listAdminProducts({
+    ...(input.search !== null ? { search: input.search } : {}),
+    status: input.status,
+    featured: input.featured ?? "all",
+  });
 
   const filtered = products.filter((product) => {
     if (input.search && !product.name.toLowerCase().includes(input.search.toLowerCase())) {

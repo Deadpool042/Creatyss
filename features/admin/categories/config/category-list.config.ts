@@ -2,7 +2,7 @@ import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import type {
   CategoryFeaturedFilter,
   CategorySortOption,
-} from "@/features/admin/categories/queries";
+} from "@/features/admin/categories/list";
 
 export const CATEGORY_FILTER_VALID_VALUES = {
   statuses: ["draft", "active", "inactive", "archived"] satisfies AdminCategoryStatus[],

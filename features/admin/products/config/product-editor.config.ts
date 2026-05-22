@@ -1,3 +1,70 @@
+type ProductSectionCopy = {
+  eyebrow: string;
+  title: string;
+  description: string;
+};
+
+export const PRODUCT_FIELD_COPY = {
+  nameLabel: "Nom",
+  slugLabel: "Adresse du produit",
+  slugHint:
+    "Visible dans l’URL du produit. Générée automatiquement depuis le nom, vous pouvez la modifier.",
+  skuRootLabel: "Référence interne",
+  skuRootHint:
+    "Optionnelle, utile pour retrouver un produit. Pour un produit à variantes, chaque déclinaison reprend cette base pour générer sa propre référence.",
+  productTypeLabel: "Famille produit",
+  productTypeHint: "Classe le produit dans une famille catalogue.",
+  marketingHookLabel: "Accroche commerciale",
+  marketingHookHint:
+    "Phrase courte affichée en haut de la fiche produit pour mettre le produit en valeur.",
+  shortDescriptionLabel: "Description courte",
+  shortDescriptionHint:
+    "Affichée en haut de la fiche produit. Visez une phrase courte, concrète et naturelle (idéalement 120 à 180 caractères, maximum 220).",
+  descriptionLabel: "Description détaillée",
+  descriptionHint:
+    "Développez le produit (usage, praticité, fabrication, finitions). Évitez de dupliquer les listes factuelles déjà saisies dans Caractéristiques.",
+  careInstructionsLabel: "Conseils d'entretien",
+  careInstructionsHint:
+    "Champ dédié aux conseils de soin affichés sur la fiche produit. Saisissez-les ici et évitez de les dupliquer dans Caractéristiques.",
+  statusLabel: "Statut",
+  statusHint:
+    "Brouillon : non visible. Actif : publié sur la boutique. Inactif : retiré temporairement. Archivé : retiré définitivement.",
+  isFeaturedLabel: "Mise en avant",
+  isFeaturedHint: "Produit mis en avant dans la boutique et l’administration.",
+  imageLabel: "Image principale",
+  imageHint: "Gérez ce choix depuis l'onglet Médias.",
+} as const;
+
+export const PRODUCT_GENERAL_SECTION_COPY = {
+  eyebrow: "Informations",
+  title: "Informations principales",
+  description: "Mettez à jour le nom, l’adresse et le texte affichés dans le catalogue.",
+} satisfies ProductSectionCopy;
+
+export const PRODUCT_CREATE_GENERAL_SECTION_COPY = {
+  ...PRODUCT_GENERAL_SECTION_COPY,
+  description:
+    "Renseignez les éléments visibles dans le catalogue. Vous pourrez compléter le visuel et le référencement ensuite.",
+} satisfies ProductSectionCopy;
+
+export const PRODUCT_SEO_SECTION_COPY = {
+  eyebrow: "Référencement",
+  title: "Référencement",
+  description:
+    "Aidez les moteurs de recherche et les aperçus de partage à présenter correctement le produit.",
+} satisfies ProductSectionCopy;
+
+export const PRODUCT_PUBLICATION_SECTION_COPY = {
+  eyebrow: "Publication",
+  title: "Publication et visibilité",
+  description: "Contrôlez la mise en ligne du produit et sa mise en avant dans la boutique.",
+} satisfies ProductSectionCopy;
+
+export const PRODUCT_STRUCTURE_SECTION_COPY = {
+  eyebrow: "Structure",
+  title: "Structure du produit",
+  description: "Indique si le produit est vendu seul ou avec plusieurs déclinaisons.",
+} satisfies ProductSectionCopy;
 // ─── Navigation & breadcrumbs ─────────────────────────────────────────────────
 
 export const PRODUCT_EDITOR_NAV_COPY = {
@@ -23,7 +90,8 @@ export const PRODUCT_CREATE_MENU_COPY = {
 // ─── Editor page ──────────────────────────────────────────────────────────────
 
 export const PRODUCT_EDITOR_PAGE_COPY = {
-  description: "Édition du produit, de ses variantes, de ses médias, de ses catégories et de son SEO.",
+  description:
+    "Édition du produit, de ses variantes, de ses médias, de ses catégories et de son SEO.",
   archivedDescription: "Produit archivé.",
   archivedBodyTitle: "Ce produit est actuellement dans la corbeille.",
   archivedBodySubtitle: "Restaurez-le pour reprendre son édition, ou supprimez-le définitivement.",
@@ -80,8 +148,10 @@ export const PRODUCT_CREATE_PANEL_COPY = {
   typePlaceholder: "Choisir un type",
   typeSimple: "Produit simple",
   typeVariable: "Produit à variantes",
-  identityCardDescription: "Donnez un nom au produit. Le slug est généré automatiquement et reste modifiable.",
-  structureCardDescription: "Choisissez la structure de départ du produit. Vous pourrez ensuite compléter le reste dans l'éditeur.",
+  identityCardDescription:
+    "Donnez un nom au produit. Le slug est généré automatiquement et reste modifiable.",
+  structureCardDescription:
+    "Choisissez la structure de départ du produit. Vous pourrez ensuite compléter le reste dans l'éditeur.",
 } as const;
 
 // ─── General tab ──────────────────────────────────────────────────────────────
@@ -89,7 +159,8 @@ export const PRODUCT_CREATE_PANEL_COPY = {
 export const PRODUCT_GENERAL_TAB_COPY = {
   identityEyebrow: "Identité",
   identityTitle: "Identité produit",
-  identityDescription: "Renseignez les attributs structurants qui identifient ce produit dans le catalogue.",
+  identityDescription:
+    "Renseignez les attributs structurants qui identifient ce produit dans le catalogue.",
   contentsEyebrow: "Contenus",
   contentsTitle: "Contenus éditoriaux",
   contentsDescription: "Rédigez le résumé et la description complète du produit.",
@@ -105,22 +176,29 @@ export const PRODUCT_GENERAL_TAB_COPY = {
   primaryImageDefined: "Une image principale est déjà définie.",
   nameLabel: "Nom du produit",
   slugLabel: "Adresse du produit",
-  slugHint: "Visible dans l'URL du produit. Générée automatiquement depuis le nom, vous pouvez la modifier.",
+  slugHint:
+    "Visible dans l'URL du produit. Générée automatiquement depuis le nom, vous pouvez la modifier.",
   skuRootLabel: "Référence interne",
-  skuRootHint: "Optionnelle, utile pour retrouver un produit. Pour un produit à variantes, chaque déclinaison reprend cette base pour générer sa propre référence.",
+  skuRootHint:
+    "Optionnelle, utile pour retrouver un produit. Pour un produit à variantes, chaque déclinaison reprend cette base pour générer sa propre référence.",
   productTypeLabel: "Famille produit",
   productTypeHint: "Classe le produit dans une famille catalogue.",
   marketingHookLabel: "Accroche commerciale",
-  marketingHookHint: "Phrase courte affichée en haut de la fiche produit pour mettre le produit en valeur.",
+  marketingHookHint:
+    "Phrase courte affichée en haut de la fiche produit pour mettre le produit en valeur.",
   marketingHookPlaceholder: "Ex. Un sac artisanal pensé pour illuminer le quotidien.",
   shortDescriptionLabel: "Description courte",
-  shortDescriptionHint: "Affichée en haut de la fiche produit. Visez une phrase courte, concrète et naturelle (idéalement 120 à 180 caractères, maximum 220).",
+  shortDescriptionHint:
+    "Affichée en haut de la fiche produit. Visez une phrase courte, concrète et naturelle (idéalement 120 à 180 caractères, maximum 220).",
   descriptionLabel: "Description détaillée",
-  descriptionHint: "Développez le produit (usage, praticité, fabrication, finitions). Évitez de dupliquer les listes factuelles déjà saisies dans Caractéristiques.",
+  descriptionHint:
+    "Développez le produit (usage, praticité, fabrication, finitions). Évitez de dupliquer les listes factuelles déjà saisies dans Caractéristiques.",
   careInstructionsLabel: "Conseils d'entretien",
-  careInstructionsHint: "Champ dédié aux conseils de soin affichés sur la fiche produit. Saisissez-les ici et évitez de les dupliquer dans Caractéristiques.",
+  careInstructionsHint:
+    "Champ dédié aux conseils de soin affichés sur la fiche produit. Saisissez-les ici et évitez de les dupliquer dans Caractéristiques.",
   statusLabel: "Statut",
-  statusHint: "Brouillon : non visible. Actif : publié sur la boutique. Inactif : retiré temporairement. Archivé : retiré définitivement.",
+  statusHint:
+    "Brouillon : non visible. Actif : publié sur la boutique. Inactif : retiré temporairement. Archivé : retiré définitivement.",
   isFeaturedLabel: "Mise en avant",
   statusDraft: "Brouillon",
   statusActive: "Actif",
@@ -138,13 +216,16 @@ export const PRODUCT_GENERAL_TAB_COPY = {
 
 export const PRODUCT_PRICING_TAB_COPY = {
   defaultPriceTitle: "Prix boutique (principal)",
-  defaultPriceDescription: "Définissez le prix affiché sur la boutique. Laisser vide désactive ce tarif.",
+  defaultPriceDescription:
+    "Définissez le prix affiché sur la boutique. Laisser vide désactive ce tarif.",
   advancedPriceTitle: "Listes de prix (avancé)",
-  advancedPriceDescription: "Pour des besoins spécifiques. La boutique V1 ne choisit pas encore une liste de prix.",
+  advancedPriceDescription:
+    "Pour des besoins spécifiques. La boutique V1 ne choisit pas encore une liste de prix.",
   variantPriceTitle: "Prix variantes",
-  variantPriceDescription: "Chaque variante peut avoir son propre prix. Si aucun prix n'est renseigné, le prix du produit est utilisé.",
+  variantPriceDescription:
+    "Chaque variante peut avoir son propre prix. Si aucun prix n'est renseigné, le prix du produit est utilisé.",
   noPriceLists: "Aucune liste de prix disponible.",
-  noDefaultPriceList: "Aucune liste de prix n'est marquée comme \"par défaut\".",
+  noDefaultPriceList: 'Aucune liste de prix n\'est marquée comme "par défaut".',
   shopBadge: "Boutique",
   priceLabel: "Prix",
   priceHint: "Montant affiché sur la fiche produit.",
@@ -163,10 +244,13 @@ export const PRODUCT_PRICING_TAB_COPY = {
   statusPlanned: "Planifiée",
   statusActive: "Active",
   advancedListsToggle: (count: number): string => `Afficher les autres listes de prix (${count})`,
-  storefrontHint: "La boutique affiche actuellement un prix simple. Les listes de prix et la planification de promotion ne pilotent pas encore l'affichage storefront (V1).",
-  promotionDatesHint: "Ces dates sont enregistrées mais ne pilotent pas encore l'affichage storefront en V1.",
+  storefrontHint:
+    "La boutique affiche actuellement un prix simple. Les listes de prix et la planification de promotion ne pilotent pas encore l'affichage storefront (V1).",
+  promotionDatesHint:
+    "Ces dates sont enregistrées mais ne pilotent pas encore l'affichage storefront en V1.",
   advancedStorefrontNote: "Stockage uniquement. Non consommé storefront V1.",
-  variantPriceReadOnly: "Lecture seule (V1). L'édition des prix par variante n'est pas encore disponible dans l'admin. La boutique applique: prix variante si présent, sinon prix produit.",
+  variantPriceReadOnly:
+    "Lecture seule (V1). L'édition des prix par variante n'est pas encore disponible dans l'admin. La boutique applique: prix variante si présent, sinon prix produit.",
 } as const;
 
 // ─── Availability tab ─────────────────────────────────────────────────────────
@@ -175,7 +259,8 @@ export const PRODUCT_AVAILABILITY_TAB_COPY = {
   singleTitle: "Disponibilité",
   singleDescription: "Définissez si ce produit est vendable en ligne.",
   variantsTitle: "Disponibilité par variante",
-  variantsDescription: "Définissez la vendabilité de chaque déclinaison sans gérer ici les quantités de stock.",
+  variantsDescription:
+    "Définissez la vendabilité de chaque déclinaison sans gérer ici les quantités de stock.",
   noData: "Aucune donnée de disponibilité disponible pour ce produit.",
   noVariants: "Aucune variante disponible pour gérer la vendabilité.",
   statusFieldLabel: "Statut de disponibilité",
@@ -197,7 +282,8 @@ export const PRODUCT_AVAILABILITY_TAB_COPY = {
   statusArchived: "Archivé",
   variantNameFallback: "Variante sans nom",
   internalRefLabel: "Référence interne :",
-  statusHint: "Le statut indique l'état commercial du produit. La vendabilité contrôle si l'ajout au panier est autorisé.",
+  statusHint:
+    "Le statut indique l'état commercial du produit. La vendabilité contrôle si l'ajout au panier est autorisé.",
 } as const;
 
 // ─── Inventory tab ────────────────────────────────────────────────────────────
@@ -220,14 +306,16 @@ export const PRODUCT_INVENTORY_TAB_COPY = {
   inventoryUnrecorded: "Non enregistré",
   internalRefLabel: "Référence interne :",
   variantNameFallback: "Variante sans nom",
-  reservedStockHint: "Le stock réservé est géré automatiquement par le système. Le stock disponible est calculé en conséquence.",
+  reservedStockHint:
+    "Le stock réservé est géré automatiquement par le système. Le stock disponible est calculé en conséquence.",
 } as const;
 
 // ─── Characteristics tab ──────────────────────────────────────────────────────
 
 export const PRODUCT_CHARACTERISTICS_TAB_COPY = {
   sectionTitle: "Caractéristiques produit",
-  sectionDescription: "Renseignez les attributs factuels du produit : matière, dimensions, fermeture, composition, etc.",
+  sectionDescription:
+    "Renseignez les attributs factuels du produit : matière, dimensions, fermeture, composition, etc.",
   addTitle: "Ajouter une caractéristique",
   suggestionsLabel: "Suggestions :",
   labelFieldLabel: "Libellé",
@@ -249,11 +337,14 @@ export const PRODUCT_CHARACTERISTICS_TAB_COPY = {
 
 export const PRODUCT_RELATED_PRODUCTS_TAB_COPY = {
   linkedTitle: "Produits liés",
-  linkedDescription: "Ces produits sont affichés sur la fiche produit. Le type change l'intitulé en vitrine, et l'ordre d'affichage se gère avec Monter/Descendre.",
+  linkedDescription:
+    "Ces produits sont affichés sur la fiche produit. Le type change l'intitulé en vitrine, et l'ordre d'affichage se gère avec Monter/Descendre.",
   addTitle: "Ajouter un produit lié",
-  addDescription: "Choisissez un produit à mettre en avant depuis cette fiche. Vous pourrez ensuite ajuster le type et l'ordre.",
+  addDescription:
+    "Choisissez un produit à mettre en avant depuis cette fiche. Vous pourrez ensuite ajuster le type et l'ordre.",
   emptyTitle: "Aucun produit lié pour le moment.",
-  emptyDescription: "Ajoutez 1 à 3 produits complémentaires pour guider la navigation. Vous pourrez ajuster le type et l'ordre ensuite.",
+  emptyDescription:
+    "Ajoutez 1 à 3 produits complémentaires pour guider la navigation. Vous pourrez ajuster le type et l'ordre ensuite.",
   productFieldLabel: "Produit à lier",
   productFieldHint: "Seuls les produits non encore associés à cet article sont proposés.",
   typeFieldLabel: "Type de relation",
@@ -273,7 +364,8 @@ export const PRODUCT_CATEGORIES_TAB_COPY = {
   summaryPrimaryLabel: "Catégorie principale",
   summaryPrimaryNone: "Aucune",
   primaryFieldLabel: "Catégorie principale",
-  primaryFieldHint: "La catégorie principale définit le classement principal de ce produit dans la boutique. Choisir la plus spécifique disponible.",
+  primaryFieldHint:
+    "La catégorie principale définit le classement principal de ce produit dans la boutique. Choisir la plus spécifique disponible.",
   primaryRootPlaceholder: "Choisir une catégorie",
   primaryChildPlaceholder: "Choisir une sous-catégorie",
   parentCategoryOption: "Catégorie parente",
@@ -320,7 +412,8 @@ export const PRODUCT_SEO_TAB_COPY = {
 
 export const PRODUCT_IMAGES_TAB_COPY = {
   gallerySectionTitle: "Galerie produit",
-  gallerySectionDescription: "Gère les médias affichés sur la fiche produit, leur ordre et leur image principale — c'est-à-dire la photo mise en avant en premier sur la boutique.",
+  gallerySectionDescription:
+    "Gère les médias affichés sur la fiche produit, leur ordre et leur image principale — c'est-à-dire la photo mise en avant en premier sur la boutique.",
   infoSectionTitle: "Informations de repère",
   infoSectionDescription: "Repères rapides sur la galerie et l'image principale.",
   ratioConformLabel: "Conformes 4:5",
@@ -346,7 +439,8 @@ export const PRODUCT_IMAGES_TAB_COPY = {
 
 export const PRODUCT_VARIANTS_TAB_COPY = {
   addVariantButton: "Ajouter une variante",
-  variantImageHint: "L'image principale de chaque variante est choisie parmi les médias déjà rattachés au produit.",
+  variantImageHint:
+    "L'image principale de chaque variante est choisie parmi les médias déjà rattachés au produit.",
   colorValuesSectionTitle: "Valeurs couleur",
   colorValuesSectionSubtitle: "Valeurs partagées entre variantes",
   noColorOptions: "Aucune option couleur active pour ce type produit.",
@@ -397,7 +491,8 @@ export const PRODUCT_IMAGE_ITEM_COPY = {
 
 export const PRODUCT_IMAGE_LIBRARY_COPY = {
   sheetTitle: "Médiathèque",
-  sheetDescription: "Sélectionne un ou plusieurs médias déjà présents dans ta médiathèque pour les ajouter à la galerie du produit.",
+  sheetDescription:
+    "Sélectionne un ou plusieurs médias déjà présents dans ta médiathèque pour les ajouter à la galerie du produit.",
   searchPlaceholder: "Rechercher un média…",
   selectedCount: (count: number): string => `${count} sélection${count > 1 ? "s" : ""}`,
   cancelButton: "Annuler",
@@ -412,7 +507,8 @@ export const PRODUCT_IMAGE_LIBRARY_COPY = {
 
 export const PRODUCT_IMAGE_UPLOAD_COPY = {
   filesLabel: "Images à importer",
-  filesDescription: "Formats acceptés : JPEG, PNG, WebP, AVIF. La sélection multiple est autorisée.",
+  filesDescription:
+    "Formats acceptés : JPEG, PNG, WebP, AVIF. La sélection multiple est autorisée.",
   makePrimaryLabel: "Définir comme image principale",
   makePrimaryCheckboxLabel: "Utiliser comme image principale",
   altTextLabel: "Texte alternatif",
@@ -433,18 +529,22 @@ export const PRODUCT_VARIANT_EDITOR_COPY = {
   identityTitle: "Identité de la variante",
   attributesEyebrow: "Attributs",
   attributesTitle: "Attributs de la variante",
-  attributesDescription: "Associez cette variante aux valeurs d'options qui la différencient (couleur, taille…).",
+  attributesDescription:
+    "Associez cette variante aux valeurs d'options qui la différencient (couleur, taille…).",
   publicationEyebrow: "Publication",
   publicationTitle: "Publication et ordre",
-  publicationDescription: "Choisissez le statut de la variante, son ordre d'apparition et son éventuel statut par défaut.",
+  publicationDescription:
+    "Choisissez le statut de la variante, son ordre d'apparition et son éventuel statut par défaut.",
   imageEyebrow: "Image",
   imageTitle: "Image principale",
-  imageDescription: "La variante choisit son image principale parmi les médias déjà rattachés au produit.",
+  imageDescription:
+    "La variante choisit son image principale parmi les médias déjà rattachés au produit.",
   technicalEyebrow: "Repères",
   technicalTitle: "Repères techniques",
   dimensionsEyebrow: "Dimensions",
   dimensionsTitle: "Dimensions et poids",
-  dimensionsDescription: "Renseignez les mesures de la variante lorsqu'elles sont utiles au pilotage.",
+  dimensionsDescription:
+    "Renseignez les mesures de la variante lorsqu'elles sont utiles au pilotage.",
   noOptions: "Ce produit ne possède pas d'axes d'option configurés.",
   noImages: "Aucune image produit n'est encore disponible pour cette variante.",
   optionNone: "— Aucune —",

@@ -25,8 +25,8 @@ export function BoutiqueMarketAside() {
       data-testid="boutique-market-aside"
       className="hidden tablet:block tablet:self-stretch "
     >
-      {/* desktop:top-[9rem] = offset hauteur header (~5.5rem) + gap de sécurité */}
-      <div className="grid gap-3 desktop:sticky desktop:top-36 desktop:z-20 desktop:content-start border-l border-brand h-fit">
+      {/* laptop+: top-[8rem] = offset header compact + marge de lecture */}
+      <div className="grid gap-3 laptop:sticky laptop:top-32 laptop:z-20 laptop:content-start border-l border-brand h-fit">
         <div data-motion-surface="market-aside" className="grid gap-3.5  p-3.5">
           <div className="grid gap-1">
             <p className={labelClass}>L&apos;atelier Creatyss</p>

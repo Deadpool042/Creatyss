@@ -28,6 +28,8 @@ export function BoutiqueActiveFilters({ labels, resetHref }: BoutiqueActiveFilte
       aria-label="Filtres actifs"
       className="flex min-w-0 flex-wrap items-center gap-1.5"
     >
+      <span className="text-[0.75rem] font-medium text-text-muted-strong">Filtres :</span>
+
       {labels.map((item, index) => (
         <CustomLink
           key={`${item.key}-${index}`}

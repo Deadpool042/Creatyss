@@ -90,9 +90,9 @@ async function getLayoutSnapshot(page: Page) {
       asides.find((element) => /atelier creatyss/i.test(element.textContent || "")) ?? null;
     const sidebarAside =
       asides.find((element) => /Filtres/i.test(element.textContent || "")) ?? null;
-    const cards = [...document.querySelectorAll('[data-testid="boutique-product-grid"] > *')].filter((element) =>
-      isVisible(element)
-    );
+    const cards = [
+      ...document.querySelectorAll('[data-testid="boutique-product-grid"] > *'),
+    ].filter((element) => isVisible(element));
     const columns = new Set(
       cards.map((element) => Math.round((element as HTMLElement).getBoundingClientRect().left))
     ).size;
@@ -121,9 +121,15 @@ async function getFilterTriggerSnapshot(page: Page) {
     };
 
     return {
-      mobileVisible: isVisible(document.querySelector('[data-testid="boutique-filter-trigger-mobile"]')),
-      tabletVisible: isVisible(document.querySelector('[data-testid="boutique-filter-trigger-tablet"]')),
-      shortcutVisible: isVisible(document.querySelector('[data-testid="boutique-filter-shortcuts"]')),
+      mobileVisible: isVisible(
+        document.querySelector('[data-testid="boutique-filter-trigger-mobile"]')
+      ),
+      tabletVisible: isVisible(
+        document.querySelector('[data-testid="boutique-filter-trigger-tablet"]')
+      ),
+      shortcutVisible: isVisible(
+        document.querySelector('[data-testid="boutique-filter-shortcuts"]')
+      ),
     };
   });
 }
@@ -145,9 +151,7 @@ async function getMarketPlacementSnapshot(page: Page) {
 
     return {
       inlineVisible: isVisible(document.querySelector(".boutique-market-inline-shell")),
-      columnVisible: isVisible(
-        document.querySelector('[data-testid="boutique-market-aside"]')
-      ),
+      columnVisible: isVisible(document.querySelector('[data-testid="boutique-market-aside"]')),
     };
   });
 }
@@ -310,7 +314,9 @@ test.describe("boutique page smoke", () => {
           .poll(async () => getVisibleHeaderCountLabel(page))
           .toBe(countCase.expectedCountLabel);
         await expect(page.locator('[data-testid="boutique-listing-actions-count"]')).toHaveText(
-          countCase.expectedCountLabel.replace("produits", "créations").replace("produit", "création")
+          countCase.expectedCountLabel
+            .replace("produits", "créations")
+            .replace("produit", "création")
         );
 
         const pagination = page.getByRole("navigation", { name: "Pagination" });
@@ -379,7 +385,7 @@ test.describe("boutique page smoke", () => {
 
     // Selecting a second root category adds it to the URL
     const accessoiresLink = filtersAside.getByRole("link", { name: "Accessoires", exact: true });
-    if (await accessoiresLink.count() > 0) {
+    if ((await accessoiresLink.count()) > 0) {
       await accessoiresLink.click();
       await expect(page).toHaveURL(/category=sacs/);
       await expect(page).toHaveURL(/category=accessoires/);
@@ -438,14 +444,17 @@ test.describe("boutique page smoke", () => {
     expect(visibleLogoCount, "visible boutique logo links").toBeGreaterThan(0);
     await expect(page.getByTestId("public-reassurance-bar")).toHaveCount(0);
 
-    const headerHeight = await page.locator("header").first().evaluate((element) => {
-      return Math.round(element.getBoundingClientRect().height);
-    });
+    const headerHeight = await page
+      .locator("header")
+      .first()
+      .evaluate((element) => {
+        return Math.round(element.getBoundingClientRect().height);
+      });
     expect(headerHeight, "boutique desktop header height").toBeLessThanOrEqual(72);
 
-    const heroBackgroundImage = await page.getByTestId("boutique-mobile-hero").evaluate((element) =>
-      window.getComputedStyle(element, "::before").backgroundImage
-    );
+    const heroBackgroundImage = await page
+      .getByTestId("boutique-mobile-hero")
+      .evaluate((element) => window.getComputedStyle(element, "::before").backgroundImage);
     expect(heroBackgroundImage).toContain("bg-light-hero");
   });
 
@@ -628,7 +637,9 @@ test.describe("boutique page smoke", () => {
 
       await expect(page.getByRole("heading", { level: 1, name: "Boutique" }).first()).toBeVisible();
       await expect(page.getByRole("link", { name: /boutique/i }).first()).toBeVisible();
-      await expect(page.locator('[data-testid="boutique-product-grid"] article').first()).toBeVisible();
+      await expect(
+        page.locator('[data-testid="boutique-product-grid"] article').first()
+      ).toBeVisible();
       await expect(page.getByRole("navigation", { name: "Pagination" })).toBeVisible();
 
       const filtersTrigger = page.getByRole("button", { name: "Filtres", exact: true }).first();
@@ -754,8 +765,12 @@ test.describe("boutique page smoke", () => {
 
       if (viewport.shortcutVisible) {
         const shortcuts = page.getByTestId("boutique-filter-shortcuts");
-        await expect(shortcuts.getByRole("button", { name: "Catégories", exact: true })).toBeVisible();
-        await expect(shortcuts.getByRole("button", { name: "Disponibilité", exact: true })).toBeVisible();
+        await expect(
+          shortcuts.getByRole("button", { name: "Catégories", exact: true })
+        ).toBeVisible();
+        await expect(
+          shortcuts.getByRole("button", { name: "Disponibilité", exact: true })
+        ).toBeVisible();
         await expect(shortcuts.getByRole("button", { name: "Prix", exact: true })).toBeVisible();
       }
 
@@ -1009,7 +1024,6 @@ test.describe("boutique page smoke", () => {
     }
   });
 
-
   test("keeps mobile hero ambience stable between discovery and category routes", async ({
     page,
   }) => {
@@ -1080,7 +1094,9 @@ test.describe("boutique page smoke", () => {
         }
 
         // Product grid stays visible
-        await expect(page.locator('[data-testid="boutique-product-grid"] article').first()).toBeVisible();
+        await expect(
+          page.locator('[data-testid="boutique-product-grid"] article').first()
+        ).toBeVisible();
 
         // No global overflow
         const globalOverflowPx = await getHorizontalOverflowPx(page);
@@ -1237,12 +1253,12 @@ test.describe("boutique page smoke", () => {
         const rect = el.getBoundingClientRect();
         return style.display !== "none" && rect.width > 0 && rect.height > 0;
       });
-      expect(sidebarVisible, `sidebar hidden at 1440 on ${url}`).toBe(false);
+      expect(sidebarVisible, `sidebar visible at 1440 on ${url}`).toBe(true);
 
       await expect(
         page.getByRole("button", { name: "Filtres", exact: true }).first(),
-        `drawer trigger visible at 1440 on ${url}`
-      ).toBeVisible();
+        `drawer trigger hidden at 1440 on ${url}`
+      ).toHaveCount(0);
 
       // Exactly 4 product columns at 1440
       const columns = await page.evaluate(() => {
@@ -1394,7 +1410,9 @@ test.describe("boutique page smoke", () => {
 
     // Pas de champ newsletter actif
     await expect(footer.getByRole("textbox")).toHaveCount(0);
-    await expect(footer.getByRole("button", { name: /newsletter|s'abonner|abonnez/i })).toHaveCount(0);
+    await expect(footer.getByRole("button", { name: /newsletter|s'abonner|abonnez/i })).toHaveCount(
+      0
+    );
 
     // Copyright présent
     await expect(footer.getByText(/Tous droits réservés/)).toBeVisible();
@@ -1409,7 +1427,9 @@ test.describe("boutique page smoke", () => {
     const hasProducts = await grid.count();
     if (!hasProducts) {
       // Texte "Aucun résultat" ou heading visible
-      await expect(page.getByRole("heading", { level: 2, name: /Aucun produit ne correspond/i })).toBeVisible();
+      await expect(
+        page.getByRole("heading", { level: 2, name: /Aucun produit ne correspond/i })
+      ).toBeVisible();
 
       // Lien reset visible avec aria-label explicite
       const resetLink = page.getByRole("link", { name: /Réinitialiser les filtres/i });
@@ -1420,9 +1440,13 @@ test.describe("boutique page smoke", () => {
     // Cas 2 : pas de filtre actif — catalogue publié non vide normalement
     await page.goto("/boutique");
     // Le grid produit doit être visible (not empty state)
-    await expect(page.locator('[data-testid="boutique-product-grid"] article').first()).toBeVisible();
+    await expect(
+      page.locator('[data-testid="boutique-product-grid"] article').first()
+    ).toBeVisible();
     // Aucun h2 "Aucun produit publié"
-    await expect(page.getByRole("heading", { level: 2, name: /Aucun produit publié/i })).toHaveCount(0);
+    await expect(
+      page.getByRole("heading", { level: 2, name: /Aucun produit publié/i })
+    ).toHaveCount(0);
   });
 
   test("product card — contenu métier et accessibilité", async ({ page }) => {
@@ -1448,9 +1472,13 @@ test.describe("boutique page smoke", () => {
     // disponibilité visible : "En stock", "Sur commande" ou "Indisponible"
     const availabilityText = await firstCard.evaluate((el) => {
       const spans = [...el.querySelectorAll("span")];
-      return spans.find((s) =>
-        ["En stock", "Sur commande", "Indisponible"].includes((s.textContent ?? "").trim())
-      )?.textContent?.trim() ?? null;
+      return (
+        spans
+          .find((s) =>
+            ["En stock", "Sur commande", "Indisponible"].includes((s.textContent ?? "").trim())
+          )
+          ?.textContent?.trim() ?? null
+      );
     });
     expect(availabilityText, "availability text should be visible in card").toBeTruthy();
 
@@ -1469,7 +1497,9 @@ test.describe("boutique page smoke", () => {
         const sr = del.querySelector(".sr-only");
         return sr?.textContent?.trim() ?? null;
       });
-      expect(srOnly, "sr-only ancien prix label should be present in <del>").toMatch(/Ancien prix/i);
+      expect(srOnly, "sr-only ancien prix label should be present in <del>").toMatch(
+        /Ancien prix/i
+      );
     }
   });
 });

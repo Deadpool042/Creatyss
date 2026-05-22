@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { ComponentType, SVGProps } from "react";
+import { useRef, type ComponentType, type SVGProps } from "react";
 import {
   BookOpenTextIcon,
   Grid2X2Icon,
@@ -42,12 +42,18 @@ const DRAWER_PRIMARY_LINKS = [
 const DRAWER_SECONDARY_LINKS = [
   { href: "/blog", label: "Blog", icon: NewspaperIcon },
   { href: "/a-propos", label: "À propos", icon: BookOpenTextIcon, status: "comingSoon" as const },
-  { href: "/contact", label: "Contact", icon: MailIcon, status: "comingSoon" as const },
+  { href: "/contact", label: "Contact", icon: MailIcon },
 ] satisfies readonly DrawerNavItem[];
 
 const DRAWER_SPACE_LINKS = [
   { href: "/favoris", label: "Favoris", icon: HeartIcon, className: "" },
-  { href: "/compte", label: "Mon compte", icon: UserIcon, className: "min-[390px]:hidden", status: "comingSoon" as const },
+  {
+    href: "/compte",
+    label: "Mon compte",
+    icon: UserIcon,
+    className: "min-[390px]:hidden",
+    status: "comingSoon" as const,
+  },
 ] satisfies readonly DrawerNavItem[];
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -117,10 +123,7 @@ function DrawerLinkGroup({ label, items }: DrawerLinkGroupProps) {
                 aria-disabled="true"
                 className={cn(GROUP_ITEM_CLS, className, "cursor-default opacity-40")}
               >
-                <Icon
-                  className="size-4 shrink-0 text-brand/65"
-                  aria-hidden="true"
-                />
+                <Icon className="size-4 shrink-0 text-brand/65" aria-hidden="true" />
                 {itemLabel}
                 <span className="ml-auto text-[0.58rem] font-medium uppercase tracking-[0.06em]">
                   Bientôt
@@ -149,6 +152,8 @@ function DrawerLinkGroup({ label, items }: DrawerLinkGroupProps) {
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function MobileMenuDrawer({ variant = "bottomNav" }: MobileMenuDrawerProps) {
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
@@ -184,6 +189,10 @@ export function MobileMenuDrawer({ variant = "bottomNav" }: MobileMenuDrawerProp
       <DrawerContent
         className="inset-y-0 right-0 mt-0 h-dvh w-[min(20rem,calc(100vw-2rem))] border-l border-shell-border/80 bg-background/78 shadow-floating backdrop-blur-2xl backdrop-saturate-150"
         data-testid="mobile-menu-drawer"
+        onOpenAutoFocus={(event) => {
+          event.preventDefault();
+          closeButtonRef.current?.focus();
+        }}
       >
         <div
           aria-hidden="true"
@@ -219,6 +228,7 @@ export function MobileMenuDrawer({ variant = "bottomNav" }: MobileMenuDrawerProp
                 size="icon-sm"
                 className="absolute right-3 top-3 text-foreground/65 hover:bg-surface-subtle hover:text-foreground"
                 aria-label="Fermer le menu"
+                ref={closeButtonRef}
               >
                 <XIcon aria-hidden="true" />
               </Button>

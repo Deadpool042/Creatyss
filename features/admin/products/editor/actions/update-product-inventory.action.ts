@@ -5,7 +5,7 @@ import {
   productInventoryFormInitialState,
   type ProductInventoryFormAction,
   type ProductInventoryRowInput,
-} from "../types/product-inventory-form.types";
+} from "../types";
 import { AdminProductEditorServiceError, updateProductInventory } from "../services";
 
 function getString(formData: FormData, key: string): FormDataEntryValue | null {

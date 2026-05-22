@@ -4,7 +4,6 @@ import type { CatalogCategoryFilterItem } from "@/features/storefront/catalog/ty
 export async function listCatalogFilterCategories(): Promise<CatalogCategoryFilterItem[]> {
   const categories = await db.category.findMany({
     where: {
-      status: "ACTIVE",
       archivedAt: null,
     },
     orderBy: [{ sortOrder: "asc" }, { name: "asc" }],

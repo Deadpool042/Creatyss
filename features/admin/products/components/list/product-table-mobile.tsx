@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState, type JSX } from "react";
 
 import { AdminFeedSentinel } from "@/components/admin/shared/admin-feed-sentinel";
-import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
+import type { ProductTableItem } from "@/features/admin/products/list/types";
 import { PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
 import { ProductCollectionCard } from "./product-collection-card";
 

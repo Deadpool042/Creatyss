@@ -8,7 +8,7 @@ import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import type {
   CategoryFeaturedFilter,
   CategorySortOption,
-} from "@/features/admin/categories/queries";
+} from "@/features/admin/categories/list";
 
 export type CategoryFiltersState = {
   search: string;

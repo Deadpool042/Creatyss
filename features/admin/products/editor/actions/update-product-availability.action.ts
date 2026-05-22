@@ -5,7 +5,7 @@ import {
   productAvailabilityFormInitialState,
   type ProductAvailabilityFormAction,
   type ProductAvailabilityRowInput,
-} from "../types/product-availability-form.types";
+} from "../types";
 import {
   AdminProductEditorServiceError,
   updateProductAvailability,

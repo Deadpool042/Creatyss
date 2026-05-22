@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { CategoryNode } from "@/features/admin/products/editor/types/product-categories.types";
+import type { CategoryNode } from "@/features/admin/products/editor/types";
 
 type ProductCategoriesAddFieldsProps = {
   rootCategories: CategoryNode[];

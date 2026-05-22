@@ -1,3 +1,5 @@
+import "server-only";
+
 export { getAdminProductEditorData } from "./get-admin-product-editor-data.query";
 export { listAdminProductCategoryOptions } from "./list-admin-product-category-options.query";
 export { listAdminProductTypeOptions } from "./list-admin-product-type-options.query";

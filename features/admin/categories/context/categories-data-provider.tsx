@@ -6,7 +6,7 @@ import type { AdminCategoryCardItem } from "@/features/admin/categories/types";
 import type {
   CategoryPickerItem,
   CategoryStatusCounts,
-} from "@/features/admin/categories/queries";
+} from "@/features/admin/categories/list";
 
 type CategoriesTableContextValue = {
   categories: AdminCategoryCardItem[];

@@ -69,7 +69,7 @@ const DESKTOP_NAV_ITEMS = [
 
   { href: "/blog", label: "Blog", icon: NewspaperIcon },
 
-  { href: "/contact", label: "Contact", icon: MailIcon, status: "comingSoon" },
+  { href: "/contact", label: "Contact", icon: MailIcon },
 ] satisfies readonly PublicNavItem[];
 
 const DESKTOP_CATEGORY_LINKS = [
@@ -456,7 +456,7 @@ export function TopbarPublic({ pathname }: TopbarPublicProps) {
   return (
     <>
       <header className="sticky top-0 z-30 border-b border-shell-border bg-background/35 backdrop-blur-md backdrop-saturate-150">
-        <PublicReassuranceBar />
+        {!isBoutiqueRoute ? <PublicReassuranceBar /> : null}
 
         <div className="mx-auto w-full max-w-430 px-4 sm:px-6 xl:px-12">
           <MobileTopbar pathname={pathname} />

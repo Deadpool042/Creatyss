@@ -11,18 +11,12 @@ import {
   AdminDataTableToolbarLayout,
 } from "@/components/admin/tables";
 import {
-  AdminFilterField,
   AdminFilterPopovers,
+  AdminSelectFilterControl,
   AdminSingleSelectFilterList,
   type AdminFilterPopoverItem,
 } from "@/components/admin/tables/filters";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   PRODUCT_FEATURED_OPTIONS,
   PRODUCT_IMAGE_OPTIONS,
@@ -33,14 +27,14 @@ import {
   PRODUCT_STOCK_OPTIONS,
   PRODUCT_VARIANT_OPTIONS,
 } from "@/features/admin/products/config";
-import type { ProductTableFiltersState } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type {
   ProductFilterFeaturedOption,
   ProductFilterImageOption,
   ProductFilterStockOption,
   ProductFilterVariantOption,
   ProductSortOption,
-} from "@/features/admin/products/list/types/product-table.types";
+  ProductTableFiltersState,
+} from "@/features/admin/products/list/types";
 import { AdminProductsCategoryFilter } from "./admin-products-category-filter";
 import { useProductTableContext } from "./product-table-context";
 import {
@@ -66,77 +60,37 @@ function StatusFilterList({ state }: { state: ProductTableFiltersState }) {
 function AdvancedFiltersContent({ state }: { state: ProductTableFiltersState }) {
   return (
     <div className="flex flex-col gap-3">
-      <AdminFilterField label={PRODUCT_LIST_COPY.filterAdvancedFeaturedLabel}>
-        <Select
-          value={state.featured}
-          onValueChange={(v) => state.setFeatured(v as ProductFilterFeaturedOption)}
-        >
-          <SelectTrigger className="h-8 text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {PRODUCT_FEATURED_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-          ))}
-          </SelectContent>
-        </Select>
-      </AdminFilterField>
+      <AdminSelectFilterControl
+        value={state.featured}
+        onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
+        options={PRODUCT_FEATURED_OPTIONS}
+        label={PRODUCT_LIST_COPY.filterAdvancedFeaturedLabel}
+        triggerClassName="h-8 text-xs"
+      />
 
-      <AdminFilterField label={PRODUCT_LIST_COPY.filterAdvancedImagesLabel}>
-        <Select
-          value={state.image}
-          onValueChange={(v) => state.setImage(v as ProductFilterImageOption)}
-        >
-          <SelectTrigger className="h-8 text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {PRODUCT_IMAGE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-          ))}
-          </SelectContent>
-        </Select>
-      </AdminFilterField>
+      <AdminSelectFilterControl
+        value={state.image}
+        onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
+        options={PRODUCT_IMAGE_OPTIONS}
+        label={PRODUCT_LIST_COPY.filterAdvancedImagesLabel}
+        triggerClassName="h-8 text-xs"
+      />
 
-      <AdminFilterField label={PRODUCT_LIST_COPY.filterAdvancedVariantsLabel}>
-        <Select
-          value={state.variant}
-          onValueChange={(v) => state.setVariant(v as ProductFilterVariantOption)}
-        >
-          <SelectTrigger className="h-8 text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {PRODUCT_VARIANT_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-          ))}
-          </SelectContent>
-        </Select>
-      </AdminFilterField>
+      <AdminSelectFilterControl
+        value={state.variant}
+        onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
+        options={PRODUCT_VARIANT_OPTIONS}
+        label={PRODUCT_LIST_COPY.filterAdvancedVariantsLabel}
+        triggerClassName="h-8 text-xs"
+      />
 
-      <AdminFilterField label={PRODUCT_LIST_COPY.filterAdvancedStockLabel}>
-        <Select
-          value={state.stock}
-          onValueChange={(v) => state.setStock(v as ProductFilterStockOption)}
-        >
-          <SelectTrigger className="h-8 text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {PRODUCT_STOCK_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-          ))}
-          </SelectContent>
-        </Select>
-      </AdminFilterField>
+      <AdminSelectFilterControl
+        value={state.stock}
+        onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
+        options={PRODUCT_STOCK_OPTIONS}
+        label={PRODUCT_LIST_COPY.filterAdvancedStockLabel}
+        triggerClassName="h-8 text-xs"
+      />
     </div>
   );
 }

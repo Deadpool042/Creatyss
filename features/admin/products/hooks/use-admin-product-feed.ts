@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type {
   AdminProductFeedItem,
   AdminProductFeedPageResult,
-} from "@/features/admin/products/list/types/admin-product-feed.types";
+} from "@/features/admin/products/list/types/product-list.types";
 
 type FeedCursor = {
   updatedAt: string;

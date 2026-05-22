@@ -3,15 +3,17 @@
 import { useState } from "react";
 
 import { archiveProductBySlugAction } from "@/features/admin/products/shared/actions/archive-product.action";
-import { bulkArchiveProductsAction } from "@/features/admin/products/list/actions/bulk-archive-products.action";
-import { bulkDeleteProductsPermanentlyAction } from "@/features/admin/products/list/actions/bulk-delete-products-permanently.action";
-import { bulkRestoreProductsAction } from "@/features/admin/products/list/actions/bulk-restore-products.action";
-import { bulkUpdateProductFeaturedAction } from "@/features/admin/products/list/actions/bulk-update-product-featured.action";
-import { bulkUpdateProductStatusAction } from "@/features/admin/products/list/actions/bulk-update-product-status.action";
+import {
+  bulkArchiveProductsAction,
+  bulkDeleteProductsPermanentlyAction,
+  bulkRestoreProductsAction,
+  bulkUpdateProductFeaturedAction,
+  bulkUpdateProductStatusAction,
+} from "@/features/admin/products/list/actions";
 import { deleteProductPermanentlyBySlugAction } from "@/features/admin/products/shared/actions/delete-product-permanently.action";
 import { restoreProductBySlugAction } from "@/features/admin/products/shared/actions/restore-product.action";
 import type { AdminProductActionResult } from "@/features/admin/products/types";
-import type { ProductTableStatus } from "@/features/admin/products/list/types/product-table.types";
+import type { ProductTableStatus } from "@/features/admin/products/list/types";
 import { useProductTableFeedback } from "./use-product-table-feedback";
 
 type UseProductTableActionsInput = {

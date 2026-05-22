@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+const emptyToNull = z
+  .string()
+  .trim()
+  .transform((v) => (v.length === 0 ? null : v));
+
 const dateStringSchema = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, "Format attendu : YYYY-MM-DD")
@@ -52,6 +57,61 @@ const optionalMoneyNumberSchema = z
   })
   .transform((value) => value as number | null);
 
+export const productVariantFormSchema = z.object({
+  variantId: z.string().optional().default(""),
+  productId: z.string().trim().min(1),
+  name: z.string().optional().default(""),
+  slug: z.string().optional().default(""),
+  sku: z.string().trim().min(1),
+  status: z.enum(["draft", "active", "inactive", "archived"]),
+  isDefault: z.enum(["true", "false"]).default("false"),
+  sortOrder: z.string().trim().min(1),
+  primaryImageId: z.string().optional().default(""),
+  barcode: z.string().optional().default(""),
+  externalReference: z.string().optional().default(""),
+  weightGrams: z.string().optional().default(""),
+  widthMm: z.string().optional().default(""),
+  heightMm: z.string().optional().default(""),
+  depthMm: z.string().optional().default(""),
+});
+
+export const productSeoFormSchema = z.object({
+  productId: z.string().trim().min(1),
+  title: z.string().trim().max(255, "Le titre SEO est trop long (max 255 car.).").default(""),
+  description: z
+    .string()
+    .trim()
+    .max(320, "La description SEO est trop longue (max 320 car.).")
+    .default(""),
+  canonicalPath: emptyToNull.refine((v) => v === null || v.startsWith("/"), {
+    message: "Le chemin canonique doit commencer par '/'.",
+  }),
+  indexingMode: z.enum(["INDEX_FOLLOW", "INDEX_NOFOLLOW", "NOINDEX_FOLLOW", "NOINDEX_NOFOLLOW"]),
+  sitemapIncluded: z.enum(["true", "false"]).default("true"),
+  openGraphTitle: z
+    .string()
+    .trim()
+    .max(255, "Le titre Open Graph est trop long (max 255 car.).")
+    .default(""),
+  openGraphDescription: z
+    .string()
+    .trim()
+    .max(320, "La description Open Graph est trop longue (max 320 car.).")
+    .default(""),
+  openGraphImageId: emptyToNull,
+  twitterTitle: z
+    .string()
+    .trim()
+    .max(255, "Le titre réseau social est trop long (max 255 car.).")
+    .default(""),
+  twitterDescription: z
+    .string()
+    .trim()
+    .max(320, "La description réseau social est trop longue (max 320 car.).")
+    .default(""),
+  twitterImageId: emptyToNull,
+});
+
 export const priceEntrySchema = z
   .object({
     priceListId: z.string().min(1),
@@ -81,4 +141,6 @@ export const priceEntrySchema = z
     }
   });
 
+export type ProductVariantFormSchema = z.infer<typeof productVariantFormSchema>;
+export type ProductSeoFormSchema = z.infer<typeof productSeoFormSchema>;
 export type PriceEntrySchema = z.infer<typeof priceEntrySchema>;

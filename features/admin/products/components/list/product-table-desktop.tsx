@@ -13,7 +13,7 @@ import {
 } from "@/components/admin/tables";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PRODUCT_SELECTION_COPY, PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
-import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
+import type { ProductTableItem } from "@/features/admin/products/list/types";
 import { ProductTableDesktopRow } from "./product-table-desktop-row";
 
 type ProductListView = "active" | "trash";

@@ -3,18 +3,10 @@
 import type { JSX } from "react";
 
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   AdminFilterBlocks,
-  AdminFilterField,
+  AdminSelectFilterControl,
   type AdminFilterBlock,
 } from "@/components/admin/tables/filters";
-import type { ProductTableFiltersState } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type {
   ProductFilterCategoryOption,
   ProductFilterFeaturedOption,
@@ -22,8 +14,9 @@ import type {
   ProductFilterStockOption,
   ProductFilterVariantOption,
   ProductSortOption,
+  ProductTableFiltersState,
   ProductTableStatusFilter,
-} from "@/features/admin/products/list/types/product-table.types";
+} from "@/features/admin/products/list/types";
 import {
   PRODUCT_FEATURED_OPTIONS,
   PRODUCT_FILTERS_FORM_COPY,
@@ -55,21 +48,13 @@ function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.El
   return (
     <div className="grid grid-cols-[10rem_minmax(0,1fr)_10rem] gap-2">
       <div className="min-w-0">
-        <Select
+        <AdminSelectFilterControl
           value={state.status}
           onValueChange={(value) => state.setStatus(value as ProductTableStatusFilter)}
-        >
-          <SelectTrigger className="h-8 w-full text-xs">
-            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.statusPlaceholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {PRODUCT_STATUS_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          options={PRODUCT_STATUS_OPTIONS}
+          placeholder={PRODUCT_FILTERS_FORM_COPY.statusPlaceholder}
+          triggerClassName="h-8 text-xs"
+        />
       </div>
 
       <div className="min-w-0">
@@ -85,21 +70,13 @@ function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.El
       </div>
 
       <div className="min-w-0">
-        <Select
+        <AdminSelectFilterControl
           value={state.sort}
           onValueChange={(value) => state.setSort(value as ProductSortOption)}
-        >
-          <SelectTrigger className="h-8 w-full text-xs">
-            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.sortPlaceholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {PRODUCT_SORT_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          options={PRODUCT_SORT_OPTIONS}
+          placeholder={PRODUCT_FILTERS_FORM_COPY.sortPlaceholder}
+          triggerClassName="h-8 text-xs"
+        />
       </div>
     </div>
   );
@@ -107,77 +84,41 @@ function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.El
 function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): JSX.Element {
   return (
     <>
-      <AdminFilterField label={PRODUCT_FILTERS_FORM_COPY.featuredLabel}>
-        <Select
-          value={state.featured}
-          onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
-        >
-          <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.featuredPlaceholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {PRODUCT_FEATURED_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </AdminFilterField>
+      <AdminSelectFilterControl
+        value={state.featured}
+        onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
+        options={PRODUCT_FEATURED_OPTIONS}
+        label={PRODUCT_FILTERS_FORM_COPY.featuredLabel}
+        placeholder={PRODUCT_FILTERS_FORM_COPY.featuredPlaceholder}
+        triggerClassName={cn("h-8 text-xs", triggerClassName)}
+      />
 
-      <AdminFilterField label={PRODUCT_FILTERS_FORM_COPY.imagesLabel}>
-        <Select
-          value={state.image}
-          onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
-        >
-          <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.imagesPlaceholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {PRODUCT_IMAGE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </AdminFilterField>
+      <AdminSelectFilterControl
+        value={state.image}
+        onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
+        options={PRODUCT_IMAGE_OPTIONS}
+        label={PRODUCT_FILTERS_FORM_COPY.imagesLabel}
+        placeholder={PRODUCT_FILTERS_FORM_COPY.imagesPlaceholder}
+        triggerClassName={cn("h-8 text-xs", triggerClassName)}
+      />
 
-      <AdminFilterField label={PRODUCT_FILTERS_FORM_COPY.variantsLabel}>
-        <Select
-          value={state.variant}
-          onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
-        >
-          <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.variantsPlaceholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {PRODUCT_VARIANT_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </AdminFilterField>
+      <AdminSelectFilterControl
+        value={state.variant}
+        onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
+        options={PRODUCT_VARIANT_OPTIONS}
+        label={PRODUCT_FILTERS_FORM_COPY.variantsLabel}
+        placeholder={PRODUCT_FILTERS_FORM_COPY.variantsPlaceholder}
+        triggerClassName={cn("h-8 text-xs", triggerClassName)}
+      />
 
-      <AdminFilterField label={PRODUCT_FILTERS_FORM_COPY.stockLabel}>
-        <Select
-          value={state.stock}
-          onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
-        >
-          <SelectTrigger className={cn("h-8 w-full text-xs", triggerClassName)}>
-            <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.stockPlaceholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {PRODUCT_STOCK_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </AdminFilterField>
+      <AdminSelectFilterControl
+        value={state.stock}
+        onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
+        options={PRODUCT_STOCK_OPTIONS}
+        label={PRODUCT_FILTERS_FORM_COPY.stockLabel}
+        placeholder={PRODUCT_FILTERS_FORM_COPY.stockPlaceholder}
+        triggerClassName={cn("h-8 text-xs", triggerClassName)}
+      />
     </>
   );
 }
@@ -185,37 +126,21 @@ function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): J
 function MobilePrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.Element {
   return (
     <div className="grid gap-2 sm:grid-cols-2">
-      <Select
+      <AdminSelectFilterControl
         value={state.status}
         onValueChange={(value) => state.setStatus(value as ProductTableStatusFilter)}
-      >
-        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.statusPlaceholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {PRODUCT_STATUS_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        options={PRODUCT_STATUS_OPTIONS}
+        placeholder={PRODUCT_FILTERS_FORM_COPY.statusPlaceholder}
+        triggerClassName={cn("text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}
+      />
 
-      <Select
+      <AdminSelectFilterControl
         value={state.sort}
         onValueChange={(value) => state.setSort(value as ProductSortOption)}
-      >
-        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.sortPlaceholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {PRODUCT_SORT_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        options={PRODUCT_SORT_OPTIONS}
+        placeholder={PRODUCT_FILTERS_FORM_COPY.sortPlaceholder}
+        triggerClassName={cn("text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}
+      />
 
       <div className="sm:col-span-2">
         <AdminProductsCategoryFilter
@@ -235,69 +160,37 @@ function MobilePrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): 
 function MobileAdvancedFiltersFields({ state }: { state: ProductTableFiltersState }): JSX.Element {
   return (
     <>
-      <Select
+      <AdminSelectFilterControl
         value={state.featured}
         onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
-      >
-        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.featuredPlaceholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {PRODUCT_FEATURED_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        options={PRODUCT_FEATURED_OPTIONS}
+        placeholder={PRODUCT_FILTERS_FORM_COPY.featuredPlaceholder}
+        triggerClassName={cn("text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}
+      />
 
-      <Select
+      <AdminSelectFilterControl
         value={state.image}
         onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
-      >
-        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.imagesPlaceholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {PRODUCT_IMAGE_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        options={PRODUCT_IMAGE_OPTIONS}
+        placeholder={PRODUCT_FILTERS_FORM_COPY.imagesPlaceholder}
+        triggerClassName={cn("text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}
+      />
 
-      <Select
+      <AdminSelectFilterControl
         value={state.variant}
         onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
-      >
-        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.variantsPlaceholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {PRODUCT_VARIANT_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        options={PRODUCT_VARIANT_OPTIONS}
+        placeholder={PRODUCT_FILTERS_FORM_COPY.variantsPlaceholder}
+        triggerClassName={cn("text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}
+      />
 
-      <Select
+      <AdminSelectFilterControl
         value={state.stock}
         onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
-      >
-        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.stockPlaceholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {PRODUCT_STOCK_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+        options={PRODUCT_STOCK_OPTIONS}
+        placeholder={PRODUCT_FILTERS_FORM_COPY.stockPlaceholder}
+        triggerClassName={cn("text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}
+      />
     </>
   );
 }

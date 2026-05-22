@@ -17,3 +17,8 @@ export { uploadProductImagesAction } from "./upload-product-images.action";
 export { deleteProductAction } from "./delete-product.action";
 export { updateProductPricesAction } from "./update-product-prices.action";
 export { updateProductInventoryAction } from "./update-product-inventory.action";
+export {
+  createProductOptionColorValueAction,
+  updateProductOptionColorValueAction,
+  archiveProductOptionColorValueAction,
+} from "./update-product-option-color-hex.action";

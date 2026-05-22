@@ -5,8 +5,8 @@ import type { JSX } from "react";
 
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import { Checkbox } from "@/components/ui/checkbox";
-import { toggleProductFeaturedAction } from "@/features/admin/products/list/actions/toggle-product-featured.action";
-import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
+import { toggleProductFeaturedAction } from "@/features/admin/products/list/actions";
+import type { ProductTableItem } from "@/features/admin/products/list/types";
 import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
 import { PRODUCT_CARD_BADGES_COPY, PRODUCT_CARD_COPY } from "@/features/admin/products/config";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";

@@ -3,11 +3,11 @@
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/core/db";
-import { deleteProductSchema } from "@/features/admin/products/editor/schemas/delete-product.schema";
+import { deleteProductSchema } from "../schemas";
 import type {
   DeleteProductInput,
   DeleteProductResult,
-} from "@/features/admin/products/editor/types/product-delete.types";
+} from "@/features/admin/products/editor/types/product-editor.types";
 import { archiveProduct } from "@/features/admin/products/shared/services/archive-product.service";
 
 export async function deleteProductAction(input: DeleteProductInput): Promise<DeleteProductResult> {

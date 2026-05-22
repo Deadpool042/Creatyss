@@ -5,7 +5,7 @@ import { validateAdminProductInput } from "@/entities/product";
 import {
   productGeneralFormInitialState,
   type ProductGeneralFormAction,
-} from "../types/product-general-form.types";
+} from "../types";
 import { AdminProductEditorServiceError, updateProductGeneral } from "../services";
 
 function getString(formData: FormData, key: string): FormDataEntryValue | null {

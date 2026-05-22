@@ -1,5 +1,5 @@
 import { MediaReferenceRole, type MediaReferenceSubjectType } from "@/prisma-generated/client";
-import type { AdminProductImageItem } from "@/features/admin/products/editor/types/product-images.types";
+import type { AdminProductImageItem } from "@/features/admin/products/editor/types/product-image.types";
 
 type ProductImageSource = {
   id: string;

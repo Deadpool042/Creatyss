@@ -12,6 +12,7 @@ export type {
   ProductFilterStockOption,
   ProductFilterVariantOption,
   ProductSortOption,
+  ProductStatusCounts,
   ProductStockState,
   ProductTableActiveFilter,
   ProductTableFeaturedFilter,
@@ -30,29 +31,24 @@ export type {
 export type {
   ToggleProductFeaturedInput,
   ToggleProductFeaturedResult,
-} from "./toggle-product-featured.types";
-
-export type {
-  BulkUpdateProductStatusInput,
-  BulkUpdateProductStatusResult,
-} from "./bulk-update-product-status.types";
-
-export type {
-  BulkUpdateProductFeaturedInput,
-  BulkUpdateProductFeaturedResult,
-} from "./bulk-update-product-featured.types";
-
-export type {
-  BulkRestoreProductsInput,
-  BulkRestoreProductsResult,
-} from "./bulk-restore-products.types";
-
-export type {
   BulkArchiveProductsInput,
   BulkArchiveProductsResult,
-} from "./bulk-archive-products.types";
-
-export type {
   BulkDeleteProductsPermanentlyInput,
   BulkDeleteProductsPermanentlyResult,
-} from "./bulk-delete-products-permanently.types";
+  BulkRestoreProductsInput,
+  BulkRestoreProductsResult,
+  BulkUpdateProductFeaturedInput,
+  BulkUpdateProductFeaturedResult,
+  BulkUpdateProductStatusInput,
+  BulkUpdateProductStatusResult,
+} from "./product-bulk-operations.types";
+
+export type {
+  AdminProductFeedPageResult,
+  AdminProductListCategory,
+  AdminProductListItem,
+  AdminProductListPriceSummary,
+  AdminProductsListFeaturedFilter,
+  AdminProductsListFilters,
+  AdminProductsListStatusFilter,
+} from "./product-list.types";

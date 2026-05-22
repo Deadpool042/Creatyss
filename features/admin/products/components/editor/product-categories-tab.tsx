@@ -4,16 +4,14 @@ import { useActionState, useMemo, useState, type JSX } from "react";
 
 import { AdminFormFooter, AdminFormMessage, AdminFormSection } from "@/components/admin/forms";
 import { Button } from "@/components/ui/button";
-import type {
-  AdminProductEditorCategoryLink,
-  AdminProductEditorData,
-} from "@/features/admin/products/editor";
-import { useProductCategoriesManager } from "@/features/admin/products/editor/hooks";
-import type { ProductCategoryOption } from "@/features/admin/products/editor/types/product-categories.types";
 import {
   productCategoriesFormInitialState,
+  type AdminProductEditorCategoryLink,
+  type AdminProductEditorData,
+  type ProductCategoryOption,
   type ProductCategoriesFormAction,
 } from "@/features/admin/products/editor/types";
+import { useProductCategoriesManager } from "@/features/admin/products/editor/hooks";
 import {
   ProductCategoriesAddFields,
   ProductCategoriesLinkedList,
@@ -183,4 +181,4 @@ export function ProductCategoriesTab(props: ProductCategoriesTabProps): JSX.Elem
   );
 }
 
-export type { ProductCategoryOption } from "@/features/admin/products/editor/types/product-categories.types";
+export type { ProductCategoryOption } from "@/features/admin/products/editor/types";

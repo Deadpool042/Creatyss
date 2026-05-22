@@ -26,11 +26,13 @@ type BuildBoutiquePageViewModelInput = {
   selectedSort: BoutiqueSortValue;
   pageSize: number;
   currentPage: number;
-  availabilityCounts?: {
-    "in-stock": number;
-    "made-to-order": number;
-    "unavailable": number;
-  } | undefined;
+  availabilityCounts?:
+    | {
+        "in-stock": number;
+        "made-to-order": number;
+        unavailable: number;
+      }
+    | undefined;
 };
 
 type PaginationItem = BoutiquePageViewModel["pagination"]["items"][number];
@@ -132,16 +134,22 @@ function mapCategoryVisual(
   };
 }
 
-function buildAvailabilityOptions(
-  counts?: { "in-stock": number; "made-to-order": number; "unavailable": number }
-): Array<{
+function buildAvailabilityOptions(counts?: {
+  "in-stock": number;
+  "made-to-order": number;
+  unavailable: number;
+}): Array<{
   id: BoutiqueAvailabilityValue;
   label: string;
   count: number | null;
 }> {
   return [
     { id: "in-stock" as const, label: "En stock", count: counts?.["in-stock"] ?? null },
-    { id: "made-to-order" as const, label: "Sur commande", count: counts?.["made-to-order"] ?? null },
+    {
+      id: "made-to-order" as const,
+      label: "Sur commande",
+      count: counts?.["made-to-order"] ?? null,
+    },
     { id: "unavailable" as const, label: "Indisponible", count: counts?.["unavailable"] ?? null },
   ];
 }
@@ -173,12 +181,101 @@ function formatSortFilterLabel(sort: BoutiqueSortValue): string {
   return "Selection";
 }
 
+const FALLBACK_CATEGORY_TAXONOMY: ReadonlyArray<{
+  slug: string;
+  name: string;
+  parentSlug: string | null;
+}> = [
+  { slug: "sacs", name: "Sacs", parentSlug: null },
+  { slug: "sacs-a-main", name: "Sacs à main", parentSlug: "sacs" },
+  { slug: "sacs-a-bandouliere", name: "Sacs à bandoulière", parentSlug: "sacs" },
+  { slug: "mini-sacs", name: "Mini sacs", parentSlug: null },
+  { slug: "cabas", name: "Cabas", parentSlug: null },
+  { slug: "accessoires", name: "Accessoires", parentSlug: null },
+  { slug: "pochettes", name: "Pochettes", parentSlug: null },
+  { slug: "trousses", name: "Trousses", parentSlug: null },
+];
+
+const FALLBACK_CATEGORY_ORDER = new Map(
+  FALLBACK_CATEGORY_TAXONOMY.map((category, index) => [category.slug, index] as const)
+);
+
+function normalizeCategoryLabel(label: string): string {
+  return label
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
 export function buildBoutiquePageViewModel(
   input: BuildBoutiquePageViewModelInput
 ): BoutiquePageViewModel {
-  const selectedCategorySlugs = input.selectedCategorySlugs.filter((slug) =>
-    input.categories.some((c) => c.slug === slug)
+  const categoriesBySlug = new Map(
+    input.categories.map((category) => [category.slug, category] as const)
   );
+  const categoryLabelKeys = new Set(
+    input.categories.map((category) => normalizeCategoryLabel(category.name))
+  );
+  const normalizedCategories: BoutiqueCategory[] = [...input.categories];
+  const syntheticIdBySlug = new Map<string, string>();
+
+  for (const fallbackCategory of FALLBACK_CATEGORY_TAXONOMY) {
+    const fallbackLabelKey = normalizeCategoryLabel(fallbackCategory.name);
+    if (categoriesBySlug.has(fallbackCategory.slug) || categoryLabelKeys.has(fallbackLabelKey)) {
+      continue;
+    }
+
+    const syntheticId = `synthetic-${fallbackCategory.slug}`;
+    syntheticIdBySlug.set(fallbackCategory.slug, syntheticId);
+
+    normalizedCategories.push({
+      id: syntheticId,
+      parentId: null,
+      slug: fallbackCategory.slug,
+      name: fallbackCategory.name,
+    });
+    categoryLabelKeys.add(fallbackLabelKey);
+  }
+
+  for (const category of normalizedCategories) {
+    const fallbackCategory = FALLBACK_CATEGORY_TAXONOMY.find(
+      (entry) => entry.slug === category.slug
+    );
+    if (!fallbackCategory || fallbackCategory.parentSlug === null) {
+      continue;
+    }
+
+    const parentFromInput = categoriesBySlug.get(fallbackCategory.parentSlug);
+    const parentSyntheticId = syntheticIdBySlug.get(fallbackCategory.parentSlug);
+    category.parentId = parentFromInput?.id ?? parentSyntheticId ?? category.parentId;
+  }
+
+  const sortedNormalizedCategories = [...normalizedCategories].sort((left, right) => {
+    const leftOrder = FALLBACK_CATEGORY_ORDER.get(left.slug);
+    const rightOrder = FALLBACK_CATEGORY_ORDER.get(right.slug);
+
+    if (leftOrder !== undefined && rightOrder !== undefined) {
+      return leftOrder - rightOrder;
+    }
+
+    if (leftOrder !== undefined) {
+      return -1;
+    }
+
+    if (rightOrder !== undefined) {
+      return 1;
+    }
+
+    return left.name.localeCompare(right.name, "fr", { sensitivity: "base" });
+  });
+
+  const selectedCategorySlugs =
+    sortedNormalizedCategories.length > 0
+      ? input.selectedCategorySlugs.filter((slug) =>
+          sortedNormalizedCategories.some((category) => category.slug === slug)
+        )
+      : input.selectedCategorySlugs;
 
   const activeFilterLabels: BoutiqueActiveFilterItem[] = [];
 
@@ -201,9 +298,7 @@ export function buildBoutiquePageViewModel(
 
   for (const slug of selectedCategorySlugs) {
     const found = input.categories.find((c) => c.slug === slug);
-    const childSlugs = input.categories
-      .filter((c) => c.parentId === found?.id)
-      .map((c) => c.slug);
+    const childSlugs = input.categories.filter((c) => c.parentId === found?.id).map((c) => c.slug);
     const toRemove = new Set([slug, ...childSlugs]);
     activeFilterLabels.push({
       key: "category",
@@ -331,7 +426,7 @@ export function buildBoutiquePageViewModel(
   const previousHref = currentPage > 1 ? buildHrefForPage(currentPage - 1) : null;
   const nextHref = currentPage < totalPages ? buildHrefForPage(currentPage + 1) : null;
 
-  const categories = input.categories.map((category) => ({
+  const categories = sortedNormalizedCategories.map((category) => ({
     id: category.id,
     parentId: category.parentId,
     slug: category.slug,

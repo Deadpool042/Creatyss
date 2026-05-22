@@ -8,30 +8,20 @@ import {
   AdminTablePagination,
 } from "@/components/admin/tables";
 import { PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
-import type {
-  ProductFilterCategoryOption,
-  ProductTableItem,
-} from "@/features/admin/products/list/types/product-table.types";
-import { ProductTableProvider, useProductTableContext } from "./product-table-context";
+import { ProductTableStateProvider, useProductTableContext } from "./product-table-context";
 import { ProductTableDesktop } from "./product-table-desktop";
 import { ProductTableMobile } from "./product-table-mobile";
 import { ProductTableToolbar } from "./product-table-toolbar";
 import type { ProductListView } from "./toolbar";
 
-type ProductTableProps = {
-  products: ProductTableItem[];
-  categoryOptions: ProductFilterCategoryOption[];
-  view: ProductListView;
-};
-
-export function ProductTable({ products, categoryOptions, view }: ProductTableProps): JSX.Element {
+export function ProductTable(): JSX.Element {
   return (
-    <ProductTableProvider products={products} categoryOptions={categoryOptions} view={view}>
+    <ProductTableStateProvider>
       <div className="flex min-h-0 flex-1 flex-col gap-3 lg:gap-4">
         <ProductTableDesktopView />
         <ProductTableMobileView />
       </div>
-    </ProductTableProvider>
+    </ProductTableStateProvider>
   );
 }
 

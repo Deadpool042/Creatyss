@@ -25,7 +25,7 @@ import {
   updateProductSeoAction,
   updateProductVariantAction,
   uploadProductImagesAction,
-} from "@/features/admin/products/editor";
+} from "@/features/admin/products/editor/actions";
 import {
   listAdminProductCategoryOptions,
   listAdminRelatedProductOptions,

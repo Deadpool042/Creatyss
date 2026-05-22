@@ -1,4 +1,4 @@
-import type { AttachableMediaAssetItem } from "@/features/admin/products/editor/types/product-image-library.types";
+import type { AttachableMediaAssetItem } from "@/features/admin/products/editor/types/product-image.types";
 
 type ReadAttachableMediaAssetRow = {
   id: string;

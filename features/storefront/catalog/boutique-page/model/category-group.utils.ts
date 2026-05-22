@@ -6,8 +6,15 @@ export type CategoryGroup = {
 };
 
 export function buildCategoryGroups(categories: BoutiqueCategoryItem[]): CategoryGroup[] {
-  const roots = categories.filter((c) => c.parentId === null);
-  return roots.map((parent) => ({
+  const categoryIds = new Set(categories.map((category) => category.id));
+  const roots = categories.filter(
+    (category) => category.parentId === null || !categoryIds.has(category.parentId)
+  );
+
+  // Si la hiérarchie est partiellement orpheline en DB, on garde un rendu utilisable.
+  const safeRoots = roots.length > 0 ? roots : categories;
+
+  return safeRoots.map((parent) => ({
     parent,
     children: categories.filter((c) => c.parentId === parent.id),
   }));

@@ -1,5 +1,5 @@
 import { db } from "@/core/db";
-import type { AdminProductOptionItem } from "@/features/admin/products/editor/types/product-variants.types";
+import type { AdminProductOptionItem } from "@/features/admin/products/editor/types/product-variant.types";
 
 export async function readAdminProductTypeWithOptions(
   productTypeId: string
