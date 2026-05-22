@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
+import { CATEGORY_FILTER_VALID_VALUES } from "@/features/admin/categories/config";
 import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import type {
   CategoryFeaturedFilter,
@@ -29,10 +30,10 @@ export type CategoryFiltersState = {
   reset: () => void;
 };
 
-const VALID_STATUSES: AdminCategoryStatus[] = ["draft", "active", "inactive", "archived"];
-const VALID_FEATURED: CategoryFeaturedFilter[] = ["featured", "not-featured"];
-const VALID_SORTS: CategorySortOption[] = ["name-asc", "name-desc", "updated-asc", "updated-desc"];
-const VALID_PER_PAGE = [5, 10, 25, 50];
+const VALID_STATUSES = CATEGORY_FILTER_VALID_VALUES.statuses as AdminCategoryStatus[];
+const VALID_FEATURED = CATEGORY_FILTER_VALID_VALUES.featured as CategoryFeaturedFilter[];
+const VALID_SORTS = CATEGORY_FILTER_VALID_VALUES.sorts as CategorySortOption[];
+const VALID_PER_PAGE = CATEGORY_FILTER_VALID_VALUES.perPage;
 
 function parseArray<T extends string>(value: string | null, valid: T[]): T[] {
   if (!value) return [];
@@ -52,7 +53,7 @@ function parseSort(value: string | null): CategorySortOption {
 
 function parsePerPage(value: string | null): number {
   const n = Number(value);
-  return VALID_PER_PAGE.includes(n) ? n : 10;
+  return (VALID_PER_PAGE as readonly number[]).includes(n) ? n : CATEGORY_FILTER_VALID_VALUES.perPageDefault;
 }
 
 function parsePage(value: string | null): number {

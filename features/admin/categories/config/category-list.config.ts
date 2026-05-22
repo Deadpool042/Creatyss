@@ -1,5 +1,16 @@
 import type { AdminCategoryStatus } from "@/features/admin/categories/types";
-import type { CategoryFeaturedFilter } from "@/features/admin/categories/queries";
+import type {
+  CategoryFeaturedFilter,
+  CategorySortOption,
+} from "@/features/admin/categories/queries";
+
+export const CATEGORY_FILTER_VALID_VALUES = {
+  statuses: ["draft", "active", "inactive", "archived"] satisfies AdminCategoryStatus[],
+  featured: ["featured", "not-featured"] satisfies CategoryFeaturedFilter[],
+  sorts: ["name-asc", "name-desc", "updated-asc", "updated-desc"] satisfies CategorySortOption[],
+  perPage: [5, 10, 25, 50],
+  perPageDefault: 10,
+} as const;
 
 export const CATEGORY_STATUS_OPTIONS: { value: AdminCategoryStatus; label: string }[] = [
   { value: "active", label: "Publiée" },
@@ -34,6 +45,7 @@ export const CATEGORY_LIST_COPY = {
   selectAllAriaLabel: "Tout sélectionner",
   rowSelectAriaPrefix: "Sélectionner",
   rowEditAriaPrefix: "Modifier",
+  imageFallbackLabel: (name: string) => `Aucun visuel pour ${name}`,
   rowActionsAriaPrefix: "Ouvrir les actions de la catégorie",
   tableAriaLabel: "Liste des catégories",
   tableEndLabel: "Fin de la liste",

@@ -11,6 +11,7 @@ import {
   type AdminCategoryStatus,
 } from "@/features/admin/categories";
 import {
+  CATEGORY_FILTER_VALID_VALUES,
   CATEGORY_LIST_PAGE_COPY,
   CATEGORY_NAVIGATION_COPY,
 } from "@/features/admin/categories/config";
@@ -27,9 +28,9 @@ type SearchParams = Promise<{
   perPage?: string;
 }>;
 
-const VALID_STATUSES: AdminCategoryStatus[] = ["draft", "active", "inactive", "archived"];
-const VALID_FEATURED: CategoryFeaturedFilter[] = ["featured", "not-featured"];
-const VALID_SORTS: CategorySortOption[] = ["name-asc", "name-desc", "updated-asc", "updated-desc"];
+const VALID_STATUSES = CATEGORY_FILTER_VALID_VALUES.statuses as AdminCategoryStatus[];
+const VALID_FEATURED = CATEGORY_FILTER_VALID_VALUES.featured as CategoryFeaturedFilter[];
+const VALID_SORTS = CATEGORY_FILTER_VALID_VALUES.sorts as CategorySortOption[];
 
 function parseArrayParam<T extends string>(value: string | undefined, valid: T[]): T[] {
   if (!value) return [];
@@ -58,7 +59,9 @@ export default async function AdminCategoriesPage({
   const categorySlugs = parseCategorySlugs(params.categories);
   const sort = parseSort(params.sort);
   const page = Math.max(1, Number(params.page) || 1);
-  const perPage = [5, 10, 25, 50].includes(Number(params.perPage)) ? Number(params.perPage) : 10;
+  const perPage = (CATEGORY_FILTER_VALID_VALUES.perPage as readonly number[]).includes(Number(params.perPage))
+    ? Number(params.perPage)
+    : CATEGORY_FILTER_VALID_VALUES.perPageDefault;
 
   const [{ items, total, totalPages, statusCounts }, categoriesForPicker] = await Promise.all([
     listAdminCategories({

@@ -47,7 +47,7 @@ function CategoryMobileVisual({
       src={category.primaryImageUrl}
       alt={category.primaryImageAlt ?? category.name}
       className="h-11 w-11 shrink-0 rounded-lg border border-surface-border/80 bg-surface-panel-soft sm:h-10 sm:w-10"
-      fallbackLabel={`Aucun visuel pour ${category.name}`}
+      fallbackLabel={CATEGORY_LIST_COPY.imageFallbackLabel(category.name)}
     />
   );
 }
@@ -66,7 +66,7 @@ function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCard
       <Link
         href={href}
         className="absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
-        aria-label={`Modifier ${category.name}`}
+        aria-label={`${CATEGORY_LIST_COPY.rowEditAriaPrefix} ${category.name}`}
       />
 
       {/* Header: badge statut + actions (z-10 pour passer au-dessus du lien) */}

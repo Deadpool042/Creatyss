@@ -2,9 +2,16 @@
 
 import type { JSX } from "react";
 
-import { AdminDataTableEmptyState } from "@/components/admin/tables";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Star } from "lucide-react";
+
+import {
+  AdminDataTableEmptyState,
+  AdminTable,
+  AdminTableBody,
+  AdminTableHead,
+  AdminTableHeader,
+} from "@/components/admin/tables";
+import { Checkbox } from "@/components/ui/checkbox";
 import { PRODUCT_SELECTION_COPY, PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
 import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
 import { ProductTableDesktopRow } from "./product-table-desktop-row";
@@ -23,6 +30,8 @@ type ProductTableDesktopProps = Readonly<{
   onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
 }>;
 
+const TH_BASE = "h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase";
+
 export function ProductTableDesktop({
   products,
   selectedProductIds,
@@ -35,98 +44,89 @@ export function ProductTableDesktop({
   onConfirmPermanentDelete,
 }: ProductTableDesktopProps): JSX.Element {
   return (
-    <div className="hidden h-full min-h-0 lg:flex lg:flex-col overflow-hidden rounded-xl border border-surface-border bg-card shadow-card">
-      {/* Zone de scroll interne — flex-1 + min-h-0 pour que le conteneur parent contrôle la hauteur */}
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-        <table className="w-full caption-bottom text-sm">
-          <thead className="sticky top-0 z-10 bg-surface-panel-soft backdrop-blur-xl">
-            <tr className="border-b border-surface-border/50">
-              {/* Checkbox sélection tout */}
-              <th className="h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-12">
-                <div className="flex items-center justify-center">
-                  <Checkbox
-                    checked={areAllCurrentPageSelected}
-                    onCheckedChange={() => onToggleSelectAllCurrentPage()}
-                    aria-label={PRODUCT_SELECTION_COPY.selectPageAriaLabel}
-                  />
-                </div>
-              </th>
+    <AdminTable wrapperClassName="hidden lg:flex">
+      <AdminTableHeader className="backdrop-blur-xl">
+        <tr className="border-b border-surface-border/50">
+          {/* Checkbox sélection tout */}
+          <AdminTableHead className={`${TH_BASE} w-12`}>
+            <div className="flex items-center justify-center">
+              <Checkbox
+                checked={areAllCurrentPageSelected}
+                onCheckedChange={() => onToggleSelectAllCurrentPage()}
+                aria-label={PRODUCT_SELECTION_COPY.selectPageAriaLabel}
+              />
+            </div>
+          </AdminTableHead>
 
-              {/* Image */}
-              <th className="h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-16" />
+          {/* Image */}
+          <AdminTableHead className={`${TH_BASE} w-16`} />
 
-              {/* Produit */}
-              <th className="h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase min-w-52">
-                {PRODUCT_TABLE_COPY.columns.product}
-              </th>
+          {/* Produit */}
+          <AdminTableHead className={`${TH_BASE} min-w-52`}>
+            {PRODUCT_TABLE_COPY.columns.product}
+          </AdminTableHead>
 
-              {/* Mise en avant */}
-              <th
-                className="h-9 px-4 text-center align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-12"
-                aria-label={PRODUCT_TABLE_COPY.columns.featuredAria}
-              >
-                <Star className="mx-auto h-3.5 w-3.5 text-muted-foreground" aria-hidden />
-              </th>
+          {/* Mise en avant */}
+          <AdminTableHead
+            className={`${TH_BASE} w-12 text-center`}
+            aria-label={PRODUCT_TABLE_COPY.columns.featuredAria}
+          >
+            <Star className="mx-auto h-3.5 w-3.5 text-muted-foreground" aria-hidden />
+          </AdminTableHead>
 
-              {/* Statut */}
-              <th className="h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-28">
-                {PRODUCT_TABLE_COPY.columns.status}
-              </th>
+          {/* Statut */}
+          <AdminTableHead className={`${TH_BASE} w-28`}>
+            {PRODUCT_TABLE_COPY.columns.status}
+          </AdminTableHead>
 
-              {/* Disponibilité */}
-              <th className="h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-32">
-                {PRODUCT_TABLE_COPY.columns.stock}
-              </th>
+          {/* Disponibilité */}
+          <AdminTableHead className={`${TH_BASE} w-32`}>
+            {PRODUCT_TABLE_COPY.columns.stock}
+          </AdminTableHead>
 
-              {/* Prix — masqué à lg, visible à xl */}
-              <th className="hidden xl:table-cell h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-36">
-                {PRODUCT_TABLE_COPY.columns.price}
-              </th>
+          {/* Prix — masqué à lg, visible à xl */}
+          <AdminTableHead className={`hidden xl:table-cell ${TH_BASE} w-36`}>
+            {PRODUCT_TABLE_COPY.columns.price}
+          </AdminTableHead>
 
-              {/* Catégorie — masquée à lg, visible à xl */}
-              <th className="hidden xl:table-cell h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-44">
-                {PRODUCT_TABLE_COPY.columns.category}
-              </th>
+          {/* Catégorie — masquée à lg, visible à xl */}
+          <AdminTableHead className={`hidden xl:table-cell ${TH_BASE} w-44`}>
+            {PRODUCT_TABLE_COPY.columns.category}
+          </AdminTableHead>
 
-              {/* Actions */}
-              <th className="h-9 px-4 text-left align-middle text-[0.62rem] font-medium tracking-[0.08em] text-muted-foreground/70 uppercase w-12" />
-            </tr>
-          </thead>
+          {/* Actions */}
+          <AdminTableHead className={`${TH_BASE} w-12`} />
+        </tr>
+      </AdminTableHeader>
 
-          <tbody className="[&_tr:last-child]:border-0">
-            {products.length === 0 ? (
-              <tr>
-                <td colSpan={9} className="p-0">
-                  <AdminDataTableEmptyState
-                    message={
-                      view === "trash"
-                        ? PRODUCT_TABLE_COPY.emptyTrash
-                        : PRODUCT_TABLE_COPY.emptyFiltered
-                    }
-                  />
-                </td>
-              </tr>
-            ) : (
-              products.map((product) => {
-                const isSelected = selectedProductIds.includes(product.id);
-
-                return (
-                  <ProductTableDesktopRow
-                    key={product.id}
-                    product={product}
-                    isSelected={isSelected}
-                    onToggleProductSelection={onToggleProductSelection}
-                    view={view}
-                    {...(onConfirmArchive ? { onConfirmArchive } : {})}
-                    {...(onConfirmRestore ? { onConfirmRestore } : {})}
-                    {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
-                  />
-                );
-              })
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <AdminTableBody className="[&_tr:last-child]:border-0">
+        {products.length === 0 ? (
+          <tr>
+            <td colSpan={9} className="p-0">
+              <AdminDataTableEmptyState
+                message={
+                  view === "trash"
+                    ? PRODUCT_TABLE_COPY.emptyTrash
+                    : PRODUCT_TABLE_COPY.emptyFiltered
+                }
+              />
+            </td>
+          </tr>
+        ) : (
+          products.map((product) => (
+            <ProductTableDesktopRow
+              key={product.id}
+              product={product}
+              isSelected={selectedProductIds.includes(product.id)}
+              onToggleProductSelection={onToggleProductSelection}
+              view={view}
+              {...(onConfirmArchive ? { onConfirmArchive } : {})}
+              {...(onConfirmRestore ? { onConfirmRestore } : {})}
+              {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
+            />
+          ))
+        )}
+      </AdminTableBody>
+    </AdminTable>
   );
 }

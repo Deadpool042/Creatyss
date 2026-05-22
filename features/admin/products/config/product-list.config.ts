@@ -58,15 +58,15 @@ export const PRODUCT_SORT_OPTIONS: { value: ProductSortOption; label: string }[]
 
 // ─── Toolbar copy ─────────────────────────────────────────────────────────────
 
-export const PRODUCT_LIST_PAGE_COPY = {
-  eyebrow: "Catalogue",
-  title: "Produits",
-  titleTrash: "Corbeille produits",
-  description: "Pilotage du catalogue.",
-  descriptionTrash: "Produits archivés, restaurables plus tard.",
-  navHomeLabel: "Accueil",
-  navProductsLabel: "Produits",
-} as const;
+// export const PRODUCT_LIST_PAGE_COPY = {
+//   eyebrow: "Catalogue",
+//   title: "Produits",
+//   titleTrash: "Corbeille produits",
+//   description: "Pilotage du catalogue.",
+//   descriptionTrash: "Produits archivés, restaurables plus tard.",
+//   navHomeLabel: "Accueil",
+//   navProductsLabel: "Produits",
+// } as const;
 
 // ─── Toolbar copy ─────────────────────────────────────────────────────────────
 
@@ -175,8 +175,7 @@ export const PRODUCT_ROW_ACTIONS_COPY = {
   permanentDeleteTitle: "Supprimer définitivement ce produit ?",
   cancel: "Annuler",
   productLabel: "Produit concerné :",
-  permanentDeleteWarning:
-    "Cette suppression est définitive et ne pourra pas être annulée.",
+  permanentDeleteWarning: "Cette suppression est définitive et ne pourra pas être annulée.",
   archiveDescriptionPrefix: "Cette action retirera",
   archiveDescriptionSuffix: "du catalogue actif.",
   restoreDescriptionPrefix: "Cette action replacera",
