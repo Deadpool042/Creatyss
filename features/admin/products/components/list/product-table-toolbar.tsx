@@ -28,20 +28,9 @@ export function ProductTableToolbar({ mode }: ProductTableToolbarProps): JSX.Ele
   }
 
   if (mode === "desktop") {
-    return (
-      <>
-        <ProductTableToolbarDesktop
-          onOpenPermanentDeleteDialog={() => setPermanentDeleteDialogOpen(true)}
-        />
-
-        <ProductTableToolbarPermanentDeleteDialog
-          open={permanentDeleteDialogOpen}
-          onOpenChange={setPermanentDeleteDialogOpen}
-          isBulkPending={isBulkPending}
-          onConfirm={handleBulkPermanentDelete}
-        />
-      </>
-    );
+    // Desktop toolbar only — the permanent delete dialog is owned by ProductTableDesktopView
+    // so that ProductBulkBar can share the same callback.
+    return <ProductTableToolbarDesktop />;
   }
 
   return (

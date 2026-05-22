@@ -1,18 +1,20 @@
 "use client";
 
-import type { JSX } from "react";
+import { useState, type JSX } from "react";
 
 import {
   AdminDataTableDesktopLayout,
+  AdminDataTableEmptyState,
   AdminDataTableMobileLayout,
-  AdminTablePagination,
+  AdminPaginationBar,
 } from "@/components/admin/tables";
-import { PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
-import { ProductTableStateProvider, useProductTableContext } from "./product-table-context";
+import { PRODUCT_FILTER_VALID_VALUES, PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
+import { ProductTableStateProvider, useProductTableContext, useProductTableData } from "./product-table-context";
 import { ProductTableDesktop } from "./product-table-desktop";
 import { ProductTableMobile } from "./product-table-mobile";
 import { ProductTableToolbar } from "./product-table-toolbar";
-import type { ProductListView } from "./toolbar";
+import { ProductBulkBar } from "./table";
+import { ProductTableToolbarPermanentDeleteDialog, type ProductListView } from "./toolbar";
 
 export function ProductTable(): JSX.Element {
   return (
@@ -27,32 +29,75 @@ export function ProductTable(): JSX.Element {
 
 function ProductTableDesktopView(): JSX.Element {
   const { state, actions, view } = useProductTableContext();
+  const { total, perPage } = useProductTableData();
+  const [permanentDeleteDialogOpen, setPermanentDeleteDialogOpen] = useState(false);
+
+  const isBulkPending = actions.isBulkPending;
+
+  async function handleBulkPermanentDelete(): Promise<void> {
+    if (view !== "trash") {
+      setPermanentDeleteDialogOpen(false);
+      return;
+    }
+
+    await actions.handleBulkPermanentDelete();
+    setPermanentDeleteDialogOpen(false);
+  }
+
+  if (state.paginated.length === 0) {
+    return (
+      <>
+        <ProductTableToolbar mode="desktop" />
+        <AdminDataTableEmptyState
+          message={
+            view === "trash" ? PRODUCT_TABLE_COPY.emptyTrash : PRODUCT_TABLE_COPY.emptyFiltered
+          }
+        />
+      </>
+    );
+  }
 
   return (
-    <AdminDataTableDesktopLayout
-      toolbar={<ProductTableToolbar mode="desktop" />}
-      content={
-        <ProductTableDesktop
-          products={state.paginated}
-          selectedProductIds={actions.selectedProductIds}
-          areAllCurrentPageSelected={actions.areAllCurrentPageSelected}
-          onToggleProductSelection={actions.toggleProductSelection}
-          onToggleSelectAllCurrentPage={actions.toggleSelectAllCurrentPage}
-          view={view}
-          {...getDesktopProductTableActionProps({ actions, view })}
-        />
-      }
-      contentClassName="overflow-hidden"
-      pagination={
-        <AdminTablePagination
-          currentPage={state.currentPage}
-          totalPages={state.totalPages}
-          onPrevious={state.goPrevious}
-          onNext={state.goNext}
-          countLabel={PRODUCT_TABLE_COPY.paginationCountLabel(state.filteredCount)}
-        />
-      }
-    />
+    <>
+      <AdminDataTableDesktopLayout
+        toolbar={<ProductTableToolbar mode="desktop" />}
+        content={
+          <ProductTableDesktop
+            products={state.paginated}
+            selectedProductIds={actions.selectedProductIds}
+            areAllCurrentPageSelected={actions.areAllCurrentPageSelected}
+            onToggleProductSelection={actions.toggleProductSelection}
+            onToggleSelectAllCurrentPage={actions.toggleSelectAllCurrentPage}
+            view={view}
+            {...getDesktopProductTableActionProps({ actions, view })}
+          />
+        }
+        contentClassName="overflow-hidden"
+        pagination={
+          <AdminPaginationBar
+            currentPage={state.currentPage}
+            totalPages={state.totalPages}
+            perPage={perPage}
+            totalItems={total}
+            onPageChange={state.setPage}
+            onPerPageChange={state.setPerPage}
+            perPageOptions={PRODUCT_FILTER_VALID_VALUES.perPage}
+          />
+        }
+        floatingBar={
+          <ProductBulkBar
+            onOpenPermanentDeleteDialog={() => setPermanentDeleteDialogOpen(true)}
+          />
+        }
+      />
+
+      <ProductTableToolbarPermanentDeleteDialog
+        open={permanentDeleteDialogOpen}
+        onOpenChange={setPermanentDeleteDialogOpen}
+        isBulkPending={isBulkPending}
+        onConfirm={handleBulkPermanentDelete}
+      />
+    </>
   );
 }
 

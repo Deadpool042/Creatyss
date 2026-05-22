@@ -22,6 +22,7 @@ type AdminPaginationBarProps = {
   totalItems?: number;
   onPageChange: (page: number) => void;
   onPerPageChange: (perPage: number) => void;
+  perPageOptions?: readonly number[];
   className?: string;
 };
 
@@ -50,6 +51,7 @@ export function AdminPaginationBar({
   totalItems,
   onPageChange,
   onPerPageChange,
+  perPageOptions = PER_PAGE_OPTIONS,
   className,
 }: AdminPaginationBarProps): JSX.Element | null {
   if (totalPages <= 0) return null;
@@ -74,7 +76,7 @@ export function AdminPaginationBar({
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {PER_PAGE_OPTIONS.map((n) => (
+            {perPageOptions.map((n) => (
               <SelectItem key={n} value={String(n)} className="text-xs">
                 {n}
               </SelectItem>

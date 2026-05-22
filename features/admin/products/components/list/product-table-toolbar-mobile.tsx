@@ -11,19 +11,20 @@ import {
   AdminDataTableFiltersTrigger,
   AdminDataTableMobileStickyBar,
   AdminDataTableMobileTopbar,
+  AdminDataTableResultsCount,
   AdminDataTableSelectionSummary,
   AdminDataTableVisibleSelectionToggle,
 } from "@/components/admin/tables";
 import { cn } from "@/lib/utils";
 import {
   PRODUCT_LIST_COPY,
+  PRODUCT_RESULTS_COUNT_COPY,
   PRODUCT_SELECTION_COPY,
 } from "@/features/admin/products/config";
 import { useProductTableContext } from "./product-table-context";
 import { ProductTableFiltersForm } from "./product-table-filters-form";
 import {
   ProductTableToolbarBulkActions,
-  ProductTableToolbarResultsCount,
   ProductTableToolbarViewSwitch,
 } from "./toolbar";
 
@@ -117,8 +118,10 @@ export function ProductTableToolbarMobile({
                 />
               }
               trailing={
-                <ProductTableToolbarResultsCount
-                  filteredCount={state.filteredCount}
+                <AdminDataTableResultsCount
+                  count={state.filteredCount}
+                  fullLabel={PRODUCT_RESULTS_COUNT_COPY.results}
+                  shortLabel={PRODUCT_RESULTS_COUNT_COPY.resultsShort}
                   className="shrink-0 whitespace-nowrap rounded-full border border-surface-border bg-surface-panel-soft px-2.5 py-1 [@media(max-height:480px)]:px-2"
                 />
               }

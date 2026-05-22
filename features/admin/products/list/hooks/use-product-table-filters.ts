@@ -22,6 +22,7 @@ type UseProductTableFiltersInput = {
   total: number;
   totalPages: number;
   currentPage: number;
+  perPage: number;
 };
 
 // ── URL param helpers ─────────────────────────────────────────────────────────
@@ -69,6 +70,7 @@ export function useProductTableFilters({
   total,
   totalPages,
   currentPage,
+  perPage,
 }: UseProductTableFiltersInput): ProductTableFiltersState {
   const router = useRouter();
   const pathname = usePathname();
@@ -151,6 +153,15 @@ export function useProductTableFilters({
 
   const setPage = useCallback(
     (value: number) => pushParams({ page: value === 1 ? null : String(value) }),
+    [pushParams]
+  );
+
+  const setPerPage = useCallback(
+    (value: number) =>
+      pushParams({
+        perPage: value === PRODUCT_FILTER_VALID_VALUES.perPageDefault ? null : String(value),
+        page: null,
+      }),
     [pushParams]
   );
 
@@ -307,6 +318,9 @@ export function useProductTableFilters({
     paginated: filtered,
     currentPage: safeCurrentPage,
     totalPages: safeTotalPages,
+    perPage,
+    setPage,
+    setPerPage,
     goPrevious: () => setPage(Math.max(1, urlPage - 1)),
     goNext: () => setPage(Math.min(safeTotalPages, urlPage + 1)),
 

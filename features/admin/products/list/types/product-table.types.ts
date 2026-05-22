@@ -118,6 +118,9 @@ export type ProductTableFiltersState = {
   paginated: ProductTableItem[];
   currentPage: number;
   totalPages: number;
+  perPage: number;
+  setPage: (page: number) => void;
+  setPerPage: (perPage: number) => void;
   goPrevious: () => void;
   goNext: () => void;
 

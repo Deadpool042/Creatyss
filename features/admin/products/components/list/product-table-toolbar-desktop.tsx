@@ -7,7 +7,7 @@ import {
   AdminDataTableActiveFilters,
   AdminDataTableFeedbackBanner,
   AdminDataTableFilterControlsRow,
-  AdminDataTableSelectionSummary,
+  AdminDataTableResultsCount,
   AdminDataTableToolbarLayout,
 } from "@/components/admin/tables";
 import {
@@ -21,7 +21,7 @@ import {
   PRODUCT_FEATURED_OPTIONS,
   PRODUCT_IMAGE_OPTIONS,
   PRODUCT_LIST_COPY,
-  PRODUCT_SELECTION_COPY,
+  PRODUCT_RESULTS_COUNT_COPY,
   PRODUCT_SORT_OPTIONS,
   PRODUCT_STATUS_OPTIONS,
   PRODUCT_STOCK_OPTIONS,
@@ -37,15 +37,7 @@ import type {
 } from "@/features/admin/products/list/types";
 import { AdminProductsCategoryFilter } from "./admin-products-category-filter";
 import { useProductTableContext } from "./product-table-context";
-import {
-  ProductTableToolbarBulkActions,
-  ProductTableToolbarResultsCount,
-  ProductTableToolbarViewSwitch,
-} from "./toolbar";
-
-type ProductTableToolbarDesktopProps = {
-  onOpenPermanentDeleteDialog: () => void;
-};
+import { ProductTableToolbarViewSwitch } from "./toolbar";
 
 function StatusFilterList({ state }: { state: ProductTableFiltersState }) {
   return (
@@ -95,17 +87,12 @@ function AdvancedFiltersContent({ state }: { state: ProductTableFiltersState }) 
   );
 }
 
-export function ProductTableToolbarDesktop({
-  onOpenPermanentDeleteDialog,
-}: ProductTableToolbarDesktopProps): JSX.Element {
+export function ProductTableToolbarDesktop(): JSX.Element {
   const { state, actions, view } = useProductTableContext();
 
-  const selectedCount = actions.selectedCount;
   const bulkMessage = actions.bulkMessage;
   const bulkError = actions.bulkError;
-  const isBulkPending = actions.isBulkPending;
   const hasActiveFilters = state.activeFilters.length > 0;
-  const hasSelection = selectedCount > 0;
 
   const statusCount = state.status !== "all" ? 1 : 0;
   const categoryCount = state.categoryId !== "all" ? 1 : 0;
@@ -149,34 +136,6 @@ export function ProductTableToolbarDesktop({
 
   return (
     <AdminDataTableToolbarLayout
-      selection={
-        hasSelection ? (
-          <div className="rounded-xl border border-surface-border-strong bg-interactive-selected px-3 py-3 shadow-card">
-            <AdminDataTableSelectionSummary
-              label={PRODUCT_SELECTION_COPY.selectedDesktop(selectedCount)}
-              clearLabel={PRODUCT_SELECTION_COPY.clearSelectionDesktop}
-              onClear={actions.clearSelection}
-              className="flex flex-wrap items-center justify-between gap-3"
-              clearButtonClassName="h-8 rounded-full px-3 text-xs"
-            />
-
-            <div className="mt-3">
-              <ProductTableToolbarBulkActions
-                view={view}
-                isBulkPending={isBulkPending}
-                onBulkSetDraft={() => void actions.handleBulkStatusChange("draft")}
-                onBulkSetActive={() => void actions.handleBulkStatusChange("active")}
-                onBulkSetInactive={() => void actions.handleBulkStatusChange("inactive")}
-                onBulkSetFeatured={() => void actions.handleBulkFeaturedChange(true)}
-                onBulkUnsetFeatured={() => void actions.handleBulkFeaturedChange(false)}
-                onBulkArchive={() => void actions.handleBulkArchive()}
-                onBulkRestore={() => void actions.handleBulkRestore()}
-                {...(view === "trash" ? { onOpenPermanentDeleteDialog } : {})}
-              />
-            </div>
-          </div>
-        ) : null
-      }
       feedback={
         <>
           <AdminDataTableFeedbackBanner message={bulkMessage} />
@@ -218,8 +177,10 @@ export function ProductTableToolbarDesktop({
 
                     <ProductTableToolbarViewSwitch view={view} />
 
-                    <ProductTableToolbarResultsCount
-                      filteredCount={state.filteredCount}
+                    <AdminDataTableResultsCount
+                      count={state.filteredCount}
+                      fullLabel={PRODUCT_RESULTS_COUNT_COPY.results}
+                      shortLabel={PRODUCT_RESULTS_COUNT_COPY.resultsShort}
                       className="whitespace-nowrap"
                     />
                   </>

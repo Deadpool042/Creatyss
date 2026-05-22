@@ -114,7 +114,7 @@ const ProductTableStateContext = createContext<ProductTableStateContextValue | n
 export function ProductTableStateProvider({
   children,
 }: Readonly<{ children: ReactNode }>): ReactNode {
-  const { products, categoryOptions, view, total, totalPages, currentPage } = useProductTableData();
+  const { products, categoryOptions, view, total, totalPages, currentPage, perPage } = useProductTableData();
 
   const state = useProductTableFilters({
     products,
@@ -122,6 +122,7 @@ export function ProductTableStateProvider({
     total,
     totalPages,
     currentPage,
+    perPage,
   });
   const [mobileVisibleSelection, setMobileVisibleSelection] =
     useState<MobileVisibleSelectionState | null>(null);

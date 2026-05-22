@@ -5,7 +5,6 @@ import type { JSX } from "react";
 import { Star } from "lucide-react";
 
 import {
-  AdminDataTableEmptyState,
   AdminTable,
   AdminTableBody,
   AdminTableHead,
@@ -100,32 +99,18 @@ export function ProductTableDesktop({
       </AdminTableHeader>
 
       <AdminTableBody className="[&_tr:last-child]:border-0">
-        {products.length === 0 ? (
-          <tr>
-            <td colSpan={9} className="p-0">
-              <AdminDataTableEmptyState
-                message={
-                  view === "trash"
-                    ? PRODUCT_TABLE_COPY.emptyTrash
-                    : PRODUCT_TABLE_COPY.emptyFiltered
-                }
-              />
-            </td>
-          </tr>
-        ) : (
-          products.map((product) => (
-            <ProductTableDesktopRow
-              key={product.id}
-              product={product}
-              isSelected={selectedProductIds.includes(product.id)}
-              onToggleProductSelection={onToggleProductSelection}
-              view={view}
-              {...(onConfirmArchive ? { onConfirmArchive } : {})}
-              {...(onConfirmRestore ? { onConfirmRestore } : {})}
-              {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
-            />
-          ))
-        )}
+        {products.map((product) => (
+          <ProductTableDesktopRow
+            key={product.id}
+            product={product}
+            isSelected={selectedProductIds.includes(product.id)}
+            onToggleProductSelection={onToggleProductSelection}
+            view={view}
+            {...(onConfirmArchive ? { onConfirmArchive } : {})}
+            {...(onConfirmRestore ? { onConfirmRestore } : {})}
+            {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
+          />
+        ))}
       </AdminTableBody>
     </AdminTable>
   );
