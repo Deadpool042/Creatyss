@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
-import { getAdminProductsFeedPage } from "@/features/admin/products/list/queries/get-admin-products-feed-page.query";
+import { getAdminProductsFeedPage } from "@/features/admin/products/list/queries";
 
 function parsePositiveInt(value: string | null, fallback: number): number {
   if (!value) {

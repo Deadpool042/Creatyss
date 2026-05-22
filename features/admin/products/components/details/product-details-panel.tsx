@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 
 import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
-import type { AdminProductDisplayStatus } from "@/features/admin/products/details/types";
+import type { AdminProductDisplayStatus } from "@/features/admin/products/details";
 
 type ProductDetailsPanelProps = {
   status: AdminProductDisplayStatus;

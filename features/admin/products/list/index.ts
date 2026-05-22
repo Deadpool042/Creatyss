@@ -1,11 +1,13 @@
 import "server-only";
 
-export { toggleProductFeaturedAction } from "./actions/toggle-product-featured.action";
-export { bulkUpdateProductStatusAction } from "./actions/bulk-update-product-status.action";
-export { bulkUpdateProductFeaturedAction } from "./actions/bulk-update-product-featured.action";
-export { bulkRestoreProductsAction } from "./actions/bulk-restore-products.action";
-export { bulkArchiveProductsAction } from "./actions/bulk-archive-products.action";
-export { bulkDeleteProductsPermanentlyAction } from "./actions/bulk-delete-products-permanently.action";
+export {
+  toggleProductFeaturedAction,
+  bulkUpdateProductStatusAction,
+  bulkUpdateProductFeaturedAction,
+  bulkRestoreProductsAction,
+  bulkArchiveProductsAction,
+  bulkDeleteProductsPermanentlyAction,
+} from "./actions";
 
 export {
   toggleProductFeatured,
@@ -19,10 +21,12 @@ export {
   bulkDeleteProductsPermanently,
 } from "./services";
 
-export { getAdminProductsFeedPage } from "./queries/get-admin-products-feed-page.query";
-export { getAdminProductsFeedPage as getAdminProductsFeed } from "./queries/get-admin-products-feed-page.query";
-export { listAdminProducts } from "./queries/list-admin-products.query";
-export { listProductFilterCategories } from "./queries/list-product-filter-categories.query";
+export {
+  getAdminProductsFeedPage,
+  getAdminProductsFeedPage as getAdminProductsFeed,
+  listAdminProducts,
+  listProductFilterCategories,
+} from "./queries";
 
 export { mapProductFilterCategoryOption } from "./mappers/map-product-filter-category-option";
 export { mapAdminProductFeedItemToTableItem } from "./mappers/shared/map-admin-product-feed-item-to-table-item";
@@ -41,12 +45,14 @@ export {
 
 export { productTableFiltersSchema } from "./schemas/product-table-filters.schema";
 export { adminProductFeedQuerySchema } from "./schemas/admin-product-feed-query.schema";
-export { bulkUpdateProductStatusSchema } from "./schemas/bulk-update-product-status.schema";
-export { bulkUpdateProductFeaturedSchema } from "./schemas/bulk-update-product-featured.schema";
-export { bulkArchiveProductsSchema } from "./schemas/bulk-archive-products.schema";
-export { bulkRestoreProductsSchema } from "./schemas/bulk-restore-products.schema";
-export { deleteProductPermanentlySchema } from "./schemas/delete-product-permanently.schema";
-export { bulkDeleteProductsPermanentlySchema } from "./schemas/bulk-delete-products-permanently.schema";
+export {
+  bulkUpdateProductStatusSchema,
+  bulkUpdateProductFeaturedSchema,
+  bulkArchiveProductsSchema,
+  bulkRestoreProductsSchema,
+  deleteProductPermanentlySchema,
+  bulkDeleteProductsPermanentlySchema,
+} from "./schemas/product-bulk-schemas";
 
 export type {
   AdminProductFeedItem,

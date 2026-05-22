@@ -1,5 +1,13 @@
 import "server-only";
 
-export { getAdminProductsFeedPage } from "./get-admin-products-feed-page.query";
-export { listAdminProducts } from "./list-admin-products.query";
-export { listProductFilterCategories } from "./list-product-filter-categories.query";
+export {
+  getAdminProductsFeedPage,
+  listAdminProducts,
+  listProductFilterCategories,
+} from "./product-list-queries";
+export type {
+  AdminProductsListView,
+  ProductFeaturedFilter,
+  ProductListFilters,
+  ProductListResult,
+} from "./product-list-queries";

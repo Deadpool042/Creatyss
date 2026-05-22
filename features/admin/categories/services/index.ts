@@ -1,9 +1,17 @@
-export { createAdminCategory } from "./create-admin-category.service";
-export { updateAdminCategory } from "./update-admin-category.service";
-export { updateCategorySeo } from "./update-category-seo.service";
-export { archiveAdminCategory } from "./archive-admin-category.service";
-export { archiveAdminCategories } from "./archive-admin-categories.service";
-export { restoreAdminCategory } from "./restore-admin-category.service";
-export { hardDeleteAdminCategory } from "./hard-delete-admin-category.service";
-export { setAdminCategoryImage } from "./set-admin-category-image.service";
-export { deleteAdminCategoryImage } from "./delete-admin-category-image.service";
+export {
+  createAdminCategory,
+  updateAdminCategory,
+  updateCategorySeo,
+} from "./category-crud-services";
+
+export {
+  archiveAdminCategory,
+  archiveAdminCategories,
+  restoreAdminCategory,
+  hardDeleteAdminCategory,
+} from "./category-lifecycle-services";
+
+export {
+  setAdminCategoryImage,
+  deleteAdminCategoryImage,
+} from "./category-media-services";

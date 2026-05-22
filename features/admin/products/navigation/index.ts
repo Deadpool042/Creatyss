@@ -14,13 +14,12 @@ export {
   productsPageFeaturedSchema,
   productsPageSearchParamsSchema,
   productsPageStatusSchema,
-} from "./schemas/products-page-params.schema";
-
-export { normalizeRawProductsPageSearchParams } from "./utils/normalize-raw-search-params";
+  normalizeRawProductsPageSearchParams,
+} from "./products-page-params";
 
 export type {
   ProductsPageFeaturedParam,
   ProductsPageParams,
   ProductsPageStatusParam,
   RawProductsPageSearchParams,
-} from "./types/products-page-params.types";
+} from "./products-page-params";

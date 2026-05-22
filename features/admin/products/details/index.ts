@@ -3,5 +3,5 @@ import "server-only";
 export type {
   AdminProductDetails,
   AdminProductDisplayStatus,
-} from "./types";
-export { readAdminProductDetailsBySlug } from "./queries/read-admin-product-details-by-slug.query";
+} from "./product-detail-types";
+export { readAdminProductDetailsBySlug } from "./read-admin-product-details-by-slug.query";

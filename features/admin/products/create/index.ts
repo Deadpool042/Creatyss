@@ -1,15 +1,15 @@
 import "server-only";
 
 export { createProductAction } from "./actions";
-export { listAdminCreatableProductTypeOptions } from "./queries/list-admin-creatable-product-type-options.query";
+export { listAdminCreatableProductTypeOptions } from "./create-product.query";
 export {
   ensureAdminCreatableProductTypes,
   isAdminCreatableProductTypeCode,
-} from "./services/ensure-admin-creatable-product-types.service";
-export { createProductSchema } from "./schemas";
-export { initialCreateProductActionState } from "./types";
+} from "./create-product.service";
+export { createProductSchema } from "./create-product.schema";
+export { initialCreateProductActionState } from "./create-product.types";
 export type {
   AdminCreatableProductTypeCode,
   CreateProductActionState,
   CreateProductFormValues,
-} from "./types";
+} from "./create-product.types";

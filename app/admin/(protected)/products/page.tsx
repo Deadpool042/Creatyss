@@ -7,10 +7,10 @@ import {
 import { mapAdminProductFeedItemToTableItem } from "@/features/admin/products/list/mappers/shared/map-admin-product-feed-item-to-table-item";
 import {
   listAdminProducts,
+  listProductFilterCategories,
   type AdminProductsListView,
   type ProductFeaturedFilter,
-} from "@/features/admin/products/list/queries/list-admin-products.query";
-import { listProductFilterCategories } from "@/features/admin/products/list/queries/list-product-filter-categories.query";
+} from "@/features/admin/products/list/queries";
 import {
   PRODUCT_FILTER_VALID_VALUES,
   PRODUCT_LIST_PAGE_COPY,

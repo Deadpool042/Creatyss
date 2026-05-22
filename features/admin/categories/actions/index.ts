@@ -1,10 +1,18 @@
-export { createCategoryAction } from "./create-category-action";
-export { updateCategoryAction } from "./update-category-action";
-export { updateCategorySeoAction } from "./update-category-seo-action";
-export { archiveCategoryRedirectAction } from "./archive-category-redirect-action";
-export { archiveCategoryAction } from "./archive-category-action";
-export { bulkArchiveCategoriesAction } from "./bulk-archive-categories-action";
-export { restoreCategoryAction } from "./restore-category-action";
-export { hardDeleteCategoryAction } from "./hard-delete-category-action";
-export { setCategoryImageAction } from "./set-category-image-action";
-export { deleteCategoryImageAction } from "./delete-category-image-action";
+export {
+  createCategoryAction,
+  updateCategoryAction,
+  updateCategorySeoAction,
+} from "./category-crud-actions";
+
+export {
+  archiveCategoryAction,
+  archiveCategoryRedirectAction,
+  bulkArchiveCategoriesAction,
+  restoreCategoryAction,
+  hardDeleteCategoryAction,
+} from "./category-lifecycle-actions";
+
+export {
+  setCategoryImageAction,
+  deleteCategoryImageAction,
+} from "./category-media-actions";

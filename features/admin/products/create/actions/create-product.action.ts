@@ -9,10 +9,12 @@ import { db } from "@/core/db";
 import type {
   CreateProductActionState,
   CreateProductFormValues,
-} from "@/features/admin/products/create/types/create-product.types";
-import { createProductSchema } from "@/features/admin/products/create/schemas";
-import { ensureAdminCreatableProductTypes } from "@/features/admin/products/create/services/ensure-admin-creatable-product-types.service";
-import { createProduct } from "@/features/admin/products/create/services/create-product.service";
+} from "@/features/admin/products/create/create-product.types";
+import { createProductSchema } from "@/features/admin/products/create/create-product.schema";
+import {
+  ensureAdminCreatableProductTypes,
+  createProduct,
+} from "@/features/admin/products/create/create-product.service";
 
 function mapFormDataToValues(formData: FormData): {
   name: string;

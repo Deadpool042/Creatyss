@@ -1,10 +1,9 @@
-//features/admin/products/navigation/products-page-params.ts
-import { productsPageSearchParamsSchema } from "@/features/admin/products/navigation/schemas/products-page-params.schema";
-import type {
-  ProductsPageParams,
-  RawProductsPageSearchParams,
-} from "@/features/admin/products/navigation/types/products-page-params.types";
-import { normalizeRawProductsPageSearchParams } from "@/features/admin/products/navigation/utils/normalize-raw-search-params";
+import {
+  productsPageSearchParamsSchema,
+  normalizeRawProductsPageSearchParams,
+  type ProductsPageParams,
+  type RawProductsPageSearchParams,
+} from "./products-page-params";
 
 export function parseProductsPageParams(
   searchParams: RawProductsPageSearchParams

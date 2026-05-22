@@ -19,7 +19,7 @@ import {
   initialCreateProductActionState,
   type CreateProductActionState,
   type AdminCreatableProductTypeCode,
-} from "@/features/admin/products/create/types";
+} from "@/features/admin/products/create";
 import {
   PRODUCT_CREATE_PAGE_COPY,
   PRODUCT_CREATE_PANEL_COPY,

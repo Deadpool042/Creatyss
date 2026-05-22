@@ -1,8 +1,8 @@
-export type { ProductSeoEditorModel, ProductSeoSource } from "./types/product-seo.types";
+export type { ProductSeoEditorModel, ProductSeoSource } from "./product-seo";
 export {
   buildProductSeoPublicPath,
   resolveProductSeoFallbackDescription,
   resolveProductSeoFallbackOpenGraphImageUrl,
   resolveProductSeoFallbackTitle,
-} from "./helpers/product-seo-defaults";
-export { createProductSeoEditorModel } from "./mappers/product-seo.mappers";
+  createProductSeoEditorModel,
+} from "./product-seo";
