@@ -8,25 +8,32 @@ export {
   mapEditorRelatedTypeToPrismaType,
 } from "./shared";
 
-export { updateProductAvailability } from "./update-product-availability.service";
-export { updateProductGeneral } from "./update-product-general.service";
-export { updateProductCategories } from "./update-product-categories.service";
-export { updateProductRelatedProducts } from "./update-product-related-products.service";
-export { updateProductCharacteristics } from "./update-product-characteristics.service";
-export { createProductVariant } from "./create-product-variant.service";
-export { updateProductVariant } from "./update-product-variant.service";
-export { deleteProductVariant } from "./delete-product-variant.service";
-export { setDefaultProductVariant } from "./set-default-product-variant.service";
-export { attachProductImages } from "./attach-product-images.service";
-export { reorderProductImage } from "./reorder-product-image.service";
-export { deleteProductImage } from "./delete-product-image.service";
-export { setProductPrimaryImage } from "./set-product-primary-image.service";
-export { updateProductImageAltText } from "./update-product-image-alt-text.service";
-export { updateProductPrices } from "./update-product-prices.service";
-export { updateProductInventory } from "./update-product-inventory.service";
-export { uploadProductImages } from "./upload-product-images.service";
 export {
+  attachProductImages,
+  deleteProductImage,
+  reorderProductImage,
+  setProductPrimaryImage,
+  updateProductImageAltText,
+  uploadProductImages,
+} from "./product-image-services";
+
+export {
+  createProductVariant,
+  deleteProductVariant,
+  setDefaultProductVariant,
+  updateProductVariant,
+} from "./product-variant-services";
+
+export {
+  updateProductAvailability,
+  updateProductCategories,
+  updateProductCharacteristics,
+  updateProductGeneral,
+  updateProductInventory,
   updateProductOptionColorHex,
   createProductOptionColorValue,
   archiveProductOptionColorValue,
-} from "./update-product-option-color-hex.service";
+  updateProductPrices,
+  updateProductRelatedProducts,
+  updateProductSeo,
+} from "./product-update-services";

@@ -3,8 +3,7 @@
 import { refresh } from "next/cache";
 import { validateAdminProductCharacteristics } from "@/entities/product";
 
-import { AdminProductEditorServiceError } from "../services/shared";
-import { updateProductCharacteristics } from "../services/update-product-characteristics.service";
+import { AdminProductEditorServiceError, updateProductCharacteristics } from "../services";
 import {
   productCharacteristicsFormInitialState,
   type ProductCharacteristicsFormAction,

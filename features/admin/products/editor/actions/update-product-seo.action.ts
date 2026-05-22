@@ -6,9 +6,8 @@ import {
   type ProductSeoFormAction,
   type ProductSeoFormState,
 } from "../types";
-import { updateProductSeo } from "../services/update-product-seo.service";
 import type { SeoIndexingMode } from "@/prisma-generated/client";
-import { AdminProductEditorServiceError } from "../services";
+import { AdminProductEditorServiceError, updateProductSeo } from "../services";
 
 function mapZodFieldErrors(
   errors: Record<string, string[] | undefined>
