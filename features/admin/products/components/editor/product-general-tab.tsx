@@ -27,6 +27,10 @@ import {
   productGeneralFormInitialState,
   type ProductGeneralFormAction,
 } from "@/features/admin/products/editor/types";
+import {
+  PRODUCT_GENERAL_TAB_COPY,
+  PRODUCT_FORM_ACTIONS_COPY,
+} from "@/features/admin/products/config";
 
 type ProductGeneralTabProps = {
   action: ProductGeneralFormAction;
@@ -58,11 +62,11 @@ function getProductTypeLabel(option: { code: string; name: string; slug: string 
   const normalizedSlug = option.slug.trim().toLowerCase();
 
   if (normalizedCode === "simple") {
-    return "Produit simple";
+    return PRODUCT_GENERAL_TAB_COPY.typeSimple;
   }
 
   if (normalizedCode === "variable") {
-    return "Produit à variantes";
+    return PRODUCT_GENERAL_TAB_COPY.typeVariable;
   }
 
   if (
@@ -73,7 +77,7 @@ function getProductTypeLabel(option: { code: string; name: string; slug: string 
     normalizedSlug.includes("import") ||
     normalizedName.includes("import")
   ) {
-    return "Import catalogue historique";
+    return PRODUCT_GENERAL_TAB_COPY.typeHistorical;
   }
 
   return option.name;
@@ -127,14 +131,14 @@ function ProductGeneralTabInner({
 
   const primaryImageSummary = useMemo(() => {
     if (product.product.primaryImageId === null) {
-      return "Aucune image principale définie.";
+      return PRODUCT_GENERAL_TAB_COPY.primaryImageNone;
     }
 
     if (product.product.primaryImageAltText) {
-      return `Image actuelle : ${product.product.primaryImageAltText}`;
+      return PRODUCT_GENERAL_TAB_COPY.primaryImageCurrent(product.product.primaryImageAltText);
     }
 
-    return "Une image principale est déjà définie.";
+    return PRODUCT_GENERAL_TAB_COPY.primaryImageDefined;
   }, [product.product.primaryImageAltText, product.product.primaryImageId]);
 
   useEffect(() => {
@@ -142,7 +146,7 @@ function ProductGeneralTabInner({
       return;
     }
 
-    toast.success(state.message ?? "Mise à jour effectuée.");
+    toast.success(state.message ?? PRODUCT_FORM_ACTIONS_COPY.saveSuccess);
     // Reset local form state after success to avoid persistent inline success state.
     onReset();
   }, [state.status, state.message, onReset]);
@@ -161,17 +165,16 @@ function ProductGeneralTabInner({
           <Card className="rounded-[1.4rem] border border-surface-border-strong bg-surface-panel shadow-raised py-0">
             <CardHeader className="rounded-t-[1.4rem] border-b border-surface-border bg-surface-panel-soft px-5 py-5 md:px-6">
               <div className="space-y-1.5">
-                <SectionEyebrow>Identité</SectionEyebrow>
-                <CardTitle className="text-lg">Identité produit</CardTitle>
+                <SectionEyebrow>{PRODUCT_GENERAL_TAB_COPY.identityEyebrow}</SectionEyebrow>
+                <CardTitle className="text-lg">{PRODUCT_GENERAL_TAB_COPY.identityTitle}</CardTitle>
                 <CardDescription className="leading-6 text-foreground/70">
-                  Renseignez les attributs structurants qui identifient ce produit dans le
-                  catalogue.
+                  {PRODUCT_GENERAL_TAB_COPY.identityDescription}
                 </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="grid gap-5 px-5 py-5 md:px-6 md:py-6">
               <AdminFormField
-                label="Nom du produit"
+                label={PRODUCT_GENERAL_TAB_COPY.nameLabel}
                 htmlFor="edit-name"
                 required
                 error={state.fieldErrors.name}
@@ -186,10 +189,10 @@ function ProductGeneralTabInner({
               </AdminFormField>
 
               <AdminFormField
-                label="Adresse du produit"
+                label={PRODUCT_GENERAL_TAB_COPY.slugLabel}
                 htmlFor="edit-slug"
                 required
-                hint="Visible dans l'URL du produit. Générée automatiquement depuis le nom, vous pouvez la modifier."
+                hint={PRODUCT_GENERAL_TAB_COPY.slugHint}
                 error={state.fieldErrors.slug}
               >
                 <Input
@@ -203,9 +206,9 @@ function ProductGeneralTabInner({
 
               <div className="grid gap-4 md:grid-cols-2">
                 <AdminFormField
-                  label="Référence interne"
+                  label={PRODUCT_GENERAL_TAB_COPY.skuRootLabel}
                   htmlFor="edit-sku-root"
-                  hint="Optionnelle, utile pour retrouver un produit. Pour un produit à variantes, chaque déclinaison reprend cette base pour générer sa propre référence."
+                  hint={PRODUCT_GENERAL_TAB_COPY.skuRootHint}
                   error={state.fieldErrors.skuRoot}
                 >
                   <Input
@@ -218,19 +221,19 @@ function ProductGeneralTabInner({
                 </AdminFormField>
 
                 <AdminFormField
-                  label="Famille produit"
+                  label={PRODUCT_GENERAL_TAB_COPY.productTypeLabel}
                   htmlFor="edit-product-type"
-                  hint="Classe le produit dans une famille catalogue."
+                  hint={PRODUCT_GENERAL_TAB_COPY.productTypeHint}
                   error={state.fieldErrors.productTypeId}
                 >
                   <input type="hidden" name="productTypeId" value={productTypeId} />
 
                   <Select value={productTypeId} onValueChange={setProductTypeId}>
                     <SelectTrigger id="edit-product-type" className="w-full text-sm">
-                      <SelectValue placeholder="Non renseignée" />
+                      <SelectValue placeholder={PRODUCT_GENERAL_TAB_COPY.typeNone} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="__none__">Non renseignée</SelectItem>
+                      <SelectItem value="__none__">{PRODUCT_GENERAL_TAB_COPY.typeNone}</SelectItem>
                       {productTypeOptions.map((option) => (
                         <SelectItem key={option.id} value={option.id}>
                           {getProductTypeLabel(option)}
@@ -243,13 +246,13 @@ function ProductGeneralTabInner({
 
               <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-3 text-sm shadow-sm">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Structure du produit
+                  {PRODUCT_GENERAL_TAB_COPY.structureInfoTitle}
                 </p>
                 <p className="mt-2 font-medium text-foreground">
                   {getProductStructurePresentation(product.product.isStandalone).label}
                 </p>
                 <p className="mt-1 leading-6 text-muted-foreground">
-                  Indique si le produit est vendu seul ou avec plusieurs déclinaisons.
+                  {PRODUCT_GENERAL_TAB_COPY.structureInfoDescription}
                 </p>
               </div>
             </CardContent>
@@ -258,18 +261,18 @@ function ProductGeneralTabInner({
           <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
             <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4 md:px-6">
               <div className="space-y-1.5">
-                <SectionEyebrow>Contenus</SectionEyebrow>
-                <CardTitle>Contenus éditoriaux</CardTitle>
+                <SectionEyebrow>{PRODUCT_GENERAL_TAB_COPY.contentsEyebrow}</SectionEyebrow>
+                <CardTitle>{PRODUCT_GENERAL_TAB_COPY.contentsTitle}</CardTitle>
                 <CardDescription className="leading-6">
-                  Rédigez le résumé et la description complète du produit.
+                  {PRODUCT_GENERAL_TAB_COPY.contentsDescription}
                 </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="space-y-6 px-5 py-5 md:px-6 md:py-6">
               <AdminFormField
-                label="Accroche commerciale"
+                label={PRODUCT_GENERAL_TAB_COPY.marketingHookLabel}
                 htmlFor="edit-marketing-hook"
-                hint="Phrase courte affichée en haut de la fiche produit pour mettre le produit en valeur."
+                hint={PRODUCT_GENERAL_TAB_COPY.marketingHookHint}
                 error={state.fieldErrors.marketingHook}
               >
                 <div className="space-y-1.5">
@@ -278,7 +281,7 @@ function ProductGeneralTabInner({
                     name="marketingHook"
                     value={marketingHook}
                     onChange={(event) => setMarketingHook(event.target.value)}
-                    placeholder="Ex. Un sac artisanal pensé pour illuminer le quotidien."
+                    placeholder={PRODUCT_GENERAL_TAB_COPY.marketingHookPlaceholder}
                     className="text-sm"
                   />
                   <div className="flex items-center justify-end">
@@ -292,8 +295,8 @@ function ProductGeneralTabInner({
               </AdminFormField>
               <AdminRichTextEditor
                 name="shortDescription"
-                label="Description courte"
-                hint="Affichée en haut de la fiche produit. Visez une phrase courte, concrète et naturelle (idéalement 120 à 180 caractères, maximum 220)."
+                label={PRODUCT_GENERAL_TAB_COPY.shortDescriptionLabel}
+                hint={PRODUCT_GENERAL_TAB_COPY.shortDescriptionHint}
                 preset="full"
                 minHeightClassName="min-h-[140px]"
                 initialValue={product.product.shortDescription ?? ""}
@@ -308,16 +311,16 @@ function ProductGeneralTabInner({
               />
               <AdminRichTextEditor
                 name="description"
-                label="Description détaillée"
-                hint="Développez le produit (usage, praticité, fabrication, finitions). Évitez de dupliquer les listes factuelles déjà saisies dans Caractéristiques."
+                label={PRODUCT_GENERAL_TAB_COPY.descriptionLabel}
+                hint={PRODUCT_GENERAL_TAB_COPY.descriptionHint}
                 preset="full"
                 initialValue={product.product.description ?? ""}
                 {...(state.fieldErrors.description ? { error: state.fieldErrors.description } : {})}
               />
               <AdminRichTextEditor
                 name="careInstructions"
-                label="Conseils d'entretien"
-                hint="Champ dédié aux conseils de soin affichés sur la fiche produit. Saisissez-les ici et évitez de les dupliquer dans Caractéristiques."
+                label={PRODUCT_GENERAL_TAB_COPY.careInstructionsLabel}
+                hint={PRODUCT_GENERAL_TAB_COPY.careInstructionsHint}
                 preset="full"
                 minHeightClassName="min-h-[120px]"
                 initialValue={product.product.careInstructions ?? ""}
@@ -331,18 +334,18 @@ function ProductGeneralTabInner({
           <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
             <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4 md:px-6">
               <div className="space-y-1.5">
-                <SectionEyebrow>Publication</SectionEyebrow>
-                <CardTitle>Publication et visibilité</CardTitle>
+                <SectionEyebrow>{PRODUCT_GENERAL_TAB_COPY.publicationEyebrow}</SectionEyebrow>
+                <CardTitle>{PRODUCT_GENERAL_TAB_COPY.publicationTitle}</CardTitle>
                 <CardDescription className="leading-6">
-                  Contrôlez la mise en ligne du produit et sa mise en avant.
+                  {PRODUCT_GENERAL_TAB_COPY.publicationDescription}
                 </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="grid gap-4 px-5 py-5 md:grid-cols-2 md:px-6 md:py-6">
               <AdminFormField
-                label="Statut"
+                label={PRODUCT_GENERAL_TAB_COPY.statusLabel}
                 htmlFor="edit-status"
-                hint="Brouillon : non visible. Actif : publié sur la boutique. Inactif : retiré temporairement. Archivé : retiré définitivement."
+                hint={PRODUCT_GENERAL_TAB_COPY.statusHint}
                 error={state.fieldErrors.status}
               >
                 <input type="hidden" name="status" value={status} />
@@ -352,16 +355,16 @@ function ProductGeneralTabInner({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="draft">Brouillon</SelectItem>
-                    <SelectItem value="active">Actif</SelectItem>
-                    <SelectItem value="inactive">Inactif</SelectItem>
-                    <SelectItem value="archived">Archivé</SelectItem>
+                    <SelectItem value="draft">{PRODUCT_GENERAL_TAB_COPY.statusDraft}</SelectItem>
+                    <SelectItem value="active">{PRODUCT_GENERAL_TAB_COPY.statusActive}</SelectItem>
+                    <SelectItem value="inactive">{PRODUCT_GENERAL_TAB_COPY.statusInactive}</SelectItem>
+                    <SelectItem value="archived">{PRODUCT_GENERAL_TAB_COPY.statusArchived}</SelectItem>
                   </SelectContent>
                 </Select>
               </AdminFormField>
 
               <AdminFormField
-                label="Mise en avant"
+                label={PRODUCT_GENERAL_TAB_COPY.isFeaturedLabel}
                 htmlFor="edit-is-featured"
                 error={state.fieldErrors.isFeatured}
               >
@@ -372,19 +375,19 @@ function ProductGeneralTabInner({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="false">Produit standard</SelectItem>
-                    <SelectItem value="true">Produit mis en avant</SelectItem>
+                    <SelectItem value="false">{PRODUCT_GENERAL_TAB_COPY.featuredStandard}</SelectItem>
+                    <SelectItem value="true">{PRODUCT_GENERAL_TAB_COPY.featuredTrue}</SelectItem>
                   </SelectContent>
                 </Select>
               </AdminFormField>
 
               <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-3 text-sm shadow-sm">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Image principale
+                  {PRODUCT_GENERAL_TAB_COPY.primaryImageInfoTitle}
                 </p>
                 <p className="mt-2 font-medium text-foreground">{primaryImageSummary}</p>
                 <p className="mt-1 leading-6 text-muted-foreground">
-                  Gérez ce choix depuis l’onglet Médias.
+                  {PRODUCT_GENERAL_TAB_COPY.primaryImageInfoDescription}
                 </p>
               </div>
             </CardContent>
@@ -408,7 +411,7 @@ function ProductGeneralTabInner({
           className="h-8 rounded-full px-4 text-muted-foreground hover:text-foreground lg:h-9"
           onClick={onReset}
         >
-          Réinitialiser
+          {PRODUCT_FORM_ACTIONS_COPY.reset}
         </Button>
 
         <Button
@@ -418,7 +421,7 @@ function ProductGeneralTabInner({
           className="h-8 w-fit rounded-full border-shell-border px-4 text-foreground shadow-none sm:flex-none lg:h-9"
           disabled={pending}
         >
-          {pending ? "Mise à jour…" : "Enregistrer"}
+          {pending ? PRODUCT_FORM_ACTIONS_COPY.savePending : PRODUCT_FORM_ACTIONS_COPY.save}
         </Button>
       </AdminFormFooter>
     </form>

@@ -20,6 +20,11 @@ import {
   type CreateProductActionState,
   type AdminCreatableProductTypeCode,
 } from "@/features/admin/products/create/types";
+import {
+  PRODUCT_CREATE_PAGE_COPY,
+  PRODUCT_CREATE_PANEL_COPY,
+  PRODUCT_FORM_ACTIONS_COPY,
+} from "@/features/admin/products/config";
 
 export type ProductCreateFormAction = (
   prevState: CreateProductActionState,
@@ -52,11 +57,11 @@ function SectionEyebrow({ children }: { children: string }): JSX.Element {
 
 function getProductTypeLabel(option: ProductTypeOption): string {
   if (option.code === "simple") {
-    return "Produit simple";
+    return PRODUCT_CREATE_PANEL_COPY.typeSimple;
   }
 
   if (option.code === "variable") {
-    return "Produit à variantes";
+    return PRODUCT_CREATE_PANEL_COPY.typeVariable;
   }
 
   return option.name;
@@ -96,9 +101,11 @@ function ProductCreatePanelInner({
   return (
     <form action={formAction} className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
       <AdminFormShell
-        title="Nouveau produit"
+        title={PRODUCT_CREATE_PAGE_COPY.title}
         description={
-          step === 1 ? "Donnez un nom à votre produit." : "Choisissez le type de produit."
+          step === 1
+            ? PRODUCT_CREATE_PANEL_COPY.step1Description
+            : PRODUCT_CREATE_PANEL_COPY.step2Description
         }
         footer={
           step === 1 ? (
@@ -110,7 +117,7 @@ function ProductCreatePanelInner({
                 className="h-8 rounded-full px-3 sm:h-9 sm:px-4"
                 onClick={handleReset}
               >
-                Réinitialiser
+                {PRODUCT_FORM_ACTIONS_COPY.reset}
               </Button>
               <Button
                 type="button"
@@ -119,7 +126,7 @@ function ProductCreatePanelInner({
                 onClick={handleNext}
                 disabled={nameValue.trim().length === 0 || slugValue.trim().length === 0}
               >
-                Suivant
+                {PRODUCT_CREATE_PANEL_COPY.nextButton}
               </Button>
             </>
           ) : (
@@ -131,7 +138,7 @@ function ProductCreatePanelInner({
                 className="h-8 rounded-full px-3 sm:h-9 sm:px-4"
                 onClick={() => setStep(1)}
               >
-                Retour
+                {PRODUCT_FORM_ACTIONS_COPY.back}
               </Button>
               <Button
                 type="submit"
@@ -139,7 +146,7 @@ function ProductCreatePanelInner({
                 className="h-8 rounded-full px-3 sm:h-9 sm:px-4"
                 disabled={pending || productTypeCode.length === 0}
               >
-                {pending ? "Création…" : "Créer le produit"}
+                {pending ? PRODUCT_CREATE_PANEL_COPY.createPending : PRODUCT_CREATE_PANEL_COPY.createButton}
               </Button>
             </>
           )
@@ -147,8 +154,8 @@ function ProductCreatePanelInner({
       >
         <div className="rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-2.5 sm:rounded-xl sm:px-4 sm:py-3">
           <div className="mb-1.5 flex items-center justify-between gap-3 text-[11px] sm:mb-2 sm:text-xs">
-            <span className="font-medium text-foreground/80">Progression</span>
-            <span className="text-muted-foreground">Étape {step} sur 2</span>
+            <span className="font-medium text-foreground/80">{PRODUCT_CREATE_PANEL_COPY.progressLabel}</span>
+            <span className="text-muted-foreground">{PRODUCT_CREATE_PANEL_COPY.progressStep(step)}</span>
           </div>
           <Progress value={step === 1 ? 50 : 100} className="h-1.5" />
         </div>
@@ -162,17 +169,17 @@ function ProductCreatePanelInner({
           <Card className="rounded-xl border border-surface-border-strong bg-surface-panel shadow-raised py-0 sm:rounded-[1.35rem]">
             <CardHeader className="rounded-t-xl border-b border-surface-border bg-surface-panel-soft px-4 py-3 sm:rounded-t-[1.35rem] sm:px-5 sm:py-4">
               <div className="space-y-1.5">
-                <SectionEyebrow>Identité</SectionEyebrow>
-                <CardTitle className="text-base sm:text-lg">Identité produit</CardTitle>
+                <SectionEyebrow>{PRODUCT_CREATE_PANEL_COPY.identityEyebrow}</SectionEyebrow>
+                <CardTitle className="text-base sm:text-lg">{PRODUCT_CREATE_PANEL_COPY.identityTitle}</CardTitle>
                 <CardDescription className="text-sm leading-6 text-foreground/70">
-                  Donnez un nom au produit. Le slug est généré automatiquement et reste modifiable.
+                  {PRODUCT_CREATE_PANEL_COPY.identityCardDescription}
                 </CardDescription>
               </div>
             </CardHeader>
 
             <CardContent className="grid gap-4 px-4 py-4 sm:gap-5 sm:px-5 sm:py-5">
               <AdminFormField
-                label="Nom"
+                label={PRODUCT_CREATE_PANEL_COPY.nameLabel}
                 htmlFor="new-name"
                 required
                 error={state.fieldErrors.name}
@@ -182,16 +189,16 @@ function ProductCreatePanelInner({
                   name="name"
                   value={nameValue}
                   onChange={(event) => setNameValue(event.target.value)}
-                  placeholder="Ex. Trousse en cuir"
+                  placeholder={PRODUCT_CREATE_PANEL_COPY.namePlaceholder}
                   className="text-sm"
                 />
               </AdminFormField>
 
               <AdminFormField
-                label="Slug"
+                label={PRODUCT_CREATE_PANEL_COPY.slugLabel}
                 htmlFor="new-slug"
                 required
-                hint="Généré automatiquement depuis le nom. Vous pouvez le modifier."
+                hint={PRODUCT_CREATE_PANEL_COPY.identitySlugHint}
                 error={state.fieldErrors.slug}
               >
                 <Input
@@ -199,7 +206,7 @@ function ProductCreatePanelInner({
                   name="slug"
                   value={slugValue}
                   onChange={(event) => setSlugValue(event.target.value)}
-                  placeholder="trousse-cuir"
+                  placeholder={PRODUCT_CREATE_PANEL_COPY.slugPlaceholder}
                   className="font-mono text-sm"
                 />
               </AdminFormField>
@@ -209,11 +216,10 @@ function ProductCreatePanelInner({
           <Card className="rounded-xl border border-surface-border-strong bg-surface-panel shadow-raised py-0 sm:rounded-[1.35rem]">
             <CardHeader className="rounded-t-xl border-b border-surface-border bg-surface-panel-soft px-4 py-3 sm:rounded-t-[1.35rem] sm:px-5 sm:py-4">
               <div className="space-y-1.5">
-                <SectionEyebrow>Structure</SectionEyebrow>
-                <CardTitle className="text-base sm:text-lg">Type de produit</CardTitle>
+                <SectionEyebrow>{PRODUCT_CREATE_PANEL_COPY.structureEyebrow}</SectionEyebrow>
+                <CardTitle className="text-base sm:text-lg">{PRODUCT_CREATE_PANEL_COPY.structureTitle}</CardTitle>
                 <CardDescription className="text-sm leading-6 text-foreground/70">
-                  Choisissez la structure de départ du produit. Vous pourrez ensuite compléter le
-                  reste dans l’éditeur.
+                  {PRODUCT_CREATE_PANEL_COPY.structureCardDescription}
                 </CardDescription>
               </div>
             </CardHeader>
@@ -223,7 +229,7 @@ function ProductCreatePanelInner({
               <input type="hidden" name="slug" value={slugValue} />
 
               <AdminFormField
-                label="Type de produit"
+                label={PRODUCT_CREATE_PANEL_COPY.structureTitle}
                 htmlFor="new-product-type"
                 required
                 error={state.fieldErrors.productTypeCode}
@@ -234,7 +240,7 @@ function ProductCreatePanelInner({
                   onValueChange={setProductTypeCode}
                 >
                   <SelectTrigger id="new-product-type" className="text-sm">
-                    <SelectValue placeholder="Choisir un type" />
+                    <SelectValue placeholder={PRODUCT_CREATE_PANEL_COPY.typePlaceholder} />
                   </SelectTrigger>
                   <SelectContent>
                     {productTypeOptions.map((option) => (

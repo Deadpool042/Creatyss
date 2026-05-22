@@ -2,7 +2,7 @@ import { db } from "@/core/db";
 import type { AdminCategoryDetail } from "../types";
 
 type GetAdminCategoryDetailInput = {
-  slug: string; // Optional slug for potential future use, currently not used in the query
+  slug: string;
 };
 
 export async function getAdminCategoryDetail(

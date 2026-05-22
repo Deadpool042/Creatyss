@@ -1,8 +1,8 @@
 import { AdminCreateTopbarMenu } from "@/components/admin/shared/admin-create-topbar-menu";
 import { CATEGORY_CREATE_MENU_COPY } from "@/features/admin/categories/config";
-import { ADMIN_CATEGORIES_NEW_PATH } from "@/features/admin/categories/shared/admin-categories-routes";
+import { ADMIN_CATEGORIES_NEW_PATH } from "../../shared";
 
-export function CategorieCreateTopbarMenu() {
+export function CategoryCreateTopbarMenu() {
   return (
     <AdminCreateTopbarMenu
       triggerLabel={CATEGORY_CREATE_MENU_COPY.triggerLabel}

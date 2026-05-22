@@ -2,7 +2,11 @@
 
 import type { JSX } from "react";
 
-import { AdminTablePagination } from "@/components/admin/tables";
+import {
+  AdminDataTableDesktopLayout,
+  AdminDataTableMobileLayout,
+  AdminTablePagination,
+} from "@/components/admin/tables";
 import { PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
 import type {
   ProductFilterCategoryOption,
@@ -35,10 +39,9 @@ function ProductTableDesktopView(): JSX.Element {
   const { state, actions, view } = useProductTableContext();
 
   return (
-    <div className="hidden min-h-0 flex-1 flex-col gap-3 lg:flex">
-      <ProductTableToolbar mode="desktop" />
-
-      <div className="min-h-0 flex-1 overflow-hidden">
+    <AdminDataTableDesktopLayout
+      toolbar={<ProductTableToolbar mode="desktop" />}
+      content={
         <ProductTableDesktop
           products={state.paginated}
           selectedProductIds={actions.selectedProductIds}
@@ -48,16 +51,18 @@ function ProductTableDesktopView(): JSX.Element {
           view={view}
           {...getDesktopProductTableActionProps({ actions, view })}
         />
-      </div>
-
-      <AdminTablePagination
-        currentPage={state.currentPage}
-        totalPages={state.totalPages}
-        onPrevious={state.goPrevious}
-        onNext={state.goNext}
-        countLabel={PRODUCT_TABLE_COPY.paginationCountLabel(state.filteredCount)}
-      />
-    </div>
+      }
+      contentClassName="overflow-hidden"
+      pagination={
+        <AdminTablePagination
+          currentPage={state.currentPage}
+          totalPages={state.totalPages}
+          onPrevious={state.goPrevious}
+          onNext={state.goNext}
+          countLabel={PRODUCT_TABLE_COPY.paginationCountLabel(state.filteredCount)}
+        />
+      }
+    />
   );
 }
 
@@ -65,13 +70,9 @@ function ProductTableMobileView(): JSX.Element {
   const { state, actions, view, onMobileVisibleSelectionChange } = useProductTableContext();
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col lg:hidden">
-      <ProductTableToolbar mode="mobile" />
-
-      <div
-        data-scroll-root="true"
-        className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-2"
-      >
+    <AdminDataTableMobileLayout
+      toolbar={<ProductTableToolbar mode="mobile" />}
+      content={
         <ProductTableMobile
           products={state.allFilteredProducts}
           view={view}
@@ -80,8 +81,8 @@ function ProductTableMobileView(): JSX.Element {
           onVisibleSelectionStatsChange={onMobileVisibleSelectionChange}
           {...getMobileProductTableActionProps({ actions, view })}
         />
-      </div>
-    </div>
+      }
+    />
   );
 }
 

@@ -29,6 +29,7 @@ type AdminToolbarProps<T extends string = string> = {
   /** Slot pour des contrôles additionnels (ex : dropdown de tri) — visible mobile et desktop */
   extraControls?: ReactNode;
   className?: string;
+  hideMobile?: boolean;
 };
 
 export function AdminToolbar<T extends string = string>({
@@ -43,6 +44,7 @@ export function AdminToolbar<T extends string = string>({
   filtersLabel = "Filtres",
   extraControls,
   className,
+  hideMobile = false,
 }: AdminToolbarProps<T>): JSX.Element {
   const tabPills =
     tabs && tabs.length > 0 ? (
@@ -101,21 +103,23 @@ export function AdminToolbar<T extends string = string>({
        */}
 
       {/* Mobile only: row 1 (search + extraControls + filter button) */}
-      <div className="flex items-center justify-between gap-2 lg:hidden ">
-        <AdminSearchInput
-          value={search}
-          onChange={onSearchChange}
-          placeholder={placeholder}
-          className="min-w-0 max-w-sm flex-1"
-        />
-        {extraControls ? (
-          <div className="flex shrink-0 items-center gap-2">{extraControls}</div>
-        ) : null}
-        {filtersButton}
-      </div>
+      {!hideMobile ? (
+        <div className="flex items-center justify-between gap-2 lg:hidden ">
+          <AdminSearchInput
+            value={search}
+            onChange={onSearchChange}
+            placeholder={placeholder}
+            className="min-w-0 max-w-sm flex-1"
+          />
+          {extraControls ? (
+            <div className="flex shrink-0 items-center gap-2">{extraControls}</div>
+          ) : null}
+          {filtersButton}
+        </div>
+      ) : null}
 
       {/* Mobile only: row 2 (tabs) */}
-      {tabPills ? <div className="lg:hidden">{tabPills}</div> : null}
+      {!hideMobile && tabPills ? <div className="lg:hidden">{tabPills}</div> : null}
 
       {/* Desktop only: single row */}
       <div className="hidden items-center gap-2 lg:flex lg:justify-between">

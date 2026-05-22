@@ -4,7 +4,7 @@ export {
   CategoryTableDesktop,
   CategoryTableMobile,
   CategoryTableRowActions,
-  CategorieCreateTopbarMenu,
+  CategoryCreateTopbarMenu,
   CategoryEditorPanel,
   CategorySeoForm,
   CategoryImageForm,
@@ -17,9 +17,24 @@ export {
   useCategoriesTableContext,
 } from "./context/categories-data-provider";
 
+// List hooks/types
+export {
+  useCategoryFilters,
+  type CategoryFiltersState,
+} from "./list";
+
 // Queries
-export { getAdminCategoryDetail } from "./queries";
-export { listAdminCategories } from "./list/queries/list-admin-categories.query";
+export {
+  getAdminCategoryDetail,
+  listAdminCategories,
+  listCategoriesForPicker,
+  type CategoryFeaturedFilter,
+  type CategoryListFilters,
+  type CategoryListResult,
+  type CategoryPickerItem,
+  type CategorySortOption,
+  type CategoryStatusCounts,
+} from "./queries";
 
 // Services
 export {
@@ -28,6 +43,8 @@ export {
   updateCategorySeo,
   archiveAdminCategory,
   archiveAdminCategories,
+  restoreAdminCategory,
+  hardDeleteAdminCategory,
   setAdminCategoryImage,
   deleteAdminCategoryImage,
 } from "./services";
@@ -53,10 +70,19 @@ export {
 // Types
 export {
   AdminCategoryServiceError,
+  type AdminCategoryCardItem,
   type AdminCategoryDetail,
   type AdminCategoryServiceErrorCode,
+  type AdminCategoryStatus,
   type AdminCategorySummary,
 } from "./types";
+
+// Shared routes
+export {
+  ADMIN_CATEGORIES_LIST_PATH,
+  ADMIN_CATEGORIES_NEW_PATH,
+  getAdminCategoryDetailPath,
+} from "./shared/admin-categories-routes";
 
 // Actions
 export {
@@ -66,6 +92,8 @@ export {
   archiveCategoryRedirectAction,
   archiveCategoryAction,
   bulkArchiveCategoriesAction,
+  restoreCategoryAction,
+  hardDeleteCategoryAction,
   setCategoryImageAction,
   deleteCategoryImageAction,
 } from "./actions";

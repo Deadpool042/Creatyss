@@ -5,7 +5,7 @@ import { mapCategoryListItem } from "@/features/admin/categories/list/mappers/ma
 import type {
   AdminCategoryCardItem,
   AdminCategoryStatus,
-} from "@/features/admin/categories/list/types/admin-category-card-item.types";
+} from "@/features/admin/categories/types";
 
 const STATUS_MAP: Record<AdminCategoryStatus, CategoryStatus> = {
   draft: CategoryStatus.DRAFT,

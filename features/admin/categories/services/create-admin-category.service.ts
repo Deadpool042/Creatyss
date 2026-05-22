@@ -31,7 +31,7 @@ export async function createAdminCategory(input: CreateAdminCategoryServiceInput
     });
 
     if (store === null) {
-      throw new AdminCategoryServiceError("category_missing");
+      throw new AdminCategoryServiceError("store_missing");
     }
 
     const existing = await tx.category.findFirst({

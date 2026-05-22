@@ -11,7 +11,7 @@ type AdminFilterPopoverProps = {
   label: string;
   count: number;
   children: ReactNode;
-  contentClassName?: string;
+  contentClassName?: string | undefined;
 };
 
 export function AdminFilterPopover({

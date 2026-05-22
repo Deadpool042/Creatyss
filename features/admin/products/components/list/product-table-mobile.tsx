@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type JSX } from "react";
+import { useCallback, useEffect, useMemo, useState, type JSX } from "react";
 
+import { AdminFeedSentinel } from "@/components/admin/shared/admin-feed-sentinel";
 import type { ProductTableItem } from "@/features/admin/products/list/types/product-table.types";
 import { PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
-import { PRODUCT_CARD_TWO_COLUMN_CLASS_NAME } from "./mobile/product-card-layout";
 import { ProductCollectionCard } from "./product-collection-card";
+
+const PRODUCT_CARD_TWO_COLUMN_CLASS_NAME = "[@media(min-width:667px)]:grid-cols-2";
 
 const MOBILE_PAGE_SIZE = 12;
 const MOBILE_BOTTOM_NAV_CLEARANCE_CLASS_NAME =
@@ -39,7 +41,6 @@ export function ProductTableMobile({
   onConfirmPermanentDelete,
 }: ProductTableMobileProps): JSX.Element {
   const [visibleCount, setVisibleCount] = useState(MOBILE_PAGE_SIZE);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const filterKey = useMemo(() => {
     const first = products[0]?.id ?? "";
@@ -59,28 +60,6 @@ export function ProductTableMobile({
     setVisibleCount((prev) => Math.min(prev + MOBILE_PAGE_SIZE, products.length));
   }, [products.length]);
 
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (sentinel === null || !hasMore) return;
-
-    const scrollRoot = sentinel.closest<HTMLElement>("[data-scroll-root]") ?? null;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          loadMore();
-        }
-      },
-      {
-        root: scrollRoot,
-        rootMargin: "260px 0px",
-        threshold: 0,
-      }
-    );
-
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [hasMore, loadMore]);
 
   const visibleItems = products.slice(0, visibleCount);
   const visibleProductIds = visibleItems.map((product) => product.id);
@@ -144,13 +123,19 @@ export function ProductTableMobile({
       </div>
 
       {hasMore ? (
-        <div
-          ref={sentinelRef}
-          className="flex h-10 items-center justify-center [@media(max-height:480px)]:h-8"
-          aria-hidden="true"
-        >
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-surface-border border-t-foreground/40" />
-        </div>
+        <>
+          <div
+            className="flex h-10 items-center justify-center [@media(max-height:480px)]:h-8"
+            aria-hidden="true"
+          >
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-surface-border border-t-foreground/40" />
+          </div>
+          <AdminFeedSentinel
+            onIntersect={loadMore}
+            rootSelector="[data-scroll-root]"
+            rootMargin="260px 0px"
+          />
+        </>
       ) : (
         <div className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-3 py-2.5 text-center [@media(max-height:480px)]:py-2">
           <p className="text-xs font-medium text-muted-foreground">{PRODUCT_TABLE_COPY.mobileEndOfList}</p>

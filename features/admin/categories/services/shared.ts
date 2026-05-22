@@ -40,6 +40,22 @@ export async function assertParentCategoryExists(
   }
 }
 
+export async function assertArchivedCategoryExists(executor: DbExecutor, categoryId: string): Promise<void> {
+  const category = await executor.category.findFirst({
+    where: {
+      id: categoryId,
+      archivedAt: { not: null },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (category === null) {
+    throw new AdminCategoryServiceError("category_missing");
+  }
+}
+
 export async function assertMediaAssetExists(
   executor: DbExecutor,
   mediaAssetId: string | null

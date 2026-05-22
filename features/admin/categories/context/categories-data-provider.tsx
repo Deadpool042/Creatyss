@@ -2,11 +2,11 @@
 
 import { createContext, useContext, useMemo, type PropsWithChildren, type ReactNode } from "react";
 
-import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
+import type { AdminCategoryCardItem } from "@/features/admin/categories/types";
 import type {
   CategoryPickerItem,
   CategoryStatusCounts,
-} from "@/features/admin/categories/list/queries/list-admin-categories.query";
+} from "@/features/admin/categories/queries";
 
 type CategoriesTableContextValue = {
   categories: AdminCategoryCardItem[];

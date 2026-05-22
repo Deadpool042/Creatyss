@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export type AdminDataTableActiveFilterItem = {
   key: string;
@@ -10,21 +11,23 @@ export type AdminDataTableActiveFilterItem = {
 
 type AdminDataTableActiveFiltersProps = {
   items: AdminDataTableActiveFilterItem[];
-  onClearAll?: () => void;
-  clearLabel?: string;
+  onClearAll?: (() => void) | undefined;
+  clearLabel?: string | undefined;
+  className?: string | undefined;
 };
 
 export function AdminDataTableActiveFilters({
   items,
   onClearAll,
   clearLabel = "Tout effacer",
+  className,
 }: AdminDataTableActiveFiltersProps) {
   if (items.length === 0) {
     return null;
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className={cn("flex flex-wrap items-center gap-2", className)}>
       {items.map((item) => (
         <button
           key={item.key}

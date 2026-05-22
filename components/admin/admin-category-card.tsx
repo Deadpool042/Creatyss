@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ImageIcon, Star } from "lucide-react";
 
-import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
-import { getAdminCategoryDetailPath } from "@/features/admin/categories/shared/admin-categories-routes";
+import {
+  getAdminCategoryDetailPath,
+  type AdminCategoryCardItem,
+} from "@/features/admin/categories";
 import { cn } from "@/lib/utils";
 
 interface AdminCategoryCardProps {

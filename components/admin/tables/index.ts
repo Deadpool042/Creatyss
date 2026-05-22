@@ -2,10 +2,23 @@ export {
   AdminDataTableActiveFilters,
   type AdminDataTableActiveFilterItem,
 } from "./admin-data-table-active-filters";
+export { AdminDataTableActiveFiltersPanel } from "./admin-data-table-active-filters-panel";
+export { AdminDataTableDesktopLayout } from "./admin-data-table-desktop-layout";
 export { AdminDataTableEmptyState } from "./admin-data-table-empty-state";
+export { AdminDataTableFeedbackBanner } from "./admin-data-table-feedback-banner";
+export { AdminDataTableFilterControlsRow } from "./admin-data-table-filter-controls-row";
+export { AdminDataTableFiltersDrawer } from "./admin-data-table-filters-drawer";
+export { AdminDataTableFiltersFooter } from "./admin-data-table-filters-footer";
 export { AdminDataTableFiltersSheet } from "./admin-data-table-filters-sheet";
+export { AdminDataTableFloatingBar } from "./admin-data-table-floating-bar";
+export { AdminDataTableFiltersTrigger } from "./admin-data-table-filters-trigger";
+export { AdminDataTableMobileLayout } from "./admin-data-table-mobile-layout";
+export { AdminDataTableMobileTopbar } from "./admin-data-table-mobile-topbar";
 export { AdminDataTablePagination } from "./admin-data-table-pagination";
 export { AdminDataTablePaginationCompact } from "./admin-data-table-pagination-compact";
+export { AdminDataTableResultsCount } from "./admin-data-table-results-count";
+export { AdminDataTableSelectionSummary } from "./admin-data-table-selection-summary";
+export { AdminDataTableToolbarLayout } from "./admin-data-table-toolbar-layout";
 export { AdminPaginationBar } from "./admin-pagination-bar";
 export { AdminRowActionsMenu } from "./admin-row-actions-menu";
 export { AdminSearchInput } from "./admin-search-input";

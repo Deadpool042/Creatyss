@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/shared/feedback";
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { getAdminCategoryDetail } from "@/features/admin/categories/queries";
 import { listAdminMediaAssets } from "@/features/admin/media";
 import {
+  ADMIN_CATEGORIES_LIST_PATH,
   CategoryEditorPanel,
+  getAdminCategoryDetail,
   updateCategoryAction,
 } from "@/features/admin/categories";
 import {
@@ -13,9 +14,6 @@ import {
   getCategoryEditFormErrorMessage,
   getCategoryEditFormStatusMessage,
 } from "@/features/admin/categories/config";
-import {
-  ADMIN_CATEGORIES_LIST_PATH,
-} from "@/features/admin/categories/shared/admin-categories-routes";
 import { FullWidthPageFrame } from "@/components/shared/layout/full-width-page-frame";
 import { FullWidthStack } from "@/components/shared/layout/full-width-stack";
 

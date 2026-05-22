@@ -3,11 +3,11 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
-import type { AdminCategoryStatus } from "@/features/admin/categories/list/types/admin-category-card-item.types";
+import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import type {
   CategoryFeaturedFilter,
   CategorySortOption,
-} from "@/features/admin/categories/list/queries/list-admin-categories.query";
+} from "@/features/admin/categories/queries";
 
 export type CategoryFiltersState = {
   search: string;
@@ -39,7 +39,7 @@ function parseArray<T extends string>(value: string | null, valid: T[]): T[] {
   return value.split(",").filter((v): v is T => valid.includes(v as T));
 }
 
-function parseCategoryIds(value: string | null): string[] {
+function parseCategorySlugs(value: string | null): string[] {
   if (!value) return [];
   return value.split(",").filter(Boolean);
 }
@@ -68,7 +68,7 @@ export function useCategoryFilters(): CategoryFiltersState {
   const search = searchParams.get("search") ?? "";
   const status = parseArray(searchParams.get("status"), VALID_STATUSES);
   const featured = parseArray(searchParams.get("featured"), VALID_FEATURED);
-  const categorySlugs = parseCategoryIds(searchParams.get("categories"));
+  const categorySlugs = parseCategorySlugs(searchParams.get("categories"));
   const sort = parseSort(searchParams.get("sort"));
   const perPage = parsePerPage(searchParams.get("perPage"));
   const page = parsePage(searchParams.get("page"));

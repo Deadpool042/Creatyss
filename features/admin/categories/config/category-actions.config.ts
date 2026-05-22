@@ -11,6 +11,11 @@ export const CATEGORY_LIST_ACTIONS_COPY = {
   foundPluralSuffix: "catégories trouvées",
 } as const;
 
+export const CATEGORY_RESULTS_COUNT_COPY = {
+  results: (count: number) => `${count} ${count === 1 ? "catégorie trouvée" : "catégories trouvées"}`,
+  resultsShort: (count: number) => `${count} cat.`,
+} as const;
+
 export const CATEGORY_ARCHIVE_ACTIONS_COPY = {
   archiveSuccessSuffix: "archivée",
   archiveErrorTitle: "Échec de l'archivage",

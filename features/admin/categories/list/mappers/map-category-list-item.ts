@@ -3,7 +3,7 @@ import { CategoryStatus } from "@/prisma-generated/client";
 import type {
   AdminCategoryCardItem,
   AdminCategoryStatus,
-} from "@/features/admin/categories/list/types/admin-category-card-item.types";
+} from "@/features/admin/categories/types";
 
 type CategoryListItemSource = {
   id: string;

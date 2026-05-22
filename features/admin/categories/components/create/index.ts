@@ -1,1 +1,1 @@
-export { CategorieCreateTopbarMenu } from "./categorie-create-topbar-menu";
+export { CategoryCreateTopbarMenu } from "./category-create-topbar-menu";

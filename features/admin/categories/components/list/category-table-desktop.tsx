@@ -24,12 +24,12 @@ import {
   CATEGORY_STATUS_LABELS,
   CATEGORY_TABLE_COPY,
 } from "@/features/admin/categories/config";
-import { getAdminCategoryDetailPath } from "@/features/admin/categories/shared/admin-categories-routes";
+import { useCategoryFilters } from "@/features/admin/categories/list";
+import type { CategorySortOption } from "@/features/admin/categories/queries";
+import { getAdminCategoryDetailPath } from "../../shared";
 
 import { useCategoriesTableContext } from "../../context/categories-data-provider";
 import { CategoryTableRowActions } from "./category-table-row-actions";
-import { useCategoryFilters } from "@/features/admin/categories/list/hooks/use-category-filters";
-import type { CategorySortOption } from "@/features/admin/categories/list/queries/list-admin-categories.query";
 
 function formatDate(date: Date): string {
   return new Intl.DateTimeFormat("fr-FR", {
@@ -123,17 +123,21 @@ export function CategoryTableDesktop({
   const someSelected = categories.some((c) => selectedIds.has(c.id));
 
   return (
-    <AdminTable aria-label={CATEGORY_LIST_COPY.tableAriaLabel} role="grid">
-      <AdminTableHeader>
-        <TableRow className="bg-shell-drawer-blur backdrop-blur-md">
-          <AdminTableHead className="w-10 px-3">
+    <AdminTable
+      aria-label={CATEGORY_LIST_COPY.tableAriaLabel}
+      role="grid"
+      viewportClassName="overflow-auto overscroll-contain"
+    >
+      <AdminTableHeader className="backdrop-blur-xl">
+        <TableRow className="border-b border-surface-border/50 bg-surface-panel-soft backdrop-blur-xl">
+          <AdminTableHead className="h-9 w-10 px-3">
             <Checkbox
               checked={allSelected ? true : someSelected ? "indeterminate" : false}
               onCheckedChange={onToggleAll}
               aria-label={CATEGORY_LIST_COPY.selectAllAriaLabel}
             />
           </AdminTableHead>
-          <AdminTableHead className="w-12">{CATEGORY_TABLE_COPY.columns.image}</AdminTableHead>
+          <AdminTableHead className="h-9 w-12 px-3">{CATEGORY_TABLE_COPY.columns.image}</AdminTableHead>
           <SortableHead
             className="min-w-48"
             asc="name-asc"
@@ -143,20 +147,20 @@ export function CategoryTableDesktop({
           >
             {CATEGORY_TABLE_COPY.columns.category}
           </SortableHead>
-          <AdminTableHead className="w-24">{CATEGORY_TABLE_COPY.columns.status}</AdminTableHead>
+          <AdminTableHead className="h-9 w-24 px-4">{CATEGORY_TABLE_COPY.columns.status}</AdminTableHead>
           <AdminTableHead
-            className="w-10 text-center"
+            className="h-9 w-10 px-4 text-center"
             aria-label={CATEGORY_TABLE_COPY.columns.featuredAria}
           >
             <Star className="mx-auto h-3.5 w-3.5 text-muted-foreground" aria-hidden />
           </AdminTableHead>
-          <AdminTableHead className="w-20 text-right">
+          <AdminTableHead className="h-9 w-20 px-4 text-right">
             {CATEGORY_TABLE_COPY.columns.products}
           </AdminTableHead>
-          <AdminTableHead className="w-24 text-right">
+          <AdminTableHead className="h-9 w-24 px-4 text-right">
             {CATEGORY_TABLE_COPY.columns.children}
           </AdminTableHead>
-          <AdminTableHead className="w-16 text-right">
+          <AdminTableHead className="h-9 w-16 px-4 text-right">
             {CATEGORY_TABLE_COPY.columns.sortOrder}
           </AdminTableHead>
           <SortableHead
@@ -180,7 +184,7 @@ export function CategoryTableDesktop({
               key={category.id}
               tabIndex={0}
               className={cn(
-                "group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand/50",
+                "group cursor-pointer border-b border-surface-border/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand/50 hover:bg-surface-subtle/40",
                 isSelected ? "bg-interactive-selected/40" : ""
               )}
               onClick={() => router.push(href)}
@@ -206,8 +210,8 @@ export function CategoryTableDesktop({
                 <AdminThumbnail
                   src={category.primaryImageUrl}
                   alt={category.primaryImageAlt ?? category.name}
-                  className="h-10 w-10 rounded border border-surface-border/40 bg-surface-subtle/50"
-                  imageClassName="object-cover"
+                  className="h-9 w-9 rounded-md border border-surface-border/40 bg-surface-subtle/50"
+                  imageClassName="object-cover transition-transform duration-300 group-hover:scale-105"
                   fallbackLabel={category.name}
                 />
               </AdminTableCell>
@@ -220,10 +224,10 @@ export function CategoryTableDesktop({
                       {category.parentName} <span className="text-muted-foreground/40">›</span>
                     </p>
                   ) : null}
-                  <span className="block truncate text-[0.95rem] font-semibold leading-snug text-foreground">
+                  <span className="block truncate text-[0.95rem] font-medium leading-snug text-foreground">
                     {category.name}
                   </span>
-                  <p className="mt-0.5 truncate text-[0.72rem] text-muted-foreground/70">
+                  <p className="mt-0.5 truncate text-[11px] text-muted-foreground/70">
                     {category.slug}
                   </p>
                 </div>
@@ -266,7 +270,7 @@ export function CategoryTableDesktop({
                 className="relative overflow-visible py-2.5 text-sm text-muted-foreground"
                 onClick={(e) => e.stopPropagation()}
               >
-                <span className="group-hover:opacity-0 group-focus-within:opacity-0 transition-opacity">
+                <span className="transition-opacity group-hover:opacity-0 group-focus-within:opacity-0">
                   {formatDate(category.createdAt)}
                 </span>
                 {/* Actions flottantes positionnées dans cette cellule */}

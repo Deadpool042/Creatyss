@@ -13,6 +13,10 @@ import {
   type AdminPriceListOption,
   type ProductPricingFormAction,
 } from "@/features/admin/products/editor/types";
+import {
+  PRODUCT_PRICING_TAB_COPY,
+  PRODUCT_FORM_ACTIONS_COPY,
+} from "@/features/admin/products/config";
 
 type ProductPricingTabProps = {
   action: ProductPricingFormAction;
@@ -61,12 +65,12 @@ function PromotionBadge({
   const status = getPromotionStatus(startsAt, endsAt);
   if (status === "none") return null;
   if (status === "expired") {
-    return <Badge variant="secondary">Expirée</Badge>;
+    return <Badge variant="secondary">{PRODUCT_PRICING_TAB_COPY.statusExpired}</Badge>;
   }
   if (status === "planned") {
-    return <Badge variant="outline">Planifiée</Badge>;
+    return <Badge variant="outline">{PRODUCT_PRICING_TAB_COPY.statusPlanned}</Badge>;
   }
-  return <Badge variant="default">Active</Badge>;
+  return <Badge variant="default">{PRODUCT_PRICING_TAB_COPY.statusActive}</Badge>;
 }
 
 function ProductPricingTabInner({
@@ -87,8 +91,7 @@ function ProductPricingTabInner({
     }
   }, [state.status, router]);
 
-  const storefrontPricingHint =
-    "La boutique affiche actuellement un prix simple. Les listes de prix et la planification de promotion ne pilotent pas encore l'affichage storefront (V1).";
+  const storefrontPricingHint = PRODUCT_PRICING_TAB_COPY.storefrontHint;
 
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -102,13 +105,13 @@ function ProductPricingTabInner({
           />
 
           <AdminFormSection
-            title="Prix boutique (principal)"
-            description="Définissez le prix affiché sur la boutique. Laisser vide désactive ce tarif."
+            title={PRODUCT_PRICING_TAB_COPY.defaultPriceTitle}
+            description={PRODUCT_PRICING_TAB_COPY.defaultPriceDescription}
           >
             <p className="text-xs leading-5 text-muted-foreground">{storefrontPricingHint}</p>
 
             {priceLists.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Aucune liste de prix disponible.</p>
+              <p className="text-sm text-muted-foreground">{PRODUCT_PRICING_TAB_COPY.noPriceLists}</p>
             ) : defaultPriceList ? (
               <div className="rounded-2xl border border-surface-border bg-card p-4 shadow-card space-y-3 md:p-5">
                 <div className="flex flex-wrap items-center gap-2">
@@ -119,7 +122,7 @@ function ProductPricingTabInner({
                     {defaultPriceList.currencyCode}
                   </span>
                   <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                    Boutique
+                    {PRODUCT_PRICING_TAB_COPY.shopBadge}
                   </span>
                 </div>
 
@@ -139,10 +142,10 @@ function ProductPricingTabInner({
 
                       <div className="grid gap-3 sm:grid-cols-2">
                         <AdminFormField
-                          label="Prix"
+                          label={PRODUCT_PRICING_TAB_COPY.priceLabel}
                           htmlFor={`amount-${defaultPriceList.id}`}
                           error={state.fieldErrors[`amount:${defaultPriceList.id}`]}
-                          hint="Montant affiché sur la fiche produit."
+                          hint={PRODUCT_PRICING_TAB_COPY.priceHint}
                         >
                           <Input
                             id={`amount-${defaultPriceList.id}`}
@@ -154,10 +157,10 @@ function ProductPricingTabInner({
                         </AdminFormField>
 
                         <AdminFormField
-                          label="Prix barré (optionnel)"
+                          label={PRODUCT_PRICING_TAB_COPY.compareAtLabel}
                           htmlFor={`compareAtAmount-${defaultPriceList.id}`}
                           error={state.fieldErrors[`compareAtAmount:${defaultPriceList.id}`]}
-                          hint="Affiché barré pour indiquer une promotion."
+                          hint={PRODUCT_PRICING_TAB_COPY.compareAtHint}
                         >
                           <Input
                             id={`compareAtAmount-${defaultPriceList.id}`}
@@ -171,22 +174,21 @@ function ProductPricingTabInner({
 
                       <details className="rounded-xl border border-border bg-background/50 px-4 py-3">
                         <summary className="cursor-pointer list-none text-sm font-medium text-foreground">
-                          Options avancées (promotion)
+                          {PRODUCT_PRICING_TAB_COPY.promotionAdvancedLabel}
                         </summary>
                         <div className="mt-3 space-y-3">
                           <div className="flex flex-wrap items-center gap-2">
                             <span className="text-xs font-medium text-muted-foreground">
-                              Période de promotion
+                              {PRODUCT_PRICING_TAB_COPY.promotionPeriodLabel}
                             </span>
                             <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
                           </div>
                           <p className="text-xs leading-5 text-muted-foreground">
-                            Ces dates sont enregistrées mais ne pilotent pas encore l&apos;affichage
-                            storefront en V1.
+                            {PRODUCT_PRICING_TAB_COPY.promotionDatesHint}
                           </p>
                           <div className="grid gap-3 sm:grid-cols-2">
                             <AdminFormField
-                              label="Début"
+                              label={PRODUCT_PRICING_TAB_COPY.promotionStartLabel}
                               htmlFor={`startsAt-${defaultPriceList.id}`}
                               error={state.fieldErrors[`startsAt:${defaultPriceList.id}`]}
                             >
@@ -200,7 +202,7 @@ function ProductPricingTabInner({
                             </AdminFormField>
 
                             <AdminFormField
-                              label="Fin"
+                              label={PRODUCT_PRICING_TAB_COPY.promotionEndLabel}
                               htmlFor={`endsAt-${defaultPriceList.id}`}
                               error={state.fieldErrors[`endsAt:${defaultPriceList.id}`]}
                             >
@@ -221,19 +223,19 @@ function ProductPricingTabInner({
               </div>
             ) : (
               <p className="text-sm text-muted-foreground">
-                Aucune liste de prix n&apos;est marquée comme “par défaut”.
+                {PRODUCT_PRICING_TAB_COPY.noDefaultPriceList}
               </p>
             )}
           </AdminFormSection>
 
           {advancedPriceLists.length > 0 ? (
             <AdminFormSection
-              title="Listes de prix (avancé)"
-              description="Pour des besoins spécifiques. La boutique V1 ne choisit pas encore une liste de prix."
+              title={PRODUCT_PRICING_TAB_COPY.advancedPriceTitle}
+              description={PRODUCT_PRICING_TAB_COPY.advancedPriceDescription}
             >
               <details className="rounded-2xl border border-surface-border bg-card p-4 shadow-card md:p-5">
                 <summary className="cursor-pointer list-none text-sm font-medium text-foreground">
-                  Afficher les autres listes de prix ({advancedPriceLists.length})
+                  {PRODUCT_PRICING_TAB_COPY.advancedListsToggle(advancedPriceLists.length)}
                 </summary>
                 <div className="mt-4 space-y-4">
                   {advancedPriceLists.map((priceList) => {
@@ -262,7 +264,7 @@ function ProductPricingTabInner({
 
                         <div className="grid gap-3 sm:grid-cols-2">
                           <AdminFormField
-                            label="Prix"
+                            label={PRODUCT_PRICING_TAB_COPY.priceLabel}
                             htmlFor={`amount-${priceList.id}`}
                             error={state.fieldErrors[`amount:${priceList.id}`]}
                           >
@@ -276,7 +278,7 @@ function ProductPricingTabInner({
                           </AdminFormField>
 
                           <AdminFormField
-                            label="Prix barré"
+                            label={PRODUCT_PRICING_TAB_COPY.compareAtLabelShort}
                             htmlFor={`compareAtAmount-${priceList.id}`}
                             error={state.fieldErrors[`compareAtAmount:${priceList.id}`]}
                           >
@@ -292,14 +294,14 @@ function ProductPricingTabInner({
 
                         <details className="rounded-lg border border-border bg-background/40 px-3 py-2.5">
                           <summary className="cursor-pointer list-none text-xs font-medium text-muted-foreground">
-                            Promotion (avancé)
+                            {PRODUCT_PRICING_TAB_COPY.promotionAdvancedShort}
                             <span className="ml-2 align-middle">
                               <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
                             </span>
                           </summary>
                           <div className="mt-3 grid gap-3 sm:grid-cols-2">
                             <AdminFormField
-                              label="Début"
+                              label={PRODUCT_PRICING_TAB_COPY.promotionStartLabel}
                               htmlFor={`startsAt-${priceList.id}`}
                               error={state.fieldErrors[`startsAt:${priceList.id}`]}
                             >
@@ -313,7 +315,7 @@ function ProductPricingTabInner({
                             </AdminFormField>
 
                             <AdminFormField
-                              label="Fin"
+                              label={PRODUCT_PRICING_TAB_COPY.promotionEndLabel}
                               htmlFor={`endsAt-${priceList.id}`}
                               error={state.fieldErrors[`endsAt:${priceList.id}`]}
                             >
@@ -327,7 +329,7 @@ function ProductPricingTabInner({
                             </AdminFormField>
                           </div>
                           <p className="mt-3 text-xs leading-5 text-muted-foreground">
-                            Stockage uniquement. Non consommé storefront V1.
+                            {PRODUCT_PRICING_TAB_COPY.advancedStorefrontNote}
                           </p>
                         </details>
                       </div>
@@ -340,20 +342,18 @@ function ProductPricingTabInner({
 
           {pricingData.variantPrices.length > 0 && !isStandalone && (
             <AdminFormSection
-              title="Prix variantes"
-              description="Chaque variante peut avoir son propre prix. Si aucun prix n'est renseigné, le prix du produit est utilisé."
+              title={PRODUCT_PRICING_TAB_COPY.variantPriceTitle}
+              description={PRODUCT_PRICING_TAB_COPY.variantPriceDescription}
             >
               <p className="text-xs text-muted-foreground leading-5">
-                Lecture seule (V1). L&apos;édition des prix par variante n&apos;est pas encore
-                disponible dans l&apos;admin. La boutique applique: prix variante si présent, sinon
-                prix produit.
+                {PRODUCT_PRICING_TAB_COPY.variantPriceReadOnly}
               </p>
               <div className="overflow-x-auto rounded-xl border border-border">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border bg-muted/40">
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">
-                        Variante
+                        {PRODUCT_PRICING_TAB_COPY.variantColumnVariant}
                       </th>
                       {priceLists.map((pl) => (
                         <th
@@ -402,7 +402,7 @@ function ProductPricingTabInner({
                                     {variantPrice.amount}
                                   </div>
                                   <div className="text-[10px] text-muted-foreground">
-                                    Prix appliqué · Prix spécifique
+                                    {PRODUCT_PRICING_TAB_COPY.variantPriceAppliedSpecific}
                                   </div>
                                 </td>
                               );
@@ -418,7 +418,7 @@ function ProductPricingTabInner({
                                     {productPrice.amount}
                                   </div>
                                   <div className="text-[10px] text-muted-foreground">
-                                    Prix appliqué · Prix du produit
+                                    {PRODUCT_PRICING_TAB_COPY.variantPriceAppliedProduct}
                                   </div>
                                 </td>
                               );
@@ -460,7 +460,7 @@ function ProductPricingTabInner({
           className="h-8 rounded-full px-4 text-muted-foreground hover:text-foreground lg:h-9"
           onClick={onReset}
         >
-          Réinitialiser
+          {PRODUCT_FORM_ACTIONS_COPY.reset}
         </Button>
 
         <Button
@@ -470,7 +470,7 @@ function ProductPricingTabInner({
           className="h-8 w-fit rounded-full border-border px-4 text-foreground shadow-none sm:flex-none lg:h-9"
           disabled={pending}
         >
-          {pending ? "Mise à jour…" : "Enregistrer"}
+          {pending ? PRODUCT_FORM_ACTIONS_COPY.savePending : PRODUCT_FORM_ACTIONS_COPY.save}
         </Button>
       </AdminFormFooter>
     </form>

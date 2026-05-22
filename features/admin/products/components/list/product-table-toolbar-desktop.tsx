@@ -2,10 +2,20 @@
 
 import type { JSX } from "react";
 
-import { AdminFilterPopover } from "@/components/admin/shared/admin-filter-popover";
 import { AdminToolbar } from "@/components/admin/shared/admin-toolbar";
-import { AdminDataTableActiveFilters } from "@/components/admin/tables";
-import { Button } from "@/components/ui/button";
+import {
+  AdminDataTableActiveFilters,
+  AdminDataTableFeedbackBanner,
+  AdminDataTableFilterControlsRow,
+  AdminDataTableSelectionSummary,
+  AdminDataTableToolbarLayout,
+} from "@/components/admin/tables";
+import {
+  AdminFilterField,
+  AdminFilterPopovers,
+  AdminSingleSelectFilterList,
+  type AdminFilterPopoverItem,
+} from "@/components/admin/tables/filters";
 import {
   Select,
   SelectContent,
@@ -13,7 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import {
   PRODUCT_FEATURED_OPTIONS,
   PRODUCT_IMAGE_OPTIONS,
@@ -46,38 +55,18 @@ type ProductTableToolbarDesktopProps = {
 
 function StatusFilterList({ state }: { state: ProductTableFiltersState }) {
   return (
-    <div className="flex flex-col gap-0.5">
-      {PRODUCT_STATUS_OPTIONS.map((opt) => (
-        <button
-          key={opt.value}
-          type="button"
-          onClick={() => state.setStatus(opt.value)}
-          className={cn(
-            "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-muted",
-            state.status === opt.value ? "font-medium text-foreground" : "text-muted-foreground"
-          )}
-        >
-          <span
-            className={cn(
-              "h-1.5 w-1.5 shrink-0 rounded-full",
-              state.status === opt.value ? "bg-foreground" : "bg-transparent"
-            )}
-          />
-          {opt.label}
-        </button>
-      ))}
-    </div>
+    <AdminSingleSelectFilterList
+      options={PRODUCT_STATUS_OPTIONS}
+      selected={state.status}
+      onChange={state.setStatus}
+    />
   );
 }
-
-const ADVANCED_LABEL_CLASS =
-  "text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60";
 
 function AdvancedFiltersContent({ state }: { state: ProductTableFiltersState }) {
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid gap-1.5">
-        <p className={ADVANCED_LABEL_CLASS}>{PRODUCT_LIST_COPY.filterAdvancedFeaturedLabel}</p>
+      <AdminFilterField label={PRODUCT_LIST_COPY.filterAdvancedFeaturedLabel}>
         <Select
           value={state.featured}
           onValueChange={(v) => state.setFeatured(v as ProductFilterFeaturedOption)}
@@ -90,13 +79,12 @@ function AdvancedFiltersContent({ state }: { state: ProductTableFiltersState }) 
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>
-            ))}
+          ))}
           </SelectContent>
         </Select>
-      </div>
+      </AdminFilterField>
 
-      <div className="grid gap-1.5">
-        <p className={ADVANCED_LABEL_CLASS}>{PRODUCT_LIST_COPY.filterAdvancedImagesLabel}</p>
+      <AdminFilterField label={PRODUCT_LIST_COPY.filterAdvancedImagesLabel}>
         <Select
           value={state.image}
           onValueChange={(v) => state.setImage(v as ProductFilterImageOption)}
@@ -109,13 +97,12 @@ function AdvancedFiltersContent({ state }: { state: ProductTableFiltersState }) 
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>
-            ))}
+          ))}
           </SelectContent>
         </Select>
-      </div>
+      </AdminFilterField>
 
-      <div className="grid gap-1.5">
-        <p className={ADVANCED_LABEL_CLASS}>{PRODUCT_LIST_COPY.filterAdvancedVariantsLabel}</p>
+      <AdminFilterField label={PRODUCT_LIST_COPY.filterAdvancedVariantsLabel}>
         <Select
           value={state.variant}
           onValueChange={(v) => state.setVariant(v as ProductFilterVariantOption)}
@@ -128,13 +115,12 @@ function AdvancedFiltersContent({ state }: { state: ProductTableFiltersState }) 
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>
-            ))}
+          ))}
           </SelectContent>
         </Select>
-      </div>
+      </AdminFilterField>
 
-      <div className="grid gap-1.5">
-        <p className={ADVANCED_LABEL_CLASS}>{PRODUCT_LIST_COPY.filterAdvancedStockLabel}</p>
+      <AdminFilterField label={PRODUCT_LIST_COPY.filterAdvancedStockLabel}>
         <Select
           value={state.stock}
           onValueChange={(v) => state.setStock(v as ProductFilterStockOption)}
@@ -147,10 +133,10 @@ function AdvancedFiltersContent({ state }: { state: ProductTableFiltersState }) 
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>
-            ))}
+          ))}
           </SelectContent>
         </Select>
-      </div>
+      </AdminFilterField>
     </div>
   );
 }
@@ -176,116 +162,124 @@ export function ProductTableToolbarDesktop({
     state.stock !== "all",
   ].filter(Boolean).length;
 
+  const filterPopoverItems: AdminFilterPopoverItem[] = [
+    {
+      key: "status",
+      label: PRODUCT_LIST_COPY.filterStatutLabel,
+      count: statusCount,
+      content: <StatusFilterList state={state} />,
+    },
+    {
+      key: "category",
+      label: PRODUCT_LIST_COPY.filterCategoryLabel,
+      count: categoryCount,
+      contentClassName: "w-72 p-3",
+      content: (
+        <AdminProductsCategoryFilter
+          categories={state.categoryOptions}
+          selectedParentCategoryId={state.parentCategoryId}
+          selectedCategoryId={state.categoryId}
+          onParentCategoryChange={state.setParentCategoryId}
+          onCategoryChange={state.setCategoryId}
+          triggerClassName="h-8 text-xs"
+        />
+      ),
+    },
+    {
+      key: "advanced",
+      label: PRODUCT_LIST_COPY.filterAdvancedLabel,
+      count: advancedCount,
+      content: <AdvancedFiltersContent state={state} />,
+    },
+  ];
+
   return (
-    <div className="space-y-2">
-      {hasSelection ? (
-        <div className="rounded-xl border border-surface-border-strong bg-interactive-selected px-3 py-3 shadow-card">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm font-medium text-foreground">
-              {PRODUCT_SELECTION_COPY.selectedDesktop(selectedCount)}
-            </p>
-
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={actions.clearSelection}
-              className="h-8 rounded-full px-3 text-xs"
-            >
-              {PRODUCT_SELECTION_COPY.clearSelectionDesktop}
-            </Button>
-          </div>
-
-          <div className="mt-3">
-            <ProductTableToolbarBulkActions
-              view={view}
-              isBulkPending={isBulkPending}
-              onBulkSetDraft={() => void actions.handleBulkStatusChange("draft")}
-              onBulkSetActive={() => void actions.handleBulkStatusChange("active")}
-              onBulkSetInactive={() => void actions.handleBulkStatusChange("inactive")}
-              onBulkSetFeatured={() => void actions.handleBulkFeaturedChange(true)}
-              onBulkUnsetFeatured={() => void actions.handleBulkFeaturedChange(false)}
-              onBulkArchive={() => void actions.handleBulkArchive()}
-              onBulkRestore={() => void actions.handleBulkRestore()}
-              {...(view === "trash" ? { onOpenPermanentDeleteDialog } : {})}
+    <AdminDataTableToolbarLayout
+      selection={
+        hasSelection ? (
+          <div className="rounded-xl border border-surface-border-strong bg-interactive-selected px-3 py-3 shadow-card">
+            <AdminDataTableSelectionSummary
+              label={PRODUCT_SELECTION_COPY.selectedDesktop(selectedCount)}
+              clearLabel={PRODUCT_SELECTION_COPY.clearSelectionDesktop}
+              onClear={actions.clearSelection}
+              className="flex flex-wrap items-center justify-between gap-3"
+              clearButtonClassName="h-8 rounded-full px-3 text-xs"
             />
-          </div>
-        </div>
-      ) : null}
 
-      {bulkMessage ? (
-        <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-3 py-2 text-sm text-foreground shadow-card">
-          {bulkMessage}
-        </div>
-      ) : null}
-
-      {bulkError ? (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive shadow-card">
-          {bulkError}
-        </div>
-      ) : null}
-
-      <div className="border-b border-surface-border/40 pb-3">
-        <AdminToolbar
-          search={state.search}
-          onSearchChange={state.handleSearchChange}
-          placeholder={PRODUCT_LIST_COPY.searchPlaceholder}
-          className="mt-0"
-          extraControls={
-            <div className="flex shrink-0 items-center gap-2">
-              <AdminFilterPopover label={PRODUCT_LIST_COPY.filterStatutLabel} count={statusCount}>
-                <StatusFilterList state={state} />
-              </AdminFilterPopover>
-
-              <AdminFilterPopover
-                label={PRODUCT_LIST_COPY.filterCategoryLabel}
-                count={categoryCount}
-                contentClassName="w-72 p-3"
-              >
-                <AdminProductsCategoryFilter
-                  categories={state.categoryOptions}
-                  selectedParentCategoryId={state.parentCategoryId}
-                  selectedCategoryId={state.categoryId}
-                  onParentCategoryChange={state.setParentCategoryId}
-                  onCategoryChange={state.setCategoryId}
-                  triggerClassName="h-8 text-xs"
-                />
-              </AdminFilterPopover>
-
-              <AdminFilterPopover label={PRODUCT_LIST_COPY.filterAdvancedLabel} count={advancedCount}>
-                <AdvancedFiltersContent state={state} />
-              </AdminFilterPopover>
-
-              <Select
-                value={state.sort}
-                onValueChange={(v) => state.setSort(v as ProductSortOption)}
-              >
-                <SelectTrigger className="h-9 w-36 text-sm text-muted-foreground">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {PRODUCT_SORT_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <ProductTableToolbarViewSwitch view={view} />
-
-              <ProductTableToolbarResultsCount
-                filteredCount={state.filteredCount}
-                className="whitespace-nowrap"
+            <div className="mt-3">
+              <ProductTableToolbarBulkActions
+                view={view}
+                isBulkPending={isBulkPending}
+                onBulkSetDraft={() => void actions.handleBulkStatusChange("draft")}
+                onBulkSetActive={() => void actions.handleBulkStatusChange("active")}
+                onBulkSetInactive={() => void actions.handleBulkStatusChange("inactive")}
+                onBulkSetFeatured={() => void actions.handleBulkFeaturedChange(true)}
+                onBulkUnsetFeatured={() => void actions.handleBulkFeaturedChange(false)}
+                onBulkArchive={() => void actions.handleBulkArchive()}
+                onBulkRestore={() => void actions.handleBulkRestore()}
+                {...(view === "trash" ? { onOpenPermanentDeleteDialog } : {})}
               />
             </div>
-          }
-        />
-      </div>
+          </div>
+        ) : null
+      }
+      feedback={
+        <>
+          <AdminDataTableFeedbackBanner message={bulkMessage} />
+          <AdminDataTableFeedbackBanner message={bulkError} tone="error" />
+        </>
+      }
+      toolbar={
+        <div className="border-b border-surface-border/40 pb-3">
+          <AdminToolbar
+            search={state.search}
+            onSearchChange={state.handleSearchChange}
+            placeholder={PRODUCT_LIST_COPY.searchPlaceholder}
+            className="mt-0"
+            extraControls={
+              <AdminDataTableFilterControlsRow
+                filters={
+                  <AdminFilterPopovers
+                    items={filterPopoverItems}
+                    className="flex items-center gap-2"
+                  />
+                }
+                trailing={
+                  <>
+                    <Select
+                      value={state.sort}
+                      onValueChange={(v) => state.setSort(v as ProductSortOption)}
+                    >
+                      <SelectTrigger className="h-9 w-36 text-sm text-muted-foreground">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PRODUCT_SORT_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
 
-      {hasActiveFilters ? (
-        <AdminDataTableActiveFilters items={state.activeFilters} onClearAll={state.reset} />
-      ) : null}
-    </div>
+                    <ProductTableToolbarViewSwitch view={view} />
+
+                    <ProductTableToolbarResultsCount
+                      filteredCount={state.filteredCount}
+                      className="whitespace-nowrap"
+                    />
+                  </>
+                }
+              />
+            }
+          />
+        </div>
+      }
+      activeFilters={
+        hasActiveFilters ? (
+          <AdminDataTableActiveFilters items={state.activeFilters} onClearAll={state.reset} />
+        ) : null
+      }
+    />
   );
 }

@@ -16,13 +16,13 @@ import {
   CATEGORY_LIST_FEEDBACK_COPY,
   CATEGORY_ROW_ACTIONS_COPY,
 } from "@/features/admin/categories/config";
-import { getAdminCategoryDetailPath } from "@/features/admin/categories/shared/admin-categories-routes";
-import type { AdminCategoryStatus } from "@/features/admin/categories/list/types/admin-category-card-item.types";
+import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import {
   DropdownMenuItem,
   DropdownMenuGroup,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { getAdminCategoryDetailPath } from "../../shared";
 
 type CategoryTableRowActionsProps = Readonly<{
   categoryId: string;

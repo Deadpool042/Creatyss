@@ -1,19 +1,23 @@
 import { CategoryStatus } from "@/prisma-generated/client";
 
-import { db } from "@/core/db";
+import { withTransaction } from "@/core/db";
+import { assertArchivedCategoryExists } from "./shared";
 
 export async function restoreAdminCategory(input: {
   categoryId: string;
 }): Promise<{ id: string }> {
-  return db.category.update({
-    where: {
-      id: input.categoryId,
-      archivedAt: { not: null },
-    },
-    data: {
-      status: CategoryStatus.DRAFT,
-      archivedAt: null,
-    },
-    select: { id: true },
+  return withTransaction(async (tx) => {
+    await assertArchivedCategoryExists(tx, input.categoryId);
+
+    return tx.category.update({
+      where: {
+        id: input.categoryId,
+      },
+      data: {
+        status: CategoryStatus.DRAFT,
+        archivedAt: null,
+      },
+      select: { id: true },
+    });
   });
 }

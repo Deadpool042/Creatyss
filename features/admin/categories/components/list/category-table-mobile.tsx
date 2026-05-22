@@ -14,8 +14,8 @@ import {
   CATEGORY_STATUS_LABELS,
   CATEGORY_TABLE_COPY,
 } from "@/features/admin/categories/config";
-import { getAdminCategoryDetailPath } from "@/features/admin/categories/shared/admin-categories-routes";
-import type { AdminCategoryCardItem } from "@/features/admin/categories/list/types/admin-category-card-item.types";
+import type { AdminCategoryCardItem } from "@/features/admin/categories/types";
+import { getAdminCategoryDetailPath } from "../../shared";
 
 import { useCategoriesTableContext } from "../../context/categories-data-provider";
 import { CategoryTableRowActions } from "./category-table-row-actions";
@@ -24,8 +24,8 @@ const MOBILE_PAGE_SIZE = 12;
 
 function MobileCountBox({ label, value }: Readonly<{ label: string; value: number }>) {
   return (
-    <div className="rounded-lg border border-surface-border/90 bg-surface-panel-soft px-2.5 py-2">
-      <p className="mb-1 text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/90">
+    <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-3 py-2.5">
+      <p className="mb-1 text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/80">
         {label}
       </p>
       <p
@@ -46,7 +46,7 @@ function CategoryMobileVisual({
     <AdminThumbnail
       src={category.primaryImageUrl}
       alt={category.primaryImageAlt ?? category.name}
-      className="h-12 w-12 shrink-0 rounded-md border border-surface-border bg-surface-panel-soft sm:h-11 sm:w-11"
+      className="h-11 w-11 shrink-0 rounded-lg border border-surface-border/80 bg-surface-panel-soft sm:h-10 sm:w-10"
       fallbackLabel={`Aucun visuel pour ${category.name}`}
     />
   );
@@ -58,19 +58,19 @@ function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCard
   return (
     <article
       className={cn(
-        "relative flex h-full flex-col rounded-lg border bg-card p-3 shadow-card transition-colors",
-        category.isFeatured ? "border-brand/35" : "border-surface-border"
+        "relative flex h-full flex-col rounded-xl border bg-card p-3.5 shadow-card transition-colors",
+        category.isFeatured ? "border-brand/35 bg-brand/3" : "border-surface-border"
       )}
     >
       {/* Lien couvrant toute la carte (sauf les boutons d'action) */}
       <Link
         href={href}
-        className="absolute inset-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
+        className="absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
         aria-label={`Modifier ${category.name}`}
       />
 
       {/* Header: badge statut + actions (z-10 pour passer au-dessus du lien) */}
-      <div className="relative z-10 mb-2.5 flex items-center justify-between gap-2">
+      <div className="relative z-10 mb-3 flex items-center justify-between gap-2">
         <AdminStatusBadge
           status={category.status}
           label={CATEGORY_STATUS_LABELS[category.status] ?? category.status}
@@ -88,13 +88,18 @@ function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCard
             </Link>
           </Button>
           <div className="relative z-10">
-            <CategoryTableRowActions categoryId={category.id} categoryName={category.name} categorySlug={category.slug} status={category.status} />
+            <CategoryTableRowActions
+              categoryId={category.id}
+              categoryName={category.name}
+              categorySlug={category.slug}
+              status={category.status}
+            />
           </div>
         </div>
       </div>
 
       {/* Body: image + nom + slug */}
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-2.5">
         <CategoryMobileVisual category={category} />
 
         <div className="min-w-0 flex-1">
@@ -103,16 +108,14 @@ function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCard
               {category.parentName} <span className="text-muted-foreground/40">›</span>
             </p>
           ) : null}
-          <h3 className="line-clamp-2 text-[0.98rem] font-semibold leading-5 tracking-tight text-foreground sm:line-clamp-1">
+          <h3 className="line-clamp-2 text-[0.96rem] font-semibold leading-5 tracking-tight text-foreground sm:line-clamp-1">
             {category.name}
           </h3>
 
-          <p className="mt-0.5 truncate text-xs text-muted-foreground/70">
-            {category.slug}
-          </p>
+          <p className="mt-1 truncate text-[11px] text-muted-foreground/70">{category.slug}</p>
 
           {category.isFeatured ? (
-            <span className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-brand">
+            <span className="mt-2 inline-flex items-center gap-1 rounded-full border border-brand/20 bg-brand/6 px-2 py-1 text-[11px] font-medium text-brand">
               <Star aria-hidden="true" className="h-3 w-3 fill-brand text-brand" />
               <span>{CATEGORY_LIST_COPY.featuredBadgeLabel}</span>
             </span>
@@ -121,9 +124,15 @@ function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCard
       </div>
 
       {/* Counts */}
-      <div className="mt-3 grid grid-cols-2 gap-1.5">
-        <MobileCountBox label={CATEGORY_TABLE_COPY.mobile.productsLabel} value={category.productCount} />
-        <MobileCountBox label={CATEGORY_TABLE_COPY.mobile.childrenLabel} value={category.childrenCount} />
+      <div className="mt-3.5 grid grid-cols-2 gap-2">
+        <MobileCountBox
+          label={CATEGORY_TABLE_COPY.mobile.productsLabel}
+          value={category.productCount}
+        />
+        <MobileCountBox
+          label={CATEGORY_TABLE_COPY.mobile.childrenLabel}
+          value={category.childrenCount}
+        />
       </div>
     </article>
   );
@@ -169,8 +178,10 @@ export function CategoryTableMobile() {
       {hasMore ? (
         <AdminFeedSentinel onIntersect={loadMore} />
       ) : (
-        <div className="rounded-lg border border-dashed border-surface-border bg-surface-panel-soft px-3 py-2.5 text-center [@media(max-height:480px)]:py-2">
-          <p className="text-xs font-medium text-muted-foreground">{CATEGORY_LIST_COPY.tableEndLabel}</p>
+        <div className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-3 py-2.5 text-center [@media(max-height:480px)]:py-2">
+          <p className="text-xs font-medium text-muted-foreground">
+            {CATEGORY_LIST_COPY.tableEndLabel}
+          </p>
           <p className="mt-1 text-[11px] text-muted-foreground/85">
             {categories.length}{" "}
             {categories.length !== 1

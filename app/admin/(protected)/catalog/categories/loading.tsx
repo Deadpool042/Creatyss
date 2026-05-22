@@ -1,12 +1,14 @@
 import type React from "react";
 
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { CategorieCreateTopbarMenu } from "@/features/admin/categories/components/create/categorie-create-topbar-menu";
+import {
+  ADMIN_CATEGORIES_LIST_PATH,
+  CategoryCreateTopbarMenu,
+} from "@/features/admin/categories";
 import {
   CATEGORY_LIST_PAGE_COPY,
   CATEGORY_NAVIGATION_COPY,
 } from "@/features/admin/categories/config";
-import { ADMIN_CATEGORIES_LIST_PATH } from "@/features/admin/categories/shared/admin-categories-routes";
 
 // ---------------------------------------------------------------------------
 // Skeleton primitives
@@ -161,7 +163,7 @@ export default function AdminCategoriesLoading() {
       title={CATEGORY_LIST_PAGE_COPY.title}
       description={CATEGORY_LIST_PAGE_COPY.description}
       scrollMode="nested"
-      topbarAction={<CategorieCreateTopbarMenu />}
+      topbarAction={<CategoryCreateTopbarMenu />}
       navigation={{ label: CATEGORY_NAVIGATION_COPY.homeLabel, href: "/admin" }}
       breadcrumbs={[
         { label: CATEGORY_NAVIGATION_COPY.homeLabel, href: "/admin" },

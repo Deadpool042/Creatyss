@@ -12,7 +12,7 @@ import {
   CATEGORY_ARCHIVE_DIALOG_COPY,
   CATEGORY_LIST_FEEDBACK_COPY,
 } from "@/features/admin/categories/config";
-import { ADMIN_CATEGORIES_LIST_PATH } from "@/features/admin/categories/shared/admin-categories-routes";
+import { ADMIN_CATEGORIES_LIST_PATH } from "../../shared";
 
 type CategoryArchiveButtonProps = Readonly<{
   categoryId: string;

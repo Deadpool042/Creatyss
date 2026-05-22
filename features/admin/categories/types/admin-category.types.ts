@@ -38,6 +38,7 @@ export type AdminCategoryDetail = {
 
 export type AdminCategoryServiceErrorCode =
   | "category_missing"
+  | "store_missing"
   | "parent_category_missing"
   | "category_slug_taken"
   | "invalid_parent_assignment"

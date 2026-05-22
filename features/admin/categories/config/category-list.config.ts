@@ -1,5 +1,5 @@
-import type { AdminCategoryStatus } from "@/features/admin/categories/list/types/admin-category-card-item.types";
-import type { CategoryFeaturedFilter } from "@/features/admin/categories/list/queries/list-admin-categories.query";
+import type { AdminCategoryStatus } from "@/features/admin/categories/types";
+import type { CategoryFeaturedFilter } from "@/features/admin/categories/queries";
 
 export const CATEGORY_STATUS_OPTIONS: { value: AdminCategoryStatus; label: string }[] = [
   { value: "active", label: "Publiée" },
@@ -28,6 +28,7 @@ export const CATEGORY_LIST_COPY = {
   filterFeaturedLabel: "Mise en avant",
   filterCategoriesEmptyLabel: "Aucune catégorie disponible",
   resetFiltersLabel: "Réinitialiser les filtres",
+  mobileFiltersActiveSection: "Filtres actifs",
   clearSelectionAriaLabel: "Désélectionner tout",
   activeFiltersResetLabel: "Réinitialiser",
   selectAllAriaLabel: "Tout sélectionner",

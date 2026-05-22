@@ -10,7 +10,7 @@ type AdminCollapsibleFilterSectionProps = {
   description: string;
   summary: string;
   children: ReactNode;
-  defaultOpen?: boolean;
+  defaultOpen?: boolean | undefined;
 };
 
 export function AdminCollapsibleFilterSection({

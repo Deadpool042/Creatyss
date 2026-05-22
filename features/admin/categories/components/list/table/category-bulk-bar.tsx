@@ -2,8 +2,8 @@
 
 import { Archive, X } from "lucide-react";
 
+import { AdminDataTableFloatingBar } from "@/components/admin/tables";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { CATEGORY_LIST_COPY } from "@/features/admin/categories/config";
 
 type CategoryBulkBarProps = {
@@ -17,14 +17,7 @@ export function CategoryBulkBar({ count, isPending, onClear, onArchive }: Catego
   if (count === 0) return null;
 
   return (
-    <div className="sticky bottom-4 flex justify-center">
-      <div
-        className={cn(
-          "flex items-center gap-3 rounded-xl border border-surface-border",
-          "bg-card/95 px-4 py-2.5 shadow-lg backdrop-blur-sm",
-          "animate-in fade-in slide-in-from-bottom-2 duration-200"
-        )}
-      >
+    <AdminDataTableFloatingBar innerClassName="flex items-center gap-3 px-4 py-2.5 backdrop-blur-sm">
         <span className="text-sm font-medium text-foreground">
           {CATEGORY_LIST_COPY.bulkSelectionCountLabel(count)}
         </span>
@@ -54,7 +47,6 @@ export function CategoryBulkBar({ count, isPending, onClear, onArchive }: Catego
         >
           <X className="h-4 w-4" />
         </button>
-      </div>
-    </div>
+    </AdminDataTableFloatingBar>
   );
 }

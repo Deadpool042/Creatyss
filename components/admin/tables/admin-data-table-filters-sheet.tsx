@@ -12,9 +12,9 @@ type AdminDataTableFiltersSheetProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
-  description?: string;
+  description?: string | undefined;
   children: ReactNode;
-  footer?: ReactNode;
+  footer?: ReactNode | undefined;
 };
 
 export function AdminDataTableFiltersSheet({

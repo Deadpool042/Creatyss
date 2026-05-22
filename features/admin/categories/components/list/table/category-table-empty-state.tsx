@@ -6,10 +6,7 @@ import {
   CATEGORY_LIST_COPY,
   CATEGORY_LIST_EMPTY_STATE_COPY,
 } from "@/features/admin/categories/config";
-import {
-  ADMIN_CATEGORIES_LIST_PATH,
-  ADMIN_CATEGORIES_NEW_PATH,
-} from "@/features/admin/categories/shared/admin-categories-routes";
+import { ADMIN_CATEGORIES_LIST_PATH, ADMIN_CATEGORIES_NEW_PATH } from "../../../shared";
 
 type CategoryTableEmptyStateProps = {
   isFiltered: boolean;

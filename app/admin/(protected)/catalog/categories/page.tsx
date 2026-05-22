@@ -1,19 +1,19 @@
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { CategorieCreateTopbarMenu } from "@/features/admin/categories/components/create/categorie-create-topbar-menu";
-import { CategoryTable } from "@/features/admin/categories/components";
-import { CategoriesTableProvider } from "@/features/admin/categories/context/categories-data-provider";
 import {
-  CATEGORY_LIST_PAGE_COPY,
-  CATEGORY_NAVIGATION_COPY,
-} from "@/features/admin/categories/config";
-import { ADMIN_CATEGORIES_LIST_PATH } from "@/features/admin/categories/shared/admin-categories-routes";
-import {
+  ADMIN_CATEGORIES_LIST_PATH,
+  CategoriesTableProvider,
+  CategoryCreateTopbarMenu,
+  CategoryTable,
   listAdminCategories,
   listCategoriesForPicker,
   type CategoryFeaturedFilter,
   type CategorySortOption,
-} from "@/features/admin/categories/list/queries/list-admin-categories.query";
-import type { AdminCategoryStatus } from "@/features/admin/categories/list/types/admin-category-card-item.types";
+  type AdminCategoryStatus,
+} from "@/features/admin/categories";
+import {
+  CATEGORY_LIST_PAGE_COPY,
+  CATEGORY_NAVIGATION_COPY,
+} from "@/features/admin/categories/config";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +36,7 @@ function parseArrayParam<T extends string>(value: string | undefined, valid: T[]
   return value.split(",").filter((v): v is T => valid.includes(v as T));
 }
 
-function parseCategoryIds(value: string | undefined): string[] {
+function parseCategorySlugs(value: string | undefined): string[] {
   if (!value) return [];
   return value.split(",").filter(Boolean);
 }
@@ -55,7 +55,7 @@ export default async function AdminCategoriesPage({
   const params = await searchParams;
   const status = parseArrayParam(params.status, VALID_STATUSES);
   const featured = parseArrayParam(params.featured, VALID_FEATURED);
-  const categorySlugs = parseCategoryIds(params.categories);
+  const categorySlugs = parseCategorySlugs(params.categories);
   const sort = parseSort(params.sort);
   const page = Math.max(1, Number(params.page) || 1);
   const perPage = [5, 10, 25, 50].includes(Number(params.perPage)) ? Number(params.perPage) : 10;
@@ -81,7 +81,7 @@ export default async function AdminCategoriesPage({
       title={CATEGORY_LIST_PAGE_COPY.title}
       description={CATEGORY_LIST_PAGE_COPY.description}
       scrollMode="nested"
-      topbarAction={<CategorieCreateTopbarMenu />}
+      topbarAction={<CategoryCreateTopbarMenu />}
       navigation={{ label: CATEGORY_NAVIGATION_COPY.homeLabel, href: "/admin" }}
       breadcrumbs={[
         { label: CATEGORY_NAVIGATION_COPY.homeLabel, href: "/admin" },

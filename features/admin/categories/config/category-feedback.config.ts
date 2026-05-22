@@ -6,6 +6,7 @@ export const CATEGORY_FORM_ERROR_MESSAGES: Record<string, string> = {
   invalid_parent_assignment: "Une catégorie ne peut pas être sa propre catégorie parente.",
   parent_category_missing: "La catégorie parente sélectionnée est introuvable.",
   media_asset_missing: "Le média sélectionné est introuvable.",
+  store_missing: "Aucune boutique disponible. Veuillez d'abord créer une boutique.",
 };
 
 export const CATEGORY_NEW_FORM_ERROR_MESSAGES: Record<string, string> = {

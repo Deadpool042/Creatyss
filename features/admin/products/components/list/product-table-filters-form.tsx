@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, type JSX } from "react";
+import type { JSX } from "react";
 
 import {
   Select,
@@ -9,7 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AdminCollapsibleFilterSection, AdminFilterSection } from "@/components/admin/tables/filters";
+import {
+  AdminFilterBlocks,
+  AdminFilterField,
+  type AdminFilterBlock,
+} from "@/components/admin/tables/filters";
 import type { ProductTableFiltersState } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type {
   ProductFilterCategoryOption,
@@ -44,25 +48,8 @@ type SecondaryFiltersProps = {
   triggerClassName?: string;
 };
 
-type AdvancedFilterFieldProps = {
-  label: string;
-  children: JSX.Element;
-};
-
 const MOBILE_SELECT_TRIGGER_CLASS_NAME =
   "h-10 rounded-xl bg-card text-sm [@media(max-height:480px)]:h-9";
-
-const ADVANCED_FILTER_LABEL_CLASS_NAME =
-  "text-[0.62rem] uppercase tracking-[0.1em] text-muted-foreground/60";
-
-function AdvancedFilterField({ label, children }: AdvancedFilterFieldProps): JSX.Element {
-  return (
-    <div className="grid gap-1.5">
-      <label className={ADVANCED_FILTER_LABEL_CLASS_NAME}>{label}</label>
-      {children}
-    </div>
-  );
-}
 
 function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.Element {
   return (
@@ -120,7 +107,7 @@ function PrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.El
 function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): JSX.Element {
   return (
     <>
-      <AdvancedFilterField label={PRODUCT_FILTERS_FORM_COPY.featuredLabel}>
+      <AdminFilterField label={PRODUCT_FILTERS_FORM_COPY.featuredLabel}>
         <Select
           value={state.featured}
           onValueChange={(value) => state.setFeatured(value as ProductFilterFeaturedOption)}
@@ -136,9 +123,9 @@ function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): J
             ))}
           </SelectContent>
         </Select>
-      </AdvancedFilterField>
+      </AdminFilterField>
 
-      <AdvancedFilterField label={PRODUCT_FILTERS_FORM_COPY.imagesLabel}>
+      <AdminFilterField label={PRODUCT_FILTERS_FORM_COPY.imagesLabel}>
         <Select
           value={state.image}
           onValueChange={(value) => state.setImage(value as ProductFilterImageOption)}
@@ -154,9 +141,9 @@ function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): J
             ))}
           </SelectContent>
         </Select>
-      </AdvancedFilterField>
+      </AdminFilterField>
 
-      <AdvancedFilterField label={PRODUCT_FILTERS_FORM_COPY.variantsLabel}>
+      <AdminFilterField label={PRODUCT_FILTERS_FORM_COPY.variantsLabel}>
         <Select
           value={state.variant}
           onValueChange={(value) => state.setVariant(value as ProductFilterVariantOption)}
@@ -172,9 +159,9 @@ function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): J
             ))}
           </SelectContent>
         </Select>
-      </AdvancedFilterField>
+      </AdminFilterField>
 
-      <AdvancedFilterField label={PRODUCT_FILTERS_FORM_COPY.stockLabel}>
+      <AdminFilterField label={PRODUCT_FILTERS_FORM_COPY.stockLabel}>
         <Select
           value={state.stock}
           onValueChange={(value) => state.setStock(value as ProductFilterStockOption)}
@@ -190,62 +177,58 @@ function SecondaryFilters({ state, triggerClassName }: SecondaryFiltersProps): J
             ))}
           </SelectContent>
         </Select>
-      </AdvancedFilterField>
+      </AdminFilterField>
     </>
   );
 }
 
 function MobilePrimaryFilters({ categoryOptions, state }: PrimaryFiltersProps): JSX.Element {
   return (
-    <section className="space-y-2.5 rounded-xl border border-surface-border bg-surface-panel-soft p-3 [@media(max-height:480px)]:space-y-2">
-      <AdminFilterSection title={PRODUCT_FILTERS_FORM_COPY.primarySectionTitle}>
-        <div className="grid gap-2 sm:grid-cols-2">
-          <Select
-            value={state.status}
-            onValueChange={(value) => state.setStatus(value as ProductTableStatusFilter)}
-          >
-            <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-              <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.statusPlaceholder} />
-            </SelectTrigger>
-            <SelectContent>
-              {PRODUCT_STATUS_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+    <div className="grid gap-2 sm:grid-cols-2">
+      <Select
+        value={state.status}
+        onValueChange={(value) => state.setStatus(value as ProductTableStatusFilter)}
+      >
+        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
+          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.statusPlaceholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {PRODUCT_STATUS_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-          <Select
-            value={state.sort}
-            onValueChange={(value) => state.setSort(value as ProductSortOption)}
-          >
-            <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
-              <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.sortPlaceholder} />
-            </SelectTrigger>
-            <SelectContent>
-              {PRODUCT_SORT_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      <Select
+        value={state.sort}
+        onValueChange={(value) => state.setSort(value as ProductSortOption)}
+      >
+        <SelectTrigger className={cn("w-full text-sm", MOBILE_SELECT_TRIGGER_CLASS_NAME)}>
+          <SelectValue placeholder={PRODUCT_FILTERS_FORM_COPY.sortPlaceholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {PRODUCT_SORT_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
-          <div className="sm:col-span-2">
-            <AdminProductsCategoryFilter
-              categories={categoryOptions}
-              selectedParentCategoryId={state.parentCategoryId}
-              selectedCategoryId={state.categoryId}
-              onParentCategoryChange={state.setParentCategoryId}
-              onCategoryChange={state.setCategoryId}
-              className="gap-2"
-              triggerClassName={MOBILE_SELECT_TRIGGER_CLASS_NAME}
-            />
-          </div>
-        </div>
-      </AdminFilterSection>
-    </section>
+      <div className="sm:col-span-2">
+        <AdminProductsCategoryFilter
+          categories={categoryOptions}
+          selectedParentCategoryId={state.parentCategoryId}
+          selectedCategoryId={state.categoryId}
+          onParentCategoryChange={state.setParentCategoryId}
+          onCategoryChange={state.setCategoryId}
+          className="gap-2"
+          triggerClassName={MOBILE_SELECT_TRIGGER_CLASS_NAME}
+        />
+      </div>
+    </div>
   );
 }
 
@@ -320,32 +303,10 @@ function MobileAdvancedFiltersFields({ state }: { state: ProductTableFiltersStat
 }
 
 function MobileAdvancedFilters({ state }: SecondaryFiltersProps): JSX.Element {
-  const activeAdvancedFiltersCount = useMemo(
-    () =>
-      [
-        state.featured !== "all",
-        state.image !== "all",
-        state.variant !== "all",
-        state.stock !== "all",
-      ].filter(Boolean).length,
-    [state.featured, state.image, state.stock, state.variant]
-  );
-
-  const summaryLabel =
-    activeAdvancedFiltersCount > 0
-        ? PRODUCT_FILTERS_FORM_COPY.advancedSummaryActive(activeAdvancedFiltersCount)
-      : PRODUCT_FILTERS_FORM_COPY.advancedSummaryShow;
-
   return (
-    <AdminCollapsibleFilterSection
-      title={PRODUCT_FILTERS_FORM_COPY.advancedSectionTitle}
-      description={PRODUCT_FILTERS_FORM_COPY.advancedSectionDescription}
-      summary={summaryLabel}
-    >
-      <div className="grid gap-2 sm:grid-cols-2">
-        <MobileAdvancedFiltersFields state={state} />
-      </div>
-    </AdminCollapsibleFilterSection>
+    <div className="grid gap-2 sm:grid-cols-2">
+      <MobileAdvancedFiltersFields state={state} />
+    </div>
   );
 }
 
@@ -362,10 +323,37 @@ export function ProductTableFiltersForm({
     return <SecondaryFilters state={state} />;
   }
 
-  return (
-    <div className="space-y-2.5">
-      <MobilePrimaryFilters categoryOptions={categoryOptions} state={state} />
-      <MobileAdvancedFilters state={state} />
-    </div>
-  );
+  const mobileBlocks: AdminFilterBlock[] = [
+    {
+      key: "primary",
+      kind: "panel",
+      title: PRODUCT_FILTERS_FORM_COPY.primarySectionTitle,
+      content: <MobilePrimaryFilters categoryOptions={categoryOptions} state={state} />,
+    },
+    {
+      key: "advanced",
+      kind: "collapsible",
+      title: PRODUCT_FILTERS_FORM_COPY.advancedSectionTitle,
+      description: PRODUCT_FILTERS_FORM_COPY.advancedSectionDescription,
+      summary:
+        [
+          state.featured !== "all",
+          state.image !== "all",
+          state.variant !== "all",
+          state.stock !== "all",
+        ].filter(Boolean).length > 0
+          ? PRODUCT_FILTERS_FORM_COPY.advancedSummaryActive(
+              [
+                state.featured !== "all",
+                state.image !== "all",
+                state.variant !== "all",
+                state.stock !== "all",
+              ].filter(Boolean).length,
+            )
+          : PRODUCT_FILTERS_FORM_COPY.advancedSummaryShow,
+      content: <MobileAdvancedFilters state={state} />,
+    },
+  ];
+
+  return <AdminFilterBlocks blocks={mobileBlocks} className="space-y-2.5" />;
 }

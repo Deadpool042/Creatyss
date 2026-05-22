@@ -11,7 +11,7 @@ import {
 } from "@/components/admin/forms";
 import { FullWidthPageFrame } from "@/components/shared/layout/full-width-page-frame";
 import { FullWidthStack } from "@/components/shared/layout/full-width-stack";
-import { createCategoryAction } from "@/features/admin/categories";
+import { ADMIN_CATEGORIES_LIST_PATH, createCategoryAction } from "@/features/admin/categories";
 import {
   CATEGORY_CREATE_GENERAL_SECTION_COPY,
   CATEGORY_FIELD_COPY,
@@ -20,9 +20,6 @@ import {
   CATEGORY_NEW_PAGE_COPY,
   getCategoryNewFormErrorMessage,
 } from "@/features/admin/categories/config";
-import {
-  ADMIN_CATEGORIES_LIST_PATH,
-} from "@/features/admin/categories/shared/admin-categories-routes";
 
 export const dynamic = "force-dynamic";
 
