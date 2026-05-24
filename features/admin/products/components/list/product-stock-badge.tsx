@@ -1,9 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { PRODUCT_STOCK_BADGE_COPY } from "@/features/admin/products/config";
+import type { ProductStockState } from "@/features/admin/products/list/types";
 import { cn } from "@/lib/utils";
 
 type ProductStockBadgeProps = {
-  state: string;
+  state: ProductStockState;
   quantity: number | null;
   compact?: boolean;
   className?: string;
@@ -14,7 +15,7 @@ type StockConfig = {
   className: string;
 };
 
-function getStockConfig(state: string, quantity: number | null, compact: boolean): StockConfig {
+function getStockConfig(state: ProductStockState, quantity: number | null, compact: boolean): StockConfig {
   switch (state) {
     case "in-stock":
       return {
@@ -28,20 +29,6 @@ function getStockConfig(state: string, quantity: number | null, compact: boolean
               : PRODUCT_STOCK_BADGE_COPY.inStockLabel,
         className:
           "border-feedback-success-border bg-feedback-success-surface text-feedback-success-foreground",
-      };
-
-    case "low-stock":
-      return {
-        label:
-          typeof quantity === "number" && quantity >= 0
-            ? compact
-              ? PRODUCT_STOCK_BADGE_COPY.withQuantityShort(PRODUCT_STOCK_BADGE_COPY.lowStockShort, quantity)
-              : PRODUCT_STOCK_BADGE_COPY.withQuantityFull(PRODUCT_STOCK_BADGE_COPY.lowStockLabel, quantity)
-            : compact
-              ? PRODUCT_STOCK_BADGE_COPY.lowStockShort
-              : PRODUCT_STOCK_BADGE_COPY.lowStockLabel,
-        className:
-          "border-feedback-warning-border bg-feedback-warning-surface text-feedback-warning-foreground",
       };
 
     case "out-of-stock":
