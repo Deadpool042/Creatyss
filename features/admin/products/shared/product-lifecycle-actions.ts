@@ -3,6 +3,7 @@
 import { refresh } from "next/cache";
 
 import type { AdminProductActionResult } from "@/features/admin/products/types";
+import { PRODUCT_LIFECYCLE_FEEDBACK_COPY } from "@/features/admin/products/config";
 import {
   archiveProduct,
   deleteProductPermanently,
@@ -21,7 +22,7 @@ export async function archiveProductBySlugAction(
   if (normalizedProductSlug.length === 0) {
     return {
       status: "error",
-      message: "Produit introuvable.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.notFound,
     };
   }
 
@@ -34,12 +35,12 @@ export async function archiveProductBySlugAction(
 
     return {
       status: "success",
-      message: "Produit mis à la corbeille.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.archiveSuccess,
     };
   } catch {
     return {
       status: "error",
-      message: "Archivage impossible.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.archiveError,
     };
   }
 }
@@ -60,7 +61,7 @@ export async function deleteProductPermanentlyBySlugAction(
   if (normalizedProductSlug.length === 0) {
     return {
       status: "error",
-      message: "Produit invalide.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.invalid,
     };
   }
 
@@ -73,12 +74,12 @@ export async function deleteProductPermanentlyBySlugAction(
 
     return {
       status: "success",
-      message: "Produit supprimé définitivement.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.deleteSuccess,
     };
   } catch {
     return {
       status: "error",
-      message: "Suppression définitive impossible.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.deleteError,
     };
   }
 }
@@ -95,7 +96,7 @@ export async function restoreProductBySlugAction(
   if (normalizedProductSlug.length === 0) {
     return {
       status: "error",
-      message: "Produit introuvable.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.notFound,
     };
   }
 
@@ -108,12 +109,12 @@ export async function restoreProductBySlugAction(
 
     return {
       status: "success",
-      message: "Produit restauré.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.restoreSuccess,
     };
   } catch {
     return {
       status: "error",
-      message: "Restauration impossible.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.restoreError,
     };
   }
 }
