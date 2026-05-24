@@ -1,29 +1,36 @@
 import "server-only";
 
-export { attachProductImagesAction } from "./actions/attach-product-images.action";
-export { createProductVariantAction } from "./actions/create-product-variant.action";
-export { deleteProductAction } from "./actions/delete-product.action";
-export { deleteProductImageAction } from "./actions/delete-product-image.action";
-export { deleteProductVariantAction } from "./actions/delete-product-variant.action";
-export { reorderProductImageAction } from "./actions/reorder-product-image.action";
-export { setDefaultProductVariantAction } from "./actions/set-default-product-variant.action";
-export { setProductPrimaryImageAction } from "./actions/set-product-primary-image.action";
-export { updateProductCategoriesAction } from "./actions/update-product-categories.action";
-export { updateProductGeneralAction } from "./actions/update-product-general.action";
-export { updateProductAvailabilityAction } from "./actions/update-product-availability.action";
-export { updateProductInventoryAction } from "./actions/update-product-inventory.action";
-export { updateProductImageAltTextAction } from "./actions/update-product-image-alt-text.action";
-export { updateProductRelatedProductsAction } from "./actions/update-product-related-products.action";
-export { updateProductCharacteristicsAction } from "./actions/update-product-characteristics.action";
-export { updateProductSeoAction } from "./actions/update-product-seo.action";
-export { updateProductPricesAction } from "./actions/update-product-prices.action";
-export { updateProductVariantAction } from "./actions/update-product-variant.action";
 export {
+  attachProductImagesAction,
+  deleteProductImageAction,
+  reorderProductImageAction,
+  setProductPrimaryImageAction,
+  updateProductImageAltTextAction,
+  uploadProductImagesAction,
+} from "./actions/product-image-editor-actions";
+
+export {
+  createProductVariantAction,
+  deleteProductVariantAction,
+  setDefaultProductVariantAction,
+  updateProductVariantAction,
+} from "./actions/product-variant-editor-actions";
+
+export {
+  updateProductAvailabilityAction,
+  updateProductCategoriesAction,
+  updateProductCharacteristicsAction,
+  updateProductGeneralAction,
+  updateProductInventoryAction,
   createProductOptionColorValueAction,
   updateProductOptionColorValueAction,
   archiveProductOptionColorValueAction,
-} from "./actions/update-product-option-color-hex.action";
-export { uploadProductImagesAction } from "./actions/upload-product-images.action";
+  updateProductPricesAction,
+  updateProductRelatedProductsAction,
+  updateProductSeoAction,
+} from "./actions/product-update-editor-actions";
+
+export { deleteProductAction } from "./actions/delete-product.action";
 
 export {
   productImageAltTextSchema,

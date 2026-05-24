@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { AdminSelectFilterControl } from "./admin-select-filter-control";
 
 type AdminHierarchicalSelectFilterOption = {
   value: string;
@@ -45,34 +39,22 @@ export function AdminHierarchicalSelectFilter({
 
   return (
     <div className={cn("grid gap-3 xl:grid-cols-2", className)}>
-      <Select value={selectedParentValue} onValueChange={onParentChange}>
-        <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
-          <SelectValue placeholder={parentAllLabel} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">{parentAllLabel}</SelectItem>
-          {parentOptions.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <AdminSelectFilterControl
+        value={selectedParentValue}
+        onValueChange={onParentChange}
+        options={[{ value: "all", label: parentAllLabel }, ...parentOptions]}
+        placeholder={parentAllLabel}
+        triggerClassName={cn("text-sm", triggerClassName)}
+      />
 
       {hasChildOptions ? (
-        <Select value={selectedChildValue} onValueChange={onChildChange}>
-          <SelectTrigger className={cn("w-full text-sm", triggerClassName)}>
-            <SelectValue placeholder={childAllLabel} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">{childAllLabel}</SelectItem>
-            {childOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <AdminSelectFilterControl
+          value={selectedChildValue}
+          onValueChange={onChildChange}
+          options={[{ value: "all", label: childAllLabel }, ...childOptions]}
+          placeholder={childAllLabel}
+          triggerClassName={cn("text-sm", triggerClassName)}
+        />
       ) : (
         <div className={emptyChildClassName ?? "hidden xl:block"} />
       )}

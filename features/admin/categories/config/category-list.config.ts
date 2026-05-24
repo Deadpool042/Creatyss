@@ -1,8 +1,5 @@
 import type { AdminCategoryStatus } from "@/features/admin/categories/types";
-import type {
-  CategoryFeaturedFilter,
-  CategorySortOption,
-} from "@/features/admin/categories/list";
+import type { CategoryFeaturedFilter, CategorySortOption } from "@/features/admin/categories/list";
 
 export const CATEGORY_FILTER_VALID_VALUES = {
   statuses: ["draft", "active", "inactive", "archived"] satisfies AdminCategoryStatus[],
@@ -52,7 +49,8 @@ export const CATEGORY_LIST_COPY = {
   featuredBadgeLabel: "Mise en avant",
   categoriesCountSuffixSingular: "catégorie",
   categoriesCountSuffixPlural: "catégories",
-  bulkSelectionCountLabel: (count: number) => `${count} ${count > 1 ? "sélectionnées" : "sélectionnée"}`,
+  bulkSelectionCountLabel: (count: number) =>
+    `${count} ${count > 1 ? "sélectionnées" : "sélectionnée"}`,
   bulkArchiveAriaLabel: (count: number) => `Archiver ${count} catégorie${count > 1 ? "s" : ""}`,
   bulkArchivePendingLabel: "Archivage…",
   bulkArchiveLabel: (count: number) => `Archiver${count > 1 ? ` (${count})` : ""}`,
@@ -94,7 +92,7 @@ export const CATEGORY_TABLE_COPY = {
     products: "Produits",
     children: "Sous-cat.",
     sortOrder: "Ordre",
-    createdAt: "Créée le",
+    updatedAt: "Modifiée le",
   },
   mobile: {
     productsLabel: "Produits",

@@ -1,11 +1,7 @@
 import { AdminCreateTopbarMenu } from "@/components/admin/shared/admin-create-topbar-menu";
 import { PRODUCT_CREATE_MENU_COPY } from "@/features/admin/products/config";
 
-type ProductCreateTopbarMenuProps = {
-  productId: string;
-};
-
-export function ProductCreateTopbarMenu({ productId: _productId }: ProductCreateTopbarMenuProps) {
+export function ProductCreateTopbarMenu() {
   return (
     <AdminCreateTopbarMenu
       triggerLabel={PRODUCT_CREATE_MENU_COPY.triggerLabel}

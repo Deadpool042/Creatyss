@@ -43,3 +43,4 @@ export {
   CATEGORY_STATUS_OPTIONS,
   CATEGORY_TABLE_COPY,
 } from "./category-list.config";
+export { CATEGORY_SORTABLE_COLUMNS } from "./category-sortable.columns.config";

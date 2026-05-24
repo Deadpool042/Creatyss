@@ -1,13 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { Pencil, Star, Trash2 } from "lucide-react";
-import { useState, useTransition, type ComponentProps, type JSX } from "react";
+import { ChevronDown, ChevronUp, Pencil, Star, Trash2 } from "lucide-react";
+import { useState, useTransition, type JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { AdminProductVariantListItem } from "@/features/admin/products/editor/types";
+import { ProductSectionEyebrow } from "@/features/admin/products/components/shared";
+import {
+  getAvailabilityBadge,
+  getStatusLabel,
+  getStatusVariant,
+  getStockBadge,
+} from "./product-variant-item.utils";
 
 type ProductVariantItemProps = {
   variant: AdminProductVariantListItem;
@@ -18,91 +25,6 @@ type ProductVariantItemProps = {
   onSetDefault?: (variantId: string) => Promise<{ status: "success" | "error"; message: string }>;
   onDelete?: (variantId: string) => Promise<{ status: "success" | "error"; message: string }>;
 };
-
-function getStatusLabel(status: AdminProductVariantListItem["status"]): string {
-  switch (status) {
-    case "draft":
-      return "Brouillon";
-    case "active":
-      return "Actif";
-    case "inactive":
-      return "Inactif";
-    case "archived":
-      return "Archivé";
-  }
-}
-
-type AvailabilityBadge = {
-  label: string;
-  variant: ComponentProps<typeof Badge>["variant"];
-};
-
-function getAvailabilityBadge(
-  availability: AdminProductVariantListItem["availability"]
-): AvailabilityBadge {
-  if (!availability.isSellable) {
-    return { label: "Indisponible", variant: "outline" };
-  }
-
-  switch (availability.status) {
-    case "available":
-      return { label: "Disponible", variant: "secondary" };
-    case "preorder":
-      return { label: "Précommande", variant: "secondary" };
-    case "backorder":
-      return { label: "Sur commande", variant: "secondary" };
-    case "discontinued":
-      return { label: "Arrêté", variant: "outline" };
-    case "archived":
-      return { label: "Archivé", variant: "outline" };
-    case "unavailable":
-    default:
-      return { label: "Indisponible", variant: "outline" };
-  }
-}
-
-type StockBadge = {
-  label: string;
-  variant: ComponentProps<typeof Badge>["variant"];
-};
-
-function getStockBadge(inventory: AdminProductVariantListItem["inventory"]): StockBadge {
-  if (!inventory.hasInventoryRecord) {
-    return { label: "Stock non suivi", variant: "outline" };
-  }
-
-  const availableQuantity = Math.max(0, inventory.availableQuantity);
-  if (availableQuantity <= 0) {
-    return { label: "Rupture", variant: "destructive" };
-  }
-
-  if (availableQuantity <= 2) {
-    return { label: `Stock faible · ${availableQuantity}`, variant: "outline" };
-  }
-
-  return { label: `Stock · ${availableQuantity}`, variant: "outline" };
-}
-
-function getStatusVariant(status: AdminProductVariantListItem["status"]) {
-  switch (status) {
-    case "active":
-      return "secondary" as const;
-    case "draft":
-      return "outline" as const;
-    case "inactive":
-      return "outline" as const;
-    case "archived":
-      return "outline" as const;
-  }
-}
-
-function SectionLabel({ children }: { children: string }): JSX.Element {
-  return (
-    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-      {children}
-    </p>
-  );
-}
 
 export function ProductVariantItem({
   variant,
@@ -126,6 +48,7 @@ export function ProductVariantItem({
   );
   const availabilityBadge = getAvailabilityBadge(variant.availability);
   const stockBadge = getStockBadge(variant.inventory);
+  const [isTechnicalDetailsOpen, setIsTechnicalDetailsOpen] = useState(false);
   const shouldShowFooterMessage =
     Boolean(message) || (variant.isDefault && hasOtherVariants && onDelete);
 
@@ -217,7 +140,7 @@ export function ProductVariantItem({
         <div className="grid gap-3.5 md:gap-4 md:grid-cols-[minmax(0,1fr)_8.5rem] lg:grid-cols-[minmax(0,1fr)_10rem]">
           <div className="grid gap-3.5 md:gap-4">
             <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-4 shadow-sm">
-              <SectionLabel>Attributs</SectionLabel>
+              <ProductSectionEyebrow className="tracking-[0.14em]">Attributs</ProductSectionEyebrow>
               {variant.optionValues.length > 0 ? (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {variant.optionValues.map((optionValue) => (
@@ -236,69 +159,98 @@ export function ProductVariantItem({
             </div>
 
             <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-4 shadow-sm">
-              <SectionLabel>Repères techniques</SectionLabel>
-              <div className="mt-3 grid gap-x-5 gap-y-3 sm:grid-cols-2">
-                <div className="space-y-1">
-                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
-                    Adresse
-                  </p>
-                  <p className="text-sm text-foreground">
-                    {variant.slug && variant.slug.trim().length > 0 ? `/${variant.slug}` : "—"}
-                  </p>
-                </div>
+              <div className="flex items-start justify-between gap-3">
+                <ProductSectionEyebrow className="tracking-[0.14em]">
+                  Repères techniques
+                </ProductSectionEyebrow>
 
-                <div className="space-y-1">
-                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
-                    Ordre interne
-                  </p>
-                  <p className="text-sm text-foreground">{variant.sortOrder}</p>
-                </div>
-
-                <div className="space-y-1">
-                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
-                    Code-barres
-                  </p>
-                  <p className="text-sm text-foreground">
-                    {variant.barcode && variant.barcode.trim().length > 0 ? variant.barcode : "—"}
-                  </p>
-                </div>
-
-                <div className="space-y-1">
-                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
-                    Réf. externe
-                  </p>
-                  <p className="text-sm text-foreground">
-                    {variant.externalReference && variant.externalReference.trim().length > 0
-                      ? variant.externalReference
-                      : "—"}
-                  </p>
-                </div>
-
-                <div className="space-y-1">
-                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Poids</p>
-                  <p className="text-sm text-foreground">
-                    {variant.weightGrams && variant.weightGrams.trim().length > 0
-                      ? `${variant.weightGrams} g`
-                      : "—"}
-                  </p>
-                </div>
-
-                <div className="space-y-1">
-                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
-                    Dimensions
-                  </p>
-                  <p className="text-sm text-foreground">
-                    {hasDimensions
-                      ? `${variant.widthMm ?? "—"} × ${variant.heightMm ?? "—"} × ${variant.depthMm ?? "—"} mm`
-                      : "—"}
-                  </p>
-                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="xs"
+                  className="h-7 rounded-full px-3 text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() => setIsTechnicalDetailsOpen((current) => !current)}
+                >
+                  {isTechnicalDetailsOpen ? (
+                    <>
+                      <ChevronUp className="mr-1 h-3.5 w-3.5" />
+                      Masquer
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="mr-1 h-3.5 w-3.5" />
+                      Afficher
+                    </>
+                  )}
+                </Button>
               </div>
+
+              {isTechnicalDetailsOpen ? (
+                <div className="mt-3 grid gap-x-5 gap-y-3 sm:grid-cols-2">
+                  <div className="space-y-1">
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                      Adresse
+                    </p>
+                    <p className="text-sm text-foreground">
+                      {variant.slug && variant.slug.trim().length > 0 ? `/${variant.slug}` : "—"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                      Ordre interne
+                    </p>
+                    <p className="text-sm text-foreground">{variant.sortOrder}</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                      Code-barres
+                    </p>
+                    <p className="text-sm text-foreground">
+                      {variant.barcode && variant.barcode.trim().length > 0 ? variant.barcode : "—"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                      Réf. externe
+                    </p>
+                    <p className="text-sm text-foreground">
+                      {variant.externalReference && variant.externalReference.trim().length > 0
+                        ? variant.externalReference
+                        : "—"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                      Poids
+                    </p>
+                    <p className="text-sm text-foreground">
+                      {variant.weightGrams && variant.weightGrams.trim().length > 0
+                        ? `${variant.weightGrams} g`
+                        : "—"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                      Dimensions
+                    </p>
+                    <p className="text-sm text-foreground">
+                      {hasDimensions
+                        ? `${variant.widthMm ?? "—"} × ${variant.heightMm ?? "—"} × ${variant.depthMm ?? "—"} mm`
+                        : "—"}
+                    </p>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
 
           <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-3 py-3">
-            <SectionLabel>Image</SectionLabel>
+            <ProductSectionEyebrow className="tracking-[0.14em]">Image</ProductSectionEyebrow>
             <div className="mt-2.5 flex items-start gap-3 md:flex-col md:items-center md:gap-2.5">
               <div className="overflow-hidden rounded-lg border border-surface-border bg-muted">
                 <div className="relative h-20 w-20 md:h-24 md:w-24">

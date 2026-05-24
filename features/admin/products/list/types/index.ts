@@ -6,13 +6,13 @@ export type {
 } from "./product-feed.types";
 
 export type {
+  ProductListView,
   ProductFilterCategoryOption,
   ProductFilterFeaturedOption,
+  ProductFeaturedFilterValue,
   ProductFilterImageOption,
   ProductFilterStockOption,
   ProductFilterVariantOption,
-  ProductSortOption,
-  ProductStatusCounts,
   ProductStockState,
   ProductTableActiveFilter,
   ProductTableFeaturedFilter,
@@ -43,12 +43,13 @@ export type {
   BulkUpdateProductStatusResult,
 } from "./product-bulk-operations.types";
 
+export type { AdminProductStatus, AdminProductCardItem } from "./admin-product-card-item.types";
+
 export type {
   AdminProductFeedPageResult,
-  AdminProductListCategory,
-  AdminProductListItem,
-  AdminProductListPriceSummary,
-  AdminProductsListFeaturedFilter,
-  AdminProductsListFilters,
-  AdminProductsListStatusFilter,
-} from "./product-list.types";
+  ProductListFilters,
+  ProductPickerItem,
+  ProductSortOption,
+  ProductStatusCounts,
+  ProductListResult,
+} from "./product-list-query.types";

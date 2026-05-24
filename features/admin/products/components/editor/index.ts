@@ -7,24 +7,19 @@ export { ProductInventoryTab } from "./product-inventory-tab";
 export { ProductRelatedProductsTab } from "./product-related-products-tab";
 export { ProductSeoTab } from "./product-seo-tab";
 export { ProductVariantsTab } from "./product-variants-tab";
-export { ProductArchivedActions } from "./product-archived-actions";
-export { ProductArchivedBanner } from "./product-archived-banner";
+export {
+  DeleteProductButton,
+  ProductArchivedActions,
+  ProductArchivedBanner,
+} from "./product-archived-actions";
+
+export { ProductImageItem } from "./images/product-image-item";
+
+export { ProductVariantEditorSheet } from "./variants/product-variant-editor-sheet";
+export { ProductVariantItem } from "./variants/product-variant-item";
 
 export {
-  ProductImageGallery,
-  ProductImageItem,
-  ProductImageLibraryPicker,
-  ProductImageLibrarySheet,
-  ProductImageUploadForm,
-} from "./images";
-
-export {
-  ProductVariantEditorSheet,
-  ProductVariantImagePicker,
-  ProductVariantItem,
-  ProductVariantList,
-} from "./variants";
-
-export { ProductEditorTopbarMenu } from "./product-editor-topbar-menu";
-export { ProductVariantTopbarMenu } from "./product-variant-topbar-menu";
-export { DeleteProductButton } from "./delete-product-button";
+  ProductEditorTopbarMenu,
+  ProductMediaTopbarMenu,
+  ProductVariantTopbarMenu,
+} from "./product-topbar-menus";

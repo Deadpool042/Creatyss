@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState, type JSX } from "react";
 
 import { AdminFeedSentinel } from "@/components/admin/shared/admin-feed-sentinel";
-import type { ProductTableItem } from "@/features/admin/products/list/types";
+import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
 import { PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
 import { ProductCollectionCard } from "./product-collection-card";
 
@@ -12,8 +12,6 @@ const PRODUCT_CARD_TWO_COLUMN_CLASS_NAME = "[@media(min-width:667px)]:grid-cols-
 const MOBILE_PAGE_SIZE = 12;
 const MOBILE_BOTTOM_NAV_CLEARANCE_CLASS_NAME =
   "pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom)+0.75rem)]";
-
-type ProductListView = "active" | "trash";
 
 type ProductTableMobileProps = {
   products: ProductTableItem[];

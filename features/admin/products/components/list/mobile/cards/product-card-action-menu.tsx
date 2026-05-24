@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { ProductTableItem } from "@/features/admin/products/list/types";
+import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
 import {
   PRODUCT_CARD_ACTIONS_COPY,
   PRODUCT_ROW_ACTIONS_COPY,
@@ -19,8 +19,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useProductLifecycleActionState } from "../../hooks/use-product-lifecycle-action-state";
 import { ProductLifecycleActionDialogs } from "../../product-lifecycle-action-dialogs";
-
-type ProductListView = "active" | "trash";
 
 type ProductCardActionMenuProps = {
   product: Pick<ProductTableItem, "name" | "slug">;

@@ -5,7 +5,6 @@ export { ProductStockBadge } from "./product-stock-badge";
 export { ProductTable } from "./product-table";
 export { ProductTableProvider, useProductTableContext } from "./product-table-context";
 export { ProductTableDesktop } from "./product-table-desktop";
-export { ProductTableFiltersForm } from "./product-table-filters-form";
 export { ProductTableMobile } from "./product-table-mobile";
 export { ProductTableRowActions } from "./product-table-row-actions";
 export { ProductTableToolbar } from "./product-table-toolbar";

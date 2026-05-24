@@ -1,3 +1,16 @@
+//features/admin/categories/types/admin-category.types.ts
+export type AdminCategorySortOption =
+  | "name-asc"
+  | "name-desc"
+  | "status-asc"
+  | "status-desc"
+  | "is-featured-asc"
+  | "is-featured-desc"
+  | "products-asc"
+  | "products-desc"
+  | "created-at-asc"
+  | "created-at-desc";
+
 export type AdminCategorySummary = {
   id: string;
   name: string;

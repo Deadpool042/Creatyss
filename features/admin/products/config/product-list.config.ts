@@ -3,6 +3,7 @@ import type {
   ProductFilterImageOption,
   ProductFilterStockOption,
   ProductFilterVariantOption,
+  ProductListView,
   ProductSortOption,
   ProductTableStatus,
   ProductTableStatusFilter,
@@ -83,6 +84,7 @@ export const PRODUCT_SORT_OPTIONS: { value: ProductSortOption; label: string }[]
 export const PRODUCT_LIST_COPY = {
   searchPlaceholder: "Rechercher un produit…",
   searchPlaceholderMobile: "Rechercher…",
+  filtersTitle: "Filtres produits",
   filterStatutLabel: "Statut",
   filterCategoryLabel: "Catégorie",
   filterCategoryAllLabel: "Toutes les catégories",
@@ -92,6 +94,9 @@ export const PRODUCT_LIST_COPY = {
   filterAdvancedImagesLabel: "Images",
   filterAdvancedVariantsLabel: "Variantes",
   filterAdvancedStockLabel: "Disponibilité",
+  filterAdvancedDescription: "Mise en avant, images, variantes, disponibilité",
+  filterAdvancedSummary: "Afficher",
+  filterAdvancedActiveSummary: (count: number) => `${count} actif${count > 1 ? "s" : ""}`,
   mobileFiltersTitle: "Filtres produits",
   mobileFiltersTitleActive: (count: number) => `Filtres produits · ${count}`,
   mobileFiltersLabel: "Filtres",
@@ -100,11 +105,29 @@ export const PRODUCT_LIST_COPY = {
     `${count} filtre${count > 1 ? "s" : ""} actif${count > 1 ? "s" : ""}`,
   mobileFiltersAriaOpen: "Ouvrir les filtres",
   mobileFiltersActiveSection: "Filtres actifs",
+  activeFiltersResetLabel: "Réinitialiser",
   mobileFiltersDescription: (count: number) =>
     `${count} filtre${count > 1 ? "s" : ""} actif${count > 1 ? "s" : ""}.`,
   mobileFiltersDescriptionEmpty: "Affiner la liste.",
   mobileFiltersReset: "Réinitialiser",
   mobileFiltersApply: "Appliquer",
+  viewActiveLabel: "Actifs",
+  viewTrashLabel: "Corbeille",
+} as const;
+
+export const PRODUCT_LIST_VIEW_OPTIONS: {
+  value: ProductListView;
+  label: string;
+  href: string;
+}[] = [
+  { value: "active", label: PRODUCT_LIST_COPY.viewActiveLabel, href: "/admin/products" },
+  { value: "trash", label: PRODUCT_LIST_COPY.viewTrashLabel, href: "/admin/products?view=trash" },
+];
+
+export const PRODUCT_LIST_ACTIONS_COPY = {
+  viewResultsLabel: "Voir les résultats",
+  mobileFiltersLabel: "Filtres",
+  mobileFiltersWithCountSeparator: " · ",
 } as const;
 
 // ─── Selection copy ───────────────────────────────────────────────────────────
@@ -148,11 +171,35 @@ export const PRODUCT_TABLE_COPY = {
     stock: "Disponibilité",
     price: "Prix",
     category: "Catégorie",
+    updatedAt: "Modifié le",
   },
   emptyTrash: "Aucun produit dans la corbeille.",
   emptyFiltered: "Aucun produit trouvé.",
   mobileEndOfList: "Fin de la liste",
   paginationCountLabel: (count: number) => `${count} produit${count !== 1 ? "s" : ""}`,
+} as const;
+
+export const PRODUCT_LIST_EMPTY_STATE_COPY = {
+  filtered: {
+    eyebrow: "Aucun résultat",
+    title: "Aucun produit ne correspond",
+    description: "Essayez de modifier la recherche ou les filtres.",
+    resetLabel: "Réinitialiser les filtres",
+  },
+  initial: {
+    active: {
+      eyebrow: "Aucun produit",
+      title: "Le catalogue ne contient pas encore de produit",
+      description: "Créez un premier produit pour commencer.",
+      ctaLabel: "Créer un produit",
+    },
+    trash: {
+      eyebrow: "Corbeille vide",
+      title: "Aucun produit dans la corbeille",
+      description: "Les produits archivés apparaîtront ici.",
+      ctaLabel: "Voir les produits actifs",
+    },
+  },
 } as const;
 
 // ─── Stock badge copy ─────────────────────────────────────────────────────────
@@ -212,26 +259,6 @@ export const PRODUCT_CARD_BADGES_COPY = {
   variantSingle: "Simple",
   variantCountShort: (n: number) => `${n} var.`,
   variantCountFull: (n: number) => `${n} variante${n > 1 ? "s" : ""}`,
-} as const;
-
-// ─── Filters form copy ────────────────────────────────────────────────────────
-
-export const PRODUCT_FILTERS_FORM_COPY = {
-  primarySectionTitle: "Principaux",
-  statusPlaceholder: "Statut",
-  sortPlaceholder: "Tri",
-  featuredLabel: "Mise en avant",
-  featuredPlaceholder: "Mise en avant",
-  imagesLabel: "Images",
-  imagesPlaceholder: "Images",
-  variantsLabel: "Variantes",
-  variantsPlaceholder: "Variantes",
-  stockLabel: "Disponibilité",
-  stockPlaceholder: "Disponibilité",
-  advancedSectionTitle: "Avancés",
-  advancedSectionDescription: "Mise en avant, images, variantes, stock",
-  advancedSummaryActive: (n: number) => `${n} actif${n > 1 ? "s" : ""}`,
-  advancedSummaryShow: "Afficher",
 } as const;
 
 // ─── Card actions copy ────────────────────────────────────────────────────────

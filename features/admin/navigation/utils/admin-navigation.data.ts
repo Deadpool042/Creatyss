@@ -77,7 +77,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   {
     key: "products",
     label: "Produits",
-    href: "/admin/products",
+    href: "/admin/catalog/products",
     iconKey: "package",
     group: "catalog",
     order: 20,
@@ -101,7 +101,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   {
     key: "media",
     label: "Médias",
-    href: "/admin/media",
+    href: "/admin/catalog/media",
     iconKey: "imageIcon",
     group: "catalog",
     order: 340,

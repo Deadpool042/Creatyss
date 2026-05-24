@@ -4,35 +4,36 @@ import { useState, type JSX } from "react";
 
 import {
   AdminDataTableDesktopLayout,
-  AdminDataTableEmptyState,
   AdminDataTableMobileLayout,
   AdminPaginationBar,
 } from "@/components/admin/tables";
-import { PRODUCT_FILTER_VALID_VALUES, PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
-import { ProductTableStateProvider, useProductTableContext, useProductTableData } from "./product-table-context";
+import { PRODUCT_FILTER_VALID_VALUES } from "@/features/admin/products/config";
+import type { ProductListView } from "@/features/admin/products/list/types";
+import { useProductTableContext } from "./product-table-context";
 import { ProductTableDesktop } from "./product-table-desktop";
 import { ProductTableMobile } from "./product-table-mobile";
 import { ProductTableToolbar } from "./product-table-toolbar";
-import { ProductBulkBar } from "./table";
-import { ProductTableToolbarPermanentDeleteDialog, type ProductListView } from "./toolbar";
+import { ProductBulkBar, ProductTableEmptyState } from "./table";
+import { ProductTableToolbarPermanentDeleteDialog } from "./toolbar";
 
 export function ProductTable(): JSX.Element {
-  return (
-    <ProductTableStateProvider>
-      <div className="flex min-h-0 flex-1 flex-col gap-3 lg:gap-4">
-        <ProductTableDesktopView />
-        <ProductTableMobileView />
-      </div>
-    </ProductTableStateProvider>
-  );
-}
-
-function ProductTableDesktopView(): JSX.Element {
-  const { state, actions, view } = useProductTableContext();
-  const { total, perPage } = useProductTableData();
+  const {
+    state,
+    actions,
+    view,
+    total,
+    perPage,
+    onMobileVisibleSelectionChange,
+  } = useProductTableContext();
   const [permanentDeleteDialogOpen, setPermanentDeleteDialogOpen] = useState(false);
 
   const isBulkPending = actions.isBulkPending;
+  const isFiltered = state.search.trim().length > 0 || state.activeFilters.length > 0;
+  const toolbar = (
+    <ProductTableToolbar onOpenPermanentDeleteDialog={() => setPermanentDeleteDialogOpen(true)} />
+  );
+  const desktopActionProps = getDesktopProductTableActionProps({ actions, view });
+  const mobileActionProps = getMobileProductTableActionProps({ actions, view });
 
   async function handleBulkPermanentDelete(): Promise<void> {
     if (view !== "trash") {
@@ -47,12 +48,8 @@ function ProductTableDesktopView(): JSX.Element {
   if (state.paginated.length === 0) {
     return (
       <>
-        <ProductTableToolbar mode="desktop" />
-        <AdminDataTableEmptyState
-          message={
-            view === "trash" ? PRODUCT_TABLE_COPY.emptyTrash : PRODUCT_TABLE_COPY.emptyFiltered
-          }
-        />
+        {toolbar}
+        <ProductTableEmptyState view={view} isFiltered={isFiltered} />
       </>
     );
   }
@@ -60,7 +57,8 @@ function ProductTableDesktopView(): JSX.Element {
   return (
     <>
       <AdminDataTableDesktopLayout
-        toolbar={<ProductTableToolbar mode="desktop" />}
+        className="overflow-y-auto [scrollbar-gutter:stable] p-1"
+        toolbar={toolbar}
         content={
           <ProductTableDesktop
             products={state.paginated}
@@ -69,10 +67,9 @@ function ProductTableDesktopView(): JSX.Element {
             onToggleProductSelection={actions.toggleProductSelection}
             onToggleSelectAllCurrentPage={actions.toggleSelectAllCurrentPage}
             view={view}
-            {...getDesktopProductTableActionProps({ actions, view })}
+            {...desktopActionProps}
           />
         }
-        contentClassName="overflow-hidden"
         pagination={
           <AdminPaginationBar
             currentPage={state.currentPage}
@@ -91,6 +88,21 @@ function ProductTableDesktopView(): JSX.Element {
         }
       />
 
+      <AdminDataTableMobileLayout
+        className="p-1"
+        toolbar={toolbar}
+        content={
+          <ProductTableMobile
+            products={state.allFilteredProducts}
+            view={view}
+            selectedProductIds={actions.selectedProductIds}
+            onToggleProductSelection={actions.toggleProductSelection}
+            onVisibleSelectionStatsChange={onMobileVisibleSelectionChange}
+            {...mobileActionProps}
+          />
+        }
+      />
+
       <ProductTableToolbarPermanentDeleteDialog
         open={permanentDeleteDialogOpen}
         onOpenChange={setPermanentDeleteDialogOpen}
@@ -98,26 +110,6 @@ function ProductTableDesktopView(): JSX.Element {
         onConfirm={handleBulkPermanentDelete}
       />
     </>
-  );
-}
-
-function ProductTableMobileView(): JSX.Element {
-  const { state, actions, view, onMobileVisibleSelectionChange } = useProductTableContext();
-
-  return (
-    <AdminDataTableMobileLayout
-      toolbar={<ProductTableToolbar mode="mobile" />}
-      content={
-        <ProductTableMobile
-          products={state.allFilteredProducts}
-          view={view}
-          selectedProductIds={actions.selectedProductIds}
-          onToggleProductSelection={actions.toggleProductSelection}
-          onVisibleSelectionStatsChange={onMobileVisibleSelectionChange}
-          {...getMobileProductTableActionProps({ actions, view })}
-        />
-      }
-    />
   );
 }
 

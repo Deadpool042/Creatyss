@@ -5,7 +5,7 @@ import type { JSX } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { PRODUCT_CARD_COPY, PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
-import type { ProductTableItem } from "@/features/admin/products/list/types";
+import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
 import { cn } from "@/lib/utils";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";
 import { AdminProductsPriceCell } from "./admin-products-price-cell";
@@ -16,8 +16,6 @@ import {
   ProductCardImage,
   ProductCardInfoTile,
 } from "./mobile/cards";
-
-type ProductListView = "active" | "trash";
 
 type ProductCollectionCardProps = {
   product: ProductTableItem;
@@ -41,12 +39,18 @@ export function ProductCollectionCard({
   return (
     <article
       className={cn(
-        "flex h-full flex-col rounded-2xl border border-surface-border bg-card p-3 shadow-card",
+        "relative flex h-full flex-col rounded-xl border border-surface-border bg-card p-3.5 shadow-card transition-colors",
         isSelected && "border-surface-border-strong bg-interactive-selected/30",
         "[@media(max-height:480px)]:rounded-xl [@media(max-height:480px)]:p-2.5"
       )}
     >
-      <div className="mb-2 flex items-center justify-between gap-2">
+      <Link
+        href={`/admin/products/${product.slug}/edit`}
+        className="absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
+        aria-label={PRODUCT_CARD_COPY.selectionAriaLabel(product.name)}
+      />
+
+      <div className="relative z-10 mb-3 flex items-center justify-between gap-2">
         <label className="flex items-center gap-2 text-xs font-medium text-foreground">
           <Checkbox
             checked={isSelected}
@@ -75,7 +79,7 @@ export function ProductCollectionCard({
         </div>
       </div>
 
-      <div className="flex items-start gap-2.5 [@media(max-height:480px)]:gap-2">
+      <div className="relative z-10 flex items-start gap-2.5 [@media(max-height:480px)]:gap-2">
         <ProductCardImage
           product={product}
           sizes="(min-width: 667px) 44px, 48px"
@@ -84,11 +88,9 @@ export function ProductCollectionCard({
         />
 
         <div className="min-w-0 flex-1">
-          <Link href={`/admin/products/${product.slug}/edit`} className="block">
-            <h3 className="line-clamp-2 text-base font-semibold leading-5 tracking-tight text-foreground [@media(min-width:667px)]:line-clamp-1 [@media(max-height:480px)]:line-clamp-1 [@media(max-height:480px)]:text-sm [@media(max-height:480px)]:leading-4">
-              {product.name}
-            </h3>
-          </Link>
+          <h3 className="line-clamp-2 text-base font-semibold leading-5 tracking-tight text-foreground [@media(min-width:667px)]:line-clamp-1 [@media(max-height:480px)]:line-clamp-1 [@media(max-height:480px)]:text-sm [@media(max-height:480px)]:leading-4">
+            {product.name}
+          </h3>
 
           <div className="mt-1">
             <ProductCardBadges
@@ -103,7 +105,7 @@ export function ProductCollectionCard({
         </div>
       </div>
 
-      <div className="mt-2 grid grid-cols-2 gap-1.5 [@media(max-height:480px)]:mt-1.5">
+      <div className="relative z-10 mt-2 grid grid-cols-2 gap-1.5 [@media(max-height:480px)]:mt-1.5">
         <ProductCardInfoTile
           label={PRODUCT_TABLE_COPY.columns.price}
           className="px-2.5 py-2 [@media(max-height:480px)]:px-2 [@media(max-height:480px)]:py-1.5"

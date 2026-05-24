@@ -1,14 +1,44 @@
 "use client";
 
-import type { JSX } from "react";
-import { RotateCcw, Trash2 } from "lucide-react";
+import { useTransition, type JSX, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { Archive, ArchiveRestore, RotateCcw, Trash2 } from "lucide-react";
 
 import { CustomButton } from "@/components/shared";
+import { deleteProductAction } from "@/features/admin/products/editor/actions";
 import { useArchivedProductMutations } from "./hooks/use-archived-product-mutations";
 
 type ProductArchivedActionsProps = {
   productSlug: string;
 };
+
+type DeleteProductButtonProps = {
+  productId: string;
+  trigger?: ReactNode;
+  redirectTo?: string;
+  onDelete?: (input: {
+    productId: string;
+  }) => Promise<{ status: "success" | "error"; message: string }>;
+};
+
+export function ProductArchivedBanner(): JSX.Element {
+  return (
+    <div className="rounded-2xl border border-amber-300/60 bg-amber-50 px-4 py-4 text-amber-950 shadow-sm">
+      <div className="flex items-start gap-3">
+        <div className="mt-0.5 rounded-full bg-amber-100 p-2">
+          <ArchiveRestore className="h-4 w-4" />
+        </div>
+
+        <div className="min-w-0">
+          <p className="text-sm font-semibold">Produit dans la corbeille</p>
+          <p className="mt-1 text-sm text-amber-900/85">
+            Ce produit est archivé. Vous pouvez le restaurer ou le supprimer définitivement.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function ProductArchivedActions({ productSlug }: ProductArchivedActionsProps): JSX.Element {
   const { isPending, handleRestore, handlePermanentDelete } = useArchivedProductMutations({
@@ -36,5 +66,47 @@ export function ProductArchivedActions({ productSlug }: ProductArchivedActionsPr
         {isPending ? "Suppression…" : "Supprimer définitivement"}
       </CustomButton>
     </div>
+  );
+}
+
+export function DeleteProductButton({
+  productId,
+  trigger,
+  redirectTo = "/admin/products",
+  onDelete = deleteProductAction,
+}: DeleteProductButtonProps): JSX.Element {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  function handleDelete(): void {
+    startTransition(async () => {
+      const result = await onDelete({ productId });
+
+      if (result.status === "success") {
+        router.push(redirectTo);
+        router.refresh();
+      }
+    });
+  }
+
+  if (trigger) {
+    return (
+      <button type="button" disabled={isPending} onClick={handleDelete}>
+        {trigger}
+      </button>
+    );
+  }
+
+  return (
+    <CustomButton
+      type="button"
+      variant="outline"
+      size="sm"
+      loading={isPending}
+      leadingIcon={<Archive className="h-4 w-4" />}
+      onClick={handleDelete}
+    >
+      {isPending ? "Déplacement…" : "Mettre à la corbeille"}
+    </CustomButton>
   );
 }

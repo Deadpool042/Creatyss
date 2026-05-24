@@ -5,7 +5,7 @@ import type { JSX } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { PRODUCT_CARD_COPY } from "@/features/admin/products/config";
-import type { ProductTableItem } from "@/features/admin/products/list/types";
+import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
 import { stripHtml } from "@/features/admin/products/list/utils";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";
 import { AdminProductsPriceCell } from "./admin-products-price-cell";
@@ -16,8 +16,6 @@ import {
   ProductCardImage,
   ProductCardInfoTile,
 } from "./mobile/cards";
-
-type ProductListView = "active" | "trash";
 
 type ProductMobileCardProps = {
   product: ProductTableItem;

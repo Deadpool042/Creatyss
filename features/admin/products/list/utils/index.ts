@@ -1,6 +1,5 @@
 export {
   buildAdminProductsCategoryFilter,
-  buildAdminProductsCategorySelectOptions,
   parsePriceValue,
   stripHtml,
 } from "./product-list-utils";

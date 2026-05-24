@@ -41,10 +41,7 @@ export async function listAdminCategories(
 
   const normalizedSearch = search.trim();
 
-  const featuredWhere =
-    featured.length === 1
-      ? { isFeatured: featured[0] === "featured" }
-      : {};
+  const featuredWhere = featured.length === 1 ? { isFeatured: featured[0] === "featured" } : {};
 
   const where = {
     ...(normalizedSearch.length > 0
@@ -108,6 +105,7 @@ export async function listAdminCategories(
         status: true,
         sortOrder: true,
         createdAt: true,
+        updatedAt: true,
         parent: {
           select: { name: true },
         },

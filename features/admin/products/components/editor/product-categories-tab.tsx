@@ -17,7 +17,7 @@ import {
   ProductCategoriesLinkedList,
   ProductCategoriesPrimaryFields,
   ProductCategoriesSummary,
-} from "./categories";
+} from "./categories/product-categories-fields";
 
 type ProductCategoriesTabProps = {
   action: ProductCategoriesFormAction;

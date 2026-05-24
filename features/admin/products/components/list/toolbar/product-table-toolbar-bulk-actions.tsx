@@ -5,7 +5,7 @@ import type { JSX } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { PRODUCT_BULK_ACTIONS_COPY } from "@/features/admin/products/config";
-import type { ProductListView } from "./product-table-toolbar-types";
+import type { ProductListView } from "@/features/admin/products/list/types";
 
 type ProductTableToolbarBulkActionButtonProps = {
   children: string;

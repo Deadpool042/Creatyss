@@ -1,4 +1,6 @@
 // features/admin/products/list/types/product-table.types.ts
+export type ProductListView = "active" | "trash";
+
 export type ProductTableStatus = "draft" | "active" | "inactive" | "archived";
 
 export type ProductStatusCounts = {
@@ -11,6 +13,7 @@ export type ProductStatusCounts = {
 export type ProductStockState = "in-stock" | "out-of-stock";
 
 export type ProductFilterFeaturedOption = "all" | "featured" | "standard";
+export type ProductFeaturedFilterValue = Exclude<ProductFilterFeaturedOption, "all">;
 export type ProductFilterImageOption = "all" | "with-image" | "without-image";
 export type ProductFilterStockOption = "all" | "in-stock" | "out-of-stock";
 export type ProductFilterVariantOption = "all" | "single" | "multiple";
@@ -56,10 +59,9 @@ export type ProductTableItem = {
 
 export type ProductTableFiltersInput = {
   search?: string | null;
-  status?: ProductTableStatusFilter;
-  categoryId?: string | null;
-  parentCategoryId?: string | null;
-  featured?: ProductFilterFeaturedOption;
+  status?: ProductTableStatus[];
+  categoryIds?: string[] | null;
+  featured?: ProductFeaturedFilterValue[];
   image?: ProductFilterImageOption;
   stock?: ProductFilterStockOption;
   variant?: ProductFilterVariantOption;
@@ -68,10 +70,9 @@ export type ProductTableFiltersInput = {
 
 export type ProductTableFiltersValues = {
   search: string;
-  status: ProductTableStatusFilter;
-  categoryId: string;
-  parentCategoryId: string;
-  featured: ProductFilterFeaturedOption;
+  status: ProductTableStatus[];
+  categoryIds: string[];
+  featured: ProductFeaturedFilterValue[];
   image: ProductFilterImageOption;
   stock: ProductFilterStockOption;
   variant: ProductFilterVariantOption;
@@ -89,17 +90,14 @@ export type ProductTableFiltersState = {
   setSearch: (value: string) => void;
   handleSearchChange: (value: string) => void;
 
-  status: ProductTableStatusFilter;
-  setStatus: (value: ProductTableStatusFilter) => void;
+  status: ProductTableStatus[];
+  setStatus: (value: ProductTableStatus[]) => void;
 
-  categoryId: string;
-  setCategoryId: (value: string) => void;
+  categoryIds: string[];
+  setCategoryIds: (value: string[]) => void;
 
-  parentCategoryId: string;
-  setParentCategoryId: (value: string) => void;
-
-  featured: ProductFilterFeaturedOption;
-  setFeatured: (value: ProductFilterFeaturedOption) => void;
+  featured: ProductFeaturedFilterValue[];
+  setFeatured: (value: ProductFeaturedFilterValue[]) => void;
 
   image: ProductFilterImageOption;
   setImage: (value: ProductFilterImageOption) => void;

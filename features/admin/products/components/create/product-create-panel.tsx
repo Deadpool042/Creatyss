@@ -25,6 +25,8 @@ import {
   PRODUCT_CREATE_PANEL_COPY,
   PRODUCT_FORM_ACTIONS_COPY,
 } from "@/features/admin/products/config";
+import { getProductTypeLabel } from "@/features/admin/products/components/shared/product-type-label";
+import { ProductSectionEyebrow } from "@/features/admin/products/components/shared";
 
 export type ProductCreateFormAction = (
   prevState: CreateProductActionState,
@@ -46,26 +48,6 @@ type ProductCreatePanelInnerProps = {
   productTypeOptions?: ProductTypeOption[];
   onReset: () => void;
 };
-
-function SectionEyebrow({ children }: { children: string }): JSX.Element {
-  return (
-    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:text-[11px]">
-      {children}
-    </p>
-  );
-}
-
-function getProductTypeLabel(option: ProductTypeOption): string {
-  if (option.code === "simple") {
-    return PRODUCT_CREATE_PANEL_COPY.typeSimple;
-  }
-
-  if (option.code === "variable") {
-    return PRODUCT_CREATE_PANEL_COPY.typeVariable;
-  }
-
-  return option.name;
-}
 
 function ProductCreatePanelInner({
   action,
@@ -169,7 +151,9 @@ function ProductCreatePanelInner({
           <Card className="rounded-xl border border-surface-border-strong bg-surface-panel shadow-raised py-0 sm:rounded-[1.35rem]">
             <CardHeader className="rounded-t-xl border-b border-surface-border bg-surface-panel-soft px-4 py-3 sm:rounded-t-[1.35rem] sm:px-5 sm:py-4">
               <div className="space-y-1.5">
-                <SectionEyebrow>{PRODUCT_CREATE_PANEL_COPY.identityEyebrow}</SectionEyebrow>
+                <ProductSectionEyebrow className="text-[10px] sm:text-[11px]">
+                  {PRODUCT_CREATE_PANEL_COPY.identityEyebrow}
+                </ProductSectionEyebrow>
                 <CardTitle className="text-base sm:text-lg">{PRODUCT_CREATE_PANEL_COPY.identityTitle}</CardTitle>
                 <CardDescription className="text-sm leading-6 text-foreground/70">
                   {PRODUCT_CREATE_PANEL_COPY.identityCardDescription}
@@ -216,7 +200,9 @@ function ProductCreatePanelInner({
           <Card className="rounded-xl border border-surface-border-strong bg-surface-panel shadow-raised py-0 sm:rounded-[1.35rem]">
             <CardHeader className="rounded-t-xl border-b border-surface-border bg-surface-panel-soft px-4 py-3 sm:rounded-t-[1.35rem] sm:px-5 sm:py-4">
               <div className="space-y-1.5">
-                <SectionEyebrow>{PRODUCT_CREATE_PANEL_COPY.structureEyebrow}</SectionEyebrow>
+                <ProductSectionEyebrow className="text-[10px] sm:text-[11px]">
+                  {PRODUCT_CREATE_PANEL_COPY.structureEyebrow}
+                </ProductSectionEyebrow>
                 <CardTitle className="text-base sm:text-lg">{PRODUCT_CREATE_PANEL_COPY.structureTitle}</CardTitle>
                 <CardDescription className="text-sm leading-6 text-foreground/70">
                   {PRODUCT_CREATE_PANEL_COPY.structureCardDescription}
@@ -245,8 +231,8 @@ function ProductCreatePanelInner({
                   <SelectContent>
                     {productTypeOptions.map((option) => (
                       <SelectItem key={option.code} value={option.code}>
-                        {getProductTypeLabel(option)}
-                      </SelectItem>
+                          {getProductTypeLabel(option, PRODUCT_CREATE_PANEL_COPY)}
+                        </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

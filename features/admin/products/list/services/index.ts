@@ -1,7 +1,9 @@
 export { toggleProductFeatured } from "./toggle-product-featured.service";
-export { archiveProduct } from "../../shared/services/archive-product.service";
-export { restoreProduct } from "../../shared/services/restore-product.service";
-export { deleteProductPermanently } from "../../shared/services/delete-product-permanently.service";
+export {
+  archiveProduct,
+  restoreProduct,
+  deleteProductPermanently,
+} from "../../shared/product-lifecycle-services";
 
 export {
   bulkArchiveProducts,

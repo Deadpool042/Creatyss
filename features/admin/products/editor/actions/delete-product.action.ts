@@ -8,7 +8,7 @@ import type {
   DeleteProductInput,
   DeleteProductResult,
 } from "@/features/admin/products/editor/types/product-editor.types";
-import { archiveProduct } from "@/features/admin/products/shared/services/archive-product.service";
+import { archiveProduct } from "@/features/admin/products/shared/product-lifecycle-services";
 
 export async function deleteProductAction(input: DeleteProductInput): Promise<DeleteProductResult> {
   const parsed = deleteProductSchema.safeParse(input);

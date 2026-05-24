@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type {
   AdminProductFeedItem,
   AdminProductFeedPageResult,
-} from "@/features/admin/products/list/types/product-list.types";
+} from "@/features/admin/products/list/types/product-list-query.types";
 
 type FeedCursor = {
   updatedAt: string;
@@ -116,8 +116,7 @@ export function useAdminProductFeed({
       const currentCursorKey = getCursorKey(nextCursor);
       const nextCursorKey = getCursorKey(data.nextCursor);
 
-      const cursorDidAdvance =
-        data.nextCursor !== null && nextCursorKey !== currentCursorKey;
+      const cursorDidAdvance = data.nextCursor !== null && nextCursorKey !== currentCursorKey;
 
       if (!cursorDidAdvance) {
         setNextCursor(data.nextCursor);

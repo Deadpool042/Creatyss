@@ -1,9 +1,20 @@
 "use client";
 
-import { useMemo, useState, type JSX } from "react";
+import Image from "next/image";
+import { useActionState, useMemo, useState, useTransition, type ChangeEvent, type JSX } from "react";
 import { Images, Upload } from "lucide-react";
 
-import { AdminFormMessage, AdminFormSection } from "@/components/admin/forms";
+import { AdminFormField, AdminFormMessage, AdminFormSection } from "@/components/admin/forms";
+import { CustomButton } from "@/components/shared";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import type {
   attachProductImagesAction,
   deleteProductImageAction,
@@ -12,13 +23,14 @@ import type {
   updateProductImageAltTextAction,
   uploadProductImagesAction,
 } from "@/features/admin/products/editor/actions";
-import type {
-  AdminProductImageItem,
-  AttachableMediaAssetItem,
+import {
+  uploadProductImagesFormInitialState,
+  type AdminProductImageItem,
+  type AttachableMediaAssetItem,
+  type ReorderProductImageResult,
+  type UploadProductImagesFormState,
 } from "@/features/admin/products/editor/types";
-import { ProductImageGallery } from "./images/product-image-gallery";
-import { ProductImageLibrarySheet } from "./images/product-image-library-sheet";
-import { ProductImageUploadForm } from "./images/product-image-upload-form";
+import { ProductImageItem } from "./images/product-image-item";
 
 type SetProductPrimaryImageAction = typeof setProductPrimaryImageAction;
 type UploadProductImagesAction = typeof uploadProductImagesAction;
@@ -48,6 +60,333 @@ type ProductImagesTabProps = {
   uploadFormOpen?: boolean;
   onUploadFormOpenChange?: (open: boolean) => void;
 };
+
+type ProductImageGallerySectionProps = {
+  productId: string;
+  images: AdminProductImageItem[];
+  onSetPrimary?: (mediaAssetId: string) => Promise<ReorderProductImageResult>;
+  onDelete?: (imageId: string) => Promise<ReorderProductImageResult>;
+  onUpdateAltText?: (imageId: string, altText: string) => Promise<ReorderProductImageResult>;
+  onReorder?: (imageId: string, sortOrder: number) => Promise<ReorderProductImageResult>;
+};
+
+function ProductImageGallerySection({
+  productId,
+  images,
+  onSetPrimary,
+  onDelete,
+  onUpdateAltText,
+  onReorder,
+}: ProductImageGallerySectionProps): JSX.Element {
+  if (images.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border bg-card px-4 py-10 text-center text-sm text-muted-foreground">
+        Aucun média associé.
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      {images.map((image, index) => {
+        const previous = images[index - 1] ?? null;
+        const next = images[index + 1] ?? null;
+
+        return (
+          <ProductImageItem
+            key={image.id}
+            productId={productId}
+            image={image}
+            canMoveUp={previous !== null}
+            canMoveDown={next !== null}
+            previousSortOrder={previous?.sortOrder ?? null}
+            nextSortOrder={next?.sortOrder ?? null}
+            {...(onSetPrimary ? { onSetPrimary } : {})}
+            {...(onDelete ? { onDelete } : {})}
+            {...(onUpdateAltText ? { onUpdateAltText } : {})}
+            {...(onReorder ? { onReorder } : {})}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+function ProductImageUploadSection({
+  productId,
+  action,
+}: Readonly<{
+  productId: string;
+  action: UploadProductImagesAction;
+}>): JSX.Element {
+  const [state, formAction, pending] = useActionState<UploadProductImagesFormState, FormData>(
+    action,
+    uploadProductImagesFormInitialState
+  );
+  const [selectedFilesCount, setSelectedFilesCount] = useState(0);
+  const [makePrimaryChecked, setMakePrimaryChecked] = useState(false);
+
+  const canSetPrimary = selectedFilesCount === 1;
+
+  const checkboxHint = useMemo(() => {
+    if (selectedFilesCount <= 0) {
+      return "Sélectionnez une image unique pour pouvoir la définir explicitement comme image principale.";
+    }
+
+    if (selectedFilesCount === 1) {
+      return "Cette image sera définie comme image principale du produit. Si une image principale est déjà définie, elle sera remplacée.";
+    }
+
+    return "Avec plusieurs images sélectionnées, cette option est désactivée. Si le produit n’a pas encore d’image principale, la première importée sera utilisée automatiquement.";
+  }, [selectedFilesCount]);
+
+  function handleFilesChange(event: ChangeEvent<HTMLInputElement>): void {
+    const nextCount = event.target.files?.length ?? 0;
+    setSelectedFilesCount(nextCount);
+
+    if (nextCount !== 1) {
+      setMakePrimaryChecked(false);
+    }
+  }
+
+  return (
+    <form action={formAction} className="space-y-5">
+      <input type="hidden" name="productId" value={productId} />
+
+      <AdminFormMessage
+        tone={state.status === "success" ? "success" : "error"}
+        message={state.status !== "idle" ? state.message : null}
+      />
+
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
+        <AdminFormField
+          label="Images à importer"
+          htmlFor="product-image-files"
+          required
+          description="Formats acceptés : JPEG, PNG, WebP, AVIF. La sélection multiple est autorisée."
+          {...(state.fieldErrors.files ? { error: state.fieldErrors.files } : {})}
+        >
+          <Input
+            id="product-image-files"
+            name="files"
+            type="file"
+            multiple
+            accept="image/jpeg,image/png,image/webp,image/avif"
+            className="text-sm"
+            onChange={handleFilesChange}
+          />
+        </AdminFormField>
+
+        <AdminFormField
+          label="Définir comme image principale"
+          htmlFor="product-image-make-primary"
+          description={checkboxHint}
+          {...(state.fieldErrors.makePrimary ? { error: state.fieldErrors.makePrimary } : {})}
+        >
+          <label className="flex min-h-10 items-center gap-3 rounded-md border px-3 py-2 text-sm">
+            <input
+              id="product-image-make-primary"
+              name="makePrimary"
+              type="checkbox"
+              value="true"
+              className="h-4 w-4"
+              checked={makePrimaryChecked}
+              disabled={!canSetPrimary}
+              onChange={(event) => setMakePrimaryChecked(event.target.checked)}
+            />
+            <span>Utiliser comme image principale</span>
+          </label>
+        </AdminFormField>
+      </div>
+
+      <AdminFormField
+        label="Texte alternatif"
+        htmlFor="product-image-alt-text"
+        description="Champ optionnel appliqué aux images importées."
+        {...(state.fieldErrors.altText ? { error: state.fieldErrors.altText } : {})}
+      >
+        <Input
+          id="product-image-alt-text"
+          name="altText"
+          placeholder="Décris brièvement l’image"
+          className="text-sm"
+        />
+      </AdminFormField>
+
+      <div className="flex justify-end">
+        <CustomButton type="submit" loading={pending} leadingIcon={<Upload className="h-4 w-4" />}>
+          {pending ? "Import…" : "Importer les images"}
+        </CustomButton>
+      </div>
+    </form>
+  );
+}
+
+function ProductImageLibraryDialog({
+  open,
+  onOpenChange,
+  items,
+  onAttach,
+}: Readonly<{
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  items: AttachableMediaAssetItem[];
+  onAttach?: (mediaAssetIds: string[]) => Promise<{ status: "success" | "error"; message: string }>;
+}>): JSX.Element {
+  const [search, setSearch] = useState("");
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  const filteredItems = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+
+    if (normalizedSearch.length === 0) {
+      return items;
+    }
+
+    return items.filter((item) => {
+      const haystack = [item.originalFilename ?? "", item.altText ?? "", item.publicUrl]
+        .join(" ")
+        .toLowerCase();
+
+      return haystack.includes(normalizedSearch);
+    });
+  }, [items, search]);
+
+  function toggleItem(id: string): void {
+    setSelectedIds((current) =>
+      current.includes(id) ? current.filter((value) => value !== id) : [...current, id]
+    );
+  }
+
+  function handleAttach(): void {
+    if (!onAttach || selectedIds.length === 0) {
+      return;
+    }
+
+    startTransition(async () => {
+      const result = await onAttach(selectedIds);
+      setMessage(result.message);
+
+      if (result.status === "success") {
+        setSelectedIds([]);
+        onOpenChange(false);
+      }
+    });
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="overflow-hidden p-0 sm:max-w-4xl">
+        <div className="flex max-h-[85dvh] flex-col">
+          <DialogHeader className="border-b px-6 py-4 text-left">
+            <DialogTitle>Médiathèque</DialogTitle>
+            <DialogDescription>
+              Sélectionne un ou plusieurs médias déjà présents dans ta médiathèque pour les ajouter
+              à la galerie du produit.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden px-6 py-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <Input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Rechercher un média…"
+                className="sm:max-w-sm"
+              />
+
+              <div className="text-sm text-muted-foreground">
+                {selectedIds.length} sélection{selectedIds.length > 1 ? "s" : ""}
+              </div>
+            </div>
+
+            {message ? <p className="text-sm text-muted-foreground">{message}</p> : null}
+
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              {filteredItems.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-border bg-card px-4 py-10 text-center text-sm text-muted-foreground">
+                  Aucun media disponible.
+                </div>
+              ) : (
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                  {filteredItems.map((item) => {
+                    const checked = selectedIds.includes(item.id);
+
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => toggleItem(item.id)}
+                        className={[
+                          "overflow-hidden rounded-2xl border bg-card text-left shadow-sm transition",
+                          checked
+                            ? "border-foreground ring-1 ring-foreground/20"
+                            : "border-border hover:border-foreground/30",
+                        ].join(" ")}
+                      >
+                        <div className="relative aspect-4/3 overflow-hidden bg-muted">
+                          <Image
+                            src={item.publicUrl}
+                            alt={item.altText ?? item.originalFilename ?? "Media"}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+
+                        <div className="space-y-1 p-3">
+                          <div className="flex items-start justify-between gap-3">
+                            <p className="line-clamp-1 text-sm font-medium text-foreground">
+                              {item.originalFilename ?? "Media"}
+                            </p>
+                            <span
+                              className={[
+                                "mt-0.5 inline-flex h-4 w-4 shrink-0 rounded-full border",
+                                checked
+                                  ? "border-foreground bg-foreground"
+                                  : "border-border bg-background",
+                              ].join(" ")}
+                              aria-hidden="true"
+                            />
+                          </div>
+
+                          <p className="line-clamp-2 text-sm text-muted-foreground">
+                            {item.altText && item.altText.trim().length > 0
+                              ? item.altText
+                              : "Sans texte alternatif"}
+                          </p>
+
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(item.createdAt).toLocaleString("fr-FR")}
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end gap-2 border-t px-6 py-4">
+            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
+              Annuler
+            </Button>
+
+            <Button
+              type="button"
+              disabled={!onAttach || selectedIds.length === 0 || isPending}
+              onClick={handleAttach}
+            >
+              {isPending ? "Ajout en cours…" : "Ajouter à la galerie"}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export function ProductImagesTab({
   productId,
@@ -352,7 +691,7 @@ export function ProductImagesTab({
                   </p>
 
                   <div className="rounded-2xl border border-border/60 bg-muted/10 p-4">
-                    <ProductImageUploadForm productId={productId} action={uploadImagesAction} />
+                    <ProductImageUploadSection productId={productId} action={uploadImagesAction} />
                   </div>
                 </div>
               ) : null}
@@ -370,7 +709,7 @@ export function ProductImagesTab({
                 </div>
               )}
 
-              <ProductImageGallery
+              <ProductImageGallerySection
                 productId={productId}
                 images={productImages}
                 {...(setPrimaryImageAction ? { onSetPrimary: handleSetPrimary } : {})}
@@ -407,7 +746,7 @@ export function ProductImagesTab({
         </div>
       </div>
 
-      <ProductImageLibrarySheet
+      <ProductImageLibraryDialog
         open={effectiveLibraryOpen}
         onOpenChange={setEffectiveLibraryOpen}
         items={attachableMediaItems}

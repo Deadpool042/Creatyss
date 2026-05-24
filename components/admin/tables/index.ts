@@ -1,3 +1,9 @@
+// Table Head
+export { AdminSortableTableHead } from "./head/admin-sortable-table-head";
+export type { SortableColumnAlign, SortableColumnConfig } from "./head/admin-sortable-table-head";
+export { ADMIN_TABLE_HEAD_CLASSNAME } from "./styles/admin-table-head.styles";
+
+// Table Toolbar
 export {
   AdminDataTableActiveFilters,
   type AdminDataTableActiveFilterItem,

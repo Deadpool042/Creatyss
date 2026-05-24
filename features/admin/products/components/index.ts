@@ -28,11 +28,9 @@ export { ProductTableRowActions } from "./list";
 export { ProductTable } from "./list";
 export { ProductTableDesktop } from "./list";
 export { ProductTableMobile } from "./list";
-export { ProductTableToolbar } from "./list";
 export { ProductFeaturedToggle } from "./list";
 export { ProductCollectionCard } from "./list";
 
 // Shared components
 export { ProductSection } from "./shared";
 export { ProductsShell } from "./shared";
-export { ProductsToolbar } from "./shared";

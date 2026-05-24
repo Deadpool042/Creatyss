@@ -4,26 +4,20 @@ import {
   createContext,
   useContext,
   useMemo,
-  useState,
   type PropsWithChildren,
   type ReactNode,
 } from "react";
 
-import { useProductTableFilters } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type {
   ProductFilterCategoryOption,
+  ProductListView,
   ProductStatusCounts,
   ProductTableItem,
 } from "@/features/admin/products/list/types/product-table.types";
-import { useProductTableActions } from "./hooks/use-product-table-actions";
-import type { ProductListView } from "./toolbar/product-table-toolbar-types";
+import { useProductTableController } from "./hooks/use-product-table-controller";
+import type { ProductMobileVisibleSelectionState } from "./hooks/use-product-table-mobile-selection";
 
-// ---------------------------------------------------------------------------
-// ProductTableDataContext — données serveur injectées depuis la page (data bridge)
-// Aligné sur CategoriesTableProvider : aucun hook, pure transmission de données.
-// ---------------------------------------------------------------------------
-
-type ProductTableDataContextValue = {
+type ProductTableData = {
   products: ProductTableItem[];
   categoryOptions: ProductFilterCategoryOption[];
   view: ProductListView;
@@ -32,6 +26,15 @@ type ProductTableDataContextValue = {
   currentPage: number;
   perPage: number;
   statusCounts: ProductStatusCounts;
+};
+
+type ProductTableController = ReturnType<typeof useProductTableController>;
+
+type ProductTableContextValue = ProductTableData & {
+  state: ProductTableController["state"];
+  actions: ProductTableController["actions"];
+  mobileVisibleSelection: ProductMobileVisibleSelectionState | null;
+  onMobileVisibleSelectionChange: (next: ProductMobileVisibleSelectionState) => void;
 };
 
 type ProductTableProviderProps = PropsWithChildren<{
@@ -45,7 +48,7 @@ type ProductTableProviderProps = PropsWithChildren<{
   statusCounts: ProductStatusCounts;
 }>;
 
-const ProductTableDataContext = createContext<ProductTableDataContextValue | null>(null);
+const ProductTableContext = createContext<ProductTableContextValue | null>(null);
 
 export function ProductTableProvider({
   products,
@@ -58,7 +61,21 @@ export function ProductTableProvider({
   statusCounts,
   children,
 }: ProductTableProviderProps): ReactNode {
-  const value = useMemo<ProductTableDataContextValue>(
+  const {
+    state,
+    actions,
+    mobileVisibleSelection,
+    onMobileVisibleSelectionChange,
+  } = useProductTableController({
+    products,
+    categoryOptions,
+    total,
+    totalPages,
+    currentPage,
+    perPage,
+  });
+
+  const value = useMemo<ProductTableContextValue>(
     () => ({
       products,
       categoryOptions,
@@ -68,110 +85,37 @@ export function ProductTableProvider({
       currentPage,
       perPage,
       statusCounts,
-    }),
-    [products, categoryOptions, view, total, totalPages, currentPage, perPage, statusCounts]
-  );
-
-  return (
-    <ProductTableDataContext.Provider value={value}>{children}</ProductTableDataContext.Provider>
-  );
-}
-
-export function useProductTableData(): ProductTableDataContextValue {
-  const context = useContext(ProductTableDataContext);
-
-  if (context === null) {
-    throw new Error("useProductTableData must be used within ProductTableProvider.");
-  }
-
-  return context;
-}
-
-// ---------------------------------------------------------------------------
-// ProductTableStateContext — état client dérivé des hooks (interne à ProductTable)
-// Reçoit les données du DataContext, calcule l'état de filtrage, sélection, etc.
-// ---------------------------------------------------------------------------
-
-type MobileVisibleSelectionState = {
-  visibleCount: number;
-  visibleSelectedCount: number;
-  areAllVisibleSelected: boolean;
-};
-
-type ProductTableState = ReturnType<typeof useProductTableFilters>;
-type ProductTableActions = ReturnType<typeof useProductTableActions>;
-
-type ProductTableStateContextValue = {
-  state: ProductTableState;
-  actions: ProductTableActions;
-  view: ProductListView;
-  mobileVisibleSelection: MobileVisibleSelectionState | null;
-  onMobileVisibleSelectionChange: (next: MobileVisibleSelectionState) => void;
-};
-
-const ProductTableStateContext = createContext<ProductTableStateContextValue | null>(null);
-
-export function ProductTableStateProvider({
-  children,
-}: Readonly<{ children: ReactNode }>): ReactNode {
-  const { products, categoryOptions, view, total, totalPages, currentPage, perPage } = useProductTableData();
-
-  const state = useProductTableFilters({
-    products,
-    categoryOptions,
-    total,
-    totalPages,
-    currentPage,
-    perPage,
-  });
-  const [mobileVisibleSelection, setMobileVisibleSelection] =
-    useState<MobileVisibleSelectionState | null>(null);
-
-  const currentPageProductIds = useMemo(
-    () => state.paginated.map((product) => product.id),
-    [state.paginated]
-  );
-
-  const mobileVisibleProductIds = useMemo(() => {
-    const visibleCount = mobileVisibleSelection?.visibleCount ?? 0;
-    return state.allFilteredProducts.slice(0, visibleCount).map((product) => product.id);
-  }, [mobileVisibleSelection?.visibleCount, state.allFilteredProducts]);
-
-  const actions = useProductTableActions({ currentPageProductIds, mobileVisibleProductIds });
-
-  const value = useMemo<ProductTableStateContextValue>(
-    () => ({
       state,
       actions,
-      view,
       mobileVisibleSelection,
-      onMobileVisibleSelectionChange: (next) => {
-        setMobileVisibleSelection((current) => {
-          if (
-            current !== null &&
-            current.visibleCount === next.visibleCount &&
-            current.visibleSelectedCount === next.visibleSelectedCount &&
-            current.areAllVisibleSelected === next.areAllVisibleSelected
-          ) {
-            return current;
-          }
-          return next;
-        });
-      },
+      onMobileVisibleSelectionChange,
     }),
-    [actions, mobileVisibleSelection, state, view]
+    [
+      actions,
+      categoryOptions,
+      currentPage,
+      mobileVisibleSelection,
+      onMobileVisibleSelectionChange,
+      perPage,
+      products,
+      state,
+      statusCounts,
+      total,
+      totalPages,
+      view,
+    ]
   );
 
   return (
-    <ProductTableStateContext.Provider value={value}>{children}</ProductTableStateContext.Provider>
+    <ProductTableContext.Provider value={value}>{children}</ProductTableContext.Provider>
   );
 }
 
-export function useProductTableContext(): ProductTableStateContextValue {
-  const context = useContext(ProductTableStateContext);
+export function useProductTableContext(): ProductTableContextValue {
+  const context = useContext(ProductTableContext);
 
   if (context === null) {
-    throw new Error("useProductTableContext must be used within ProductTableStateProvider.");
+    throw new Error("useProductTableContext must be used within ProductTableProvider.");
   }
 
   return context;

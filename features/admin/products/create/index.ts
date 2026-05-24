@@ -1,6 +1,6 @@
 import "server-only";
 
-export { createProductAction } from "./actions";
+export { createProductAction } from "./create-product.action";
 export { listAdminCreatableProductTypeOptions } from "./create-product.query";
 export {
   ensureAdminCreatableProductTypes,

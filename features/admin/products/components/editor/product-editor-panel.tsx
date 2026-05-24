@@ -4,9 +4,9 @@ import { useEffect, useState, type JSX } from "react";
 
 import { useAdminPageTitle } from "@/components/admin/admin-page-title-context";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-editor-topbar-menu";
-import { ProductMediaTopbarMenu } from "@/features/admin/products/components/editor/product-media-topbar-menu";
-import { ProductVariantTopbarMenu } from "@/features/admin/products/components/editor/product-variant-topbar-menu";
+import {
+  ProductEditorTopbarMenu,
+} from "@/features/admin/products/components/editor/product-topbar-menus";
 import {
   type attachProductImagesAction,
   type deleteProductImageAction,
@@ -125,48 +125,62 @@ const defaultClassNameTabTrigger = cn(
   "data-[state=active]:shadow-card [@media(max-height:480px)]:h-7"
 );
 
+const productEditorPrimaryTabs = [
+  { value: "general", label: "Général" },
+  { value: "pricing", label: "Tarification" },
+  { value: "images", label: "Médias" },
+  { value: "seo", label: "Référencement" },
+] as const;
+
+const productEditorAdvancedTabs = [
+  { value: "availability", label: "Disponibilité" },
+  { value: "inventory", label: "Stock" },
+  { value: "categories", label: "Catégories" },
+  { value: "related-products", label: "Produits liés" },
+  { value: "characteristics", label: "Caractéristiques" },
+] as const;
+
 function ProductEditorTabs({ isStandalone }: { isStandalone: boolean }): JSX.Element {
   return (
     <div className="min-w-0 shrink-0 border-b border-surface-border bg-card px-2 py-1.5 sm:px-3 md:px-4 md:py-2">
       <div className="no-scrollbar w-full overflow-x-auto overflow-y-hidden">
-        <div className="inline-flex min-w-full justify-start">
-          <TabsList
-            variant="line"
-            className="h-auto min-w-max flex-nowrap justify-start gap-1 rounded-none p-0"
-          >
-            <TabsTrigger className={defaultClassNameTabTrigger} value="general">
-              Général
-            </TabsTrigger>
-            {!isStandalone && (
-              <TabsTrigger className={defaultClassNameTabTrigger} value="variants">
-                Variantes
-              </TabsTrigger>
-            )}
-            <TabsTrigger className={defaultClassNameTabTrigger} value="pricing">
-              Tarification
-            </TabsTrigger>
-            <TabsTrigger className={defaultClassNameTabTrigger} value="availability">
-              Disponibilité
-            </TabsTrigger>
-            <TabsTrigger className={defaultClassNameTabTrigger} value="inventory">
-              Stock
-            </TabsTrigger>
-            <TabsTrigger className={defaultClassNameTabTrigger} value="images">
-              Médias
-            </TabsTrigger>
-            <TabsTrigger className={defaultClassNameTabTrigger} value="categories">
-              Catégories
-            </TabsTrigger>
-            <TabsTrigger className={defaultClassNameTabTrigger} value="related-products">
-              Produits liés
-            </TabsTrigger>
-            <TabsTrigger className={defaultClassNameTabTrigger} value="characteristics">
-              Caractéristiques
-            </TabsTrigger>
-            <TabsTrigger className={defaultClassNameTabTrigger} value="seo">
-              Référencement
-            </TabsTrigger>
-          </TabsList>
+        <div className="min-w-full space-y-2">
+          <div className="space-y-1">
+            <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Essentiel
+            </p>
+            <TabsList
+              variant="line"
+              className="h-auto min-w-max flex-nowrap justify-start gap-1 rounded-none p-0"
+            >
+              {productEditorPrimaryTabs.map((tab) => (
+                <TabsTrigger key={tab.value} className={defaultClassNameTabTrigger} value={tab.value}>
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+              {!isStandalone && (
+                <TabsTrigger className={defaultClassNameTabTrigger} value="variants">
+                  Variantes
+                </TabsTrigger>
+              )}
+            </TabsList>
+          </div>
+
+          <div className="space-y-1">
+            <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Avancé
+            </p>
+            <TabsList
+              variant="line"
+              className="h-auto min-w-max flex-nowrap justify-start gap-1 rounded-none p-0"
+            >
+              {productEditorAdvancedTabs.map((tab) => (
+                <TabsTrigger key={tab.value} className={defaultClassNameTabTrigger} value={tab.value}>
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
         </div>
       </div>
     </div>
@@ -219,36 +233,20 @@ export function ProductEditorPanel({
   ].join("|");
 
   useEffect(() => {
-    if (activeTab === "variants" && !product.product.isStandalone) {
-      setPageActionNode(
-        <ProductVariantTopbarMenu
-          productId={product.product.id}
-          onCreateVariant={() => setIsCreateVariantOpen(true)}
-        />
-      );
-      return;
-    }
-
-    if (activeTab === "images") {
-      setPageActionNode(
-        <ProductMediaTopbarMenu
-          productId={product.product.id}
-          onOpenLibrary={() => setIsLibraryOpen(true)}
-          onOpenUpload={() => setIsUploadFormOpen(true)}
-        />
-      );
-      return;
-    }
-
     setPageActionNode(
       <ProductEditorTopbarMenu
         productId={product.product.id}
         productSlug={product.product.slug}
         isArchived={product.product.isArchived}
+        canCreateVariant={!product.product.isStandalone}
+        {...(!product.product.isStandalone
+          ? { onCreateVariant: () => setIsCreateVariantOpen(true) }
+          : {})}
+        onOpenLibrary={() => setIsLibraryOpen(true)}
+        onOpenUpload={() => setIsUploadFormOpen(true)}
       />
     );
   }, [
-    activeTab,
     product.product.id,
     product.product.slug,
     product.product.isArchived,

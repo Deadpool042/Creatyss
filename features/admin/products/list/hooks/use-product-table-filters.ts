@@ -5,14 +5,14 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PRODUCT_FILTER_VALID_VALUES } from "@/features/admin/products/config";
 import type {
   ProductFilterCategoryOption,
-  ProductFilterFeaturedOption,
+  ProductFeaturedFilterValue,
   ProductFilterImageOption,
   ProductFilterStockOption,
   ProductFilterVariantOption,
   ProductSortOption,
   ProductTableFiltersState,
   ProductTableItem,
-  ProductTableStatusFilter,
+  ProductTableStatus,
 } from "../types";
 
 type UseProductTableFiltersInput = {
@@ -41,18 +41,19 @@ function parsePage(value: string | null): number {
   return Number.isInteger(n) && n >= 1 ? n : 1;
 }
 
-function parseStatus(value: string | null): ProductTableStatusFilter {
-  const valid: ProductTableStatusFilter[] = ["all", "active", "draft", "inactive", "archived"];
-  return valid.includes(value as ProductTableStatusFilter)
-    ? (value as ProductTableStatusFilter)
-    : "all";
+const VALID_STATUSES = PRODUCT_FILTER_VALID_VALUES.statuses as readonly ProductTableStatus[];
+const VALID_FEATURED = PRODUCT_FILTER_VALID_VALUES.featured.filter(
+  (value): value is ProductFeaturedFilterValue => value !== "all"
+);
+
+function parseArray<T extends string>(value: string | null, valid: readonly T[]): T[] {
+  if (!value) return [];
+  return value.split(",").filter((item): item is T => valid.includes(item as T));
 }
 
-function parseFeatured(value: string | null): ProductFilterFeaturedOption {
-  const valid: ProductFilterFeaturedOption[] = ["all", "featured", "standard"];
-  return valid.includes(value as ProductFilterFeaturedOption)
-    ? (value as ProductFilterFeaturedOption)
-    : "all";
+function parseCategoryIds(value: string | null): string[] {
+  if (!value) return [];
+  return value.split(",").filter(Boolean);
 }
 
 function sortCategories(
@@ -79,10 +80,10 @@ export function useProductTableFilters({
   // ── URL-based filter state ────────────────────────────────────────────────
 
   const search = searchParams.get("search") ?? "";
-  const status = parseStatus(searchParams.get("status"));
+  const status = parseArray(searchParams.get("status"), VALID_STATUSES);
   const sort = parseSort(searchParams.get("sort"));
-  const featured = parseFeatured(searchParams.get("featured"));
-  const categoryId = searchParams.get("categoryId") ?? "all";
+  const featured = parseArray(searchParams.get("featured"), VALID_FEATURED);
+  const categoryIds = parseCategoryIds(searchParams.get("categories") ?? searchParams.get("categoryId"));
 
   // page / perPage come from server via props (already parsed & validated)
   // but we still read from URL for the setters
@@ -90,7 +91,6 @@ export function useProductTableFilters({
 
   // ── Local UI-only state (not in URL) ─────────────────────────────────────
 
-  const [parentCategoryId, setParentCategoryId] = useState("all");
   const [image, setImage] = useState<ProductFilterImageOption>("all");
   const [stock, setStock] = useState<ProductFilterStockOption>("all");
   const [variant, setVariant] = useState<ProductFilterVariantOption>("all");
@@ -129,8 +129,8 @@ export function useProductTableFilters({
   );
 
   const setStatus = useCallback(
-    (value: ProductTableStatusFilter) =>
-      pushParams({ status: value === "all" ? null : value }),
+    (value: ProductTableStatus[]) =>
+      pushParams({ status: value.length > 0 ? value.join(",") : null }),
     [pushParams]
   );
 
@@ -141,13 +141,14 @@ export function useProductTableFilters({
   );
 
   const setFeatured = useCallback(
-    (value: ProductFilterFeaturedOption) =>
-      pushParams({ featured: value === "all" ? null : value }),
+    (value: ProductFeaturedFilterValue[]) =>
+      pushParams({ featured: value.length > 0 ? value.join(",") : null }),
     [pushParams]
   );
 
-  const setCategoryId = useCallback(
-    (value: string) => pushParams({ categoryId: value === "all" ? null : value }),
+  const setCategoryIds = useCallback(
+    (value: string[]) =>
+      pushParams({ categories: value.length > 0 ? value.join(",") : null, categoryId: null }),
     [pushParams]
   );
 
@@ -193,17 +194,6 @@ export function useProductTableFilters({
     return result;
   }, [image, products, stock, variant]);
 
-  // ── Category options filtered by parent ───────────────────────────────────
-
-  const filteredCategoryOptions = useMemo(() => {
-    if (parentCategoryId === "all") {
-      return categoryOptions;
-    }
-    return categoryOptions.filter(
-      (category) => category.id === parentCategoryId || category.parentId === parentCategoryId
-    );
-  }, [categoryOptions, parentCategoryId]);
-
   // ── Pagination — server-driven ────────────────────────────────────────────
   // paginated = the server-filtered page of products, after client residual filters
   // allFilteredProducts = same (mobile infinite scroll receives this)
@@ -214,29 +204,21 @@ export function useProductTableFilters({
   // ── Active filters for UI chips ───────────────────────────────────────────
 
   const activeFilters = useMemo(() => [
-    ...(status !== "all"
-      ? [{ key: "status", label: `Statut · ${status}`, onRemove: () => setStatus("all") }]
-      : []),
-    ...(categoryId !== "all"
-      ? [
-          {
-            key: "category",
-            label: `Catégorie · ${
-              categoryOptions.find((cat) => cat.id === categoryId)?.name ?? categoryId
-            }`,
-            onRemove: () => setCategoryId("all"),
-          },
-        ]
-      : []),
-    ...(featured !== "all"
-      ? [
-          {
-            key: "featured",
-            label: featured === "featured" ? "Mis en avant" : "Standard",
-            onRemove: () => setFeatured("all"),
-          },
-        ]
-      : []),
+    ...status.map((value) => ({
+      key: `status-${value}`,
+      label: `Statut · ${value}`,
+      onRemove: () => setStatus(status.filter((item) => item !== value)),
+    })),
+    ...categoryIds.map((value) => ({
+      key: `category-${value}`,
+      label: `Catégorie · ${categoryOptions.find((cat) => cat.id === value)?.name ?? value}`,
+      onRemove: () => setCategoryIds(categoryIds.filter((item) => item !== value)),
+    })),
+    ...featured.map((value) => ({
+      key: `featured-${value}`,
+      label: value === "featured" ? "Mis en avant" : "Standard",
+      onRemove: () => setFeatured(featured.filter((item) => item !== value)),
+    })),
     ...(image !== "all"
       ? [
           {
@@ -268,8 +250,8 @@ export function useProductTableFilters({
       ? [{ key: "search", label: `Recherche · ${search.trim()}`, onRemove: () => setSearch("") }]
       : []),
   ], [
-    status, categoryId, featured, image, stock, variant, search,
-    categoryOptions, setStatus, setCategoryId, setFeatured, setSearch, setImage, setStock, setVariant,
+    status, categoryIds, featured, image, stock, variant, search,
+    categoryOptions, setStatus, setCategoryIds, setFeatured, setSearch, setImage, setStock, setVariant,
   ]);
 
   // ── Reset ─────────────────────────────────────────────────────────────────
@@ -278,7 +260,6 @@ export function useProductTableFilters({
     setImage("all");
     setStock("all");
     setVariant("all");
-    setParentCategoryId("all");
     router.push(pathname);
   }, [pathname, router]);
 
@@ -292,11 +273,8 @@ export function useProductTableFilters({
     status,
     setStatus,
 
-    categoryId,
-    setCategoryId,
-
-    parentCategoryId,
-    setParentCategoryId,
+    categoryIds,
+    setCategoryIds,
 
     featured,
     setFeatured,
@@ -313,7 +291,7 @@ export function useProductTableFilters({
     sort,
     setSort,
 
-    categoryOptions: [...filteredCategoryOptions].sort(sortCategories),
+    categoryOptions: [...categoryOptions].sort(sortCategories),
     allFilteredProducts: filtered,
     paginated: filtered,
     currentPage: safeCurrentPage,

@@ -1,6 +1,8 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, type JSX } from "react";
+import Image from "next/image";
+import { useActionState, useEffect, useMemo, useState, type JSX } from "react";
+import { Check } from "lucide-react";
 
 import { useAutoSlug } from "@/entities/shared/slug/hooks/use-auto-slug";
 import { AdminFormField, AdminFormFooter, AdminFormMessage } from "@/components/admin/forms";
@@ -29,7 +31,10 @@ import {
   type AdminProductVariantListItem,
   type ProductVariantFormAction,
 } from "@/features/admin/products/editor/types";
-import { ProductVariantImagePicker } from "./product-variant-image-picker";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { ProductSectionEyebrow } from "@/features/admin/products/components/shared";
+import { isColorAxisOption } from "./color-utils";
 
 type ProductVariantEditorSheetProps = {
   open: boolean;
@@ -50,17 +55,72 @@ const noopVariantAction: ProductVariantFormAction = async () => {
   };
 };
 
-function isColorAxisOption(option: { code: string; name: string }): boolean {
-  const code = option.code.trim().toLowerCase();
-  const name = option.name.trim().toLowerCase();
-  return code.includes("color") || code.includes("couleur") || name.includes("color") || name.includes("couleur");
-}
-
-function SectionEyebrow({ children }: { children: string }): JSX.Element {
+function ProductVariantImagePicker({
+  images,
+  currentSelectedMediaAssetId,
+}: Readonly<{
+  images: AdminProductImageItem[];
+  currentSelectedMediaAssetId: string;
+}>): JSX.Element {
   return (
-    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-      {children}
-    </p>
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      {images.map((image) => {
+        const checked = image.mediaAssetId === currentSelectedMediaAssetId;
+        const displayName = image.originalName ?? "Media";
+        const displayAltText =
+          image.altText && image.altText.trim().length > 0 ? image.altText.trim() : null;
+
+        return (
+          <label key={image.id} className="block cursor-pointer">
+            <input
+              type="radio"
+              name="primaryImageId"
+              value={image.mediaAssetId}
+              defaultChecked={checked}
+              className="peer sr-only"
+            />
+
+            <div
+              className={cn(
+                "relative overflow-hidden rounded-2xl border border-surface-border bg-surface-panel-soft shadow-sm transition-all",
+                "hover:border-surface-border-strong hover:shadow-card",
+                "peer-checked:border-primary peer-checked:bg-background peer-checked:shadow-card peer-checked:ring-2 peer-checked:ring-primary/20"
+              )}
+            >
+              <Badge
+                variant="secondary"
+                className="absolute right-2 top-2 z-10 gap-1 opacity-0 shadow-sm transition-opacity peer-checked:opacity-100"
+              >
+                <Check className="size-3" />
+                Selectionnee
+              </Badge>
+
+              <div className="relative aspect-square overflow-hidden border-b border-surface-border bg-muted">
+                {image.publicUrl ? (
+                  <Image
+                    src={image.publicUrl}
+                    alt={image.altText ?? "Image produit"}
+                    fill
+                    className="object-cover transition-transform duration-200 peer-checked:scale-[1.02]"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center px-3 text-center text-xs text-muted-foreground">
+                    Media indisponible
+                  </div>
+                )}
+              </div>
+
+              <div className="flex min-h-16 flex-col gap-1 px-3 py-3">
+                <p className="truncate text-sm font-medium text-foreground">{displayName}</p>
+                {displayAltText ? (
+                  <p className="truncate text-xs text-muted-foreground">{displayAltText}</p>
+                ) : null}
+              </div>
+            </div>
+          </label>
+        );
+      })}
+    </div>
   );
 }
 
@@ -83,6 +143,7 @@ export function ProductVariantEditorSheet({
     resolvedAction,
     productVariantFormInitialState
   );
+  const [isImageSectionOpen, setIsImageSectionOpen] = useState(false);
 
   const productImages = useMemo(
     () => images.filter((image) => image.subjectType === "product"),
@@ -196,7 +257,7 @@ export function ProductVariantEditorSheet({
               <Card className="rounded-[1.35rem] border border-surface-border-strong bg-surface-panel shadow-raised py-0">
                 <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-surface-panel-soft px-5 py-4">
                   <div className="space-y-1.5">
-                    <SectionEyebrow>Identité</SectionEyebrow>
+                    <ProductSectionEyebrow>Identité</ProductSectionEyebrow>
                     <CardTitle>Identité de la variante</CardTitle>
                     <CardDescription className="leading-6 text-foreground/70">
                       Définissez la référence visible dans le catalogue et les repères utilisés par
@@ -257,7 +318,7 @@ export function ProductVariantEditorSheet({
               <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
                 <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4">
                   <div className="space-y-1.5">
-                    <SectionEyebrow>Attributs</SectionEyebrow>
+                    <ProductSectionEyebrow>Attributs</ProductSectionEyebrow>
                     <CardTitle>Attributs de la variante</CardTitle>
                     <CardDescription className="leading-6">
                       Associez cette variante aux valeurs d&apos;options qui la différencient (couleur, taille…).
@@ -324,7 +385,7 @@ export function ProductVariantEditorSheet({
               <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
                 <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4">
                   <div className="space-y-1.5">
-                    <SectionEyebrow>Publication</SectionEyebrow>
+                    <ProductSectionEyebrow>Publication</ProductSectionEyebrow>
                     <CardTitle>Publication et ordre</CardTitle>
                     <CardDescription className="leading-6">
                       Choisissez le statut de la variante, son ordre d&apos;apparition et son éventuel
@@ -388,37 +449,61 @@ export function ProductVariantEditorSheet({
               {/* Image */}
               <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
                 <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4">
-                  <div className="space-y-1.5">
-                    <SectionEyebrow>Image</SectionEyebrow>
-                    <CardTitle>Image principale</CardTitle>
-                    <CardDescription className="leading-6">
-                      La variante choisit son image principale parmi les médias déjà rattachés au
-                      produit.
-                    </CardDescription>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="space-y-1.5">
+                      <ProductSectionEyebrow>Image</ProductSectionEyebrow>
+                      <CardTitle>Image principale</CardTitle>
+                      <CardDescription className="leading-6">
+                        La variante choisit son image principale parmi les médias déjà rattachés au
+                        produit.
+                      </CardDescription>
+                    </div>
+
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="xs"
+                      className="h-7 rounded-full px-3 text-xs text-muted-foreground hover:text-foreground"
+                      onClick={() => setIsImageSectionOpen((current) => !current)}
+                    >
+                      {isImageSectionOpen ? "Masquer" : "Afficher"}
+                    </Button>
                   </div>
                 </CardHeader>
-                <CardContent className="px-5 py-5">
-                  {state.fieldErrors.primaryImageId ? (
-                    <p className="mb-4 text-sm text-destructive">{state.fieldErrors.primaryImageId}</p>
-                  ) : null}
-                  {productImages.length > 0 ? (
-                    <ProductVariantImagePicker
-                      images={productImages}
-                      currentSelectedMediaAssetId={initialValues.primaryImageId}
-                    />
-                  ) : (
-                    <div className="rounded-2xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-8 text-sm text-muted-foreground">
-                      Aucune image produit n&apos;est encore disponible pour cette variante.
-                    </div>
-                  )}
-                </CardContent>
+                {isImageSectionOpen ? (
+                  <CardContent className="px-5 py-5">
+                    {state.fieldErrors.primaryImageId ? (
+                      <p className="mb-4 text-sm text-destructive">
+                        {state.fieldErrors.primaryImageId}
+                      </p>
+                    ) : null}
+                    {productImages.length > 0 ? (
+                      <ProductVariantImagePicker
+                        images={productImages}
+                        currentSelectedMediaAssetId={initialValues.primaryImageId}
+                      />
+                    ) : (
+                      <div className="rounded-2xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-8 text-sm text-muted-foreground">
+                        Aucune image produit n&apos;est encore disponible pour cette variante.
+                      </div>
+                    )}
+                  </CardContent>
+                ) : (
+                  <CardContent className="px-5 py-4">
+                    <p className="text-sm text-muted-foreground">
+                      {initialValues.primaryImageId
+                        ? "Une image principale est déjà définie. Ouvrez ce bloc pour la modifier."
+                        : "Aucune image principale n’est encore définie. Ouvrez ce bloc pour en choisir une."}
+                    </p>
+                  </CardContent>
+                )}
               </Card>
 
               {/* Repères */}
               <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
                 <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4">
                   <div className="space-y-1.5">
-                    <SectionEyebrow>Repères</SectionEyebrow>
+                    <ProductSectionEyebrow>Repères</ProductSectionEyebrow>
                     <CardTitle>Repères techniques</CardTitle>
                     <CardDescription className="leading-6">
                       Conservez ici les identifiants utiles à l&apos;exploitation et aux rapprochements
@@ -445,7 +530,7 @@ export function ProductVariantEditorSheet({
               <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
                 <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4">
                   <div className="space-y-1.5">
-                    <SectionEyebrow>Dimensions</SectionEyebrow>
+                    <ProductSectionEyebrow>Dimensions</ProductSectionEyebrow>
                     <CardTitle>Dimensions et poids</CardTitle>
                     <CardDescription className="leading-6">
                       Renseignez les mesures de la variante lorsqu&apos;elles sont utiles au pilotage.

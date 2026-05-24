@@ -2,6 +2,7 @@
 
 import type { JSX, ReactNode } from "react";
 
+import { ProductSectionEyebrow } from "@/features/admin/products/components/shared";
 import { cn } from "@/lib/utils";
 
 type ProductCardInfoTileProps = {
@@ -26,14 +27,9 @@ export function ProductCardInfoTile({
         className
       )}
     >
-      <p
-        className={cn(
-          "text-[10px] uppercase tracking-[0.14em] text-muted-foreground",
-          labelClassName
-        )}
-      >
+      <ProductSectionEyebrow className={cn("text-[10px] tracking-[0.14em]", labelClassName)}>
         {label}
-      </p>
+      </ProductSectionEyebrow>
 
       <div className={cn("mt-1.5 min-h-8 text-sm", bodyClassName)}>{children}</div>
     </div>

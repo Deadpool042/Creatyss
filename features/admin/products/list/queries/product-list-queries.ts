@@ -6,6 +6,7 @@ import { db } from "@/core/db";
 import { mapAdminProductFeedItem } from "@/features/admin/products/list/mappers/server";
 import type { AdminProductFeedItem } from "@/features/admin/products/list/types/product-feed.types";
 import type {
+  ProductFeaturedFilterValue,
   ProductSortOption,
   ProductStatusCounts,
   ProductTableStatus,
@@ -20,8 +21,6 @@ import type {
 
 export type AdminProductsListView = "active" | "trash";
 
-export type ProductFeaturedFilter = "all" | "featured" | "standard";
-
 export type ProductListFilters = {
   view?: AdminProductsListView;
   search?: string;
@@ -29,8 +28,8 @@ export type ProductListFilters = {
   sort?: ProductSortOption;
   page?: number;
   perPage?: number;
-  categoryId?: string;
-  featured?: ProductFeaturedFilter;
+  categoryIds?: string[];
+  featured?: ProductFeaturedFilterValue[];
 };
 
 export type ProductListResult = {
@@ -133,8 +132,8 @@ export async function listAdminProducts(
     sort = "updated-desc",
     page = 1,
     perPage = DEFAULT_PER_PAGE,
-    categoryId,
-    featured = "all",
+    categoryIds = [],
+    featured = [],
   } = filters;
 
   const normalizedSearch = search.trim();
@@ -162,18 +161,29 @@ export async function listAdminProducts(
       : {};
 
   const featuredWhere =
-    featured === "featured"
-      ? { isFeatured: true }
-      : featured === "standard"
-        ? { isFeatured: false }
-        : {};
+    featured.length === 1
+      ? featured[0] === "featured"
+        ? { isFeatured: true }
+        : { isFeatured: false }
+      : {};
 
   const categoryWhere =
-    categoryId !== undefined && categoryId !== "" && categoryId !== "all"
+    categoryIds.length > 0
       ? {
           productCategories: {
             some: {
-              category: { id: categoryId },
+              OR: [
+                {
+                  category: {
+                    id: { in: categoryIds },
+                  },
+                },
+                {
+                  category: {
+                    parentId: { in: categoryIds },
+                  },
+                },
+              ],
             },
           },
         }
@@ -292,7 +302,8 @@ export async function getAdminProductsFeedPage(
   const { items: products } = await listAdminProducts({
     ...(input.search !== null ? { search: input.search } : {}),
     status: input.status,
-    featured: input.featured ?? "all",
+    ...(input.categoryIds.length > 0 ? { categoryIds: input.categoryIds } : {}),
+    featured: input.featured,
   });
 
   const filtered = products.filter((product) => {
@@ -304,11 +315,11 @@ export async function getAdminProductsFeedPage(
       return false;
     }
 
-    if (input.featured === "featured" && !product.isFeatured) {
+    if (input.featured.length === 1 && input.featured[0] === "featured" && !product.isFeatured) {
       return false;
     }
 
-    if (input.featured === "standard" && product.isFeatured) {
+    if (input.featured.length === 1 && input.featured[0] === "standard" && product.isFeatured) {
       return false;
     }
 

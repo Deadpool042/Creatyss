@@ -1,4 +1,8 @@
-import type { ProductTableStatus, ProductStockState } from "./product-table.types";
+import type {
+  ProductFeaturedFilterValue,
+  ProductTableStatus,
+  ProductStockState,
+} from "./product-table.types";
 
 export type GetAdminProductsFeedPageCursor = {
   updatedAt: string;
@@ -31,8 +35,8 @@ export type GetAdminProductsFeedPageInput = {
   cursor: string | null;
   search: string | null;
   status: ProductTableStatus[];
-  categoryId: string | null;
-  featured: "featured" | "standard" | null;
+  categoryIds: string[];
+  featured: ProductFeaturedFilterValue[];
   sort: "updated-desc";
 };
 

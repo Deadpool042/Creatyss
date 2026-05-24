@@ -11,10 +11,9 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { PRODUCT_ROW_ACTIONS_COPY } from "@/features/admin/products/config";
+import type { ProductListView } from "@/features/admin/products/list/types";
 import { useProductLifecycleActionState } from "./hooks/use-product-lifecycle-action-state";
 import { ProductLifecycleActionDialogs } from "./product-lifecycle-action-dialogs";
-
-type ProductListView = "active" | "trash";
 
 type ProductTableRowActionsProps = {
   slug: string;

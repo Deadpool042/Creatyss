@@ -30,8 +30,8 @@ export async function GET(request: Request) {
     cursor,
     search: search.length > 0 ? search : null,
     status: [],
-    categoryId: null,
-    featured: null,
+    categoryIds: [],
+    featured: [],
     sort: "updated-desc",
   });
 

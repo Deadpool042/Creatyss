@@ -1,18 +1,18 @@
+import "server-only";
+
 export {
   archiveProduct,
+  restoreProduct,
+  deleteProductPermanently,
+  deleteProductCatalogByIdInTx,
   type ArchiveProductInput,
   type ArchiveProductResult,
-} from "./services/archive-product.service";
-export { archiveProductBySlugAction } from "./actions/archive-product.action";
-
-export {
-  restoreProduct,
   type RestoreProductInput,
   type RestoreProductResult,
-} from "./services/restore-product.service";
-export { restoreProductBySlugAction } from "./actions/restore-product.action";
+} from "./product-lifecycle-services";
 
 export {
-  deleteProductPermanently,
-} from "./services/delete-product-permanently.service";
-export { deleteProductPermanentlyBySlugAction } from "./actions/delete-product-permanently.action";
+  archiveProductBySlugAction,
+  deleteProductPermanentlyBySlugAction,
+  restoreProductBySlugAction,
+} from "./product-lifecycle-actions";

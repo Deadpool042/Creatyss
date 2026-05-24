@@ -3,8 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
-import { deleteProductPermanentlyBySlugAction } from "@/features/admin/products/shared/actions/delete-product-permanently.action";
-import { restoreProductBySlugAction } from "@/features/admin/products/shared/actions/restore-product.action";
+import {
+  deleteProductPermanentlyBySlugAction,
+  restoreProductBySlugAction,
+} from "@/features/admin/products/shared/product-lifecycle-actions";
 
 type UseArchivedProductMutationsInput = {
   productSlug: string;
