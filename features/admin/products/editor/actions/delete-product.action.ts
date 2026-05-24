@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/core/db";
+import { PRODUCT_LIFECYCLE_FEEDBACK_COPY } from "@/features/admin/products/config";
 import { deleteProductSchema } from "../schemas";
 import type {
   DeleteProductInput,
@@ -33,7 +34,7 @@ export async function deleteProductAction(input: DeleteProductInput): Promise<De
   if (product === null) {
     return {
       status: "error",
-      message: "Produit introuvable.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.notFound,
     };
   }
 
@@ -47,12 +48,12 @@ export async function deleteProductAction(input: DeleteProductInput): Promise<De
 
     return {
       status: "success",
-      message: "Produit mis à la corbeille.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.archiveSuccess,
     };
   } catch {
     return {
       status: "error",
-      message: "Archivage impossible.",
+      message: PRODUCT_LIFECYCLE_FEEDBACK_COPY.archiveError,
     };
   }
 }

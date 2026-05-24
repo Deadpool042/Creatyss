@@ -24,6 +24,8 @@ export {
   PRODUCT_CARD_COPY,
 } from "./product-list.config";
 
+export { PRODUCT_LIFECYCLE_FEEDBACK_COPY } from "./product-feedback.config";
+
 export {
   PRODUCT_EDITOR_NAV_COPY,
   PRODUCT_CREATE_PAGE_COPY,
