@@ -4,14 +4,13 @@ import { redirect } from "next/navigation";
 import { refresh } from "next/cache";
 import type { z } from "zod";
 
-import { db } from "@/core/db";
-
 import type {
   CreateProductActionState,
   CreateProductFormValues,
 } from "@/features/admin/products/create/create-product.types";
 import { createProductSchema } from "@/features/admin/products/create/create-product.schema";
 import {
+  CreateProductServiceError,
   ensureAdminCreatableProductTypes,
   createProduct,
 } from "@/features/admin/products/create/create-product.service";
@@ -71,21 +70,6 @@ export async function createProductAction(
     };
   }
 
-  const existingProduct = await db.product.findFirst({
-    where: { slug: parsed.data.slug },
-    select: { id: true },
-  });
-
-  if (existingProduct) {
-    return {
-      status: "error",
-      message: "Le slug est déjà utilisé.",
-      fieldErrors: buildFieldErrors({
-        slug: "Choisis un autre slug.",
-      }),
-    };
-  }
-
   const { storeId, productTypes } = await ensureAdminCreatableProductTypes();
   const productType = productTypes.find((item) => item.code === parsed.data.productTypeCode);
 
@@ -101,13 +85,27 @@ export async function createProductAction(
 
   const isStandalone = parsed.data.productTypeCode === "simple";
 
-  await createProduct({
-    slug: parsed.data.slug,
-    name: parsed.data.name,
-    storeId,
-    productTypeId: productType.id,
-    isStandalone,
-  });
+  try {
+    await createProduct({
+      slug: parsed.data.slug,
+      name: parsed.data.name,
+      storeId,
+      productTypeId: productType.id,
+      isStandalone,
+    });
+  } catch (error: unknown) {
+    if (error instanceof CreateProductServiceError && error.code === "slug_taken") {
+      return {
+        status: "error",
+        message: "Le slug est déjà utilisé.",
+        fieldErrors: buildFieldErrors({
+          slug: "Choisis un autre slug.",
+        }),
+      };
+    }
+
+    throw error;
+  }
 
   refresh();
   redirect(`/admin/products/${parsed.data.slug}/edit`);

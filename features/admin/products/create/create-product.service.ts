@@ -3,6 +3,16 @@ import { ProductStatus } from "@/prisma-generated/client";
 
 import type { AdminCreatableProductTypeCode } from "./create-product.types";
 
+export class CreateProductServiceError extends Error {
+  readonly code: "slug_taken";
+
+  constructor(code: "slug_taken", message?: string) {
+    super(message ?? code);
+    this.name = "CreateProductServiceError";
+    this.code = code;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -145,6 +155,15 @@ type CreateProductServiceInput = {
 export async function createProduct(
   input: CreateProductServiceInput
 ): Promise<{ id: string }> {
+  const existingProduct = await db.product.findFirst({
+    where: { slug: input.slug },
+    select: { id: true },
+  });
+
+  if (existingProduct !== null) {
+    throw new CreateProductServiceError("slug_taken");
+  }
+
   return db.$transaction(async (tx) => {
     const product = await tx.product.create({
       data: {
@@ -173,4 +192,3 @@ export async function createProduct(
     return { id: product.id };
   });
 }
-
