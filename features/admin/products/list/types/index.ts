@@ -14,6 +14,7 @@ export type {
   ProductFilterStockOption,
   ProductFilterVariantOption,
   ProductStockState,
+  ProductSortOption,
   ProductTableActiveFilter,
   ProductTableFeaturedFilter,
   ProductTableFiltersInput,
@@ -47,9 +48,8 @@ export type { AdminProductStatus, AdminProductCardItem } from "./admin-product-c
 
 export type {
   AdminProductFeedPageResult,
-  ProductListFilters,
+  ProductListUrlFilters,
   ProductPickerItem,
-  ProductSortOption,
   ProductStatusCounts,
   ProductListResult,
 } from "./product-list-query.types";

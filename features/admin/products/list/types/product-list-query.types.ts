@@ -3,6 +3,7 @@ import type {
   AdminProductStatus,
   ProductFeaturedFilter,
 } from "./admin-product-card-item.types";
+import type { ProductSortOption } from "./product-table.types";
 import type { GetAdminProductsFeedPageResult } from "./product-feed.types";
 
 // ─── Admin product feed (re-exports + alias) ──────────────────────────────────
@@ -15,7 +16,6 @@ export type { GetAdminProductsFeedPageResult } from "./product-feed.types";
 export type AdminProductFeedPageResult = GetAdminProductsFeedPageResult;
 
 // ─── Admin product list item ──────────────────────────────────────────────────
-export type ProductSortOption = "name-asc" | "name-desc" | "updated-asc" | "updated-desc";
 
 export type ProductPickerItem = {
   id: string;
@@ -24,7 +24,7 @@ export type ProductPickerItem = {
   parentId: string | null;
 };
 
-export type ProductListFilters = {
+export type ProductListUrlFilters = {
   search?: string;
   status?: AdminProductStatus[];
   featured?: ProductFeaturedFilter[];

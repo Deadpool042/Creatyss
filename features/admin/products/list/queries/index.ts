@@ -7,6 +7,6 @@ export {
 } from "./product-list-queries";
 export type {
   AdminProductsListView,
-  ProductListFilters,
+  ProductListQueryFilters,
   ProductListResult,
 } from "./product-list-queries";
