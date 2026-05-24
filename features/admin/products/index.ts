@@ -39,7 +39,6 @@ export {
   getAdminProductsFeedPage,
   listAdminProducts,
   listProductFilterCategories,
-  mapProductFilterCategoryOption,
   mapProductTableItem,
   getFeaturedLabel,
   getImageLabel,
