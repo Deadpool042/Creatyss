@@ -3,7 +3,7 @@ export {
   archiveProduct,
   restoreProduct,
   deleteProductPermanently,
-} from "../../shared/product-lifecycle-services";
+} from "../../actions/product-lifecycle-services";
 
 export {
   bulkArchiveProducts,

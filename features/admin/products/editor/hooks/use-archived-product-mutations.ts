@@ -6,7 +6,7 @@ import { useTransition } from "react";
 import {
   deleteProductPermanentlyBySlugAction,
   restoreProductBySlugAction,
-} from "@/features/admin/products/shared/product-lifecycle-actions";
+} from "@/features/admin/products/actions/product-lifecycle-actions";
 
 type UseArchivedProductMutationsInput = {
   productSlug: string;

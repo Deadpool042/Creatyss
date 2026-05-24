@@ -1,6 +1,6 @@
 import { withTransaction } from "@/core/db";
 import { ProductStatus } from "@/prisma-generated/client";
-import { deleteProductCatalogByIdInTx } from "@/features/admin/products/shared/product-lifecycle-services";
+import { deleteProductCatalogByIdInTx } from "@/features/admin/products/actions/product-lifecycle-services";
 import type {
   BulkArchiveProductsInput,
   BulkRestoreProductsInput,

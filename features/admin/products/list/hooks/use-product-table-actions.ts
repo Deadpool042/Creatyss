@@ -6,7 +6,7 @@ import {
   archiveProductBySlugAction,
   deleteProductPermanentlyBySlugAction,
   restoreProductBySlugAction,
-} from "@/features/admin/products/shared/product-lifecycle-actions";
+} from "@/features/admin/products/actions/product-lifecycle-actions";
 import {
   bulkArchiveProductsAction,
   bulkDeleteProductsPermanentlyAction,
