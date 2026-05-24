@@ -19,8 +19,8 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { PRODUCT_EDITOR_MENUS_COPY } from "@/features/admin/products/config";
+import { useArchivedProductMutations } from "@/features/admin/products/editor/hooks";
 import { DeleteProductButton } from "./product-archived-actions";
-import { useArchivedProductMutations } from "./hooks/use-archived-product-mutations";
 
 type ProductEditorTopbarMenuProps = Readonly<{
   productId: string;
