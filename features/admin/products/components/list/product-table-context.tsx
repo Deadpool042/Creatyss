@@ -14,8 +14,10 @@ import type {
   ProductStatusCounts,
   ProductTableItem,
 } from "@/features/admin/products/list/types/product-table.types";
-import { useProductTableController } from "./hooks/use-product-table-controller";
-import type { ProductMobileVisibleSelectionState } from "./hooks/use-product-table-mobile-selection";
+import {
+  useProductTableController,
+  type ProductMobileVisibleSelectionState,
+} from "@/features/admin/products/list/hooks";
 
 type ProductTableData = {
   products: ProductTableItem[];

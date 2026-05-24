@@ -16,8 +16,8 @@ import {
   PRODUCT_CARD_ACTIONS_COPY,
   PRODUCT_ROW_ACTIONS_COPY,
 } from "@/features/admin/products/config";
+import { useProductLifecycleActionState } from "@/features/admin/products/list/hooks";
 import { cn } from "@/lib/utils";
-import { useProductLifecycleActionState } from "../../hooks/use-product-lifecycle-action-state";
 import { ProductLifecycleActionDialogs } from "../../product-lifecycle-action-dialogs";
 
 type ProductCardActionMenuProps = {

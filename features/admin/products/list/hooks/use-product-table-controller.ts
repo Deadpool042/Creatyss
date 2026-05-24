@@ -1,10 +1,10 @@
 "use client";
 
-import { useProductTableFilters } from "@/features/admin/products/list/hooks/use-product-table-filters";
 import type {
   ProductFilterCategoryOption,
   ProductTableItem,
 } from "@/features/admin/products/list/types";
+import { useProductTableFilters } from "./use-product-table-filters";
 import {
   useProductTableMobileSelection,
   type ProductMobileVisibleSelectionState,
