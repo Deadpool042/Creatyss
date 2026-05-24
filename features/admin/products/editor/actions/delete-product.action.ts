@@ -9,7 +9,7 @@ import type {
   DeleteProductInput,
   DeleteProductResult,
 } from "@/features/admin/products/editor/types/product-editor.types";
-import { archiveProduct } from "@/features/admin/products/actions/product-lifecycle-services";
+import { archiveProduct } from "@/features/admin/products/services";
 
 export async function deleteProductAction(input: DeleteProductInput): Promise<DeleteProductResult> {
   const parsed = deleteProductSchema.safeParse(input);

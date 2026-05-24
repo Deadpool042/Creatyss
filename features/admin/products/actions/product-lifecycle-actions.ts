@@ -8,7 +8,7 @@ import {
   archiveProduct,
   deleteProductPermanently,
   restoreProduct,
-} from "./product-lifecycle-services";
+} from "@/features/admin/products/services";
 
 // ---------------------------------------------------------------------------
 // archiveProductBySlugAction
