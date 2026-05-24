@@ -1,9 +1,9 @@
 import "server-only";
 
 import { ProductStatus } from "@/prisma-generated/client";
-
 import { db } from "@/core/db";
 import { mapAdminProductFeedItem } from "@/features/admin/products/list/mappers";
+import { mapProductStatusToPrismaStatus } from "@/features/admin/products/services";
 import type { AdminProductFeedItem } from "@/features/admin/products/list/types/product-feed.types";
 import type {
   ProductFeaturedFilterValue,
@@ -38,13 +38,6 @@ export type ProductListResult = {
   totalPages: number;
   currentPage: number;
   statusCounts: ProductStatusCounts;
-};
-
-const STATUS_MAP: Record<ProductTableStatus, ProductStatus> = {
-  draft: ProductStatus.DRAFT,
-  active: ProductStatus.ACTIVE,
-  inactive: ProductStatus.INACTIVE,
-  archived: ProductStatus.ARCHIVED,
 };
 
 const DEFAULT_PER_PAGE = 24;
@@ -147,8 +140,8 @@ export async function listAdminProducts(
     view === "trash"
       ? {}
       : status.length > 0
-        ? { status: { in: status.map((s) => STATUS_MAP[s]) } }
-        : { status: { not: ProductStatus.ARCHIVED } };
+        ? { status: { in: status.map(mapProductStatusToPrismaStatus) } }
+        : { status: { not: mapProductStatusToPrismaStatus("archived") } };
 
   const searchWhere =
     normalizedSearch.length > 0

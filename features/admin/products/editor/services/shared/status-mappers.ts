@@ -1,22 +1,17 @@
 import {
   AvailabilityStatus,
-  ProductStatus,
   ProductVariantStatus,
+  type ProductStatus,
 } from "@/prisma-generated/client";
+import {
+  mapProductStatusToPrismaStatus,
+  type ProductLifecycleStatus,
+} from "@/features/admin/products/services";
 
 export function mapEditorStatusToPrismaStatus(
-  status: "draft" | "active" | "inactive" | "archived"
+  status: ProductLifecycleStatus
 ): ProductStatus {
-  switch (status) {
-    case "draft":
-      return ProductStatus.DRAFT;
-    case "active":
-      return ProductStatus.ACTIVE;
-    case "inactive":
-      return ProductStatus.INACTIVE;
-    case "archived":
-      return ProductStatus.ARCHIVED;
-  }
+  return mapProductStatusToPrismaStatus(status);
 }
 
 export function mapEditorVariantStatusToPrismaStatus(

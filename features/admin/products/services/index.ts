@@ -8,3 +8,8 @@ export {
   type RestoreProductInput,
   type RestoreProductResult,
 } from "./product-lifecycle-services";
+
+export {
+  mapProductStatusToPrismaStatus,
+  type ProductLifecycleStatus,
+} from "./product-status-mappers";
