@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { refresh } from "next/cache";
 
 import { db } from "@/core/db";
 import { PRODUCT_LIFECYCLE_FEEDBACK_COPY } from "@/features/admin/products/config";
@@ -43,8 +43,7 @@ export async function deleteProductAction(input: DeleteProductInput): Promise<De
       productSlug: product.slug,
     });
 
-    revalidatePath("/admin/products");
-    revalidatePath(`/admin/products/${product.slug}/edit`);
+    refresh();
 
     return {
       status: "success",

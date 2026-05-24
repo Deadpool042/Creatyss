@@ -30,7 +30,6 @@ export function useArchivedProductMutations({
 
       if (result.status === "success") {
         router.push("/admin/products");
-        router.refresh();
       }
     });
   }
@@ -51,7 +50,6 @@ export function useArchivedProductMutations({
 
       if (result.status === "success") {
         router.push("/admin/products?view=trash");
-        router.refresh();
       }
     });
   }

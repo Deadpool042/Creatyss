@@ -6,7 +6,7 @@ import { Archive, ArchiveRestore, RotateCcw, Trash2 } from "lucide-react";
 
 import { CustomButton } from "@/components/shared";
 import { deleteProductAction } from "@/features/admin/products/editor/actions";
-import { useArchivedProductMutations } from "./hooks/use-archived-product-mutations";
+import { useArchivedProductMutations } from "@/features/admin/products/editor/hooks";
 
 type ProductArchivedActionsProps = {
   productSlug: string;
@@ -84,7 +84,6 @@ export function DeleteProductButton({
 
       if (result.status === "success") {
         router.push(redirectTo);
-        router.refresh();
       }
     });
   }
