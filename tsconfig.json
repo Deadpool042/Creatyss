@@ -32,11 +32,27 @@
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "core/**/*.ts",
+    "core/**/*.tsx",
+    "db/**/*.ts",
+    "db/**/*.tsx",
+    "entities/**/*.ts",
+    "entities/**/*.tsx",
+    "features/**/*.ts",
+    "features/**/*.tsx",
+    "lib/**/*.ts",
+    "lib/**/*.tsx",
+    "prisma/**/*.ts",
+    "scripts/**/*.ts",
+    "styles/**/*.ts",
+    "styles/**/*.tsx",
+    "src/generated/prisma/**/*.ts",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "features/admin/products/list/schemas/bulk-delete-product-permanently.schemats"
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -52,6 +68,9 @@
     "tmp",
     "logs",
     ".sst",
+    "playwright-report",
+    "test-results",
+    "output",
     "**/*.map",
     "**/*.meta"
   ]
