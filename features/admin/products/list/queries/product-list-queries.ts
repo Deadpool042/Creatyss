@@ -21,7 +21,7 @@ import type {
 
 export type AdminProductsListView = "active" | "trash";
 
-export type ProductListFilters = {
+export type ProductListQueryFilters = {
   view?: AdminProductsListView;
   search?: string;
   status?: ProductTableStatus[];
@@ -123,7 +123,7 @@ const PRODUCT_SELECT = {
 };
 
 export async function listAdminProducts(
-  filters: ProductListFilters = {}
+  filters: ProductListQueryFilters = {}
 ): Promise<ProductListResult> {
   const {
     view = "active",
