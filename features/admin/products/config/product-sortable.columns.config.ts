@@ -1,4 +1,5 @@
 import type { SortableColumnConfig } from "@/components/admin/tables";
+import type { ProductSortOption } from "@/features/admin/products/list";
 
 import { PRODUCT_TABLE_COPY } from "./product-list.config";
 
@@ -15,4 +16,4 @@ export const PRODUCT_SORTABLE_COLUMNS = {
     desc: "updated-desc",
     className: "w-28",
   },
-} satisfies Record<string, SortableColumnConfig<string>>;
+} satisfies Record<string, SortableColumnConfig<ProductSortOption>>;

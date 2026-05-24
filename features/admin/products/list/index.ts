@@ -28,7 +28,6 @@ export {
   listProductFilterCategories,
 } from "./queries";
 
-export { mapProductFilterCategoryOption } from "./mappers/map-product-filter-category-option";
 export { mapAdminProductFeedItemToTableItem } from "./mappers/shared/map-admin-product-feed-item-to-table-item";
 export { mapProductTableItem } from "./mappers/server/map-product-table-item";
 

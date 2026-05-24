@@ -69,18 +69,6 @@ export const PRODUCT_SORT_OPTIONS: { value: ProductSortOption; label: string }[]
 
 // ─── Toolbar copy ─────────────────────────────────────────────────────────────
 
-// export const PRODUCT_LIST_PAGE_COPY = {
-//   eyebrow: "Catalogue",
-//   title: "Produits",
-//   titleTrash: "Corbeille produits",
-//   description: "Pilotage du catalogue.",
-//   descriptionTrash: "Produits archivés, restaurables plus tard.",
-//   navHomeLabel: "Accueil",
-//   navProductsLabel: "Produits",
-// } as const;
-
-// ─── Toolbar copy ─────────────────────────────────────────────────────────────
-
 export const PRODUCT_LIST_COPY = {
   searchPlaceholder: "Rechercher un produit…",
   searchPlaceholderMobile: "Rechercher…",
