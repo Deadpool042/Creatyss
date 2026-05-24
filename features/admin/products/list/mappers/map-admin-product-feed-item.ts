@@ -182,20 +182,6 @@ function mapPriceSummary(input: {
   };
 }
 
-function formatPriceValue(value: string | null): string | null {
-  if (!value) {
-    return null;
-  }
-
-  const parsed = Number.parseFloat(value);
-
-  if (!Number.isFinite(parsed)) {
-    return value;
-  }
-
-  return `${parsed.toFixed(2)} €`;
-}
-
 function buildPriceLabel(input: { minAmount: string | null; hasPriceRange: boolean }): string {
   if (!input.minAmount) {
     return "";
@@ -219,6 +205,20 @@ function buildCompareAtPriceLabel(input: {
   }
 
   return formatPriceValue(input.minCompareAtAmount) ?? "";
+}
+
+function formatPriceValue(value: string | null): string | null {
+  if (!value) {
+    return null;
+  }
+
+  const parsed = Number.parseFloat(value);
+
+  if (!Number.isFinite(parsed)) {
+    return value;
+  }
+
+  return `${parsed.toFixed(2)} €`;
 }
 
 function buildCategoryPathLabel(

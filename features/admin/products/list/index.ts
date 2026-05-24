@@ -28,8 +28,7 @@ export {
   listProductFilterCategories,
 } from "./queries";
 
-export { mapAdminProductFeedItemToTableItem } from "./mappers/shared/map-admin-product-feed-item-to-table-item";
-export { mapProductTableItem } from "./mappers/server/map-product-table-item";
+export { mapAdminProductFeedItem, mapProductTableItem } from "./mappers";
 
 export {
   getFeaturedLabel,

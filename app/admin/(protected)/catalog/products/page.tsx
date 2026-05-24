@@ -1,7 +1,7 @@
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { ProductCreateTopbarMenu } from "@/features/admin/products/components";
 import { ProductTable, ProductTableProvider } from "@/features/admin/products/components/list";
-import { mapAdminProductFeedItemToTableItem } from "@/features/admin/products/list/mappers/shared/map-admin-product-feed-item-to-table-item";
+import { mapProductTableItem } from "@/features/admin/products/list/mappers";
 import {
   listAdminProducts,
   listProductFilterCategories,
@@ -99,7 +99,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
       listProductFilterCategories(),
     ]);
 
-  const products = items.map(mapAdminProductFeedItemToTableItem);
+  const products = items.map(mapProductTableItem);
 
   return (
     <AdminPageShell

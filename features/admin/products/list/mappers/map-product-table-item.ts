@@ -1,8 +1,6 @@
-import type { AdminProductFeedItem, ProductTableItem } from "../../types";
+import type { AdminProductFeedItem, ProductTableItem } from "../types";
 
-export function mapAdminProductFeedItemToTableItem(
-  item: AdminProductFeedItem
-): ProductTableItem {
+export function mapProductTableItem(item: AdminProductFeedItem): ProductTableItem {
   return {
     id: item.id,
     slug: item.slug,

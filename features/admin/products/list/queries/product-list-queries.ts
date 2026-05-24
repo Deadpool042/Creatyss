@@ -3,7 +3,7 @@ import "server-only";
 import { ProductStatus } from "@/prisma-generated/client";
 
 import { db } from "@/core/db";
-import { mapAdminProductFeedItem } from "@/features/admin/products/list/mappers/server";
+import { mapAdminProductFeedItem } from "@/features/admin/products/list/mappers";
 import type { AdminProductFeedItem } from "@/features/admin/products/list/types/product-feed.types";
 import type {
   ProductFeaturedFilterValue,
