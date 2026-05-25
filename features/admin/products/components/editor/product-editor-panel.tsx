@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ProductEditorTopbarMenu,
 } from "@/features/admin/products/components/editor/product-topbar-menus";
+import { PRODUCT_EDITOR_TAB_GROUPS } from "@/features/admin/products/config/product-editor.config";
 import {
   type attachProductImagesAction,
   type deleteProductImageAction,
@@ -125,22 +126,11 @@ const defaultClassNameTabTrigger = cn(
   "data-[state=active]:shadow-card [@media(max-height:480px)]:h-7"
 );
 
-const productEditorPrimaryTabs = [
-  { value: "general", label: "Général" },
-  { value: "pricing", label: "Tarification" },
-  { value: "images", label: "Médias" },
-  { value: "seo", label: "Référencement" },
-] as const;
-
-const productEditorAdvancedTabs = [
-  { value: "availability", label: "Disponibilité" },
-  { value: "inventory", label: "Stock" },
-  { value: "categories", label: "Catégories" },
-  { value: "related-products", label: "Produits liés" },
-  { value: "characteristics", label: "Caractéristiques" },
-] as const;
-
 function ProductEditorTabs({ isStandalone }: { isStandalone: boolean }): JSX.Element {
+  const advancedTabs = isStandalone
+    ? PRODUCT_EDITOR_TAB_GROUPS.advanced.filter((tab) => tab.value !== "variants")
+    : PRODUCT_EDITOR_TAB_GROUPS.advanced;
+
   return (
     <div className="min-w-0 shrink-0 border-b border-surface-border bg-card px-2 py-1.5 sm:px-3 md:px-4 md:py-2">
       <div className="no-scrollbar w-full overflow-x-auto overflow-y-hidden">
@@ -153,16 +143,11 @@ function ProductEditorTabs({ isStandalone }: { isStandalone: boolean }): JSX.Ele
               variant="line"
               className="h-auto min-w-max flex-nowrap justify-start gap-1 rounded-none p-0"
             >
-              {productEditorPrimaryTabs.map((tab) => (
+              {PRODUCT_EDITOR_TAB_GROUPS.essential.map((tab) => (
                 <TabsTrigger key={tab.value} className={defaultClassNameTabTrigger} value={tab.value}>
                   {tab.label}
                 </TabsTrigger>
               ))}
-              {!isStandalone && (
-                <TabsTrigger className={defaultClassNameTabTrigger} value="variants">
-                  Variantes
-                </TabsTrigger>
-              )}
             </TabsList>
           </div>
 
@@ -174,7 +159,7 @@ function ProductEditorTabs({ isStandalone }: { isStandalone: boolean }): JSX.Ele
               variant="line"
               className="h-auto min-w-max flex-nowrap justify-start gap-1 rounded-none p-0"
             >
-              {productEditorAdvancedTabs.map((tab) => (
+              {advancedTabs.map((tab) => (
                 <TabsTrigger key={tab.value} className={defaultClassNameTabTrigger} value={tab.value}>
                   {tab.label}
                 </TabsTrigger>

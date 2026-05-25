@@ -100,6 +100,23 @@ export const PRODUCT_EDITOR_PAGE_COPY = {
   notFoundBack: "Retour à la liste des produits",
 } as const;
 
+export const PRODUCT_EDITOR_TAB_GROUPS = {
+  essential: [
+    { value: "general", label: "Général" },
+    { value: "images", label: "Images" },
+    { value: "categories", label: "Catégories" },
+    { value: "seo", label: "SEO" },
+  ],
+  advanced: [
+    { value: "variants", label: "Variantes" },
+    { value: "pricing", label: "Prix" },
+    { value: "availability", label: "Disponibilité" },
+    { value: "inventory", label: "Inventaire" },
+    { value: "characteristics", label: "Caractéristiques" },
+    { value: "related-products", label: "Produits liés" },
+  ],
+} as const;
+
 export const PRODUCT_EDITOR_MENUS_COPY = {
   editorMenuAriaLabel: "Ouvrir les actions du produit",
   mediaMenuAriaLabel: "Ouvrir les actions des images",
