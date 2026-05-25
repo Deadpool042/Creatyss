@@ -2,8 +2,6 @@
 
 import type { JSX } from "react";
 
-import { Star } from "lucide-react";
-
 import {
   AdminTable,
   AdminTableBody,
@@ -62,22 +60,9 @@ export function ProductTableDesktop({
             {PRODUCT_TABLE_COPY.columns.product}
           </AdminTableHead>
 
-          {/* Mise en avant */}
-          <AdminTableHead
-            className={`${ADMIN_TABLE_HEAD_CLASSNAME} w-12 text-center`}
-            aria-label={PRODUCT_TABLE_COPY.columns.featuredAria}
-          >
-            <Star className="mx-auto h-3.5 w-3.5 text-muted-foreground" aria-hidden />
-          </AdminTableHead>
-
           {/* Statut */}
           <AdminTableHead className={`${ADMIN_TABLE_HEAD_CLASSNAME} w-28`}>
             {PRODUCT_TABLE_COPY.columns.status}
-          </AdminTableHead>
-
-          {/* Disponibilité */}
-          <AdminTableHead className={`${ADMIN_TABLE_HEAD_CLASSNAME} w-32`}>
-            {PRODUCT_TABLE_COPY.columns.stock}
           </AdminTableHead>
 
           {/* Prix — masqué à lg, visible à xl */}

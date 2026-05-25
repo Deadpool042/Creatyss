@@ -4,15 +4,12 @@ import type { JSX } from "react";
 import { useRouter } from "next/navigation";
 
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
-import { Checkbox } from "@/components/ui/checkbox";
-import { toggleProductFeaturedAction } from "@/features/admin/products/list/actions";
-import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
 import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
-import { PRODUCT_CARD_BADGES_COPY, PRODUCT_CARD_COPY } from "@/features/admin/products/config";
+import { Checkbox } from "@/components/ui/checkbox";
+import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
+import { PRODUCT_CARD_COPY } from "@/features/admin/products/config";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";
 import { AdminProductsPriceCell } from "./admin-products-price-cell";
-import { ProductFeaturedToggle } from "./product-featured-toggle";
-import { ProductStockBadge } from "./product-stock-badge";
 import { ProductTableRowActions } from "./product-table-row-actions";
 
 type ProductTableDesktopRowProps = Readonly<{
@@ -24,11 +21,6 @@ type ProductTableDesktopRowProps = Readonly<{
   onConfirmRestore?: (slug: string) => void | Promise<void>;
   onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
 }>;
-
-function getVariantLabel(variantCount: number): string {
-  if (variantCount <= 1) return PRODUCT_CARD_BADGES_COPY.variantSingle;
-  return PRODUCT_CARD_BADGES_COPY.variantCountFull(variantCount);
-}
 
 export function ProductTableDesktopRow({
   product,
@@ -86,14 +78,7 @@ export function ProductTableDesktopRow({
           <span className="line-clamp-1 font-medium leading-snug text-foreground">
             {product.name}
           </span>
-          <div className="mt-0.5">
-            <span className="inline-flex items-center rounded-md border border-surface-border/50 bg-surface-panel-soft px-2 py-0.5 text-[11px] text-muted-foreground/80">
-              {getVariantLabel(product.variantCount)}
-            </span>
-          </div>
           <div className="mt-1 hidden min-w-0 items-center gap-1.5 text-xs text-muted-foreground/60 lg:flex xl:hidden">
-            <span className="line-clamp-1">{getVariantLabel(product.variantCount)}</span>
-            <span aria-hidden="true">·</span>
             <span className="line-clamp-1 tabular-nums font-medium text-foreground/85">
               {product.priceLabel}
             </span>
@@ -103,23 +88,8 @@ export function ProductTableDesktopRow({
         </div>
       </td>
 
-      <td
-        className="px-4 py-2.5 align-middle text-center"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <ProductFeaturedToggle
-          productId={product.id}
-          isFeatured={product.isFeatured}
-          onToggle={toggleProductFeaturedAction}
-        />
-      </td>
-
       <td className="px-4 py-2.5 align-middle">
         <AdminStatusBadge status={product.status} />
-      </td>
-
-      <td className="px-4 py-2.5 align-middle">
-        <ProductStockBadge state={product.stockState} quantity={product.stockQuantity} />
       </td>
 
       <td className="hidden xl:table-cell px-4 py-2.5 align-middle">
