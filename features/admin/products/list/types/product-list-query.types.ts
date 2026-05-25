@@ -4,16 +4,8 @@ import type {
   ProductFeaturedFilter,
 } from "./admin-product-card-item.types";
 import type { ProductSortOption } from "./product-table.types";
-import type { GetAdminProductsFeedPageResult } from "./product-feed.types";
-
-// ─── Admin product feed (re-exports + alias) ──────────────────────────────────
 
 export type { AdminProductFeedItem } from "./product-feed.types";
-export type { GetAdminProductsFeedPageCursor } from "./product-feed.types";
-export type { GetAdminProductsFeedPageInput } from "./product-feed.types";
-export type { GetAdminProductsFeedPageResult } from "./product-feed.types";
-
-export type AdminProductFeedPageResult = GetAdminProductsFeedPageResult;
 
 // ─── Admin product list item ──────────────────────────────────────────────────
 

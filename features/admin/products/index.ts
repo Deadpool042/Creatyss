@@ -36,7 +36,6 @@ export {
 } from "./editor";
 
 export {
-  getAdminProductsFeedPage,
   listAdminProducts,
   listProductFilterCategories,
   mapAdminProductFeedItem,
@@ -50,11 +49,7 @@ export {
   parsePriceValue,
   stripHtml,
   productTableFiltersSchema,
-  adminProductFeedQuerySchema,
   type AdminProductFeedItem,
-  type GetAdminProductsFeedPageCursor,
-  type GetAdminProductsFeedPageInput,
-  type GetAdminProductsFeedPageResult,
   type ProductFilterCategoryOption,
   type ProductFilterFeaturedOption,
   type ProductFilterImageOption,

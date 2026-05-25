@@ -1,5 +1,4 @@
 export { productTableFiltersSchema } from "./product-table-filters.schema";
-export { adminProductFeedQuerySchema } from "./admin-product-feed-query.schema";
 
 export {
   bulkArchiveProductsSchema,
@@ -11,7 +10,6 @@ export {
 } from "./product-bulk-schemas";
 
 export type { ProductTableFiltersSchema } from "./product-table-filters.schema";
-export type { AdminProductFeedQuerySchema } from "./admin-product-feed-query.schema";
 
 export type {
   BulkArchiveProductsSchema,

@@ -12,8 +12,6 @@ import type {
   ProductTableStatus,
 } from "@/features/admin/products/list/types/product-table.types";
 import type {
-  GetAdminProductsFeedPageInput,
-  GetAdminProductsFeedPageResult,
   ProductFilterCategoryOption,
 } from "../types";
 
@@ -285,51 +283,4 @@ export async function listProductFilterCategories(): Promise<ProductFilterCatego
     parentId: category.parentId,
     productCount: 0,
   }));
-}
-
-// ─── getAdminProductsFeedPage ─────────────────────────────────────────────────
-
-export async function getAdminProductsFeedPage(
-  input: GetAdminProductsFeedPageInput
-): Promise<GetAdminProductsFeedPageResult> {
-  const { items: products } = await listAdminProducts({
-    ...(input.search !== null ? { search: input.search } : {}),
-    status: input.status,
-    ...(input.categoryIds.length > 0 ? { categoryIds: input.categoryIds } : {}),
-    featured: input.featured,
-  });
-
-  const filtered = products.filter((product) => {
-    if (input.search && !product.name.toLowerCase().includes(input.search.toLowerCase())) {
-      return false;
-    }
-
-    if (input.status.length > 0 && !input.status.includes(product.status)) {
-      return false;
-    }
-
-    if (input.featured.length === 1 && input.featured[0] === "featured" && !product.isFeatured) {
-      return false;
-    }
-
-    if (input.featured.length === 1 && input.featured[0] === "standard" && product.isFeatured) {
-      return false;
-    }
-
-    return true;
-  });
-
-  const items = filtered.slice(0, input.limit);
-  const lastItem = items.at(-1) ?? null;
-
-  return {
-    items,
-    nextCursor: lastItem
-      ? {
-          updatedAt: lastItem.updatedAt,
-          id: lastItem.id,
-        }
-      : null,
-    hasMore: filtered.length > input.limit,
-  };
 }

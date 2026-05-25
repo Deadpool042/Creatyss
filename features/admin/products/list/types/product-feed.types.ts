@@ -1,13 +1,7 @@
 import type {
-  ProductFeaturedFilterValue,
   ProductTableStatus,
   ProductStockState,
 } from "./product-table.types";
-
-export type GetAdminProductsFeedPageCursor = {
-  updatedAt: string;
-  id: string;
-};
 
 export type AdminProductFeedItem = {
   id: string;
@@ -28,20 +22,4 @@ export type AdminProductFeedItem = {
   compareAtPriceLabel: string | null;
   hasPromotion: boolean;
   updatedAt: string;
-};
-
-export type GetAdminProductsFeedPageInput = {
-  limit: number;
-  cursor: string | null;
-  search: string | null;
-  status: ProductTableStatus[];
-  categoryIds: string[];
-  featured: ProductFeaturedFilterValue[];
-  sort: "updated-desc";
-};
-
-export type GetAdminProductsFeedPageResult = {
-  items: AdminProductFeedItem[];
-  nextCursor: GetAdminProductsFeedPageCursor | null;
-  hasMore: boolean;
 };

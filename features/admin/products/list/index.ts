@@ -22,8 +22,6 @@ export {
 } from "./services";
 
 export {
-  getAdminProductsFeedPage,
-  getAdminProductsFeedPage as getAdminProductsFeed,
   listAdminProducts,
   listProductFilterCategories,
 } from "./queries";
@@ -42,7 +40,6 @@ export {
 } from "./utils";
 
 export { productTableFiltersSchema } from "./schemas/product-table-filters.schema";
-export { adminProductFeedQuerySchema } from "./schemas/admin-product-feed-query.schema";
 export {
   bulkUpdateProductStatusSchema,
   bulkUpdateProductFeaturedSchema,
@@ -54,9 +51,6 @@ export {
 
 export type {
   AdminProductFeedItem,
-  GetAdminProductsFeedPageCursor,
-  GetAdminProductsFeedPageInput,
-  GetAdminProductsFeedPageResult,
   ProductFilterCategoryOption,
   ProductFilterFeaturedOption,
   ProductFilterImageOption,

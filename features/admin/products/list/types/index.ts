@@ -1,8 +1,5 @@
 export type {
   AdminProductFeedItem,
-  GetAdminProductsFeedPageCursor,
-  GetAdminProductsFeedPageInput,
-  GetAdminProductsFeedPageResult,
 } from "./product-feed.types";
 
 export type {
@@ -46,10 +43,4 @@ export type {
 
 export type { AdminProductStatus, AdminProductCardItem } from "./admin-product-card-item.types";
 
-export type {
-  AdminProductFeedPageResult,
-  ProductListUrlFilters,
-  ProductPickerItem,
-  ProductStatusCounts,
-  ProductListResult,
-} from "./product-list-query.types";
+export type { ProductListUrlFilters, ProductPickerItem, ProductStatusCounts, ProductListResult } from "./product-list-query.types";

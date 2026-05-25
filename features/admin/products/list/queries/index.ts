@@ -1,7 +1,6 @@
 import "server-only";
 
 export {
-  getAdminProductsFeedPage,
   listAdminProducts,
   listProductFilterCategories,
 } from "./product-list-queries";
