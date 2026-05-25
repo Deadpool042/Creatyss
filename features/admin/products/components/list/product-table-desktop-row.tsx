@@ -110,14 +110,17 @@ export function ProductTableDesktopRow({
         className="px-2 py-2.5 align-middle text-right"
         onClick={(event) => event.stopPropagation()}
       >
-        <ProductTableRowActions
-          slug={product.slug}
-          productName={product.name}
-          view={view}
-          {...(onConfirmArchive ? { onConfirmArchive } : {})}
-          {...(onConfirmRestore ? { onConfirmRestore } : {})}
-          {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
-        />
+        <div className="flex items-center justify-end opacity-0 pointer-events-none transition-opacity duration-150 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto">
+          <ProductTableRowActions
+            slug={product.slug}
+            productName={product.name}
+            view={view}
+            triggerClassName="opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
+            {...(onConfirmArchive ? { onConfirmArchive } : {})}
+            {...(onConfirmRestore ? { onConfirmRestore } : {})}
+            {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
+          />
+        </div>
       </td>
     </tr>
   );

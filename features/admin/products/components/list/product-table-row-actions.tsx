@@ -22,6 +22,7 @@ type ProductTableRowActionsProps = {
   onConfirmArchive?: (slug: string) => void | Promise<void>;
   onConfirmRestore?: (slug: string) => void | Promise<void>;
   onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
+  triggerClassName?: string;
 };
 
 type ProductRowAction = {
@@ -50,6 +51,7 @@ export function ProductTableRowActions({
   onConfirmArchive,
   onConfirmRestore,
   onConfirmPermanentDelete,
+  triggerClassName,
 }: ProductTableRowActionsProps): JSX.Element {
   const lifecycleState = useProductLifecycleActionState({
     productSlug: slug,
@@ -65,6 +67,7 @@ export function ProductTableRowActions({
       <AdminRowActionsMenu
         label={PRODUCT_ROW_ACTIONS_COPY.menuAriaLabel(displayName)}
         contentClassName="w-56"
+        {...(triggerClassName ? { triggerClassName } : {})}
       >
         <DropdownMenuGroup>
           {productRowActions.map((action) => (
