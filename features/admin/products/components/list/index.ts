@@ -1,6 +1,5 @@
 export { AdminProductsCategoryCell } from "./admin-products-category-cell";
 export { AdminProductsPriceCell } from "./admin-products-price-cell";
-export { ProductMobileCard } from "./product-mobile-card";
 export { ProductStockBadge } from "./product-stock-badge";
 export { ProductTable } from "./product-table";
 export { ProductTableProvider, useProductTableContext } from "./product-table-context";

@@ -22,7 +22,6 @@ export { ProductArchivedBanner } from "./editor";
 export { ProductArchivedActions } from "./editor";
 
 // List components
-export { ProductMobileCard } from "./list";
 export { ProductStockBadge } from "./list";
 export { ProductTableRowActions } from "./list";
 export { ProductTable } from "./list";
