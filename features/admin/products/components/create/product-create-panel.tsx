@@ -23,30 +23,16 @@ export type ProductCreateFormAction = (
   formData: FormData
 ) => Promise<CreateProductActionState>;
 
-type ProductTypeOption = {
-  id: string;
-  code: string;
-  name: string;
-  slug: string;
-  isActive: boolean;
-};
-
 type ProductCreateFormProps = {
   action: ProductCreateFormAction;
-  productTypeOptions?: ReadonlyArray<ProductTypeOption>;
 };
 
 type ProductCreatePanelInnerProps = {
   action: ProductCreateFormAction;
-  productTypeOptions?: ReadonlyArray<ProductTypeOption>;
   onReset: () => void;
 };
 
-function ProductCreatePanelInner({
-  action,
-  productTypeOptions = [],
-  onReset,
-}: ProductCreatePanelInnerProps): JSX.Element {
+function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerProps): JSX.Element {
   const [state, formAction, pending] = useActionState(action, initialCreateProductActionState);
 
   const {
@@ -62,8 +48,6 @@ function ProductCreatePanelInner({
   function handleReset(): void {
     onReset();
   }
-
-  void productTypeOptions;
 
   return (
     <form action={formAction} className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
@@ -152,7 +136,6 @@ function ProductCreatePanelInner({
 
 export function ProductCreatePanel({
   action,
-  productTypeOptions = [],
 }: ProductCreateFormProps): JSX.Element {
   const [formInstanceKey, setFormInstanceKey] = useState(0);
 
@@ -161,7 +144,6 @@ export function ProductCreatePanel({
       <ProductCreatePanelInner
         key={formInstanceKey}
         action={action}
-        productTypeOptions={productTypeOptions}
         onReset={() => setFormInstanceKey((current) => current + 1)}
       />
     </div>

@@ -1,10 +1,7 @@
 import { AdminPageShell } from "@/components/admin/admin-page-shell";
 import { FullWidthPageFrame } from "@/components/shared/layout/full-width-page-frame";
 import { FullWidthStack } from "@/components/shared/layout/full-width-stack";
-import {
-  createProductAction,
-  listAdminCreatableProductTypeOptions,
-} from "@/features/admin/products/create";
+import { createProductAction } from "@/features/admin/products/create";
 import { ProductCreatePanel } from "@/features/admin/products/components";
 import {
   PRODUCT_CREATE_PAGE_COPY,
@@ -12,8 +9,6 @@ import {
 } from "@/features/admin/products/config";
 
 export default async function ProductCreatePage() {
-  const productTypeOptions = await listAdminCreatableProductTypeOptions();
-
   return (
     <AdminPageShell
       title={PRODUCT_CREATE_PAGE_COPY.title}
@@ -28,7 +23,7 @@ export default async function ProductCreatePage() {
     >
       <FullWidthPageFrame>
         <FullWidthStack>
-          <ProductCreatePanel action={createProductAction} productTypeOptions={productTypeOptions} />
+          <ProductCreatePanel action={createProductAction} />
         </FullWidthStack>
       </FullWidthPageFrame>
     </AdminPageShell>
