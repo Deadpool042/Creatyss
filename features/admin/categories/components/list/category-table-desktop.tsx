@@ -103,21 +103,21 @@ export function CategoryTableDesktop({
           </AdminTableHead>
 
           <AdminTableHead
-            className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "hidden xl:table-cell w-8 text-center")}
+            className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "w-10 text-center")}
             aria-label={CATEGORY_TABLE_COPY.columns.featuredAria}
           >
-            <Star className="mx-auto h-3 w-3 text-muted-foreground" aria-hidden="true" />
+            <Star className="mx-auto h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
           </AdminTableHead>
 
-          <AdminTableHead className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "hidden xl:table-cell w-20 text-right")}>
+          <AdminTableHead className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "w-20 text-right")}>
             {CATEGORY_TABLE_COPY.columns.products}
           </AdminTableHead>
 
-          <AdminTableHead className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "hidden xl:table-cell w-24 text-right")}>
+          <AdminTableHead className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "w-24 text-right")}>
             {CATEGORY_TABLE_COPY.columns.children}
           </AdminTableHead>
 
-          <AdminTableHead className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "hidden xl:table-cell w-16 text-right")}>
+          <AdminTableHead className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "w-16 text-right")}>
             {CATEGORY_TABLE_COPY.columns.sortOrder}
           </AdminTableHead>
 
@@ -126,8 +126,6 @@ export function CategoryTableDesktop({
             currentSort={filters.sort}
             onSort={filters.setSort}
           />
-
-          <AdminTableHead className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "w-20")} />
         </TableRow>
       </AdminTableHeader>
 
@@ -178,7 +176,7 @@ export function CategoryTableDesktop({
               <AdminTableCell className="py-2.5">
                 <div className="min-w-0">
                   {category.parentName ? (
-                    <p className="mb-0.5 truncate text-[0.65rem] font-medium text-muted-foreground/70">
+                    <p className="mb-0.5 truncate text-[0.65rem] font-medium text-brand/75">
                       {category.parentName} <span className="text-muted-foreground/40">›</span>
                     </p>
                   ) : null}
@@ -187,7 +185,7 @@ export function CategoryTableDesktop({
                     {category.name}
                   </span>
 
-                  <p className="mt-0.5 hidden truncate text-[11px] text-muted-foreground/60 xl:block">
+                  <p className="mt-0.5 truncate text-[11px] text-muted-foreground/70">
                     {category.slug}
                   </p>
                 </div>
@@ -200,57 +198,58 @@ export function CategoryTableDesktop({
                 />
               </AdminTableCell>
 
-              <AdminTableCell className="hidden xl:table-cell py-2.5 text-center">
+              <AdminTableCell className="py-2.5 text-center">
                 {category.isFeatured ? (
                   <Star
-                    className="mx-auto h-3 w-3 fill-amber-400 text-amber-400"
+                    className="mx-auto h-3.5 w-3.5 fill-amber-400 text-amber-400"
                     aria-hidden="true"
                   />
                 ) : (
                   <Star
-                    className="mx-auto h-3 w-3 text-muted-foreground/25"
+                    className="mx-auto h-3.5 w-3.5 text-muted-foreground/25"
                     aria-hidden="true"
                   />
                 )}
               </AdminTableCell>
 
-              <AdminTableCell className="hidden xl:table-cell py-2.5 text-right text-sm">
+              <AdminTableCell className="py-2.5 text-right text-sm">
                 <CountCell value={category.productCount} />
               </AdminTableCell>
 
-              <AdminTableCell className="hidden xl:table-cell py-2.5 text-right text-sm">
+              <AdminTableCell className="py-2.5 text-right text-sm">
                 <CountCell value={category.childrenCount} />
               </AdminTableCell>
 
-              <AdminTableCell className="hidden xl:table-cell py-2.5 text-right text-sm">
+              <AdminTableCell className="py-2.5 text-right text-sm">
                 <CountCell value={category.sortOrder} />
               </AdminTableCell>
 
               <AdminTableCell
-                className="hidden xl:table-cell py-2.5 text-sm text-muted-foreground"
+                className="relative overflow-visible py-2.5 text-sm text-muted-foreground"
                 onClick={(event) => event.stopPropagation()}
               >
-                <span>{formatDate(category.createdAt)}</span>
-              </AdminTableCell>
+                <span className="transition-opacity group-hover:opacity-0 group-focus-within:opacity-0">
+                  {formatDate(category.createdAt)}
+                </span>
 
-              <AdminTableCell
-                className="py-2.5 text-right"
-                onClick={(event) => event.stopPropagation()}
-              >
-                <div className="flex items-center justify-end gap-1.5">
-                  {category.status === "archived" ? (
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      asChild
-                      className="text-muted-foreground hover:text-foreground"
-                      aria-label={`${CATEGORY_LIST_COPY.rowEditAriaPrefix} ${category.name}`}
-                    >
-                      <Link href={href}>
-                        <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
-                      </Link>
-                    </Button>
-                  ) : null}
+                <div
+                  className={cn(
+                    "absolute inset-y-0 right-2 flex items-center gap-1",
+                    "opacity-0 transition-opacity",
+                    "group-hover:opacity-100 group-focus-within:opacity-100"
+                  )}
+                >
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    asChild
+                    className="text-muted-foreground hover:text-foreground"
+                    aria-label={`${CATEGORY_LIST_COPY.rowEditAriaPrefix} ${category.name}`}
+                  >
+                    <Link href={href}>
+                      <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                    </Link>
+                  </Button>
 
                   <CategoryTableRowActions
                     categoryId={category.id}
