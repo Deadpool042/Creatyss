@@ -18,25 +18,21 @@ import {
 function mapFormDataToValues(formData: FormData): {
   name: string;
   slug: string;
-  productTypeCode: string;
 } {
   return {
     name: String(formData.get("name") ?? ""),
     slug: String(formData.get("slug") ?? ""),
-    productTypeCode: String(formData.get("productTypeCode") ?? ""),
   };
 }
 
 function buildFieldErrors(input: {
   name?: string | undefined;
   slug?: string | undefined;
-  productTypeCode?: string | undefined;
 }): CreateProductActionState["fieldErrors"] {
   const fieldErrors: CreateProductActionState["fieldErrors"] = {};
 
   if (input.name) fieldErrors.name = input.name;
   if (input.slug) fieldErrors.slug = input.slug;
-  if (input.productTypeCode) fieldErrors.productTypeCode = input.productTypeCode;
 
   return fieldErrors;
 }
@@ -65,7 +61,6 @@ export async function createProductAction(
       fieldErrors: buildFieldErrors({
         name: getFirstIssueMessage(issues, "name"),
         slug: getFirstIssueMessage(issues, "slug"),
-        productTypeCode: getFirstIssueMessage(issues, "productTypeCode"),
       }),
     };
   }
@@ -77,9 +72,7 @@ export async function createProductAction(
     return {
       status: "error",
       message: "Type de produit introuvable.",
-      fieldErrors: buildFieldErrors({
-        productTypeCode: "Choisis un type valide.",
-      }),
+      fieldErrors: {},
     };
   }
 

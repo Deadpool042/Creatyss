@@ -9,7 +9,7 @@ export const createProductSchema = z.object({
     .trim()
     .min(1, "Le slug est obligatoire.")
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Le slug doit être en kebab-case."),
-  productTypeCode: adminCreatableProductTypeCodeSchema,
+  productTypeCode: adminCreatableProductTypeCodeSchema.default("simple"),
 });
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;

@@ -77,14 +77,14 @@ export const PRODUCT_EDITOR_NAV_COPY = {
 // ─── Create page ──────────────────────────────────────────────────────────────
 
 export const PRODUCT_CREATE_PAGE_COPY = {
-  title: "Nouveau produit",
-  description: "Créez un produit, puis complétez ses informations dans l'éditeur.",
-  newProductButton: "Nouveau produit",
+  title: "Nouvelle fiche produit",
+  description: "Créez rapidement une fiche produit simple, puis complétez-la dans l'éditeur.",
+  newProductButton: "Nouvelle fiche produit",
 } as const;
 
 export const PRODUCT_CREATE_MENU_COPY = {
   triggerLabel: "Nouveau",
-  createProductLabel: "Créer un produit",
+  createProductLabel: "Nouvelle fiche produit",
 } as const;
 
 // ─── Editor page ──────────────────────────────────────────────────────────────
@@ -129,29 +129,18 @@ export const PRODUCT_FORM_ACTIONS_COPY = {
 // ─── Create panel ─────────────────────────────────────────────────────────────
 
 export const PRODUCT_CREATE_PANEL_COPY = {
-  step1Description: "Donnez un nom à votre produit.",
-  step2Description: "Choisissez le type de produit.",
-  progressLabel: "Progression",
-  progressStep: (step: number): string => `Étape ${step} sur 2`,
-  nextButton: "Suivant",
-  createButton: "Créer le produit",
+  description: "Créez rapidement une fiche produit simple, puis complétez-la dans l'éditeur.",
+  createButton: "Créer la fiche produit",
   createPending: "Création…",
-  identityEyebrow: "Identité",
-  identityTitle: "Identité produit",
+  identityEyebrow: "Création rapide",
+  identityTitle: "Nouvelle fiche produit",
   identitySlugHint: "Généré automatiquement depuis le nom. Vous pouvez le modifier.",
-  structureEyebrow: "Structure",
-  structureTitle: "Type de produit",
   nameLabel: "Nom",
   namePlaceholder: "Ex. Trousse en cuir",
   slugLabel: "Slug",
   slugPlaceholder: "trousse-cuir",
-  typePlaceholder: "Choisir un type",
-  typeSimple: "Produit simple",
-  typeVariable: "Produit à variantes",
   identityCardDescription:
-    "Donnez un nom au produit. Le slug est généré automatiquement et reste modifiable.",
-  structureCardDescription:
-    "Choisissez la structure de départ du produit. Vous pourrez ensuite compléter le reste dans l'éditeur.",
+    "Renseignez le nom et l’adresse. Le produit est créé comme pièce unique par défaut, puis ouvert dans l’éditeur.",
 } as const;
 
 // ─── General tab ──────────────────────────────────────────────────────────────

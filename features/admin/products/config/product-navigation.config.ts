@@ -22,8 +22,8 @@ export const PRODUCT_LIST_PAGE_COPY = {
 
 export const PRODUCT_NEW_PAGE_COPY = {
   eyebrow: "Produits",
-  title: "Nouveau produit",
-  description: "Créez un produit simple pour commencer à construire votre catalogue.",
+  title: "Nouvelle fiche produit",
+  description: "Créez rapidement une fiche produit simple pour démarrer.",
 } as const;
 
 export const PRODUCT_EDIT_PAGE_COPY = {
