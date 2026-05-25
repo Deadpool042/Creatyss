@@ -77,7 +77,7 @@ export const PRODUCT_LIST_COPY = {
   filterCategoryLabel: "Catégorie",
   filterCategoryAllLabel: "Toutes les catégories",
   filterSubcategoryAllLabel: "Toutes les sous-catégories",
-  filterAdvancedLabel: "Avancés",
+  filterAdvancedLabel: "Autres filtres",
   filterAdvancedFeaturedLabel: "Mise en avant",
   filterAdvancedImagesLabel: "Images",
   filterAdvancedVariantsLabel: "Variantes",

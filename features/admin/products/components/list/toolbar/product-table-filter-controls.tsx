@@ -114,17 +114,21 @@ export function ProductFeaturedFilterControl({
 }
 
 export function ProductAdvancedFiltersControl({
+  featured,
   image,
   variant,
   stock,
+  onFeaturedChange,
   onImageChange,
   onVariantChange,
   onStockChange,
   triggerClassName,
 }: Readonly<{
+  featured: ProductFeaturedFilterValue[];
   image: ProductFilterImageOption;
   variant: ProductFilterVariantOption;
   stock: ProductFilterStockOption;
+  onFeaturedChange: (next: ProductFeaturedFilterValue[]) => void;
   onImageChange: (next: ProductFilterImageOption) => void;
   onVariantChange: (next: ProductFilterVariantOption) => void;
   onStockChange: (next: ProductFilterStockOption) => void;
@@ -132,6 +136,16 @@ export function ProductAdvancedFiltersControl({
 }>): JSX.Element {
   return (
     <div className="flex flex-col gap-3">
+      <div className="space-y-2">
+        <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
+          {PRODUCT_LIST_COPY.filterAdvancedFeaturedLabel}
+        </p>
+        <ProductFeaturedFilterControl
+          featured={featured}
+          onFeaturedChange={onFeaturedChange}
+        />
+      </div>
+
       <AdminSelectFilterControl
         value={image}
         onValueChange={(value) => onImageChange(value as ProductFilterImageOption)}
@@ -177,9 +191,20 @@ export function ProductTableFilterControls({
   onStockChange,
   onCategoryIdsChange,
 }: ProductTableFilterControlsProps): JSX.Element {
-  const advancedCount = [image !== "all", variant !== "all", stock !== "all"].filter(Boolean).length;
+  const advancedCount = [
+    featured.length > 0,
+    image !== "all",
+    variant !== "all",
+    stock !== "all",
+  ].filter(Boolean).length;
 
   const items: AdminFilterPopoverItem[] = [
+    {
+      key: "status",
+      label: PRODUCT_LIST_COPY.filterStatutLabel,
+      count: status.length,
+      content: <ProductStatusFilterControl status={status} onStatusChange={onStatusChange} />,
+    },
     {
       key: "categories",
       label: PRODUCT_LIST_COPY.filterCategoryLabel,
@@ -194,31 +219,16 @@ export function ProductTableFilterControls({
       ),
     },
     {
-      key: "status",
-      label: PRODUCT_LIST_COPY.filterStatutLabel,
-      count: status.length,
-      content: <ProductStatusFilterControl status={status} onStatusChange={onStatusChange} />,
-    },
-    {
-      key: "featured",
-      label: PRODUCT_LIST_COPY.filterAdvancedFeaturedLabel,
-      count: featured.length,
-      content: (
-        <ProductFeaturedFilterControl
-          featured={featured}
-          onFeaturedChange={onFeaturedChange}
-        />
-      ),
-    },
-    {
       key: "advanced",
       label: PRODUCT_LIST_COPY.filterAdvancedLabel,
       count: advancedCount,
       content: (
         <ProductAdvancedFiltersControl
+          featured={featured}
           image={image}
           variant={variant}
           stock={stock}
+          onFeaturedChange={onFeaturedChange}
           onImageChange={onImageChange}
           onVariantChange={onVariantChange}
           onStockChange={onStockChange}

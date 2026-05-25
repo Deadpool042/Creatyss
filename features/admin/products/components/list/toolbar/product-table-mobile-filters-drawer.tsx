@@ -18,7 +18,6 @@ import type {
 import {
   ProductAdvancedFiltersControl,
   ProductCategoryFilterControl,
-  ProductFeaturedFilterControl,
   ProductStatusFilterControl,
 } from "./product-table-filter-controls";
 
@@ -43,6 +42,7 @@ export function ProductTableMobileFiltersDrawer({
   activeFilterItems,
 }: ProductTableMobileFiltersDrawerProps): JSX.Element {
   const advancedCount = [
+    state.featured.length > 0,
     state.image !== "all",
     state.variant !== "all",
     state.stock !== "all",
@@ -68,17 +68,6 @@ export function ProductTableMobileFiltersDrawer({
       ),
     },
     {
-      key: "featured",
-      kind: "section",
-      title: PRODUCT_LIST_COPY.filterAdvancedFeaturedLabel,
-      content: (
-        <ProductFeaturedFilterControl
-          featured={state.featured}
-          onFeaturedChange={state.setFeatured}
-        />
-      ),
-    },
-    {
       key: "advanced",
       kind: "collapsible",
       title: PRODUCT_LIST_COPY.filterAdvancedLabel,
@@ -89,9 +78,11 @@ export function ProductTableMobileFiltersDrawer({
           : PRODUCT_LIST_COPY.filterAdvancedSummary,
       content: (
         <ProductAdvancedFiltersControl
+          featured={state.featured}
           image={state.image}
           variant={state.variant}
           stock={state.stock}
+          onFeaturedChange={state.setFeatured}
           onImageChange={state.setImage}
           onVariantChange={state.setVariant}
           onStockChange={state.setStock}
