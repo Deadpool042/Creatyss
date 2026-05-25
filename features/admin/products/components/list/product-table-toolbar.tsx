@@ -67,7 +67,6 @@ export function ProductTableToolbar({
             <ProductTableMobileTopbar
               search={state.search}
               onSearchChange={state.handleSearchChange}
-              filteredCount={state.filteredCount}
               activeFiltersCount={activeFiltersCount}
               hasActiveFilters={hasActiveFilters}
               onOpenFilters={() => setDrawerOpen(true)}
@@ -135,7 +134,6 @@ export function ProductTableToolbar({
 type ProductTableMobileTopbarProps = Readonly<{
   search: string;
   onSearchChange: (value: string) => void;
-  filteredCount: number;
   activeFiltersCount: number;
   hasActiveFilters: boolean;
   onOpenFilters: () => void;
@@ -145,7 +143,6 @@ type ProductTableMobileTopbarProps = Readonly<{
 function ProductTableMobileTopbar({
   search,
   onSearchChange,
-  filteredCount,
   activeFiltersCount,
   hasActiveFilters,
   onOpenFilters,
@@ -177,12 +174,6 @@ function ProductTableMobileTopbar({
         }
         trailing={
           <div className="flex items-center gap-2">
-            <AdminDataTableResultsCount
-              count={filteredCount}
-              fullLabel={PRODUCT_RESULTS_COUNT_COPY.results}
-              shortLabel={PRODUCT_RESULTS_COUNT_COPY.resultsShort}
-              className="shrink-0 whitespace-nowrap text-xs not-italic"
-            />
             <ProductTableToolbarViewSwitch
               view={view}
               className="shrink-0 scale-[0.92] origin-right"

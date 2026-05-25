@@ -121,14 +121,12 @@ export function CategoryListToolbar() {
           />
         }
         meta={
-          total > 0 ? (
-            <AdminDataTableResultsCount
-              count={total}
-              fullLabel={CATEGORY_RESULTS_COUNT_COPY.results}
-              shortLabel={CATEGORY_RESULTS_COUNT_COPY.resultsShort}
-              className="text-xs not-italic"
-            />
-          ) : null
+          <AdminDataTableResultsCount
+            count={total}
+            fullLabel={CATEGORY_RESULTS_COUNT_COPY.results}
+            shortLabel={CATEGORY_RESULTS_COUNT_COPY.resultsShort}
+            className="text-xs not-italic"
+          />
         }
       />
 
