@@ -8,8 +8,7 @@ type AdminFeedSentinelProps = {
   rootMargin?: string;
   /**
    * Sélecteur CSS passé à `element.closest()` pour trouver le conteneur
-   * scroll de référence (ex : "[data-scroll-root]"). Si absent, utilise
-   * le viewport (`root: null`).
+   * scroll de référence. Par défaut, on cible le scroll root admin local.
    */
   rootSelector?: string | undefined;
 };
@@ -18,7 +17,7 @@ export function AdminFeedSentinel({
   disabled = false,
   onIntersect,
   rootMargin = "200px",
-  rootSelector,
+  rootSelector = "[data-scroll-root]",
 }: AdminFeedSentinelProps): JSX.Element {
   const elementRef = useRef<HTMLDivElement | null>(null);
 
@@ -28,9 +27,7 @@ export function AdminFeedSentinel({
     const element = elementRef.current;
     if (!element) return;
 
-    const root = rootSelector
-      ? (element.closest<Element>(rootSelector) ?? null)
-      : null;
+    const root = element.closest<Element>(rootSelector) ?? null;
 
     const observer = new IntersectionObserver(
       (entries) => {
