@@ -15,6 +15,8 @@ import {
   AdminTableHead,
   AdminTableHeader,
   AdminTableRow,
+  AdminRowActionsReveal,
+  AdminTableIdentityStack,
 } from "@/components/admin/tables";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -174,21 +176,23 @@ export function CategoryTableDesktop({
               </AdminTableCell>
 
               <AdminTableCell className="py-2.5">
-                <div className="min-w-0">
-                  {category.parentName ? (
-                    <p className="mb-0.5 truncate text-[0.65rem] font-medium text-brand/75">
-                      {category.parentName} <span className="text-muted-foreground/40">›</span>
+                <AdminTableIdentityStack
+                  eyebrow={
+                    category.parentName ? (
+                      <>
+                        {category.parentName}{" "}
+                        <span className="text-muted-foreground/40">›</span>
+                      </>
+                    ) : null
+                  }
+                  title={category.name}
+                  titleClassName="leading-snug"
+                  caption={
+                    <p className="mt-0.5 truncate text-[11px] text-muted-foreground/70">
+                      {category.slug}
                     </p>
-                  ) : null}
-
-                  <span className="block truncate text-[0.95rem] font-medium leading-snug text-foreground">
-                    {category.name}
-                  </span>
-
-                  <p className="mt-0.5 truncate text-[11px] text-muted-foreground/70">
-                    {category.slug}
-                  </p>
-                </div>
+                  }
+                />
               </AdminTableCell>
 
               <AdminTableCell className="py-2.5">
@@ -232,12 +236,8 @@ export function CategoryTableDesktop({
                   {formatDate(category.createdAt)}
                 </span>
 
-                <div
-                  className={cn(
-                    "absolute inset-y-0 right-2 flex items-center gap-1",
-                    "opacity-0 transition-opacity",
-                    "group-hover:opacity-100 group-focus-within:opacity-100"
-                  )}
+                <AdminRowActionsReveal
+                  className={cn("absolute inset-y-0 right-2 flex items-center gap-1")}
                 >
                   <Button
                     variant="ghost"
@@ -257,7 +257,7 @@ export function CategoryTableDesktop({
                     categorySlug={category.slug}
                     status={category.status}
                   />
-                </div>
+                </AdminRowActionsReveal>
               </AdminTableCell>
             </AdminTableRow>
           );

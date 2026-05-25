@@ -8,6 +8,7 @@ import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
 import { PRODUCT_CARD_COPY } from "@/features/admin/products/config";
+import { AdminRowActionsReveal, AdminTableIdentityStack } from "@/components/admin/tables";
 import { AdminProductsCategoryCell } from "./admin-products-category-cell";
 import { AdminProductsPriceCell } from "./admin-products-price-cell";
 import { ProductTableRowActions } from "./product-table-row-actions";
@@ -74,18 +75,19 @@ export function ProductTableDesktopRow({
       </td>
 
       <td className="px-4 py-2.5 align-middle">
-        <div className="min-w-0">
-          <span className="line-clamp-1 font-medium leading-snug text-foreground">
-            {product.name}
-          </span>
-          <div className="mt-1 hidden min-w-0 items-center gap-1.5 text-xs text-muted-foreground/60 lg:flex xl:hidden">
-            <span className="line-clamp-1 tabular-nums font-medium text-foreground/85">
-              {product.priceLabel}
-            </span>
-            <span aria-hidden="true">·</span>
-            <span className="line-clamp-1">{product.categoryPathLabel}</span>
-          </div>
-        </div>
+        <AdminTableIdentityStack
+          title={product.name}
+          titleClassName="line-clamp-1 leading-snug"
+          caption={
+            <div className="mt-1 hidden min-w-0 items-center gap-1.5 text-xs text-muted-foreground/60 lg:flex xl:hidden">
+              <span className="line-clamp-1 tabular-nums font-medium text-foreground/85">
+                {product.priceLabel}
+              </span>
+              <span aria-hidden="true">·</span>
+              <span className="line-clamp-1">{product.categoryPathLabel}</span>
+            </div>
+          }
+        />
       </td>
 
       <td className="px-4 py-2.5 align-middle">
@@ -110,17 +112,16 @@ export function ProductTableDesktopRow({
         className="px-2 py-2.5 align-middle text-right"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="flex items-center justify-end opacity-0 pointer-events-none transition-opacity duration-150 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto">
+        <AdminRowActionsReveal className="flex items-center justify-end">
           <ProductTableRowActions
             slug={product.slug}
             productName={product.name}
             view={view}
-            triggerClassName="opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
             {...(onConfirmArchive ? { onConfirmArchive } : {})}
             {...(onConfirmRestore ? { onConfirmRestore } : {})}
             {...(onConfirmPermanentDelete ? { onConfirmPermanentDelete } : {})}
           />
-        </div>
+        </AdminRowActionsReveal>
       </td>
     </tr>
   );

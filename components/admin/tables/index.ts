@@ -28,6 +28,7 @@ export { AdminDataTableSelectionSummary } from "./admin-data-table-selection-sum
 export { AdminDataTableToolbarLayout } from "./admin-data-table-toolbar-layout";
 export { AdminDataTableVisibleSelectionToggle } from "./admin-data-table-visible-selection-toggle";
 export { AdminPaginationBar } from "./admin-pagination-bar";
+export { AdminRowActionsReveal } from "./admin-row-actions-reveal";
 export { AdminRowActionsMenu } from "./admin-row-actions-menu";
 export { AdminSearchInput } from "./admin-search-input";
 export {
@@ -38,4 +39,5 @@ export {
   AdminTableHeader,
   AdminTableRow,
 } from "./admin-table";
+export { AdminTableIdentityStack } from "./admin-table-identity-stack";
 export { AdminTablePagination } from "./admin-table-pagination";
