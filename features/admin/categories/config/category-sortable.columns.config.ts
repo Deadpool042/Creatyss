@@ -8,12 +8,12 @@ export const CATEGORY_SORTABLE_COLUMNS = {
     label: CATEGORY_TABLE_COPY.columns.category,
     asc: "name-asc",
     desc: "name-desc",
-    className: "min-w-48",
+    className: "min-w-56",
   },
   updatedAt: {
     label: CATEGORY_TABLE_COPY.columns.updatedAt,
     asc: "updated-asc",
     desc: "updated-desc",
-    className: "w-28",
+    className: "hidden xl:table-cell w-28",
   },
 } satisfies Record<string, SortableColumnConfig<CategorySortOption>>;
