@@ -124,9 +124,5 @@ export type ProductTableFiltersState = {
 
   filteredCount: number;
   activeFilters: ProductTableActiveFilter[];
-  showAdvancedFilters: boolean;
-  setShowAdvancedFilters: (value: boolean) => void;
-  mobileFiltersOpen: boolean;
-  setMobileFiltersOpen: (value: boolean) => void;
   reset: () => void;
 };

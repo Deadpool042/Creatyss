@@ -94,9 +94,6 @@ export function useProductTableFilters({
   const [image, setImage] = useState<ProductFilterImageOption>("all");
   const [stock, setStock] = useState<ProductFilterStockOption>("all");
   const [variant, setVariant] = useState<ProductFilterVariantOption>("all");
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-
   // ── URL push helper ───────────────────────────────────────────────────────
 
   const pushParams = useCallback(
@@ -304,10 +301,6 @@ export function useProductTableFilters({
 
     filteredCount: total,
     activeFilters,
-    showAdvancedFilters,
-    setShowAdvancedFilters,
-    mobileFiltersOpen,
-    setMobileFiltersOpen,
     reset,
   };
 }
