@@ -9,6 +9,7 @@ import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
 import {
   ADMIN_TABLE_HEAD_CLASSNAME,
   AdminSortableTableHead,
+  AdminCountValue,
   AdminTable,
   AdminTableBody,
   AdminTableCell,
@@ -44,14 +45,13 @@ function formatDate(date: Date | string): string {
 
 function CountCell({ value }: { value: number }) {
   return (
-    <span
+    <AdminCountValue
+      value={value}
       className={cn(
-        "inline-block min-w-4 text-right tabular-nums",
+        "inline-block min-w-4 text-right",
         value === 0 ? "text-muted-foreground/35" : "text-foreground/90"
       )}
-    >
-      {value === 0 ? "—" : value}
-    </span>
+    />
   );
 }
 

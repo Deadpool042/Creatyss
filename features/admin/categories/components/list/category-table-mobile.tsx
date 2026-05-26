@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import { AdminFeedSentinel } from "@/components/admin/shared/admin-feed-sentinel";
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
+import { AdminCountValue } from "@/components/admin/tables";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -30,9 +31,9 @@ function MobileCountBox({ label, value }: Readonly<{ label: string; value: numbe
         {label}
       </p>
       <p
-        className={`text-[13px] font-semibold leading-5 tabular-nums ${value === 0 ? "text-muted-foreground/45" : "text-foreground"}`}
+        className={`text-[13px] font-semibold leading-5 ${value === 0 ? "text-muted-foreground/45" : "text-foreground"}`}
       >
-        {value === 0 ? "—" : value}
+        <AdminCountValue value={value} />
       </p>
     </div>
   );

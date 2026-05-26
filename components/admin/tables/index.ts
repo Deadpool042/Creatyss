@@ -27,6 +27,7 @@ export { AdminDataTableResultsCount } from "./admin-data-table-results-count";
 export { AdminDataTableSelectionSummary } from "./admin-data-table-selection-summary";
 export { AdminDataTableToolbarLayout } from "./admin-data-table-toolbar-layout";
 export { AdminDataTableVisibleSelectionToggle } from "./admin-data-table-visible-selection-toggle";
+export { AdminCountValue } from "./admin-count-value";
 export { AdminPaginationBar } from "./admin-pagination-bar";
 export { AdminRowActionsReveal } from "./admin-row-actions-reveal";
 export { AdminRowActionsMenu } from "./admin-row-actions-menu";
