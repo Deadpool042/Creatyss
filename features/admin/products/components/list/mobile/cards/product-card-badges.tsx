@@ -55,8 +55,8 @@ export function ProductCardBadges({
         className={cn(
           [
             compact
-              ? "inline-flex h-6 items-center rounded-full border border-surface-border bg-surface-panel-soft px-2 text-[11px] font-medium leading-none text-muted-foreground"
-              : "inline-flex h-7 items-center rounded-full border border-surface-border bg-surface-panel-soft px-2.5 text-xs font-medium leading-none text-muted-foreground",
+              ? "inline-flex h-6 items-center rounded-full border border-surface-border/70 bg-transparent px-2 text-[11px] font-medium leading-none text-muted-foreground/90"
+              : "inline-flex h-7 items-center rounded-full border border-surface-border/70 bg-transparent px-2.5 text-xs font-medium leading-none text-muted-foreground/90",
           ].join(" "),
           metricClassName
         )}

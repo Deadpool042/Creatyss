@@ -18,9 +18,9 @@ type StockConfig = {
 function getStockConfig(state: ProductStockState, quantity: number | null, compact: boolean): StockConfig {
   switch (state) {
     case "in-stock":
-      return {
-        label:
-          typeof quantity === "number" && quantity > 0
+    return {
+      label:
+        typeof quantity === "number" && quantity > 0
             ? compact
               ? PRODUCT_STOCK_BADGE_COPY.withQuantityShort(PRODUCT_STOCK_BADGE_COPY.inStockShort, quantity)
               : PRODUCT_STOCK_BADGE_COPY.withQuantityFull(PRODUCT_STOCK_BADGE_COPY.inStockLabel, quantity)
@@ -41,7 +41,7 @@ function getStockConfig(state: ProductStockState, quantity: number | null, compa
     default:
       return {
         label: PRODUCT_STOCK_BADGE_COPY.unknown,
-        className: "border-surface-border bg-surface-panel-soft text-muted-foreground",
+        className: "border-surface-border/70 bg-transparent text-muted-foreground",
       };
   }
 }

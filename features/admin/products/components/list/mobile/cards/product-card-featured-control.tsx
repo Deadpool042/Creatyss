@@ -24,7 +24,7 @@ export function ProductCardFeaturedControl({
   return (
     <div
       className={cn(
-        "rounded-full border border-surface-border bg-surface-panel-soft p-0.5",
+        "rounded-full bg-transparent p-0",
         className
       )}
     >

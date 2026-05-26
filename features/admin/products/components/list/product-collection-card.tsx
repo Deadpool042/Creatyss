@@ -39,18 +39,18 @@ export function ProductCollectionCard({
   return (
     <article
       className={cn(
-        "relative flex h-full flex-col rounded-xl border border-surface-border bg-card p-3.5 shadow-card transition-colors",
-        isSelected && "border-surface-border-strong bg-interactive-selected/30",
-        "[@media(max-height:480px)]:rounded-xl [@media(max-height:480px)]:p-2.5"
+        "relative flex h-full flex-col rounded-lg border border-surface-border/70 bg-surface-panel/40 p-3 transition-colors",
+        isSelected && "border-surface-border-strong bg-interactive-selected/20",
+        "[@media(max-height:480px)]:rounded-lg [@media(max-height:480px)]:p-2.5"
       )}
     >
       <Link
         href={`/admin/products/${product.slug}/edit`}
-        className="absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
+        className="absolute inset-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
         aria-label={PRODUCT_CARD_COPY.selectionAriaLabel(product.name)}
       />
 
-      <div className="relative z-10 mb-3 flex items-center justify-between gap-2">
+      <div className="relative z-10 mb-2.5 flex items-center justify-between gap-2">
         <label className="flex items-center gap-2 text-xs font-medium text-foreground">
           <Checkbox
             checked={isSelected}
@@ -64,7 +64,7 @@ export function ProductCollectionCard({
           <ProductCardFeaturedControl
             productId={product.id}
             isFeatured={product.isFeatured}
-            className="p-0.5"
+            className="p-0"
             buttonClassName="h-7 w-7 [@media(max-height:480px)]:h-6 [@media(max-height:480px)]:w-6"
             iconClassName="h-3.5 w-3.5"
           />
@@ -83,7 +83,7 @@ export function ProductCollectionCard({
         <ProductCardImage
           product={product}
           sizes="(min-width: 667px) 44px, 48px"
-          className="h-12 w-12 shrink-0 rounded-xl [@media(min-width:667px)]:h-11 [@media(min-width:667px)]:w-11 [@media(max-height:480px)]:h-10 [@media(max-height:480px)]:w-10"
+          className="h-12 w-12 shrink-0 rounded-lg [@media(min-width:667px)]:h-11 [@media(min-width:667px)]:w-11 [@media(max-height:480px)]:h-10 [@media(max-height:480px)]:w-10"
           placeholderClassName="bg-muted"
         />
 

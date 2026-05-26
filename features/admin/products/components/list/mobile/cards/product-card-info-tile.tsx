@@ -23,15 +23,15 @@ export function ProductCardInfoTile({
   return (
     <div
       className={cn(
-        "rounded-xl border border-surface-border bg-surface-panel-soft px-3 py-3",
+        "rounded-lg border border-surface-border/70 bg-background/35 px-2.5 py-2.5",
         className
       )}
     >
-      <ProductSectionEyebrow className={cn("text-[10px] tracking-[0.14em]", labelClassName)}>
+      <ProductSectionEyebrow className={cn("text-[10px] tracking-[0.12em]", labelClassName)}>
         {label}
       </ProductSectionEyebrow>
 
-      <div className={cn("mt-1.5 min-h-8 text-sm", bodyClassName)}>{children}</div>
+      <div className={cn("mt-1 min-h-7 text-sm", bodyClassName)}>{children}</div>
     </div>
   );
 }

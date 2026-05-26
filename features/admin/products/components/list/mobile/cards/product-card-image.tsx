@@ -31,7 +31,7 @@ export function ProductCardImage({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-xl border border-surface-border bg-muted",
+        "relative overflow-hidden rounded-lg border border-surface-border/70 bg-muted",
         className
       )}
     >

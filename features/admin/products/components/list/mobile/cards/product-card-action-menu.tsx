@@ -56,8 +56,7 @@ export function ProductCardActionMenu({
             size="icon"
             className={cn(
               [
-                "h-8 w-8 rounded-full border border-surface-border bg-surface-panel-soft",
-                "text-muted-foreground",
+                "h-8 w-8 rounded-full bg-transparent text-muted-foreground hover:bg-surface-panel-soft",
               ].join(" "),
               triggerClassName
             )}
@@ -70,7 +69,7 @@ export function ProductCardActionMenu({
         <DropdownMenuContent
           align="end"
           sideOffset={8}
-          className={cn("w-56 rounded-xl", contentClassName)}
+          className={cn("w-56 rounded-lg", contentClassName)}
         >
           <DropdownMenuItem asChild>
             <Link href={`/products/${product.slug}`} target="_blank" rel="noreferrer">

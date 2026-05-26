@@ -33,7 +33,7 @@ export function AdminProductsPriceCell({
         {hasPromotion ? (
           <span
             className={cn(
-              "inline-flex items-center rounded-full border border-surface-border-strong bg-interactive-selected text-foreground",
+              "inline-flex items-center rounded-full border border-surface-border/70 bg-transparent text-foreground/85",
               compact ? "px-1.5 py-0 text-[10px] leading-4" : "px-2 py-0.5 text-[11px]"
             )}
           >

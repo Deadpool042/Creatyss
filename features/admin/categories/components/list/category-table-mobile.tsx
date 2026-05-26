@@ -26,7 +26,7 @@ const MOBILE_PAGE_SIZE = 8;
 
 function MobileCountBox({ label, value }: Readonly<{ label: string; value: number }>) {
   return (
-    <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-3 py-2.5">
+    <div className="rounded-lg border border-surface-border/70 bg-background/35 px-2.5 py-2">
       <p className="mb-1 text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/80">
         {label}
       </p>
@@ -48,7 +48,7 @@ function CategoryMobileVisual({
     <AdminThumbnail
       src={category.primaryImageUrl}
       alt={category.primaryImageAlt ?? category.name}
-      className="h-11 w-11 shrink-0 rounded-lg border border-surface-border/80 bg-surface-panel-soft sm:h-10 sm:w-10"
+      className="h-11 w-11 shrink-0 rounded-md border border-surface-border/70 bg-surface-panel-soft sm:h-10 sm:w-10"
       fallbackLabel={CATEGORY_LIST_COPY.imageFallbackLabel(category.name)}
     />
   );
@@ -60,14 +60,14 @@ function CategoryMobileCard({ category }: Readonly<{ category: AdminCategoryCard
   return (
     <article
       className={cn(
-        "relative flex h-full flex-col rounded-xl border bg-card p-3.5 shadow-card transition-colors",
-        category.isFeatured ? "border-brand/35 bg-brand/3" : "border-surface-border"
+        "relative flex h-full flex-col rounded-lg border border-surface-border/70 bg-surface-panel/40 p-3 transition-colors",
+        category.isFeatured ? "border-brand/25 bg-brand/4" : "border-surface-border/70"
       )}
     >
       {/* Lien couvrant toute la carte (sauf les boutons d'action) */}
       <Link
         href={href}
-        className="absolute inset-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
+        className="absolute inset-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
         aria-label={`${CATEGORY_LIST_COPY.rowEditAriaPrefix} ${category.name}`}
       />
 
