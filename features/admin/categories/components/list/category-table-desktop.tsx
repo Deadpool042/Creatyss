@@ -105,21 +105,27 @@ export function CategoryTableDesktop({
           </AdminTableHead>
 
           <AdminTableHead
-            className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "w-10 text-center")}
+            className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "hidden w-10 text-center xl:table-cell")}
             aria-label={CATEGORY_TABLE_COPY.columns.featuredAria}
           >
             <Star className="mx-auto h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
           </AdminTableHead>
 
-          <AdminTableHead className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "w-20 text-right")}>
+          <AdminTableHead
+            className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "hidden w-20 text-right xl:table-cell")}
+          >
             {CATEGORY_TABLE_COPY.columns.products}
           </AdminTableHead>
 
-          <AdminTableHead className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "w-24 text-right")}>
+          <AdminTableHead
+            className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "hidden w-24 text-right xl:table-cell")}
+          >
             {CATEGORY_TABLE_COPY.columns.children}
           </AdminTableHead>
 
-          <AdminTableHead className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "w-16 text-right")}>
+          <AdminTableHead
+            className={cn(ADMIN_TABLE_HEAD_CLASSNAME, "hidden w-16 text-right xl:table-cell")}
+          >
             {CATEGORY_TABLE_COPY.columns.sortOrder}
           </AdminTableHead>
 
@@ -127,6 +133,7 @@ export function CategoryTableDesktop({
             column={CATEGORY_SORTABLE_COLUMNS.updatedAt}
             currentSort={filters.sort}
             onSort={filters.setSort}
+            className="hidden xl:table-cell"
           />
         </TableRow>
       </AdminTableHeader>
@@ -188,7 +195,7 @@ export function CategoryTableDesktop({
                   title={category.name}
                   titleClassName="leading-snug"
                   caption={
-                    <p className="mt-0.5 truncate text-[11px] text-muted-foreground/70">
+                    <p className="mt-0.5 hidden truncate text-[11px] text-muted-foreground/70 xl:block">
                       {category.slug}
                     </p>
                   }
@@ -202,7 +209,7 @@ export function CategoryTableDesktop({
                 />
               </AdminTableCell>
 
-              <AdminTableCell className="py-2.5 text-center">
+              <AdminTableCell className="hidden py-2.5 text-center xl:table-cell">
                 {category.isFeatured ? (
                   <Star
                     className="mx-auto h-3.5 w-3.5 fill-amber-400 text-amber-400"
@@ -216,20 +223,20 @@ export function CategoryTableDesktop({
                 )}
               </AdminTableCell>
 
-              <AdminTableCell className="py-2.5 text-right text-sm">
+              <AdminTableCell className="hidden py-2.5 text-right text-sm xl:table-cell">
                 <CountCell value={category.productCount} />
               </AdminTableCell>
 
-              <AdminTableCell className="py-2.5 text-right text-sm">
+              <AdminTableCell className="hidden py-2.5 text-right text-sm xl:table-cell">
                 <CountCell value={category.childrenCount} />
               </AdminTableCell>
 
-              <AdminTableCell className="py-2.5 text-right text-sm">
+              <AdminTableCell className="hidden py-2.5 text-right text-sm xl:table-cell">
                 <CountCell value={category.sortOrder} />
               </AdminTableCell>
 
               <AdminTableCell
-                className="relative overflow-visible py-2.5 text-sm text-muted-foreground"
+                className="hidden relative overflow-visible py-2.5 text-sm text-muted-foreground xl:table-cell"
                 onClick={(event) => event.stopPropagation()}
               >
                 <span className="transition-opacity group-hover:opacity-0 group-focus-within:opacity-0">

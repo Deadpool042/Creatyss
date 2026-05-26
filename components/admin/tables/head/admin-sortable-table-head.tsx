@@ -19,12 +19,14 @@ type AdminSortableTableHeadProps<TSort extends string> = Readonly<{
   column: SortableColumnConfig<TSort>;
   currentSort: TSort;
   onSort: (sort: TSort) => void;
+  className?: string;
 }>;
 
 export function AdminSortableTableHead<TSort extends string>({
   column,
   currentSort,
   onSort,
+  className,
 }: AdminSortableTableHeadProps<TSort>) {
   const isAsc = currentSort === column.asc;
   const isDesc = currentSort === column.desc;
@@ -42,7 +44,7 @@ export function AdminSortableTableHead<TSort extends string>({
 
   return (
     <AdminTableHead
-      className={cn(ADMIN_TABLE_HEAD_CLASSNAME, column.className)}
+      className={cn(ADMIN_TABLE_HEAD_CLASSNAME, column.className, className)}
       aria-sort={ariaSort}
     >
       <button
