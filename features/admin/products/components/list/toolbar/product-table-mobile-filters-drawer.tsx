@@ -3,10 +3,10 @@
 import type { JSX } from "react";
 
 import {
-  AdminDataTableFiltersDrawer,
+  AdminConfigDataTableFiltersDrawer,
   type AdminDataTableActiveFilterItem,
 } from "@/components/admin/tables";
-import { AdminFilterBlocks, type AdminFilterBlock } from "@/components/admin/tables/filters";
+import type { AdminFilterBlock } from "@/components/admin/tables/filters";
 import {
   PRODUCT_LIST_ACTIONS_COPY,
   PRODUCT_LIST_COPY,
@@ -93,7 +93,7 @@ export function ProductTableMobileFiltersDrawer({
   ];
 
   return (
-    <AdminDataTableFiltersDrawer
+    <AdminConfigDataTableFiltersDrawer
       open={open}
       onOpenChange={onOpenChange}
       title={PRODUCT_LIST_COPY.filtersTitle}
@@ -104,20 +104,13 @@ export function ProductTableMobileFiltersDrawer({
       }
       resetLabel={PRODUCT_LIST_COPY.mobileFiltersReset}
       applyLabel={PRODUCT_LIST_ACTIONS_COPY.viewResultsLabel}
-      resetDisabled={!hasActiveFilters}
-      stackedFooter
-      onReset={() => {
-        state.reset();
-        onOpenChange(false);
-      }}
-      onApply={() => onOpenChange(false)}
+      hasActiveFilters={hasActiveFilters}
+      onReset={state.reset}
       activeFiltersTitle={PRODUCT_LIST_COPY.mobileFiltersActiveSection}
       activeFilterItems={activeFilterItems}
       clearActiveFiltersLabel={PRODUCT_LIST_COPY.activeFiltersResetLabel}
       onClearActiveFilters={state.reset}
-      contentClassName="flex flex-col gap-5"
-    >
-      <AdminFilterBlocks blocks={blocks} className="flex flex-col gap-5" />
-    </AdminDataTableFiltersDrawer>
+      blocks={blocks}
+    />
   );
 }

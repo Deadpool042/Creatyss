@@ -4,39 +4,26 @@ import { ProductStatus } from "@/prisma-generated/client";
 import { db } from "@/core/db";
 import { mapAdminProductFeedItem } from "@/features/admin/products/list/mappers";
 import { mapProductStatusToPrismaStatus } from "@/features/admin/products/services";
-import type { AdminProductFeedItem } from "@/features/admin/products/list/types/product-feed.types";
+// import type {
+//   ProductFeaturedFilterValue,
+//   ProductSortOption,
+//   ProductStatusCounts,
+//   ProductTableStatus,
+// } from "@/features/admin/products/list/types/product-table.types";
+import type { ProductFilterCategoryOption } from "../types";
 import type {
-  ProductFeaturedFilterValue,
-  ProductSortOption,
+  AdminProductsListView,
+  ProductListFilters,
+  ProductListResult,
+  ProductPickerItem,
   ProductStatusCounts,
-  ProductTableStatus,
-} from "@/features/admin/products/list/types/product-table.types";
-import type {
-  ProductFilterCategoryOption,
-} from "../types";
+} from "../types/product-list-query.types";
+
+export type ProductListQueryFilters = ProductListFilters;
+export type { ProductListResult };
+export type { AdminProductsListView };
 
 // ─── listAdminProducts ───────────────────────────────────────────────────────
-
-export type AdminProductsListView = "active" | "trash";
-
-export type ProductListQueryFilters = {
-  view?: AdminProductsListView;
-  search?: string;
-  status?: ProductTableStatus[];
-  sort?: ProductSortOption;
-  page?: number;
-  perPage?: number;
-  categoryIds?: string[];
-  featured?: ProductFeaturedFilterValue[];
-};
-
-export type ProductListResult = {
-  items: AdminProductFeedItem[];
-  total: number;
-  totalPages: number;
-  currentPage: number;
-  statusCounts: ProductStatusCounts;
-};
 
 const DEFAULT_PER_PAGE = 24;
 
@@ -113,8 +100,15 @@ const PRODUCT_SELECT = {
   },
 };
 
+export async function listProductsCategoryForPicker(): Promise<ProductPickerItem[]> {
+  return db.category.findMany({
+    select: { id: true, name: true, slug: true, parentId: true },
+    orderBy: [{ parentId: "asc" }, { name: "asc" }],
+  });
+}
+
 export async function listAdminProducts(
-  filters: ProductListQueryFilters = {}
+  filters: ProductListFilters = {}
 ): Promise<ProductListResult> {
   const {
     view = "active",
@@ -123,16 +117,21 @@ export async function listAdminProducts(
     sort = "updated-desc",
     page = 1,
     perPage = DEFAULT_PER_PAGE,
-    categoryIds = [],
+    categorySlugs = [],
     featured = [],
   } = filters;
 
   const normalizedSearch = search.trim();
 
-  const viewWhere =
-    view === "trash"
-      ? { archivedAt: { not: null } }
-      : { archivedAt: null };
+  const viewWhere = view === "trash" ? { archivedAt: { not: null } } : { archivedAt: null };
+  const categoryIds = categorySlugs.length
+    ? await db.category
+        .findMany({
+          where: { slug: { in: categorySlugs } },
+          select: { id: true },
+        })
+        .then((categories) => categories.map((c) => c.id))
+    : [];
 
   const statusWhere =
     view === "trash"
@@ -246,7 +245,8 @@ export async function listAdminProducts(
     else if (row.status === ProductStatus.INACTIVE) statusCounts.inactive = row._count.id;
   }
 
-  statusCounts.all = statusCounts.active + statusCounts.draft + statusCounts.inactive;
+  statusCounts.all =
+    (statusCounts.active ?? 0) + (statusCounts.draft ?? 0) + (statusCounts.inactive ?? 0);
 
   return {
     items: rawProducts.map(mapAdminProductFeedItem),

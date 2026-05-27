@@ -10,7 +10,7 @@ type AdminCollapsibleFilterSectionProps = {
   description: string;
   summary: string;
   children: ReactNode;
-  defaultOpen?: boolean | undefined;
+  defaultOpen?: boolean;
 };
 
 export function AdminCollapsibleFilterSection({
@@ -31,7 +31,7 @@ export function AdminCollapsibleFilterSection({
         aria-expanded={open}
       >
         <div className="space-y-0.5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
             {title}
           </p>
           <p className="text-xs text-foreground">{description}</p>
@@ -42,7 +42,10 @@ export function AdminCollapsibleFilterSection({
             {summary}
           </span>
           <ChevronDown
-            className={cn("h-4 w-4 text-muted-foreground transition-transform", open && "rotate-180")}
+            className={cn(
+              "h-4 w-4 text-muted-foreground transition-transform",
+              open && "rotate-180"
+            )}
           />
         </div>
       </button>

@@ -2,11 +2,9 @@
 
 import type { JSX } from "react";
 
-import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { CustomLink } from "@/components/shared";
-import {
-  PRODUCT_LIST_EMPTY_STATE_COPY,
-} from "@/features/admin/products/config";
+import { PRODUCT_LIST_EMPTY_STATE_COPY } from "@/features/admin/products/config";
 import type { ProductListView } from "@/features/admin/products/list/types";
 
 type ProductTableEmptyStateProps = Readonly<{
@@ -25,7 +23,11 @@ export function ProductTableEmptyState({
         title={PRODUCT_LIST_EMPTY_STATE_COPY.filtered.title}
         description={PRODUCT_LIST_EMPTY_STATE_COPY.filtered.description}
         actionNode={
-          <CustomLink href={view === "trash" ? "/admin/products?view=trash" : "/admin/products"} variant="navUnderline" className="text-brand">
+          <CustomLink
+            href={view === "trash" ? "/admin/products?view=trash" : "/admin/products"}
+            variant="navUnderline"
+            className="text-brand"
+          >
             {PRODUCT_LIST_EMPTY_STATE_COPY.filtered.resetLabel}
           </CustomLink>
         }

@@ -1,11 +1,2 @@
-export { AdminProductsCategoryCell } from "./admin-products-category-cell";
-export { AdminProductsPriceCell } from "./admin-products-price-cell";
-export { ProductStockBadge } from "./product-stock-badge";
-export { ProductTable } from "./product-table";
-export { ProductTableProvider, useProductTableContext } from "./product-table-context";
-export { ProductTableDesktop } from "./product-table-desktop";
-export { ProductTableMobile } from "./product-table-mobile";
-export { ProductTableRowActions } from "./product-table-row-actions";
-export { ProductTableToolbar } from "./product-table-toolbar";
-export { ProductFeaturedToggle } from "./product-featured-toggle";
-export { ProductCollectionCard } from "./product-collection-card";
+export { ProductTable } from "./table/product-table";
+export { ProductTableProvider } from "./desktop/product-table-context";

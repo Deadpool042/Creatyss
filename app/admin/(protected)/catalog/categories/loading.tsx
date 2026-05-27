@@ -1,6 +1,6 @@
 import type React from "react";
 
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import {
   ADMIN_CATEGORIES_LIST_PATH,
   CategoryCreateTopbarMenu,

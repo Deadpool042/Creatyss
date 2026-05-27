@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/shared/feedback";
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { listAdminMediaAssets } from "@/features/admin/media";
 import {
   ADMIN_CATEGORIES_LIST_PATH,

@@ -19,7 +19,7 @@ export function AdminFilterField({
     <div className={cn("grid gap-1.5", className)}>
       <p
         className={cn(
-          "text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60",
+          "text-[0.62rem] font-semibold uppercase tracking-widest text-muted-foreground/60",
           labelClassName
         )}
       >

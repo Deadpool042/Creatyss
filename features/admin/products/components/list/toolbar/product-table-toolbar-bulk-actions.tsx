@@ -2,40 +2,9 @@
 
 import type { JSX } from "react";
 
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { AdminDataTableBulkActionButton } from "@/components/admin/tables";
 import { PRODUCT_BULK_ACTIONS_COPY } from "@/features/admin/products/config";
 import type { ProductListView } from "@/features/admin/products/list/types";
-
-type ProductTableToolbarBulkActionButtonProps = {
-  children: string;
-  onClick: () => void;
-  disabled?: boolean;
-  danger?: boolean;
-};
-
-function ProductTableToolbarBulkActionButton({
-  children,
-  onClick,
-  disabled = false,
-  danger = false,
-}: ProductTableToolbarBulkActionButtonProps): JSX.Element {
-  return (
-    <Button
-      type="button"
-      variant="outline"
-      size="sm"
-      onClick={onClick}
-      disabled={disabled}
-      className={cn(
-        "h-8 shrink-0 whitespace-nowrap rounded-full px-3 text-xs shadow-none",
-        danger && "border-destructive/30 text-destructive/70 hover:text-destructive/70"
-      )}
-    >
-      {children}
-    </Button>
-  );
-}
 
 type ProductTableToolbarBulkActionsProps = {
   view: ProductListView;
@@ -66,19 +35,24 @@ export function ProductTableToolbarBulkActions({
     return (
       <div className="flex gap-2 overflow-x-auto pb-1">
         {onBulkRestore ? (
-          <ProductTableToolbarBulkActionButton onClick={onBulkRestore} disabled={isBulkPending}>
+          <AdminDataTableBulkActionButton
+            onClick={onBulkRestore}
+            disabled={isBulkPending}
+            className="h-8"
+          >
             {PRODUCT_BULK_ACTIONS_COPY.restore}
-          </ProductTableToolbarBulkActionButton>
+          </AdminDataTableBulkActionButton>
         ) : null}
 
         {onOpenPermanentDeleteDialog ? (
-          <ProductTableToolbarBulkActionButton
+          <AdminDataTableBulkActionButton
             onClick={onOpenPermanentDeleteDialog}
             disabled={isBulkPending}
             danger
+            className="h-8"
           >
             {PRODUCT_BULK_ACTIONS_COPY.hardDelete}
-          </ProductTableToolbarBulkActionButton>
+          </AdminDataTableBulkActionButton>
         ) : null}
       </div>
     );
@@ -87,42 +61,64 @@ export function ProductTableToolbarBulkActions({
   return (
     <div className="flex gap-2 overflow-x-auto pb-1">
       {onBulkSetDraft ? (
-        <ProductTableToolbarBulkActionButton onClick={onBulkSetDraft} disabled={isBulkPending}>
+        <AdminDataTableBulkActionButton
+          onClick={onBulkSetDraft}
+          disabled={isBulkPending}
+          className="h-8"
+        >
           {PRODUCT_BULK_ACTIONS_COPY.setDraft}
-        </ProductTableToolbarBulkActionButton>
+        </AdminDataTableBulkActionButton>
       ) : null}
 
       {onBulkSetActive ? (
-        <ProductTableToolbarBulkActionButton onClick={onBulkSetActive} disabled={isBulkPending}>
+        <AdminDataTableBulkActionButton
+          onClick={onBulkSetActive}
+          disabled={isBulkPending}
+          className="h-8"
+        >
           {PRODUCT_BULK_ACTIONS_COPY.setActive}
-        </ProductTableToolbarBulkActionButton>
+        </AdminDataTableBulkActionButton>
       ) : null}
 
       {onBulkSetInactive ? (
-        <ProductTableToolbarBulkActionButton onClick={onBulkSetInactive} disabled={isBulkPending}>
+        <AdminDataTableBulkActionButton
+          onClick={onBulkSetInactive}
+          disabled={isBulkPending}
+          className="h-8"
+        >
           {PRODUCT_BULK_ACTIONS_COPY.setInactive}
-        </ProductTableToolbarBulkActionButton>
+        </AdminDataTableBulkActionButton>
       ) : null}
 
       {onBulkSetFeatured ? (
-        <ProductTableToolbarBulkActionButton onClick={onBulkSetFeatured} disabled={isBulkPending}>
+        <AdminDataTableBulkActionButton
+          onClick={onBulkSetFeatured}
+          disabled={isBulkPending}
+          className="h-8"
+        >
           {PRODUCT_BULK_ACTIONS_COPY.setFeatured}
-        </ProductTableToolbarBulkActionButton>
+        </AdminDataTableBulkActionButton>
       ) : null}
 
       {onBulkUnsetFeatured ? (
-        <ProductTableToolbarBulkActionButton
+        <AdminDataTableBulkActionButton
           onClick={onBulkUnsetFeatured}
           disabled={isBulkPending}
+          className="h-8"
         >
           {PRODUCT_BULK_ACTIONS_COPY.unsetFeatured}
-        </ProductTableToolbarBulkActionButton>
+        </AdminDataTableBulkActionButton>
       ) : null}
 
       {onBulkArchive ? (
-        <ProductTableToolbarBulkActionButton onClick={onBulkArchive} disabled={isBulkPending} danger>
+        <AdminDataTableBulkActionButton
+          onClick={onBulkArchive}
+          disabled={isBulkPending}
+          danger
+          className="h-8"
+        >
           {PRODUCT_BULK_ACTIONS_COPY.archive}
-        </ProductTableToolbarBulkActionButton>
+        </AdminDataTableBulkActionButton>
       ) : null}
     </div>
   );

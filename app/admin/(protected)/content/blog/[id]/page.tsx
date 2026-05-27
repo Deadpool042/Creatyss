@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFormActions, AdminFormField, AdminFormSection } from "@/components/admin/forms";
 import { Notice } from "@/components/shared/feedback";
 import { Button } from "@/components/ui/button";

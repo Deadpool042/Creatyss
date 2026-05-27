@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { CustomLink } from "@/components/shared";
 import {
   CATEGORY_LIST_COPY,

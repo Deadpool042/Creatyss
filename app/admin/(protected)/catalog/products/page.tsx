@@ -1,4 +1,11 @@
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import {
+  parseAdminListArrayParam,
+  parseAdminListPageParam,
+  parseAdminListPerPageParam,
+  parseAdminListSortParam,
+  parseAdminListStringArrayParam,
+} from "@/components/admin/tables/state/admin-list-search-params";
+import { AdminDataTablePageShell } from "@/components/admin/tables";
 import { ProductCreateTopbarMenu } from "@/features/admin/products/components";
 import { ProductTable, ProductTableProvider } from "@/features/admin/products/components/list";
 import { mapProductTableItem } from "@/features/admin/products/list/mappers";
@@ -31,41 +38,15 @@ type SearchParams = Promise<{
   featured?: string;
 }>;
 
-const VALID_STATUSES = PRODUCT_FILTER_VALID_VALUES.statuses as readonly ProductTableStatus[];
+const VALID_STATUSES = PRODUCT_FILTER_VALID_VALUES.statuses as ProductTableStatus[];
 const VALID_FEATURED = PRODUCT_FILTER_VALID_VALUES.featured.filter(
   (value): value is ProductFeaturedFilterValue => value !== "all"
 );
-const VALID_SORTS = PRODUCT_FILTER_VALID_VALUES.sorts as readonly ProductSortOption[];
+const VALID_SORTS = PRODUCT_FILTER_VALID_VALUES.sorts as ProductSortOption[];
+const VALID_PER_PAGE = PRODUCT_FILTER_VALID_VALUES.perPage as readonly number[];
 
 function resolveProductsView(rawView: string | undefined): AdminProductsListView {
   return rawView === "trash" ? "trash" : "active";
-}
-
-function parseStatus(value: string | undefined): ProductTableStatus[] {
-  if (!value) return [];
-  return value
-    .split(",")
-    .filter((v): v is ProductTableStatus => VALID_STATUSES.includes(v as ProductTableStatus));
-}
-
-function parseFeatured(value: string | undefined): ProductFeaturedFilterValue[] {
-  if (!value) return [];
-  return value
-    .split(",")
-    .filter((v): v is ProductFeaturedFilterValue =>
-      VALID_FEATURED.includes(v as ProductFeaturedFilterValue)
-    );
-}
-
-function parseCategoryIds(value: string | undefined): string[] {
-  if (!value) return [];
-  return value.split(",").filter(Boolean);
-}
-
-function parseSort(value: string | undefined): ProductSortOption {
-  return VALID_SORTS.includes(value as ProductSortOption)
-    ? (value as ProductSortOption)
-    : "updated-desc";
 }
 
 export default async function AdminProductsPage({ searchParams }: { searchParams: SearchParams }) {
@@ -73,16 +54,16 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
 
   const view = resolveProductsView(params.view);
   const search = params.search ?? "";
-  const status = parseStatus(params.status);
-  const sort = parseSort(params.sort);
-  const featured = parseFeatured(params.featured);
-  const categoryIds = parseCategoryIds(params.categories ?? params.categoryId);
-  const page = Math.max(1, Number(params.page) || 1);
-  const perPage = (PRODUCT_FILTER_VALID_VALUES.perPage as readonly number[]).includes(
-    Number(params.perPage)
-  )
-    ? Number(params.perPage)
-    : PRODUCT_FILTER_VALID_VALUES.perPageDefault;
+  const status = parseAdminListArrayParam(params.status, VALID_STATUSES);
+  const sort = parseAdminListSortParam(params.sort, VALID_SORTS, "updated-desc");
+  const featured = parseAdminListArrayParam(params.featured, VALID_FEATURED);
+  const productSlugs = parseAdminListStringArrayParam(params.categories);
+  const page = parseAdminListPageParam(params.page);
+  const perPage = parseAdminListPerPageParam(
+    params.perPage,
+    VALID_PER_PAGE,
+    PRODUCT_FILTER_VALID_VALUES.perPageDefault
+  );
 
   const [{ items, total, totalPages, currentPage, statusCounts }, categoryOptions] =
     await Promise.all([
@@ -93,8 +74,8 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
         sort,
         page,
         perPage,
-        ...(categoryIds.length > 0 ? { categoryIds } : {}),
         featured,
+        productSlugs,
       }),
       listProductFilterCategories(),
     ]);
@@ -102,9 +83,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
   const products = items.map(mapProductTableItem);
 
   return (
-    <AdminPageShell
-      headerVisibility="desktop"
-      headerDensity="compact"
+    <AdminDataTablePageShell
       eyebrow={PRODUCT_LIST_PAGE_COPY.eyebrow}
       title={view === "trash" ? PRODUCT_LIST_PAGE_COPY.titleTrash : PRODUCT_LIST_PAGE_COPY.title}
       description={
@@ -118,9 +97,6 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
         { label: PRODUCT_LIST_PAGE_COPY.navHomeLabel, href: "/admin" },
         { label: PRODUCT_LIST_PAGE_COPY.navProductsLabel, href: "/admin/products" },
       ]}
-      viewportClassName="!h-full"
-      scrollMode="nested"
-      contentClassName="min-h-0 flex-1 overflow-hidden px-3 pt-14 pb-4 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 lg:px-6 lg:pb-6 lg:pt-0"
     >
       <ProductTableProvider
         products={products}
@@ -134,6 +110,6 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
       >
         <ProductTable />
       </ProductTableProvider>
-    </AdminPageShell>
+    </AdminDataTablePageShell>
   );
 }

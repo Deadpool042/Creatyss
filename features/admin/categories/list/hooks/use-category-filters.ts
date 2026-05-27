@@ -1,14 +1,22 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
+import { useAdminListUrlState } from "@/components/admin/tables";
+import {
+  formatAdminListArrayParam,
+  formatAdminListDefaultParam,
+  formatAdminListPageParam,
+  parseAdminListArrayParam,
+  parseAdminListPageParam,
+  parseAdminListPerPageParam,
+  parseAdminListSortParam,
+  parseAdminListStringArrayParam,
+} from "@/components/admin/tables/state/admin-list-search-params";
 import { CATEGORY_FILTER_VALID_VALUES } from "@/features/admin/categories/config";
 import type { AdminCategoryStatus } from "@/features/admin/categories/types";
-import type {
-  CategoryFeaturedFilter,
-  CategorySortOption,
-} from "@/features/admin/categories/list";
+import type { CategoryFeaturedFilter, CategorySortOption } from "@/features/admin/categories/list";
 
 export type CategoryFiltersState = {
   search: string;
@@ -35,73 +43,29 @@ const VALID_FEATURED = CATEGORY_FILTER_VALID_VALUES.featured as CategoryFeatured
 const VALID_SORTS = CATEGORY_FILTER_VALID_VALUES.sorts as CategorySortOption[];
 const VALID_PER_PAGE = CATEGORY_FILTER_VALID_VALUES.perPage;
 
-function parseArray<T extends string>(value: string | null, valid: T[]): T[] {
-  if (!value) return [];
-  return value.split(",").filter((v): v is T => valid.includes(v as T));
-}
-
-function parseCategorySlugs(value: string | null): string[] {
-  if (!value) return [];
-  return value.split(",").filter(Boolean);
-}
-
-function parseSort(value: string | null): CategorySortOption {
-  return VALID_SORTS.includes(value as CategorySortOption)
-    ? (value as CategorySortOption)
-    : "name-asc";
-}
-
-function parsePerPage(value: string | null): number {
-  const n = Number(value);
-  return (VALID_PER_PAGE as readonly number[]).includes(n) ? n : CATEGORY_FILTER_VALID_VALUES.perPageDefault;
-}
-
-function parsePage(value: string | null): number {
-  const n = Number(value);
-  return Number.isInteger(n) && n >= 1 ? n : 1;
-}
-
 export function useCategoryFilters(): CategoryFiltersState {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { pushParams, resetUrl } = useAdminListUrlState();
 
   const search = searchParams.get("search") ?? "";
-  const status = parseArray(searchParams.get("status"), VALID_STATUSES);
-  const featured = parseArray(searchParams.get("featured"), VALID_FEATURED);
-  const categorySlugs = parseCategorySlugs(searchParams.get("categories"));
-  const sort = parseSort(searchParams.get("sort"));
-  const perPage = parsePerPage(searchParams.get("perPage"));
-  const page = parsePage(searchParams.get("page"));
+  const status = parseAdminListArrayParam(searchParams.get("status"), VALID_STATUSES);
+  const featured = parseAdminListArrayParam(searchParams.get("featured"), VALID_FEATURED);
+  const categorySlugs = parseAdminListStringArrayParam(searchParams.get("categories"));
+  const sort = parseAdminListSortParam(searchParams.get("sort"), VALID_SORTS, "name-asc");
+  const perPage = parseAdminListPerPageParam(
+    searchParams.get("perPage"),
+    VALID_PER_PAGE,
+    CATEGORY_FILTER_VALID_VALUES.perPageDefault
+  );
+  const page = parseAdminListPageParam(searchParams.get("page"));
 
   const activeFilterCount = [
     sort !== "name-asc",
-    perPage !== 10,
+    perPage !== CATEGORY_FILTER_VALID_VALUES.perPageDefault,
     status.length > 0,
     featured.length > 0,
     categorySlugs.length > 0,
   ].filter(Boolean).length;
-
-  const pushParams = useCallback(
-    (updates: Record<string, string | null>) => {
-      const params = new URLSearchParams(searchParams.toString());
-
-      for (const [key, value] of Object.entries(updates)) {
-        if (value === null || value === "") {
-          params.delete(key);
-        } else {
-          params.set(key, value);
-        }
-      }
-
-      if (!("page" in updates)) {
-        params.delete("page");
-      }
-
-      router.push(`${pathname}?${params.toString()}`);
-    },
-    [pathname, router, searchParams]
-  );
 
   const setSearch = useCallback(
     (value: string) => pushParams({ search: value || null }),
@@ -109,35 +73,37 @@ export function useCategoryFilters(): CategoryFiltersState {
   );
 
   const setStatus = useCallback(
-    (values: AdminCategoryStatus[]) =>
-      pushParams({ status: values.length > 0 ? values.join(",") : null }),
+    (values: AdminCategoryStatus[]) => pushParams({ status: formatAdminListArrayParam(values) }),
     [pushParams]
   );
 
   const setFeatured = useCallback(
     (values: CategoryFeaturedFilter[]) =>
-      pushParams({ featured: values.length > 0 ? values.join(",") : null }),
+      pushParams({ featured: formatAdminListArrayParam(values) }),
     [pushParams]
   );
 
   const setCategorySlugs = useCallback(
-    (values: string[]) =>
-      pushParams({ categories: values.length > 0 ? values.join(",") : null }),
+    (values: string[]) => pushParams({ categories: formatAdminListArrayParam(values) }),
     [pushParams]
   );
 
   const setSort = useCallback(
-    (value: CategorySortOption) => pushParams({ sort: value === "name-asc" ? null : value }),
+    (value: CategorySortOption) =>
+      pushParams({ sort: formatAdminListDefaultParam(value, "name-asc") }),
     [pushParams]
   );
 
   const setPage = useCallback(
-    (value: number) => pushParams({ page: value === 1 ? null : String(value) }),
+    (value: number) => pushParams({ page: formatAdminListPageParam(value) }),
     [pushParams]
   );
 
   const setPerPage = useCallback(
-    (value: number) => pushParams({ perPage: value === 10 ? null : String(value) }),
+    (value: number) =>
+      pushParams({
+        perPage: formatAdminListDefaultParam(value, CATEGORY_FILTER_VALID_VALUES.perPageDefault),
+      }),
     [pushParams]
   );
 
@@ -147,8 +113,8 @@ export function useCategoryFilters(): CategoryFiltersState {
   );
 
   const reset = useCallback(() => {
-    router.push(pathname);
-  }, [pathname, router]);
+    resetUrl();
+  }, [resetUrl]);
 
   return {
     search,

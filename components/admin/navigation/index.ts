@@ -4,7 +4,5 @@ export {
   isAdminNavigationItemActive,
   renderAdminNavigationIcon,
 } from "./shared";
-export { AdminSidebarNav } from "./sidebar";
+export { AdminSidebar, AdminSidebarGroup, AdminSidebarLink, AdminSidebarNav } from "./sidebar";
 export { AdminTopbar } from "./topbar";
-
-export type { AdminSidebarNavGroup, AdminSidebarNavItem } from "./types";

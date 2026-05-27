@@ -1,6 +1,4 @@
-export type {
-  AdminProductFeedItem,
-} from "./product-feed.types";
+export type { AdminProductFeedItem } from "./product-feed.types";
 
 export type {
   ProductListView,
@@ -43,4 +41,10 @@ export type {
 
 export type { AdminProductStatus, AdminProductCardItem } from "./admin-product-card-item.types";
 
-export type { ProductListUrlFilters, ProductPickerItem, ProductStatusCounts, ProductListResult } from "./product-list-query.types";
+export type {
+  ProductListFilters,
+  ProductListUrlFilters,
+  ProductPickerItem,
+  ProductStatusCounts,
+  ProductListResult,
+} from "./product-list-query.types";

@@ -19,6 +19,34 @@ const STATUS_MAP: Record<AdminCategoryStatus, CategoryStatus> = {
 
 const DEFAULT_PER_PAGE = 10;
 
+type CategoryBaseWhereInput = {
+  normalizedSearch: string;
+  featured: CategoryListFilters["featured"];
+  categorySlugs: CategoryListFilters["categorySlugs"];
+};
+
+function buildCategoryBaseWhere(input: CategoryBaseWhereInput) {
+  const featuredWhere =
+    input.featured && input.featured.length === 1
+      ? { isFeatured: input.featured[0] === "featured" }
+      : {};
+
+  return {
+    ...(input.normalizedSearch.length > 0
+      ? {
+          OR: [
+            { name: { contains: input.normalizedSearch, mode: "insensitive" as const } },
+            { slug: { contains: input.normalizedSearch, mode: "insensitive" as const } },
+          ],
+        }
+      : {}),
+    ...featuredWhere,
+    ...(input.categorySlugs && input.categorySlugs.length > 0
+      ? { slug: { in: input.categorySlugs } }
+      : {}),
+  };
+}
+
 export async function listCategoriesForPicker(): Promise<CategoryPickerItem[]> {
   return db.category.findMany({
     select: { id: true, name: true, slug: true, parentId: true },
@@ -41,35 +69,30 @@ export async function listAdminCategories(
 
   const normalizedSearch = search.trim();
 
-  const featuredWhere = featured.length === 1 ? { isFeatured: featured[0] === "featured" } : {};
+  const baseWhere = buildCategoryBaseWhere({
+    normalizedSearch,
+    featured,
+    categorySlugs,
+  });
 
   const where = {
-    ...(normalizedSearch.length > 0
-      ? {
-          OR: [
-            { name: { contains: normalizedSearch, mode: "insensitive" as const } },
-            { slug: { contains: normalizedSearch, mode: "insensitive" as const } },
-          ],
-        }
-      : {}),
+    ...baseWhere,
     ...(status.length > 0
       ? { status: { in: status.map((s) => STATUS_MAP[s]) } }
       : { status: { not: CategoryStatus.ARCHIVED } }),
-    ...featuredWhere,
-    ...(categorySlugs.length > 0 ? { slug: { in: categorySlugs } } : {}),
   };
 
   const orderBy = (() => {
     switch (sort) {
       case "name-desc":
-        return { name: "desc" as const };
+        return [{ name: "desc" as const }, { id: "desc" as const }];
       case "updated-asc":
-        return { updatedAt: "asc" as const };
+        return [{ updatedAt: "asc" as const }, { id: "asc" as const }];
       case "updated-desc":
-        return { updatedAt: "desc" as const };
+        return [{ updatedAt: "desc" as const }, { id: "desc" as const }];
       case "name-asc":
       default:
-        return { name: "asc" as const };
+        return [{ name: "asc" as const }, { id: "asc" as const }];
     }
   })();
 
@@ -78,16 +101,7 @@ export async function listAdminCategories(
   const skip = (safePage - 1) * safePerPage;
 
   const whereWithoutStatus = {
-    ...(normalizedSearch.length > 0
-      ? {
-          OR: [
-            { name: { contains: normalizedSearch, mode: "insensitive" as const } },
-            { slug: { contains: normalizedSearch, mode: "insensitive" as const } },
-          ],
-        }
-      : {}),
-    ...featuredWhere,
-    ...(categorySlugs.length > 0 ? { slug: { in: categorySlugs } } : {}),
+    ...baseWhere,
   };
 
   const [rawCategories, total, rawStatusCounts] = await Promise.all([

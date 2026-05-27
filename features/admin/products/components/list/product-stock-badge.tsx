@@ -15,33 +15,41 @@ type StockConfig = {
   className: string;
 };
 
-function getStockConfig(state: ProductStockState, quantity: number | null, compact: boolean): StockConfig {
+function getStockConfig(
+  state: ProductStockState,
+  quantity: number | null,
+  compact: boolean
+): StockConfig {
   switch (state) {
     case "in-stock":
-    return {
-      label:
-        typeof quantity === "number" && quantity > 0
+      return {
+        label:
+          typeof quantity === "number" && quantity > 0
             ? compact
-              ? PRODUCT_STOCK_BADGE_COPY.withQuantityShort(PRODUCT_STOCK_BADGE_COPY.inStockShort, quantity)
-              : PRODUCT_STOCK_BADGE_COPY.withQuantityFull(PRODUCT_STOCK_BADGE_COPY.inStockLabel, quantity)
+              ? PRODUCT_STOCK_BADGE_COPY.withQuantityShort(
+                  PRODUCT_STOCK_BADGE_COPY.inStockShort,
+                  quantity
+                )
+              : PRODUCT_STOCK_BADGE_COPY.withQuantityFull(
+                  PRODUCT_STOCK_BADGE_COPY.inStockLabel,
+                  quantity
+                )
             : compact
               ? PRODUCT_STOCK_BADGE_COPY.inStockShort
               : PRODUCT_STOCK_BADGE_COPY.inStockLabel,
-        className:
-          "border-feedback-success-border bg-feedback-success-surface text-feedback-success-foreground",
+        className: "bg-feedback-success-surface/75 text-feedback-success-foreground",
       };
 
     case "out-of-stock":
       return {
         label: PRODUCT_STOCK_BADGE_COPY.outOfStock,
-        className:
-          "border-feedback-error-border bg-feedback-error-surface text-feedback-error-foreground",
+        className: "bg-feedback-error-surface/75 text-feedback-error-foreground",
       };
 
     default:
       return {
         label: PRODUCT_STOCK_BADGE_COPY.unknown,
-        className: "border-surface-border/70 bg-transparent text-muted-foreground",
+        className: "bg-surface-panel-soft/70 text-muted-foreground",
       };
   }
 }
@@ -56,11 +64,11 @@ export function ProductStockBadge({
 
   return (
     <Badge
-      variant="outline"
+      variant="ghost"
       className={cn(
         compact
-          ? "inline-flex h-6 items-center rounded-full px-2 text-[11px] font-medium leading-none"
-          : "inline-flex h-7 items-center rounded-full px-2.5 text-[12px] font-medium leading-none",
+          ? "inline-flex h-6 items-center rounded-md px-1.5 text-[11px] font-medium leading-none"
+          : "inline-flex h-7 items-center rounded-md px-2 text-[12px] font-medium leading-none",
         config.className,
         className
       )}

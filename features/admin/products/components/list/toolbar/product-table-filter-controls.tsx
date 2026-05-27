@@ -4,11 +4,10 @@ import type { JSX } from "react";
 
 import {
   AdminCheckboxFilterList,
+  AdminConfigHierarchicalCheckboxFilter,
   AdminFilterPopovers,
-  AdminHierarchicalCheckboxFilter,
   AdminSelectFilterControl,
   type AdminFilterPopoverItem,
-  type AdminHierarchicalCheckboxFilterItem,
 } from "@/components/admin/tables/filters";
 import {
   PRODUCT_FEATURED_OPTIONS,
@@ -51,17 +50,6 @@ type ProductTableFilterControlsProps = Readonly<{
   onCategoryIdsChange: (next: string[]) => void;
 }>;
 
-function mapCategoryOptions(
-  items: ProductFilterCategoryOption[]
-): AdminHierarchicalCheckboxFilterItem[] {
-  return items.map((item) => ({
-    id: item.id,
-    label: item.name,
-    parentId: item.parentId,
-    value: item.id,
-  }));
-}
-
 export function ProductStatusFilterControl({
   status,
   onStatusChange,
@@ -88,11 +76,15 @@ export function ProductCategoryFilterControl({
   onCategoryIdsChange: (next: string[]) => void;
 }>): JSX.Element {
   return (
-    <AdminHierarchicalCheckboxFilter
-      items={mapCategoryOptions(categoryOptions)}
+    <AdminConfigHierarchicalCheckboxFilter
+      items={categoryOptions}
       selected={categoryIds}
       emptyLabel={PRODUCT_LIST_COPY.filterCategoryAllLabel}
       onChange={onCategoryIdsChange}
+      getId={(category) => category.id}
+      getLabel={(category) => category.name}
+      getParentId={(category) => category.parentId}
+      getValue={(category) => category.id}
     />
   );
 }

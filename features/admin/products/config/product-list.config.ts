@@ -154,6 +154,8 @@ export const PRODUCT_RESULTS_COUNT_COPY = {
 export const PRODUCT_TABLE_COPY = {
   columns: {
     product: "Produit",
+    isFeatured: "Mise en avant",
+    stock: "Stock",
     status: "Statut",
     price: "Prix",
     category: "Catégorie",

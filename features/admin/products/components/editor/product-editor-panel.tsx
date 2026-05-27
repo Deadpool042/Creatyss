@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type JSX } from "react";
 
-import { useAdminPageTitle } from "@/components/admin/admin-page-title-context";
+import { useAdminPageTitle } from "@/components/admin/layout/admin-page-title-context";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ProductEditorTopbarMenu,

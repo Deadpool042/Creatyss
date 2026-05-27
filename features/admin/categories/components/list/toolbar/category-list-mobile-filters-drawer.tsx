@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  AdminDataTableFiltersDrawer,
+  AdminConfigDataTableFiltersDrawer,
   type AdminDataTableActiveFilterItem,
 } from "@/components/admin/tables";
-import { AdminFilterBlocks, type AdminFilterBlock } from "@/components/admin/tables/filters";
+import type { AdminFilterBlock } from "@/components/admin/tables/filters";
 import { CATEGORY_LIST_ACTIONS_COPY, CATEGORY_LIST_COPY } from "@/features/admin/categories/config";
 import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import type {
@@ -76,26 +76,19 @@ export function CategoryListMobileFiltersDrawer({
   ];
 
   return (
-    <AdminDataTableFiltersDrawer
+    <AdminConfigDataTableFiltersDrawer
       open={open}
       onOpenChange={onOpenChange}
       title={CATEGORY_LIST_COPY.filtersTitle}
       resetLabel={CATEGORY_LIST_COPY.resetFiltersLabel}
       applyLabel={CATEGORY_LIST_ACTIONS_COPY.viewResultsLabel}
-      resetDisabled={!hasActiveFilters}
-      stackedFooter
-      onReset={() => {
-        onReset();
-        onOpenChange(false);
-      }}
-      onApply={() => onOpenChange(false)}
+      hasActiveFilters={hasActiveFilters}
+      onReset={onReset}
       activeFiltersTitle={CATEGORY_LIST_COPY.mobileFiltersActiveSection}
       activeFilterItems={activeFilterItems}
       clearActiveFiltersLabel={CATEGORY_LIST_COPY.activeFiltersResetLabel}
       onClearActiveFilters={onReset}
-      contentClassName="flex flex-col gap-5"
-    >
-      <AdminFilterBlocks blocks={filterBlocks} className="flex flex-col gap-5" />
-    </AdminDataTableFiltersDrawer>
+      blocks={filterBlocks}
+    />
   );
 }

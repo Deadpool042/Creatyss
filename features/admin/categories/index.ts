@@ -3,9 +3,6 @@ import "server-only";
 // Components
 export {
   CategoryTable,
-  CategoryTableDesktop,
-  CategoryTableMobile,
-  CategoryTableRowActions,
   CategoryCreateTopbarMenu,
   CategoryEditorPanel,
   CategorySeoForm,

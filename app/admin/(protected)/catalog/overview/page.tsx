@@ -1,4 +1,4 @@
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { FullWidthPageFrame, FullWidthStack } from "@/components/shared/layout";
 import { CatalogOverviewSections } from "@/features/admin/catalog/components/catalog-overview-sections";
 import { getCatalogOverviewStats } from "@/features/admin/catalog/queries/get-catalog-overview-stats.query";

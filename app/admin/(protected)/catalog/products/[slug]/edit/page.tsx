@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { FullWidthPageFrame } from "@/components/shared/layout/full-width-page-frame";
 import { FullWidthStack } from "@/components/shared/layout/full-width-stack";
 import { Button } from "@/components/ui/button";

@@ -22,13 +22,7 @@ export { ProductArchivedBanner } from "./editor";
 export { ProductArchivedActions } from "./editor";
 
 // List components
-export { ProductStockBadge } from "./list";
-export { ProductTableRowActions } from "./list";
 export { ProductTable } from "./list";
-export { ProductTableDesktop } from "./list";
-export { ProductTableMobile } from "./list";
-export { ProductFeaturedToggle } from "./list";
-export { ProductCollectionCard } from "./list";
 
 // Shared components
 export { ProductSection } from "./shared";

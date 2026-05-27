@@ -1,4 +1,4 @@
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { Notice } from "@/components/shared/feedback";
 
 export default function AdminCommerceOverviewPage() {

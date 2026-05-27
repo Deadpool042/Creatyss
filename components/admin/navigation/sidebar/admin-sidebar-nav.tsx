@@ -3,9 +3,9 @@
 import type { JSX } from "react";
 
 import type { AdminNavigationGroup, AdminNavigationItem } from "@/features/admin/navigation";
-import { AdminSidebarGroup } from "@/components/admin/admin-sidebar-group";
-import { AdminSidebarLink } from "@/components/admin/admin-sidebar-link";
-import { renderAdminNavigationIcon } from "@/components/admin/navigation";
+import { renderAdminNavigationIcon } from "../shared/admin-navigation-icons";
+import { AdminSidebarGroup } from "./admin-sidebar-group";
+import { AdminSidebarLink } from "./admin-sidebar-link";
 import { SidebarMenu, SidebarSeparator } from "@/components/ui/sidebar";
 
 type AdminSidebarNavProps = {

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
-import { AdminCollectionSection } from "@/components/admin/admin-collection-section";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminCollectionSection } from "@/components/admin/cards/admin-collection-section";
 import {
   AdminFormActions,
   AdminFormField,
@@ -9,7 +9,7 @@ import {
 } from "@/components/admin/forms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { AdminEmptyState } from "@/components/admin/admin-empty-state";
+import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { AdminMediaAssetCard } from "@/components/admin/media/admin-media-asset-card";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import {
@@ -139,11 +139,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
       scrollMode="nested"
     >
       <div className="flex min-h-0 flex-1 flex-col gap-4 lg:gap-6 [@media(max-height:480px)]:gap-3">
-        <AdminFormMessage
-          tone="success"
-          message={successMessage}
-          className="shrink-0"
-        />
+        <AdminFormMessage tone="success" message={successMessage} className="shrink-0" />
         <AdminFormMessage tone="error" message={errorMessage} className="shrink-0" />
 
         <div id="admin-media-upload" className="shrink-0 scroll-mt-24">
@@ -180,9 +176,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                     Réutilisable ensuite dans les produits, catégories, articles et sections
                     éditoriales.
                   </p>
-                  <p>
-                    Import limité à 10 MB, avec prise en charge des fichiers JPEG, PNG et WebP.
-                  </p>
+                  <p>Import limité à 10 MB, avec prise en charge des fichiers JPEG, PNG et WebP.</p>
                 </div>
 
                 <AdminFormActions className="sm:justify-end lg:justify-start">

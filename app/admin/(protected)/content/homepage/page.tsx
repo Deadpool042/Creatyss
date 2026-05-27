@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Notice } from "@/components/shared/feedback";
 import { AdminFormActions } from "@/components/admin/forms";
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { getUploadsPublicPath } from "@/core/uploads";
 import {
   createHomepageAction,

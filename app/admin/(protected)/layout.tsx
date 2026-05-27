@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminShell } from "@/components/admin/layout/admin-shell";
 import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { adminNavigationGroupDefinitions, adminNavigationItems } from "@/features/admin/navigation";

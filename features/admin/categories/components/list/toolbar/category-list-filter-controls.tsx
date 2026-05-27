@@ -2,10 +2,9 @@
 
 import {
   AdminCheckboxFilterList,
+  AdminConfigHierarchicalCheckboxFilter,
   AdminFilterPopovers,
-  AdminHierarchicalCheckboxFilter,
   type AdminFilterPopoverItem,
-  type AdminHierarchicalCheckboxFilterItem,
 } from "@/components/admin/tables/filters";
 import {
   CATEGORY_FEATURED_OPTIONS,
@@ -17,15 +16,6 @@ import type {
   CategoryFeaturedFilter,
   CategoryPickerItem,
 } from "@/features/admin/categories/list";
-
-function mapCategoryPickerItems(items: CategoryPickerItem[]): AdminHierarchicalCheckboxFilterItem[] {
-  return items.map((item) => ({
-    id: item.id,
-    label: item.name,
-    parentId: item.parentId,
-    value: item.slug,
-  }));
-}
 
 type CategoryListFilterControlsProps = {
   categoriesForPicker: CategoryPickerItem[];
@@ -52,11 +42,15 @@ export function CategoryListFilterControls({
       label: CATEGORY_LIST_COPY.filterCategoriesLabel,
       count: categorySlugs.length,
       content: (
-        <AdminHierarchicalCheckboxFilter
-          items={mapCategoryPickerItems(categoriesForPicker)}
+        <AdminConfigHierarchicalCheckboxFilter
+          items={categoriesForPicker}
           selected={categorySlugs}
           emptyLabel={CATEGORY_LIST_COPY.filterCategoriesEmptyLabel}
           onChange={onCategorySlugsChange}
+          getId={(category) => category.id}
+          getLabel={(category) => category.name}
+          getParentId={(category) => category.parentId}
+          getValue={(category) => category.slug}
         />
       ),
     },
@@ -101,11 +95,15 @@ export function CategoryHierarchyFilter({
   onCategorySlugsChange: (next: string[]) => void;
 }) {
   return (
-    <AdminHierarchicalCheckboxFilter
-      items={mapCategoryPickerItems(categoriesForPicker)}
+    <AdminConfigHierarchicalCheckboxFilter
+      items={categoriesForPicker}
       selected={categorySlugs}
       emptyLabel={CATEGORY_LIST_COPY.filterCategoriesEmptyLabel}
       onChange={onCategorySlugsChange}
+      getId={(category) => category.id}
+      getLabel={(category) => category.name}
+      getParentId={(category) => category.parentId}
+      getValue={(category) => category.slug}
     />
   );
 }

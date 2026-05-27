@@ -1,8 +1,5 @@
 export {
   CategoryTable,
-  CategoryTableDesktop,
-  CategoryTableMobile,
-  CategoryTableRowActions,
 } from "./list";
 
 // Create components

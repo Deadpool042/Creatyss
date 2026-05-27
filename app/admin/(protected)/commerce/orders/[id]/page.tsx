@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/shared/feedback";
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { findAdminOrderById } from "@/features/orders/lib/order.repository";
 import { getAllowedOrderStatusTransitions } from "@/entities/order/order-status-transition";
 import {

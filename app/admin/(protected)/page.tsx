@@ -1,5 +1,5 @@
 //app/admin/(protected)/page.tsx
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminDashboardSections } from "@/components/admin/dashboard";
 import { FullWidthPageFrame, FullWidthStack } from "@/components/shared/layout";
 import { getAdminDashboardStats } from "@/features/admin/dashboard";

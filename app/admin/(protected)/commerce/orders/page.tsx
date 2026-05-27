@@ -1,6 +1,6 @@
 import { Notice } from "@/components/shared/feedback";
-import { AdminEmptyState } from "@/components/admin/admin-empty-state";
-import { AdminPageShell } from "@/components/admin/admin-page-shell";
+import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { listAdminOrders } from "@/features/orders/lib/order.repository";
 import { OrdersListTable } from "@/features/admin/orders";
 
@@ -42,7 +42,8 @@ export default async function AdminOrdersPage({ searchParams }: AdminOrdersPageP
     >
       {moduleUnavailable ? (
         <Notice tone="note">
-          Le module commandes est en préparation. Les commandes seront disponibles avec le commerce transactionnel.
+          Le module commandes est en préparation. Les commandes seront disponibles avec le commerce
+          transactionnel.
         </Notice>
       ) : (
         <>

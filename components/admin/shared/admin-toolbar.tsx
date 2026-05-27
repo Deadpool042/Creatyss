@@ -5,8 +5,7 @@ import { type JSX, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-import { AdminSearchInput } from "../tables/admin-search-input";
+import { AdminSearchInput } from "./admin-search-input";
 
 export type AdminToolbarTab<T extends string = string> = {
   key: T;

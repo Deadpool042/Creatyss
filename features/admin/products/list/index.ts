@@ -21,10 +21,7 @@ export {
   bulkDeleteProductsPermanently,
 } from "./services";
 
-export {
-  listAdminProducts,
-  listProductFilterCategories,
-} from "./queries";
+export { listAdminProducts, listProductFilterCategories } from "./queries";
 
 export { mapAdminProductFeedItem, mapProductTableItem } from "./mappers";
 
@@ -51,13 +48,19 @@ export {
 
 export type {
   AdminProductFeedItem,
+  AdminProductCardItem,
+  AdminProductStatus,
   ProductFilterCategoryOption,
   ProductFilterFeaturedOption,
+  ProductPickerItem,
   ProductFilterImageOption,
   ProductFilterStockOption,
   ProductFilterVariantOption,
+  ProductListFilters,
+  ProductListResult,
   ProductSortOption,
   ProductStockState,
+  ProductStatusCounts,
   ProductTableActiveFilter,
   ProductTableFeaturedFilter,
   ProductTableFiltersInput,
