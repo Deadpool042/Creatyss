@@ -1,30 +1,23 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import type { AdminCategoryCardItem, AdminCategoryStatus } from "@/features/admin/categories/list";
 import {
   ADMIN_CATEGORIES_LIST_PATH,
   getAdminCategoryDetailPath,
   withAdminCategoryListParams,
 } from "@/features/admin/categories/shared/admin-categories-routes";
-import { CATEGORY_STATUS_LABELS } from "@/features/admin/categories/config/category-list.config";
+import {
+  CATEGORY_STATUS_LABELS,
+  CATEGORY_STATUS_OPTIONS,
+} from "@/features/admin/categories/config/category-list.config";
 import { cn } from "@/lib/utils";
 import { useRevealActiveCategoryRow } from "./use-reveal-active-category-row";
 import Image from "next/image";
-import { buildAdminFilterHref } from "@/components/admin/layout/admin-build-filter-href";
-
-const STATUS_FILTERS: readonly AdminCategoryStatus[] = ["draft", "active", "inactive", "archived"];
+import { AdminPanelListControls } from "@/components/admin/layout/admin-panel-list-controls";
 
 function getCategoryStatusBadgeVariant(status: AdminCategoryStatus) {
   if (status === "archived") return "destructive" as const;
@@ -64,10 +57,7 @@ type CategoriesPanelListProps = {
 
 export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const currentSearch = searchParams.get("search") ?? "";
-  const currentStatus = searchParams.get("status") ?? "";
 
   const activeSlug = pathname.startsWith(`${ADMIN_CATEGORIES_LIST_PATH}/`)
     ? pathname.slice(ADMIN_CATEGORIES_LIST_PATH.length + 1) || null
@@ -77,42 +67,15 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-      <div className="shrink-0 space-y-2 border-b border-surface-border/50 px-3 pb-2.5 pt-2">
-        <form action={ADMIN_CATEGORIES_LIST_PATH} method="GET">
-          {currentStatus && (
-            <input type="hidden" name="status" value={currentStatus} />
-          )}
-          <Input
-            name="search"
-            placeholder="Rechercher…"
-            defaultValue={currentSearch}
-            className="h-8 rounded-full border-white/55 bg-white/60 px-3 text-sm shadow-none"
-          />
-        </form>
-
-        <Select
-          value={currentStatus || "all"}
-          onValueChange={(value) => {
-            const nextStatus = value === "all" ? null : value;
-            const params: { search?: string; status?: string } = {};
-            if (currentSearch) params.search = currentSearch;
-            if (nextStatus) params.status = nextStatus;
-            const nextUrl = buildAdminFilterHref(ADMIN_CATEGORIES_LIST_PATH, params);
-            router.replace(nextUrl, { scroll: false });
-          }}
-        >
-          <SelectTrigger size="sm" className="w-full">
-            <SelectValue placeholder="Tous les statuts" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous les statuts</SelectItem>
-            {STATUS_FILTERS.map((status) => (
-              <SelectItem key={status} value={status}>
-                {CATEGORY_STATUS_LABELS[status]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="shrink-0 border-b border-surface-border/50 px-3 pb-2.5 pt-2">
+        <AdminPanelListControls
+          listPath={ADMIN_CATEGORIES_LIST_PATH}
+          searchPlaceholder="Rechercher…"
+          statusOptions={CATEGORY_STATUS_OPTIONS}
+          allStatusLabel="Tous les statuts"
+          searchInputClassName="h-8 rounded-full border-white/55 bg-white/60 px-3 text-sm shadow-none"
+          selectTriggerSize="sm"
+        />
       </div>
 
       <ul className="min-h-0 flex-1 overflow-y-auto px-1.5 py-2">
