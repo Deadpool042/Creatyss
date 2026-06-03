@@ -1,43 +1,34 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import type { AdminCategoryCardItem, AdminCategoryStatus } from "@/features/admin/categories/list";
 import {
   ADMIN_CATEGORIES_LIST_PATH,
   getAdminCategoryDetailPath,
 } from "@/features/admin/categories/shared/admin-categories-routes";
+import { CATEGORY_STATUS_LABELS } from "@/features/admin/categories/config/category-list.config";
 import { cn } from "@/lib/utils";
 import { useRevealActiveCategoryRow } from "./use-reveal-active-category-row";
 import Image from "next/image";
-
-const ALL_STATUSES_VALUE = "all";
-
-const STATUS_LABELS: Record<AdminCategoryStatus, string> = {
-  draft: "Brouillon",
-  active: "Publiée",
-  inactive: "Inactive",
-  archived: "Archivée",
-};
 
 const STATUS_FILTERS: readonly AdminCategoryStatus[] = ["draft", "active", "inactive", "archived"];
 
 function getCategoryStatusBadgeVariant(status: AdminCategoryStatus) {
   if (status === "archived") return "destructive" as const;
   if (status === "draft") return "outline" as const;
-  if (status === "inactive") return "secondary" as const;
   return "secondary" as const;
+}
+
+function buildFilterHref(params: { search?: string; status?: string }): string {
+  const url = new URLSearchParams();
+  if (params.search) url.set("search", params.search);
+  if (params.status) url.set("status", params.status);
+  const query = url.toString();
+  return query ? `${ADMIN_CATEGORIES_LIST_PATH}?${query}` : ADMIN_CATEGORIES_LIST_PATH;
 }
 
 function CategoryThumbnail({ name, imageUrl }: { name: string; imageUrl: string | null }) {
@@ -72,60 +63,62 @@ type CategoriesPanelListProps = {
 
 export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
   const pathname = usePathname();
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>(ALL_STATUSES_VALUE);
-  const activeSlug = useMemo(() => {
-    if (!pathname.startsWith(`${ADMIN_CATEGORIES_LIST_PATH}/`)) {
-      return null;
-    }
+  const searchParams = useSearchParams();
+  const currentSearch = searchParams.get("search") ?? "";
+  const currentStatus = searchParams.get("status") ?? "";
 
-    return pathname.slice(ADMIN_CATEGORIES_LIST_PATH.length + 1) || null;
-  }, [pathname]);
+  const activeSlug = pathname.startsWith(`${ADMIN_CATEGORIES_LIST_PATH}/`)
+    ? pathname.slice(ADMIN_CATEGORIES_LIST_PATH.length + 1) || null
+    : null;
 
   useRevealActiveCategoryRow({ activeSlug });
-
-  const filtered = categories.filter((category) => {
-    const matchesStatus = statusFilter === ALL_STATUSES_VALUE || category.status === statusFilter;
-
-    if (!matchesStatus) return false;
-
-    if (!search.trim()) return true;
-
-    const query = search.trim().toLowerCase();
-    return category.name.toLowerCase().includes(query);
-  });
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <div className="shrink-0 space-y-2 border-b border-surface-border/50 px-3 pb-2.5 pt-2">
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-            <Input
-              placeholder="Rechercher…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="h-8 rounded-full border-white/55 bg-white/60 px-3 text-sm shadow-none"
-            />
-            <SelectTrigger
-              className="h-8 w-34 rounded-full border-white/55 bg-white/60 px-3 text-sm shadow-none"
-              size="sm"
+        <form action={ADMIN_CATEGORIES_LIST_PATH} method="GET">
+          {currentStatus && (
+            <input type="hidden" name="status" value={currentStatus} />
+          )}
+          <Input
+            name="search"
+            placeholder="Rechercher…"
+            defaultValue={currentSearch}
+            className="h-8 rounded-full border-white/55 bg-white/60 px-3 text-sm shadow-none"
+          />
+        </form>
+
+        <div className="flex flex-wrap gap-1">
+          <Link
+            href={buildFilterHref({ search: currentSearch })}
+            className={cn(
+              "inline-flex h-7 items-center rounded-full px-3 text-xs font-medium transition-colors",
+              !currentStatus
+                ? "bg-primary text-primary-foreground"
+                : "border border-white/55 bg-white/60 text-page-foreground hover:bg-white/80"
+            )}
+          >
+            Tous
+          </Link>
+          {STATUS_FILTERS.map((status) => (
+            <Link
+              key={status}
+              href={buildFilterHref({ search: currentSearch, status })}
+              className={cn(
+                "inline-flex h-7 items-center rounded-full px-3 text-xs font-medium transition-colors",
+                currentStatus === status
+                  ? "bg-primary text-primary-foreground"
+                  : "border border-white/55 bg-white/60 text-page-foreground hover:bg-white/80"
+              )}
             >
-              <SelectValue placeholder="Tous les statuts" />
-            </SelectTrigger>
-          </div>
-          <SelectContent>
-            <SelectItem value={ALL_STATUSES_VALUE}>Tous les statuts</SelectItem>
-            {STATUS_FILTERS.map((status) => (
-              <SelectItem key={status} value={status}>
-                {STATUS_LABELS[status]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+              {CATEGORY_STATUS_LABELS[status]}
+            </Link>
+          ))}
+        </div>
       </div>
 
       <ul className="min-h-0 flex-1 overflow-y-auto px-1.5 py-2">
-        {filtered.map((category) => {
+        {categories.map((category) => {
           const detailHref = getAdminCategoryDetailPath(category.slug);
           const isDetailActive = pathname === detailHref;
           const href = isDetailActive ? ADMIN_CATEGORIES_LIST_PATH : detailHref;
@@ -152,7 +145,7 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
                     variant={getCategoryStatusBadgeVariant(category.status)}
                     className="w-fit shrink-0 px-1.5 py-0 text-[10px]"
                   >
-                    {STATUS_LABELS[category.status]}
+                    {CATEGORY_STATUS_LABELS[category.status]}
                   </Badge>
                 </div>
               </Link>
@@ -160,7 +153,7 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
           );
         })}
 
-        {filtered.length === 0 && (
+        {categories.length === 0 && (
           <li className="px-3 py-6 text-center text-sm text-muted-foreground">
             Aucune catégorie trouvée.
           </li>
