@@ -93,8 +93,8 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
                 className={cn(
                   "flex min-h-13 items-center gap-2.5 rounded-r-[1rem] rounded-l-sm border-l-2 border-transparent px-3 py-2 transition-colors",
                   isDetailActive
-                    ? "border-brand bg-white/78 shadow-[0_10px_28px_rgba(70,52,38,0.08)] ring-1 ring-white/70"
-                    : "hover:bg-white/42"
+                    ? "border-l-primary bg-interactive-selected"
+                    : "hover:bg-interactive-hover"
                 )}
                 aria-current={isDetailActive ? "page" : undefined}
               >
