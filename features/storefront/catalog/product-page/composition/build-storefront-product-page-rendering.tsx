@@ -1,7 +1,7 @@
 import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addToCartAction } from "@/features/cart";
+import { addToCartAction } from "@/features/commerce/cart";
 import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
 
 type BuildStorefrontProductPageRenderingInput = {

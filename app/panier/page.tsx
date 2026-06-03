@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/feedback";
 import { readCartSessionToken } from "@/core/sessions/cart";
-import { readGuestCartByToken } from "@/features/cart/lib/guest-cart.repository";
-import type { GuestCart } from "@/features/cart/lib/guest-cart.types";
-import { updateCartItemQuantityAction, removeCartItemAction } from "@/features/cart";
+import { readGuestCartByToken } from "@/features/commerce/cart/lib/guest-cart.repository";
+import type { GuestCart } from "@/features/commerce/cart/lib/guest-cart.types";
+import { updateCartItemQuantityAction, removeCartItemAction } from "@/features/commerce/cart";
 
 export const dynamic = "force-dynamic";
 

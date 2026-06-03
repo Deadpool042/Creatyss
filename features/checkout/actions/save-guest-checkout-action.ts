@@ -5,7 +5,7 @@ import { readCartSessionToken } from "@/core/sessions/cart";
 import {
   readGuestCheckoutContextByToken,
   upsertGuestCheckoutDetails,
-} from "@/features/cart/lib/guest-cart.repository";
+} from "@/features/commerce/cart/lib/guest-cart.repository";
 import { validateGuestCheckoutInput } from "@/entities/checkout/guest-checkout-input";
 
 export async function saveGuestCheckoutAction(formData: FormData): Promise<void> {

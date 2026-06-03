@@ -7,7 +7,7 @@ import { OrderRepositoryError } from "@/features/commerce/orders/lib/order.types
 import {
   readGuestCheckoutContextByToken,
   upsertGuestCheckoutDetails,
-} from "@/features/cart/lib/guest-cart.repository";
+} from "@/features/commerce/cart/lib/guest-cart.repository";
 import { validateGuestCheckoutInput } from "@/entities/checkout/guest-checkout-input";
 import { sendOrderTransactionalEmail } from "@/features/email";
 

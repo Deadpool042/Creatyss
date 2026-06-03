@@ -4,8 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/feedback";
 import { readCartSessionToken } from "@/core/sessions/cart";
-import { readGuestCheckoutContextByToken } from "@/features/cart/lib/guest-cart.repository";
-import type { GuestCheckoutContext } from "@/features/cart/lib/guest-cart.types";
+import { readGuestCheckoutContextByToken } from "@/features/commerce/cart/lib/guest-cart.repository";
+import type { GuestCheckoutContext } from "@/features/commerce/cart/lib/guest-cart.types";
 import { createOrderAction, saveGuestCheckoutAction } from "@/features/checkout";
 
 export const dynamic = "force-dynamic";

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import {
   findGuestCartIdByToken,
   removeGuestCartItem,
-} from "@/features/cart/lib/guest-cart.repository";
+} from "@/features/commerce/cart/lib/guest-cart.repository";
 import { readCartSessionToken } from "@/core/sessions/cart";
 
 function normalizeCartItemId(value: FormDataEntryValue | string | null | undefined): string | null {

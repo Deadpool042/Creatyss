@@ -6,7 +6,7 @@ import {
   findGuestCartItemById,
   findGuestCartVariantById,
   updateGuestCartItemQuantity,
-} from "@/features/cart/lib/guest-cart.repository";
+} from "@/features/commerce/cart/lib/guest-cart.repository";
 import { validateCartItemInput } from "@/entities/cart/cart-item-input";
 import { readCartSessionToken } from "@/core/sessions/cart";
 

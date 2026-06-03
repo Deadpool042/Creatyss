@@ -11,7 +11,7 @@ import {
   findGuestCartIdByToken,
   findGuestCartItemByVariant,
   findGuestCartVariantById,
-} from "@/features/cart/lib/guest-cart.repository";
+} from "@/features/commerce/cart/lib/guest-cart.repository";
 import { validateCartItemInput } from "@/entities/cart/cart-item-input";
 
 type AddToCartIntent = "add_to_cart" | "buy_now";
