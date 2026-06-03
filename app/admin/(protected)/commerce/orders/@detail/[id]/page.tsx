@@ -3,12 +3,7 @@ import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { Notice } from "@/components/shared/feedback";
 import { findAdminOrderById } from "@/features/admin/commerce/orders/details/queries/find-admin-order-by-id.query";
-import { getAllowedOrderStatusTransitions } from "@/entities/order/order-status-transition";
-import {
-  getOrderStatusLabel,
-  getOrderStatusSummary,
-  getPaymentStatusLabel,
-} from "@/entities/order/order-status-presentation";
+import { buildAdminOrderDetailViewModel } from "@/features/admin/commerce/orders/details/mappers/build-admin-order-detail-view-model";
 import {
   OrderDetailActionsCard,
   OrderDetailBillingAddressCard,
@@ -19,12 +14,6 @@ import {
   OrderDetailShippingAddressCard,
   OrderDetailShippingCard,
   OrderDetailSummaryCard,
-  formatOptionalOrderDateTime,
-  formatOrderDateTime,
-  getOrderDetailErrorMessage,
-  getOrderDetailStatusMessage,
-  readOrderDetailSearchParam,
-  getShipmentStatusLabel,
 } from "@/features/admin/commerce/orders";
 
 export const dynamic = "force-dynamic";
@@ -45,81 +34,13 @@ export default async function OrderDetailSlotPage({
 }: OrderDetailSlotPageProps) {
   const { id } = await params;
   const resolvedSearchParams = await searchParams;
-  const orderStatusParam = readOrderDetailSearchParam(resolvedSearchParams, "order_status");
-  const orderErrorParam = readOrderDetailSearchParam(resolvedSearchParams, "order_error");
   const order = await findAdminOrderById(id);
 
   if (order === null) {
     notFound();
   }
 
-  const allowedTransitions = getAllowedOrderStatusTransitions(order.status);
-  const paymentStatus = order.payment?.status ?? "pending";
-  const summary = getOrderStatusSummary({
-    orderStatus: order.status,
-    paymentStatus,
-  });
-  const statusMessage = getOrderDetailStatusMessage(orderStatusParam);
-  const errorMessage = getOrderDetailErrorMessage(orderErrorParam);
-  const orderStatusLabel = getOrderStatusLabel(order.status);
-  const paymentStatusLabel = getPaymentStatusLabel(paymentStatus);
-
-  const trackingReference = order.shipment?.trackingNumber ?? null;
-
-  const orderMeta = {
-    id: order.id,
-    reference: order.reference,
-    trackingReference,
-    createdAtLabel: formatOrderDateTime(order.createdAt),
-    statusLabel: orderStatusLabel,
-    paymentStatusLabel,
-  };
-  const shippingInfo = {
-    statusLabel: getShipmentStatusLabel(order.shipment?.status ?? null),
-    status: order.shipment?.status ?? null,
-    shippedAtLabel: formatOptionalOrderDateTime(order.shipment?.shippedAt ?? null),
-    deliveredAtLabel: formatOptionalOrderDateTime(order.shipment?.deliveredAt ?? null),
-    trackingReference,
-    trackingUrl: order.shipment?.trackingUrl ?? null,
-    carrier: order.shipment?.carrier ?? null,
-  };
-  const customer = {
-    fullName: `${order.customerFirstName ?? ""} ${order.customerLastName ?? ""}`.trim() || "—",
-    email: order.customerEmail ?? "",
-    phone: order.customerPhone,
-  };
-  const shippingAddress = order.shippingAddress
-    ? {
-        line1: order.shippingAddress.line1,
-        line2: order.shippingAddress.line2,
-        postalCode: order.shippingAddress.postalCode,
-        city: order.shippingAddress.city,
-        countryCode: order.shippingAddress.countryCode,
-      }
-    : null;
-  const billing = order.billingAddress
-    ? {
-        sameAsShipping: false as const,
-        fullName:
-          `${order.billingAddress.firstName ?? ""} ${order.billingAddress.lastName ?? ""}`.trim() ||
-          null,
-        phone: order.billingAddress.phone,
-        line1: order.billingAddress.line1,
-        line2: order.billingAddress.line2,
-        postalCode: order.billingAddress.postalCode,
-        city: order.billingAddress.city,
-        countryCode: order.billingAddress.countryCode,
-      }
-    : {
-        sameAsShipping: true as const,
-        fullName: null,
-        phone: null,
-        line1: null,
-        line2: null,
-        postalCode: null,
-        city: null,
-        countryCode: null,
-      };
+  const vm = buildAdminOrderDetailViewModel(order, resolvedSearchParams);
 
   return (
     <AdminPageShell
@@ -142,42 +63,44 @@ export default async function OrderDetailSlotPage({
       contentClassName="px-6 py-4"
     >
       <div className="flex flex-col gap-4">
-        {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
-        {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
+        {vm.statusMessage ? <Notice tone="success">{vm.statusMessage}</Notice> : null}
+        {vm.errorMessage ? <Notice tone="alert">{vm.errorMessage}</Notice> : null}
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(20rem,0.85fr)] xl:items-start">
           <OrderDetailSummaryCard
-            createdAtLabel={orderMeta.createdAtLabel}
+            createdAtLabel={vm.orderMeta.createdAtLabel}
             lineCount={order.lines.length}
             orderReference={order.reference}
-            orderStatusLabel={orderStatusLabel}
-            paymentStatusLabel={paymentStatusLabel}
-            shipmentStatusLabel={shippingInfo.statusLabel}
-            summary={summary}
+            orderStatusLabel={vm.orderMeta.statusLabel}
+            paymentStatusLabel={vm.orderMeta.paymentStatusLabel}
+            shipmentStatusLabel={vm.shippingInfo.statusLabel}
+            summary={vm.summary}
             totalAmount={order.totalAmount}
           />
 
-          <OrderDetailActionsCard allowedTransitions={allowedTransitions} order={orderMeta} />
+          <OrderDetailActionsCard allowedTransitions={vm.allowedTransitions} order={vm.orderMeta} />
         </div>
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(20rem,0.9fr)] xl:items-start">
           <div className="grid gap-4 md:grid-cols-2">
-            <OrderDetailCustomerCard customer={customer} />
+            <OrderDetailCustomerCard customer={vm.customer} />
 
             <OrderDetailShippingCard
-              carrier={shippingInfo.carrier}
-              deliveredAtLabel={shippingInfo.deliveredAtLabel}
-              shipmentStatus={shippingInfo.status}
-              shippedAtLabel={shippingInfo.shippedAtLabel}
-              trackingReference={shippingInfo.trackingReference}
-              trackingUrl={shippingInfo.trackingUrl}
+              carrier={vm.shippingInfo.carrier}
+              deliveredAtLabel={vm.shippingInfo.deliveredAtLabel}
+              shipmentStatus={vm.shippingInfo.status}
+              shippedAtLabel={vm.shippingInfo.shippedAtLabel}
+              trackingReference={vm.shippingInfo.trackingReference}
+              trackingUrl={vm.shippingInfo.trackingUrl}
             />
 
             {order.payment ? <OrderDetailPaymentCard payment={order.payment} /> : null}
 
-            {shippingAddress ? <OrderDetailShippingAddressCard address={shippingAddress} /> : null}
+            {vm.shippingAddress ? (
+              <OrderDetailShippingAddressCard address={vm.shippingAddress} />
+            ) : null}
 
-            <OrderDetailBillingAddressCard billing={billing} />
+            <OrderDetailBillingAddressCard billing={vm.billing} />
           </div>
 
           <OrderDetailLinesPanel lines={order.lines} totalAmount={order.totalAmount} />
