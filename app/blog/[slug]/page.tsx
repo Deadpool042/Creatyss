@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getUploadsPublicPath } from "@/core/uploads";
-import { getPublishedBlogPostBySlug } from "@/features/storefront/catalog";
+import { getPublishedBlogPostBySlug } from "@/features/storefront/content/blog";
 
 export const dynamic = "force-dynamic";
 

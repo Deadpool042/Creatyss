@@ -1,5 +1,5 @@
 import { db } from "@/core/db";
-import type { CatalogBlogListItem } from "@/features/storefront/catalog/types";
+import type { CatalogBlogListItem } from "@/features/storefront/content/blog/types/catalog-blog.types";
 
 export async function listPublishedBlogPosts(): Promise<CatalogBlogListItem[]> {
   const posts = await db.blogPost.findMany({

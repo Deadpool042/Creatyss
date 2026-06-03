@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { listPublishedBlogPosts } from "@/features/storefront/catalog";
+import { listPublishedBlogPosts } from "@/features/storefront/content/blog";
 
 export const dynamic = "force-dynamic";
 

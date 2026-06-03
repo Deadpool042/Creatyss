@@ -3,9 +3,9 @@ import type { MetadataRoute } from "next";
 import { serverEnv } from "@/core/config/env";
 import {
   getPublishedProductsForSitemap,
-  getPublishedBlogPostsForSitemap,
   getPublishedCategoriesForSitemap,
 } from "@/features/storefront/catalog";
+import { getPublishedBlogPostsForSitemap } from "@/features/storefront/content/blog";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [products, blogPosts, categories] = await Promise.all([

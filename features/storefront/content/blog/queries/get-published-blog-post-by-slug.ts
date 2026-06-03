@@ -1,6 +1,6 @@
 import { db } from "@/core/db";
 import { SeoSubjectType } from "@/prisma-generated/client";
-import type { CatalogBlogDetail } from "@/features/storefront/catalog/types";
+import type { CatalogBlogDetail } from "@/features/storefront/content/blog/types/catalog-blog.types";
 
 export async function getPublishedBlogPostBySlug(slug: string): Promise<CatalogBlogDetail | null> {
   const post = await db.blogPost.findFirst({
