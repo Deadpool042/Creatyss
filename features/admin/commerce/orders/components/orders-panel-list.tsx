@@ -71,6 +71,7 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
             <li key={order.id} className="border-b border-surface-border last:border-b-0">
               <Link
                 href={href}
+                aria-current={isActive ? "page" : undefined}
                 className={cn(
                   "flex min-h-[112px] flex-col justify-center gap-3 px-3 py-3 transition-colors",
                   isActive
