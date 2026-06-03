@@ -1,5 +1,5 @@
 import type { OrderStatus } from "@/entities/order/order-status-transition";
-import { listAdminOrders } from "@/features/admin/orders/list/queries/list-admin-orders.query";
+import { listAdminOrders } from "@/features/admin/commerce/orders/list/queries/list-admin-orders.query";
 
 export type CommerceOrderSignal = {
   key: string;
@@ -21,8 +21,8 @@ export type CommerceRecentOrder = {
 export type CommerceOverviewStats = {
   totalOrders: number;
   ordersByStatus: Partial<Record<OrderStatus, number>>;
-  confirmedRevenue: number;       // totalAmount des commandes paid + preparing + shipped
-  pendingRevenue: number;         // totalAmount des commandes pending (en attente de paiement)
+  confirmedRevenue: number; // totalAmount des commandes paid + preparing + shipped
+  pendingRevenue: number; // totalAmount des commandes pending (en attente de paiement)
   pendingCount: number;
   preparingCount: number;
   shippedCount: number;

@@ -1,4 +1,6 @@
-export type OrderStatus = "pending" | "paid" | "preparing" | "shipped" | "cancelled" | "archived";
+import type { OrderStatus } from "@/entities/order/order-status";
+
+export type { OrderStatus } from "@/entities/order/order-status";
 
 type AllowedTransitions = Record<OrderStatus, readonly OrderStatus[]>;
 

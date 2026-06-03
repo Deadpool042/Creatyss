@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { Notice } from "@/components/shared/feedback";
-import { findAdminOrderById } from "@/features/admin/orders/details/queries/find-admin-order-by-id.query";
+import { findAdminOrderById } from "@/features/admin/commerce/orders/details/queries/find-admin-order-by-id.query";
 import { getAllowedOrderStatusTransitions } from "@/entities/order/order-status-transition";
 import {
   getOrderStatusLabel,
@@ -24,7 +24,8 @@ import {
   getOrderDetailErrorMessage,
   getOrderDetailStatusMessage,
   readOrderDetailSearchParam,
-} from "@/features/admin/orders";
+  getShipmentStatusLabel,
+} from "@/features/admin/commerce/orders";
 
 export const dynamic = "force-dynamic";
 
@@ -74,8 +75,13 @@ export default async function OrderDetailSlotPage({
     paymentStatusLabel,
   };
   const shippingInfo = {
+    statusLabel: getShipmentStatusLabel(order.shipment?.status ?? null),
+    status: order.shipment?.status ?? null,
     shippedAtLabel: formatOptionalOrderDateTime(order.shipment?.shippedAt ?? null),
+    deliveredAtLabel: formatOptionalOrderDateTime(order.shipment?.deliveredAt ?? null),
     trackingReference,
+    trackingUrl: order.shipment?.trackingUrl ?? null,
+    carrier: order.shipment?.carrier ?? null,
   };
   const customer = {
     fullName: `${order.customerFirstName ?? ""} ${order.customerLastName ?? ""}`.trim() || "—",
@@ -139,36 +145,45 @@ export default async function OrderDetailSlotPage({
         {statusMessage ? <Notice tone="success">{statusMessage}</Notice> : null}
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)] xl:items-start">
-          <div className="grid gap-4">
-            <OrderDetailSummaryCard
-              orderStatusLabel={orderStatusLabel}
-              paymentStatusLabel={paymentStatusLabel}
-              summary={summary}
-            />
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(20rem,0.85fr)] xl:items-start">
+          <OrderDetailSummaryCard
+            createdAtLabel={orderMeta.createdAtLabel}
+            lineCount={order.lines.length}
+            orderReference={order.reference}
+            orderStatusLabel={orderStatusLabel}
+            paymentStatusLabel={paymentStatusLabel}
+            shipmentStatusLabel={shippingInfo.statusLabel}
+            summary={summary}
+            totalAmount={order.totalAmount}
+          />
 
-            <OrderDetailActionsCard allowedTransitions={allowedTransitions} order={orderMeta} />
+          <OrderDetailActionsCard allowedTransitions={allowedTransitions} order={orderMeta} />
+        </div>
+
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(20rem,0.9fr)] xl:items-start">
+          <div className="grid gap-4 md:grid-cols-2">
+            <OrderDetailCustomerCard customer={customer} />
 
             <OrderDetailShippingCard
+              carrier={shippingInfo.carrier}
+              deliveredAtLabel={shippingInfo.deliveredAtLabel}
+              shipmentStatus={shippingInfo.status}
               shippedAtLabel={shippingInfo.shippedAtLabel}
               trackingReference={shippingInfo.trackingReference}
+              trackingUrl={shippingInfo.trackingUrl}
             />
 
             {order.payment ? <OrderDetailPaymentCard payment={order.payment} /> : null}
 
-            <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
-
-            <OrderDetailCustomerCard customer={customer} />
-
-            {shippingAddress ? (
-              <OrderDetailShippingAddressCard address={shippingAddress} />
-            ) : null}
+            {shippingAddress ? <OrderDetailShippingAddressCard address={shippingAddress} /> : null}
 
             <OrderDetailBillingAddressCard billing={billing} />
           </div>
 
           <OrderDetailLinesPanel lines={order.lines} totalAmount={order.totalAmount} />
         </div>
+
+        <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
       </div>
     </AdminPageShell>
   );

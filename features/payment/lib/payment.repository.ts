@@ -3,8 +3,8 @@ import {
   toAppOrderStatus,
   toAppPaymentStatus,
   type AppPaymentStatus,
-} from "@/features/orders/lib/order-status-mappers";
-import type { OrderStatus } from "@/entities/order/order-status-transition";
+  type OrderStatus,
+} from "@/entities/order/order-status";
 
 export type PaymentStartContext = {
   orderId: string;

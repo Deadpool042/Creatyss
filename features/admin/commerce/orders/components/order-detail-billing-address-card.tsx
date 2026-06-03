@@ -1,0 +1,53 @@
+import { SectionIntro } from "@/components/shared/display";
+
+type OrderDetailBillingAddressCardProps = Readonly<{
+  billing: {
+    sameAsShipping: boolean;
+    fullName: string | null;
+    phone: string | null;
+    line1: string | null;
+    line2: string | null;
+    postalCode: string | null;
+    city: string | null;
+    countryCode: string | null;
+  };
+}>;
+
+export function OrderDetailBillingAddressCard({ billing }: OrderDetailBillingAddressCardProps) {
+  return (
+    <article className="grid gap-3 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
+      <SectionIntro className="grid gap-2" eyebrow="Facturation" title="Adresse de facturation" />
+
+      {billing.sameAsShipping ? (
+        <p className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+          Identique à l&apos;adresse de livraison.
+        </p>
+      ) : (
+        <div className="grid gap-1 rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+          {billing.fullName ? (
+            <p className="card-copy text-sm leading-6 text-foreground">{billing.fullName}</p>
+          ) : null}
+          {billing.phone ? (
+            <p className="card-meta text-sm leading-6 text-text-muted-strong">{billing.phone}</p>
+          ) : null}
+          {billing.line1 ? (
+            <p className="card-copy text-sm leading-6 text-foreground">{billing.line1}</p>
+          ) : null}
+          {billing.line2 ? (
+            <p className="card-copy text-sm leading-6 text-foreground">{billing.line2}</p>
+          ) : null}
+          {billing.postalCode && billing.city ? (
+            <p className="card-copy text-sm leading-6 text-foreground">
+              {billing.postalCode} {billing.city}
+            </p>
+          ) : null}
+          {billing.countryCode ? (
+            <p className="card-meta text-sm leading-6 text-text-muted-strong">
+              {billing.countryCode}
+            </p>
+          ) : null}
+        </div>
+      )}
+    </article>
+  );
+}

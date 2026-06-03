@@ -6,7 +6,7 @@ import {
   toAppPaymentStatus,
   type PrismaOrderStatus,
   type PrismaPaymentStatus,
-} from "@/features/orders/lib/order-status-mappers";
+} from "@/entities/order/order-status";
 import {
   OrderRepositoryError,
   type PaymentStatus,

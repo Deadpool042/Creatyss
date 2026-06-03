@@ -2,8 +2,8 @@ import { Notice } from "@/components/shared/feedback";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminSplitPanelHeader } from "@/components/admin/layout/admin-split-panel-header";
-import { OrdersPanelList } from "@/features/admin/orders";
-import { listAdminOrders } from "@/features/admin/orders/list/queries/list-admin-orders.query";
+import { OrdersPanelList } from "@/features/admin/commerce/orders";
+import { listAdminOrders } from "@/features/admin/commerce/orders/list/queries/list-admin-orders.query";
 
 type OrdersListPanelProps = {
   errorParam?: string | null;

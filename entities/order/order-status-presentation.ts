@@ -1,6 +1,6 @@
-import type { OrderStatus } from "@/entities/order/order-status-transition";
+import type { AppPaymentStatus, OrderStatus } from "@/entities/order/order-status";
 
-export type OrderPaymentStatus = "pending" | "succeeded" | "failed";
+export type OrderPaymentStatus = AppPaymentStatus;
 
 export type OrderStatusSummary = {
   title: string;
