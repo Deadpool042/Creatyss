@@ -27,7 +27,7 @@ function formatCustomerName(input: {
 }
 
 export async function getAdminOrdersOverview(): Promise<AdminOrdersOverviewStats> {
-  const [orders, failedEmailOrders] = await Promise.all([
+  const [ordersResult, failedEmailOrders] = await Promise.all([
     listAdminOrders(),
     db.emailMessage.findMany({
       where: {
@@ -41,6 +41,8 @@ export async function getAdminOrdersOverview(): Promise<AdminOrdersOverviewStats
       distinct: ["subjectId"],
     }),
   ]);
+
+  const orders = ordersResult.items;
 
   if (orders.length === 0) {
     return EMPTY_OVERVIEW;

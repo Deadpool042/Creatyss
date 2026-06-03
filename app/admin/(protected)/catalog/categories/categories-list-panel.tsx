@@ -1,3 +1,4 @@
+//app/admin/(protected)/catalog/categories/categories-list-panel.tsx
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminSplitPanelHeader } from "@/components/admin/layout/admin-split-panel-header";
 import {
@@ -5,9 +6,7 @@ import {
   CategoryCreateTopbarMenu,
   listAdminCategories,
 } from "@/features/admin/categories";
-import {
-  CATEGORY_LIST_PAGE_COPY,
-} from "@/features/admin/categories/config";
+import { CATEGORY_LIST_PAGE_COPY } from "@/features/admin/categories/config";
 
 export async function CategoriesListPanel() {
   const { items } = await listAdminCategories({});

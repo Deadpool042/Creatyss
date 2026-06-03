@@ -1,3 +1,4 @@
+//app/admin/(protected)/commerce/orders/orders-list-panel.tsx
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminSplitPanelHeader } from "@/components/admin/layout/admin-split-panel-header";
 import { OrdersPanelList, listAdminOrders } from "@/features/admin/commerce/orders";
@@ -7,11 +8,12 @@ import { ORDER_LIST_PAGE_CONFIG } from "@/features/admin/commerce/orders/config"
 export async function OrdersListPanel() {
   // const orders: Awaited<ReturnType<typeof listAdminOrders>> = [];
 
-  let orders: Awaited<ReturnType<typeof listAdminOrders>> = [];
+  let items: Awaited<ReturnType<typeof listAdminOrders>>["items"] = [];
   // let moduleUnavailable = false;
 
   try {
-    orders = await listAdminOrders();
+    const result = await listAdminOrders();
+    items = result.items;
   } catch (err) {
     console.error("[orders] listAdminOrders failed:", err);
     // moduleUnavailable = true;
@@ -31,7 +33,7 @@ export async function OrdersListPanel() {
       }
       scrollMode="area"
     >
-      <OrdersPanelList orders={orders} />
+      <OrdersPanelList orders={items} />
     </AdminPageShell>
   );
 }

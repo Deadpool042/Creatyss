@@ -37,7 +37,7 @@ const compactDateFormatter = new Intl.DateTimeFormat("fr-FR", {
 const ALL_STATUSES_VALUE = "all";
 
 type OrdersPanelListProps = {
-  orders: AdminOrderSummary[];
+  orders: readonly AdminOrderSummary[];
 };
 
 export function OrdersPanelList({ orders }: OrdersPanelListProps) {

@@ -50,9 +50,10 @@ function parseAmount(raw: string): number {
 }
 
 export async function getCommerceOverviewStats(): Promise<CommerceOverviewStats> {
-  let orders;
+  let orders: Awaited<ReturnType<typeof listAdminOrders>>["items"];
   try {
-    orders = await listAdminOrders();
+    const result = await listAdminOrders();
+    orders = result.items;
   } catch {
     // Module commerce non encore activé
     return EMPTY;
