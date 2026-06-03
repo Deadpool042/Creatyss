@@ -1,18 +1,10 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import type { AdminOrderSummary } from "@/features/admin/commerce/orders/types/order-detail-types";
 import {
   getOrderStatusLabel,
@@ -34,7 +26,13 @@ const compactDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   month: "short",
 });
 
-const ALL_STATUSES_VALUE = "all";
+function buildFilterHref(params: { search?: string; status?: string }): string {
+  const url = new URLSearchParams();
+  if (params.search) url.set("search", params.search);
+  if (params.status) url.set("status", params.status);
+  const query = url.toString();
+  return query ? `${ADMIN_ORDERS_LIST_PATH}?${query}` : ADMIN_ORDERS_LIST_PATH;
+}
 
 type OrdersPanelListProps = {
   orders: readonly AdminOrderSummary[];
@@ -42,77 +40,67 @@ type OrdersPanelListProps = {
 
 export function OrdersPanelList({ orders }: OrdersPanelListProps) {
   const pathname = usePathname();
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>(ALL_STATUSES_VALUE);
-
-  const filtered = orders.filter((order) => {
-    const matchesStatus = statusFilter === ALL_STATUSES_VALUE || order.status === statusFilter;
-
-    if (!matchesStatus) return false;
-
-    if (!search.trim()) return true;
-
-    const query = search.trim().toLowerCase();
-    return [order.reference, order.customerFirstName, order.customerLastName, order.customerEmail]
-      .join(" ")
-      .toLowerCase()
-      .includes(query);
-  });
-
-  const pendingCount = filtered.filter((order) => order.status === "pending").length;
-  const activeCount = filtered.filter(
-    (order) => order.status === "paid" || order.status === "preparing"
-  ).length;
+  const searchParams = useSearchParams();
+  const currentSearch = searchParams.get("search") ?? "";
+  const currentStatus = searchParams.get("status") ?? "";
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <div className="shrink-0 space-y-3 border-b border-surface-border px-3 py-3">
         <div className="grid gap-2">
-          <Input
-            placeholder="Référence, client…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="h-9 text-sm"
-          />
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="h-9 w-full text-sm" size="sm">
-              <SelectValue placeholder="Tous les statuts" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={ALL_STATUSES_VALUE}>Tous les statuts</SelectItem>
-              {ORDER_STATUS_FILTERS.map((status) => (
-                <SelectItem key={status} value={status}>
-                  {getOrderStatusLabel(status)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <form action={ADMIN_ORDERS_LIST_PATH} method="GET">
+            {currentStatus && (
+              <input type="hidden" name="status" value={currentStatus} />
+            )}
+            <Input
+              name="search"
+              placeholder="Référence, client…"
+              defaultValue={currentSearch}
+              className="h-9 text-sm"
+            />
+          </form>
+
+          <div className="flex flex-wrap gap-1.5">
+            <Link
+              href={buildFilterHref({ search: currentSearch })}
+              className={cn(
+                "inline-flex h-8 items-center rounded-md px-3 text-sm font-medium transition-colors",
+                !currentStatus
+                  ? "bg-primary text-primary-foreground"
+                  : "border border-surface-border bg-surface-panel text-text-muted hover:bg-interactive-hover"
+              )}
+            >
+              Tous
+            </Link>
+            {ORDER_STATUS_FILTERS.map((status) => (
+              <Link
+                key={status}
+                href={buildFilterHref({ search: currentSearch, status })}
+                className={cn(
+                  "inline-flex h-8 items-center rounded-md px-3 text-sm font-medium transition-colors",
+                  currentStatus === status
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-surface-border bg-surface-panel text-text-muted hover:bg-interactive-hover"
+                )}
+              >
+                {getOrderStatusLabel(status)}
+              </Link>
+            ))}
+          </div>
         </div>
 
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-1">
           <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
             <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
               Affichées
             </p>
-            <p className="mt-1 text-lg font-semibold text-foreground">{filtered.length}</p>
-          </div>
-          <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-              En attente
-            </p>
-            <p className="mt-1 text-lg font-semibold text-foreground">{pendingCount}</p>
-          </div>
-          <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-              En traitement
-            </p>
-            <p className="mt-1 text-lg font-semibold text-foreground">{activeCount}</p>
+            <p className="mt-1 text-lg font-semibold text-foreground">{orders.length}</p>
           </div>
         </div>
       </div>
 
       <ul className="min-h-0 flex-1 overflow-y-auto">
-        {filtered.map((order) => {
+        {orders.map((order) => {
           const detailHref = getAdminOrderDetailPath(order.id);
           const isActive = pathname === detailHref;
           const href = isActive ? ADMIN_ORDERS_LIST_PATH : detailHref;
@@ -166,7 +154,7 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
           );
         })}
 
-        {filtered.length === 0 && (
+        {orders.length === 0 && (
           <li className="px-3 py-6 text-center text-sm text-muted-foreground">
             Aucune commande trouvée.
           </li>

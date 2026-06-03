@@ -7,9 +7,15 @@ import {
   listAdminCategories,
 } from "@/features/admin/categories";
 import { CATEGORY_LIST_PAGE_COPY } from "@/features/admin/categories/config";
+import { parseAdminCategoryListSearchParams } from "@/features/admin/categories/list/schemas/parse-admin-category-list-search-params";
 
-export async function CategoriesListPanel() {
-  const { items } = await listAdminCategories({});
+type CategoriesListPanelProps = {
+  searchParams?: Record<string, string | string[] | undefined>;
+};
+
+export async function CategoriesListPanel({ searchParams }: CategoriesListPanelProps) {
+  const filters = parseAdminCategoryListSearchParams(searchParams ?? {});
+  const { items } = await listAdminCategories(filters);
 
   return (
     <AdminPageShell

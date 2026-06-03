@@ -3,14 +3,15 @@ import type { ReactNode } from "react";
 import { AdminSplitView } from "@/components/admin/layout/admin-split-view";
 import { AdminRouteBreadcrumbs } from "@/components/admin/navigation/admin-route-breadcrumbs";
 
-import { CategoriesListPanel } from "./categories-list-panel";
+type CategoriesLayoutProps = {
+  children: ReactNode;
+  detail: ReactNode;
+};
 
-type CategoriesLayoutProps = { detail: ReactNode };
-
-export default function CategoriesLayout({ detail }: CategoriesLayoutProps) {
+export default function CategoriesLayout({ children, detail }: CategoriesLayoutProps) {
   return (
     <AdminSplitView
-      list={<CategoriesListPanel />}
+      list={children}
       detail={detail}
       header={<AdminRouteBreadcrumbs />}
       listRootPath="/admin/catalog/categories"
