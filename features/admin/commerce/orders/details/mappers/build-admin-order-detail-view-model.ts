@@ -16,7 +16,10 @@ import {
   readOrderDetailSearchParam,
 } from "@/features/admin/commerce/orders/mappers/order-detail-mappers";
 import { getShipmentStatusLabel } from "@/features/admin/commerce/orders/config/order-ui.config";
-import type { AdminOrderDetail } from "@/features/admin/commerce/orders/details/types/admin-order-detail.types";
+import type {
+  AdminOrderDetail,
+  AdminOrderStatusHistoryEntry,
+} from "@/features/admin/commerce/orders/details/types/admin-order-detail.types";
 import type { OrderDetailSearchParams } from "@/features/admin/commerce/orders/types/order-detail-types";
 
 export type AdminOrderDetailViewModel = {
@@ -72,6 +75,7 @@ export type AdminOrderDetailViewModel = {
       };
   allowedTransitions: readonly OrderStatus[];
   summary: OrderStatusSummary;
+  statusHistory: AdminOrderStatusHistoryEntry[];
   statusMessage: string | null;
   errorMessage: string | null;
 };
@@ -176,6 +180,7 @@ export function buildAdminOrderDetailViewModel(
     billing,
     allowedTransitions,
     summary,
+    statusHistory: order.statusHistory,
     statusMessage,
     errorMessage,
   };

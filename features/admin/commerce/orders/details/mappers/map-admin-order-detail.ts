@@ -5,12 +5,14 @@ import {
   type PrismaOrderStatus,
   type PrismaPaymentStatus,
 } from "@/entities/order/order-status";
+import { getOrderStatusLabel } from "@/entities/order/order-status-presentation";
 import type {
   AdminOrderAddress,
   AdminOrderDetail,
   AdminOrderLine,
   AdminOrderPayment,
   AdminOrderShipment,
+  AdminOrderStatusHistoryEntry,
 } from "@/features/admin/commerce/orders/details/types/admin-order-detail.types";
 import type { OrderEmailEvent } from "@/features/email/order/order-email.types";
 
@@ -78,6 +80,13 @@ type AdminOrderDetailSource = {
     shippedAt: Date | null;
     deliveredAt: Date | null;
   }>;
+  statusHistory: Array<{
+    id: string;
+    status: PrismaOrderStatus;
+    reasonCode: string | null;
+    notes: string | null;
+    createdAt: Date;
+  }>;
 };
 
 function mapAddress(address: AdminOrderDetailSource["addresses"][number]): AdminOrderAddress {
@@ -123,6 +132,23 @@ function mapPayment(payment: AdminOrderDetailSource["payments"][number]): AdminO
     amountRefunded: normalizeMoneyString(payment.amountRefunded.toString()),
     provider: payment.provider,
     providerReference: payment.providerReference,
+  };
+}
+
+const statusHistoryDateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  dateStyle: "long",
+  timeStyle: "short",
+});
+
+function mapStatusHistoryEntry(
+  entry: AdminOrderDetailSource["statusHistory"][number]
+): AdminOrderStatusHistoryEntry {
+  return {
+    id: entry.id,
+    statusLabel: getOrderStatusLabel(toAppOrderStatus(entry.status)),
+    reasonCode: entry.reasonCode,
+    note: entry.notes,
+    date: statusHistoryDateFormatter.format(entry.createdAt),
   };
 }
 
@@ -174,5 +200,6 @@ export function mapAdminOrderDetail(input: {
     payment: latestPayment ? mapPayment(latestPayment) : null,
     shipment: latestShipment ? mapShipment(latestShipment) : null,
     emailEvents: input.emailEvents,
+    statusHistory: input.order.statusHistory.map(mapStatusHistoryEntry),
   };
 }

@@ -17,11 +17,6 @@ export async function CategoriesListPanel() {
       title={CATEGORY_LIST_PAGE_COPY.title}
       topbarAction={<CategoryCreateTopbarMenu />}
       contentPreset="split-panel"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Catalogue", href: "/admin/catalog" },
-        { label: "Catégories" },
-      ]}
       showBreadcrumbsInContent={false}
       header={
         <AdminSplitPanelHeader

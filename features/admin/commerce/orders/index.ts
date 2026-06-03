@@ -8,6 +8,7 @@ export { OrderDetailActionsCard } from "./components/order-detail-actions-card";
 export { OrderDetailBillingAddressCard } from "./components/order-detail-billing-address-card";
 export { OrderDetailCustomerCard } from "./components/order-detail-customer-card";
 export { OrderDetailEmailEventsCard } from "./components/order-detail-email-events-card";
+export { OrderDetailStatusHistoryCard } from "./components/order-detail-status-history-card";
 export { OrderDetailLinesPanel } from "./components/order-detail-lines-panel";
 export { OrderDetailPaymentCard } from "./components/order-detail-payment-card";
 export { OrderDetailShippingAddressCard } from "./components/order-detail-shipping-address-card";

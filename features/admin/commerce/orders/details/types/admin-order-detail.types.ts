@@ -48,6 +48,14 @@ export type AdminOrderShipment = {
   deliveredAt: string | null;
 };
 
+export type AdminOrderStatusHistoryEntry = {
+  id: string;
+  statusLabel: string;
+  reasonCode: string | null;
+  note: string | null;
+  date: string;
+};
+
 export type AdminOrderDetail = {
   id: string;
   reference: string;
@@ -73,4 +81,5 @@ export type AdminOrderDetail = {
   payment: AdminOrderPayment | null;
   shipment: AdminOrderShipment | null;
   emailEvents: OrderEmailEvent[];
+  statusHistory: AdminOrderStatusHistoryEntry[];
 };

@@ -47,6 +47,16 @@ export async function findAdminOrderById(id: string): Promise<AdminOrderDetail |
         take: 1,
         orderBy: [{ shippedAt: "desc" }, { createdAt: "desc" }],
       },
+      statusHistory: {
+        orderBy: { createdAt: "asc" },
+        select: {
+          id: true,
+          status: true,
+          reasonCode: true,
+          notes: true,
+          createdAt: true,
+        },
+      },
     },
   });
 

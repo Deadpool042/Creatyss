@@ -1,8 +1,9 @@
-import { OrdersListPanel } from "./orders-list-panel";
+// import { OrdersListPanel } from "./orders-list-panel";
 
 // Slot fallback pour les sous-routes inconnues du slot children.
 export const dynamic = "force-dynamic";
 
 export default async function OrdersListDefaultSlot() {
-  return <OrdersListPanel />;
+  return null;
+  // return <OrdersListPanel />;
 }

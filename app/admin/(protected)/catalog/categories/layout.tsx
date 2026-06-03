@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 
 import { AdminSplitView } from "@/components/admin/layout/admin-split-view";
+import { AdminRouteBreadcrumbs } from "@/components/admin/navigation/admin-route-breadcrumbs";
+
 import { CategoriesListPanel } from "./categories-list-panel";
 
 type CategoriesLayoutProps = { detail: ReactNode };
@@ -10,6 +12,7 @@ export default function CategoriesLayout({ detail }: CategoriesLayoutProps) {
     <AdminSplitView
       list={<CategoriesListPanel />}
       detail={detail}
+      header={<AdminRouteBreadcrumbs />}
       listRootPath="/admin/catalog/categories"
       detailClassName="lg:overflow-visible"
       desktopCollapsible

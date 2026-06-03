@@ -13,6 +13,7 @@ import {
   OrderDetailPaymentCard,
   OrderDetailShippingAddressCard,
   OrderDetailShippingCard,
+  OrderDetailStatusHistoryCard,
   OrderDetailSummaryCard,
 } from "@/features/admin/commerce/orders";
 
@@ -105,6 +106,8 @@ export default async function OrderDetailSlotPage({
 
           <OrderDetailLinesPanel lines={order.lines} totalAmount={order.totalAmount} />
         </div>
+
+        <OrderDetailStatusHistoryCard statusHistory={vm.statusHistory} />
 
         <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
       </div>

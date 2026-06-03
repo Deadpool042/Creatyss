@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AdminSplitViewNav } from "@/components/admin/layout/admin-split-view-nav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { AdminCategoryCardItem, AdminCategoryStatus } from "@/features/admin/categories/list";
 import {
@@ -101,6 +102,8 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <div className="shrink-0 space-y-2 border-b border-surface-border/50 px-3 pb-2.5 pt-2">
+        <AdminSplitViewNav rootPath="/admin/catalog/categories" />
+
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
             <Input

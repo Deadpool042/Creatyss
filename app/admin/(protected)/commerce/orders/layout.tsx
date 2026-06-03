@@ -1,17 +1,20 @@
 import type { ReactNode } from "react";
 
 import { AdminSplitView } from "@/components/admin/layout/admin-split-view";
+import { AdminRouteBreadcrumbs } from "@/components/admin/navigation/admin-route-breadcrumbs";
+
+import { OrdersListPanel } from "./orders-list-panel";
 
 type OrdersLayoutProps = {
-  children: ReactNode;
   detail: ReactNode;
 };
 
-export default function OrdersLayout({ children, detail }: OrdersLayoutProps) {
+export default function OrdersLayout({ detail }: OrdersLayoutProps) {
   return (
     <AdminSplitView
-      list={children}
+      list={<OrdersListPanel />}
       detail={detail}
+      header={<AdminRouteBreadcrumbs />}
       listRootPath="/admin/commerce/orders"
       desktopCollapsible
       desktopStorageKey="commerce-orders"

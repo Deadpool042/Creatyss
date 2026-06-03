@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AdminSplitViewNav } from "@/components/admin/layout/admin-split-view-nav";
 import type { AdminOrderSummary } from "@/features/admin/commerce/orders/types/order-detail-types";
 import type { OrderStatus } from "@/entities/order/order-status-transition";
 import {
@@ -70,6 +71,8 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <div className="shrink-0 space-y-3 border-b border-surface-border px-3 py-3">
+        <AdminSplitViewNav rootPath="/admin/commerce/orders" />
+
         <div className="grid gap-2">
           <Input
             placeholder="Référence, client…"
