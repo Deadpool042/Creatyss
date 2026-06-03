@@ -67,7 +67,7 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-      <div className="shrink-0 border-b border-surface-border/50 px-3 pb-2.5 pt-2">
+      <div className="shrink-0 border-b border-surface-border px-3 py-3">
         <AdminPanelListControls
           listPath={ADMIN_CATEGORIES_LIST_PATH}
           searchPlaceholder="Rechercher…"
