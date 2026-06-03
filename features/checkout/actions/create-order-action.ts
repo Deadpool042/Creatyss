@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { clearCartSessionToken, readCartSessionToken } from "@/core/sessions/cart";
-import { createOrderFromGuestCartToken } from "@/features/orders/lib/order.repository";
-import { OrderRepositoryError } from "@/features/orders/lib/order.types";
+import { createOrderFromGuestCartToken } from "@/features/commerce/orders/lib/order.repository";
+import { OrderRepositoryError } from "@/features/commerce/orders/lib/order.types";
 import {
   readGuestCheckoutContextByToken,
   upsertGuestCheckoutDetails,

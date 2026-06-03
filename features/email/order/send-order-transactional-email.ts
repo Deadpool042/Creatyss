@@ -7,7 +7,7 @@ import {
 } from "@/features/email/order/order-email.repository";
 import { serverEnv } from "@/core/config/env/server";
 import { resolveEmailProvider } from "@/features/email/providers/resolve-email-provider";
-import { findOrderEmailContextById } from "@/features/orders/lib/order.repository";
+import { findOrderEmailContextById } from "@/features/commerce/orders/lib/order.repository";
 import { buildOrderEmailTemplate } from "@/features/email/order/order-email-templates";
 
 import type { OrderEmailEventType } from "./order-email.types";
