@@ -9,6 +9,7 @@ import type { AdminCategoryCardItem, AdminCategoryStatus } from "@/features/admi
 import {
   ADMIN_CATEGORIES_LIST_PATH,
   getAdminCategoryDetailPath,
+  withAdminCategoryListParams,
 } from "@/features/admin/categories/shared/admin-categories-routes";
 import { CATEGORY_STATUS_LABELS } from "@/features/admin/categories/config/category-list.config";
 import { cn } from "@/lib/utils";
@@ -121,7 +122,10 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
         {categories.map((category) => {
           const detailHref = getAdminCategoryDetailPath(category.slug);
           const isDetailActive = pathname === detailHref;
-          const href = isDetailActive ? ADMIN_CATEGORIES_LIST_PATH : detailHref;
+          const href = withAdminCategoryListParams(
+            isDetailActive ? ADMIN_CATEGORIES_LIST_PATH : detailHref,
+            searchParams
+          );
 
           return (
             <li key={category.id} className="py-px">

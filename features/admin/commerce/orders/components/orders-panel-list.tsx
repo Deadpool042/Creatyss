@@ -19,6 +19,7 @@ import { ORDER_STATUS_FILTERS } from "@/features/admin/commerce/orders/config/or
 import {
   ADMIN_ORDERS_LIST_PATH,
   getAdminOrderDetailPath,
+  withAdminOrderListParams,
 } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
 
 const compactDateFormatter = new Intl.DateTimeFormat("fr-FR", {
@@ -103,7 +104,10 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
         {orders.map((order) => {
           const detailHref = getAdminOrderDetailPath(order.id);
           const isActive = pathname === detailHref;
-          const href = isActive ? ADMIN_ORDERS_LIST_PATH : detailHref;
+          const href = withAdminOrderListParams(
+            isActive ? ADMIN_ORDERS_LIST_PATH : detailHref,
+            searchParams
+          );
 
           return (
             <li key={order.id} className="border-b border-surface-border last:border-b-0">
