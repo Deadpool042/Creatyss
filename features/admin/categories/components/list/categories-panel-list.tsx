@@ -73,8 +73,6 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
           searchPlaceholder="Rechercher…"
           statusOptions={CATEGORY_STATUS_OPTIONS}
           allStatusLabel="Tous les statuts"
-          searchInputClassName="h-8 rounded-full border-white/55 bg-white/60 px-3 text-sm shadow-none"
-          selectTriggerSize="sm"
         />
       </div>
 
