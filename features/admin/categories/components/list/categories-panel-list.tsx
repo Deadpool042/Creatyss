@@ -1,10 +1,17 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { AdminCategoryCardItem, AdminCategoryStatus } from "@/features/admin/categories/list";
 import {
   ADMIN_CATEGORIES_LIST_PATH,
@@ -57,6 +64,7 @@ type CategoriesPanelListProps = {
 
 export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const currentSearch = searchParams.get("search") ?? "";
   const currentStatus = searchParams.get("status") ?? "";
@@ -82,33 +90,29 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
           />
         </form>
 
-        <div className="flex flex-wrap gap-1">
-          <Link
-            href={buildAdminFilterHref(ADMIN_CATEGORIES_LIST_PATH,{ search: currentSearch })}
-            className={cn(
-              "inline-flex h-7 items-center rounded-full px-3 text-xs font-medium transition-colors",
-              !currentStatus
-                ? "bg-primary text-primary-foreground"
-                : "border border-white/55 bg-white/60 text-page-foreground hover:bg-white/80"
-            )}
-          >
-            Tous
-          </Link>
-          {STATUS_FILTERS.map((status) => (
-            <Link
-              key={status}
-              href={buildAdminFilterHref(ADMIN_CATEGORIES_LIST_PATH,{ search: currentSearch, status })}
-              className={cn(
-                "inline-flex h-7 items-center rounded-full px-3 text-xs font-medium transition-colors",
-                currentStatus === status
-                  ? "bg-primary text-primary-foreground"
-                  : "border border-white/55 bg-white/60 text-page-foreground hover:bg-white/80"
-              )}
-            >
-              {CATEGORY_STATUS_LABELS[status]}
-            </Link>
-          ))}
-        </div>
+        <Select
+          value={currentStatus || "all"}
+          onValueChange={(value) => {
+            const nextStatus = value === "all" ? null : value;
+            const params: { search?: string; status?: string } = {};
+            if (currentSearch) params.search = currentSearch;
+            if (nextStatus) params.status = nextStatus;
+            const nextUrl = buildAdminFilterHref(ADMIN_CATEGORIES_LIST_PATH, params);
+            router.replace(nextUrl, { scroll: false });
+          }}
+        >
+          <SelectTrigger size="sm" className="w-full">
+            <SelectValue placeholder="Tous les statuts" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tous les statuts</SelectItem>
+            {STATUS_FILTERS.map((status) => (
+              <SelectItem key={status} value={status}>
+                {CATEGORY_STATUS_LABELS[status]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <ul className="min-h-0 flex-1 overflow-y-auto px-1.5 py-2">

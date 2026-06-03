@@ -1,10 +1,17 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { AdminOrderSummary } from "@/features/admin/commerce/orders/types/order-detail-types";
 import {
   getOrderStatusLabel,
@@ -34,6 +41,7 @@ type OrdersPanelListProps = {
 
 export function OrdersPanelList({ orders }: OrdersPanelListProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const currentSearch = searchParams.get("search") ?? "";
   const currentStatus = searchParams.get("status") ?? "";
@@ -54,33 +62,29 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
             />
           </form>
 
-          <div className="flex flex-wrap gap-1.5">
-            <Link
-              href={buildAdminFilterHref(ADMIN_ORDERS_LIST_PATH,{ search: currentSearch })}
-              className={cn(
-                "inline-flex h-8 items-center rounded-md px-3 text-sm font-medium transition-colors",
-                !currentStatus
-                  ? "bg-primary text-primary-foreground"
-                  : "border border-surface-border bg-surface-panel text-text-muted hover:bg-interactive-hover"
-              )}
-            >
-              Tous
-            </Link>
-            {ORDER_STATUS_FILTERS.map((status) => (
-              <Link
-                key={status}
-                href={buildAdminFilterHref(ADMIN_ORDERS_LIST_PATH,{ search: currentSearch, status })}
-                className={cn(
-                  "inline-flex h-8 items-center rounded-md px-3 text-sm font-medium transition-colors",
-                  currentStatus === status
-                    ? "bg-primary text-primary-foreground"
-                    : "border border-surface-border bg-surface-panel text-text-muted hover:bg-interactive-hover"
-                )}
-              >
-                {getOrderStatusLabel(status)}
-              </Link>
-            ))}
-          </div>
+          <Select
+            value={currentStatus || "all"}
+            onValueChange={(value) => {
+              const nextStatus = value === "all" ? null : value;
+              const params: { search?: string; status?: string } = {};
+              if (currentSearch) params.search = currentSearch;
+              if (nextStatus) params.status = nextStatus;
+              const nextUrl = buildAdminFilterHref(ADMIN_ORDERS_LIST_PATH, params);
+              router.replace(nextUrl, { scroll: false });
+            }}
+          >
+            <SelectTrigger size="default" className="w-full">
+              <SelectValue placeholder="Tous les statuts" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous les statuts</SelectItem>
+              {ORDER_STATUS_FILTERS.map((status) => (
+                <SelectItem key={status} value={status}>
+                  {getOrderStatusLabel(status)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="grid gap-2 sm:grid-cols-1">
