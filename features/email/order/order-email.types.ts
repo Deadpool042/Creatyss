@@ -1,4 +1,4 @@
-import type { EmailProviderKind } from "./providers/email-provider.types";
+import type { EmailProviderKind } from "../providers/email-provider.types";
 
 export type OrderEmailEventType = "order_created" | "payment_succeeded" | "order_shipped";
 

@@ -12,7 +12,7 @@ import type {
   AdminOrderPayment,
   AdminOrderShipment,
 } from "@/features/admin/commerce/orders/details/types/admin-order-detail.types";
-import type { OrderEmailEvent } from "@/features/email/order-email.types";
+import type { OrderEmailEvent } from "@/features/email/order/order-email.types";
 
 type AdminOrderDetailSource = {
   id: string;

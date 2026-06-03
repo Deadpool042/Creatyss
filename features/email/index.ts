@@ -1,2 +1,2 @@
-export { sendOrderTransactionalEmail } from "./send-order-transactional-email";
-export { buildOrderEmailTemplate, type OrderEmailTemplate } from "./order-email-templates";
+export { sendOrderTransactionalEmail } from "./order/send-order-transactional-email";
+export { buildOrderEmailTemplate, type OrderEmailTemplate } from "./order/order-email-templates";

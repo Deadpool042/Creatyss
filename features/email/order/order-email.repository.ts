@@ -7,7 +7,7 @@ import type {
   CreateOrderEmailEventIfAbsentInput,
   MarkOrderEmailEventSentInput,
   MarkOrderEmailEventFailedInput,
-} from "@/features/email/order-email.types";
+} from "@/features/email/order/order-email.types";
 export type { OrderEmailEvent, OrderEmailEventType, OrderEmailEventStatus };
 
 import type { EmailMessage, EmailRecipient } from "@/prisma-generated/client";

@@ -1,4 +1,4 @@
-import type { OrderEmailEvent } from "@/features/email/order-email.types";
+import type { OrderEmailEvent } from "@/features/email/order/order-email.types";
 import type { OrderStatus } from "@/entities/order/order-status-transition";
 import type { AdminOrderPaymentStatus } from "@/features/admin/commerce/orders/list/types/admin-order-list.types";
 

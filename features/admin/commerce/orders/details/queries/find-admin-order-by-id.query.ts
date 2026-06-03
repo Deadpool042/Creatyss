@@ -1,5 +1,5 @@
 import { db } from "@/core/db";
-import { listOrderEmailEventsByOrderId } from "@/features/email/lib/order-email.repository";
+import { listOrderEmailEventsByOrderId } from "@/features/email/order/order-email.repository";
 import { mapAdminOrderDetail } from "@/features/admin/commerce/orders/details/mappers/map-admin-order-detail";
 import type { AdminOrderDetail } from "@/features/admin/commerce/orders/details/types/admin-order-detail.types";
 
