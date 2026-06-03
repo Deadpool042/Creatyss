@@ -1,17 +1,9 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import type { AdminOrderSummary } from "@/features/admin/commerce/orders/types/order-detail-types";
 import {
   getOrderStatusLabel,
@@ -28,7 +20,7 @@ import {
   getAdminOrderDetailPath,
   withAdminOrderListParams,
 } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
-import { buildAdminFilterHref } from "@/components/admin/layout/admin-build-filter-href";
+import { AdminPanelListControls } from "@/components/admin/layout/admin-panel-list-controls";
 
 const compactDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -41,51 +33,20 @@ type OrdersPanelListProps = {
 
 export function OrdersPanelList({ orders }: OrdersPanelListProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const currentSearch = searchParams.get("search") ?? "";
-  const currentStatus = searchParams.get("status") ?? "";
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <div className="shrink-0 space-y-3 border-b border-surface-border px-3 py-3">
-        <div className="grid gap-2">
-          <form action={ADMIN_ORDERS_LIST_PATH} method="GET">
-            {currentStatus && (
-              <input type="hidden" name="status" value={currentStatus} />
-            )}
-            <Input
-              name="search"
-              placeholder="Référence, client…"
-              defaultValue={currentSearch}
-              className="h-9 text-sm"
-            />
-          </form>
-
-          <Select
-            value={currentStatus || "all"}
-            onValueChange={(value) => {
-              const nextStatus = value === "all" ? null : value;
-              const params: { search?: string; status?: string } = {};
-              if (currentSearch) params.search = currentSearch;
-              if (nextStatus) params.status = nextStatus;
-              const nextUrl = buildAdminFilterHref(ADMIN_ORDERS_LIST_PATH, params);
-              router.replace(nextUrl, { scroll: false });
-            }}
-          >
-            <SelectTrigger size="default" className="w-full">
-              <SelectValue placeholder="Tous les statuts" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Tous les statuts</SelectItem>
-              {ORDER_STATUS_FILTERS.map((status) => (
-                <SelectItem key={status} value={status}>
-                  {getOrderStatusLabel(status)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        <AdminPanelListControls
+          listPath={ADMIN_ORDERS_LIST_PATH}
+          searchPlaceholder="Référence, client…"
+          statusOptions={ORDER_STATUS_FILTERS.map((status) => ({
+            value: status,
+            label: getOrderStatusLabel(status),
+          }))}
+          allStatusLabel="Tous les statuts"
+        />
 
         <div className="grid gap-2 sm:grid-cols-1">
           <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
