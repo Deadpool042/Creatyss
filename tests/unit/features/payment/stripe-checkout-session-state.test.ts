@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   resolveStripeCheckoutSessionState,
   type StripeCheckoutSessionStateInput,
-} from "@/features/payment";
+} from "@/features/commerce/payment";
 
 function resolve(input: StripeCheckoutSessionStateInput) {
   return resolveStripeCheckoutSessionState(input);
