@@ -21,19 +21,12 @@ import {
   getAdminOrderDetailPath,
   withAdminOrderListParams,
 } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
+import { buildAdminFilterHref } from "@/components/admin/layout/admin-build-filter-href";
 
 const compactDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
   month: "short",
 });
-
-function buildFilterHref(params: { search?: string; status?: string }): string {
-  const url = new URLSearchParams();
-  if (params.search) url.set("search", params.search);
-  if (params.status) url.set("status", params.status);
-  const query = url.toString();
-  return query ? `${ADMIN_ORDERS_LIST_PATH}?${query}` : ADMIN_ORDERS_LIST_PATH;
-}
 
 type OrdersPanelListProps = {
   orders: readonly AdminOrderSummary[];
@@ -63,7 +56,7 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
 
           <div className="flex flex-wrap gap-1.5">
             <Link
-              href={buildFilterHref({ search: currentSearch })}
+              href={buildAdminFilterHref(ADMIN_ORDERS_LIST_PATH,{ search: currentSearch })}
               className={cn(
                 "inline-flex h-8 items-center rounded-md px-3 text-sm font-medium transition-colors",
                 !currentStatus
@@ -76,7 +69,7 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
             {ORDER_STATUS_FILTERS.map((status) => (
               <Link
                 key={status}
-                href={buildFilterHref({ search: currentSearch, status })}
+                href={buildAdminFilterHref(ADMIN_ORDERS_LIST_PATH,{ search: currentSearch, status })}
                 className={cn(
                   "inline-flex h-8 items-center rounded-md px-3 text-sm font-medium transition-colors",
                   currentStatus === status

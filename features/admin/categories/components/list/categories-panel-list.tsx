@@ -15,6 +15,7 @@ import { CATEGORY_STATUS_LABELS } from "@/features/admin/categories/config/categ
 import { cn } from "@/lib/utils";
 import { useRevealActiveCategoryRow } from "./use-reveal-active-category-row";
 import Image from "next/image";
+import { buildAdminFilterHref } from "@/components/admin/layout/admin-build-filter-href";
 
 const STATUS_FILTERS: readonly AdminCategoryStatus[] = ["draft", "active", "inactive", "archived"];
 
@@ -22,14 +23,6 @@ function getCategoryStatusBadgeVariant(status: AdminCategoryStatus) {
   if (status === "archived") return "destructive" as const;
   if (status === "draft") return "outline" as const;
   return "secondary" as const;
-}
-
-function buildFilterHref(params: { search?: string; status?: string }): string {
-  const url = new URLSearchParams();
-  if (params.search) url.set("search", params.search);
-  if (params.status) url.set("status", params.status);
-  const query = url.toString();
-  return query ? `${ADMIN_CATEGORIES_LIST_PATH}?${query}` : ADMIN_CATEGORIES_LIST_PATH;
 }
 
 function CategoryThumbnail({ name, imageUrl }: { name: string; imageUrl: string | null }) {
@@ -91,7 +84,7 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
 
         <div className="flex flex-wrap gap-1">
           <Link
-            href={buildFilterHref({ search: currentSearch })}
+            href={buildAdminFilterHref(ADMIN_CATEGORIES_LIST_PATH,{ search: currentSearch })}
             className={cn(
               "inline-flex h-7 items-center rounded-full px-3 text-xs font-medium transition-colors",
               !currentStatus
@@ -104,7 +97,7 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
           {STATUS_FILTERS.map((status) => (
             <Link
               key={status}
-              href={buildFilterHref({ search: currentSearch, status })}
+              href={buildAdminFilterHref(ADMIN_CATEGORIES_LIST_PATH,{ search: currentSearch, status })}
               className={cn(
                 "inline-flex h-7 items-center rounded-full px-3 text-xs font-medium transition-colors",
                 currentStatus === status
