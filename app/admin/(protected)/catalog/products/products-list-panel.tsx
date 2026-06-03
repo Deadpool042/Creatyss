@@ -78,7 +78,7 @@ export async function ProductsListPanel({
         { label: "Catalogue", href: "/admin/catalog/overview" },
         { label: "Produits" },
       ]}
-      contentPreset="split-panel"
+      contentPreset="full-width"
       showBreadcrumbsInContent={false}
       header={
         <AdminSplitPanelHeader
