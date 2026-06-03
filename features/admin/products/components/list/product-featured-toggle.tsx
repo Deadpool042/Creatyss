@@ -43,7 +43,7 @@ export function ProductFeaturedToggle({
         className,
         isFeatured
           ? "border border-surface-border-strong bg-interactive-selected text-foreground hover:bg-interactive-selected"
-          : "border border-surface-border bg-card text-muted-foreground hover:bg-interactive-hover"
+          : "border border-surface-border bg-surface-panel text-muted-foreground hover:bg-interactive-hover"
       )}
       title={isFeatured ? PRODUCT_BULK_ACTIONS_COPY.unsetFeatured : PRODUCT_BULK_ACTIONS_COPY.setFeatured}
       aria-label={isFeatured ? PRODUCT_BULK_ACTIONS_COPY.unsetFeatured : PRODUCT_BULK_ACTIONS_COPY.setFeatured}

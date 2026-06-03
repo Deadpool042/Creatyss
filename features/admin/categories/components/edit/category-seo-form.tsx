@@ -2,16 +2,15 @@
 
 import { useActionState, type JSX } from "react";
 
-import {
-  AdminCheckboxField,
-  AdminFormActions,
-  AdminFormField,
-  AdminFormMessage,
-  AdminSelectField,
-} from "@/components/admin/forms";
+import { AdminCheckboxField } from "@/components/admin/forms/admin-checkbox-field";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
+import { AdminSelectField } from "@/components/admin/forms/admin-select-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { SEO_INDEXING_MODE_LABELS, SEO_INDEXING_MODE_VALUES, type SeoIndexingMode } from "@/entities/seo";
 import { updateCategorySeoAction } from "@/features/admin/categories/actions";
 import { CATEGORY_SEO_FORM_COPY } from "@/features/admin/categories/config";
 
@@ -19,7 +18,7 @@ type CategorySeoData = {
   metaTitle: string | null;
   metaDescription: string | null;
   canonicalPath: string | null;
-  indexingMode: "INDEX_FOLLOW" | "INDEX_NOFOLLOW" | "NOINDEX_FOLLOW" | "NOINDEX_NOFOLLOW";
+  indexingMode: SeoIndexingMode;
   sitemapIncluded: boolean;
   openGraphTitle: string | null;
   openGraphDescription: string | null;
@@ -95,10 +94,11 @@ export function CategorySeoForm({
           id="cat-seo-indexing"
           name="indexingMode"
         >
-          <option value="INDEX_FOLLOW">{CATEGORY_SEO_FORM_COPY.indexingModeOptions.indexFollow}</option>
-          <option value="INDEX_NOFOLLOW">{CATEGORY_SEO_FORM_COPY.indexingModeOptions.indexNoFollow}</option>
-          <option value="NOINDEX_FOLLOW">{CATEGORY_SEO_FORM_COPY.indexingModeOptions.noIndexFollow}</option>
-          <option value="NOINDEX_NOFOLLOW">{CATEGORY_SEO_FORM_COPY.indexingModeOptions.noIndexNoFollow}</option>
+          {SEO_INDEXING_MODE_VALUES.map((value) => (
+            <option key={value} value={value}>
+              {SEO_INDEXING_MODE_LABELS[value]}
+            </option>
+          ))}
         </AdminSelectField>
       </AdminFormField>
 

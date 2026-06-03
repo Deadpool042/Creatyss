@@ -1,4 +1,5 @@
 import { db } from "@/core/db";
+import { SEO_INDEXING_MODE_DEFAULT } from "@/entities/seo";
 import type { AdminCategoryDetail } from "../types";
 
 type GetAdminCategoryDetailInput = {
@@ -77,7 +78,7 @@ export async function getAdminCategoryDetail(
       metaTitle: seoMetadata?.metaTitle ?? null,
       metaDescription: seoMetadata?.metaDescription ?? null,
       canonicalPath: seoMetadata?.canonicalPath ?? null,
-      indexingMode: seoMetadata?.indexingMode ?? "INDEX_FOLLOW",
+      indexingMode: seoMetadata?.indexingMode ?? SEO_INDEXING_MODE_DEFAULT,
       sitemapIncluded: seoMetadata?.sitemapIncluded ?? true,
       openGraphTitle: seoMetadata?.openGraphTitle ?? null,
       openGraphDescription: seoMetadata?.openGraphDescription ?? null,

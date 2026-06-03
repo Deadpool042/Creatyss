@@ -220,11 +220,24 @@ ENV_FILE=.env.local make up
 - `CART_SESSION_SECRET`
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
+- `EMAIL_PROVIDER`
+- `EMAIL_FROM_ADDRESS`
+- `EMAIL_FROM_NAME`
+- `MAILPIT_SMTP_HOST`
+- `MAILPIT_SMTP_PORT`
 - `BREVO_API_KEY`
-- `EMAIL_FROM`
+- `BREVO_FROM_ADDRESS`
+- `BREVO_FROM_NAME`
 - `WC_BASE_URL`
 - `WC_CONSUMER_KEY`
 - `WC_CONSUMER_SECRET`
+
+Pour l’email transactionnel :
+
+- en local natif `pnpm dev`, utiliser `EMAIL_PROVIDER=mailpit` avec `MAILPIT_SMTP_HOST=localhost`
+- si l’application tourne dans Docker mais que Mailpit tourne sur la machine hôte, utiliser `MAILPIT_SMTP_HOST=host.docker.internal`
+- en production, utiliser `EMAIL_PROVIDER=brevo`
+- les placeholders Brevo de `.env.example` sont volontairement refusés quand `EMAIL_PROVIDER=brevo`
 
 ## Commandes principales
 
@@ -319,7 +332,9 @@ make test-select
 4. les dépendances Node locales doivent déjà être installées (`pnpm install`)
 5. Chromium Playwright doit être installé localement une fois
 6. si les flux Stripe doivent être testés réellement, de vraies clés de test doivent être définies dans `.env.local`
-7. si les emails transactionnels doivent être testés réellement, `BREVO_API_KEY` et `EMAIL_FROM` doivent aussi être définis dans `.env.local`
+7. pour les emails transactionnels en local, lancer Mailpit puis définir `EMAIL_PROVIDER=mailpit`, `EMAIL_FROM_ADDRESS`, `EMAIL_FROM_NAME`, `MAILPIT_SMTP_HOST=localhost` et `MAILPIT_SMTP_PORT=1025` dans `.env.local`
+8. pour la production, définir explicitement `EMAIL_PROVIDER=brevo`, `BREVO_API_KEY`, `BREVO_FROM_ADDRESS` et `BREVO_FROM_NAME` dans l’environnement cible
+9. si l’application tourne dans Docker mais que Mailpit tourne hors Docker sur la machine hôte, utiliser `MAILPIT_SMTP_HOST=host.docker.internal`
 
 Flux local natif minimal :
 

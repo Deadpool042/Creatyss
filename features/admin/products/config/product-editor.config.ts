@@ -91,30 +91,13 @@ export const PRODUCT_CREATE_MENU_COPY = {
 
 export const PRODUCT_EDITOR_PAGE_COPY = {
   description:
-    "Édition du produit, de ses variantes, de ses médias, de ses catégories et de son SEO.",
+    "Éditez ici les informations coeur du produit : identité, contenus éditoriaux, publication et structure.",
   archivedDescription: "Produit archivé.",
   archivedBodyTitle: "Ce produit est actuellement dans la corbeille.",
   archivedBodySubtitle: "Restaurez-le pour reprendre son édition, ou supprimez-le définitivement.",
   archivedBackToTrash: "Retour à la corbeille",
   notFoundMessage: "Produit introuvable.",
   notFoundBack: "Retour à la liste des produits",
-} as const;
-
-export const PRODUCT_EDITOR_TAB_GROUPS = {
-  essential: [
-    { value: "general", label: "Général" },
-    { value: "images", label: "Images" },
-    { value: "categories", label: "Catégories" },
-    { value: "seo", label: "SEO" },
-  ],
-  advanced: [
-    { value: "variants", label: "Variantes" },
-    { value: "pricing", label: "Prix" },
-    { value: "availability", label: "Disponibilité" },
-    { value: "inventory", label: "Inventaire" },
-    { value: "characteristics", label: "Caractéristiques" },
-    { value: "related-products", label: "Produits liés" },
-  ],
 } as const;
 
 export const PRODUCT_EDITOR_MENUS_COPY = {

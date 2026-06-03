@@ -112,7 +112,7 @@ export const orderColumns: ColumnDef<AdminOrderSummary>[] = [
 
           <Link
             className="inline-flex items-center text-sm font-medium transition-colors w-fit text-foreground/80 underline-offset-4 hover:text-foreground hover:underline"
-            href={`/admin/orders/${order.id}`}
+            href={`/admin/commerce/orders/${order.id}`}
           >
             Voir le détail
           </Link>

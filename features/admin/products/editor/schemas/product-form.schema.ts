@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+import { PRODUCT_VARIANT_LIFECYCLE_STATUS_VALUES } from "@/entities/product";
+import { SEO_INDEXING_MODE_VALUES } from "@/entities/seo";
+
 const emptyToNull = z
   .string()
   .trim()
@@ -63,7 +66,7 @@ export const productVariantFormSchema = z.object({
   name: z.string().optional().default(""),
   slug: z.string().optional().default(""),
   sku: z.string().trim().min(1),
-  status: z.enum(["draft", "active", "inactive", "archived"]),
+  status: z.enum(PRODUCT_VARIANT_LIFECYCLE_STATUS_VALUES),
   isDefault: z.enum(["true", "false"]).default("false"),
   sortOrder: z.string().trim().min(1),
   primaryImageId: z.string().optional().default(""),
@@ -86,7 +89,7 @@ export const productSeoFormSchema = z.object({
   canonicalPath: emptyToNull.refine((v) => v === null || v.startsWith("/"), {
     message: "Le chemin canonique doit commencer par '/'.",
   }),
-  indexingMode: z.enum(["INDEX_FOLLOW", "INDEX_NOFOLLOW", "NOINDEX_FOLLOW", "NOINDEX_NOFOLLOW"]),
+  indexingMode: z.enum(SEO_INDEXING_MODE_VALUES),
   sitemapIncluded: z.enum(["true", "false"]).default("true"),
   openGraphTitle: z
     .string()

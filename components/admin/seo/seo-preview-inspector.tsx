@@ -1,16 +1,9 @@
 import type { JSX } from "react";
 
-import type { SeoIndexingMode } from "@/entities/seo";
+import { SEO_INDEXING_MODE_LABELS, type SeoIndexingMode } from "@/entities/seo";
 
 import { SeoSearchPreview } from "./seo-search-preview";
 import { SeoSocialPreview } from "./seo-social-preview";
-
-const INDEXING_MODE_LABELS: Record<SeoIndexingMode, string> = {
-  INDEX_FOLLOW: "Index, follow",
-  INDEX_NOFOLLOW: "Index, nofollow",
-  NOINDEX_FOLLOW: "Noindex, follow",
-  NOINDEX_NOFOLLOW: "Noindex, nofollow",
-};
 
 type SeoPreviewInspectorProps = {
   publicPath: string;
@@ -67,7 +60,7 @@ export function SeoPreviewInspector({
                 <div className="flex items-start justify-between gap-3 rounded-lg border border-surface-border bg-card px-3 py-2">
                   <dt className="shrink-0 text-xs text-muted-foreground">Indexation</dt>
                   <dd className="text-right text-xs font-medium text-foreground">
-                    {INDEXING_MODE_LABELS[indexingMode]}
+                    {SEO_INDEXING_MODE_LABELS[indexingMode]}
                   </dd>
                 </div>
 

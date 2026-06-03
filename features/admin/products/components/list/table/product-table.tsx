@@ -1,32 +1,75 @@
 "use client";
 
-import { useState, type JSX } from "react";
+import { useCallback, useState, type JSX } from "react";
+import { useSearchParams } from "next/navigation";
 
 import {
-  AdminConfigDataTableFrame,
-  AdminPaginationBar,
-} from "@/components/admin/tables";
-import { PRODUCT_FILTER_VALID_VALUES } from "@/features/admin/products/config";
-import type { ProductListView } from "@/features/admin/products/list/types";
+  parseAdminLoadMoreItems,
+  AdminConfigMobileFeed,
+} from "@/components/admin/tables/mobile/admin-config-mobile-feed";
+import { AdminConfigDataTable } from "@/components/admin/tables/admin-config-data-table";
+import { AdminConfigDataTableFrame } from "@/components/admin/tables/layout/admin-config-data-table-frame";
+import { AdminPaginationBar } from "@/components/admin/tables/layout/admin-pagination-bar";
+import {
+  PRODUCT_FILTER_VALID_VALUES,
+  PRODUCT_TABLE_COPY,
+} from "@/features/admin/products/config";
+import { buildAdminProductEditPath } from "@/features/admin/products/navigation";
+import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
 import { useProductTableContext } from "../desktop/product-table-context";
-import { ProductTableDesktop } from "../desktop/product-table-desktop";
-import { ProductTableMobile } from "../mobile/product-table-mobile";
+import { createProductTableDesktopColumns } from "../desktop/product-table-desktop.config";
+import { ProductCollectionCard } from "../mobile/product-collection-card";
 import { ProductListToolbar } from "../toolbar/product-list-toolbar";
-import { ProductBulkBar, ProductTableEmptyState } from ".";
-import { ProductTableToolbarPermanentDeleteDialog } from "../toolbar";
+import { ProductBulkBar } from "./product-bulk-bar";
+import { ProductTableEmptyState } from "./product-table-empty-state";
+import { ProductTableToolbarPermanentDeleteDialog } from "../toolbar/product-table-toolbar-permanent-delete-dialog";
+
+type ProductTableActionProps = Readonly<{
+  onConfirmArchive?: (slug: string) => void | Promise<void>;
+  onConfirmRestore?: (slug: string) => void | Promise<void>;
+  onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
+}>;
 
 export function ProductTable(): JSX.Element {
   const { state, actions, view, total, perPage, onMobileVisibleSelectionChange } =
     useProductTableContext();
   const [permanentDeleteDialogOpen, setPermanentDeleteDialogOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const queryString = searchParams.toString();
 
   const isBulkPending = actions.isBulkPending;
   const isFiltered = state.search.trim().length > 0 || state.activeFilters.length > 0;
   const toolbar = (
     <ProductListToolbar onOpenPermanentDeleteDialog={() => setPermanentDeleteDialogOpen(true)} />
   );
-  const desktopActionProps = getDesktopProductTableActionProps({ actions, view });
-  const mobileActionProps = getMobileProductTableActionProps({ actions, view });
+  const actionProps = getProductTableActionProps({ actions, view });
+  const desktopColumns = createProductTableDesktopColumns({
+    selectedProductIds: actions.selectedProductIds,
+    areAllCurrentPageSelected: actions.areAllCurrentPageSelected,
+    view,
+    sort: state.sort,
+    onSortChange: state.setSort,
+    onToggleProductSelection: actions.toggleProductSelection,
+    onToggleSelectAllCurrentPage: actions.toggleSelectAllCurrentPage,
+    ...actionProps,
+  });
+  const handleMobileVisibleItemsChange = useCallback(
+    (visibleItems: ProductTableItem[]) => {
+      const visibleProductIds = visibleItems.map((product) => product.id);
+      const visibleSelectedCount = visibleProductIds.filter((productId) =>
+        actions.selectedProductIds.includes(productId)
+      ).length;
+
+      onMobileVisibleSelectionChange?.({
+        visibleCount: visibleItems.length,
+        visibleSelectedCount,
+        areAllVisibleSelected:
+          visibleProductIds.length > 0 &&
+          visibleProductIds.every((productId) => actions.selectedProductIds.includes(productId)),
+      });
+    },
+    [actions.selectedProductIds, onMobileVisibleSelectionChange]
+  );
 
   async function handleBulkPermanentDelete(): Promise<void> {
     if (view !== "trash") {
@@ -51,27 +94,18 @@ export function ProductTable(): JSX.Element {
     <>
       <AdminConfigDataTableFrame
         toolbar={toolbar}
-        desktopClassName="overflow-y-auto [scrollbar-gutter:stable] p-1"
+        desktopClassName="p-1"
         desktopContent={
-          <ProductTableDesktop
-            products={state.paginated}
-            selectedProductIds={actions.selectedProductIds}
-            areAllCurrentPageSelected={actions.areAllCurrentPageSelected}
-            onToggleProductSelection={actions.toggleProductSelection}
-            onToggleSelectAllCurrentPage={actions.toggleSelectAllCurrentPage}
-            view={view}
-            {...desktopActionProps}
-          />
-        }
-        mobileClassName="p-1"
-        mobileContent={
-          <ProductTableMobile
-            products={state.allFilteredProducts}
-            view={view}
-            selectedProductIds={actions.selectedProductIds}
-            onToggleProductSelection={actions.toggleProductSelection}
-            onVisibleSelectionStatsChange={onMobileVisibleSelectionChange}
-            {...mobileActionProps}
+          <AdminConfigDataTable
+            data={state.paginated}
+            columns={desktopColumns}
+            getRowId={(product) => product.id}
+            wrapperClassName="flex min-h-0 flex-1 flex-col"
+            viewportClassName="min-h-0 flex-1"
+            headerClassName="backdrop-blur-xl"
+            bodyClassName="[&_tr:last-child]:border-0"
+            getRowHref={(product) => buildAdminProductEditPath(product.slug)}
+            onToggleRowSelection={(product) => actions.toggleProductSelection(product.id)}
           />
         }
         pagination={
@@ -87,6 +121,36 @@ export function ProductTable(): JSX.Element {
         }
         floatingBar={
           <ProductBulkBar onOpenPermanentDeleteDialog={() => setPermanentDeleteDialogOpen(true)} />
+        }
+        mobileClassName="p-1"
+        mobileContent={
+          <AdminConfigMobileFeed
+            items={state.allFilteredProducts}
+            currentPage={state.currentPage}
+            totalPages={state.totalPages}
+            perPage={perPage}
+            totalItems={total}
+            queryString={queryString}
+            loadMorePath="/api/admin/products/load-more"
+            className="pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom)+0.75rem)]"
+            gridClassName="[@media(min-width:667px)]:grid-cols-2"
+            endLabel={PRODUCT_TABLE_COPY.mobileEndOfList}
+            totalLabel={(count) => `${count} produit${count !== 1 ? "s" : ""}`}
+            parseItems={parseAdminLoadMoreItems<ProductTableItem>}
+            onVisibleItemsChange={handleMobileVisibleItemsChange}
+            renderItem={(product) => (
+              <ProductCollectionCard
+                key={product.id}
+                product={product}
+                view={view}
+                isSelected={actions.selectedProductIds.includes(product.id)}
+                onToggleSelection={actions.toggleProductSelection}
+                {...(actionProps.onConfirmArchive ? { onConfirmArchive: actionProps.onConfirmArchive } : {})}
+                {...(actionProps.onConfirmRestore ? { onConfirmRestore: actionProps.onConfirmRestore } : {})}
+                {...(actionProps.onConfirmPermanentDelete ? { onConfirmPermanentDelete: actionProps.onConfirmPermanentDelete } : {})}
+              />
+            )}
+          />
         }
       />
 
@@ -105,24 +169,10 @@ type ProductTableActionPropsInput = Readonly<{
   view: ProductListView;
 }>;
 
-function getDesktopProductTableActionProps({
+function getProductTableActionProps({
   actions,
   view,
-}: ProductTableActionPropsInput): Partial<Parameters<typeof ProductTableDesktop>[0]> {
-  if (view === "active") {
-    return { onConfirmArchive: actions.handleArchiveOne };
-  }
-
-  return {
-    onConfirmRestore: actions.handleRestoreOne,
-    onConfirmPermanentDelete: actions.handlePermanentDeleteOne,
-  };
-}
-
-function getMobileProductTableActionProps({
-  actions,
-  view,
-}: ProductTableActionPropsInput): Partial<Parameters<typeof ProductTableMobile>[0]> {
+}: ProductTableActionPropsInput): ProductTableActionProps {
   if (view === "active") {
     return { onConfirmArchive: actions.handleArchiveOne };
   }

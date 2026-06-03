@@ -10,8 +10,9 @@ import {
   readTrimmedString,
   type RawInputValue,
 } from "./shared-input";
-
-export type ProductVariantLifecycleStatus = "draft" | "active" | "inactive" | "archived";
+import {
+  PRODUCT_VARIANT_LIFECYCLE_STATUS_VALUES,
+} from "./product-variant-lifecycle-status";
 
 export type AdminProductVariantInputErrorCode =
   | "missing_sku"
@@ -40,7 +41,9 @@ type AdminProductVariantInputSource = {
   depthMm: RawInputValue;
 };
 
-const productVariantLifecycleStatusSchema = z.enum(["draft", "active", "inactive", "archived"]);
+const productVariantLifecycleStatusSchema = z.enum(
+  PRODUCT_VARIANT_LIFECYCLE_STATUS_VALUES
+);
 
 const adminProductVariantInputSchema = z.object({
   sku: z.preprocess((value) => readTrimmedString(value), z.string().min(1)),

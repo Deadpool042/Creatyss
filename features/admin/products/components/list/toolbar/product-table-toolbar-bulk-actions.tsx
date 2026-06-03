@@ -2,7 +2,7 @@
 
 import type { JSX } from "react";
 
-import { AdminDataTableBulkActionButton } from "@/components/admin/tables";
+import { AdminDataTableBulkActionButton } from "@/components/admin/tables/admin-data-table-bulk-action-button";
 import { PRODUCT_BULK_ACTIONS_COPY } from "@/features/admin/products/config";
 import type { ProductListView } from "@/features/admin/products/list/types";
 

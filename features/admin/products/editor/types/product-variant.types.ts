@@ -1,6 +1,7 @@
+import type { ProductVariantLifecycleStatus } from "@/entities/product";
 import type { AdminProductActionResult } from "@/features/admin/products/types";
 
-export type AdminProductVariantStatus = "draft" | "active" | "inactive" | "archived";
+export type AdminProductVariantStatus = ProductVariantLifecycleStatus;
 
 export type AdminProductAvailabilityStatus =
   | "available"

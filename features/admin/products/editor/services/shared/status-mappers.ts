@@ -1,36 +1,28 @@
 import {
   AvailabilityStatus,
-  ProductVariantStatus,
-  type ProductStatus,
 } from "@/prisma-generated/client";
 import {
-  mapProductStatusToPrismaStatus,
+  type ProductAvailabilityStatus,
+  mapProductLifecycleStatusToPrismaStatus,
+  mapProductVariantLifecycleStatusToPrismaStatus,
   type ProductLifecycleStatus,
-} from "@/features/admin/products/services";
+  type ProductVariantLifecycleStatus,
+} from "@/entities/product";
 
 export function mapEditorStatusToPrismaStatus(
   status: ProductLifecycleStatus
-): ProductStatus {
-  return mapProductStatusToPrismaStatus(status);
+): ReturnType<typeof mapProductLifecycleStatusToPrismaStatus> {
+  return mapProductLifecycleStatusToPrismaStatus(status);
 }
 
 export function mapEditorVariantStatusToPrismaStatus(
-  status: "draft" | "active" | "inactive" | "archived"
-): ProductVariantStatus {
-  switch (status) {
-    case "draft":
-      return ProductVariantStatus.DRAFT;
-    case "active":
-      return ProductVariantStatus.ACTIVE;
-    case "inactive":
-      return ProductVariantStatus.INACTIVE;
-    case "archived":
-      return ProductVariantStatus.ARCHIVED;
-  }
+  status: ProductVariantLifecycleStatus
+): ReturnType<typeof mapProductVariantLifecycleStatusToPrismaStatus> {
+  return mapProductVariantLifecycleStatusToPrismaStatus(status);
 }
 
 export function mapEditorAvailabilityStatusToPrismaStatus(
-  status: "available" | "unavailable" | "preorder" | "backorder" | "discontinued" | "archived"
+  status: ProductAvailabilityStatus
 ): AvailabilityStatus {
   switch (status) {
     case "available":

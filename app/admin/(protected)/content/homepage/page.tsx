@@ -2,8 +2,10 @@ import type { HomepageStatus } from "@/prisma-generated/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Notice } from "@/components/shared/feedback";
-import { AdminFormActions } from "@/components/admin/forms";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { getUploadsPublicPath } from "@/core/uploads";
 import {
   createHomepageAction,
@@ -69,10 +71,22 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
   if (editorData === null) {
     return (
       <AdminPageShell
-        description="Créez la page d'accueil initiale pour commencer son édition depuis l'administration."
-        eyebrow="Accueil"
         scrollMode="area"
         title="Édition de la page d'accueil"
+        breadcrumbs={[
+          { label: "Admin", href: "/admin" },
+          { label: "Contenu" },
+          { label: "Accueil" },
+        ]}
+        contentClassName={ADMIN_CONTENT_PAGE}
+        header={
+          <AdminPageHeader
+            mobileHidden
+            eyebrow="Accueil"
+            title="Édition de la page d'accueil"
+            description="Créez la page d'accueil initiale pour commencer son édition depuis l'administration."
+          />
+        }
       >
         {explicitErrorMessage ? <Notice tone="alert">{explicitErrorMessage}</Notice> : null}
         <Notice tone="note">
@@ -106,15 +120,27 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
 
   return (
     <AdminPageShell
-      description="Commencez par la bannière principale, puis complétez le bloc éditorial et les sélections mises en avant."
-      eyebrow="Accueil"
       scrollMode="area"
       title="Édition de la page d'accueil"
+      breadcrumbs={[
+        { label: "Admin", href: "/admin" },
+        { label: "Contenu" },
+        { label: "Accueil" },
+      ]}
+      contentClassName={ADMIN_CONTENT_PAGE}
+      header={
+        <AdminPageHeader
+          mobileHidden
+          eyebrow="Accueil"
+          title="Édition de la page d'accueil"
+          description="Commencez par la bannière principale, puis complétez le bloc éditorial et les sélections mises en avant."
+        />
+      }
     >
       {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {explicitErrorMessage ? <Notice tone="alert">{explicitErrorMessage}</Notice> : null}
 
-      <div className="flex flex-col gap-2 rounded-3xl border border-border/70 bg-background/80 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-2 rounded-3xl border border-surface-border/60 bg-background/80 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <p className="text-sm font-medium text-foreground">Statut actuel</p>
           <div className="flex items-center gap-3">

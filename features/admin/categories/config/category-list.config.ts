@@ -1,19 +1,23 @@
+import {
+  CATEGORY_LIFECYCLE_STATUS_LABELS,
+  CATEGORY_LIFECYCLE_STATUS_VALUES,
+} from "@/entities/category/category-status";
 import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import type { CategoryFeaturedFilter, CategorySortOption } from "@/features/admin/categories/list";
 
 export const CATEGORY_FILTER_VALID_VALUES = {
-  statuses: ["draft", "active", "inactive", "archived"] satisfies AdminCategoryStatus[],
-  featured: ["featured", "not-featured"] satisfies CategoryFeaturedFilter[],
-  sorts: ["name-asc", "name-desc", "updated-asc", "updated-desc"] satisfies CategorySortOption[],
+  statuses: CATEGORY_LIFECYCLE_STATUS_VALUES satisfies readonly AdminCategoryStatus[],
+  featured: ["featured", "not-featured"] satisfies readonly CategoryFeaturedFilter[],
+  sorts: ["name-asc", "name-desc", "updated-asc", "updated-desc"] satisfies readonly CategorySortOption[],
   perPage: [5, 10, 25, 50],
   perPageDefault: 10,
 } as const;
 
 export const CATEGORY_STATUS_OPTIONS: { value: AdminCategoryStatus; label: string }[] = [
-  { value: "active", label: "Publiée" },
-  { value: "draft", label: "Brouillon" },
-  { value: "inactive", label: "Inactive" },
-  { value: "archived", label: "Archivée" },
+  ...CATEGORY_LIFECYCLE_STATUS_VALUES.map((value) => ({
+    value,
+    label: CATEGORY_LIFECYCLE_STATUS_LABELS[value],
+  })),
 ];
 
 export const CATEGORY_FEATURED_OPTIONS: { value: CategoryFeaturedFilter; label: string }[] = [
@@ -22,10 +26,7 @@ export const CATEGORY_FEATURED_OPTIONS: { value: CategoryFeaturedFilter; label: 
 ];
 
 export const CATEGORY_STATUS_LABELS: Record<AdminCategoryStatus, string> = {
-  active: "Publiée",
-  draft: "Brouillon",
-  inactive: "Inactive",
-  archived: "Archivée",
+  ...CATEGORY_LIFECYCLE_STATUS_LABELS,
 };
 
 export const CATEGORY_LIST_COPY = {

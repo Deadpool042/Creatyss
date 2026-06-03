@@ -1,4 +1,6 @@
-export type AdminCreatableProductTypeCode = "simple" | "variable";
+import type { ProductType } from "@/entities/product";
+
+export type AdminCreatableProductTypeCode = ProductType;
 
 export type CreateProductFormValues = {
   name: string;

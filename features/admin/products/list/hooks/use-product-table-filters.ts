@@ -1,5 +1,5 @@
 //features/admin/products/list/hooks/use-product-table-filters.ts
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
 import {
@@ -11,7 +11,7 @@ import {
   parseAdminListSortParam,
   parseAdminListStringArrayParam,
 } from "@/components/admin/tables/state/admin-list-search-params";
-import { useAdminListUrlState } from "@/components/admin/tables";
+import { useAdminListUrlState } from "@/components/admin/tables/state/use-admin-list-url-state";
 import { PRODUCT_FILTER_VALID_VALUES } from "@/features/admin/products/config";
 import type {
   ProductFilterCategoryOption,
@@ -44,6 +44,9 @@ const VALID_STATUSES = PRODUCT_FILTER_VALID_VALUES.statuses as readonly ProductT
 const VALID_FEATURED = PRODUCT_FILTER_VALID_VALUES.featured.filter(
   (value): value is ProductFeaturedFilterValue => value !== "all"
 );
+const VALID_IMAGES = PRODUCT_FILTER_VALID_VALUES.images as readonly ProductFilterImageOption[];
+const VALID_STOCK = PRODUCT_FILTER_VALID_VALUES.stock as readonly ProductFilterStockOption[];
+const VALID_VARIANTS = PRODUCT_FILTER_VALID_VALUES.variants as readonly ProductFilterVariantOption[];
 
 function sortCategories(
   left: ProductFilterCategoryOption,
@@ -71,19 +74,15 @@ export function useProductTableFilters({
   const status = parseAdminListArrayParam(searchParams.get("status"), VALID_STATUSES);
   const sort = parseAdminListSortParam(searchParams.get("sort"), VALID_SORTS, DEFAULT_SORT);
   const featured = parseAdminListArrayParam(searchParams.get("featured"), VALID_FEATURED);
-  const categoryIds = parseAdminListStringArrayParam(
-    searchParams.get("categories") ?? searchParams.get("categoryId")
-  );
+  const categorySlugs = parseAdminListStringArrayParam(searchParams.get("categories"));
+  const image = parseAdminListSortParam(searchParams.get("image"), VALID_IMAGES, "all");
+  const stock = parseAdminListSortParam(searchParams.get("stock"), VALID_STOCK, "all");
+  const variant = parseAdminListSortParam(searchParams.get("variant"), VALID_VARIANTS, "all");
 
   // page / perPage come from server via props (already parsed & validated)
   // but we still read from URL for the setters
   const urlPage = parseAdminListPageParam(searchParams.get("page"));
 
-  // ── Local UI-only state (not in URL) ─────────────────────────────────────
-
-  const [image, setImage] = useState<ProductFilterImageOption>("all");
-  const [stock, setStock] = useState<ProductFilterStockOption>("all");
-  const [variant, setVariant] = useState<ProductFilterVariantOption>("all");
   // ── URL setters ───────────────────────────────────────────────────────────
 
   const setSearch = useCallback(
@@ -108,9 +107,26 @@ export function useProductTableFilters({
     [pushParams]
   );
 
-  const setCategoryIds = useCallback(
-    (value: string[]) =>
-      pushParams({ categories: formatAdminListArrayParam(value), categoryId: null }),
+  const setCategorySlugs = useCallback(
+    (value: string[]) => pushParams({ categories: formatAdminListArrayParam(value) }),
+    [pushParams]
+  );
+
+  const setImage = useCallback(
+    (value: ProductFilterImageOption) =>
+      pushParams({ image: formatAdminListDefaultParam(value, "all") }),
+    [pushParams]
+  );
+
+  const setStock = useCallback(
+    (value: ProductFilterStockOption) =>
+      pushParams({ stock: formatAdminListDefaultParam(value, "all") }),
+    [pushParams]
+  );
+
+  const setVariant = useCallback(
+    (value: ProductFilterVariantOption) =>
+      pushParams({ variant: formatAdminListDefaultParam(value, "all") }),
     [pushParams]
   );
 
@@ -128,36 +144,8 @@ export function useProductTableFilters({
     [pushParams]
   );
 
-  // ── Client-side filtering on top of server results ────────────────────────
-  // The server handles: search, status, sort, featured, categoryId, page, perPage.
-  // The client applies residual filters: image, stock, variant.
-
-  const filtered = useMemo(() => {
-    let result = [...products];
-
-    if (image === "with-image") {
-      result = result.filter((product) => Boolean(product.primaryImageUrl));
-    } else if (image === "without-image") {
-      result = result.filter((product) => !product.primaryImageUrl);
-    }
-
-    if (stock === "in-stock") {
-      result = result.filter((product) => product.stockState === "in-stock");
-    } else if (stock === "out-of-stock") {
-      result = result.filter((product) => product.stockState === "out-of-stock");
-    }
-
-    if (variant === "single") {
-      result = result.filter((product) => product.variantCount <= 1);
-    } else if (variant === "multiple") {
-      result = result.filter((product) => product.variantCount > 1);
-    }
-
-    return result;
-  }, [image, products, stock, variant]);
-
   // ── Pagination — server-driven ────────────────────────────────────────────
-  // paginated = the server-filtered page of products, after client residual filters
+  // paginated = the server-filtered page of products
   // allFilteredProducts = same (mobile infinite scroll receives this)
 
   const safeCurrentPage = currentPage;
@@ -172,10 +160,10 @@ export function useProductTableFilters({
         label: `Statut · ${value}`,
         onRemove: () => setStatus(status.filter((item) => item !== value)),
       })),
-      ...categoryIds.map((value) => ({
+      ...categorySlugs.map((value) => ({
         key: `category-${value}`,
-        label: `Catégorie · ${categoryOptions.find((cat) => cat.id === value)?.name ?? value}`,
-        onRemove: () => setCategoryIds(categoryIds.filter((item) => item !== value)),
+        label: `Catégorie · ${categoryOptions.find((cat) => cat.slug === value)?.name ?? value}`,
+        onRemove: () => setCategorySlugs(categorySlugs.filter((item) => item !== value)),
       })),
       ...featured.map((value) => ({
         key: `featured-${value}`,
@@ -215,7 +203,7 @@ export function useProductTableFilters({
     ],
     [
       status,
-      categoryIds,
+      categorySlugs,
       featured,
       image,
       stock,
@@ -223,7 +211,7 @@ export function useProductTableFilters({
       search,
       categoryOptions,
       setStatus,
-      setCategoryIds,
+      setCategorySlugs,
       setFeatured,
       setSearch,
       setImage,
@@ -235,9 +223,6 @@ export function useProductTableFilters({
   // ── Reset ─────────────────────────────────────────────────────────────────
 
   const reset = useCallback(() => {
-    setImage("all");
-    setStock("all");
-    setVariant("all");
     resetUrl();
   }, [resetUrl]);
 
@@ -251,8 +236,8 @@ export function useProductTableFilters({
     status,
     setStatus,
 
-    categoryIds,
-    setCategoryIds,
+    categorySlugs,
+    setCategorySlugs,
 
     featured,
     setFeatured,
@@ -270,8 +255,8 @@ export function useProductTableFilters({
     setSort,
 
     categoryOptions: [...categoryOptions].sort(sortCategories),
-    allFilteredProducts: filtered,
-    paginated: filtered,
+    allFilteredProducts: products,
+    paginated: products,
     currentPage: safeCurrentPage,
     totalPages: safeTotalPages,
     perPage,

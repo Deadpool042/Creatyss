@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { SurfaceSection } from "@/components/storefront/surfaceSection";
+import { SurfaceSection } from "@/components/shared";
 
 const blogDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",

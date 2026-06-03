@@ -106,7 +106,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
   return (
     <div className="grid gap-8">
-      <section className="w-full border border-shell-border rounded-lg bg-shell-surface shadow-soft p-7">
+      <section className="w-full rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-6 shadow-sm backdrop-blur-sm md:p-8">
         <div className="mb-6 grid gap-2">
           <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Commande</p>
           <h1 className="m-0">Finaliser la commande</h1>
@@ -122,7 +122,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         {cart ? (
           <div className="grid gap-4">
             <form className="grid gap-4 content-start" noValidate>
-              <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
+              <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
                 <div className="grid gap-1">
                   <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                     Contact
@@ -178,7 +178,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
               </section>
 
-              <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
+              <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
                 <div className="grid gap-1">
                   <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                     Livraison
@@ -238,11 +238,11 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                     Pays
                   </p>
-                  <p className="card-copy">France</p>
+                  <p className="text-sm text-muted-foreground">France</p>
                 </div>
               </section>
 
-              <section className="grid gap-4 rounded-xl border border-border/70 bg-white/80 p-5">
+              <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
                 <div className="grid gap-1">
                   <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                     Facturation
@@ -348,7 +348,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                     Pays
                   </p>
-                  <p className="card-copy">France</p>
+                  <p className="text-sm text-muted-foreground">France</p>
                 </div>
               </section>
 
@@ -396,8 +396,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                       <div className="grid gap-1">
                         <h3>{line.productName}</h3>
                         <p className="text-[0.95rem] text-foreground/68">
-                          {line.variantName} · {line.colorName}
-                          {line.colorHex ? ` · ${line.colorHex}` : ""}
+                          {line.variantName}
                         </p>
                       </div>
 
@@ -405,35 +404,35 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                         <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                           SKU
                         </p>
-                        <p className="card-copy">{line.sku}</p>
+                        <p className="text-sm text-muted-foreground">{line.sku}</p>
                       </div>
 
                       <div className="grid gap-1">
                         <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                           Quantité
                         </p>
-                        <p className="card-copy">{line.quantity}</p>
+                        <p className="text-sm text-muted-foreground">{line.quantity}</p>
                       </div>
 
                       <div className="grid gap-1">
                         <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                           Prix unitaire actuel
                         </p>
-                        <p className="card-copy">{line.unitPrice}</p>
+                        <p className="text-sm text-muted-foreground">{line.unitPriceAmount}</p>
                       </div>
 
                       <div className="grid gap-1">
                         <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                           Sous-total
                         </p>
-                        <p className="card-copy">{line.lineTotal}</p>
+                        <p className="text-sm text-muted-foreground">{line.lineTotalAmount}</p>
                       </div>
 
                       <div className="grid gap-1">
                         <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                           Disponibilité
                         </p>
-                        <p className="card-copy">{getAvailabilityLabel(line.isAvailable)}</p>
+                        <p className="text-sm text-muted-foreground">{getAvailabilityLabel(line.isAvailable)}</p>
                         {!line.isAvailable ? (
                           <Notice tone="alert">
                             Cette ligne bloque la commande tant qu&apos;elle n&apos;est pas corrigée
@@ -450,7 +449,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                     Panier vide
                   </p>
                   <h2>Aucune ligne à valider</h2>
-                  <p className="card-copy">
+                  <p className="text-sm text-muted-foreground">
                     Revenez à la boutique pour ajouter un article au panier.
                   </p>
                 </div>
@@ -460,14 +459,14 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Quantité totale
                 </p>
-                <p className="card-copy">{cart.itemCount}</p>
+                <p className="text-sm text-muted-foreground">{cart.itemCount}</p>
               </div>
 
               <div className="grid gap-1">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Sous-total panier
                 </p>
-                <p className="card-copy">{cart.subtotal}</p>
+                <p className="text-sm text-muted-foreground">{cart.subtotal}</p>
               </div>
             </aside>
           </div>
@@ -477,7 +476,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               Commande indisponible
             </p>
             <h2>Ajoutez d&apos;abord un article au panier</h2>
-            <p className="card-copy">
+            <p className="text-sm text-muted-foreground">
               Ajoutez d&apos;abord un article disponible au panier pour finaliser la commande.
             </p>
             <div className="flex flex-wrap items-center gap-3">

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { Viewport } from "next";
 
 import { AdminShell } from "@/components/admin/layout/admin-shell";
 import { db } from "@/core/db";
@@ -10,6 +11,13 @@ import {
   buildAdminNavigation,
   getAdminNavigationContext,
 } from "@/features/admin/navigation/server";
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#efe4d6" },
+    { media: "(prefers-color-scheme: dark)", color: "#2a2420" },
+  ],
+};
 
 export default async function ProtectedAdminLayout({ children }: { children: ReactNode }) {
   const admin = await requireAuthenticatedAdmin();

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { SEO_INDEXING_MODE_VALUES } from "@/entities/seo";
+
 const emptyToNull = z
   .string()
   .trim()
@@ -16,7 +18,7 @@ export const categorySeoFormSchema = z.object({
   canonicalPath: emptyToNull.refine((v) => v === null || v.startsWith("/"), {
     message: "Le chemin canonique doit commencer par '/'.",
   }),
-  indexingMode: z.enum(["INDEX_FOLLOW", "INDEX_NOFOLLOW", "NOINDEX_FOLLOW", "NOINDEX_NOFOLLOW"]),
+  indexingMode: z.enum(SEO_INDEXING_MODE_VALUES),
   sitemapIncluded: z.enum(["true", "false"]).default("true"),
   openGraphTitle: z
     .string()

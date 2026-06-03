@@ -6,7 +6,7 @@ import {
   markOrderEmailEventSent,
 } from "@/features/email/lib/order-email.repository";
 import { serverEnv } from "@/core/config/env/server";
-import { sendEmail } from "@/core/email/client";
+import { resolveEmailProvider } from "@/features/email/providers/resolve-email-provider";
 import { findOrderEmailContextById } from "@/features/orders/lib/order.repository";
 import { buildOrderEmailTemplate } from "@/features/email/order-email-templates";
 
@@ -31,10 +31,13 @@ export async function sendOrderTransactionalEmail(input: {
       return;
     }
 
+    const emailProvider = resolveEmailProvider();
+
     const emailEvent = await createOrderEmailEventIfAbsent({
       orderId: order.id,
       eventType: input.eventType,
       recipientEmail: order.customerEmail,
+      provider: serverEnv.emailProvider,
     });
 
     if (emailEvent === null) {
@@ -55,7 +58,7 @@ export async function sendOrderTransactionalEmail(input: {
     });
 
     try {
-      const providerMessageId = await sendEmail({
+      const result = await emailProvider.sendTransactionalEmail({
         to: order.customerEmail,
         subject: template.subject,
         text: template.text,
@@ -64,7 +67,7 @@ export async function sendOrderTransactionalEmail(input: {
 
       await markOrderEmailEventSent({
         id: emailEvent.id,
-        providerMessageId,
+        providerMessageId: result.providerMessageId,
       });
     } catch (error) {
       console.error(error);

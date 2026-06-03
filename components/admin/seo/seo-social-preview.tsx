@@ -18,7 +18,7 @@ export function SeoSocialPreview({
   compact = false,
 }: SeoSocialPreviewProps): JSX.Element {
   return (
-    <div className="rounded-2xl border border-surface-border bg-card p-4">
+    <div className="rounded-2xl border border-surface-border bg-surface-panel p-4">
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         Aperçu partage social
       </p>

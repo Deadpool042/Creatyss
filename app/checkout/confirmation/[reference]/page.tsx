@@ -52,10 +52,17 @@ export default async function OrderConfirmationPage({
     orderStatus: order.status,
     paymentParam,
   });
+  const formatLinePresentation = (line: (typeof order.lines)[number]) => {
+    const parts = [line.variantName, line.colorName, line.colorHex].filter(
+      (value): value is string => Boolean(value && value.trim().length > 0)
+    );
+
+    return parts.length > 0 ? parts.join(" · ") : "Configuration standard";
+  };
 
   return (
     <div className="grid gap-8">
-      <section className="w-full border border-shell-border rounded-lg bg-shell-surface shadow-soft p-7">
+      <section className="w-full rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-6 shadow-sm backdrop-blur-sm md:p-8">
         <div className="mb-6 grid gap-2">
           <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Confirmation</p>
           <h1 className="m-0">{summary.title}</h1>
@@ -77,7 +84,7 @@ export default async function OrderConfirmationPage({
               <div className="grid gap-1">
                 <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Synthèse</p>
                 <h2>{summary.title}</h2>
-                <p className="card-copy">{summary.description}</p>
+                <p className="text-sm text-muted-foreground">{summary.description}</p>
                 <p className="text-sm leading-relaxed text-muted-foreground">{summary.nextStep}</p>
               </div>
 
@@ -92,28 +99,28 @@ export default async function OrderConfirmationPage({
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Référence
                 </p>
-                <p className="card-copy">{order.reference}</p>
+                <p className="text-sm text-muted-foreground">{order.reference}</p>
               </div>
 
               <div className="grid gap-1">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Statut
                 </p>
-                <p className="card-copy">{getOrderStatusLabel(order.status)}</p>
+                <p className="text-sm text-muted-foreground">{getOrderStatusLabel(order.status)}</p>
               </div>
 
               <div className="grid gap-1">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Paiement
                 </p>
-                <p className="card-copy">{getPaymentStatusLabel(order.payment.status)}</p>
+                <p className="text-sm text-muted-foreground">{getPaymentStatusLabel(order.payment.status)}</p>
               </div>
 
               <div className="grid gap-1">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Créée le
                 </p>
-                <p className="card-copy">
+                <p className="text-sm text-muted-foreground">
                   {orderDateTimeFormatter.format(new Date(order.createdAt))}
                 </p>
               </div>
@@ -125,7 +132,7 @@ export default async function OrderConfirmationPage({
                 <h2>
                   {order.customerFirstName} {order.customerLastName}
                 </h2>
-                <p className="card-copy">{order.customerEmail}</p>
+                <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
                 {order.customerPhone ? (
                   <p className="text-[0.95rem] text-foreground/68">{order.customerPhone}</p>
                 ) : null}
@@ -138,11 +145,11 @@ export default async function OrderConfirmationPage({
                   Livraison
                 </p>
                 <h2>Adresse de livraison</h2>
-                <p className="card-copy">{order.shippingAddressLine1}</p>
+                <p className="text-sm text-muted-foreground">{order.shippingAddressLine1}</p>
                 {order.shippingAddressLine2 ? (
-                  <p className="card-copy">{order.shippingAddressLine2}</p>
+                  <p className="text-sm text-muted-foreground">{order.shippingAddressLine2}</p>
                 ) : null}
-                <p className="card-copy">
+                <p className="text-sm text-muted-foreground">
                   {order.shippingPostalCode} {order.shippingCity}
                 </p>
                 <p className="text-[0.95rem] text-foreground/68">{order.shippingCountryCode}</p>
@@ -167,20 +174,20 @@ export default async function OrderConfirmationPage({
                 </p>
                 <h2>Adresse de facturation</h2>
                 {order.billingSameAsShipping ? (
-                  <p className="card-copy">Identique à l&apos;adresse de livraison.</p>
+                  <p className="text-sm text-muted-foreground">Identique à l&apos;adresse de livraison.</p>
                 ) : (
                   <>
-                    <p className="card-copy">
+                    <p className="text-sm text-muted-foreground">
                       {order.billingFirstName} {order.billingLastName}
                     </p>
                     {order.billingPhone ? (
                       <p className="text-[0.95rem] text-foreground/68">{order.billingPhone}</p>
                     ) : null}
-                    <p className="card-copy">{order.billingAddressLine1}</p>
+                    <p className="text-sm text-muted-foreground">{order.billingAddressLine1}</p>
                     {order.billingAddressLine2 ? (
-                      <p className="card-copy">{order.billingAddressLine2}</p>
+                      <p className="text-sm text-muted-foreground">{order.billingAddressLine2}</p>
                     ) : null}
-                    <p className="card-copy">
+                    <p className="text-sm text-muted-foreground">
                       {order.billingPostalCode} {order.billingCity}
                     </p>
                     <p className="text-[0.95rem] text-foreground/68">{order.billingCountryCode}</p>
@@ -203,38 +210,35 @@ export default async function OrderConfirmationPage({
                 <article className="store-card grid gap-4" key={line.id}>
                   <div className="grid gap-1">
                     <h3>{line.productName}</h3>
-                    <p className="text-[0.95rem] text-foreground/68">
-                      {line.variantName} · {line.colorName}
-                      {line.colorHex ? ` · ${line.colorHex}` : ""}
-                    </p>
+                    <p className="text-[0.95rem] text-foreground/68">{formatLinePresentation(line)}</p>
                   </div>
 
                   <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       SKU
                     </p>
-                    <p className="card-copy">{line.sku}</p>
+                    <p className="text-sm text-muted-foreground">{line.sku ?? "Non renseigné"}</p>
                   </div>
 
                   <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Quantité
                     </p>
-                    <p className="card-copy">{line.quantity}</p>
+                    <p className="text-sm text-muted-foreground">{line.quantity}</p>
                   </div>
 
                   <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Prix unitaire figé
                     </p>
-                    <p className="card-copy">{line.unitPrice}</p>
+                    <p className="text-sm text-muted-foreground">{line.unitPrice}</p>
                   </div>
 
                   <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Sous-total
                     </p>
-                    <p className="card-copy">{line.lineTotal}</p>
+                    <p className="text-sm text-muted-foreground">{line.lineTotal}</p>
                   </div>
                 </article>
               ))}
@@ -244,7 +248,7 @@ export default async function OrderConfirmationPage({
               <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                 Total commande
               </p>
-              <p className="card-copy">{order.totalAmount}</p>
+              <p className="text-sm text-muted-foreground">{order.totalAmount}</p>
             </div>
 
             <div className="flex flex-wrap gap-3">

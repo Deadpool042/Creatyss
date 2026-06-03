@@ -14,6 +14,7 @@ import {
   ensureAdminCreatableProductTypes,
   createProduct,
 } from "@/features/admin/products/create/create-product.service";
+import { buildAdminProductEditPath } from "@/features/admin/products/navigation";
 
 function mapFormDataToValues(formData: FormData): {
   name: string;
@@ -101,5 +102,5 @@ export async function createProductAction(
   }
 
   refresh();
-  redirect(`/admin/products/${parsed.data.slug}/edit`);
+  redirect(buildAdminProductEditPath(parsed.data.slug));
 }

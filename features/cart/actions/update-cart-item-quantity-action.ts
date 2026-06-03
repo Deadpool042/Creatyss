@@ -17,7 +17,7 @@ function normalizeCartItemId(value: FormDataEntryValue | string | null | undefin
 
   const normalizedValue = value.trim();
 
-  if (!/^[0-9]+$/.test(normalizedValue)) {
+  if (normalizedValue.length === 0) {
     return null;
   }
 
@@ -64,7 +64,7 @@ export async function updateCartItemQuantityAction(formData: FormData): Promise<
     redirect("/panier?error=missing_variant");
   }
 
-  if (variant.productStatus !== "published" || variant.status !== "published") {
+  if (variant.productStatus !== "ACTIVE" || variant.status !== "ACTIVE") {
     redirect("/panier?error=variant_unavailable");
   }
 

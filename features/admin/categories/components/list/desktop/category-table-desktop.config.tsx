@@ -5,15 +5,15 @@ import Link from "next/link";
 import { Pencil, Star } from "lucide-react";
 
 import {
-  ADMIN_TABLE_HEAD_CLASSNAME,
-  AdminRowActionsReveal,
   AdminSortableTableHead,
-  AdminTableIdentityStack,
-  createAdminCountColumn,
-  createAdminSelectionColumn,
-  createAdminStatusColumn,
-  createAdminThumbnailColumn,
-} from "@/components/admin/tables";
+} from "@/components/admin/tables/head/admin-sortable-table-head";
+import { ADMIN_TABLE_HEAD_CLASSNAME } from "@/components/admin/tables/styles/admin-table-head.styles";
+import { AdminRowActionsReveal } from "@/components/admin/tables/actions/admin-row-actions-reveal";
+import { AdminTableIdentityStack } from "@/components/admin/tables/layout/admin-table-identity-stack";
+import { createAdminCountColumn } from "@/components/admin/tables/columns/admin-count-column";
+import { createAdminSelectionColumn } from "@/components/admin/tables/columns/admin-selection-column";
+import { createAdminStatusColumn } from "@/components/admin/tables/columns/admin-status-column";
+import { createAdminThumbnailColumn } from "@/components/admin/tables/columns/admin-thumbnail-column";
 import { Button } from "@/components/ui/button";
 import {
   CATEGORY_LIST_COPY,

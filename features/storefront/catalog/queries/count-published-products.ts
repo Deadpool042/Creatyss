@@ -1,3 +1,5 @@
+import "server-only";
+
 import { db } from "@/core/db";
 import type { CatalogAvailabilityFilterValue } from "@/entities/catalog/catalog-filter-input";
 import {

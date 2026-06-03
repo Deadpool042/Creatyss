@@ -1,4 +1,4 @@
-import type { SortableColumnConfig } from "@/components/admin/tables";
+import type { SortableColumnConfig } from "@/components/admin/tables/head/admin-sortable-table-head";
 import type { CategorySortOption } from "@/features/admin/categories/list";
 
 import { CATEGORY_TABLE_COPY } from "./category-list.config";

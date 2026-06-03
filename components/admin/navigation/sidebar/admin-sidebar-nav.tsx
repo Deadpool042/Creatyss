@@ -15,8 +15,8 @@ type AdminSidebarNavProps = {
 
 export function AdminSidebarNav({ rootItems, groups }: AdminSidebarNavProps): JSX.Element {
   return (
-    <nav aria-label="Navigation admin" className="flex flex-col gap-0">
-      <SidebarMenu className="gap-0.5 py-1">
+    <nav aria-label="Navigation admin" className="flex flex-col gap-1">
+      <SidebarMenu className="gap-1 py-0.5">
         {rootItems.map((item) => (
           <AdminSidebarLink
             key={item.key}
@@ -32,7 +32,7 @@ export function AdminSidebarNav({ rootItems, groups }: AdminSidebarNavProps): JS
         ))}
       </SidebarMenu>
 
-      <SidebarSeparator className="mx-2 my-1" />
+      <SidebarSeparator className="mx-2 my-0.5 bg-sidebar-border/40" />
 
       {groups.map((group) => (
         <AdminSidebarGroup key={group.key} group={group} />

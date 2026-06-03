@@ -1,0 +1,248 @@
+/**
+ * get-content-overview-stats.query.ts
+ *
+ * Agrège l'état éditorial de la boutique pour le cockpit content/overview.
+ *
+ * Données réelles : blog (listAdminBlogPosts disponible).
+ * Données mockées : homepage, pages, SEO — domaines définis dans le schéma
+ * Prisma et la doctrine (docs/domains/optional/) mais sans admin-UI finalisé.
+ * Les mocks sont explicitement labellisés MOCK dans le code pour faciliter
+ * la migration vers de vraies queries lors de l'activation de ces domaines.
+ */
+import { listAdminBlogPosts } from "@/features/admin/blog/queries";
+
+// ── Types ──────────────────────────────────────────────────────────────────
+
+export type ContentReadinessItem = {
+  key: string;
+  label: string;
+  detail: string;
+  /** 0-100 */
+  progress: number;
+  toneClassName: string;
+  /** true si la donnée vient du backend, false si mock assumé */
+  isMock?: boolean;
+};
+
+export type ContentSignal = {
+  key: string;
+  label: string;
+  detail: string;
+  tone: "warning" | "error" | "info" | "success";
+  isMock?: boolean;
+};
+
+export type ContentRecentPost = {
+  id: string;
+  title: string;
+  status: "draft" | "published" | "inactive" | "archived";
+  publishedAt: string | null;
+  hasContent: boolean;
+};
+
+export type ContentOverviewStats = {
+  // Blog — réel
+  totalPosts: number;
+  publishedPosts: number;
+  draftPosts: number;
+  recentPosts: ContentRecentPost[];
+
+  // Homepage — mock (domaine homepage-editorial, Prisma activé mais admin UI à venir)
+  homepagePublished: boolean;
+  homepageSectionsCount: number;
+
+  // Pages — mock (domaine pages, Prisma activé mais admin UI à venir)
+  totalPages: number;
+  publishedPages: number;
+
+  // SEO — mock (domaine seo cross-cutting, metadata partielle)
+  seoOverallScore: number; // 0-100
+
+  // Synthèse
+  readinessItems: ContentReadinessItem[];
+  signals: ContentSignal[];
+};
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+function blogReadiness(published: number, total: number): ContentReadinessItem {
+  const progress = total === 0 ? 0 : Math.min(100, Math.round((published / total) * 100));
+  return {
+    key: "blog",
+    label: "Blog",
+    detail:
+      total === 0
+        ? "Aucun article rédigé"
+        : `${published} publié${published > 1 ? "s" : ""} sur ${total}`,
+    progress,
+    toneClassName:
+      progress >= 60
+        ? "text-feedback-success-foreground"
+        : progress >= 30
+          ? "text-feedback-warning-foreground"
+          : "text-muted-foreground",
+    isMock: false,
+  };
+}
+
+// ── Query principale ───────────────────────────────────────────────────────
+
+export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
+  // ── Blog (réel) ──────────────────────────────────────────────────────────
+  let posts: Awaited<ReturnType<typeof listAdminBlogPosts>> = [];
+  try {
+    posts = await listAdminBlogPosts();
+  } catch {
+    // Blog non activé ou DB non disponible — degradation gracieuse
+  }
+
+  const publishedPosts = posts.filter((p) => p.status === "published").length;
+  const draftPosts = posts.filter((p) => p.status === "draft").length;
+
+  const recentPosts: ContentRecentPost[] = [...posts]
+    .sort((a, b) => {
+      const da = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+      const db_ = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+      return db_ - da;
+    })
+    .slice(0, 5)
+    .map((p) => ({
+      id: p.id,
+      title: p.title,
+      status: p.status,
+      publishedAt: p.publishedAt,
+      hasContent: p.hasContent,
+    }));
+
+  // ── Homepage MOCK ────────────────────────────────────────────────────────
+  // Domaine : homepage-editorial (docs/domains/optional/homepage-editorial.md)
+  // Prisma : prisma/optional/homepage.prisma — HomepageSection, etc.
+  // Admin UI : à implémenter (content/homepage/page.tsx existant mais basique)
+  const homepagePublished: boolean = false; // MOCK — pas encore publié
+  const homepageSectionsCount: number = 3; // MOCK — sections configurées en dev
+
+  // ── Pages MOCK ───────────────────────────────────────────────────────────
+  // Domaine : pages (docs/domains/optional/pages.md)
+  // Prisma : prisma/core/content/pages.prisma — Page, PageSection, PageBlock
+  // Admin UI : content/pages — non implémenté
+  const totalPages: number = 4; // MOCK — pages prévues (CGV, À propos, FAQ, Contact)
+  const publishedPages: number = 0; // MOCK — aucune publiée
+
+  // ── SEO MOCK ─────────────────────────────────────────────────────────────
+  // Domaine : seo cross-cutting (docs/architecture/)
+  // Prisma : prisma/cross-cutting/seo.prisma — SeoMetadata
+  // Admin UI : content/seo existant — métadonnées partielles
+  const seoOverallScore: number = 42; // MOCK — score partiel, SEO produits manquants
+
+  // ── Readiness ────────────────────────────────────────────────────────────
+  const readinessItems: ContentReadinessItem[] = [
+    blogReadiness(publishedPosts, posts.length),
+    {
+      key: "homepage",
+      label: "Page d'accueil",
+      detail: homepagePublished
+        ? `${homepageSectionsCount} sections configurées — publiée`
+        : `${homepageSectionsCount} sections configurées — brouillon`,
+      progress: homepagePublished ? 90 : 35,
+      toneClassName: homepagePublished
+        ? "text-feedback-success-foreground"
+        : "text-feedback-warning-foreground",
+      isMock: true,
+    },
+    {
+      key: "pages",
+      label: "Pages éditoriales",
+      detail:
+        publishedPages === 0
+          ? `${totalPages} pages prévues — aucune publiée`
+          : `${publishedPages} publiée${publishedPages > 1 ? "s" : ""} sur ${totalPages}`,
+      progress: totalPages === 0 ? 0 : Math.round((publishedPages / totalPages) * 100),
+      toneClassName:
+        publishedPages === 0
+          ? "text-muted-foreground"
+          : "text-feedback-success-foreground",
+      isMock: true,
+    },
+    {
+      key: "seo",
+      label: "SEO",
+      detail: `Score estimé ${seoOverallScore}/100 — compléter les titres produits`,
+      progress: seoOverallScore,
+      toneClassName:
+        seoOverallScore >= 70
+          ? "text-feedback-success-foreground"
+          : seoOverallScore >= 40
+            ? "text-feedback-warning-foreground"
+            : "text-feedback-error-foreground",
+      isMock: true,
+    },
+  ];
+
+  // ── Signals ──────────────────────────────────────────────────────────────
+  const signals: ContentSignal[] = [];
+
+  if (draftPosts > 0) {
+    signals.push({
+      key: "blog_drafts",
+      label: `${draftPosts} article${draftPosts > 1 ? "s" : ""} en brouillon`,
+      detail: "Relire, compléter et publier pour alimenter le blog.",
+      tone: "info",
+      isMock: false,
+    });
+  }
+
+  if (!homepagePublished) {
+    signals.push({
+      key: "homepage_draft",
+      label: "Page d'accueil non publiée",
+      detail:
+        "La boutique est visible mais sans page d'accueil éditoriale. Finaliser et publier.",
+      tone: "warning",
+      isMock: true,
+    });
+  }
+
+  if (publishedPages === 0 && totalPages > 0) {
+    signals.push({
+      key: "pages_missing",
+      label: "Aucune page légale publiée",
+      detail: "CGV, Mentions légales, Politique de confidentialité — obligatoires avant lancement.",
+      tone: "error",
+      isMock: true,
+    });
+  }
+
+  if (seoOverallScore < 50) {
+    signals.push({
+      key: "seo_low",
+      label: "SEO incomplet",
+      detail: "Moins de la moitié des métadonnées SEO sont renseignées.",
+      tone: "warning",
+      isMock: true,
+    });
+  }
+
+  if (publishedPosts >= 3 && seoOverallScore >= 60) {
+    signals.push({
+      key: "content_ok",
+      label: "Blog actif",
+      detail: `${publishedPosts} article${publishedPosts > 1 ? "s" : ""} publié${publishedPosts > 1 ? "s" : ""} — bonne cadence éditoriale.`,
+      tone: "success",
+      isMock: false,
+    });
+  }
+
+  return {
+    totalPosts: posts.length,
+    publishedPosts,
+    draftPosts,
+    recentPosts,
+    homepagePublished,
+    homepageSectionsCount,
+    totalPages,
+    publishedPages,
+    seoOverallScore,
+    readinessItems,
+    signals,
+  };
+}

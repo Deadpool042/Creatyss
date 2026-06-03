@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminConfigDataTable } from "@/components/admin/tables";
+import { AdminConfigDataTable } from "@/components/admin/tables/admin-config-data-table";
 import { CATEGORY_LIST_COPY } from "@/features/admin/categories/config";
 import { useCategoryFilters } from "@/features/admin/categories/list";
 import { cn } from "@/lib/utils";
@@ -43,6 +43,7 @@ export function CategoryTableDesktop({
       columns={columns}
       ariaLabel={CATEGORY_LIST_COPY.tableAriaLabel}
       getRowId={(category) => category.id}
+      wrapperClassName="h-full"
       viewportClassName="overflow-auto overscroll-contain"
       headerClassName="backdrop-blur-xl"
       headerRowClassName="bg-surface-panel-soft backdrop-blur-xl"

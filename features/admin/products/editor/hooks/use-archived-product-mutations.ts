@@ -7,6 +7,10 @@ import {
   deleteProductPermanentlyBySlugAction,
   restoreProductBySlugAction,
 } from "@/features/admin/products/actions/product-lifecycle-actions";
+import {
+  ADMIN_PRODUCTS_LIST_PATH,
+  ADMIN_PRODUCTS_TRASH_PATH,
+} from "@/features/admin/products/navigation";
 
 type UseArchivedProductMutationsInput = {
   productSlug: string;
@@ -29,7 +33,7 @@ export function useArchivedProductMutations({
       const result = await restoreProductBySlugAction(productSlug);
 
       if (result.status === "success") {
-        router.push("/admin/products");
+        router.push(ADMIN_PRODUCTS_LIST_PATH);
       }
     });
   }
@@ -49,7 +53,7 @@ export function useArchivedProductMutations({
       });
 
       if (result.status === "success") {
-        router.push("/admin/products?view=trash");
+        router.push(ADMIN_PRODUCTS_TRASH_PATH);
       }
     });
   }

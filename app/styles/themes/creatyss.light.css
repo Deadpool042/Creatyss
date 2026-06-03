@@ -6,13 +6,13 @@
   /* ── Core shadcn/ui ─────────────────────────────────────────────────────── */
 
   /* Blanc légèrement warm — moins agressif pour les yeux */
-  --background: oklch(0.982 0.006 80);
+  --background: oklch(0.968 0.009 78);
   /* Gris chaud subtil : fond hero, sections secondaires */
-  --background-secondary: oklch(0.965 0.006 78);
+  --background-secondary: oklch(0.956 0.008 78);
   /* Encre chaude très sombre — pas de noir froid */
   --foreground: oklch(0.15 0.024 50);
 
-  --card: oklch(0.992 0.005 78);
+  --card: oklch(0.996 0.004 78);
   --card-foreground: oklch(0.15 0.024 50);
 
   --popover: oklch(0.998 0.003 80);
@@ -24,8 +24,8 @@
   --secondary: oklch(0.944 0.022 82);
   --secondary-foreground: oklch(0.28 0.036 52);
 
-  --muted: oklch(0.942 0.018 84);
-  --muted-foreground: oklch(0.5 0.02 54);
+  --muted: oklch(0.932 0.02 84);
+  --muted-foreground: oklch(0.4 0.022 54);
 
   --accent: oklch(0.84 0.12 78);
   --accent-foreground: oklch(0.28 0.036 48);
@@ -44,7 +44,7 @@
 
   /* ── Page / document ────────────────────────────────────────────────────── */
 
-  --page-bg: oklch(0.996 0.004 84);
+  --page-bg: oklch(0.976 0.009 80);
   --page-foreground: oklch(0.15 0.024 50);
   --body-background: var(--page-bg);
 
@@ -55,8 +55,8 @@
 
   /* ── Interactive states ─────────────────────────────────────────────────── */
 
-  --interactive-hover: oklch(0.58 0.08 66 / 0.07);
-  --interactive-selected: oklch(0.58 0.08 66 / 0.14);
+  --interactive-hover: oklch(0.56 0.08 66 / 0.1);
+  --interactive-selected: oklch(0.56 0.09 66 / 0.18);
   --interactive-pressed: oklch(0.58 0.08 66 / 0.27);
   --interactive-selected-foreground: oklch(0.15 0.024 50);
   --interactive-disabled: oklch(0.58 0.04 66 / 0.05);
@@ -92,38 +92,38 @@
 
   /* ── Text hierarchy ─────────────────────────────────────────────────────── */
 
-  --text-muted-strong: oklch(0.34 0.03 52);
-  --text-muted-soft: oklch(0.54 0.022 56);
+  --text-muted-strong: oklch(0.29 0.03 52);
+  --text-muted-soft: oklch(0.43 0.024 56);
 
   /* ── Surfaces ───────────────────────────────────────────────────────────── */
 
-  --surface-panel: oklch(0.996 0.004 80 / 0.99);
-  --surface-panel-soft: oklch(0.98 0.008 78 / 0.94);
-  --surface-floating: oklch(0.996 0.003 80 / 0.99);
-  --surface-subtle: oklch(0.72 0.06 64 / 0.1);
-  --surface-border-subtle: oklch(0.58 0.044 54 / 0.15);
-  --border-floating: oklch(0.52 0.05 52 / 0.28);
-  --surface-border: oklch(0.58 0.044 52 / 0.18);
-  --surface-border-strong: oklch(0.5 0.05 50 / 0.3);
+  --surface-panel: oklch(0.994 0.005 80 / 1);
+  --surface-panel-soft: oklch(0.972 0.01 78 / 0.98);
+  --surface-floating: oklch(0.99 0.006 80 / 1);
+  --surface-subtle: oklch(0.72 0.06 64 / 0.06);
+  --surface-border-subtle: oklch(0.58 0.044 52 / 0.10);
+  --border-floating: oklch(0.48 0.05 52 / 0.32);
+  --surface-border: oklch(0.52 0.046 52 / 0.24);
+  --surface-border-strong: oklch(0.46 0.052 50 / 0.38);
 
   /* ── Controls ───────────────────────────────────────────────────────────── */
 
-  --control-surface: oklch(0.978 0.009 78);
-  --control-surface-hover: oklch(0.984 0.008 78);
-  --control-surface-active: oklch(0.965 0.012 76);
+  --control-surface: oklch(0.968 0.012 78);
+  --control-surface-hover: oklch(0.976 0.011 78);
+  --control-surface-active: oklch(0.952 0.014 76);
   --control-surface-selected: oklch(0.6 0.08 60 / 0.14);
-  --control-border: oklch(0.55 0.044 52 / 0.2);
-  --control-border-strong: oklch(0.5 0.055 50 / 0.34);
+  --control-border: oklch(0.5 0.044 52 / 0.26);
+  --control-border-strong: oklch(0.45 0.055 50 / 0.4);
 
   /* ── Shell public ───────────────────────────────────────────────────────── */
 
   /* Plus warm et plus distinct du background : évite le blur "fade" en light mode */
-  --shell-surface: oklch(0.952 0.018 74 / 0.96);
-  --shell-surface-blur: oklch(0.948 0.017 74 / 0.84);
-  --shell-drawer: oklch(0.978 0.008 76 / 0.99);
-  --shell-drawer-blur: oklch(0.976 0.008 76 / 0.92);
-  --shell-border: oklch(0.52 0.046 54 / 0.22);
-  --shell-border-strong: oklch(0.46 0.052 52 / 0.34);
+  --shell-surface: oklch(0.936 0.02 74 / 0.98);
+  --shell-surface-blur: oklch(0.932 0.02 74 / 0.92);
+  --shell-drawer: oklch(0.964 0.012 76 / 1);
+  --shell-drawer-blur: oklch(0.958 0.012 76 / 0.95);
+  --shell-border: oklch(0.46 0.05 54 / 0.26);
+  --shell-border-strong: oklch(0.4 0.056 52 / 0.4);
 
   /* ── Hero éditorial ─────────────────────────────────────────────────────── */
 
@@ -157,14 +157,14 @@
   /* ── Sidebar admin ──────────────────────────────────────────────────────── */
 
   /* Fond sidebar warm distinctif */
-  --sidebar: oklch(0.955 0.014 70);
+  --sidebar: oklch(0.944 0.016 70);
   --sidebar-foreground: oklch(0.22 0.022 54);
   --sidebar-primary: oklch(0.28 0.032 54);
   --sidebar-primary-foreground: oklch(0.97 0.004 70);
   /* Hover/active : contraste nettement plus marqué */
-  --sidebar-accent: oklch(0.910 0.026 68);
-  --sidebar-accent-foreground: oklch(0.2 0.03 52);
-  --sidebar-border: oklch(0.78 0.022 66);
+  --sidebar-accent: oklch(0.875 0.03 68);
+  --sidebar-accent-foreground: oklch(0.16 0.03 52);
+  --sidebar-border: oklch(0.7 0.026 66);
   --sidebar-ring: oklch(0.6 0.12 70);
 
   /* ── Charts ─────────────────────────────────────────────────────────────── */

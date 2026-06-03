@@ -1,19 +1,17 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useState, type JSX } from "react";
+import { useActionState, useEffect, useState, type JSX } from "react";
 
 import { useAutoSlug } from "@/entities/shared/slug/hooks/use-auto-slug";
-import { getProductStructurePresentation } from "@/entities/product";
-import {
-  AdminCharCounter,
-  AdminFormField,
-  AdminFormFooter,
-  AdminFormMessage,
-  AdminRichTextEditor,
-} from "@/components/admin/forms";
+import { getProductStructurePresentation } from "@/entities/product/product-public-presentation";
+import type { ProductLifecycleStatus } from "@/entities/product/product-lifecycle-status";
+import { AdminCharCounter } from "@/components/admin/forms/admin-char-counter";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
+import { AdminRichTextEditor } from "@/components/admin/forms/admin-rich-text-editor";
 import { toast } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -32,7 +30,7 @@ import {
   PRODUCT_FORM_ACTIONS_COPY,
 } from "@/features/admin/products/config";
 import { getProductTypeLabel } from "@/features/admin/products/components/shared/product-type-label";
-import { ProductSectionEyebrow } from "@/features/admin/products/components/shared";
+import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
 
 type ProductGeneralTabProps = {
   action: ProductGeneralFormAction;
@@ -50,13 +48,52 @@ type ProductGeneralTabInnerProps = ProductGeneralTabProps & {
   onReset: () => void;
 };
 
-type ProductStatusValue = "draft" | "active" | "inactive" | "archived";
 type IsFeaturedValue = "true" | "false";
 
 const MARKETING_HOOK_MIN = 40;
 const MARKETING_HOOK_MAX = 110;
 const SHORT_DESCRIPTION_MIN = 120;
 const SHORT_DESCRIPTION_MAX = 220;
+
+type ProductGeneralSectionIntroProps = {
+  eyebrow: string;
+  title: string;
+  description: string;
+};
+
+type ProductGeneralContextItemProps = {
+  label: string;
+  value: string;
+  description: string;
+};
+
+function ProductGeneralSectionIntro({
+  eyebrow,
+  title,
+  description,
+}: ProductGeneralSectionIntroProps): JSX.Element {
+  return (
+    <div className="grid gap-1.5">
+      <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
+      <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
+      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+    </div>
+  );
+}
+
+function ProductGeneralContextItem({
+  label,
+  value,
+  description,
+}: ProductGeneralContextItemProps): JSX.Element {
+  return (
+    <div className="grid gap-1.5 py-3 first:pt-0 last:pb-0">
+      <ProductSectionEyebrow className="tracking-[0.14em]">{label}</ProductSectionEyebrow>
+      <p className="text-sm font-medium text-foreground">{value}</p>
+      <p className="text-sm leading-6 text-muted-foreground">{description}</p>
+    </div>
+  );
+}
 
 function ProductGeneralTabInner({
   action,
@@ -79,7 +116,7 @@ function ProductGeneralTabInner({
   const [skuRoot, setSkuRoot] = useState(product.product.skuRoot ?? "");
   const [marketingHook, setMarketingHook] = useState(product.product.marketingHook ?? "");
   const [productTypeId, setProductTypeId] = useState(product.product.productTypeId ?? "__none__");
-  const [status, setStatus] = useState<ProductStatusValue>(product.product.status);
+  const [status, setStatus] = useState<ProductLifecycleStatus>(product.product.status);
   const [isFeatured, setIsFeatured] = useState<IsFeaturedValue>(
     product.product.isFeatured ? "true" : "false"
   );
@@ -96,17 +133,15 @@ function ProductGeneralTabInner({
     }
   }
 
-  const primaryImageSummary = useMemo(() => {
-    if (product.product.primaryImageId === null) {
-      return PRODUCT_GENERAL_TAB_COPY.primaryImageNone;
-    }
-
-    if (product.product.primaryImageAltText) {
-      return PRODUCT_GENERAL_TAB_COPY.primaryImageCurrent(product.product.primaryImageAltText);
-    }
-
-    return PRODUCT_GENERAL_TAB_COPY.primaryImageDefined;
-  }, [product.product.primaryImageAltText, product.product.primaryImageId]);
+  const primaryImageSummary =
+    product.product.primaryImageId === null
+      ? PRODUCT_GENERAL_TAB_COPY.primaryImageNone
+      : product.product.primaryImageAltText
+        ? PRODUCT_GENERAL_TAB_COPY.primaryImageCurrent(product.product.primaryImageAltText)
+        : PRODUCT_GENERAL_TAB_COPY.primaryImageDefined;
+  const structurePresentation = getProductStructurePresentation(product.product.isStandalone);
+  const productPublicPath = `/boutique/${slugValue || product.product.slug}`;
+  const skuRootSummary = skuRoot.trim() || "Non renseignée";
 
   useEffect(() => {
     if (state.status !== "success") {
@@ -119,77 +154,59 @@ function ProductGeneralTabInner({
   }, [state.status, state.message, onReset]);
 
   return (
-    <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
+    <form action={formAction} className="relative">
+      <div>
         <input type="hidden" name="productId" value={product.product.id} />
 
-        <div className="w-full space-y-6 px-4 py-4 md:space-y-7 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
-          <AdminFormMessage
-            tone="error"
-            message={state.status === "error" ? state.message : null}
-          />
+        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3">
+          <div className="min-w-0 space-y-5 md:space-y-6">
+            <AdminFormMessage
+              tone="error"
+              message={state.status === "error" ? state.message : null}
+            />
 
-          <div className="grid gap-6 xl:grid-cols-2">
-            <Card className="rounded-[1.4rem] border border-surface-border-strong bg-surface-panel shadow-raised py-0">
-              <CardHeader className="rounded-t-[1.4rem] border-b border-surface-border bg-surface-panel-soft px-5 py-5 md:px-6">
-                <div className="space-y-1.5">
-                  <ProductSectionEyebrow>
-                    {PRODUCT_GENERAL_TAB_COPY.identityEyebrow}
-                  </ProductSectionEyebrow>
-                  <CardTitle className="text-lg">{PRODUCT_GENERAL_TAB_COPY.identityTitle}</CardTitle>
-                  <CardDescription className="leading-6 text-foreground/70">
-                    {PRODUCT_GENERAL_TAB_COPY.identityDescription}
-                  </CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="grid gap-5 px-5 py-5 md:px-6 md:py-6">
-                <AdminFormField
-                  label={PRODUCT_GENERAL_TAB_COPY.nameLabel}
-                  htmlFor="edit-name"
-                  required
-                  error={state.fieldErrors.name}
-                >
-                  <Input
-                    id="edit-name"
-                    name="name"
-                    value={nameValue}
-                    onChange={(event) => setNameValue(event.target.value)}
-                    className="text-sm"
-                  />
-                </AdminFormField>
+            <div className="divide-y divide-surface-border/40">
+              <section className="grid gap-6 py-6 first:pt-0">
+                <ProductGeneralSectionIntro
+                  eyebrow={PRODUCT_GENERAL_TAB_COPY.identityEyebrow}
+                  title={PRODUCT_GENERAL_TAB_COPY.identityTitle}
+                  description={PRODUCT_GENERAL_TAB_COPY.identityDescription}
+                />
 
-                <AdminFormField
-                  label={PRODUCT_GENERAL_TAB_COPY.slugLabel}
-                  htmlFor="edit-slug"
-                  required
-                  hint={PRODUCT_GENERAL_TAB_COPY.slugHint}
-                  error={state.fieldErrors.slug}
-                >
-                  <Input
-                    id="edit-slug"
-                    name="slug"
-                    value={slugValue}
-                    onChange={(event) => setSlugValue(event.target.value)}
-                    className="font-mono text-sm"
-                  />
-                </AdminFormField>
-
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-5 md:grid-cols-2">
                   <AdminFormField
-                    label={PRODUCT_GENERAL_TAB_COPY.skuRootLabel}
-                    htmlFor="edit-sku-root"
-                    hint={PRODUCT_GENERAL_TAB_COPY.skuRootHint}
-                    error={state.fieldErrors.skuRoot}
+                    label={PRODUCT_GENERAL_TAB_COPY.nameLabel}
+                    htmlFor="edit-name"
+                    required
+                    error={state.fieldErrors.name}
                   >
                     <Input
-                      id="edit-sku-root"
-                      name="skuRoot"
-                      value={skuRoot}
-                      onChange={(event) => setSkuRoot(event.target.value)}
+                      id="edit-name"
+                      name="name"
+                      value={nameValue}
+                      onChange={(event) => setNameValue(event.target.value)}
                       className="text-sm"
                     />
                   </AdminFormField>
 
+                  <AdminFormField
+                    label={PRODUCT_GENERAL_TAB_COPY.slugLabel}
+                    htmlFor="edit-slug"
+                    required
+                    hint={PRODUCT_GENERAL_TAB_COPY.slugHint}
+                    error={state.fieldErrors.slug}
+                  >
+                    <Input
+                      id="edit-slug"
+                      name="slug"
+                      value={slugValue}
+                      onChange={(event) => setSlugValue(event.target.value)}
+                      className="font-mono text-sm"
+                    />
+                  </AdminFormField>
+                </div>
+
+                <div className="grid gap-5 md:grid-cols-2">
                   <AdminFormField
                     label={PRODUCT_GENERAL_TAB_COPY.productTypeLabel}
                     htmlFor="edit-product-type"
@@ -212,35 +229,106 @@ function ProductGeneralTabInner({
                       </SelectContent>
                     </Select>
                   </AdminFormField>
-                </div>
 
-                <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-3 text-sm shadow-sm">
-                  <ProductSectionEyebrow className="tracking-[0.14em]">
-                    {PRODUCT_GENERAL_TAB_COPY.structureInfoTitle}
-                  </ProductSectionEyebrow>
-                  <p className="mt-2 font-medium text-foreground">
-                    {getProductStructurePresentation(product.product.isStandalone).label}
-                  </p>
-                  <p className="mt-1 leading-6 text-muted-foreground">
-                    {PRODUCT_GENERAL_TAB_COPY.structureInfoDescription}
-                  </p>
+                  <AdminFormField
+                    label={PRODUCT_GENERAL_TAB_COPY.skuRootLabel}
+                    htmlFor="edit-sku-root"
+                    hint={PRODUCT_GENERAL_TAB_COPY.skuRootHint}
+                    error={state.fieldErrors.skuRoot}
+                  >
+                    <Input
+                      id="edit-sku-root"
+                      name="skuRoot"
+                      value={skuRoot}
+                      onChange={(event) => setSkuRoot(event.target.value)}
+                      className="text-sm"
+                    />
+                  </AdminFormField>
                 </div>
-              </CardContent>
-            </Card>
+              </section>
 
-            <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
-              <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4 md:px-6">
-                <div className="space-y-1.5">
-                  <ProductSectionEyebrow>
-                    {PRODUCT_GENERAL_TAB_COPY.publicationEyebrow}
-                  </ProductSectionEyebrow>
-                  <CardTitle>{PRODUCT_GENERAL_TAB_COPY.publicationTitle}</CardTitle>
-                  <CardDescription className="leading-6">
-                    {PRODUCT_GENERAL_TAB_COPY.publicationDescription}
-                  </CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="grid gap-4 px-5 py-5 md:grid-cols-2 md:px-6 md:py-6">
+              <section className="grid gap-6 py-6">
+                <ProductGeneralSectionIntro
+                  eyebrow={PRODUCT_GENERAL_TAB_COPY.contentsEyebrow}
+                  title={PRODUCT_GENERAL_TAB_COPY.contentsTitle}
+                  description={PRODUCT_GENERAL_TAB_COPY.contentsDescription}
+                />
+
+                <AdminFormField
+                  label={PRODUCT_GENERAL_TAB_COPY.marketingHookLabel}
+                  htmlFor="edit-marketing-hook"
+                  hint={PRODUCT_GENERAL_TAB_COPY.marketingHookHint}
+                  error={state.fieldErrors.marketingHook}
+                >
+                  <div className="space-y-1.5">
+                    <Input
+                      id="edit-marketing-hook"
+                      name="marketingHook"
+                      value={marketingHook}
+                      onChange={(event) => setMarketingHook(event.target.value)}
+                      placeholder={PRODUCT_GENERAL_TAB_COPY.marketingHookPlaceholder}
+                      className="text-sm"
+                    />
+                    <div className="flex items-center justify-end">
+                      <AdminCharCounter
+                        value={marketingHook}
+                        min={MARKETING_HOOK_MIN}
+                        max={MARKETING_HOOK_MAX}
+                      />
+                    </div>
+                  </div>
+                </AdminFormField>
+
+                <AdminRichTextEditor
+                  name="shortDescription"
+                  label={PRODUCT_GENERAL_TAB_COPY.shortDescriptionLabel}
+                  hint={PRODUCT_GENERAL_TAB_COPY.shortDescriptionHint}
+                  preset="full"
+                  minHeightClassName="min-h-[140px]"
+                  initialValue={product.product.shortDescription ?? ""}
+                  counter={{
+                    min: SHORT_DESCRIPTION_MIN,
+                    max: SHORT_DESCRIPTION_MAX,
+                    visibleText: true,
+                  }}
+                  {...(state.fieldErrors.shortDescription
+                    ? { error: state.fieldErrors.shortDescription }
+                    : {})}
+                />
+
+                <AdminRichTextEditor
+                  name="description"
+                  label={PRODUCT_GENERAL_TAB_COPY.descriptionLabel}
+                  hint={PRODUCT_GENERAL_TAB_COPY.descriptionHint}
+                  preset="full"
+                  initialValue={product.product.description ?? ""}
+                  {...(state.fieldErrors.description ? { error: state.fieldErrors.description } : {})}
+                />
+
+                <AdminRichTextEditor
+                  name="careInstructions"
+                  label={PRODUCT_GENERAL_TAB_COPY.careInstructionsLabel}
+                  hint={PRODUCT_GENERAL_TAB_COPY.careInstructionsHint}
+                  preset="full"
+                  minHeightClassName="min-h-[120px]"
+                  initialValue={product.product.careInstructions ?? ""}
+                  {...(state.fieldErrors.careInstructions
+                    ? { error: state.fieldErrors.careInstructions }
+                    : {})}
+                />
+              </section>
+            </div>
+          </div>
+
+          <aside className="min-w-0 xl:sticky xl:top-6">
+            <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/80">
+              <section className="grid gap-4 px-5 py-5">
+                <ProductGeneralSectionIntro
+                  eyebrow={PRODUCT_GENERAL_TAB_COPY.publicationEyebrow}
+                  title={PRODUCT_GENERAL_TAB_COPY.publicationTitle}
+                  description={PRODUCT_GENERAL_TAB_COPY.publicationDescription}
+                />
+
                 <AdminFormField
                   label={PRODUCT_GENERAL_TAB_COPY.statusLabel}
                   htmlFor="edit-status"
@@ -274,108 +362,53 @@ function ProductGeneralTabInner({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="false">{PRODUCT_GENERAL_TAB_COPY.featuredStandard}</SelectItem>
+                      <SelectItem value="false">
+                        {PRODUCT_GENERAL_TAB_COPY.featuredStandard}
+                      </SelectItem>
                       <SelectItem value="true">{PRODUCT_GENERAL_TAB_COPY.featuredTrue}</SelectItem>
                     </SelectContent>
                   </Select>
                 </AdminFormField>
+              </section>
 
-                <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-3 text-sm shadow-sm md:col-span-2">
-                  <ProductSectionEyebrow className="tracking-[0.14em]">
-                    {PRODUCT_GENERAL_TAB_COPY.primaryImageInfoTitle}
-                  </ProductSectionEyebrow>
-                  <p className="mt-2 font-medium text-foreground">{primaryImageSummary}</p>
-                  <p className="mt-1 leading-6 text-muted-foreground">
-                    {PRODUCT_GENERAL_TAB_COPY.primaryImageInfoDescription}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+              <section className="grid gap-1 border-t border-surface-border px-5 py-5">
+                <ProductGeneralSectionIntro
+                  eyebrow="Repères"
+                  title="Contexte produit"
+                  description="Gardez sous les yeux les informations qui structurent la fiche sans surcharger le formulaire."
+                />
 
-          <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
-            <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4 md:px-6">
-              <div className="space-y-1.5">
-                <ProductSectionEyebrow>{PRODUCT_GENERAL_TAB_COPY.contentsEyebrow}</ProductSectionEyebrow>
-                <CardTitle>{PRODUCT_GENERAL_TAB_COPY.contentsTitle}</CardTitle>
-                <CardDescription className="leading-6">
-                  {PRODUCT_GENERAL_TAB_COPY.contentsDescription}
-                </CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6 px-5 py-5 md:px-6 md:py-6">
-              <AdminFormField
-                label={PRODUCT_GENERAL_TAB_COPY.marketingHookLabel}
-                htmlFor="edit-marketing-hook"
-                hint={PRODUCT_GENERAL_TAB_COPY.marketingHookHint}
-                error={state.fieldErrors.marketingHook}
-              >
-                <div className="space-y-1.5">
-                  <Input
-                    id="edit-marketing-hook"
-                    name="marketingHook"
-                    value={marketingHook}
-                    onChange={(event) => setMarketingHook(event.target.value)}
-                    placeholder={PRODUCT_GENERAL_TAB_COPY.marketingHookPlaceholder}
-                    className="text-sm"
+                <div className="divide-y divide-surface-border">
+                  <ProductGeneralContextItem
+                    label={PRODUCT_GENERAL_TAB_COPY.structureInfoTitle}
+                    value={structurePresentation.label}
+                    description={PRODUCT_GENERAL_TAB_COPY.structureInfoDescription}
                   />
-                  <div className="flex items-center justify-end">
-                    <AdminCharCounter
-                      value={marketingHook}
-                      min={MARKETING_HOOK_MIN}
-                      max={MARKETING_HOOK_MAX}
-                    />
-                  </div>
+                  <ProductGeneralContextItem
+                    label={PRODUCT_GENERAL_TAB_COPY.primaryImageInfoTitle}
+                    value={primaryImageSummary}
+                    description={PRODUCT_GENERAL_TAB_COPY.primaryImageInfoDescription}
+                  />
+                  <ProductGeneralContextItem
+                    label="Référence actuelle"
+                    value={skuRootSummary}
+                    description={PRODUCT_GENERAL_TAB_COPY.skuRootHint}
+                  />
+                  <ProductGeneralContextItem
+                    label="URL publique"
+                    value={productPublicPath}
+                    description="Cette adresse reprend le slug courant du produit."
+                  />
                 </div>
-              </AdminFormField>
-              <AdminRichTextEditor
-                name="shortDescription"
-                label={PRODUCT_GENERAL_TAB_COPY.shortDescriptionLabel}
-                hint={PRODUCT_GENERAL_TAB_COPY.shortDescriptionHint}
-                preset="full"
-                minHeightClassName="min-h-[140px]"
-                initialValue={product.product.shortDescription ?? ""}
-                counter={{
-                  min: SHORT_DESCRIPTION_MIN,
-                  max: SHORT_DESCRIPTION_MAX,
-                  visibleText: true,
-                }}
-                {...(state.fieldErrors.shortDescription
-                  ? { error: state.fieldErrors.shortDescription }
-                  : {})}
-              />
-              <AdminRichTextEditor
-                name="description"
-                label={PRODUCT_GENERAL_TAB_COPY.descriptionLabel}
-                hint={PRODUCT_GENERAL_TAB_COPY.descriptionHint}
-                preset="full"
-                initialValue={product.product.description ?? ""}
-                {...(state.fieldErrors.description ? { error: state.fieldErrors.description } : {})}
-              />
-              <AdminRichTextEditor
-                name="careInstructions"
-                label={PRODUCT_GENERAL_TAB_COPY.careInstructionsLabel}
-                hint={PRODUCT_GENERAL_TAB_COPY.careInstructionsHint}
-                preset="full"
-                minHeightClassName="min-h-[120px]"
-                initialValue={product.product.careInstructions ?? ""}
-                {...(state.fieldErrors.careInstructions
-                  ? { error: state.fieldErrors.careInstructions }
-                  : {})}
-              />
-            </CardContent>
-          </Card>
+              </section>
+            </div>
+          </aside>
         </div>
       </div>
 
       <AdminFormFooter
-        actionsClassName="w-full justify-between gap-2 sm:w-auto sm:justify-end "
-        className={[
-          "bottom-[calc(3.5rem+env(safe-area-inset-bottom))]",
-          "[@media(max-height:480px)]:bottom-[calc(2.75rem+env(safe-area-inset-bottom))]",
-          "lg:bottom-0",
-        ].join(" ")}
-        overlay
+        actionsClassName="w-full justify-between gap-2 sm:w-auto sm:justify-end"
+        className="sticky bottom-[calc(3.5rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:bottom-[calc(2.75rem+env(safe-area-inset-bottom))] lg:bottom-0"
       >
         <Button
           variant="ghost"

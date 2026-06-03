@@ -8,7 +8,6 @@ import {
   validateAdminProductRelatedProducts,
   type AdminProductInputErrorCode,
 } from "@/entities/product";
-import type { SeoIndexingMode } from "@/prisma-generated/client";
 import {
   AdminProductEditorServiceError,
   updateProductAvailability,
@@ -1107,7 +1106,7 @@ export const updateProductSeoAction: ProductSeoFormAction = async (_prevState, f
       title: parsed.data.title,
       description: parsed.data.description,
       canonicalPath: parsed.data.canonicalPath,
-      indexingMode: parsed.data.indexingMode as SeoIndexingMode,
+      indexingMode: parsed.data.indexingMode,
       sitemapIncluded: parsed.data.sitemapIncluded === "true",
       openGraphTitle: parsed.data.openGraphTitle,
       openGraphDescription: parsed.data.openGraphDescription,

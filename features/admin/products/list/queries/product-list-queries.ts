@@ -1,9 +1,11 @@
 import "server-only";
 
-import { ProductStatus } from "@/prisma-generated/client";
 import { db } from "@/core/db";
+import {
+  mapPrismaProductStatusToLifecycleStatus,
+  mapProductLifecycleStatusToPrismaStatus,
+} from "@/entities/product";
 import { mapAdminProductFeedItem } from "@/features/admin/products/list/mappers";
-import { mapProductStatusToPrismaStatus } from "@/features/admin/products/services";
 // import type {
 //   ProductFeaturedFilterValue,
 //   ProductSortOption,
@@ -18,10 +20,13 @@ import type {
   ProductPickerItem,
   ProductStatusCounts,
 } from "../types/product-list-query.types";
+import type { AdminProductFeedItem } from "../types/product-feed.types";
 
 export type ProductListQueryFilters = ProductListFilters;
 export type { ProductListResult };
 export type { AdminProductsListView };
+
+type PrismaProductStatus = Parameters<typeof mapPrismaProductStatusToLifecycleStatus>[0];
 
 // ─── listAdminProducts ───────────────────────────────────────────────────────
 
@@ -100,6 +105,53 @@ const PRODUCT_SELECT = {
   },
 };
 
+function createEmptyProductStatusCounts(): ProductStatusCounts {
+  return {
+    all: 0,
+    active: 0,
+    draft: 0,
+    inactive: 0,
+  };
+}
+
+function buildProductStatusCounts(items: AdminProductFeedItem[]): ProductStatusCounts {
+  const statusCounts = createEmptyProductStatusCounts();
+
+  for (const item of items) {
+    if (item.status === "active") statusCounts.active += 1;
+    else if (item.status === "draft") statusCounts.draft += 1;
+    else if (item.status === "inactive") statusCounts.inactive += 1;
+  }
+
+  statusCounts.all = statusCounts.active + statusCounts.draft + statusCounts.inactive;
+  return statusCounts;
+}
+
+function applyProductListPostFilters(
+  items: AdminProductFeedItem[],
+  filters: Pick<ProductListFilters, "stock" | "variant">
+): AdminProductFeedItem[] {
+  return items.filter((product) => {
+    if (filters.stock === "in-stock" && product.stockState !== "in-stock") {
+      return false;
+    }
+
+    if (filters.stock === "out-of-stock" && product.stockState !== "out-of-stock") {
+      return false;
+    }
+
+    if (filters.variant === "single" && product.variantCount > 1) {
+      return false;
+    }
+
+    if (filters.variant === "multiple" && product.variantCount <= 1) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
 export async function listProductsCategoryForPicker(): Promise<ProductPickerItem[]> {
   return db.category.findMany({
     select: { id: true, name: true, slug: true, parentId: true },
@@ -119,6 +171,9 @@ export async function listAdminProducts(
     perPage = DEFAULT_PER_PAGE,
     categorySlugs = [],
     featured = [],
+    image = "all",
+    stock = "all",
+    variant = "all",
   } = filters;
 
   const normalizedSearch = search.trim();
@@ -137,8 +192,8 @@ export async function listAdminProducts(
     view === "trash"
       ? {}
       : status.length > 0
-        ? { status: { in: status.map(mapProductStatusToPrismaStatus) } }
-        : { status: { not: mapProductStatusToPrismaStatus("archived") } };
+        ? { status: { in: status.map(mapProductLifecycleStatusToPrismaStatus) } }
+        : { status: { not: mapProductLifecycleStatusToPrismaStatus("archived") } };
 
   const searchWhere =
     normalizedSearch.length > 0
@@ -156,6 +211,13 @@ export async function listAdminProducts(
         ? { isFeatured: true }
         : { isFeatured: false }
       : {};
+
+  const imageWhere =
+    image === "with-image"
+      ? { primaryImageId: { not: null } }
+      : image === "without-image"
+        ? { primaryImageId: null }
+        : {};
 
   const categoryWhere =
     categoryIds.length > 0
@@ -185,6 +247,7 @@ export async function listAdminProducts(
     ...searchWhere,
     ...featuredWhere,
     ...categoryWhere,
+    ...imageWhere,
   };
 
   const whereWithoutStatus = {
@@ -192,6 +255,7 @@ export async function listAdminProducts(
     ...searchWhere,
     ...featuredWhere,
     ...categoryWhere,
+    ...imageWhere,
   };
 
   const orderBy = (() => {
@@ -211,6 +275,53 @@ export async function listAdminProducts(
   const safePage = Math.max(1, page);
   const safePerPage = Math.max(1, Math.min(200, perPage));
   const skip = (safePage - 1) * safePerPage;
+  const hasPostQueryFilters = stock !== "all" || variant !== "all";
+
+  if (hasPostQueryFilters) {
+    const [rawProducts, rawStatusProducts] = await Promise.all([
+      db.product.findMany({
+        where,
+        orderBy,
+        select: PRODUCT_SELECT,
+      }),
+      view === "trash"
+        ? Promise.resolve([])
+        : db.product.findMany({
+            where: whereWithoutStatus,
+            orderBy,
+            select: PRODUCT_SELECT,
+          }),
+    ]);
+
+    const filteredItems = applyProductListPostFilters(rawProducts.map(mapAdminProductFeedItem), {
+      stock,
+      variant,
+    });
+    const total = filteredItems.length;
+    const totalPages = Math.max(1, Math.ceil(total / safePerPage));
+    const currentPage = Math.min(safePage, totalPages);
+    const paginatedItems = filteredItems.slice(
+      (currentPage - 1) * safePerPage,
+      currentPage * safePerPage
+    );
+    const statusCounts =
+      view === "trash"
+        ? createEmptyProductStatusCounts()
+        : buildProductStatusCounts(
+            applyProductListPostFilters(rawStatusProducts.map(mapAdminProductFeedItem), {
+              stock,
+              variant,
+            })
+          );
+
+    return {
+      items: paginatedItems,
+      total,
+      totalPages,
+      currentPage,
+      statusCounts,
+    };
+  }
 
   const [rawProducts, total, rawStatusCounts] = await Promise.all([
     db.product.findMany({
@@ -222,7 +333,7 @@ export async function listAdminProducts(
     }),
     db.product.count({ where }),
     view === "trash"
-      ? Promise.resolve([] as { status: ProductStatus; _count: { id: number } }[])
+      ? Promise.resolve([] as { status: PrismaProductStatus; _count: { id: number } }[])
       : db.product.groupBy({
           by: ["status"],
           where: whereWithoutStatus,
@@ -240,9 +351,11 @@ export async function listAdminProducts(
   };
 
   for (const row of rawStatusCounts) {
-    if (row.status === ProductStatus.ACTIVE) statusCounts.active = row._count.id;
-    else if (row.status === ProductStatus.DRAFT) statusCounts.draft = row._count.id;
-    else if (row.status === ProductStatus.INACTIVE) statusCounts.inactive = row._count.id;
+    const status = mapPrismaProductStatusToLifecycleStatus(row.status);
+
+    if (status === "active") statusCounts.active = row._count.id;
+    else if (status === "draft") statusCounts.draft = row._count.id;
+    else if (status === "inactive") statusCounts.inactive = row._count.id;
   }
 
   statusCounts.all =

@@ -14,7 +14,7 @@ function normalizeCartItemId(value: FormDataEntryValue | string | null | undefin
 
   const normalizedValue = value.trim();
 
-  if (!/^[0-9]+$/.test(normalizedValue)) {
+  if (normalizedValue.length === 0) {
     return null;
   }
 

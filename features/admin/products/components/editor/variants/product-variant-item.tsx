@@ -6,9 +6,8 @@ import { useState, useTransition, type JSX } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { AdminProductVariantListItem } from "@/features/admin/products/editor/types";
-import { ProductSectionEyebrow } from "@/features/admin/products/components/shared";
+import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
 import {
   getAvailabilityBadge,
   getStatusLabel,
@@ -75,15 +74,17 @@ export function ProductVariantItem({
   }
 
   return (
-    <Card
+    <article
       data-testid="product-variant-card"
-      className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0"
+      className="overflow-hidden rounded-[1.5rem] border border-surface-border bg-surface-panel shadow-card"
     >
-      <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/20 px-4 py-3.5 md:px-5 md:py-4">
+      <div className="border-b border-surface-border bg-surface-subtle/10 px-4 py-4 md:px-5 md:py-4.5">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0 space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <CardTitle className="truncate text-base">{displayName}</CardTitle>
+              <h3 className="truncate text-base font-semibold tracking-tight text-foreground">
+                {displayName}
+              </h3>
               {variant.isDefault ? <Badge variant="secondary">Par défaut</Badge> : null}
               <Badge variant={getStatusVariant(variant.status)}>
                 {getStatusLabel(variant.status)}
@@ -134,12 +135,12 @@ export function ProductVariantItem({
             ) : null}
           </div>
         </div>
-      </CardHeader>
+      </div>
 
-      <CardContent className="grid gap-3.5 px-4 py-3.5 md:gap-4 md:px-5 md:py-5">
-        <div className="grid gap-3.5 md:gap-4 md:grid-cols-[minmax(0,1fr)_8.5rem] lg:grid-cols-[minmax(0,1fr)_10rem]">
+      <div className="grid gap-4 px-4 py-4 md:px-5 md:py-5">
+        <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_8.5rem] lg:grid-cols-[minmax(0,1fr)_10rem]">
           <div className="grid gap-3.5 md:gap-4">
-            <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-4 shadow-sm">
+            <section className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-4">
               <ProductSectionEyebrow className="tracking-[0.14em]">Attributs</ProductSectionEyebrow>
               {variant.optionValues.length > 0 ? (
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -156,9 +157,9 @@ export function ProductVariantItem({
               ) : (
                 <p className="mt-3 text-sm text-muted-foreground">Aucun attribut défini.</p>
               )}
-            </div>
+            </section>
 
-            <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-4 shadow-sm">
+            <section className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-4">
               <div className="flex items-start justify-between gap-3">
                 <ProductSectionEyebrow className="tracking-[0.14em]">
                   Repères techniques
@@ -186,7 +187,7 @@ export function ProductVariantItem({
               </div>
 
               {isTechnicalDetailsOpen ? (
-                <div className="mt-3 grid gap-x-5 gap-y-3 sm:grid-cols-2">
+                <div className="mt-3 grid gap-x-5 gap-y-3 border-t border-surface-border pt-3 sm:grid-cols-2">
                   <div className="space-y-1">
                     <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
                       Adresse
@@ -246,13 +247,13 @@ export function ProductVariantItem({
                   </div>
                 </div>
               ) : null}
-            </div>
+            </section>
           </div>
 
-          <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-3 py-3">
+          <aside className="rounded-2xl border border-surface-border bg-surface-panel-soft px-3 py-3">
             <ProductSectionEyebrow className="tracking-[0.14em]">Image</ProductSectionEyebrow>
             <div className="mt-2.5 flex items-start gap-3 md:flex-col md:items-center md:gap-2.5">
-              <div className="overflow-hidden rounded-lg border border-surface-border bg-muted">
+              <div className="overflow-hidden rounded-lg border border-surface-border bg-surface-subtle">
                 <div className="relative h-20 w-20 md:h-24 md:w-24">
                   {variant.primaryImageUrl ? (
                     <Image
@@ -272,18 +273,18 @@ export function ProductVariantItem({
                 {variant.primaryImageUrl ? "Image principale." : "À choisir dans la galerie."}
               </p>
             </div>
-          </div>
+          </aside>
         </div>
-      </CardContent>
+      </div>
 
       {shouldShowFooterMessage ? (
-        <CardFooter className="flex flex-col items-start gap-1 border-t border-surface-border bg-muted/10 px-4 py-2.5 text-sm text-muted-foreground md:px-5 md:py-3">
+        <div className="flex flex-col items-start gap-1 border-t border-surface-border bg-surface-subtle/10 px-4 py-2.5 text-sm text-muted-foreground md:px-5 md:py-3">
           {variant.isDefault && hasOtherVariants && onDelete ? (
             <p>Choisissez une autre variante par défaut avant de supprimer celle-ci.</p>
           ) : null}
           {message ? <p>{message}</p> : null}
-        </CardFooter>
+        </div>
       ) : null}
-    </Card>
+    </article>
   );
 }

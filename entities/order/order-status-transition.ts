@@ -1,4 +1,4 @@
-export type OrderStatus = "pending" | "paid" | "preparing" | "shipped" | "cancelled";
+export type OrderStatus = "pending" | "paid" | "preparing" | "shipped" | "cancelled" | "archived";
 
 type AllowedTransitions = Record<OrderStatus, readonly OrderStatus[]>;
 
@@ -8,6 +8,7 @@ const ALLOWED_ORDER_STATUS_TRANSITIONS: AllowedTransitions = {
   preparing: ["shipped", "cancelled"],
   shipped: [],
   cancelled: [],
+  archived: [],
 };
 
 export type OrderStatusTransitionResult =

@@ -16,25 +16,19 @@ import {
 import { cn } from "@/lib/utils";
 
 import { AdminSidebarLink } from "./admin-sidebar-link";
+import {
+  ADMIN_SIDEBAR_GROUP_CONTENT_CLASSNAME,
+  ADMIN_SIDEBAR_GROUP_TRIGGER_CLASSNAME,
+} from "./admin-sidebar.styles";
 
 const GROUP_CLASSNAMES = {
   root: "group/collapsible",
   sidebarGroup: "p-0",
   label: "p-0",
-  content:
-    "ml-2 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up",
-  groupContent: "pt-1",
+  content: ADMIN_SIDEBAR_GROUP_CONTENT_CLASSNAME,
+  groupContent: "pt-1.5",
   menu: "gap-px desktop:gap-0.5",
   icon: "size-4 shrink-0",
-} as const;
-
-const TRIGGER_CLASSNAMES = {
-  base: "flex w-full items-center gap-2 rounded-l-none rounded-r-sm px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors focus-visible:outline-none focus-visible:ring-2",
-  desktop: "desktop:py-2 desktop:text-[11px] desktop:tracking-[0.18em]",
-  inactive:
-    "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-  open: "data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground data-[state=open]:shadow-raised data-[state=open]:border-l-4 data-[state=open]:border-brand",
-  focus: "focus-visible:ring-sidebar-ring",
 } as const;
 
 const CHEVRON_CLASSNAMES = {
@@ -62,15 +56,7 @@ export function AdminSidebarGroup({ group }: AdminSidebarGroupProps) {
     >
       <SidebarGroup className={GROUP_CLASSNAMES.sidebarGroup}>
         <SidebarGroupLabel asChild className={GROUP_CLASSNAMES.label}>
-          <CollapsibleTrigger
-            className={cn(
-              TRIGGER_CLASSNAMES.base,
-              TRIGGER_CLASSNAMES.desktop,
-              TRIGGER_CLASSNAMES.inactive,
-              TRIGGER_CLASSNAMES.open,
-              TRIGGER_CLASSNAMES.focus
-            )}
-          >
+          <CollapsibleTrigger className={cn(ADMIN_SIDEBAR_GROUP_TRIGGER_CLASSNAME)}>
             <ChevronRight className={cn(CHEVRON_CLASSNAMES.base, CHEVRON_CLASSNAMES.open)} />
             <span>{group.label}</span>
           </CollapsibleTrigger>

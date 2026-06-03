@@ -1,9 +1,7 @@
 import type { ReactNode } from "react";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 
-import { AdminTableHead } from "../admin-table";
 import { cn } from "@/lib/utils";
-import { ADMIN_TABLE_HEAD_CLASSNAME } from "../styles/admin-table-head.styles";
 export type SortableColumnAlign = "left" | "center" | "right";
 
 export type SortableColumnConfig<TSort extends string> = Readonly<{
@@ -39,7 +37,11 @@ export function AdminSortableTableHead<TSort extends string>({
         : "justify-start text-left";
   const toneClassName = isActive ? "text-foreground" : "text-muted-foreground";
 
-  const ariaSort = isAsc ? "ascending" : isDesc ? "descending" : undefined;
+  const ariaLabel = isAsc
+    ? `${String(column.label)} trié par ordre croissant`
+    : isDesc
+      ? `${String(column.label)} trié par ordre décroissant`
+      : `Trier ${String(column.label)}`;
   const sortIcon = isAsc ? (
     <ArrowUp className="h-3 w-3 shrink-0" aria-hidden="true" />
   ) : isDesc ? (
@@ -53,24 +55,22 @@ export function AdminSortableTableHead<TSort extends string>({
   }
 
   return (
-    <AdminTableHead
-      className={cn(ADMIN_TABLE_HEAD_CLASSNAME, column.className, className)}
-      aria-sort={ariaSort}
+    <button
+      type="button"
+      onClick={handleClick}
+      aria-label={ariaLabel}
+      className={cn(
+        "flex h-full w-full items-center gap-1 px-4 py-3",
+        "transition-colors hover:text-foreground",
+        alignClassName,
+        toneClassName,
+        column.className,
+        column.buttonClassName,
+        className
+      )}
     >
-      <button
-        type="button"
-        onClick={handleClick}
-        className={cn(
-          "flex h-full w-full items-center gap-1 px-4 py-3",
-          "transition-colors hover:text-foreground",
-          alignClassName,
-          toneClassName,
-          column.buttonClassName
-        )}
-      >
-        <span>{column.label}</span>
-        {sortIcon}
-      </button>
-    </AdminTableHead>
+      <span>{column.label}</span>
+      {sortIcon}
+    </button>
   );
 }

@@ -9,7 +9,7 @@
   --background-secondary: oklch(0.96 0.022 80 / 0.13);
   --foreground: oklch(0.94 0.008 72);
 
-  --card: oklch(0.22 0.016 54);
+  --card: oklch(0.225 0.016 54);
   --card-foreground: oklch(0.94 0.008 72);
 
   --popover: oklch(0.22 0.016 54);
@@ -99,8 +99,8 @@
   --surface-panel: oklch(0.96 0.006 72 / 0.13);
   --surface-panel-soft: oklch(0.96 0.006 72 / 0.10);
   --surface-floating: oklch(0.24 0.018 54 / 0.97);
-  --surface-subtle: oklch(0.80 0.080 72 / 0.12);
-  --surface-border-subtle: oklch(0.90 0.008 72 / 0.16);
+  --surface-subtle: oklch(0.80 0.080 72 / 0.07);
+  --surface-border-subtle: oklch(0.90 0.008 72 / 0.09);
   --border-floating: oklch(0.90 0.008 72 / 0.36);
   --surface-border: oklch(0.90 0.008 72 / 0.18);
   --surface-border-strong: oklch(0.90 0.008 72 / 0.30);

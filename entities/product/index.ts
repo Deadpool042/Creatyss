@@ -1,6 +1,7 @@
 export {
   normalizeProductSlug,
   validateProductInput,
+  PRODUCT_TYPE_VALUES,
   type ProductInputErrorCode,
   type ProductInputValidationResult,
   type ProductStatus,
@@ -9,12 +10,44 @@ export {
 } from "./product-input";
 
 export {
+  PRODUCT_AVAILABILITY_STATUS_VALUES,
+  type ProductAvailabilityStatus,
+} from "./product-availability-status";
+
+export {
+  PRODUCT_RELATED_TYPE_VALUES,
+  type ProductRelatedType,
+} from "./product-related-type";
+
+export {
+  PRODUCT_LIFECYCLE_STATUS_VALUES,
+  type ProductLifecycleStatus,
+} from "./product-lifecycle-status";
+
+export {
+  mapPrismaProductStatusToLifecycleStatus,
+  mapProductLifecycleStatusToPrismaStatus,
+  mapPrismaProductVariantStatusToLifecycleStatus,
+  mapProductVariantLifecycleStatusToPrismaStatus,
+} from "./product-status-prisma";
+
+export {
+  mapPrismaRelatedTypeToProductRelatedType,
+  mapProductRelatedTypeToPrismaRelatedType,
+} from "./product-related-type-prisma";
+
+export {
   validateProductVariantInput,
   type ProductVariantInputErrorCode,
   type ProductVariantInputValidationResult,
   type ProductVariantStatus,
   type ValidatedProductVariantInput,
 } from "./product-variant-input";
+
+export {
+  PRODUCT_VARIANT_LIFECYCLE_STATUS_VALUES,
+  type ProductVariantLifecycleStatus,
+} from "./product-variant-lifecycle-status";
 
 export {
   validateCreateProductImageInput,
@@ -40,7 +73,6 @@ export {
   type AdminProductCharacteristicValidationIssue,
   type AdminProductInputErrorCode,
   type AdminProductInputValidationResult,
-  type ProductLifecycleStatus,
   type RelatedProductLinkType,
   type ValidatedAdminProductCharacteristicInput,
   type ValidatedAdminProductCategoryLinkInput,
@@ -52,7 +84,6 @@ export {
   validateAdminProductVariantInput,
   type AdminProductVariantInputErrorCode,
   type AdminProductVariantInputValidationResult,
-  type ProductVariantLifecycleStatus,
   type ValidatedAdminProductVariantInput,
 } from "./admin-product-variant-input";
 

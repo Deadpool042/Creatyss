@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { validateAdminCategoryInput } from "@/entities/category";
-import type { SeoIndexingMode } from "@/prisma-generated/client";
 import { AdminCategoryServiceError } from "../types";
 import { createAdminCategory, updateAdminCategory, updateCategorySeo } from "../services";
 import {
@@ -147,7 +146,7 @@ export async function updateCategorySeoAction(
       title: parsed.data.title,
       description: parsed.data.description,
       canonicalPath: parsed.data.canonicalPath,
-      indexingMode: parsed.data.indexingMode as SeoIndexingMode,
+      indexingMode: parsed.data.indexingMode,
       sitemapIncluded: parsed.data.sitemapIncluded === "true",
       openGraphTitle: parsed.data.openGraphTitle,
       openGraphDescription: parsed.data.openGraphDescription,

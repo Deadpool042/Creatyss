@@ -1,7 +1,6 @@
 //app/admin/(protected)/page.tsx
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminDashboardSections } from "@/components/admin/dashboard";
-import { FullWidthPageFrame, FullWidthStack } from "@/components/shared/layout";
 import { getAdminDashboardStats } from "@/features/admin/dashboard";
 
 export default async function AdminDashboardPage() {
@@ -9,18 +8,14 @@ export default async function AdminDashboardPage() {
 
   return (
     <AdminPageShell
-      headerVisibility="desktop"
       scrollMode="area"
-      viewportClassName="!h-full"
       title="Tableau de bord"
-      eyebrow="Administration Creatyss"
-      description="Bienvenue dans l’espace d’administration. Utilisez les accès rapides ci-dessous pour gérer le catalogue, le contenu et les opérations de la boutique."
+      breadcrumbs={[{ label: "Tableau de bord" }]}
+      contentPreset="dashboard"
+      showBreadcrumbsInContent={false}
+      showTitleInContent={false}
     >
-      <FullWidthPageFrame>
-        <FullWidthStack>
-          <AdminDashboardSections stats={stats} />
-        </FullWidthStack>
-      </FullWidthPageFrame>
+      <AdminDashboardSections stats={stats} />
     </AdminPageShell>
   );
 }

@@ -26,23 +26,6 @@ type AdminPaginationBarProps = {
   className?: string;
 };
 
-function buildPageNumbers(currentPage: number, totalPages: number): (number | "…")[] {
-  if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }
-
-  const pages: (number | "…")[] = [];
-
-  if (currentPage <= 4) {
-    pages.push(1, 2, 3, 4, 5, "…", totalPages);
-  } else if (currentPage >= totalPages - 3) {
-    pages.push(1, "…", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
-  } else {
-    pages.push(1, "…", currentPage - 1, currentPage, currentPage + 1, "…", totalPages);
-  }
-
-  return pages;
-}
 
 export function AdminPaginationBar({
   currentPage,
@@ -55,8 +38,6 @@ export function AdminPaginationBar({
   className,
 }: AdminPaginationBarProps): JSX.Element | null {
   if (totalPages <= 0) return null;
-
-  const pages = buildPageNumbers(currentPage, totalPages);
 
   const from = totalItems !== undefined ? (currentPage - 1) * perPage + 1 : undefined;
   const to = totalItems !== undefined ? Math.min(currentPage * perPage, totalItems) : undefined;
@@ -85,20 +66,20 @@ export function AdminPaginationBar({
         </Select>
         <span className="text-xs text-muted-foreground">par page</span>
         {from !== undefined && to !== undefined && totalItems !== undefined && (
-          <span className="hidden text-xs text-muted-foreground/60 sm:inline">
+          <span className="hidden text-xs text-muted-foreground sm:inline">
             · {from}–{to} sur {totalItems}
           </span>
         )}
       </div>
 
-      {/* Right: page number buttons */}
+      {/* Right: page navigation */}
       {totalPages > 1 ? (
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-1">
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            className="h-7 w-7"
+            className="h-9 w-9"
             disabled={currentPage <= 1}
             onClick={() => onPageChange(currentPage - 1)}
             aria-label="Page précédente"
@@ -106,39 +87,15 @@ export function AdminPaginationBar({
             <ChevronLeft className="h-3.5 w-3.5" />
           </Button>
 
-          {pages.map((page, idx) =>
-            page === "…" ? (
-              <span
-                key={`ellipsis-${idx}`}
-                className="flex h-7 w-7 items-center justify-center text-xs text-muted-foreground"
-              >
-                …
-              </span>
-            ) : (
-              <Button
-                key={page}
-                type="button"
-                variant={page === currentPage ? "default" : "ghost"}
-                size="icon"
-                className={cn(
-                  "h-7 w-7 text-xs",
-                  page === currentPage
-                    ? "bg-interactive-selected text-foreground hover:bg-interactive-selected border border-surface-border-strong"
-                    : ""
-                )}
-                onClick={() => onPageChange(page)}
-                aria-current={page === currentPage ? "page" : undefined}
-              >
-                {page}
-              </Button>
-            )
-          )}
+          <span className="select-none text-xs text-foreground/65">
+            Page {currentPage} / {totalPages}
+          </span>
 
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            className="h-7 w-7"
+            className="h-9 w-9"
             disabled={currentPage >= totalPages}
             onClick={() => onPageChange(currentPage + 1)}
             aria-label="Page suivante"

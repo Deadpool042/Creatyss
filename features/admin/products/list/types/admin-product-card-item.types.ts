@@ -1,7 +1,8 @@
+import type { ProductLifecycleStatus } from "@/entities/product";
 import type { ProductPickerItem } from "./product-list-query.types";
 import type { ProductStockState } from "./product-table.types";
 
-export type AdminProductStatus = "draft" | "active" | "inactive" | "archived";
+export type AdminProductStatus = ProductLifecycleStatus;
 export type ProductFeaturedFilter = "featured" | "not-featured";
 export type ProductType = "simple" | "variable" | "typed";
 

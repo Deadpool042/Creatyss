@@ -1,4 +1,3 @@
-import { type ProductStatus, type ProductVariantStatus } from "@/prisma-generated/client";
 import {
   mapAdminProductStatus,
   mapAdminProductVariantStatus,
@@ -12,7 +11,7 @@ type ProductDetailsSource = {
   name: string;
   shortDescription: string | null;
   description: string | null;
-  status: ProductStatus;
+  status: Parameters<typeof mapAdminProductStatus>[0];
   isFeatured: boolean;
   updatedAt: Date;
   productType: {
@@ -40,7 +39,7 @@ type ProductDetailsSource = {
     slug: string | null;
     name: string | null;
     sku: string;
-    status: ProductVariantStatus;
+    status: Parameters<typeof mapAdminProductVariantStatus>[0];
     primaryImage: {
       publicUrl: string | null;
       altText: string | null;

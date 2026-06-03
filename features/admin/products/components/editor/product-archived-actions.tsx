@@ -5,8 +5,12 @@ import { useRouter } from "next/navigation";
 import { Archive, ArchiveRestore, RotateCcw, Trash2 } from "lucide-react";
 
 import { CustomButton } from "@/components/shared";
-import { deleteProductAction } from "@/features/admin/products/editor/actions";
+import { ADMIN_PRODUCTS_LIST_PATH } from "@/features/admin/products/navigation";
 import { useArchivedProductMutations } from "@/features/admin/products/editor/hooks";
+import type {
+  DeleteProductInput,
+  DeleteProductResult,
+} from "@/features/admin/products/editor/types";
 
 type ProductArchivedActionsProps = {
   productSlug: string;
@@ -14,11 +18,9 @@ type ProductArchivedActionsProps = {
 
 type DeleteProductButtonProps = {
   productId: string;
+  onDelete: (input: DeleteProductInput) => Promise<DeleteProductResult>;
   trigger?: ReactNode;
   redirectTo?: string;
-  onDelete?: (input: {
-    productId: string;
-  }) => Promise<{ status: "success" | "error"; message: string }>;
 };
 
 export function ProductArchivedBanner(): JSX.Element {
@@ -71,9 +73,9 @@ export function ProductArchivedActions({ productSlug }: ProductArchivedActionsPr
 
 export function DeleteProductButton({
   productId,
+  onDelete,
   trigger,
-  redirectTo = "/admin/products",
-  onDelete = deleteProductAction,
+  redirectTo = ADMIN_PRODUCTS_LIST_PATH,
 }: DeleteProductButtonProps): JSX.Element {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();

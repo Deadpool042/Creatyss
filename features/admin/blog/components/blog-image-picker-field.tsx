@@ -42,7 +42,7 @@ export function BlogImagePickerField({
       <input type="hidden" name={name} value={selectedFilePath ?? ""} />
 
       <div className="flex items-center gap-3">
-        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md border border-border bg-surface-subtle">
+        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md border border-surface-border bg-surface-subtle">
           {selectedFilePath !== null ? (
             <Image
               src={`${basePath}/${selectedFilePath}`}
@@ -84,7 +84,7 @@ export function BlogImagePickerField({
                           setSelectedFilePath(asset.filePath);
                           setOpen(false);
                         }}
-                        className="group relative aspect-square overflow-hidden rounded-md border border-border bg-surface-subtle transition-colors hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="group relative aspect-square overflow-hidden rounded-md border border-surface-border bg-surface-subtle transition-colors hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         title={asset.originalName}
                       >
                         <Image

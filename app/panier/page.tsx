@@ -82,7 +82,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
 
   return (
     <div className="grid gap-8">
-      <section className="w-full border border-shell-border rounded-lg bg-shell-surface shadow-soft p-7">
+      <section className="w-full rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-6 shadow-sm backdrop-blur-sm md:p-8">
         <div className="mb-6 grid gap-2">
           <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Panier</p>
           <h1 className="m-0">Votre panier</h1>
@@ -104,8 +104,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                     <p className="text-[0.95rem] text-foreground/68">Produit</p>
                     <h2>{line.productName}</h2>
                     <p className="text-[0.95rem] text-foreground/68">
-                      {line.variantName} · {line.colorName}
-                      {line.colorHex ? ` · ${line.colorHex}` : ""}
+                      {line.variantName}
                     </p>
                   </div>
 
@@ -113,28 +112,28 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       SKU
                     </p>
-                    <p className="card-copy">{line.sku}</p>
+                    <p className="text-sm text-muted-foreground">{line.sku}</p>
                   </div>
 
                   <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Prix unitaire actuel
                     </p>
-                    <p className="card-copy">{line.unitPrice}</p>
+                    <p className="text-sm text-muted-foreground">{line.unitPriceAmount}</p>
                   </div>
 
                   <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Sous-total
                     </p>
-                    <p className="card-copy">{line.lineTotal}</p>
+                    <p className="text-sm text-muted-foreground">{line.lineTotalAmount}</p>
                   </div>
 
                   <div className="grid gap-1">
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Disponibilité
                     </p>
-                    <p className="card-copy">{getAvailabilityLabel(line.isAvailable)}</p>
+                    <p className="text-sm text-muted-foreground">{getAvailabilityLabel(line.isAvailable)}</p>
                     {!line.isAvailable ? (
                       <Notice tone="alert">
                         Cette ligne bloque la commande. Revenez à la fiche produit ou supprimez-la
@@ -193,21 +192,21 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Lignes
                 </p>
-                <p className="card-copy">{cart.lines.length}</p>
+                <p className="text-sm text-muted-foreground">{cart.lines.length}</p>
               </div>
 
               <div className="grid gap-1">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Quantité totale
                 </p>
-                <p className="card-copy">{cart.itemCount}</p>
+                <p className="text-sm text-muted-foreground">{cart.itemCount}</p>
               </div>
 
               <div className="grid gap-1">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Sous-total panier
                 </p>
-                <p className="card-copy">{cart.subtotal}</p>
+                <p className="text-sm text-muted-foreground">{cart.subtotal}</p>
               </div>
 
               <Button asChild className="w-full">
@@ -219,7 +218,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
           <div className="empty-state">
             <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Panier vide</p>
             <h2>Aucun article n&apos;a encore été ajouté au panier</h2>
-            <p className="card-copy">Ajoutez un article disponible depuis une fiche produit.</p>
+            <p className="text-sm text-muted-foreground">Ajoutez un article disponible depuis une fiche produit.</p>
             <Button asChild>
               <Link href="/boutique">Voir la boutique</Link>
             </Button>

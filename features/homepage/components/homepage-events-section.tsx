@@ -1,4 +1,4 @@
-import { SurfaceSection } from "@/components/storefront/surfaceSection";
+import { SurfaceSection } from "@/components/shared";
 
 export function HomepageEventsSection() {
   return (

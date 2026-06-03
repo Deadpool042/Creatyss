@@ -1,4 +1,5 @@
 import type { AdminProductActionResult } from "@/features/admin/products/types";
+import type { ProductLifecycleStatus } from "@/entities/product";
 
 // ─── Toggle featured ──────────────────────────────────────────────────────────
 
@@ -55,7 +56,7 @@ export type BulkUpdateProductFeaturedResult = AdminProductActionResult & {
 
 export type BulkUpdateProductStatusInput = {
   productIds: string[];
-  status: "draft" | "active" | "inactive" | "archived";
+  status: ProductLifecycleStatus;
 };
 
 export type BulkUpdateProductStatusResult = AdminProductActionResult & {

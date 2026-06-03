@@ -1,5 +1,8 @@
-import { MediaReferenceRole, type MediaReferenceSubjectType } from "@/prisma-generated/client";
 import type { AdminPriceListOption } from "@/features/admin/products/editor/types";
+import {
+  mapPrismaRoleToEditorRole,
+  mapPrismaSubjectTypeToEditorSubjectType,
+} from "@/features/admin/products/editor/services/shared/relation-mappers";
 import type {
   AdminProductImageItem,
   AttachableMediaAssetItem,
@@ -34,9 +37,9 @@ export function mapAdminPriceListOption(priceList: PriceListOptionSource): Admin
 type ProductImageSource = {
   id: string;
   assetId: string;
-  subjectType: MediaReferenceSubjectType;
+  subjectType: Parameters<typeof mapPrismaSubjectTypeToEditorSubjectType>[0];
   subjectId: string;
-  role: MediaReferenceRole;
+  role: Parameters<typeof mapPrismaRoleToEditorRole>[0];
   sortOrder: number;
   isPrimary: boolean;
   asset: {
@@ -50,28 +53,13 @@ type ProductImageSource = {
   };
 };
 
-function mapRole(role: MediaReferenceRole): AdminProductImageItem["role"] {
-  switch (role) {
-    case MediaReferenceRole.PRIMARY:
-      return "primary";
-    case MediaReferenceRole.COVER:
-      return "cover";
-    case MediaReferenceRole.THUMBNAIL:
-      return "thumbnail";
-    case MediaReferenceRole.OTHER:
-      return "other";
-    default:
-      return "gallery";
-  }
-}
-
 export function mapAdminProductImageItem(image: ProductImageSource): AdminProductImageItem {
   return {
     id: image.id,
     mediaAssetId: image.assetId,
-    subjectType: image.subjectType === "PRODUCT_VARIANT" ? "product_variant" : "product",
+    subjectType: mapPrismaSubjectTypeToEditorSubjectType(image.subjectType),
     subjectId: image.subjectId,
-    role: mapRole(image.role),
+    role: mapPrismaRoleToEditorRole(image.role),
     sortOrder: image.sortOrder,
     isPrimary: image.isPrimary,
     publicUrl: image.asset.publicUrl,

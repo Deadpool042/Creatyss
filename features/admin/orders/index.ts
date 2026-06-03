@@ -15,6 +15,7 @@ export { OrderDetailShippingAddressCard } from "./components/order-detail-shippi
 export { OrderDetailShippingCard } from "./components/order-detail-shipping-card";
 export { OrderDetailSummaryCard } from "./components/order-detail-summary-card";
 export { OrderRowActions } from "./components/order-row-actions";
+export { OrdersPanelList } from "./components/orders-panel-list";
 export { OrdersListTable } from "./components/orders-list-table";
 
 // Mappers
@@ -25,3 +26,5 @@ export {
   getOrderDetailStatusMessage,
   readOrderDetailSearchParam,
 } from "./mappers/order-detail-mappers";
+export { listAdminOrders } from "./list/queries/list-admin-orders.query";
+export { findAdminOrderById } from "./details/queries/find-admin-order-by-id.query";

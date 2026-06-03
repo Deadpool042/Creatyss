@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-const adminCreatableProductTypeCodeSchema = z.enum(["simple", "variable"]);
+import { PRODUCT_TYPE_VALUES } from "@/entities/product";
+
+const adminCreatableProductTypeCodeSchema = z.enum(PRODUCT_TYPE_VALUES);
 
 export const createProductSchema = z.object({
   name: z.string().trim().min(1, "Le nom est obligatoire."),

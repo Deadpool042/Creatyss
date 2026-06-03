@@ -14,8 +14,10 @@ export type {
 export {
   readAdminPriceLists,
   readAdminProductEditorBySlug,
+  readAdminProductPageContextBySlug,
   readAdminProductImages,
   readAdminProductPrices,
   readAdminProductTypeWithOptions,
   readAdminProductVariants,
 } from "./product-editor-read-queries";
+export type { AdminProductPageContext } from "./product-editor-read-queries";

@@ -4,13 +4,14 @@ import Link from "next/link";
 import type { JSX } from "react";
 import { Eye, Pencil, RotateCcw, Trash2 } from "lucide-react";
 
-import { AdminRowActionsMenu } from "@/components/admin/tables";
+import { AdminRowActionsMenu } from "@/components/admin/tables/actions/admin-row-actions-menu";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
 import {
   PRODUCT_CARD_ACTIONS_COPY,
   PRODUCT_ROW_ACTIONS_COPY,
 } from "@/features/admin/products/config";
+import { buildAdminProductEditPath } from "@/features/admin/products/navigation";
 import { useProductLifecycleActionState } from "@/features/admin/products/list/hooks";
 import { cn } from "@/lib/utils";
 import { ProductLifecycleActionDialogSet } from "../../product-lifecycle-action-dialogs";
@@ -62,7 +63,7 @@ export function ProductCardActionMenu({
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href={`/admin/products/${product.slug}/edit`}>
+          <Link href={buildAdminProductEditPath(product.slug)}>
             <Pencil className="mr-2 h-4 w-4" />
             {PRODUCT_CARD_ACTIONS_COPY.edit}
           </Link>

@@ -2,7 +2,7 @@
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 
-import { getUploadsDirectory, getUploadsPublicPath } from "./index";
+import { getUploadsDirectory, getUploadsPublicPath } from "./runtime";
 
 function sanitizeSegment(value: string): string {
   return value

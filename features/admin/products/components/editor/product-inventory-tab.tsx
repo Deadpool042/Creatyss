@@ -2,14 +2,23 @@
 
 import { useActionState, type JSX } from "react";
 
-import { AdminFormField, AdminFormFooter, AdminFormMessage, AdminFormSection } from "@/components/admin/forms";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
 import {
   productInventoryFormInitialState,
   type AdminProductVariantListItem,
   type ProductInventoryFormAction,
 } from "@/features/admin/products/editor/types";
+
+type ProductInventorySectionIntroProps = {
+  eyebrow: string;
+  title: string;
+  description: string;
+};
 
 // ─── Internal components ──────────────────────────────────────────────────────
 
@@ -68,11 +77,25 @@ function InventoryFields({
   );
 }
 
+function ProductInventorySectionIntro({
+  eyebrow,
+  title,
+  description,
+}: ProductInventorySectionIntroProps): JSX.Element {
+  return (
+    <div className="grid gap-1.5">
+      <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
+      <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
+      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+    </div>
+  );
+}
+
 function VariantInventoryCard({ variant }: { variant: AdminProductVariantListItem }): JSX.Element {
   return (
     <div
       data-testid="product-stock-card"
-      className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
+      className="grid gap-4 border-t border-surface-border pt-4 first:border-t-0 first:pt-0"
     >
       <div className="space-y-1">
         <p className="text-sm font-medium text-foreground">{variant.name ?? "Variante sans nom"}</p>
@@ -124,59 +147,106 @@ export function ProductInventoryTab({
       ))}
 
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
-        <div className="w-full space-y-6 px-4 py-4 md:space-y-7 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
-          <AdminFormMessage
-            tone={state.status === "error" ? "error" : "success"}
-            message={state.status !== "idle" ? state.message : null}
-          />
+        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3">
+          <div className="min-w-0 space-y-5 md:space-y-6">
+            <AdminFormMessage
+              tone={state.status === "error" ? "error" : "success"}
+              message={state.status !== "idle" ? state.message : null}
+            />
 
-          {isStandalone ? (
-            <AdminFormSection
-              title="Stock du produit"
-              description="Gérez les quantités disponibles pour ce produit."
-            >
-              {standaloneVariant != null ? (
-                <div
-                  data-testid="product-stock-card"
-                  className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
-                >
-                  {standaloneVariant.sku && (
-                    <p className="text-xs text-muted-foreground">
-                      <span className="font-medium">Référence interne :</span>{" "}
-                      <span className="font-mono">{standaloneVariant.sku}</span>
+            <div className="divide-y divide-surface-border/40">
+              {isStandalone ? (
+                <section className="grid gap-6 py-6 first:pt-0">
+                  <ProductInventorySectionIntro
+                    eyebrow="Stock physique"
+                    title="Stock du produit"
+                    description="Gérez les quantités disponibles sans mélanger ici la vendabilité commerciale."
+                  />
+
+                  {standaloneVariant != null ? (
+                    <>
+                      {standaloneVariant.sku && (
+                        <p className="text-sm text-muted-foreground">
+                          <span className="font-medium">Référence interne :</span>{" "}
+                          <span className="font-mono">{standaloneVariant.sku}</span>
+                        </p>
+                      )}
+
+                      <InventoryFields
+                        variantId={standaloneVariant.id}
+                        inventory={standaloneVariant.inventory}
+                        availability={standaloneVariant.availability}
+                      />
+                    </>
+                  ) : (
+                    <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
+                      Aucune donnée de stock disponible pour ce produit.
                     </p>
                   )}
-
-                  <InventoryFields
-                    variantId={standaloneVariant.id}
-                    inventory={standaloneVariant.inventory}
-                    availability={standaloneVariant.availability}
+                </section>
+              ) : (
+                <section className="grid gap-6 py-6 first:pt-0">
+                  <ProductInventorySectionIntro
+                    eyebrow="Déclinaisons"
+                    title="Stock par variante"
+                    description="Gérez les quantités physiques par déclinaison sans modifier ici la vendabilité."
                   />
-                </div>
-              ) : (
-                <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
-                  Aucune donnée de stock disponible pour ce produit.
-                </p>
+
+                  {hasVariants ? (
+                    <div className="grid gap-4">
+                      {variants.map((variant) => (
+                        <VariantInventoryCard key={variant.id} variant={variant} />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
+                      Aucune variante disponible pour gérer le stock.
+                    </p>
+                  )}
+                </section>
               )}
-            </AdminFormSection>
-          ) : (
-            <AdminFormSection
-              title="Stock par variante"
-              description="Gérez les quantités de stock sans modifier ici la vendabilité."
-            >
-              {hasVariants ? (
-                <div className="space-y-4">
-                  {variants.map((variant) => (
-                    <VariantInventoryCard key={variant.id} variant={variant} />
-                  ))}
+            </div>
+          </div>
+
+          <aside className="min-w-0 xl:sticky xl:top-6">
+            <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/80">
+              <section className="grid gap-4 px-5 py-5">
+                <ProductInventorySectionIntro
+                  eyebrow="Repères"
+                  title="Lecture stock"
+                  description="Gardez le cadre de gestion visible pendant la mise à jour des quantités."
+                />
+
+                <div className="divide-y divide-surface-border">
+                  <div className="grid gap-1.5 py-3 first:pt-0">
+                    <ProductSectionEyebrow className="tracking-[0.14em]">Périmètre</ProductSectionEyebrow>
+                    <p className="text-sm font-medium text-foreground">
+                      {isStandalone ? "Produit simple" : `${variants.length} variantes`}
+                    </p>
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      Ce module suit les quantités physiques, pas l’état commercial de vente.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-1.5 py-3">
+                    <ProductSectionEyebrow className="tracking-[0.14em]">Calcul</ProductSectionEyebrow>
+                    <p className="text-sm font-medium text-foreground">Disponible = physique - réservé</p>
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      Le stock réservé est géré automatiquement par le système.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-1.5 py-3 last:pb-0">
+                    <ProductSectionEyebrow className="tracking-[0.14em]">Rupture</ProductSectionEyebrow>
+                    <p className="text-sm font-medium text-foreground">Backorders séparés</p>
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      L’autorisation de vente en rupture reste pilotée depuis le module Disponibilité.
+                    </p>
+                  </div>
                 </div>
-              ) : (
-                <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
-                  Aucune variante disponible pour gérer le stock.
-                </p>
-              )}
-            </AdminFormSection>
-          )}
+              </section>
+            </div>
+          </aside>
         </div>
       </div>
 

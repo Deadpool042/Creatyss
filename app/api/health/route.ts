@@ -1,14 +1,17 @@
 import { NextResponse } from "next/server";
 
 import { checkDatabaseHealth } from "@/core/db/health";
-import { ensureUploadsDirectory, getUploadsPublicPath } from "@/core/uploads";
 
 export const dynamic = "force-dynamic";
 
+function getUploadsPublicPath(): string {
+  const uploadsDir = process.env.UPLOADS_DIR ?? "public/uploads";
+
+  return `/${uploadsDir.replace(/^public\//, "").replaceAll("\\", "/")}`;
+}
+
 export async function GET() {
   const database = await checkDatabaseHealth();
-
-  await ensureUploadsDirectory();
 
   const body = {
     app: "ok",

@@ -5,10 +5,11 @@ import { useActionState, useEffect, useMemo, useState, type JSX } from "react";
 import { Check } from "lucide-react";
 
 import { useAutoSlug } from "@/entities/shared/slug/hooks/use-auto-slug";
-import { AdminFormField, AdminFormFooter, AdminFormMessage } from "@/components/admin/forms";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { toast } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -33,7 +34,7 @@ import {
 } from "@/features/admin/products/editor/types";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { ProductSectionEyebrow } from "@/features/admin/products/components/shared";
+import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
 import { isColorAxisOption } from "./color-utils";
 
 type ProductVariantEditorSheetProps = {
@@ -47,6 +48,12 @@ type ProductVariantEditorSheetProps = {
   updateAction?: ProductVariantFormAction;
 };
 
+type ProductVariantSectionIntroProps = {
+  eyebrow: string;
+  title: string;
+  description: string;
+};
+
 const noopVariantAction: ProductVariantFormAction = async () => {
   return {
     status: "error",
@@ -54,6 +61,20 @@ const noopVariantAction: ProductVariantFormAction = async () => {
     fieldErrors: {},
   };
 };
+
+function ProductVariantSectionIntro({
+  eyebrow,
+  title,
+  description,
+}: ProductVariantSectionIntroProps): JSX.Element {
+  return (
+    <div className="grid gap-1.5">
+      <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
+      <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
+      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+    </div>
+  );
+}
 
 function ProductVariantImagePicker({
   images,
@@ -95,7 +116,7 @@ function ProductVariantImagePicker({
                 Selectionnee
               </Badge>
 
-              <div className="relative aspect-square overflow-hidden border-b border-surface-border bg-muted">
+              <div className="relative aspect-square overflow-hidden border-b border-surface-border bg-surface-subtle">
                 {image.publicUrl ? (
                   <Image
                     src={image.publicUrl}
@@ -192,6 +213,10 @@ export function ProductVariantEditorSheet({
     () => variantAxisOptions.filter((option) => isColorAxisOption(option)),
     [variantAxisOptions]
   );
+  const variantModeSummary = isEdit ? "Variante existante" : "Nouvelle variante";
+  const imageSummary = initialValues.primaryImageId
+    ? "Une image principale est déjà définie."
+    : "Aucune image principale n’est définie.";
 
   const {
     sourceValue: nameValue,
@@ -247,334 +272,329 @@ export function ProductVariantEditorSheet({
           <input type="hidden" name="productId" value={initialValues.productId} />
 
           <div className="min-h-0 flex-1 overflow-y-auto">
-            <div className="space-y-7 px-4 py-4 sm:px-6 sm:py-6">
+            <div className="mx-auto grid max-w-6xl gap-6 px-4 py-4 sm:px-6 sm:py-6 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-start">
               <AdminFormMessage
                 tone="error"
                 message={state.status === "error" ? state.message : null}
               />
 
-              {/* Identité */}
-              <Card className="rounded-[1.35rem] border border-surface-border-strong bg-surface-panel shadow-raised py-0">
-                <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-surface-panel-soft px-5 py-4">
-                  <div className="space-y-1.5">
-                    <ProductSectionEyebrow>Identité</ProductSectionEyebrow>
-                    <CardTitle>Identité de la variante</CardTitle>
-                    <CardDescription className="leading-6 text-foreground/70">
-                      Définissez la référence visible dans le catalogue et les repères utilisés par
-                      l&apos;administration.
-                    </CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent className="grid gap-5 px-5 py-5">
-                  <AdminFormField
-                    label="Nom"
-                    htmlFor="variant-name"
-                    {...(state.fieldErrors.name ? { error: state.fieldErrors.name } : {})}
-                  >
-                    <Input
-                      id="variant-name"
-                      name="name"
-                      value={nameValue}
-                      onChange={(event) => setNameValue(event.target.value)}
-                      className="text-sm"
+              <div className="min-w-0 lg:col-span-1">
+                <div className="overflow-hidden rounded-[1.85rem] border border-surface-border-strong bg-surface-panel shadow-card">
+                  <section className="grid gap-6 px-5 py-5 sm:px-6 sm:py-6">
+                    <ProductVariantSectionIntro
+                      eyebrow="Identité"
+                      title="Identité de la variante"
+                      description="Définissez la référence visible dans le catalogue et les repères utilisés par l’administration."
                     />
-                  </AdminFormField>
 
-                  <div className="grid gap-4 md:grid-cols-2">
                     <AdminFormField
-                      label="Référence interne"
-                      htmlFor="variant-sku"
-                      required
-                      description="Optionnelle si déjà fournie automatiquement, utile pour retrouver une variante."
-                      {...(state.fieldErrors.sku ? { error: state.fieldErrors.sku } : {})}
+                      label="Nom"
+                      htmlFor="variant-name"
+                      {...(state.fieldErrors.name ? { error: state.fieldErrors.name } : {})}
                     >
                       <Input
-                        id="variant-sku"
-                        name="sku"
-                        defaultValue={initialValues.sku}
-                        className="font-mono text-sm"
+                        id="variant-name"
+                        name="name"
+                        value={nameValue}
+                        onChange={(event) => setNameValue(event.target.value)}
+                        className="text-sm"
                       />
                     </AdminFormField>
 
-                    <AdminFormField
-                      label="Adresse de la variante"
-                      htmlFor="variant-slug"
-                      description="Visible dans l'URL de la variante. Générée automatiquement depuis le nom, valeur modifiable."
-                      {...(state.fieldErrors.slug ? { error: state.fieldErrors.slug } : {})}
-                    >
-                      <Input
-                        id="variant-slug"
-                        name="slug"
-                        value={slugValue}
-                        onChange={(event) => setSlugValue(event.target.value)}
-                        className="font-mono text-sm"
-                      />
-                    </AdminFormField>
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <AdminFormField
+                        label="Référence interne"
+                        htmlFor="variant-sku"
+                        required
+                        description="Optionnelle si déjà fournie automatiquement, utile pour retrouver une variante."
+                        {...(state.fieldErrors.sku ? { error: state.fieldErrors.sku } : {})}
+                      >
+                        <Input
+                          id="variant-sku"
+                          name="sku"
+                          defaultValue={initialValues.sku}
+                          className="font-mono text-sm"
+                        />
+                      </AdminFormField>
 
-              {/* Attributs */}
-              <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
-                <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4">
-                  <div className="space-y-1.5">
-                    <ProductSectionEyebrow>Attributs</ProductSectionEyebrow>
-                    <CardTitle>Attributs de la variante</CardTitle>
-                    <CardDescription className="leading-6">
-                      Associez cette variante aux valeurs d&apos;options qui la différencient (couleur, taille…).
-                    </CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent className="px-5 py-5">
-                  {state.fieldErrors.optionValues && (
-                    <p className="mb-4 text-sm text-destructive">
-                      {state.fieldErrors.optionValues}
-                    </p>
-                  )}
-                  {variantAxisOptions.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">
-                      Ce produit ne possède pas d&apos;axes d&apos;option configurés.
-                    </p>
-                  ) : (
-                    <div className="space-y-5">
-                      <div className="grid gap-4 md:grid-cols-2">
-                        {variantAxisOptions.map((option) => (
-                          <AdminFormField
-                            key={option.id}
-                            label={option.name}
-                            htmlFor={`variant-option-${option.id}`}
-                          >
-                            <Select
-                              name={`optionValue:${option.id}`}
-                              defaultValue={optionValuesByOptionId[option.id] ?? "__none__"}
-                            >
-                              <SelectTrigger
-                                id={`variant-option-${option.id}`}
-                                className="text-sm"
-                              >
-                                <SelectValue placeholder="— Aucune —" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="__none__">— Aucune —</SelectItem>
-                                {option.values.map((v) => (
-                                  <SelectItem key={v.id} value={v.id}>
-                                    {v.label ?? v.value}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </AdminFormField>
-                        ))}
-                      </div>
-
-                      {colorAxisOptions.length > 0 ? (
-                        <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-3">
-                          <p className="text-sm text-muted-foreground">
-                            Les codes couleur des valeurs partagées se gèrent dans le bloc{" "}
-                            <span className="font-medium text-foreground">Valeurs couleur</span> de
-                            l&apos;onglet Variantes.
-                          </p>
-                        </div>
-                      ) : null}
+                      <AdminFormField
+                        label="Adresse de la variante"
+                        htmlFor="variant-slug"
+                        description="Visible dans l'URL de la variante. Générée automatiquement depuis le nom, valeur modifiable."
+                        {...(state.fieldErrors.slug ? { error: state.fieldErrors.slug } : {})}
+                      >
+                        <Input
+                          id="variant-slug"
+                          name="slug"
+                          value={slugValue}
+                          onChange={(event) => setSlugValue(event.target.value)}
+                          className="font-mono text-sm"
+                        />
+                      </AdminFormField>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
+                  </section>
 
-              {/* Publication */}
-              <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
-                <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4">
-                  <div className="space-y-1.5">
-                    <ProductSectionEyebrow>Publication</ProductSectionEyebrow>
-                    <CardTitle>Publication et ordre</CardTitle>
-                    <CardDescription className="leading-6">
-                      Choisissez le statut de la variante, son ordre d&apos;apparition et son éventuel
-                      statut par défaut.
-                    </CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent className="grid gap-4 px-5 py-5 md:grid-cols-3">
-                  <AdminFormField
-                    label="Statut"
-                    htmlFor="variant-status"
-                    {...(state.fieldErrors.status ? { error: state.fieldErrors.status } : {})}
-                  >
-                    <Select name="status" defaultValue={initialValues.status}>
-                      <SelectTrigger id="variant-status" className="text-sm">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="draft">Brouillon</SelectItem>
-                        <SelectItem value="active">Actif</SelectItem>
-                        <SelectItem value="inactive">Inactif</SelectItem>
-                        <SelectItem value="archived">Archivé</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </AdminFormField>
-
-                  <AdminFormField
-                    label="Variante par défaut"
-                    htmlFor="variant-is-default"
-                    {...(state.fieldErrors.isDefault ? { error: state.fieldErrors.isDefault } : {})}
-                  >
-                    <Select name="isDefault" defaultValue={initialValues.isDefault}>
-                      <SelectTrigger id="variant-is-default" className="text-sm">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="false">Non</SelectItem>
-                        <SelectItem value="true">Oui</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </AdminFormField>
-
-                  <AdminFormField
-                    label="Ordre"
-                    htmlFor="variant-sort-order"
-                    {...(state.fieldErrors.sortOrder ? { error: state.fieldErrors.sortOrder } : {})}
-                  >
-                    <Input
-                      id="variant-sort-order"
-                      name="sortOrder"
-                      type="number"
-                      min={0}
-                      step={1}
-                      defaultValue={initialValues.sortOrder}
-                      className="text-sm"
+                  <section className="grid gap-6 border-t border-surface-border px-5 py-5 sm:px-6 sm:py-6">
+                    <ProductVariantSectionIntro
+                      eyebrow="Attributs"
+                      title="Différenciation"
+                      description="Associez la variante aux valeurs d’options qui la distinguent réellement."
                     />
-                  </AdminFormField>
-                </CardContent>
-              </Card>
 
-              {/* Image */}
-              <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
-                <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="space-y-1.5">
-                      <ProductSectionEyebrow>Image</ProductSectionEyebrow>
-                      <CardTitle>Image principale</CardTitle>
-                      <CardDescription className="leading-6">
-                        La variante choisit son image principale parmi les médias déjà rattachés au
-                        produit.
-                      </CardDescription>
-                    </div>
-
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="xs"
-                      className="h-7 rounded-full px-3 text-xs text-muted-foreground hover:text-foreground"
-                      onClick={() => setIsImageSectionOpen((current) => !current)}
-                    >
-                      {isImageSectionOpen ? "Masquer" : "Afficher"}
-                    </Button>
-                  </div>
-                </CardHeader>
-                {isImageSectionOpen ? (
-                  <CardContent className="px-5 py-5">
-                    {state.fieldErrors.primaryImageId ? (
-                      <p className="mb-4 text-sm text-destructive">
-                        {state.fieldErrors.primaryImageId}
+                    {state.fieldErrors.optionValues && (
+                      <p className="text-sm text-destructive">{state.fieldErrors.optionValues}</p>
+                    )}
+                    {variantAxisOptions.length === 0 ? (
+                      <p className="text-sm text-muted-foreground">
+                        Ce produit ne possède pas d&apos;axes d&apos;option configurés.
                       </p>
-                    ) : null}
-                    {productImages.length > 0 ? (
-                      <ProductVariantImagePicker
-                        images={productImages}
-                        currentSelectedMediaAssetId={initialValues.primaryImageId}
-                      />
                     ) : (
-                      <div className="rounded-2xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-8 text-sm text-muted-foreground">
-                        Aucune image produit n&apos;est encore disponible pour cette variante.
+                      <div className="grid gap-5">
+                        <div className="grid gap-4 md:grid-cols-2">
+                          {variantAxisOptions.map((option) => (
+                            <AdminFormField
+                              key={option.id}
+                              label={option.name}
+                              htmlFor={`variant-option-${option.id}`}
+                            >
+                              <Select
+                                name={`optionValue:${option.id}`}
+                                defaultValue={optionValuesByOptionId[option.id] ?? "__none__"}
+                              >
+                                <SelectTrigger
+                                  id={`variant-option-${option.id}`}
+                                  className="text-sm"
+                                >
+                                  <SelectValue placeholder="— Aucune —" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="__none__">— Aucune —</SelectItem>
+                                  {option.values.map((v) => (
+                                    <SelectItem key={v.id} value={v.id}>
+                                      {v.label ?? v.value}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </AdminFormField>
+                          ))}
+                        </div>
+
+                        {colorAxisOptions.length > 0 ? (
+                          <div className="rounded-2xl border border-surface-border bg-surface-panel-soft px-4 py-3">
+                            <p className="text-sm text-muted-foreground">
+                              Les codes couleur partagés se gèrent dans le bloc{" "}
+                              <span className="font-medium text-foreground">Valeurs couleur</span> de
+                              l&apos;onglet Variantes.
+                            </p>
+                          </div>
+                        ) : null}
                       </div>
                     )}
-                  </CardContent>
-                ) : (
-                  <CardContent className="px-5 py-4">
-                    <p className="text-sm text-muted-foreground">
-                      {initialValues.primaryImageId
-                        ? "Une image principale est déjà définie. Ouvrez ce bloc pour la modifier."
-                        : "Aucune image principale n’est encore définie. Ouvrez ce bloc pour en choisir une."}
-                    </p>
-                  </CardContent>
-                )}
-              </Card>
+                  </section>
 
-              {/* Repères */}
-              <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
-                <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4">
-                  <div className="space-y-1.5">
-                    <ProductSectionEyebrow>Repères</ProductSectionEyebrow>
-                    <CardTitle>Repères techniques</CardTitle>
-                    <CardDescription className="leading-6">
-                      Conservez ici les identifiants utiles à l&apos;exploitation et aux rapprochements
-                      externes.
-                    </CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent className="grid gap-4 px-5 py-5 md:grid-cols-2">
-                  <AdminFormField label="Code-barres" htmlFor="variant-barcode">
-                    <Input id="variant-barcode" name="barcode" defaultValue={initialValues.barcode} />
-                  </AdminFormField>
-
-                  <AdminFormField label="Référence externe" htmlFor="variant-external-reference">
-                    <Input
-                      id="variant-external-reference"
-                      name="externalReference"
-                      defaultValue={initialValues.externalReference}
+                  <section className="grid gap-6 border-t border-surface-border px-5 py-5 sm:px-6 sm:py-6">
+                    <ProductVariantSectionIntro
+                      eyebrow="Publication"
+                      title="Statut et ordre"
+                      description="Choisissez la place de cette variante dans le catalogue et son rôle éventuel par défaut."
                     />
-                  </AdminFormField>
-                </CardContent>
-              </Card>
 
-              {/* Dimensions */}
-              <Card className="rounded-[1.35rem] border border-surface-border bg-card shadow-card py-0">
-                <CardHeader className="rounded-t-[1.35rem] border-b border-surface-border bg-muted/30 px-5 py-4">
-                  <div className="space-y-1.5">
-                    <ProductSectionEyebrow>Dimensions</ProductSectionEyebrow>
-                    <CardTitle>Dimensions et poids</CardTitle>
-                    <CardDescription className="leading-6">
-                      Renseignez les mesures de la variante lorsqu&apos;elles sont utiles au pilotage.
-                    </CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent className="grid gap-4 px-5 py-5 md:grid-cols-2">
-                  <AdminFormField
-                    label="Poids (g)"
-                    htmlFor="variant-weight-grams"
-                    {...(state.fieldErrors.weightGrams ? { error: state.fieldErrors.weightGrams } : {})}
-                  >
-                    <Input
-                      id="variant-weight-grams"
-                      name="weightGrams"
-                      defaultValue={initialValues.weightGrams}
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <AdminFormField
+                        label="Statut"
+                        htmlFor="variant-status"
+                        {...(state.fieldErrors.status ? { error: state.fieldErrors.status } : {})}
+                      >
+                        <Select name="status" defaultValue={initialValues.status}>
+                          <SelectTrigger id="variant-status" className="text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="draft">Brouillon</SelectItem>
+                            <SelectItem value="active">Actif</SelectItem>
+                            <SelectItem value="inactive">Inactif</SelectItem>
+                            <SelectItem value="archived">Archivé</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </AdminFormField>
+
+                      <AdminFormField
+                        label="Variante par défaut"
+                        htmlFor="variant-is-default"
+                        {...(state.fieldErrors.isDefault ? { error: state.fieldErrors.isDefault } : {})}
+                      >
+                        <Select name="isDefault" defaultValue={initialValues.isDefault}>
+                          <SelectTrigger id="variant-is-default" className="text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="false">Non</SelectItem>
+                            <SelectItem value="true">Oui</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </AdminFormField>
+
+                      <AdminFormField
+                        label="Ordre"
+                        htmlFor="variant-sort-order"
+                        {...(state.fieldErrors.sortOrder ? { error: state.fieldErrors.sortOrder } : {})}
+                      >
+                        <Input
+                          id="variant-sort-order"
+                          name="sortOrder"
+                          type="number"
+                          min={0}
+                          step={1}
+                          defaultValue={initialValues.sortOrder}
+                          className="text-sm"
+                        />
+                      </AdminFormField>
+                    </div>
+                  </section>
+
+                  <section className="grid gap-6 border-t border-surface-border px-5 py-5 sm:px-6 sm:py-6">
+                    <ProductVariantSectionIntro
+                      eyebrow="Repères"
+                      title="Repères techniques"
+                      description="Conservez ici les identifiants utiles à l’exploitation et aux rapprochements externes."
                     />
-                  </AdminFormField>
 
-                  <AdminFormField
-                    label="Largeur (mm)"
-                    htmlFor="variant-width-mm"
-                    {...(state.fieldErrors.widthMm ? { error: state.fieldErrors.widthMm } : {})}
-                  >
-                    <Input id="variant-width-mm" name="widthMm" defaultValue={initialValues.widthMm} />
-                  </AdminFormField>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <AdminFormField label="Code-barres" htmlFor="variant-barcode">
+                        <Input id="variant-barcode" name="barcode" defaultValue={initialValues.barcode} />
+                      </AdminFormField>
 
-                  <AdminFormField
-                    label="Hauteur (mm)"
-                    htmlFor="variant-height-mm"
-                    {...(state.fieldErrors.heightMm ? { error: state.fieldErrors.heightMm } : {})}
-                  >
-                    <Input id="variant-height-mm" name="heightMm" defaultValue={initialValues.heightMm} />
-                  </AdminFormField>
+                      <AdminFormField label="Référence externe" htmlFor="variant-external-reference">
+                        <Input
+                          id="variant-external-reference"
+                          name="externalReference"
+                          defaultValue={initialValues.externalReference}
+                        />
+                      </AdminFormField>
+                    </div>
+                  </section>
 
-                  <AdminFormField
-                    label="Profondeur (mm)"
-                    htmlFor="variant-depth-mm"
-                    {...(state.fieldErrors.depthMm ? { error: state.fieldErrors.depthMm } : {})}
-                  >
-                    <Input id="variant-depth-mm" name="depthMm" defaultValue={initialValues.depthMm} />
-                  </AdminFormField>
-                </CardContent>
-              </Card>
+                  <section className="grid gap-6 border-t border-surface-border px-5 py-5 sm:px-6 sm:py-6">
+                    <ProductVariantSectionIntro
+                      eyebrow="Dimensions"
+                      title="Dimensions et poids"
+                      description="Renseignez les mesures seulement lorsqu’elles sont utiles au pilotage ou à la logistique."
+                    />
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <AdminFormField
+                        label="Poids (g)"
+                        htmlFor="variant-weight-grams"
+                        {...(state.fieldErrors.weightGrams ? { error: state.fieldErrors.weightGrams } : {})}
+                      >
+                        <Input
+                          id="variant-weight-grams"
+                          name="weightGrams"
+                          defaultValue={initialValues.weightGrams}
+                        />
+                      </AdminFormField>
+
+                      <AdminFormField
+                        label="Largeur (mm)"
+                        htmlFor="variant-width-mm"
+                        {...(state.fieldErrors.widthMm ? { error: state.fieldErrors.widthMm } : {})}
+                      >
+                        <Input id="variant-width-mm" name="widthMm" defaultValue={initialValues.widthMm} />
+                      </AdminFormField>
+
+                      <AdminFormField
+                        label="Hauteur (mm)"
+                        htmlFor="variant-height-mm"
+                        {...(state.fieldErrors.heightMm ? { error: state.fieldErrors.heightMm } : {})}
+                      >
+                        <Input id="variant-height-mm" name="heightMm" defaultValue={initialValues.heightMm} />
+                      </AdminFormField>
+
+                      <AdminFormField
+                        label="Profondeur (mm)"
+                        htmlFor="variant-depth-mm"
+                        {...(state.fieldErrors.depthMm ? { error: state.fieldErrors.depthMm } : {})}
+                      >
+                        <Input id="variant-depth-mm" name="depthMm" defaultValue={initialValues.depthMm} />
+                      </AdminFormField>
+                    </div>
+                  </section>
+                </div>
+              </div>
+
+              <aside className="min-w-0 lg:sticky lg:top-0">
+                <div className="overflow-hidden rounded-[1.5rem] border border-surface-border bg-surface-panel shadow-soft">
+                  <section className="grid gap-4 px-5 py-5">
+                    <ProductVariantSectionIntro
+                      eyebrow="Contexte"
+                      title="Lecture rapide"
+                      description="Gardez le minimum utile sous les yeux pendant l’édition."
+                    />
+
+                    <div className="divide-y divide-surface-border">
+                      <div className="grid gap-1.5 py-3 first:pt-0">
+                        <ProductSectionEyebrow className="tracking-[0.14em]">Mode</ProductSectionEyebrow>
+                        <p className="text-sm font-medium text-foreground">{variantModeSummary}</p>
+                        <p className="text-sm leading-6 text-muted-foreground">
+                          {isEdit
+                            ? "Mettez à jour les repères sans casser la différenciation existante."
+                            : "Commencez par l’identité, puis rattachez la variante à ses attributs."}
+                        </p>
+                      </div>
+
+                      <div className="grid gap-1.5 py-3">
+                        <ProductSectionEyebrow className="tracking-[0.14em]">Image</ProductSectionEyebrow>
+                        <p className="text-sm font-medium text-foreground">{imageSummary}</p>
+                        <p className="text-sm leading-6 text-muted-foreground">
+                          L’image principale reste choisie parmi les médias déjà rattachés au produit.
+                        </p>
+                      </div>
+
+                      <div className="grid gap-3 py-3 last:pb-0">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="grid gap-1">
+                            <ProductSectionEyebrow className="tracking-[0.14em]">Média</ProductSectionEyebrow>
+                            <p className="text-sm text-muted-foreground">
+                              Ouvrez ce bloc seulement si vous devez revoir l’image principale.
+                            </p>
+                          </div>
+
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="xs"
+                            className="h-7 rounded-full px-3 text-xs text-muted-foreground hover:text-foreground"
+                            onClick={() => setIsImageSectionOpen((current) => !current)}
+                          >
+                            {isImageSectionOpen ? "Masquer" : "Afficher"}
+                          </Button>
+                        </div>
+
+                        {isImageSectionOpen ? (
+                          <div className="grid gap-4">
+                            {state.fieldErrors.primaryImageId ? (
+                              <p className="text-sm text-destructive">
+                                {state.fieldErrors.primaryImageId}
+                              </p>
+                            ) : null}
+                            {productImages.length > 0 ? (
+                              <ProductVariantImagePicker
+                                images={productImages}
+                                currentSelectedMediaAssetId={initialValues.primaryImageId}
+                              />
+                            ) : (
+                              <div className="rounded-2xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-8 text-sm text-muted-foreground">
+                                Aucune image produit n&apos;est encore disponible pour cette variante.
+                              </div>
+                            )}
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </aside>
             </div>
           </div>
 

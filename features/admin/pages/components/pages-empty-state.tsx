@@ -1,6 +1,6 @@
 export function PagesEmptyState() {
   return (
-    <div className="rounded-2xl border border-border bg-card p-6">
+    <div className="rounded-2xl border border-surface-border bg-surface-panel p-6">
       <div className="space-y-2">
         <h2 className="text-base font-medium">Aucune implémentation métier branchée</h2>
         <p className="text-sm text-muted-foreground">

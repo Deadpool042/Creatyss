@@ -13,6 +13,16 @@ import type {
 import type { AdminProductOptionItem } from "../types/product-variant.types";
 import { getAdminProductEditorData } from "./get-admin-product-editor-data.query";
 
+export type AdminProductPageContext = {
+  id: string;
+  storeId: string;
+  slug: string;
+  name: string;
+  isArchived: boolean;
+  isStandalone: boolean;
+  productTypeId: string | null;
+};
+
 // ─── read-admin-price-lists ───────────────────────────────────────────────────
 
 export async function readAdminPriceLists(): Promise<
@@ -62,6 +72,41 @@ export async function readAdminProductEditorBySlug(
   return getAdminProductEditorData({
     productId: product.id,
   });
+}
+
+// ─── read-admin-product-page-context-by-slug ─────────────────────────────────
+
+export async function readAdminProductPageContextBySlug(
+  slug: string,
+): Promise<AdminProductPageContext | null> {
+  const product = await db.product.findFirst({
+    where: {
+      slug,
+    },
+    select: {
+      id: true,
+      storeId: true,
+      slug: true,
+      name: true,
+      archivedAt: true,
+      isStandalone: true,
+      productTypeId: true,
+    },
+  });
+
+  if (product === null) {
+    return null;
+  }
+
+  return {
+    id: product.id,
+    storeId: product.storeId,
+    slug: product.slug,
+    name: product.name,
+    isArchived: product.archivedAt !== null,
+    isStandalone: product.isStandalone,
+    productTypeId: product.productTypeId,
+  };
 }
 
 // ─── read-admin-product-images ────────────────────────────────────────────────

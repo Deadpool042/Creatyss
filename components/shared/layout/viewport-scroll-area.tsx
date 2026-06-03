@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 const ADMIN_VIEWPORT_SCROLL_AREA_CLASS_NAME = [
@@ -47,6 +48,9 @@ export function ViewportScrollArea({
   viewportPreset = "admin",
   scrollMode = "area",
 }: ViewportScrollAreaProps) {
+  const isMobile = useIsMobile();
+  const effectiveScrollMode = isMobile ? "nested" : scrollMode;
+
   const viewportPresetClassName =
     viewportPreset === "admin"
       ? ADMIN_VIEWPORT_SCROLL_AREA_CLASS_NAME
@@ -55,17 +59,31 @@ export function ViewportScrollArea({
         : null;
 
   const body =
-    scrollMode === "area" ? (
+    effectiveScrollMode === "area" ? (
       <ScrollArea className={cn("min-h-0 flex-1", bodyClassName, scrollAreaClassName)}>
-        <div className={cn("min-w-0 pr-1", contentClassName)}>{children}</div>
+        <div className={cn("min-w-0 w-full pr-1", contentClassName)}>{children}</div>
       </ScrollArea>
     ) : (
-      <div className={cn("flex min-h-0 flex-1 flex-col", bodyClassName)}>{children}</div>
+      <div
+        className={cn(
+          "flex flex-1 flex-col lg:min-h-0",
+          !isMobile && "min-h-0",
+          bodyClassName,
+          scrollAreaClassName
+        )}
+      >
+        <div className={cn("min-w-0 flex min-h-0 flex-1 flex-col", contentClassName)}>{children}</div>
+      </div>
     );
 
   return (
     <div
-      className={cn("flex min-h-0 flex-col overflow-hidden", viewportPresetClassName, className)}
+      className={cn(
+        "flex flex-col lg:min-h-0",
+        isMobile ? "overflow-visible" : "min-h-0 overflow-hidden",
+        viewportPresetClassName,
+        className
+      )}
     >
       {header ? <div className={cn("shrink-0", headerClassName)}>{header}</div> : null}
       {body}

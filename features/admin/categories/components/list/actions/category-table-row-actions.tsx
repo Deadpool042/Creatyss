@@ -5,7 +5,7 @@ import { Archive, ArchiveRestore, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
-import { AdminRowActionsMenu } from "@/components/admin/tables";
+import { AdminRowActionsMenu } from "@/components/admin/tables/actions/admin-row-actions-menu";
 import { ConfirmDestructiveDialog } from "@/components/shared";
 import {
   archiveCategoryAction,

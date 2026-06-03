@@ -2,7 +2,9 @@
 
 import { useActionState, useState, type JSX } from "react";
 
-import { AdminFormField, AdminFormFooter, AdminFormMessage, AdminFormSection } from "@/components/admin/forms";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
 import {
   productAvailabilityFormInitialState,
   type AdminProductVariantAvailability,
@@ -24,6 +27,12 @@ type ProductAvailabilityTabProps = {
   productId: string;
   variants: AdminProductVariantListItem[];
   isStandalone: boolean;
+};
+
+type ProductAvailabilitySectionIntroProps = {
+  eyebrow: string;
+  title: string;
+  description: string;
 };
 
 const availabilityStatusLabels: Record<AdminProductVariantAvailability["status"], string> = {
@@ -53,6 +62,20 @@ function toDateTimeLocalValue(value: string | null): string {
   const minutes = String(date.getMinutes()).padStart(2, "0");
 
   return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+function ProductAvailabilitySectionIntro({
+  eyebrow,
+  title,
+  description,
+}: ProductAvailabilitySectionIntroProps): JSX.Element {
+  return (
+    <div className="grid gap-1.5">
+      <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
+      <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
+      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+    </div>
+  );
 }
 
 type AvailabilityFieldsProps = {
@@ -173,7 +196,7 @@ function VariantAvailabilityCard({
   return (
     <div
       data-testid="product-availability-card"
-      className="space-y-4 rounded-xl border border-surface-border bg-card p-4"
+      className="grid gap-4 border-t border-surface-border pt-4 first:border-t-0 first:pt-0"
     >
       <div className="space-y-1">
         <p className="text-sm font-medium text-foreground">{variant.name ?? "Variante sans nom"}</p>
@@ -211,54 +234,104 @@ export function ProductAvailabilityTab({
       ))}
 
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
-        <div className="w-full space-y-6 px-4 py-4 md:space-y-7 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
-          <AdminFormMessage
-            tone={state.status === "error" ? "error" : "success"}
-            message={state.status !== "idle" ? state.message : null}
-          />
+        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3">
+          <div className="min-w-0 space-y-5 md:space-y-6">
+            <AdminFormMessage
+              tone={state.status === "error" ? "error" : "success"}
+              message={state.status !== "idle" ? state.message : null}
+            />
 
-          {isStandalone ? (
-            <AdminFormSection
-              title="Disponibilité"
-              description="Définissez si ce produit est vendable en ligne."
-            >
-              {standaloneVariant === null ? (
-                <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
-                  Aucune donnée de disponibilité disponible pour ce produit.
-                </p>
+            <div className="divide-y divide-surface-border/40">
+              {isStandalone ? (
+                <section className="grid gap-6 py-6 first:pt-0">
+                  <ProductAvailabilitySectionIntro
+                    eyebrow="Vendabilité"
+                    title="Disponibilité"
+                    description="Définissez si ce produit peut être vendu en ligne, sur quelle période et dans quel mode commercial."
+                  />
+
+                  {standaloneVariant === null ? (
+                    <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
+                      Aucune donnée de disponibilité disponible pour ce produit.
+                    </p>
+                  ) : (
+                    <>
+                      {standaloneVariant.sku !== null && (
+                        <p className="text-sm text-muted-foreground">
+                          <span className="font-medium">Référence interne :</span>{" "}
+                          <span className="font-mono">{standaloneVariant.sku}</span>
+                        </p>
+                      )}
+                      <AvailabilityFields
+                        variantId={standaloneVariant.id}
+                        availability={standaloneVariant.availability}
+                      />
+                    </>
+                  )}
+                </section>
               ) : (
-                <>
-                  {standaloneVariant.sku !== null && (
-                    <p className="text-xs text-muted-foreground -mt-2 mb-2">
-                      <span className="font-medium">Référence interne :</span>{" "}
-                      <span className="font-mono">{standaloneVariant.sku}</span>
+                <section className="grid gap-6 py-6 first:pt-0">
+                  <ProductAvailabilitySectionIntro
+                    eyebrow="Déclinaisons"
+                    title="Disponibilité par variante"
+                    description="Définissez la vendabilité de chaque déclinaison sans mélanger cette logique avec le stock physique."
+                  />
+
+                  {hasVariants ? (
+                    <div className="grid gap-4">
+                      {variants.map((variant) => (
+                        <VariantAvailabilityCard key={variant.id} variant={variant} />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
+                      Aucune variante disponible pour gérer la vendabilité.
                     </p>
                   )}
-                  <AvailabilityFields
-                    variantId={standaloneVariant.id}
-                    availability={standaloneVariant.availability}
-                  />
-                </>
+                </section>
               )}
-            </AdminFormSection>
-          ) : (
-            <AdminFormSection
-              title="Disponibilité par variante"
-              description="Définissez la vendabilité de chaque déclinaison sans gérer ici les quantités de stock."
-            >
-              {hasVariants ? (
-                <div className="space-y-4">
-                  {variants.map((variant) => (
-                    <VariantAvailabilityCard key={variant.id} variant={variant} />
-                  ))}
+            </div>
+          </div>
+
+          <aside className="min-w-0 xl:sticky xl:top-6">
+            <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/80">
+              <section className="grid gap-4 px-5 py-5">
+                <ProductAvailabilitySectionIntro
+                  eyebrow="Repères"
+                  title="Lecture rapide"
+                  description="Gardez les règles commerciales visibles pendant l’édition sans transformer le formulaire en documentation."
+                />
+
+                <div className="divide-y divide-surface-border">
+                  <div className="grid gap-1.5 py-3 first:pt-0">
+                    <ProductSectionEyebrow className="tracking-[0.14em]">Périmètre</ProductSectionEyebrow>
+                    <p className="text-sm font-medium text-foreground">
+                      {isStandalone ? "Produit simple" : `${variants.length} variantes`}
+                    </p>
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      Ce module pilote la vendabilité, pas les quantités de stock.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-1.5 py-3">
+                    <ProductSectionEyebrow className="tracking-[0.14em]">Statuts</ProductSectionEyebrow>
+                    <p className="text-sm font-medium text-foreground">Disponible, précommande, rupture…</p>
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      Choisissez le statut commercial puis ajustez la période ou la précommande si nécessaire.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-1.5 py-3 last:pb-0">
+                    <ProductSectionEyebrow className="tracking-[0.14em]">Périodes</ProductSectionEyebrow>
+                    <p className="text-sm font-medium text-foreground">Fenêtres optionnelles</p>
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      Utilisez les dates seulement quand la vente doit être bornée dans le temps.
+                    </p>
+                  </div>
                 </div>
-              ) : (
-                <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
-                  Aucune variante disponible pour gérer la vendabilité.
-                </p>
-              )}
-            </AdminFormSection>
-          )}
+              </section>
+            </div>
+          </aside>
         </div>
       </div>
 

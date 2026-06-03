@@ -9,10 +9,13 @@ import {
   readTrimmedString,
   type RawInputValue,
 } from "./shared-input";
+import {
+  PRODUCT_LIFECYCLE_STATUS_VALUES,
+  type ProductLifecycleStatus,
+} from "./product-lifecycle-status";
+import type { ProductRelatedType } from "./product-related-type";
 
-export type ProductLifecycleStatus = "draft" | "active" | "inactive" | "archived";
-
-export type RelatedProductLinkType = "related" | "cross_sell" | "up_sell" | "accessory" | "similar";
+export type RelatedProductLinkType = ProductRelatedType;
 
 export type ValidatedAdminProductCategoryLinkInput = {
   categoryId: string;
@@ -278,7 +281,7 @@ function normalizeDistinctIds(values: readonly RawInputValue[] | undefined): str
   return normalizedIds;
 }
 
-const productLifecycleStatusSchema = z.enum(["draft", "active", "inactive", "archived"]);
+const productLifecycleStatusSchema = z.enum(PRODUCT_LIFECYCLE_STATUS_VALUES);
 
 const adminProductTopLevelSchema = z.object({
   name: z.preprocess((value) => readTrimmedString(value), z.string().min(1)),

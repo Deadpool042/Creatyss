@@ -1,4 +1,5 @@
-import type { SeoIndexingMode } from "@/prisma-generated/client";
+import type { ProductLifecycleStatus } from "@/entities/product";
+import type { SeoIndexingMode } from "@/entities/seo";
 import type {
   AdminProductVariantListItem,
   AdminProductVariantStatus,
@@ -17,7 +18,7 @@ export type ProductCategoryOption = {
 
 export type CategoryNode = ProductCategoryOption;
 
-export type AdminProductEditorStatus = "draft" | "active" | "inactive" | "archived";
+export type AdminProductEditorStatus = ProductLifecycleStatus;
 
 export type AdminRelatedProductEditorType =
   | "related"

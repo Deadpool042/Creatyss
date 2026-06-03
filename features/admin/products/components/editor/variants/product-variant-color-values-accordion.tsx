@@ -7,13 +7,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/shared";
-import { AdminFormMessage } from "@/components/admin/forms";
-import type {
-  archiveProductOptionColorValueAction,
-  createProductOptionColorValueAction,
-  updateProductOptionColorValueAction,
-} from "@/features/admin/products/editor/actions";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import type { AdminProductOptionItem } from "@/features/admin/products/editor/types";
+import type { AdminProductActionResult } from "@/features/admin/products/types";
 import {
   isColorAxisOption,
   isValidColorHex,
@@ -21,9 +17,15 @@ import {
   toPickerValue,
 } from "./color-utils";
 
-type CreateProductOptionColorValueAction = typeof createProductOptionColorValueAction;
-type UpdateProductOptionColorValueAction = typeof updateProductOptionColorValueAction;
-type ArchiveProductOptionColorValueAction = typeof archiveProductOptionColorValueAction;
+type CreateProductOptionColorValueAction = (
+  input: { productId: string; optionId: string; label: string; colorHex: string | null }
+) => Promise<AdminProductActionResult>;
+type UpdateProductOptionColorValueAction = (
+  input: { productId: string; optionValueId: string; label: string; colorHex: string | null }
+) => Promise<AdminProductActionResult>;
+type ArchiveProductOptionColorValueAction = (
+  input: { productId: string; optionValueId: string }
+) => Promise<AdminProductActionResult>;
 
 type MessageState = {
   status: "success" | "error";
@@ -148,15 +150,22 @@ export function ProductVariantColorValuesAccordion({
   }
 
   return (
-    <section className="rounded-[1.35rem] border border-surface-border bg-card shadow-card">
+    <section className="rounded-[1.35rem] border border-surface-border bg-surface-panel-soft">
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="color-values" className="border-b-0">
-          <AccordionTrigger className="rounded-none px-4 py-3.5 hover:no-underline md:px-5 md:py-4">
+          <AccordionTrigger className="rounded-none px-4 py-4 hover:no-underline md:px-5 md:py-4.5">
             <div className="min-w-0 space-y-1 text-left">
-              <p className="text-sm font-medium text-foreground">
-                Valeurs couleur · {colorValueSummary.totalCount}
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                Couleurs partagées
               </p>
-              <p className="text-xs text-muted-foreground">Valeurs partagées entre variantes</p>
+              <p className="text-sm font-medium text-foreground">
+                {colorValueSummary.totalCount} valeur
+                {colorValueSummary.totalCount > 1 ? "s" : ""} disponible
+                {colorValueSummary.totalCount > 1 ? "s" : ""}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Nomenclature commune aux variantes qui portent un axe couleur
+              </p>
               {colorValueSummary.previewHexes.length > 0 ? (
                 <div className="flex items-center gap-1 pt-0.5">
                   {colorValueSummary.previewHexes.map((hex) => (
@@ -194,7 +203,7 @@ export function ProductVariantColorValuesAccordion({
                 colorOptions.map((option) => (
                   <section
                     key={option.id}
-                    className="space-y-3 rounded-2xl border border-surface-border bg-surface-panel-soft p-3.5 md:p-4"
+                    className="space-y-3 rounded-2xl border border-surface-border bg-background/70 p-3.5 md:p-4"
                   >
                     <div>
                       <p className="text-sm font-medium text-foreground">{option.name}</p>
@@ -221,7 +230,7 @@ export function ProductVariantColorValuesAccordion({
                           return (
                             <div
                               key={value.id}
-                              className="grid gap-2.5 rounded-xl border border-surface-border bg-background/70 p-3 md:grid-cols-[minmax(0,1fr)_8.5rem_7.5rem_auto] md:items-end"
+                              className="grid gap-2.5 rounded-xl border border-surface-border bg-surface-panel-soft p-3 md:grid-cols-[minmax(0,1fr)_8.5rem_7.5rem_auto] md:items-end"
                             >
                               <label className="grid gap-1 text-xs text-muted-foreground">
                                 Libellé
@@ -322,7 +331,7 @@ export function ProductVariantColorValuesAccordion({
                       )}
                     </div>
 
-                    <div className="grid gap-2.5 rounded-xl border border-dashed border-surface-border bg-background/70 p-3 md:grid-cols-[minmax(0,1fr)_8.5rem_auto] md:items-end">
+                    <div className="grid gap-2.5 rounded-xl border border-dashed border-surface-border bg-surface-panel-soft p-3 md:grid-cols-[minmax(0,1fr)_8.5rem_auto] md:items-end">
                       <label className="grid gap-1 text-xs text-muted-foreground">
                         Nouvelle couleur (libellé)
                         <Input

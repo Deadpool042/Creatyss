@@ -4,10 +4,10 @@ import { useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
 
 import {
-  AdminConfigDataTableToolbar,
-  AdminDataTableFiltersTrigger,
   type AdminDataTableActiveFilterItem,
-} from "@/components/admin/tables";
+} from "@/components/admin/tables/filters/panel/admin-data-table-active-filters";
+import { AdminConfigDataTableToolbar } from "@/components/admin/tables/admin-config-data-table-toolbar";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useCategoriesTableContext } from "@/features/admin/categories/context/categories-data-provider";
 import {
@@ -18,7 +18,8 @@ import {
   CATEGORY_STATUS_OPTIONS,
 } from "@/features/admin/categories/config";
 import { useCategoryFilters } from "@/features/admin/categories/list";
-import { CategoryListFilterControls, CategoryListMobileFiltersDrawer } from ".";
+import { CategoryListFilterControls } from "./category-list-filter-controls";
+import { CategoryListMobileFiltersDrawer } from "./category-list-mobile-filters-drawer";
 
 // ─── Main toolbar ───────────────────────────────────────────────────────────
 
@@ -54,16 +55,26 @@ export function CategoryListToolbar() {
   }
 
   const mobileFiltersButton = (
-    <AdminDataTableFiltersTrigger
-      icon={SlidersHorizontal}
-      label={CATEGORY_LIST_ACTIONS_COPY.mobileFiltersLabel}
-      activeCount={mobileFilterCount}
-      activeCountSeparator={CATEGORY_LIST_ACTIONS_COPY.mobileFiltersWithCountSeparator}
-      active={mobileFilterCount > 0}
+    <Button
+      variant="outline"
+      size="sm"
+      type="button"
       onClick={() => setDrawerOpen(true)}
-      className={cn("lg:hidden inline-flex h-9 shrink-0 items-center gap-1.5 px-3 text-sm")}
-      activeClassName="border-surface-border-strong bg-interactive-selected text-foreground"
-    />
+      aria-label="Ouvrir les filtres"
+      className={cn(
+        "lg:hidden inline-flex h-9 shrink-0 items-center gap-1.5 px-3 text-sm",
+        mobileFilterCount > 0
+          ? "border-surface-border-strong bg-interactive-selected text-foreground"
+          : "text-muted-foreground"
+      )}
+    >
+      <SlidersHorizontal className="h-4 w-4" />
+      <span>
+        {mobileFilterCount > 0
+          ? `${CATEGORY_LIST_ACTIONS_COPY.mobileFiltersLabel}${CATEGORY_LIST_ACTIONS_COPY.mobileFiltersWithCountSeparator}${mobileFilterCount}`
+          : CATEGORY_LIST_ACTIONS_COPY.mobileFiltersLabel}
+      </span>
+    </Button>
   );
 
   return (

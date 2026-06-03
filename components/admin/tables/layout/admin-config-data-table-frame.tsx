@@ -1,12 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
-
-import { AdminDataTableDesktopLayout } from "./admin-data-table-desktop-layout";
-import { AdminDataTableMobileLayout } from "./admin-data-table-mobile-layout";
+import { cn } from "@/lib/utils";
 
 type AdminConfigDataTableFrameProps = {
-  toolbar: ReactNode;
+  toolbar?: ReactNode;
   desktopContent: ReactNode;
   mobileContent: ReactNode;
   pagination?: ReactNode;
@@ -30,25 +28,27 @@ export function AdminConfigDataTableFrame({
 }: AdminConfigDataTableFrameProps) {
   return (
     <>
-      <AdminDataTableDesktopLayout
-        toolbar={toolbar}
-        content={desktopContent}
-        pagination={pagination}
-        floatingBar={floatingBar}
-        {...(desktopClassName === undefined ? {} : { className: desktopClassName })}
-        {...(desktopContentClassName === undefined
-          ? {}
-          : { contentClassName: desktopContentClassName })}
-      />
+      <div className={cn("hidden min-h-0 flex-1 flex-col gap-3 lg:flex", desktopClassName)}>
+        {toolbar}
+        <div className={cn("flex min-h-0 flex-1 flex-col", desktopContentClassName)}>
+          {desktopContent}
+        </div>
+        {pagination}
+        {floatingBar}
+      </div>
 
-      <AdminDataTableMobileLayout
-        toolbar={toolbar}
-        content={mobileContent}
-        {...(mobileClassName === undefined ? {} : { className: mobileClassName })}
-        {...(mobileContentClassName === undefined
-          ? {}
-          : { contentClassName: mobileContentClassName })}
-      />
+      <div className={cn("flex min-h-0 flex-1 flex-col lg:hidden", mobileClassName)}>
+        {toolbar}
+        <div
+          data-scroll-root="true"
+          className={cn(
+            "min-h-0 flex-1 overflow-y-auto overscroll-contain py-2",
+            mobileContentClassName
+          )}
+        >
+          {mobileContent}
+        </div>
+      </div>
     </>
   );
 }

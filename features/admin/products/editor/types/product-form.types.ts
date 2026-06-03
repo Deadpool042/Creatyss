@@ -1,4 +1,5 @@
-import type { SeoIndexingMode } from "@/prisma-generated/client";
+import type { ProductLifecycleStatus } from "@/entities/product";
+import type { SeoIndexingMode } from "@/entities/seo";
 
 import type { AdminProductAvailabilityStatus } from "./product-variant.types";
 
@@ -34,7 +35,7 @@ export type ProductGeneralFormValues = {
   shortDescription: string;
   description: string;
   careInstructions: string;
-  status: "draft" | "active" | "inactive" | "archived";
+  status: ProductLifecycleStatus;
   isFeatured: boolean;
   productTypeId: string;
   primaryImageId: string;

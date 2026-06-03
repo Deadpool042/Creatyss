@@ -1,35 +1,44 @@
-import type { AdminOrderDetail } from "@/features/admin/orders/types/order-detail-types";
+import type { AdminOrderPayment } from "@/features/admin/orders/details/types/admin-order-detail.types";
 import { SectionIntro } from "@/components/shared/display";
 
 type OrderDetailPaymentCardProps = Readonly<{
-  payment: AdminOrderDetail["payment"];
+  payment: AdminOrderPayment;
 }>;
 
 export function OrderDetailPaymentCard({ payment }: OrderDetailPaymentCardProps) {
   return (
-    <article className="grid gap-4 rounded-xl border border-surface-border bg-surface-panel p-5 text-card-foreground shadow-card">
+    <article className="grid gap-4 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
       <SectionIntro className="grid gap-2" eyebrow="Paiement" title="État du paiement" />
 
       <div className="grid gap-3">
-        <p className="card-copy rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
-          Prestataire : {payment.provider}
-        </p>
-        <p className="card-copy rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
-          Méthode : {payment.method}
-        </p>
-        <p className="card-copy rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
-          Montant : {payment.amount} {payment.currency.toUpperCase()}
-        </p>
-
-        {payment.stripeCheckoutSessionId ? (
-          <p className="card-meta text-sm leading-6 text-text-muted-strong">
-            Session Stripe : {payment.stripeCheckoutSessionId}
+        {payment.provider ? (
+          <p className="card-copy rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+            Prestataire : {payment.provider}
           </p>
         ) : null}
-
-        {payment.stripePaymentIntentId ? (
+        {payment.methodType ? (
+          <p className="card-copy rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+            Méthode : {payment.methodType}
+          </p>
+        ) : null}
+        {payment.amountCaptured ? (
+          <p className="card-copy rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+            Montant capturé : {payment.amountCaptured}
+          </p>
+        ) : null}
+        {payment.amountAuthorized ? (
+          <p className="card-copy rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+            Montant autorisé : {payment.amountAuthorized}
+          </p>
+        ) : null}
+        {payment.amountRefunded !== "0.00" ? (
+          <p className="card-copy rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+            Montant remboursé : {payment.amountRefunded}
+          </p>
+        ) : null}
+        {payment.providerReference ? (
           <p className="card-meta text-sm leading-6 text-text-muted-strong">
-            Identifiant de paiement : {payment.stripePaymentIntentId}
+            Référence prestataire : {payment.providerReference}
           </p>
         ) : null}
       </div>

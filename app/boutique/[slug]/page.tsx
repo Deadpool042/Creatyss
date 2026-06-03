@@ -11,6 +11,7 @@ import { buildProductPageViewModel } from "@/features/storefront/catalog/product
 import { buildStorefrontProductPageRendering } from "@/features/storefront/catalog/product-page/composition/build-storefront-product-page-rendering";
 import { buildProductJsonLd } from "@/features/storefront/catalog/product-page/model/build-product-json-ld";
 import { buildSeoDescription, pickSeoText } from "@/entities/product/seo-text";
+import { getSeoRobotsFlags } from "@/entities/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -30,31 +31,6 @@ function getProductMetadataDescription(product: ProductMetadataSource): string {
   });
 }
 
-type RobotsMetadata = {
-  index: boolean;
-  follow: boolean;
-};
-
-function getRobotsFromIndexingMode(
-  mode: "INDEX_FOLLOW" | "INDEX_NOFOLLOW" | "NOINDEX_FOLLOW" | "NOINDEX_NOFOLLOW" | null
-): RobotsMetadata | undefined {
-  if (mode === null || mode === "INDEX_FOLLOW") {
-    return undefined;
-  }
-
-  const map: Record<
-    "INDEX_FOLLOW" | "INDEX_NOFOLLOW" | "NOINDEX_FOLLOW" | "NOINDEX_NOFOLLOW",
-    RobotsMetadata
-  > = {
-    INDEX_FOLLOW: { index: true, follow: true },
-    INDEX_NOFOLLOW: { index: true, follow: false },
-    NOINDEX_FOLLOW: { index: false, follow: true },
-    NOINDEX_NOFOLLOW: { index: false, follow: false },
-  };
-
-  return map[mode];
-}
-
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = await getPublishedProductBySlug(slug);
@@ -66,7 +42,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     };
   }
 
-  const robots = getRobotsFromIndexingMode(product.seoIndexingMode);
+  const robots = getSeoRobotsFlags(product.seoIndexingMode);
 
   const canonicalPath = pickSeoText(product.seoCanonicalPath) ?? `/boutique/${product.slug}`;
   const canonical = `${clientEnv.appUrl}${canonicalPath}`;

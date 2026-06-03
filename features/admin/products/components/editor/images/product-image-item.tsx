@@ -140,8 +140,8 @@ export function ProductImageItem({
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border/60 bg-card">
-      <div className="relative aspect-4/3 overflow-hidden bg-muted">
+    <div className="overflow-hidden rounded-2xl border border-surface-border/60 bg-surface-panel">
+      <div className="relative aspect-4/3 overflow-hidden bg-surface-subtle">
         {hasRealImage(image.publicUrl) ? (
           <Image
             src={image.publicUrl!}

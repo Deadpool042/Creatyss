@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { PRODUCT_LIFECYCLE_STATUS_VALUES } from "@/entities/product";
+
 // ── bulkArchiveProducts ──────────────────────────────────────────────────────
 
 export const bulkArchiveProductsSchema = z.object({
@@ -39,7 +41,7 @@ export type BulkUpdateProductFeaturedSchema = z.infer<typeof bulkUpdateProductFe
 
 export const bulkUpdateProductStatusSchema = z.object({
   productIds: z.array(z.string().trim().min(1)).min(1, "Aucun produit sélectionné."),
-  status: z.enum(["draft", "active", "inactive", "archived"]),
+  status: z.enum(PRODUCT_LIFECYCLE_STATUS_VALUES),
 });
 
 export type BulkUpdateProductStatusSchema = z.infer<typeof bulkUpdateProductStatusSchema>;

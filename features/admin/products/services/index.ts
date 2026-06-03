@@ -11,5 +11,6 @@ export {
 
 export {
   mapProductStatusToPrismaStatus,
+  mapProductLifecycleStatusToPrismaStatus,
   type ProductLifecycleStatus,
 } from "./product-status-mappers";

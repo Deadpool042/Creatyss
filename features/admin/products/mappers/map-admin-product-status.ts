@@ -1,38 +1,20 @@
 import {
-  ProductStatus,
-  ProductVariantStatus,
-} from "@/prisma-generated/client";
+  mapPrismaProductStatusToLifecycleStatus,
+  mapPrismaProductVariantStatusToLifecycleStatus,
+} from "@/entities/product";
 import type {
   AdminProductLifecycleStatus,
   AdminProductVariantLifecycleStatus,
 } from "../types";
 
 export function mapAdminProductStatus(
-  status: ProductStatus
+  status: Parameters<typeof mapPrismaProductStatusToLifecycleStatus>[0]
 ): AdminProductLifecycleStatus {
-  switch (status) {
-    case ProductStatus.DRAFT:
-      return "draft";
-    case ProductStatus.ACTIVE:
-      return "active";
-    case ProductStatus.INACTIVE:
-      return "inactive";
-    case ProductStatus.ARCHIVED:
-      return "archived";
-  }
+  return mapPrismaProductStatusToLifecycleStatus(status);
 }
 
 export function mapAdminProductVariantStatus(
-  status: ProductVariantStatus
+  status: Parameters<typeof mapPrismaProductVariantStatusToLifecycleStatus>[0]
 ): AdminProductVariantLifecycleStatus {
-  switch (status) {
-    case ProductVariantStatus.DRAFT:
-      return "draft";
-    case ProductVariantStatus.ACTIVE:
-      return "active";
-    case ProductVariantStatus.INACTIVE:
-      return "inactive";
-    case ProductVariantStatus.ARCHIVED:
-      return "archived";
-  }
+  return mapPrismaProductVariantStatusToLifecycleStatus(status);
 }

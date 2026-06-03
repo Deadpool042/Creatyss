@@ -27,11 +27,24 @@ export function AdminMobileBottomNav({
     <nav
       aria-label="Navigation mobile admin"
       className={[
-        "site-header-blur fixed inset-x-0 bottom-0 z-30 border-t border-shell-border shadow-raised lg:hidden",
-        "pb-[max(env(safe-area-inset-bottom),0px)]",
+        // Toujours caché sur desktop (lg:)
+        // Caché en landscape compact (hauteur < 480px) — libère l'espace, évite la coupure
+        "fixed inset-x-0 bottom-0 z-30 lg:hidden [@media(max-height:480px)]:hidden",
+        // Portrait mobile uniquement : fond + bordure + blur
+        "border-t border-shell-border/60 bg-shell-surface/92",
+        // Safe-area : extension sous le home indicator iOS
+        "pb-[env(safe-area-inset-bottom)]",
+        // Backdrop blur pour adoucir la transition avec le contenu
+        "supports-[backdrop-filter]:bg-shell-surface/78 supports-[backdrop-filter]:backdrop-blur-xl",
       ].join(" ")}
     >
-      <div className="grid h-14 grid-cols-5 [@media(max-height:480px)]:h-11">
+      {/* Fondu doux au-dessus de la nav pour éviter la coupure nette */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-full h-8 bg-gradient-to-t from-page-background/70 to-transparent"
+      />
+
+      <div className="grid h-14 grid-cols-5">
         {primaryItems.map((item) => {
           const active = isAdminNavigationItemActive(pathname, item.href);
 
@@ -42,18 +55,13 @@ export function AdminMobileBottomNav({
               aria-current={active ? "page" : undefined}
               className={cn(
                 "flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl px-2 text-[11px] transition-colors",
-                "[@media(max-height:480px)]:gap-0 [@media(max-height:480px)]:px-1 [@media(max-height:480px)]:text-[9px]",
                 active
                   ? "bg-interactive-selected text-foreground"
-                  : "text-muted-foreground hover:bg-interactive-hover hover:text-foreground"
+                  : "text-text-muted-strong hover:bg-interactive-hover hover:text-foreground"
               )}
             >
               {renderAdminNavigationIcon(item.iconKey, {
-                className: cn(
-                  "h-4 w-4 shrink-0",
-                  "[@media(max-height:480px)]:h-3.5 [@media(max-height:480px)]:w-3.5",
-                  active && "text-foreground"
-                ),
+                className: cn("h-4 w-4 shrink-0", active && "text-foreground"),
               })}
               <span className="truncate leading-none">{item.label}</span>
             </Link>

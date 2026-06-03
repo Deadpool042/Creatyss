@@ -4,7 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { SectionIntro } from "@/components/shared/display";
 import { Notice } from "@/components/shared/feedback";
-import { AdminFormActions, AdminFormField } from "@/components/admin/forms";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { updateOrderStatusAction, shipOrderAction } from "@/features/admin/orders/actions";
 import { OrderCancelConfirmDialog } from "./order-cancel-confirm-dialog";
 import { getOrderTransitionLabel } from "@/features/admin/orders/mappers/order-detail-mappers";
@@ -34,7 +35,7 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
   const statusTransitions = allowedTransitions.filter((nextStatus) => nextStatus !== "shipped");
 
   return (
-    <article className="grid gap-5 rounded-xl border border-surface-border bg-surface-panel p-5 text-card-foreground shadow-card">
+    <article className="grid gap-5 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
       <SectionIntro
         className="grid gap-2"
         description="Vérifiez le statut, puis utilisez l'action disponible si une étape reste à effectuer."

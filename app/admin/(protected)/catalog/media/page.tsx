@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { AdminCollectionSection } from "@/components/admin/cards/admin-collection-section";
 import {
   AdminFormActions,
-  AdminFormField,
-  AdminFormMessage,
-  AdminFormSection,
-} from "@/components/admin/forms";
+} from "@/components/admin/forms/admin-form-actions";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
@@ -127,18 +128,20 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
 
   return (
     <AdminPageShell
-      compactMobileTitle
-      eyebrow="Médias"
       title="Bibliothèque médias"
-      description="Importez et réutilisez vos visuels dans le catalogue et les contenus."
-      actions={
+      scrollMode="area"
+      contentClassName={ADMIN_CONTENT_PAGE}
+      breadcrumbs={[
+        { label: "Admin", href: "/admin" },
+        { label: "Catalogue", href: "/admin/catalog/overview" },
+        { label: "Médias" },
+      ]}
+      topbarAction={
         <Button asChild size="sm" className="w-full sm:min-w-40 sm:w-auto">
           <a href="#admin-media-upload">Importer</a>
         </Button>
       }
-      scrollMode="nested"
     >
-      <div className="flex min-h-0 flex-1 flex-col gap-4 lg:gap-6 [@media(max-height:480px)]:gap-3">
         <AdminFormMessage tone="success" message={successMessage} className="shrink-0" />
         <AdminFormMessage tone="error" message={errorMessage} className="shrink-0" />
 
@@ -231,7 +234,6 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
             />
           )}
         </AdminCollectionSection>
-      </div>
     </AdminPageShell>
   );
 }

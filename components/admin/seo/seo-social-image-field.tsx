@@ -3,7 +3,7 @@
 import Image from "next/image";
 import type { JSX } from "react";
 
-import { AdminFormField } from "@/components/admin/forms";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { SeoFieldAutoReset } from "@/components/admin/seo/seo-field-auto-reset";
 import {
   Select,

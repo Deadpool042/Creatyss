@@ -2,6 +2,7 @@ import type { OrderStatus } from "@/entities/order/order-status-transition";
 
 import {
   type OrderDetailSearchParams,
+  type AdminOrderDetail,
   type OrderEmailEventStatus,
 } from "../types/order-detail-types";
 
@@ -92,4 +93,72 @@ export function getEmailEventStatusLabel(status: OrderEmailEventStatus): string 
     default:
       return "En attente";
   }
+}
+
+type EmailFailurePresentation = {
+  title: string;
+  summary: string;
+  technicalDetail: string;
+};
+
+function getEmailEventAudienceLabel(eventType: string): string {
+  switch (eventType) {
+    case "payment_succeeded":
+      return "L'email de confirmation de paiement";
+    case "order_shipped":
+      return "L'email d'expédition";
+    case "order_created":
+    default:
+      return "L'email de confirmation";
+  }
+}
+
+function normalizeTechnicalDetail(lastError: string): string {
+  return lastError.trim().replace(/\s+/g, " ");
+}
+
+function getProviderDiagnosticSummary(input: {
+  provider: AdminOrderDetail["emailEvents"][number]["provider"];
+  technicalDetail: string;
+}): string {
+  const normalizedDetail = input.technicalDetail.toLowerCase();
+
+  if (
+    input.provider === "brevo" &&
+    (normalizedDetail.includes("authorised_ips") ||
+      normalizedDetail.includes("unauthorized") ||
+      normalizedDetail.includes("unrecognised ip"))
+  ) {
+    return "Le service d'envoi a refusé la requête. Une vérification de configuration du provider est nécessaire.";
+  }
+
+  if (input.provider === "brevo") {
+    return "Le service d'envoi Brevo a rejeté l'envoi. Vérifiez la configuration technique du provider.";
+  }
+
+  if (input.provider === "resend") {
+    return "Le service d'envoi Resend a rejeté l'envoi. Vérifiez la configuration technique du provider.";
+  }
+
+  return "Le service d'envoi a rejeté l'opération. Vérifiez la configuration technique du provider.";
+}
+
+export function getEmailEventFailurePresentation(
+  emailEvent: AdminOrderDetail["emailEvents"][number]
+): EmailFailurePresentation | null {
+  if (emailEvent.lastError === null) {
+    return null;
+  }
+
+  const technicalDetail = normalizeTechnicalDetail(emailEvent.lastError);
+  const title = `${getEmailEventAudienceLabel(emailEvent.eventType)} n'a pas pu être envoyé.`;
+
+  return {
+    title,
+    summary: getProviderDiagnosticSummary({
+      provider: emailEvent.provider,
+      technicalDetail,
+    }),
+    technicalDetail,
+  };
 }

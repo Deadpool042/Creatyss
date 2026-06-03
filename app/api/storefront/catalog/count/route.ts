@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { validateCatalogFilterInput } from "@/entities/catalog/catalog-filter-input";
 import { validateCatalogSearchQuery } from "@/entities/catalog/catalog-search-input";
-import { countPublishedProducts } from "@/features/storefront/catalog";
+import { countPublishedProducts } from "@/features/storefront/catalog/queries/count-published-products";
 import { catalogSearchParamsSchema } from "@/features/storefront/catalog/schemas/catalog-search-params.schema";
 
 type CatalogCountSearchParams = {

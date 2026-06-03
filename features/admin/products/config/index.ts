@@ -25,6 +25,7 @@ export {
 } from "./product-list.config";
 
 export { PRODUCT_LIFECYCLE_FEEDBACK_COPY } from "./product-feedback.config";
+export { PRODUCT_SORTABLE_COLUMNS } from "./product-sortable.columns.config";
 
 export {
   PRODUCT_EDITOR_NAV_COPY,

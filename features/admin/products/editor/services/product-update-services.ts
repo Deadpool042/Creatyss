@@ -3,8 +3,13 @@
 // update-product-option-color-hex, update-product-prices, update-product-related-products,
 // update-product-seo
 
-import type { ValidatedAdminProductCharacteristicInput } from "@/entities/product";
-import { InventoryItemStatus, type SeoIndexingMode } from "@/prisma-generated/client";
+import type {
+  ProductAvailabilityStatus,
+  ProductLifecycleStatus,
+  ValidatedAdminProductCharacteristicInput,
+} from "@/entities/product";
+import { type SeoIndexingMode } from "@/entities/seo";
+import { InventoryItemStatus } from "@/prisma-generated/client";
 import { withTransaction, type DbExecutor } from "@/core/db";
 import { recomputeProductCatalogPriceSnapshot } from "@/features/catalog/shared";
 
@@ -25,7 +30,7 @@ import {
 
 type UpdateProductAvailabilityRowInput = {
   variantId: string;
-  status: "available" | "unavailable" | "preorder" | "backorder" | "discontinued" | "archived";
+  status: ProductAvailabilityStatus;
   isSellable: boolean;
   backorderAllowed: boolean;
   sellableFrom: Date | null;
@@ -199,7 +204,7 @@ type UpdateProductGeneralServiceInput = {
   shortDescription: string | null;
   description: string | null;
   careInstructions: string | null;
-  status: "draft" | "active" | "inactive" | "archived";
+  status: ProductLifecycleStatus;
   isFeatured: boolean;
   productTypeId: string | null;
 };

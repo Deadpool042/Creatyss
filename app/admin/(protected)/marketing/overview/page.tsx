@@ -1,0 +1,16 @@
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { MarketingOverviewSections } from "@/features/admin/marketing/components/marketing-overview-sections";
+
+export default function AdminMarketingOverviewPage() {
+  return (
+    <AdminPageShell
+      scrollMode="area"
+      title="Marketing"
+      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Marketing" }]}
+      showBreadcrumbsInContent={false}
+      showTitleInContent={false}
+    >
+      <MarketingOverviewSections />
+    </AdminPageShell>
+  );
+}

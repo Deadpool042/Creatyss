@@ -1,5 +1,6 @@
 import type { CatalogImage } from "@/features/storefront/catalog/helpers/catalog-images";
 import type { CatalogStorefrontAvailabilityStatus } from "@/features/storefront/catalog/helpers/catalog-availability";
+import type { SeoIndexingMode } from "@/entities/seo";
 import type { CurrencyCode, PriceTargetType } from "@/prisma-generated/client";
 
 export type CatalogVariantOptionValue = {
@@ -73,7 +74,7 @@ export type CatalogProductDetail = {
   shippingReturnsPolicy: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
-  seoIndexingMode: "INDEX_FOLLOW" | "INDEX_NOFOLLOW" | "NOINDEX_FOLLOW" | "NOINDEX_NOFOLLOW" | null;
+  seoIndexingMode: SeoIndexingMode | null;
   seoCanonicalPath: string | null;
   seoOpenGraphTitle: string | null;
   seoOpenGraphDescription: string | null;

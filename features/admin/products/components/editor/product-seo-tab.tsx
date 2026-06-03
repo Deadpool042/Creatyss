@@ -4,13 +4,10 @@ import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState, type JSX } from "react";
 
-import {
-  AdminCharCounter,
-  AdminFormField,
-  AdminFormFooter,
-  AdminFormMessage,
-  AdminFormSection,
-} from "@/components/admin/forms";
+import { AdminCharCounter } from "@/components/admin/forms/admin-char-counter";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormFooter } from "@/components/admin/forms/admin-form-footer";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { Button } from "@/components/ui/button";
 import { clientEnv } from "@/core/config/env/client";
 import { Input } from "@/components/ui/input";
@@ -22,7 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SEO_INDEXING_MODE_LABELS, SEO_INDEXING_MODE_VALUES } from "@/entities/seo";
 import { toSeoPlainText } from "@/entities/product/seo-text";
+import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
 import {
   productSeoFormInitialState,
   type AdminProductEditorData,
@@ -44,6 +43,26 @@ const SEO_TITLE_RECOMMENDED = 60;
 const SEO_TITLE_MIN = 20;
 const SEO_DESC_RECOMMENDED = 160;
 const SEO_DESC_MIN = 50;
+
+type ProductSeoSectionIntroProps = {
+  eyebrow: string;
+  title: string;
+  description: string;
+};
+
+function ProductSeoSectionIntro({
+  eyebrow,
+  title,
+  description,
+}: ProductSeoSectionIntroProps): JSX.Element {
+  return (
+    <div className="grid gap-1.5">
+      <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
+      <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
+      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+    </div>
+  );
+}
 
 function buildSeoTitleTemplate(productName: string, siteName: string): string {
   const full = `${productName} | ${siteName}`;
@@ -89,14 +108,14 @@ function SerpPreview({
   }
 
   return (
-    <div className="rounded-xl border border-border bg-background px-4 py-4 space-y-2.5">
+    <div className="rounded-xl border border-surface-border bg-background px-4 py-4 space-y-2.5">
       <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
         Aperçu Google
       </p>
 
       {/* Site identity row */}
       <div className="flex items-center gap-2">
-        <div className="size-5 rounded-full bg-muted flex items-center justify-center shrink-0">
+        <div className="size-5 rounded-full bg-surface-subtle flex items-center justify-center shrink-0">
           <span className="text-[9px] font-bold text-muted-foreground">{SITE_NAME[0]}</span>
         </div>
         <div className="min-w-0">
@@ -129,8 +148,8 @@ function SocialPreview({
   const displayDesc = description.trim() || "—";
 
   return (
-    <div className="rounded-xl border border-border bg-background overflow-hidden">
-      <div className="aspect-[1.91/1] bg-muted relative overflow-hidden">
+    <div className="rounded-xl border border-surface-border bg-background overflow-hidden">
+      <div className="aspect-[1.91/1] bg-surface-subtle relative overflow-hidden">
         {imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={imageUrl} alt="" className="absolute inset-0 w-full h-full object-cover" />
@@ -189,7 +208,7 @@ function SeoChecklist({ items }: { items: SeoCheckItem[] }): JSX.Element {
 
   const borderBg =
     errorCount > 0
-      ? "border-border bg-muted/40"
+      ? "border-surface-border bg-surface-subtle/40"
       : warnCount > 0
         ? "border-amber-200/60 bg-amber-50/40 dark:border-amber-800/30 dark:bg-amber-950/10"
         : "border-emerald-200 bg-emerald-50/60 dark:border-emerald-800/40 dark:bg-emerald-950/20";
@@ -420,416 +439,419 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
       <input type="hidden" name="productId" value={product.product.id} />
 
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
-        <div className="w-full space-y-6 px-4 py-4 md:space-y-8 md:px-6 md:py-6 lg:mx-auto lg:max-w-4xl lg:px-5 xl:px-0 [@media(max-height:480px)]:space-y-4 [@media(max-height:480px)]:py-3">
-          <AdminFormMessage
-            tone={state.status === "success" ? "success" : "error"}
-            message={state.status !== "idle" ? state.message : null}
-          />
+        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3">
+          <div className="min-w-0 space-y-5 md:space-y-6">
+            <AdminFormMessage
+              tone={state.status === "success" ? "success" : "error"}
+              message={state.status !== "idle" ? state.message : null}
+            />
 
-          <div className="grid gap-3">
-            <SeoChecklist items={checklistItems} />
-            <SeoNextSteps items={checklistItems} />
+            <div className="divide-y divide-surface-border/40">
+              <section className="grid gap-6 py-6 first:pt-0">
+                <ProductSeoSectionIntro
+                  eyebrow="Visibilité Google"
+                  title="Référencement principal"
+                  description="Ces informations alimentent le résultat Google. Elles partent du produit existant, puis peuvent être affinées sans surcharger la fiche."
+                />
+
+                <div className="space-y-5 lg:grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-8 lg:space-y-0 lg:items-start">
+                  <SerpPreview title={titleValue} url={previewUrl} description={descValue} />
+
+                  <div className="space-y-4">
+                    <AdminFormField
+                      label="Titre pour Google"
+                      htmlFor="seo-title"
+                      error={state.fieldErrors.title}
+                    >
+                      <div className="space-y-1.5">
+                        <Input
+                          id="seo-title"
+                          name="title"
+                          value={titleValue}
+                          onChange={(e) => setTitleValue(e.target.value)}
+                          className="text-sm"
+                        />
+                        <div className="flex items-center justify-between gap-3">
+                          {!hasSavedTitle ? (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setTitleValue(buildSeoTitleTemplate(product.product.name, SITE_NAME))
+                              }
+                              className="text-[11px] text-muted-foreground underline-offset-2 hover:text-foreground hover:underline transition-colors"
+                            >
+                              ← Pré-remplir
+                            </button>
+                          ) : (
+                            <p className="text-[11px] text-muted-foreground leading-snug">
+                              {titleStatus === "error"
+                                ? "Conseil : ajoutez 1 détail utile (matière, usage, gamme)."
+                                : titleStatus === "warn"
+                                  ? "Conseil : retirez le superflu (gardez produit + 1 bénéfice)."
+                                  : "Conseil : nom clair, sans jargon."}
+                            </p>
+                          )}
+                          <AdminCharCounter
+                            value={titleValue}
+                            min={SEO_TITLE_MIN}
+                            max={SEO_TITLE_RECOMMENDED}
+                          />
+                        </div>
+                      </div>
+                    </AdminFormField>
+
+                    <AdminFormField
+                      label="Description pour Google"
+                      htmlFor="seo-description"
+                      error={state.fieldErrors.description}
+                    >
+                      <div className="space-y-1.5">
+                        <Textarea
+                          id="seo-description"
+                          name="description"
+                          value={descValue}
+                          onChange={(e) => setDescValue(e.target.value)}
+                          className="min-h-24 resize-y text-sm leading-relaxed"
+                        />
+                        <div className="flex items-center justify-between gap-3">
+                          {!hasSavedDesc ? (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setDescValue(
+                                  buildSeoDescTemplate(
+                                    product.product.shortDescription,
+                                    product.product.description
+                                  )
+                                )
+                              }
+                              className="text-[11px] text-muted-foreground underline-offset-2 hover:text-foreground hover:underline transition-colors"
+                            >
+                              ← Pré-remplir
+                            </button>
+                          ) : (
+                            <p className="text-[11px] text-muted-foreground leading-snug">
+                              {descStatus === "error"
+                                ? "Conseil : 1 phrase = ce que c'est + pour qui + bénéfice."
+                                : descStatus === "warn"
+                                  ? "Conseil : gardez l'essentiel, supprimez les détails secondaires."
+                                  : "Conseil : phrase simple, lisible, sans listes."}
+                            </p>
+                          )}
+                          <AdminCharCounter
+                            value={descValue}
+                            min={SEO_DESC_MIN}
+                            max={SEO_DESC_RECOMMENDED}
+                          />
+                        </div>
+                      </div>
+                    </AdminFormField>
+
+                    <AdminFormField
+                      label="Adresse de la page (URL canonique)"
+                      htmlFor="seo-canonical-path"
+                      error={state.fieldErrors.canonicalPath}
+                    >
+                      <div className="space-y-1.5">
+                        <Input
+                          id="seo-canonical-path"
+                          name="canonicalPath"
+                          defaultValue={product.seo.canonicalPath ?? ""}
+                          placeholder={product.seo.fallbackCanonicalPath}
+                          className="text-sm"
+                        />
+                        <p className="text-[11px] text-muted-foreground leading-snug">
+                          Laissez vide pour utiliser l'adresse standard :{" "}
+                          <span className="font-mono text-[10px]">
+                            {product.seo.fallbackCanonicalPath}
+                          </span>
+                          . Ne remplissez ce champ que si ce produit est accessible depuis
+                          plusieurs adresses différentes.
+                        </p>
+                      </div>
+                    </AdminFormField>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <AdminFormField
+                        label="Visibilité Google"
+                        htmlFor="seo-indexing-mode"
+                        error={state.fieldErrors.indexingMode}
+                      >
+                        <div className="space-y-1.5">
+                          <Select name="indexingMode" defaultValue={product.seo.indexingMode}>
+                            <SelectTrigger id="seo-indexing-mode" className="text-sm">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {SEO_INDEXING_MODE_VALUES.map((value) => (
+                                <SelectItem key={value} value={value}>
+                                  {SEO_INDEXING_MODE_LABELS[value]}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <p className="text-[11px] text-muted-foreground leading-snug">
+                            Laissez sur "Visible" sauf cas particulier.
+                          </p>
+                          {indexingStatus === "error" ? (
+                            <p className="rounded-lg border border-feedback-warning-border bg-feedback-warning-surface px-3 py-2 text-[11px] leading-snug text-feedback-warning-foreground">
+                              Cette page est actuellement masquée aux moteurs.
+                            </p>
+                          ) : null}
+                        </div>
+                      </AdminFormField>
+
+                      <AdminFormField
+                        label="Plan du site (Sitemap)"
+                        htmlFor="seo-sitemap-included"
+                        error={state.fieldErrors.sitemapIncluded}
+                      >
+                        <div className="space-y-1.5">
+                          <Select
+                            name="sitemapIncluded"
+                            defaultValue={product.seo.sitemapIncluded ? "true" : "false"}
+                          >
+                            <SelectTrigger id="seo-sitemap-included" className="text-sm">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="true">Inclus dans le plan du site</SelectItem>
+                              <SelectItem value="false">Exclu du plan du site</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <p className="text-[11px] text-muted-foreground leading-snug">
+                            Incluez cette page sauf si elle est provisoire ou masquée.
+                          </p>
+                          {sitemapStatus === "error" ? (
+                            <p className="rounded-lg border border-feedback-warning-border bg-feedback-warning-surface px-3 py-2 text-[11px] leading-snug text-feedback-warning-foreground">
+                              Cette page est exclue du plan du site.
+                            </p>
+                          ) : null}
+                        </div>
+                      </AdminFormField>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="grid gap-6 py-6">
+                <ProductSeoSectionIntro
+                  eyebrow="Partage social"
+                  title="Aperçus et réseaux"
+                  description="Par défaut, les textes Google sont repris au partage. Personnalisez uniquement si le ton ou l’image doivent changer."
+                />
+
+                <div className="space-y-5 lg:grid lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-8 lg:space-y-0 lg:items-start">
+                  <SocialPreview
+                    title={effectiveSocialTitle}
+                    description={effectiveSocialDesc}
+                    imageUrl={socialImageUrl}
+                  />
+
+                  <div className="space-y-3">
+                    <p className="text-[11px] text-muted-foreground leading-snug">
+                      Utilisez les mêmes messages que Google ou adaptez-les pour le partage.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowSocialFields((v) => !v)}
+                      className="text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline transition-colors"
+                    >
+                      {showSocialFields
+                        ? "Masquer les champs de personnalisation"
+                        : "Personnaliser le titre et la description"}
+                    </button>
+
+                    {showSocialFields ? (
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div className="grid gap-4">
+                          <p className="text-xs text-muted-foreground">Facebook, LinkedIn et autres réseaux</p>
+                          <AdminFormField
+                            label="Titre de partage"
+                            htmlFor="seo-og-title"
+                            error={state.fieldErrors.openGraphTitle}
+                          >
+                            <Input
+                              id="seo-og-title"
+                              name="openGraphTitle"
+                              defaultValue={product.seo.openGraphTitle}
+                              placeholder={product.seo.fallbackOpenGraphTitle}
+                              className="text-sm"
+                            />
+                          </AdminFormField>
+
+                          <AdminFormField
+                            label="Description de partage"
+                            htmlFor="seo-og-description"
+                            error={state.fieldErrors.openGraphDescription}
+                          >
+                            <Input
+                              id="seo-og-description"
+                              name="openGraphDescription"
+                              defaultValue={product.seo.openGraphDescription}
+                              placeholder={fallbackOpenGraphDescriptionPlain}
+                              className="text-sm"
+                            />
+                          </AdminFormField>
+                        </div>
+
+                        <div className="grid gap-4">
+                          <p className="text-xs text-muted-foreground">X (anciennement Twitter)</p>
+                          <AdminFormField
+                            label="Titre X"
+                            htmlFor="seo-twitter-title"
+                            error={state.fieldErrors.twitterTitle}
+                          >
+                            <Input
+                              id="seo-twitter-title"
+                              name="twitterTitle"
+                              defaultValue={product.seo.twitterTitle ?? ""}
+                              placeholder={product.seo.fallbackOpenGraphTitle}
+                              className="text-sm"
+                            />
+                          </AdminFormField>
+
+                          <AdminFormField
+                            label="Description X"
+                            htmlFor="seo-twitter-description"
+                            error={state.fieldErrors.twitterDescription}
+                          >
+                            <Input
+                              id="seo-twitter-description"
+                              name="twitterDescription"
+                              defaultValue={product.seo.twitterDescription ?? ""}
+                              placeholder={fallbackOpenGraphDescriptionPlain}
+                              className="text-sm"
+                            />
+                          </AdminFormField>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <input type="hidden" name="openGraphTitle" value={product.seo.openGraphTitle} />
+                        <input
+                          type="hidden"
+                          name="openGraphDescription"
+                          value={product.seo.openGraphDescription}
+                        />
+                        <input
+                          type="hidden"
+                          name="twitterTitle"
+                          value={product.seo.twitterTitle ?? ""}
+                        />
+                        <input
+                          type="hidden"
+                          name="twitterDescription"
+                          value={product.seo.twitterDescription ?? ""}
+                        />
+                      </>
+                    )}
+
+                    <input type="hidden" name="openGraphImageId" value={socialImageId ?? ""} />
+                    <input type="hidden" name="twitterImageId" value={socialImageId ?? ""} />
+
+                    <div className="grid gap-3 border-t border-surface-border pt-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                          Image de partage
+                        </p>
+                        <div className="flex items-center gap-3">
+                          {socialImageId !== null ? (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSocialImageId(null);
+                                setShowSocialImagePicker(false);
+                              }}
+                              className="text-[11px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                            >
+                              Supprimer
+                            </button>
+                          ) : null}
+                          {productOnlyImages.length > 0 ? (
+                            <button
+                              type="button"
+                              onClick={() => setShowSocialImagePicker((v) => !v)}
+                              className="text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+                            >
+                              {showSocialImagePicker
+                                ? "Fermer"
+                                : socialImageId !== null
+                                  ? "Modifier"
+                                  : "Choisir une image dédiée"}
+                            </button>
+                          ) : null}
+                        </div>
+                      </div>
+
+                      {socialImageId === null ? (
+                        <p className="text-[11px] leading-snug text-muted-foreground">
+                          {product.product.primaryImageUrl
+                            ? "L'image principale du produit sera utilisée pour le partage."
+                            : "Aucune image produit disponible. Ajoutez une image dans l'onglet Images."}
+                        </p>
+                      ) : null}
+
+                      {showSocialImagePicker && productOnlyImages.length > 0 ? (
+                        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                          {productOnlyImages.map((img) => {
+                            const selected = img.mediaAssetId === socialImageId;
+                            return (
+                              <button
+                                key={img.id}
+                                type="button"
+                                title={img.originalName ?? img.altText ?? "Image produit"}
+                                onClick={() => {
+                                  setSocialImageId(img.mediaAssetId);
+                                  setShowSocialImagePicker(false);
+                                }}
+                                className={[
+                                  "relative aspect-square overflow-hidden rounded-lg border transition-all",
+                                  selected
+                                    ? "border-primary ring-2 ring-primary/20"
+                                    : "border-surface-border hover:border-foreground/30",
+                                ].join(" ")}
+                              >
+                                {img.publicUrl ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img
+                                    src={img.publicUrl}
+                                    alt={img.altText ?? "Image produit"}
+                                    className="absolute inset-0 h-full w-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-surface-subtle text-[10px] text-muted-foreground">
+                                    Indisponible
+                                  </div>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
           </div>
 
-          <AdminFormSection
-            title="Référencement Google"
-            description="Ces informations apparaissent dans les résultats Google. Elles sont pré-remplies depuis votre produit — vous pouvez les personnaliser."
-          >
-            {/* Mobile: stack. lg+: preview left, fields right */}
-            <div className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-8 lg:space-y-0 lg:items-start">
-              <SerpPreview title={titleValue} url={previewUrl} description={descValue} />
+          <aside className="min-w-0 xl:sticky xl:top-6">
+            <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/80">
+              <section className="grid gap-4 px-5 py-5">
+                <ProductSeoSectionIntro
+                  eyebrow="Lecture rapide"
+                  title="État SEO"
+                  description="Conservez les signaux essentiels sous les yeux pendant l’édition au lieu de disperser l’attention dans le formulaire."
+                />
 
-              <div className="space-y-4">
-                <AdminFormField
-                  label="Titre pour Google"
-                  htmlFor="seo-title"
-                  error={state.fieldErrors.title}
-                >
-                  <div className="space-y-1.5">
-                    <Input
-                      id="seo-title"
-                      name="title"
-                      value={titleValue}
-                      onChange={(e) => setTitleValue(e.target.value)}
-                      className="text-sm"
-                    />
-                    <div className="flex items-center justify-between gap-3">
-                      {!hasSavedTitle ? (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setTitleValue(buildSeoTitleTemplate(product.product.name, SITE_NAME))
-                          }
-                          className="text-[11px] text-muted-foreground underline-offset-2 hover:underline hover:text-foreground transition-colors"
-                        >
-                          ← Pré-remplir
-                        </button>
-                      ) : (
-                        <p className="text-[11px] text-muted-foreground leading-snug">
-                          {titleStatus === "error"
-                            ? "Conseil : ajoutez 1 détail utile (matière, usage, gamme)."
-                            : titleStatus === "warn"
-                              ? "Conseil : retirez le superflu (gardez produit + 1 bénéfice)."
-                              : "Conseil : nom clair, sans jargon."
-                          }
-                        </p>
-                      )}
-                      <AdminCharCounter
-                        value={titleValue}
-                        min={SEO_TITLE_MIN}
-                        max={SEO_TITLE_RECOMMENDED}
-                      />
-                    </div>
-                  </div>
-                </AdminFormField>
-
-                <AdminFormField
-                  label="Description pour Google"
-                  htmlFor="seo-description"
-                  error={state.fieldErrors.description}
-                >
-                  <div className="space-y-1.5">
-                    <Textarea
-                      id="seo-description"
-                      name="description"
-                      value={descValue}
-                      onChange={(e) => setDescValue(e.target.value)}
-                      className="min-h-24 resize-y text-sm leading-relaxed"
-                    />
-                    <div className="flex items-center justify-between gap-3">
-                      {!hasSavedDesc ? (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setDescValue(
-                              buildSeoDescTemplate(
-                                product.product.shortDescription,
-                                product.product.description
-                              )
-                            )
-                          }
-                          className="text-[11px] text-muted-foreground underline-offset-2 hover:underline hover:text-foreground transition-colors"
-                        >
-                          ← Pré-remplir
-                        </button>
-                      ) : (
-                        <p className="text-[11px] text-muted-foreground leading-snug">
-                          {descStatus === "error"
-                            ? "Conseil : 1 phrase = ce que c'est + pour qui + bénéfice."
-                            : descStatus === "warn"
-                              ? "Conseil : gardez l'essentiel, supprimez les détails secondaires."
-                              : "Conseil : phrase simple, lisible, sans listes."
-                          }
-                        </p>
-                      )}
-                      <AdminCharCounter
-                        value={descValue}
-                        min={SEO_DESC_MIN}
-                        max={SEO_DESC_RECOMMENDED}
-                      />
-                    </div>
-                  </div>
-                </AdminFormField>
-
-                <AdminFormField
-                  label="Adresse de la page (URL canonique)"
-                  htmlFor="seo-canonical-path"
-                  error={state.fieldErrors.canonicalPath}
-                >
-                  <div className="space-y-1.5">
-                    <Input
-                      id="seo-canonical-path"
-                      name="canonicalPath"
-                      defaultValue={product.seo.canonicalPath ?? ""}
-                      placeholder={product.seo.fallbackCanonicalPath}
-                      className="text-sm"
-                    />
-                    <p className="text-[11px] text-muted-foreground leading-snug">
-                      Laissez vide pour utiliser l'adresse standard :{" "}
-                      <span className="font-mono text-[10px]">
-                        {product.seo.fallbackCanonicalPath}
-                      </span>
-                      . Ne remplissez ce champ que si ce produit est accessible depuis plusieurs
-                      adresses différentes.
-                    </p>
-                  </div>
-                </AdminFormField>
-
-                <div className="space-y-4">
-                  <AdminFormField
-                    label="Visibilité Google"
-                    htmlFor="seo-indexing-mode"
-                    error={state.fieldErrors.indexingMode}
-                  >
-                    <div className="space-y-1.5">
-                      <Select name="indexingMode" defaultValue={product.seo.indexingMode}>
-                        <SelectTrigger id="seo-indexing-mode" className="text-sm">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="INDEX_FOLLOW">
-                            Visible sur Google — liens suivis
-                          </SelectItem>
-                          <SelectItem value="INDEX_NOFOLLOW">
-                            Visible sur Google — liens non suivis
-                          </SelectItem>
-                          <SelectItem value="NOINDEX_FOLLOW">
-                            Masqué sur Google — liens suivis
-                          </SelectItem>
-                          <SelectItem value="NOINDEX_NOFOLLOW">
-                            Masqué sur Google — liens non suivis
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <p className="text-[11px] text-muted-foreground leading-snug">
-                        Choisissez si cette page peut apparaître dans les résultats de recherche.
-                        Laissez sur "Visible" sauf cas particulier.
-                      </p>
-                      {indexingStatus === "error" ? (
-                        <p className="rounded-lg border border-feedback-warning-border bg-feedback-warning-surface px-3 py-2 text-[11px] leading-snug text-feedback-warning-foreground">
-                          Cette page est actuellement masquée aux moteurs. Remettez sur “Visible”
-                          si vous voulez qu’elle apparaisse sur Google.
-                        </p>
-                      ) : null}
-                    </div>
-                  </AdminFormField>
-
-                  <AdminFormField
-                    label="Plan du site (Sitemap)"
-                    htmlFor="seo-sitemap-included"
-                    error={state.fieldErrors.sitemapIncluded}
-                  >
-                    <div className="space-y-1.5">
-                      <Select
-                        name="sitemapIncluded"
-                        defaultValue={product.seo.sitemapIncluded ? "true" : "false"}
-                      >
-                        <SelectTrigger id="seo-sitemap-included" className="text-sm">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="true">Inclus dans le plan du site</SelectItem>
-                          <SelectItem value="false">Exclu du plan du site</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <p className="text-[11px] text-muted-foreground leading-snug">
-                        Le plan du site aide Google à découvrir vos pages. Incluez cette page sauf
-                        si elle est masquée ou provisoire.
-                      </p>
-                      {sitemapStatus === "error" ? (
-                        <p className="rounded-lg border border-feedback-warning-border bg-feedback-warning-surface px-3 py-2 text-[11px] leading-snug text-feedback-warning-foreground">
-                          Cette page est exclue du plan du site. Gardez “Inclus” sauf cas
-                          provisoire.
-                        </p>
-                      ) : null}
-                    </div>
-                  </AdminFormField>
+                <div className="grid gap-3">
+                  <SeoChecklist items={checklistItems} />
+                  <SeoNextSteps items={checklistItems} />
                 </div>
-              </div>
+              </section>
             </div>
-          </AdminFormSection>
-
-          {/* Social sharing — single merged section, collapsible overrides */}
-          <AdminFormSection
-            title="Réseaux sociaux"
-            description="Par défaut, votre titre et description Google sont utilisés lors du partage. Vous pouvez les personnaliser si nécessaire."
-          >
-            {/* Mobile: stack. lg+: preview capped left, controls right */}
-            <div className="space-y-4 lg:grid lg:grid-cols-[minmax(0,280px)_1fr] lg:gap-8 lg:space-y-0 lg:items-start">
-              <SocialPreview
-                title={effectiveSocialTitle}
-                description={effectiveSocialDesc}
-                imageUrl={socialImageUrl}
-              />
-
-              <div className="space-y-3">
-                <p className="text-[11px] text-muted-foreground leading-snug">
-                  Vous pouvez reprendre les textes Google tels quels ou les adapter pour le partage
-                  sur les réseaux — c'est optionnel.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setShowSocialFields((v) => !v)}
-                  className="text-xs text-muted-foreground underline-offset-2 hover:underline hover:text-foreground transition-colors"
-                >
-                  {showSocialFields
-                    ? "Masquer les champs de personnalisation"
-                    : "Personnaliser le titre et la description"}
-                </button>
-
-                {showSocialFields ? (
-                  <div className="space-y-4">
-                    <p className="text-xs text-muted-foreground">
-                      Facebook, LinkedIn et autres réseaux
-                    </p>
-                    <AdminFormField
-                      label="Titre de partage"
-                      htmlFor="seo-og-title"
-                      error={state.fieldErrors.openGraphTitle}
-                    >
-                      <Input
-                        id="seo-og-title"
-                        name="openGraphTitle"
-                        defaultValue={product.seo.openGraphTitle}
-                        placeholder={product.seo.fallbackOpenGraphTitle}
-                        className="text-sm"
-                      />
-                    </AdminFormField>
-
-                    <AdminFormField
-                      label="Description de partage"
-                      htmlFor="seo-og-description"
-                      error={state.fieldErrors.openGraphDescription}
-                    >
-                      <Input
-                        id="seo-og-description"
-                        name="openGraphDescription"
-                        defaultValue={product.seo.openGraphDescription}
-                        placeholder={fallbackOpenGraphDescriptionPlain}
-                        className="text-sm"
-                      />
-                    </AdminFormField>
-
-                    <p className="text-xs text-muted-foreground pt-2">X (anciennement Twitter)</p>
-
-                    <AdminFormField
-                      label="Titre X"
-                      htmlFor="seo-twitter-title"
-                      error={state.fieldErrors.twitterTitle}
-                    >
-                      <Input
-                        id="seo-twitter-title"
-                        name="twitterTitle"
-                        defaultValue={product.seo.twitterTitle ?? ""}
-                        placeholder={product.seo.fallbackOpenGraphTitle}
-                        className="text-sm"
-                      />
-                    </AdminFormField>
-
-                    <AdminFormField
-                      label="Description X"
-                      htmlFor="seo-twitter-description"
-                      error={state.fieldErrors.twitterDescription}
-                    >
-                      <Input
-                        id="seo-twitter-description"
-                        name="twitterDescription"
-                        defaultValue={product.seo.twitterDescription ?? ""}
-                        placeholder={fallbackOpenGraphDescriptionPlain}
-                        className="text-sm"
-                      />
-                    </AdminFormField>
-                  </div>
-                ) : (
-                  /* When collapsed: preserve saved values in hidden inputs so they are not lost on save */
-                  <>
-                    <input type="hidden" name="openGraphTitle" value={product.seo.openGraphTitle} />
-                    <input
-                      type="hidden"
-                      name="openGraphDescription"
-                      value={product.seo.openGraphDescription}
-                    />
-                    <input
-                      type="hidden"
-                      name="twitterTitle"
-                      value={product.seo.twitterTitle ?? ""}
-                    />
-                    <input
-                      type="hidden"
-                      name="twitterDescription"
-                      value={product.seo.twitterDescription ?? ""}
-                    />
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* Social image — single ID drives both OG and Twitter fields */}
-            <input type="hidden" name="openGraphImageId" value={socialImageId ?? ""} />
-            <input type="hidden" name="twitterImageId" value={socialImageId ?? ""} />
-
-            {/* Social image picker */}
-            <div className="space-y-3 border-t border-border/40 pt-4">
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-                  Image de partage
-                </p>
-                <div className="flex items-center gap-3">
-                  {socialImageId !== null ? (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSocialImageId(null);
-                        setShowSocialImagePicker(false);
-                      }}
-                      className="text-[11px] text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
-                    >
-                      Supprimer
-                    </button>
-                  ) : null}
-                  {productOnlyImages.length > 0 ? (
-                    <button
-                      type="button"
-                      onClick={() => setShowSocialImagePicker((v) => !v)}
-                      className="text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
-                    >
-                      {showSocialImagePicker
-                        ? "Fermer"
-                        : socialImageId !== null
-                          ? "Modifier"
-                          : "Choisir une image dédiée"}
-                    </button>
-                  ) : null}
-                </div>
-              </div>
-
-              {socialImageId === null ? (
-                <p className="text-[11px] leading-snug text-muted-foreground">
-                  {product.product.primaryImageUrl
-                    ? "L'image principale du produit sera utilisée pour le partage sur les réseaux sociaux."
-                    : "Aucune image produit disponible. Ajoutez une image dans l'onglet Images."}
-                </p>
-              ) : null}
-
-              {showSocialImagePicker && productOnlyImages.length > 0 ? (
-                <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                  {productOnlyImages.map((img) => {
-                    const selected = img.mediaAssetId === socialImageId;
-                    return (
-                      <button
-                        key={img.id}
-                        type="button"
-                        title={img.originalName ?? img.altText ?? "Image produit"}
-                        onClick={() => {
-                          setSocialImageId(img.mediaAssetId);
-                          setShowSocialImagePicker(false);
-                        }}
-                        className={[
-                          "relative aspect-square overflow-hidden rounded-lg border transition-all",
-                          selected
-                            ? "border-primary ring-2 ring-primary/20"
-                            : "border-border hover:border-foreground/30",
-                        ].join(" ")}
-                      >
-                        {img.publicUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={img.publicUrl}
-                            alt={img.altText ?? "Image produit"}
-                            className="absolute inset-0 h-full w-full object-cover"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center bg-muted text-[10px] text-muted-foreground">
-                            Indisponible
-                          </div>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : null}
-            </div>
-          </AdminFormSection>
+          </aside>
         </div>
       </div>
 
@@ -856,7 +878,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
           type="submit"
           variant="outline"
           size="xs"
-          className="h-8 w-fit rounded-full border-border px-4 text-foreground shadow-none sm:flex-none lg:h-9"
+          className="h-8 w-fit rounded-full border-surface-border px-4 text-foreground shadow-none sm:flex-none lg:h-9"
           disabled={pending}
         >
           {pending ? "Mise à jour…" : "Enregistrer"}

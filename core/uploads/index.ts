@@ -1,7 +1,11 @@
 //core/uploads/index.ts
+import "server-only";
+
 import { mkdir } from "node:fs/promises";
-import path from "node:path";
-import { serverEnv } from "@/core/config/env/server";
+
+import { getUploadsDirectory } from "./runtime";
+
+export { getUploadsDirectory, getUploadsPublicPath } from "./runtime";
 
 export async function ensureUploadsDirectory() {
   const directory = getUploadsDirectory();
@@ -9,14 +13,6 @@ export async function ensureUploadsDirectory() {
   await mkdir(directory, { recursive: true });
 
   return directory;
-}
-
-export function getUploadsDirectory() {
-  return path.resolve(process.cwd(), serverEnv.uploadsDir);
-}
-
-export function getUploadsPublicPath() {
-  return `/${serverEnv.uploadsDir.replace(/^public\//, "").replaceAll("\\", "/")}`;
 }
 
 export {

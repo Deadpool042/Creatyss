@@ -1,4 +1,5 @@
-import { CategoryStatus, type SeoIndexingMode } from "@/prisma-generated/client";
+import { type SeoIndexingMode } from "@/entities/seo";
+import { mapCategoryLifecycleStatusToPrismaStatus } from "@/entities/category";
 
 import { withTransaction } from "@/core/db";
 import { AdminCategoryServiceError } from "../types";
@@ -68,7 +69,7 @@ export async function createAdminCategory(
         name: input.name,
         shortDescription: null,
         description: input.description,
-        status: CategoryStatus.DRAFT,
+        status: mapCategoryLifecycleStatusToPrismaStatus("draft"),
         parentId: input.parentId,
         primaryImageId: input.primaryImageId,
         isFeatured: input.isFeatured,

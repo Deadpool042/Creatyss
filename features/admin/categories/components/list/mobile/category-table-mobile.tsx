@@ -7,12 +7,12 @@ import { useSearchParams } from "next/navigation";
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import { AdminStatusBadge } from "@/components/admin/shared/admin-status-badge";
 import {
-  AdminConfigMobileFeed,
-  AdminCountValue,
-  AdminMobileInfoTile,
-  AdminMobileLinkedCard,
   parseAdminLoadMoreItems,
-} from "@/components/admin/tables";
+  AdminConfigMobileFeed,
+} from "@/components/admin/tables/mobile/admin-config-mobile-feed";
+import { AdminCountValue } from "@/components/admin/tables/columns/admin-count-value";
+import { AdminMobileInfoTile } from "@/components/admin/tables/mobile/admin-mobile-info-tile";
+import { AdminMobileLinkedCard } from "@/components/admin/tables/mobile/admin-mobile-linked-card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {

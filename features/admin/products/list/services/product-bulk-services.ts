@@ -1,8 +1,7 @@
 import { withTransaction } from "@/core/db";
-import { ProductStatus } from "@/prisma-generated/client";
 import {
   deleteProductCatalogByIdInTx,
-  mapProductStatusToPrismaStatus,
+  mapProductLifecycleStatusToPrismaStatus,
 } from "@/features/admin/products/services";
 import type {
   BulkArchiveProductsInput,
@@ -61,7 +60,7 @@ export async function bulkRestoreProducts(
       },
       data: {
         archivedAt: null,
-        status: ProductStatus.DRAFT,
+        status: mapProductLifecycleStatusToPrismaStatus("draft"),
         publishedAt: null,
       },
     });
@@ -147,7 +146,7 @@ export async function bulkUpdateProductStatus(
   input: BulkUpdateProductStatusInput
 ): Promise<BulkUpdateProductStatusServiceResult> {
   return withTransaction(async (tx) => {
-    const prismaStatus = mapProductStatusToPrismaStatus(input.status);
+    const prismaStatus = mapProductLifecycleStatusToPrismaStatus(input.status);
 
     const result = await tx.product.updateMany({
       where: {

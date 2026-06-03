@@ -1,4 +1,9 @@
-export type ProductVariantStatus = "draft" | "published";
+import {
+  PRODUCT_PUBLICATION_STATUS_VALUES,
+  type ProductPublicationStatus,
+} from "./product-publication-status";
+
+export type ProductVariantStatus = ProductPublicationStatus;
 
 export type ValidatedProductVariantInput = {
   name: string;
@@ -118,7 +123,7 @@ function normalizeStockQuantity(
 }
 
 function isVariantStatus(value: string | null): value is ProductVariantStatus {
-  return value === "draft" || value === "published";
+  return PRODUCT_PUBLICATION_STATUS_VALUES.includes(value as ProductPublicationStatus);
 }
 
 export function validateProductVariantInput(

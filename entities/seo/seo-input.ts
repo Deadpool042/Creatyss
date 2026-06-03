@@ -1,8 +1,4 @@
-export type SeoIndexingMode =
-  | "INDEX_FOLLOW"
-  | "INDEX_NOFOLLOW"
-  | "NOINDEX_FOLLOW"
-  | "NOINDEX_NOFOLLOW";
+import type { SeoIndexingMode } from "./seo-indexing-mode";
 
 export type SeoInput = {
   metaTitle: string;

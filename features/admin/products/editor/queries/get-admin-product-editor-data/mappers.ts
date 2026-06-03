@@ -2,6 +2,11 @@ import {
   mapAdminProductStatus,
   mapAdminProductVariantStatus,
 } from "@/features/admin/products/mappers";
+import {
+  mapPrismaRoleToEditorRole,
+  mapPrismaSubjectTypeToEditorSubjectType,
+} from "@/features/admin/products/editor/services/shared/relation-mappers";
+import { SEO_INDEXING_MODE_DEFAULT } from "@/entities/seo";
 
 import type {
   AdminProductEditorData,
@@ -31,21 +36,6 @@ function mapAvailabilityStatus(
       return "archived";
     default:
       return "unavailable";
-  }
-}
-
-function mapMediaRole(role: string): AdminProductImageItem["role"] {
-  switch (role) {
-    case "PRIMARY":
-      return "primary";
-    case "COVER":
-      return "cover";
-    case "THUMBNAIL":
-      return "thumbnail";
-    case "OTHER":
-      return "other";
-    default:
-      return "gallery";
   }
 }
 
@@ -125,9 +115,9 @@ function mapAdminProductImages(
   return mediaReferences.map((reference) => ({
     id: reference.id,
     mediaAssetId: reference.assetId,
-    subjectType: reference.subjectType === "PRODUCT_VARIANT" ? "product_variant" : "product",
+    subjectType: mapPrismaSubjectTypeToEditorSubjectType(reference.subjectType),
     subjectId: reference.subjectId,
-    role: mapMediaRole(reference.role),
+    role: mapPrismaRoleToEditorRole(reference.role),
     sortOrder: reference.sortOrder,
     isPrimary: reference.assetId === primaryImageId,
     publicUrl: reference.asset.publicUrl,
@@ -221,7 +211,7 @@ export function mapProductEditorData(input: {
       title: input.seoMetadata?.metaTitle ?? "",
       description: input.seoMetadata?.metaDescription ?? "",
       canonicalPath: input.seoMetadata?.canonicalPath ?? null,
-      indexingMode: input.seoMetadata?.indexingMode ?? "INDEX_FOLLOW",
+      indexingMode: input.seoMetadata?.indexingMode ?? SEO_INDEXING_MODE_DEFAULT,
       sitemapIncluded: input.seoMetadata?.sitemapIncluded ?? true,
       openGraphTitle: input.seoMetadata?.openGraphTitle ?? "",
       openGraphDescription: input.seoMetadata?.openGraphDescription ?? "",

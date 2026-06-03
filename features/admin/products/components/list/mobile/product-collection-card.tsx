@@ -2,19 +2,19 @@
 
 import type { JSX } from "react";
 
-import { AdminMobileInfoTile, AdminMobileLinkedCard } from "@/components/admin/tables";
+import { AdminMobileInfoTile } from "@/components/admin/tables/mobile/admin-mobile-info-tile";
+import { AdminMobileLinkedCard } from "@/components/admin/tables/mobile/admin-mobile-linked-card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PRODUCT_CARD_COPY, PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
+import { buildAdminProductEditPath } from "@/features/admin/products/navigation";
 import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
 import { cn } from "@/lib/utils";
 import { AdminProductsCategoryCell } from "../admin-products-category-cell";
 import { AdminProductsPriceCell } from "../admin-products-price-cell";
-import {
-  ProductCardActionMenu,
-  ProductCardBadges,
-  ProductCardFeaturedControl,
-  ProductCardImage,
-} from "./cards";
+import { ProductCardActionMenu } from "./cards/product-card-action-menu";
+import { ProductCardBadges } from "./cards/product-card-badges";
+import { ProductCardFeaturedControl } from "./cards/product-card-featured-control";
+import { ProductCardImage } from "./cards/product-card-image";
 
 type ProductCollectionCardProps = {
   product: ProductTableItem;
@@ -37,7 +37,7 @@ export function ProductCollectionCard({
 }: ProductCollectionCardProps): JSX.Element {
   return (
     <AdminMobileLinkedCard
-      href={`/admin/products/${product.slug}/edit`}
+      href={buildAdminProductEditPath(product.slug)}
       ariaLabel={PRODUCT_CARD_COPY.selectionAriaLabel(product.name)}
       className={cn(
         isSelected && "border-surface-border-strong bg-interactive-selected/20",

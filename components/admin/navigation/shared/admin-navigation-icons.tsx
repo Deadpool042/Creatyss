@@ -4,18 +4,24 @@ import {
   BadgePercent,
   BarChart3,
   CreditCard,
+  Euro,
   FileText,
   FolderTree,
   HeartPulse,
   House,
   ImageIcon,
+  Key,
   LayoutGrid,
+  Link,
   Mail,
   Megaphone,
   Package,
   Search,
   Settings,
+  Shield,
   ShoppingCart,
+  Tag,
+  Telescope,
   Truck,
   Users,
   Wrench,
@@ -39,6 +45,8 @@ export function renderAdminNavigationIcon(
       return <BarChart3 {...props} />;
     case "creditCard":
       return <CreditCard {...props} />;
+    case "euro":
+      return <Euro {...props} />;
     case "fileText":
       return <FileText {...props} />;
     case "folderTree":
@@ -49,8 +57,12 @@ export function renderAdminNavigationIcon(
       return <House {...props} />;
     case "imageIcon":
       return <ImageIcon {...props} />;
+    case "key":
+      return <Key {...props} />;
     case "layoutGrid":
       return <LayoutGrid {...props} />;
+    case "link":
+      return <Link {...props} />;
     case "mail":
       return <Mail {...props} />;
     case "megaphone":
@@ -61,8 +73,14 @@ export function renderAdminNavigationIcon(
       return <Search {...props} />;
     case "settings":
       return <Settings {...props} />;
+    case "shield":
+      return <Shield {...props} />;
     case "shoppingCart":
       return <ShoppingCart {...props} />;
+    case "tag":
+      return <Tag {...props} />;
+    case "telescope":
+      return <Telescope {...props} />;
     case "truck":
       return <Truck {...props} />;
     case "users":

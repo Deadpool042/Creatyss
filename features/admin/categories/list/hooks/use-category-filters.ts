@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
-import { useAdminListUrlState } from "@/components/admin/tables";
+import { useAdminListUrlState } from "@/components/admin/tables/state/use-admin-list-url-state";
 import {
   formatAdminListArrayParam,
   formatAdminListDefaultParam,
@@ -38,9 +38,9 @@ export type CategoryFiltersState = {
   reset: () => void;
 };
 
-const VALID_STATUSES = CATEGORY_FILTER_VALID_VALUES.statuses as AdminCategoryStatus[];
-const VALID_FEATURED = CATEGORY_FILTER_VALID_VALUES.featured as CategoryFeaturedFilter[];
-const VALID_SORTS = CATEGORY_FILTER_VALID_VALUES.sorts as CategorySortOption[];
+const VALID_STATUSES = CATEGORY_FILTER_VALID_VALUES.statuses;
+const VALID_FEATURED = CATEGORY_FILTER_VALID_VALUES.featured;
+const VALID_SORTS = CATEGORY_FILTER_VALID_VALUES.sorts;
 const VALID_PER_PAGE = CATEGORY_FILTER_VALID_VALUES.perPage;
 
 export function useCategoryFilters(): CategoryFiltersState {
@@ -103,6 +103,7 @@ export function useCategoryFilters(): CategoryFiltersState {
     (value: number) =>
       pushParams({
         perPage: formatAdminListDefaultParam(value, CATEGORY_FILTER_VALID_VALUES.perPageDefault),
+        page: null,
       }),
     [pushParams]
   );

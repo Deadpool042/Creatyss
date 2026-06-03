@@ -28,7 +28,7 @@ export function AppBreadcrumbs({ items, className }: AppBreadcrumbsProps): JSX.E
   return (
     <div className={className}>
       <Breadcrumb>
-        <BreadcrumbList className="flex-wrap gap-y-1">
+        <BreadcrumbList className="min-w-max flex-nowrap gap-y-1 text-[11px] text-text-muted-strong sm:flex-wrap [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:text-[10px]">
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
 
@@ -44,7 +44,9 @@ export function AppBreadcrumbs({ items, className }: AppBreadcrumbsProps): JSX.E
                   )}
                 </BreadcrumbItem>
 
-                {!isLast ? <BreadcrumbSeparator /> : null}
+                {!isLast ? (
+                  <BreadcrumbSeparator className="text-text-muted-soft/70 [&>svg]:size-3" />
+                ) : null}
               </Fragment>
             );
           })}

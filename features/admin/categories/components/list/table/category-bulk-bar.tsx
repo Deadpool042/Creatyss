@@ -2,7 +2,7 @@
 
 import { Archive } from "lucide-react";
 
-import { AdminDataTableSelectionFloatingBar } from "@/components/admin/tables";
+import { AdminDataTableSelectionFloatingBar } from "@/components/admin/tables/admin-data-table-selection-floating-bar";
 import { Button } from "@/components/ui/button";
 import { CATEGORY_LIST_COPY } from "@/features/admin/categories/config";
 

@@ -4,13 +4,17 @@ import Link from "next/link";
 import type { JSX } from "react";
 import { Eye, Pencil, RotateCcw, Trash2 } from "lucide-react";
 
-import { AdminRowActionsMenu } from "@/components/admin/tables";
+import { AdminRowActionsMenu } from "@/components/admin/tables/actions/admin-row-actions-menu";
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { PRODUCT_ROW_ACTIONS_COPY } from "@/features/admin/products/config";
+import {
+  buildAdminProductEditPath,
+  buildAdminProductPreviewPath,
+} from "@/features/admin/products/navigation";
 import type { ProductListView } from "@/features/admin/products/list/types";
 import { useProductLifecycleActionState } from "@/features/admin/products/list/hooks";
 import { ProductLifecycleActionDialogSet } from "../product-lifecycle-action-dialogs";
@@ -34,12 +38,12 @@ const productRowActions: ProductRowAction[] = [
   {
     label: PRODUCT_ROW_ACTIONS_COPY.edit,
     icon: Pencil,
-    href: (slug: string) => `/admin/products/${slug}/edit`,
+    href: buildAdminProductEditPath,
   },
   {
     label: PRODUCT_ROW_ACTIONS_COPY.preview,
     icon: Eye,
-    href: (slug: string) => `/admin/products/${slug}/preview`,
+    href: buildAdminProductPreviewPath,
   },
 ];
 

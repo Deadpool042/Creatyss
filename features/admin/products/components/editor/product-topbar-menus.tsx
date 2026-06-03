@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { PRODUCT_EDITOR_MENUS_COPY } from "@/features/admin/products/config";
 import { useArchivedProductMutations } from "@/features/admin/products/editor/hooks";
+import { ADMIN_PRODUCTS_CREATE_PATH } from "@/features/admin/products/navigation";
+import type { DeleteProductInput, DeleteProductResult } from "@/features/admin/products/editor/types";
 import { DeleteProductButton } from "./product-archived-actions";
 
 type ProductEditorTopbarMenuProps = Readonly<{
@@ -27,6 +29,7 @@ type ProductEditorTopbarMenuProps = Readonly<{
   productSlug: string;
   isArchived?: boolean;
   canCreateVariant?: boolean;
+  onDelete?: (input: DeleteProductInput) => Promise<DeleteProductResult>;
   onCreateVariant?: () => void;
   onOpenLibrary?: () => void;
   onOpenUpload?: () => void;
@@ -34,12 +37,14 @@ type ProductEditorTopbarMenuProps = Readonly<{
 
 type ProductMediaTopbarMenuProps = Readonly<{
   productId: string;
+  onDelete?: (input: DeleteProductInput) => Promise<DeleteProductResult>;
   onOpenLibrary: () => void;
   onOpenUpload: () => void;
 }>;
 
 type ProductVariantTopbarMenuProps = Readonly<{
   productId: string;
+  onDelete?: (input: DeleteProductInput) => Promise<DeleteProductResult>;
   onCreateVariant: () => void;
 }>;
 
@@ -72,6 +77,7 @@ export function ProductEditorTopbarMenu({
   productSlug,
   isArchived = false,
   canCreateVariant = false,
+  onDelete,
   onCreateVariant,
   onOpenLibrary,
   onOpenUpload,
@@ -89,7 +95,7 @@ export function ProductEditorTopbarMenu({
       <DropdownMenuLabel inset>{PRODUCT_EDITOR_MENUS_COPY.editorMenuAriaLabel}</DropdownMenuLabel>
 
       <DropdownMenuItem asChild>
-        <Link href="/admin/products/new">
+        <Link href={ADMIN_PRODUCTS_CREATE_PATH}>
           <TopbarMenuActionItem icon={Plus}>
             {PRODUCT_EDITOR_MENUS_COPY.newProductLabel}
           </TopbarMenuActionItem>
@@ -173,9 +179,10 @@ export function ProductEditorTopbarMenu({
             </TopbarMenuActionItem>
           </DropdownMenuItem>
         </>
-      ) : (
+      ) : onDelete ? (
         <DeleteProductButton
           productId={productId}
+          onDelete={onDelete}
           trigger={
             <DropdownMenuItem
               onSelect={(event) => {
@@ -188,13 +195,14 @@ export function ProductEditorTopbarMenu({
             </DropdownMenuItem>
           }
         />
-      )}
+      ) : null}
     </AdminTopbarOverflowMenu>
   );
 }
 
 export function ProductMediaTopbarMenu({
   productId,
+  onDelete,
   onOpenLibrary,
   onOpenUpload,
 }: ProductMediaTopbarMenuProps): JSX.Element {
@@ -225,7 +233,7 @@ export function ProductMediaTopbarMenu({
       <DropdownMenuSeparator />
 
       <DropdownMenuItem asChild>
-        <Link href="/admin/products/new">
+        <Link href={ADMIN_PRODUCTS_CREATE_PATH}>
           <TopbarMenuActionItem icon={Plus}>
             {PRODUCT_EDITOR_MENUS_COPY.newProductLabel}
           </TopbarMenuActionItem>
@@ -234,26 +242,30 @@ export function ProductMediaTopbarMenu({
 
       <DropdownMenuSeparator />
 
-      <DeleteProductButton
-        productId={productId}
-        trigger={
-          <DropdownMenuItem
-            onSelect={(event) => {
-              event.preventDefault();
-            }}
-          >
-            <TopbarMenuActionItem icon={Trash2} destructive>
-              {PRODUCT_EDITOR_MENUS_COPY.deleteProductLabel}
-            </TopbarMenuActionItem>
-          </DropdownMenuItem>
-        }
-      />
+      {onDelete ? (
+        <DeleteProductButton
+          productId={productId}
+          onDelete={onDelete}
+          trigger={
+            <DropdownMenuItem
+              onSelect={(event) => {
+                event.preventDefault();
+              }}
+            >
+              <TopbarMenuActionItem icon={Trash2} destructive>
+                {PRODUCT_EDITOR_MENUS_COPY.deleteProductLabel}
+              </TopbarMenuActionItem>
+            </DropdownMenuItem>
+          }
+        />
+      ) : null}
     </AdminTopbarOverflowMenu>
   );
 }
 
 export function ProductVariantTopbarMenu({
   productId,
+  onDelete,
   onCreateVariant,
 }: ProductVariantTopbarMenuProps): JSX.Element {
   return (
@@ -272,7 +284,7 @@ export function ProductVariantTopbarMenu({
       <DropdownMenuSeparator />
 
       <DropdownMenuItem asChild>
-        <Link href="/admin/products/new">
+        <Link href={ADMIN_PRODUCTS_CREATE_PATH}>
           <TopbarMenuActionItem icon={Plus}>
             {PRODUCT_EDITOR_MENUS_COPY.newProductLabel}
           </TopbarMenuActionItem>
@@ -281,20 +293,23 @@ export function ProductVariantTopbarMenu({
 
       <DropdownMenuSeparator />
 
-      <DeleteProductButton
-        productId={productId}
-        trigger={
-          <DropdownMenuItem
-            onSelect={(event) => {
-              event.preventDefault();
-            }}
-          >
-            <TopbarMenuActionItem icon={Trash2} destructive>
-              {PRODUCT_EDITOR_MENUS_COPY.deleteProductLabel}
-            </TopbarMenuActionItem>
-          </DropdownMenuItem>
-        }
-      />
+      {onDelete ? (
+        <DeleteProductButton
+          productId={productId}
+          onDelete={onDelete}
+          trigger={
+            <DropdownMenuItem
+              onSelect={(event) => {
+                event.preventDefault();
+              }}
+            >
+              <TopbarMenuActionItem icon={Trash2} destructive>
+                {PRODUCT_EDITOR_MENUS_COPY.deleteProductLabel}
+              </TopbarMenuActionItem>
+            </DropdownMenuItem>
+          }
+        />
+      ) : null}
     </AdminTopbarOverflowMenu>
   );
 }

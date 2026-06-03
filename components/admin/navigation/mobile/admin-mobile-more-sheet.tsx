@@ -40,7 +40,7 @@ export function AdminMobileMoreSheet({ pathname, items }: AdminMobileMoreSheetPr
               "flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl px-3 py-1.5 text-[11px] transition-colors [@media(max-height:480px)]:px-2 [@media(max-height:480px)]:py-1 [@media(max-height:480px)]:text-[9px]",
               isMoreActive
                 ? "bg-interactive-selected text-foreground"
-                : "text-muted-foreground hover:bg-interactive-hover hover:text-foreground"
+                : "text-text-muted-strong hover:bg-interactive-hover hover:text-foreground"
             )}
           >
             <Menu
@@ -62,7 +62,7 @@ export function AdminMobileMoreSheet({ pathname, items }: AdminMobileMoreSheetPr
         className="z-50 w-[min(18rem,calc(100vw-1rem))] rounded-2xl border border-surface-border bg-popover p-2 shadow-overlay ring-0"
       >
         <div className="mb-1 px-2 py-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-text-muted-strong">
             Plus
           </p>
         </div>
@@ -86,7 +86,7 @@ export function AdminMobileMoreSheet({ pathname, items }: AdminMobileMoreSheetPr
                       "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border",
                       active
                         ? "border-surface-border-strong bg-interactive-selected text-foreground"
-                        : "border-surface-border bg-surface-panel text-muted-foreground"
+                        : "border-surface-border bg-surface-panel text-text-muted-strong"
                     )}
                   >
                     {renderAdminNavigationIcon(item.iconKey, { className: "h-4 w-4" })}
@@ -97,12 +97,12 @@ export function AdminMobileMoreSheet({ pathname, items }: AdminMobileMoreSheetPr
                   </span>
 
                   {item.badge ? (
-                    <span className="inline-flex h-5 items-center rounded-full border border-surface-border bg-surface-panel-soft px-2 text-[10px] font-medium leading-none text-muted-foreground">
+                    <span className="inline-flex h-5 items-center rounded-full border border-surface-border bg-surface-panel-soft px-2 text-[10px] font-medium leading-none text-text-muted-strong">
                       {item.badge.label}
                     </span>
                   ) : null}
 
-                  <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <ChevronRight className="h-4 w-4 shrink-0 text-text-muted-soft" />
                 </Link>
               </DropdownMenuItem>
             );

@@ -1,3 +1,5 @@
+import "server-only";
+
 import type { Prisma } from "@/prisma-generated/client";
 import { localUploadExists } from "@/core/uploads/check-local-upload";
 import {

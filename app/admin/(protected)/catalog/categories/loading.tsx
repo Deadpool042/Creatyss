@@ -1,5 +1,6 @@
 import type React from "react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import {
   ADMIN_CATEGORIES_LIST_PATH,
@@ -157,20 +158,27 @@ function TableSkeletonMobile() {
 export default function AdminCategoriesLoading() {
   return (
     <AdminPageShell
-      headerVisibility="desktop"
-      headerDensity="compact"
-      eyebrow={CATEGORY_LIST_PAGE_COPY.eyebrow}
       title={CATEGORY_LIST_PAGE_COPY.title}
-      description={CATEGORY_LIST_PAGE_COPY.description}
-      scrollMode="nested"
+      scrollMode="area"
       topbarAction={<CategoryCreateTopbarMenu />}
       navigation={{ label: CATEGORY_NAVIGATION_COPY.homeLabel, href: "/admin" }}
-      breadcrumbs={[
-        { label: CATEGORY_NAVIGATION_COPY.homeLabel, href: "/admin" },
-        { label: CATEGORY_NAVIGATION_COPY.categoriesLabel, href: ADMIN_CATEGORIES_LIST_PATH },
-      ]}
-      viewportClassName="!h-full"
-      contentClassName="min-h-0 flex-1 overflow-hidden px-3 pt-14 pb-4 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 lg:px-6 lg:pb-6 lg:pt-0"
+      header={
+        <AdminPageHeader
+          className="hidden lg:block"
+          compact
+          eyebrow={CATEGORY_LIST_PAGE_COPY.eyebrow}
+          title={CATEGORY_LIST_PAGE_COPY.title}
+          description={CATEGORY_LIST_PAGE_COPY.description}
+          breadcrumbs={[
+            { label: CATEGORY_NAVIGATION_COPY.homeLabel, href: "/admin" },
+            {
+              label: CATEGORY_NAVIGATION_COPY.categoriesLabel,
+              href: ADMIN_CATEGORIES_LIST_PATH,
+            },
+          ]}
+        />
+      }
+      contentClassName="min-h-full px-3 pt-14 pb-4 [@media(max-height:480px)]:px-2.5 [@media(max-height:480px)]:pt-12 lg:px-6 lg:pb-6 lg:pt-0"
     >
       <TableSkeletonDesktop />
       <TableSkeletonMobile />

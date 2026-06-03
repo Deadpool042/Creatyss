@@ -3,11 +3,19 @@ import type {
   // ProductFeaturedFilter,
 } from "./admin-product-card-item.types";
 import type { AdminProductFeedItem } from "./product-feed.types";
-// import type { ProductSortOption } from "./product-table.types";
+import type {
+  ProductFilterImageOption,
+  ProductFilterStockOption,
+  ProductFilterVariantOption,
+  ProductFeaturedFilterValue,
+  ProductListView,
+  ProductSortOption,
+  ProductStatusCounts as ProductTableStatusCounts,
+} from "./product-table.types";
 
-export type ProductSortOption = "name-asc" | "name-desc" | "updated-asc" | "updated-desc";
-export type ProductFeaturedFilter = "featured" | "standard";
-export type AdminProductsListView = "active" | "trash";
+export type ProductFeaturedFilter = ProductFeaturedFilterValue;
+export type AdminProductsListView = ProductListView;
+export type ProductStatusCounts = ProductTableStatusCounts;
 
 // ─── Admin product list item ──────────────────────────────────────────────────
 
@@ -23,21 +31,16 @@ export type ProductListFilters = {
   search?: string;
   status?: AdminProductStatus[];
   featured?: ProductFeaturedFilter[];
+  image?: ProductFilterImageOption;
+  stock?: ProductFilterStockOption;
+  variant?: ProductFilterVariantOption;
   sort?: ProductSortOption;
   categorySlugs?: string[];
-  productSlugs?: string[];
   page?: number;
   perPage?: number;
 };
 
 export type ProductListUrlFilters = ProductListFilters;
-
-export type ProductStatusCounts = {
-  all: number;
-  active: number;
-  draft: number;
-  inactive: number;
-};
 
 export type ProductListResult = {
   items: AdminProductFeedItem[];

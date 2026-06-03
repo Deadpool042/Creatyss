@@ -12,7 +12,7 @@ type OrderDetailShippingAddressCardProps = Readonly<{
 
 export function OrderDetailShippingAddressCard({ address }: OrderDetailShippingAddressCardProps) {
   return (
-    <article className="grid gap-3 rounded-xl border border-surface-border bg-surface-panel p-5 text-card-foreground shadow-card">
+    <article className="grid gap-3 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
       <SectionIntro className="grid gap-2" eyebrow="Livraison" title="Adresse de livraison" />
       <p className="card-copy text-sm leading-6 text-foreground">{address.line1}</p>
       {address.line2 ? (

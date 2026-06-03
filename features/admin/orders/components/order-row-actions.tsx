@@ -61,7 +61,7 @@ export function OrderRowActions({ order }: OrderRowActionsProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/admin/orders/${order.id}`}>Voir le détail</Link>
+              <Link href={`/admin/commerce/orders/${order.id}`}>Voir le détail</Link>
             </DropdownMenuItem>
 
             {canPrepare ? (

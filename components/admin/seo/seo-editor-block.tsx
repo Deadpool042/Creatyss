@@ -20,7 +20,7 @@ export function SeoEditorBlock({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-surface-border bg-card p-4 shadow-card md:p-5",
+        "rounded-2xl border border-surface-border bg-surface-panel p-4 shadow-card md:p-5",
         className
       )}
     >

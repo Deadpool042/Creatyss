@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { buildAdminProductEditPath } from "@/features/admin/products/navigation";
 
 export default async function ProductSlugPage({
   params,
@@ -6,5 +7,5 @@ export default async function ProductSlugPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  redirect(`/admin/products/${slug}/edit`);
+  redirect(buildAdminProductEditPath(slug));
 }

@@ -1,9 +1,7 @@
 "use client";
 
-import {
-  AdminDataTableBulkActionButton,
-  AdminDataTableSelectionFloatingBar,
-} from "@/components/admin/tables";
+import { AdminDataTableSelectionFloatingBar } from "@/components/admin/tables/admin-data-table-selection-floating-bar";
+import { AdminDataTableBulkActionButton } from "@/components/admin/tables/admin-data-table-bulk-action-button";
 import {
   PRODUCT_BULK_ACTIONS_COPY,
   PRODUCT_SELECTION_COPY,

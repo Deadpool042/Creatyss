@@ -1,11 +1,11 @@
 "use client";
 
+import { AdminCheckboxFilterList } from "@/components/admin/tables/filters/admin-checkbox-filter-list";
 import {
-  AdminCheckboxFilterList,
-  AdminConfigHierarchicalCheckboxFilter,
   AdminFilterPopovers,
   type AdminFilterPopoverItem,
-} from "@/components/admin/tables/filters";
+} from "@/components/admin/tables/filters/admin-filter-popovers";
+import { AdminHierarchicalCheckboxFilter } from "@/components/admin/tables/filters/admin-hierarchical-checkbox-filter";
 import {
   CATEGORY_FEATURED_OPTIONS,
   CATEGORY_LIST_COPY,
@@ -36,21 +36,24 @@ export function CategoryListFilterControls({
   onFeaturedChange,
   onCategorySlugsChange,
 }: CategoryListFilterControlsProps) {
+  const categoryItems = categoriesForPicker.map((category) => ({
+    id: category.id,
+    label: category.name,
+    parentId: category.parentId,
+    value: category.slug,
+  }));
+
   const items: AdminFilterPopoverItem[] = [
     {
       key: "categories",
       label: CATEGORY_LIST_COPY.filterCategoriesLabel,
       count: categorySlugs.length,
       content: (
-        <AdminConfigHierarchicalCheckboxFilter
-          items={categoriesForPicker}
+        <AdminHierarchicalCheckboxFilter
+          items={categoryItems}
           selected={categorySlugs}
           emptyLabel={CATEGORY_LIST_COPY.filterCategoriesEmptyLabel}
           onChange={onCategorySlugsChange}
-          getId={(category) => category.id}
-          getLabel={(category) => category.name}
-          getParentId={(category) => category.parentId}
-          getValue={(category) => category.slug}
         />
       ),
     },
@@ -94,16 +97,19 @@ export function CategoryHierarchyFilter({
   categorySlugs: string[];
   onCategorySlugsChange: (next: string[]) => void;
 }) {
+  const categoryItems = categoriesForPicker.map((category) => ({
+    id: category.id,
+    label: category.name,
+    parentId: category.parentId,
+    value: category.slug,
+  }));
+
   return (
-    <AdminConfigHierarchicalCheckboxFilter
-      items={categoriesForPicker}
+    <AdminHierarchicalCheckboxFilter
+      items={categoryItems}
       selected={categorySlugs}
       emptyLabel={CATEGORY_LIST_COPY.filterCategoriesEmptyLabel}
       onChange={onCategorySlugsChange}
-      getId={(category) => category.id}
-      getLabel={(category) => category.name}
-      getParentId={(category) => category.parentId}
-      getValue={(category) => category.slug}
     />
   );
 }

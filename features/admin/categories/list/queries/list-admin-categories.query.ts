@@ -1,21 +1,15 @@
-import { CategoryStatus } from "@/prisma-generated/client";
-
 import { db } from "@/core/db";
+import {
+  mapCategoryLifecycleStatusToPrismaStatus,
+  mapPrismaCategoryStatusToLifecycleStatus,
+} from "@/entities/category";
 import { mapCategoryListItem } from "@/features/admin/categories/list/mappers/map-category-list-item";
-import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import type {
   CategoryListFilters,
   CategoryListResult,
   CategoryPickerItem,
   CategoryStatusCounts,
 } from "../types";
-
-const STATUS_MAP: Record<AdminCategoryStatus, CategoryStatus> = {
-  draft: CategoryStatus.DRAFT,
-  active: CategoryStatus.ACTIVE,
-  inactive: CategoryStatus.INACTIVE,
-  archived: CategoryStatus.ARCHIVED,
-};
 
 const DEFAULT_PER_PAGE = 10;
 
@@ -78,8 +72,16 @@ export async function listAdminCategories(
   const where = {
     ...baseWhere,
     ...(status.length > 0
-      ? { status: { in: status.map((s) => STATUS_MAP[s]) } }
-      : { status: { not: CategoryStatus.ARCHIVED } }),
+      ? {
+          status: {
+            in: status.map((value) => mapCategoryLifecycleStatusToPrismaStatus(value)),
+          },
+        }
+      : {
+          status: {
+            not: mapCategoryLifecycleStatusToPrismaStatus("archived"),
+          },
+        }),
   };
 
   const orderBy = (() => {
@@ -147,16 +149,9 @@ export async function listAdminCategories(
 
   const totalPages = Math.max(1, Math.ceil(total / safePerPage));
 
-  const REVERSE_STATUS_MAP: Record<CategoryStatus, AdminCategoryStatus> = {
-    [CategoryStatus.DRAFT]: "draft",
-    [CategoryStatus.ACTIVE]: "active",
-    [CategoryStatus.INACTIVE]: "inactive",
-    [CategoryStatus.ARCHIVED]: "archived",
-  };
-
   const statusCounts: CategoryStatusCounts = {};
   for (const row of rawStatusCounts) {
-    const key = REVERSE_STATUS_MAP[row.status];
+    const key = mapPrismaCategoryStatusToLifecycleStatus(row.status);
     if (key) statusCounts[key] = row._count.id;
   }
 

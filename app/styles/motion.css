@@ -12,6 +12,10 @@
 
   --motion-ease-standard: ease;
   --motion-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --motion-duration-panel: 300ms;
+  --motion-duration-page: 240ms;
 
   --motion-transition-control:
     border-color var(--motion-duration-fast) var(--motion-ease-standard),

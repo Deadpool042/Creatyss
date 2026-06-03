@@ -1,4 +1,4 @@
-export type AdminBlogPostStatus = "draft" | "published";
+export type AdminBlogPostStatus = "draft" | "published" | "inactive" | "archived";
 
 export type AdminBlogPostSummary = {
   id: string;

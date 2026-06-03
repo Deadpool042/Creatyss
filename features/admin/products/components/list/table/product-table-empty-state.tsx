@@ -5,6 +5,11 @@ import type { JSX } from "react";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { CustomLink } from "@/components/shared";
 import { PRODUCT_LIST_EMPTY_STATE_COPY } from "@/features/admin/products/config";
+import {
+  ADMIN_PRODUCTS_CREATE_PATH,
+  ADMIN_PRODUCTS_LIST_PATH,
+  ADMIN_PRODUCTS_TRASH_PATH,
+} from "@/features/admin/products/navigation";
 import type { ProductListView } from "@/features/admin/products/list/types";
 
 type ProductTableEmptyStateProps = Readonly<{
@@ -24,7 +29,7 @@ export function ProductTableEmptyState({
         description={PRODUCT_LIST_EMPTY_STATE_COPY.filtered.description}
         actionNode={
           <CustomLink
-            href={view === "trash" ? "/admin/products?view=trash" : "/admin/products"}
+            href={view === "trash" ? ADMIN_PRODUCTS_TRASH_PATH : ADMIN_PRODUCTS_LIST_PATH}
             variant="navUnderline"
             className="text-brand"
           >
@@ -42,7 +47,7 @@ export function ProductTableEmptyState({
         title={PRODUCT_LIST_EMPTY_STATE_COPY.initial.trash.title}
         description={PRODUCT_LIST_EMPTY_STATE_COPY.initial.trash.description}
         actionNode={
-          <CustomLink href="/admin/products" variant="navUnderline" className="text-brand">
+          <CustomLink href={ADMIN_PRODUCTS_LIST_PATH} variant="navUnderline" className="text-brand">
             {PRODUCT_LIST_EMPTY_STATE_COPY.initial.trash.ctaLabel}
           </CustomLink>
         }
@@ -56,7 +61,7 @@ export function ProductTableEmptyState({
       title={PRODUCT_LIST_EMPTY_STATE_COPY.initial.active.title}
       description={PRODUCT_LIST_EMPTY_STATE_COPY.initial.active.description}
       actionNode={
-        <CustomLink href="/admin/products/new" variant="navUnderline" className="text-brand">
+        <CustomLink href={ADMIN_PRODUCTS_CREATE_PATH} variant="navUnderline" className="text-brand">
           {PRODUCT_LIST_EMPTY_STATE_COPY.initial.active.ctaLabel}
         </CustomLink>
       }

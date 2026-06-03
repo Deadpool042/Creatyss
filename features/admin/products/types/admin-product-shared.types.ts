@@ -1,21 +1,14 @@
-export type AdminProductLifecycleStatus =
-  | "draft"
-  | "active"
-  | "inactive"
-  | "archived";
+import type {
+  ProductLifecycleStatus,
+  ProductRelatedType,
+  ProductVariantLifecycleStatus,
+} from "@/entities/product";
 
-export type AdminProductVariantLifecycleStatus =
-  | "draft"
-  | "active"
-  | "inactive"
-  | "archived";
+export type AdminProductLifecycleStatus = ProductLifecycleStatus;
 
-export type AdminRelatedProductType =
-  | "related"
-  | "cross_sell"
-  | "up_sell"
-  | "accessory"
-  | "similar";
+export type AdminProductVariantLifecycleStatus = ProductVariantLifecycleStatus;
+
+export type AdminRelatedProductType = ProductRelatedType;
 
 export type AdminProductTypeOption = {
   id: string;

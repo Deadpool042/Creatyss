@@ -1,7 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Notice } from "@/components/shared/feedback";
-import { AdminFormField, AdminFormSection } from "@/components/admin/forms";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 
 const checkboxClassName =
   "mt-0.5 size-4 rounded border-input text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30";
@@ -32,7 +33,7 @@ export function FeaturedCategoriesSection({
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {categoryOptions.map((category) => (
             <Card
-              className="rounded-xl border border-border/70 bg-card/95 text-card-foreground shadow-sm"
+              className="rounded-xl border border-surface-border/60 bg-surface-panel/60 text-foreground shadow-sm"
               key={category.id}
             >
               <div className="grid gap-4 px-3">

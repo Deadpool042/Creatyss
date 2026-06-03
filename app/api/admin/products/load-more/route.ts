@@ -8,6 +8,9 @@ import {
 import { mapProductTableItem } from "@/features/admin/products/list/mappers";
 import type {
   ProductFeaturedFilterValue,
+  ProductFilterImageOption,
+  ProductFilterStockOption,
+  ProductFilterVariantOption,
   ProductSortOption,
   ProductTableStatus,
 } from "@/features/admin/products/list/types/product-table.types";
@@ -31,6 +34,24 @@ function parseFeatured(value: string | null): ProductFeaturedFilterValue[] {
   );
 }
 
+function parseImage(value: string | null): ProductFilterImageOption {
+  return PRODUCT_FILTER_VALID_VALUES.images.includes(value as ProductFilterImageOption)
+    ? (value as ProductFilterImageOption)
+    : "all";
+}
+
+function parseStock(value: string | null): ProductFilterStockOption {
+  return PRODUCT_FILTER_VALID_VALUES.stock.includes(value as ProductFilterStockOption)
+    ? (value as ProductFilterStockOption)
+    : "all";
+}
+
+function parseVariant(value: string | null): ProductFilterVariantOption {
+  return PRODUCT_FILTER_VALID_VALUES.variants.includes(value as ProductFilterVariantOption)
+    ? (value as ProductFilterVariantOption)
+    : "all";
+}
+
 function parseSort(value: string | null): ProductSortOption {
   return PRODUCT_FILTER_VALID_VALUES.sorts.includes(value as ProductSortOption)
     ? (value as ProductSortOption)
@@ -45,7 +66,7 @@ export async function GET(request: NextRequest) {
   await requireAuthenticatedAdmin();
 
   const url = new URL(request.url);
-  const categoryParam = url.searchParams.get("categories") ?? url.searchParams.get("categoryId");
+  const categoryParam = url.searchParams.get("categories");
   const page = Math.max(1, Number(url.searchParams.get("page")) || 1);
   const perPage = (PRODUCT_FILTER_VALID_VALUES.perPage as readonly number[]).includes(
     Number(url.searchParams.get("perPage"))
@@ -60,8 +81,11 @@ export async function GET(request: NextRequest) {
     sort: parseSort(url.searchParams.get("sort")),
     page,
     perPage,
-    ...(categoryParam ? { categoryIds: categoryParam.split(",").filter(Boolean) } : {}),
+    ...(categoryParam ? { categorySlugs: categoryParam.split(",").filter(Boolean) } : {}),
     featured: parseFeatured(url.searchParams.get("featured")),
+    image: parseImage(url.searchParams.get("image")),
+    stock: parseStock(url.searchParams.get("stock")),
+    variant: parseVariant(url.searchParams.get("variant")),
   });
 
   return NextResponse.json(

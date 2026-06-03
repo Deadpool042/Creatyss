@@ -1,12 +1,9 @@
 import Link from "next/link";
 
-import { AdminEditorTwoColumnLayout } from "@/components/admin/shared/admin-editor-two-column-layout";
-import {
-  AdminCheckboxField,
-  AdminFormActions,
-  AdminFormField,
-  AdminFormSection,
-} from "@/components/admin/forms";
+import { AdminCheckboxField } from "@/components/admin/forms/admin-checkbox-field";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -39,14 +36,13 @@ export function CategoryEditorPanel({
   updateAction,
 }: CategoryEditorPanelProps) {
   return (
-    <AdminEditorTwoColumnLayout
-      main={
-        <>
+    <div className="grid gap-8 xl:grid-cols-[minmax(0,1.7fr)_minmax(19rem,0.92fr)] xl:items-start">
+      <div className="space-y-10">
         <AdminFormSection
           eyebrow={CATEGORY_GENERAL_SECTION_COPY.eyebrow}
           title={CATEGORY_GENERAL_SECTION_COPY.title}
           description={CATEGORY_GENERAL_SECTION_COPY.description}
-          contentClassName="rounded-3xl border border-surface-border bg-card p-5 shadow-card sm:p-6"
+          contentClassName="space-y-4"
         >
           <form action={updateAction} className="grid gap-5">
             <input name="categoryId" type="hidden" value={category.id} />
@@ -91,23 +87,24 @@ export function CategoryEditorPanel({
           </form>
         </AdminFormSection>
 
+        <div className="h-px bg-surface-border/55" />
+
         <AdminFormSection
           eyebrow={CATEGORY_SEO_SECTION_COPY.eyebrow}
           title={CATEGORY_SEO_SECTION_COPY.title}
           description={CATEGORY_SEO_SECTION_COPY.description}
-          contentClassName="rounded-3xl border border-surface-border bg-card p-5 shadow-card sm:p-6"
+          contentClassName="space-y-4"
         >
           <CategorySeoForm categoryId={category.id} categoryName={category.name} seo={category.seo} />
         </AdminFormSection>
-        </>
-      }
-      sidebar={
-        <>
+      </div>
+
+      <div className="space-y-6 xl:sticky xl:top-10 2xl:top-12">
         <AdminFormSection
           eyebrow={CATEGORY_IMAGE_SECTION_COPY.eyebrow}
           title={CATEGORY_IMAGE_SECTION_COPY.title}
           description={CATEGORY_IMAGE_SECTION_COPY.description}
-          contentClassName="rounded-3xl border border-surface-border bg-card p-5 shadow-card sm:p-6"
+          contentClassName="space-y-4"
         >
           {mediaAssets.length > 0 ? (
             <CategoryImageForm
@@ -134,12 +131,11 @@ export function CategoryEditorPanel({
           eyebrow={CATEGORY_ARCHIVE_SECTION_COPY.eyebrow}
           title={CATEGORY_ARCHIVE_SECTION_COPY.title}
           description={CATEGORY_ARCHIVE_SECTION_COPY.description}
-          contentClassName="rounded-3xl border border-feedback-error-border bg-feedback-error-surface/40 p-5 shadow-card sm:p-6"
+          contentClassName="space-y-3"
         >
           <CategoryArchiveButton categoryId={category.id} categoryName={category.name} />
         </AdminFormSection>
-        </>
-      }
-    />
+      </div>
+    </div>
   );
 }

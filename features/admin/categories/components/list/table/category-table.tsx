@@ -3,19 +3,17 @@
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
-import {
-  AdminConfigDataTableFrame,
-  AdminPaginationBar,
-} from "@/components/admin/tables";
+import { AdminConfigDataTableFrame } from "@/components/admin/tables/layout/admin-config-data-table-frame";
+import { AdminPaginationBar } from "@/components/admin/tables/layout/admin-pagination-bar";
 import { CATEGORY_LIST_FEEDBACK_COPY } from "@/features/admin/categories/config";
 import { bulkArchiveCategoriesAction } from "@/features/admin/categories/actions";
 import { useCategoryFilters } from "@/features/admin/categories/list";
 
 import { useCategoriesTableContext } from "../../../context/categories-data-provider";
-import { CategoryListToolbar } from "../toolbar/category-list-toolbar";
 import { CategoryTableDesktop } from "../desktop/category-table-desktop";
 import { CategoryTableMobile } from "../mobile/category-table-mobile";
-import { CategoryBulkBar, CategoryTableEmptyState } from ".";
+import { CategoryBulkBar } from "./category-bulk-bar";
+import { CategoryTableEmptyState } from "./category-table-empty-state";
 
 export function CategoryTable() {
   const { categories, totalPages, total } = useCategoriesTableContext();
@@ -67,50 +65,39 @@ export function CategoryTable() {
   }
 
   if (categories.length === 0) {
-    return (
-      <>
-        <CategoryListToolbar />
-        <CategoryTableEmptyState isFiltered={isFiltered} />
-      </>
-    );
+    return <CategoryTableEmptyState isFiltered={isFiltered} />;
   }
 
   return (
-    <>
-      <AdminConfigDataTableFrame
-        toolbar={<CategoryListToolbar />}
-        desktopClassName="overflow-y-auto [scrollbar-gutter:stable] p-1"
-        desktopContent={
-          <CategoryTableDesktop
-            selectedIds={selectedIds}
-            onToggleOne={toggleOne}
-            onToggleAll={toggleAll}
-          />
-        }
-        mobileClassName="p-1"
-        mobileContent={<CategoryTableMobile />}
-        pagination={
-          <AdminPaginationBar
-            currentPage={filters.page}
-            totalPages={totalPages}
-            perPage={filters.perPage}
-            totalItems={total}
-            onPageChange={filters.setPage}
-            onPerPageChange={(n) => {
-              filters.setPerPage(n);
-              filters.setPage(1);
-            }}
-          />
-        }
-        floatingBar={
-          <CategoryBulkBar
-            count={selectedIds.size}
-            isPending={isPending}
-            onClear={() => setSelectedIds(new Set())}
-            onArchive={handleBulkArchive}
-          />
-        }
-      />
-    </>
+    <AdminConfigDataTableFrame
+      desktopClassName="p-1"
+      desktopContent={
+        <CategoryTableDesktop
+          selectedIds={selectedIds}
+          onToggleOne={toggleOne}
+          onToggleAll={toggleAll}
+        />
+      }
+      mobileClassName="p-1"
+      mobileContent={<CategoryTableMobile />}
+      pagination={
+        <AdminPaginationBar
+          currentPage={filters.page}
+          totalPages={totalPages}
+          perPage={filters.perPage}
+          totalItems={total}
+          onPageChange={filters.setPage}
+          onPerPageChange={filters.setPerPage}
+        />
+      }
+      floatingBar={
+        <CategoryBulkBar
+          count={selectedIds.size}
+          isPending={isPending}
+          onClear={() => setSelectedIds(new Set())}
+          onArchive={handleBulkArchive}
+        />
+      }
+    />
   );
 }

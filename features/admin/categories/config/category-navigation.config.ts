@@ -1,6 +1,7 @@
 export const CATEGORY_NAVIGATION_COPY = {
   homeLabel: "Accueil",
   backLabel: "Retour",
+  catalogLabel: "Catalogue",
   categoriesLabel: "Catégories",
 } as const;
 

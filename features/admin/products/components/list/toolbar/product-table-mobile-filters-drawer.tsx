@@ -3,10 +3,13 @@
 import type { JSX } from "react";
 
 import {
-  AdminConfigDataTableFiltersDrawer,
   type AdminDataTableActiveFilterItem,
-} from "@/components/admin/tables";
-import type { AdminFilterBlock } from "@/components/admin/tables/filters";
+} from "@/components/admin/tables/filters/panel/admin-data-table-active-filters";
+import {
+  AdminFilterBlocks,
+  type AdminFilterBlock,
+} from "@/components/admin/tables/filters/admin-filter-blocks";
+import { AdminDataTableFiltersDrawer } from "@/components/admin/tables/filters/panel/admin-data-table-filters-drawer";
 import {
   PRODUCT_LIST_ACTIONS_COPY,
   PRODUCT_LIST_COPY,
@@ -62,8 +65,8 @@ export function ProductTableMobileFiltersDrawer({
       content: (
         <ProductCategoryFilterControl
           categoryOptions={categoryOptions}
-          categoryIds={state.categoryIds}
-          onCategoryIdsChange={state.setCategoryIds}
+          categorySlugs={state.categorySlugs}
+          onCategorySlugsChange={state.setCategorySlugs}
         />
       ),
     },
@@ -93,7 +96,7 @@ export function ProductTableMobileFiltersDrawer({
   ];
 
   return (
-    <AdminConfigDataTableFiltersDrawer
+    <AdminDataTableFiltersDrawer
       open={open}
       onOpenChange={onOpenChange}
       title={PRODUCT_LIST_COPY.filtersTitle}
@@ -104,13 +107,20 @@ export function ProductTableMobileFiltersDrawer({
       }
       resetLabel={PRODUCT_LIST_COPY.mobileFiltersReset}
       applyLabel={PRODUCT_LIST_ACTIONS_COPY.viewResultsLabel}
-      hasActiveFilters={hasActiveFilters}
-      onReset={state.reset}
+      resetDisabled={!hasActiveFilters}
+      stackedFooter
+      onReset={() => {
+        state.reset();
+        onOpenChange(false);
+      }}
+      onApply={() => onOpenChange(false)}
       activeFiltersTitle={PRODUCT_LIST_COPY.mobileFiltersActiveSection}
       activeFilterItems={activeFilterItems}
       clearActiveFiltersLabel={PRODUCT_LIST_COPY.activeFiltersResetLabel}
       onClearActiveFilters={state.reset}
-      blocks={blocks}
-    />
+      contentClassName="flex flex-col gap-5"
+    >
+      <AdminFilterBlocks blocks={blocks} className="flex flex-col gap-5" />
+    </AdminDataTableFiltersDrawer>
   );
 }

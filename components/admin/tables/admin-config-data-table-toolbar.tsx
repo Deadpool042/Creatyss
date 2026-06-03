@@ -2,15 +2,11 @@
 
 import type { ReactNode } from "react";
 
-import { AdminToolbar } from "@/components/admin/shared/admin-toolbar";
+import { AdminSearchInput } from "@/components/admin/shared/admin-search-input";
 import {
   AdminDataTableActiveFilters,
   type AdminDataTableActiveFilterItem,
 } from "./filters/panel/admin-data-table-active-filters";
-import { AdminDataTableFilterControlsRow } from "./filters/panel/admin-data-table-filter-controls-row";
-import { AdminDataTableMobileTopbar } from "./layout/admin-data-table-mobile-topbar";
-import { AdminDataTableResultsCount } from "./layout/admin-data-table-results-count";
-import { AdminDataTableToolbarLayout } from "./layout/admin-data-table-toolbar-layout";
 
 type AdminConfigDataTableToolbarProps = Readonly<{
   search: string;
@@ -50,57 +46,57 @@ export function AdminConfigDataTableToolbar({
   const hasDesktopControls = Boolean(desktopFilters);
 
   return (
-    <AdminDataTableToolbarLayout
-      feedback={feedback}
-      toolbar={
-        <>
-          <div className="lg:hidden">
-            <AdminDataTableMobileTopbar
-              search={search}
-              onSearchChange={onSearchChange}
-              {...(mobileSearchPlaceholder ? { placeholder: mobileSearchPlaceholder } : {})}
-              {...(mobileControls ? { controls: mobileControls } : {})}
-              {...(mobileTrailing ? { trailing: mobileTrailing } : {})}
-            />
-          </div>
+    <div className="flex flex-col gap-2">
+      {feedback}
 
-          <AdminToolbar
-            search={search}
-            onSearchChange={onSearchChange}
-            {...(desktopSearchPlaceholder ? { placeholder: desktopSearchPlaceholder } : {})}
-            extraControls={
-              hasDesktopControls ? (
-                <AdminDataTableFilterControlsRow
-                  filters={desktopFilters}
-                  {...(desktopTrailing ? { trailing: desktopTrailing } : {})}
-                />
-              ) : undefined
-            }
-            className="mt-0"
-            hideMobile
-          />
-        </>
-      }
-      activeFilters={
-        activeFilters.length > 0 && onClearActiveFilters && clearActiveFiltersLabel ? (
-          <AdminDataTableActiveFilters
-            items={activeFilters}
-            onClearAll={onClearActiveFilters}
-            clearLabel={clearActiveFiltersLabel}
-            className="hidden lg:flex"
-          />
-        ) : null
-      }
-      meta={
-        typeof resultsCount === "number" && resultsFullLabel && resultsShortLabel ? (
-          <AdminDataTableResultsCount
-            count={resultsCount}
-            fullLabel={resultsFullLabel}
-            shortLabel={resultsShortLabel}
-            className="text-xs not-italic"
-          />
-        ) : null
-      }
-    />
+      <div className="lg:hidden">
+        <div className="flex w-full items-center gap-2 [@media(max-height:480px)]:gap-1.5">
+          <div className="flex min-w-0 flex-1 items-center gap-2 [@media(max-height:480px)]:gap-1.5">
+            <AdminSearchInput
+              value={search}
+              onChange={onSearchChange}
+              placeholder={mobileSearchPlaceholder ?? "Rechercher…"}
+              className="min-w-0 flex-1"
+            />
+            {mobileControls}
+          </div>
+          {mobileTrailing}
+        </div>
+      </div>
+
+      <div className="mt-0 hidden items-center gap-2 lg:flex lg:justify-between">
+        <AdminSearchInput
+          value={search}
+          onChange={onSearchChange}
+          placeholder={desktopSearchPlaceholder ?? "Rechercher…"}
+          className="min-w-0 max-w-sm flex-1"
+        />
+
+        {hasDesktopControls ? (
+          <div className="flex shrink-0 items-center gap-2">
+            <div className="flex shrink-0 items-center gap-2">{desktopFilters}</div>
+            {desktopTrailing}
+          </div>
+        ) : null}
+      </div>
+
+      {activeFilters.length > 0 && onClearActiveFilters && clearActiveFiltersLabel ? (
+        <AdminDataTableActiveFilters
+          items={activeFilters}
+          onClearAll={onClearActiveFilters}
+          clearLabel={clearActiveFiltersLabel}
+          className="hidden lg:flex"
+        />
+      ) : null}
+
+      {typeof resultsCount === "number" && resultsFullLabel && resultsShortLabel ? (
+        <span className="inline-flex items-center text-xs not-italic text-muted-foreground sm:text-[11px]">
+          <span className="[@media(max-height:480px)]:hidden">{resultsFullLabel(resultsCount)}</span>
+          <span className="hidden [@media(max-height:480px)]:inline">
+            {resultsShortLabel(resultsCount)}
+          </span>
+        </span>
+      ) : null}
+    </div>
   );
 }

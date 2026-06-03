@@ -3,6 +3,7 @@
 
 import { withTransaction } from "@/core/db";
 import { recomputeProductCatalogPriceSnapshot } from "@/features/catalog/shared";
+import { type ProductVariantLifecycleStatus } from "@/entities/product";
 import { Prisma } from "@/prisma-generated/client";
 
 import {
@@ -28,7 +29,7 @@ type CreateProductVariantServiceInput = {
   slug: string | null;
   name: string | null;
   primaryImageId: string | null;
-  status: "draft" | "active" | "inactive" | "archived";
+  status: ProductVariantLifecycleStatus;
   isDefault: boolean;
   sortOrder: number;
   barcode: string | null;
@@ -233,7 +234,7 @@ type UpdateProductVariantServiceInput = {
   slug: string | null;
   name: string | null;
   primaryImageId: string | null;
-  status: "draft" | "active" | "inactive" | "archived";
+  status: ProductVariantLifecycleStatus;
   isDefault: boolean;
   sortOrder: number;
   barcode: string | null;

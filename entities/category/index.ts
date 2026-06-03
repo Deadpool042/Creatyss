@@ -7,6 +7,18 @@ export {
 } from "./category-input";
 
 export {
+  CATEGORY_LIFECYCLE_STATUS_LABELS,
+  CATEGORY_LIFECYCLE_STATUS_VALUES,
+  isCategoryLifecycleStatus,
+  type CategoryLifecycleStatus,
+} from "./category-status";
+
+export {
+  mapCategoryLifecycleStatusToPrismaStatus,
+  mapPrismaCategoryStatusToLifecycleStatus,
+} from "./category-status-prisma";
+
+export {
   validateAdminCategoryInput,
   type AdminCategoryInputErrorCode,
   type AdminCategoryInputValidationResult,

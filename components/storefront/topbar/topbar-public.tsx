@@ -61,11 +61,11 @@ type TopbarPublicProps = Readonly<{
 const DESKTOP_NAV_ITEMS = [
   { href: "/boutique", label: "Boutique", icon: ShoppingBagIcon },
 
-  { href: "/categories", label: "Catégories", icon: Grid2X2Icon, status: "comingSoon" },
+  { href: "/categories", label: "Catégories", icon: Grid2X2Icon },
 
-  { href: "/les-marches", label: "Les marchés", icon: StoreIcon, status: "comingSoon" },
+  { href: "/les-marches", label: "Les marchés", icon: StoreIcon },
 
-  { href: "/a-propos", label: "À propos", icon: BookOpenTextIcon, status: "comingSoon" },
+  { href: "/a-propos", label: "À propos", icon: BookOpenTextIcon },
 
   { href: "/blog", label: "Blog", icon: NewspaperIcon },
 
@@ -86,9 +86,9 @@ const TOUCH_NAV_ITEMS = [
 
   { href: "/boutique", label: "Boutique", icon: ShoppingBagIcon },
 
-  { href: "/categories", label: "Catégories", icon: Grid2X2Icon, status: "comingSoon" },
+  { href: "/categories", label: "Catégories", icon: Grid2X2Icon },
 
-  { href: "/les-marches", label: "Marchés", icon: StoreIcon, status: "comingSoon" },
+  { href: "/les-marches", label: "Marchés", icon: StoreIcon },
 ] satisfies readonly PublicNavItem[];
 
 const MOBILE_COMPACT_HEADER_ACTIONS = [
@@ -99,7 +99,7 @@ const MOBILE_COMPACT_HEADER_ACTIONS = [
 const TOUCH_LARGE_HEADER_ACTIONS = [
   { href: "/recherche", label: "Rechercher", icon: SearchIcon, status: "comingSoon" },
 
-  { href: "/compte", label: "Mon compte", icon: UserIcon, status: "comingSoon" },
+  { href: "/compte", label: "Mon compte", icon: UserIcon },
 
   { href: "/panier", label: "Panier", icon: ShoppingCartIcon },
 ] satisfies readonly PublicNavItem[];
@@ -283,7 +283,7 @@ function DesktopNavigation({ pathname }: { pathname: string }) {
     <NavigationMenu className="hidden desktop:flex" aria-label="Navigation principale">
       <NavigationMenuList className="gap-3 lg:gap-4">
         {DESKTOP_NAV_ITEMS.map((link) => {
-          const isComingSoon = link.status === "comingSoon";
+          const isComingSoon = ('status' in link) && link.status === "comingSoon";
           const isCategories = link.href === "/categories";
           const isActive = isPublicLinkActive(pathname, link.href);
 

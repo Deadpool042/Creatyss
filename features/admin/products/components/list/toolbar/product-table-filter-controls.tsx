@@ -2,13 +2,13 @@
 
 import type { JSX } from "react";
 
+import { AdminCheckboxFilterList } from "@/components/admin/tables/filters/admin-checkbox-filter-list";
 import {
-  AdminCheckboxFilterList,
-  AdminConfigHierarchicalCheckboxFilter,
   AdminFilterPopovers,
-  AdminSelectFilterControl,
   type AdminFilterPopoverItem,
-} from "@/components/admin/tables/filters";
+} from "@/components/admin/tables/filters/admin-filter-popovers";
+import { AdminHierarchicalCheckboxFilter } from "@/components/admin/tables/filters/admin-hierarchical-checkbox-filter";
+import { AdminSelectFilterControl } from "@/components/admin/tables/filters/admin-select-filter-control";
 import {
   PRODUCT_FEATURED_OPTIONS,
   PRODUCT_IMAGE_OPTIONS,
@@ -41,13 +41,13 @@ type ProductTableFilterControlsProps = Readonly<{
   image: ProductFilterImageOption;
   variant: ProductFilterVariantOption;
   stock: ProductFilterStockOption;
-  categoryIds: string[];
+  categorySlugs: string[];
   onStatusChange: (next: ProductTableStatus[]) => void;
   onFeaturedChange: (next: ProductFeaturedFilterValue[]) => void;
   onImageChange: (next: ProductFilterImageOption) => void;
   onVariantChange: (next: ProductFilterVariantOption) => void;
   onStockChange: (next: ProductFilterStockOption) => void;
-  onCategoryIdsChange: (next: string[]) => void;
+  onCategorySlugsChange: (next: string[]) => void;
 }>;
 
 export function ProductStatusFilterControl({
@@ -68,23 +68,24 @@ export function ProductStatusFilterControl({
 
 export function ProductCategoryFilterControl({
   categoryOptions,
-  categoryIds,
-  onCategoryIdsChange,
+  categorySlugs,
+  onCategorySlugsChange,
 }: Readonly<{
   categoryOptions: ProductFilterCategoryOption[];
-  categoryIds: string[];
-  onCategoryIdsChange: (next: string[]) => void;
+  categorySlugs: string[];
+  onCategorySlugsChange: (next: string[]) => void;
 }>): JSX.Element {
   return (
-    <AdminConfigHierarchicalCheckboxFilter
-      items={categoryOptions}
-      selected={categoryIds}
+    <AdminHierarchicalCheckboxFilter
+      items={categoryOptions.map((category) => ({
+        id: category.id,
+        label: category.name,
+        parentId: category.parentId,
+        value: category.slug,
+      }))}
+      selected={categorySlugs}
       emptyLabel={PRODUCT_LIST_COPY.filterCategoryAllLabel}
-      onChange={onCategoryIdsChange}
-      getId={(category) => category.id}
-      getLabel={(category) => category.name}
-      getParentId={(category) => category.parentId}
-      getValue={(category) => category.id}
+      onChange={onCategorySlugsChange}
     />
   );
 }
@@ -175,13 +176,13 @@ export function ProductTableFilterControls({
   image,
   variant,
   stock,
-  categoryIds,
+  categorySlugs,
   onStatusChange,
   onFeaturedChange,
   onImageChange,
   onVariantChange,
   onStockChange,
-  onCategoryIdsChange,
+  onCategorySlugsChange,
 }: ProductTableFilterControlsProps): JSX.Element {
   const advancedCount = [
     featured.length > 0,
@@ -200,13 +201,13 @@ export function ProductTableFilterControls({
     {
       key: "categories",
       label: PRODUCT_LIST_COPY.filterCategoryLabel,
-      count: categoryIds.length,
+      count: categorySlugs.length,
       contentClassName: "w-80 p-3",
       content: (
         <ProductCategoryFilterControl
           categoryOptions={categoryOptions}
-          categoryIds={categoryIds}
-          onCategoryIdsChange={onCategoryIdsChange}
+          categorySlugs={categorySlugs}
+          onCategorySlugsChange={onCategorySlugsChange}
         />
       ),
     },
@@ -229,5 +230,5 @@ export function ProductTableFilterControls({
     },
   ];
 
-  return <AdminFilterPopovers items={items} className="hidden lg:flex lg:items-center lg:gap-2" />;
+  return <AdminFilterPopovers items={items} className="hidden lg:flex lg:items-center lg:gap-1.5" />;
 }

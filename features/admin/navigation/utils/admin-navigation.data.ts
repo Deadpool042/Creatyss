@@ -104,10 +104,25 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     href: "/admin/catalog/media",
     iconKey: "imageIcon",
     group: "catalog",
-    order: 340,
+    order: 40,
     visibility: {
       sidebar: true,
       mobilePrimary: true,
+    },
+  },
+  {
+    key: "pricing",
+    label: "Tarification",
+    href: "/admin/catalog/pricing",
+    iconKey: "badgePercent",
+    group: "catalog",
+    order: 50,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.catalog.pricingRead],
     },
   },
 
@@ -214,6 +229,21 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     },
   },
   {
+    key: "pages",
+    label: "Pages",
+    href: "/admin/content/pages",
+    iconKey: "link",
+    group: "content",
+    order: 25,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.content.pagesRead],
+    },
+  },
+  {
     key: "blog",
     label: "Blog",
     href: "/admin/content/blog",
@@ -244,6 +274,18 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     },
   },
 
+  {
+    key: "marketing-overview",
+    label: "Vue d'ensemble",
+    href: "/admin/marketing/overview",
+    iconKey: "megaphone",
+    group: "marketing",
+    order: 5,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+  },
   {
     key: "newsletter",
     label: "Newsletter",
@@ -371,6 +413,21 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     },
   },
   {
+    key: "team-settings",
+    label: "Équipe",
+    href: "/admin/settings/team",
+    iconKey: "users",
+    group: "settings",
+    order: 15,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.teamRead],
+    },
+  },
+  {
     key: "payment-settings",
     label: "Réglages de paiement",
     href: "/admin/settings/payments",
@@ -428,6 +485,22 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     access: {
       internalOnly: true,
       capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+    },
+  },
+  {
+    key: "api-clients-settings",
+    label: "Clés API",
+    href: "/admin/settings/api-clients",
+    iconKey: "key",
+    group: "settings",
+    order: 60,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.apiClientsRead],
     },
   },
 ];

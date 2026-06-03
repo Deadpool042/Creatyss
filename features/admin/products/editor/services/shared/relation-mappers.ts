@@ -1,46 +1,40 @@
 import {
   MediaReferenceRole,
   MediaReferenceSubjectType,
-  RelatedProductType,
+  type RelatedProductType,
 } from "@/prisma-generated/client";
+import { mapProductRelatedTypeToPrismaRelatedType } from "@/entities/product";
 
 export function mapEditorRelatedTypeToPrismaType(
   type: "related" | "cross_sell" | "up_sell" | "accessory" | "similar"
 ): RelatedProductType {
-  switch (type) {
-    case "related":
-      return RelatedProductType.RELATED;
-    case "cross_sell":
-      return RelatedProductType.CROSS_SELL;
-    case "up_sell":
-      return RelatedProductType.UP_SELL;
-    case "accessory":
-      return RelatedProductType.ACCESSORY;
-    case "similar":
-      return RelatedProductType.SIMILAR;
-  }
+  return mapProductRelatedTypeToPrismaRelatedType(type);
 }
 
 export function mapEditorSubjectTypeToPrismaSubjectType(
   subjectType: "product" | "product_variant"
 ): MediaReferenceSubjectType {
-  switch (subjectType) {
-    case "product":
-      return MediaReferenceSubjectType.PRODUCT;
-    case "product_variant":
-      return MediaReferenceSubjectType.PRODUCT_VARIANT;
-  }
+  return subjectType === "product_variant"
+    ? MediaReferenceSubjectType.PRODUCT_VARIANT
+    : MediaReferenceSubjectType.PRODUCT;
 }
 
 export function mapEditorRoleToPrismaRole(
   role: "gallery" | "thumbnail" | "other"
 ): MediaReferenceRole {
-  switch (role) {
-    case "gallery":
-      return MediaReferenceRole.GALLERY;
-    case "thumbnail":
-      return MediaReferenceRole.THUMBNAIL;
-    case "other":
-      return MediaReferenceRole.OTHER;
-  }
+  if (role === "thumbnail") return MediaReferenceRole.THUMBNAIL;
+  if (role === "other") return MediaReferenceRole.OTHER;
+  return MediaReferenceRole.GALLERY;
+}
+
+export function mapPrismaSubjectTypeToEditorSubjectType(
+  subjectType: MediaReferenceSubjectType
+): "product" | "product_variant" {
+  return subjectType === MediaReferenceSubjectType.PRODUCT_VARIANT ? "product_variant" : "product";
+}
+
+export function mapPrismaRoleToEditorRole(role: MediaReferenceRole): "gallery" | "thumbnail" | "other" {
+  if (role === MediaReferenceRole.THUMBNAIL) return "thumbnail";
+  if (role === MediaReferenceRole.OTHER) return "other";
+  return "gallery";
 }

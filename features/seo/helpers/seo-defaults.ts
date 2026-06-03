@@ -1,10 +1,10 @@
-import type { SeoInput } from "@/entities/seo";
+import { SEO_INDEXING_MODE_DEFAULT, type SeoInput } from "@/entities/seo";
 
 export function createDefaultSeoInput(): SeoInput {
   return {
     metaTitle: "",
     metaDescription: "",
-    indexingMode: "INDEX_FOLLOW",
+    indexingMode: SEO_INDEXING_MODE_DEFAULT,
     sitemapIncluded: true,
     canonicalPath: null,
     openGraphTitle: "",

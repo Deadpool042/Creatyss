@@ -6,7 +6,13 @@ import type {
 } from "../types";
 
 function toAdminBlogPostStatus(status: BlogPostStatus): AdminBlogPostStatus {
-  return status === BlogPostStatus.ACTIVE ? "published" : "draft";
+  const map: Record<BlogPostStatus, AdminBlogPostStatus> = {
+    [BlogPostStatus.DRAFT]: "draft",
+    [BlogPostStatus.ACTIVE]: "published",
+    [BlogPostStatus.INACTIVE]: "inactive",
+    [BlogPostStatus.ARCHIVED]: "archived",
+  };
+  return map[status];
 }
 
 function toIsoString(value: Date | null): string | null {
@@ -76,5 +82,11 @@ export function mapAdminBlogPostDetail(
 }
 
 export function toPrismaBlogPostStatus(status: AdminBlogPostStatus): BlogPostStatus {
-  return status === "published" ? BlogPostStatus.ACTIVE : BlogPostStatus.DRAFT;
+  const map: Record<AdminBlogPostStatus, BlogPostStatus> = {
+    draft: BlogPostStatus.DRAFT,
+    published: BlogPostStatus.ACTIVE,
+    inactive: BlogPostStatus.INACTIVE,
+    archived: BlogPostStatus.ARCHIVED,
+  };
+  return map[status];
 }

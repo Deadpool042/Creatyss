@@ -14,8 +14,10 @@ const INFO_LINKS: readonly FooterInfoLink[] = [
   { href: "/blog", label: "Blog" },
   { href: "/favoris", label: "Favoris" },
   { href: "/panier", label: "Panier" },
-  { href: "/a-propos", label: "À propos", status: "comingSoon" },
-  { href: "/contact", label: "Contact", status: "comingSoon" },
+  { href: "/a-propos", label: "À propos" },
+  { href: "/les-marches", label: "Les marchés" },
+  { href: "/contact", label: "Contact" },
+  { href: "/compte", label: "Mon compte" },
   { href: "/faq", label: "FAQ", status: "comingSoon" },
 ];
 

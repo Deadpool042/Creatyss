@@ -1,16 +1,12 @@
-import { ProductStatus } from "@/prisma-generated/client";
+import {
+  mapProductLifecycleStatusToPrismaStatus,
+  type ProductLifecycleStatus,
+} from "@/entities/product";
 
-export type ProductLifecycleStatus = "draft" | "active" | "inactive" | "archived";
+export type { ProductLifecycleStatus };
 
-export function mapProductStatusToPrismaStatus(status: ProductLifecycleStatus): ProductStatus {
-  switch (status) {
-    case "draft":
-      return ProductStatus.DRAFT;
-    case "active":
-      return ProductStatus.ACTIVE;
-    case "inactive":
-      return ProductStatus.INACTIVE;
-    case "archived":
-      return ProductStatus.ARCHIVED;
-  }
+export function mapProductStatusToPrismaStatus(status: ProductLifecycleStatus) {
+  return mapProductLifecycleStatusToPrismaStatus(status);
 }
+
+export { mapProductLifecycleStatusToPrismaStatus };

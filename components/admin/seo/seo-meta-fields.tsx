@@ -2,7 +2,7 @@
 
 import type { JSX } from "react";
 
-import { AdminFormField } from "@/components/admin/forms";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SEO_META_DESCRIPTION_SOFT_LIMIT, SEO_META_TITLE_SOFT_LIMIT } from "@/entities/seo";

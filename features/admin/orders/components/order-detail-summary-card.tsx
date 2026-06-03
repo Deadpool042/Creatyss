@@ -15,7 +15,7 @@ export function OrderDetailSummaryCard({
   paymentStatusLabel,
 }: OrderDetailSummaryCardProps) {
   return (
-    <article className="grid gap-4 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+    <article className="grid gap-4 rounded-xl border border-surface-border/60 bg-surface-panel/80 p-5 shadow-sm">
       <div className="grid gap-3">
         <SectionIntro
           description={summary.description}

@@ -1,4 +1,6 @@
-export type AdminCategoryStatus = "draft" | "active" | "inactive" | "archived";
+import type { CategoryLifecycleStatus } from "@/entities/category";
+
+export type AdminCategoryStatus = CategoryLifecycleStatus;
 
 export type AdminCategoryCardItem = {
   id: string;

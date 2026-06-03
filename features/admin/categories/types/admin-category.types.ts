@@ -1,4 +1,6 @@
 //features/admin/categories/types/admin-category.types.ts
+import type { SeoIndexingMode } from "@/entities/seo";
+
 export type AdminCategorySortOption =
   | "name-asc"
   | "name-desc"
@@ -40,7 +42,7 @@ export type AdminCategoryDetail = {
     metaTitle: string | null;
     metaDescription: string | null;
     canonicalPath: string | null;
-    indexingMode: "INDEX_FOLLOW" | "INDEX_NOFOLLOW" | "NOINDEX_FOLLOW" | "NOINDEX_NOFOLLOW";
+    indexingMode: SeoIndexingMode;
     sitemapIncluded: boolean;
     openGraphTitle: string | null;
     openGraphDescription: string | null;

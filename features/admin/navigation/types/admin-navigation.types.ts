@@ -28,7 +28,13 @@ export type AdminNavigationIconKey =
   | "truck"
   | "users"
   | "wrench"
-  | "zap";
+  | "zap"
+  | "euro"
+  | "key"
+  | "link"
+  | "shield"
+  | "tag"
+  | "telescope";
 
 export type AdminNavigationVisibility = {
   sidebar: boolean;

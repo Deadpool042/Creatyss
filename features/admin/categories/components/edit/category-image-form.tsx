@@ -4,12 +4,10 @@ import Image from "next/image";
 import { useMemo, useState, useTransition, type JSX } from "react";
 import { useRouter } from "next/navigation";
 
-import {
-  AdminFormActions,
-  AdminFormField,
-  AdminFormMessage,
-  AdminSelectField,
-} from "@/components/admin/forms";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
+import { AdminSelectField } from "@/components/admin/forms/admin-select-field";
 import { Button } from "@/components/ui/button";
 import { CATEGORY_IMAGE_FORM_COPY } from "@/features/admin/categories/config";
 import {
@@ -88,17 +86,17 @@ export function CategoryImageForm({
   return (
     <div className="grid gap-4">
       {displayedImageUrl ? (
-        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        <div className="overflow-hidden rounded-[1.75rem] border border-surface-border/60 bg-surface-panel shadow-sm">
           <Image
             alt={categoryName}
-            className="aspect-video w-full object-cover"
+            className="aspect-[4/5] w-full object-cover"
             src={displayedImageUrl}
             width={800}
-            height={450}
+            height={1000}
           />
         </div>
       ) : (
-        <div className="flex min-h-40 items-center justify-center rounded-2xl border border-dashed border-border bg-card px-6 text-center text-sm text-muted-foreground">
+        <div className="flex min-h-56 items-center justify-center rounded-[1.75rem] border border-dashed border-surface-border/60 bg-surface-panel px-6 text-center text-sm text-muted-foreground">
           {CATEGORY_IMAGE_FORM_COPY.emptyImageLabel}
         </div>
       )}

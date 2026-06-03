@@ -1,0 +1,141 @@
+/* app/styles/safe-area.css
+   ──────────────────────────────────────────────────────────────────────────
+   Safe-area utilities pour l'admin Creatyss.
+
+   ⚠️  Tailwind v4 : @layer utilities n'est pas supporté ici car ces utilities
+       utilisent des @supports et @media imbriqués incompatibles avec @utility.
+       → On écrit du CSS pur sans @layer (priorité maximale sur les layers Tailwind).
+
+   Règle d'usage :
+   - safe-px-layout   : wrappers de layout principaux (page, shell, drawer)
+   - safe-px-compact  : barres compactes proches des bords (topbar, toolbar)
+   - safe-pt-layout   : compensation top (header sticky/fixed)
+   - safe-pb-layout   : compensation bottom de layout (page scrollable)
+   - safe-pb-mobile-bar : barres FIXÉES en bas (bottom nav, CTA fixe) uniquement
+   - admin-topbar-height : hauteur canonique de la topbar admin
+
+   Ne jamais cumuler safe-px-* avec px-* / pl-* / pr-* sur le même nœud.
+   Ne pas appliquer safe-px-* partout : uniquement sur les wrappers proches du viewport.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ── Padding horizontal layout — wrappers de page ────────────────────────── */
+.safe-px-layout {
+  --safe-area-left: 0px;
+  --safe-area-right: 0px;
+  --safe-layout-inline-padding: 1rem;
+
+  padding-left: max(var(--safe-layout-inline-padding), var(--safe-area-left));
+  padding-right: max(var(--safe-layout-inline-padding), var(--safe-area-right));
+}
+
+/* ── Padding horizontal compact — topbar, toolbar ────────────────────────── */
+.safe-px-compact {
+  --safe-area-left: 0px;
+  --safe-area-right: 0px;
+  --safe-compact-inline-padding: 0.375rem;
+  --safe-compact-area-ratio: 0.72;
+
+  padding-left: max(
+    var(--safe-compact-inline-padding),
+    calc(var(--safe-area-left) * var(--safe-compact-area-ratio))
+  );
+  padding-right: max(
+    var(--safe-compact-inline-padding),
+    calc(var(--safe-area-right) * var(--safe-compact-area-ratio))
+  );
+}
+
+/* Injection des vraies valeurs env() si supportées */
+@supports (padding-left: env(safe-area-inset-left)) {
+  .safe-px-layout,
+  .safe-px-compact {
+    --safe-area-left: env(safe-area-inset-left);
+    --safe-area-right: env(safe-area-inset-right);
+  }
+}
+
+/* Responsive padding de base */
+@media (min-width: 768px) {
+  .safe-px-layout {
+    --safe-layout-inline-padding: 1.5rem;   /* = px-6 */
+  }
+  .safe-px-compact {
+    --safe-compact-inline-padding: 0.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .safe-px-layout {
+    --safe-layout-inline-padding: 1.5rem;   /* aligné sur px-6 du shellHeader */
+  }
+  .safe-px-compact {
+    --safe-compact-inline-padding: 0.75rem;
+  }
+}
+
+/* Landscape iPhone — base réduit pour ne pas étouffer l'espace */
+@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+  .safe-px-layout {
+    --safe-layout-inline-padding: 1rem;
+  }
+  .safe-px-compact {
+    --safe-compact-inline-padding: 0.25rem;
+    --safe-compact-area-ratio: 0.62;
+  }
+}
+
+/* ── Padding vertical top ────────────────────────────────────────────────── */
+.safe-pt-layout {
+  --safe-area-top: 0px;
+  padding-top: var(--safe-area-top);
+}
+
+@supports (padding-top: env(safe-area-inset-top)) {
+  .safe-pt-layout {
+    --safe-area-top: env(safe-area-inset-top);
+  }
+}
+
+/* ── Padding vertical bottom — layout scrollable ─────────────────────────── */
+/* À utiliser sur le contenu d'une page scrollable, pas sur une barre fixe.  */
+.safe-pb-layout {
+  --safe-area-bottom: 0px;
+  padding-bottom: var(--safe-area-bottom);
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-pb-layout {
+    --safe-area-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* ── Padding vertical bottom — barres FIXÉES en bas (bottom nav, CTA) ──────
+   Différent de safe-pb-layout : ajoute un minimum de 0.5rem en plus du safe area
+   car les barres fixées doivent toujours avoir un minimum de séparation visuelle. */
+.safe-pb-mobile-bar {
+  --safe-area-bottom: 0px;
+  --safe-mobile-bar-padding: 0.5rem;
+
+  padding-bottom: max(var(--safe-mobile-bar-padding), var(--safe-area-bottom));
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-pb-mobile-bar {
+    --safe-area-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* ── Hauteur canonique topbar admin ─────────────────────────────────────── */
+/* Centralisée ici pour éviter les conflits entre classes Tailwind responsive
+   et media queries safe-area. Ne pas dupliquer dans le composant React. */
+.admin-topbar-height {
+  height: 3.75rem;
+  min-height: 3.75rem;
+}
+
+@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+  .admin-topbar-height {
+    height: 3rem;
+    min-height: 3rem;
+  }
+}

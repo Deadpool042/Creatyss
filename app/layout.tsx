@@ -1,5 +1,5 @@
 //app/layout.tsx
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { Cormorant_Garamond, Jost } from "next/font/google";
@@ -24,10 +24,19 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(clientEnv.appUrl),
-  title: "Creatyss",
-  description: "Boutique publique minimale de Creatyss.",
+  title: {
+    default: "Creatyss — Créations artisanales",
+    template: "%s — Creatyss",
+  },
+  description: "Créations artisanales faites main à Saint-Étienne. Sacs, pochettes et accessoires uniques, sans cuir animal. Découvrez les collections Creatyss.",
 };
 
 type RootLayoutProps = Readonly<{

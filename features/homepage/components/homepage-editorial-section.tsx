@@ -1,4 +1,4 @@
-import { SurfaceSection } from "@/components/storefront/surfaceSection";
+import { SurfaceSection } from "@/components/shared";
 
 type HomepageEditorialSectionProps = {
   editorialTitle: string | null;

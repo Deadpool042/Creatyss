@@ -1,8 +1,6 @@
-export type AdminProductDisplayStatus =
-  | "draft"
-  | "active"
-  | "inactive"
-  | "archived";
+import type { ProductLifecycleStatus } from "@/entities/product";
+
+export type AdminProductDisplayStatus = ProductLifecycleStatus;
 
 export type AdminProductDisplayType = "simple" | "variable" | "typed";
 

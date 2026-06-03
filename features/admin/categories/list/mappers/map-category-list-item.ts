@@ -1,9 +1,12 @@
-import { CategoryStatus } from "@/prisma-generated/client";
-
+import {
+  mapPrismaCategoryStatusToLifecycleStatus,
+} from "@/entities/category";
 import type {
   AdminCategoryCardItem,
   AdminCategoryStatus,
 } from "@/features/admin/categories/types";
+
+type CategoryStatus = Parameters<typeof mapPrismaCategoryStatusToLifecycleStatus>[0];
 
 type CategoryListItemSource = {
   id: string;
@@ -26,17 +29,7 @@ type CategoryListItemSource = {
 };
 
 function mapCategoryStatus(status: CategoryStatus): AdminCategoryStatus {
-  switch (status) {
-    case CategoryStatus.ACTIVE:
-      return "active";
-    case CategoryStatus.INACTIVE:
-      return "inactive";
-    case CategoryStatus.ARCHIVED:
-      return "archived";
-    case CategoryStatus.DRAFT:
-    default:
-      return "draft";
-  }
+  return mapPrismaCategoryStatusToLifecycleStatus(status);
 }
 
 export function mapCategoryListItem(category: CategoryListItemSource): AdminCategoryCardItem {

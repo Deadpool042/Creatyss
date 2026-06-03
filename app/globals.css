@@ -15,6 +15,10 @@
 /* ─── Layer 5 — Primitives visuelles du shell (header blur) ──────────────── */
 @import "./styles/shell.css";
 
+/* ─── Layer 5.1 — Safe areas mobile pour shells sticky/fixed ─────────────── */
+
+@import "./styles/safe-area.css";
+
 /* ─── Layer 6 — Tokens de motion + comportement de transition de thème ───── */
 @import "./styles/motion.css";
 

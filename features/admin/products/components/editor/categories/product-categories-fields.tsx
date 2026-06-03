@@ -3,7 +3,7 @@
 import type { JSX } from "react";
 import { Plus, Trash2 } from "lucide-react";
 
-import { AdminFormField } from "@/components/admin/forms";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -56,7 +56,7 @@ export function ProductCategoriesSummary({
 }: ProductCategoriesSummaryProps): JSX.Element {
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      <div className="rounded-xl border border-border/60 px-4 py-3">
+      <div className="rounded-xl border border-surface-border/60 px-4 py-3">
         <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
           Catégories liées
         </p>
@@ -65,7 +65,7 @@ export function ProductCategoriesSummary({
         </p>
       </div>
 
-      <div className="rounded-xl border border-border/60 px-4 py-3">
+      <div className="rounded-xl border border-surface-border/60 px-4 py-3">
         <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
           Catégorie principale
         </p>
@@ -228,7 +228,7 @@ export function ProductCategoriesLinkedList({
             return (
               <div
                 key={category.id}
-                className="flex items-center justify-between gap-3 rounded-xl border border-border/60 px-4 py-3"
+                className="flex items-center justify-between gap-3 rounded-xl border border-surface-border/60 px-4 py-3"
               >
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">

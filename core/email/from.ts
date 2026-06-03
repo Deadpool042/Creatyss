@@ -6,21 +6,36 @@ type EmailSender = {
 
 const SIMPLE_EMAIL_PATTERN = /^[^<>\s@]+@[^<>\s@]+\.[^<>\s@]+$/;
 
-export function parseEmailFrom(value: string): EmailSender {
+function assertEmailAddress(value: string): string {
   const normalizedValue = value.trim();
 
-  if (SIMPLE_EMAIL_PATTERN.test(normalizedValue)) {
-    return { email: normalizedValue };
+  if (!SIMPLE_EMAIL_PATTERN.test(normalizedValue)) {
+    throw new Error("Invalid email sender address.");
   }
 
-  const match = /^(?<name>.+?)\s*<(?<email>[^<>\s@]+@[^<>\s@]+\.[^<>\s@]+)>$/.exec(normalizedValue);
+  return normalizedValue;
+}
 
-  const name = match?.groups?.name?.trim().replace(/^"|"$/g, "");
-  const email = match?.groups?.email?.trim();
+export function createEmailSender(address: string, name?: string): EmailSender {
+  const email = assertEmailAddress(address);
+  const normalizedName = name?.trim();
 
-  if (!name || !email || !SIMPLE_EMAIL_PATTERN.test(email)) {
-    throw new Error("Invalid EMAIL_FROM format.");
+  if (!normalizedName) {
+    return { email };
   }
 
-  return { email, name };
+  return {
+    email,
+    name: normalizedName.replace(/^"|"$/g, ""),
+  };
+}
+
+export function formatEmailSenderHeader(address: string, name?: string): string {
+  const sender = createEmailSender(address, name);
+
+  if (!sender.name) {
+    return sender.email;
+  }
+
+  return `${sender.name} <${sender.email}>`;
 }

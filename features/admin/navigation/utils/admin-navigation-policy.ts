@@ -7,6 +7,7 @@ export const adminNavigationCapabilities = {
   },
   content: {
     homepageRead: "admin.content.homepage.read",
+    pagesRead: "admin.content.pages.read",
     blogRead: "admin.content.blog.read",
     seoRead: "admin.content.seo.read",
   },
@@ -18,10 +19,16 @@ export const adminNavigationCapabilities = {
   insights: {
     analyticsRead: "admin.insights.analytics.read",
   },
+  catalog: {
+    pricingRead: "admin.catalog.pricing.read",
+  },
   settings: {
+    teamRead: "admin.settings.team.read",
     paymentsRead: "admin.settings.payments.read",
     shippingRead: "admin.settings.shipping.read",
     advancedRead: "admin.settings.advanced.read",
+    apiClientsRead: "admin.settings.api-clients.read",
+    webhooksRead: "admin.settings.webhooks.read",
   },
   system: {
     logsRead: "admin.system.logs.read",

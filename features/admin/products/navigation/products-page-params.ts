@@ -1,10 +1,15 @@
 import { z } from "zod";
 
+import {
+  PRODUCT_LIFECYCLE_STATUS_VALUES,
+  type ProductLifecycleStatus,
+} from "@/entities/product/product-lifecycle-status";
+
 // ---------------------------------------------------------------------------
 // Types (formerly types/products-page-params.types.ts)
 // ---------------------------------------------------------------------------
 
-export type ProductsPageStatusParam = "" | "draft" | "active" | "inactive" | "archived";
+export type ProductsPageStatusParam = "" | ProductLifecycleStatus;
 
 export type ProductsPageFeaturedParam = "" | "featured" | "standard";
 
@@ -20,12 +25,17 @@ export type RawProductsPageSearchParams =
   | URLSearchParams
   | undefined;
 
+const PRODUCTS_PAGE_STATUS_VALUES = ["", ...PRODUCT_LIFECYCLE_STATUS_VALUES] as const satisfies readonly (
+  | ""
+  | ProductLifecycleStatus
+)[];
+
 // ---------------------------------------------------------------------------
 // Schemas (formerly schemas/products-page-params.schema.ts)
 // ---------------------------------------------------------------------------
 
 export const productsPageStatusSchema = z
-  .enum(["", "draft", "active", "inactive", "archived"])
+  .enum(PRODUCTS_PAGE_STATUS_VALUES)
   .catch("");
 
 export const productsPageFeaturedSchema = z.enum(["", "featured", "standard"]);

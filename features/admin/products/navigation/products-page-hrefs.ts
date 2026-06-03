@@ -1,4 +1,9 @@
 import type { ProductsPageParams } from "./products-page-params";
+import {
+  ADMIN_PRODUCTS_CREATE_PATH,
+  ADMIN_PRODUCTS_LIST_PATH,
+  buildAdminProductEditPath,
+} from "./product-routes";
 
 type ProductsPageQueryValue = string | null | undefined;
 
@@ -31,7 +36,7 @@ export function buildProductsPageSearchParams(input: ProductsPageQueryInput): st
 }
 
 export function buildProductsPageHref(input: ProductsPageQueryInput): string {
-  return `/admin/products${buildProductsPageSearchParams(input)}`;
+  return `${ADMIN_PRODUCTS_LIST_PATH}${buildProductsPageSearchParams(input)}`;
 }
 
 export function buildProductsListHref(params: ProductsPageParams): string {
@@ -44,7 +49,7 @@ export function buildProductsListHref(params: ProductsPageParams): string {
 }
 
 export function buildProductDetailsHref(params: ProductsPageParams, slug: string): string {
-  return `/admin/products/${slug}${buildProductsPageSearchParams({
+  return `${buildAdminProductEditPath(slug)}${buildProductsPageSearchParams({
     q: params.search,
     status: params.status,
     category: params.category,
@@ -57,13 +62,30 @@ export function buildProductEditorHref(params: ProductsPageParams, slug: string)
 }
 
 export function buildProductsCreateHref(params: ProductsPageParams): string {
-  return `/admin/products/new${buildProductsPageSearchParams({
+  return `${ADMIN_PRODUCTS_CREATE_PATH}${buildProductsPageSearchParams({
     q: params.search,
     status: params.status,
     category: params.category,
     featured: params.featured,
   })}`;
 }
+
+export {
+  buildAdminProductAvailabilityPath,
+  ADMIN_PRODUCTS_CREATE_PATH,
+  buildAdminProductCategoriesPath,
+  ADMIN_PRODUCTS_LIST_PATH,
+  ADMIN_PRODUCTS_TRASH_PATH,
+  buildAdminProductEditPath,
+  buildAdminProductInventoryPath,
+  buildAdminProductMediaPath,
+  buildAdminProductPath,
+  buildAdminProductPricingPath,
+  buildAdminProductPreviewPath,
+  buildAdminProductRelatedPath,
+  buildAdminProductSeoPath,
+  buildAdminProductVariantsPath,
+} from "./product-routes";
 
 export function buildProductsFiltersHref(
   params: ProductsPageParams,

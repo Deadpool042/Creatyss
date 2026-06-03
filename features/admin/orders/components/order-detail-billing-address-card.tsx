@@ -15,7 +15,7 @@ type OrderDetailBillingAddressCardProps = Readonly<{
 
 export function OrderDetailBillingAddressCard({ billing }: OrderDetailBillingAddressCardProps) {
   return (
-    <article className="grid gap-3 rounded-xl border border-surface-border bg-surface-panel p-5 text-card-foreground shadow-card">
+    <article className="grid gap-3 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
       <SectionIntro className="grid gap-2" eyebrow="Facturation" title="Adresse de facturation" />
 
       {billing.sameAsShipping ? (

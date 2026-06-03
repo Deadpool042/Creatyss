@@ -1,5 +1,5 @@
 import { db } from "@/core/db";
-import { ProductStatus } from "@/prisma-generated/client";
+import { mapProductLifecycleStatusToPrismaStatus } from "@/entities/product";
 
 import type { AdminCreatableProductTypeCode } from "./create-product.types";
 
@@ -169,7 +169,7 @@ export async function createProduct(
       data: {
         slug: input.slug,
         name: input.name,
-        status: ProductStatus.DRAFT,
+        status: mapProductLifecycleStatusToPrismaStatus("draft"),
         isFeatured: false,
         isStandalone: input.isStandalone,
         productType: { connect: { id: input.productTypeId } },

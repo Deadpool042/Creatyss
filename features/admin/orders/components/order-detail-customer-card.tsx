@@ -10,7 +10,7 @@ type OrderDetailCustomerCardProps = Readonly<{
 
 export function OrderDetailCustomerCard({ customer }: OrderDetailCustomerCardProps) {
   return (
-    <article className="grid gap-3 rounded-xl border border-border/70 bg-card p-5 text-card-foreground shadow-sm">
+    <article className="grid gap-3 rounded-xl border border-surface-border/60 bg-surface-panel/80 p-5 shadow-sm">
       <SectionIntro className="grid gap-2" eyebrow="Cliente" title={customer.fullName} />
       <p className="card-copy text-sm leading-6 text-foreground">{customer.email}</p>
       {customer.phone ? (

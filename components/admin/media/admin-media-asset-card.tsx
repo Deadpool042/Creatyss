@@ -82,7 +82,7 @@ function ArchiveMediaButton({
     <form action={archiveAction} onSubmit={handleSubmit}>
       <input type="hidden" name="assetId" value={assetId} />
       <button
-        className="rounded-lg border border-surface-border bg-card/90 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:border-destructive/50 hover:text-destructive"
+        className="rounded-lg border border-surface-border bg-surface-panel/90 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:border-destructive/50 hover:text-destructive"
         type="submit"
       >
         Archiver
@@ -99,7 +99,7 @@ export function AdminMediaAssetCard({
   const formatLabel = getFormatLabel(asset.mimeType);
 
   return (
-    <article className="flex h-full flex-col gap-4 rounded-4xl border border-surface-border bg-card p-4 shadow-card transition-colors duration-200 hover:border-surface-border-strong">
+    <article className="flex h-full flex-col gap-4 rounded-4xl border border-surface-border bg-surface-panel p-4 shadow-card transition-colors duration-200 hover:border-surface-border-strong">
       <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-media-surface">
         {asset.previewUrl ? (
           <Image

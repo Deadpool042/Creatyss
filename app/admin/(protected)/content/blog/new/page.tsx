@@ -1,5 +1,8 @@
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { AdminFormActions, AdminFormField, AdminFormSection } from "@/components/admin/forms";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Notice } from "@/components/shared/feedback";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,10 +41,15 @@ export default async function NewAdminBlogPostPage({ searchParams }: NewAdminBlo
   return (
     <AdminPageShell
       scrollMode="area"
-      pageTitleNavigation={{ label: "Retour", href: "/admin/content/blog" }}
-      description="Création d'un article de blog."
-      eyebrow="Blog"
       title="Nouvel article"
+      navigation={{ label: "Retour", href: "/admin/content/blog" }}
+      breadcrumbs={[
+        { label: "Admin", href: "/admin" },
+        { label: "Contenu" },
+        { label: "Blog", href: "/admin/content/blog" },
+        { label: "Nouvel article" },
+      ]}
+      header={<AdminPageHeader eyebrow="Blog" title="Nouvel article" description="Création d'un article de blog." />}
     >
       {errorMessage !== null && (
         <Notice tone="alert">{errorMessage}</Notice>

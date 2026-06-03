@@ -2,7 +2,7 @@
 
 import type { JSX } from "react";
 
-import { AdminFormField } from "@/components/admin/forms";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import {
   Select,
   SelectContent,
@@ -10,7 +10,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { SeoIndexingMode } from "@/entities/seo";
+import {
+  SEO_INDEXING_MODE_LABELS,
+  SEO_INDEXING_MODE_VALUES,
+  isSeoIndexingMode,
+  type SeoIndexingMode,
+} from "@/entities/seo";
 import { SeoEditorBlock } from "./seo-editor-block";
 
 type SeoVisibilityFieldsProps = {
@@ -22,13 +27,6 @@ type SeoVisibilityFieldsProps = {
   sitemapIncludedError?: string;
 };
 
-const INDEXING_MODE_LABELS: Record<SeoIndexingMode, string> = {
-  INDEX_FOLLOW: "Index, follow",
-  INDEX_NOFOLLOW: "Index, nofollow",
-  NOINDEX_FOLLOW: "Noindex, follow",
-  NOINDEX_NOFOLLOW: "Noindex, nofollow",
-};
-
 function SummaryRow({ label, value }: { label: string; value: string }): JSX.Element {
   return (
     <div className="flex items-start justify-between gap-4 rounded-xl border border-surface-border bg-surface-panel px-3 py-2.5">
@@ -38,10 +36,6 @@ function SummaryRow({ label, value }: { label: string; value: string }): JSX.Ele
       <span className="text-right text-sm font-medium text-foreground">{value}</span>
     </div>
   );
-}
-
-function isSeoIndexingMode(value: string): value is SeoIndexingMode {
-  return value in INDEXING_MODE_LABELS;
 }
 
 export function SeoVisibilityFields({
@@ -78,10 +72,11 @@ export function SeoVisibilityFields({
                 </SelectTrigger>
 
                 <SelectContent>
-                  <SelectItem value="INDEX_FOLLOW">Index, follow</SelectItem>
-                  <SelectItem value="INDEX_NOFOLLOW">Index, nofollow</SelectItem>
-                  <SelectItem value="NOINDEX_FOLLOW">Noindex, follow</SelectItem>
-                  <SelectItem value="NOINDEX_NOFOLLOW">Noindex, nofollow</SelectItem>
+                  {SEO_INDEXING_MODE_VALUES.map((value) => (
+                    <SelectItem key={value} value={value}>
+                      {SEO_INDEXING_MODE_LABELS[value]}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             )}
@@ -121,7 +116,7 @@ export function SeoVisibilityFields({
         description="Résumé rapide des signaux techniques appliqués à cette page produit."
       >
         <div className="grid gap-2">
-          <SummaryRow label="Indexation" value={INDEXING_MODE_LABELS[indexingMode]} />
+          <SummaryRow label="Indexation" value={SEO_INDEXING_MODE_LABELS[indexingMode]} />
           <SummaryRow
             label="Sitemap"
             value={sitemapIncluded ? "Inclus dans le sitemap" : "Exclu du sitemap"}

@@ -1,3 +1,5 @@
+import "server-only";
+
 import { getUploadsPublicPath } from "@/core/uploads";
 import type { CatalogProductDetail } from "@/features/storefront/catalog/types";
 import { readPublishedProductBySlug, readPublishedProductSideData } from "./readers";

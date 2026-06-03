@@ -14,6 +14,7 @@
  */
 import { db } from "@/core/db";
 import { getUploadsPublicPath } from "@/core/uploads";
+import type { ProductType } from "@/entities/product";
 import { mapAdminProductStatus } from "@/features/admin/products/mappers";
 import type { AdminProductLifecycleStatus } from "@/features/admin/products/types";
 import type { SeoIndexingMode } from "@/entities/seo";
@@ -82,7 +83,7 @@ export type AdminProductPreview = {
   careInstructions: string | null;
   shippingReturnsPolicy: string | null;
   status: AdminProductLifecycleStatus;
-  productType: "simple" | "variable";
+  productType: ProductType;
   isAvailable: boolean;
   images: AdminProductPreviewImage[];
   variants: AdminProductPreviewVariant[];
@@ -446,7 +447,7 @@ export async function getAdminProductPreviewBySlug(
     })),
     seoTitle: seoMetadata?.metaTitle ?? null,
     seoDescription: seoMetadata?.metaDescription ?? null,
-    seoIndexingMode: (seoMetadata?.indexingMode as SeoIndexingMode) ?? null,
+    seoIndexingMode: seoMetadata?.indexingMode ?? null,
     seoCanonicalPath: seoMetadata?.canonicalPath ?? null,
     seoOpenGraphTitle: seoMetadata?.openGraphTitle ?? null,
     seoOpenGraphDescription: seoMetadata?.openGraphDescription ?? null,

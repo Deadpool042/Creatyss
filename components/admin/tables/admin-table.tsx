@@ -33,7 +33,7 @@ export function AdminTable({
   return (
     <div
       className={cn(
-        "flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-surface-border bg-card shadow-card",
+        "flex w-full min-h-0 flex-col overflow-hidden",
         wrapperClassName
       )}
     >
@@ -65,7 +65,13 @@ type AdminTableHeaderProps = ComponentProps<typeof TableHeader> & {
 
 export function AdminTableHeader({ className, ...props }: Readonly<AdminTableHeaderProps>) {
   return (
-    <TableHeader className={cn("sticky top-0 z-10 bg-surface-panel-soft", className)} {...props} />
+    <TableHeader
+      className={cn(
+        "sticky top-0 z-10 bg-page-background/85 backdrop-blur-xl supports-[backdrop-filter]:bg-page-background/65",
+        className
+      )}
+      {...props}
+    />
   );
 }
 
@@ -93,7 +99,7 @@ export function AdminTableHead({ className, ...props }: Readonly<AdminTableHeadP
   return (
     <TableHead
       className={cn(
-        "text-[0.65rem] font-medium tracking-wide text-muted-foreground uppercase",
+        "text-[11px] font-semibold tracking-wider text-muted-foreground/70 uppercase",
         className
       )}
       {...props}
@@ -112,7 +118,7 @@ type AdminTableRowProps = ComponentProps<typeof TableRow> & {
 export function AdminTableRow({ className, ...props }: Readonly<AdminTableRowProps>) {
   return (
     <TableRow
-      className={cn("transition-colors hover:bg-surface-subtle/50", className)}
+      className={cn("transition-colors hover:bg-surface-subtle/25", className)}
       {...props}
     />
   );
@@ -127,5 +133,5 @@ type AdminTableCellProps = ComponentProps<typeof TableCell> & {
 };
 
 export function AdminTableCell({ className, ...props }: Readonly<AdminTableCellProps>) {
-  return <TableCell className={cn("px-4 py-3", className)} {...props} />;
+  return <TableCell className={cn("px-3 py-3", className)} {...props} />;
 }

@@ -8,12 +8,19 @@ import type {
   ProductTableStatus,
   ProductTableStatusFilter,
 } from "@/features/admin/products/list/types/product-table.types";
+import {
+  ADMIN_PRODUCTS_LIST_PATH,
+  ADMIN_PRODUCTS_TRASH_PATH,
+} from "@/features/admin/products/navigation";
 
 // ─── Server-side filter valid values ─────────────────────────────────────────
 
 export const PRODUCT_FILTER_VALID_VALUES = {
   statuses: ["active", "draft", "inactive"] satisfies ProductTableStatus[],
   featured: ["all", "featured", "standard"] satisfies ProductFilterFeaturedOption[],
+  images: ["all", "with-image", "without-image"] satisfies ProductFilterImageOption[],
+  variants: ["all", "single", "multiple"] satisfies ProductFilterVariantOption[],
+  stock: ["all", "in-stock", "out-of-stock"] satisfies ProductFilterStockOption[],
   sorts: ["updated-desc", "updated-asc", "name-asc", "name-desc"] satisfies ProductSortOption[],
   perPage: [12, 24, 48, 96],
   perPageDefault: 24,
@@ -108,8 +115,8 @@ export const PRODUCT_LIST_VIEW_OPTIONS: {
   label: string;
   href: string;
 }[] = [
-  { value: "active", label: PRODUCT_LIST_COPY.viewActiveLabel, href: "/admin/products" },
-  { value: "trash", label: PRODUCT_LIST_COPY.viewTrashLabel, href: "/admin/products?view=trash" },
+  { value: "active", label: PRODUCT_LIST_COPY.viewActiveLabel, href: ADMIN_PRODUCTS_LIST_PATH },
+  { value: "trash", label: PRODUCT_LIST_COPY.viewTrashLabel, href: ADMIN_PRODUCTS_TRASH_PATH },
 ];
 
 export const PRODUCT_LIST_ACTIONS_COPY = {

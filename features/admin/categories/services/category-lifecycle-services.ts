@@ -1,6 +1,5 @@
-import { CategoryStatus } from "@/prisma-generated/client";
-
 import { withTransaction } from "@/core/db";
+import { mapCategoryLifecycleStatusToPrismaStatus } from "@/entities/category";
 import { assertCategoryExists, assertArchivedCategoryExists } from "./shared";
 
 // ---------------------------------------------------------------------------
@@ -22,7 +21,7 @@ export async function archiveAdminCategory(
         id: input.categoryId,
       },
       data: {
-        status: CategoryStatus.ARCHIVED,
+        status: mapCategoryLifecycleStatusToPrismaStatus("archived"),
         archivedAt: new Date(),
       },
       select: {
@@ -56,7 +55,7 @@ export async function archiveAdminCategories(
         archivedAt: null,
       },
       data: {
-        status: CategoryStatus.ARCHIVED,
+        status: mapCategoryLifecycleStatusToPrismaStatus("archived"),
         archivedAt: new Date(),
       },
     });
@@ -80,7 +79,7 @@ export async function restoreAdminCategory(input: {
         id: input.categoryId,
       },
       data: {
-        status: CategoryStatus.DRAFT,
+        status: mapCategoryLifecycleStatusToPrismaStatus("draft"),
         archivedAt: null,
       },
       select: { id: true },

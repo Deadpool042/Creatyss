@@ -1,4 +1,3 @@
-import type { OrderEmailEvent } from "@/features/email/order-email.types";
 import type { OrderStatus } from "@/entities/order/order-status-transition";
 export type { OrderStatus };
 
@@ -10,10 +9,10 @@ export type OrderLine = {
   id: string;
   sourceProductVariantId: string | null;
   productName: string;
-  variantName: string;
-  colorName: string;
+  variantName: string | null;
+  colorName: string | null;
   colorHex: string | null;
-  sku: string;
+  sku: string | null;
   unitPrice: string;
   quantity: number;
   lineTotal: string;
@@ -61,20 +60,6 @@ export type PublicOrderConfirmation = {
   lines: OrderLine[];
 };
 
-export type AdminOrderSummary = {
-  id: string;
-  reference: string;
-  status: OrderStatus;
-  paymentStatus: PaymentStatus;
-  customerEmail: string;
-  customerFirstName: string;
-  customerLastName: string;
-  totalAmount: string;
-  lineCount: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
 export type OrderEmailContext = {
   id: string;
   reference: string;
@@ -84,18 +69,11 @@ export type OrderEmailContext = {
   trackingReference: string | null;
 };
 
-export type AdminOrderDetail = PublicOrderConfirmation & {
-  emailEvents: OrderEmailEvent[];
-};
-
 export type OrderRepositoryErrorCode =
   | "missing_cart"
   | "empty_cart"
   | "missing_checkout"
-  | "cart_unavailable"
-  | "create_failed"
-  | "missing_order"
-  | "invalid_status_transition";
+  | "create_failed";
 
 export class OrderRepositoryError extends Error {
   readonly code: OrderRepositoryErrorCode;

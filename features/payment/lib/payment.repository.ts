@@ -1,4 +1,10 @@
 import { db } from "@/core/db";
+import {
+  toAppOrderStatus,
+  toAppPaymentStatus,
+  type AppPaymentStatus,
+} from "@/features/orders/lib/order-status-mappers";
+import type { OrderStatus } from "@/entities/order/order-status-transition";
 
 export type PaymentStartContext = {
   orderId: string;
@@ -6,8 +12,8 @@ export type PaymentStartContext = {
   totalAmount: string;
   currencyCode: string;
   customerEmail: string | null;
-  orderStatus: string;
-  paymentStatus: string | null;
+  orderStatus: OrderStatus;
+  paymentStatus: AppPaymentStatus | null;
   stripeCheckoutSessionId: string | null;
   stripePaymentIntentId: string | null;
 };
@@ -126,8 +132,9 @@ export async function findPaymentStartContextByOrderReference(
     totalAmount: order.totalAmount.toString(),
     currencyCode: order.currencyCode,
     customerEmail: order.customerEmail,
-    orderStatus: order.status.toLowerCase(),
-    paymentStatus: latestStripePayment?.status.toLowerCase() ?? null,
+    orderStatus: toAppOrderStatus(order.status),
+    paymentStatus:
+      latestStripePayment !== null ? toAppPaymentStatus(latestStripePayment.status) : null,
     stripeCheckoutSessionId: latestStripePayment?.providerReference ?? null,
     stripePaymentIntentId: latestStripePayment?.providerPaymentId ?? null,
   };

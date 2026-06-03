@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import {
-  createCartToken,
   readCartSessionToken,
   setCartSessionToken,
 } from "@/core/sessions/cart";
@@ -64,17 +63,16 @@ export async function addToCartAction(formData: FormData): Promise<void> {
     redirect(`/boutique/${productSlug}?cart_error=missing_variant`);
   }
 
-  if (variant.productStatus !== "published" || variant.status !== "published") {
+  if (variant.productStatus !== "ACTIVE" || variant.status !== "ACTIVE") {
     redirect(`/boutique/${productSlug}?cart_error=variant_unavailable`);
   }
 
-  let cartToken = await readCartSessionToken();
+  const cartToken = await readCartSessionToken();
   let cartId = cartToken ? await findGuestCartIdByToken(cartToken) : null;
 
   if (cartId === null) {
-    cartToken = createCartToken();
-    cartId = await createGuestCart(cartToken);
-    await setCartSessionToken(cartToken);
+    cartId = await createGuestCart();
+    await setCartSessionToken(cartId);
   }
 
   const existingItem = await findGuestCartItemByVariant(cartId, variant.id);
@@ -88,6 +86,11 @@ export async function addToCartAction(formData: FormData): Promise<void> {
     await addGuestCartItemQuantity({
       cartId,
       variantId: variant.id,
+      productId: variant.productId,
+      productName: variant.productName,
+      variantName: variant.name,
+      sku: variant.sku,
+      unitPriceAmount: variant.unitPriceAmount,
       quantity: validation.data.quantity,
     });
   } catch (error) {

@@ -10,10 +10,10 @@ type AdminPageHeaderProps = {
   description?: ReactNode;
   actions?: ReactNode;
   breadcrumbs?: ReadonlyArray<AppBreadcrumbItem>;
+  className?: string;
   compact?: boolean;
-  compactMobileTitle?: boolean;
-  hideEyebrowOnLowHeight?: boolean;
   hideDescriptionOnMobile?: boolean;
+  mobileHidden?: boolean;
 };
 
 export function AdminPageHeader({
@@ -22,28 +22,30 @@ export function AdminPageHeader({
   description,
   actions,
   breadcrumbs = [],
+  className,
   compact = false,
-  compactMobileTitle = false,
-  hideEyebrowOnLowHeight = false,
   hideDescriptionOnMobile = false,
+  mobileHidden = true,
 }: AdminPageHeaderProps) {
   return (
     <div
       className={cn(
-        "flex flex-col [@media(max-height:480px)]:gap-1",
-        compact ? "gap-1 sm:gap-1.5" : "gap-1.5 sm:gap-2.5"
+        "flex flex-col max-sm:landscape:gap-1",
+        compact ? "gap-1 sm:gap-1.5" : "gap-1.5 sm:gap-2",
+        mobileHidden && "hidden lg:block",
+        className
       )}
     >
       {breadcrumbs.length > 0 ? (
         <AppBreadcrumbs
           items={breadcrumbs}
-          className={cn(compact && "text-xs text-muted-foreground/85")}
+          className={cn(compact && "text-xs text-muted-foreground/85 ")}
         />
       ) : null}
 
       <div
         className={cn(
-          "flex flex-col sm:flex-row sm:items-end sm:justify-between [@media(max-height:480px)]:gap-1.5",
+          "flex flex-col sm:flex-row sm:items-end sm:justify-between max-sm:landscape:gap-1.5",
           compact ? "gap-1.5 sm:gap-2" : "gap-2 sm:gap-3"
         )}
       >
@@ -53,8 +55,7 @@ export function AdminPageHeader({
               className={cn(
                 compact
                   ? "mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary/90"
-                  : "mb-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary",
-                hideEyebrowOnLowHeight && "[@media(max-height:480px)]:hidden"
+                  : "mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/85"
               )}
             >
               {eyebrow}
@@ -64,8 +65,9 @@ export function AdminPageHeader({
           <h1
             className={cn(
               "font-semibold tracking-tight leading-tight text-foreground",
-              compact ? "text-[1.5rem] lg:text-[2rem]" : "text-[1.75rem] lg:text-3xl",
-              compactMobileTitle && "text-[1.4rem] sm:text-[1.75rem]"
+              compact
+                ? "text-[1.45rem] max-sm:landscape:text-[1.3rem] lg:text-[1.9rem]"
+                : "text-[1.65rem] max-sm:landscape:text-[1.45rem] lg:text-[2.4rem]"
             )}
           >
             {title}
@@ -78,7 +80,7 @@ export function AdminPageHeader({
                   ? "mt-1 max-w-2xl text-xs leading-5 text-muted-foreground sm:text-sm sm:leading-5"
                   : "mt-1.5 max-w-3xl text-sm leading-5 text-muted-foreground sm:text-base sm:leading-6",
                 hideDescriptionOnMobile && "hidden lg:block",
-                "[@media(max-height:480px)]:hidden"
+                "max-sm:landscape:hidden"
               )}
             >
               {description}

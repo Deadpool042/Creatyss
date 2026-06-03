@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { AdminFormActions, AdminFormField, AdminFormSection } from "@/components/admin/forms";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Notice } from "@/components/shared/feedback";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,10 +53,21 @@ export default async function EditAdminBlogPostPage({
   return (
     <AdminPageShell
       scrollMode="area"
-      pageTitleNavigation={{ label: "Retour", href: "/admin/content/blog" }}
-      description="Modification d'un article de blog."
-      eyebrow="Blog"
       title="Modifier l'article"
+      navigation={{ label: "Retour", href: "/admin/content/blog" }}
+      breadcrumbs={[
+        { label: "Admin", href: "/admin" },
+        { label: "Contenu" },
+        { label: "Blog", href: "/admin/content/blog" },
+        { label: post.title },
+      ]}
+      header={
+        <AdminPageHeader
+          eyebrow="Blog"
+          title="Modifier l'article"
+          description="Modification d'un article de blog."
+        />
+      }
     >
       {errorMessage !== null && (
         <Notice tone="alert">{errorMessage}</Notice>

@@ -3,14 +3,12 @@ export type GuestCartVariant = {
   productId: string;
   productSlug: string;
   productName: string;
-  productStatus: "draft" | "published";
-  name: string;
-  colorName: string;
-  colorHex: string | null;
+  productStatus: "DRAFT" | "ACTIVE" | "INACTIVE" | "ARCHIVED";
+  name: string | null;
   sku: string;
-  price: string;
+  unitPriceAmount: string;
   stockQuantity: number;
-  status: "draft" | "published";
+  status: "DRAFT" | "ACTIVE" | "INACTIVE" | "ARCHIVED";
   isAvailable: boolean;
 };
 
@@ -27,12 +25,10 @@ export type GuestCartLine = {
   productId: string;
   productSlug: string;
   productName: string;
-  variantName: string;
-  colorName: string;
-  colorHex: string | null;
-  sku: string;
-  unitPrice: string;
-  lineTotal: string;
+  variantName: string | null;
+  sku: string | null;
+  unitPriceAmount: string;
+  lineTotalAmount: string;
   isAvailable: boolean;
   createdAt: string;
   updatedAt: string;

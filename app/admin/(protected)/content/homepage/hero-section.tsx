@@ -3,7 +3,9 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/feedback";
-import { AdminFormField, AdminFormSection, AdminSelectField } from "@/components/admin/forms";
+import { AdminFormField } from "@/components/admin/forms/admin-form-field";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import { AdminSelectField } from "@/components/admin/forms/admin-select-field";
 
 type MediaAsset = {
   id: string;
@@ -38,7 +40,7 @@ export function HeroSection({
       title="Bannière principale"
     >
       {heroImageUrl ? (
-        <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/20 shadow-xs">
+        <div className="overflow-hidden rounded-xl border border-surface-border/60 bg-surface-subtle/20 shadow-xs">
           <Image
             alt={heroTitle ?? "Image principale actuelle"}
             className="aspect-[16/7] w-full object-cover"
@@ -48,7 +50,7 @@ export function HeroSection({
           />
         </div>
       ) : (
-        <div className="flex min-h-48 items-center justify-center rounded-xl border border-dashed border-border/70 bg-muted/20 px-6 text-center text-sm leading-6 text-muted-foreground">
+        <div className="flex min-h-48 items-center justify-center rounded-xl border border-dashed border-surface-border/60 bg-surface-subtle/20 px-6 text-center text-sm leading-6 text-muted-foreground">
           Aucune image principale actuellement
         </div>
       )}

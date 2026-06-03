@@ -1,7 +1,9 @@
 // features/admin/products/list/types/product-table.types.ts
+import type { ProductLifecycleStatus } from "@/entities/product";
+
 export type ProductListView = "active" | "trash";
 
-export type ProductTableStatus = "draft" | "active" | "inactive" | "archived";
+export type ProductTableStatus = ProductLifecycleStatus;
 
 export type ProductStatusCounts = {
   all: number;
@@ -60,7 +62,7 @@ export type ProductTableItem = {
 export type ProductTableFiltersInput = {
   search?: string | null;
   status?: ProductTableStatus[];
-  categoryIds?: string[] | null;
+  categorySlugs?: string[] | null;
   featured?: ProductFeaturedFilterValue[];
   image?: ProductFilterImageOption;
   stock?: ProductFilterStockOption;
@@ -71,7 +73,7 @@ export type ProductTableFiltersInput = {
 export type ProductTableFiltersValues = {
   search: string;
   status: ProductTableStatus[];
-  categoryIds: string[];
+  categorySlugs: string[];
   featured: ProductFeaturedFilterValue[];
   image: ProductFilterImageOption;
   stock: ProductFilterStockOption;
@@ -93,8 +95,8 @@ export type ProductTableFiltersState = {
   status: ProductTableStatus[];
   setStatus: (value: ProductTableStatus[]) => void;
 
-  categoryIds: string[];
-  setCategoryIds: (value: string[]) => void;
+  categorySlugs: string[];
+  setCategorySlugs: (value: string[]) => void;
 
   featured: ProductFeaturedFilterValue[];
   setFeatured: (value: ProductFeaturedFilterValue[]) => void;

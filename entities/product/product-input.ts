@@ -6,9 +6,18 @@ import {
   normalizeProductSlug,
   readTrimmedString,
 } from "./shared-input";
+import {
+  PRODUCT_PUBLICATION_STATUS_VALUES,
+  type ProductPublicationStatus,
+} from "./product-publication-status";
 
-export type ProductStatus = "draft" | "published";
+export type ProductStatus = ProductPublicationStatus;
 export type ProductType = "simple" | "variable";
+
+export const PRODUCT_TYPE_VALUES = [
+  "simple",
+  "variable",
+] as const satisfies readonly ProductType[];
 
 export type ValidatedProductInput = {
   name: string;
@@ -84,8 +93,8 @@ function normalizeCategoryIds(
   return normalizedIds;
 }
 
-const productStatusSchema = z.enum(["draft", "published"]);
-const productTypeSchema = z.enum(["simple", "variable"]);
+const productStatusSchema = z.enum(PRODUCT_PUBLICATION_STATUS_VALUES);
+const productTypeSchema = z.enum(PRODUCT_TYPE_VALUES);
 
 const productInputSchema = z.object({
   name: z.preprocess((value) => readTrimmedString(value), z.string().min(1)),
