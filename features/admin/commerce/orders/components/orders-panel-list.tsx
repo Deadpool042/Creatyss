@@ -24,6 +24,10 @@ import {
   getOrderStatusBadgeVariant,
   getPaymentStatusBadgeVariant,
 } from "@/features/admin/commerce/orders/config/order-ui.config";
+import {
+  ADMIN_ORDERS_LIST_PATH,
+  getAdminOrderDetailPath,
+} from "@/features/admin/commerce/orders/shared/admin-orders-routes";
 
 const compactDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -116,9 +120,9 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
 
       <ul className="min-h-0 flex-1 overflow-y-auto">
         {filtered.map((order) => {
-          const detailHref = `/admin/commerce/orders/${order.id}`;
+          const detailHref = getAdminOrderDetailPath(order.id);
           const isActive = pathname === detailHref;
-          const href = isActive ? "/admin/commerce/orders" : detailHref;
+          const href = isActive ? ADMIN_ORDERS_LIST_PATH : detailHref;
 
           return (
             <li key={order.id} className="border-b border-surface-border last:border-b-0">

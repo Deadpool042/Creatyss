@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { AdminOrderSummary } from "@/features/admin/commerce/orders/types/order-detail-types";
 import { updateOrderStatusAction } from "@/features/admin/commerce/orders/actions";
+import { getAdminOrderDetailPath } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
 
 type OrderRowActionsProps = {
   order: AdminOrderSummary;
@@ -61,7 +62,7 @@ export function OrderRowActions({ order }: OrderRowActionsProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/admin/commerce/orders/${order.id}`}>Voir le détail</Link>
+              <Link href={getAdminOrderDetailPath(order.id)}>Voir le détail</Link>
             </DropdownMenuItem>
 
             {canPrepare ? (

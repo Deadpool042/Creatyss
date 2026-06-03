@@ -1,3 +1,5 @@
+import { ADMIN_ORDERS_LIST_PATH } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
+
 export const ORDER_NAVIGATION_CONFIG = {
   home: {
     label: "Accueil",
@@ -9,7 +11,7 @@ export const ORDER_NAVIGATION_CONFIG = {
   },
   orders: {
     label: "Commandes",
-    href: "/admin/commerce/orders",
+    href: ADMIN_ORDERS_LIST_PATH,
   },
 } as const;
 
