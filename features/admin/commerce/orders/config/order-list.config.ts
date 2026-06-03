@@ -1,4 +1,13 @@
+import type { OrderStatus } from "@/entities/order/order-status-transition";
 import { ADMIN_ORDERS_LIST_PATH } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
+
+export const ORDER_STATUS_FILTERS = [
+  "pending",
+  "paid",
+  "preparing",
+  "shipped",
+  "cancelled",
+] as const satisfies readonly OrderStatus[];
 
 export const ORDER_NAVIGATION_CONFIG = {
   home: {

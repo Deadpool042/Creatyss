@@ -14,7 +14,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { AdminOrderSummary } from "@/features/admin/commerce/orders/types/order-detail-types";
-import type { OrderStatus } from "@/entities/order/order-status-transition";
 import {
   getOrderStatusLabel,
   getPaymentStatusLabel,
@@ -24,6 +23,7 @@ import {
   getOrderStatusBadgeVariant,
   getPaymentStatusBadgeVariant,
 } from "@/features/admin/commerce/orders/config/order-ui.config";
+import { ORDER_STATUS_FILTERS } from "@/features/admin/commerce/orders/config/order-list.config";
 import {
   ADMIN_ORDERS_LIST_PATH,
   getAdminOrderDetailPath,
@@ -35,13 +35,6 @@ const compactDateFormatter = new Intl.DateTimeFormat("fr-FR", {
 });
 
 const ALL_STATUSES_VALUE = "all";
-const ORDER_STATUS_FILTERS = [
-  "pending",
-  "paid",
-  "preparing",
-  "shipped",
-  "cancelled",
-] as const satisfies readonly OrderStatus[];
 
 type OrdersPanelListProps = {
   orders: AdminOrderSummary[];
