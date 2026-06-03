@@ -10,7 +10,7 @@ import {
   getOrderStatusSummary,
   getPaymentStatusLabel,
 } from "@/entities/order/order-status-presentation";
-import { startOrderPaymentAction } from "@/features/payment";
+import { startOrderPaymentAction } from "@/features/commerce/payment";
 
 export const dynamic = "force-dynamic";
 

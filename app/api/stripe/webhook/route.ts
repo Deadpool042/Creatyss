@@ -6,7 +6,7 @@ import {
   findPaymentByCheckoutSessionId,
   markPaymentFailedByCheckoutSessionId,
   markPaymentSucceededByCheckoutSessionId,
-} from "@/features/payment/lib/payment.repository";
+} from "@/features/commerce/payment/lib/payment.repository";
 import { serverEnv } from "@/core/config/env";
 import { stripe } from "@/core/payments/stripe/server";
 

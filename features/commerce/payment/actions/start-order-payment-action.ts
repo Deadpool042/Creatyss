@@ -5,10 +5,10 @@ import {
   findPaymentStartContextByOrderReference,
   markPaymentFailedByCheckoutSessionId,
   saveStripeCheckoutSessionForOrder,
-} from "@/features/payment/lib/payment.repository";
+} from "@/features/commerce/payment/lib/payment.repository";
 import { serverEnv } from "@/core/config/env";
 import { stripe } from "@/core/payments/stripe/server";
-import { resolveStripeCheckoutSessionState } from "@/features/payment/stripe-checkout-session-state";
+import { resolveStripeCheckoutSessionState } from "@/features/commerce/payment/stripe-checkout-session-state";
 
 function moneyStringToCents(value: string): number {
   const match = value.match(/^(\d+)(?:\.(\d{1,2}))?$/);
