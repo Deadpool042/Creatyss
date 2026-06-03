@@ -9,16 +9,16 @@ import {
   listAdminCategories,
 } from "@/features/admin/categories";
 
-const OVERVIEW_TITLE = "Categories";
+const OVERVIEW_TITLE = "Catégories";
 const OVERVIEW_DESCRIPTION =
-  "Selectionnez une categorie pour la modifier, ou commencez par les zones qui structurent le plus le catalogue.";
+  "Sélectionnez une catégorie pour la modifier, ou commencez par les zones qui structurent le plus le catalogue.";
 
 function formatProductsLabel(count: number): string {
   return `${count} produit${count > 1 ? "s" : ""}`;
 }
 
 function formatChildrenLabel(count: number): string {
-  return `${count} sous-categorie${count > 1 ? "s" : ""}`;
+  return `${count} sous-catégorie${count > 1 ? "s" : ""}`;
 }
 
 export async function CategoryDetailOverview() {
@@ -39,11 +39,6 @@ export async function CategoryDetailOverview() {
       scrollMode="area"
       title={OVERVIEW_TITLE}
       contentPreset="full-width"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Catalogue", href: "/admin/catalog" },
-        { label: "Catégories" },
-      ]}
       contentClassName="space-y-5"
       header={
         <div className="hidden px-4 pt-1 md:px-5 lg:flex lg:flex-col lg:items-center lg:justify-center lg:gap-3 lg:px-6 lg:pb-1">
@@ -62,9 +57,9 @@ export async function CategoryDetailOverview() {
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {[
           { label: "Total", value: items.length, tone: "bg-white/72" },
-          { label: "Publiees", value: activeCount, tone: "bg-emerald-50/85" },
+          { label: "Publiées", value: activeCount, tone: "bg-emerald-50/85" },
           { label: "Mises en avant", value: featuredCount, tone: "bg-amber-50/85" },
-          { label: "Produits relies", value: totalProducts, tone: "bg-sky-50/85" },
+          { label: "Produits reliés", value: totalProducts, tone: "bg-sky-50/85" },
         ].map((stat) => (
           <div
             key={stat.label}
@@ -85,18 +80,18 @@ export async function CategoryDetailOverview() {
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
-                Priorites
+                Priorités
               </p>
               <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground">
-                Categories a fort impact
+                Catégories à fort impact
               </h2>
               <p className="mt-1 text-sm leading-5 text-muted-foreground">
-                Ouvrez directement les categories qui concentrent le plus de produits ou de
-                sous-categories.
+                Ouvrez directement les catégories qui concentrent le plus de produits ou de
+                sous-catégories.
               </p>
             </div>
             <Button asChild size="sm" className="rounded-full">
-              <Link href={ADMIN_CATEGORIES_NEW_PATH}>Nouvelle categorie</Link>
+              <Link href={ADMIN_CATEGORIES_NEW_PATH}>Nouvelle catégorie</Link>
             </Button>
           </div>
 
@@ -117,7 +112,7 @@ export async function CategoryDetailOverview() {
                   </div>
                   <span className="shrink-0 rounded-full bg-surface/80 px-2 py-1 text-[10px] font-medium text-muted-foreground">
                     {category.status === "active"
-                      ? "Publiee"
+                      ? "Publiée"
                       : category.status === "draft"
                         ? "Brouillon"
                         : category.status}
@@ -127,9 +122,9 @@ export async function CategoryDetailOverview() {
             </div>
           ) : (
             <div className="mt-5 rounded-[1.4rem] border border-dashed border-surface-border/70 bg-white/45 px-5 py-8 text-center">
-              <p className="text-sm font-medium text-foreground">Aucune categorie pour le moment</p>
+              <p className="text-sm font-medium text-foreground">Aucune catégorie pour le moment</p>
               <p className="mt-1 text-sm text-muted-foreground">
-                Creez une premiere categorie pour structurer le catalogue.
+                Créez une première catégorie pour structurer le catalogue.
               </p>
             </div>
           )}
@@ -140,14 +135,14 @@ export async function CategoryDetailOverview() {
             Conseils
           </p>
           <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground">
-            Pour demarrer vite
+            Pour démarrer vite
           </h2>
           <div className="mt-4 space-y-3 text-sm leading-6 text-muted-foreground">
-            <p>Regroupez d'abord les categories qui portent vraiment la navigation boutique.</p>
+            <p>Regroupez d'abord les catégories qui portent vraiment la navigation boutique.</p>
             <p>
-              Mettez en avant seulement quelques categories cles pour garder une hierarchie nette.
+              Mettez en avant seulement quelques catégories clés pour garder une hiérarchie nette.
             </p>
-            <p>Ajoutez un visuel uniquement quand il aide a reconnaitre plus vite la categorie.</p>
+            <p>Ajoutez un visuel uniquement quand il aide à reconnaître plus vite la catégorie.</p>
           </div>
         </section>
       </div>
