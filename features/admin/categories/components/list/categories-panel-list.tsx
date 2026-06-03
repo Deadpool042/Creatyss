@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -13,8 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AdminSplitViewNav } from "@/components/admin/layout/admin-split-view-nav";
-import { useIsMobile } from "@/hooks/use-mobile";
 import type { AdminCategoryCardItem, AdminCategoryStatus } from "@/features/admin/categories/list";
 import {
   ADMIN_CATEGORIES_LIST_PATH,
@@ -74,8 +72,6 @@ type CategoriesPanelListProps = {
 
 export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
   const pathname = usePathname();
-  const router = useRouter();
-  const isMobile = useIsMobile();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>(ALL_STATUSES_VALUE);
   const activeSlug = useMemo(() => {
@@ -102,8 +98,6 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <div className="shrink-0 space-y-2 border-b border-surface-border/50 px-3 pb-2.5 pt-2">
-        <AdminSplitViewNav rootPath="/admin/catalog/categories" />
-
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
             <Input
@@ -134,21 +128,13 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
         {filtered.map((category) => {
           const detailHref = getAdminCategoryDetailPath(category.slug);
           const isDetailActive = pathname === detailHref;
-          const href = isDetailActive && !isMobile ? ADMIN_CATEGORIES_LIST_PATH : detailHref;
+          const href = isDetailActive ? ADMIN_CATEGORIES_LIST_PATH : detailHref;
 
           return (
             <li key={category.id} className="py-px">
               <Link
                 href={href}
                 data-category-row={category.slug}
-                onClick={(event) => {
-                  if (!isDetailActive || isMobile) {
-                    return;
-                  }
-
-                  event.preventDefault();
-                  router.push(ADMIN_CATEGORIES_LIST_PATH, { scroll: false });
-                }}
                 className={cn(
                   "flex min-h-13 items-center gap-2.5 rounded-r-[1rem] rounded-l-sm border-l-2 border-transparent px-3 py-2 transition-colors",
                   isDetailActive
