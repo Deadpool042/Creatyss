@@ -2,8 +2,7 @@
 
 import * as React from "react";
 
-// Aligné avec app/styles/theme.css : --breakpoint-laptop (1024px = Tailwind lg)
-const ADMIN_MOBILE_BREAKPOINT = 1024;
+import { ADMIN_SIDEBAR_MOBILE_BREAKPOINT } from "@/lib/breakpoints";
 
 export function useIsAdminMobile(): boolean {
   const [isAdminMobile, setIsAdminMobile] = React.useState<
@@ -12,7 +11,7 @@ export function useIsAdminMobile(): boolean {
 
   React.useEffect(() => {
     const updateIsAdminMobile = () => {
-      setIsAdminMobile(window.innerWidth < ADMIN_MOBILE_BREAKPOINT);
+      setIsAdminMobile(window.innerWidth < ADMIN_SIDEBAR_MOBILE_BREAKPOINT);
     };
 
     updateIsAdminMobile();

@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 
+import { ADMIN_SIDEBAR_MOBILE_BREAKPOINT } from "@/lib/breakpoints";
 import type { AdminNavigationGroup, AdminNavigationItem } from "@/features/admin/navigation";
 import { AdminSidebar, AdminMobileBottomNav, AdminTopbar } from "@/components/admin/navigation";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -27,11 +28,11 @@ export function AdminShell({
 }: AdminShellProps) {
   return (
     <>
-      {/* mobileBreakpoint=1024 aligns with --breakpoint-laptop (theme.css),
+      {/* mobileBreakpoint aligns with --breakpoint-laptop (theme.css / BREAKPOINTS.laptop),
           ensuring SidebarProvider renders a Sheet (not a persistent sidebar)
           on tablet (768–1023px), where the desktop sidebar is hidden (lg:block). */}
       <SidebarProvider
-        mobileBreakpoint={1024}
+        mobileBreakpoint={ADMIN_SIDEBAR_MOBILE_BREAKPOINT}
         className="min-h-svh overflow-visible bg-[radial-gradient(circle_at_top,color-mix(in_srgb,var(--shell-surface)_82%,white)_0%,color-mix(in_srgb,var(--shell-surface)_34%,var(--page-background))_36%,var(--page-background)_100%)] text-page-foreground supports-[height:100dvh]:min-h-dvh lg:h-svh lg:min-h-0 lg:overflow-hidden lg:supports-[height:100dvh]:h-dvh"
       >
         <div className="flex min-h-svh w-full flex-col overflow-visible supports-[height:100dvh]:min-h-dvh lg:h-svh lg:min-h-0 lg:overflow-hidden lg:supports-[height:100dvh]:h-dvh">
