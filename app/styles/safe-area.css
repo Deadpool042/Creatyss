@@ -125,6 +125,19 @@
   }
 }
 
+/* ── Padding bottom — compensation hauteur bottom nav mobile (h-14 = 3.5rem) ─
+   À utiliser sur les panneaux qui doivent dégager la barre de navigation mobile.
+   Réinitialisé à 0 en desktop (≥ 1024px) car la bottom nav n'est plus présente. */
+.safe-pb-mobile-nav {
+  padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 1024px) {
+  .safe-pb-mobile-nav {
+    padding-bottom: 0;
+  }
+}
+
 /* ── Hauteur canonique topbar admin ─────────────────────────────────────── */
 /* Centralisée ici pour éviter les conflits entre classes Tailwind responsive
    et media queries safe-area. Ne pas dupliquer dans le composant React. */

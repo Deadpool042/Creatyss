@@ -15,7 +15,16 @@ type CategoriesListPanelProps = {
 
 export async function CategoriesListPanel({ searchParams }: CategoriesListPanelProps) {
   const filters = parseAdminCategoryListSearchParams(searchParams ?? {});
-  const { items } = await listAdminCategories(filters);
+  // const { items } = await listAdminCategories(filters);
+
+  let items: Awaited<ReturnType<typeof listAdminCategories>>["items"] = [];
+
+  try {
+    const result = await listAdminCategories(filters);
+    items = result.items;
+  } catch (err) {
+    console.error("[categories] listAdminCategories failed:", err);
+  }
 
   return (
     <AdminPageShell

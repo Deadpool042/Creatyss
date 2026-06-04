@@ -21,6 +21,7 @@ import {
   withAdminOrderListParams,
 } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
 import { AdminPanelListControls } from "@/components/admin/layout/admin-panel-list-controls";
+import { useRevealActiveOrderRow } from "../list/use-reveal-active-order-row";
 
 const compactDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -35,8 +36,14 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const activeSlug = pathname.startsWith(`${ADMIN_ORDERS_LIST_PATH}/`)
+    ? pathname.slice(ADMIN_ORDERS_LIST_PATH.length + 1) || null
+    : null;
+
+  useRevealActiveOrderRow({ activeSlug });
+
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-red-300">
       <div className="shrink-0 space-y-3 border-b border-surface-border px-3 py-3">
         <AdminPanelListControls
           listPath={ADMIN_ORDERS_LIST_PATH}
@@ -48,13 +55,11 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
           allStatusLabel="Tous les statuts"
         />
 
-        <div className="grid gap-2 sm:grid-cols-1">
-          <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-              Affichées
-            </p>
-            <p className="mt-1 text-lg font-semibold text-foreground">{orders.length}</p>
-          </div>
+        <div className="inline-flex items-baseline gap-2">
+          <p className="text-xs font-semibold italic tracking-widest text-text-muted-soft">
+            Résultats
+          </p>
+          <p className="mt-1 text-lg font-semibold text-foreground">{orders.length}</p>
         </div>
       </div>
 
@@ -71,13 +76,14 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
             <li key={order.id} className="border-b border-surface-border last:border-b-0">
               <Link
                 href={href}
-                aria-current={isActive ? "page" : undefined}
+                data-order-row={order.id}
                 className={cn(
-                  "flex min-h-[112px] flex-col justify-center gap-3 px-3 py-3 transition-colors",
+                  "flex min-h-28 flex-col justify-center gap-3 px-3 py-3 transition-colors",
                   isActive
                     ? "border-l-2 border-l-primary bg-interactive-selected"
                     : "hover:bg-interactive-hover"
                 )}
+                aria-current={isActive ? "page" : undefined}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="grid gap-1">
@@ -105,7 +111,7 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
                 </div>
 
                 <div className="flex items-baseline justify-between gap-3">
-                  <span className="text-xs uppercase tracking-widest text-text-muted-soft">
+                  <span className="text-xs italic tracking-widest text-text-muted-soft">
                     {order.lineCount} article{order.lineCount > 1 ? "s" : ""}
                   </span>
                   <span className="shrink-0 text-base font-semibold text-page-foreground">

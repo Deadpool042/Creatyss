@@ -63,7 +63,7 @@ export async function CategoryDetailOverview() {
         ].map((stat) => (
           <div
             key={stat.label}
-            className={`rounded-[1.6rem] border border-surface-border/60 ${stat.tone} px-4 py-4 shadow-sm backdrop-blur-xl`}
+            className={`rounded-[1.35rem] border border-surface-border/60 ${stat.tone} px-4 py-4 shadow-sm backdrop-blur-xl`}
           >
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               {stat.label}
@@ -76,7 +76,7 @@ export async function CategoryDetailOverview() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.8fr)]">
-        <section className="rounded-[1.8rem] border border-surface-border/60 bg-white/68 p-5 shadow-sm backdrop-blur-xl">
+        <section className="rounded-[1.65rem] border border-surface-border/60 bg-white/68 p-5 shadow-sm backdrop-blur-xl">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
@@ -130,7 +130,7 @@ export async function CategoryDetailOverview() {
           )}
         </section>
 
-        <section className="rounded-[1.8rem] border border-surface-border/60 bg-white/54 p-5 shadow-sm backdrop-blur-xl">
+        <section className="rounded-[1.65rem] border border-surface-border/60 bg-white/54 p-5 shadow-sm backdrop-blur-xl">
           <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
             Conseils
           </p>

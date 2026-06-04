@@ -1,7 +1,8 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 import { type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
@@ -24,6 +25,7 @@ type AdminSplitViewProps = {
   collapseLabel?: string;
   expandLabel?: string;
   resizeLabel?: string;
+  mobileBackToListLabel?: string;
 };
 
 export function AdminSplitView({
@@ -42,9 +44,14 @@ export function AdminSplitView({
   collapseLabel = "Réduire la liste",
   expandLabel = "Ouvrir la liste",
   resizeLabel = "Redimensionner la liste",
+  mobileBackToListLabel,
 }: AdminSplitViewProps) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const isDetailActive = pathname !== listRootPath && pathname.startsWith(`${listRootPath}/`);
+
+  const queryString = searchParams.toString();
+  const mobileBackToListHref = queryString ? `${listRootPath}?${queryString}` : listRootPath;
 
   const { desktopListWidth, desktopListCollapsed, toggleDesktopList, handleResizePointerDown } =
     useAdminSplitViewState({
@@ -78,6 +85,7 @@ export function AdminSplitView({
         <div
           className={cn(
             "absolute inset-0 flex flex-col overflow-hidden",
+            "safe-pb-mobile-nav",
             "transition-transform duration-(--motion-duration-panel) ease-(--motion-ease-spring)",
             isDetailActive ? "pointer-events-none -translate-x-full" : "translate-x-0",
             "lg:pointer-events-auto lg:relative lg:inset-auto lg:translate-x-0",
@@ -138,6 +146,7 @@ export function AdminSplitView({
         <div
           className={cn(
             "absolute inset-0 flex flex-col overflow-hidden",
+            "safe-pb-mobile-nav",
             "transition-transform duration-(--motion-duration-panel) ease-(--motion-ease-spring)",
             isDetailActive ? "translate-x-0" : "pointer-events-none translate-x-full",
             "lg:pointer-events-auto lg:relative lg:inset-auto lg:translate-x-0",
@@ -145,6 +154,15 @@ export function AdminSplitView({
             detailClassName
           )}
         >
+          {mobileBackToListLabel && isDetailActive ? (
+            <Link
+              href={mobileBackToListHref}
+              className="flex shrink-0 items-center gap-2 border-b border-surface-border px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground lg:hidden"
+            >
+              <ChevronLeft className="size-4" />
+              {mobileBackToListLabel}
+            </Link>
+          ) : null}
           {detail}
         </div>
       </div>

@@ -34,7 +34,7 @@ export async function OrdersListPanel({ searchParams }: OrdersListPanelProps) {
           description={ORDER_LIST_PAGE_CONFIG.description}
         />
       }
-      scrollMode="area"
+      scrollMode="nested"
     >
       <OrdersPanelList orders={items} />
     </AdminPageShell>

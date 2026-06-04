@@ -4,22 +4,23 @@ import { AdminSplitView } from "@/components/admin/layout/admin-split-view";
 import { AdminRouteBreadcrumbs } from "@/components/admin/navigation/admin-route-breadcrumbs";
 
 type OrdersLayoutProps = {
-  children: ReactNode;
+  list: ReactNode;
   detail: ReactNode;
 };
 
-export default function OrdersLayout({ children, detail }: OrdersLayoutProps) {
+export default function OrdersLayout({ list, detail }: OrdersLayoutProps) {
   return (
     <AdminSplitView
-      list={children}
+      list={list}
       detail={detail}
       header={<AdminRouteBreadcrumbs />}
       listRootPath="/admin/commerce/orders"
       desktopCollapsible
       desktopStorageKey="commerce-orders"
-      defaultDesktopListWidth={380}
-      minDesktopListWidth={300}
+      defaultDesktopListWidth={320}
+      minDesktopListWidth={280}
       maxDesktopListWidth={520}
+      mobileBackToListLabel="Toutes les commandes"
     />
   );
 }
