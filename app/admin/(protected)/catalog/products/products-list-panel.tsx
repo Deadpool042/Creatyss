@@ -1,5 +1,4 @@
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { AdminSplitPanelHeader } from "@/components/admin/layout/admin-split-panel-header";
 import { ProductCreateTopbarMenu } from "@/features/admin/products/components/create/product-create-topbar-menu";
 import { ProductTableProvider } from "@/features/admin/products/components/list/desktop/product-table-context";
 import { ProductTable } from "@/features/admin/products/components/list/table/product-table";
@@ -80,17 +79,6 @@ export async function ProductsListPanel({
       ]}
       contentPreset="full-width"
       showBreadcrumbsInContent={false}
-      header={
-        <AdminSplitPanelHeader
-          eyebrow={PRODUCT_LIST_PAGE_COPY.eyebrow}
-          title={isTrashView ? PRODUCT_LIST_PAGE_COPY.titleTrash : PRODUCT_LIST_PAGE_COPY.title}
-          description={
-            isTrashView
-              ? PRODUCT_LIST_PAGE_COPY.descriptionTrash
-              : PRODUCT_LIST_PAGE_COPY.description
-          }
-        />
-      }
       scrollMode="nested"
     >
       <ProductTableProvider

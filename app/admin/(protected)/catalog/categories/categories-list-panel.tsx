@@ -1,6 +1,5 @@
 //app/admin/(protected)/catalog/categories/categories-list-panel.tsx
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { AdminSplitPanelHeader } from "@/components/admin/layout/admin-split-panel-header";
 import {
   CategoriesPanelList,
   CategoryCreateTopbarMenu,
@@ -32,13 +31,6 @@ export async function CategoriesListPanel({ searchParams }: CategoriesListPanelP
       topbarAction={<CategoryCreateTopbarMenu />}
       contentPreset="split-panel"
       showBreadcrumbsInContent={false}
-      header={
-        <AdminSplitPanelHeader
-          eyebrow={CATEGORY_LIST_PAGE_COPY.eyebrow}
-          title={CATEGORY_LIST_PAGE_COPY.title}
-          description={CATEGORY_LIST_PAGE_COPY.description}
-        />
-      }
       scrollMode="area"
     >
       <CategoriesPanelList categories={items} />

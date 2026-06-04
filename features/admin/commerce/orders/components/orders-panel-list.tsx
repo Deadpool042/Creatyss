@@ -1,15 +1,16 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
+import { AdminSplitListPane } from "@/components/admin/layout/admin-split-list-pane";
+import { AdminSplitListItem } from "@/components/admin/layout/admin-split-list-item";
+import { AdminPanelListControls } from "@/components/admin/layout/admin-panel-list-controls";
 import type { AdminOrderSummary } from "@/features/admin/commerce/orders/types/order-detail-types";
 import {
   getOrderStatusLabel,
   getPaymentStatusLabel,
 } from "@/entities/order/order-status-presentation";
-import { cn } from "@/lib/utils";
 import {
   getOrderStatusBadgeVariant,
   getPaymentStatusBadgeVariant,
@@ -20,7 +21,6 @@ import {
   getAdminOrderDetailPath,
   withAdminOrderListParams,
 } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
-import { AdminPanelListControls } from "@/components/admin/layout/admin-panel-list-controls";
 import { useRevealActiveOrderRow } from "../list/use-reveal-active-order-row";
 
 const compactDateFormatter = new Intl.DateTimeFormat("fr-FR", {
@@ -42,28 +42,33 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
 
   useRevealActiveOrderRow({ activeSlug });
 
+  const controls = (
+    <AdminPanelListControls
+      listPath={ADMIN_ORDERS_LIST_PATH}
+      searchPlaceholder="Référence, client…"
+      statusOptions={ORDER_STATUS_FILTERS.map((status) => ({
+        value: status,
+        label: getOrderStatusLabel(status),
+      }))}
+      allStatusLabel="Tous les statuts"
+    />
+  );
+
+  const emptyState = (
+    <li className="px-3 py-6 text-center text-sm text-muted-foreground">
+      Aucune commande trouvée.
+    </li>
+  );
+
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-red-300">
-      <div className="shrink-0 space-y-3 border-b border-surface-border px-3 py-3">
-        <AdminPanelListControls
-          listPath={ADMIN_ORDERS_LIST_PATH}
-          searchPlaceholder="Référence, client…"
-          statusOptions={ORDER_STATUS_FILTERS.map((status) => ({
-            value: status,
-            label: getOrderStatusLabel(status),
-          }))}
-          allStatusLabel="Tous les statuts"
-        />
-
-        <div className="inline-flex items-baseline gap-2">
-          <p className="text-xs font-semibold italic tracking-widest text-text-muted-soft">
-            Résultats
-          </p>
-          <p className="mt-1 text-lg font-semibold text-foreground">{orders.length}</p>
-        </div>
-      </div>
-
-      <ul className="min-h-0 flex-1 overflow-y-auto">
+    <AdminSplitListPane
+      title="Commandes"
+      resultCount={orders.length}
+      controls={controls}
+      isEmpty={orders.length === 0}
+      emptyState={<ul>{emptyState}</ul>}
+    >
+      <ul className="px-1.5 py-2">
         {orders.map((order) => {
           const detailHref = getAdminOrderDetailPath(order.id);
           const isActive = pathname === detailHref;
@@ -73,17 +78,15 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
           );
 
           return (
-            <li key={order.id} className="border-b border-surface-border last:border-b-0">
-              <Link
+            <li
+              key={order.id}
+              className="border-b border-surface-border py-px last:border-b-0"
+            >
+              <AdminSplitListItem
                 href={href}
+                active={isActive}
                 data-order-row={order.id}
-                className={cn(
-                  "flex min-h-28 flex-col justify-center gap-3 px-3 py-3 transition-colors",
-                  isActive
-                    ? "border-l-2 border-l-primary bg-interactive-selected"
-                    : "hover:bg-interactive-hover"
-                )}
-                aria-current={isActive ? "page" : undefined}
+                className="flex min-h-28 flex-col justify-center gap-3 rounded-r-[1rem] rounded-l-sm"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="grid gap-1">
@@ -118,17 +121,11 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
                     {order.totalAmount}
                   </span>
                 </div>
-              </Link>
+              </AdminSplitListItem>
             </li>
           );
         })}
-
-        {orders.length === 0 && (
-          <li className="px-3 py-6 text-center text-sm text-muted-foreground">
-            Aucune commande trouvée.
-          </li>
-        )}
       </ul>
-    </div>
+    </AdminSplitListPane>
   );
 }
