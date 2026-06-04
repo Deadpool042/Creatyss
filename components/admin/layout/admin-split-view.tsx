@@ -67,19 +67,18 @@ export function AdminSplitView({
   const canCollapseDesktopList = desktopCollapsible;
   const showDesktopRail = canCollapseDesktopList && desktopListCollapsed;
 
-  const desktopListStyle =
-    !desktopListCollapsed && desktopResizable
-      ? { width: `${desktopListWidth}px` }
-      : !desktopListCollapsed
-        ? { width: `${defaultDesktopListWidth}px` }
-        : undefined;
+  const splitListCSSVar = !desktopListCollapsed
+    ? ({
+        "--admin-split-list-width": `${desktopResizable ? desktopListWidth : defaultDesktopListWidth}px`,
+      } as React.CSSProperties)
+    : undefined;
 
   const splitClasses = compactSplit
     ? {
         listPanel:
           "tablet:pointer-events-auto tablet:relative tablet:inset-auto tablet:translate-x-0 tablet:min-h-0 tablet:shrink-0 tablet:transition-[width,border-color] tablet:duration-(--motion-duration-panel)",
         listPanelCollapsed: "tablet:w-12 tablet:border-r tablet:border-surface-border",
-        listPanelExpanded: "tablet:border-r tablet:border-surface-border",
+        listPanelExpanded: "w-full tablet:w-[var(--admin-split-list-width)] tablet:border-r tablet:border-surface-border",
         detailPanel:
           "tablet:pointer-events-auto tablet:relative tablet:inset-auto tablet:translate-x-0 tablet:min-h-0 tablet:flex-1 tablet:overflow-hidden",
         resizeHandle: "tablet:flex",
@@ -89,7 +88,7 @@ export function AdminSplitView({
         listPanel:
           "laptop:pointer-events-auto laptop:relative laptop:inset-auto laptop:translate-x-0 laptop:min-h-0 laptop:shrink-0 laptop:transition-[width,border-color] laptop:duration-(--motion-duration-panel)",
         listPanelCollapsed: "laptop:w-12 laptop:border-r laptop:border-surface-border",
-        listPanelExpanded: "laptop:border-r laptop:border-surface-border",
+        listPanelExpanded: "w-full laptop:w-[var(--admin-split-list-width)] laptop:border-r laptop:border-surface-border",
         detailPanel:
           "laptop:pointer-events-auto laptop:relative laptop:inset-auto laptop:translate-x-0 laptop:min-h-0 laptop:flex-1 laptop:overflow-hidden",
         resizeHandle: "laptop:flex",
@@ -118,7 +117,7 @@ export function AdminSplitView({
               : splitClasses.listPanelExpanded,
             listClassName
           )}
-          style={desktopListStyle}
+          style={splitListCSSVar}
         >
           {canCollapseDesktopList ? (
             <button
