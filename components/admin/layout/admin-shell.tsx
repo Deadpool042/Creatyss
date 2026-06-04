@@ -27,7 +27,13 @@ export function AdminShell({
 }: AdminShellProps) {
   return (
     <>
-      <SidebarProvider className="min-h-svh overflow-visible bg-[radial-gradient(circle_at_top,color-mix(in_srgb,var(--shell-surface)_82%,white)_0%,color-mix(in_srgb,var(--shell-surface)_34%,var(--page-background))_36%,var(--page-background)_100%)] text-page-foreground supports-[height:100dvh]:min-h-dvh lg:h-svh lg:min-h-0 lg:overflow-hidden lg:supports-[height:100dvh]:h-dvh">
+      {/* mobileBreakpoint=1024 aligns with --breakpoint-laptop (theme.css),
+          ensuring SidebarProvider renders a Sheet (not a persistent sidebar)
+          on tablet (768–1023px), where the desktop sidebar is hidden (lg:block). */}
+      <SidebarProvider
+        mobileBreakpoint={1024}
+        className="min-h-svh overflow-visible bg-[radial-gradient(circle_at_top,color-mix(in_srgb,var(--shell-surface)_82%,white)_0%,color-mix(in_srgb,var(--shell-surface)_34%,var(--page-background))_36%,var(--page-background)_100%)] text-page-foreground supports-[height:100dvh]:min-h-dvh lg:h-svh lg:min-h-0 lg:overflow-hidden lg:supports-[height:100dvh]:h-dvh"
+      >
         <div className="flex min-h-svh w-full flex-col overflow-visible supports-[height:100dvh]:min-h-dvh lg:h-svh lg:min-h-0 lg:overflow-hidden lg:supports-[height:100dvh]:h-dvh">
           <AdminTopbar displayName={displayName} email={email} />
 
@@ -41,7 +47,7 @@ export function AdminShell({
               />
             </div>
 
-            <SidebarInset className="safe-content-inset relative min-h-0 min-w-0 overflow-visible bg-[linear-gradient(180deg,color-mix(in_srgb,var(--page-background)_84%,var(--shell-surface))_0%,var(--page-background)_100%)] text-page-foreground lg:overflow-hidden">
+            <SidebarInset className="relative min-h-0 min-w-0 overflow-visible bg-[linear-gradient(180deg,color-mix(in_srgb,var(--page-background)_84%,var(--shell-surface))_0%,var(--page-background)_100%)] text-page-foreground lg:overflow-hidden">
               {children}
               <div
                 aria-hidden

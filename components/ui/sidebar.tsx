@@ -52,6 +52,7 @@ function SidebarProvider({
   defaultOpen = true,
   open: openProp,
   onOpenChange: setOpenProp,
+  mobileBreakpoint,
   className,
   style,
   children,
@@ -60,8 +61,30 @@ function SidebarProvider({
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Override the breakpoint (px) below which the sidebar renders as a Sheet.
+   *  Defaults to the shadcn useIsMobile() threshold (768px).
+   *  Pass 1024 in AdminShell to align with --breakpoint-laptop. */
+  mobileBreakpoint?: number;
 }) {
-  const isMobile = useIsMobile();
+  const isMobileDefault = useIsMobile();
+  const [isMobileOverride, setIsMobileOverride] = React.useState<
+    boolean | undefined
+  >(undefined);
+
+  React.useEffect(() => {
+    if (mobileBreakpoint === undefined) return;
+    const update = () =>
+      setIsMobileOverride(window.innerWidth < mobileBreakpoint);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [mobileBreakpoint]);
+
+  const isMobile =
+    mobileBreakpoint !== undefined
+      ? Boolean(isMobileOverride)
+      : isMobileDefault;
+
   const [openMobile, setOpenMobile] = React.useState(false);
 
   // This is the internal state of the sidebar.
