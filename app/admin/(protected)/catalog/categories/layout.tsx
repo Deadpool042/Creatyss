@@ -16,6 +16,7 @@ export default function CategoriesLayout({ list, detail }: CategoriesLayoutProps
       header={<AdminRouteBreadcrumbs />}
       listRootPath="/admin/catalog/categories"
       detailClassName="lg:overflow-visible"
+      compactSplit
       desktopResizable
       desktopCollapsible
       desktopStorageKey="catalog-categories"

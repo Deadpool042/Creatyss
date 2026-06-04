@@ -15,6 +15,7 @@ export default function OrdersLayout({ list, detail }: OrdersLayoutProps) {
       detail={detail}
       header={<AdminRouteBreadcrumbs />}
       listRootPath="/admin/commerce/orders"
+      compactSplit
       desktopResizable
       desktopCollapsible
       desktopStorageKey="commerce-orders"
