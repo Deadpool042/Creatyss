@@ -16,11 +16,12 @@ export default function CategoriesLayout({ list, detail }: CategoriesLayoutProps
       header={<AdminRouteBreadcrumbs />}
       listRootPath="/admin/catalog/categories"
       detailClassName="lg:overflow-visible"
+      desktopResizable
       desktopCollapsible
       desktopStorageKey="catalog-categories"
       defaultDesktopListWidth={280}
       minDesktopListWidth={240}
-      maxDesktopListWidth={520}
+      maxDesktopListWidth={380}
       mobileBackToListLabel="Toutes les catégories"
     />
   );

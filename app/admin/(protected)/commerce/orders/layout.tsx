@@ -15,11 +15,12 @@ export default function OrdersLayout({ list, detail }: OrdersLayoutProps) {
       detail={detail}
       header={<AdminRouteBreadcrumbs />}
       listRootPath="/admin/commerce/orders"
+      desktopResizable
       desktopCollapsible
       desktopStorageKey="commerce-orders"
       defaultDesktopListWidth={320}
       minDesktopListWidth={280}
-      maxDesktopListWidth={520}
+      maxDesktopListWidth={460}
       mobileBackToListLabel="Toutes les commandes"
     />
   );
