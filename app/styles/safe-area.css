@@ -16,6 +16,16 @@
 
    Ne jamais cumuler safe-px-* avec px-* / pl-* / pr-* sur le même nœud.
    Ne pas appliquer safe-px-* partout : uniquement sur les wrappers proches du viewport.
+
+   Responsive notes:
+   Les media queries numériques ci-dessous reprennent intentionnellement les tokens
+   définis dans app/styles/theme.css :
+     768px  = --breakpoint-tablet  (48rem)
+     1024px = --breakpoint-laptop  (64rem)
+
+   Conserver ces valeurs alignées avec lib/breakpoints.ts lors de tout changement
+   de breakpoints. CSS ne peut pas importer des constantes TS — la duplication est
+   intentionnelle et documentée ici.
    ────────────────────────────────────────────────────────────────────────── */
 
 /* ── Padding horizontal layout — wrappers de page ────────────────────────── */
@@ -127,7 +137,8 @@
 
 /* ── Padding bottom — compensation hauteur bottom nav mobile (h-14 = 3.5rem) ─
    À utiliser sur les panneaux qui doivent dégager la barre de navigation mobile.
-   Réinitialisé à 0 en desktop (≥ 1024px) car la bottom nav n'est plus présente. */
+   Réinitialisé à 0 en desktop (≥ 1024px = --breakpoint-laptop) car la bottom nav
+   n'est plus présente au-delà de ce seuil. */
 .safe-pb-mobile-nav {
   padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
 }
