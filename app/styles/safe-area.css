@@ -149,21 +149,6 @@
   }
 }
 
-/* ── Padding bottom — compensation hauteur bottom nav pour les Compact Split Views ─
-   CompactSplit bascule de slide à split dès --breakpoint-tablet (768px).
-   La bottom nav disparaît au même seuil — on réinitialise donc le padding à 768px,
-   plus tôt que safe-pb-mobile-nav qui réinitialise à --breakpoint-laptop (1024px). */
-.safe-pb-compact-split-nav {
-  padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
-}
-
-@media (min-width: 768px) {
-  /* --breakpoint-tablet — le split est actif, la bottom nav est masquée */
-  .safe-pb-compact-split-nav {
-    padding-bottom: 0;
-  }
-}
-
 /* ── Hauteur canonique topbar admin ─────────────────────────────────────── */
 /* Centralisée ici pour éviter les conflits entre classes Tailwind responsive
    et media queries safe-area. Ne pas dupliquer dans le composant React. */

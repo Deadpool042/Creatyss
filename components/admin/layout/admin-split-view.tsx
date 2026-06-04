@@ -74,10 +74,6 @@ export function AdminSplitView({
         ? { width: `${defaultDesktopListWidth}px` }
         : undefined;
 
-  const mobileNavPaddingClass = compactSplit
-    ? "safe-pb-compact-split-nav"
-    : "safe-pb-mobile-nav";
-
   const splitClasses = compactSplit
     ? {
         listPanel:
@@ -113,7 +109,7 @@ export function AdminSplitView({
         <div
           className={cn(
             "absolute inset-0 flex flex-col overflow-hidden",
-            mobileNavPaddingClass,
+            "safe-pb-mobile-nav",
             "transition-transform duration-(--motion-duration-panel) ease-(--motion-ease-spring)",
             isDetailActive ? "pointer-events-none -translate-x-full" : "translate-x-0",
             splitClasses.listPanel,
@@ -173,7 +169,7 @@ export function AdminSplitView({
         <div
           className={cn(
             "absolute inset-0 flex flex-col overflow-hidden",
-            mobileNavPaddingClass,
+            "safe-pb-mobile-nav",
             "transition-transform duration-(--motion-duration-panel) ease-(--motion-ease-spring)",
             isDetailActive ? "translate-x-0" : "pointer-events-none translate-x-full",
             splitClasses.detailPanel,
