@@ -26,6 +26,7 @@ type AdminSplitViewProps = {
   expandLabel?: string;
   resizeLabel?: string;
   mobileBackToListLabel?: string;
+  compactSplit?: boolean;
 };
 
 export function AdminSplitView({
@@ -45,6 +46,7 @@ export function AdminSplitView({
   expandLabel = "Ouvrir la liste",
   resizeLabel = "Redimensionner la liste",
   mobileBackToListLabel,
+  compactSplit = false,
 }: AdminSplitViewProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -72,6 +74,28 @@ export function AdminSplitView({
         ? { width: `${defaultDesktopListWidth}px` }
         : undefined;
 
+  const splitClasses = compactSplit
+    ? {
+        listPanel:
+          "tablet:pointer-events-auto tablet:relative tablet:inset-auto tablet:translate-x-0 tablet:min-h-0 tablet:shrink-0 tablet:transition-[width,border-color] tablet:duration-(--motion-duration-panel)",
+        listPanelCollapsed: "tablet:w-12 tablet:border-r tablet:border-surface-border",
+        listPanelExpanded: "tablet:border-r tablet:border-surface-border",
+        detailPanel:
+          "tablet:pointer-events-auto tablet:relative tablet:inset-auto tablet:translate-x-0 tablet:min-h-0 tablet:flex-1 tablet:overflow-hidden",
+        resizeHandle: "tablet:flex",
+        mobileBackHidden: "tablet:hidden",
+      }
+    : {
+        listPanel:
+          "laptop:pointer-events-auto laptop:relative laptop:inset-auto laptop:translate-x-0 laptop:min-h-0 laptop:shrink-0 laptop:transition-[width,border-color] laptop:duration-(--motion-duration-panel)",
+        listPanelCollapsed: "laptop:w-12 laptop:border-r laptop:border-surface-border",
+        listPanelExpanded: "laptop:border-r laptop:border-surface-border",
+        detailPanel:
+          "laptop:pointer-events-auto laptop:relative laptop:inset-auto laptop:translate-x-0 laptop:min-h-0 laptop:flex-1 laptop:overflow-hidden",
+        resizeHandle: "laptop:flex",
+        mobileBackHidden: "laptop:hidden",
+      };
+
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       {header ? (
@@ -88,11 +112,10 @@ export function AdminSplitView({
             "safe-pb-mobile-nav",
             "transition-transform duration-(--motion-duration-panel) ease-(--motion-ease-spring)",
             isDetailActive ? "pointer-events-none -translate-x-full" : "translate-x-0",
-            "lg:pointer-events-auto lg:relative lg:inset-auto lg:translate-x-0",
-            "lg:min-h-0 lg:shrink-0 lg:transition-[width,border-color] lg:duration-(--motion-duration-panel)",
+            splitClasses.listPanel,
             showDesktopRail
-              ? "lg:w-12 lg:border-r lg:border-surface-border"
-              : "lg:border-r lg:border-surface-border",
+              ? splitClasses.listPanelCollapsed
+              : splitClasses.listPanelExpanded,
             listClassName
           )}
           style={desktopListStyle}
@@ -125,7 +148,7 @@ export function AdminSplitView({
           <div
             role="separator"
             aria-orientation="vertical"
-            className="relative hidden w-6 shrink-0 items-stretch justify-center bg-transparent lg:flex"
+            className={cn("relative hidden w-6 shrink-0 items-stretch justify-center bg-transparent", splitClasses.resizeHandle)}
           >
             {!showDesktopRail ? (
               <button
@@ -149,15 +172,14 @@ export function AdminSplitView({
             "safe-pb-mobile-nav",
             "transition-transform duration-(--motion-duration-panel) ease-(--motion-ease-spring)",
             isDetailActive ? "translate-x-0" : "pointer-events-none translate-x-full",
-            "lg:pointer-events-auto lg:relative lg:inset-auto lg:translate-x-0",
-            "lg:min-h-0 lg:flex-1 lg:overflow-hidden",
+            splitClasses.detailPanel,
             detailClassName
           )}
         >
           {mobileBackToListLabel && isDetailActive ? (
             <Link
               href={mobileBackToListHref}
-              className="sticky top-0 z-20 flex shrink-0 items-center gap-2 border-b border-surface-border bg-surface-panel/95 px-4 py-3 text-sm font-medium text-muted-foreground backdrop-blur-xl transition-colors hover:text-foreground lg:hidden"
+              className={cn("sticky top-0 z-20 flex shrink-0 items-center gap-2 border-b border-surface-border bg-surface-panel/95 px-4 py-3 text-sm font-medium text-muted-foreground backdrop-blur-xl transition-colors hover:text-foreground", splitClasses.mobileBackHidden)}
             >
               <ChevronLeft className="size-4" />
               {mobileBackToListLabel}
