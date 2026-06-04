@@ -157,7 +157,7 @@ export function AdminSplitView({
           {mobileBackToListLabel && isDetailActive ? (
             <Link
               href={mobileBackToListHref}
-              className="flex shrink-0 items-center gap-2 border-b border-surface-border px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground lg:hidden"
+              className="sticky top-0 z-20 flex shrink-0 items-center gap-2 border-b border-surface-border bg-surface-panel/95 px-4 py-3 text-sm font-medium text-muted-foreground backdrop-blur-xl transition-colors hover:text-foreground lg:hidden"
             >
               <ChevronLeft className="size-4" />
               {mobileBackToListLabel}
