@@ -213,7 +213,7 @@
   }
 }
 
-@media (max-height: 480px) {
+@media (max-height: 480px) and (min-width: 1024px) {
   .admin-content-bottom-spacing {
     padding-bottom: 0;
   }

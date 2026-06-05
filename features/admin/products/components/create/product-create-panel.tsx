@@ -60,7 +60,7 @@ function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerPro
   }
 
   return (
-    <form action={formAction} className="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden rounded-[1.2rem] border border-surface-border bg-surface-panel shadow-sm sm:rounded-[1.4rem]">
+    <form action={formAction} className="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-surface-border bg-surface-panel shadow-card">
       <div className="site-header-blur hidden shrink-0 border-b border-surface-border lg:block">
         <div className="px-6 py-5">
           <h2 className="text-sm font-semibold">{PRODUCT_CREATE_PAGE_COPY.title}</h2>
@@ -88,8 +88,8 @@ function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerPro
             message={state.status !== "idle" ? state.message : null}
           />
 
-          <Card className="rounded-xl border border-surface-border-strong bg-surface-panel shadow-raised py-0 sm:rounded-[1.35rem]">
-            <CardHeader className="rounded-t-xl border-b border-surface-border bg-surface-panel-soft px-4 py-3 sm:rounded-t-[1.35rem] sm:px-5 sm:py-4">
+          <Card className="rounded-xl border border-surface-border-strong bg-surface-panel shadow-card py-0">
+            <CardHeader className="rounded-t-xl border-b border-surface-border bg-surface-panel-soft px-4 py-3 sm:px-5 sm:py-4">
               <div className="space-y-1.5">
                 <ProductSectionEyebrow className="text-[10px] sm:text-[11px]">
                   {PRODUCT_CREATE_PANEL_COPY.identityEyebrow}
