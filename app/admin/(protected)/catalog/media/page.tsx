@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { AdminCollectionSection } from "@/components/admin/cards/admin-collection-section";
 import {
   AdminFormActions,
@@ -130,7 +129,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
     <AdminPageShell
       title="Bibliothèque médias"
       scrollMode="area"
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="detail"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
         { label: "Catalogue", href: "/admin/catalog/overview" },

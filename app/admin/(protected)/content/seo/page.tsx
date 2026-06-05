@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, FileText, Globe, Package, Tag } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { ADMIN_PRODUCTS_LIST_PATH } from "@/features/admin/products/navigation";
 import { listAdminBlogPosts } from "@/features/admin/blog";
 import { listAdminProducts } from "@/features/admin/products/list/queries";
@@ -77,9 +76,9 @@ export default async function AdminContentSeoPage() {
         { label: "Contenu", href: "/admin/content/overview" },
         { label: "SEO" },
       ]}
+      contentPreset="detail"
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentClassName={ADMIN_CONTENT_PAGE}
     >
       <div className="mx-auto w-full max-w-4xl">
         {/* ── Hero score ─────────────────────────────────────────────── */}
