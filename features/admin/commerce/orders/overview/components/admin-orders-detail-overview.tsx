@@ -35,7 +35,7 @@ type OverviewSignal = {
 
 function OverviewMetric(props: { label: string; value: number; hint: string }) {
   return (
-    <div className="rounded-[1.35rem] border border-surface-border/60 bg-surface-panel/70 px-4 py-4 shadow-sm">
+    <div className="rounded-2xl border border-surface-border bg-surface-panel px-4 py-4 shadow-sm">
       <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
         {props.label}
       </p>
@@ -95,7 +95,7 @@ export async function AdminOrdersDetailOverview() {
       showBreadcrumbsInContent={false}
       header={
         <div className="hidden px-4 pt-1 md:px-5 lg:flex lg:flex-col lg:items-center lg:justify-center lg:gap-3 lg:px-6 lg:pb-1">
-          <div className="flex size-11 items-center justify-center rounded-[1.15rem] border border-white/70 bg-white/72 shadow-sm backdrop-blur-xl">
+          <div className="flex size-11 items-center justify-center rounded-2xl border border-surface-border bg-surface-panel shadow-sm backdrop-blur-xl">
             <ShoppingBagIcon className="size-5 text-muted-foreground" />
           </div>
           <div className="text-center">
@@ -146,7 +146,7 @@ export async function AdminOrdersDetailOverview() {
         </div>
 
         <div className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.85fr)]">
-          <section className="rounded-[1.65rem] border border-surface-border/60 bg-surface-panel/70 p-5 shadow-sm">
+          <section className="rounded-2xl border border-surface-border bg-surface-panel p-5 shadow-card">
             <div className="flex items-end justify-between gap-4">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
@@ -170,7 +170,7 @@ export async function AdminOrdersDetailOverview() {
                   <Link
                     key={order.id}
                     href={`/admin/commerce/orders/${order.id}`}
-                    className="flex items-start justify-between gap-3 rounded-[1.1rem] border border-white/70 bg-white/74 px-4 py-3 transition-colors hover:bg-white"
+                    className="flex items-start justify-between gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft px-4 py-3 transition-colors hover:bg-surface-panel"
                   >
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium text-foreground">{order.reference}</p>
@@ -197,7 +197,7 @@ export async function AdminOrdersDetailOverview() {
                 ))}
               </div>
             ) : (
-              <div className="mt-5 rounded-[1.4rem] border border-dashed border-surface-border/70 bg-white/45 px-5 py-8 text-center">
+              <div className="mt-5 rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-5 py-8 text-center">
                 <p className="text-sm font-medium text-foreground">Aucune commande pour le moment</p>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Les premières commandes apparaîtront ici dès qu&apos;elles seront créées.
@@ -206,7 +206,7 @@ export async function AdminOrdersDetailOverview() {
             )}
           </section>
 
-          <section className="rounded-[1.65rem] border border-surface-border/60 bg-surface-panel/64 p-5 shadow-sm">
+          <section className="rounded-2xl border border-surface-border bg-surface-panel-soft p-5 shadow-sm">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
               Pilotage
             </p>
@@ -229,10 +229,10 @@ export async function AdminOrdersDetailOverview() {
                   return (
                     <div
                       key={signal.key}
-                      className="rounded-[1.1rem] border border-surface-border/60 bg-white/72 px-4 py-3"
+                      className="rounded-xl border border-surface-border-subtle bg-surface-panel-soft px-4 py-3"
                     >
                       <div className="flex items-start gap-3">
-                        <div className="mt-0.5 flex size-8 items-center justify-center rounded-full bg-surface-panel/80">
+                        <div className="mt-0.5 flex size-8 items-center justify-center rounded-full bg-surface-panel">
                           <Icon className="size-4 text-muted-foreground" />
                         </div>
                         <div className="min-w-0">
@@ -247,9 +247,9 @@ export async function AdminOrdersDetailOverview() {
                 })}
               </div>
             ) : (
-              <div className="mt-4 rounded-[1.1rem] border border-surface-border/60 bg-white/72 px-4 py-4">
+              <div className="mt-4 rounded-xl border border-surface-border-subtle bg-surface-panel-soft px-4 py-4">
                 <div className="flex items-start gap-3">
-                  <div className="mt-0.5 flex size-8 items-center justify-center rounded-full bg-surface-panel/80">
+                  <div className="mt-0.5 flex size-8 items-center justify-center rounded-full bg-surface-panel">
                     <TruckIcon className="size-4 text-muted-foreground" />
                   </div>
                   <div>

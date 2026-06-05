@@ -42,7 +42,7 @@ export async function CategoryDetailOverview() {
       contentClassName="space-y-5"
       header={
         <div className="hidden px-4 pt-1 md:px-5 lg:flex lg:flex-col lg:items-center lg:justify-center lg:gap-3 lg:px-6 lg:pb-1">
-          <div className="flex size-11 items-center justify-center rounded-[1.15rem] border border-white/70 bg-white/72 shadow-sm backdrop-blur-xl">
+          <div className="flex size-11 items-center justify-center rounded-2xl border border-surface-border bg-surface-panel shadow-sm backdrop-blur-xl">
             <TagIcon className="size-5 text-muted-foreground" />
           </div>
           <div className="text-center">
@@ -56,14 +56,14 @@ export async function CategoryDetailOverview() {
     >
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {[
-          { label: "Total", value: items.length, tone: "bg-white/72" },
-          { label: "Publiées", value: activeCount, tone: "bg-emerald-50/85" },
-          { label: "Mises en avant", value: featuredCount, tone: "bg-amber-50/85" },
-          { label: "Produits reliés", value: totalProducts, tone: "bg-sky-50/85" },
+          { label: "Total", value: items.length, tone: "bg-surface-panel" },
+          { label: "Publiées", value: activeCount, tone: "bg-surface-panel-soft" },
+          { label: "Mises en avant", value: featuredCount, tone: "bg-surface-panel-soft" },
+          { label: "Produits reliés", value: totalProducts, tone: "bg-surface-panel-soft" },
         ].map((stat) => (
           <div
             key={stat.label}
-            className={`rounded-[1.35rem] border border-surface-border/60 ${stat.tone} px-4 py-4 shadow-sm backdrop-blur-xl`}
+            className={`rounded-2xl border border-surface-border ${stat.tone} px-4 py-4 shadow-sm backdrop-blur-xl`}
           >
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               {stat.label}
@@ -76,7 +76,7 @@ export async function CategoryDetailOverview() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.8fr)]">
-        <section className="rounded-[1.65rem] border border-surface-border/60 bg-white/68 p-5 shadow-sm backdrop-blur-xl">
+        <section className="rounded-2xl border border-surface-border bg-surface-panel p-5 shadow-card backdrop-blur-xl">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
@@ -101,7 +101,7 @@ export async function CategoryDetailOverview() {
                 <Link
                   key={category.id}
                   href={getAdminCategoryDetailPath(category.slug)}
-                  className="flex items-center justify-between gap-3 rounded-[1.1rem] border border-white/70 bg-white/74 px-4 py-3 transition-colors hover:bg-white"
+                  className="flex items-center justify-between gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft px-4 py-3 transition-colors hover:bg-surface-panel"
                 >
                   <div className="min-w-0">
                     <p className="truncate text-sm font-medium text-foreground">{category.name}</p>
@@ -121,7 +121,7 @@ export async function CategoryDetailOverview() {
               ))}
             </div>
           ) : (
-            <div className="mt-5 rounded-[1.4rem] border border-dashed border-surface-border/70 bg-white/45 px-5 py-8 text-center">
+            <div className="mt-5 rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-5 py-8 text-center">
               <p className="text-sm font-medium text-foreground">Aucune catégorie pour le moment</p>
               <p className="mt-1 text-sm text-muted-foreground">
                 Créez une première catégorie pour structurer le catalogue.
@@ -130,7 +130,7 @@ export async function CategoryDetailOverview() {
           )}
         </section>
 
-        <section className="rounded-[1.65rem] border border-surface-border/60 bg-white/54 p-5 shadow-sm backdrop-blur-xl">
+        <section className="rounded-2xl border border-surface-border bg-surface-panel-soft p-5 shadow-sm backdrop-blur-xl">
           <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
             Conseils
           </p>
