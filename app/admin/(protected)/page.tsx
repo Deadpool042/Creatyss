@@ -11,7 +11,7 @@ export default async function AdminDashboardPage() {
       scrollMode="area"
       title="Tableau de bord"
       breadcrumbs={[{ label: "Tableau de bord" }]}
-      contentPreset="dashboard"
+      contentPreset="full-width"
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
     >
