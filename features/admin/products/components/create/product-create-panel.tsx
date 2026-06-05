@@ -34,6 +34,14 @@ type ProductCreatePanelInnerProps = {
   onReset: () => void;
 };
 
+const CREATE_PANEL_CONTENT_BOTTOM_PADDING_CLASS =
+  "pb-[calc(var(--admin-bottom-nav-offset)+2.75rem)]";
+const CREATE_PANEL_CONTENT_BOTTOM_PADDING_LANDSCAPE_CLASS =
+  "[@media(max-height:480px)]:pb-[calc(var(--admin-bottom-nav-offset)+1.75rem)]";
+const CREATE_PANEL_FOOTER_BOTTOM_CLASS = "bottom-[var(--admin-bottom-nav-offset)]";
+const CREATE_PANEL_FOOTER_BOTTOM_LANDSCAPE_CLASS =
+  "[@media(max-height:480px)]:bottom-[calc(var(--admin-bottom-nav-offset)-0.75rem)]";
+
 function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerProps): JSX.Element {
   const [state, formAction, pending] = useActionState(action, initialCreateProductActionState);
 
@@ -65,13 +73,14 @@ function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerPro
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
         <div
           className={[
-            "mx-auto max-w-4xl space-y-4 px-3 pt-4 pb-[calc(6.25rem+env(safe-area-inset-bottom))]",
+            "mx-auto max-w-4xl space-y-4 px-3 pt-4",
             "sm:space-y-5 sm:px-4 sm:pt-5 sm:pb-6",
             "md:space-y-6 md:px-6 md:pt-6",
             "lg:px-5 xl:px-0",
             "[@media(max-height:480px)]:space-y-3",
             "[@media(max-height:480px)]:pt-3",
-            "[@media(max-height:480px)]:pb-[calc(5.25rem+env(safe-area-inset-bottom))]",
+            CREATE_PANEL_CONTENT_BOTTOM_PADDING_CLASS,
+            CREATE_PANEL_CONTENT_BOTTOM_PADDING_LANDSCAPE_CLASS,
           ].join(" ")}
         >
           <AdminFormMessage
@@ -137,8 +146,8 @@ function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerPro
         actionsClassName="w-full justify-between gap-2 sm:w-auto sm:justify-end"
         className={[
           "px-3 py-2",
-          "bottom-[calc(3.5rem+env(safe-area-inset-bottom))]",
-          "[@media(max-height:480px)]:bottom-[calc(2.75rem+env(safe-area-inset-bottom))]",
+          CREATE_PANEL_FOOTER_BOTTOM_CLASS,
+          CREATE_PANEL_FOOTER_BOTTOM_LANDSCAPE_CLASS,
           "sm:px-4 sm:py-3",
           "lg:bottom-0 lg:px-4 lg:py-3",
         ].join(" ")}
