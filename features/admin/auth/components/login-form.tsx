@@ -76,7 +76,7 @@ function LoginSidebar() {
 export function LoginForm({ action, showError = false }: LoginFormProps) {
   return (
     <AuthShell sidebar={<LoginSidebar />}>
-      <Card className="overflow-hidden rounded-[28px] border border-border/80 bg-card/92 shadow-[0_20px_70px_-24px_rgba(0,0,0,0.22)] backdrop-blur-sm">
+      <Card className="overflow-hidden rounded-2xl border border-surface-border bg-surface-panel/92 shadow-card backdrop-blur-sm">
         <div className="h-1 w-full bg-linear-to-r from-foreground via-foreground/70 to-brand" />
 
         <CardHeader className="space-y-4 px-8 pb-6 pt-8">
@@ -139,7 +139,7 @@ export function LoginForm({ action, showError = false }: LoginFormProps) {
               <Field className="pt-2">
                 <Button
                   type="submit"
-                  className="h-12 w-full rounded-2xl bg-primary text-sm font-medium text-primary-foreground shadow-lg transition hover:bg-primary/90"
+                  className="h-12 w-full rounded-2xl bg-primary text-sm font-medium text-primary-foreground shadow-control transition hover:bg-primary/90"
                 >
                   Se connecter
                 </Button>

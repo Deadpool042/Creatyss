@@ -15,7 +15,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
   return (
     <main className="w-full grid min-h-[calc(100vh-8rem)] place-items-center p-4 ">
-      <section className="w-[min(100%,42rem)] p-8 border border-[rgba(31,31,31,0.08)] rounded-[1rem] bg-white/92 shadow-[0_20px_60px_rgba(31,31,31,0.08)]">
+      <section className="w-[min(100%,42rem)] rounded-2xl border border-surface-border bg-surface-panel p-8 shadow-card">
         <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
           Erreur applicative
         </p>
