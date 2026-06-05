@@ -2,18 +2,11 @@ import "server-only";
 
 // Components
 export { CategoriesPanelList } from "./components/list/categories-panel-list";
-export { CategoryTable } from "./components/list/table/category-table";
 export { CategoryCreateTopbarMenu } from "./components/create/category-create-topbar-menu";
 export { CategoryEditorPanel } from "./components/edit/category-editor-panel";
 export { CategorySeoForm } from "./components/edit/category-seo-form";
 export { CategoryImageForm } from "./components/edit/category-image-form";
 export { CategoryArchiveButton } from "./components/edit/category-archive-button";
-
-// Context
-export {
-  CategoriesTableProvider,
-  useCategoriesTableContext,
-} from "./context/categories-data-provider";
 
 // List hooks/types
 export {

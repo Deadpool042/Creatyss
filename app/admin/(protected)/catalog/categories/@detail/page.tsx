@@ -1,4 +1,4 @@
-import { CategoryDetailOverview } from "./category-detail-overview";
+import { CategoryDetailOverview } from "@/features/admin/categories/overview/category-detail-overview";
 
 export const dynamic = "force-dynamic";
 

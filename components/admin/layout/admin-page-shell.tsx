@@ -83,7 +83,7 @@ export function AdminPageShell({
   return (
     <div className={cn("flex min-h-0 flex-1 flex-col ", className)}>
       {hasContextBar ? (
-        <div className="shrink-0 border-b border-shell-border/60 bg-shell-surface/88 supports-[backdrop-filter]:bg-shell-surface/72 supports-[backdrop-filter]:backdrop-blur-xl">
+        <div className="shrink-0 border-b border-shell-border/60 bg-shell-surface/88 supports-backdrop-filter:bg-shell-surface/72 supports-backdrop-filter:backdrop-blur-xl">
           <div className="safe-px-layout flex flex-col gap-2 py-2.5 sm:flex-row sm:items-center sm:justify-between [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:gap-1.5 [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:py-1.5">
             <div className="flex min-w-0 items-center gap-2 overflow-hidden">
               {navigation ? (
@@ -94,7 +94,10 @@ export function AdminPageShell({
                   size="sm"
                   className="h-8 shrink-0 gap-1 rounded-xl px-2 text-foreground/72 hover:text-foreground"
                 >
-                  <Link href={navigation.href} aria-label={navigation.ariaLabel ?? navigation.label}>
+                  <Link
+                    href={navigation.href}
+                    aria-label={navigation.ariaLabel ?? navigation.label}
+                  >
                     <ChevronLeft className="size-4 shrink-0" />
                     <span className="hidden sm:inline">{navigation.label}</span>
                   </Link>
@@ -125,12 +128,7 @@ export function AdminPageShell({
         // ce scroll local le contenu plus grand que la viewport est clippé.
         // À utiliser pour : pages standards, formulaires, listes, dashboard.
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-          <div
-            className={cn(
-              "flex min-h-full min-w-0 flex-col",
-              resolvedContentClassName
-            )}
-          >
+          <div className={cn("flex min-h-full min-w-0 flex-col", resolvedContentClassName)}>
             {children}
           </div>
         </div>

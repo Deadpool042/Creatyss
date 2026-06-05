@@ -78,7 +78,8 @@ export function AdminSplitView({
         listPanel:
           "tablet:pointer-events-auto tablet:relative tablet:inset-auto tablet:translate-x-0 tablet:min-h-0 tablet:shrink-0 tablet:transition-[width,border-color] tablet:duration-(--motion-duration-panel)",
         listPanelCollapsed: "tablet:w-12 tablet:border-r tablet:border-surface-border",
-        listPanelExpanded: "w-full tablet:w-[var(--admin-split-list-width)] tablet:border-r tablet:border-surface-border",
+        listPanelExpanded:
+          "w-full tablet:w-[var(--admin-split-list-width)] tablet:border-r tablet:border-surface-border",
         detailPanel:
           "tablet:pointer-events-auto tablet:relative tablet:inset-auto tablet:translate-x-0 tablet:min-h-0 tablet:flex-1 tablet:overflow-hidden",
         resizeHandle: "tablet:flex",
@@ -88,7 +89,8 @@ export function AdminSplitView({
         listPanel:
           "laptop:pointer-events-auto laptop:relative laptop:inset-auto laptop:translate-x-0 laptop:min-h-0 laptop:shrink-0 laptop:transition-[width,border-color] laptop:duration-(--motion-duration-panel)",
         listPanelCollapsed: "laptop:w-12 laptop:border-r laptop:border-surface-border",
-        listPanelExpanded: "w-full laptop:w-[var(--admin-split-list-width)] laptop:border-r laptop:border-surface-border",
+        listPanelExpanded:
+          "w-full laptop:w-[var(--admin-split-list-width)] laptop:border-r laptop:border-surface-border",
         detailPanel:
           "laptop:pointer-events-auto laptop:relative laptop:inset-auto laptop:translate-x-0 laptop:min-h-0 laptop:flex-1 laptop:overflow-hidden",
         resizeHandle: "laptop:flex",
@@ -107,14 +109,12 @@ export function AdminSplitView({
         {/* List panel — mobile: absolute slide, desktop: flex shrink-0 */}
         <div
           className={cn(
-            "absolute inset-0 flex flex-col overflow-hidden",
+            "absolute inset-0 flex flex-col overflow-hidden ",
             "safe-pb-mobile-nav",
             "transition-transform duration-(--motion-duration-panel) ease-(--motion-ease-spring)",
             isDetailActive ? "pointer-events-none -translate-x-full" : "translate-x-0",
             splitClasses.listPanel,
-            showDesktopRail
-              ? splitClasses.listPanelCollapsed
-              : splitClasses.listPanelExpanded,
+            showDesktopRail ? splitClasses.listPanelCollapsed : splitClasses.listPanelExpanded,
             listClassName
           )}
           style={splitListCSSVar}
@@ -123,7 +123,7 @@ export function AdminSplitView({
             <button
               type="button"
               className={cn(
-                "absolute top-3 z-10 hidden h-6 w-6 items-center justify-center rounded-full border border-surface-border bg-surface-panel text-muted-foreground shadow-control backdrop-blur-xl transition-[transform,background-color,color,left,right] duration-(--motion-duration-panel) ease-(--motion-ease-spring) hover:bg-surface-floating hover:text-foreground lg:flex",
+                "absolute bottom-3 z-10 hidden h-6 w-6 items-center justify-center rounded-full border border-surface-border bg-surface-panel text-muted-foreground shadow-control backdrop-blur-xl transition-[transform,background-color,color,left,right] duration-(--motion-duration-panel) ease-(--motion-ease-spring) hover:bg-surface-floating hover:text-foreground lg:flex",
                 showDesktopRail ? "left-1/2 -translate-x-1/2" : "right-3"
               )}
               onClick={toggleDesktopList}
@@ -147,7 +147,10 @@ export function AdminSplitView({
           <div
             role="separator"
             aria-orientation="vertical"
-            className={cn("relative hidden w-6 shrink-0 items-stretch justify-center bg-transparent", splitClasses.resizeHandle)}
+            className={cn(
+              "relative hidden w-6 shrink-0 items-stretch justify-center bg-transparent",
+              splitClasses.resizeHandle
+            )}
           >
             {!showDesktopRail ? (
               <button
@@ -178,7 +181,10 @@ export function AdminSplitView({
           {mobileBackToListLabel && isDetailActive ? (
             <Link
               href={mobileBackToListHref}
-              className={cn("sticky top-0 z-20 flex shrink-0 items-center gap-2 border-b border-surface-border bg-surface-panel/95 px-4 py-3 text-sm font-medium text-muted-foreground backdrop-blur-xl transition-colors hover:text-foreground", splitClasses.mobileBackHidden)}
+              className={cn(
+                "sticky top-0 z-20 flex shrink-0 items-center gap-2 border-b border-surface-border bg-surface-panel/95 px-4 py-3 text-sm font-medium text-muted-foreground backdrop-blur-xl transition-colors hover:text-foreground",
+                splitClasses.mobileBackHidden
+              )}
             >
               <ChevronLeft className="size-4" />
               {mobileBackToListLabel}

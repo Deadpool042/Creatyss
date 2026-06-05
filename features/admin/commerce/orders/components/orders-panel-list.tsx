@@ -13,7 +13,6 @@ import {
 } from "@/entities/order/order-status-presentation";
 import {
   getOrderStatusBadgeVariant,
-  getPaymentStatusBadgeVariant,
 } from "@/features/admin/commerce/orders/config/order-ui.config";
 import { ORDER_STATUS_FILTERS } from "@/features/admin/commerce/orders/config/order-list.config";
 import {
@@ -51,6 +50,8 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
         label: getOrderStatusLabel(status),
       }))}
       allStatusLabel="Tous les statuts"
+      density="compact"
+      filterAriaLabel="Filtrer les commandes"
     />
   );
 
@@ -105,12 +106,15 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant={getOrderStatusBadgeVariant(order.status)}>
+                  <Badge
+                    variant={getOrderStatusBadgeVariant(order.status)}
+                    className="px-1.5 py-0 text-[10px] font-medium"
+                  >
                     {getOrderStatusLabel(order.status)}
                   </Badge>
-                  <Badge variant={getPaymentStatusBadgeVariant(order.paymentStatus)}>
+                  <span className="text-[11px] font-medium text-muted-foreground">
                     {getPaymentStatusLabel(order.paymentStatus)}
-                  </Badge>
+                  </span>
                 </div>
 
                 <div className="flex items-baseline justify-between gap-3">

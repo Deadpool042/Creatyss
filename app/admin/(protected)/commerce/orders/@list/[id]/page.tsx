@@ -1,4 +1,4 @@
-import { OrdersListPanel } from "../../orders-list-panel";
+import { OrdersListPage } from "@/features/admin/commerce/orders/routes/orders-list-page";
 
 export const dynamic = "force-dynamic";
 
@@ -7,5 +7,5 @@ type PageProps = {
 };
 
 export default async function OrdersListSlotDetailPage({ searchParams }: PageProps) {
-  return <OrdersListPanel searchParams={await searchParams} />;
+  return <OrdersListPage searchParams={await searchParams} />;
 }

@@ -9,6 +9,7 @@ export default async function AdminCommerceOverviewPage() {
     <AdminPageShell
       scrollMode="area"
       title="Vue d'ensemble"
+      contentPreset="overview"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
         { label: "Commerce" },

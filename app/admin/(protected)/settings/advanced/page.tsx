@@ -1,5 +1,4 @@
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { FeatureFlagsPanel } from "./feature-flags-panel";
 import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
 
@@ -25,10 +24,10 @@ export default async function AdminSettingsAdvancedPage() {
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="form"
     >
-      <div className="mx-auto w-full max-w-3xl">
-        <div className="mb-6">
+      <div className="space-y-6">
+        <div>
           <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
             Pilotage
           </p>

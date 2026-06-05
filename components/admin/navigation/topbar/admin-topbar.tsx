@@ -37,7 +37,7 @@ export function AdminTopbar({ displayName, email }: AdminTopbarProps): JSX.Eleme
         "admin-topbar-height",
       ].join(" ")}
     >
-      <div className="safe-px-compact flex h-full w-full items-center justify-between gap-3">
+      <div className="safe-px-layout flex h-full w-full items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2.5 [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:gap-2">
           <SidebarTrigger className="size-8 shrink-0 rounded-xl border border-surface-border/50 bg-surface-panel/72 text-foreground/68 shadow-control backdrop-blur-xl hover:bg-surface-panel hover:text-foreground lg:hidden [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:size-7.5" />
 

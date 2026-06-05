@@ -94,7 +94,7 @@ function KpiCard({
 
 export function AnalyticsOverviewSections() {
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-4 md:px-6 md:py-6 lg:px-8 lg:py-6">
+    <div>
       {/* KPI Hero — aujourd'hui */}
       <div className="mb-1.5">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">

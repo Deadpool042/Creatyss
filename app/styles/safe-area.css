@@ -8,7 +8,7 @@
 
    Règle d'usage :
    - safe-px-layout   : wrappers de layout principaux (page, shell, drawer)
-   - safe-px-compact  : barres compactes proches des bords (topbar, toolbar)
+   - safe-px-compact  : barres compactes secondaires proches des bords (toolbar)
    - safe-pt-layout   : compensation top (header sticky/fixed)
    - safe-pb-layout   : compensation bottom de layout (page scrollable)
    - safe-pb-mobile-bar : barres FIXÉES en bas (bottom nav, CTA fixe) uniquement
@@ -67,7 +67,7 @@
 /* Responsive padding de base */
 @media (min-width: 768px) {
   .safe-px-layout {
-    --safe-layout-inline-padding: 1.5rem;   /* = px-6 */
+    --safe-layout-inline-padding: 1.25rem;  /* = px-5 */
   }
   .safe-px-compact {
     --safe-compact-inline-padding: 0.5rem;
@@ -76,7 +76,7 @@
 
 @media (min-width: 1024px) {
   .safe-px-layout {
-    --safe-layout-inline-padding: 1.5rem;   /* aligné sur px-6 du shellHeader */
+    --safe-layout-inline-padding: 1.5rem;   /* = px-6 */
   }
   .safe-px-compact {
     --safe-compact-inline-padding: 0.75rem;
@@ -135,17 +135,65 @@
   }
 }
 
+/* ── Variables canoniques bottom nav mobile ──────────────────────────────────
+   Source unique pour la hauteur de la bottom nav mobile et son offset safe-area.
+   --admin-bottom-nav-height  : hauteur de la barre (h-14 = 3.5rem)
+   --admin-bottom-nav-offset  : hauteur + home indicator iOS
+   Variante landscape (2.75rem) : utilisée uniquement via Tailwind JIT dans les
+   composants — sera migrée dans les lots 2-4 via ces variables.
+   Formules dispersées cibles des lots 2-4 (non migrées ici) :
+     calc(3.5rem + env(safe-area-inset-bottom))         → var(--admin-bottom-nav-offset)
+     calc(2.75rem + env(safe-area-inset-bottom))        → landscape override à définir
+     calc(3.5rem + env(safe-area-inset-bottom) + Xrem)  → calc(var(--admin-bottom-nav-offset) + Xrem)
+     calc(7rem + env(safe-area-inset-bottom))           → calc(var(--admin-bottom-nav-offset) + 3.5rem)
+     calc(5.5rem + env(safe-area-inset-bottom))         → landscape equivalent */
+:root {
+  --admin-bottom-nav-height: 3.5rem;
+  --admin-bottom-nav-offset: calc(var(--admin-bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+  --admin-bottom-nav-spacer: calc(var(--admin-bottom-nav-offset) + 1.5rem);
+}
+
 /* ── Padding bottom — compensation hauteur bottom nav mobile (h-14 = 3.5rem) ─
    À utiliser sur les panneaux qui doivent dégager la barre de navigation mobile.
    Réinitialisé à 0 en desktop (≥ 1024px = --breakpoint-laptop) car la bottom nav
    n'est plus présente au-delà de ce seuil. */
 .safe-pb-mobile-nav {
-  padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
+  padding-bottom: var(--admin-bottom-nav-offset);
 }
 
 @media (min-width: 1024px) {
   .safe-pb-mobile-nav {
     padding-bottom: 0;
+  }
+}
+
+@media (max-height: 480px) {
+  .safe-pb-mobile-nav {
+    padding-bottom: 0;
+  }
+}
+
+/* ── Frame fixed de la bottom nav admin ────────────────────────────────────
+   À utiliser sur le nav fixed lui-même : hauteur canonique + safe area iOS.
+   La grille interne garde seulement la hauteur métier de 3.5rem. */
+.admin-mobile-bottom-nav-frame {
+  padding-bottom: 0;
+}
+
+.admin-mobile-bottom-nav-height {
+  height: var(--admin-bottom-nav-height);
+}
+
+/* ── Spacer de compensation contenu / bottom nav mobile ────────────────────
+   Réserve canonique utilisée par le shell pour éviter que le contenu passe
+   sous la bottom nav, avec marge d'air supplémentaire de 1.5rem. */
+.admin-mobile-bottom-nav-spacer {
+  height: var(--admin-bottom-nav-spacer);
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .admin-mobile-bottom-nav-frame {
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 

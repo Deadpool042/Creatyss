@@ -192,9 +192,9 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
   const priorities = buildPriorities(stats);
 
   return (
-    <div className="safe-px-layout flex flex-col gap-5 pt-4 md:gap-6 md:pt-5 lg:pt-6">
+    <div className="flex flex-col gap-5 md:gap-6">
       <section className="grid gap-4 xl:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
-        <Card className="overflow-hidden rounded-[1.75rem] border-shell-border-strong bg-[linear-gradient(145deg,color-mix(in_srgb,var(--surface-panel)_90%,white)_0%,color-mix(in_srgb,var(--surface-panel)_70%,var(--shell-surface))_100%)] shadow-[0_28px_80px_-42px_rgba(26,17,10,0.35)]">
+        <Card className="overflow-hidden rounded-3xl border-shell-border-strong bg-[linear-gradient(145deg,color-mix(in_srgb,var(--surface-panel)_90%,white)_0%,color-mix(in_srgb,var(--surface-panel)_70%,var(--shell-surface))_100%)] shadow-card">
           <CardHeader className="gap-4 pb-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center rounded-full border border-shell-border/70 bg-surface-subtle px-2.5 py-1 text-[10px] font-semibold tracking-[0.24em] text-text-muted-strong uppercase">
@@ -225,7 +225,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               return (
                 <div
                   key={metric.label}
-                  className="rounded-[1.35rem] border border-shell-border/70 bg-background/70 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] backdrop-blur-sm"
+                  className="rounded-xl border border-shell-border/70 bg-surface-panel/70 p-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="space-y-2">
@@ -254,7 +254,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
           </CardContent>
         </Card>
 
-        <Card className="rounded-[1.75rem] bg-surface-panel/96 shadow-card">
+        <Card className="rounded-2xl bg-surface-panel/80 shadow-sm">
           <CardHeader className="gap-2 border-b border-surface-border-subtle/80 pb-4">
             <div className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.22em] text-text-muted-strong uppercase">
               <Activity className="h-4 w-4" />
@@ -272,7 +272,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
             {priorities.map((priority, index) => (
               <div
                 key={priority.title}
-                className="rounded-[1.2rem] border border-surface-border-subtle bg-background/55 p-4"
+                className="rounded-xl border border-surface-border-subtle bg-surface-panel/70 p-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1.5">
@@ -299,7 +299,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
       </section>
 
       <section className="grid gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)]">
-        <Card className="rounded-[1.65rem] bg-surface-panel/96 shadow-card">
+        <Card className="rounded-2xl bg-surface-panel/80 shadow-sm">
           <CardHeader className="gap-2 border-b border-surface-border-subtle/80 pb-4">
             <div className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.22em] text-text-muted-strong uppercase">
               <TrendingUp className="h-4 w-4" />
@@ -330,7 +330,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
                 <div className="h-2 rounded-full bg-foreground/[0.07]">
                   <div
                     className={cn(
-                      "h-full rounded-full shadow-[0_0_0_1px_rgba(255,255,255,0.08)_inset]",
+                      "h-full rounded-full",
                       track.progressWidthClassName,
                       track.toneClassName
                     )}
@@ -341,7 +341,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
           </CardContent>
         </Card>
 
-        <Card className="rounded-[1.65rem] bg-surface-panel/96 shadow-card">
+        <Card className="rounded-2xl bg-surface-panel/80 shadow-sm">
           <CardHeader className="gap-2 border-b border-surface-border-subtle/80 pb-4">
             <div className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.22em] text-text-muted-strong uppercase">
               <AlertTriangle className="h-4 w-4" />
@@ -357,7 +357,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
           </CardHeader>
 
           <CardContent className="space-y-3 pt-5">
-            <div className="flex items-start gap-3 rounded-[1.15rem] border border-amber-500/20 bg-amber-500/[0.08] p-4">
+            <div className="flex items-start gap-3 rounded-xl border border-amber-500/20 bg-amber-500/[0.08] p-4">
               <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-300" />
               <div className="space-y-1">
                 <p className="text-sm font-medium text-foreground">Métriques business simulées</p>
@@ -368,7 +368,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-[1.15rem] border border-sky-500/20 bg-sky-500/[0.08] p-4">
+            <div className="flex items-start gap-3 rounded-xl border border-sky-500/20 bg-sky-500/[0.08] p-4">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-sky-600 dark:text-sky-300" />
               <div className="space-y-1">
                 <p className="text-sm font-medium text-foreground">Base admin stable</p>
@@ -379,7 +379,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               </div>
             </div>
 
-            <div className="rounded-[1.15rem] border border-surface-border-subtle bg-background/55 p-4">
+            <div className="rounded-xl border border-surface-border-subtle bg-surface-panel/70 p-4">
               <p className="text-xs font-semibold tracking-[0.24em] text-text-muted-strong uppercase">
                 Prochain palier recommandé
               </p>
@@ -416,9 +416,9 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               <Link
                 key={item.href}
                 href={item.href}
-                className="group block rounded-[1.55rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+                className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
               >
-                <Card className="h-full rounded-[1.55rem] bg-surface-panel/94 transition duration-200 hover:-translate-y-0.5 hover:border-shell-border-strong hover:shadow-[0_18px_40px_-28px_rgba(27,18,11,0.42)]">
+                <Card className="h-full rounded-2xl bg-surface-panel/80 transition duration-200 hover:-translate-y-0.5 hover:border-shell-border-strong hover:shadow-sm">
                   <CardHeader className="gap-4">
                     <div className="flex items-start justify-between gap-4">
                       <div className="space-y-2">
@@ -449,10 +449,6 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
         </div>
       </section>
 
-      <div
-        aria-hidden
-        className="h-[calc(3.5rem+env(safe-area-inset-bottom)+5rem)] shrink-0 lg:hidden [@media(max-height:480px)]:hidden"
-      />
     </div>
   );
 }

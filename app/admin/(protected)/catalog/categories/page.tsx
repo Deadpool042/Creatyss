@@ -1,4 +1,4 @@
-import { CategoriesListPanel } from "./categories-list-panel";
+import { CategoriesListPage } from "@/features/admin/categories/routes/categories-list-page";
 
 export const dynamic = "force-dynamic";
 
@@ -8,5 +8,5 @@ type AdminCategoriesPageProps = {
 
 export default async function AdminCategoriesPage({ searchParams }: AdminCategoriesPageProps) {
   const resolvedSearchParams = await searchParams;
-  return <CategoriesListPanel searchParams={resolvedSearchParams} />;
+  return <CategoriesListPage searchParams={resolvedSearchParams} />;
 }

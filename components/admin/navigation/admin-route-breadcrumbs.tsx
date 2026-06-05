@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import type { JSX } from "react";
 
 import { AppBreadcrumbs, type AppBreadcrumbItem } from "@/components/shared/breadcrumbs";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import {
   ADMIN_BREADCRUMB_DYNAMIC_PATTERNS,
@@ -54,8 +55,11 @@ function buildBreadcrumbItems(pathname: string): AppBreadcrumbItem[] {
 }
 
 export function AdminRouteBreadcrumbs(): JSX.Element | null {
+  const isMobile = useIsMobile();
   const pathname = usePathname();
   const items = buildBreadcrumbItems(pathname);
+
+  if (isMobile) return null;
 
   return <AppBreadcrumbs items={items} />;
 }

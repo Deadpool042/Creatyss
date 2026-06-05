@@ -1,7 +1,6 @@
 import { Key, ShieldOff } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
 import { listAdminApiClients, type AdminApiClientSummary } from "@/features/admin/settings/queries/list-admin-api-clients.query";
@@ -44,10 +43,10 @@ export default async function AdminSettingsApiClientsPage() {
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="form"
     >
-      <div className="mx-auto w-full max-w-3xl">
-        <div className="mb-6">
+      <div className="space-y-6">
+        <div>
           <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">Sécurité</p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">Clés API</h1>
           <p className="mt-1 text-sm text-muted-foreground">

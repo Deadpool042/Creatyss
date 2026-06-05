@@ -9,7 +9,7 @@ export default async function CatalogOverviewPage() {
     <AdminPageShell
       scrollMode="area"
       title="Vue d'ensemble du catalogue"
-      contentPreset="full-width"
+      contentPreset="overview"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
         { label: "Catalogue" },

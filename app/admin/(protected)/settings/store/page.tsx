@@ -17,8 +17,9 @@ export default async function AdminSettingsStorePage() {
         ]}
         showBreadcrumbsInContent={false}
         showTitleInContent={false}
+        contentPreset="form"
       >
-        <div className="mx-auto max-w-2xl px-4 py-16 text-center">
+        <div className="py-16 text-center">
           <p className="text-sm text-muted-foreground">Boutique introuvable.</p>
         </div>
       </AdminPageShell>
@@ -36,9 +37,10 @@ export default async function AdminSettingsStorePage() {
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
+      contentPreset="form"
     >
-      <div className="mx-auto w-full max-w-3xl px-4 py-6 md:px-6 lg:px-8">
-        <div className="mb-8">
+      <div className="space-y-8">
+        <div>
           <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
             Réglages
           </p>

@@ -9,6 +9,7 @@ export default async function AdminContentOverviewPage() {
     <AdminPageShell
       scrollMode="area"
       title="Vue d'ensemble contenu"
+      contentPreset="overview"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
         { label: "Contenu" },

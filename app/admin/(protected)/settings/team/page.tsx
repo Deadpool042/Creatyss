@@ -1,7 +1,6 @@
 import { Clock, ShieldCheck, UserCheck, UserX } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
 
@@ -51,10 +50,10 @@ export default async function AdminSettingsTeamPage() {
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="form"
     >
-      <div className="mx-auto w-full max-w-3xl">
-        <div className="mb-6">
+      <div className="space-y-6">
+        <div>
           <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
             Accès admin
           </p>

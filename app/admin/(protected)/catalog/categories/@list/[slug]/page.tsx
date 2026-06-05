@@ -1,4 +1,4 @@
-import { CategoriesListPanel } from "../../categories-list-panel";
+import { CategoriesListPage } from "@/features/admin/categories/routes/categories-list-page";
 
 export const dynamic = "force-dynamic";
 
@@ -7,5 +7,5 @@ type PageProps = {
 };
 
 export default async function CategoriesListSlotDetailPage({ searchParams }: PageProps) {
-  return <CategoriesListPanel searchParams={await searchParams} />;
+  return <CategoriesListPage searchParams={await searchParams} />;
 }

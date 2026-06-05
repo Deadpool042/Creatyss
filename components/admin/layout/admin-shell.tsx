@@ -52,7 +52,7 @@ export function AdminShell({
               {children}
               <div
                 aria-hidden
-                className="h-[calc(3.5rem+env(safe-area-inset-bottom)+1.5rem)] shrink-0 lg:hidden [@media(max-height:480px)]:hidden"
+                className="admin-mobile-bottom-nav-spacer shrink-0 lg:hidden [@media(max-height:480px)]:hidden"
               />
               <AdminMobileBottomNav
                 primaryItems={mobilePrimaryItems}

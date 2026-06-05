@@ -6,6 +6,7 @@ export default function AdminMarketingOverviewPage() {
     <AdminPageShell
       scrollMode="area"
       title="Marketing"
+      contentPreset="overview"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Marketing" }]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}

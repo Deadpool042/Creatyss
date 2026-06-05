@@ -6,6 +6,7 @@ export default function AdminInsightsAnalyticsPage() {
     <AdminPageShell
       scrollMode="area"
       title="Analytics"
+      contentPreset="overview"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Insights" }, { label: "Analytics" }]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}

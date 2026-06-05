@@ -71,6 +71,8 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
       searchPlaceholder="Rechercher…"
       statusOptions={CATEGORY_STATUS_OPTIONS}
       allStatusLabel="Tous les statuts"
+      density="compact"
+      filterAriaLabel="Filtrer les catégories"
     />
   );
 

@@ -1,15 +1,14 @@
-//app/admin/(protected)/commerce/orders/orders-list-panel.tsx
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { OrdersPanelList, listAdminOrders } from "@/features/admin/commerce/orders";
 import { parseAdminOrderListSearchParams } from "@/features/admin/commerce/orders/list/schemas/parse-admin-order-list-search-params";
 
 import { ORDER_LIST_PAGE_CONFIG } from "@/features/admin/commerce/orders/config";
 
-type OrdersListPanelProps = {
+type OrdersListPageProps = {
   searchParams?: Record<string, string | string[] | undefined>;
 };
 
-export async function OrdersListPanel({ searchParams }: OrdersListPanelProps) {
+export async function OrdersListPage({ searchParams }: OrdersListPageProps) {
   const filters = parseAdminOrderListSearchParams(searchParams ?? {});
 
   let items: Awaited<ReturnType<typeof listAdminOrders>>["items"] = [];
@@ -20,12 +19,14 @@ export async function OrdersListPanel({ searchParams }: OrdersListPanelProps) {
   } catch (err) {
     console.error("[orders] listAdminOrders failed:", err);
   }
+
   return (
     <AdminPageShell
       title={ORDER_LIST_PAGE_CONFIG.title}
       topbarAction={null}
       contentPreset="split-panel"
       showBreadcrumbsInContent={false}
+      showTitleInContent={false}
       scrollMode="area"
     >
       <OrdersPanelList orders={items} />

@@ -20,10 +20,7 @@ type AdminSplitListPaneProps = Readonly<{
   className?: string;
 }>;
 
-function formatResultLabel(
-  resultCount?: number,
-  resultLabel?: string,
-): string | null {
+function formatResultLabel(resultCount?: number, resultLabel?: string): string | null {
   if (resultLabel !== undefined) return resultLabel;
   if (typeof resultCount !== "number") return null;
   return `${resultCount} ${resultCount > 1 ? "résultats" : "résultat"}`;
@@ -42,23 +39,29 @@ export function AdminSplitListPane({
   const resolvedResultLabel = formatResultLabel(resultCount, resultLabel);
 
   return (
-    <section className={cn("flex min-h-0 flex-1 flex-col", className)}>
-      <header className="shrink-0 border-b border-surface-border px-3 py-2.5">
-        <div className="mb-2 flex items-center justify-between gap-3">
-          <h2 className="truncate text-sm font-semibold tracking-tight text-foreground">
-            {title}
-          </h2>
-          {resolvedResultLabel !== null ? (
-            <p className="shrink-0 text-xs font-medium tabular-nums text-muted-foreground">
-              {resolvedResultLabel}
-            </p>
-          ) : null}
-        </div>
-        {controls !== undefined ? <div>{controls}</div> : null}
-      </header>
+    <section className={cn("flex min-h-0 flex-1 flex-col ", className)}>
+      <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain">
+        <header className="sticky top-0 z-10 pb-2.5 pt-0">
+          <div
+            aria-hidden
+            className="absolute inset-y-0 -left-4 -right-4 border-b border-surface-border/70 bg-shell-surface/90 supports-backdrop-filter:bg-shell-surface/78 supports-backdrop-filter:backdrop-blur-xl md:-left-5 md:-right-5 lg:-left-6 lg:-right-6"
+          />
+          <div className="relative pt-0">
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <h2 className="truncate text-sm font-semibold tracking-tight text-foreground">
+                {title}
+              </h2>
+              {resolvedResultLabel !== null ? (
+                <p className="shrink-0 text-xs font-medium tabular-nums text-muted-foreground">
+                  {resolvedResultLabel}
+                </p>
+              ) : null}
+            </div>
+            {controls !== undefined ? <div>{controls}</div> : null}
+          </div>
+        </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-        {isEmpty && emptyState !== undefined ? emptyState : children}
+        <div className="-mt-px">{isEmpty && emptyState !== undefined ? emptyState : children}</div>
       </div>
     </section>
   );

@@ -220,7 +220,7 @@ export function ContentOverviewSections({ stats }: ContentOverviewSectionsProps)
   ];
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-4 md:px-6 md:py-6 lg:px-8 lg:py-6">
+    <div>
       {/* ── Hero metrics ──────────────────────────────────────────────── */}
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {heroMetrics.map(({ accentClassName, ...rest }) => (

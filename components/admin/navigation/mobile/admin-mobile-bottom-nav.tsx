@@ -33,7 +33,7 @@ export function AdminMobileBottomNav({
         // Portrait mobile uniquement : fond + bordure + blur
         "border-t border-shell-border/60 bg-shell-surface/92",
         // Safe-area : extension sous le home indicator iOS
-        "pb-[env(safe-area-inset-bottom)]",
+        "admin-mobile-bottom-nav-frame",
         // Backdrop blur pour adoucir la transition avec le contenu
         "supports-[backdrop-filter]:bg-shell-surface/78 supports-[backdrop-filter]:backdrop-blur-xl",
       ].join(" ")}
@@ -44,7 +44,7 @@ export function AdminMobileBottomNav({
         className="pointer-events-none absolute inset-x-0 bottom-full h-8 bg-gradient-to-t from-page-background/70 to-transparent"
       />
 
-      <div className="grid h-14 grid-cols-5">
+      <div className="admin-mobile-bottom-nav-height grid grid-cols-5">
         {primaryItems.map((item) => {
           const active = isAdminNavigationItemActive(pathname, item.href);
 

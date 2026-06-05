@@ -2,8 +2,6 @@ export {
   CATEGORY_ARCHIVE_ACTIONS_COPY,
   CATEGORY_CREATE_MENU_COPY,
   CATEGORY_FORM_ACTIONS_COPY,
-  CATEGORY_LIST_ACTIONS_COPY,
-  CATEGORY_RESULTS_COUNT_COPY,
 } from "./category-actions.config";
 export {
   CATEGORY_ARCHIVE_DIALOG_COPY,
@@ -41,6 +39,4 @@ export {
   CATEGORY_ROW_ACTIONS_COPY,
   CATEGORY_STATUS_LABELS,
   CATEGORY_STATUS_OPTIONS,
-  CATEGORY_TABLE_COPY,
 } from "./category-list.config";
-export { CATEGORY_SORTABLE_COLUMNS } from "./category-sortable.columns.config";
