@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/shared/feedback";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { cn } from "@/lib/utils";
 import { listAdminBlogPosts, toggleBlogPostStatusAction } from "@/features/admin/blog";
 
@@ -56,7 +55,7 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="table"
       topbarAction={
         <Button asChild size="sm" className="rounded-full gap-1.5">
           <Link href="/admin/content/blog/new">

@@ -1,7 +1,6 @@
 import { CheckCircle2, Clock, Euro, Star, Tag } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { AdminComingSoon as AdminEmptyState } from "@/components/admin/shared/admin-coming-soon";
 import { cn } from "@/lib/utils";
 
@@ -45,7 +44,7 @@ export default async function AdminCatalogPricingPage() {
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="table"
     >
       {priceLists.length === 0 ? (
         <AdminEmptyState

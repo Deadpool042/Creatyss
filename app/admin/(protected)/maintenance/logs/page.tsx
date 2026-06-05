@@ -1,7 +1,6 @@
 import { AlertCircle, CheckCircle2, Clock, Loader2, XCircle } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
 import { listAdminJobs, type AdminJobSummary } from "@/features/admin/maintenance/queries/list-admin-jobs.query";
@@ -67,7 +66,7 @@ export default async function AdminMaintenanceLogsPage() {
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="table"
     >
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">

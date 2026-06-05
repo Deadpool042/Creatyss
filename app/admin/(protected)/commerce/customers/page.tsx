@@ -2,7 +2,6 @@ import { Mail, Package, Users } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { cn } from "@/lib/utils";
 import { listAdminCustomers } from "@/features/admin/customers/queries/list-admin-customers.query";
 
@@ -46,7 +45,7 @@ export default async function AdminCommerceCustomersPage() {
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="table"
     >
       {moduleUnavailable ? (
         <AdminEmptyState

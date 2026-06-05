@@ -1,7 +1,6 @@
 import { AlertTriangle, CheckCircle2, Clock, Database, GitBranch, Package, Zap } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { cn } from "@/lib/utils";
 import { getAdminSystemHealth } from "@/features/admin/maintenance/queries/get-admin-system-health.query";
 
@@ -135,7 +134,7 @@ export default async function AdminMaintenanceMonitoringPage() {
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="table"
     >
       {/* État global */}
       <div
