@@ -49,6 +49,7 @@ export default async function NewAdminBlogPostPage({ searchParams }: NewAdminBlo
         { label: "Blog", href: "/admin/content/blog" },
         { label: "Nouvel article" },
       ]}
+      contentPreset="form"
       header={<AdminPageHeader eyebrow="Blog" title="Nouvel article" description="Création d'un article de blog." />}
     >
       {errorMessage !== null && (

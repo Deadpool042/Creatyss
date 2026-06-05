@@ -5,7 +5,6 @@ import { Notice } from "@/components/shared/feedback";
 import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { getUploadsPublicPath } from "@/core/uploads";
 import {
   createHomepageAction,
@@ -78,7 +77,7 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
           { label: "Contenu" },
           { label: "Accueil" },
         ]}
-        contentClassName={ADMIN_CONTENT_PAGE}
+        contentPreset="detail"
         header={
           <AdminPageHeader
             mobileHidden
@@ -127,7 +126,7 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
         { label: "Contenu" },
         { label: "Accueil" },
       ]}
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="detail"
       header={
         <AdminPageHeader
           mobileHidden

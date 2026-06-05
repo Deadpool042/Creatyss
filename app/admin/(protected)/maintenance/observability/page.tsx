@@ -1,7 +1,6 @@
 import { AlertTriangle, CheckCircle2, Info, Shield } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { ADMIN_CONTENT_PAGE } from "@/components/admin/layout/admin-content-classnames";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
 import { getAdminSystemHealth, type AdminAuditLogEntry } from "@/features/admin/maintenance/queries/get-admin-system-health.query";
@@ -46,7 +45,7 @@ export default async function AdminMaintenanceObservabilityPage() {
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentClassName={ADMIN_CONTENT_PAGE}
+      contentPreset="detail"
     >
       {!health ? (
         <AdminEmptyState

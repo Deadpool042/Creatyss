@@ -61,6 +61,7 @@ export default async function EditAdminBlogPostPage({
         { label: "Blog", href: "/admin/content/blog" },
         { label: post.title },
       ]}
+      contentPreset="form"
       header={
         <AdminPageHeader
           eyebrow="Blog"
