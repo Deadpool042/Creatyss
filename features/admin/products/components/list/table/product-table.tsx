@@ -132,7 +132,7 @@ export function ProductTable(): JSX.Element {
             totalItems={total}
             queryString={queryString}
             loadMorePath="/api/admin/products/load-more"
-            className="pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom)+0.75rem)]"
+            className="safe-pb-mobile-nav"
             gridClassName="[@media(min-width:667px)]:grid-cols-2"
             endLabel={PRODUCT_TABLE_COPY.mobileEndOfList}
             totalLabel={(count) => `${count} produit${count !== 1 ? "s" : ""}`}
