@@ -85,7 +85,7 @@ export function AdminNavigationLinkItem({
     return (
       <div
         className={cn(
-          "flex items-center gap-3 rounded-[1.1rem] border border-surface-border bg-surface-panel-soft px-3.5 py-3 text-sm text-muted-foreground opacity-70",
+          "flex items-center gap-3 rounded-xl border border-surface-border bg-surface-panel-soft px-3.5 py-3 text-sm text-muted-foreground opacity-70",
           className
         )}
         aria-disabled="true"
@@ -109,7 +109,7 @@ export function AdminNavigationLinkItem({
       {...(onClick ? { onClick } : {})}
       {...(active ? { "aria-current": "page" as const } : {})}
       className={cn(
-        "flex items-center gap-3 rounded-[1.1rem] border px-3.5 py-3 outline-none transition-colors focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50",
+        "flex items-center gap-3 rounded-xl border px-3.5 py-3 outline-none transition-colors focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50",
         active
           ? "border-surface-border-strong bg-surface-panel text-foreground shadow-card"
           : "border-surface-border bg-card text-foreground hover:border-surface-border-strong hover:bg-interactive-hover",
