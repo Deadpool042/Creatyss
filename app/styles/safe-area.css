@@ -197,6 +197,28 @@
   }
 }
 
+/* ── Bottom spacing générique du contenu admin ─────────────────────────────
+   Utilisé par les presets qui doivent réserver l'espace de la bottom nav
+   mobile sans réécrire des formules Tailwind dans les presets TS.
+   Mobile/tablette : réserve basée sur l'offset de la bottom nav.
+   Desktop : respiration basse canonique.
+   Landscape compact : supprime la réserve pour préserver la hauteur utile. */
+.admin-content-bottom-spacing {
+  padding-bottom: var(--admin-bottom-nav-offset);
+}
+
+@media (min-width: 1024px) {
+  .admin-content-bottom-spacing {
+    padding-bottom: 2rem;
+  }
+}
+
+@media (max-height: 480px) {
+  .admin-content-bottom-spacing {
+    padding-bottom: 0;
+  }
+}
+
 /* ── Hauteur canonique topbar admin ─────────────────────────────────────── */
 /* Centralisée ici pour éviter les conflits entre classes Tailwind responsive
    et media queries safe-area. Ne pas dupliquer dans le composant React. */

@@ -53,14 +53,12 @@ export const ADMIN_CONTENT_DETAIL = `${ADMIN_CONTENT_PAGE} mx-auto w-full max-w-
 
 // Dashboard : page paddée et cockpit large cadré. Ce preset est l'owner du
 // container global dashboard ; les sections internes ne portent plus safe-px.
-// Il garde aussi la réserve basse mobile pour que la dernière carte passe
-// au-dessus de la bottom nav fixe.
-// Le spacer universel du shell (admin-shell.tsx) s'applique en plus pour toutes
-// les pages — ici on ajoute la réserve spécifique au dashboard (+3rem).
-// Formule : var(--admin-bottom-nav-offset) + 3rem
-// (--admin-bottom-nav-offset défini dans app/styles/safe-area.css)
+// Le bottom spacing dépendant de la bottom nav est centralisé dans
+// app/styles/safe-area.css via .admin-content-bottom-spacing.
+// Le shell admin ajoute déjà son spacer universel ; ici le preset dashboard
+// n'ajoute que sa largeur/gap/padding horizontal/top.
 export const ADMIN_CONTENT_DASHBOARD =
-  "mx-auto w-full max-w-7xl gap-4 overflow-x-hidden px-4 pt-4 pb-[calc(var(--admin-bottom-nav-offset)+3rem)] max-sm:landscape:gap-3 max-sm:landscape:px-3 max-sm:landscape:pt-3 [@media(max-height:480px)]:pb-0 md:gap-6 md:px-5 md:pt-5 lg:gap-6 lg:px-6 lg:pt-0 lg:pb-0";
+  "mx-auto w-full max-w-7xl gap-4 overflow-x-hidden px-4 pt-4 admin-content-bottom-spacing max-sm:landscape:gap-3 max-sm:landscape:px-3 max-sm:landscape:pt-3 md:gap-6 md:px-5 md:pt-5 lg:gap-6 lg:px-6 lg:pt-6";
 
 // Panneau split-view : aucun max-width global.
 // Les panes et leurs scroll containers sont propriétaires de leurs dimensions.
