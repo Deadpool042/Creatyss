@@ -6,20 +6,28 @@ import {
   getPublishedCategoriesForSitemap,
 } from "@/features/storefront/catalog";
 import { getPublishedBlogPostsForSitemap } from "@/features/storefront/content/blog";
+import { getAdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [products, blogPosts, categories] = await Promise.all([
+  const [products, blogPosts, categories, seoSettings] = await Promise.all([
     getPublishedProductsForSitemap(),
     getPublishedBlogPostsForSitemap(),
     getPublishedCategoriesForSitemap(),
+    getAdminSeoSettings().catch(() => null),
   ]);
 
+  const includeHomepage = seoSettings?.sitemapIncluded !== false;
+
   const staticPages: MetadataRoute.Sitemap = [
-    {
-      url: `${serverEnv.appUrl}/`,
-      changeFrequency: "daily",
-      priority: 1.0,
-    },
+    ...(includeHomepage
+      ? [
+          {
+            url: `${serverEnv.appUrl}/`,
+            changeFrequency: "daily" as const,
+            priority: 1.0,
+          },
+        ]
+      : []),
     {
       url: `${serverEnv.appUrl}/boutique`,
       changeFrequency: "daily",
