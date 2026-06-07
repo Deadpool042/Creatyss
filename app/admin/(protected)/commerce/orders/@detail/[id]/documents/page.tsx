@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminSplitDetailPaneShell } from "@/components/admin/layout/admin-split-detail-pane-shell";
 import { db } from "@/core/db";
+import { isDocumentsFeatureActive } from "@/features/admin/commerce/documents/queries/is-documents-feature-active.query";
 import { findDocumentsByOrderId } from "@/features/admin/commerce/documents/queries/find-documents-by-order.query";
 import { OrderDetailDocumentsCard } from "@/features/admin/commerce/documents/components/order-detail-documents-card";
 
@@ -17,13 +18,18 @@ type OrderDocumentsSlotPageProps = Readonly<{
 export default async function OrderDocumentsSlotPage({ params }: OrderDocumentsSlotPageProps) {
   const { id } = await params;
 
-  const [order, documents] = await Promise.all([
+  const [featureActive, order, documents] = await Promise.all([
+    isDocumentsFeatureActive(),
     db.order.findUnique({
       where: { id },
       select: { id: true, orderNumber: true },
     }),
     findDocumentsByOrderId(id),
   ]);
+
+  if (!featureActive) {
+    notFound();
+  }
 
   if (order === null) {
     notFound();
