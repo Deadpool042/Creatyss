@@ -1,8 +1,13 @@
+import { notFound } from "next/navigation";
+
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
+import { isShippingFeatureActive } from "@/features/admin/commerce/queries/is-shipping-feature-active.query";
 import { Truck } from "lucide-react";
 
-export default function AdminCommerceShippingPage() {
+export default async function AdminCommerceShippingPage() {
+  const featureActive = await isShippingFeatureActive();
+  if (!featureActive) notFound();
   return (
     <AdminPageShell
       scrollMode="area"

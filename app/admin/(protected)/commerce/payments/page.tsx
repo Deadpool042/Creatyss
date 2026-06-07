@@ -1,8 +1,13 @@
+import { notFound } from "next/navigation";
+
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
+import { isPaymentsFeatureActive } from "@/features/admin/commerce/queries/is-payments-feature-active.query";
 import { CreditCard } from "lucide-react";
 
-export default function AdminCommercePaymentsPage() {
+export default async function AdminCommercePaymentsPage() {
+  const featureActive = await isPaymentsFeatureActive();
+  if (!featureActive) notFound();
   return (
     <AdminPageShell
       scrollMode="area"
