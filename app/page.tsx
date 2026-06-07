@@ -13,12 +13,37 @@ import {
   HomepageNewsletterSection,
   HomepageSavoirFaireSection,
 } from "@/features/homepage";
+import { getAdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
 
-export const metadata: Metadata = {
-  title: "Creatyss — Artisan créateur",
-  description:
-    "Découvrez les créations artisanales Creatyss : pièces uniques, collections exclusives et savoir-faire d'exception.",
-};
+const FALLBACK_TITLE = "Creatyss — Artisan créateur";
+const FALLBACK_DESCRIPTION =
+  "Découvrez les créations artisanales Creatyss : pièces uniques, collections exclusives et savoir-faire d'exception.";
+
+export async function generateMetadata(): Promise<Metadata> {
+  let seo: Awaited<ReturnType<typeof getAdminSeoSettings>> = null;
+  try {
+    seo = await getAdminSeoSettings();
+  } catch {
+    // DB non disponible — fallback aux valeurs statiques
+  }
+
+  return {
+    title: seo?.metaTitle ?? FALLBACK_TITLE,
+    description: seo?.metaDescription ?? FALLBACK_DESCRIPTION,
+    openGraph: {
+      title: seo?.openGraphTitle ?? seo?.metaTitle ?? FALLBACK_TITLE,
+      description: seo?.openGraphDescription ?? seo?.metaDescription ?? FALLBACK_DESCRIPTION,
+    },
+    twitter: {
+      title: seo?.twitterTitle ?? seo?.openGraphTitle ?? seo?.metaTitle ?? FALLBACK_TITLE,
+      description:
+        seo?.twitterDescription ??
+        seo?.openGraphDescription ??
+        seo?.metaDescription ??
+        FALLBACK_DESCRIPTION,
+    },
+  };
+}
 
 export default async function HomePage() {
   const [data, uploadsPublicPath] = await Promise.all([
