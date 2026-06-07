@@ -16,6 +16,9 @@ import {
   OrderDetailStatusHistoryCard,
   OrderDetailSummaryCard,
 } from "@/features/admin/commerce/orders";
+import { findDocumentsByOrderId } from "@/features/admin/commerce/documents/queries/find-documents-by-order.query";
+import { isDocumentsFeatureActive } from "@/features/admin/commerce/documents/queries/is-documents-feature-active.query";
+import { OrderDetailDocumentsCard } from "@/features/admin/commerce/documents/components/order-detail-documents-card";
 
 export const dynamic = "force-dynamic";
 
@@ -35,13 +38,19 @@ export default async function OrderDetailSlotPage({
 }: OrderDetailSlotPageProps) {
   const { id } = await params;
   const resolvedSearchParams = await searchParams;
-  const order = await findAdminOrderById(id);
+
+  const [order, documentsFeatureActive] = await Promise.all([
+    findAdminOrderById(id),
+    isDocumentsFeatureActive(),
+  ]);
 
   if (order === null) {
     notFound();
   }
 
   const vm = buildAdminOrderDetailViewModel(order, resolvedSearchParams);
+
+  const documents = documentsFeatureActive ? await findDocumentsByOrderId(id) : null;
 
   return (
     <AdminSplitDetailPaneShell constrainContent={false} contentClassName="gap-4">
@@ -103,6 +112,12 @@ export default async function OrderDetailSlotPage({
       <div className="admin-split-detail-pane-column">
         <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
       </div>
+
+      {documents !== null ? (
+        <div className="admin-split-detail-pane-column">
+          <OrderDetailDocumentsCard documents={documents} orderId={id} />
+        </div>
+      ) : null}
     </AdminSplitDetailPaneShell>
   );
 }
