@@ -54,6 +54,7 @@ export const adminNavigationFeatureFlags = {
   engagement: {
     newsletter: "engagement.newsletter",
     analytics: "engagement.analytics",
+    automations: "engagement.automations",
   },
   platform: {
     notifications: "platform.notifications",

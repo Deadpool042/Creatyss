@@ -330,6 +330,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
       mobileMore: true,
     },
     access: {
+      featureFlagsAll: [adminNavigationFeatureFlags.engagement.automations],
       capabilitiesAll: [adminNavigationCapabilities.marketing.automationsRead],
     },
   },

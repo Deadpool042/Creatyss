@@ -19,7 +19,7 @@ export default async function AdminMarketingAutomationsPage() {
       <AdminComingSoon
         title="Automations"
         description="Configurez des flux automatisés : email panier abandonné, relance post-achat, bienvenue abonné. Déclencheurs basés sur les événements boutique."
-        requirements={["Feature non encore cataloguée (FEATURE_CATALOG)", "Schéma Prisma Automation à définir"]}
+        requirements={["Feature flag : engagement.automations", "Schéma Prisma Automation à définir"]}
         icon={Zap}
         fallbackAction={{ label: "Voir les codes promo", href: "/admin/marketing/discounts" }}
       />
