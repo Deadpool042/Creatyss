@@ -1,8 +1,13 @@
+import { notFound } from "next/navigation";
+
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
+import { isNewsletterFeatureActive } from "@/features/admin/marketing/queries/is-newsletter-feature-active.query";
 import { Mail } from "lucide-react";
 
-export default function AdminMarketingNewsletterPage() {
+export default async function AdminMarketingNewsletterPage() {
+  const featureActive = await isNewsletterFeatureActive();
+  if (!featureActive) notFound();
   return (
     <AdminPageShell
       scrollMode="area"
@@ -14,7 +19,7 @@ export default function AdminMarketingNewsletterPage() {
       <AdminComingSoon
         title="Newsletter"
         description="Gérez les abonnés, composez des campagnes email, suivez les taux d'ouverture et de clic. Segmentation par comportement d'achat."
-        docRef="prisma/optional/engagement/newsletter.prisma"
+        docRef="docs/domains/cross-cutting/newsletter.md"
         requirements={["Feature flag : engagement.newsletter", "Capability : marketing.newsletterRead"]}
         icon={Mail}
       />

@@ -14,7 +14,7 @@ export default function AdminSettingsShippingPage() {
       <AdminComingSoon
         title="Réglages de livraison"
         description="Zones de livraison, transporteurs, tarifs et délais. Règles de franchise de port et options de retrait en point relais."
-        docRef="prisma/optional/commerce/shipping.prisma"
+        docRef="docs/domains/optional/commerce/shipping.md"
         icon={Truck}
       />
     </AdminPageShell>

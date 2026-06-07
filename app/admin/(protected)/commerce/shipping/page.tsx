@@ -14,8 +14,8 @@ export default function AdminCommerceShippingPage() {
       <AdminComingSoon
         title="Livraisons"
         description="Gestion des expéditions, transporteurs, numéros de suivi et notifications clients. Intégration Colissimo, Mondial Relay, etc."
-        docRef="docs/domains/optional/shipping.md"
-        requirements={["Zones de livraison dans Réglages > Livraison"]}
+        docRef="docs/domains/optional/commerce/shipping.md"
+        requirements={["Module commerce.shipping activé (feature flag)", "Schéma Prisma : prisma/optional/commerce/shipping.prisma"]}
         icon={Truck}
         fallbackAction={{ label: "Voir les commandes", href: "/admin/commerce/orders" }}
       />

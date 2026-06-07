@@ -14,7 +14,7 @@ export default function AdminSettingsPaymentsPage() {
       <AdminComingSoon
         title="Réglages de paiement"
         description="Connexion aux prestataires de paiement (Stripe, etc.), clés API, modes de paiement acceptés et configuration des webhooks."
-        docRef="docs/domains/optional/payments.md"
+        docRef="docs/domains/optional/commerce/payments.md"
         icon={CreditCard}
       />
     </AdminPageShell>

@@ -14,8 +14,8 @@ export default function AdminCommercePaymentsPage() {
       <AdminComingSoon
         title="Paiements"
         description="Suivi des transactions, statuts de paiement, remboursements et rapprochements. Connecté au prestataire de paiement configuré dans les réglages."
-        docRef="docs/domains/optional/payments.md"
-        requirements={["Prestataire configuré dans Réglages > Paiements"]}
+        docRef="docs/domains/optional/commerce/payments.md"
+        requirements={["Module commerce.payments activé (feature flag)", "Schéma Prisma : prisma/optional/commerce/payments.prisma"]}
         icon={CreditCard}
         fallbackAction={{ label: "Voir les commandes", href: "/admin/commerce/orders" }}
       />
