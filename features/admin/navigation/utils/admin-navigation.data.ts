@@ -460,6 +460,66 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     },
   },
   {
+    key: "orders-settings",
+    label: "Réglages des commandes",
+    href: "/admin/settings/orders",
+    iconKey: "shoppingCart",
+    group: "settings",
+    order: 35,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.ordersRead],
+    },
+  },
+  {
+    key: "catalog-settings",
+    label: "Réglages du catalogue",
+    href: "/admin/settings/catalog",
+    iconKey: "package",
+    group: "settings",
+    order: 37,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.catalogRead],
+    },
+  },
+  {
+    key: "media-settings",
+    label: "Réglages des médias",
+    href: "/admin/settings/media",
+    iconKey: "imageIcon",
+    group: "settings",
+    order: 38,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.mediaRead],
+    },
+  },
+  {
+    key: "seo-settings",
+    label: "Réglages SEO",
+    href: "/admin/settings/seo",
+    iconKey: "search",
+    group: "settings",
+    order: 39,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.seoRead],
+    },
+  },
+  {
     key: "store-settings",
     label: "Réglages de la boutique",
     href: "/admin/settings/store",

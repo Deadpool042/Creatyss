@@ -171,6 +171,30 @@ Correction :
 
 ---
 
+## Axes orthogonaux : activabilité et portée
+
+Dans Creatyss, la classification d'un domaine peut se lire selon deux axes distincts :
+
+- `optional` décrit l'activabilité du module : le domaine peut être désactivé, activé plus tard, ou limité par niveau de feature.
+- `cross-cutting` décrit sa portée fonctionnelle : le domaine traverse plusieurs parties du système.
+
+Ces deux axes ne sont pas opposés. Un module peut donc être :
+
+- optionnel dans Prisma, parce qu'il est activable progressivement ;
+- transverse dans la documentation, parce qu'il impacte plusieurs domaines métier.
+
+Exemples :
+
+- `newsletter` : optionnelle à l'activation, mais transverse entre clients, marketing et consentement.
+- `analytics` : optionnelle selon le niveau de pilotage, mais transverse au catalogue, au commerce et au contenu.
+- `crm` : optionnel dans la roadmap, mais transverse entre clients, commandes et marketing.
+- `consent` : optionnel selon les fonctionnalités activées, mais transverse pour la conformité.
+- `support` : optionnel côté produit, mais transverse entre clients, commandes et relation commerciale.
+
+Cette distinction évite de déplacer inutilement des modèles Prisma uniquement pour aligner leur dossier avec une lecture documentaire. Le dossier Prisma exprime prioritairement l'activation technique du module ; la documentation peut aussi exprimer sa portée métier.
+
+---
+
 ## Règle de décision
 
 Lorsqu’un nouvel élément apparaît, il faut répondre dans cet ordre :
