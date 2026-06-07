@@ -30,13 +30,13 @@ export async function processImageToWebp(input: { buffer: Buffer }): Promise<Pro
   const pipeline = sharp(input.buffer, { failOn: "error" })
     .rotate()
     .resize({
-      width: 2000,
-      height: 2000,
+      width: IMAGE_MAX_DIMENSION_PX,
+      height: IMAGE_MAX_DIMENSION_PX,
       fit: "inside",
       withoutEnlargement: true,
     })
     .webp({
-      quality: 82,
+      quality: IMAGE_WEBP_QUALITY,
       effort: 4,
     });
 
