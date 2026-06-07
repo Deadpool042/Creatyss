@@ -1,23 +1,38 @@
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
-import { Package } from "lucide-react";
+import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
+import { CatalogRelatedProductsSection } from "@/features/admin/settings/components/catalog-related-products-section";
 
-export default function AdminSettingsCatalogPage() {
+export const dynamic = "force-dynamic";
+
+const RELATED_FLAG_KEY = "catalog.products.related";
+
+export default async function AdminSettingsCatalogPage() {
+  let flags: Awaited<ReturnType<typeof listAdminFeatureFlags>> = [] as const;
+
+  try {
+    flags = await listAdminFeatureFlags();
+  } catch {
+    // Table non disponible — état fallback
+  }
+
+  const relatedFlag =
+    flags.find((f) => f.key === RELATED_FLAG_KEY) ?? null;
+
   return (
     <AdminPageShell
       scrollMode="area"
       title="Catalogue"
-      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Catalogue" }]}
+      breadcrumbs={[
+        { label: "Admin", href: "/admin" },
+        { label: "Réglages" },
+        { label: "Catalogue" },
+      ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
     >
-      <AdminComingSoon
-        title="Réglages du catalogue"
-        description="Configuration des variantes, disponibilité, tarification et organisation des produits."
-        docRef="docs/domains/core/catalog/products.md"
-        requirements={["Module core : catalogue", "Feature flag : catalog.products.related"]}
-        icon={Package}
-      />
+      <div className="space-y-4 px-1">
+        <CatalogRelatedProductsSection flag={relatedFlag} />
+      </div>
     </AdminPageShell>
   );
 }
