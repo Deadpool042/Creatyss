@@ -13,6 +13,7 @@ import { ProductRelatedProductsTab } from "@/features/admin/products/components/
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
 import { buildAdminProductRelatedPath } from "@/features/admin/products/navigation";
+import { isRelatedProductsFeatureActive } from "@/features/admin/catalog/queries/is-related-products-feature-active.query";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +23,12 @@ export default async function ProductDetailRelatedPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
+  const featureActive = await isRelatedProductsFeatureActive();
+  if (!featureActive) {
+    notFound();
+  }
+
   const editor = await readAdminProductEditorBySlug(slug);
 
   if (editor === null) {

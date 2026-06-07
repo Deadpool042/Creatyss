@@ -1,3 +1,5 @@
+import "server-only";
+
 import { db } from "@/core/db";
 import type { SeoIndexingModeValue } from "@/features/admin/settings/schemas/seo-settings.schema";
 

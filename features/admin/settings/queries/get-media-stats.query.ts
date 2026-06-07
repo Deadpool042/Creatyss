@@ -1,3 +1,5 @@
+import "server-only";
+
 import { db } from "@/core/db";
 
 export type AdminMediaStats = {

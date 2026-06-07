@@ -88,7 +88,7 @@ const SETTINGS_CARDS: ReadonlyArray<SettingsCard> = [
     icon: Key,
   },
   {
-    href: "/admin/settings/advanced",
+    href: "/admin/settings/advanced/overview",
     title: "Avancé",
     description: "Feature flags, variables système et options de débogage.",
     icon: Sliders,
