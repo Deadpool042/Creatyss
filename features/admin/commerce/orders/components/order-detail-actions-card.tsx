@@ -1,7 +1,10 @@
 import type { OrderStatus } from "@/entities/order/order-status-transition";
+import {
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
 import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
-import { SectionIntro } from "@/components/shared/display";
 import { Notice } from "@/components/shared/feedback";
 import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
@@ -23,9 +26,8 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
   const statusTransitions = allowedTransitions.filter((nextStatus) => nextStatus !== "shipped");
 
   return (
-    <article className="grid gap-5 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
-      <SectionIntro
-        className="grid gap-2"
+    <AdminSplitDetailSectionCard tone="secondary">
+      <AdminSplitDetailSectionHeader
         description="Les actions proposées suivent l'état actuel de la commande. Aucune étape métier n'est modifiée en dehors des transitions déjà autorisées."
         eyebrow="Actions"
         title="Actions disponibles"
@@ -36,7 +38,7 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
           {canShip ? (
             <form
               action={shipOrderAction}
-              className="grid gap-4 rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-4"
+              className="grid gap-4 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-4"
             >
               <div className="grid gap-1">
                 <h3 className="text-sm font-semibold text-foreground">Expédier la commande</h3>
@@ -65,7 +67,7 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
           ) : null}
 
           {statusTransitions.length > 0 ? (
-            <div className="grid gap-3 rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-4">
+            <div className="grid gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-4">
               <div className="grid gap-1">
                 <h3 className="text-sm font-semibold text-foreground">Autres actions</h3>
                 <p className="text-sm leading-6 text-text-muted-strong">
@@ -95,6 +97,6 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
       ) : (
         <Notice tone="note">Aucune autre action n&apos;est disponible pour cette commande.</Notice>
       )}
-    </article>
+    </AdminSplitDetailSectionCard>
   );
 }

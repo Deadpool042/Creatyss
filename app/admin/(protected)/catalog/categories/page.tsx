@@ -1,12 +1,7 @@
-import { CategoriesListPage } from "@/features/admin/categories/routes/categories-list-page";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-type AdminCategoriesPageProps = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
-
-export default async function AdminCategoriesPage({ searchParams }: AdminCategoriesPageProps) {
-  const resolvedSearchParams = await searchParams;
-  return <CategoriesListPage searchParams={resolvedSearchParams} />;
+export default function AdminCategoriesPage() {
+  redirect("/admin/catalog/categories/overview");
 }

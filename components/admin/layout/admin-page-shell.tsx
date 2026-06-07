@@ -128,7 +128,7 @@ export function AdminPageShell({
         // ce scroll local le contenu plus grand que la viewport est clippé.
         // À utiliser pour : pages standards, formulaires, listes, dashboard.
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-          <div className={cn("flex min-h-full min-w-0 flex-col", resolvedContentClassName)}>
+          <div className={cn("flex min-h-full min-w-0 flex-col ", resolvedContentClassName)}>
             {children}
           </div>
         </div>
@@ -142,7 +142,7 @@ export function AdminPageShell({
         //     Préférer "area" par défaut sauf besoin explicite de "nested".
         <div
           className={cn(
-            "flex min-h-0 flex-1 flex-col overflow-visible lg:overflow-hidden",
+            "flex min-h-0 flex-1 flex-col overflow-visible lg:overflow-hidden ",
             resolvedContentClassName
           )}
         >

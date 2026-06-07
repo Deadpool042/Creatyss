@@ -1,4 +1,4 @@
-import { SectionIntro } from "@/components/shared/display";
+import { AdminSplitDetailSectionCard, AdminSplitDetailSectionHeader } from "@/components/admin/layout/admin-split-detail-overview-content";
 import type { AdminOrderStatusHistoryEntry } from "@/features/admin/commerce/orders/details/types/admin-order-detail.types";
 
 type OrderDetailStatusHistoryCardProps = Readonly<{
@@ -9,9 +9,8 @@ export function OrderDetailStatusHistoryCard({
   statusHistory,
 }: OrderDetailStatusHistoryCardProps) {
   return (
-    <article className="grid gap-4 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
-      <SectionIntro
-        className="grid gap-2"
+    <AdminSplitDetailSectionCard tone="secondary">
+      <AdminSplitDetailSectionHeader
         eyebrow="Historique"
         title="Historique de statut"
         description="Chronologie des transitions de statut appliquées à cette commande."
@@ -26,7 +25,7 @@ export function OrderDetailStatusHistoryCard({
           {statusHistory.map((entry) => (
             <li
               key={entry.id}
-              className="grid gap-1 rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3"
+              className="grid gap-1 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-3"
             >
               <div className="flex flex-wrap items-baseline gap-2">
                 <p className="card-meta leading-snug text-text-muted-strong">{entry.date}</p>
@@ -44,6 +43,6 @@ export function OrderDetailStatusHistoryCard({
           ))}
         </ol>
       )}
-    </article>
+    </AdminSplitDetailSectionCard>
   );
 }

@@ -10,6 +10,7 @@ import {
 
 type UseAdminSplitViewStateArgs = {
   desktopResizable: boolean;
+  desktopCollapsible: boolean;
   desktopStorageKey?: string | undefined;
   defaultDesktopListWidth: number;
   minDesktopListWidth: number;
@@ -27,14 +28,16 @@ type UseAdminSplitViewStateResult = {
 
 export function useAdminSplitViewState({
   desktopResizable,
+  desktopCollapsible,
   desktopStorageKey,
   defaultDesktopListWidth,
   minDesktopListWidth,
   maxDesktopListWidth,
 }: UseAdminSplitViewStateArgs): UseAdminSplitViewStateResult {
+  const storageEnabled = desktopResizable || desktopCollapsible;
   const storageKey = useMemo(
-    () => (desktopStorageKey ? `admin-split-view:${desktopStorageKey}` : null),
-    [desktopStorageKey]
+    () => (storageEnabled && desktopStorageKey ? `admin-split-view:${desktopStorageKey}` : null),
+    [desktopStorageKey, storageEnabled]
   );
   const [desktopListWidth, setDesktopListWidth] = useState<number>(() => {
     if (!storageKey || typeof window === "undefined") return defaultDesktopListWidth;

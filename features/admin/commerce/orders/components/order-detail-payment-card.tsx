@@ -1,5 +1,9 @@
 import type { AdminOrderPayment } from "@/features/admin/commerce/orders/details/types/admin-order-detail.types";
-import { SectionIntro } from "@/components/shared/display";
+import {
+  AdminSplitDetailFact,
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
 import { Badge } from "@/components/ui/badge";
 import { getPaymentStatusLabel } from "@/entities/order/order-status-presentation";
 import { getPaymentStatusBadgeVariant } from "@/features/admin/commerce/orders/config/order-ui.config";
@@ -10,8 +14,8 @@ type OrderDetailPaymentCardProps = Readonly<{
 
 export function OrderDetailPaymentCard({ payment }: OrderDetailPaymentCardProps) {
   return (
-    <article className="grid gap-4 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
-      <SectionIntro className="grid gap-2" eyebrow="Paiement" title="État du paiement" />
+    <AdminSplitDetailSectionCard tone="secondary">
+      <AdminSplitDetailSectionHeader eyebrow="Paiement" title="État du paiement" />
 
       <div className="flex flex-wrap gap-2">
         <Badge variant={getPaymentStatusBadgeVariant(payment.status)}>
@@ -21,52 +25,19 @@ export function OrderDetailPaymentCard({ payment }: OrderDetailPaymentCardProps)
 
       <div className="grid gap-3 sm:grid-cols-2">
         {payment.provider ? (
-          <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-              Prestataire
-            </p>
-            <p className="mt-1 text-sm font-medium leading-6 text-foreground">{payment.provider}</p>
-          </div>
+          <AdminSplitDetailFact label="Prestataire" value={payment.provider} />
         ) : null}
         {payment.methodType ? (
-          <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-              Méthode
-            </p>
-            <p className="mt-1 text-sm font-medium leading-6 text-foreground">
-              {payment.methodType}
-            </p>
-          </div>
+          <AdminSplitDetailFact label="Méthode" value={payment.methodType} />
         ) : null}
         {payment.amountCaptured ? (
-          <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-              Montant capturé
-            </p>
-            <p className="mt-1 text-sm font-medium leading-6 text-foreground">
-              {payment.amountCaptured}
-            </p>
-          </div>
+          <AdminSplitDetailFact label="Montant capturé" value={payment.amountCaptured} />
         ) : null}
         {payment.amountAuthorized ? (
-          <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-              Montant autorisé
-            </p>
-            <p className="mt-1 text-sm font-medium leading-6 text-foreground">
-              {payment.amountAuthorized}
-            </p>
-          </div>
+          <AdminSplitDetailFact label="Montant autorisé" value={payment.amountAuthorized} />
         ) : null}
         {payment.amountRefunded !== "0.00" ? (
-          <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-              Montant remboursé
-            </p>
-            <p className="mt-1 text-sm font-medium leading-6 text-foreground">
-              {payment.amountRefunded}
-            </p>
-          </div>
+          <AdminSplitDetailFact label="Montant remboursé" value={payment.amountRefunded} />
         ) : null}
       </div>
 
@@ -75,6 +46,6 @@ export function OrderDetailPaymentCard({ payment }: OrderDetailPaymentCardProps)
           Référence prestataire : {payment.providerReference}
         </p>
       ) : null}
-    </article>
+    </AdminSplitDetailSectionCard>
   );
 }

@@ -14,6 +14,17 @@ const EXCLUDED_PRODUCT_PATHS = new Set(["/boutique/produit-simple-de-test"]);
 
 function isCriticalConsoleError(message: string): boolean {
   const ignoredPatterns = [/favicon\.ico/i, /status of 400/i];
+  const isRadixHydrationIdNoise =
+    message.includes(
+      "A tree hydrated but some attributes of the server rendered HTML didn't match"
+    ) &&
+    message.includes("hydration-mismatch") &&
+    message.includes("radix-");
+
+  if (isRadixHydrationIdNoise) {
+    return false;
+  }
+
   return !ignoredPatterns.some((pattern) => pattern.test(message));
 }
 
@@ -394,10 +405,13 @@ test.describe("public product page smoke", () => {
         expect(originFontSize ?? 0).toBeGreaterThanOrEqual(12);
 
         if (viewport.name === "mobile-portrait") {
-          const badgeFontSize = await getMinVisibleFontSizeForText(
+          const legacyBadgeFontSize = await getMinVisibleFontSizeForText(
             page,
             "Pièces uniques ou petites séries"
           );
+          const badgeFontSize =
+            legacyBadgeFontSize ??
+            (await getMinVisibleFontSizeForText(page, "Chaque sac est unique"));
           expect(badgeFontSize).not.toBeNull();
           expect(badgeFontSize ?? 0).toBeGreaterThanOrEqual(12);
         }

@@ -366,8 +366,37 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Gouvernance des fonctionnalités
+
+La doctrine produit des fonctionnalités (modules, capabilities, niveaux gradués,
+mutabilité, maintenance, cycle de vie, pilotage depuis Réglages avancés) est
+portée par un document dédié : `feature-governance.md`.
+
+Répartition des responsabilités :
+
+- **`feature-governance.md`** est la référence produit canonique. Il définit le
+  vocabulaire (Module, Feature, Capability, Feature level, Feature scope,
+  Feature guard, Maintenance state), la typologie produit, le mécanisme générique
+  de niveaux gradués, la mutabilité par famille et la migration progressive.
+- **Ce document (`feature-flags.md`)** porte le **mécanisme technique** : ce
+  qu'est un flag, comment il est défini, évalué, scopé et tracé.
+
+Rappel d'ancrage technique côté schéma :
+
+- `FeatureFlagStatus = DRAFT | ACTIVE | INACTIVE | ARCHIVED` ;
+- `FeatureFlagScopeType = GLOBAL | STORE | USER` ;
+- l'état effectif d'une feature (`feature state`) résulte du flag et de ses
+  overrides ; sa résolution serveur est gouvernée par les guards décrits dans
+  `feature-governance.md`.
+
+Le feature flag est un mécanisme de variation contrôlée. Il n'est pas la
+doctrine produit : il l'exécute.
+
+---
+
 ## Documents liés
 
+- `feature-governance.md`
 - `../../architecture/10-fondations/11-modele-de-classification.md`
 - `../core/foundation/stores.md`
 - `audit.md`

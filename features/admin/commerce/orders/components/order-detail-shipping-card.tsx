@@ -1,4 +1,8 @@
-import { SectionIntro } from "@/components/shared/display";
+import {
+  AdminSplitDetailFact,
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
 import { Badge } from "@/components/ui/badge";
 import {
   getShipmentStatusBadgeVariant,
@@ -23,9 +27,8 @@ export function OrderDetailShippingCard({
   deliveredAtLabel,
 }: OrderDetailShippingCardProps) {
   return (
-    <article className="grid gap-3 rounded-xl border border-surface-border/60 bg-surface-panel/80 p-5 shadow-sm">
-      <SectionIntro
-        className="grid gap-2"
+    <AdminSplitDetailSectionCard>
+      <AdminSplitDetailSectionHeader
         description={
           shippedAtLabel
             ? `Expédiée le ${shippedAtLabel}`
@@ -42,31 +45,14 @@ export function OrderDetailShippingCard({
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
-          <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-            Référence de suivi
-          </p>
-          <p className="mt-1 text-sm font-medium leading-6 text-foreground">
-            {trackingReference ?? "Aucune pour le moment"}
-          </p>
-        </div>
-
-        <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3">
-          <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-            Transporteur
-          </p>
-          <p className="mt-1 text-sm font-medium leading-6 text-foreground">
-            {carrier ?? "Non renseigné"}
-          </p>
-        </div>
+        <AdminSplitDetailFact
+          label="Référence de suivi"
+          value={trackingReference ?? "Aucune pour le moment"}
+        />
+        <AdminSplitDetailFact label="Transporteur" value={carrier ?? "Non renseigné"} />
 
         {deliveredAtLabel ? (
-          <div className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 sm:col-span-2">
-            <p className="text-xs font-semibold uppercase tracking-widest text-text-muted-soft">
-              Livrée le
-            </p>
-            <p className="mt-1 text-sm font-medium leading-6 text-foreground">{deliveredAtLabel}</p>
-          </div>
+          <AdminSplitDetailFact className="sm:col-span-2" label="Livrée le" value={deliveredAtLabel} />
         ) : null}
       </div>
 
@@ -80,6 +66,6 @@ export function OrderDetailShippingCard({
           Ouvrir le lien de suivi
         </a>
       ) : null}
-    </article>
+    </AdminSplitDetailSectionCard>
   );
 }

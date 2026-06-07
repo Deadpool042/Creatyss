@@ -1,21 +1,23 @@
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
+import { AdminSplitDetailPaneShell } from "@/components/admin/layout/admin-split-detail-pane-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/feedback";
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import {
   AdminCheckboxField,
 } from "@/components/admin/forms/admin-checkbox-field";
 import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
-import { ADMIN_CATEGORIES_LIST_PATH, createCategoryAction } from "@/features/admin/categories";
+import { createCategoryAction } from "@/features/admin/categories";
+import {
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
 import {
   CATEGORY_CREATE_GENERAL_SECTION_COPY,
   CATEGORY_FIELD_COPY,
   CATEGORY_FORM_ACTIONS_COPY,
-  CATEGORY_NAVIGATION_COPY,
   CATEGORY_NEW_PAGE_COPY,
   getCategoryNewFormErrorMessage,
 } from "@/features/admin/categories/config";
@@ -41,37 +43,23 @@ export default async function NewAdminCategoryPage({ searchParams }: NewAdminCat
   }
 
   return (
-    <AdminPageShell
-      title={CATEGORY_NEW_PAGE_COPY.title}
-      navigation={{ label: CATEGORY_NAVIGATION_COPY.backLabel, href: ADMIN_CATEGORIES_LIST_PATH }}
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Catalogue", href: "/admin/catalog" },
-        { label: "Catégories", href: ADMIN_CATEGORIES_LIST_PATH },
-        { label: "Nouvelle catégorie" },
-      ]}
-      contentPreset="full-width"
-      scrollMode="area"
-      contentClassName="space-y-4 md:space-y-6 lg:pb-0"
-      header={
-        <AdminPageHeader
-          className="hidden px-4 pt-1 md:px-5 lg:block lg:px-6"
-          compact
-          eyebrow={CATEGORY_NEW_PAGE_COPY.eyebrow}
-          title={CATEGORY_NEW_PAGE_COPY.title}
-          description={CATEGORY_NEW_PAGE_COPY.description}
-        />
-      }
-    >
+    <AdminSplitDetailPaneShell>
+      <AdminPageHeader
+        compact
+        eyebrow={CATEGORY_NEW_PAGE_COPY.eyebrow}
+        title={CATEGORY_NEW_PAGE_COPY.title}
+        description={CATEGORY_NEW_PAGE_COPY.description}
+      />
+
       <div className="space-y-4">
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
-        <AdminFormSection
-          eyebrow={CATEGORY_CREATE_GENERAL_SECTION_COPY.eyebrow}
-          title={CATEGORY_CREATE_GENERAL_SECTION_COPY.title}
-          description={CATEGORY_CREATE_GENERAL_SECTION_COPY.description}
-          contentClassName="rounded-3xl border border-surface-border bg-card p-5 shadow-card sm:p-6"
-        >
+        <AdminSplitDetailSectionCard>
+          <AdminSplitDetailSectionHeader
+            eyebrow={CATEGORY_CREATE_GENERAL_SECTION_COPY.eyebrow}
+            title={CATEGORY_CREATE_GENERAL_SECTION_COPY.title}
+            description={CATEGORY_CREATE_GENERAL_SECTION_COPY.description}
+          />
           <form action={handleCreateCategory} className="grid gap-5">
             <AdminFormField htmlFor="cat-name" label={CATEGORY_FIELD_COPY.nameLabel}>
               <Input id="cat-name" name="name" required type="text" />
@@ -103,8 +91,8 @@ export default async function NewAdminCategoryPage({ searchParams }: NewAdminCat
               <Button type="submit">{CATEGORY_FORM_ACTIONS_COPY.createCategoryLabel}</Button>
             </AdminFormActions>
           </form>
-        </AdminFormSection>
+        </AdminSplitDetailSectionCard>
       </div>
-    </AdminPageShell>
+    </AdminSplitDetailPaneShell>
   );
 }

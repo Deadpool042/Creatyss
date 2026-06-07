@@ -7,7 +7,14 @@ import {
   TruckIcon,
 } from "lucide-react";
 
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminOverviewHero } from "@/components/admin/layout/admin-overview-hero";
+import {
+  AdminSplitDetailOverviewCard,
+  AdminSplitDetailOverviewEmptyState,
+  AdminSplitDetailOverviewGrid,
+  AdminSplitDetailOverviewSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
+import { AdminSplitDetailOverviewShell } from "@/components/admin/layout/admin-split-detail-overview-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,18 +39,6 @@ type OverviewSignal = {
   title: string;
   detail: string;
 };
-
-function OverviewMetric(props: { label: string; value: number; hint: string }) {
-  return (
-    <div className="rounded-2xl border border-surface-border bg-surface-panel px-4 py-4 shadow-sm">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        {props.label}
-      </p>
-      <p className="mt-2 text-3xl font-semibold tracking-tight text-foreground">{props.value}</p>
-      <p className="mt-1 text-xs leading-5 text-muted-foreground">{props.hint}</p>
-    </div>
-  );
-}
 
 function buildSignals(input: Awaited<ReturnType<typeof getAdminOrdersOverview>>): OverviewSignal[] {
   const signals: OverviewSignal[] = [];
@@ -88,182 +83,169 @@ export async function AdminOrdersDetailOverview() {
   const signals = buildSignals(stats);
 
   return (
-    <AdminPageShell
-      scrollMode="area"
+    <AdminSplitDetailOverviewShell
       title="Commandes"
-      contentPreset="full-width"
-      showBreadcrumbsInContent={false}
-      header={
-        <div className="hidden px-4 pt-1 md:px-5 lg:flex lg:flex-col lg:items-center lg:justify-center lg:gap-3 lg:px-6 lg:pb-1">
-          <div className="flex size-11 items-center justify-center rounded-2xl border border-surface-border bg-surface-panel shadow-sm backdrop-blur-xl">
-            <ShoppingBagIcon className="size-5 text-muted-foreground" />
-          </div>
-          <div className="text-center">
-            <h1 className="text-[1.45rem] font-semibold tracking-tight text-foreground">
-              Vue d&apos;ensemble commandes
-            </h1>
-            <p className="mt-1 text-sm leading-5 text-muted-foreground">
-              Gardez un point d&apos;entrée clair sur les commandes à traiter avant de descendre dans le détail.
-            </p>
-          </div>
-        </div>
+      hero={
+        <AdminOverviewHero
+          mobileHidden
+          align="leading"
+          eyebrow="Commerce"
+          icon={ShoppingBagIcon}
+          title="Vue d'ensemble commandes"
+          description="Gardez un point d'entrée clair sur les commandes à traiter avant de descendre dans le détail."
+          action={
+            <Button asChild size="sm" className="rounded-full">
+              <Link href="/admin/commerce/overview">Vue commerce</Link>
+            </Button>
+          }
+          metrics={[
+            {
+              label: "Total",
+              value: stats.totalCount,
+              hint: `${stats.shippedCount} expédiée${stats.shippedCount > 1 ? "s" : ""} · ${stats.cancelledCount} annulée${stats.cancelledCount > 1 ? "s" : ""}`,
+              toneClassName: "bg-surface-panel",
+            },
+            {
+              label: "À préparer",
+              value: stats.paidCount,
+              hint:
+                stats.paidCount > 0
+                  ? "Commandes payées en attente de prise en charge."
+                  : "Aucune commande payée en attente.",
+              toneClassName: "bg-surface-panel-soft",
+            },
+            {
+              label: "À expédier",
+              value: stats.preparingCount,
+              hint:
+                stats.preparingCount > 0
+                  ? "Commandes en préparation prêtes à sortir."
+                  : "Aucune expédition urgente.",
+              toneClassName: "bg-surface-panel-soft",
+            },
+            {
+              label: "Emails en échec",
+              value: stats.failedEmailCount,
+              hint:
+                stats.failedEmailCount > 0
+                  ? "Les commandes restent lisibles, mais les traces demandent un suivi."
+                  : "Aucun incident email remonté.",
+              toneClassName: "bg-surface-panel-soft",
+            },
+          ]}
+        />
       }
     >
-      <div className="space-y-4">
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <OverviewMetric
-            label="Total"
-            value={stats.totalCount}
-            hint={`${stats.shippedCount} expédiée${stats.shippedCount > 1 ? "s" : ""} · ${stats.cancelledCount} annulée${stats.cancelledCount > 1 ? "s" : ""}`}
-          />
-          <OverviewMetric
-            label="À préparer"
-            value={stats.paidCount}
-            hint={
-              stats.paidCount > 0
-                ? "Commandes payées en attente de prise en charge."
-                : "Aucune commande payée en attente."
-            }
-          />
-          <OverviewMetric
-            label="À expédier"
-            value={stats.preparingCount}
-            hint={
-              stats.preparingCount > 0
-                ? "Commandes en préparation prêtes à sortir."
-                : "Aucune expédition urgente."
-            }
-          />
-          <OverviewMetric
-            label="Emails en échec"
-            value={stats.failedEmailCount}
-            hint={
-              stats.failedEmailCount > 0
-                ? "Les commandes restent lisibles, mais les traces demandent un suivi."
-                : "Aucun incident email remonté."
-            }
-          />
-        </div>
-
-        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.85fr)]">
-          <section className="rounded-2xl border border-surface-border bg-surface-panel p-5 shadow-card">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
-                  Récentes
-                </p>
-                <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground">
-                  Dernières commandes
-                </h2>
-                <p className="mt-1 text-sm leading-5 text-muted-foreground">
-                  Ouvrez directement une commande prioritaire depuis ce panneau.
-                </p>
-              </div>
+      <AdminSplitDetailOverviewGrid>
+        <AdminSplitDetailOverviewCard>
+          <AdminSplitDetailOverviewSectionHeader
+            eyebrow="Récentes"
+            title="Dernières commandes"
+            description="Ouvrez directement une commande prioritaire depuis ce panneau."
+            action={
               <Button asChild size="sm" className="rounded-full">
                 <Link href="/admin/commerce/overview">Vue commerce</Link>
               </Button>
-            </div>
+            }
+          />
 
-            {stats.recentOrders.length > 0 ? (
-              <div className="mt-5 space-y-2">
-                {stats.recentOrders.map((order) => (
-                  <Link
-                    key={order.id}
-                    href={`/admin/commerce/orders/${order.id}`}
-                    className="flex items-start justify-between gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft px-4 py-3 transition-colors hover:bg-surface-panel"
-                  >
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-foreground">{order.reference}</p>
-                      <p className="mt-1 truncate text-xs text-muted-foreground">
-                        {order.customerName}
-                        {order.customerEmail.length > 0 ? ` · ${order.customerEmail}` : ""}
-                      </p>
-                      <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <Badge variant={getOrderStatusBadgeVariant(order.status)}>
-                          {getOrderStatusLabel(order.status)}
-                        </Badge>
-                        <Badge variant={getPaymentStatusBadgeVariant(order.paymentStatus)}>
-                          {getPaymentStatusLabel(order.paymentStatus)}
-                        </Badge>
-                      </div>
+          {stats.recentOrders.length > 0 ? (
+            <div className="mt-5 space-y-2">
+              {stats.recentOrders.map((order) => (
+                <Link
+                  key={order.id}
+                  href={`/admin/commerce/orders/${order.id}`}
+                  className="flex items-start justify-between gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft px-4 py-3 transition-colors hover:bg-surface-panel"
+                >
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-foreground">
+                      {order.reference}
+                    </p>
+                    <p className="mt-1 truncate text-xs text-muted-foreground">
+                      {order.customerName}
+                      {order.customerEmail.length > 0 ? ` · ${order.customerEmail}` : ""}
+                    </p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      <Badge variant={getOrderStatusBadgeVariant(order.status)}>
+                        {getOrderStatusLabel(order.status)}
+                      </Badge>
+                      <Badge variant={getPaymentStatusBadgeVariant(order.paymentStatus)}>
+                        {getPaymentStatusLabel(order.paymentStatus)}
+                      </Badge>
                     </div>
-                    <div className="shrink-0 text-right">
-                      <p className="text-sm font-semibold text-foreground">{order.totalAmount}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {dateTimeFormatter.format(new Date(order.createdAt))}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="mt-5 rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-5 py-8 text-center">
-                <p className="text-sm font-medium text-foreground">Aucune commande pour le moment</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Les premières commandes apparaîtront ici dès qu&apos;elles seront créées.
-                </p>
-              </div>
-            )}
-          </section>
-
-          <section className="rounded-2xl border border-surface-border bg-surface-panel-soft p-5 shadow-sm">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
-              Pilotage
-            </p>
-            <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground">
-              Points d&apos;attention
-            </h2>
-
-            {signals.length > 0 ? (
-              <div className="mt-4 space-y-3">
-                {signals.map((signal) => {
-                  const Icon =
-                    signal.key === "email"
-                      ? MailWarningIcon
-                      : signal.key === "preparing"
-                        ? TruckIcon
-                        : signal.key === "payment"
-                          ? AlertTriangleIcon
-                          : PackageIcon;
-
-                  return (
-                    <div
-                      key={signal.key}
-                      className="rounded-xl border border-surface-border-subtle bg-surface-panel-soft px-4 py-3"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="mt-0.5 flex size-8 items-center justify-center rounded-full bg-surface-panel">
-                          <Icon className="size-4 text-muted-foreground" />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-medium text-foreground">{signal.title}</p>
-                          <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                            {signal.detail}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="mt-4 rounded-xl border border-surface-border-subtle bg-surface-panel-soft px-4 py-4">
-                <div className="flex items-start gap-3">
-                  <div className="mt-0.5 flex size-8 items-center justify-center rounded-full bg-surface-panel">
-                    <TruckIcon className="size-4 text-muted-foreground" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">Aucun point bloquant remonté</p>
-                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                      Ouvrez une commande dans la liste pour vérifier le paiement, l&apos;email et l&apos;expédition au cas par cas.
+                  <div className="shrink-0 text-right">
+                    <p className="text-sm font-semibold text-foreground">{order.totalAmount}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {dateTimeFormatter.format(new Date(order.createdAt))}
                     </p>
                   </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <AdminSplitDetailOverviewEmptyState
+              title="Aucune commande pour le moment"
+              description="Les premières commandes apparaîtront ici dès qu'elles seront créées."
+            />
+          )}
+        </AdminSplitDetailOverviewCard>
+
+        <AdminSplitDetailOverviewCard tone="secondary">
+          <AdminSplitDetailOverviewSectionHeader eyebrow="Pilotage" title="Points d'attention" />
+
+          {signals.length > 0 ? (
+            <div className="mt-4 space-y-3">
+              {signals.map((signal) => {
+                const Icon =
+                  signal.key === "email"
+                    ? MailWarningIcon
+                    : signal.key === "preparing"
+                      ? TruckIcon
+                      : signal.key === "payment"
+                        ? AlertTriangleIcon
+                        : PackageIcon;
+
+                return (
+                  <div
+                    key={signal.key}
+                    className="rounded-xl border border-surface-border-subtle bg-surface-panel-soft px-4 py-3"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 flex size-8 items-center justify-center rounded-full bg-surface-panel">
+                        <Icon className="size-4 text-muted-foreground" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">{signal.title}</p>
+                        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                          {signal.detail}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="mt-4 rounded-xl border border-surface-border-subtle bg-surface-panel-soft px-4 py-4">
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 flex size-8 items-center justify-center rounded-full bg-surface-panel">
+                  <TruckIcon className="size-4 text-muted-foreground" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">
+                    Aucun point bloquant remonté
+                  </p>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                    Ouvrez une commande dans la liste pour vérifier le paiement, l&apos;email et
+                    l&apos;expédition au cas par cas.
+                  </p>
                 </div>
               </div>
-            )}
-          </section>
-        </div>
-      </div>
-    </AdminPageShell>
+            </div>
+          )}
+        </AdminSplitDetailOverviewCard>
+      </AdminSplitDetailOverviewGrid>
+    </AdminSplitDetailOverviewShell>
   );
 }

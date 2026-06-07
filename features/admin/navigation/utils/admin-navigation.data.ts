@@ -8,22 +8,22 @@ export const adminNavigationGroupDefinitions: ReadonlyArray<AdminNavigationGroup
   {
     key: "main",
     label: "Tableau de bord",
-    defaultOpen: true,
+    defaultOpen: false,
   },
   {
     key: "catalog",
     label: "Catalogue",
-    defaultOpen: true,
+    defaultOpen: false,
   },
   {
     key: "commerce",
     label: "Commerce",
-    defaultOpen: true,
+    defaultOpen: false,
   },
   {
     key: "content",
     label: "Contenu",
-    defaultOpen: true,
+    defaultOpen: false,
   },
   {
     key: "marketing",
@@ -89,7 +89,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   {
     key: "categories",
     label: "Catégories",
-    href: "/admin/catalog/categories",
+    href: "/admin/catalog/categories/overview",
     iconKey: "folderTree",
     group: "catalog",
     order: 30,
@@ -141,7 +141,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   {
     key: "orders",
     label: "Commandes",
-    href: "/admin/commerce/orders",
+    href: "/admin/commerce/orders/overview",
     iconKey: "shoppingCart",
     group: "commerce",
     order: 20,
@@ -474,7 +474,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   {
     key: "advanced-settings",
     label: "Réglages avancés",
-    href: "/admin/settings/advanced",
+    href: "/admin/settings/advanced/overview",
     iconKey: "settings",
     group: "settings",
     order: 50,

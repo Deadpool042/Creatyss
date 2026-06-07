@@ -3,7 +3,10 @@ import Link from "next/link";
 import { AdminCheckboxField } from "@/components/admin/forms/admin-checkbox-field";
 import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
+import {
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -37,13 +40,14 @@ export function CategoryEditorPanel({
 }: CategoryEditorPanelProps) {
   return (
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1.7fr)_minmax(19rem,0.92fr)] xl:items-start">
-      <div className="space-y-10">
-        <AdminFormSection
-          eyebrow={CATEGORY_GENERAL_SECTION_COPY.eyebrow}
-          title={CATEGORY_GENERAL_SECTION_COPY.title}
-          description={CATEGORY_GENERAL_SECTION_COPY.description}
-          contentClassName="space-y-4"
-        >
+      <div className="space-y-6">
+        <AdminSplitDetailSectionCard>
+          <AdminSplitDetailSectionHeader
+            eyebrow={CATEGORY_GENERAL_SECTION_COPY.eyebrow}
+            title={CATEGORY_GENERAL_SECTION_COPY.title}
+            description={CATEGORY_GENERAL_SECTION_COPY.description}
+          />
+
           <form action={updateAction} className="grid gap-5">
             <input name="categoryId" type="hidden" value={category.id} />
             <input name="routeSlug" type="hidden" value={routeSlug} />
@@ -85,27 +89,25 @@ export function CategoryEditorPanel({
               <Button type="submit">{CATEGORY_FORM_ACTIONS_COPY.saveCategoryInfoLabel}</Button>
             </AdminFormActions>
           </form>
-        </AdminFormSection>
+        </AdminSplitDetailSectionCard>
 
-        <div className="h-px bg-surface-border/55" />
-
-        <AdminFormSection
-          eyebrow={CATEGORY_SEO_SECTION_COPY.eyebrow}
-          title={CATEGORY_SEO_SECTION_COPY.title}
-          description={CATEGORY_SEO_SECTION_COPY.description}
-          contentClassName="space-y-4"
-        >
+        <AdminSplitDetailSectionCard>
+          <AdminSplitDetailSectionHeader
+            eyebrow={CATEGORY_SEO_SECTION_COPY.eyebrow}
+            title={CATEGORY_SEO_SECTION_COPY.title}
+            description={CATEGORY_SEO_SECTION_COPY.description}
+          />
           <CategorySeoForm categoryId={category.id} categoryName={category.name} seo={category.seo} />
-        </AdminFormSection>
+        </AdminSplitDetailSectionCard>
       </div>
 
       <div className="space-y-6 xl:sticky xl:top-10 2xl:top-12">
-        <AdminFormSection
-          eyebrow={CATEGORY_IMAGE_SECTION_COPY.eyebrow}
-          title={CATEGORY_IMAGE_SECTION_COPY.title}
-          description={CATEGORY_IMAGE_SECTION_COPY.description}
-          contentClassName="space-y-4"
-        >
+        <AdminSplitDetailSectionCard>
+          <AdminSplitDetailSectionHeader
+            eyebrow={CATEGORY_IMAGE_SECTION_COPY.eyebrow}
+            title={CATEGORY_IMAGE_SECTION_COPY.title}
+            description={CATEGORY_IMAGE_SECTION_COPY.description}
+          />
           {mediaAssets.length > 0 ? (
             <CategoryImageForm
               categoryId={category.id}
@@ -125,16 +127,16 @@ export function CategoryEditorPanel({
               </Link>
             </p>
           )}
-        </AdminFormSection>
+        </AdminSplitDetailSectionCard>
 
-        <AdminFormSection
-          eyebrow={CATEGORY_ARCHIVE_SECTION_COPY.eyebrow}
-          title={CATEGORY_ARCHIVE_SECTION_COPY.title}
-          description={CATEGORY_ARCHIVE_SECTION_COPY.description}
-          contentClassName="space-y-3"
-        >
+        <AdminSplitDetailSectionCard tone="secondary">
+          <AdminSplitDetailSectionHeader
+            eyebrow={CATEGORY_ARCHIVE_SECTION_COPY.eyebrow}
+            title={CATEGORY_ARCHIVE_SECTION_COPY.title}
+            description={CATEGORY_ARCHIVE_SECTION_COPY.description}
+          />
           <CategoryArchiveButton categoryId={category.id} categoryName={category.name} />
-        </AdminFormSection>
+        </AdminSplitDetailSectionCard>
       </div>
     </div>
   );

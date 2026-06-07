@@ -1,17 +1,15 @@
+import { AdminSplitDetailPaneShell } from "@/components/admin/layout/admin-split-detail-pane-shell";
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/shared/feedback";
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { listAdminMediaAssets } from "@/features/admin/media";
 import {
-  ADMIN_CATEGORIES_LIST_PATH,
   CategoryEditorPanel,
   getAdminCategoryDetail,
   updateCategoryAction,
 } from "@/features/admin/categories";
 import {
   CATEGORY_EDIT_PAGE_COPY,
-  CATEGORY_NAVIGATION_COPY,
   getCategoryEditFormErrorMessage,
   getCategoryEditFormStatusMessage,
 } from "@/features/admin/categories/config";
@@ -59,28 +57,14 @@ export default async function EditAdminCategoryPage({
     await updateCategoryAction(formData);
   }
   return (
-    <AdminPageShell
-      title={CATEGORY_EDIT_PAGE_COPY.title}
-      navigation={{ label: CATEGORY_NAVIGATION_COPY.backLabel, href: ADMIN_CATEGORIES_LIST_PATH }}
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Catalogue", href: "/admin/catalog" },
-        { label: "Catégories", href: ADMIN_CATEGORIES_LIST_PATH },
-        { label: "Édition" },
-      ]}
-      contentPreset="full-width"
-      scrollMode="area"
-      contentClassName="space-y-4 md:space-y-6"
-      header={
-        <AdminPageHeader
-          className="hidden px-4 pt-1 md:px-5 lg:block lg:px-6"
-          compact
-          eyebrow={CATEGORY_EDIT_PAGE_COPY.eyebrow}
-          title={CATEGORY_EDIT_PAGE_COPY.title}
-          description={CATEGORY_EDIT_PAGE_COPY.description}
-        />
-      }
-    >
+    <AdminSplitDetailPaneShell>
+      <AdminPageHeader
+        compact
+        eyebrow={CATEGORY_EDIT_PAGE_COPY.eyebrow}
+        title={CATEGORY_EDIT_PAGE_COPY.title}
+        description={CATEGORY_EDIT_PAGE_COPY.description}
+      />
+
       <div className="space-y-3">
         {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
@@ -92,6 +76,6 @@ export default async function EditAdminCategoryPage({
         mediaAssets={mediaAssets}
         updateAction={handleUpdateCategory}
       />
-    </AdminPageShell>
+    </AdminSplitDetailPaneShell>
   );
 }

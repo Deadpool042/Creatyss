@@ -57,7 +57,8 @@ const quickLinks: ReadonlyArray<CatalogQuickLink> = [
   {
     href: ADMIN_CATEGORIES_LIST_PATH,
     title: "Catégories",
-    description: "Maintenir une navigation claire, des regroupements cohérents et une hiérarchie propre.",
+    description:
+      "Maintenir une navigation claire, des regroupements cohérents et une hiérarchie propre.",
     icon: FolderTree,
   },
   {
@@ -77,7 +78,10 @@ function buildHeroMetrics(stats: CatalogOverviewStats): ReadonlyArray<CatalogHer
     stats.products.total > 0 ? Math.round((stats.products.active / stats.products.total) * 100) : 0;
   const taxonomyCoverage =
     stats.products.total > 0
-      ? Math.max(0, 100 - Math.round((stats.alerts.productsWithoutCategories / stats.products.total) * 100))
+      ? Math.max(
+          0,
+          100 - Math.round((stats.alerts.productsWithoutCategories / stats.products.total) * 100)
+        )
       : 100;
 
   return [
@@ -115,17 +119,24 @@ function buildHeroMetrics(stats: CatalogOverviewStats): ReadonlyArray<CatalogHer
 function buildReadinessItems(stats: CatalogOverviewStats): ReadonlyArray<CatalogReadinessItem> {
   const mediaCoverage =
     stats.products.total > 0
-      ? Math.max(0, 100 - Math.round((stats.alerts.productsWithoutImages / stats.products.total) * 100))
+      ? Math.max(
+          0,
+          100 - Math.round((stats.alerts.productsWithoutImages / stats.products.total) * 100)
+        )
       : 100;
   const categoryCoverage =
     stats.products.total > 0
-      ? Math.max(0, 100 - Math.round((stats.alerts.productsWithoutCategories / stats.products.total) * 100))
+      ? Math.max(
+          0,
+          100 - Math.round((stats.alerts.productsWithoutCategories / stats.products.total) * 100)
+        )
       : 100;
 
   return [
     {
       title: "Qualité fiches produit",
-      detail: "Identité, publication et contenu existent. Les derniers arbitrages UX se jouent côté édition.",
+      detail:
+        "Identité, publication et contenu existent. Les derniers arbitrages UX se jouent côté édition.",
       progressLabel: `${Math.max(42, Math.min(92, mediaCoverage))}%`,
       progressValue: Math.max(42, Math.min(92, mediaCoverage)),
       toneClassName: "bg-emerald-500",
@@ -139,7 +150,8 @@ function buildReadinessItems(stats: CatalogOverviewStats): ReadonlyArray<Catalog
     },
     {
       title: "Signal business",
-      detail: "Les vraies métriques catalogues sont encore en préparation. La lecture reste volontairement mockée.",
+      detail:
+        "Les vraies métriques catalogues sont encore en préparation. La lecture reste volontairement mockée.",
       progressLabel: "31%",
       progressValue: 31,
       toneClassName: "bg-violet-500",
@@ -164,7 +176,7 @@ export function CatalogOverviewSections({ stats }: CatalogOverviewSectionsProps)
               <span className="inline-flex items-center rounded-full border border-shell-border/70 bg-surface-subtle px-2.5 py-1 text-[10px] font-semibold tracking-[0.24em] text-text-muted-strong uppercase">
                 Catalogue
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-foreground/[0.06] px-2.5 py-1 text-[11px] text-text-muted-strong">
+              <span className="inline-flex items-center gap-1 rounded-full bg-foreground/6 px-2.5 py-1 text-[11px] text-text-muted-strong">
                 <Sparkles className="h-3.5 w-3.5" />
                 Vue pilotage
               </span>
@@ -175,8 +187,8 @@ export function CatalogOverviewSections({ stats }: CatalogOverviewSectionsProps)
                 Une lecture catalogue claire avant même que tout le back-office soit branché.
               </CardTitle>
               <CardDescription className="max-w-2xl text-base leading-7 text-text-muted-strong">
-                Cette vue mélange le socle réel du catalogue et quelques signaux mockés pour
-                garder une lecture métier utile: couverture fiches, taxonomie, médias et zones de
+                Cette vue mélange le socle réel du catalogue et quelques signaux mockés pour garder
+                une lecture métier utile: couverture fiches, taxonomie, médias et zones de
                 vigilance.
               </CardDescription>
             </div>
@@ -272,20 +284,33 @@ export function CatalogOverviewSections({ stats }: CatalogOverviewSectionsProps)
               </span>
 
               {stats.alerts.productsWithoutImages > 0 ? (
-                <Badge variant="secondary" className="bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200">
-                  {stats.alerts.productsWithoutImages} produit{stats.alerts.productsWithoutImages > 1 ? "s" : ""} sans image
+                <Badge
+                  variant="secondary"
+                  className="bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200"
+                >
+                  {stats.alerts.productsWithoutImages} produit
+                  {stats.alerts.productsWithoutImages > 1 ? "s" : ""} sans image
                 </Badge>
               ) : null}
 
               {stats.alerts.productsWithoutCategories > 0 ? (
-                <Badge variant="secondary" className="bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200">
-                  {stats.alerts.productsWithoutCategories} produit{stats.alerts.productsWithoutCategories > 1 ? "s" : ""} sans catégorie
+                <Badge
+                  variant="secondary"
+                  className="bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200"
+                >
+                  {stats.alerts.productsWithoutCategories} produit
+                  {stats.alerts.productsWithoutCategories > 1 ? "s" : ""} sans catégorie
                 </Badge>
               ) : null}
 
               {stats.alerts.categoriesWithoutProducts > 0 ? (
-                <Badge variant="secondary" className="bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200">
-                  {stats.alerts.categoriesWithoutProducts} catégorie{stats.alerts.categoriesWithoutProducts > 1 ? "s" : ""} vide{stats.alerts.categoriesWithoutProducts > 1 ? "s" : ""}
+                <Badge
+                  variant="secondary"
+                  className="bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200"
+                >
+                  {stats.alerts.categoriesWithoutProducts} catégorie
+                  {stats.alerts.categoriesWithoutProducts > 1 ? "s" : ""} vide
+                  {stats.alerts.categoriesWithoutProducts > 1 ? "s" : ""}
                 </Badge>
               ) : null}
             </CardContent>
@@ -324,10 +349,7 @@ export function CatalogOverviewSections({ stats }: CatalogOverviewSectionsProps)
 
                 <div className="h-2 rounded-full bg-foreground/[0.07]">
                   <div
-                    className={cn(
-                      "h-full rounded-full",
-                      item.toneClassName
-                    )}
+                    className={cn("h-full rounded-full", item.toneClassName)}
                     style={{ width: `${item.progressValue}%` }}
                   />
                 </div>
@@ -417,7 +439,7 @@ export function CatalogOverviewSections({ stats }: CatalogOverviewSectionsProps)
                         </CardDescription>
                       </div>
 
-                      <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-foreground/[0.06] text-foreground">
+                      <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-foreground/6 text-foreground">
                         <Icon className="h-5 w-5" />
                       </span>
                     </div>

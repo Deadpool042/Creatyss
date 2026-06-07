@@ -1,4 +1,7 @@
-import { SectionIntro } from "@/components/shared/display";
+import {
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
 
 type OrderDetailBillingAddressCardProps = Readonly<{
   billing: {
@@ -15,15 +18,15 @@ type OrderDetailBillingAddressCardProps = Readonly<{
 
 export function OrderDetailBillingAddressCard({ billing }: OrderDetailBillingAddressCardProps) {
   return (
-    <article className="grid gap-3 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
-      <SectionIntro className="grid gap-2" eyebrow="Facturation" title="Adresse de facturation" />
+    <AdminSplitDetailSectionCard tone="secondary">
+      <AdminSplitDetailSectionHeader eyebrow="Facturation" title="Adresse de facturation" />
 
       {billing.sameAsShipping ? (
-        <p className="rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+        <p className="rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
           Identique à l&apos;adresse de livraison.
         </p>
       ) : (
-        <div className="grid gap-1 rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+        <div className="grid gap-1 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
           {billing.fullName ? (
             <p className="card-copy text-sm leading-6 text-foreground">{billing.fullName}</p>
           ) : null}
@@ -48,6 +51,6 @@ export function OrderDetailBillingAddressCard({ billing }: OrderDetailBillingAdd
           ) : null}
         </div>
       )}
-    </article>
+    </AdminSplitDetailSectionCard>
   );
 }

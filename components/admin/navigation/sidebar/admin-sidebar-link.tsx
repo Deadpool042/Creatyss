@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 
 import { isAdminNavigationItemActive } from "@/components/admin/navigation";
-import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import {
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
 import {
@@ -20,6 +24,7 @@ type AdminSidebarLinkProps = {
   children: ReactNode;
   exact?: boolean;
   iconContent?: ReactNode;
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 };
 
 export function AdminSidebarLink({
@@ -28,9 +33,19 @@ export function AdminSidebarLink({
   children,
   exact = false,
   iconContent,
+  onClick,
 }: AdminSidebarLinkProps) {
   const pathname = usePathname();
+  const { isMobile, setOpenMobile } = useSidebar();
   const isActive = isAdminNavigationItemActive(pathname, href, exact);
+
+  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
+    onClick?.(event);
+
+    if (!event.defaultPrevented && isMobile) {
+      setOpenMobile(false);
+    }
+  }
 
   return (
     <SidebarMenuItem>
@@ -40,7 +55,7 @@ export function AdminSidebarLink({
         isActive={isActive}
         className={ADMIN_SIDEBAR_ITEM_CLASSNAME}
       >
-        <Link href={href}>
+        <Link href={href} onClick={handleClick}>
           {iconContent ? (
             <span
               className={cn(

@@ -1,4 +1,7 @@
-import { SectionIntro } from "@/components/shared/display";
+import {
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
 
 type OrderDetailShippingAddressCardProps = Readonly<{
   address: {
@@ -12,9 +15,9 @@ type OrderDetailShippingAddressCardProps = Readonly<{
 
 export function OrderDetailShippingAddressCard({ address }: OrderDetailShippingAddressCardProps) {
   return (
-    <article className="grid gap-3 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
-      <SectionIntro className="grid gap-2" eyebrow="Livraison" title="Adresse de livraison" />
-      <div className="grid gap-1 text-sm leading-6 text-foreground">
+    <AdminSplitDetailSectionCard tone="secondary">
+      <AdminSplitDetailSectionHeader eyebrow="Livraison" title="Adresse de livraison" />
+      <div className="grid gap-1 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
         <p>{address.line1}</p>
         {address.line2 ? <p>{address.line2}</p> : null}
         <p>
@@ -22,6 +25,6 @@ export function OrderDetailShippingAddressCard({ address }: OrderDetailShippingA
         </p>
         <p className="text-text-muted-strong">{address.countryCode}</p>
       </div>
-    </article>
+    </AdminSplitDetailSectionCard>
   );
 }

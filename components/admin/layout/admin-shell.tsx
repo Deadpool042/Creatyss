@@ -33,12 +33,12 @@ export function AdminShell({
           on tablet (768–1023px), where the desktop sidebar is hidden (lg:block). */}
       <SidebarProvider
         mobileBreakpoint={ADMIN_SIDEBAR_MOBILE_BREAKPOINT}
-        className="min-h-svh overflow-visible bg-[radial-gradient(circle_at_top,color-mix(in_srgb,var(--shell-surface)_82%,white)_0%,color-mix(in_srgb,var(--shell-surface)_34%,var(--page-background))_36%,var(--page-background)_100%)] text-page-foreground supports-[height:100dvh]:min-h-dvh lg:h-svh lg:min-h-0 lg:overflow-hidden lg:supports-[height:100dvh]:h-dvh"
+        className="admin-shell-root min-h-svh overflow-visible bg-[radial-gradient(circle_at_top,color-mix(in_srgb,var(--shell-surface)_82%,white)_0%,color-mix(in_srgb,var(--shell-surface)_34%,var(--page-background))_36%,var(--page-background)_100%)] text-page-foreground supports-[height:100dvh]:min-h-dvh lg:h-svh lg:min-h-0 lg:overflow-hidden lg:supports-[height:100dvh]:h-dvh"
       >
-        <div className="flex min-h-svh w-full flex-col overflow-visible supports-[height:100dvh]:min-h-dvh lg:h-svh lg:min-h-0 lg:overflow-hidden lg:supports-[height:100dvh]:h-dvh">
+        <div className="admin-shell-frame flex min-h-svh w-full flex-col overflow-visible supports-[height:100dvh]:min-h-dvh lg:h-svh lg:min-h-0 lg:overflow-hidden lg:supports-[height:100dvh]:h-dvh">
           <AdminTopbar displayName={displayName} email={email} />
 
-          <div className="flex min-h-0 flex-1 flex-col overflow-visible lg:flex-row lg:overflow-hidden">
+          <div className="admin-shell-body flex min-h-0 flex-1 flex-col overflow-visible lg:flex-row lg:overflow-hidden">
             <div className="hidden lg:block [@media(max-height:480px)]:hidden">
               <AdminSidebar
                 displayName={displayName}
@@ -48,7 +48,7 @@ export function AdminShell({
               />
             </div>
 
-            <SidebarInset className="relative min-h-0 min-w-0 overflow-visible bg-[linear-gradient(180deg,color-mix(in_srgb,var(--page-background)_84%,var(--shell-surface))_0%,var(--page-background)_100%)] text-page-foreground lg:overflow-hidden">
+            <SidebarInset className="admin-shell-inset relative min-h-0 min-w-0 overflow-visible bg-[linear-gradient(180deg,color-mix(in_srgb,var(--page-background)_84%,var(--shell-surface))_0%,var(--page-background)_100%)] text-page-foreground lg:overflow-hidden">
               {children}
               <div
                 aria-hidden

@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import { Badge } from "@/components/ui/badge";
 import { AdminSplitListPane } from "@/components/admin/layout/admin-split-list-pane";
+import { AdminSplitOverviewItem } from "@/components/admin/layout/admin-split-overview-item";
 import { AdminSplitListItem } from "@/components/admin/layout/admin-split-list-item";
 import { AdminPanelListControls } from "@/components/admin/layout/admin-panel-list-controls";
 import type { AdminCategoryCardItem, AdminCategoryStatus } from "@/features/admin/categories/list";
@@ -58,10 +59,14 @@ type CategoriesPanelListProps = {
 export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const overviewHref = `${ADMIN_CATEGORIES_LIST_PATH}/overview`;
 
-  const activeSlug = pathname.startsWith(`${ADMIN_CATEGORIES_LIST_PATH}/`)
-    ? pathname.slice(ADMIN_CATEGORIES_LIST_PATH.length + 1) || null
-    : null;
+  const isOverviewActive = pathname === ADMIN_CATEGORIES_LIST_PATH || pathname === overviewHref;
+  const activeSlug = isOverviewActive
+    ? "overview"
+    : pathname.startsWith(`${ADMIN_CATEGORIES_LIST_PATH}/`)
+      ? pathname.slice(ADMIN_CATEGORIES_LIST_PATH.length + 1) || null
+      : null;
 
   useRevealActiveCategoryRow({ activeSlug });
 
@@ -86,6 +91,18 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
     <AdminSplitListPane
       title="Catégories"
       resultCount={categories.length}
+      overview={
+        <AdminSplitOverviewItem
+          href={withAdminCategoryListParams(overviewHref, searchParams)}
+          active={isOverviewActive}
+          title="Vue d’ensemble"
+          meta={
+            <Badge variant="secondary" className="w-fit shrink-0 px-1.5 py-0 text-[10px]">
+              {categories.length} catégorie{categories.length > 1 ? "s" : ""}
+            </Badge>
+          }
+        />
+      }
       controls={controls}
       isEmpty={categories.length === 0}
       emptyState={<ul>{emptyState}</ul>}
@@ -95,7 +112,7 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
           const detailHref = getAdminCategoryDetailPath(category.slug);
           const isDetailActive = pathname === detailHref;
           const href = withAdminCategoryListParams(
-            isDetailActive ? ADMIN_CATEGORIES_LIST_PATH : detailHref,
+            isDetailActive ? overviewHref : detailHref,
             searchParams
           );
 
@@ -104,6 +121,7 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
               <AdminSplitListItem
                 href={href}
                 active={isDetailActive}
+                tooltipContent={category.name}
                 data-category-row={category.slug}
                 className="flex min-h-13 items-center gap-2.5 rounded-r-[1rem] rounded-l-sm"
               >

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
+import { AdminSplitListShell } from "./admin-split-list-shell";
 
 type AdminSplitListPaneProps = Readonly<{
   /** Titre court affiché dans le header compact */
@@ -11,6 +11,8 @@ type AdminSplitListPaneProps = Readonly<{
   resultLabel?: string;
   /** Zone de contrôles (AdminPanelListControls ou autre) */
   controls?: ReactNode;
+  /** Vue d'ensemble canonique affichée sous le header compact */
+  overview?: ReactNode;
   /** Items de liste — contenu feature-local */
   children: ReactNode;
   /** Passer true quand la liste est vide */
@@ -31,6 +33,7 @@ export function AdminSplitListPane({
   resultCount,
   resultLabel,
   controls,
+  overview,
   children,
   isEmpty = false,
   emptyState,
@@ -39,14 +42,17 @@ export function AdminSplitListPane({
   const resolvedResultLabel = formatResultLabel(resultCount, resultLabel);
 
   return (
-    <section className={cn("flex min-h-0 flex-1 flex-col ", className)}>
-      <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain">
-        <header className="sticky top-0 z-10 pb-2.5 pt-0">
+    <AdminSplitListShell
+      {...(className !== undefined ? { className } : {})}
+      scrollClassName="overflow-x-hidden overflow-y-auto"
+      contentClassName="flex min-h-full min-w-0 flex-col safe-px-layout space-y-4 pt-2"
+      header={
+        <header className="relative z-10 h-fit py-1">
           <div
             aria-hidden
-            className="absolute inset-y-0 -left-4 -right-4 border-b border-surface-border/70 bg-shell-surface/90 supports-backdrop-filter:bg-shell-surface/78 supports-backdrop-filter:backdrop-blur-xl md:-left-5 md:-right-5 lg:-left-6 lg:-right-6"
+            className="pointer-events-none absolute inset-0 border-b border-surface-border/70 bg-shell-surface/90 supports-backdrop-filter:bg-shell-surface/78 supports-backdrop-filter:backdrop-blur-xl"
           />
-          <div className="relative pt-0">
+          <div className="relative safe-px-layout pt-0">
             <div className="mb-2 flex items-center justify-between gap-3">
               <h2 className="truncate text-sm font-semibold tracking-tight text-foreground">
                 {title}
@@ -60,9 +66,11 @@ export function AdminSplitListPane({
             {controls !== undefined ? <div>{controls}</div> : null}
           </div>
         </header>
+      }
+    >
+      {overview !== undefined ? <div className="pb-2.5">{overview}</div> : null}
 
-        <div className="-mt-px">{isEmpty && emptyState !== undefined ? emptyState : children}</div>
-      </div>
-    </section>
+      <div className="-mt-px">{isEmpty && emptyState !== undefined ? emptyState : children}</div>
+    </AdminSplitListShell>
   );
 }

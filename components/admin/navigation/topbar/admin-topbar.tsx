@@ -32,7 +32,7 @@ export function AdminTopbar({ displayName, email }: AdminTopbarProps): JSX.Eleme
   return (
     <header
       className={[
-        "site-header-blur sticky top-0 z-40 shrink-0",
+        "site-header-blur z-40 shrink-0",
         "border-b border-shell-border/40",
         "admin-topbar-height",
       ].join(" ")}

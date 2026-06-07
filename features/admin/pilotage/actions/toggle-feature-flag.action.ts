@@ -2,6 +2,7 @@
 
 import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { findFeatureCatalogEntry } from "@/features/admin/pilotage/catalog";
 
 export type ToggleFeatureFlagResult =
   | { ok: true; newStatus: string }
@@ -12,11 +13,21 @@ export async function toggleFeatureFlagAction(flagId: string): Promise<ToggleFea
 
   const flag = await db.featureFlag.findUnique({
     where: { id: flagId },
-    select: { id: true, status: true, archivedAt: true },
+    select: { id: true, code: true, status: true, archivedAt: true },
   });
 
   if (!flag || flag.archivedAt) {
     return { ok: false, error: "Feature flag introuvable." };
+  }
+
+  const catalogEntry = findFeatureCatalogEntry(flag.code);
+
+  if (!catalogEntry) {
+    return { ok: false, error: "Cette fonctionnalité n'est pas référencée dans le catalogue." };
+  }
+
+  if (catalogEntry.mutability !== "toggleable") {
+    return { ok: false, error: "Cette fonctionnalité ne peut pas être activée/désactivée manuellement." };
   }
 
   // DRAFT/INACTIVE → ACTIVE, ACTIVE → INACTIVE

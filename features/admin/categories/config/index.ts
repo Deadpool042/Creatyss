@@ -40,3 +40,4 @@ export {
   CATEGORY_STATUS_LABELS,
   CATEGORY_STATUS_OPTIONS,
 } from "./category-list.config";
+export { CATEGORY_LAYOUT_CONFIG } from "./category-layout.config";

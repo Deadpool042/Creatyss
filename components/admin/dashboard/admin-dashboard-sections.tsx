@@ -142,7 +142,8 @@ function buildReadinessTracks(stats: AdminDashboardStats): ReadonlyArray<AdminRe
     },
     {
       title: "Commerce",
-      detail: "Commandes présentes. Les vues de pilotage et les automatismes restent à approfondir.",
+      detail:
+        "Commandes présentes. Les vues de pilotage et les automatismes restent à approfondir.",
       progressLabel: commerceMomentum,
       progressWidthClassName: stats.ordersCount > 0 ? "w-[49%]" : "w-[37%]",
       toneClassName: "bg-sky-500",
@@ -200,7 +201,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               <span className="inline-flex items-center rounded-full border border-shell-border/70 bg-surface-subtle px-2.5 py-1 text-[10px] font-semibold tracking-[0.24em] text-text-muted-strong uppercase">
                 Tableau de bord
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-foreground/[0.06] px-2.5 py-1 text-[11px] text-text-muted-strong">
+              <span className="inline-flex items-center gap-1 rounded-full bg-foreground/6 px-2.5 py-1 text-[11px] text-text-muted-strong">
                 <Sparkles className="h-3.5 w-3.5" />
                 Vue pilotage
               </span>
@@ -212,8 +213,8 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               </CardTitle>
               <CardDescription className="max-w-2xl text-base leading-7 text-text-muted-strong">
                 Certaines briques restent en construction. Cette vue assume donc un mélange de
-                signaux réels et de repères mockés pour garder un cap lisible sans attendre que
-                tout le back-office soit terminé.
+                signaux réels et de repères mockés pour garder un cap lisible sans attendre que tout
+                le back-office soit terminé.
               </CardDescription>
             </div>
           </CardHeader>
@@ -357,7 +358,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
           </CardHeader>
 
           <CardContent className="space-y-3 pt-5">
-            <div className="flex items-start gap-3 rounded-xl border border-amber-500/20 bg-amber-500/[0.08] p-4">
+            <div className="flex items-start gap-3 rounded-xl border border-amber-500/20 bg-amber-500/8 p-4">
               <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-300" />
               <div className="space-y-1">
                 <p className="text-sm font-medium text-foreground">Métriques business simulées</p>
@@ -368,7 +369,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-xl border border-sky-500/20 bg-sky-500/[0.08] p-4">
+            <div className="flex items-start gap-3 rounded-xl border border-sky-500/20 bg-sky-500/8 p-4">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-sky-600 dark:text-sky-300" />
               <div className="space-y-1">
                 <p className="text-sm font-medium text-foreground">Base admin stable</p>
@@ -430,7 +431,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
                         </CardDescription>
                       </div>
 
-                      <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-foreground/[0.06] text-foreground">
+                      <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-foreground/6 text-foreground">
                         <Icon className="h-5 w-5" />
                       </span>
                     </div>
@@ -448,7 +449,6 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
           })}
         </div>
       </section>
-
     </div>
   );
 }

@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { TagIcon } from "lucide-react";
 
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminOverviewHero } from "@/components/admin/layout/admin-overview-hero";
+import {
+  AdminSplitDetailOverviewCard,
+  AdminSplitDetailOverviewEmptyState,
+  AdminSplitDetailOverviewGrid,
+  AdminSplitDetailOverviewSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
+import { AdminSplitDetailOverviewShell } from "@/components/admin/layout/admin-split-detail-overview-shell";
 import { Button } from "@/components/ui/button";
 import {
   ADMIN_CATEGORIES_NEW_PATH,
@@ -35,65 +42,62 @@ export async function CategoryDetailOverview() {
     .slice(0, 5);
 
   return (
-    <AdminPageShell
-      scrollMode="area"
+    <AdminSplitDetailOverviewShell
       title={OVERVIEW_TITLE}
-      contentPreset="full-width"
-      contentClassName="space-y-5"
-      header={
-        <div className="hidden px-4 pt-1 md:px-5 lg:flex lg:flex-col lg:items-center lg:justify-center lg:gap-3 lg:px-6 lg:pb-1">
-          <div className="flex size-11 items-center justify-center rounded-2xl border border-surface-border bg-surface-panel shadow-sm backdrop-blur-xl">
-            <TagIcon className="size-5 text-muted-foreground" />
-          </div>
-          <div className="text-center">
-            <h1 className="text-[1.45rem] font-semibold tracking-tight text-foreground">
-              {OVERVIEW_TITLE}
-            </h1>
-            <p className="mt-1 text-sm leading-5 text-muted-foreground">{OVERVIEW_DESCRIPTION}</p>
-          </div>
-        </div>
-      }
-    >
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {[
-          { label: "Total", value: items.length, tone: "bg-surface-panel" },
-          { label: "Publiées", value: activeCount, tone: "bg-surface-panel-soft" },
-          { label: "Mises en avant", value: featuredCount, tone: "bg-surface-panel-soft" },
-          { label: "Produits reliés", value: totalProducts, tone: "bg-surface-panel-soft" },
-        ].map((stat) => (
-          <div
-            key={stat.label}
-            className={`rounded-2xl border border-surface-border ${stat.tone} px-4 py-4 shadow-sm backdrop-blur-xl`}
-          >
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              {stat.label}
-            </p>
-            <p className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
-              {stat.value}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.8fr)]">
-        <section className="rounded-2xl border border-surface-border bg-surface-panel p-5 shadow-card backdrop-blur-xl">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
-                Priorités
-              </p>
-              <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground">
-                Catégories à fort impact
-              </h2>
-              <p className="mt-1 text-sm leading-5 text-muted-foreground">
-                Ouvrez directement les catégories qui concentrent le plus de produits ou de
-                sous-catégories.
-              </p>
-            </div>
+      hero={
+        <AdminOverviewHero
+          mobileHidden
+          align="leading"
+          eyebrow="Catalogue"
+          icon={TagIcon}
+          title={OVERVIEW_TITLE}
+          description={OVERVIEW_DESCRIPTION}
+          action={
             <Button asChild size="sm" className="rounded-full">
               <Link href={ADMIN_CATEGORIES_NEW_PATH}>Nouvelle catégorie</Link>
             </Button>
-          </div>
+          }
+          metrics={[
+            {
+              label: "Total",
+              value: items.length,
+              hint: "Catégories disponibles dans le catalogue.",
+              toneClassName: "bg-surface-panel",
+            },
+            {
+              label: "Publiées",
+              value: activeCount,
+              hint: "Catégories visibles côté boutique.",
+              toneClassName: "bg-surface-panel-soft",
+            },
+            {
+              label: "Mises en avant",
+              value: featuredCount,
+              hint: "Catégories clés pour la navigation.",
+              toneClassName: "bg-surface-panel-soft",
+            },
+            {
+              label: "Produits reliés",
+              value: totalProducts,
+              hint: "Volume total d’assignations produit.",
+              toneClassName: "bg-surface-panel-soft",
+            },
+          ]}
+        />
+      }
+    >
+      <AdminSplitDetailOverviewGrid className="xl:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.8fr)]">
+        <AdminSplitDetailOverviewCard>
+          <AdminSplitDetailOverviewSectionHeader
+            eyebrow="Priorités"
+            title="Catégories à fort impact"
+            description="Ouvrez directement les catégories qui concentrent le plus de produits ou de sous-catégories."
+            action={
+              <Button asChild size="sm" className="rounded-full">
+                <Link href={ADMIN_CATEGORIES_NEW_PATH}>Nouvelle catégorie</Link>
+              </Button>
+            }
+          />
 
           {topCategories.length > 0 ? (
             <div className="mt-5 space-y-2">
@@ -121,22 +125,15 @@ export async function CategoryDetailOverview() {
               ))}
             </div>
           ) : (
-            <div className="mt-5 rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-5 py-8 text-center">
-              <p className="text-sm font-medium text-foreground">Aucune catégorie pour le moment</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Créez une première catégorie pour structurer le catalogue.
-              </p>
-            </div>
+            <AdminSplitDetailOverviewEmptyState
+              title="Aucune catégorie pour le moment"
+              description="Créez une première catégorie pour structurer le catalogue."
+            />
           )}
-        </section>
+        </AdminSplitDetailOverviewCard>
 
-        <section className="rounded-2xl border border-surface-border bg-surface-panel-soft p-5 shadow-sm backdrop-blur-xl">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/80">
-            Conseils
-          </p>
-          <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground">
-            Pour démarrer vite
-          </h2>
+        <AdminSplitDetailOverviewCard tone="secondary">
+          <AdminSplitDetailOverviewSectionHeader eyebrow="Conseils" title="Pour démarrer vite" />
           <div className="mt-4 space-y-3 text-sm leading-6 text-muted-foreground">
             <p>Regroupez d'abord les catégories qui portent vraiment la navigation boutique.</p>
             <p>
@@ -144,8 +141,8 @@ export async function CategoryDetailOverview() {
             </p>
             <p>Ajoutez un visuel uniquement quand il aide à reconnaître plus vite la catégorie.</p>
           </div>
-        </section>
-      </div>
-    </AdminPageShell>
+        </AdminSplitDetailOverviewCard>
+      </AdminSplitDetailOverviewGrid>
+    </AdminSplitDetailOverviewShell>
   );
 }

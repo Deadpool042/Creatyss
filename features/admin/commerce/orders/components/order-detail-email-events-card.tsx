@@ -1,5 +1,9 @@
 import type { AdminOrderDetail } from "@/features/admin/commerce/orders/types/order-detail-types";
-import { SectionIntro } from "@/components/shared/display";
+import {
+  AdminSplitDetailFact,
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
 import {
   formatOrderDateTime,
   getEmailEventLabel,
@@ -13,9 +17,8 @@ type OrderDetailEmailEventsCardProps = Readonly<{
 
 export function OrderDetailEmailEventsCard({ emailEvents }: OrderDetailEmailEventsCardProps) {
   return (
-    <article className="grid gap-4 rounded-xl border border-surface-border bg-surface-panel p-5 text-foreground shadow-card">
-      <SectionIntro
-        className="grid gap-2"
+    <AdminSplitDetailSectionCard tone="secondary">
+      <AdminSplitDetailSectionHeader
         eyebrow="Emails transactionnels"
         title="Trace minimale"
         description="Le message principal reste opératoire. Le détail technique n'apparaît qu'en second niveau."
@@ -33,36 +36,19 @@ export function OrderDetailEmailEventsCard({ emailEvents }: OrderDetailEmailEven
 
               return (
                 <article
-                  className="grid gap-3 rounded-lg border border-surface-border-subtle bg-surface-panel-soft p-4"
+                  className="grid gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-4"
                   key={emailEvent.id}
                 >
                   <div className="grid gap-3 sm:grid-cols-3">
-                    <div className="grid gap-1">
-                      <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">
-                        Événement
-                      </p>
-                      <p className="card-copy leading-snug font-medium text-foreground">
-                        {getEmailEventLabel(emailEvent.eventType)}
-                      </p>
-                    </div>
-
-                    <div className="grid gap-1">
-                      <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">
-                        Statut
-                      </p>
-                      <p className="card-copy leading-snug font-medium text-foreground">
-                        {getEmailEventStatusLabel(emailEvent.status)}
-                      </p>
-                    </div>
-
-                    <div className="grid gap-1">
-                      <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">
-                        Destinataire
-                      </p>
-                      <p className="card-copy leading-snug font-medium text-foreground">
-                        {emailEvent.recipientEmail}
-                      </p>
-                    </div>
+                    <AdminSplitDetailFact
+                      label="Événement"
+                      value={getEmailEventLabel(emailEvent.eventType)}
+                    />
+                    <AdminSplitDetailFact
+                      label="Statut"
+                      value={getEmailEventStatusLabel(emailEvent.status)}
+                    />
+                    <AdminSplitDetailFact label="Destinataire" value={emailEvent.recipientEmail} />
                   </div>
 
                   {emailEvent.sentAt ? (
@@ -72,7 +58,7 @@ export function OrderDetailEmailEventsCard({ emailEvents }: OrderDetailEmailEven
                   ) : null}
 
                   {failurePresentation ? (
-                    <div className="grid gap-2 rounded-lg border border-surface-border bg-surface-panel p-3">
+                    <div className="grid gap-2 rounded-xl border border-surface-border bg-surface-panel p-3">
                       <div className="grid gap-1">
                         <p className="card-copy leading-snug font-medium text-foreground">
                           {failurePresentation.title}
@@ -104,6 +90,6 @@ export function OrderDetailEmailEventsCard({ emailEvents }: OrderDetailEmailEven
           )}
         </div>
       )}
-    </article>
+    </AdminSplitDetailSectionCard>
   );
 }
