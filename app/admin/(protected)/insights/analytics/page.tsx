@@ -1,7 +1,13 @@
+import { notFound } from "next/navigation";
+
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AnalyticsOverviewSections } from "@/features/admin/insights/components/analytics-overview-sections";
+import { isAnalyticsFeatureActive } from "@/features/admin/insights/queries/is-analytics-feature-active.query";
 
-export default function AdminInsightsAnalyticsPage() {
+export default async function AdminInsightsAnalyticsPage() {
+  const featureActive = await isAnalyticsFeatureActive();
+  if (!featureActive) notFound();
+
   return (
     <AdminPageShell
       scrollMode="area"

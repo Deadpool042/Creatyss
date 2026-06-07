@@ -1,5 +1,6 @@
 import { Key, ShieldOff } from "lucide-react";
 
+import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,8 @@ const STATUS_CONFIG: Record<AdminApiClientSummary["status"], { label: string; ba
 };
 
 export default async function AdminSettingsApiClientsPage() {
+  await requireAuthenticatedAdmin();
+
   let clients: AdminApiClientSummary[] = [];
 
   try {
