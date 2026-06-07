@@ -14,6 +14,7 @@ import {
   HomepageSavoirFaireSection,
 } from "@/features/homepage";
 import { getAdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
+import { getSeoRobotsFlags } from "@/entities/seo";
 
 const FALLBACK_TITLE = "Creatyss — Artisan créateur";
 const FALLBACK_DESCRIPTION =
@@ -27,9 +28,13 @@ export async function generateMetadata(): Promise<Metadata> {
     // DB non disponible — fallback aux valeurs statiques
   }
 
+  const robots = getSeoRobotsFlags(seo?.indexingMode);
+
   return {
     title: seo?.metaTitle ?? FALLBACK_TITLE,
     description: seo?.metaDescription ?? FALLBACK_DESCRIPTION,
+    keywords: seo?.metaKeywords ?? undefined,
+    ...(robots !== undefined && { robots }),
     openGraph: {
       title: seo?.openGraphTitle ?? seo?.metaTitle ?? FALLBACK_TITLE,
       description: seo?.openGraphDescription ?? seo?.metaDescription ?? FALLBACK_DESCRIPTION,
