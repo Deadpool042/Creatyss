@@ -1,8 +1,13 @@
+import { notFound } from "next/navigation";
+
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
+import { isAutomationsFeatureActive } from "@/features/admin/marketing/queries/is-automations-feature-active.query";
 import { Zap } from "lucide-react";
 
-export default function AdminMarketingAutomationsPage() {
+export default async function AdminMarketingAutomationsPage() {
+  const featureActive = await isAutomationsFeatureActive();
+  if (!featureActive) notFound();
   return (
     <AdminPageShell
       scrollMode="area"

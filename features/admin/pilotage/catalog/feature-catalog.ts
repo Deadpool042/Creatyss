@@ -167,6 +167,16 @@ export const FEATURE_CATALOG = [
     scopes: ["store"],
     levels: FEATURE_LEVELS.analytics,
   },
+  {
+    key: "engagement.automations",
+    label: "Automations marketing",
+    description: "Flux automatisés déclenchés par les événements boutique : panier abandonné, relance post-achat, bienvenue abonné.",
+    family: "optional",
+    module: "engagement",
+    defaultState: "inactive",
+    mutability: "toggleable",
+    scopes: ["store"],
+  },
   // Catalog products — core capabilities
   {
     key: "catalog.products.pricing",
