@@ -59,7 +59,7 @@ function getErrorMessage(errorCode: string | undefined): string | null {
     case "file_too_large":
       return "Le fichier dépasse la limite de 10 MB.";
     case "unsupported_file":
-      return "Seules les images JPEG, PNG et WebP sont acceptées.";
+      return "Seules les images JPEG, PNG, WebP et AVIF sont acceptées.";
     case "write_failed":
       return "Le fichier n'a pas pu être enregistré localement.";
     case "database_insert_failed":
@@ -146,7 +146,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
 
         <div id="admin-media-upload" className="shrink-0 scroll-mt-24">
           <AdminFormSection
-            description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP. Taille maximale : 10 MB."
+            description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP, AVIF. Taille maximale : 10 MB."
             eyebrow="Import"
             title="Importer une image"
           >
@@ -162,7 +162,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                   required
                 >
                   <Input
-                    accept="image/jpeg,image/png,image/webp"
+                    accept="image/jpeg,image/png,image/webp,image/avif"
                     className="h-11 rounded-2xl border-surface-border bg-card px-3 shadow-none file:mr-3 file:rounded-full file:border file:border-surface-border file:bg-surface-panel file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-foreground"
                     id="media-file"
                     name="file"
@@ -178,7 +178,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
                     Réutilisable ensuite dans les produits, catégories, articles et sections
                     éditoriales.
                   </p>
-                  <p>Import limité à 10 MB, avec prise en charge des fichiers JPEG, PNG et WebP.</p>
+                  <p>Import limité à 10 MB, avec prise en charge des fichiers JPEG, PNG, WebP et AVIF.</p>
                 </div>
 
                 <AdminFormActions className="sm:justify-end lg:justify-start">

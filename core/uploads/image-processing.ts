@@ -10,7 +10,14 @@ export type ProcessedImageResult = {
   size: number;
 };
 
-const ACCEPTED_IMAGE_MIME_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/avif"]);
+export const MAX_IMAGE_FILE_SIZE_BYTES = 10 * 1024 * 1024;
+
+export const ACCEPTED_IMAGE_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/avif",
+]);
 
 export function isSupportedImageMimeType(value: string): boolean {
   return ACCEPTED_IMAGE_MIME_TYPES.has(value);

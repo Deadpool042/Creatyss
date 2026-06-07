@@ -3,13 +3,16 @@ import { unlink } from "node:fs/promises";
 import { MediaAssetKind, MediaAssetStatus } from "@/prisma-generated/client";
 
 import { db } from "@/core/db";
-import { buildStorageKeyFromPublicUrl, ensureUploadsDirectory, saveUploadedImage } from "@/core/uploads";
+import {
+  ACCEPTED_IMAGE_MIME_TYPES,
+  buildStorageKeyFromPublicUrl,
+  ensureUploadsDirectory,
+  MAX_IMAGE_FILE_SIZE_BYTES,
+  saveUploadedImage,
+} from "@/core/uploads";
 import { buildAdminMediaUploadRelativeDirectory } from "@/features/admin/media/helpers/build-admin-media-upload-relative-directory";
 import { mapAdminMediaListItem } from "@/features/admin/media/mappers/map-admin-media-list-item";
 import type { AdminMediaListItem } from "@/features/admin/media/types/admin-media-list-item.types";
-
-const MAX_MEDIA_FILE_SIZE_BYTES = 10 * 1024 * 1024;
-const ALLOWED_MEDIA_MIME_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 type UploadAdminMediaInput = {
   file: FormDataEntryValue | null;
@@ -71,14 +74,14 @@ export async function uploadAdminMedia(
     throw new MediaUploadError("empty_file", "The uploaded file is empty.");
   }
 
-  if (input.file.size > MAX_MEDIA_FILE_SIZE_BYTES) {
+  if (input.file.size > MAX_IMAGE_FILE_SIZE_BYTES) {
     throw new MediaUploadError("file_too_large", "The uploaded file exceeds the 10 MB limit.");
   }
 
-  if (!ALLOWED_MEDIA_MIME_TYPES.has(input.file.type)) {
+  if (!ACCEPTED_IMAGE_MIME_TYPES.has(input.file.type)) {
     throw new MediaUploadError(
       "unsupported_file",
-      "Only JPEG, PNG, and WebP images are supported."
+      "Only JPEG, PNG, WebP, and AVIF images are supported."
     );
   }
 

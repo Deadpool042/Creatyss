@@ -20,6 +20,11 @@ export {
   buildProductUploadRelativeDirectory,
   buildStorageKeyFromPublicUrl,
 } from "./paths";
-export { isSupportedImageMimeType, processImageToWebp } from "./image-processing";
+export {
+  ACCEPTED_IMAGE_MIME_TYPES,
+  isSupportedImageMimeType,
+  MAX_IMAGE_FILE_SIZE_BYTES,
+  processImageToWebp,
+} from "./image-processing";
 export { saveUploadedImage } from "./save-image";
 export type { SavedImageResult } from "./save-image";

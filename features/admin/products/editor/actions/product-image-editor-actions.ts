@@ -24,7 +24,7 @@ import {
   type UploadProductImagesFormState,
 } from "../types";
 import { uploadProductImagesSchema } from "../schemas";
-import { isSupportedImageMimeType } from "@/core/uploads";
+import { isSupportedImageMimeType, MAX_IMAGE_FILE_SIZE_BYTES } from "@/core/uploads";
 
 // ---------------------------------------------------------------------------
 // attachProductImagesAction
@@ -191,8 +191,6 @@ export async function updateProductImageAltTextAction(
 // uploadProductImagesAction
 // ---------------------------------------------------------------------------
 
-const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
-
 function isFile(value: FormDataEntryValue): value is File {
   return typeof File !== "undefined" && value instanceof File;
 }
@@ -225,7 +223,7 @@ export async function uploadProductImagesAction(
     if (!isFile(entry)) continue;
     if (entry.size <= 0) continue;
 
-    if (entry.size > MAX_FILE_SIZE_BYTES) {
+    if (entry.size > MAX_IMAGE_FILE_SIZE_BYTES) {
       return {
         status: "error",
         message: null,
