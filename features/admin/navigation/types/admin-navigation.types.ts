@@ -33,6 +33,7 @@ export type AdminNavigationIconKey =
   | "key"
   | "link"
   | "shield"
+  | "sliders"
   | "tag"
   | "telescope";
 

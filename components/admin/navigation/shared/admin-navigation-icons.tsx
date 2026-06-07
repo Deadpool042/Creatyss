@@ -20,6 +20,7 @@ import {
   Settings,
   Shield,
   ShoppingCart,
+  Sliders,
   Tag,
   Telescope,
   Truck,
@@ -75,6 +76,8 @@ export function renderAdminNavigationIcon(
       return <Settings {...props} />;
     case "shield":
       return <Shield {...props} />;
+    case "sliders":
+      return <Sliders {...props} />;
     case "shoppingCart":
       return <ShoppingCart {...props} />;
     case "tag":

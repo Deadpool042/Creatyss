@@ -401,86 +401,37 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   },
 
   {
-    key: "general-settings",
-    label: "Réglages généraux",
-    href: "/admin/settings/general",
+    key: "settings-overview",
+    label: "Vue d'ensemble",
+    href: "/admin/settings",
     iconKey: "settings",
     group: "settings",
     order: 10,
+    exact: true,
     visibility: {
       sidebar: true,
       mobileMore: true,
     },
   },
   {
-    key: "team-settings",
-    label: "Équipe",
-    href: "/admin/settings/team",
-    iconKey: "users",
-    group: "settings",
-    order: 15,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.teamRead],
-    },
-  },
-  {
-    key: "payment-settings",
-    label: "Réglages de paiement",
-    href: "/admin/settings/payments",
-    iconKey: "creditCard",
+    key: "store-settings",
+    label: "Boutique",
+    href: "/admin/settings/store",
+    iconKey: "house",
     group: "settings",
     order: 20,
     visibility: {
       sidebar: true,
       mobileMore: true,
     },
-    access: {
-      featureFlagsAll: [adminNavigationFeatureFlags.commerce.payments],
-      capabilitiesAll: [adminNavigationCapabilities.settings.paymentsRead],
-    },
-  },
-  {
-    key: "shipping-settings",
-    label: "Réglages de livraison",
-    href: "/admin/settings/shipping",
-    iconKey: "truck",
-    group: "settings",
-    order: 30,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-    access: {
-      featureFlagsAll: [adminNavigationFeatureFlags.commerce.shipping],
-      capabilitiesAll: [adminNavigationCapabilities.settings.shippingRead],
-    },
-  },
-  {
-    key: "orders-settings",
-    label: "Réglages des commandes",
-    href: "/admin/settings/orders",
-    iconKey: "shoppingCart",
-    group: "settings",
-    order: 35,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.ordersRead],
-    },
   },
   {
     key: "catalog-settings",
-    label: "Réglages du catalogue",
+    label: "Catalogue",
     href: "/admin/settings/catalog",
     iconKey: "package",
     group: "settings",
-    order: 37,
+    order: 30,
     visibility: {
       sidebar: true,
       mobileMore: true,
@@ -490,54 +441,12 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     },
   },
   {
-    key: "media-settings",
-    label: "Réglages des médias",
-    href: "/admin/settings/media",
-    iconKey: "imageIcon",
-    group: "settings",
-    order: 38,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.mediaRead],
-    },
-  },
-  {
-    key: "seo-settings",
-    label: "Réglages SEO",
-    href: "/admin/settings/seo",
-    iconKey: "search",
-    group: "settings",
-    order: 39,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.seoRead],
-    },
-  },
-  {
-    key: "store-settings",
-    label: "Réglages de la boutique",
-    href: "/admin/settings/store",
-    iconKey: "house",
+    key: "advanced-settings",
+    label: "Avancé",
+    href: "/admin/settings/advanced/overview",
+    iconKey: "sliders",
     group: "settings",
     order: 40,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-  },
-  {
-    key: "advanced-settings",
-    label: "Réglages avancés",
-    href: "/admin/settings/advanced/overview",
-    iconKey: "settings",
-    group: "settings",
-    order: 50,
     visibility: {
       sidebar: true,
       mobileMore: true,
@@ -545,22 +454,6 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     access: {
       internalOnly: true,
       capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
-    },
-  },
-  {
-    key: "api-clients-settings",
-    label: "Clés API",
-    href: "/admin/settings/api-clients",
-    iconKey: "key",
-    group: "settings",
-    order: 60,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-    access: {
-      internalOnly: true,
-      capabilitiesAll: [adminNavigationCapabilities.settings.apiClientsRead],
     },
   },
 ];
