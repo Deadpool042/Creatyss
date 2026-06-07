@@ -1,13 +1,8 @@
 import { z } from "zod";
 
-export const SEO_INDEXING_MODES = [
-  "INDEX_FOLLOW",
-  "INDEX_NOFOLLOW",
-  "NOINDEX_FOLLOW",
-  "NOINDEX_NOFOLLOW",
-] as const;
+import { SEO_INDEXING_MODE_VALUES, type SeoIndexingMode } from "@/entities/seo";
 
-export type SeoIndexingModeValue = (typeof SEO_INDEXING_MODES)[number];
+export type SeoIndexingModeValue = SeoIndexingMode;
 
 export const seoSettingsSchema = z.object({
   metaTitle: z.string().max(120).optional().nullable(),
@@ -17,7 +12,7 @@ export const seoSettingsSchema = z.object({
   openGraphDescription: z.string().max(320).optional().nullable(),
   twitterTitle: z.string().max(120).optional().nullable(),
   twitterDescription: z.string().max(320).optional().nullable(),
-  indexingMode: z.enum(SEO_INDEXING_MODES),
+  indexingMode: z.enum([...SEO_INDEXING_MODE_VALUES]),
   sitemapIncluded: z
     .enum(["true", "false"])
     .transform((v) => v === "true"),
