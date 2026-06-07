@@ -22,6 +22,9 @@ export {
 } from "./paths";
 export {
   ACCEPTED_IMAGE_MIME_TYPES,
+  IMAGE_MAX_DIMENSION_PX,
+  IMAGE_OUTPUT_FORMAT,
+  IMAGE_WEBP_QUALITY,
   isSupportedImageMimeType,
   MAX_IMAGE_FILE_SIZE_BYTES,
   processImageToWebp,

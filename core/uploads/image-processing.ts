@@ -11,6 +11,9 @@ export type ProcessedImageResult = {
 };
 
 export const MAX_IMAGE_FILE_SIZE_BYTES = 10 * 1024 * 1024;
+export const IMAGE_MAX_DIMENSION_PX = 2000;
+export const IMAGE_WEBP_QUALITY = 82;
+export const IMAGE_OUTPUT_FORMAT = "WebP" as const;
 
 export const ACCEPTED_IMAGE_MIME_TYPES = new Set([
   "image/jpeg",

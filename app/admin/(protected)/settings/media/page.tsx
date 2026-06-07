@@ -5,6 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { serverEnv } from "@/core/config/env/server";
 import {
   ACCEPTED_IMAGE_MIME_TYPES,
+  IMAGE_MAX_DIMENSION_PX,
+  IMAGE_OUTPUT_FORMAT,
+  IMAGE_WEBP_QUALITY,
   getUploadsPublicPath,
   MAX_IMAGE_FILE_SIZE_BYTES,
 } from "@/core/uploads";
@@ -93,8 +96,7 @@ export default async function AdminSettingsMediaPage() {
           <div className="divide-y divide-border rounded-lg border bg-card">
             <MediaInfoRow
               label="Format de sortie"
-              value="WebP"
-              // Source : core/uploads/image-processing.ts — mimeType: "image/webp"
+              value={IMAGE_OUTPUT_FORMAT}
               readOnly
             />
             <MediaInfoRow
@@ -104,16 +106,12 @@ export default async function AdminSettingsMediaPage() {
             />
             <MediaInfoRow
               label="Dimensions maximales"
-              value="2000 × 2000 px"
-              // Source : core/uploads/image-processing.ts — resize({ width: 2000, height: 2000 })
-              // Note : valeurs littérales dans processImageToWebp, pas des constantes exportées
+              value={`${IMAGE_MAX_DIMENSION_PX} × ${IMAGE_MAX_DIMENSION_PX} px`}
               readOnly
             />
             <MediaInfoRow
               label="Qualité WebP"
-              value="82"
-              // Source : core/uploads/image-processing.ts — .webp({ quality: 82 })
-              // Note : valeur littérale dans processImageToWebp, pas une constante exportée
+              value={String(IMAGE_WEBP_QUALITY)}
               readOnly
             />
             <MediaInfoRow
