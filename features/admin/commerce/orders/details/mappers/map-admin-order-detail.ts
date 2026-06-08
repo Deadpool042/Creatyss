@@ -60,6 +60,18 @@ type AdminOrderDetailSource = {
     lineTotalAmount: { toString(): string };
     productSlug: string | null;
     variantSlug: string | null;
+    product: {
+      primaryImage: {
+        publicUrl: string | null;
+        altText: string | null;
+      } | null;
+    } | null;
+    variant: {
+      primaryImage: {
+        publicUrl: string | null;
+        altText: string | null;
+      } | null;
+    } | null;
   }>;
   payments: Array<{
     id: string;
@@ -105,6 +117,11 @@ function mapAddress(address: AdminOrderDetailSource["addresses"][number]): Admin
 }
 
 function mapLine(line: AdminOrderDetailSource["lines"][number]): AdminOrderLine {
+  const thumbnailUrl =
+    line.variant?.primaryImage?.publicUrl ?? line.product?.primaryImage?.publicUrl ?? null;
+  const thumbnailAlt =
+    line.variant?.primaryImage?.altText ?? line.product?.primaryImage?.altText ?? null;
+
   return {
     id: line.id,
     productName: line.productName,
@@ -115,6 +132,8 @@ function mapLine(line: AdminOrderDetailSource["lines"][number]): AdminOrderLine 
     lineTotalAmount: normalizeMoneyString(line.lineTotalAmount.toString()),
     productSlug: line.productSlug,
     variantSlug: line.variantSlug,
+    thumbnailUrl,
+    thumbnailAlt,
   };
 }
 

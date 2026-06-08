@@ -25,6 +25,8 @@ export type AdminOrderLine = {
   lineTotalAmount: string;
   productSlug: string | null;
   variantSlug: string | null;
+  thumbnailUrl: string | null;
+  thumbnailAlt: string | null;
 };
 
 export type AdminOrderPayment = {

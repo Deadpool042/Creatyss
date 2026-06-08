@@ -35,7 +35,7 @@ export function OrderDetailShippingCard({
             : "La commande n'a pas encore été expédiée."
         }
         eyebrow="Expédition"
-        title="Suivi simple"
+        title="Suivi d'expédition"
       />
 
       <div className="flex flex-wrap gap-2">

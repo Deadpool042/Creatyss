@@ -16,6 +16,7 @@ type OrderDetailSummaryCardProps = Readonly<{
   createdAtLabel: string;
   lineCount: number;
   shipmentStatusLabel: string;
+  notes?: string | null;
 }>;
 
 export function OrderDetailSummaryCard({
@@ -27,6 +28,7 @@ export function OrderDetailSummaryCard({
   createdAtLabel,
   lineCount,
   shipmentStatusLabel,
+  notes,
 }: OrderDetailSummaryCardProps) {
   return (
     <AdminSplitDetailSectionCard>
@@ -57,6 +59,15 @@ export function OrderDetailSummaryCard({
         <AdminSplitDetailFact label="Créée le" value={createdAtLabel} />
         <AdminSplitDetailFact label="Articles" value={lineCount} />
       </div>
+
+      {notes ? (
+        <div className="rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-3">
+          <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">
+            Note
+          </p>
+          <p className="mt-1 card-copy leading-snug text-foreground">{notes}</p>
+        </div>
+      ) : null}
     </AdminSplitDetailSectionCard>
   );
 }

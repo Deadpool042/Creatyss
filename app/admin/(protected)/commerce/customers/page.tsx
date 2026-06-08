@@ -1,9 +1,11 @@
+import Link from "next/link";
 import { Mail, Package, Users } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
 import { listAdminCustomers } from "@/features/admin/customers/queries/list-admin-customers.query";
+import { ADMIN_ORDERS_LIST_PATH } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
 
 export const dynamic = "force-dynamic";
 
@@ -110,9 +112,12 @@ export default async function AdminCommerceCustomersPage() {
 
                   {/* Commandes */}
                   {customer.ordersCount > 0 ? (
-                    <span className="hidden shrink-0 text-xs text-muted-foreground sm:inline">
+                    <Link
+                      className="hidden shrink-0 text-xs text-muted-foreground hover:text-foreground hover:underline underline-offset-4 sm:inline"
+                      href={`${ADMIN_ORDERS_LIST_PATH}?search=${encodeURIComponent(customer.email)}`}
+                    >
                       {customer.ordersCount} commande{customer.ordersCount > 1 ? "s" : ""}
-                    </span>
+                    </Link>
                   ) : null}
 
                   {/* Date */}

@@ -53,13 +53,13 @@ Ne jamais supprimer un modèle Prisma uniquement parce qu'il n'a pas d'UI, n'est
 
 Classifier avant toute suppression :
 
-| Tag | Signification |
-|-----|---------------|
-| `KEEP_NOW` | Modèle actif, UI branchée |
-| `KEEP_SOON` | Modèle prévu, lot planifié |
+| Tag                 | Signification                           |
+| ------------------- | --------------------------------------- |
+| `KEEP_NOW`          | Modèle actif, UI branchée               |
+| `KEEP_SOON`         | Modèle prévu, lot planifié              |
 | `PLACEHOLDER_VALID` | Modèle documenté, pas encore implémenté |
-| `REVIEW` | Modèle non documenté, usage incertain |
-| `REMOVE_CANDIDATE` | Doublon ou orphelin confirmé |
+| `REVIEW`            | Modèle non documenté, usage incertain   |
+| `REMOVE_CANDIDATE`  | Doublon ou orphelin confirmé            |
 
 ---
 

@@ -15,6 +15,67 @@ type OrderDetailEmailEventsCardProps = Readonly<{
   emailEvents: AdminOrderDetail["emailEvents"];
 }>;
 
+type EmailEventRowProps = Readonly<{
+  emailEvent: AdminOrderDetail["emailEvents"][number];
+}>;
+
+function EmailEventRow({ emailEvent }: EmailEventRowProps) {
+  const failurePresentation = getEmailEventFailurePresentation(emailEvent);
+
+  return (
+    <article
+      className="grid gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-4"
+      key={emailEvent.id}
+    >
+      <div className="grid gap-3 sm:grid-cols-3">
+        <AdminSplitDetailFact
+          label="Événement"
+          value={getEmailEventLabel(emailEvent.eventType)}
+        />
+        <AdminSplitDetailFact
+          label="Statut"
+          value={getEmailEventStatusLabel(emailEvent.status)}
+        />
+        <AdminSplitDetailFact label="Destinataire" value={emailEvent.recipientEmail} />
+      </div>
+
+      {emailEvent.sentAt ? (
+        <p className="card-meta leading-snug text-text-muted-strong">
+          Envoyé le {formatOrderDateTime(emailEvent.sentAt)}
+        </p>
+      ) : null}
+
+      {failurePresentation ? (
+        <div className="grid gap-2 rounded-xl border border-surface-border bg-surface-panel p-3">
+          <div className="grid gap-1">
+            <p className="card-copy leading-snug font-medium text-foreground">
+              {failurePresentation.title}
+            </p>
+            <p className="card-meta leading-snug text-text-muted-strong">
+              {failurePresentation.summary}
+            </p>
+          </div>
+
+          <details className="grid gap-2">
+            <summary className="cursor-pointer text-sm font-medium text-foreground/80">
+              Détail technique
+            </summary>
+            <div className="grid gap-1 text-sm text-text-muted-strong">
+              <p>Provider : {emailEvent.provider}</p>
+              {emailEvent.providerMessageId ? (
+                <p>Référence provider : {emailEvent.providerMessageId}</p>
+              ) : null}
+              <p className="break-words">
+                Message technique : {failurePresentation.technicalDetail}
+              </p>
+            </div>
+          </details>
+        </div>
+      ) : null}
+    </article>
+  );
+}
+
 export function OrderDetailEmailEventsCard({ emailEvents }: OrderDetailEmailEventsCardProps) {
   return (
     <AdminSplitDetailSectionCard tone="secondary">
@@ -30,64 +91,9 @@ export function OrderDetailEmailEventsCard({ emailEvents }: OrderDetailEmailEven
         </p>
       ) : (
         <div className="grid gap-3">
-          {emailEvents.map((emailEvent) =>
-            (() => {
-              const failurePresentation = getEmailEventFailurePresentation(emailEvent);
-
-              return (
-                <article
-                  className="grid gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-4"
-                  key={emailEvent.id}
-                >
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    <AdminSplitDetailFact
-                      label="Événement"
-                      value={getEmailEventLabel(emailEvent.eventType)}
-                    />
-                    <AdminSplitDetailFact
-                      label="Statut"
-                      value={getEmailEventStatusLabel(emailEvent.status)}
-                    />
-                    <AdminSplitDetailFact label="Destinataire" value={emailEvent.recipientEmail} />
-                  </div>
-
-                  {emailEvent.sentAt ? (
-                    <p className="card-meta leading-snug text-text-muted-strong">
-                      Envoyé le {formatOrderDateTime(emailEvent.sentAt)}
-                    </p>
-                  ) : null}
-
-                  {failurePresentation ? (
-                    <div className="grid gap-2 rounded-xl border border-surface-border bg-surface-panel p-3">
-                      <div className="grid gap-1">
-                        <p className="card-copy leading-snug font-medium text-foreground">
-                          {failurePresentation.title}
-                        </p>
-                        <p className="card-meta leading-snug text-text-muted-strong">
-                          {failurePresentation.summary}
-                        </p>
-                      </div>
-
-                      <details className="grid gap-2">
-                        <summary className="cursor-pointer text-sm font-medium text-foreground/80">
-                          Détail technique
-                        </summary>
-                        <div className="grid gap-1 text-sm text-text-muted-strong">
-                          <p>Provider : {emailEvent.provider}</p>
-                          {emailEvent.providerMessageId ? (
-                            <p>Référence provider : {emailEvent.providerMessageId}</p>
-                          ) : null}
-                          <p className="break-words">
-                            Message technique : {failurePresentation.technicalDetail}
-                          </p>
-                        </div>
-                      </details>
-                    </div>
-                  ) : null}
-                </article>
-              );
-            })()
-          )}
+          {emailEvents.map((emailEvent) => (
+            <EmailEventRow emailEvent={emailEvent} key={emailEvent.id} />
+          ))}
         </div>
       )}
     </AdminSplitDetailSectionCard>

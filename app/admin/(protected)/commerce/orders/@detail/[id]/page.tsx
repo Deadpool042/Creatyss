@@ -69,6 +69,7 @@ export default async function OrderDetailSlotPage({
         <OrderDetailSummaryCard
           createdAtLabel={vm.orderMeta.createdAtLabel}
           lineCount={order.lines.length}
+          notes={order.notes}
           orderReference={order.reference}
           orderStatusLabel={vm.orderMeta.statusLabel}
           paymentStatusLabel={vm.orderMeta.paymentStatusLabel}
@@ -102,15 +103,18 @@ export default async function OrderDetailSlotPage({
           <OrderDetailBillingAddressCard billing={vm.billing} />
         </div>
 
-        <OrderDetailLinesPanel lines={order.lines} totalAmount={order.totalAmount} />
+        <OrderDetailLinesPanel
+          lines={order.lines}
+          subtotalAmount={order.subtotalAmount}
+          shippingAmount={order.shippingAmount}
+          discountAmount={order.discountAmount}
+          taxAmount={order.taxAmount}
+          totalAmount={order.totalAmount}
+        />
       </div>
 
       <div className="admin-split-detail-pane-column">
         <OrderDetailStatusHistoryCard statusHistory={vm.statusHistory} />
-      </div>
-
-      <div className="admin-split-detail-pane-column">
-        <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
       </div>
 
       {documents !== null ? (
@@ -118,6 +122,10 @@ export default async function OrderDetailSlotPage({
           <OrderDetailDocumentsCard documents={documents} orderId={id} />
         </div>
       ) : null}
+
+      <div className="admin-split-detail-pane-column">
+        <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
+      </div>
     </AdminSplitDetailPaneShell>
   );
 }
