@@ -7,10 +7,10 @@ import {
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
 } from "@/components/admin/layout/admin-split-detail-overview-content";
-import type { AdminOrderDocumentSummary } from "@/features/admin/commerce/documents/types/admin-order-document.types";
 import {
   getDocumentTypeLabel,
   getDocumentStatusLabel,
+  type AdminOrderDocumentSummary,
 } from "@/features/admin/commerce/documents/types/admin-order-document.types";
 import { createOrderConfirmationAction } from "@/features/admin/commerce/documents/actions/create-order-confirmation-action";
 
@@ -24,9 +24,7 @@ function formatDocumentDate(date: Date): string {
   return documentDateFormatter.format(date);
 }
 
-function hasActiveOrderConfirmation(
-  documents: AdminOrderDocumentSummary[]
-): boolean {
+function hasActiveOrderConfirmation(documents: AdminOrderDocumentSummary[]): boolean {
   return documents.some(
     (doc) =>
       doc.typeCode === "ORDER_CONFIRMATION" &&
@@ -40,15 +38,12 @@ type OrderDetailDocumentsCardProps = Readonly<{
   orderId: string;
 }>;
 
-export function OrderDetailDocumentsCard({
-  documents,
-  orderId,
-}: OrderDetailDocumentsCardProps) {
+export function OrderDetailDocumentsCard({ documents, orderId }: OrderDetailDocumentsCardProps) {
   const [isPending, startTransition] = useTransition();
   const [generated, setGenerated] = useState(false);
-  const [feedback, setFeedback] = useState<
-    { type: "success" | "error"; message: string } | null
-  >(null);
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
+    null
+  );
 
   const confirmationAlreadyExists = generated || hasActiveOrderConfirmation(documents);
 
@@ -122,9 +117,7 @@ export function OrderDetailDocumentsCard({
 
       <div className="mt-3 grid gap-2">
         {confirmationAlreadyExists ? (
-          <p className="card-meta leading-snug text-text-muted-strong">
-            Confirmation déjà générée
-          </p>
+          <p className="card-meta leading-snug text-text-muted-strong">Confirmation déjà générée</p>
         ) : (
           <button
             type="button"
@@ -139,9 +132,7 @@ export function OrderDetailDocumentsCard({
         {feedback !== null ? (
           <p
             className={`card-meta leading-snug ${
-              feedback.type === "success"
-                ? "text-text-success"
-                : "text-text-alert"
+              feedback.type === "success" ? "text-text-success" : "text-text-alert"
             }`}
           >
             {feedback.message}

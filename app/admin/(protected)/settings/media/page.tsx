@@ -1,4 +1,4 @@
-import { HardDrive, Image, Library } from "lucide-react";
+import { HardDrive, Image as ImageIcon, Library } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { Badge } from "@/components/ui/badge";
@@ -36,11 +36,7 @@ export default async function AdminSettingsMediaPage() {
     <AdminPageShell
       scrollMode="area"
       title="Médias"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Réglages" },
-        { label: "Médias" },
-      ]}
+      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Médias" }]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
@@ -66,59 +62,34 @@ export default async function AdminSettingsMediaPage() {
           </div>
 
           <div className="divide-y divide-border rounded-lg border bg-card">
-            <MediaInfoRow
-              label="Type de stockage"
-              value="Système de fichiers local"
-              readOnly
-            />
+            <MediaInfoRow label="Type de stockage" value="Système de fichiers local" readOnly />
             <MediaInfoRow
               label="Répertoire effectif"
               value={uploadsDir ?? "Non configuré"}
               mono
               readOnly
             />
-            <MediaInfoRow
-              label="URL publique"
-              value={publicPath}
-              mono
-              readOnly
-            />
+            <MediaInfoRow label="URL publique" value={publicPath} mono readOnly />
           </div>
         </section>
 
         {/* Section Traitement des images */}
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <Image className="size-4 text-muted-foreground" />
+            <ImageIcon className="size-4 text-muted-foreground" />
             <h2 className="text-sm font-semibold text-foreground">Traitement des images</h2>
           </div>
 
           <div className="divide-y divide-border rounded-lg border bg-card">
-            <MediaInfoRow
-              label="Format de sortie"
-              value={IMAGE_OUTPUT_FORMAT}
-              readOnly
-            />
-            <MediaInfoRow
-              label="Taille maximale acceptée"
-              value={`${maxFileSizeMb} Mo`}
-              readOnly
-            />
+            <MediaInfoRow label="Format de sortie" value={IMAGE_OUTPUT_FORMAT} readOnly />
+            <MediaInfoRow label="Taille maximale acceptée" value={`${maxFileSizeMb} Mo`} readOnly />
             <MediaInfoRow
               label="Dimensions maximales"
               value={`${IMAGE_MAX_DIMENSION_PX} × ${IMAGE_MAX_DIMENSION_PX} px`}
               readOnly
             />
-            <MediaInfoRow
-              label="Qualité WebP"
-              value={String(IMAGE_WEBP_QUALITY)}
-              readOnly
-            />
-            <MediaInfoRow
-              label="Formats acceptés en entrée"
-              value={acceptedFormats}
-              readOnly
-            />
+            <MediaInfoRow label="Qualité WebP" value={String(IMAGE_WEBP_QUALITY)} readOnly />
+            <MediaInfoRow label="Formats acceptés en entrée" value={acceptedFormats} readOnly />
           </div>
         </section>
 
@@ -158,7 +129,10 @@ function MediaInfoRow({ label, value, mono = false, readOnly = false }: MediaInf
       <span className="text-sm text-muted-foreground">{label}</span>
       <div className="flex items-center gap-2">
         {readOnly && (
-          <Badge variant="outline" className="shrink-0 text-[10px] font-normal text-muted-foreground">
+          <Badge
+            variant="outline"
+            className="shrink-0 text-[10px] font-normal text-muted-foreground"
+          >
             Non configurable
           </Badge>
         )}
