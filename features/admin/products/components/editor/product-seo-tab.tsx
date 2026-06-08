@@ -206,20 +206,9 @@ function SeoChecklist({ items }: { items: SeoCheckItem[] }): JSX.Element {
         ? "text-amber-600 dark:text-amber-400"
         : "text-emerald-700 dark:text-emerald-400";
 
-  const borderBg =
-    errorCount > 0
-      ? "border-surface-border bg-surface-subtle/40"
-      : warnCount > 0
-        ? "border-amber-200/60 bg-amber-50/40 dark:border-amber-800/30 dark:bg-amber-950/10"
-        : "border-emerald-200 bg-emerald-50/60 dark:border-emerald-800/40 dark:bg-emerald-950/20";
-
   return (
-    <div className={["rounded-xl border px-4 py-3 text-sm", borderBg].join(" ")}>
-      <p
-        className={["mb-2.5 text-[11px] font-semibold uppercase tracking-wide", headerColor].join(
-          " "
-        )}
-      >
+    <div className="grid gap-2.5 text-sm">
+      <p className={["text-[11px] font-semibold uppercase tracking-wide", headerColor].join(" ")}>
         {headerText}
       </p>
       <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -263,8 +252,8 @@ function SeoNextSteps({ items }: { items: SeoCheckItem[] }): JSX.Element | null 
   if (actionable.length === 0) return null;
 
   return (
-    <div className="rounded-xl border border-surface-border bg-surface-panel-soft px-4 py-3">
-      <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-text-muted-strong">
+    <div className="grid gap-2">
+      <p className="text-[11px] font-semibold uppercase tracking-wide text-text-muted-strong">
         À faire en priorité
       </p>
       <ul className="grid gap-2">
