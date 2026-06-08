@@ -1,3 +1,6 @@
+"use client";
+
+import { useTransition, useState } from "react";
 import Link from "next/link";
 
 import {
@@ -9,6 +12,7 @@ import {
   getDocumentTypeLabel,
   getDocumentStatusLabel,
 } from "@/features/admin/commerce/documents/types/admin-order-document.types";
+import { createOrderConfirmationAction } from "@/features/admin/commerce/documents/actions/create-order-confirmation-action";
 
 const documentDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "2-digit",
@@ -20,6 +24,17 @@ function formatDocumentDate(date: Date): string {
   return documentDateFormatter.format(date);
 }
 
+function hasActiveOrderConfirmation(
+  documents: AdminOrderDocumentSummary[]
+): boolean {
+  return documents.some(
+    (doc) =>
+      doc.typeCode === "ORDER_CONFIRMATION" &&
+      doc.status !== "CANCELLED" &&
+      doc.status !== "ARCHIVED"
+  );
+}
+
 type OrderDetailDocumentsCardProps = Readonly<{
   documents: AdminOrderDocumentSummary[];
   orderId: string;
@@ -29,6 +44,28 @@ export function OrderDetailDocumentsCard({
   documents,
   orderId,
 }: OrderDetailDocumentsCardProps) {
+  const [isPending, startTransition] = useTransition();
+  const [feedback, setFeedback] = useState<
+    { type: "success" | "error"; message: string } | null
+  >(null);
+
+  const confirmationAlreadyExists = hasActiveOrderConfirmation(documents);
+
+  function handleGenerateConfirmation(): void {
+    setFeedback(null);
+    startTransition(async () => {
+      const result = await createOrderConfirmationAction(orderId);
+      if (result.success) {
+        setFeedback({
+          type: "success",
+          message: "Confirmation générée avec succès.",
+        });
+      } else {
+        setFeedback({ type: "error", message: result.error });
+      }
+    });
+  }
+
   return (
     <AdminSplitDetailSectionCard tone="secondary">
       <AdminSplitDetailSectionHeader
@@ -81,9 +118,38 @@ export function OrderDetailDocumentsCard({
         </ol>
       )}
 
-      <p className="mt-3 card-meta leading-snug text-text-muted-strong/70">
-        La génération de documents est bientôt disponible.
-      </p>
+      <div className="mt-3 grid gap-2">
+        {confirmationAlreadyExists ? (
+          <p className="card-meta leading-snug text-text-muted-strong">
+            Confirmation déjà générée
+          </p>
+        ) : (
+          <button
+            type="button"
+            onClick={handleGenerateConfirmation}
+            disabled={isPending}
+            className="w-fit rounded-lg border border-surface-border bg-surface-panel px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-interactive-hover disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isPending ? "Génération en cours…" : "Générer la confirmation"}
+          </button>
+        )}
+
+        {feedback !== null ? (
+          <p
+            className={`card-meta leading-snug ${
+              feedback.type === "success"
+                ? "text-text-success"
+                : "text-text-alert"
+            }`}
+          >
+            {feedback.message}
+          </p>
+        ) : null}
+
+        <p className="card-meta leading-snug text-text-muted-strong/70">
+          La génération PDF sera disponible prochainement.
+        </p>
+      </div>
     </AdminSplitDetailSectionCard>
   );
 }
