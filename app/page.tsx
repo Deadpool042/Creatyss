@@ -10,9 +10,11 @@ import {
   HomepageGuaranteesSection,
   HomepageHeroSection,
   HomepageJournalSection,
+  HomepageNewArrivalsSection,
   HomepageNewsletterSection,
   HomepageSavoirFaireSection,
 } from "@/features/homepage";
+import { listPublishedProducts } from "@/features/storefront/catalog/queries/list-published-products";
 import { getAdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
 import { getSeoRobotsFlags } from "@/entities/seo";
 
@@ -51,9 +53,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const [data, uploadsPublicPath] = await Promise.all([
+  const [data, uploadsPublicPath, rawNewArrivals] = await Promise.all([
     getStorefrontHomepage(),
     Promise.resolve(getUploadsPublicPath()),
+    listPublishedProducts({
+      searchQuery: null,
+      categorySlugs: [],
+      availabilityStatus: null,
+      minPriceCents: null,
+      maxPriceCents: null,
+      sort: "newest",
+    }),
   ]);
 
   const heroImagePath =
@@ -63,6 +73,9 @@ export default async function HomePage() {
 
   const featuredProducts = data?.featuredProducts ?? [];
   const featuredCategories = data?.featuredCategories ?? [];
+
+  const featuredProductIds = new Set(featuredProducts.map((p) => p.id));
+  const newArrivals = rawNewArrivals.filter((p) => !featuredProductIds.has(p.id)).slice(0, 4);
 
   return (
     <div className="px-4 md:px-6 xl:px-12">
@@ -76,6 +89,13 @@ export default async function HomePage() {
         {featuredProducts.length > 0 && (
           <HomepageFeaturedProductsSection
             products={featuredProducts}
+            uploadsPublicPath={uploadsPublicPath}
+          />
+        )}
+
+        {newArrivals.length > 0 && (
+          <HomepageNewArrivalsSection
+            products={newArrivals}
             uploadsPublicPath={uploadsPublicPath}
           />
         )}

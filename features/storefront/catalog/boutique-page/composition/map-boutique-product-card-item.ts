@@ -11,6 +11,15 @@ function buildImageUrl(uploadsPublicPath: string, filePath: string): string {
   return `${uploadsPublicPath}/${filePath.replace(/^\/+/, "")}`;
 }
 
+function computeDiscountLabel(price: string | null, compareAtPrice: string | null): string | null {
+  if (price === null || compareAtPrice === null) return null;
+  const priceVal = parseFloat(price);
+  const compareVal = parseFloat(compareAtPrice);
+  if (!Number.isFinite(priceVal) || !Number.isFinite(compareVal) || compareVal <= 0) return null;
+  const pct = Math.round(((compareVal - priceVal) / compareVal) * 100);
+  return pct > 0 ? `−${pct}%` : null;
+}
+
 export function mapBoutiqueProductCardItem(
   input: MapBoutiqueProductCardItemInput
 ): BoutiqueProductCardItem {
@@ -21,7 +30,7 @@ export function mapBoutiqueProductCardItem(
     price: input.product.price,
     compareAtPrice: input.product.compareAtPrice,
     promoLabel: null,
-    discountLabel: null,
+    discountLabel: computeDiscountLabel(input.product.price, input.product.compareAtPrice),
     isAvailable: input.product.isAvailable,
     isFeatured: input.product.isFeatured,
     availabilityStatus: input.product.availabilityStatus,

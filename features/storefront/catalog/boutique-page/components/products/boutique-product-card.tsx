@@ -46,7 +46,7 @@ function getProductBadge(product: BoutiquePageViewModel["products"][number]): {
 } | null {
   if (product.discountLabel) return { label: product.discountLabel, tone: "discount" };
   if (product.promoLabel) return { label: product.promoLabel, tone: "promo" };
-  if (product.isFeatured) return { label: "Nouveau", tone: "new" };
+  if (product.isFeatured) return { label: "Sélection", tone: "new" };
   return null;
 }
 
