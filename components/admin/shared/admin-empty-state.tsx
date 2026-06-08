@@ -1,3 +1,5 @@
+import type { ComponentType } from "react";
+
 import {
   Empty,
   EmptyContent,
@@ -14,6 +16,7 @@ type AdminEmptyStateProps = {
   description: string;
   className?: string;
   actionNode?: React.ReactNode;
+  icon?: ComponentType<{ className?: string }>;
 };
 
 export function AdminEmptyState({
@@ -22,12 +25,15 @@ export function AdminEmptyState({
   description,
   className,
   actionNode,
+  icon,
 }: AdminEmptyStateProps) {
+  const ResolvedIcon = icon ?? FolderXIcon;
+
   return (
     <Empty className={`${className}`}>
       <EmptyHeader className="items-start gap-1 text-left">
         <EmptyMedia variant="icon">
-          <FolderXIcon className="h-6 w-6 text-muted-foreground " />
+          <ResolvedIcon className="h-6 w-6 text-muted-foreground " />
         </EmptyMedia>
         <p className="text-xs font-medium uppercase tracking-tight text-muted-foreground">
           {eyebrow}
