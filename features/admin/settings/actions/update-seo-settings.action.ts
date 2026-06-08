@@ -2,6 +2,7 @@
 
 import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import {
   seoSettingsSchema,
   type SeoSettingsFormState,
@@ -41,21 +42,18 @@ export async function updateSeoSettingsAction(
   }
 
   try {
-    const store = await db.store.findFirst({
-      orderBy: { createdAt: "asc" },
-      select: { id: true },
-    });
+    const storeId = await getCurrentStoreId();
 
-    if (!store) {
+    if (storeId === null) {
       return { status: "error", message: "Boutique introuvable." };
     }
 
     await db.seoMetadata.upsert({
       where: {
         storeId_subjectType_subjectId: {
-          storeId: store.id,
+          storeId,
           subjectType: "HOMEPAGE",
-          subjectId: store.id,
+          subjectId: storeId,
         },
       },
       update: {
@@ -70,9 +68,9 @@ export async function updateSeoSettingsAction(
         sitemapIncluded: parsed.data.sitemapIncluded,
       },
       create: {
-        storeId: store.id,
+        storeId,
         subjectType: "HOMEPAGE",
-        subjectId: store.id,
+        subjectId: storeId,
         status: "ACTIVE",
         metaTitle: parsed.data.metaTitle ?? null,
         metaDescription: parsed.data.metaDescription ?? null,

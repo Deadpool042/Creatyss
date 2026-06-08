@@ -1,6 +1,7 @@
 import "server-only";
 
 import { db } from "@/core/db";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 
 type FlagRow = {
   status: "DRAFT" | "ACTIVE" | "INACTIVE" | "ARCHIVED";
@@ -32,12 +33,7 @@ function isOverrideActive(
  * (utiliser readAdminProductModuleFeatureFlags pour une résolution complète).
  */
 export async function queryFeatureFlagActive(code: string): Promise<boolean> {
-  const store = await db.store.findFirst({
-    orderBy: { createdAt: "asc" },
-    select: { id: true },
-  });
-
-  const storeId = store?.id ?? null;
+  const storeId = await getCurrentStoreId();
 
   const flags: FlagRow[] = await db.featureFlag.findMany({
     where: {

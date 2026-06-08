@@ -2,6 +2,7 @@ import "server-only";
 
 import { db } from "@/core/db";
 import type { SeoIndexingModeValue } from "@/features/admin/settings/schemas/seo-settings.schema";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 
 export type AdminSeoSettings = {
   metaTitle: string | null;
@@ -16,19 +17,16 @@ export type AdminSeoSettings = {
 };
 
 export async function getAdminSeoSettings(): Promise<AdminSeoSettings | null> {
-  const store = await db.store.findFirst({
-    orderBy: { createdAt: "asc" },
-    select: { id: true },
-  });
+  const storeId = await getCurrentStoreId();
 
-  if (!store) return null;
+  if (storeId === null) return null;
 
   const row = await db.seoMetadata.findUnique({
     where: {
       storeId_subjectType_subjectId: {
-        storeId: store.id,
+        storeId,
         subjectType: "HOMEPAGE",
-        subjectId: store.id,
+        subjectId: storeId,
       },
     },
     select: {

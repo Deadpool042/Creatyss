@@ -2,6 +2,7 @@
 
 import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import {
   storeSettingsSchema,
   type StoreSettingsFormState,
@@ -40,14 +41,14 @@ export async function updateAdminStoreSettingsAction(
   }
 
   try {
-    const store = await db.store.findFirst({ orderBy: { createdAt: "asc" }, select: { id: true } });
+    const storeId = await getCurrentStoreId();
 
-    if (!store) {
+    if (storeId === null) {
       return { status: "error", message: "Boutique introuvable." };
     }
 
     await db.store.update({
-      where: { id: store.id },
+      where: { id: storeId },
       data: {
         name: parsed.data.name,
         legalName: parsed.data.legalName ?? null,
