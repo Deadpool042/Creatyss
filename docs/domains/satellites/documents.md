@@ -398,6 +398,29 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Décisions d'implémentation
+
+### documentNumber — V1 (2026-06)
+
+**`ORDER_CONFIRMATION` conserve `documentNumber = null` en V1.**
+
+Une confirmation de commande n'est pas soumise à l'obligation légale de numérotation séquentielle (art. L441-9 du Code de commerce). Le champ `documentNumber` reste `null` intentionnellement. Le statut `GENERATED` est suffisant pour tracer l'existence du document.
+
+Si un identifiant lisible est souhaité plus tard pour `ORDER_CONFIRMATION`, la stratégie retenue sera `CONF-{orderNumber}` — dérivé de la commande, sans table compteur ni migration.
+
+**`INVOICE` et `CREDIT_NOTE` nécessiteront une stratégie dédiée.**
+
+Aucun compteur, aucune séquence PostgreSQL, aucune migration `DocumentCounter` ne doit être créée avant que les décisions suivantes soient prises :
+
+- contenu légal du document (snapshot ou dérivation depuis `Order` au moment du rendu) ;
+- champs fiscaux obligatoires (TVA, SIRET vendeur, adresse acheteur, lignes HT/TTC) ;
+- format de numérotation (ex. `FA-2026-0001`) ;
+- politique de rétention et d'archivage légal.
+
+La stratégie de numérotation recommandée pour `INVOICE` / `CREDIT_NOTE` est une table `DocumentCounter` avec `SELECT FOR UPDATE` dans une transaction Prisma — sans SQL brut, sans séquence PostgreSQL native. Cette décision reste à valider lors du chantier factures.
+
+---
+
 ## Documents liés
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
