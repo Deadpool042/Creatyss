@@ -1,29 +1,16 @@
 import { Prisma, SeoSubjectType } from "@/prisma-generated/client";
 import { withTransaction } from "@/core/db";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { toPrismaBlogPostStatus } from "../mappers";
 import {
   AdminBlogServiceError,
   type CreateAdminBlogPostInput,
 } from "../types";
 
-async function getDefaultStoreId() {
-  const { db } = await import("@/core/db");
-  const store = await db.store.findFirst({
-    orderBy: {
-      createdAt: "asc",
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  return store?.id ?? null;
-}
-
 export async function createAdminBlogPost(
   input: CreateAdminBlogPostInput,
 ): Promise<{ id: string }> {
-  const storeId = await getDefaultStoreId();
+  const storeId = await getCurrentStoreId();
 
   if (storeId === null) {
     throw new AdminBlogServiceError("blog_post_missing");

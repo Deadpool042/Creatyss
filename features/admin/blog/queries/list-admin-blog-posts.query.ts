@@ -1,22 +1,10 @@
 import { db } from "@/core/db";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { mapAdminBlogPostSummary } from "../mappers";
 import type { AdminBlogPostSummary } from "../types";
 
-async function getDefaultStoreId(): Promise<string | null> {
-  const store = await db.store.findFirst({
-    orderBy: {
-      createdAt: "asc",
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  return store?.id ?? null;
-}
-
 export async function listAdminBlogPosts(): Promise<readonly AdminBlogPostSummary[]> {
-  const storeId = await getDefaultStoreId();
+  const storeId = await getCurrentStoreId();
 
   if (storeId === null) {
     return [];

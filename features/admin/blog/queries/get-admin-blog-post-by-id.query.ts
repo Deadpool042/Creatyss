@@ -1,23 +1,11 @@
 import { db } from "@/core/db";
 import { SeoSubjectType } from "@/prisma-generated/client";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { mapAdminBlogPostDetail } from "../mappers";
 import type { AdminBlogPostDetail } from "../types";
 
-async function getDefaultStoreId(): Promise<string | null> {
-  const store = await db.store.findFirst({
-    orderBy: {
-      createdAt: "asc",
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  return store?.id ?? null;
-}
-
 export async function getAdminBlogPostById(id: string): Promise<AdminBlogPostDetail | null> {
-  const storeId = await getDefaultStoreId();
+  const storeId = await getCurrentStoreId();
 
   if (storeId === null) {
     return null;

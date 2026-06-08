@@ -1,4 +1,5 @@
 import { db } from "@/core/db";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 
 export type AdminCustomerSummary = {
   id: string;
@@ -16,11 +17,11 @@ export type AdminCustomerSummary = {
 };
 
 export async function listAdminCustomers(): Promise<readonly AdminCustomerSummary[]> {
-  const store = await db.store.findFirst({ orderBy: { createdAt: "asc" }, select: { id: true } });
-  if (!store) return [];
+  const storeId = await getCurrentStoreId();
+  if (storeId === null) return [];
 
   const customers = await db.customer.findMany({
-    where: { storeId: store.id, archivedAt: null, isGuest: false },
+    where: { storeId, archivedAt: null, isGuest: false },
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
