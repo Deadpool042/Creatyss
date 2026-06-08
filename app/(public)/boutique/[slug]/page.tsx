@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { clientEnv } from "@/core/config/env";
 import { readFavoriteProductIds } from "@/core/sessions/favorites";
 import { getPublishedProductBySlug } from "@/features/storefront/catalog";
+import { isRelatedProductsFeatureActive } from "@/features/admin/catalog/queries/is-related-products-feature-active.query";
 import { FavoriteButton } from "@/features/storefront/favorites";
 import { ProductPageCartFeedbackToast } from "@/features/storefront/catalog/product-page/components/product-page-cart-feedback-toast";
 import { ProductPageTemplate } from "@/features/storefront/catalog/product-page/components/product-page-template";
@@ -97,7 +98,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = await getPublishedProductBySlug(slug);
+  const [product, relatedActive] = await Promise.all([
+    getPublishedProductBySlug(slug),
+    isRelatedProductsFeatureActive(),
+  ]);
 
   if (product === null) {
     notFound();
@@ -146,7 +150,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         variants={viewModel.variantsNormalized}
         characteristics={product.characteristics}
         technicalSpecs={viewModel.technicalSpecs}
-        relatedProductGroups={product.relatedProductGroups}
+        relatedProductGroups={relatedActive ? product.relatedProductGroups : []}
         heroCta={rendering.heroCta}
         heroVariantSummary={viewModel.variantSummary}
         heroAsideExtra={heroAsideExtra}
