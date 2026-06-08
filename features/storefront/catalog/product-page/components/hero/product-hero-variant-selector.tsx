@@ -75,6 +75,7 @@ export function ProductHeroVariantSelector({
                 isSelected
                   ? "border-control-border-strong bg-interactive-selected text-foreground"
                   : "border-control-border bg-transparent text-foreground-muted hover:bg-interactive-hover hover:text-foreground",
+                !variant.isAvailable ? "cursor-not-allowed opacity-50" : "",
               ].join(" ")}
             >
               <span className="inline-flex items-center gap-2">

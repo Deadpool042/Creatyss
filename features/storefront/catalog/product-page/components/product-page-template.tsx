@@ -42,9 +42,10 @@ type ProductPageRelatedGroup = {
 };
 
 function getRelatedSectionTitle(groups: ProductPageRelatedGroup[]): string {
-  const firstGroup = groups.find((group) => group.products.length > 0);
-  if (!firstGroup) return "À découvrir";
-  return "À découvrir";
+  const activeGroups = groups.filter((group) => group.products.length > 0);
+  if (activeGroups.length === 0) return "À découvrir";
+  const allSameType = activeGroups.every((g) => g.type === activeGroups[0]?.type);
+  return allSameType ? (activeGroups[0]?.label ?? "À découvrir") : "À découvrir aussi";
 }
 
 function normalizeCharacteristicLabel(value: string): string {
@@ -176,7 +177,7 @@ export function ProductPageTemplate({
               <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Caractéristiques</p>
               <h2>Caractéristiques du produit</h2>
               <p className="m-0 text-muted-foreground">
-                Attributs factuels renseignés pour ce produit.
+                Détails utiles pour choisir votre pièce.
               </p>
             </div>
             <dl className="grid gap-3  pt-4 min-[700px]:gap-3.5 min-[700px]:pt-5 min-[900px]:grid-cols-2">

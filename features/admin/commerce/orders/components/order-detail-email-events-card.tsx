@@ -28,14 +28,8 @@ function EmailEventRow({ emailEvent }: EmailEventRowProps) {
       key={emailEvent.id}
     >
       <div className="grid gap-3 sm:grid-cols-3">
-        <AdminSplitDetailFact
-          label="Événement"
-          value={getEmailEventLabel(emailEvent.eventType)}
-        />
-        <AdminSplitDetailFact
-          label="Statut"
-          value={getEmailEventStatusLabel(emailEvent.status)}
-        />
+        <AdminSplitDetailFact label="Événement" value={getEmailEventLabel(emailEvent.eventType)} />
+        <AdminSplitDetailFact label="Statut" value={getEmailEventStatusLabel(emailEvent.status)} />
         <AdminSplitDetailFact label="Destinataire" value={emailEvent.recipientEmail} />
       </div>
 
@@ -65,7 +59,7 @@ function EmailEventRow({ emailEvent }: EmailEventRowProps) {
               {emailEvent.providerMessageId ? (
                 <p>Référence provider : {emailEvent.providerMessageId}</p>
               ) : null}
-              <p className="break-words">
+              <p className="wrap-break-word">
                 Message technique : {failurePresentation.technicalDetail}
               </p>
             </div>

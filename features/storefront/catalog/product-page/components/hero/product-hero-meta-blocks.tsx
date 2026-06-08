@@ -2,6 +2,15 @@ import type { OfferVariant } from "@/features/storefront/catalog/types/product-o
 
 type ProductHeroMetaDensity = "compact" | "cozy" | "default";
 
+function computeDiscountLabel(price: string | null, compareAtPrice: string | null): string | null {
+  if (price === null || compareAtPrice === null) return null;
+  const priceVal = parseFloat(price);
+  const compareVal = parseFloat(compareAtPrice);
+  if (!Number.isFinite(priceVal) || !Number.isFinite(compareVal) || compareVal <= 0) return null;
+  const pct = Math.round(((compareVal - priceVal) / compareVal) * 100);
+  return pct > 0 ? `−${pct}%` : null;
+}
+
 type ProductHeroPricingMetaProps = {
   resolvedHeroVariant: OfferVariant;
   isSimpleProduct: boolean;
@@ -56,11 +65,15 @@ export function ProductHeroPricingMeta({
   includeShippingHint = false,
 }: ProductHeroPricingMetaProps) {
   const isCompact = density === "compact";
+  const discountLabel = computeDiscountLabel(
+    resolvedHeroVariant.price,
+    resolvedHeroVariant.compareAtPrice
+  );
 
   return (
     <div className={["grid", getPricingGapClass(density)].join(" ")}>
       {resolvedHeroVariant.compareAtPrice ? (
-        <div className="flex items-baseline gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Ancien prix</span>
           <span
             className={[
@@ -70,6 +83,11 @@ export function ProductHeroPricingMeta({
           >
             {resolvedHeroVariant.compareAtPrice}
           </span>
+          {discountLabel ? (
+            <span className="inline-flex items-center rounded-full border border-feedback-success-border bg-feedback-success-surface px-1.5 py-0.5 text-[0.625rem] font-semibold uppercase tracking-widest leading-none text-feedback-success-foreground">
+              {discountLabel}
+            </span>
+          ) : null}
         </div>
       ) : null}
 
