@@ -22,11 +22,11 @@ export function OrderDetailBillingAddressCard({ billing }: OrderDetailBillingAdd
       <AdminSplitDetailSectionHeader eyebrow="Facturation" title="Adresse de facturation" />
 
       {billing.sameAsShipping ? (
-        <p className="rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+        <p className="pt-1 text-sm leading-6 text-foreground">
           Identique à l&apos;adresse de livraison.
         </p>
       ) : (
-        <div className="grid gap-1 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-3 text-sm leading-6 text-foreground">
+        <div className="grid gap-1 pt-1 text-sm leading-6 text-foreground">
           {billing.fullName ? (
             <p className="card-copy text-sm leading-6 text-foreground">{billing.fullName}</p>
           ) : null}

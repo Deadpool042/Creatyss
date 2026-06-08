@@ -54,14 +54,30 @@ export function OrderDetailSummaryCard({
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <AdminSplitDetailFact label="Référence" value={orderReference} />
-        <AdminSplitDetailFact label="Total" value={totalAmount} />
-        <AdminSplitDetailFact label="Créée le" value={createdAtLabel} />
-        <AdminSplitDetailFact label="Articles" value={lineCount} />
+        <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+          label="Référence"
+          value={orderReference}
+        />
+        <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+          label="Total"
+          value={totalAmount}
+        />
+        <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+          label="Créée le"
+          value={createdAtLabel}
+        />
+        <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+          label="Articles"
+          value={lineCount}
+        />
       </div>
 
       {notes ? (
-        <div className="rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-3">
+        <div className="grid gap-1 pt-1">
           <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">
             Note
           </p>

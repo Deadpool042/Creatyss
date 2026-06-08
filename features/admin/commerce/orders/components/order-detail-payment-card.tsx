@@ -25,19 +25,39 @@ export function OrderDetailPaymentCard({ payment }: OrderDetailPaymentCardProps)
 
       <div className="grid gap-3 sm:grid-cols-2">
         {payment.provider ? (
-          <AdminSplitDetailFact label="Prestataire" value={payment.provider} />
+          <AdminSplitDetailFact
+            className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+            label="Prestataire"
+            value={payment.provider}
+          />
         ) : null}
         {payment.methodType ? (
-          <AdminSplitDetailFact label="Méthode" value={payment.methodType} />
+          <AdminSplitDetailFact
+            className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+            label="Méthode"
+            value={payment.methodType}
+          />
         ) : null}
         {payment.amountCaptured ? (
-          <AdminSplitDetailFact label="Montant capturé" value={payment.amountCaptured} />
+          <AdminSplitDetailFact
+            className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+            label="Montant capturé"
+            value={payment.amountCaptured}
+          />
         ) : null}
         {payment.amountAuthorized ? (
-          <AdminSplitDetailFact label="Montant autorisé" value={payment.amountAuthorized} />
+          <AdminSplitDetailFact
+            className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+            label="Montant autorisé"
+            value={payment.amountAuthorized}
+          />
         ) : null}
         {payment.amountRefunded !== "0.00" ? (
-          <AdminSplitDetailFact label="Montant remboursé" value={payment.amountRefunded} />
+          <AdminSplitDetailFact
+            className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+            label="Montant remboursé"
+            value={payment.amountRefunded}
+          />
         ) : null}
       </div>
 

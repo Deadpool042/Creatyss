@@ -1,13 +1,14 @@
-import { AdminSplitDetailSectionCard, AdminSplitDetailSectionHeader } from "@/components/admin/layout/admin-split-detail-overview-content";
+import {
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
 import type { AdminOrderStatusHistoryEntry } from "@/features/admin/commerce/orders/details/types/admin-order-detail.types";
 
 type OrderDetailStatusHistoryCardProps = Readonly<{
   statusHistory: AdminOrderStatusHistoryEntry[];
 }>;
 
-export function OrderDetailStatusHistoryCard({
-  statusHistory,
-}: OrderDetailStatusHistoryCardProps) {
+export function OrderDetailStatusHistoryCard({ statusHistory }: OrderDetailStatusHistoryCardProps) {
   return (
     <AdminSplitDetailSectionCard tone="secondary">
       <AdminSplitDetailSectionHeader
@@ -23,10 +24,7 @@ export function OrderDetailStatusHistoryCard({
       ) : (
         <ol className="grid gap-2">
           {statusHistory.map((entry) => (
-            <li
-              key={entry.id}
-              className="grid gap-1 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-3"
-            >
+            <li key={entry.id} className="grid gap-1 py-1">
               <div className="flex flex-wrap items-baseline gap-2">
                 <p className="card-meta leading-snug text-text-muted-strong">{entry.date}</p>
                 <p className="card-copy leading-snug font-medium text-foreground">
@@ -35,9 +33,7 @@ export function OrderDetailStatusHistoryCard({
               </div>
 
               {entry.note ? (
-                <p className="card-meta leading-snug text-text-muted-strong">
-                  Note : {entry.note}
-                </p>
+                <p className="card-meta leading-snug text-text-muted-strong">Note : {entry.note}</p>
               ) : null}
             </li>
           ))}

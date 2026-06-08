@@ -37,10 +37,7 @@ export function OrderDetailLinesPanel({
 
       <div className="grid gap-3">
         {lines.map((line) => (
-          <article
-            className="grid gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-4"
-            key={line.id}
-          >
+          <article className="grid gap-3 py-2" key={line.id}>
             <div className="flex gap-3">
               <AdminThumbnail
                 alt={line.thumbnailAlt ?? line.productName}
@@ -67,13 +64,29 @@ export function OrderDetailLinesPanel({
             </div>
 
             {line.sku ? (
-              <AdminSplitDetailFact label="SKU" value={line.sku} />
+              <AdminSplitDetailFact
+                className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+                label="SKU"
+                value={line.sku}
+              />
             ) : null}
 
             <div className="grid gap-3 sm:grid-cols-3">
-              <AdminSplitDetailFact label="Quantité" value={line.quantity} />
-              <AdminSplitDetailFact label="Prix unitaire" value={line.unitPriceAmount} />
-              <AdminSplitDetailFact label="Sous-total" value={line.lineTotalAmount} />
+              <AdminSplitDetailFact
+                className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+                label="Quantité"
+                value={line.quantity}
+              />
+              <AdminSplitDetailFact
+                className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+                label="Prix unitaire"
+                value={line.unitPriceAmount}
+              />
+              <AdminSplitDetailFact
+                className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+                label="Sous-total"
+                value={line.lineTotalAmount}
+              />
             </div>
           </article>
         ))}
@@ -83,27 +96,35 @@ export function OrderDetailLinesPanel({
 
       <div className="grid gap-2">
         <div className="flex items-baseline justify-between gap-2">
-          <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">Sous-total</p>
+          <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">
+            Sous-total
+          </p>
           <p className="card-copy text-sm leading-snug text-foreground">{subtotalAmount}</p>
         </div>
 
         {shippingAmount !== "0.00" ? (
           <div className="flex items-baseline justify-between gap-2">
-            <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">Livraison</p>
+            <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">
+              Livraison
+            </p>
             <p className="card-copy text-sm leading-snug text-foreground">{shippingAmount}</p>
           </div>
         ) : null}
 
         {discountAmount !== "0.00" ? (
           <div className="flex items-baseline justify-between gap-2">
-            <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">Remise</p>
+            <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">
+              Remise
+            </p>
             <p className="card-copy text-sm leading-snug text-foreground">−{discountAmount}</p>
           </div>
         ) : null}
 
         {taxAmount !== "0.00" ? (
           <div className="flex items-baseline justify-between gap-2">
-            <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">TVA</p>
+            <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">
+              TVA
+            </p>
             <p className="card-copy text-sm leading-snug text-foreground">{taxAmount}</p>
           </div>
         ) : null}
@@ -111,7 +132,9 @@ export function OrderDetailLinesPanel({
         <Separator className="my-0.5" />
 
         <div className="flex items-baseline justify-between gap-2">
-          <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">Total</p>
+          <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-text-muted-soft">
+            Total
+          </p>
           <p className="card-copy font-semibold text-foreground">{totalAmount}</p>
         </div>
       </div>

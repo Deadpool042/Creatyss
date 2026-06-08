@@ -23,14 +23,23 @@ function EmailEventRow({ emailEvent }: EmailEventRowProps) {
   const failurePresentation = getEmailEventFailurePresentation(emailEvent);
 
   return (
-    <article
-      className="grid gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-4"
-      key={emailEvent.id}
-    >
+    <article className="grid gap-3 py-1" key={emailEvent.id}>
       <div className="grid gap-3 sm:grid-cols-3">
-        <AdminSplitDetailFact label="Événement" value={getEmailEventLabel(emailEvent.eventType)} />
-        <AdminSplitDetailFact label="Statut" value={getEmailEventStatusLabel(emailEvent.status)} />
-        <AdminSplitDetailFact label="Destinataire" value={emailEvent.recipientEmail} />
+        <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+          label="Événement"
+          value={getEmailEventLabel(emailEvent.eventType)}
+        />
+        <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+          label="Statut"
+          value={getEmailEventStatusLabel(emailEvent.status)}
+        />
+        <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+          label="Destinataire"
+          value={emailEvent.recipientEmail}
+        />
       </div>
 
       {emailEvent.sentAt ? (
@@ -40,7 +49,7 @@ function EmailEventRow({ emailEvent }: EmailEventRowProps) {
       ) : null}
 
       {failurePresentation ? (
-        <div className="grid gap-2 rounded-xl border border-surface-border bg-surface-panel p-3">
+        <div className="grid gap-2 pt-1">
           <div className="grid gap-1">
             <p className="card-copy leading-snug font-medium text-foreground">
               {failurePresentation.title}

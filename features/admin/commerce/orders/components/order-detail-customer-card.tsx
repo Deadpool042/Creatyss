@@ -18,8 +18,16 @@ export function OrderDetailCustomerCard({ customer }: OrderDetailCustomerCardPro
       <AdminSplitDetailSectionHeader eyebrow="Client" title={customer.fullName} />
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <AdminSplitDetailFact label="Email" value={customer.email} />
-        <AdminSplitDetailFact label="Téléphone" value={customer.phone ?? "Non renseigné"} />
+        <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+          label="Email"
+          value={customer.email}
+        />
+        <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+          label="Téléphone"
+          value={customer.phone ?? "Non renseigné"}
+        />
       </div>
     </AdminSplitDetailSectionCard>
   );

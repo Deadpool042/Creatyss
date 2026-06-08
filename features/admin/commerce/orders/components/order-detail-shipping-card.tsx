@@ -46,13 +46,22 @@ export function OrderDetailShippingCard({
 
       <div className="grid gap-3 sm:grid-cols-2">
         <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
           label="Référence de suivi"
           value={trackingReference ?? "Aucune pour le moment"}
         />
-        <AdminSplitDetailFact label="Transporteur" value={carrier ?? "Non renseigné"} />
+        <AdminSplitDetailFact
+          className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+          label="Transporteur"
+          value={carrier ?? "Non renseigné"}
+        />
 
         {deliveredAtLabel ? (
-          <AdminSplitDetailFact className="sm:col-span-2" label="Livrée le" value={deliveredAtLabel} />
+          <AdminSplitDetailFact
+            className="sm:col-span-2 rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
+            label="Livrée le"
+            value={deliveredAtLabel}
+          />
         ) : null}
       </div>
 
