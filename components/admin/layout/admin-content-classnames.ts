@@ -40,7 +40,7 @@ export const ADMIN_CONTENT_PAGE =
   "safe-px-layout gap-4 overflow-x-hidden pt-4 max-sm:landscape:gap-3 max-sm:landscape:pt-3 md:gap-6 md:pt-5 lg:gap-6 lg:pt-0 lg:pb-8";
 
 // Overview métier : page paddée, cadrée et centrée pour les grilles/cards.
-export const ADMIN_CONTENT_OVERVIEW = `${ADMIN_CONTENT_PAGE} mx-auto w-full max-w-6xl`;
+export const ADMIN_CONTENT_OVERVIEW = `${ADMIN_CONTENT_PAGE} mx-auto w-full max-w-7xl`;
 
 // Table/list : page paddée, pleine largeur réelle, sans max-width global.
 export const ADMIN_CONTENT_TABLE = ADMIN_CONTENT_PAGE;
@@ -49,7 +49,7 @@ export const ADMIN_CONTENT_TABLE = ADMIN_CONTENT_PAGE;
 export const ADMIN_CONTENT_FORM = `${ADMIN_CONTENT_PAGE} mx-auto w-full max-w-3xl`;
 
 // Detail/editor dense : page paddée, largeur cadrée sans contraindre les sous-grilles.
-export const ADMIN_CONTENT_DETAIL = `${ADMIN_CONTENT_PAGE} mx-auto w-full max-w-6xl`;
+export const ADMIN_CONTENT_DETAIL = `${ADMIN_CONTENT_PAGE} mx-auto w-full max-w-7xl`;
 
 // Dashboard : page paddée et cockpit large cadré. Ce preset est l'owner du
 // container global dashboard ; les sections internes ne portent plus safe-px.
