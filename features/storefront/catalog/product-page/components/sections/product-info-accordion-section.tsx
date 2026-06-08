@@ -36,7 +36,7 @@ export function ProductInfoAccordionSection({
         </AccordionTrigger>
         <AccordionContent className="px-3 leading-snug text-foreground-muted h-fit">
           {detailsContent ?? (
-            <p>Les caractéristiques détaillées de ce produit seront disponibles prochainement.</p>
+            <p>Les détails de cette pièce seront ajoutés prochainement.</p>
           )}
         </AccordionContent>
       </AccordionItem>

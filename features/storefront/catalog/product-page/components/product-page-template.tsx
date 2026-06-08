@@ -202,7 +202,7 @@ export function ProductPageTemplate({
               <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Spécifications</p>
               <h2 className="m-0">Spécifications techniques</h2>
               <p className="m-0 text-muted-foreground">
-                Données techniques dérivées de la variante de référence.
+                Mesures et caractéristiques de fabrication.
               </p>
             </div>
             <dl className="border-t border-surface-border-subtle/70 pt-2 min-[700px]:pt-3">
@@ -224,7 +224,7 @@ export function ProductPageTemplate({
         {hasRelatedProducts ? (
           <section className="w-full px-4 pb-5 pt-5 min-[700px]:pb-6 min-[700px]:pt-6">
             <div className="mb-6 grid gap-2.5 min-[700px]:mb-7">
-              <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">À découvrir</p>
+              <p className="text-xs font-semibold uppercase tracking-widest leading-snug text-brand">Suggestions</p>
               <h2 className="m-0">{relatedSectionTitle}</h2>
             </div>
             <ProductRelatedSection
