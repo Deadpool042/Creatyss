@@ -19,6 +19,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ADMIN_CATEGORIES_LIST_PATH } from "@/features/admin/categories";
+import { ADMIN_ORDERS_LIST_PATH } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
 import { ADMIN_PRODUCTS_LIST_PATH } from "@/features/admin/products/navigation";
 import type { AdminDashboardStats } from "@/features/admin/dashboard";
 
@@ -65,25 +66,25 @@ const quickLinks: AdminQuickLink[] = [
     icon: FolderTree,
   },
   {
-    href: "/admin/orders",
+    href: ADMIN_ORDERS_LIST_PATH,
     title: "Commandes",
     description: "Suivre la vente, la préparation et les points de friction.",
     icon: ShoppingBag,
   },
   {
-    href: "/admin/media",
+    href: "/admin/catalog/media",
     title: "Médias",
     description: "Centraliser les visuels, couvertures et assets de la boutique.",
     icon: ImageIcon,
   },
   {
-    href: "/admin/homepage",
+    href: "/admin/content/homepage",
     title: "Page d’accueil",
     description: "Piloter les mises en avant, messages saisonniers et blocs éditoriaux.",
     icon: Globe,
   },
   {
-    href: "/admin/blog",
+    href: "/admin/content/blog",
     title: "Blog",
     description: "Préparer les articles, l’acquisition organique et le calendrier éditorial.",
     icon: FileText,
@@ -106,21 +107,21 @@ function buildPulseMetrics(stats: AdminDashboardStats): ReadonlyArray<AdminPulse
     {
       label: "Pipeline commerce",
       value: `${formatCount(stats.ordersCount)} commande${stats.ordersCount > 1 ? "s" : ""}`,
-      hint: "La brique commandes existe, le cockpit reste à enrichir.",
+      hint: "Commandes enregistrées et accessibles pour le suivi de votre activité.",
       accentClassName: "bg-sky-500/12 text-sky-700 dark:text-sky-300",
       icon: ShoppingBag,
     },
     {
       label: "Contenu éditorial",
       value: `${formatCount(stats.blogPostsCount)} article${stats.blogPostsCount > 1 ? "s" : ""}`,
-      hint: "Le socle contenu est là, l’interface publication reste à finir.",
+      hint: "Articles et pages disponibles dans votre espace éditorial.",
       accentClassName: "bg-amber-500/14 text-amber-700 dark:text-amber-300",
       icon: FileText,
     },
     {
       label: "Lecture business",
-      value: "En construction",
-      hint: "Simulation : reporting ventes, conversion et trafic arriveront ici.",
+      value: "—",
+      hint: "Indicateurs de performance commerciale, disponibles à l'activation des modules analytics.",
       accentClassName: "bg-violet-500/12 text-violet-700 dark:text-violet-300",
       icon: TrendingUp,
     },
@@ -150,7 +151,7 @@ function buildReadinessTracks(stats: AdminDashboardStats): ReadonlyArray<AdminRe
     },
     {
       title: "Contenu",
-      detail: "Homepage et blog ont leur place. L’outillage éditorial reste partiellement mocké.",
+      detail: "Homepage et blog sont disponibles. L’outillage éditorial sera enrichi progressivement.",
       progressLabel: contentMomentum,
       progressWidthClassName: stats.blogPostsCount > 0 ? "w-[56%]" : "w-[18%]",
       toneClassName: "bg-amber-500",
@@ -180,9 +181,9 @@ function buildPriorities(stats: AdminDashboardStats): ReadonlyArray<AdminPriorit
       title: "Brancher le contenu storefront",
       detail:
         stats.blogPostsCount > 0
-          ? "Le blog existe déjà. Homepage, mises en avant et calendrier éditorial doivent suivre."
-          : "Le socle éditorial existe mais reste encore largement en mode préparation.",
-      state: "Partiellement mocké",
+          ? "Le blog est actif. Homepage, mises en avant et calendrier éditorial sont les prochaines étapes."
+          : "L'espace éditorial est prêt à accueillir vos premiers contenus.",
+      state: "En préparation",
     },
   ];
 }
@@ -212,9 +213,8 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
                 Un cockpit sobre pour piloter le catalogue, le contenu et le commerce.
               </CardTitle>
               <CardDescription className="max-w-2xl text-base leading-7 text-text-muted-strong">
-                Certaines briques restent en construction. Cette vue assume donc un mélange de
-                signaux réels et de repères mockés pour garder un cap lisible sans attendre que tout
-                le back-office soit terminé.
+                Les indicateurs du catalogue et du commerce reflètent vos données réelles. D'autres
+                métriques s'enrichiront à mesure que les modules seront activés.
               </CardDescription>
             </div>
           </CardHeader>
@@ -265,7 +265,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               Priorités immédiates
             </CardTitle>
             <CardDescription className="leading-6">
-              Vue de conduite pour avancer sans se perdre dans des modules encore incomplets.
+              Repères de pilotage pour avancer au quotidien sur votre boutique.
             </CardDescription>
           </CardHeader>
 
@@ -310,8 +310,8 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               État d’avancement des chantiers
             </CardTitle>
             <CardDescription className="leading-6">
-              Lecture synthétique du niveau de maturité des zones admin. Les pourcentages restent
-              mockés tant que le reporting complet n’existe pas.
+              Avancement des zones principales de votre administration. Les indicateurs évolueront
+              à mesure que les modules seront activés.
             </CardDescription>
           </CardHeader>
 
@@ -349,11 +349,10 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               Vigilance
             </div>
             <CardTitle className="text-2xl font-semibold tracking-tight">
-              Ce qui mérite ton attention
+              Ce qui mérite votre attention
             </CardTitle>
             <CardDescription className="leading-6">
-              Des repères utiles pour la suite, même si toute la chaîne métier n’est pas encore
-              branchée.
+              Points d’attention pour avancer sereinement sur chaque module de votre boutique.
             </CardDescription>
           </CardHeader>
 
@@ -361,10 +360,10 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
             <div className="flex items-start gap-3 rounded-xl border border-amber-500/20 bg-amber-500/8 p-4">
               <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-300" />
               <div className="space-y-1">
-                <p className="text-sm font-medium text-foreground">Métriques business simulées</p>
+                <p className="text-sm font-medium text-foreground">Indicateurs de performance</p>
                 <p className="text-sm leading-6 text-text-muted-soft">
-                  Conversion, panier moyen et trafic restent mockés pour garder un cockpit utile
-                  avant le branchement analytics.
+                  Conversion, panier moyen et trafic seront disponibles une fois les modules
+                  analytics activés.
                 </p>
               </div>
             </div>
@@ -385,8 +384,8 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
                 Prochain palier recommandé
               </p>
               <p className="mt-2 text-sm leading-6 text-text-muted-soft">
-                Finir la lecture commandes, brancher les contenus storefront et introduire de vrais
-                signaux de performance commerciale.
+                Approfondir le suivi des commandes, enrichir les contenus storefront et activer
+                les indicateurs de performance commerciale.
               </p>
             </div>
           </CardContent>
