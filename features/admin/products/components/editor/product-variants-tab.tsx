@@ -67,7 +67,7 @@ type ProductVariantListProps = Readonly<{
 type ProductVariantsSectionIntroProps = Readonly<{
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
 }>;
 
 type ProductVariantsContextItemProps = Readonly<{
@@ -87,7 +87,9 @@ function ProductVariantsSectionIntro({
         {eyebrow}
       </p>
       <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      {description ? (
+        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      ) : null}
     </div>
   );
 }
@@ -308,7 +310,6 @@ export function ProductVariantsTab({
                 <ProductVariantsSectionIntro
                   eyebrow="Repères"
                   title="Lecture rapide"
-                  description="Gardez sous les yeux le périmètre du module avant d’ouvrir ou de créer une nouvelle variante."
                 />
 
                 <div className="divide-y divide-surface-border">

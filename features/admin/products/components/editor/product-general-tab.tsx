@@ -58,7 +58,7 @@ const SHORT_DESCRIPTION_MAX = 220;
 type ProductGeneralSectionIntroProps = {
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
 };
 
 type ProductGeneralContextItemProps = {
@@ -76,7 +76,9 @@ function ProductGeneralSectionIntro({
     <div className="grid gap-1.5">
       <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
       <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      {description ? (
+        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      ) : null}
     </div>
   );
 }
@@ -375,7 +377,6 @@ function ProductGeneralTabInner({
                 <ProductGeneralSectionIntro
                   eyebrow="Repères"
                   title="Contexte produit"
-                  description="Gardez sous les yeux les informations qui structurent la fiche sans surcharger le formulaire."
                 />
 
                 <div className="divide-y divide-surface-border">

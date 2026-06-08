@@ -32,7 +32,7 @@ type ProductAvailabilityTabProps = {
 type ProductAvailabilitySectionIntroProps = {
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
 };
 
 const availabilityStatusLabels: Record<AdminProductVariantAvailability["status"], string> = {
@@ -73,7 +73,9 @@ function ProductAvailabilitySectionIntro({
     <div className="grid gap-1.5">
       <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
       <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      {description ? (
+        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      ) : null}
     </div>
   );
 }
@@ -299,7 +301,6 @@ export function ProductAvailabilityTab({
                 <ProductAvailabilitySectionIntro
                   eyebrow="Repères"
                   title="Lecture rapide"
-                  description="Gardez les règles commerciales visibles pendant l’édition sans transformer le formulaire en documentation."
                 />
 
                 <div className="divide-y divide-surface-border">

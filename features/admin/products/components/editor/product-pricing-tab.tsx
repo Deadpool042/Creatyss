@@ -35,7 +35,7 @@ type ProductPricingTabInnerProps = ProductPricingTabProps & {
 type ProductPricingSectionIntroProps = {
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
 };
 
 function findProductPrice(pricingData: AdminProductPricingData, priceListId: string) {
@@ -91,7 +91,9 @@ function ProductPricingSectionIntro({
     <div className="grid gap-1.5">
       <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
       <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      {description ? (
+        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      ) : null}
     </div>
   );
 }
@@ -482,7 +484,6 @@ function ProductPricingTabInner({
                 <ProductPricingSectionIntro
                   eyebrow="Repères"
                   title="Contexte tarifaire"
-                  description="Gardez les signaux clés visibles sans faire du formulaire un tableau de bord."
                 />
 
                 <div className="divide-y divide-surface-border">

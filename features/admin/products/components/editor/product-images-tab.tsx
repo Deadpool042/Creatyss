@@ -83,7 +83,7 @@ type ProductImageGallerySectionProps = {
 type ProductImagesSectionIntroProps = Readonly<{
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
 }>;
 
 function ProductImagesSectionIntro({
@@ -95,7 +95,9 @@ function ProductImagesSectionIntro({
     <div className="grid gap-1.5">
       <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
       <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      {description ? (
+        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      ) : null}
     </div>
   );
 }
@@ -768,7 +770,6 @@ export function ProductImagesTab({
                   <ProductImagesSectionIntro
                     eyebrow="Repères"
                     title="Lecture galerie"
-                    description="Gardez les signaux essentiels visibles pendant le tri et le choix de l’image principale."
                   />
 
                   <div className="divide-y divide-surface-border">

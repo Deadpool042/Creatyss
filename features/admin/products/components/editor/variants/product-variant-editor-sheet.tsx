@@ -51,7 +51,7 @@ type ProductVariantEditorSheetProps = {
 type ProductVariantSectionIntroProps = {
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
 };
 
 const noopVariantAction: ProductVariantFormAction = async () => {
@@ -71,7 +71,9 @@ function ProductVariantSectionIntro({
     <div className="grid gap-1.5">
       <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
       <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      {description ? (
+        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      ) : null}
     </div>
   );
 }
@@ -529,7 +531,6 @@ export function ProductVariantEditorSheet({
                     <ProductVariantSectionIntro
                       eyebrow="Contexte"
                       title="Lecture rapide"
-                      description="Gardez le minimum utile sous les yeux pendant l’édition."
                     />
 
                     <div className="divide-y divide-surface-border">

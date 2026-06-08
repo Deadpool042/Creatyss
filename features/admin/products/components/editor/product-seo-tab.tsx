@@ -47,7 +47,7 @@ const SEO_DESC_MIN = 50;
 type ProductSeoSectionIntroProps = {
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
 };
 
 function ProductSeoSectionIntro({
@@ -59,7 +59,9 @@ function ProductSeoSectionIntro({
     <div className="grid gap-1.5">
       <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
       <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      {description ? (
+        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      ) : null}
     </div>
   );
 }
@@ -831,7 +833,6 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                 <ProductSeoSectionIntro
                   eyebrow="Lecture rapide"
                   title="État SEO"
-                  description="Conservez les signaux essentiels sous les yeux pendant l’édition au lieu de disperser l’attention dans le formulaire."
                 />
 
                 <div className="grid gap-3">

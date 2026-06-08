@@ -48,7 +48,7 @@ type EditableRelatedProduct = {
 type ProductRelatedSectionIntroProps = {
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
 };
 
 const relatedTypeLabels: Record<AdminRelatedProductEditorType, string> = {
@@ -105,7 +105,9 @@ function ProductRelatedSectionIntro({
     <div className="grid gap-1.5">
       <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
       <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      {description ? (
+        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      ) : null}
     </div>
   );
 }
@@ -482,7 +484,6 @@ export function ProductRelatedProductsTab({
                 <ProductRelatedSectionIntro
                   eyebrow="Repères"
                   title="Lecture éditoriale"
-                  description="Gardez l’intention de chaque liaison visible pendant la composition du parcours."
                 />
 
                 <div className="divide-y divide-surface-border">

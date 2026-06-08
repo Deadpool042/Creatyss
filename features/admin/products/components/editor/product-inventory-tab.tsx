@@ -17,7 +17,7 @@ import {
 type ProductInventorySectionIntroProps = {
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
 };
 
 // ─── Internal components ──────────────────────────────────────────────────────
@@ -86,7 +86,9 @@ function ProductInventorySectionIntro({
     <div className="grid gap-1.5">
       <ProductSectionEyebrow>{eyebrow}</ProductSectionEyebrow>
       <h2 className="text-xl font-semibold tracking-tight text-foreground">{title}</h2>
-      <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      {description ? (
+        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
+      ) : null}
     </div>
   );
 }
@@ -214,7 +216,6 @@ export function ProductInventoryTab({
                 <ProductInventorySectionIntro
                   eyebrow="Repères"
                   title="Lecture stock"
-                  description="Gardez le cadre de gestion visible pendant la mise à jour des quantités."
                 />
 
                 <div className="divide-y divide-surface-border">
