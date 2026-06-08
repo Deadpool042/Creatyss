@@ -2,13 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 
-import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { isDocumentsFeatureActive } from "@/features/admin/commerce/documents/queries/is-documents-feature-active.query";
 import {
   createOrderConfirmation,
   CreateOrderConfirmationError,
 } from "@/features/admin/commerce/documents/services/create-order-confirmation.service";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 
 type CreateOrderConfirmationActionResult =
   | { success: true }
@@ -28,17 +28,13 @@ export async function createOrderConfirmationAction(
     return { success: false, error: "La fonctionnalité documents n'est pas activée." };
   }
 
-  const store = await db.store.findFirst({
-    orderBy: { createdAt: "asc" },
-    select: { id: true },
-  });
-
-  if (store === null) {
+  const storeId = await getCurrentStoreId();
+  if (storeId === null) {
     return { success: false, error: "Boutique introuvable." };
   }
 
   try {
-    await createOrderConfirmation({ orderId: orderId.trim(), storeId: store.id });
+    await createOrderConfirmation({ orderId: orderId.trim(), storeId });
     revalidatePath(`/admin/commerce/orders/${orderId.trim()}/documents`);
     revalidatePath(`/admin/commerce/orders/${orderId.trim()}`);
     return { success: true };

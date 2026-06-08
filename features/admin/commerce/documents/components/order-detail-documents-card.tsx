@@ -45,17 +45,19 @@ export function OrderDetailDocumentsCard({
   orderId,
 }: OrderDetailDocumentsCardProps) {
   const [isPending, startTransition] = useTransition();
+  const [generated, setGenerated] = useState(false);
   const [feedback, setFeedback] = useState<
     { type: "success" | "error"; message: string } | null
   >(null);
 
-  const confirmationAlreadyExists = hasActiveOrderConfirmation(documents);
+  const confirmationAlreadyExists = generated || hasActiveOrderConfirmation(documents);
 
   function handleGenerateConfirmation(): void {
     setFeedback(null);
     startTransition(async () => {
       const result = await createOrderConfirmationAction(orderId);
       if (result.success) {
+        setGenerated(true);
         setFeedback({
           type: "success",
           message: "Confirmation générée avec succès.",
