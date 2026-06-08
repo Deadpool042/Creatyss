@@ -1,5 +1,6 @@
 import { db } from "@/core/db";
 import { mapProductLifecycleStatusToPrismaStatus } from "@/entities/product";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 
 import type { AdminCreatableProductTypeCode } from "./create-product.types";
 
@@ -62,12 +63,9 @@ export async function ensureAdminCreatableProductTypes(): Promise<{
   storeId: string;
   productTypes: AdminCreatableProductTypeRecord[];
 }> {
-  const store = await db.store.findFirst({
-    where: { isProduction: true },
-    select: { id: true },
-  });
+  const storeId = await getCurrentStoreId();
 
-  if (store === null) {
+  if (storeId === null) {
     throw new Error("store_missing");
   }
 
@@ -76,7 +74,7 @@ export async function ensureAdminCreatableProductTypes(): Promise<{
       db.productType.upsert({
         where: {
           storeId_code: {
-            storeId: store.id,
+            storeId,
             code: definition.code,
           },
         },
@@ -88,7 +86,7 @@ export async function ensureAdminCreatableProductTypes(): Promise<{
           archivedAt: null,
         },
         create: {
-          storeId: store.id,
+          storeId,
           code: definition.code,
           name: definition.name,
           slug: definition.slug,
@@ -101,7 +99,7 @@ export async function ensureAdminCreatableProductTypes(): Promise<{
 
   const productTypes = await db.productType.findMany({
     where: {
-      storeId: store.id,
+      storeId,
       archivedAt: null,
       code: {
         in: ADMIN_CREATABLE_PRODUCT_TYPE_DEFINITIONS.map((item) => item.code),
@@ -135,7 +133,7 @@ export async function ensureAdminCreatableProductTypes(): Promise<{
     });
 
   return {
-    storeId: store.id,
+    storeId,
     productTypes: ordered,
   };
 }
