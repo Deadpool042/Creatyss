@@ -30,6 +30,7 @@ export default function OrdersLayout({ list, detail }: OrdersLayoutProps) {
         minDesktopListWidth={240}
         maxDesktopListWidth={460}
         mobileBackToListLabel="Toutes les commandes"
+        compactSplit
       />
     </AdminSplitPageShell>
   );

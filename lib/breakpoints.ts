@@ -18,6 +18,5 @@ export const BREAKPOINTS = {
  * Admin sidebar treats viewports below laptop as mobile.
  * Used by:
  *   - SidebarProvider mobileBreakpoint prop in AdminShell
- *   - useIsAdminMobile hook
  */
 export const ADMIN_SIDEBAR_MOBILE_BREAKPOINT = BREAKPOINTS.laptop;

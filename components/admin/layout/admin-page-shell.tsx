@@ -7,7 +7,6 @@ import type { ReactNode } from "react";
 import type { AppBreadcrumbItem } from "@/components/shared/breadcrumbs";
 import { AppBreadcrumbs } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { useIsAdminMobile } from "@/hooks/use-is-admin-mobile";
 import { cn } from "@/lib/utils";
 
 import { getAdminContentClassName, type AdminContentPreset } from "./admin-content-classnames";
@@ -137,8 +136,8 @@ function AdminPageTitleBlock({ title, header, showTitle }: AdminPageTitleBlockPr
 function AdminPageContent({ children, scrollBehavior, className }: AdminPageContentProps) {
   if (scrollBehavior === "page") {
     return (
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-        <div className={cn("flex min-h-full min-w-0 flex-col", className)}>{children}</div>
+      <div className="min-h-0 flex-1 lg:overflow-y-auto lg:overscroll-contain">
+        <div className={cn("flex min-w-0 flex-col lg:min-h-full", className)}>{children}</div>
       </div>
     );
   }
@@ -166,9 +165,7 @@ export function AdminPageShell({
   showBreadcrumbsInContent = true,
   showTitleInContent = true,
 }: AdminPageShellProps) {
-  const isMobile = useIsAdminMobile();
-  const resolvedScrollBehavior = resolveScrollBehavior(scrollBehavior);
-  const effectiveScrollBehavior = isMobile ? "external" : resolvedScrollBehavior;
+  const effectiveScrollBehavior = resolveScrollBehavior(scrollBehavior);
   const resolvedContentClassName = cn(getAdminContentClassName(contentPreset), contentClassName);
 
   return (
