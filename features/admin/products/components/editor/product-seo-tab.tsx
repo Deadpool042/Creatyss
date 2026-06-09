@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SEO_INDEXING_MODE_LABELS, SEO_INDEXING_MODE_VALUES } from "@/entities/seo";
+import { SEO_INDEXING_MODE_LABELS, SEO_INDEXING_MODE_VALUES, SEO_META_DESCRIPTION_SOFT_LIMIT, SEO_META_TITLE_SOFT_LIMIT } from "@/entities/seo";
 import { toSeoPlainText } from "@/entities/product/seo-text";
 import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
 import {
@@ -39,9 +39,7 @@ type ProductSeoTabInnerProps = ProductSeoTabProps & {
   onReset: () => void;
 };
 
-const SEO_TITLE_RECOMMENDED = 60;
 const SEO_TITLE_MIN = 20;
-const SEO_DESC_RECOMMENDED = 160;
 const SEO_DESC_MIN = 50;
 
 type ProductSeoSectionIntroProps = {
@@ -68,12 +66,12 @@ function ProductSeoSectionIntro({
 
 function buildSeoTitleTemplate(productName: string, siteName: string): string {
   const full = `${productName} | ${siteName}`;
-  return full.length > SEO_TITLE_RECOMMENDED ? full.slice(0, SEO_TITLE_RECOMMENDED) : full;
+  return full.length > SEO_META_TITLE_SOFT_LIMIT ? full.slice(0, SEO_META_TITLE_SOFT_LIMIT) : full;
 }
 
 function buildSeoDescTemplate(shortDescription: string | null, description: string | null): string {
   const source = toSeoPlainText(shortDescription ?? description ?? "");
-  return source.length > SEO_DESC_RECOMMENDED ? source.slice(0, SEO_DESC_RECOMMENDED) : source;
+  return source.length > SEO_META_DESCRIPTION_SOFT_LIMIT ? source.slice(0, SEO_META_DESCRIPTION_SOFT_LIMIT) : source;
 }
 
 function SerpPreview({
@@ -89,14 +87,14 @@ function SerpPreview({
   const rawDesc = description.trim();
 
   const displayTitle = rawTitle
-    ? rawTitle.length > SEO_TITLE_RECOMMENDED
-      ? rawTitle.slice(0, SEO_TITLE_RECOMMENDED) + "…"
+    ? rawTitle.length > SEO_META_TITLE_SOFT_LIMIT
+      ? rawTitle.slice(0, SEO_META_TITLE_SOFT_LIMIT) + "…"
       : rawTitle
     : "—";
 
   const displayDesc = rawDesc
-    ? rawDesc.length > SEO_DESC_RECOMMENDED
-      ? rawDesc.slice(0, SEO_DESC_RECOMMENDED) + "…"
+    ? rawDesc.length > SEO_META_DESCRIPTION_SOFT_LIMIT
+      ? rawDesc.slice(0, SEO_META_DESCRIPTION_SOFT_LIMIT) + "…"
       : rawDesc
     : "—";
 
@@ -322,15 +320,15 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
   const titleLen = titleValue.trim().length;
   const descLen = descValue.trim().length;
   const titleStatus: SeoCheckStatus =
-    titleLen >= SEO_TITLE_MIN && titleLen <= SEO_TITLE_RECOMMENDED
+    titleLen >= SEO_TITLE_MIN && titleLen <= SEO_META_TITLE_SOFT_LIMIT
       ? "good"
-      : titleLen > SEO_TITLE_RECOMMENDED
+      : titleLen > SEO_META_TITLE_SOFT_LIMIT
         ? "warn"
         : "error";
   const descStatus: SeoCheckStatus =
-    descLen >= SEO_DESC_MIN && descLen <= SEO_DESC_RECOMMENDED
+    descLen >= SEO_DESC_MIN && descLen <= SEO_META_DESCRIPTION_SOFT_LIMIT
       ? "good"
-      : descLen > SEO_DESC_RECOMMENDED
+      : descLen > SEO_META_DESCRIPTION_SOFT_LIMIT
         ? "warn"
         : "error";
   const indexingStatus: SeoCheckStatus = product.seo.indexingMode.startsWith("INDEX")
@@ -485,7 +483,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                           <AdminCharCounter
                             value={titleValue}
                             min={SEO_TITLE_MIN}
-                            max={SEO_TITLE_RECOMMENDED}
+                            max={SEO_META_TITLE_SOFT_LIMIT}
                           />
                         </div>
                       </div>
@@ -532,7 +530,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                           <AdminCharCounter
                             value={descValue}
                             min={SEO_DESC_MIN}
-                            max={SEO_DESC_RECOMMENDED}
+                            max={SEO_META_DESCRIPTION_SOFT_LIMIT}
                           />
                         </div>
                       </div>

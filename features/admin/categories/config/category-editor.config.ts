@@ -77,12 +77,6 @@ export const CATEGORY_SEO_FORM_COPY = {
   canonicalPathLabel: "Adresse canonique",
   canonicalPathPlaceholder: "/boutique/categories/...",
   indexingModeLabel: "Visibilité dans les moteurs de recherche",
-  indexingModeOptions: {
-    indexFollow: "Indexer et suivre les liens",
-    indexNoFollow: "Indexer, ne pas suivre les liens",
-    noIndexFollow: "Ne pas indexer, suivre les liens",
-    noIndexNoFollow: "Ne pas indexer, ne pas suivre",
-  },
   sitemapIncludedLabel: "Inclure cette catégorie dans le sitemap",
   openGraphTitleLabel: "Titre d’aperçu de partage",
   openGraphDescriptionLabel: "Description d’aperçu de partage",

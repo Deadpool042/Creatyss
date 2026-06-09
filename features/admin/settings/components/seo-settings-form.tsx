@@ -11,17 +11,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/shared";
 import { cn } from "@/lib/utils";
-import { SEO_INDEXING_MODE_VALUES } from "@/entities/seo";
+import { SEO_INDEXING_MODE_LABELS, SEO_INDEXING_MODE_VALUES } from "@/entities/seo";
 import { updateSeoSettingsAction } from "@/features/admin/settings/actions/update-seo-settings.action";
 import { type SeoSettingsFormState } from "@/features/admin/settings/schemas/seo-settings.schema";
 import type { AdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
 
-const INDEXING_MODE_LABELS: Record<string, string> = {
-  INDEX_FOLLOW: "Indexer et suivre les liens",
-  INDEX_NOFOLLOW: "Indexer, ne pas suivre les liens",
-  NOINDEX_FOLLOW: "Ne pas indexer, suivre les liens",
-  NOINDEX_NOFOLLOW: "Ne pas indexer, ne pas suivre les liens",
-};
 
 const INITIAL_STATE: SeoSettingsFormState = { status: "idle" };
 
@@ -221,7 +215,7 @@ export function SeoSettingsForm({ seo }: Props) {
                 <SelectContent>
                   {SEO_INDEXING_MODE_VALUES.map((mode) => (
                     <SelectItem key={mode} value={mode}>
-                      {INDEXING_MODE_LABELS[mode] ?? mode}
+                      {SEO_INDEXING_MODE_LABELS[mode]}
                     </SelectItem>
                   ))}
                 </SelectContent>
