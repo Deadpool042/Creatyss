@@ -12,11 +12,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { BREAKPOINTS } from "@/lib/breakpoints";
 import { SeoDefaultValues } from "./seo-default-values";
 import { SeoSocialFields } from "./seo-social-fields";
 import { SeoSocialImageField } from "./seo-social-image-field";
 
-const LG_QUERY = "(min-width: 1024px)";
+const LG_QUERY = `(min-width: ${BREAKPOINTS.laptop}px)`;
 
 function subscribeLg(callback: () => void): () => void {
   const mql = window.matchMedia(LG_QUERY);
