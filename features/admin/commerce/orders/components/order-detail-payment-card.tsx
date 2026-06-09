@@ -3,7 +3,7 @@ import {
   AdminSplitDetailFact,
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
-} from "@/components/admin/layout/admin-split-detail-overview-content";
+} from "@/components/admin/layout/admin-split-detail-section-card";
 import { Badge } from "@/components/ui/badge";
 import { getPaymentStatusLabel } from "@/entities/order/order-status-presentation";
 import { getPaymentStatusBadgeVariant } from "@/features/admin/commerce/orders/config/order-ui.config";

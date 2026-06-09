@@ -3,7 +3,7 @@ import {
   AdminSplitDetailFact,
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
-} from "@/components/admin/layout/admin-split-detail-overview-content";
+} from "@/components/admin/layout/admin-split-detail-section-card";
 import { Notice } from "@/components/shared/feedback";
 import { Badge } from "@/components/ui/badge";
 

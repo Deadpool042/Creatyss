@@ -1,7 +1,7 @@
 import {
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
-} from "@/components/admin/layout/admin-split-detail-overview-content";
+} from "@/components/admin/layout/admin-split-detail-section-card";
 import type { AdminOrderStatusHistoryEntry } from "@/features/admin/commerce/orders/details/types/admin-order-detail.types";
 
 type OrderDetailStatusHistoryCardProps = Readonly<{

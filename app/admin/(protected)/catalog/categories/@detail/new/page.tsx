@@ -10,7 +10,7 @@ import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import {
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
-} from "@/components/admin/layout/admin-split-detail-overview-content";
+} from "@/components/admin/layout/admin-split-detail-section-card";
 import {
   CATEGORY_CREATE_GENERAL_SECTION_COPY,
   CATEGORY_FIELD_COPY,

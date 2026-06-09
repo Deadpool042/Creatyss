@@ -1,7 +1,7 @@
 import {
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
-} from "@/components/admin/layout/admin-split-detail-overview-content";
+} from "@/components/admin/layout/admin-split-detail-section-card";
 
 type OrderDetailBillingAddressCardProps = Readonly<{
   billing: {

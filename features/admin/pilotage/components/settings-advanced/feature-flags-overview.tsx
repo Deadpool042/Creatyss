@@ -1,11 +1,11 @@
 import { Sparkles } from "lucide-react";
 
 import { AdminOverviewHero } from "@/components/admin/layout/admin-overview-hero";
+import { AdminSplitDetailOverviewGrid } from "@/components/admin/layout/admin-split-detail-overview-content";
 import {
-  AdminSplitDetailOverviewGrid,
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
-} from "@/components/admin/layout/admin-split-detail-overview-content";
+} from "@/components/admin/layout/admin-split-detail-section-card";
 import { AdminSplitDetailOverviewShell } from "@/components/admin/layout/admin-split-detail-overview-shell";
 import { StatsCard } from "@/components/shared/display/stats-card";
 import type { FeatureFlagsOverviewStats } from "@/features/admin/pilotage/view-models/settings-advanced/feature-flags-split-view.types";

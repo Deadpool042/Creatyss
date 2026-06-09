@@ -2,7 +2,7 @@ import type { OrderStatus } from "@/entities/order/order-status-transition";
 import {
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
-} from "@/components/admin/layout/admin-split-detail-overview-content";
+} from "@/components/admin/layout/admin-split-detail-section-card";
 import { CustomButton } from "@/components/shared";
 import { Input } from "@/components/ui/input";
 import { Notice } from "@/components/shared/feedback";

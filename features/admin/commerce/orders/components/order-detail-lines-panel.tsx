@@ -5,7 +5,7 @@ import {
   AdminSplitDetailFact,
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
-} from "@/components/admin/layout/admin-split-detail-overview-content";
+} from "@/components/admin/layout/admin-split-detail-section-card";
 import { AdminThumbnail } from "@/components/admin/media/admin-thumbnail";
 import { Separator } from "@/components/ui/separator";
 import { buildAdminProductPath } from "@/features/admin/products/navigation/product-routes";

@@ -5,9 +5,11 @@ import { AdminOverviewHero } from "@/components/admin/layout/admin-overview-hero
 import {
   AdminSplitDetailOverviewEmptyState,
   AdminSplitDetailOverviewGrid,
+} from "@/components/admin/layout/admin-split-detail-overview-content";
+import {
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
-} from "@/components/admin/layout/admin-split-detail-overview-content";
+} from "@/components/admin/layout/admin-split-detail-section-card";
 import { AdminSplitDetailOverviewShell } from "@/components/admin/layout/admin-split-detail-overview-shell";
 import { Button } from "@/components/ui/button";
 import {
