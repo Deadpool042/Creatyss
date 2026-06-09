@@ -1,7 +1,7 @@
 import { CheckCircle2, Clock, Euro, Star, Tag } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { AdminComingSoon as AdminEmptyState } from "@/components/admin/shared/admin-coming-soon";
+import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
 
 import { listAdminPriceLists, type AdminPriceListSummary } from "@/features/admin/catalog/queries/list-admin-price-lists.query";
@@ -48,9 +48,9 @@ export default async function AdminCatalogPricingPage() {
     >
       {priceLists.length === 0 ? (
         <AdminEmptyState
-          title="Listes de prix"
-          description="Créez des listes de prix pour gérer les tarifs par devise, par canal ou par période promotionnelle. Modèle : PriceList (prisma/core/catalog/pricing.prisma)."
-          docRef="prisma/core/catalog/pricing.prisma"
+          eyebrow="Tarification"
+          title="Aucune liste de prix"
+          description="Créez des listes de prix pour gérer les tarifs par devise, par canal ou par période promotionnelle."
           icon={Tag}
         />
       ) : (

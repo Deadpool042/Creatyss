@@ -1,3 +1,9 @@
+/**
+ * Primitives d'aide contextuelle conservées volontairement.
+ * Destinées aux aides locales interactives (admin, formulaires, champs complexes).
+ * Ne pas supprimer sur simple grep de faible usage.
+ * Suppression uniquement après audit UX/produit explicite.
+ */
 "use client";
 
 import type { ComponentProps, ReactNode } from "react";
