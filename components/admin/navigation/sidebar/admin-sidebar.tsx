@@ -31,10 +31,9 @@ export function AdminSidebar({ displayName, email, rootItems, groups }: AdminSid
       className={[
         // Visibilité : caché sur mobile (<768px) et landscape compact
         "md:hidden lg:block [@media(max-height:480px)]:hidden",
-        // Position : commence sous la topbar (admin-topbar-height = 3.75rem)
-        // Landscape compact : topbar = 3rem
-        "top-[3.75rem] h-[calc(100svh-3.75rem)]",
-        "[@media(max-height:480px)]:top-[3rem]",
+        // Position : commence sous la topbar — utilise le token CSS --admin-topbar-height
+        // (défini dans safe-area.css, redéfini automatiquement à 3rem en landscape compact)
+        "top-[var(--admin-topbar-height)] h-[calc(100svh-var(--admin-topbar-height))]",
         // Style
         "border-r border-sidebar-border/60 bg-sidebar",
       ].join(" ")}
