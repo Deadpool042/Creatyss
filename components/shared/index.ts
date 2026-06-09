@@ -15,7 +15,5 @@ export { CustomLink } from "./navigation";
 export { ModeToggle } from "./theme";
 export { ThemeProvider } from "./theme";
 
-export { ViewportScrollArea } from "./layout";
-
 export { AppBreadcrumbs } from "./breadcrumbs";
 export type { AppBreadcrumbItem } from "./breadcrumbs";
