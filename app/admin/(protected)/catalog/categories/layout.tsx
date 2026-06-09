@@ -14,7 +14,7 @@ export default function CategoriesLayout({ list, detail }: CategoriesLayoutProps
   return (
     <AdminPageShell
       className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden"
-      scrollMode="area"
+      scrollMode="nested"
       title="Catégories"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

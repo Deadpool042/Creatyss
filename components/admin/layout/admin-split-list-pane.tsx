@@ -46,7 +46,7 @@ export function AdminSplitListPane({
 
   return (
     <section className={cn("flex min-h-0 flex-1 flex-col space-y-2", className)}>
-      <div className="admin-split-list-pane-scroll min-h-0 flex-1 overflow-visible overscroll-contain md:overflow-x-hidden md:overflow-y-auto">
+      <div className="admin-split-list-pane-scroll min-h-0 flex-1 overflow-visible md:overflow-x-hidden md:overflow-y-auto">
         <div>
           <header className="relative z-10 h-fit py-1">
             <div

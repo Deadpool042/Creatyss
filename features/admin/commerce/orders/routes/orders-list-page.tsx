@@ -27,7 +27,7 @@ export async function OrdersListPage({ searchParams }: OrdersListPageProps) {
       contentPreset="split-panel"
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      scrollMode="area"
+      scrollMode="nested"
     >
       <OrdersPanelList orders={items} />
     </AdminPageShell>

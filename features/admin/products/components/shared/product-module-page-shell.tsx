@@ -58,7 +58,7 @@ export function getProductModulePageShellProps({
           ),
         }
       : {}),
-    scrollMode: "nested",
+    scrollMode: "area",
     contentPreset: "full-width",
     contentClassName: PRODUCT_MODULE_PAGE_CONTENT_CLASSNAME,
     breadcrumbs: [

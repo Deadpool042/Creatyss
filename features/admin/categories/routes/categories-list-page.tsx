@@ -25,7 +25,7 @@ export async function CategoriesListPage({ searchParams }: CategoriesListPagePro
       contentPreset="split-panel"
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      scrollMode="area"
+      scrollMode="nested"
     >
       <CategoriesPanelList categories={items} />
     </AdminPageShell>
