@@ -33,7 +33,7 @@ function ModuleGroupList({ group }: { group: FeatureModuleGroup }) {
 
 export function FeatureFlagsFamilyDetail({ viewModel }: FeatureFlagsFamilyDetailProps) {
   return (
-    <div className="admin-split-detail-pane-content admin-split-detail-pane-column safe-px-layout py-0 md:py-4 lg:py-6">
+    <div className="admin-split-detail-pane-content admin-split-detail-pane-fluid safe-px-layout py-0 md:py-4 lg:py-6">
       <AdminSplitDetailSectionCard className="overflow-hidden p-0">
         <div className="border-b border-surface-border/30 px-4 py-4">
           <AdminSplitDetailSectionHeader
@@ -42,7 +42,7 @@ export function FeatureFlagsFamilyDetail({ viewModel }: FeatureFlagsFamilyDetail
             description={viewModel.description}
             action={
               <span className="shrink-0 text-[11px] font-medium text-muted-foreground/70 tabular-nums">
-              {viewModel.activeCount} / {viewModel.totalCount} actifs
+                {viewModel.activeCount} / {viewModel.totalCount} actifs
               </span>
             }
           />
@@ -67,7 +67,9 @@ export function FeatureFlagsFamilyDetail({ viewModel }: FeatureFlagsFamilyDetail
 
         {viewModel.moduleGroups.length === 0 ? (
           <div className="px-4 py-8 text-center">
-            <p className="text-sm text-muted-foreground">Aucune fonctionnalité dans cette famille.</p>
+            <p className="text-sm text-muted-foreground">
+              Aucune fonctionnalité dans cette famille.
+            </p>
           </div>
         ) : null}
 

@@ -4,12 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/feedback";
-import {
-  AdminCheckboxField,
-} from "@/components/admin/forms/admin-checkbox-field";
+import { AdminCheckboxField } from "@/components/admin/forms/admin-checkbox-field";
 import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { createCategoryAction } from "@/features/admin/categories";
 import {
   AdminSplitDetailSectionCard,
   AdminSplitDetailSectionHeader,
@@ -21,6 +18,11 @@ import {
   CATEGORY_NEW_PAGE_COPY,
   getCategoryNewFormErrorMessage,
 } from "@/features/admin/categories/config";
+import {
+  ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS,
+  ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT,
+  createCategoryAction,
+} from "@/features/admin/categories";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +45,10 @@ export default async function NewAdminCategoryPage({ searchParams }: NewAdminCat
   }
 
   return (
-    <AdminSplitDetailPaneShell>
+    <AdminSplitDetailPaneShell
+      constrainContent={ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT}
+      contentClassName={ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS}
+    >
       <AdminPageHeader
         compact
         eyebrow={CATEGORY_NEW_PAGE_COPY.eyebrow}

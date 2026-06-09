@@ -2,9 +2,9 @@ import { Sparkles } from "lucide-react";
 
 import { AdminOverviewHero } from "@/components/admin/layout/admin-overview-hero";
 import {
-  AdminSplitDetailOverviewCard,
   AdminSplitDetailOverviewGrid,
-  AdminSplitDetailOverviewSectionHeader,
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
 } from "@/components/admin/layout/admin-split-detail-overview-content";
 import { AdminSplitDetailOverviewShell } from "@/components/admin/layout/admin-split-detail-overview-shell";
 import { StatsCard } from "@/components/shared/display/stats-card";
@@ -28,6 +28,7 @@ export function FeatureFlagsOverview({ stats }: FeatureFlagsOverviewProps) {
   return (
     <AdminSplitDetailOverviewShell
       title="Pilotage avancé"
+      contentWidth="fluid"
       hero={
         <AdminOverviewHero
           mobileHidden
@@ -66,8 +67,8 @@ export function FeatureFlagsOverview({ stats }: FeatureFlagsOverviewProps) {
       }
     >
       <AdminSplitDetailOverviewGrid>
-        <AdminSplitDetailOverviewCard>
-          <AdminSplitDetailOverviewSectionHeader
+        <AdminSplitDetailSectionCard>
+          <AdminSplitDetailSectionHeader
             eyebrow="Pilotage"
             title="Vue d'ensemble de la gouvernance"
             description="État global du catalogue de feature flags et de leur présence en base de données."
@@ -85,10 +86,10 @@ export function FeatureFlagsOverview({ stats }: FeatureFlagsOverviewProps) {
               <StatsCard title="Brouillons" value={draftCount} />
             </div>
           </div>
-        </AdminSplitDetailOverviewCard>
+        </AdminSplitDetailSectionCard>
 
-        <AdminSplitDetailOverviewCard tone="secondary">
-          <AdminSplitDetailOverviewSectionHeader
+        <AdminSplitDetailSectionCard tone="secondary">
+          <AdminSplitDetailSectionHeader
             eyebrow="Pilotage"
             title="Écarts à traiter"
             description="Points à surveiller entre le catalogue, la base et le runtime."
@@ -116,7 +117,7 @@ export function FeatureFlagsOverview({ stats }: FeatureFlagsOverviewProps) {
               </p>
             </div>
           </div>
-        </AdminSplitDetailOverviewCard>
+        </AdminSplitDetailSectionCard>
       </AdminSplitDetailOverviewGrid>
     </AdminSplitDetailOverviewShell>
   );

@@ -15,6 +15,7 @@ import {
   withAdminCategoryListParams,
 } from "@/features/admin/categories/shared/admin-categories-routes";
 import {
+  CATEGORY_LIST_COPY,
   CATEGORY_STATUS_LABELS,
   CATEGORY_STATUS_OPTIONS,
 } from "@/features/admin/categories/config/category-list.config";
@@ -70,16 +71,14 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
 
   useRevealActiveCategoryRow({ activeSlug });
 
-  const controls = (
-    <AdminPanelListControls
-      listPath={ADMIN_CATEGORIES_LIST_PATH}
-      searchPlaceholder="Rechercher…"
-      statusOptions={CATEGORY_STATUS_OPTIONS}
-      allStatusLabel="Tous les statuts"
-      density="compact"
-      filterAriaLabel="Filtrer les catégories"
-    />
-  );
+  const controlsProps = {
+    listPath: ADMIN_CATEGORIES_LIST_PATH,
+    searchPlaceholder: CATEGORY_LIST_COPY.searchPlaceholder,
+    statusOptions: CATEGORY_STATUS_OPTIONS,
+    allStatusLabel: CATEGORY_LIST_COPY.splitAllStatusLabel,
+    density: "compact" as const,
+    filterAriaLabel: CATEGORY_LIST_COPY.splitFilterAriaLabel,
+  };
 
   const emptyState = (
     <li className="px-3 py-6 text-center text-sm text-muted-foreground">
@@ -89,13 +88,15 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
 
   return (
     <AdminSplitListPane
-      title="Catégories"
+      title={CATEGORY_LIST_COPY.splitPanelTitle}
       resultCount={categories.length}
+      controls={<AdminPanelListControls {...controlsProps} visibility="desktop" />}
+      mobileControls={<AdminPanelListControls {...controlsProps} visibility="mobile" />}
       overview={
         <AdminSplitOverviewItem
           href={withAdminCategoryListParams(overviewHref, searchParams)}
           active={isOverviewActive}
-          title="Vue d’ensemble"
+          title={CATEGORY_LIST_COPY.splitOverviewTitle}
           meta={
             <Badge variant="secondary" className="w-fit shrink-0 px-1.5 py-0 text-[10px]">
               {categories.length} catégorie{categories.length > 1 ? "s" : ""}
@@ -103,7 +104,6 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
           }
         />
       }
-      controls={controls}
       isEmpty={categories.length === 0}
       emptyState={<ul>{emptyState}</ul>}
     >

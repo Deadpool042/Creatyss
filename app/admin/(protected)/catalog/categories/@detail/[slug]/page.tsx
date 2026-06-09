@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { Notice } from "@/components/shared/feedback";
 import { listAdminMediaAssets } from "@/features/admin/media";
 import {
+  ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS,
+  ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT,
   CategoryEditorPanel,
   getAdminCategoryDetail,
   updateCategoryAction,
@@ -13,7 +15,6 @@ import {
   getCategoryEditFormErrorMessage,
   getCategoryEditFormStatusMessage,
 } from "@/features/admin/categories/config";
-
 export const dynamic = "force-dynamic";
 
 type EditAdminCategoryPageProps = Readonly<{
@@ -57,7 +58,10 @@ export default async function EditAdminCategoryPage({
     await updateCategoryAction(formData);
   }
   return (
-    <AdminSplitDetailPaneShell>
+    <AdminSplitDetailPaneShell
+      constrainContent={ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT}
+      contentClassName={ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS}
+    >
       <AdminPageHeader
         compact
         eyebrow={CATEGORY_EDIT_PAGE_COPY.eyebrow}

@@ -15,9 +15,7 @@ type PageProps = {
   params: Promise<{ family: string }>;
 };
 
-export default async function AdvancedSettingsDetailFamilyPage({
-  params,
-}: PageProps) {
+export default async function AdvancedSettingsDetailFamilyPage({ params }: PageProps) {
   const { family } = await params;
 
   const validSlugs: readonly string[] = FAMILY_SLUGS;
@@ -44,10 +42,11 @@ export default async function AdvancedSettingsDetailFamilyPage({
 
   if (viewModel === null) {
     return (
-      <AdminSplitDetailPaneShell contentClassName="items-center py-6">
-          <p className="text-sm text-muted-foreground">
-            Aucune fonctionnalité dans cette famille.
-          </p>
+      <AdminSplitDetailPaneShell
+        constrainContent={false}
+        contentClassName="admin-split-detail-pane-fluid items-center py-6"
+      >
+        <p className="text-sm text-muted-foreground">Aucune fonctionnalité dans cette famille.</p>
       </AdminSplitDetailPaneShell>
     );
   }

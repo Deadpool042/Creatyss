@@ -9,17 +9,10 @@ export { CategoryImageForm } from "./components/edit/category-image-form";
 export { CategoryArchiveButton } from "./components/edit/category-archive-button";
 
 // List hooks/types
-export {
-  useCategoryFilters,
-  type CategoryFiltersState,
-} from "./list";
+export { useCategoryFilters, type CategoryFiltersState } from "./list";
 
 // Queries
-export {
-  getAdminCategoryDetail,
-  listAdminCategories,
-  listCategoriesForPicker,
-} from "./queries";
+export { getAdminCategoryDetail, listAdminCategories, listCategoriesForPicker } from "./queries";
 export type {
   CategoryFeaturedFilter,
   CategoryListFilters,
@@ -43,10 +36,7 @@ export {
 } from "./services";
 
 // Schemas
-export {
-  categorySeoFormSchema,
-  type CategorySeoFormSchema,
-} from "./schemas";
+export { categorySeoFormSchema, type CategorySeoFormSchema } from "./schemas";
 
 // Config
 export {
@@ -76,6 +66,11 @@ export {
   ADMIN_CATEGORIES_NEW_PATH,
   getAdminCategoryDetailPath,
 } from "./shared/admin-categories-routes";
+export {
+  ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS,
+  ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT,
+  ADMIN_CATEGORIES_DETAIL_OVERVIEW_CONTENT_WIDTH,
+} from "./shared/admin-categories-detail-layout";
 
 // Actions
 export {

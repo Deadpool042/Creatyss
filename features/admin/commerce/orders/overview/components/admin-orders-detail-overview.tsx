@@ -9,10 +9,10 @@ import {
 
 import { AdminOverviewHero } from "@/components/admin/layout/admin-overview-hero";
 import {
-  AdminSplitDetailOverviewCard,
   AdminSplitDetailOverviewEmptyState,
   AdminSplitDetailOverviewGrid,
-  AdminSplitDetailOverviewSectionHeader,
+  AdminSplitDetailSectionCard,
+  AdminSplitDetailSectionHeader,
 } from "@/components/admin/layout/admin-split-detail-overview-content";
 import { AdminSplitDetailOverviewShell } from "@/components/admin/layout/admin-split-detail-overview-shell";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +26,7 @@ import {
   getPaymentStatusBadgeVariant,
 } from "@/features/admin/commerce/orders/config/order-ui.config";
 import { getAdminOrdersOverview } from "@/features/admin/commerce/orders/overview/queries/get-admin-orders-overview.query";
+import { ADMIN_ORDERS_DETAIL_OVERVIEW_CONTENT_WIDTH } from "@/features/admin/commerce/orders/shared/admin-orders-detail-layout";
 
 const dateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -85,6 +86,7 @@ export async function AdminOrdersDetailOverview() {
   return (
     <AdminSplitDetailOverviewShell
       title="Commandes"
+      contentWidth={ADMIN_ORDERS_DETAIL_OVERVIEW_CONTENT_WIDTH}
       hero={
         <AdminOverviewHero
           mobileHidden
@@ -137,8 +139,8 @@ export async function AdminOrdersDetailOverview() {
       }
     >
       <AdminSplitDetailOverviewGrid>
-        <AdminSplitDetailOverviewCard>
-          <AdminSplitDetailOverviewSectionHeader
+        <AdminSplitDetailSectionCard>
+          <AdminSplitDetailSectionHeader
             eyebrow="Récentes"
             title="Dernières commandes"
             description="Ouvrez directement une commande prioritaire depuis ce panneau."
@@ -189,10 +191,10 @@ export async function AdminOrdersDetailOverview() {
               description="Les premières commandes apparaîtront ici dès qu'elles seront créées."
             />
           )}
-        </AdminSplitDetailOverviewCard>
+        </AdminSplitDetailSectionCard>
 
-        <AdminSplitDetailOverviewCard tone="secondary">
-          <AdminSplitDetailOverviewSectionHeader eyebrow="Pilotage" title="Points d'attention" />
+        <AdminSplitDetailSectionCard tone="secondary">
+          <AdminSplitDetailSectionHeader eyebrow="Pilotage" title="Points d'attention" />
 
           {signals.length > 0 ? (
             <div className="mt-4 space-y-3">
@@ -244,7 +246,7 @@ export async function AdminOrdersDetailOverview() {
               </div>
             </div>
           )}
-        </AdminSplitDetailOverviewCard>
+        </AdminSplitDetailSectionCard>
       </AdminSplitDetailOverviewGrid>
     </AdminSplitDetailOverviewShell>
   );

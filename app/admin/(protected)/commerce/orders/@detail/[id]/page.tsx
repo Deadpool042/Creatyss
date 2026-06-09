@@ -16,6 +16,10 @@ import {
   OrderDetailStatusHistoryCard,
   OrderDetailSummaryCard,
 } from "@/features/admin/commerce/orders";
+import {
+  ADMIN_ORDERS_DETAIL_CONTENT_CLASS,
+  buildAdminOrdersDetailSectionClassName,
+} from "@/features/admin/commerce/orders/shared/admin-orders-detail-layout";
 import { findDocumentsByOrderId } from "@/features/admin/commerce/documents/queries/find-documents-by-order.query";
 import { isDocumentsFeatureActive } from "@/features/admin/commerce/documents/queries/is-documents-feature-active.query";
 import { OrderDetailDocumentsCard } from "@/features/admin/commerce/documents/components/order-detail-documents-card";
@@ -53,8 +57,11 @@ export default async function OrderDetailSlotPage({
   const documents = documentsFeatureActive ? await findDocumentsByOrderId(id) : null;
 
   return (
-    <AdminSplitDetailPaneShell constrainContent={false} contentClassName="gap-4">
-      <div className="admin-split-detail-pane-column">
+    <AdminSplitDetailPaneShell
+      constrainContent={false}
+      contentClassName={ADMIN_ORDERS_DETAIL_CONTENT_CLASS}
+    >
+      <div className={buildAdminOrdersDetailSectionClassName()}>
         <AdminPageHeader
           eyebrow="Commandes"
           title={`Commande ${order.reference}`}
@@ -65,7 +72,11 @@ export default async function OrderDetailSlotPage({
       {vm.statusMessage ? <Notice tone="success">{vm.statusMessage}</Notice> : null}
       {vm.errorMessage ? <Notice tone="alert">{vm.errorMessage}</Notice> : null}
 
-      <div className="admin-split-detail-pane-column grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(20rem,0.85fr)] xl:items-start">
+      <div
+        className={buildAdminOrdersDetailSectionClassName(
+          "grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(20rem,0.85fr)] xl:items-start"
+        )}
+      >
         <OrderDetailSummaryCard
           createdAtLabel={vm.orderMeta.createdAtLabel}
           lineCount={order.lines.length}
@@ -81,7 +92,11 @@ export default async function OrderDetailSlotPage({
         <OrderDetailActionsCard allowedTransitions={vm.allowedTransitions} order={vm.orderMeta} />
       </div>
 
-      <div className="admin-split-detail-pane-column grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(20rem,0.9fr)] xl:items-start">
+      <div
+        className={buildAdminOrdersDetailSectionClassName(
+          "grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(20rem,0.9fr)] xl:items-start"
+        )}
+      >
         <div className="grid gap-4 md:grid-cols-2">
           <OrderDetailCustomerCard customer={vm.customer} />
 
@@ -113,17 +128,17 @@ export default async function OrderDetailSlotPage({
         />
       </div>
 
-      <div className="admin-split-detail-pane-column">
+      <div className={buildAdminOrdersDetailSectionClassName()}>
         <OrderDetailStatusHistoryCard statusHistory={vm.statusHistory} />
       </div>
 
       {documents !== null ? (
-        <div className="admin-split-detail-pane-column">
+        <div className={buildAdminOrdersDetailSectionClassName()}>
           <OrderDetailDocumentsCard documents={documents} orderId={id} />
         </div>
       ) : null}
 
-      <div className="admin-split-detail-pane-column">
+      <div className={buildAdminOrdersDetailSectionClassName()}>
         <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
       </div>
     </AdminSplitDetailPaneShell>

@@ -54,10 +54,7 @@ export function AdminShell({
                 aria-hidden
                 className="admin-mobile-bottom-nav-spacer shrink-0 lg:hidden [@media(max-height:480px)]:hidden"
               />
-              <AdminMobileBottomNav
-                primaryItems={mobilePrimaryItems}
-                moreItems={mobileMoreItems}
-              />
+              <AdminMobileBottomNav primaryItems={mobilePrimaryItems} moreItems={mobileMoreItems} />
             </SidebarInset>
           </div>
         </div>

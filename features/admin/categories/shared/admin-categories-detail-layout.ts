@@ -1,0 +1,3 @@
+export const ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS = "w-full gap-4";
+export const ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT = false;
+export const ADMIN_CATEGORIES_DETAIL_OVERVIEW_CONTENT_WIDTH = "fluid" as const;

@@ -44,19 +44,17 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
 
   useRevealActiveOrderRow({ activeSlug });
 
-  const controls = (
-    <AdminPanelListControls
-      listPath={ADMIN_ORDERS_LIST_PATH}
-      searchPlaceholder="Référence, client…"
-      statusOptions={ORDER_STATUS_FILTERS.map((status) => ({
-        value: status,
-        label: getOrderStatusLabel(status),
-      }))}
-      allStatusLabel="Tous les statuts"
-      density="compact"
-      filterAriaLabel="Filtrer les commandes"
-    />
-  );
+  const controlsProps = {
+    listPath: ADMIN_ORDERS_LIST_PATH,
+    searchPlaceholder: "Référence, client…",
+    statusOptions: ORDER_STATUS_FILTERS.map((status) => ({
+      value: status,
+      label: getOrderStatusLabel(status),
+    })),
+    allStatusLabel: "Tous les statuts",
+    density: "compact" as const,
+    filterAriaLabel: "Filtrer les commandes",
+  };
 
   const emptyState = (
     <li className="px-3 py-6 text-center text-sm text-muted-foreground">
@@ -68,7 +66,8 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
     <AdminSplitListPane
       title="Commandes"
       resultCount={orders.length}
-      controls={controls}
+      controls={<AdminPanelListControls {...controlsProps} visibility="desktop" />}
+      mobileControls={<AdminPanelListControls {...controlsProps} visibility="mobile" />}
       isEmpty={orders.length === 0}
       emptyState={<ul>{emptyState}</ul>}
       overview={

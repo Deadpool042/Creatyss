@@ -52,9 +52,6 @@ export function AdminSplitDetailSectionCard({
   );
 }
 
-export function AdminSplitDetailOverviewCard(props: AdminSplitDetailSectionCardProps) {
-  return <AdminSplitDetailSectionCard {...props} />;
-}
 
 type AdminSplitDetailSectionHeaderProps = Readonly<{
   eyebrow: ReactNode;
@@ -92,11 +89,6 @@ export function AdminSplitDetailSectionHeader({
   );
 }
 
-export function AdminSplitDetailOverviewSectionHeader(
-  props: AdminSplitDetailSectionHeaderProps
-) {
-  return <AdminSplitDetailSectionHeader {...props} />;
-}
 
 type AdminSplitDetailFactProps = Readonly<{
   label: ReactNode;

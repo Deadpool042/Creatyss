@@ -8,7 +8,12 @@ import type { CategoryFeaturedFilter, CategorySortOption } from "@/features/admi
 export const CATEGORY_FILTER_VALID_VALUES = {
   statuses: CATEGORY_LIFECYCLE_STATUS_VALUES satisfies readonly AdminCategoryStatus[],
   featured: ["featured", "not-featured"] satisfies readonly CategoryFeaturedFilter[],
-  sorts: ["name-asc", "name-desc", "updated-asc", "updated-desc"] satisfies readonly CategorySortOption[],
+  sorts: [
+    "name-asc",
+    "name-desc",
+    "updated-asc",
+    "updated-desc",
+  ] satisfies readonly CategorySortOption[],
   perPage: [5, 10, 25, 50],
   perPageDefault: 10,
 } as const;
@@ -30,7 +35,11 @@ export const CATEGORY_STATUS_LABELS: Record<AdminCategoryStatus, string> = {
 };
 
 export const CATEGORY_LIST_COPY = {
+  splitPanelTitle: "Catégories",
+  splitOverviewTitle: "Vue d’ensemble",
   searchPlaceholder: "Rechercher…",
+  splitAllStatusLabel: "Tous les statuts",
+  splitFilterAriaLabel: "Filtrer les catégories",
   filtersTitle: "Filtres",
   filterCategoriesLabel: "Catégories",
   filterStatusLabel: "Statut",

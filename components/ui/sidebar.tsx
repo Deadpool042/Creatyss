@@ -67,23 +67,17 @@ function SidebarProvider({
   mobileBreakpoint?: number;
 }) {
   const isMobileDefault = useIsMobile();
-  const [isMobileOverride, setIsMobileOverride] = React.useState<
-    boolean | undefined
-  >(undefined);
+  const [isMobileOverride, setIsMobileOverride] = React.useState<boolean | undefined>(undefined);
 
   React.useEffect(() => {
     if (mobileBreakpoint === undefined) return;
-    const update = () =>
-      setIsMobileOverride(window.innerWidth < mobileBreakpoint);
+    const update = () => setIsMobileOverride(window.innerWidth < mobileBreakpoint);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, [mobileBreakpoint]);
 
-  const isMobile =
-    mobileBreakpoint !== undefined
-      ? Boolean(isMobileOverride)
-      : isMobileDefault;
+  const isMobile = mobileBreakpoint !== undefined ? Boolean(isMobileOverride) : isMobileDefault;
 
   const [openMobile, setOpenMobile] = React.useState(false);
 
@@ -153,7 +147,7 @@ function SidebarProvider({
           } as React.CSSProperties
         }
         className={cn(
-          "group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar",
+          "group/sidebar-wrapper flex min-h-[calc(100svh+1px)] w-full has-data-[variant=inset]:bg-sidebar supports-[height:100dvh]:min-h-[calc(100dvh+1px)]",
           className
         )}
         {...props}

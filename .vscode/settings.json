@@ -5,7 +5,7 @@
   "files.trimTrailingWhitespace": true,
 
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,
-  "prisma.schemaPath": "prisma.config.ts",
+  "prisma.schemaPath": "prisma",
 
   "markdownlint.config": {
     "default": true,
@@ -17,6 +17,7 @@
   },
 
   "files.watcherExclude": {
+    "**/.claude/worktrees/**": true,
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
     "**/node_modules/**": true,
@@ -39,6 +40,7 @@
   },
 
   "search.exclude": {
+    "**/.claude/worktrees": true,
     "**/node_modules": true,
     "**/.next": true,
     "**/dist": true,
@@ -57,6 +59,7 @@
   },
 
   "files.exclude": {
+    "**/.claude/worktrees": true,
     "**/.next": true,
     "**/dist": true,
     "**/build": true,
@@ -91,7 +94,8 @@
     "docker compose": true,
     "uniq": true,
     "git restore": true,
-    "true": true
+    "true": true,
+    "printf": true
   },
   "github.copilot.chat.workspace.codeSearchExternalIngest.enabled": true
 }

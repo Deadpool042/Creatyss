@@ -3,9 +3,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Bell, ChevronDown, LogOut, Moon, Sun } from "lucide-react";
+import { Bell, ChevronDown, LogOut, Moon } from "lucide-react";
 import type { JSX } from "react";
-import { useTheme } from "next-themes";
 
 import { ModeToggle } from "@/components/shared/theme";
 import { Button } from "@/components/ui/button";
@@ -26,8 +25,6 @@ type AdminTopbarProps = {
 
 export function AdminTopbar({ displayName, email }: AdminTopbarProps): JSX.Element {
   const initial = displayName.charAt(0).toUpperCase();
-  const { resolvedTheme } = useTheme();
-  const currentTheme = resolvedTheme === "dark" ? "dark" : "light";
 
   return (
     <header
@@ -121,11 +118,7 @@ export function AdminTopbar({ displayName, email }: AdminTopbarProps): JSX.Eleme
                 onSelect={(event) => event.preventDefault()}
               >
                 <div className="flex items-center gap-2.5">
-                  {currentTheme === "dark" ? (
-                    <Sun className="size-4 shrink-0" />
-                  ) : (
-                    <Moon className="size-4 shrink-0" />
-                  )}
+                  <Moon className="size-4 shrink-0" />
                   <div className="leading-tight">
                     <p className="font-medium text-foreground">Apparence</p>
                     <p className="text-[11px] text-foreground/52">Mode clair ou sombre</p>

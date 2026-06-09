@@ -344,14 +344,19 @@
 
   .admin-split-compact-landscape-shell {
     min-height: var(--admin-compact-vh, 100svh);
+    height: var(--admin-compact-vh, 100svh) !important;
+    max-height: var(--admin-compact-vh, 100svh) !important;
+    overflow: hidden !important;
   }
 
   .admin-split-compact-landscape-root {
     min-height: var(--admin-compact-vh, 100svh);
+    height: var(--admin-compact-vh, 100svh) !important;
+    max-height: var(--admin-compact-vh, 100svh) !important;
     display: block;
     align-items: stretch;
     overflow-x: clip !important;
-    overflow-y: visible !important;
+    overflow-y: hidden !important;
   }
 
   .admin-split-compact-landscape-list {
@@ -360,7 +365,9 @@
     z-index: 2;
     width: var(--admin-split-compact-landscape-list-width);
     min-height: var(--admin-compact-vh, 100svh);
+    height: var(--admin-compact-vh, 100svh);
     transform: translate3d(0, 0, 0);
+    overflow: hidden !important;
   }
 
   .admin-split-compact-landscape-list--focused {
@@ -380,7 +387,9 @@
     width: calc(100% - var(--admin-split-compact-landscape-list-width));
     margin-left: var(--admin-split-compact-landscape-list-width);
     min-height: var(--admin-compact-vh, 100svh);
+    height: var(--admin-compact-vh, 100svh);
     transform: translate3d(0, 0, 0);
+    overflow: hidden !important;
   }
 
   .admin-split-compact-landscape-detail--focused {
@@ -393,10 +402,11 @@
   .admin-split-compact-landscape-list > section > div,
   .admin-split-compact-landscape-list .admin-split-list-pane-scroll,
   .admin-split-compact-landscape-detail .admin-split-detail-pane-scroll {
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-    overscroll-behavior: auto;
+    height: 100% !important;
+    max-height: var(--admin-compact-vh, 100svh) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
   }
 }
 
@@ -406,6 +416,13 @@
   max-width: min(100%, 58rem);
   margin-inline-start: 0;
   margin-inline-end: auto;
+}
+
+.admin-split-detail-pane-fluid {
+  width: 100%;
+  max-width: none;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
 }
 
 .admin-split-detail-pane-content {

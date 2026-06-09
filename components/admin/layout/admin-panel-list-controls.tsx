@@ -44,6 +44,7 @@ type AdminPanelListControlsProps = Readonly<{
   statusOptions: readonly AdminPanelListControlStatusOption[];
   allStatusLabel?: string;
   density?: "default" | "compact";
+  visibility?: "all" | "desktop" | "mobile";
   filterAriaLabel?: string;
   searchInputClassName?: string;
   selectTriggerSize?: "sm" | "default";
@@ -55,6 +56,7 @@ export function AdminPanelListControls({
   statusOptions,
   allStatusLabel = "Tous les statuts",
   density = "default",
+  visibility = "all",
   filterAriaLabel = "Filtrer la liste",
   searchInputClassName,
   selectTriggerSize = "default",
@@ -70,8 +72,14 @@ export function AdminPanelListControls({
   const resolvedSelectTriggerSize = isCompact ? "sm" : selectTriggerSize;
   const selectTriggerClassName = isCompact ? "h-8 w-full text-sm" : "w-full";
   const activeFiltersCount = currentStatus ? 1 : 0;
+  const showDesktopControls = visibility !== "mobile";
+  const showMobileControls = visibility !== "desktop";
   const mobileToolbarInputClassName = cn(
     "h-10 rounded-xl border-control-border/80 bg-surface-panel/80 px-3.5 text-sm shadow-control placeholder:text-text-muted-soft hover:border-control-border-strong hover:bg-control-surface-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/40 md:h-8 md:rounded-xl md:px-3",
+    searchInputClassName
+  );
+  const mobileOverlayInputClassName = cn(
+    "h-10 rounded-full border-white/10 bg-black/12 px-3.5 text-sm text-foreground shadow-none placeholder:text-text-muted-soft hover:border-white/14 hover:bg-black/16 focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/30",
     searchInputClassName
   );
 
@@ -89,13 +97,16 @@ export function AdminPanelListControls({
     router.replace(nextUrl, { scroll: false });
   }
 
-  function renderFilterTrigger() {
+  function renderFilterTrigger(className?: string) {
     return (
       <Button
         type="button"
         variant="outline"
         size="icon"
-        className="relative size-10 rounded-xl border-control-border/80 bg-surface-panel/80 text-foreground shadow-control hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:ring-focus-ring/40 md:size-8"
+        className={cn(
+          "relative size-10 rounded-xl border-control-border/80 bg-surface-panel/80 text-foreground shadow-control hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:ring-focus-ring/40 md:size-8",
+          className
+        )}
         aria-label={filterAriaLabel}
       >
         <SlidersHorizontal className="size-4" />
@@ -126,105 +137,133 @@ export function AdminPanelListControls({
 
   if (isCompact) {
     return (
-      <div className="flex items-center gap-2 p-2">
-        <form action={listPath} method="GET" className="min-w-0 flex-1">
-          <Input
-            name="search"
-            defaultValue={currentSearch}
-            placeholder={searchPlaceholder}
-            className={mobileToolbarInputClassName}
-          />
-          {currentStatus && <input type="hidden" name="status" value={currentStatus} />}
-        </form>
+      <>
+        {showDesktopControls ? (
+          <div className="hidden items-center gap-2 p-2 md:flex">
+            <form action={listPath} method="GET" className="min-w-0 flex-1">
+              <Input
+                name="search"
+                defaultValue={currentSearch}
+                placeholder={searchPlaceholder}
+                className={mobileToolbarInputClassName}
+              />
+              {currentStatus && <input type="hidden" name="status" value={currentStatus} />}
+            </form>
 
-        <div className="md:hidden">
-          <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
-            <SheetTrigger asChild>{renderFilterTrigger()}</SheetTrigger>
-            <SheetContent
-              side="bottom"
-              showCloseButton={false}
-              className="rounded-t-[1.75rem] border-t border-surface-border/70 bg-shell-surface/98 px-0 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-0 shadow-2xl supports-backdrop-filter:bg-shell-surface/92 supports-backdrop-filter:backdrop-blur-xl"
-            >
-              <SheetHeader className="gap-1 border-b border-surface-border/60 px-4 pb-3 pt-4 text-left">
-                <SheetTitle>Filtres</SheetTitle>
-                <SheetDescription>Affinez la liste sans réduire l’espace utile.</SheetDescription>
-              </SheetHeader>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>{renderFilterTrigger()}</DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
+                <DropdownMenuLabel>Statut</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {renderFilterOptions(handleStatusChange)}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        ) : null}
 
-              <div className="px-4 py-4">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-text-muted-strong">
-                    Statut
-                  </p>
-                  {activeFiltersCount > 0 ? (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 rounded-full px-3 text-xs"
-                      onClick={() => applyStatusFilter("all")}
+        {showMobileControls ? (
+          <div className="bg-transparent py-2 md:hidden [@media(max-height:480px)]:py-1.5">
+            <div className="safe-px-layout">
+              <div className="rounded-[1.45rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.085),rgba(255,255,255,0.03))] px-2.5 py-2 shadow-[0_16px_34px_rgba(0,0,0,0.22)] ring-1 ring-black/10 supports-backdrop-filter:bg-black/22 supports-backdrop-filter:backdrop-blur-2xl [@media(max-height:480px)]:rounded-[1.1rem] [@media(max-height:480px)]:px-2 [@media(max-height:480px)]:py-1.5">
+                <div className="flex items-center gap-2">
+                  <form action={listPath} method="GET" className="min-w-0 flex-1">
+                    <Input
+                      name="search"
+                      defaultValue={currentSearch}
+                      placeholder={searchPlaceholder}
+                      className={mobileOverlayInputClassName}
+                    />
+                    {currentStatus && <input type="hidden" name="status" value={currentStatus} />}
+                  </form>
+
+                  <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
+                    <SheetTrigger asChild>
+                      {renderFilterTrigger(
+                        "size-10 rounded-full border-white/10 bg-black/12 text-foreground shadow-none hover:border-white/14 hover:bg-black/18 focus-visible:ring-focus-ring/30"
+                      )}
+                    </SheetTrigger>
+                    <SheetContent
+                      side="bottom"
+                      showCloseButton={false}
+                      className="rounded-t-[1.75rem] border-t border-surface-border/70 bg-shell-surface/98 px-0 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-0 shadow-2xl supports-backdrop-filter:bg-shell-surface/92 supports-backdrop-filter:backdrop-blur-xl"
                     >
-                      Réinitialiser
-                    </Button>
-                  ) : null}
-                </div>
+                      <SheetHeader className="gap-1 border-b border-surface-border/60 px-4 pb-3 pt-4 text-left">
+                        <SheetTitle>Filtres</SheetTitle>
+                        <SheetDescription>
+                          Affinez la liste sans réduire l’espace utile.
+                        </SheetDescription>
+                      </SheetHeader>
 
-                <div className="grid gap-2">
-                  <button
-                    type="button"
-                    className={cn(
-                      "flex min-h-11 w-full items-center justify-between rounded-2xl border px-3.5 py-3 text-left text-sm shadow-sm transition-colors",
-                      !currentStatus
-                        ? "border-control-border-strong bg-control-surface-selected text-foreground"
-                        : "border-control-border/70 bg-surface-panel/70 text-text-muted-strong hover:bg-control-surface-hover"
-                    )}
-                    onClick={() => applyStatusFilter("all")}
-                  >
-                    <span>{allStatusLabel}</span>
-                    {!currentStatus ? (
-                      <span className="text-[11px] font-medium text-text-muted-strong">Actif</span>
-                    ) : null}
-                  </button>
+                      <div className="px-4 py-4">
+                        <div className="mb-3 flex items-center justify-between gap-3">
+                          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-text-muted-strong">
+                            Statut
+                          </p>
+                          {activeFiltersCount > 0 ? (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 rounded-full px-3 text-xs"
+                              onClick={() => applyStatusFilter("all")}
+                            >
+                              Réinitialiser
+                            </Button>
+                          ) : null}
+                        </div>
 
-                  {statusOptions.map((option) => {
-                    const isActive = currentStatus === option.value;
-                    return (
-                      <button
-                        key={option.value}
-                        type="button"
-                        className={cn(
-                          "flex min-h-11 w-full items-center justify-between rounded-2xl border px-3.5 py-3 text-left text-sm shadow-sm transition-colors",
-                          isActive
-                            ? "border-control-border-strong bg-control-surface-selected text-foreground"
-                            : "border-control-border/70 bg-surface-panel/70 text-text-muted-strong hover:bg-control-surface-hover"
-                        )}
-                        onClick={() => applyStatusFilter(option.value)}
-                      >
-                        <span>{option.label}</span>
-                        {isActive ? (
-                          <span className="text-[11px] font-medium text-text-muted-strong">
-                            Actif
-                          </span>
-                        ) : null}
-                      </button>
-                    );
-                  })}
+                        <div className="grid gap-2">
+                          <button
+                            type="button"
+                            className={cn(
+                              "flex min-h-11 w-full items-center justify-between rounded-2xl border px-3.5 py-3 text-left text-sm shadow-sm transition-colors",
+                              !currentStatus
+                                ? "border-control-border-strong bg-control-surface-selected text-foreground"
+                                : "border-control-border/70 bg-surface-panel/70 text-text-muted-strong hover:bg-control-surface-hover"
+                            )}
+                            onClick={() => applyStatusFilter("all")}
+                          >
+                            <span>{allStatusLabel}</span>
+                            {!currentStatus ? (
+                              <span className="text-[11px] font-medium text-text-muted-strong">
+                                Actif
+                              </span>
+                            ) : null}
+                          </button>
+
+                          {statusOptions.map((option) => {
+                            const isActive = currentStatus === option.value;
+                            return (
+                              <button
+                                key={option.value}
+                                type="button"
+                                className={cn(
+                                  "flex min-h-11 w-full items-center justify-between rounded-2xl border px-3.5 py-3 text-left text-sm shadow-sm transition-colors",
+                                  isActive
+                                    ? "border-control-border-strong bg-control-surface-selected text-foreground"
+                                    : "border-control-border/70 bg-surface-panel/70 text-text-muted-strong hover:bg-control-surface-hover"
+                                )}
+                                onClick={() => applyStatusFilter(option.value)}
+                              >
+                                <span>{option.label}</span>
+                                {isActive ? (
+                                  <span className="text-[11px] font-medium text-text-muted-strong">
+                                    Actif
+                                  </span>
+                                ) : null}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
                 </div>
               </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-
-        <div className="hidden md:block">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>{renderFilterTrigger()}</DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
-              <DropdownMenuLabel>Statut</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {renderFilterOptions(handleStatusChange)}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+            </div>
+          </div>
+        ) : null}
+      </>
     );
   }
 

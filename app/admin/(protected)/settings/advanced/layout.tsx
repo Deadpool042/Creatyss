@@ -12,7 +12,7 @@ export default function AdvancedSettingsLayout({ list, detail }: AdvancedSetting
   return (
     <AdminPageShell
       className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden lg:overscroll-contain"
-      scrollMode="area"
+      scrollMode="nested"
       title="Avancé"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Avancé" }]}
       contentPreset="split-panel"
@@ -26,7 +26,6 @@ export default function AdvancedSettingsLayout({ list, detail }: AdvancedSetting
         listRootPath="/admin/settings/advanced"
         overviewPath="/admin/settings/advanced/overview"
         compactSplit
-        compactLandscapeMode="detailFocus"
         mobileBackToListLabel="Familles"
         defaultDesktopListWidth={288}
         minDesktopListWidth={272}

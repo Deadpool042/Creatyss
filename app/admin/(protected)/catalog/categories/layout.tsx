@@ -29,7 +29,6 @@ export default function CategoriesLayout({ list, detail }: CategoriesLayoutProps
       <AdminSplitView
         list={list}
         detail={detail}
-        compactLandscapeMode="detailFocus"
         listRootPath={CATEGORY_LAYOUT_CONFIG.listRootPath}
         overviewPath="/admin/catalog/categories/overview"
         detailClassName={CATEGORY_LAYOUT_CONFIG.detailClassName}

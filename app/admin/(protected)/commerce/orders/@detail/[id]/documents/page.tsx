@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminSplitDetailPaneShell } from "@/components/admin/layout/admin-split-detail-pane-shell";
 import { db } from "@/core/db";
+import {
+  ADMIN_ORDERS_DETAIL_CONTENT_CLASS,
+  buildAdminOrdersDetailSectionClassName,
+} from "@/features/admin/commerce/orders/shared/admin-orders-detail-layout";
 import { isDocumentsFeatureActive } from "@/features/admin/commerce/documents/queries/is-documents-feature-active.query";
 import { findDocumentsByOrderId } from "@/features/admin/commerce/documents/queries/find-documents-by-order.query";
 import { OrderDetailDocumentsCard } from "@/features/admin/commerce/documents/components/order-detail-documents-card";
@@ -36,8 +40,11 @@ export default async function OrderDocumentsSlotPage({ params }: OrderDocumentsS
   }
 
   return (
-    <AdminSplitDetailPaneShell constrainContent={false} contentClassName="gap-4">
-      <div className="admin-split-detail-pane-column">
+    <AdminSplitDetailPaneShell
+      constrainContent={false}
+      contentClassName={ADMIN_ORDERS_DETAIL_CONTENT_CLASS}
+    >
+      <div className={buildAdminOrdersDetailSectionClassName()}>
         <AdminPageHeader
           eyebrow="Commandes"
           title={`Documents — Commande #${order.orderNumber}`}
@@ -45,7 +52,7 @@ export default async function OrderDocumentsSlotPage({ params }: OrderDocumentsS
         />
       </div>
 
-      <div className="admin-split-detail-pane-column">
+      <div className={buildAdminOrdersDetailSectionClassName()}>
         <OrderDetailDocumentsCard documents={documents} orderId={id} />
       </div>
     </AdminSplitDetailPaneShell>

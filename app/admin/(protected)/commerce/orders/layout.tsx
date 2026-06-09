@@ -13,7 +13,7 @@ export default function OrdersLayout({ list, detail }: OrdersLayoutProps) {
   return (
     <AdminPageShell
       className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden lg:overscroll-contain"
-      scrollMode="area"
+      scrollMode="nested"
       title="Commandes"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
@@ -30,7 +30,6 @@ export default function OrdersLayout({ list, detail }: OrdersLayoutProps) {
         detail={detail}
         listRootPath="/admin/commerce/orders"
         overviewPath="/admin/commerce/orders/overview"
-        compactLandscapeMode="detailFocus"
         desktopResizable={false}
         desktopCollapsible={true}
         defaultDesktopListWidth={280}
