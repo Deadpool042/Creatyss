@@ -26,7 +26,7 @@ type ProductModulePageShellProps = Pick<
   | "title"
   | "navigation"
   | "topbarAction"
-  | "scrollMode"
+  | "scrollBehavior"
   | "contentPreset"
   | "contentClassName"
   | "breadcrumbs"
@@ -58,7 +58,7 @@ export function getProductModulePageShellProps({
           ),
         }
       : {}),
-    scrollMode: "area",
+    scrollBehavior: "page",
     contentPreset: "full-width",
     contentClassName: PRODUCT_MODULE_PAGE_CONTENT_CLASSNAME,
     breadcrumbs: [

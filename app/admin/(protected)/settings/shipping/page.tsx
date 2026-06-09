@@ -5,7 +5,7 @@ import { Truck } from "lucide-react";
 export default function AdminSettingsShippingPage() {
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Livraison"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Livraison" }]}
       showBreadcrumbsInContent={false}

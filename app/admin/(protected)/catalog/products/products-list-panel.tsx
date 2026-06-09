@@ -79,7 +79,7 @@ export async function ProductsListPanel({
       ]}
       contentPreset="full-width"
       showBreadcrumbsInContent={false}
-      scrollMode="nested"
+      scrollBehavior="external"
     >
       <ProductTableProvider
         products={products}

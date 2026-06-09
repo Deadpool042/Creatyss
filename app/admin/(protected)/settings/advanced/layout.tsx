@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminSplitPageShell } from "@/components/admin/layout/admin-split-page-shell";
 import { AdminSplitView } from "@/components/admin/layout/admin-split-view";
 
 type AdvancedSettingsLayoutProps = {
@@ -10,15 +10,9 @@ type AdvancedSettingsLayoutProps = {
 
 export default function AdvancedSettingsLayout({ list, detail }: AdvancedSettingsLayoutProps) {
   return (
-    <AdminPageShell
-      className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden"
-      scrollMode="nested"
+    <AdminSplitPageShell
       title="Avancé"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Avancé" }]}
-      contentPreset="split-panel"
-      contentClassName="admin-split-page-content min-h-0 lg:h-full lg:overflow-hidden"
-      showBreadcrumbsInContent={false}
-      showTitleInContent={false}
     >
       <AdminSplitView
         list={list}
@@ -33,6 +27,6 @@ export default function AdvancedSettingsLayout({ list, detail }: AdvancedSetting
         desktopResizable={false}
         desktopCollapsible={true}
       />
-    </AdminPageShell>
+    </AdminSplitPageShell>
   );
 }

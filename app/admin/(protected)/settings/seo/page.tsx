@@ -15,7 +15,7 @@ export default async function AdminSettingsSeoPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="SEO"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

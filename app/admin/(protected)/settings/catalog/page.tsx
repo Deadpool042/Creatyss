@@ -20,7 +20,7 @@ export default async function AdminSettingsCatalogPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Catalogue"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

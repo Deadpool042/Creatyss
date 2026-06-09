@@ -10,7 +10,7 @@ export default async function AdminCommercePaymentsPage() {
   if (!featureActive) notFound();
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Paiements"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Commerce", href: "/admin/commerce/overview" }, { label: "Paiements" }]}
       showBreadcrumbsInContent={false}

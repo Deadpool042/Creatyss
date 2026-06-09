@@ -44,7 +44,7 @@ export default async function AdminSettingsTeamPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Équipe"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

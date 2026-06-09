@@ -10,7 +10,7 @@ export default async function AdminInsightsAnalyticsPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Analytics"
       contentPreset="overview"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Insights" }, { label: "Analytics" }]}

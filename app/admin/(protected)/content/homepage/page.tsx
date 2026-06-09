@@ -70,7 +70,7 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
   if (editorData === null) {
     return (
       <AdminPageShell
-        scrollMode="area"
+        scrollBehavior="page"
         title="Édition de la page d'accueil"
         breadcrumbs={[
           { label: "Admin", href: "/admin" },
@@ -119,7 +119,7 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Édition de la page d'accueil"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

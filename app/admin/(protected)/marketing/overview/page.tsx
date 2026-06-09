@@ -4,7 +4,7 @@ import { MarketingOverviewSections } from "@/features/admin/marketing/components
 export default function AdminMarketingOverviewPage() {
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Marketing"
       contentPreset="overview"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Marketing" }]}

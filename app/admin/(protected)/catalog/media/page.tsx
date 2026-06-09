@@ -128,7 +128,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
   return (
     <AdminPageShell
       title="Bibliothèque médias"
-      scrollMode="area"
+      scrollBehavior="page"
       contentPreset="detail"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

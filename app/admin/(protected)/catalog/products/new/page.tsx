@@ -13,7 +13,7 @@ export default async function ProductCreatePage() {
     <AdminPageShell
       title={PRODUCT_CREATE_PAGE_COPY.title}
       navigation={{ label: PRODUCT_EDITOR_NAV_COPY.navLabel, href: ADMIN_PRODUCTS_LIST_PATH }}
-      scrollMode="area"
+      scrollBehavior="page"
       contentPreset="form"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

@@ -117,7 +117,7 @@ export function CategoriesListLoading() {
   return (
     <AdminPageShell
       title={CATEGORY_LIST_PAGE_COPY.title}
-      scrollMode="area"
+      scrollBehavior="page"
       navigation={{ label: CATEGORY_NAVIGATION_COPY.homeLabel, href: "/admin" }}
       header={
         <AdminPageHeader

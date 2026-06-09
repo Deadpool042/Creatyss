@@ -46,7 +46,7 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Articles"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

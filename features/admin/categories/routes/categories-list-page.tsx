@@ -1,4 +1,4 @@
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminSplitPaneShell } from "@/components/admin/layout/admin-split-pane-shell";
 import { CategoriesPanelList, listAdminCategories } from "@/features/admin/categories";
 import { CATEGORY_LIST_PAGE_COPY } from "@/features/admin/categories/config";
 import { parseAdminCategoryListSearchParams } from "@/features/admin/categories/list/schemas/parse-admin-category-list-search-params";
@@ -20,14 +20,8 @@ export async function CategoriesListPage({ searchParams }: CategoriesListPagePro
   }
 
   return (
-    <AdminPageShell
-      title={CATEGORY_LIST_PAGE_COPY.title}
-      contentPreset="split-panel"
-      showBreadcrumbsInContent={false}
-      showTitleInContent={false}
-      scrollMode="nested"
-    >
+    <AdminSplitPaneShell title={CATEGORY_LIST_PAGE_COPY.title}>
       <CategoriesPanelList categories={items} />
-    </AdminPageShell>
+    </AdminSplitPaneShell>
   );
 }

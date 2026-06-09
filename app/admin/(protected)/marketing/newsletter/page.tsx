@@ -10,7 +10,7 @@ export default async function AdminMarketingNewsletterPage() {
   if (!featureActive) notFound();
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Newsletter"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Marketing", href: "/admin/marketing/overview" }, { label: "Newsletter" }]}
       showBreadcrumbsInContent={false}

@@ -18,7 +18,7 @@ export function AdminSplitDetailPaneShell({
   return (
     <section
       className={cn(
-        "admin-split-detail-pane-scroll flex min-h-0 flex-1 overflow-y-auto overscroll-contain",
+        "admin-split-detail-pane-scroll flex min-h-0 flex-1 overflow-y-auto",
         className
       )}
     >

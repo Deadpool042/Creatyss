@@ -34,7 +34,7 @@ export default async function AdminSettingsMediaPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Médias"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Médias" }]}
       showBreadcrumbsInContent={false}

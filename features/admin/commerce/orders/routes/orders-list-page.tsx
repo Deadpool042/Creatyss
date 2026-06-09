@@ -1,4 +1,4 @@
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminSplitPaneShell } from "@/components/admin/layout/admin-split-pane-shell";
 import { OrdersPanelList, listAdminOrders } from "@/features/admin/commerce/orders";
 import { parseAdminOrderListSearchParams } from "@/features/admin/commerce/orders/list/schemas/parse-admin-order-list-search-params";
 
@@ -21,15 +21,8 @@ export async function OrdersListPage({ searchParams }: OrdersListPageProps) {
   }
 
   return (
-    <AdminPageShell
-      title={ORDER_LIST_PAGE_CONFIG.title}
-      topbarAction={null}
-      contentPreset="split-panel"
-      showBreadcrumbsInContent={false}
-      showTitleInContent={false}
-      scrollMode="nested"
-    >
+    <AdminSplitPaneShell title={ORDER_LIST_PAGE_CONFIG.title}>
       <OrdersPanelList orders={items} />
-    </AdminPageShell>
+    </AdminSplitPaneShell>
   );
 }

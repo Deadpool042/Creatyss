@@ -36,7 +36,7 @@ export default async function AdminMaintenanceObservabilityPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Audit & Observabilité"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

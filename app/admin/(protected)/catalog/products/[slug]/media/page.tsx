@@ -63,7 +63,7 @@ export default async function ProductDetailMediaPage({
             isArchived
           />
         }
-        scrollMode="area"
+        scrollBehavior="page"
         contentPreset="full-width"
         header={
           <AdminPageHeader

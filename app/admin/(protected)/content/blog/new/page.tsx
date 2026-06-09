@@ -40,7 +40,7 @@ export default async function NewAdminBlogPostPage({ searchParams }: NewAdminBlo
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Nouvel article"
       navigation={{ label: "Retour", href: "/admin/content/blog" }}
       breadcrumbs={[

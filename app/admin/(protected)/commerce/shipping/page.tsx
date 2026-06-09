@@ -10,7 +10,7 @@ export default async function AdminCommerceShippingPage() {
   if (!featureActive) notFound();
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Livraisons"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Commerce", href: "/admin/commerce/overview" }, { label: "Livraisons" }]}
       showBreadcrumbsInContent={false}

@@ -100,7 +100,7 @@ const SETTINGS_CARDS: ReadonlyArray<SettingsCard> = [
 export default function AdminSettingsPage() {
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Réglages"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }]}
       showBreadcrumbsInContent={false}

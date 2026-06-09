@@ -38,7 +38,7 @@ export default async function AdminCommerceCustomersPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Clients"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

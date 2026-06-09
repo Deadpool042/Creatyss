@@ -10,7 +10,7 @@ export default async function AdminMarketingDiscountsPage() {
   if (!featureActive) notFound();
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Codes promo"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Marketing", href: "/admin/marketing/overview" }, { label: "Réductions" }]}
       showBreadcrumbsInContent={false}

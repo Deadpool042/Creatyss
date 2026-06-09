@@ -8,7 +8,7 @@ export default async function AdminSettingsGeneralPage() {
   if (!store) {
     return (
       <AdminPageShell
-        scrollMode="area"
+        scrollBehavior="page"
         title="Réglages généraux"
         breadcrumbs={[
           { label: "Admin", href: "/admin" },
@@ -30,7 +30,7 @@ export default async function AdminSettingsGeneralPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Réglages généraux"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

@@ -1,7 +1,7 @@
 //app/admin/(protected)/commerce/orders/layout.tsx
 import type { ReactNode } from "react";
 
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminSplitPageShell } from "@/components/admin/layout/admin-split-page-shell";
 import { AdminSplitView } from "@/components/admin/layout/admin-split-view";
 
 type OrdersLayoutProps = {
@@ -11,19 +11,13 @@ type OrdersLayoutProps = {
 
 export default function OrdersLayout({ list, detail }: OrdersLayoutProps) {
   return (
-    <AdminPageShell
-      className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden"
-      scrollMode="nested"
+    <AdminSplitPageShell
       title="Commandes"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
         { label: "Commerce", href: "/admin/commerce/overview" },
         { label: "Commandes" },
       ]}
-      contentPreset="split-panel"
-      contentClassName="admin-split-page-content min-h-0 lg:h-full lg:overflow-hidden"
-      showBreadcrumbsInContent={false}
-      showTitleInContent={false}
     >
       <AdminSplitView
         list={list}
@@ -37,6 +31,6 @@ export default function OrdersLayout({ list, detail }: OrdersLayoutProps) {
         maxDesktopListWidth={460}
         mobileBackToListLabel="Toutes les commandes"
       />
-    </AdminPageShell>
+    </AdminSplitPageShell>
   );
 }

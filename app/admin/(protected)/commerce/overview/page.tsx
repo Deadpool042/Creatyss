@@ -7,7 +7,7 @@ export default async function AdminCommerceOverviewPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Vue d'ensemble"
       contentPreset="overview"
       breadcrumbs={[

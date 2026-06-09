@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { AdminSplitView } from "@/components/admin/layout/admin-split-view";
 import { CATEGORY_LAYOUT_CONFIG } from "@/features/admin/categories/config";
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminSplitPageShell } from "@/components/admin/layout/admin-split-page-shell";
 
 type CategoriesLayoutProps = {
   list: ReactNode;
@@ -12,19 +12,13 @@ type CategoriesLayoutProps = {
 
 export default function CategoriesLayout({ list, detail }: CategoriesLayoutProps) {
   return (
-    <AdminPageShell
-      className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden"
-      scrollMode="nested"
+    <AdminSplitPageShell
       title="Catégories"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
         { label: "Catalogue", href: "/admin/catalog/overview" },
         { label: "Catégories" },
       ]}
-      contentPreset="split-panel"
-      contentClassName="admin-split-page-content min-h-0 lg:h-full lg:overflow-hidden"
-      showBreadcrumbsInContent={false}
-      showTitleInContent={false}
     >
       <AdminSplitView
         list={list}
@@ -40,6 +34,6 @@ export default function CategoriesLayout({ list, detail }: CategoriesLayoutProps
         maxDesktopListWidth={CATEGORY_LAYOUT_CONFIG.maxDesktopListWidth}
         mobileBackToListLabel={CATEGORY_LAYOUT_CONFIG.mobileBackToListLabel}
       />
-    </AdminPageShell>
+    </AdminSplitPageShell>
   );
 }

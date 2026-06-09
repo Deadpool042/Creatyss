@@ -5,7 +5,7 @@ import { ShoppingCart } from "lucide-react";
 export default function AdminSettingsOrdersPage() {
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Commandes"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Commandes" }]}
       showBreadcrumbsInContent={false}

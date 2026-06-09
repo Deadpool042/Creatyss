@@ -10,7 +10,7 @@ export default async function AdminMarketingAutomationsPage() {
   if (!featureActive) notFound();
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Automations"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Marketing", href: "/admin/marketing/overview" }, { label: "Automations" }]}
       showBreadcrumbsInContent={false}

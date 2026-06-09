@@ -97,7 +97,7 @@ function ProductArchivedState({ product }: ProductArchivedStateProps) {
       topbarAction={
         <ProductEditorTopbarMenu productId={product.id} productSlug={product.slug} isArchived />
       }
-      scrollMode="area"
+      scrollBehavior="page"
       contentPreset="full-width"
       contentClassName="lg:pb-6"
       breadcrumbs={[

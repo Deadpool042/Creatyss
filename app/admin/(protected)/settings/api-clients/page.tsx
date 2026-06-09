@@ -37,7 +37,7 @@ export default async function AdminSettingsApiClientsPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Clés API"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

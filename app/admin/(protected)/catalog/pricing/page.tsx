@@ -35,7 +35,7 @@ export default async function AdminCatalogPricingPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Listes de prix"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

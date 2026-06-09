@@ -52,7 +52,7 @@ export default async function EditAdminBlogPostPage({
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Modifier l'article"
       navigation={{ label: "Retour", href: "/admin/content/blog" }}
       breadcrumbs={[

@@ -7,7 +7,7 @@ export default async function AdminContentOverviewPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Vue d'ensemble contenu"
       contentPreset="overview"
       breadcrumbs={[

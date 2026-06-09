@@ -7,7 +7,7 @@ export default async function CatalogOverviewPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Vue d'ensemble du catalogue"
       contentPreset="overview"
       breadcrumbs={[

@@ -86,7 +86,7 @@ export default async function ProductDetailPreviewPage({ params }: PreviewPagePr
         label: "Retour à l'éditeur",
         href: buildAdminProductEditPath(product.slug),
       }}
-      scrollMode="area"
+      scrollBehavior="page"
       contentPreset="full-width"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

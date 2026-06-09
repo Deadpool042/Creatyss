@@ -8,7 +8,7 @@ export default async function AdminDashboardPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Tableau de bord"
       breadcrumbs={[{ label: "Tableau de bord" }]}
       contentPreset="dashboard"

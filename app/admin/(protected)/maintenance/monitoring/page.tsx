@@ -125,7 +125,7 @@ export default async function AdminMaintenanceMonitoringPage() {
 
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Monitoring"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },

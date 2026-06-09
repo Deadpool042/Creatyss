@@ -5,7 +5,7 @@ import { CreditCard } from "lucide-react";
 export default function AdminSettingsPaymentsPage() {
   return (
     <AdminPageShell
-      scrollMode="area"
+      scrollBehavior="page"
       title="Paiements"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Paiements" }]}
       showBreadcrumbsInContent={false}
