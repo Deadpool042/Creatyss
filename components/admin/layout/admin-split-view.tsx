@@ -317,7 +317,7 @@ export function AdminSplitView({
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-visible laptop:overflow-hidden laptop:overscroll-contain">
+    <div className="flex min-h-0 flex-1 flex-col overflow-visible laptop:overflow-hidden">
       {header ? (
         <div className="shrink-0 border-b border-surface-border bg-surface-panel/70 safe-px-layout py-2.5">
           {header}

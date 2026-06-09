@@ -12,7 +12,7 @@ type OrdersLayoutProps = {
 export default function OrdersLayout({ list, detail }: OrdersLayoutProps) {
   return (
     <AdminPageShell
-      className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden lg:overscroll-contain"
+      className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden"
       scrollMode="nested"
       title="Commandes"
       breadcrumbs={[

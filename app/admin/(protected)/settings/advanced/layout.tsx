@@ -11,7 +11,7 @@ type AdvancedSettingsLayoutProps = {
 export default function AdvancedSettingsLayout({ list, detail }: AdvancedSettingsLayoutProps) {
   return (
     <AdminPageShell
-      className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden lg:overscroll-contain"
+      className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden"
       scrollMode="nested"
       title="Avancé"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Avancé" }]}
