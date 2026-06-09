@@ -2,23 +2,28 @@
 
 import * as React from "react";
 
-import { ADMIN_SIDEBAR_MOBILE_BREAKPOINT } from "@/lib/breakpoints";
+const ADMIN_MOBILE_QUERY = "(max-width: 1023px)";
+const COMPACT_LANDSCAPE_QUERY =
+  "(pointer: coarse) and (orientation: landscape) and (max-height: 480px)";
 
 export function useIsAdminMobile(): boolean {
-  const [isAdminMobile, setIsAdminMobile] = React.useState<
-    boolean | undefined
-  >(undefined);
+  const [isAdminMobile, setIsAdminMobile] = React.useState<boolean | undefined>(undefined);
 
   React.useEffect(() => {
-    const updateIsAdminMobile = () => {
-      setIsAdminMobile(window.innerWidth < ADMIN_SIDEBAR_MOBILE_BREAKPOINT);
+    const mqlMobile = window.matchMedia(ADMIN_MOBILE_QUERY);
+    const mqlCompact = window.matchMedia(COMPACT_LANDSCAPE_QUERY);
+
+    const update = () => {
+      setIsAdminMobile(mqlMobile.matches || mqlCompact.matches);
     };
 
-    updateIsAdminMobile();
-    window.addEventListener("resize", updateIsAdminMobile);
+    mqlMobile.addEventListener("change", update);
+    mqlCompact.addEventListener("change", update);
+    update();
 
     return () => {
-      window.removeEventListener("resize", updateIsAdminMobile);
+      mqlMobile.removeEventListener("change", update);
+      mqlCompact.removeEventListener("change", update);
     };
   }, []);
 

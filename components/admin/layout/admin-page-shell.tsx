@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 import type { AppBreadcrumbItem } from "@/components/shared/breadcrumbs";
 import { AppBreadcrumbs } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsAdminMobile } from "@/hooks/use-is-admin-mobile";
 import { cn } from "@/lib/utils";
 
 import { getAdminContentClassName, type AdminContentPreset } from "./admin-content-classnames";
@@ -166,7 +166,7 @@ export function AdminPageShell({
   showBreadcrumbsInContent = true,
   showTitleInContent = true,
 }: AdminPageShellProps) {
-  const isMobile = useIsMobile();
+  const isMobile = useIsAdminMobile();
   const resolvedScrollBehavior = resolveScrollBehavior(scrollBehavior);
   const effectiveScrollBehavior = isMobile ? "external" : resolvedScrollBehavior;
   const resolvedContentClassName = cn(getAdminContentClassName(contentPreset), contentClassName);
